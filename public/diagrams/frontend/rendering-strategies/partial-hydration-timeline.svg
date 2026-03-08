@@ -1,0 +1,102 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Partial Hydration — Hydration Strategy Timeline</text>
+
+  <defs>
+    <marker id="ax" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#1a1822"/>
+    </marker>
+  </defs>
+
+  <!-- X axis: 0 to variable/on-demand, segments: 0-200ms, 200-500ms, 500-1s, 1-2s, 2s+/variable -->
+  <!-- Simplified: 0 to "user-triggered" on right -->
+  <!-- x=220 to x=860 -->
+  <line x1="220" y1="440" x2="865" y2="440" stroke="#1a1822" stroke-width="2" marker-end="url(#ax)"/>
+
+  <!-- Tick marks -->
+  <line x1="220" y1="435" x2="220" y2="445" stroke="#1a1822" stroke-width="2"/>
+  <text x="220" y="458" text-anchor="middle" font-size="11" fill="#1a1822">0ms</text>
+  <line x1="340" y1="435" x2="340" y2="445" stroke="#1a1822" stroke-width="2"/>
+  <text x="340" y="458" text-anchor="middle" font-size="11" fill="#1a1822">200ms</text>
+  <line x1="460" y1="435" x2="460" y2="445" stroke="#1a1822" stroke-width="2"/>
+  <text x="460" y="458" text-anchor="middle" font-size="11" fill="#1a1822">500ms</text>
+  <line x1="580" y1="435" x2="580" y2="445" stroke="#1a1822" stroke-width="2"/>
+  <text x="580" y="458" text-anchor="middle" font-size="11" fill="#1a1822">1s</text>
+  <line x1="700" y1="435" x2="700" y2="445" stroke="#1a1822" stroke-width="2"/>
+  <text x="700" y="458" text-anchor="middle" font-size="11" fill="#1a1822">2s</text>
+  <line x1="820" y1="435" x2="820" y2="445" stroke="#1a1822" stroke-width="2"/>
+  <text x="820" y="458" text-anchor="middle" font-size="11" fill="#1a1822">on-demand</text>
+
+  <!-- Grid lines -->
+  <line x1="340" y1="80" x2="340" y2="440" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="460" y1="80" x2="460" y2="440" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="580" y1="80" x2="580" y2="440" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="700" y1="80" x2="700" y2="440" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="820" y1="80" x2="820" y2="440" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Row 1: Page Load (HTML, CSS) — instant -->
+  <text x="210" y="108" text-anchor="end" font-size="11" fill="#1a1822" font-weight="bold">Page Load</text>
+  <rect x="220" y="90" width="120" height="28" rx="5" fill="#2f9d74"/>
+  <text x="280" y="108" text-anchor="middle" font-size="10" fill="#fff">HTML+CSS (0-200ms)</text>
+  <!-- FCP marker -->
+  <line x1="340" y1="78" x2="340" y2="130" stroke="#2f9d74" stroke-width="2.5"/>
+  <rect x="318" y="76" width="44" height="18" rx="4" fill="#2f9d74"/>
+  <text x="340" y="89" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">FCP</text>
+
+  <!-- Row 2: Critical (Immediate) — 0-200ms -->
+  <text x="210" y="158" text-anchor="end" font-size="11" fill="#1a1822" font-weight="bold">Critical</text>
+  <text x="210" y="172" text-anchor="end" font-size="9" fill="#6d5bd0">(Immediate)</text>
+  <rect x="220" y="143" width="120" height="28" rx="5" fill="#6d5bd0"/>
+  <text x="280" y="161" text-anchor="middle" font-size="10" fill="#fff">Nav, CTA, Cart (0-200ms)</text>
+  <!-- Hydrated indicator -->
+  <rect x="341" y="143" width="70" height="28" rx="5" fill="#2f9d74"/>
+  <text x="376" y="161" text-anchor="middle" font-size="10" fill="#fff">Interactive ✓</text>
+
+  <!-- TTI for critical -->
+  <line x1="340" y1="130" x2="340" y2="185" stroke="#6d5bd0" stroke-width="2.5"/>
+  <rect x="318" y="128" width="44" height="18" rx="4" fill="#6d5bd0"/>
+  <text x="340" y="141" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">TTI*</text>
+
+  <!-- Row 3: Visible (On Scroll) — 500ms-1s -->
+  <text x="210" y="218" text-anchor="end" font-size="11" fill="#1a1822" font-weight="bold">Visible</text>
+  <text x="210" y="232" text-anchor="end" font-size="9" fill="#d97843">(On Scroll)</text>
+  <!-- Waiting period -->
+  <rect x="220" y="203" width="240" height="28" rx="5" fill="#f0eef5" stroke="#d7d1e6"/>
+  <text x="340" y="221" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.6">waiting for scroll...</text>
+  <!-- Active hydration -->
+  <rect x="460" y="203" width="120" height="28" rx="5" fill="#d97843" opacity="0.9"/>
+  <text x="520" y="221" text-anchor="middle" font-size="10" fill="#fff">Hydrate on scroll (500ms-1s)</text>
+  <rect x="580" y="203" width="70" height="28" rx="5" fill="#2f9d74"/>
+  <text x="615" y="221" text-anchor="middle" font-size="10" fill="#fff">Active ✓</text>
+
+  <!-- Row 4: Idle (requestIdleCallback) — 1-2s -->
+  <text x="210" y="278" text-anchor="end" font-size="11" fill="#1a1822" font-weight="bold">Idle</text>
+  <text x="210" y="292" text-anchor="end" font-size="9" fill="#d97843">(requestIdleCallback)</text>
+  <rect x="220" y="263" width="360" height="28" rx="5" fill="#f0eef5" stroke="#d7d1e6"/>
+  <text x="400" y="281" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.6">waiting for idle time...</text>
+  <rect x="580" y="263" width="120" height="28" rx="5" fill="#d97843" opacity="0.7"/>
+  <text x="640" y="281" text-anchor="middle" font-size="10" fill="#fff">Hydrate on idle (1-2s)</text>
+  <rect x="700" y="263" width="70" height="28" rx="5" fill="#2f9d74"/>
+  <text x="735" y="281" text-anchor="middle" font-size="10" fill="#fff">Active ✓</text>
+
+  <!-- Row 5: Interaction (addEventListener) — when triggered -->
+  <text x="210" y="338" text-anchor="end" font-size="11" fill="#1a1822" font-weight="bold">Interaction</text>
+  <text x="210" y="352" text-anchor="end" font-size="9" fill="#6d5bd0">(On Click/Focus)</text>
+  <rect x="220" y="323" width="600" height="28" rx="5" fill="#f0eef5" stroke="#d7d1e6"/>
+  <text x="520" y="341" text-anchor="middle" font-size="9" fill="#1a1822" opacity="0.6">waiting for user interaction...</text>
+  <rect x="820" y="323" width="40" height="28" rx="5" fill="#d97843" opacity="0.5"/>
+  <text x="840" y="341" text-anchor="middle" font-size="9" fill="#fff">Go</text>
+
+  <!-- Row 6: Never -->
+  <text x="210" y="398" text-anchor="end" font-size="11" fill="#1a1822" font-weight="bold">Never</text>
+  <text x="210" y="412" text-anchor="end" font-size="9" fill="#1a1822">(Static)</text>
+  <rect x="220" y="383" width="640" height="28" rx="5" fill="#d7d1e6" opacity="0.4" stroke="#d7d1e6"/>
+  <text x="540" y="401" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.7">No JavaScript — Static HTML throughout — Footer, Articles, Legal text</text>
+
+  <!-- Key insight -->
+  <rect x="20" y="474" width="860" height="22" rx="5" fill="#edeaf5" stroke="#6d5bd0"/>
+  <text x="450" y="489" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="bold">*TTI = only critical components. Rest hydrates without blocking user interaction.</text>
+
+  <!-- X axis label -->
+  <text x="540" y="480" text-anchor="middle" font-size="0" fill="#1a1822">Time</text>
+</svg>

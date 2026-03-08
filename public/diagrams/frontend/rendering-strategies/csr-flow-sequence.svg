@@ -1,0 +1,90 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">CSR Request Flow Sequence</text>
+
+  <!-- Actor boxes -->
+  <rect x="40" y="60" width="110" height="40" rx="8" fill="#6d5bd0" stroke="#6d5bd0"/>
+  <text x="95" y="85" text-anchor="middle" font-size="13" fill="#ffffff" font-weight="bold">User</text>
+
+  <rect x="220" y="60" width="110" height="40" rx="8" fill="#6d5bd0" stroke="#6d5bd0"/>
+  <text x="275" y="85" text-anchor="middle" font-size="13" fill="#ffffff" font-weight="bold">Browser</text>
+
+  <rect x="400" y="60" width="110" height="40" rx="8" fill="#6d5bd0" stroke="#6d5bd0"/>
+  <text x="455" y="85" text-anchor="middle" font-size="13" fill="#ffffff" font-weight="bold">Server</text>
+
+  <rect x="590" y="60" width="110" height="40" rx="8" fill="#6d5bd0" stroke="#6d5bd0"/>
+  <text x="645" y="85" text-anchor="middle" font-size="13" fill="#ffffff" font-weight="bold">API</text>
+
+  <!-- Lifelines -->
+  <line x1="95" y1="100" x2="95" y2="470" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="6,4"/>
+  <line x1="275" y1="100" x2="275" y2="470" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="6,4"/>
+  <line x1="455" y1="100" x2="455" y2="470" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="6,4"/>
+  <line x1="645" y1="100" x2="645" y2="470" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="6,4"/>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrow-dark" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1822"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+  </defs>
+
+  <!-- Step 1: User navigates -->
+  <line x1="95" y1="130" x2="265" y2="130" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="100" y="112" width="160" height="20" rx="4" fill="#edeaf5"/>
+  <text x="180" y="126" text-anchor="middle" font-size="11" fill="#1a1822">1. User navigates to site</text>
+
+  <!-- Step 2: Browser GET / -->
+  <line x1="275" y1="160" x2="445" y2="160" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="290" y="142" width="140" height="20" rx="4" fill="#edeaf5"/>
+  <text x="360" y="156" text-anchor="middle" font-size="11" fill="#1a1822">2. GET / (HTTP request)</text>
+
+  <!-- Step 3: Server returns HTML shell -->
+  <line x1="455" y1="195" x2="285" y2="195" stroke="#d97843" stroke-width="2" marker-end="url(#arrow-dark)"/>
+  <rect x="290" y="177" width="158" height="20" rx="4" fill="#fff3ec"/>
+  <text x="369" y="191" text-anchor="middle" font-size="11" fill="#1a1822">3. Returns empty HTML shell</text>
+
+  <!-- Step 4: Browser downloads JS -->
+  <line x1="275" y1="230" x2="445" y2="230" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="285" y="212" width="150" height="20" rx="4" fill="#edeaf5"/>
+  <text x="360" y="226" text-anchor="middle" font-size="11" fill="#1a1822">4. Download JS bundles</text>
+
+  <!-- Step 5: JS returns -->
+  <line x1="455" y1="265" x2="285" y2="265" stroke="#d97843" stroke-width="2" marker-end="url(#arrow-dark)"/>
+  <rect x="290" y="247" width="155" height="20" rx="4" fill="#fff3ec"/>
+  <text x="367" y="261" text-anchor="middle" font-size="11" fill="#1a1822">5. JS bundles downloaded</text>
+
+  <!-- Step 6: Browser executes JS + fetches API -->
+  <line x1="275" y1="305" x2="635" y2="305" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="355" y="287" width="178" height="20" rx="4" fill="#edeaf5"/>
+  <text x="444" y="301" text-anchor="middle" font-size="11" fill="#1a1822">6. Execute JS → fetch data</text>
+
+  <!-- Step 7: API returns data -->
+  <line x1="645" y1="340" x2="285" y2="340" stroke="#2f9d74" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <rect x="365" y="322" width="168" height="20" rx="4" fill="#e8f5f0"/>
+  <text x="449" y="336" text-anchor="middle" font-size="11" fill="#1a1822">7. API returns JSON data</text>
+
+  <!-- Step 8: Browser renders UI -->
+  <line x1="275" y1="378" x2="105" y2="378" stroke="#2f9d74" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <rect x="115" y="360" width="148" height="20" rx="4" fill="#e8f5f0"/>
+  <text x="189" y="374" text-anchor="middle" font-size="11" fill="#1a1822">8. Renders UI with data</text>
+
+  <!-- Step 9: Interactive -->
+  <rect x="160" y="405" width="230" height="32" rx="8" fill="#2f9d74"/>
+  <text x="275" y="427" text-anchor="middle" font-size="13" fill="#ffffff" font-weight="bold">✓ App Fully Interactive (TTI)</text>
+
+  <!-- Timeline labels on right -->
+  <text x="780" y="133" font-size="10" fill="#6d5bd0">0ms</text>
+  <text x="780" y="163" font-size="10" fill="#6d5bd0">~50ms</text>
+  <text x="780" y="198" font-size="10" fill="#d97843">~100ms</text>
+  <text x="780" y="233" font-size="10" fill="#6d5bd0">~200ms</text>
+  <text x="780" y="268" font-size="10" fill="#d97843">~1500ms</text>
+  <text x="780" y="308" font-size="10" fill="#6d5bd0">~2000ms</text>
+  <text x="780" y="343" font-size="10" fill="#2f9d74">~3000ms</text>
+  <text x="780" y="381" font-size="10" fill="#2f9d74">~3500ms</text>
+  <text x="760" y="10" font-size="11" fill="#1a1822" font-weight="bold">Timeline</text>
+</svg>

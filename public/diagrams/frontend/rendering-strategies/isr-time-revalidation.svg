@@ -1,0 +1,100 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">ISR — Time-Based Revalidation Sequence</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="30" y="65" width="80" height="36" rx="8" fill="#6d5bd0"/>
+  <text x="70" y="87" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">User 1</text>
+
+  <rect x="210" y="65" width="80" height="36" rx="8" fill="#6d5bd0"/>
+  <text x="250" y="87" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">CDN</text>
+
+  <rect x="390" y="65" width="80" height="36" rx="8" fill="#6d5bd0"/>
+  <text x="430" y="87" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Server</text>
+
+  <rect x="570" y="65" width="80" height="36" rx="8" fill="#6d5bd0"/>
+  <text x="610" y="87" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">User 2</text>
+
+  <rect x="750" y="65" width="80" height="36" rx="8" fill="#6d5bd0"/>
+  <text x="790" y="87" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">User 3</text>
+
+  <!-- Lifelines -->
+  <line x1="70" y1="101" x2="70" y2="450" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="250" y1="101" x2="250" y2="450" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="430" y1="101" x2="430" y2="450" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="610" y1="101" x2="610" y2="450" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="790" y1="101" x2="790" y2="450" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+
+  <!-- Phase 1: FRESH cache -->
+  <rect x="20" y="108" width="860" height="18" rx="4" fill="#2f9d74" opacity="0.15"/>
+  <text x="450" y="120" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="bold">PHASE 1: Cache FRESH (within revalidate window)</text>
+
+  <!-- User1 → CDN -->
+  <line x1="70" y1="138" x2="240" y2="138" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="155" y="132" text-anchor="middle" font-size="10" fill="#1a1822">1. Request page</text>
+
+  <!-- CDN → User1 (cached fresh) -->
+  <line x1="240" y1="158" x2="80" y2="158" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="155" y="152" text-anchor="middle" font-size="10" fill="#2f9d74">2. Return FRESH cached HTML ✓</text>
+
+  <!-- Time passes label -->
+  <rect x="160" y="172" width="300" height="22" rx="5" fill="#6d5bd0"/>
+  <text x="310" y="187" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">⏱ revalidate: 60 seconds pass...</text>
+
+  <!-- Phase 2: STALE cache, User2 triggers regen -->
+  <rect x="20" y="200" width="860" height="18" rx="4" fill="#d97843" opacity="0.15"/>
+  <text x="450" y="212" text-anchor="middle" font-size="10" fill="#d97843" font-weight="bold">PHASE 2: Cache becomes STALE — User 2 triggers background regeneration</text>
+
+  <!-- User2 → CDN -->
+  <line x1="610" y1="228" x2="260" y2="228" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="435" y="222" text-anchor="middle" font-size="10" fill="#1a1822">3. Request page</text>
+
+  <!-- CDN → User2 (serves stale) -->
+  <line x1="260" y1="248" x2="600" y2="248" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-o)"/>
+  <text x="435" y="242" text-anchor="middle" font-size="10" fill="#d97843">4. Serve STALE HTML (immediately)</text>
+
+  <!-- CDN → Server (background regen) -->
+  <line x1="260" y1="270" x2="420" y2="270" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+  <text x="340" y="264" text-anchor="middle" font-size="10" fill="#6d5bd0">5. Background: trigger regeneration</text>
+
+  <!-- Server fetches new data -->
+  <rect x="385" y="284" width="90" height="22" rx="5" fill="#6d5bd0"/>
+  <text x="430" y="299" text-anchor="middle" font-size="10" fill="#fff">6. Fetch new data</text>
+
+  <!-- Server generates new page -->
+  <rect x="385" y="312" width="90" height="22" rx="5" fill="#6d5bd0"/>
+  <text x="430" y="327" text-anchor="middle" font-size="10" fill="#fff">7. Generate page</text>
+
+  <!-- Server → CDN (new page) -->
+  <line x1="420" y1="340" x2="260" y2="340" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="340" y="334" text-anchor="middle" font-size="10" fill="#2f9d74">8. Store new static page in CDN</text>
+
+  <!-- Phase 3: FRESH again, User3 -->
+  <rect x="20" y="356" width="860" height="18" rx="4" fill="#2f9d74" opacity="0.15"/>
+  <text x="450" y="368" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="bold">PHASE 3: Cache FRESH again — User 3 gets updated content</text>
+
+  <!-- User3 → CDN -->
+  <line x1="790" y1="385" x2="260" y2="385" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="525" y="379" text-anchor="middle" font-size="10" fill="#1a1822">9. Request page</text>
+
+  <!-- CDN → User3 (fresh) -->
+  <line x1="260" y1="405" x2="780" y2="405" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-g)"/>
+  <text x="525" y="399" text-anchor="middle" font-size="10" fill="#2f9d74">10. Return FRESH updated HTML ✓</text>
+
+  <!-- Key insight box -->
+  <rect x="20" y="428" width="860" height="32" rx="6" fill="#edeaf5" stroke="#6d5bd0"/>
+  <text x="450" y="443" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="bold">Key: User 2 gets stale content (fast), User 3 gets fresh content. No user waits for server to render.</text>
+  <text x="450" y="456" text-anchor="middle" font-size="10" fill="#1a1822">ISR = best of SSG performance + SSR freshness</text>
+</svg>

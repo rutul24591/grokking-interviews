@@ -1,0 +1,95 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">ISR vs SSG vs SSR — Attribute Comparison</text>
+
+  <!-- Header -->
+  <rect x="20" y="58" width="860" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="175" y="83" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">Metric</text>
+  <text x="375" y="83" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">ISR</text>
+  <text x="565" y="83" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">SSG</text>
+  <text x="755" y="83" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">SSR</text>
+
+  <!-- Vertical dividers -->
+  <line x1="295" y1="58" x2="295" y2="470" stroke="#d7d1e6" stroke-width="1.5"/>
+  <line x1="475" y1="58" x2="475" y2="470" stroke="#d7d1e6" stroke-width="1.5"/>
+  <line x1="665" y1="58" x2="665" y2="470" stroke="#d7d1e6" stroke-width="1.5"/>
+
+  <!-- Row colors alternating -->
+  <!-- Row 1: Performance -->
+  <rect x="20" y="98" width="860" height="52" fill="#fff" rx="0"/>
+  <text x="175" y="128" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Performance (TTFB)</text>
+  <rect x="305" y="108" width="155" height="30" rx="6" fill="#2f9d74"/>
+  <text x="382" y="127" text-anchor="middle" font-size="11" fill="#fff">Excellent (~10-50ms)</text>
+  <rect x="485" y="108" width="155" height="30" rx="6" fill="#2f9d74"/>
+  <text x="562" y="127" text-anchor="middle" font-size="11" fill="#fff">Excellent (~10-50ms)</text>
+  <rect x="675" y="108" width="155" height="30" rx="6" fill="#d97843"/>
+  <text x="752" y="127" text-anchor="middle" font-size="11" fill="#fff">OK (200-800ms)</text>
+
+  <!-- Row 2: Data Freshness -->
+  <rect x="20" y="150" width="860" height="52" fill="#edeaf5" rx="0"/>
+  <text x="175" y="180" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Data Freshness</text>
+  <rect x="305" y="160" width="155" height="30" rx="6" fill="#2f9d74"/>
+  <text x="382" y="179" text-anchor="middle" font-size="11" fill="#fff">Configurable freshness</text>
+  <rect x="485" y="160" width="155" height="30" rx="6" fill="#d97843"/>
+  <text x="562" y="179" text-anchor="middle" font-size="11" fill="#fff">Stale until rebuild</text>
+  <rect x="675" y="160" width="155" height="30" rx="6" fill="#2f9d74"/>
+  <text x="752" y="179" text-anchor="middle" font-size="11" fill="#fff">Always fresh</text>
+
+  <!-- Row 3: Build Speed -->
+  <rect x="20" y="202" width="860" height="52" fill="#fff" rx="0"/>
+  <text x="175" y="232" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Build Speed</text>
+  <rect x="305" y="212" width="155" height="30" rx="6" fill="#2f9d74"/>
+  <text x="382" y="231" text-anchor="middle" font-size="11" fill="#fff">Fast (on-demand pages)</text>
+  <rect x="485" y="212" width="155" height="30" rx="6" fill="#d97843"/>
+  <text x="562" y="231" text-anchor="middle" font-size="11" fill="#fff">Slow (all pages upfront)</text>
+  <rect x="675" y="212" width="155" height="30" rx="6" fill="#2f9d74"/>
+  <text x="752" y="231" text-anchor="middle" font-size="11" fill="#fff">Instant</text>
+
+  <!-- Row 4: Scale -->
+  <rect x="20" y="254" width="860" height="52" fill="#edeaf5" rx="0"/>
+  <text x="175" y="284" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Scale (Traffic)</text>
+  <rect x="305" y="264" width="155" height="30" rx="6" fill="#2f9d74"/>
+  <text x="382" y="283" text-anchor="middle" font-size="11" fill="#fff">Excellent (CDN cached)</text>
+  <rect x="485" y="264" width="155" height="30" rx="6" fill="#2f9d74"/>
+  <text x="562" y="283" text-anchor="middle" font-size="11" fill="#fff">Excellent (CDN cached)</text>
+  <rect x="675" y="264" width="155" height="30" rx="6" fill="#d97843"/>
+  <text x="752" y="283" text-anchor="middle" font-size="11" fill="#fff">Limited by server</text>
+
+  <!-- Row 5: Cost -->
+  <rect x="20" y="306" width="860" height="52" fill="#fff" rx="0"/>
+  <text x="175" y="336" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Infrastructure Cost</text>
+  <rect x="305" y="316" width="155" height="30" rx="6" fill="#2f9d74"/>
+  <text x="382" y="335" text-anchor="middle" font-size="11" fill="#fff">Low (CDN + regen)</text>
+  <rect x="485" y="316" width="155" height="30" rx="6" fill="#2f9d74"/>
+  <text x="562" y="335" text-anchor="middle" font-size="11" fill="#fff">Very Low (CDN only)</text>
+  <rect x="675" y="316" width="155" height="30" rx="6" fill="#d97843"/>
+  <text x="752" y="335" text-anchor="middle" font-size="11" fill="#fff">High (always-on server)</text>
+
+  <!-- Row 6: Complexity -->
+  <rect x="20" y="358" width="860" height="52" fill="#edeaf5" rx="0"/>
+  <text x="175" y="388" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Complexity</text>
+  <rect x="305" y="368" width="155" height="30" rx="6" fill="#d97843"/>
+  <text x="382" y="387" text-anchor="middle" font-size="11" fill="#fff">Medium</text>
+  <rect x="485" y="368" width="155" height="30" rx="6" fill="#2f9d74"/>
+  <text x="562" y="387" text-anchor="middle" font-size="11" fill="#fff">Simple</text>
+  <rect x="675" y="368" width="155" height="30" rx="6" fill="#d97843"/>
+  <text x="752" y="387" text-anchor="middle" font-size="11" fill="#fff">Medium</text>
+
+  <!-- Summary bar -->
+  <rect x="20" y="425" width="860" height="55" rx="8" fill="#fff" stroke="#d7d1e6"/>
+  <text x="175" y="447" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="bold">Best for:</text>
+  <text x="175" y="465" text-anchor="middle" font-size="10" fill="#1a1822">Hybrid use cases</text>
+  <text x="382" y="447" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="bold">Best for:</text>
+  <text x="382" y="465" text-anchor="middle" font-size="10" fill="#1a1822">Static content (blogs, docs)</text>
+  <text x="562" y="447" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="bold">Best for:</text>
+  <text x="562" y="465" text-anchor="middle" font-size="10" fill="#1a1822">Static content (blogs, docs)</text>
+  <text x="752" y="447" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="bold">Best for:</text>
+  <text x="752" y="465" text-anchor="middle" font-size="10" fill="#1a1822">Real-time dynamic data</text>
+
+  <!-- Legend -->
+  <rect x="20" y="412" width="860" height="10" fill="#f3f1f8"/>
+  <rect x="20" y="410" width="14" height="10" rx="2" fill="#2f9d74"/>
+  <text x="38" y="420" font-size="10" fill="#1a1822">Advantage</text>
+  <rect x="110" y="410" width="14" height="10" rx="2" fill="#d97843"/>
+  <text x="128" y="420" font-size="10" fill="#1a1822">Disadvantage</text>
+</svg>

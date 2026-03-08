@@ -1,0 +1,112 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Partial Hydration — Orchestration Flowchart</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+  </defs>
+
+  <!-- Page Loads -->
+  <rect x="340" y="55" width="220" height="44" rx="10" fill="#6d5bd0"/>
+  <text x="450" y="75" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">Page Loads</text>
+  <text x="450" y="92" text-anchor="middle" font-size="11" fill="#edeaf5">Full server-rendered HTML</text>
+  <line x1="450" y1="99" x2="450" y2="120" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Component Analysis -->
+  <rect x="320" y="120" width="260" height="44" rx="10" fill="#1a1822"/>
+  <text x="450" y="140" text-anchor="middle" font-size="13" fill="#edeaf5" font-weight="bold">Hydration Orchestrator</text>
+  <text x="450" y="157" text-anchor="middle" font-size="11" fill="#d7d1e6">Analyzes component annotations</text>
+
+  <!-- Branches: 5 strategies -->
+  <line x1="340" y1="162" x2="80" y2="220" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="370" y1="162" x2="215" y2="220" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="450" y1="164" x2="450" y2="220" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="530" y1="162" x2="685" y2="220" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="560" y1="162" x2="835" y2="220" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Strategy boxes -->
+  <!-- 1: Immediate -->
+  <rect x="20" y="220" width="120" height="72" rx="8" fill="#6d5bd0"/>
+  <text x="80" y="243" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Immediate</text>
+  <text x="80" y="260" text-anchor="middle" font-size="10" fill="#edeaf5">react.hydrate()</text>
+  <text x="80" y="277" text-anchor="middle" font-size="10" fill="#edeaf5">on page load</text>
+
+  <!-- 2: On Scroll (Intersection) -->
+  <rect x="155" y="220" width="120" height="72" rx="8" fill="#d97843"/>
+  <text x="215" y="240" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">On Scroll</text>
+  <text x="215" y="257" text-anchor="middle" font-size="10" fill="#fff">Intersection</text>
+  <text x="215" y="274" text-anchor="middle" font-size="10" fill="#fff">Observer</text>
+  <text x="215" y="286" text-anchor="middle" font-size="9" fill="#fff">threshold: 0.1</text>
+
+  <!-- 3: On Idle -->
+  <rect x="390" y="220" width="120" height="72" rx="8" fill="#d97843" opacity="0.8"/>
+  <text x="450" y="240" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">On Idle</text>
+  <text x="450" y="257" text-anchor="middle" font-size="10" fill="#fff">request</text>
+  <text x="450" y="274" text-anchor="middle" font-size="10" fill="#fff">IdleCallback</text>
+  <text x="450" y="286" text-anchor="middle" font-size="9" fill="#fff">timeout: 2000ms</text>
+
+  <!-- 4: On Interaction -->
+  <rect x="625" y="220" width="120" height="72" rx="8" fill="#d97843" opacity="0.6"/>
+  <text x="685" y="240" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">On Interact</text>
+  <text x="685" y="257" text-anchor="middle" font-size="10" fill="#fff">addEventListener</text>
+  <text x="685" y="274" text-anchor="middle" font-size="10" fill="#fff">click / hover /</text>
+  <text x="685" y="286" text-anchor="middle" font-size="9" fill="#fff">focus</text>
+
+  <!-- 5: Never -->
+  <rect x="775" y="220" width="110" height="72" rx="8" fill="#d7d1e6"/>
+  <text x="830" y="240" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Never</text>
+  <text x="830" y="257" text-anchor="middle" font-size="10" fill="#1a1822">Static content</text>
+  <text x="830" y="274" text-anchor="middle" font-size="10" fill="#1a1822">No JS needed</text>
+
+  <!-- Component examples below each -->
+  <line x1="80" y1="292" x2="80" y2="318" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="20" y="318" width="120" height="90" rx="6" fill="#fff" stroke="#6d5bd0"/>
+  <text x="80" y="338" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold">Examples:</text>
+  <text x="80" y="355" text-anchor="middle" font-size="10" fill="#1a1822">• Header/Nav</text>
+  <text x="80" y="371" text-anchor="middle" font-size="10" fill="#1a1822">• Shopping Cart</text>
+  <text x="80" y="387" text-anchor="middle" font-size="10" fill="#1a1822">• CTA Button</text>
+  <text x="80" y="403" text-anchor="middle" font-size="10" fill="#1a1822">• Login form</text>
+
+  <line x1="215" y1="292" x2="215" y2="318" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="155" y="318" width="120" height="90" rx="6" fill="#fff" stroke="#d97843"/>
+  <text x="215" y="338" text-anchor="middle" font-size="10" fill="#d97843" font-weight="bold">Examples:</text>
+  <text x="215" y="355" text-anchor="middle" font-size="10" fill="#1a1822">• Content cards</text>
+  <text x="215" y="371" text-anchor="middle" font-size="10" fill="#1a1822">• Carousels</text>
+  <text x="215" y="387" text-anchor="middle" font-size="10" fill="#1a1822">• Featured items</text>
+  <text x="215" y="403" text-anchor="middle" font-size="10" fill="#1a1822">• Below-fold UI</text>
+
+  <line x1="450" y1="292" x2="450" y2="318" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="390" y="318" width="120" height="90" rx="6" fill="#fff" stroke="#d97843"/>
+  <text x="450" y="338" text-anchor="middle" font-size="10" fill="#d97843" font-weight="bold">Examples:</text>
+  <text x="450" y="355" text-anchor="middle" font-size="10" fill="#1a1822">• Analytics</text>
+  <text x="450" y="371" text-anchor="middle" font-size="10" fill="#1a1822">• Social share</text>
+  <text x="450" y="387" text-anchor="middle" font-size="10" fill="#1a1822">• Chat widget</text>
+  <text x="450" y="403" text-anchor="middle" font-size="10" fill="#1a1822">• Tracking</text>
+
+  <line x1="685" y1="292" x2="685" y2="318" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="625" y="318" width="120" height="90" rx="6" fill="#fff" stroke="#d97843"/>
+  <text x="685" y="338" text-anchor="middle" font-size="10" fill="#d97843" font-weight="bold">Examples:</text>
+  <text x="685" y="355" text-anchor="middle" font-size="10" fill="#1a1822">• Modals</text>
+  <text x="685" y="371" text-anchor="middle" font-size="10" fill="#1a1822">• Dropdown menu</text>
+  <text x="685" y="387" text-anchor="middle" font-size="10" fill="#1a1822">• Image lightbox</text>
+  <text x="685" y="403" text-anchor="middle" font-size="10" fill="#1a1822">• Tooltip</text>
+
+  <line x1="830" y1="292" x2="830" y2="318" stroke="#d7d1e6" stroke-width="1.5" marker-end="url(#arr)"/>
+  <rect x="770" y="318" width="115" height="90" rx="6" fill="#fff" stroke="#d7d1e6"/>
+  <text x="827" y="338" text-anchor="middle" font-size="10" fill="#1a1822" font-weight="bold">Examples:</text>
+  <text x="827" y="355" text-anchor="middle" font-size="10" fill="#1a1822">• Static footer</text>
+  <text x="827" y="371" text-anchor="middle" font-size="10" fill="#1a1822">• Blog article</text>
+  <text x="827" y="387" text-anchor="middle" font-size="10" fill="#1a1822">• Legal text</text>
+  <text x="827" y="403" text-anchor="middle" font-size="10" fill="#1a1822">• Copyright</text>
+
+  <!-- Summary -->
+  <rect x="20" y="424" width="860" height="60" rx="8" fill="#edeaf5" stroke="#6d5bd0"/>
+  <text x="450" y="446" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="bold">Partial Hydration: Only ship JS for components that actually need it</text>
+  <text x="450" y="464" text-anchor="middle" font-size="11" fill="#1a1822">Static components skip JS entirely — significantly reducing bundle size, parse time, and main-thread blocking.</text>
+  <text x="450" y="479" text-anchor="middle" font-size="10" fill="#6d5bd0">Typical JS reduction: 60-80% less JavaScript shipped to the browser</text>
+</svg>

@@ -1,0 +1,79 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">SSR Hydration Flow</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+  </defs>
+
+  <!-- Flowchart nodes: vertical flow with two branches -->
+
+  <!-- Node 1: User navigates -->
+  <rect x="345" y="55" width="210" height="46" rx="10" fill="#6d5bd0"/>
+  <text x="450" y="83" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">User Navigates to Page</text>
+  <line x1="450" y1="101" x2="450" y2="125" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Node 2: Server receives -->
+  <rect x="345" y="125" width="210" height="46" rx="10" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="450" y="149" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Server Receives Request</text>
+  <line x1="450" y1="171" x2="450" y2="195" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Node 3: Fetch data -->
+  <rect x="345" y="195" width="210" height="46" rx="10" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="450" y="215" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Fetch Data</text>
+  <text x="450" y="232" text-anchor="middle" font-size="11" fill="#6d5bd0">(DB / API calls)</text>
+  <line x1="450" y1="241" x2="450" y2="265" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Node 4: Render HTML -->
+  <rect x="345" y="265" width="210" height="46" rx="10" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="450" y="289" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Render Full HTML</text>
+  <text x="450" y="306" text-anchor="middle" font-size="11" fill="#6d5bd0">(React renderToString)</text>
+  <line x1="450" y1="311" x2="450" y2="335" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Node 5: Stream HTML -->
+  <rect x="345" y="335" width="210" height="46" rx="10" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="450" y="355" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Stream HTML to Browser</text>
+  <text x="450" y="372" text-anchor="middle" font-size="11" fill="#6d5bd0">(Transfer-Encoding: chunked)</text>
+
+  <!-- Split into two outcomes -->
+  <line x1="345" y1="358" x2="220" y2="420" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <line x1="555" y1="358" x2="680" y2="420" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Left: FCP -->
+  <rect x="80" y="420" width="270" height="46" rx="10" fill="#2f9d74"/>
+  <text x="215" y="440" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">FCP — User Sees Content</text>
+  <text x="215" y="457" text-anchor="middle" font-size="11" fill="#fff">(HTML rendered immediately)</text>
+
+  <!-- Right: Download JS -->
+  <rect x="560" y="420" width="270" height="46" rx="10" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="695" y="440" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Browser Downloads JS</text>
+  <text x="695" y="457" text-anchor="middle" font-size="11" fill="#6d5bd0">(Attach event listeners)</text>
+
+  <!-- Labels on arrows -->
+  <rect x="200" y="380" width="130" height="20" rx="4" fill="#e8f5f0"/>
+  <text x="265" y="394" text-anchor="middle" font-size="10" fill="#2f9d74">Immediate content</text>
+
+  <rect x="560" y="380" width="130" height="20" rx="4" fill="#edeaf5"/>
+  <text x="625" y="394" text-anchor="middle" font-size="10" fill="#6d5bd0">Parallel download</text>
+
+  <!-- TTI note after JS -->
+  <line x1="695" y1="466" x2="695" y2="486" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Side annotations -->
+  <rect x="20" y="195" width="130" height="40" rx="6" fill="#fff" stroke="#d7d1e6"/>
+  <text x="85" y="212" text-anchor="middle" font-size="11" fill="#d97843" font-weight="bold">Server-side</text>
+  <text x="85" y="228" text-anchor="middle" font-size="11" fill="#1a1822">~200-800ms</text>
+
+  <rect x="760" y="335" width="130" height="40" rx="6" fill="#fff" stroke="#d7d1e6"/>
+  <text x="825" y="352" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="bold">Client-side</text>
+  <text x="825" y="368" text-anchor="middle" font-size="11" fill="#1a1822">~0.5-1.5s</text>
+
+  <!-- TTI box -->
+  <rect x="540" y="476" width="310" height="20" rx="5" fill="#6d5bd0"/>
+  <text x="695" y="490" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">TTI — Fully Interactive</text>
+</svg>

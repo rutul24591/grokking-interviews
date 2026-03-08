@@ -1,0 +1,104 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Traditional SSR vs Streaming SSR — Performance</text>
+
+  <defs>
+    <marker id="ax" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#1a1822"/>
+    </marker>
+  </defs>
+
+  <!-- X axis: 0-5s, x=200 to x=860, 1s=132px -->
+  <line x1="200" y1="430" x2="865" y2="430" stroke="#1a1822" stroke-width="2" marker-end="url(#ax)"/>
+  <!-- Ticks -->
+  <line x1="200" y1="425" x2="200" y2="435" stroke="#1a1822" stroke-width="2"/>
+  <text x="200" y="448" text-anchor="middle" font-size="11" fill="#1a1822">0s</text>
+  <line x1="332" y1="425" x2="332" y2="435" stroke="#1a1822" stroke-width="2"/>
+  <text x="332" y="448" text-anchor="middle" font-size="11" fill="#1a1822">1s</text>
+  <line x1="464" y1="425" x2="464" y2="435" stroke="#1a1822" stroke-width="2"/>
+  <text x="464" y="448" text-anchor="middle" font-size="11" fill="#1a1822">2s</text>
+  <line x1="596" y1="425" x2="596" y2="435" stroke="#1a1822" stroke-width="2"/>
+  <text x="596" y="448" text-anchor="middle" font-size="11" fill="#1a1822">3s</text>
+  <line x1="728" y1="425" x2="728" y2="435" stroke="#1a1822" stroke-width="2"/>
+  <text x="728" y="448" text-anchor="middle" font-size="11" fill="#1a1822">4s</text>
+  <line x1="860" y1="425" x2="860" y2="435" stroke="#1a1822" stroke-width="2"/>
+  <text x="860" y="448" text-anchor="middle" font-size="11" fill="#1a1822">5s</text>
+
+  <!-- Grid lines -->
+  <line x1="332" y1="70" x2="332" y2="430" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="464" y1="70" x2="464" y2="430" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="596" y1="70" x2="596" y2="430" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="728" y1="70" x2="728" y2="430" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- TRADITIONAL SSR section -->
+  <rect x="20" y="72" width="172" height="28" rx="6" fill="#d97843"/>
+  <text x="106" y="90" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Traditional SSR</text>
+
+  <!-- Row T1: Wait for ALL data -->
+  <text x="190" y="130" text-anchor="end" font-size="11" fill="#1a1822">Wait for ALL data</text>
+  <rect x="200" y="114" width="264" height="28" rx="4" fill="#d97843"/>
+  <text x="332" y="132" text-anchor="middle" font-size="10" fill="#fff">Wait for all DB queries (0–2s)</text>
+
+  <!-- Row T2: Render ALL HTML then send -->
+  <text x="190" y="176" text-anchor="end" font-size="11" fill="#1a1822">Render + Send HTML</text>
+  <rect x="464" y="160" width="132" height="28" rx="4" fill="#d97843" opacity="0.8"/>
+  <text x="530" y="178" text-anchor="middle" font-size="10" fill="#fff">Render+Send (2-3s)</text>
+
+  <!-- FCP marker Traditional: at 3s -->
+  <line x1="596" y1="70" x2="596" y2="210" stroke="#d97843" stroke-width="2.5"/>
+  <rect x="574" y="68" width="44" height="18" rx="4" fill="#d97843"/>
+  <text x="596" y="81" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">FCP</text>
+
+  <!-- Row T3: Hydration -->
+  <text x="190" y="220" text-anchor="end" font-size="11" fill="#1a1822">Hydration</text>
+  <rect x="596" y="204" width="132" height="28" rx="4" fill="#6d5bd0" opacity="0.7"/>
+  <text x="662" y="222" text-anchor="middle" font-size="10" fill="#fff">JS Hydrate (3-4s)</text>
+
+  <!-- TTI Traditional: at 4s -->
+  <line x1="728" y1="70" x2="728" y2="245" stroke="#d97843" stroke-width="2.5"/>
+  <rect x="706" y="68" width="44" height="18" rx="4" fill="#d97843"/>
+  <text x="728" y="81" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">TTI</text>
+
+  <!-- STREAMING SSR section -->
+  <rect x="20" y="260" width="172" height="28" rx="6" fill="#2f9d74"/>
+  <text x="106" y="278" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Streaming SSR</text>
+
+  <!-- Row S1: Shell sent immediately -->
+  <text x="190" y="324" text-anchor="end" font-size="11" fill="#1a1822">HTML Shell</text>
+  <rect x="200" y="308" width="40" height="28" rx="4" fill="#2f9d74"/>
+  <text x="220" y="326" text-anchor="middle" font-size="9" fill="#fff">~0.1s</text>
+
+  <!-- FCP Streaming: at ~0.1s (shell received) -->
+  <line x1="240" y1="260" x2="240" y2="360" stroke="#2f9d74" stroke-width="2.5"/>
+  <rect x="218" y="258" width="44" height="18" rx="4" fill="#2f9d74"/>
+  <text x="240" y="271" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">FCP!</text>
+
+  <!-- Row S2: Chunk 1 arrives while data fetches -->
+  <text x="190" y="368" text-anchor="end" font-size="11" fill="#1a1822">Chunk 1 (Nav)</text>
+  <rect x="240" y="352" width="93" height="28" rx="4" fill="#2f9d74" opacity="0.8"/>
+  <text x="286" y="370" text-anchor="middle" font-size="10" fill="#fff">Nav chunk (~0.7s)</text>
+
+  <!-- Row S3: Chunk 2 with DB data (parallel fetch) -->
+  <text x="190" y="412" text-anchor="end" font-size="11" fill="#1a1822">Chunk 2 (Data)</text>
+  <rect x="200" y="396" width="264" height="28" rx="4" fill="#6d5bd0" opacity="0.4" stroke="#6d5bd0" stroke-dasharray="5,3"/>
+  <text x="332" y="414" text-anchor="middle" font-size="10" fill="#1a1822">Parallel DB fetch + render</text>
+  <rect x="464" y="396" width="93" height="28" rx="4" fill="#2f9d74" opacity="0.7"/>
+  <text x="510" y="414" text-anchor="middle" font-size="10" fill="#fff">Data chunk (~3.5s)</text>
+
+  <!-- TTI Streaming -->
+  <line x1="596" y1="260" x2="596" y2="430" stroke="#2f9d74" stroke-width="2.5" stroke-dasharray="7,3"/>
+  <rect x="574" y="258" width="44" height="18" rx="4" fill="#2f9d74"/>
+  <text x="596" y="271" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">TTI</text>
+  <text x="607" y="295" font-size="9" fill="#2f9d74">~same</text>
+
+  <!-- Improvement summary -->
+  <rect x="648" y="295" width="235" height="100" rx="10" fill="#e8f5f0" stroke="#2f9d74"/>
+  <text x="765" y="318" text-anchor="middle" font-size="12" fill="#2f9d74" font-weight="bold">Streaming Wins:</text>
+  <text x="658" y="340" font-size="11" fill="#1a1822">FCP: ~0.1s vs ~3s</text>
+  <text x="658" y="358" font-size="11" fill="#1a1822">(30x faster FCP!)</text>
+  <text x="658" y="378" font-size="11" fill="#1a1822">TTI: roughly same</text>
+  <text x="658" y="396" font-size="11" fill="#1a1822">UX: progressive rendering</text>
+
+  <!-- X axis label -->
+  <text x="532" y="472" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Time (seconds)</text>
+</svg>

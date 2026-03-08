@@ -1,0 +1,88 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Edge Rendering — Latency by Region</text>
+
+  <defs>
+    <marker id="ax" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#1a1822"/>
+    </marker>
+  </defs>
+
+  <!-- Y axis: latency 0-400ms, y=420 to y=80, scale: 1ms = 0.85px -->
+  <line x1="100" y1="80" x2="100" y2="425" stroke="#1a1822" stroke-width="2" marker-end="url(#ax)"/>
+  <line x1="95" y1="420" x2="870" y2="420" stroke="#1a1822" stroke-width="2" marker-end="url(#ax)"/>
+
+  <!-- Y ticks -->
+  <line x1="96" y1="420" x2="104" y2="420" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="90" y="424" text-anchor="end" font-size="11" fill="#1a1822">0ms</text>
+  <line x1="96" y1="335" x2="104" y2="335" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="90" y="339" text-anchor="end" font-size="11" fill="#1a1822">100ms</text>
+  <line x1="96" y1="250" x2="104" y2="250" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="90" y="254" text-anchor="end" font-size="11" fill="#1a1822">200ms</text>
+  <line x1="96" y1="165" x2="104" y2="165" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="90" y="169" text-anchor="end" font-size="11" fill="#1a1822">300ms</text>
+  <line x1="96" y1="80" x2="104" y2="80" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="90" y="84" text-anchor="end" font-size="11" fill="#1a1822">400ms</text>
+
+  <!-- Grid lines -->
+  <line x1="100" y1="335" x2="865" y2="335" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="100" y1="250" x2="865" y2="250" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="100" y1="165" x2="865" y2="165" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="100" y1="80" x2="865" y2="80" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Group labels -->
+  <text x="220" y="465" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Tokyo User</text>
+  <text x="450" y="465" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">London User</text>
+  <text x="700" y="465" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">NYC User</text>
+
+  <!-- Group separators -->
+  <line x1="335" y1="75" x2="335" y2="420" stroke="#d7d1e6" stroke-width="1.5"/>
+  <line x1="565" y1="75" x2="565" y2="420" stroke="#d7d1e6" stroke-width="1.5"/>
+
+  <!-- TOKYO GROUP -->
+  <!-- Edge SSR: ~15ms → h=12.75, base=420, top=420-12.75=407.25 -->
+  <rect x="140" y="408" width="65" height="12" rx="4" fill="#2f9d74"/>
+  <text x="172" y="440" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="bold">15ms</text>
+  <text x="172" y="453" text-anchor="middle" font-size="9" fill="#2f9d74">Edge SSR</text>
+
+  <!-- Origin SSR: ~320ms → h=272, top=148 -->
+  <rect x="230" y="148" width="65" height="272" rx="4" fill="#d97843"/>
+  <text x="262" y="135" text-anchor="middle" font-size="10" fill="#d97843" font-weight="bold">320ms</text>
+  <text x="262" y="440" text-anchor="middle" font-size="10" fill="#d97843">Origin SSR</text>
+
+  <!-- LONDON GROUP -->
+  <!-- Edge SSR: ~12ms → h=10.2 -->
+  <rect x="380" y="410" width="65" height="10" rx="4" fill="#2f9d74"/>
+  <text x="412" y="440" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="bold">12ms</text>
+  <text x="412" y="453" text-anchor="middle" font-size="9" fill="#2f9d74">Edge SSR</text>
+
+  <!-- Origin SSR: ~250ms → h=212.5 -->
+  <rect x="470" y="208" width="65" height="212" rx="4" fill="#d97843"/>
+  <text x="502" y="195" text-anchor="middle" font-size="10" fill="#d97843" font-weight="bold">250ms</text>
+  <text x="502" y="440" text-anchor="middle" font-size="10" fill="#d97843">Origin SSR</text>
+
+  <!-- NYC GROUP -->
+  <!-- Edge SSR: ~8ms → h=6.8 -->
+  <rect x="630" y="414" width="65" height="6" rx="4" fill="#2f9d74"/>
+  <text x="662" y="440" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="bold">8ms</text>
+  <text x="662" y="453" text-anchor="middle" font-size="9" fill="#2f9d74">Edge SSR</text>
+
+  <!-- Origin SSR: ~40ms → h=34 (NYC is near origin in US) -->
+  <rect x="720" y="386" width="65" height="34" rx="4" fill="#d97843" opacity="0.7"/>
+  <text x="752" y="373" text-anchor="middle" font-size="10" fill="#d97843" font-weight="bold">40ms</text>
+  <text x="752" y="440" text-anchor="middle" font-size="10" fill="#d97843">Origin SSR</text>
+
+  <!-- Legend -->
+  <rect x="110" y="65" width="760" height="30" rx="6" fill="#fff" stroke="#d7d1e6"/>
+  <rect x="125" y="73" width="16" height="16" rx="3" fill="#2f9d74"/>
+  <text x="148" y="85" font-size="12" fill="#1a1822">Edge SSR (nearby edge node renders page)</text>
+  <rect x="470" y="73" width="16" height="16" rx="3" fill="#d97843"/>
+  <text x="493" y="85" font-size="12" fill="#1a1822">Origin SSR (request goes all the way to US)</text>
+
+  <!-- Key insight -->
+  <rect x="110" y="480" width="760" height="15" rx="4" fill="#edeaf5"/>
+  <text x="490" y="492" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold">Edge SSR delivers consistent low latency globally. Origin SSR latency increases dramatically with distance.</text>
+
+  <!-- Y axis title -->
+  <text x="28" y="260" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold" transform="rotate(-90, 28, 260)">Latency (ms) — lower is better</text>
+</svg>

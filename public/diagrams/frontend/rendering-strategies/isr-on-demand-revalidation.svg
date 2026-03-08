@@ -1,0 +1,96 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">ISR — On-Demand Revalidation Flow</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="20" y="65" width="100" height="40" rx="8" fill="#d97843"/>
+  <text x="70" y="85" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">CMS</text>
+  <text x="70" y="100" text-anchor="middle" font-size="10" fill="#fff">(Content updated)</text>
+
+  <rect x="185" y="65" width="100" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="235" y="85" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Webhook</text>
+  <text x="235" y="100" text-anchor="middle" font-size="10" fill="#edeaf5">Handler</text>
+
+  <rect x="350" y="65" width="120" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="410" y="85" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Revalidate</text>
+  <text x="410" y="100" text-anchor="middle" font-size="10" fill="#edeaf5">API Endpoint</text>
+
+  <rect x="535" y="65" width="120" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="595" y="85" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Next.js</text>
+  <text x="595" y="100" text-anchor="middle" font-size="10" fill="#edeaf5">Server</text>
+
+  <rect x="725" y="65" width="100" height="40" rx="8" fill="#2f9d74"/>
+  <text x="775" y="85" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">CDN</text>
+  <text x="775" y="100" text-anchor="middle" font-size="10" fill="#e8f5f0">Cache</text>
+
+  <!-- Lifelines -->
+  <line x1="70" y1="105" x2="70" y2="420" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="235" y1="105" x2="235" y2="420" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="410" y1="105" x2="410" y2="420" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="595" y1="105" x2="595" y2="420" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="775" y1="105" x2="775" y2="420" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+
+  <!-- Step 1: CMS content updated -->
+  <rect x="20" y="118" width="100" height="24" rx="5" fill="#d97843"/>
+  <text x="70" y="133" text-anchor="middle" font-size="10" fill="#fff">Content Updated</text>
+
+  <!-- Step 2: Webhook fires -->
+  <line x1="70" y1="155" x2="225" y2="155" stroke="#d97843" stroke-width="2" marker-end="url(#arr-o)"/>
+  <text x="152" y="149" text-anchor="middle" font-size="10" fill="#d97843">1. Webhook fired</text>
+
+  <!-- Step 3: Webhook validates & calls revalidate -->
+  <rect x="185" y="165" width="100" height="24" rx="5" fill="#6d5bd0"/>
+  <text x="235" y="180" text-anchor="middle" font-size="10" fill="#fff">Validate secret</text>
+
+  <line x1="235" y1="200" x2="400" y2="200" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="317" y="194" text-anchor="middle" font-size="10" fill="#6d5bd0">2. POST /api/revalidate</text>
+  <text x="317" y="210" text-anchor="middle" font-size="9" fill="#1a1822">{ path: '/blog/my-post', secret }</text>
+
+  <!-- Step 4: Revalidate API calls revalidatePath -->
+  <rect x="350" y="220" width="120" height="24" rx="5" fill="#6d5bd0"/>
+  <text x="410" y="235" text-anchor="middle" font-size="10" fill="#fff">revalidatePath()</text>
+
+  <line x1="410" y1="255" x2="585" y2="255" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="497" y="249" text-anchor="middle" font-size="10" fill="#6d5bd0">3. Invalidate cache entry</text>
+
+  <!-- Step 5: Next.js invalidates cache -->
+  <rect x="535" y="265" width="120" height="24" rx="5" fill="#6d5bd0"/>
+  <text x="595" y="280" text-anchor="middle" font-size="10" fill="#fff">Invalidate page cache</text>
+
+  <!-- Step 6: CDN cache updated -->
+  <line x1="595" y1="300" x2="765" y2="300" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="680" y="294" text-anchor="middle" font-size="10" fill="#2f9d74">4. Purge CDN cache</text>
+
+  <rect x="725" y="310" width="100" height="24" rx="5" fill="#2f9d74"/>
+  <text x="775" y="325" text-anchor="middle" font-size="10" fill="#fff">Cache invalidated</text>
+
+  <!-- Step 7: Confirm revalidation -->
+  <line x1="400" y1="340" x2="245" y2="340" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="322" y="334" text-anchor="middle" font-size="10" fill="#2f9d74">5. 200 OK { revalidated: true }</text>
+
+  <!-- Next request re-generates -->
+  <line x1="775" y1="355" x2="605" y2="355" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+  <text x="690" y="349" text-anchor="middle" font-size="9" fill="#6d5bd0">Next request triggers regen</text>
+
+  <!-- Final result -->
+  <rect x="20" y="385" width="860" height="50" rx="8" fill="#e8f5f0" stroke="#2f9d74"/>
+  <text x="450" y="406" text-anchor="middle" font-size="12" fill="#2f9d74" font-weight="bold">Result: Next user request to /blog/my-post triggers fresh server-side generation</text>
+  <text x="450" y="424" text-anchor="middle" font-size="11" fill="#1a1822">Content updated immediately on demand — no waiting for revalidate timer — no full site rebuild</text>
+
+  <!-- Code example -->
+  <rect x="20" y="443" width="860" height="50" rx="8" fill="#1a1822"/>
+  <text x="40" y="460" font-size="11" fill="#6d5bd0" font-family="monospace">// Next.js API route: /api/revalidate.ts</text>
+  <text x="40" y="478" font-size="11" fill="#fff" font-family="monospace">await res.revalidate('/blog/my-post')  // On-demand ISR</text>
+</svg>

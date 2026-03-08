@@ -1,0 +1,104 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">SSG Build Process Flow</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+  </defs>
+
+  <!-- Step 1: Source Code -->
+  <rect x="30" y="210" width="120" height="56" rx="10" fill="#6d5bd0"/>
+  <text x="90" y="234" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Source</text>
+  <text x="90" y="252" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Code</text>
+  <text x="90" y="268" text-anchor="middle" font-size="10" fill="#edeaf5">(React / Next.js)</text>
+
+  <!-- Arrow -->
+  <line x1="150" y1="238" x2="180" y2="238" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Step 2: Build Process -->
+  <rect x="180" y="210" width="120" height="56" rx="10" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="240" y="234" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Build</text>
+  <text x="240" y="252" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Process</text>
+  <text x="240" y="268" text-anchor="middle" font-size="10" fill="#6d5bd0">next build</text>
+
+  <!-- Arrow -->
+  <line x1="300" y1="238" x2="330" y2="238" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Step 3: Fetch Data at Build Time -->
+  <rect x="330" y="210" width="130" height="56" rx="10" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="395" y="232" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Fetch Data</text>
+  <text x="395" y="248" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">at Build Time</text>
+  <text x="395" y="265" text-anchor="middle" font-size="10" fill="#6d5bd0">getStaticProps()</text>
+
+  <!-- Arrow -->
+  <line x1="460" y1="238" x2="490" y2="238" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Step 4: Render Components -->
+  <rect x="490" y="210" width="120" height="56" rx="10" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="550" y="234" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Render</text>
+  <text x="550" y="252" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Components</text>
+  <text x="550" y="268" text-anchor="middle" font-size="10" fill="#6d5bd0">to HTML strings</text>
+
+  <!-- Arrow down to Generate -->
+  <line x1="550" y1="266" x2="550" y2="310" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Step 5: Generate HTML -->
+  <rect x="460" y="310" width="200" height="56" rx="10" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="560" y="334" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Generate Static</text>
+  <text x="560" y="350" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">HTML Files</text>
+  <text x="560" y="366" text-anchor="middle" font-size="10" fill="#6d5bd0">index.html, about.html, ...</text>
+
+  <!-- Arrow left to Optimize -->
+  <line x1="460" y1="338" x2="380" y2="338" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Step 6: Optimize Assets -->
+  <rect x="240" y="310" width="140" height="56" rx="10" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="310" y="334" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Optimize</text>
+  <text x="310" y="350" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Assets</text>
+  <text x="310" y="366" text-anchor="middle" font-size="10" fill="#6d5bd0">CSS, JS minify, images</text>
+
+  <!-- Arrow left to Deploy -->
+  <line x1="240" y1="338" x2="170" y2="338" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+
+  <!-- Step 7: Deploy to CDN -->
+  <rect x="30" y="310" width="140" height="56" rx="10" fill="#2f9d74"/>
+  <text x="100" y="334" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Deploy to</text>
+  <text x="100" y="352" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">CDN</text>
+  <text x="100" y="368" text-anchor="middle" font-size="10" fill="#e8f5f0">Edge nodes worldwide</text>
+
+  <!-- Build time badge -->
+  <rect x="160" y="158" width="560" height="28" rx="8" fill="#6d5bd0"/>
+  <text x="440" y="176" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">← All of the following happens at BUILD TIME (not per request) →</text>
+
+  <!-- Data sources panel -->
+  <rect x="690" y="190" width="195" height="150" rx="10" fill="#fff" stroke="#d7d1e6"/>
+  <text x="787" y="212" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="bold">Data Sources</text>
+  <text x="700" y="235" font-size="11" fill="#1a1822">• CMS (Contentful, Sanity)</text>
+  <text x="700" y="253" font-size="11" fill="#1a1822">• REST / GraphQL APIs</text>
+  <text x="700" y="271" font-size="11" fill="#1a1822">• Markdown files (MDX)</text>
+  <text x="700" y="289" font-size="11" fill="#1a1822">• Databases (Prisma)</text>
+  <text x="700" y="307" font-size="11" fill="#1a1822">• Local JSON / CSV files</text>
+  <line x1="690" y1="270" x2="460" y2="255" stroke="#d7d1e6" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- Benefits panel -->
+  <rect x="690" y="360" width="195" height="120" rx="10" fill="#e8f5f0" stroke="#2f9d74"/>
+  <text x="787" y="382" text-anchor="middle" font-size="12" fill="#2f9d74" font-weight="bold">CDN Benefits</text>
+  <text x="700" y="403" font-size="11" fill="#1a1822">• Zero server processing</text>
+  <text x="700" y="421" font-size="11" fill="#1a1822">• Global edge delivery</text>
+  <text x="700" y="439" font-size="11" fill="#1a1822">• Near-instant TTFB</text>
+  <text x="700" y="457" font-size="11" fill="#1a1822">• Highly scalable</text>
+
+  <!-- Step labels -->
+  <text x="90" y="200" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold">STEP 1</text>
+  <text x="240" y="200" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold">STEP 2</text>
+  <text x="395" y="200" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold">STEP 3</text>
+  <text x="550" y="200" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold">STEP 4</text>
+  <text x="560" y="300" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold">STEP 5</text>
+  <text x="310" y="300" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold">STEP 6</text>
+  <text x="100" y="300" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="bold">STEP 7</text>
+</svg>

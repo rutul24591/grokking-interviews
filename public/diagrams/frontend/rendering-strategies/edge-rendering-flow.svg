@@ -1,0 +1,111 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Edge Rendering — Request Flow Sequence</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="20" y="65" width="100" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="70" y="83" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">User</text>
+  <text x="70" y="99" text-anchor="middle" font-size="10" fill="#edeaf5">(Tokyo)</text>
+
+  <rect x="210" y="65" width="120" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="270" y="83" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Tokyo Edge</text>
+  <text x="270" y="99" text-anchor="middle" font-size="10" fill="#edeaf5">Node</text>
+
+  <rect x="440" y="65" width="120" height="40" rx="8" fill="#2f9d74"/>
+  <text x="500" y="83" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Singapore DB</text>
+  <text x="500" y="99" text-anchor="middle" font-size="10" fill="#e8f5f0">(Regional)</text>
+
+  <rect x="680" y="65" width="120" height="40" rx="8" fill="#1a1822"/>
+  <text x="740" y="83" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Origin Server</text>
+  <text x="740" y="99" text-anchor="middle" font-size="10" fill="#d7d1e6">(US — fallback)</text>
+
+  <!-- Lifelines -->
+  <line x1="70" y1="105" x2="70" y2="460" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="270" y1="105" x2="270" y2="460" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="500" y1="105" x2="500" y2="460" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="740" y1="105" x2="740" y2="460" stroke="#d7d1e6" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.4"/>
+
+  <!-- === PATH A: Cache HIT === -->
+  <rect x="20" y="112" width="860" height="18" rx="4" fill="#2f9d74" opacity="0.15"/>
+  <text x="450" y="124" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="bold">PATH A — Cache HIT (common case)</text>
+
+  <!-- Step 1: User → Edge -->
+  <line x1="70" y1="142" x2="260" y2="142" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="165" y="136" text-anchor="middle" font-size="10" fill="#1a1822">1. GET /page</text>
+
+  <!-- Edge cache check -->
+  <rect x="215" y="152" width="110" height="22" rx="5" fill="#2f9d74"/>
+  <text x="270" y="167" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Cache HIT ✓</text>
+
+  <!-- Edge → User (instant) -->
+  <line x1="260" y1="186" x2="80" y2="186" stroke="#2f9d74" stroke-width="2.5" marker-end="url(#arr-g)"/>
+  <text x="165" y="180" text-anchor="middle" font-size="10" fill="#2f9d74">2. Returns cached HTML (~5-10ms!)</text>
+
+  <!-- FCP -->
+  <rect x="20" y="196" width="135" height="22" rx="5" fill="#2f9d74"/>
+  <text x="87" y="211" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">FCP: ~10ms ✓</text>
+
+  <!-- === PATH B: Cache MISS === -->
+  <rect x="20" y="228" width="860" height="18" rx="4" fill="#d97843" opacity="0.12"/>
+  <text x="450" y="240" text-anchor="middle" font-size="10" fill="#d97843" font-weight="bold">PATH B — Cache MISS (first request or after invalidation)</text>
+
+  <!-- Step 3: User → Edge -->
+  <line x1="70" y1="260" x2="260" y2="260" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="165" y="254" text-anchor="middle" font-size="10" fill="#1a1822">3. GET /page (cache miss)</text>
+
+  <!-- Edge cache miss -->
+  <rect x="215" y="270" width="110" height="22" rx="5" fill="#d97843"/>
+  <text x="270" y="285" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Cache MISS ✗</text>
+
+  <!-- Edge → Regional DB -->
+  <line x1="270" y1="302" x2="490" y2="302" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="380" y="296" text-anchor="middle" font-size="10" fill="#1a1822">4. Query Singapore DB (near edge)</text>
+
+  <!-- DB returns -->
+  <line x1="490" y1="322" x2="280" y2="322" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="385" y="316" text-anchor="middle" font-size="10" fill="#2f9d74">5. Data returned (~15ms)</text>
+
+  <!-- Edge renders HTML -->
+  <rect x="215" y="332" width="110" height="22" rx="5" fill="#6d5bd0"/>
+  <text x="270" y="347" text-anchor="middle" font-size="10" fill="#fff">6. Edge renders HTML</text>
+
+  <!-- Edge caches and returns -->
+  <rect x="215" y="362" width="110" height="22" rx="5" fill="#2f9d74"/>
+  <text x="270" y="377" text-anchor="middle" font-size="10" fill="#fff">7. Cache result</text>
+
+  <line x1="260" y1="394" x2="80" y2="394" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="165" y="388" text-anchor="middle" font-size="10" fill="#2f9d74">8. Return HTML to user (~30ms)</text>
+
+  <!-- PATH C: Heavy operations → Origin -->
+  <rect x="20" y="410" width="860" height="18" rx="4" fill="#1a1822" opacity="0.08"/>
+  <text x="450" y="422" text-anchor="middle" font-size="10" fill="#1a1822" font-weight="bold">PATH C — Heavy operations fall back to Origin Server</text>
+
+  <line x1="270" y1="438" x2="730" y2="438" stroke="#1a1822" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr)"/>
+  <text x="500" y="432" text-anchor="middle" font-size="10" fill="#1a1822">Authentication, Complex queries, Admin routes → Origin (~150ms)</text>
+
+  <!-- Metrics box -->
+  <rect x="540" y="148" width="340" height="178" rx="10" fill="#fff" stroke="#d7d1e6"/>
+  <text x="710" y="172" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="bold">Edge vs Origin Latency</text>
+  <text x="550" y="196" font-size="11" fill="#1a1822">Cache HIT (edge serve):</text>
+  <text x="830" y="196" text-anchor="end" font-size="11" fill="#2f9d74" font-weight="bold">~5-15ms</text>
+  <text x="550" y="216" font-size="11" fill="#1a1822">Cache MISS (edge render):</text>
+  <text x="830" y="216" text-anchor="end" font-size="11" fill="#d97843" font-weight="bold">~25-50ms</text>
+  <text x="550" y="236" font-size="11" fill="#1a1822">Origin SSR (US server):</text>
+  <text x="830" y="236" text-anchor="end" font-size="11" fill="#d97843" font-weight="bold">~150-300ms</text>
+  <line x1="550" y1="248" x2="870" y2="248" stroke="#d7d1e6"/>
+  <text x="550" y="268" font-size="11" fill="#2f9d74" font-weight="bold">Improvement: 10-20x faster</text>
+  <text x="550" y="288" font-size="11" fill="#1a1822">Platforms: Vercel Edge, Cloudflare</text>
+  <text x="550" y="306" font-size="11" fill="#1a1822">Workers, AWS Lambda@Edge</text>
+</svg>

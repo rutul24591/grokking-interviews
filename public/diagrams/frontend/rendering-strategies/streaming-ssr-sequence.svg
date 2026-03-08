@@ -1,0 +1,111 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Streaming SSR — Request &amp; Chunk Delivery Sequence</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="20" y="65" width="85" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="62" y="89" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">User</text>
+
+  <rect x="185" y="65" width="100" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="235" y="85" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Browser</text>
+  <text x="235" y="100" text-anchor="middle" font-size="9" fill="#edeaf5">Streaming client</text>
+
+  <rect x="385" y="65" width="130" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="85" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Server</text>
+  <text x="450" y="100" text-anchor="middle" font-size="9" fill="#edeaf5">(React Streaming)</text>
+
+  <rect x="650" y="65" width="85" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="692" y="89" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">DB / API</text>
+
+  <!-- Lifelines -->
+  <line x1="62" y1="105" x2="62" y2="450" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="235" y1="105" x2="235" y2="450" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="450" y1="105" x2="450" y2="450" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="692" y1="105" x2="692" y2="450" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+
+  <!-- Step 1: User requests -->
+  <line x1="62" y1="130" x2="225" y2="130" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="143" y="124" text-anchor="middle" font-size="10" fill="#1a1822">1. Navigates to page</text>
+
+  <!-- Step 2: Browser → Server -->
+  <line x1="235" y1="148" x2="440" y2="148" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="337" y="142" text-anchor="middle" font-size="10" fill="#1a1822">2. GET / (HTTP request)</text>
+
+  <!-- Step 3: Server starts streaming HTML shell IMMEDIATELY -->
+  <rect x="390" y="160" width="120" height="20" rx="5" fill="#6d5bd0"/>
+  <text x="450" y="174" text-anchor="middle" font-size="10" fill="#fff">Start streaming...</text>
+
+  <!-- Chunk 1: HTML shell -->
+  <line x1="440" y1="188" x2="245" y2="188" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <rect x="248" y="172" width="188" height="18" rx="4" fill="#e8f5f0"/>
+  <text x="342" y="184" text-anchor="middle" font-size="10" fill="#2f9d74">3. CHUNK 1: HTML shell (instant)</text>
+
+  <!-- Browser renders shell -->
+  <rect x="185" y="200" width="100" height="18" rx="5" fill="#2f9d74"/>
+  <text x="235" y="213" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Render shell ✓</text>
+
+  <!-- FCP indicator -->
+  <rect x="20" y="220" width="140" height="20" rx="5" fill="#2f9d74"/>
+  <text x="90" y="234" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">FCP — Shell visible</text>
+
+  <!-- Server fetches data for chunk 2 in parallel -->
+  <line x1="450" y1="200" x2="682" y2="200" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="566" y="194" text-anchor="middle" font-size="10" fill="#1a1822">4. Fetch data (parallel)</text>
+
+  <!-- DB returns data -->
+  <line x1="682" y1="240" x2="460" y2="240" stroke="#d97843" stroke-width="2" marker-end="url(#arr-o)"/>
+  <text x="571" y="234" text-anchor="middle" font-size="10" fill="#d97843">5. Data returned</text>
+
+  <!-- Chunk 2: Nav/Header rendered -->
+  <line x1="440" y1="268" x2="245" y2="268" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <rect x="248" y="252" width="188" height="18" rx="4" fill="#e8f5f0"/>
+  <text x="342" y="264" text-anchor="middle" font-size="10" fill="#2f9d74">6. CHUNK 2: Nav + Header HTML</text>
+
+  <!-- Browser renders chunk 2 -->
+  <rect x="185" y="280" width="100" height="18" rx="5" fill="#2f9d74"/>
+  <text x="235" y="293" text-anchor="middle" font-size="10" fill="#fff">Render chunk 2</text>
+
+  <!-- Chunk 3: Main content with DB data -->
+  <line x1="440" y1="320" x2="245" y2="320" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <rect x="248" y="304" width="188" height="18" rx="4" fill="#e8f5f0"/>
+  <text x="342" y="316" text-anchor="middle" font-size="10" fill="#2f9d74">7. CHUNK 3: Main content HTML</text>
+
+  <!-- Browser renders chunk 3 -->
+  <rect x="185" y="332" width="100" height="18" rx="5" fill="#2f9d74"/>
+  <text x="235" y="345" text-anchor="middle" font-size="10" fill="#fff">Render chunk 3</text>
+
+  <!-- All chunks done → JS hydration -->
+  <line x1="440" y1="362" x2="245" y2="362" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <rect x="248" y="346" width="188" height="18" rx="4" fill="#edeaf5"/>
+  <text x="342" y="358" text-anchor="middle" font-size="10" fill="#6d5bd0">8. Stream complete + JS</text>
+
+  <!-- Hydration -->
+  <rect x="185" y="374" width="100" height="20" rx="5" fill="#6d5bd0"/>
+  <text x="235" y="388" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Hydrate ✓</text>
+
+  <!-- TTI indicator -->
+  <rect x="20" y="398" width="140" height="20" rx="5" fill="#6d5bd0"/>
+  <text x="90" y="412" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">TTI — Fully interactive</text>
+
+  <!-- Key benefit box -->
+  <rect x="490" y="285" width="395" height="155" rx="10" fill="#fff" stroke="#d7d1e6"/>
+  <text x="687" y="310" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="bold">Streaming SSR Key Benefits</text>
+  <text x="500" y="332" font-size="11" fill="#1a1822">• FCP happens as soon as shell arrives</text>
+  <text x="500" y="350" font-size="11" fill="#1a1822">• No waiting for all data before any HTML</text>
+  <text x="500" y="368" font-size="11" fill="#1a1822">• Browser renders progressively</text>
+  <text x="500" y="386" font-size="11" fill="#1a1822">• React 18 + Suspense enables this</text>
+  <text x="500" y="404" font-size="11" fill="#1a1822">• Each Suspense boundary streams</text>
+  <text x="500" y="422" font-size="11" fill="#1a1822">  independently</text>
+</svg>

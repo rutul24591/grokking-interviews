@@ -1,0 +1,97 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">SSR Request Flow Sequence</text>
+
+  <defs>
+    <marker id="arr-p" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+  </defs>
+
+  <!-- Actor boxes -->
+  <rect x="30" y="60" width="110" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="85" y="85" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">Browser</text>
+
+  <rect x="230" y="60" width="110" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="285" y="85" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">Server</text>
+
+  <rect x="430" y="60" width="110" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="485" y="85" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">DB / API</text>
+
+  <rect x="630" y="60" width="110" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="685" y="85" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">CDN</text>
+
+  <!-- Lifelines -->
+  <line x1="85" y1="100" x2="85" y2="470" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="6,4"/>
+  <line x1="285" y1="100" x2="285" y2="470" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="6,4"/>
+  <line x1="485" y1="100" x2="485" y2="470" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="6,4"/>
+  <line x1="685" y1="100" x2="685" y2="470" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="6,4"/>
+
+  <!-- Step 1: Browser requests page -->
+  <line x1="85" y1="130" x2="275" y2="130" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr-p)"/>
+  <rect x="100" y="113" width="165" height="19" rx="4" fill="#edeaf5"/>
+  <text x="182" y="126" text-anchor="middle" font-size="11" fill="#1a1822">1. GET /page (HTTP request)</text>
+
+  <!-- Step 2: Server fetches data -->
+  <line x1="285" y1="165" x2="475" y2="165" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr-p)"/>
+  <rect x="295" y="148" width="165" height="19" rx="4" fill="#edeaf5"/>
+  <text x="378" y="161" text-anchor="middle" font-size="11" fill="#1a1822">2. Fetch data from DB/API</text>
+
+  <!-- Step 3: DB returns data -->
+  <line x1="485" y1="200" x2="295" y2="200" stroke="#d97843" stroke-width="2" marker-end="url(#arr-o)"/>
+  <rect x="300" y="183" width="175" height="19" rx="4" fill="#fff3ec"/>
+  <text x="387" y="196" text-anchor="middle" font-size="11" fill="#1a1822">3. DB returns data records</text>
+
+  <!-- Step 4: Server renders HTML -->
+  <rect x="240" y="222" width="90" height="26" rx="6" fill="#6d5bd0"/>
+  <text x="285" y="239" text-anchor="middle" font-size="11" fill="#fff">Render HTML</text>
+
+  <!-- Step 5: Return full HTML -->
+  <line x1="285" y1="262" x2="95" y2="262" stroke="#d97843" stroke-width="2" marker-end="url(#arr-o)"/>
+  <rect x="100" y="245" width="178" height="19" rx="4" fill="#fff3ec"/>
+  <text x="189" y="258" text-anchor="middle" font-size="11" fill="#1a1822">5. Return full HTML (FCP) ✓</text>
+
+  <!-- FCP marker -->
+  <rect x="10" y="274" width="145" height="24" rx="6" fill="#2f9d74"/>
+  <text x="82" y="290" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">FCP — Content Visible</text>
+
+  <!-- Step 6: Browser downloads JS -->
+  <line x1="85" y1="316" x2="275" y2="316" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr-p)"/>
+  <rect x="96" y="299" width="175" height="19" rx="4" fill="#edeaf5"/>
+  <text x="183" y="312" text-anchor="middle" font-size="11" fill="#1a1822">6. Request JS bundles</text>
+
+  <!-- Step 7: CDN serves JS -->
+  <line x1="285" y1="350" x2="675" y2="350" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr-p)"/>
+  <rect x="430" y="333" width="120" height="19" rx="4" fill="#edeaf5"/>
+  <text x="490" y="346" text-anchor="middle" font-size="11" fill="#1a1822">7. Forward to CDN</text>
+
+  <line x1="685" y1="380" x2="295" y2="380" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <rect x="370" y="363" width="200" height="19" rx="4" fill="#e8f5f0"/>
+  <text x="470" y="376" text-anchor="middle" font-size="11" fill="#1a1822">8. CDN returns static JS assets</text>
+
+  <!-- Step 9: Hydration -->
+  <rect x="30" y="408" width="140" height="26" rx="6" fill="#6d5bd0"/>
+  <text x="100" y="425" text-anchor="middle" font-size="11" fill="#fff">9. JS Hydration</text>
+
+  <!-- TTI marker -->
+  <rect x="182" y="408" width="185" height="26" rx="6" fill="#2f9d74"/>
+  <text x="275" y="425" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">TTI — App Interactive ✓</text>
+
+  <!-- Timeline note -->
+  <rect x="720" y="120" width="165" height="180" rx="8" fill="#fff" stroke="#d7d1e6"/>
+  <text x="802" y="140" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="bold">Key Metrics</text>
+  <text x="730" y="160" font-size="11" fill="#1a1822">TTFB: ~200-800ms</text>
+  <text x="730" y="178" font-size="11" fill="#1a1822">FCP: ~0.8-1.5s</text>
+  <text x="730" y="196" font-size="11" fill="#1a1822">TTI: ~1.5-3s</text>
+  <line x1="730" y1="208" x2="875" y2="208" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="730" y="226" font-size="11" fill="#2f9d74" font-weight="bold">Advantages:</text>
+  <text x="730" y="244" font-size="11" fill="#1a1822">• Fast FCP</text>
+  <text x="730" y="260" font-size="11" fill="#1a1822">• Good SEO</text>
+  <text x="730" y="278" font-size="11" fill="#1a1822">• No empty shell</text>
+</svg>

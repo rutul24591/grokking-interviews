@@ -1,0 +1,87 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">SSR Hydration Mismatch — Causes &amp; Solutions</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+  </defs>
+
+  <!-- Main flow -->
+  <!-- Node 1: Server renders HTML -->
+  <rect x="310" y="58" width="200" height="44" rx="10" fill="#6d5bd0"/>
+  <text x="410" y="76" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Server Renders HTML</text>
+  <text x="410" y="93" text-anchor="middle" font-size="11" fill="#edeaf5">with server-side data</text>
+  <line x1="410" y1="102" x2="410" y2="125" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Node 2: Browser hydrates -->
+  <rect x="310" y="125" width="200" height="44" rx="10" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="410" y="143" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Browser Hydrates</text>
+  <text x="410" y="160" text-anchor="middle" font-size="11" fill="#6d5bd0">React attaches to DOM</text>
+
+  <!-- Branch: Mismatch detected -->
+  <line x1="410" y1="169" x2="410" y2="195" stroke="#d97843" stroke-width="2" marker-end="url(#arr-r)"/>
+
+  <!-- Decision diamond -->
+  <polygon points="410,195 470,230 410,265 350,230" fill="#d97843"/>
+  <text x="410" y="226" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Mismatch</text>
+  <text x="410" y="243" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Detected?</text>
+
+  <!-- Yes branch -->
+  <line x1="470" y1="230" x2="600" y2="230" stroke="#d97843" stroke-width="2" marker-end="url(#arr-r)"/>
+  <text x="535" y="222" text-anchor="middle" font-size="11" fill="#d97843">Yes</text>
+
+  <rect x="600" y="208" width="210" height="44" rx="10" fill="#d97843"/>
+  <text x="705" y="226" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Warning / UI Bug</text>
+  <text x="705" y="243" text-anchor="middle" font-size="11" fill="#fff">Console warning + re-render</text>
+
+  <!-- No branch -->
+  <line x1="410" y1="265" x2="410" y2="295" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <text x="420" y="285" font-size="11" fill="#2f9d74">No</text>
+  <rect x="310" y="295" width="200" height="40" rx="10" fill="#2f9d74"/>
+  <text x="410" y="319" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Hydration Success ✓</text>
+
+  <!-- Causes panel -->
+  <rect x="20" y="58" width="265" height="200" rx="10" fill="#fff" stroke="#d97843" stroke-width="2"/>
+  <rect x="20" y="58" width="265" height="34" rx="10" fill="#d97843"/>
+  <text x="152" y="80" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">Common Causes</text>
+  <text x="34" y="112" font-size="11" fill="#1a1822" font-weight="bold">• Browser-only APIs</text>
+  <text x="44" y="128" font-size="10" fill="#6d5bd0">window, document, localStorage</text>
+  <text x="34" y="148" font-size="11" fill="#1a1822" font-weight="bold">• Date/Time values</text>
+  <text x="44" y="164" font-size="10" fill="#6d5bd0">new Date() differs server vs client</text>
+  <text x="34" y="184" font-size="11" fill="#1a1822" font-weight="bold">• Random values</text>
+  <text x="44" y="200" font-size="10" fill="#6d5bd0">Math.random() not seeded</text>
+  <text x="34" y="220" font-size="11" fill="#1a1822" font-weight="bold">• External data changes</text>
+  <text x="44" y="236" font-size="10" fill="#6d5bd0">Different data between renders</text>
+
+  <!-- Solutions panel -->
+  <rect x="20" y="290" width="265" height="195" rx="10" fill="#fff" stroke="#2f9d74" stroke-width="2"/>
+  <rect x="20" y="290" width="265" height="34" rx="10" fill="#2f9d74"/>
+  <text x="152" y="312" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">Solutions</text>
+  <text x="34" y="342" font-size="11" fill="#1a1822" font-weight="bold">• suppressHydrationWarning</text>
+  <text x="44" y="358" font-size="10" fill="#6d5bd0">For intentional differences</text>
+  <text x="34" y="378" font-size="11" fill="#1a1822" font-weight="bold">• useEffect for client-only code</text>
+  <text x="44" y="394" font-size="10" fill="#6d5bd0">Run after hydration completes</text>
+  <text x="34" y="414" font-size="11" fill="#1a1822" font-weight="bold">• dynamic(() =&gt; ..., {ssr: false})</text>
+  <text x="44" y="430" font-size="10" fill="#6d5bd0">Skip SSR for client components</text>
+  <text x="34" y="460" font-size="11" fill="#1a1822" font-weight="bold">• Stable IDs / seeds</text>
+  <text x="44" y="476" font-size="10" fill="#6d5bd0">Use consistent random seeds</text>
+
+  <!-- Right side: Mismatch effects -->
+  <rect x="600" y="270" width="280" height="195" rx="10" fill="#fff" stroke="#d97843" stroke-width="1.5"/>
+  <text x="740" y="292" text-anchor="middle" font-size="12" fill="#d97843" font-weight="bold">Mismatch Effects</text>
+  <text x="614" y="315" font-size="11" fill="#1a1822">• Whole subtree re-renders</text>
+  <text x="614" y="335" font-size="11" fill="#1a1822">• Performance hit (extra work)</text>
+  <text x="614" y="355" font-size="11" fill="#1a1822">• Layout flash / CLS</text>
+  <text x="614" y="375" font-size="11" fill="#1a1822">• Console warning in dev</text>
+  <text x="614" y="395" font-size="11" fill="#1a1822">• UI inconsistency visible</text>
+  <text x="614" y="415" font-size="11" fill="#1a1822">• Loss of SSR benefits</text>
+  <text x="614" y="435" font-size="11" fill="#1a1822">• Potential broken state</text>
+</svg>

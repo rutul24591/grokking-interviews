@@ -1,0 +1,95 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">CSR Architecture Flow</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+  </defs>
+
+  <!-- Step nodes -->
+  <!-- 1 -->
+  <rect x="30" y="210" width="130" height="60" rx="10" fill="#6d5bd0" stroke="#6d5bd0"/>
+  <text x="95" y="236" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">User Visits</text>
+  <text x="95" y="254" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Site</text>
+
+  <!-- 2 -->
+  <rect x="200" y="210" width="130" height="60" rx="10" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="265" y="232" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Server Sends</text>
+  <text x="265" y="248" text-anchor="middle" font-size="11" fill="#1a1822">Empty HTML</text>
+  <text x="265" y="264" text-anchor="middle" font-size="11" fill="#1a1822">Shell</text>
+
+  <!-- 3 -->
+  <rect x="370" y="210" width="130" height="60" rx="10" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="435" y="232" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Browser</text>
+  <text x="435" y="248" text-anchor="middle" font-size="11" fill="#1a1822">Downloads JS</text>
+  <text x="435" y="264" text-anchor="middle" font-size="11" fill="#1a1822">Bundles</text>
+
+  <!-- 4 -->
+  <rect x="540" y="210" width="130" height="60" rx="10" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="605" y="236" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Framework</text>
+  <text x="605" y="252" text-anchor="middle" font-size="11" fill="#1a1822">Initializes</text>
+
+  <!-- 5 -->
+  <rect x="710" y="210" width="130" height="60" rx="10" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="775" y="236" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">API Calls</text>
+  <text x="775" y="252" text-anchor="middle" font-size="11" fill="#1a1822">Made</text>
+
+  <!-- Bottom row -->
+  <!-- 6 -->
+  <rect x="710" y="360" width="130" height="60" rx="10" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="775" y="384" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Data</text>
+  <text x="775" y="400" text-anchor="middle" font-size="11" fill="#1a1822">Returns</text>
+
+  <!-- 7 -->
+  <rect x="540" y="360" width="130" height="60" rx="10" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="605" y="384" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">UI</text>
+  <text x="605" y="400" text-anchor="middle" font-size="11" fill="#1a1822">Renders</text>
+
+  <!-- 8 -->
+  <rect x="340" y="360" width="160" height="60" rx="10" fill="#2f9d74" stroke="#2f9d74"/>
+  <text x="420" y="384" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">App Fully</text>
+  <text x="420" y="402" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Interactive</text>
+
+  <!-- Arrows row 1 -->
+  <line x1="160" y1="240" x2="198" y2="240" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="330" y1="240" x2="368" y2="240" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="500" y1="240" x2="538" y2="240" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="670" y1="240" x2="708" y2="240" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Arrow down from API Calls -->
+  <line x1="775" y1="270" x2="775" y2="358" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Arrows row 2 (right to left) -->
+  <line x1="708" y1="390" x2="672" y2="390" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="538" y1="390" x2="502" y2="390" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-green)"/>
+
+  <!-- Step numbers -->
+  <text x="95" y="200" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="bold">Step 1</text>
+  <text x="265" y="200" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="bold">Step 2</text>
+  <text x="435" y="200" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="bold">Step 3</text>
+  <text x="605" y="200" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="bold">Step 4</text>
+  <text x="775" y="200" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="bold">Step 5</text>
+  <text x="775" y="350" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="bold">Step 6</text>
+  <text x="605" y="350" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="bold">Step 7</text>
+  <text x="420" y="350" text-anchor="middle" font-size="11" fill="#2f9d74" font-weight="bold">Step 8</text>
+
+  <!-- Legend -->
+  <rect x="30" y="440" width="14" height="14" rx="3" fill="#6d5bd0"/>
+  <text x="50" y="452" font-size="11" fill="#1a1822">Start / Entry Point</text>
+  <rect x="190" y="440" width="14" height="14" rx="3" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="210" y="452" font-size="11" fill="#1a1822">Processing Step</text>
+  <rect x="350" y="440" width="14" height="14" rx="3" fill="#2f9d74"/>
+  <text x="370" y="452" font-size="11" fill="#1a1822">Final State (Interactive)</text>
+
+  <!-- Note -->
+  <rect x="30" y="100" width="840" height="70" rx="8" fill="#fff" stroke="#d7d1e6"/>
+  <text x="50" y="122" font-size="12" fill="#6d5bd0" font-weight="bold">Key Characteristics:</text>
+  <text x="50" y="142" font-size="11" fill="#1a1822">• Initial HTML is nearly empty (just a &lt;div id="root"&gt;) — no content visible until JS loads and executes</text>
+  <text x="50" y="158" font-size="11" fill="#1a1822">• All rendering happens client-side in the browser — server only serves static assets</text>
+  <text x="50" y="173" font-size="11" fill="#1a1822">• Slow FCP &amp; TTI (JS must load, parse, execute, and fetch data before user sees anything meaningful)</text>
+</svg>

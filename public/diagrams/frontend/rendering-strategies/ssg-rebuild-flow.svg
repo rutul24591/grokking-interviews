@@ -1,0 +1,107 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">SSG Rebuild &amp; Deploy Flow</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+  </defs>
+
+  <!-- Trigger sources -->
+  <rect x="20" y="90" width="130" height="110" rx="10" fill="#fff" stroke="#d7d1e6"/>
+  <text x="85" y="112" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="bold">Trigger</text>
+  <text x="85" y="132" text-anchor="middle" font-size="11" fill="#1a1822">Sources</text>
+  <text x="32" y="155" font-size="11" fill="#1a1822">• Webhook</text>
+  <text x="32" y="173" font-size="11" fill="#1a1822">• Git push</text>
+  <text x="32" y="191" font-size="11" fill="#1a1822">• Cron / schedule</text>
+
+  <!-- Step 1: Content Change -->
+  <rect x="180" y="110" width="140" height="56" rx="10" fill="#d97843"/>
+  <text x="250" y="133" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Content Change</text>
+  <text x="250" y="152" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Detected</text>
+  <text x="250" y="168" text-anchor="middle" font-size="10" fill="#fff">CMS / repo update</text>
+
+  <!-- Arrow -->
+  <line x1="320" y1="138" x2="350" y2="138" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Step 2: Webhook/CI -->
+  <rect x="350" y="110" width="140" height="56" rx="10" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="420" y="133" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">CI/CD Pipeline</text>
+  <text x="420" y="152" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Triggered</text>
+  <text x="420" y="168" text-anchor="middle" font-size="10" fill="#6d5bd0">GitHub Actions / Vercel</text>
+
+  <!-- Arrow -->
+  <line x1="490" y1="138" x2="520" y2="138" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Step 3: Run Build -->
+  <rect x="520" y="110" width="140" height="56" rx="10" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="590" y="133" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Run Build</text>
+  <text x="590" y="152" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Process</text>
+  <text x="590" y="168" text-anchor="middle" font-size="10" fill="#6d5bd0">next build</text>
+
+  <!-- Arrow down -->
+  <line x1="590" y1="166" x2="590" y2="210" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Step 4: Generate static files -->
+  <rect x="500" y="210" width="180" height="56" rx="10" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="590" y="232" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Generate Static</text>
+  <text x="590" y="250" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Files</text>
+  <text x="590" y="266" text-anchor="middle" font-size="10" fill="#6d5bd0">HTML, CSS, JS, assets</text>
+
+  <!-- Arrow left -->
+  <line x1="500" y1="240" x2="420" y2="240" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Step 5: Deploy to CDN -->
+  <rect x="280" y="212" width="140" height="56" rx="10" fill="#2f9d74"/>
+  <text x="350" y="235" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Deploy to CDN</text>
+  <text x="350" y="255" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Global</text>
+  <text x="350" y="270" text-anchor="middle" font-size="10" fill="#e8f5f0">Upload to edge nodes</text>
+
+  <!-- Arrow left -->
+  <line x1="280" y1="240" x2="200" y2="240" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Step 6: Purge CDN Cache -->
+  <rect x="60" y="212" width="140" height="56" rx="10" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="130" y="235" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Purge CDN</text>
+  <text x="130" y="255" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Cache</text>
+  <text x="130" y="270" text-anchor="middle" font-size="10" fill="#6d5bd0">Invalidate old files</text>
+
+  <!-- Arrow down -->
+  <line x1="130" y1="268" x2="130" y2="320" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+
+  <!-- Step 7: Users get fresh content -->
+  <rect x="30" y="320" width="200" height="56" rx="10" fill="#2f9d74"/>
+  <text x="130" y="344" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Users Get</text>
+  <text x="130" y="362" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Fresh Content ✓</text>
+  <text x="130" y="376" text-anchor="middle" font-size="10" fill="#e8f5f0">From nearest CDN edge</text>
+
+  <!-- Timing bar -->
+  <rect x="20" y="415" width="860" height="65" rx="8" fill="#fff" stroke="#d7d1e6"/>
+  <text x="450" y="438" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="bold">Typical Build/Deploy Timeline</text>
+  <!-- Timeline bar -->
+  <rect x="40" y="448" width="820" height="24" rx="4" fill="#edeaf5"/>
+  <rect x="40" y="448" width="82" height="24" rx="4" fill="#d97843"/>
+  <text x="81" y="464" text-anchor="middle" font-size="9" fill="#fff">Trigger (~1s)</text>
+  <rect x="122" y="448" width="246" height="24" rx="4" fill="#6d5bd0"/>
+  <text x="245" y="464" text-anchor="middle" font-size="9" fill="#fff">Build (1-5 min)</text>
+  <rect x="368" y="448" width="164" height="24" rx="4" fill="#6d5bd0" opacity="0.7"/>
+  <text x="450" y="464" text-anchor="middle" font-size="9" fill="#fff">Deploy (~1-2 min)</text>
+  <rect x="532" y="448" width="164" height="24" rx="4" fill="#2f9d74"/>
+  <text x="614" y="464" text-anchor="middle" font-size="9" fill="#fff">CDN Propagation (~1-5 min)</text>
+  <rect x="696" y="448" width="164" height="24" rx="4" fill="#2f9d74" opacity="0.7"/>
+  <text x="778" y="464" text-anchor="middle" font-size="9" fill="#fff">Live ✓</text>
+
+  <!-- Build time note -->
+  <rect x="700" y="310" width="180" height="80" rx="8" fill="#fff3ec" stroke="#d97843"/>
+  <text x="790" y="332" text-anchor="middle" font-size="11" fill="#d97843" font-weight="bold">Build Time Challenge</text>
+  <text x="710" y="352" font-size="10" fill="#1a1822">Large sites (10k+ pages)</text>
+  <text x="710" y="368" font-size="10" fill="#1a1822">can take 30+ minutes</text>
+  <text x="710" y="384" font-size="10" fill="#1a1822">→ Use ISR for scale</text>
+</svg>

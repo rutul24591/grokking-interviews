@@ -1,0 +1,78 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">ISR Cache State Machine</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1822"/>
+    </marker>
+  </defs>
+
+  <!-- State: FRESH -->
+  <circle cx="200" cy="220" r="80" fill="#2f9d74" stroke="#1a1822" stroke-width="2.5"/>
+  <text x="200" y="213" text-anchor="middle" font-size="16" fill="#fff" font-weight="bold">FRESH</text>
+  <text x="200" y="233" text-anchor="middle" font-size="12" fill="#e8f5f0">Cache valid</text>
+  <text x="200" y="250" text-anchor="middle" font-size="11" fill="#e8f5f0">Served instantly</text>
+
+  <!-- State: STALE -->
+  <circle cx="500" cy="220" r="80" fill="#d97843" stroke="#1a1822" stroke-width="2.5"/>
+  <text x="500" y="213" text-anchor="middle" font-size="16" fill="#fff" font-weight="bold">STALE</text>
+  <text x="500" y="233" text-anchor="middle" font-size="12" fill="#fff">Expired cache</text>
+  <text x="500" y="250" text-anchor="middle" font-size="11" fill="#fff">Still served (stale)</text>
+
+  <!-- State: REGENERATING -->
+  <circle cx="700" cy="360" r="80" fill="#6d5bd0" stroke="#1a1822" stroke-width="2.5"/>
+  <text x="700" y="348" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">REGEN-</text>
+  <text x="700" y="368" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">ERATING</text>
+  <text x="700" y="390" text-anchor="middle" font-size="11" fill="#edeaf5">Background fetch</text>
+
+  <!-- Transition: FRESH → STALE (revalidation period expires) -->
+  <path d="M 278 200 Q 390 150 422 200" stroke="#d97843" stroke-width="2" fill="none" marker-end="url(#arr-o)"/>
+  <rect x="300" y="140" width="155" height="32" rx="6" fill="#fff3ec" stroke="#d97843"/>
+  <text x="377" y="155" text-anchor="middle" font-size="10" fill="#d97843" font-weight="bold">revalidate period expires</text>
+  <text x="377" y="169" text-anchor="middle" font-size="10" fill="#1a1822">(e.g., 60 seconds pass)</text>
+
+  <!-- Transition: STALE → REGENERATING (background request) -->
+  <path d="M 560 270 Q 640 300 640 350" stroke="#6d5bd0" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+  <rect x="570" y="290" width="140" height="32" rx="6" fill="#edeaf5" stroke="#6d5bd0"/>
+  <text x="640" y="305" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold">Request received</text>
+  <text x="640" y="319" text-anchor="middle" font-size="10" fill="#1a1822">(trigger background regen)</text>
+
+  <!-- Transition: REGENERATING → FRESH (new page generated) -->
+  <path d="M 630 320 Q 400 200 278 220" stroke="#2f9d74" stroke-width="2" fill="none" marker-end="url(#arr-g)"/>
+  <rect x="355" y="250" width="155" height="32" rx="6" fill="#e8f5f0" stroke="#2f9d74"/>
+  <text x="432" y="265" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="bold">New page generated</text>
+  <text x="432" y="279" text-anchor="middle" font-size="10" fill="#1a1822">(cache updated)</text>
+
+  <!-- Self-loop: FRESH → FRESH (requests within revalidate) -->
+  <path d="M 135 165 Q 90 100 145 155" stroke="#2f9d74" stroke-width="2" fill="none" marker-end="url(#arr-g)"/>
+  <rect x="20" y="110" width="130" height="30" rx="5" fill="#e8f5f0" stroke="#2f9d74"/>
+  <text x="85" y="125" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="bold">User requests</text>
+  <text x="85" y="137" text-anchor="middle" font-size="10" fill="#1a1822">(within revalidate)</text>
+
+  <!-- Self-loop: STALE → STALE (served stale while regen) -->
+  <path d="M 500 140 Q 550 90 500 142" stroke="#d97843" stroke-width="2" fill="none" marker-end="url(#arr-o)"/>
+  <rect x="510" y="78" width="145" height="30" rx="5" fill="#fff3ec" stroke="#d97843"/>
+  <text x="582" y="93" text-anchor="middle" font-size="10" fill="#d97843" font-weight="bold">Served stale content</text>
+  <text x="582" y="105" text-anchor="middle" font-size="10" fill="#1a1822">(while regen in progress)</text>
+
+  <!-- Stale-While-Revalidate note -->
+  <rect x="20" y="400" width="860" height="80" rx="10" fill="#fff" stroke="#d7d1e6"/>
+  <text x="450" y="424" text-anchor="middle" font-size="13" fill="#6d5bd0" font-weight="bold">Key ISR Principle: Stale-While-Revalidate</text>
+  <text x="450" y="446" text-anchor="middle" font-size="11" fill="#1a1822">When a request arrives for a stale page, the old (stale) page is served immediately.</text>
+  <text x="450" y="464" text-anchor="middle" font-size="11" fill="#1a1822">In the background, the server regenerates the page. The NEXT request gets the fresh version.</text>
+
+  <!-- Initial state indicator -->
+  <rect x="20" y="60" width="145" height="30" rx="5" fill="#6d5bd0"/>
+  <text x="92" y="79" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Initial: page built → FRESH</text>
+  <line x1="92" y1="90" x2="140" y2="155" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+</svg>

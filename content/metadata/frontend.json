@@ -1,0 +1,143 @@
+{
+  "rendering-strategies": {
+    "client-side-rendering": {
+      "extensive": {
+        "status": "draft",
+        "wordCount": 0,
+        "lastUpdated": "2026-03-05"
+      },
+      "concise": {
+        "status": "draft",
+        "wordCount": 0,
+        "lastUpdated": "2026-03-05"
+      }
+    },
+    "server-side-rendering": {
+      "extensive": {
+        "status": "draft",
+        "wordCount": 0,
+        "lastUpdated": "2026-03-05"
+      },
+      "concise": {
+        "status": "draft",
+        "wordCount": 0,
+        "lastUpdated": "2026-03-05"
+      }
+    },
+    "static-site-generation": {
+      "extensive": {
+        "status": "draft",
+        "wordCount": 0,
+        "lastUpdated": "2026-03-05"
+      },
+      "concise": {
+        "status": "draft",
+        "wordCount": 0,
+        "lastUpdated": "2026-03-05"
+      }
+    },
+    "incremental-static-regeneration": {
+      "extensive": {
+        "status": "draft",
+        "wordCount": 0,
+        "lastUpdated": "2026-03-05"
+      },
+      "concise": {
+        "status": "draft",
+        "wordCount": 0,
+        "lastUpdated": "2026-03-05"
+      }
+    },
+    "progressive-hydration": {
+      "extensive": {
+        "status": "draft",
+        "wordCount": 0,
+        "lastUpdated": "2026-03-05"
+      },
+      "concise": {
+        "status": "draft",
+        "wordCount": 0,
+        "lastUpdated": "2026-03-05"
+      }
+    },
+    "selective-hydration": {
+      "extensive": {
+        "status": "draft",
+        "wordCount": 0,
+        "lastUpdated": "2026-03-05"
+      },
+      "concise": {
+        "status": "draft",
+        "wordCount": 0,
+        "lastUpdated": "2026-03-05"
+      }
+    },
+    "islands-architecture": {
+      "extensive": {
+        "status": "draft",
+        "wordCount": 0,
+        "lastUpdated": "2026-03-05"
+      },
+      "concise": {
+        "status": "draft",
+        "wordCount": 0,
+        "lastUpdated": "2026-03-05"
+      }
+    },
+    "streaming-ssr": {
+      "extensive": {
+        "status": "draft",
+        "wordCount": 0,
+        "lastUpdated": "2026-03-05"
+      },
+      "concise": {
+        "status": "draft",
+        "wordCount": 0,
+        "lastUpdated": "2026-03-05"
+      }
+    },
+    "edge-rendering": {
+      "extensive": {
+        "status": "draft",
+        "wordCount": 0,
+        "lastUpdated": "2026-03-05"
+      },
+      "concise": {
+        "status": "draft",
+        "wordCount": 0,
+        "lastUpdated": "2026-03-05"
+      }
+    },
+    "partial-hydration": {
+      "extensive": {
+        "status": "draft",
+        "wordCount": 0,
+        "lastUpdated": "2026-03-05"
+      },
+      "concise": {
+        "status": "draft",
+        "wordCount": 0,
+        "lastUpdated": "2026-03-05"
+      }
+    }
+  },
+  "performance-optimization": {},
+  "caching-strategies": {},
+  "state-management": {},
+  "routing": {},
+  "authentication-authorization": {},
+  "error-handling": {},
+  "testing": {},
+  "build-optimization": {},
+  "accessibility": {},
+  "security": {},
+  "responsive-design": {},
+  "animation-interaction": {},
+  "forms-validation": {},
+  "api-integration": {},
+  "progressive-web-apps": {},
+  "browser-apis": {},
+  "tooling": {},
+  "architecture": {},
+  "component-patterns": {}
+}

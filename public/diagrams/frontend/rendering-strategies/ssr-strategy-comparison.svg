@@ -1,0 +1,86 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">SSR vs CSR vs SSG — Metric Comparison</text>
+
+  <!-- Chart area: grouped bars for TTFB, FCP, TTI -->
+  <!-- X groups at x=180, 420, 660 -->
+  <!-- Each group: 3 bars, width=60 each, gaps=10 -->
+  <!-- Y axis: 0 at y=420, max at y=80 -->
+
+  <defs>
+    <marker id="ax" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#1a1822"/>
+    </marker>
+  </defs>
+
+  <!-- Axes -->
+  <line x1="80" y1="80" x2="80" y2="425" stroke="#1a1822" stroke-width="2" marker-end="url(#ax)"/>
+  <line x1="75" y1="420" x2="860" y2="420" stroke="#1a1822" stroke-width="2" marker-end="url(#ax)"/>
+
+  <!-- Y axis labels -->
+  <text x="72" y="424" text-anchor="end" font-size="11" fill="#1a1822">0</text>
+  <line x1="77" y1="350" x2="83" y2="350" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="72" y="354" text-anchor="end" font-size="11" fill="#1a1822">1s</text>
+  <line x1="77" y1="280" x2="83" y2="280" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="72" y="284" text-anchor="end" font-size="11" fill="#1a1822">2s</text>
+  <line x1="77" y1="210" x2="83" y2="210" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="72" y="214" text-anchor="end" font-size="11" fill="#1a1822">3s</text>
+  <line x1="77" y1="140" x2="83" y2="140" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="72" y="144" text-anchor="end" font-size="11" fill="#1a1822">4s</text>
+  <line x1="77" y1="100" x2="83" y2="100" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="72" y="104" text-anchor="end" font-size="11" fill="#1a1822">~5s</text>
+
+  <!-- Grid lines -->
+  <line x1="80" y1="350" x2="855" y2="350" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="80" y1="280" x2="855" y2="280" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="80" y1="210" x2="855" y2="210" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="80" y1="140" x2="855" y2="140" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Group 1: TTFB -->
+  <!-- SSG TTFB: ~0.1s → h=7 -->
+  <rect x="130" y="413" width="65" height="7" rx="3" fill="#2f9d74"/>
+  <text x="162" y="408" text-anchor="middle" font-size="9" fill="#2f9d74">0.1s</text>
+  <!-- SSR TTFB: ~0.8s → h=56 -->
+  <rect x="205" y="364" width="65" height="56" rx="3" fill="#6d5bd0"/>
+  <text x="237" y="359" text-anchor="middle" font-size="9" fill="#6d5bd0">0.8s</text>
+  <!-- CSR TTFB: ~0.1s → h=7 (fast, empty) -->
+  <rect x="280" y="413" width="65" height="7" rx="3" fill="#d97843"/>
+  <text x="312" y="408" text-anchor="middle" font-size="9" fill="#d97843">0.1s</text>
+  <text x="235" y="455" text-anchor="middle" font-size="13" fill="#1a1822" font-weight="bold">TTFB</text>
+
+  <!-- Group 2: FCP -->
+  <!-- SSG FCP: ~0.2s → h=14 -->
+  <rect x="400" y="406" width="65" height="14" rx="3" fill="#2f9d74"/>
+  <text x="432" y="401" text-anchor="middle" font-size="9" fill="#2f9d74">0.2s</text>
+  <!-- SSR FCP: ~1.0s → h=70 -->
+  <rect x="475" y="350" width="65" height="70" rx="3" fill="#6d5bd0"/>
+  <text x="507" y="345" text-anchor="middle" font-size="9" fill="#6d5bd0">1.0s</text>
+  <!-- CSR FCP: ~3.0s → h=210 -->
+  <rect x="550" y="210" width="65" height="210" rx="3" fill="#d97843"/>
+  <text x="582" y="205" text-anchor="middle" font-size="9" fill="#d97843">3.0s</text>
+  <text x="505" y="455" text-anchor="middle" font-size="13" fill="#1a1822" font-weight="bold">FCP</text>
+
+  <!-- Group 3: TTI -->
+  <!-- SSG TTI: ~0.2s → h=14 -->
+  <rect x="660" y="406" width="65" height="14" rx="3" fill="#2f9d74"/>
+  <text x="692" y="401" text-anchor="middle" font-size="9" fill="#2f9d74">0.2s</text>
+  <!-- SSR TTI: ~2.0s → h=140 -->
+  <rect x="735" y="280" width="65" height="140" rx="3" fill="#6d5bd0"/>
+  <text x="767" y="275" text-anchor="middle" font-size="9" fill="#6d5bd0">2.0s</text>
+  <!-- CSR TTI: ~5.5s → h=322 -->
+  <rect x="810" y="98" width="65" height="322" rx="3" fill="#d97843"/>
+  <text x="842" y="93" text-anchor="middle" font-size="9" fill="#d97843">5.5s</text>
+  <text x="770" y="455" text-anchor="middle" font-size="13" fill="#1a1822" font-weight="bold">TTI</text>
+
+  <!-- Legend -->
+  <rect x="90" y="55" width="660" height="30" rx="6" fill="#fff" stroke="#d7d1e6"/>
+  <rect x="105" y="64" width="16" height="16" rx="3" fill="#2f9d74"/>
+  <text x="128" y="76" font-size="12" fill="#1a1822">SSG (Static Site Generation)</text>
+  <rect x="330" y="64" width="16" height="16" rx="3" fill="#6d5bd0"/>
+  <text x="353" y="76" font-size="12" fill="#1a1822">SSR (Server-Side Rendering)</text>
+  <rect x="560" y="64" width="16" height="16" rx="3" fill="#d97843"/>
+  <text x="583" y="76" font-size="12" fill="#1a1822">CSR (Client-Side Rendering)</text>
+
+  <!-- Y axis title -->
+  <text x="20" y="260" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold" transform="rotate(-90, 20, 260)">Time (seconds) — lower is better</text>
+</svg>

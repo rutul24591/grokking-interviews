@@ -1,0 +1,20 @@
+System-Design-concepts
+        |
+        |---> Frontend concepts(category)
+                |
+                |--> Rendering strategies(sub-category)
+                            |
+                            |--> Client-side-rendering(topic)
+                |
+                |
+                |--> Performance optimization(sub-category)
+        |
+        |
+        |---> Backend concepts(category)
+                |
+                |--> Rendering strategies(sub-category)
+                            |
+                            |--> Client-side-rendering(topic)
+                |
+                |
+                |--> Performance optimization(sub-category)

@@ -1,0 +1,107 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Selective Hydration — Sequence Flow</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="20" y="65" width="90" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="65" y="89" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Browser</text>
+
+  <rect x="160" y="65" width="90" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="205" y="83" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Full Static</text>
+  <text x="205" y="98" text-anchor="middle" font-size="10" fill="#edeaf5">HTML</text>
+
+  <rect x="320" y="65" width="90" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="365" y="83" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Identify</text>
+  <text x="365" y="98" text-anchor="middle" font-size="10" fill="#edeaf5">Interactive</text>
+
+  <rect x="480" y="65" width="90" height="40" rx="8" fill="#2f9d74"/>
+  <text x="525" y="83" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Island 1</text>
+  <text x="525" y="98" text-anchor="middle" font-size="10" fill="#e8f5f0">Cart</text>
+
+  <rect x="640" y="65" width="90" height="40" rx="8" fill="#2f9d74"/>
+  <text x="685" y="83" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Island 2</text>
+  <text x="685" y="98" text-anchor="middle" font-size="10" fill="#e8f5f0">Search</text>
+
+  <rect x="800" y="65" width="85" height="40" rx="8" fill="#2f9d74"/>
+  <text x="842" y="83" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Island 3</text>
+  <text x="842" y="98" text-anchor="middle" font-size="10" fill="#e8f5f0">Newsletter</text>
+
+  <!-- Lifelines -->
+  <line x1="65" y1="105" x2="65" y2="440" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="205" y1="105" x2="205" y2="440" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="365" y1="105" x2="365" y2="440" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="525" y1="105" x2="525" y2="440" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="685" y1="105" x2="685" y2="440" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="842" y1="105" x2="842" y2="440" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+
+  <!-- Step 1: Browser loads page -->
+  <line x1="65" y1="130" x2="195" y2="130" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <rect x="70" y="113" width="120" height="18" rx="4" fill="#edeaf5"/>
+  <text x="130" y="126" text-anchor="middle" font-size="10" fill="#1a1822">1. GET / (HTTP request)</text>
+
+  <!-- Step 2: Gets full static HTML -->
+  <line x1="195" y1="155" x2="75" y2="155" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-g)"/>
+  <rect x="76" y="138" width="118" height="18" rx="4" fill="#e8f5f0"/>
+  <text x="135" y="151" text-anchor="middle" font-size="10" fill="#2f9d74">2. Full static HTML returned</text>
+
+  <!-- FCP indicator -->
+  <rect x="20" y="166" width="105" height="20" rx="5" fill="#2f9d74"/>
+  <text x="72" y="180" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">FCP achieved ✓</text>
+
+  <!-- Step 3: Identify interactive components -->
+  <line x1="65" y1="200" x2="355" y2="200" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <rect x="85" y="183" width="265" height="18" rx="4" fill="#edeaf5"/>
+  <text x="217" y="196" text-anchor="middle" font-size="10" fill="#1a1822">3. Identify: data-hydrate attributes → 3 islands</text>
+
+  <!-- Step 4: Download JS for Island 1 -->
+  <line x1="365" y1="225" x2="515" y2="225" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <rect x="370" y="208" width="140" height="18" rx="4" fill="#edeaf5"/>
+  <text x="440" y="221" text-anchor="middle" font-size="10" fill="#1a1822">4. Download cart.js (20KB)</text>
+
+  <!-- Step 5: Hydrate Island 1 -->
+  <rect x="487" y="238" width="76" height="22" rx="5" fill="#2f9d74"/>
+  <text x="525" y="252" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">5. Hydrate ✓</text>
+  <rect x="410" y="252" width="110" height="16" rx="4" fill="#e8f5f0"/>
+  <text x="465" y="263" text-anchor="middle" font-size="9" fill="#2f9d74">Cart interactive</text>
+
+  <!-- Step 6: Download JS for Island 2 -->
+  <line x1="365" y1="280" x2="675" y2="280" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <rect x="380" y="263" width="280" height="18" rx="4" fill="#edeaf5"/>
+  <text x="520" y="276" text-anchor="middle" font-size="10" fill="#1a1822">6. Download search.js (30KB) — parallel</text>
+
+  <!-- Step 7: Hydrate Island 2 -->
+  <rect x="645" y="292" width="80" height="22" rx="5" fill="#2f9d74"/>
+  <text x="685" y="306" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">7. Hydrate ✓</text>
+  <rect x="570" y="306" width="110" height="16" rx="4" fill="#e8f5f0"/>
+  <text x="625" y="317" text-anchor="middle" font-size="9" fill="#2f9d74">Search interactive</text>
+
+  <!-- Step 8: Download JS for Island 3 -->
+  <line x1="365" y1="338" x2="832" y2="338" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <rect x="380" y="321" width="440" height="18" rx="4" fill="#edeaf5"/>
+  <text x="600" y="334" text-anchor="middle" font-size="10" fill="#1a1822">8. Download newsletter.js (15KB) — on scroll/idle</text>
+
+  <!-- Step 9: Hydrate Island 3 -->
+  <rect x="805" y="350" width="80" height="22" rx="5" fill="#2f9d74"/>
+  <text x="845" y="364" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">9. Hydrate ✓</text>
+
+  <!-- Static content stays -->
+  <rect x="145" y="380" width="200" height="30" rx="6" fill="#d7d1e6"/>
+  <text x="245" y="399" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Static content: zero JS attached</text>
+
+  <!-- Summary -->
+  <rect x="20" y="420" width="860" height="50" rx="8" fill="#edeaf5" stroke="#6d5bd0"/>
+  <text x="450" y="440" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="bold">Islands hydrate independently — no component blocks another.</text>
+  <text x="450" y="458" text-anchor="middle" font-size="11" fill="#1a1822">Total JS: ~65KB (3 small bundles) vs 500KB+ for full app hydration. Static content: 0 KB JS.</text>
+</svg>

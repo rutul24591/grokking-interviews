@@ -1,0 +1,230 @@
+@import "tailwindcss";
+@import "../styles/theme.css";
+@import "../styles/animations.css";
+
+:root {
+  --font-sans: var(--font-space-grotesk);
+  --font-mono: var(--font-jetbrains-mono);
+  --topbar-h: 4rem;
+  --app-vh: 100vh;
+}
+
+@supports (height: 100dvh) {
+  :root {
+    --app-vh: 100dvh;
+  }
+}
+
+body {
+  min-height: var(--app-vh);
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-accent) 25%, transparent);
+}
+
+.text-theme {
+  color: var(--color-text);
+}
+
+.text-heading {
+  color: var(--color-heading);
+}
+
+.text-muted {
+  color: var(--color-muted);
+}
+
+.bg-theme {
+  background-color: var(--color-bg);
+}
+
+.bg-theme-80 {
+  background-color: color-mix(in srgb, var(--color-bg) 80%, transparent);
+}
+
+.bg-panel {
+  background-color: var(--color-panel);
+}
+
+.bg-panel-soft {
+  background-color: var(--color-panel-soft);
+}
+
+.bg-panel-hover {
+  background-color: var(--color-panel-hover);
+}
+
+.bg-accent {
+  background-color: var(--color-accent);
+}
+
+.bg-online {
+  background-color: var(--color-online);
+}
+
+.bg-offline {
+  background-color: var(--color-offline);
+}
+
+.border-theme {
+  border-color: var(--color-border);
+}
+
+.border-accent {
+  border-color: var(--color-accent);
+}
+
+.ring-accent {
+  --tw-ring-color: var(--color-accent);
+}
+
+.shadow-soft-theme {
+  box-shadow: var(--shadow-soft);
+}
+
+.shadow-strong-theme {
+  box-shadow: var(--shadow-strong);
+}
+
+.app-shell {
+  height: var(--app-vh);
+}
+
+.topbar-h {
+  height: var(--topbar-h);
+}
+
+/* Article Content Styling */
+.prose {
+  color: var(--color-text);
+  max-width: 65ch;
+}
+
+.prose p {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  line-height: 1.75;
+}
+
+.prose h2 {
+  font-weight: 700;
+  font-size: 1.5em;
+  margin-top: 2em;
+  margin-bottom: 1em;
+  line-height: 1.3333333;
+  color: var(--color-heading);
+}
+
+.prose h3 {
+  font-weight: 600;
+  font-size: 1.25em;
+  margin-top: 1.6em;
+  margin-bottom: 0.6em;
+  line-height: 1.6;
+  color: var(--color-heading);
+}
+
+.prose strong {
+  font-weight: 600;
+  color: var(--color-heading);
+}
+
+.prose ul, .prose ol {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  padding-left: 1.625em;
+}
+
+.prose li {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.75;
+}
+
+.prose code {
+  color: var(--color-accent);
+  font-weight: 400;
+  font-size: 0.875em;
+  background-color: var(--color-code-bg);
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  font-family: var(--font-mono);
+}
+
+.prose pre {
+  background-color: var(--color-code-bg);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+  margin-top: 1.75em;
+  margin-bottom: 1.75em;
+  line-height: 1.7142857;
+  border: 1px solid var(--color-border);
+}
+
+.prose pre code {
+  background-color: transparent;
+  padding: 0;
+  color: var(--color-text);
+  font-size: 0.875em;
+  font-family: var(--font-mono);
+  line-height: inherit;
+}
+
+.prose table {
+  width: 100%;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  border-collapse: collapse;
+}
+
+.prose thead {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.prose thead th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--color-heading);
+}
+
+.prose tbody tr {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.prose tbody td {
+  padding: 0.75rem 1rem;
+  line-height: 1.75;
+}
+
+.prose a {
+  color: var(--color-accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.prose a:hover {
+  text-decoration: underline;
+}
+
+.prose section {
+  margin-bottom: 3rem;
+}
+
+.prose img {
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-border);
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.prose figcaption {
+  margin-top: 0.75em;
+  text-align: center;
+  font-size: 0.875em;
+  color: var(--color-muted);
+}

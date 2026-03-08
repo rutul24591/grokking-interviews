@@ -1,0 +1,98 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Partial Hydration — Event-Driven Sequence</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-g" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-o" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="20" y="65" width="90" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="65" y="89" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Browser</text>
+
+  <rect x="190" y="65" width="110" height="40" rx="8" fill="#1a1822"/>
+  <text x="245" y="83" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Hydration</text>
+  <text x="245" y="99" text-anchor="middle" font-size="10" fill="#d7d1e6">Orchestrator</text>
+
+  <rect x="390" y="65" width="110" height="40" rx="8" fill="#2f9d74"/>
+  <text x="445" y="83" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Carousel</text>
+  <text x="445" y="99" text-anchor="middle" font-size="10" fill="#e8f5f0">(scroll trigger)</text>
+
+  <rect x="590" y="65" width="110" height="40" rx="8" fill="#2f9d74"/>
+  <text x="645" y="83" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Analytics</text>
+  <text x="645" y="99" text-anchor="middle" font-size="10" fill="#e8f5f0">(idle trigger)</text>
+
+  <rect x="790" y="65" width="90" height="40" rx="8" fill="#2f9d74"/>
+  <text x="835" y="83" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Modal</text>
+  <text x="835" y="99" text-anchor="middle" font-size="10" fill="#e8f5f0">(click trigger)</text>
+
+  <!-- Lifelines -->
+  <line x1="65" y1="105" x2="65" y2="440" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="245" y1="105" x2="245" y2="440" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="445" y1="105" x2="445" y2="440" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="645" y1="105" x2="645" y2="440" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+  <line x1="835" y1="105" x2="835" y2="440" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="5,4"/>
+
+  <!-- Step 1: Browser loads page -->
+  <line x1="65" y1="130" x2="235" y2="130" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="150" y="124" text-anchor="middle" font-size="10" fill="#1a1822">1. Page loads, HTML rendered</text>
+
+  <!-- Orchestrator starts monitoring -->
+  <rect x="193" y="140" width="104" height="20" rx="5" fill="#1a1822"/>
+  <text x="245" y="154" text-anchor="middle" font-size="10" fill="#fff">2. Start monitoring events</text>
+
+  <!-- Monitoring label: registers all listeners -->
+  <rect x="255" y="154" width="430" height="20" rx="5" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="470" y="168" text-anchor="middle" font-size="10" fill="#6d5bd0">Register: IntersectionObserver, requestIdleCallback, addEventListener</text>
+
+  <!-- Event: User scrolls -->
+  <rect x="20" y="182" width="155" height="22" rx="5" fill="#d97843"/>
+  <text x="97" y="197" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">3. User scrolls down page</text>
+
+  <!-- Browser → Orchestrator: scroll event -->
+  <line x1="65" y1="216" x2="235" y2="216" stroke="#d97843" stroke-width="2" marker-end="url(#arr-o)"/>
+  <text x="150" y="210" text-anchor="middle" font-size="10" fill="#d97843">IntersectionObserver fires</text>
+
+  <!-- Orchestrator hydrates Carousel -->
+  <line x1="245" y1="235" x2="435" y2="235" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="340" y="229" text-anchor="middle" font-size="10" fill="#1a1822">4. Hydrate Carousel</text>
+
+  <rect x="405" y="245" width="80" height="20" rx="5" fill="#2f9d74"/>
+  <text x="445" y="259" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Hydrated ✓</text>
+  <text x="445" y="275" text-anchor="middle" font-size="10" fill="#2f9d74">Carousel interactive</text>
+
+  <!-- Event: User goes idle -->
+  <rect x="20" y="288" width="155" height="22" rx="5" fill="#d97843" opacity="0.8"/>
+  <text x="97" y="303" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">5. Browser enters idle state</text>
+
+  <!-- Orchestrator → Analytics: idle -->
+  <line x1="245" y1="322" x2="635" y2="322" stroke="#d97843" stroke-width="2" marker-end="url(#arr-o)"/>
+  <text x="440" y="316" text-anchor="middle" font-size="10" fill="#d97843">6. requestIdleCallback fires → Hydrate Analytics</text>
+
+  <rect x="605" y="332" width="80" height="20" rx="5" fill="#2f9d74"/>
+  <text x="645" y="346" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Hydrated ✓</text>
+  <text x="645" y="362" text-anchor="middle" font-size="10" fill="#2f9d74">Analytics tracking</text>
+
+  <!-- Event: User clicks modal trigger -->
+  <rect x="20" y="375" width="175" height="22" rx="5" fill="#6d5bd0"/>
+  <text x="107" y="390" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">7. User clicks "Open Modal"</text>
+
+  <!-- Orchestrator → Modal: click -->
+  <line x1="245" y1="408" x2="825" y2="408" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="535" y="402" text-anchor="middle" font-size="10" fill="#1a1822">8. addEventListener fires → Hydrate Modal on demand</text>
+
+  <rect x="795" y="418" width="80" height="20" rx="5" fill="#2f9d74"/>
+  <text x="835" y="432" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Hydrated ✓</text>
+
+  <!-- Static footer note -->
+  <rect x="20" y="443" width="860" height="30" rx="6" fill="#f0eef5" stroke="#d7d1e6"/>
+  <text x="450" y="462" text-anchor="middle" font-size="11" fill="#1a1822">Static Footer: never hydrated — remains as server-rendered HTML throughout (zero JS, zero download)</text>
+</svg>
