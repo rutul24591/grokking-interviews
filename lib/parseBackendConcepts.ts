@@ -57,15 +57,11 @@ export function parseBackendConcepts(input: string): SubCategoryItem[] {
       continue;
     }
 
-    // Sub-section headers like "2.1 SQL Databases", "2.2 NoSQL Databases"
+    // Sub-section headers like "2.1 SQL Databases" are folded into the
+    // current main section. We ignore these headings so bullets keep
+    // accumulating under the parent section.
     const subSectionMatch = line.match(/^\d+\.\d+\s+(.+)$/);
     if (subSectionMatch && pastToc) {
-      current = {
-        id: makeUniqueId("sub-backend-", subSectionMatch[1], subCategoryIdCounts),
-        name: subSectionMatch[1],
-        topics: [],
-      };
-      result.push(current);
       continue;
     }
 

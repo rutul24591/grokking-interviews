@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="420" viewBox="0 0 920 420">
+  <rect width="920" height="420" fill="#f8fafc"/>
+  <rect x="30" y="30" width="860" height="360" rx="18" fill="#ffffff" stroke="#d7dbe2"/>
+  <text x="60" y="70" font-family="Inter, Arial, sans-serif" font-size="20" fill="#1f2937">Function Usage in Queries</text>
+
+  <rect x="90" y="120" width="740" height="220" rx="14" fill="#0f172a"/>
+  <text x="120" y="165" font-family="Menlo, Consolas, monospace" font-size="14" fill="#e2e8f0">SELECT id,</text>
+  <text x="120" y="190" font-family="Menlo, Consolas, monospace" font-size="14" fill="#e2e8f0">       lifetime_value(id) AS ltv</text>
+  <text x="120" y="215" font-family="Menlo, Consolas, monospace" font-size="14" fill="#e2e8f0">FROM users</text>
+  <text x="120" y="240" font-family="Menlo, Consolas, monospace" font-size="14" fill="#e2e8f0">WHERE status = 'active';</text>
+
+  <rect x="560" y="140" width="230" height="70" rx="10" fill="#c7d2fe"/>
+  <text x="575" y="182" font-family="Inter, Arial, sans-serif" font-size="12" fill="#1f2937">Function executes</text>
+  <text x="575" y="200" font-family="Inter, Arial, sans-serif" font-size="12" fill="#1f2937">per row or per plan</text>
+</svg>

@@ -1,0 +1,363 @@
+"use client";
+
+import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { ArticleImage } from "@/components/articles/ArticleImage";
+import type { ArticleMetadata } from "@/types/article";
+
+export const metadata: ArticleMetadata = {
+  id: "article-backend-ip-addressing-extensive",
+  title: "IP Addressing",
+  description:
+    "Comprehensive guide to IPv4, IPv6, CIDR, and subnetting with practical backend examples.",
+  category: "backend",
+  subcategory: "fundamentals-building-blocks",
+  slug: "ip-addressing",
+  version: "extensive",
+  wordCount: 11000,
+  readingTime: 55,
+  lastUpdated: "2026-03-09",
+  tags: ["backend", "ip", "networking", "cidr"],
+  relatedTopics: ["domain-name-system", "tcp-vs-udp", "networking-fundamentals"],
+};
+
+export default function IpAddressingExtensiveArticle() {
+  return (
+    <ArticleLayout metadata={metadata}>
+      <section>
+        <h2>Definition & Context</h2>
+        <p>
+          <strong>IP addressing</strong> provides unique identifiers for devices
+          on a network. IPv4 uses 32-bit addresses, while IPv6 uses 128-bit
+          addresses to address global growth and improve routing efficiency.
+        </p>
+        <p>
+          Backends rely on IP addressing for routing, security policies, and
+          service discovery. CIDR and subnetting are fundamental for cloud
+          networking and VPC design.
+        </p>
+      </section>
+
+      <section>
+        <h2>IPv4 and IPv6 Formats</h2>
+        <ArticleImage
+          src="/diagrams/backend/fundamentals-building-blocks/ipv4-format.svg"
+          alt="IPv4 address format"
+          caption="IPv4 uses dotted decimal notation with 32 bits"
+        />
+
+        <ArticleImage
+          src="/diagrams/backend/fundamentals-building-blocks/ipv6-format.svg"
+          alt="IPv6 address format"
+          caption="IPv6 uses hexadecimal notation with 128 bits"
+        />
+
+        <ArticleImage
+          src="/diagrams/backend/fundamentals-building-blocks/ipv6-address-leading-zeros.svg"
+          alt="IPv6 leading zeros example"
+          caption="IPv6 leading zeros and compression examples"
+        />
+      </section>
+
+      <section>
+        <h2>Public vs Private Ranges</h2>
+        <p>
+          Private ranges are not routable on the public internet and are used for
+          internal networks. NAT translates private addresses to public ones at
+          the edge.
+        </p>
+        <ul className="space-y-2">
+          <li>10.0.0.0/8</li>
+          <li>172.16.0.0/12</li>
+          <li>192.168.0.0/16</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>CIDR and Subnetting</h2>
+        <p>
+          CIDR expresses network ranges as a prefix length. /24 means the first
+          24 bits represent the network, leaving 8 bits for host addresses.
+        </p>
+        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
+          <code>{`// Example: /24 network
+Network: 192.168.1.0/24
+Hosts:   192.168.1.1 - 192.168.1.254`}</code>
+        </pre>
+      </section>
+
+      <section>
+        <h2>Backend Use Cases</h2>
+        <ul className="space-y-2">
+          <li>Allowlist or blocklist IP ranges for APIs.</li>
+          <li>Segment services into private subnets and public subnets.</li>
+          <li>Route traffic between regions using CIDR blocks.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Practical Example: CIDR Checking</h2>
+        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
+          <code>{`// Simple Node example using built-in net module
+import net from 'node:net';
+
+function isPrivate(ip) {
+  if (!net.isIP(ip)) return false;
+  return (
+    ip.startsWith('10.') ||
+    ip.startsWith('192.168.') ||
+    (ip.startsWith('172.') && Number(ip.split('.')[1]) >= 16 && Number(ip.split('.')[1]) <= 31)
+  );
+}
+
+console.log(isPrivate('10.1.2.3')); // true`}</code>
+        </pre>
+      </section>
+
+      <section>
+        <h2>Common Pitfalls</h2>
+        <ul className="space-y-2">
+          <li>Overlapping CIDR blocks during VPC peering.</li>
+          <li>Using public IPs for internal traffic.</li>
+          <li>Ignoring IPv6 compatibility in new services.</li>
+        </ul>
+      </section>
+    
+      <section>
+        <h2>Subnet Design in Practice</h2>
+        <p>
+          Cloud networks often reserve separate subnets for public entry points
+          and private services. A typical pattern is public subnets for load
+          balancers and private subnets for app servers and databases.
+        </p>
+      </section>
+
+      <section>
+        <h2>IP Address Management (IPAM)</h2>
+        <p>
+          IPAM ensures non-overlapping CIDR blocks across environments. This is
+          critical for peering and multi-region connectivity.
+        </p>
+        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
+          <code>{`// Example CIDR allocation
+Prod VPC: 10.0.0.0/16
+Dev VPC:  10.1.0.0/16
+Staging:  10.2.0.0/16`}</code>
+        </pre>
+      </section>
+
+      <section>
+        <h2>Deep Dive: IPv6 Transition</h2>
+        <p>
+          IPv6 adoption is uneven. Dual-stack setups allow IPv4 and IPv6 in parallel, but they
+          double complexity. Track client demographics and gradually shift traffic to IPv6 while
+          maintaining IPv4 compatibility for legacy clients.
+        </p>
+      </section>
+
+      <section>
+        <h2>Deep Dive: Subnet Sizing</h2>
+        <p>
+          Subnet size impacts scalability. Overly small subnets cause IP exhaustion, while overly
+          large subnets reduce isolation. A common practice is to reserve larger ranges for
+          workloads that scale unpredictably.
+        </p>
+      </section>
+
+      <section>
+        <h2>Deep Dive: NAT at Scale</h2>
+        <p>
+          NAT enables private subnets but becomes a bottleneck at scale. Large
+          systems use multiple NAT gateways or egress proxies to avoid port
+          exhaustion. Monitor NAT metrics to avoid silent connection failures.
+        </p>
+      </section>
+
+      <section>
+        <h2>Deep Dive: Anycast and Global Routing</h2>
+        <p>
+          Anycast advertises the same IP prefix from multiple locations. Traffic
+          is routed to the nearest endpoint based on BGP. This is widely used
+          by CDNs and DNS providers to reduce latency.
+        </p>
+      </section>
+
+      <section>
+        <h2>Routing Tables and Prefix Matching</h2>
+        <p>
+          Routers choose a route using longest-prefix match. More specific routes
+          override broader ones, which is why /24 beats /16 even if both match.
+          Understanding this helps debug “why is traffic going there?” issues.
+        </p>
+        <p>
+          In cloud networks, route tables are explicit. Public subnets typically
+          route 0.0.0.0/0 to an internet gateway, while private subnets route
+          through a NAT gateway or internal router.
+        </p>
+      </section>
+
+      <section>
+        <h2>Subnet Math in Practice</h2>
+        <p>
+          Subnet sizing is a common interview topic. A /24 gives 256 addresses,
+          with 254 usable in IPv4 after reserving network and broadcast. A /26
+          gives 64 addresses, 62 usable. These rules affect capacity planning.
+        </p>
+        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
+          <code>{`// Quick CIDR math
+/24 -> 2^(32-24) = 256 addresses
+/26 -> 2^(32-26) = 64 addresses`}</code>
+        </pre>
+      </section>
+
+      <section>
+        <h2>IPv6 Operational Differences</h2>
+        <p>
+          IPv6 eliminates NAT in many designs, enabling end-to-end addressing.
+          It also introduces Neighbor Discovery (NDP) in place of ARP and often
+          uses SLAAC for address assignment.
+        </p>
+        <p>
+          Many services run dual-stack. Ensure firewalls, load balancers, and
+          observability tools are IPv6-aware to avoid blind spots.
+        </p>
+      </section>
+
+      <section>
+        <h2>Security and Access Controls</h2>
+        <p>
+          IP ranges are used in allowlists, blocklists, and geofencing. However,
+          IP-based access control should be a coarse filter only, because IPs can
+          change or be spoofed at higher layers.
+        </p>
+        <ul className="space-y-2">
+          <li>Use security groups to restrict east-west traffic.</li>
+          <li>Prefer private endpoints for internal services.</li>
+          <li>Log source IPs for audit and abuse detection.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Operational Checklist</h2>
+        <ul className="space-y-2">
+          <li>Ensure CIDR blocks do not overlap across VPCs.</li>
+          <li>Track IP exhaustion in high-scale subnets.</li>
+          <li>Plan IPv6 adoption early, even if traffic is mostly IPv4.</li>
+          <li>Document routing tables and NAT dependencies.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>IPv4 Exhaustion and NAT Reality</h2>
+        <p>
+          IPv4 space is exhausted, which is why NAT is everywhere. NAT allows many
+          private hosts to share a single public IP by translating ports and
+          addresses. This is essential for scale, but it complicates tracing and
+          can break protocols that embed IPs in payloads.
+        </p>
+        <p>
+          Large systems use multiple NAT gateways to avoid port exhaustion. If a
+          NAT gateway is saturated, outbound connections fail silently. Monitor
+          NAT metrics and allocate enough egress capacity for peak traffic.
+        </p>
+      </section>
+
+      <section>
+        <h2>Subnet Planning and Growth</h2>
+        <p>
+          Subnetting is more than math; it is capacity planning. Overly small
+          subnets cause IP exhaustion and downtime during autoscaling. Overly
+          large subnets waste address space and reduce isolation.
+        </p>
+        <p>
+          A common approach is to reserve larger blocks for dynamic workloads
+          (auto-scaling app tiers) and smaller blocks for stable services
+          (databases, internal tools). This reduces the risk of address starvation.
+        </p>
+      </section>
+
+      <section>
+        <h2>Routing Policies and Peering</h2>
+        <p>
+          Route tables determine which networks can talk to each other. In cloud
+          environments, peering allows VPCs to exchange traffic, but only if CIDR
+          blocks do not overlap. Overlaps are one of the most common mistakes in
+          multi-region or multi-account architectures.
+        </p>
+        <p>
+          When connecting to on-prem networks, define clear routing boundaries
+          and document which prefixes are reachable. Unclear routes lead to
+          asymmetric routing and hard-to-debug connectivity issues.
+        </p>
+      </section>
+
+      <section>
+        <h2>IPv6 Addressing in Practice</h2>
+        <p>
+          IPv6 enables end-to-end addressing and removes the need for NAT. This
+          simplifies some designs but requires new operational practices. For
+          example, IPv6 uses Neighbor Discovery (NDP), which can be abused in
+          local networks if not controlled.
+        </p>
+        <p>
+          Dual-stack environments are common. The operational challenge is
+          ensuring parity: firewall rules, logging, and monitoring must handle
+          IPv6 as well as IPv4, or you create blind spots.
+        </p>
+      </section>
+
+      <section>
+        <h2>Addressing for Containers and Kubernetes</h2>
+        <p>
+          Containerized environments introduce overlay networks. Pods often get
+          their own IPs, and service routing is handled by virtual networking
+          layers. This creates additional abstraction layers and can make packet
+          tracing more complex.
+        </p>
+        <p>
+          CIDR allocation for clusters must account for pod scaling. If the pod
+          CIDR is too small, you cannot scale nodes. Planning these ranges up
+          front saves painful migrations later.
+        </p>
+      </section>
+
+      <section>
+        <h2>Anycast, Geo Routing, and Global Services</h2>
+        <p>
+          Anycast allows the same IP prefix to be advertised from multiple
+          regions. Traffic is routed to the nearest point based on BGP policies.
+          This reduces latency but can make traffic patterns less predictable.
+        </p>
+        <p>
+          For global services, anycast is often combined with DNS geo routing.
+          DNS selects a region, and anycast handles routing within that region.
+        </p>
+      </section>
+
+      <section>
+        <h2>Security Implications of IP-Based Controls</h2>
+        <p>
+          IP allowlists are useful but not foolproof. IPs can be shared (NAT),
+          reassigned, or spoofed at higher layers. Use IP allowlists as a coarse
+          control, but rely on strong authentication and authorization for true
+          security.
+        </p>
+        <p>
+          Logging source IPs remains valuable for auditing, rate limiting, and
+          abuse detection. Ensure your systems correctly parse proxy headers
+          (X-Forwarded-For) to avoid spoofing.
+        </p>
+      </section>
+
+      <section>
+        <h2>Operational Checklist (Expanded)</h2>
+        <ul className="space-y-2">
+          <li>Reserve CIDR space for future growth.</li>
+          <li>Monitor NAT gateway port usage and saturation.</li>
+          <li>Validate route tables after peering or VPN changes.</li>
+          <li>Ensure IPv6 parity in firewalls and logging.</li>
+          <li>Document pod/service CIDRs for clusters.</li>
+        </ul>
+      </section>
+</ArticleLayout>
+  );
+}

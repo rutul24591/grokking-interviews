@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useSidebarStore } from "@/features/sidebar/sidebar.store";
 import { sidebarData } from "@/features/sidebar/sidebar.mock";
 import { slugify } from "@/lib/slugify";
+import type { SubCategoryItem } from "@/types/content";
 
 /**
  * Syncs the current URL pathname with the sidebar state
@@ -13,7 +14,13 @@ import { slugify } from "@/lib/slugify";
  * - User refreshes the page
  * - User uses browser back/forward buttons
  */
-export function useSyncUrlToState() {
+export function useSyncUrlToState({
+  frontendSubCategories,
+  backendSubCategories,
+}: {
+  frontendSubCategories: SubCategoryItem[];
+  backendSubCategories: SubCategoryItem[];
+}) {
   const pathname = usePathname();
   const prevPathname = useRef(pathname);
 
@@ -59,7 +66,13 @@ export function useSyncUrlToState() {
         }
 
         // SubCategoryItem level (e.g., /frontend/rendering-strategies)
-        for (const subCategoryItem of subCategory.subCategories || []) {
+        const resolvedItems = subCategory.id === "sub-frontend"
+          ? frontendSubCategories
+          : subCategory.id === "sub-backend"
+            ? backendSubCategories
+            : (subCategory.subCategories || []);
+
+        for (const subCategoryItem of resolvedItems) {
           const itemSlug = slugify(subCategoryItem.name);
 
           if (itemSlug !== subcategorySlug) continue;

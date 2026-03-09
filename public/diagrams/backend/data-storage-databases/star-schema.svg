@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="420" viewBox="0 0 920 420">
+  <rect width="920" height="420" fill="#f8fafc"/>
+  <rect x="30" y="30" width="860" height="360" rx="18" fill="#ffffff" stroke="#d7dbe2"/>
+  <text x="60" y="70" font-family="Inter, Arial, sans-serif" font-size="20" fill="#1f2937">Star Schema</text>
+
+  <rect x="360" y="170" width="200" height="120" rx="14" fill="#c7d2fe" stroke="#8b9cf6"/>
+  <text x="400" y="240" font-family="Inter, Arial, sans-serif" font-size="12" fill="#1f2937">Fact</text>
+
+  <rect x="90" y="80" width="200" height="100" rx="12" fill="#e2e8f0" stroke="#cbd5f5"/>
+  <text x="120" y="140" font-family="Inter, Arial, sans-serif" font-size="12" fill="#334155">Dim A</text>
+  <rect x="630" y="80" width="200" height="100" rx="12" fill="#e2e8f0" stroke="#cbd5f5"/>
+  <text x="660" y="140" font-family="Inter, Arial, sans-serif" font-size="12" fill="#334155">Dim B</text>
+  <rect x="90" y="260" width="200" height="100" rx="12" fill="#e2e8f0" stroke="#cbd5f5"/>
+  <text x="120" y="320" font-family="Inter, Arial, sans-serif" font-size="12" fill="#334155">Dim C</text>
+  <rect x="630" y="260" width="200" height="100" rx="12" fill="#e2e8f0" stroke="#cbd5f5"/>
+  <text x="660" y="320" font-family="Inter, Arial, sans-serif" font-size="12" fill="#334155">Dim D</text>
+
+  <path d="M290 130 L360 210" stroke="#64748b" stroke-width="2"/>
+  <path d="M630 130 L560 210" stroke="#64748b" stroke-width="2"/>
+  <path d="M290 310 L360 250" stroke="#64748b" stroke-width="2"/>
+  <path d="M630 310 L560 250" stroke="#64748b" stroke-width="2"/>
+</svg>

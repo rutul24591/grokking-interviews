@@ -9,10 +9,12 @@ import type { SubCategoryItem } from "@/types/content";
 
 type SubCategoryCardsProps = {
   frontendSubCategories: SubCategoryItem[];
+  backendSubCategories: SubCategoryItem[];
 };
 
 export function SubCategoryCards({
   frontendSubCategories,
+  backendSubCategories,
 }: SubCategoryCardsProps) {
   const router = useRouter();
 
@@ -35,6 +37,8 @@ export function SubCategoryCards({
   const resolvedSubCategories =
     selectedSubCategoryId === "sub-frontend"
       ? frontendSubCategories
+      : selectedSubCategoryId === "sub-backend"
+        ? backendSubCategories
       : (selectedSubCategory?.subCategories ?? []);
   const selectedSubCategoryItem = resolvedSubCategories.find(
     (item) => item.id === selectedSubCategoryItemId,

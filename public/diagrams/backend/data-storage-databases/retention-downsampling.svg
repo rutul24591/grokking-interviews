@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="420" viewBox="0 0 920 420">
+  <rect width="920" height="420" fill="#f8fafc"/>
+  <rect x="30" y="30" width="860" height="360" rx="18" fill="#ffffff" stroke="#d7dbe2"/>
+  <text x="60" y="70" font-family="Inter, Arial, sans-serif" font-size="20" fill="#1f2937">Retention &amp; Downsampling</text>
+
+  <rect x="90" y="140" width="740" height="60" rx="10" fill="#c7d2fe"/>
+  <rect x="90" y="210" width="520" height="60" rx="10" fill="#e2e8f0"/>
+  <rect x="90" y="280" width="300" height="60" rx="10" fill="#e2e8f0"/>
+
+  <text x="110" y="175" font-family="Inter, Arial, sans-serif" font-size="12" fill="#1f2937">High resolution (last 7 days)</text>
+  <text x="110" y="245" font-family="Inter, Arial, sans-serif" font-size="12" fill="#334155">Hourly aggregates (30 days)</text>
+  <text x="110" y="315" font-family="Inter, Arial, sans-serif" font-size="12" fill="#334155">Daily aggregates (1 year)</text>
+</svg>

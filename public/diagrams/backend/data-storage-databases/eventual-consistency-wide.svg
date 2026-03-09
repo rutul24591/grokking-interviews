@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="420" viewBox="0 0 920 420">
+  <rect width="920" height="420" fill="#f8fafc"/>
+  <rect x="30" y="30" width="860" height="360" rx="18" fill="#ffffff" stroke="#d7dbe2"/>
+  <text x="60" y="70" font-family="Inter, Arial, sans-serif" font-size="20" fill="#1f2937">Eventual Consistency</text>
+
+  <rect x="90" y="140" width="220" height="120" rx="14" fill="#c7d2fe" stroke="#8b9cf6"/>
+  <text x="120" y="210" font-family="Inter, Arial, sans-serif" font-size="14" fill="#1f2937">Replica A</text>
+
+  <rect x="360" y="140" width="220" height="120" rx="14" fill="#e2e8f0" stroke="#cbd5f5"/>
+  <text x="390" y="210" font-family="Inter, Arial, sans-serif" font-size="14" fill="#334155">Replica B</text>
+
+  <rect x="630" y="140" width="220" height="120" rx="14" fill="#c7d2fe" stroke="#8b9cf6"/>
+  <text x="660" y="210" font-family="Inter, Arial, sans-serif" font-size="14" fill="#1f2937">Replica C</text>
+
+  <path d="M310 200 L360 200" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M580 200 L630 200" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <text x="90" y="300" font-family="Inter, Arial, sans-serif" font-size="12" fill="#334155">Updates propagate and converge over time</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+</svg>

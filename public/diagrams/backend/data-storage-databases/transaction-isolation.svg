@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+  <rect width="960" height="540" fill="#f8fafc"/>
+  <text x="40" y="50" font-family="Arial, sans-serif" font-size="24" fill="#0f172a">Isolation Levels (Conceptual)</text>
+
+  <rect x="60" y="100" width="840" height="60" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+  <text x="80" y="138" font-family="Arial, sans-serif" font-size="16" fill="#0f172a">Read Uncommitted → Read Committed → Repeatable Read → Serializable</text>
+
+  <rect x="60" y="200" width="840" height="260" fill="#ffffff" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="80" y="235" font-family="Arial, sans-serif" font-size="14" fill="#334155">Higher isolation reduces anomalies but increases locking/overhead.</text>
+</svg>

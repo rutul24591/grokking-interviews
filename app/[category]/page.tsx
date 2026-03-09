@@ -3,6 +3,9 @@ import { Metadata } from "next";
 import { sidebarData } from "@/features/sidebar/sidebar.mock";
 import { slugify } from "@/lib/slugify";
 import { CategoryPageClient } from "@/components/CategoryPageClient";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+import { parseBackendConcepts } from "@/lib/parseBackendConcepts";
 
 type PageProps = {
   params: Promise<{ category: string }>;
@@ -51,13 +54,23 @@ export default async function CategoryPage({ params }: PageProps) {
   if (!subCategory) {
     notFound();
   }
+  let staticItems = subCategory.subCategories ?? [];
+  if (subCategory.id === "sub-backend") {
+    const backendConceptsPath = path.join(
+      process.cwd(),
+      "concepts",
+      "backend-concepts.txt",
+    );
+    const backendConceptsRaw = await readFile(backendConceptsPath, "utf8");
+    staticItems = parseBackendConcepts(backendConceptsRaw);
+  }
 
   return (
     <CategoryPageClient
       categorySlug={category}
       subCategoryName={subCategory.name}
       subCategoryId={subCategory.id}
-      staticItems={subCategory.subCategories ?? []}
+      staticItems={staticItems}
     />
   );
 }

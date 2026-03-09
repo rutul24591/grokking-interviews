@@ -10,9 +10,13 @@ import type { SubCategoryItem } from "@/types/content";
 
 type SidebarProps = {
   frontendSubCategories: SubCategoryItem[];
+  backendSubCategories: SubCategoryItem[];
 };
 
-export function Sidebar({ frontendSubCategories }: SidebarProps) {
+export function Sidebar({
+  frontendSubCategories,
+  backendSubCategories,
+}: SidebarProps) {
   const router = useRouter();
 
   useEffect(() => {
@@ -63,10 +67,12 @@ export function Sidebar({ frontendSubCategories }: SidebarProps) {
         {sidebarData.map((category) => (
           <SidebarItem key={category.id} id={category.id} label={category.name} level={1}>
             {category.subCategories.map((subCategory) => {
-              // Use parsed data for Frontend, mock data for others
+              // Use parsed data for Frontend/Backend, mock data for others
               const subCategoryItems = subCategory.id === "sub-frontend"
                 ? frontendSubCategories
-                : (subCategory.subCategories ?? []);
+                : subCategory.id === "sub-backend"
+                  ? backendSubCategories
+                  : (subCategory.subCategories ?? []);
 
               return (
                 <SidebarItem

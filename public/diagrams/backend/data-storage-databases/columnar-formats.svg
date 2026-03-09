@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="420" viewBox="0 0 920 420">
+  <rect width="920" height="420" fill="#f8fafc"/>
+  <rect x="30" y="30" width="860" height="360" rx="18" fill="#ffffff" stroke="#d7dbe2"/>
+  <text x="60" y="70" font-family="Inter, Arial, sans-serif" font-size="20" fill="#1f2937">Columnar Formats</text>
+
+  <rect x="90" y="140" width="200" height="180" rx="12" fill="#c7d2fe" stroke="#8b9cf6"/>
+  <text x="120" y="170" font-family="Inter, Arial, sans-serif" font-size="12" fill="#1f2937">Column A</text>
+  <rect x="120" y="190" width="140" height="20" rx="4" fill="#e2e8f0"/>
+  <rect x="120" y="220" width="140" height="20" rx="4" fill="#e2e8f0"/>
+
+  <rect x="320" y="140" width="200" height="180" rx="12" fill="#e2e8f0" stroke="#cbd5f5"/>
+  <text x="350" y="170" font-family="Inter, Arial, sans-serif" font-size="12" fill="#334155">Column B</text>
+  <rect x="350" y="190" width="140" height="20" rx="4" fill="#c7d2fe"/>
+  <rect x="350" y="220" width="140" height="20" rx="4" fill="#c7d2fe"/>
+
+  <rect x="550" y="140" width="200" height="180" rx="12" fill="#e2e8f0" stroke="#cbd5f5"/>
+  <text x="580" y="170" font-family="Inter, Arial, sans-serif" font-size="12" fill="#334155">Column C</text>
+</svg>

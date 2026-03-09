@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="420" viewBox="0 0 920 420">
+  <rect width="920" height="420" fill="#f8fafc"/>
+  <rect x="30" y="30" width="860" height="360" rx="18" fill="#ffffff" stroke="#d7dbe2"/>
+  <text x="60" y="70" font-family="Inter, Arial, sans-serif" font-size="20" fill="#1f2937">Sharding Strategies</text>
+
+  <rect x="90" y="120" width="230" height="220" rx="14" fill="#e2e8f0" stroke="#cbd5f5"/>
+  <text x="120" y="150" font-family="Inter, Arial, sans-serif" font-size="14" fill="#334155">Range</text>
+  <rect x="120" y="175" width="170" height="28" rx="6" fill="#c7d2fe"/>
+  <rect x="120" y="215" width="170" height="28" rx="6" fill="#e2e8f0"/>
+  <rect x="120" y="255" width="170" height="28" rx="6" fill="#e2e8f0"/>
+
+  <rect x="350" y="120" width="230" height="220" rx="14" fill="#e2e8f0" stroke="#cbd5f5"/>
+  <text x="380" y="150" font-family="Inter, Arial, sans-serif" font-size="14" fill="#334155">Hash</text>
+  <circle cx="390" cy="200" r="16" fill="#c7d2fe"/>
+  <circle cx="440" cy="200" r="16" fill="#e2e8f0"/>
+  <circle cx="490" cy="200" r="16" fill="#c7d2fe"/>
+  <circle cx="390" cy="250" r="16" fill="#e2e8f0"/>
+  <circle cx="440" cy="250" r="16" fill="#c7d2fe"/>
+  <circle cx="490" cy="250" r="16" fill="#e2e8f0"/>
+
+  <rect x="610" y="120" width="230" height="220" rx="14" fill="#e2e8f0" stroke="#cbd5f5"/>
+  <text x="640" y="150" font-family="Inter, Arial, sans-serif" font-size="14" fill="#334155">Geo</text>
+  <text x="640" y="190" font-family="Inter, Arial, sans-serif" font-size="12" fill="#334155">US</text>
+  <text x="640" y="220" font-family="Inter, Arial, sans-serif" font-size="12" fill="#334155">EU</text>
+  <text x="640" y="250" font-family="Inter, Arial, sans-serif" font-size="12" fill="#334155">APAC</text>
+</svg>

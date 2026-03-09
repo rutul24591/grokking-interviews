@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500">
+  <rect width="100%" height="100%" fill="#ffffff" />
+  <style>
+    text { font-family: 'Sora', Arial, sans-serif; fill: #1f2937; }
+    .box { fill: #f8fafc; stroke: #cbd5f5; stroke-width: 2; rx: 12; }
+    .arrow { stroke: #94a3b8; stroke-width: 2.5; marker-end: url(#arrow); }
+    .label { font-size: 18px; font-weight: 600; }
+    .small { font-size: 14px; }
+  </style>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#94a3b8" />
+    </marker>
+  </defs>
+
+  <text x="450" y="40" text-anchor="middle" class="label">DNS Hierarchy (Root → TLD → Authoritative)</text>
+
+  <rect class="box" x="360" y="70" width="180" height="70" />
+  <text x="450" y="110" text-anchor="middle" class="label">Root Servers</text>
+  <text x="450" y="130" text-anchor="middle" class="small">"." zone</text>
+
+  <rect class="box" x="120" y="190" width="180" height="80" />
+  <text x="210" y="230" text-anchor="middle" class="label">TLD Servers</text>
+  <text x="210" y="252" text-anchor="middle" class="small">.com, .org, .net</text>
+
+  <rect class="box" x="600" y="190" width="180" height="80" />
+  <text x="690" y="230" text-anchor="middle" class="label">TLD Servers</text>
+  <text x="690" y="252" text-anchor="middle" class="small">.edu, .io, .dev</text>
+
+  <rect class="box" x="90" y="340" width="240" height="90" />
+  <text x="210" y="380" text-anchor="middle" class="label">Authoritative</text>
+  <text x="210" y="402" text-anchor="middle" class="small">example.com zone</text>
+
+  <rect class="box" x="570" y="340" width="240" height="90" />
+  <text x="690" y="380" text-anchor="middle" class="label">Authoritative</text>
+  <text x="690" y="402" text-anchor="middle" class="small">example.org zone</text>
+
+  <line class="arrow" x1="450" y1="140" x2="210" y2="190" />
+  <line class="arrow" x1="450" y1="140" x2="690" y2="190" />
+  <line class="arrow" x1="210" y1="270" x2="210" y2="340" />
+  <line class="arrow" x1="690" y1="270" x2="690" y2="340" />
+</svg>

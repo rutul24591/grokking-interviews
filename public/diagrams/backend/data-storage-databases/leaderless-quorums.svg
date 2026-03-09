@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="420" viewBox="0 0 920 420">
+  <rect width="920" height="420" fill="#f8fafc"/>
+  <rect x="30" y="30" width="860" height="360" rx="18" fill="#ffffff" stroke="#d7dbe2"/>
+  <text x="60" y="70" font-family="Inter, Arial, sans-serif" font-size="20" fill="#1f2937">Leaderless Quorums</text>
+
+  <rect x="90" y="140" width="220" height="120" rx="14" fill="#c7d2fe" stroke="#8b9cf6"/>
+  <text x="120" y="210" font-family="Inter, Arial, sans-serif" font-size="14" fill="#1f2937">Replica 1</text>
+
+  <rect x="350" y="140" width="220" height="120" rx="14" fill="#c7d2fe" stroke="#8b9cf6"/>
+  <text x="380" y="210" font-family="Inter, Arial, sans-serif" font-size="14" fill="#1f2937">Replica 2</text>
+
+  <rect x="610" y="140" width="220" height="120" rx="14" fill="#e2e8f0" stroke="#cbd5f5"/>
+  <text x="640" y="210" font-family="Inter, Arial, sans-serif" font-size="14" fill="#334155">Replica 3</text>
+
+  <text x="90" y="300" font-family="Inter, Arial, sans-serif" font-size="12" fill="#334155">Write requires quorum W=2</text>
+</svg>

@@ -3,13 +3,15 @@ import { Metadata } from "next";
 import { sidebarData } from "@/features/sidebar/sidebar.mock";
 import { slugify } from "@/lib/slugify";
 import { SubCategoryPageClient } from "@/components/SubCategoryPageClient";
-import type { SubCategoryItem } from "@/types/content";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+import { parseBackendConcepts } from "@/lib/parseBackendConcepts";
 
 type PageProps = {
   params: Promise<{ category: string; subcategory: string }>;
 };
 
-function findMatch(
+async function findMatch(
   categorySlug: string,
   subcategorySlug: string,
 ) {
@@ -20,7 +22,16 @@ function findMatch(
     const slug = slugify(subCategory.name).replace(/-concepts$/, "");
     if (slug !== categorySlug) continue;
 
-    const items = subCategory.subCategories ?? [];
+    let items = subCategory.subCategories ?? [];
+    if (subCategory.id === "sub-backend") {
+      const backendConceptsPath = path.join(
+        process.cwd(),
+        "concepts",
+        "backend-concepts.txt",
+      );
+      const backendConceptsRaw = await readFile(backendConceptsPath, "utf8");
+      items = parseBackendConcepts(backendConceptsRaw);
+    }
     for (const item of items) {
       if (slugify(item.name) === subcategorySlug) {
         return { subCategory, item };
@@ -39,7 +50,16 @@ export async function generateStaticParams() {
 
   for (const sub of category.subCategories) {
     const catSlug = slugify(sub.name).replace(/-concepts$/, "");
-    const items = sub.subCategories ?? [];
+    let items = sub.subCategories ?? [];
+    if (sub.id === "sub-backend") {
+      const backendConceptsPath = path.join(
+        process.cwd(),
+        "concepts",
+        "backend-concepts.txt",
+      );
+      const backendConceptsRaw = await readFile(backendConceptsPath, "utf8");
+      items = parseBackendConcepts(backendConceptsRaw);
+    }
 
     for (const item of items) {
       results.push({ category: catSlug, subcategory: slugify(item.name) });
@@ -51,7 +71,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { category, subcategory } = await params;
-  const { item } = findMatch(category, subcategory);
+  const { item } = await findMatch(category, subcategory);
 
   if (!item) {
     return { title: "Not Found | Interview Prep Studio" };
@@ -65,7 +85,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function SubCategoryPage({ params }: PageProps) {
   const { category, subcategory } = await params;
-  const { subCategory } = findMatch(category, subcategory);
+  const { subCategory } = await findMatch(category, subcategory);
 
   if (!subCategory) {
     notFound();

@@ -1,5 +1,6 @@
 "use client";
 
+import { useBackendData } from "@/lib/backend-data-context";
 import { useFrontendData } from "@/lib/frontend-data-context";
 import { sidebarData } from "@/features/sidebar/sidebar.mock";
 import { slugify } from "@/lib/slugify";
@@ -20,6 +21,7 @@ export function SubCategoryPageClient({
   subCategoryId,
 }: SubCategoryPageClientProps) {
   const frontendData = useFrontendData();
+  const backendData = useBackendData();
 
   // Resolve items: use frontend context data for frontend category, otherwise static sidebar data
   const subCategory = sidebarData[0]?.subCategories.find(
@@ -27,7 +29,9 @@ export function SubCategoryPageClient({
   );
   const items = subCategoryId === "sub-frontend" && frontendData.length > 0
     ? frontendData
-    : subCategory?.subCategories ?? [];
+    : subCategoryId === "sub-backend" && backendData.length > 0
+      ? backendData
+      : subCategory?.subCategories ?? [];
 
   // Find the matching subcategory item
   const item = items.find((i) => slugify(i.name) === subcategorySlug);
