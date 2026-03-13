@@ -1,0 +1,1 @@
+Avoid shared schema changes across services.

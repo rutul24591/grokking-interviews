@@ -1,0 +1,17 @@
+// webpack.config.js
+module.exports = {
+  externals: {
+    // key = import name, value = global variable on window
+    react: 'React',
+    'react-dom': 'ReactDOM',
+  },
+};
+
+// In your HTML template, add CDN script tags:
+// <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+// <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+
+// Your application code continues to use normal imports:
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+// Webpack resolves these to the global variables at runtime

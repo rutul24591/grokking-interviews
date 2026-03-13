@@ -1,0 +1,5 @@
+queues:
+  primary: email-jobs
+  dlq: email-jobs-dlq
+  maxRetries: 3
+  backoffMs: 500

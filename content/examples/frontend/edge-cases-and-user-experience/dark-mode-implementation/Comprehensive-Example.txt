@@ -1,0 +1,27 @@
+import { useEffect, useState } from "react";
+
+type Theme = "light" | "dark" | "system";
+
+function resolveTheme(userPref: Theme) {
+  if (userPref !== "system") return userPref;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [theme, setTheme] = useState<Theme>("system");
+
+  useEffect(() => {
+    const applied = resolveTheme(theme);
+    document.documentElement.dataset.theme = applied;
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  return (
+    <div>
+      <button onClick={() => setTheme("light")}>Light</button>
+      <button onClick={() => setTheme("dark")}>Dark</button>
+      <button onClick={() => setTheme("system")}>System</button>
+      {children}
+    </div>
+  );
+}

@@ -1,0 +1,49 @@
+// Component 1: Header showing user name
+function Header() {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    fetch('/api/user').then(r => r.json()).then(setUser);
+  }, []);
+  return <header>Welcome, {user?.name}</header>;
+}
+
+// Component 2: Sidebar showing user avatar and role
+function Sidebar() {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    fetch('/api/user').then(r => r.json()).then(setUser);
+  }, []);
+  return (
+    <aside>
+      <img src={user?.avatar} />
+      <span>{user?.role}</span>
+    </aside>
+  );
+}
+
+// Component 3: Settings panel with user preferences
+function SettingsPanel() {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    fetch('/api/user').then(r => r.json()).then(setUser);
+  }, []);
+  return <form>{/* render user preferences */}</form>;
+}
+
+// Component 4: Notification badge checking unread count
+function NotificationBadge() {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    fetch('/api/user').then(r => r.json()).then(setUser);
+  }, []);
+  return <span>{user?.unreadCount}</span>;
+}
+
+// Component 5: Profile card in the content area
+function ProfileCard() {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    fetch('/api/user').then(r => r.json()).then(setUser);
+  }, []);
+  return <div>{user?.bio}</div>;
+}

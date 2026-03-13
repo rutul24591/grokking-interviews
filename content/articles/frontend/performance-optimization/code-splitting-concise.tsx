@@ -71,18 +71,18 @@ export default function CodeSplittingConciseArticle() {
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-const Home = lazy(() => import('./pages/Home'));
-const Dashboard = lazy(() => import('./pages/Dashboard'));
-const Settings = lazy(() => import('./pages/Settings'));
+const Home = lazy(() =&gt; import('./pages/Home'));
+const Dashboard = lazy(() =&gt; import('./pages/Dashboard'));
+const Settings = lazy(() =&gt; import('./pages/Settings'));
 
 function App() {
   return (
     <BrowserRouter>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div>Loading...</div>}&gt;
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/settings" element={<Settings />} />
+          <Route path="/" element={<Home />} /&gt;
+          <Route path="/dashboard" element={<Dashboard />} /&gt;
+          <Route path="/settings" element={<Settings />} /&gt;
         </Routes>
       </Suspense>
     </BrowserRouter>
@@ -103,7 +103,7 @@ function App() {
           <code>{`import { lazy, Suspense, useState } from 'react';
 
 // Heavy chart library (~500KB) only loads when needed
-const AnalyticsChart = lazy(() => import('./AnalyticsChart'));
+const AnalyticsChart = lazy(() =&gt; import('./AnalyticsChart'));
 
 function Dashboard() {
   const [showChart, setShowChart] = useState(false);
@@ -111,12 +111,12 @@ function Dashboard() {
   return (
     <div>
       <h1>Dashboard</h1>
-      <button onClick={() => setShowChart(true)}>
+      <button onClick={() => setShowChart(true)}&gt;
         Show Analytics
       </button>
 
       {showChart && (
-        <Suspense fallback={<div>Loading chart...</div>}>
+        <Suspense fallback={<div>Loading chart...</div>}&gt;
           <AnalyticsChart />
         </Suspense>
       )}
@@ -178,7 +178,7 @@ if (!('IntersectionObserver' in window)) {
 
 // Load heavy library on interaction
 document.getElementById('editor-trigger')
-  .addEventListener('click', async () => {
+  .addEventListener('click', async () =&gt; {
     const { initEditor } = await import('./editor');
     initEditor();
   });`}</code>
@@ -193,19 +193,19 @@ document.getElementById('editor-trigger')
         </p>
         <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
           <code>{`// Webpack magic comments for prefetch/preload
-const Settings = lazy(() =>
+const Settings = lazy(() =&gt;
   import(/* webpackPrefetch: true */ './pages/Settings')
 );
 // Adds <link rel="prefetch"> — downloads during idle time
 
-const CriticalModal = lazy(() =>
+const CriticalModal = lazy(() =&gt;
   import(/* webpackPreload: true */ './CriticalModal')
 );
 // Adds <link rel="preload"> — downloads in parallel with current chunk
 
 // Manual prefetch on hover/focus
 function NavLink({ to, children }) {
-  const prefetch = () => {
+  const prefetch = () =&gt; {
     // Trigger the dynamic import to cache the chunk
     if (to === '/settings') import('./pages/Settings');
     if (to === '/profile') import('./pages/Profile');
@@ -234,7 +234,7 @@ function NavLink({ to, children }) {
           </li>
           <li>
             <strong>Coverage Tab:</strong> Chrome DevTools Coverage shows how much downloaded JS is actually
-            executed. Target {'<'}50% unused code.
+            executed. Target {'&lt;'}50% unused code.
           </li>
           <li>
             <strong>Lighthouse:</strong> Check "Reduce unused JavaScript" audit. Score should improve

@@ -1,0 +1,95 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Controlled vs Uncontrolled Components</text>
+
+  <!-- Divider -->
+  <line x1="450" y1="50" x2="450" y2="480" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="6,4" opacity="0.4"/>
+
+  <!-- LEFT: Controlled -->
+  <text x="225" y="70" text-anchor="middle" font-size="15" font-weight="bold" fill="#6d5bd0">Controlled (React is Source of Truth)</text>
+
+  <!-- Step 1 -->
+  <rect x="50" y="95" width="350" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="225" y="120" text-anchor="middle" font-size="13" fill="#fff" font-weight="600">1. User Types</text>
+
+  <line x1="225" y1="135" x2="225" y2="155" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowPurple)"/>
+
+  <!-- Step 2 -->
+  <rect x="50" y="155" width="350" height="40" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="225" y="180" text-anchor="middle" font-size="13" fill="#1a1822" font-weight="600">2. onChange fires → setState(newValue)</text>
+
+  <line x1="225" y1="195" x2="225" y2="215" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowPurple)"/>
+
+  <!-- Step 3 -->
+  <rect x="50" y="215" width="350" height="40" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="225" y="240" text-anchor="middle" font-size="13" fill="#1a1822" font-weight="600">3. React Re-renders Component</text>
+
+  <line x1="225" y1="255" x2="225" y2="275" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowPurple)"/>
+
+  <!-- Step 4 -->
+  <rect x="50" y="275" width="350" height="40" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="225" y="300" text-anchor="middle" font-size="13" fill="#1a1822" font-weight="600">4. Virtual DOM Diff → DOM Patch</text>
+
+  <line x1="225" y1="315" x2="225" y2="335" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowPurple)"/>
+
+  <!-- Step 5 -->
+  <rect x="50" y="335" width="350" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="225" y="360" text-anchor="middle" font-size="13" fill="#fff" font-weight="600">5. Input Displays Updated Value</text>
+
+  <!-- Re-render count -->
+  <rect x="90" y="400" width="270" height="50" rx="8" fill="#fff" stroke="#d97843" stroke-width="2"/>
+  <text x="225" y="420" text-anchor="middle" font-size="12" fill="#d97843" font-weight="bold">Re-renders per keystroke: 1+</text>
+  <text x="225" y="438" text-anchor="middle" font-size="11" fill="#1a1822">30 fields = 30 re-renders per character</text>
+
+  <!-- RIGHT: Uncontrolled -->
+  <text x="675" y="70" text-anchor="middle" font-size="15" font-weight="bold" fill="#2f9d74">Uncontrolled (DOM is Source of Truth)</text>
+
+  <!-- Step 1 -->
+  <rect x="500" y="95" width="350" height="40" rx="8" fill="#2f9d74"/>
+  <text x="675" y="120" text-anchor="middle" font-size="13" fill="#fff" font-weight="600">1. User Types</text>
+
+  <line x1="675" y1="135" x2="675" y2="155" stroke="#2f9d74" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+  <!-- Step 2 -->
+  <rect x="500" y="155" width="350" height="40" rx="8" fill="#e8f5ef" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="675" y="180" text-anchor="middle" font-size="13" fill="#1a1822" font-weight="600">2. DOM Updates Input Directly</text>
+
+  <line x1="675" y1="195" x2="675" y2="215" stroke="#2f9d74" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+  <!-- Step 3 -->
+  <rect x="500" y="215" width="350" height="40" rx="8" fill="#e8f5ef" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="675" y="240" text-anchor="middle" font-size="13" fill="#1a1822" font-weight="600">3. No React Re-render</text>
+
+  <line x1="675" y1="255" x2="675" y2="275" stroke="#2f9d74" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+  <!-- Step 4 -->
+  <rect x="500" y="275" width="350" height="52" rx="8" fill="#e8f5ef" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="675" y="296" text-anchor="middle" font-size="13" fill="#1a1822" font-weight="600">4. On Submit: Read via ref</text>
+  <text x="675" y="314" text-anchor="middle" font-size="11" fill="#1a1822">inputRef.current.value</text>
+
+  <line x1="675" y1="327" x2="675" y2="347" stroke="#2f9d74" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+  <!-- Step 5 -->
+  <rect x="500" y="347" width="350" height="40" rx="8" fill="#2f9d74"/>
+  <text x="675" y="372" text-anchor="middle" font-size="13" fill="#fff" font-weight="600">5. Values Collected at Submit Time</text>
+
+  <!-- Re-render count -->
+  <rect x="540" y="400" width="270" height="50" rx="8" fill="#fff" stroke="#2f9d74" stroke-width="2"/>
+  <text x="675" y="420" text-anchor="middle" font-size="12" fill="#2f9d74" font-weight="bold">Re-renders per keystroke: 0</text>
+  <text x="675" y="438" text-anchor="middle" font-size="11" fill="#1a1822">30 fields = 0 re-renders per character</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowPurple" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#2f9d74"/>
+    </marker>
+  </defs>
+
+  <!-- Bottom label -->
+  <text x="450" y="490" text-anchor="middle" font-size="11" fill="#1a1822" opacity="0.6">React Hook Form uses uncontrolled refs internally with a controlled-like API, achieving 0 re-renders by default</text>
+</svg>

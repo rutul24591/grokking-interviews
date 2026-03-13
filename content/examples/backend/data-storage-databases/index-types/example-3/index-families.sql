@@ -1,0 +1,3 @@
+-- B-tree: range/equality
+-- Hash: equality only
+-- Bitmap: low-cardinality

@@ -1,0 +1,90 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Cross-Tab State Synchronization via BroadcastChannel</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+  </defs>
+
+  <!-- Tab 1 - Source -->
+  <rect x="40" y="70" width="200" height="140" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="40" y="70" width="200" height="30" rx="8" fill="#6d5bd0"/>
+  <rect x="40" y="92" width="200" height="2" fill="#6d5bd0"/>
+  <text x="140" y="91" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Tab 1 (Active)</text>
+  <text x="140" y="125" text-anchor="middle" font-size="11" fill="#1a1822">User clicks</text>
+  <text x="140" y="142" text-anchor="middle" font-size="13" fill="#6d5bd0" font-weight="bold">"Log Out"</text>
+  <rect x="70" y="160" width="140" height="30" rx="6" fill="#6d5bd0"/>
+  <text x="140" y="180" text-anchor="middle" font-size="11" fill="#fff">Clear auth state</text>
+
+  <!-- BroadcastChannel - Central -->
+  <rect x="310" y="90" width="280" height="100" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="450" y="118" text-anchor="middle" font-size="13" fill="#6d5bd0" font-weight="bold">BroadcastChannel("auth")</text>
+  <text x="450" y="140" text-anchor="middle" font-size="11" fill="#1a1822">Message: { type: "AUTH_LOGOUT",</text>
+  <text x="450" y="156" text-anchor="middle" font-size="11" fill="#1a1822">timestamp: 1710345600000 }</text>
+  <text x="450" y="178" text-anchor="middle" font-size="10" fill="#6d5bd0">One-to-many broadcast (sender excluded)</text>
+
+  <!-- Arrow: Tab 1 -> BroadcastChannel -->
+  <line x1="240" y1="140" x2="308" y2="140" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="274" y="132" text-anchor="middle" font-size="9" fill="#6d5bd0">post</text>
+
+  <!-- Tab 2 - Receiver -->
+  <rect x="660" y="70" width="200" height="200" rx="8" fill="#2f9d74" opacity="0.1" stroke="#2f9d74" stroke-width="2"/>
+  <rect x="660" y="70" width="200" height="30" rx="8" fill="#2f9d74"/>
+  <rect x="660" y="92" width="200" height="2" fill="#2f9d74"/>
+  <text x="760" y="91" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Tab 2</text>
+  <text x="760" y="122" text-anchor="middle" font-size="11" fill="#1a1822">onmessage fires</text>
+  <rect x="685" y="135" width="150" height="26" rx="6" fill="#edeaf5" stroke="#2f9d74"/>
+  <text x="760" y="153" text-anchor="middle" font-size="10" fill="#1a1822">Validate message</text>
+  <rect x="685" y="170" width="150" height="26" rx="6" fill="#edeaf5" stroke="#2f9d74"/>
+  <text x="760" y="188" text-anchor="middle" font-size="10" fill="#1a1822">Clear auth tokens</text>
+  <rect x="685" y="205" width="150" height="26" rx="6" fill="#2f9d74"/>
+  <text x="760" y="223" text-anchor="middle" font-size="10" fill="#fff">Redirect to /login</text>
+  <text x="760" y="258" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="bold">State updated</text>
+
+  <!-- Arrow: BroadcastChannel -> Tab 2 -->
+  <line x1="590" y1="120" x2="658" y2="120" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-green)"/>
+  <text x="624" y="112" text-anchor="middle" font-size="9" fill="#2f9d74">receive</text>
+
+  <!-- Tab 3 - Receiver -->
+  <rect x="660" y="300" width="200" height="170" rx="8" fill="#d97843" opacity="0.1" stroke="#d97843" stroke-width="2"/>
+  <rect x="660" y="300" width="200" height="30" rx="8" fill="#d97843"/>
+  <rect x="660" y="322" width="200" height="2" fill="#d97843"/>
+  <text x="760" y="321" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Tab 3</text>
+  <text x="760" y="352" text-anchor="middle" font-size="11" fill="#1a1822">onmessage fires</text>
+  <rect x="685" y="362" width="150" height="26" rx="6" fill="#edeaf5" stroke="#d97843"/>
+  <text x="760" y="380" text-anchor="middle" font-size="10" fill="#1a1822">Validate message</text>
+  <rect x="685" y="397" width="150" height="26" rx="6" fill="#edeaf5" stroke="#d97843"/>
+  <text x="760" y="415" text-anchor="middle" font-size="10" fill="#1a1822">Clear auth tokens</text>
+  <rect x="685" y="432" width="150" height="26" rx="6" fill="#d97843"/>
+  <text x="760" y="450" text-anchor="middle" font-size="10" fill="#fff">Redirect to /login</text>
+
+  <!-- Arrow: BroadcastChannel -> Tab 3 -->
+  <line x1="520" y1="190" x2="520" y2="370" stroke="#d97843" stroke-width="2"/>
+  <line x1="520" y1="370" x2="658" y2="370" stroke="#d97843" stroke-width="2" marker-end="url(#arr-orange)"/>
+  <text x="540" y="282" font-size="9" fill="#d97843">receive</text>
+
+  <!-- Timeline indicator -->
+  <rect x="40" y="300" width="200" height="80" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-dasharray="4,2"/>
+  <text x="140" y="325" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="bold">Tab 1 Result</text>
+  <text x="140" y="345" text-anchor="middle" font-size="10" fill="#1a1822">Redirects to /login</text>
+  <text x="140" y="362" text-anchor="middle" font-size="10" fill="#1a1822">locally (no broadcast</text>
+  <text x="140" y="376" text-anchor="middle" font-size="10" fill="#1a1822">needed for self)</text>
+
+  <!-- Legend -->
+  <rect x="40" y="460" width="14" height="14" rx="3" fill="#6d5bd0"/>
+  <text x="60" y="472" font-size="11" fill="#1a1822">Source tab (initiator)</text>
+  <rect x="230" y="460" width="14" height="14" rx="3" fill="#2f9d74"/>
+  <text x="250" y="472" font-size="11" fill="#1a1822">Receiving tab</text>
+  <rect x="400" y="460" width="14" height="14" rx="3" fill="#d97843"/>
+  <text x="420" y="472" font-size="11" fill="#1a1822">Receiving tab</text>
+  <rect x="560" y="460" width="14" height="14" rx="3" fill="#edeaf5" stroke="#6d5bd0" stroke-dasharray="4,2"/>
+  <text x="580" y="472" font-size="11" fill="#1a1822">Channel / info box</text>
+</svg>

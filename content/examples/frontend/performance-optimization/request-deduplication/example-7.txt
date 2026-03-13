@@ -1,0 +1,133 @@
+interface DedupOptions {
+  /** Time in ms to cache completed responses (default: 2000) */
+  dedupWindow?: number;
+  /** Custom cache key generator */
+  keyFn?: (url: string, options?: RequestInit) => string;
+}
+
+interface CacheEntry<T> {
+  data: T;
+  timestamp: number;
+}
+
+class RequestDeduplicator {
+  private inflight = new Map<string, Promise<any>>();
+  private cache = new Map<string, CacheEntry<any>>();
+  private defaultWindow: number;
+
+  constructor(defaultWindow = 2000) {
+    this.defaultWindow = defaultWindow;
+  }
+
+  /**
+   * Normalize URL by sorting query parameters
+   */
+  private normalizeUrl(url: string): string {
+    try {
+      const parsed = new URL(url, window.location.origin);
+      parsed.searchParams.sort();
+      return parsed.pathname + parsed.search;
+    } catch {
+      return url; // fallback for non-standard URLs
+    }
+  }
+
+  /**
+   * Generate a cache key from URL and relevant request options
+   */
+  private getCacheKey(url: string, options?: RequestInit): string {
+    const normalizedUrl = this.normalizeUrl(url);
+    const method = options?.method?.toUpperCase() || 'GET';
+
+    // Only dedup GET/HEAD requests
+    if (method !== 'GET' && method !== 'HEAD') {
+      // Return unique key so mutations are never deduplicated
+      return `\${method}:\${normalizedUrl}:\${Date.now()}:\${Math.random()}`;
+    }
+
+    // Include Authorization header in key (different users = different data)
+    const authHeader = options?.headers
+      ? new Headers(options.headers).get('Authorization') || ''
+      : '';
+
+    return `GET:\${normalizedUrl}:\${authHeader}`;
+  }
+
+  /**
+   * Fetch with deduplication
+   */
+  async fetch<T = any>(
+    url: string,
+    options?: RequestInit,
+    dedupOptions?: DedupOptions
+  ): Promise<T> {
+    const key = dedupOptions?.keyFn
+      ? dedupOptions.keyFn(url, options)
+      : this.getCacheKey(url, options);
+
+    const window = dedupOptions?.dedupWindow ?? this.defaultWindow;
+
+    // 1. Check time-window cache
+    const cached = this.cache.get(key);
+    if (cached && Date.now() - cached.timestamp < window) {
+      return cached.data as T;
+    }
+
+    // 2. Check in-flight requests
+    if (this.inflight.has(key)) {
+      return this.inflight.get(key)! as Promise<T>;
+    }
+
+    // 3. Create new request
+    const promise = fetch(url, options)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP \${response.status}: \${response.statusText}`);
+        }
+        return response.json() as Promise<T>;
+      })
+      .then(data => {
+        // Store in time-window cache
+        this.cache.set(key, { data, timestamp: Date.now() });
+        return data;
+      })
+      .finally(() => {
+        this.inflight.delete(key);
+      });
+
+    this.inflight.set(key, promise);
+    return promise;
+  }
+
+  /**
+   * Invalidate cache for a specific key or pattern
+   */
+  invalidate(pattern?: string | RegExp): void {
+    if (!pattern) {
+      this.cache.clear();
+      return;
+    }
+    for (const key of this.cache.keys()) {
+      if (typeof pattern === 'string' ? key.includes(pattern) : pattern.test(key)) {
+        this.cache.delete(key);
+      }
+    }
+  }
+
+  /**
+   * Get current stats for debugging
+   */
+  get stats() {
+    return {
+      inflightCount: this.inflight.size,
+      cacheSize: this.cache.size,
+    };
+  }
+}
+
+// Singleton instance
+export const dedup = new RequestDeduplicator();
+
+// Usage
+const user = await dedup.fetch('/api/user');
+const posts = await dedup.fetch('/api/posts?sort=date&limit=10');

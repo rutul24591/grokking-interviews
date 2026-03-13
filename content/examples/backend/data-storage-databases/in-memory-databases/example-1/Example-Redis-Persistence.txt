@@ -1,0 +1,3 @@
+# Redis config
+save 900 1
+appendonly yes

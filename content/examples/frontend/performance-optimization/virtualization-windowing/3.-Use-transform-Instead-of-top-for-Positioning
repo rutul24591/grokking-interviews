@@ -1,0 +1,13 @@
+// BAD: changing 'top' triggers layout recalculation
+<div style={{ position: 'absolute', top: virtualRow.start }}>
+
+// GOOD: transform uses the compositor thread, skipping layout and paint
+<div style={{
+  position: 'absolute',
+  top: 0,
+  transform: `translateY(\${virtualRow.start}px)`
+}}>
+
+// WHY: CSS transforms are handled by the GPU compositor thread,
+// not the main thread. This means positioning updates during scroll
+// don't block JavaScript execution or trigger expensive layout passes.

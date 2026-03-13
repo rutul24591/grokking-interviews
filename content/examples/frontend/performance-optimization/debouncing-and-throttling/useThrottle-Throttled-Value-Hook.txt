@@ -1,0 +1,58 @@
+import { useState, useEffect, useRef } from 'react';
+
+function useThrottle<T>(value: T, interval: number): T {
+  const [throttledValue, setThrottledValue] = useState<T>(value);
+  const lastUpdated = useRef<number>(Date.now());
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const now = Date.now();
+    const elapsed = now - lastUpdated.current;
+
+    if (elapsed >= interval) {
+      // Enough time has passed — update immediately
+      lastUpdated.current = now;
+      setThrottledValue(value);
+    } else {
+      // Schedule update for when the interval completes
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        lastUpdated.current = Date.now();
+        setThrottledValue(value);
+        timeoutRef.current = null;
+      }, interval - elapsed);
+    }
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [value, interval]);
+
+  return throttledValue;
+}
+
+// Usage: live character count with throttled updates
+function TextEditor() {
+  const [text, setText] = useState('');
+  const throttledText = useThrottle(text, 200);
+
+  // Only recalculate stats every 200ms, not on every keystroke
+  const stats = useMemo(() => ({
+    characters: throttledText.length,
+    words: throttledText.split(/\\s+/).filter(Boolean).length,
+    readingTime: Math.ceil(throttledText.split(/\\s+/).filter(Boolean).length / 200),
+  }), [throttledText]);
+
+  return (
+    <div>
+      <textarea value={text} onChange={(e) => setText(e.target.value)} />
+      <div>
+        {stats.characters} chars | {stats.words} words | {stats.readingTime} min read
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,121 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Cache Lifecycle Timeline</text>
+
+  <defs>
+    <marker id="a" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="ag" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="ao" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+  </defs>
+
+  <!-- Timeline axis -->
+  <line x1="60" y1="240" x2="860" y2="240" stroke="#6d5bd0" stroke-width="3" marker-end="url(#a)"/>
+  <text x="870" y="244" font-size="11" fill="#6d5bd0" font-weight="bold">Time</text>
+
+  <!-- Time markers -->
+  <line x1="100" y1="230" x2="100" y2="250" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="100" y="268" text-anchor="middle" font-size="9" fill="#6d5bd0">t=0</text>
+
+  <line x1="250" y1="230" x2="250" y2="250" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="250" y="268" text-anchor="middle" font-size="9" fill="#6d5bd0">t=1s</text>
+
+  <line x1="380" y1="230" x2="380" y2="250" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="380" y="268" text-anchor="middle" font-size="9" fill="#6d5bd0">t=30s</text>
+
+  <line x1="500" y1="230" x2="500" y2="250" stroke="#d97843" stroke-width="2"/>
+  <text x="500" y="268" text-anchor="middle" font-size="9" fill="#d97843">max-age</text>
+  <text x="500" y="280" text-anchor="middle" font-size="9" fill="#d97843">expires</text>
+
+  <line x1="620" y1="230" x2="620" y2="250" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="620" y="268" text-anchor="middle" font-size="9" fill="#6d5bd0">t=61s</text>
+
+  <line x1="780" y1="230" x2="780" y2="250" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="780" y="268" text-anchor="middle" font-size="9" fill="#6d5bd0">t=120s</text>
+
+  <!-- Fresh zone -->
+  <rect x="100" y="225" width="400" height="30" rx="0" fill="#2f9d74" opacity="0.15"/>
+  <text x="300" y="222" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="bold">FRESH (served from cache without network)</text>
+
+  <!-- Stale zone -->
+  <rect x="500" y="225" width="340" height="30" rx="0" fill="#d97843" opacity="0.15"/>
+  <text x="670" y="222" text-anchor="middle" font-size="10" fill="#d97843" font-weight="bold">STALE (requires revalidation)</text>
+
+  <!-- Event 1: Initial Request -->
+  <line x1="100" y1="160" x2="100" y2="228" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="4,3"/>
+  <rect x="30" y="80" width="140" height="78" rx="8" fill="#6d5bd0"/>
+  <text x="100" y="100" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">Initial Request</text>
+  <text x="100" y="116" text-anchor="middle" font-size="9" fill="#edeaf5">GET /api/data</text>
+  <text x="100" y="132" text-anchor="middle" font-size="10" fill="#ffffff" font-weight="bold">200 OK</text>
+  <text x="100" y="146" text-anchor="middle" font-size="8" fill="#edeaf5">ETag: "abc123"</text>
+  <text x="100" y="156" text-anchor="middle" font-size="8" fill="#edeaf5">max-age=60</text>
+
+  <!-- Event 2: Cache Hit -->
+  <line x1="250" y1="160" x2="250" y2="228" stroke="#2f9d74" stroke-width="2" stroke-dasharray="4,3"/>
+  <rect x="185" y="100" width="130" height="58" rx="8" fill="#2f9d74"/>
+  <text x="250" y="120" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">Cache Hit</text>
+  <text x="250" y="136" text-anchor="middle" font-size="9" fill="#ffffff">Served instantly</text>
+  <text x="250" y="148" text-anchor="middle" font-size="9" fill="#ffffff">~0ms latency</text>
+
+  <!-- Event 3: Another Cache Hit -->
+  <line x1="380" y1="160" x2="380" y2="228" stroke="#2f9d74" stroke-width="2" stroke-dasharray="4,3"/>
+  <rect x="315" y="100" width="130" height="58" rx="8" fill="#2f9d74"/>
+  <text x="380" y="120" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">Cache Hit</text>
+  <text x="380" y="136" text-anchor="middle" font-size="9" fill="#ffffff">Still fresh</text>
+  <text x="380" y="148" text-anchor="middle" font-size="9" fill="#ffffff">~0ms latency</text>
+
+  <!-- Event 4: Conditional Request (resource unchanged) -->
+  <line x1="620" y1="115" x2="620" y2="228" stroke="#d97843" stroke-width="2" stroke-dasharray="4,3"/>
+  <rect x="540" y="55" width="160" height="58" rx="8" fill="#d97843"/>
+  <text x="620" y="72" text-anchor="middle" font-size="10" fill="#ffffff" font-weight="bold">Conditional Request</text>
+  <text x="620" y="86" text-anchor="middle" font-size="8" fill="#ffffff">If-None-Match: "abc123"</text>
+  <text x="620" y="100" text-anchor="middle" font-size="10" fill="#ffffff" font-weight="bold">304 Not Modified</text>
+
+  <!-- Arrow showing cache refresh -->
+  <line x1="620" y1="115" x2="620" y2="142" stroke="#2f9d74" stroke-width="2" marker-end="url(#ag)"/>
+  <rect x="560" y="144" width="120" height="30" rx="6" fill="#2f9d74"/>
+  <text x="620" y="164" text-anchor="middle" font-size="9" fill="#ffffff" font-weight="bold">Cache Refreshed</text>
+  <text x="620" y="186" text-anchor="middle" font-size="8" fill="#2f9d74">Freshness timer resets</text>
+
+  <!-- Event 5: Resource Changed -->
+  <line x1="780" y1="115" x2="780" y2="228" stroke="#d97843" stroke-width="2" stroke-dasharray="4,3"/>
+  <rect x="700" y="55" width="160" height="58" rx="8" fill="#d97843"/>
+  <text x="780" y="72" text-anchor="middle" font-size="10" fill="#ffffff" font-weight="bold">Conditional Request</text>
+  <text x="780" y="86" text-anchor="middle" font-size="8" fill="#ffffff">If-None-Match: "abc123"</text>
+  <text x="780" y="100" text-anchor="middle" font-size="10" fill="#ffffff" font-weight="bold">200 OK (changed!)</text>
+
+  <line x1="780" y1="115" x2="780" y2="142" stroke="#6d5bd0" stroke-width="2" marker-end="url(#a)"/>
+  <rect x="710" y="144" width="140" height="30" rx="6" fill="#6d5bd0"/>
+  <text x="780" y="164" text-anchor="middle" font-size="9" fill="#ffffff" font-weight="bold">New ETag: "def456"</text>
+  <text x="780" y="186" text-anchor="middle" font-size="8" fill="#6d5bd0">Cache replaced entirely</text>
+
+  <!-- Bottom: Key insights -->
+  <rect x="60" y="300" width="790" height="44" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="80" y="320" font-size="11" fill="#1a1822" font-weight="bold">Key Insight:</text>
+  <text x="170" y="320" font-size="10" fill="#1a1822">304 responses are ~100-300 bytes (headers only, no body) vs full 200 responses that include the entire resource payload.</text>
+  <text x="80" y="336" font-size="10" fill="#6d5bd0">This saves bandwidth and latency. A 500KB image revalidation with 304 uses 99.98% less data than re-downloading.</text>
+
+  <!-- Bandwidth comparison -->
+  <rect x="60" y="360" width="790" height="120" rx="8" fill="#edeaf5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="385" text-anchor="middle" font-size="13" fill="#1a1822" font-weight="bold">Response Size Comparison</text>
+
+  <!-- Cache hit bar -->
+  <text x="80" y="410" font-size="10" fill="#2f9d74" font-weight="bold">Cache Hit (memory)</text>
+  <rect x="230" y="400" width="4" height="14" rx="2" fill="#2f9d74"/>
+  <text x="242" y="412" font-size="9" fill="#1a1822">0 bytes (no network)</text>
+
+  <!-- 304 bar -->
+  <text x="80" y="434" font-size="10" fill="#d97843" font-weight="bold">304 Not Modified</text>
+  <rect x="230" y="424" width="20" height="14" rx="2" fill="#d97843"/>
+  <text x="258" y="436" font-size="9" fill="#1a1822">~200-400 bytes (headers only)</text>
+
+  <!-- 200 bar -->
+  <text x="80" y="458" font-size="10" fill="#6d5bd0" font-weight="bold">200 OK (full response)</text>
+  <rect x="230" y="448" width="500" height="14" rx="2" fill="#6d5bd0"/>
+  <text x="738" y="460" font-size="9" fill="#1a1822">Full payload (KB-MB)</text>
+</svg>

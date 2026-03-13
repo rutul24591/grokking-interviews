@@ -1,0 +1,3 @@
+mkfs.ext4 /dev/nvme1n1
+mount /dev/nvme1n1 /data
+df -h /data

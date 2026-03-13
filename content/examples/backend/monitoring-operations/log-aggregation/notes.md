@@ -1,0 +1,1 @@
+Normalize log fields for consistent search.

@@ -1,0 +1,1 @@
+Content moderation checks text and images against policy rules.

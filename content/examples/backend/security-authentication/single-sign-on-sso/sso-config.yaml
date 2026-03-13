@@ -1,0 +1,4 @@
+sso:
+  issuer: https://idp.example.com
+  audience: app
+  redirectUri: https://app.example.com/callback

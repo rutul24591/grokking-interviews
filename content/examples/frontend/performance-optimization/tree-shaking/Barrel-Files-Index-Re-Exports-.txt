@@ -1,0 +1,48 @@
+// ✅ GOOD barrel file — pure re-exports
+// components/index.ts
+export { Button } from './Button';
+export { Input } from './Input';
+export { Select } from './Select';
+export { Modal } from './Modal';
+export { Tooltip } from './Tooltip';
+
+// Consumer:
+import { Button } from './components';
+// Only Button's code is included (with proper sideEffects: false)
+
+// ⚠️ RISKY barrel file — imports then re-exports
+// components/index.ts
+import { Button } from './Button';
+import { Input } from './Input';
+import { Select } from './Select';
+export { Button, Input, Select };
+// Some bundlers handle this fine; others include everything
+
+// ❌ PROBLEMATIC — barrel file with side effects
+// components/index.ts
+import { Button } from './Button';
+import './Button.css';  // Side effect!
+import { Input } from './Input';
+import './Input.css';   // Side effect!
+// ALL CSS files are included even if only Button is imported
+
+// ✅ BETTER — co-locate CSS with components
+// Button.tsx
+import './Button.css';  // Side effect stays with its component
+export function Button() { /* ... */ }
+
+// === Deep import paths as alternative ===
+// Instead of barrel imports:
+import { Button } from '@my-lib';
+
+// Use direct paths for guaranteed tree shaking:
+import { Button } from '@my-lib/Button';
+
+// Package.json exports map to support both:
+{
+  "exports": {
+    ".": "./src/index.ts",
+    "./Button": "./src/Button.tsx",
+    "./Input": "./src/Input.tsx"
+  }
+}

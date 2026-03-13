@@ -1,0 +1,19 @@
+function calculateFixedRange(scrollTop, viewportHeight, itemHeight, itemCount) {
+  const startIndex = Math.floor(scrollTop / itemHeight);
+  const visibleCount = Math.ceil(viewportHeight / itemHeight);
+  const endIndex = Math.min(startIndex + visibleCount, itemCount - 1);
+
+  // Position for any item is simply: index * itemHeight
+  const getOffset = (index) => index * itemHeight;
+
+  // Total height for scrollbar is: itemCount * itemHeight
+  const totalHeight = itemCount * itemHeight;
+
+  return { startIndex, endIndex, getOffset, totalHeight };
+}
+
+// Example: viewport=600px, itemHeight=48px, scrolled to 2400px
+// startIndex = 2400/48 = 50
+// visibleCount = ceil(600/48) = 13
+// endIndex = 50 + 13 = 63
+// Renders items 50-63 (14 items) + overscan

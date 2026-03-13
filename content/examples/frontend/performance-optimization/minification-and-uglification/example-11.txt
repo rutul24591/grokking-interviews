@@ -1,0 +1,59 @@
+// === Terser via CLI ===
+npx terser src/app.js --compress passes=3,dead_code,drop_console \\
+  --mangle --mangle-props regex=/^_/ \\
+  --format comments=false \\
+  --source-map "filename='app.js.map',url='app.js.map'" \\
+  --output dist/app.min.js
+
+// === Terser via Node.js API ===
+const { minify } = require('terser');
+
+async function minifyBundle(code) {
+  const result = await minify(code, {
+    compress: {
+      passes: 3,               // Multiple optimization passes
+      dead_code: true,         // Remove unreachable code
+      drop_console: true,      // Remove console.* calls
+      drop_debugger: true,     // Remove debugger statements
+      pure_funcs: [            // Functions with no side effects
+        'console.log',
+        'console.debug',
+        'console.info',
+      ],
+      pure_getters: true,      // Assume property access has no side effects
+      unsafe_math: true,       // Optimize numeric expressions
+      unsafe_methods: true,    // Optimize known method calls
+      toplevel: true,          // Mangle/drop top-level scope
+      ecma: 2020,              // Target modern syntax
+      module: true,            // Enable ES module optimizations
+      booleans_as_integers: true, // true→1, false→0
+    },
+    mangle: {
+      toplevel: true,          // Mangle top-level names
+      safari10: true,          // Work around Safari 10 loop scoping bug
+      properties: {
+        regex: /^_/,           // Only mangle properties starting with _
+      },
+    },
+    format: {
+      comments: false,         // Strip all comments
+      ecma: 2020,              // Use modern syntax in output
+      wrap_func_args: false,   // Don't wrap function args in parens
+    },
+    sourceMap: {
+      filename: 'app.js',
+      url: 'app.js.map',
+    },
+  });
+
+  console.log('Original:', code.length, 'bytes');
+  console.log('Minified:', result.code.length, 'bytes');
+  console.log('Ratio:', ((1 - result.code.length / code.length) * 100).toFixed(1) + '%');
+
+  return result;
+}
+
+// Typical results for a React app bundle:
+// Original: 523,847 bytes
+// Minified: 198,261 bytes
+// Ratio: 62.2%

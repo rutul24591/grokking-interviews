@@ -198,10 +198,6 @@
 • Integration Testing
 • E2E Testing
 • Visual Regression Testing
-• Performance Testing
-• Accessibility Testing
-• Load Testing
-• A/B Testing Infrastructure
 
 18. Build & Deployment
 • Webpack/Vite/Rollup Configuration
@@ -310,7 +306,7 @@
 • Performance Considerations (60fps)
 • Animation Queuing
 
-29. Web Standards & Compatibility
+29. Web Standards and Compatibility
 • Progressive Enhancement
 • Graceful Degradation
 • Polyfills and Transpilation
@@ -319,7 +315,7 @@
 • Cross-Browser Testing
 • Legacy Browser Support
 
-30. Edge Cases & User Experience
+30. Edge Cases and User Experience
 • Loading States
 • Empty States
 • Error States

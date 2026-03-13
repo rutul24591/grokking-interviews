@@ -1,0 +1,13 @@
+// Simplified Huffman coding example:
+// Standard ASCII: every character = 8 bits
+
+// Frequency analysis of a CSS file:
+// ':' appears 500 times  → Huffman code: 00      (2 bits)
+// ';' appears 480 times  → Huffman code: 01      (2 bits)
+// ' ' appears 450 times  → Huffman code: 10      (2 bits)
+// 'o' appears 200 times  → Huffman code: 110     (3 bits)
+// 'Q' appears 1 time     → Huffman code: 1110101 (7 bits)
+
+// The most common characters shrink from 8 bits to 2-3 bits.
+// Rare characters may expand, but the net savings are large
+// because common characters dominate the content.

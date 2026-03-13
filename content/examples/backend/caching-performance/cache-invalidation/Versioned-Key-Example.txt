@@ -1,0 +1,3 @@
+const version = await redis.get('product:version') || '1';
+const key = 'product:v' + version + ':' + id; // On update
+await redis.incr('product:version');

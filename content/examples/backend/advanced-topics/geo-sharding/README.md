@@ -1,0 +1,1 @@
+Geo-sharding routes data to regional shards to reduce latency.

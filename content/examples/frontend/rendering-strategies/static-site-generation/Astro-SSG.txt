@@ -1,0 +1,21 @@
+---
+// src/pages/blog/[slug].astro
+export async function getStaticPaths() {
+  // Fetch posts at build time
+  const response = await fetch('https://cms.example.com/posts');
+  const posts = await response.json();
+
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post }, // Pass post data to component
+  }));
+}
+
+const { post } = Astro.props;
+---
+
+<article>
+  <h1>{post.title}</h1>
+  <time>{new Date(post.publishedAt).toLocaleDateString()}</time>
+  <div set:html={post.content} />
+</article>

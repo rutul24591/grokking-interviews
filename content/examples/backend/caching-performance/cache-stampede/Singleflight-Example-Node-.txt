@@ -1,0 +1,2 @@
+const inflight = new Map(); async function getWithSingleflight(key, loader) { if (inflight.has(key)) return inflight.get(key); const promise = (async () => { try { const value = await loader(); await redis.set(key, JSON.stringify(value), 'EX', 300); return value; } finally { inflight.delete(key); } })(); inflight.set(key, promise); return promise;
+}

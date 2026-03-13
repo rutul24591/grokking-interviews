@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
+  <rect width="960" height="420" fill="#f8fafc" />
+  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Hot Key Expiry</text>
+
+  <line x1="80" y1="320" x2="880" y2="320" stroke="#94a3b8" stroke-width="2" />
+  <line x1="80" y1="320" x2="80" y2="100" stroke="#94a3b8" stroke-width="2" />
+
+  <path d="M80 200 C 200 180, 320 160, 440 150 C 560 140, 700 135, 880 130" fill="none" stroke="#60a5fa" stroke-width="3" />
+  <line x1="520" y1="120" x2="520" y2="320" stroke="#f97316" stroke-width="2" />
+
+  <text x="500" y="110" font-family="Arial" font-size="12" fill="#f97316">Expiry</text>
+  <text x="90" y="345" font-family="Arial" font-size="12" fill="#0f172a">Time</text>
+  <text x="20" y="115" font-family="Arial" font-size="12" fill="#0f172a">Load</text>
+</svg>

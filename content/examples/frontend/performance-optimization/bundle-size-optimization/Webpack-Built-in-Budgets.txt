@@ -1,0 +1,24 @@
+// webpack.config.js
+module.exports = {
+  performance: {
+    // Maximum size for any individual asset (JS, CSS, images)
+    maxAssetSize: 250_000,        // 250KB
+
+    // Maximum combined size of all assets for an entry point
+    maxEntrypointSize: 500_000,   // 500KB
+
+    // 'error' fails the build; 'warning' just logs
+    hints: 'error',
+
+    // Only check JS and CSS files (ignore images, fonts)
+    assetFilter: function (assetFilename) {
+      return /\\.(js|css)$/.test(assetFilename);
+    },
+  },
+};
+
+// Build output when budget is exceeded:
+// ERROR in entrypoint size limit: The following entrypoint(s)
+// combined asset size exceeds the recommended limit (500 kB).
+// main (687 kB)
+//   main.js (687 kB)

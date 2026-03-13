@@ -1,0 +1,54 @@
+// app/products/[id]/page.tsx
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+}
+
+// Generate static params for build time
+export async function generateStaticParams() {
+  const response = await fetch('https://api.example.com/products?limit=100');
+  const products: Product[] = await response.json();
+
+  return products.map((product) => ({
+    id: product.id,
+  }));
+}
+
+// Server Component with ISR via revalidate option
+async function ProductPage({ params }: { params: { id: string } }) {
+  // Fetch with revalidation time (ISR)
+  const product: Product = await fetch(
+    `https://api.example.com/products/\${params.id}`,
+    {
+      next: {
+        revalidate: 60, // Revalidate every 60 seconds
+        tags: ['products'] // Optional: for on-demand revalidation
+      }
+    }
+  ).then(res => res.json());
+
+  return (
+    <article>
+      <h1>{product.name}</h1>
+      <p>{product.description}</p>
+      <p className="text-lg font-bold">\${product.price}</p>
+    </article>
+  );
+}
+
+export default ProductPage;
+
+// Generate metadata with ISR
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const product: Product = await fetch(
+    `https://api.example.com/products/\${params.id}`,
+    { next: { revalidate: 60 } }
+  ).then(res => res.json());
+
+  return {
+    title: product.name,
+    description: product.description,
+  };
+}

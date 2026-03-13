@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="bold" fill="#1a1822">Minification &amp; Uglification Techniques</text>
+
+  <!-- Center label -->
+  <rect x="350" y="60" width="200" height="50" rx="8" fill="#6d5bd0" stroke="#5a49b8" stroke-width="1.5"/>
+  <text x="450" y="90" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" fill="#fff">Source Code</text>
+
+  <!-- Left column: Minification -->
+  <rect x="30" y="140" width="260" height="40" rx="8" fill="#d97843" stroke="#c06835" stroke-width="1.5"/>
+  <text x="160" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">Minification</text>
+
+  <line x1="350" y1="85" x2="160" y2="140" stroke="#d97843" stroke-width="1.5"/>
+
+  <rect x="30" y="195" width="260" height="35" rx="6" fill="#fff" stroke="#d97843" stroke-width="1"/>
+  <text x="160" y="218" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Whitespace removal</text>
+
+  <rect x="30" y="240" width="260" height="35" rx="6" fill="#fff" stroke="#d97843" stroke-width="1"/>
+  <text x="160" y="263" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Comment stripping</text>
+
+  <rect x="30" y="285" width="260" height="35" rx="6" fill="#fff" stroke="#d97843" stroke-width="1"/>
+  <text x="160" y="308" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Shorthand properties (CSS)</text>
+
+  <rect x="30" y="330" width="260" height="35" rx="6" fill="#fff" stroke="#d97843" stroke-width="1"/>
+  <text x="160" y="353" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Semicolon / bracket removal</text>
+
+  <rect x="30" y="375" width="260" height="35" rx="6" fill="#fff" stroke="#d97843" stroke-width="1"/>
+  <text x="160" y="398" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Color shortening (#ffffff → #fff)</text>
+
+  <!-- Right column: Uglification -->
+  <rect x="610" y="140" width="260" height="40" rx="8" fill="#2f9d74" stroke="#258a63" stroke-width="1.5"/>
+  <text x="740" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">Uglification (Mangling)</text>
+
+  <line x1="550" y1="85" x2="740" y2="140" stroke="#2f9d74" stroke-width="1.5"/>
+
+  <rect x="610" y="195" width="260" height="35" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1"/>
+  <text x="740" y="218" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Variable renaming (a, b, c...)</text>
+
+  <rect x="610" y="240" width="260" height="35" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1"/>
+  <text x="740" y="263" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Function inlining</text>
+
+  <rect x="610" y="285" width="260" height="35" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1"/>
+  <text x="740" y="308" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Constant folding (1+2 → 3)</text>
+
+  <rect x="610" y="330" width="260" height="35" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1"/>
+  <text x="740" y="353" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Dead code elimination</text>
+
+  <rect x="610" y="375" width="260" height="35" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1"/>
+  <text x="740" y="398" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Boolean simplification</text>
+
+  <!-- Bottom: Combined result -->
+  <rect x="250" y="440" width="400" height="45" rx="8" fill="#6d5bd0" stroke="#5a49b8" stroke-width="1.5"/>
+  <text x="450" y="468" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">Combined: 30-60% size reduction (JS)</text>
+
+  <line x1="160" y1="410" x2="350" y2="440" stroke="#6d5bd0" stroke-width="1.5"/>
+  <line x1="740" y1="410" x2="550" y2="440" stroke="#6d5bd0" stroke-width="1.5"/>
+</svg>

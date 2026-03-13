@@ -1,0 +1,19 @@
+// Layout shift score = impact fraction × distance fraction
+
+// Impact fraction: % of viewport affected by the shift
+// If an element occupies 25% of viewport and shifts,
+// and 25% of viewport is the new area → impact = 50% (0.5)
+
+// Distance fraction: how far the element moved as % of viewport
+// If element moves 100px in a 800px viewport → distance = 12.5% (0.125)
+
+// Score = 0.5 × 0.125 = 0.0625 per shift event
+
+// CLS uses "session windows":
+// - Groups shifts that occur within 1 second of each other
+// - Max window duration: 5 seconds
+// - CLS = the largest session window score
+
+// User-initiated shifts don't count:
+// - Shifts within 500ms of user input (click, tap, key)
+// - Scroll-triggered shifts don't count

@@ -1,0 +1,27 @@
+// Qwik automatically does progressive hydration
+import { component$, useSignal } from '@builder.io/qwik';
+
+export default component$(() => {
+  const count = useSignal(0);
+
+  return (
+    <>
+      <header>
+        <nav>Navigation</nav>
+      </header>
+
+      <main>
+        {/* Only hydrates when button is clicked */}
+        <button onClick$={() => count.value++}>
+          Count: {count.value}
+        </button>
+
+        {/* Hydrates when visible */}
+        <ProductGrid />
+      </main>
+
+      {/* Never hydrates unless interacted with */}
+      <footer>Footer content</footer>
+    </>
+  );
+});

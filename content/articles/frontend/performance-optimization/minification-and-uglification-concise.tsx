@@ -197,13 +197,13 @@ module.exports = {
       <section>
         <h2>HTML Minification</h2>
         <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`<!-- Before -->
+          <code>{`<!-- Before --&gt;
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>My App</title>
-    <!-- This is a comment -->
+    <!-- This is a comment --&gt;
   </head>
   <body>
     <div id="root">
@@ -212,14 +212,14 @@ module.exports = {
   </body>
 </html>
 
-<!-- After (html-minifier-terser) -->
+<!-- After (html-minifier-terser) --&gt;
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>My App</title></head><body><div id="root"><p>Hello World</p></div></body></html>
 
 <!-- Savings: ~30% for HTML
    Most frameworks handle this automatically:
    - Next.js: automatic HTML minification in production
    - Vite: html-minifier-terser plugin available
--->`}</code>
+--&gt;`}</code>
         </pre>
       </section>
 

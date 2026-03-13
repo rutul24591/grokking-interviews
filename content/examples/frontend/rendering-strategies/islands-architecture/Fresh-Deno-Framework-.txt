@@ -1,0 +1,37 @@
+// routes/index.tsx - Fresh uses file-based routing
+import Counter from "../islands/Counter.tsx";
+
+export default function Home() {
+  return (
+    <div>
+      <h1>Welcome to Fresh</h1>
+      <p>This is static HTML</p>
+
+      {/* Island: Any component in islands/ directory auto-hydrates */}
+      <Counter start={10} />
+
+      <p>More static content</p>
+    </div>
+  );
+}
+
+// islands/Counter.tsx - Automatically becomes an island
+import { useState } from "preact/hooks";
+
+interface CounterProps {
+  start: number;
+}
+
+export default function Counter({ start }: CounterProps) {
+  const [count, setCount] = useState(start);
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>+1</button>
+    </div>
+  );
+}
+
+// Fresh convention: components in islands/ folder are interactive
+// Everything else is static

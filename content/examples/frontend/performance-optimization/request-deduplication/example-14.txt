@@ -1,0 +1,35 @@
+// Next.js App Router — automatic deduplication
+// No special imports or wrappers needed
+
+// app/components/Header.tsx (Server Component)
+async function Header() {
+  // Next.js intercepts this fetch
+  const res = await fetch('https://api.example.com/user');
+  const user = await res.json();
+  return <header>{user.name}</header>;
+}
+
+// app/components/Sidebar.tsx (Server Component)
+async function Sidebar() {
+  // Same URL + same options = automatically deduplicated
+  const res = await fetch('https://api.example.com/user');
+  const user = await res.json();
+  return <aside>{user.role}</aside>;
+}
+
+// app/page.tsx
+export default function Page() {
+  return (
+    <div>
+      <Header />   {/* Both share one fetch */}
+      <Sidebar />  {/* No duplicate request */}
+    </div>
+  );
+}
+
+// Important caveats:
+// 1. Only GET requests are deduplicated
+// 2. POST requests are NOT deduplicated (they're mutations)
+// 3. Different options (headers, cache directives) = different requests
+// 4. Dedup only works within a single server render pass
+// 5. Works with fetch() only — not axios, got, or other HTTP clients

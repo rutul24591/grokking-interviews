@@ -1,0 +1,4 @@
+const lockKey = 'lock:product:123';
+const acquired = await redis.set(lockKey, '1', 'NX', 'PX', 5000); if (acquired) { const value = await loadFromDb(); await redis.set('product:v1:123', JSON.stringify(value), 'EX', 300); await redis.del(lockKey);
+} else { // wait or serve stale
+}

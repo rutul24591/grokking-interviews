@@ -1,0 +1,45 @@
+// routes/products.tsx - Fresh on Deno Deploy
+import { Handlers, PageProps } from '$fresh/server.ts';
+
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+}
+
+export const handler: Handlers<Product[]> = {
+  async GET(req, ctx) {
+    // Deno Deploy runs at 35+ global edge locations
+    const url = new URL(req.url);
+    const region = req.headers.get('CF-IPCountry') || 'US';
+
+    // Fetch from edge-compatible KV or database
+    const products = await fetch(
+      `https://api.example.com/products?region=\${region}`,
+      { signal: AbortSignal.timeout(500) } // 500ms timeout
+    ).then(res => res.json());
+
+    return ctx.render(products);
+  },
+};
+
+export default function ProductsPage({ data }: PageProps<Product[]>) {
+  return (
+    <div>
+      <h1>Products in Your Region</h1>
+      <ul>
+        {data.map((product) => (
+          <li key={product.id}>
+            {product.name} - \${product.price}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+// Result:
+// - Runs on Deno Deploy edge network
+// - Geolocation-aware rendering (CF-IPCountry header)
+// - Timeout prevents slow origin from blocking edge
+// - TTFB: 50-120ms globally

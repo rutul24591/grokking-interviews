@@ -1,0 +1,36 @@
+<!-- LCP hero image — boost priority -->
+<img src="/hero.webp" alt="Hero banner"
+     width="1200" height="600"
+     fetchpriority="high">
+
+<!-- Below-fold images — lower priority -->
+<img src="/testimonial.webp" alt="Customer photo"
+     loading="lazy"
+     fetchpriority="low">
+
+<!-- Critical above-fold fetch — boost priority -->
+<script>
+  fetch('/api/above-fold-data', { priority: 'high' })
+    .then(res => res.json())
+    .then(data => renderAboveFold(data));
+
+  // Non-critical fetch — lower priority
+  fetch('/api/recommendations', { priority: 'low' })
+    .then(res => res.json())
+    .then(data => renderBelowFold(data));
+</script>
+
+<!-- Next.js Image component with priority -->
+import Image from 'next/image';
+
+function HeroBanner() {
+  return (
+    <Image
+      src="/hero.webp"
+      alt="Hero banner"
+      width={1200}
+      height={600}
+      priority  // Sets fetchpriority="high" and adds preload
+    />
+  );
+}

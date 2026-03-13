@@ -1,0 +1,6 @@
+async function getTableVersion(table) { const key = 'table_version:' + table; const version = await redis.get(key); return version || '0';
+} async function bumpTableVersion(table) { const key = 'table_version:' + table; await redis.incr(key);
+} async function cachedQuery(sql, params, tables) { const versions = await Promise.all(tables.map(getTableVersion)); const key = 'q:v1:' + normalizeQuery(sql, params) + ':v:' + versions.join('-'); const cached = await redis.get(key); if (cached) return JSON.parse(cached); const result = await db.query(sql, params); await redis.set(key, JSON.stringify(result.rows), 'EX', 120); return result.rows;
+} // On writes
+await db.update('users', payload);
+await bumpTableVersion('users');

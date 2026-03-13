@@ -1,0 +1,13 @@
+// Without source maps, an error looks like:
+// TypeError: Cannot read properties of undefined (reading 'price')
+//   at c (app.min.js:1:34829)
+//   at n (app.min.js:1:35102)
+//   at Object.t (app.min.js:1:42891)
+
+// With source maps, Sentry/Datadog resolves it to:
+// TypeError: Cannot read properties of undefined (reading 'price')
+//   at calculateItemTotal (src/utils/pricing.js:23:18)
+//   at CartItem (src/components/CartItem.jsx:45:22)
+//   at renderCart (src/pages/CartPage.jsx:112:8)
+
+// This makes production debugging practical.

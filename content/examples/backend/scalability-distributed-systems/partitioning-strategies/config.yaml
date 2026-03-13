@@ -1,0 +1,5 @@
+partitioning:
+  type: range
+  key: event_time
+  retention_days: 90
+  create_ahead_days: 7

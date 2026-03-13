@@ -1,0 +1,1 @@
+Commit offsets after processing to avoid data loss.

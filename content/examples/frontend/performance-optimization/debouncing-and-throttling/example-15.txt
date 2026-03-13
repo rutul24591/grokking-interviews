@@ -1,0 +1,28 @@
+function useWindowSize() {
+  const [size, setSize] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    // Initialize
+    setSize({ width: window.innerWidth, height: window.innerHeight });
+
+    const handleResize = debounce(() => {
+      setSize({ width: window.innerWidth, height: window.innerHeight });
+    }, 150);
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      handleResize.cancel();
+    };
+  }, []);
+
+  return size;
+}
+
+// Usage: responsive chart that recalculates dimensions
+function ResponsiveChart({ data }) {
+  const { width } = useWindowSize();
+  const chartWidth = Math.min(width - 48, 800);
+
+  return <BarChart data={data} width={chartWidth} height={400} />;
+}

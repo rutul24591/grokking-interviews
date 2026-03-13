@@ -1,0 +1,5 @@
+class BufferPool { constructor(max) { this.max = max; this.pool = []; } acquire() { return this.pool.pop() || Buffer.alloc(1024); } release(buf) { buf.fill(0); if (this.pool.length < this.max) this.pool.push(buf); }
+} const pool = new BufferPool(100);
+const buf = pool.acquire();
+// use buffer
+pool.release(buf);

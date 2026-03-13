@@ -1,0 +1,38 @@
+// Qwik automatically does selective hydration
+import { component$, useSignal } from '@builder.io/qwik';
+
+export default component$(() => {
+  return (
+    <div>
+      {/* Static content - zero JavaScript */}
+      <header>
+        <h1>Blog Post Title</h1>
+        <p>Author • Date</p>
+      </header>
+
+      <article>
+        <p>Static content here...</p>
+      </article>
+
+      {/* Only this gets JavaScript (on interaction) */}
+      <LikeButton postId="123" />
+
+      {/* Only this gets JavaScript */}
+      <CommentSection postId="123" />
+
+      {/* Static footer */}
+      <footer>© 2026</footer>
+    </div>
+  );
+});
+
+const LikeButton = component$(({ postId }: { postId: string }) => {
+  const likes = useSignal(0);
+
+  // This code only loads when button is clicked
+  return (
+    <button onClick$={() => likes.value++}>
+      ❤️ Like ({likes.value})
+    </button>
+  );
+});

@@ -1,0 +1,1 @@
+Never concatenate user input into SQL. Use parameterized queries.

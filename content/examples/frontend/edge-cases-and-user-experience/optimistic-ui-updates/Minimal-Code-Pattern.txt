@@ -1,0 +1,4 @@
+mutate(updateItem, {
+  optimisticData: draft => applyPatch(draft),
+  rollbackOnError: true,
+});

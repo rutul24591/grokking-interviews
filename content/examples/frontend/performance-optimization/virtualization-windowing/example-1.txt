@@ -1,0 +1,21 @@
+<!-- Outer container: scrollable viewport -->
+<div style="height: 600px; overflow: auto;">
+
+  <!-- Inner container: tall spacer that creates correct scrollbar -->
+  <div style="height: 480000px; position: relative;">
+    <!-- height = totalItems (10,000) × itemHeight (48px) -->
+
+    <!-- Only visible items + overscan are rendered -->
+    <div style="position: absolute; top: 4800px; height: 48px;">Row 100</div>
+    <div style="position: absolute; top: 4848px; height: 48px;">Row 101</div>
+    <div style="position: absolute; top: 4896px; height: 48px;">Row 102</div>
+    <!-- ... ~20 more rows ... -->
+    <div style="position: absolute; top: 5760px; height: 48px;">Row 120</div>
+
+  </div>
+</div>
+
+<!-- Items outside the visible window simply don't exist in the DOM -->
+<!-- Row 0-94: not rendered (above viewport + overscan) -->
+<!-- Row 95-125: rendered (visible + overscan buffer) -->
+<!-- Row 126-9999: not rendered (below viewport + overscan) -->

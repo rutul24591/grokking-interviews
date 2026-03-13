@@ -1,0 +1,52 @@
+// === Strategy 1: Hidden source maps ===
+// Generate source maps but don't reference them in the bundle
+// Only upload to error monitoring services (Sentry, Datadog, etc.)
+
+// Webpack
+module.exports = {
+  devtool: 'hidden-source-map',
+  // Generates .map files but no //# sourceMappingURL comment
+};
+
+// Vite
+export default defineConfig({
+  build: {
+    sourcemap: 'hidden',
+  },
+});
+
+// === Strategy 2: Source maps only for error monitoring ===
+// Upload to Sentry, then delete from deployment
+// sentry.config.js
+const SentryWebpackPlugin = require('@sentry/webpack-plugin');
+
+module.exports = {
+  devtool: 'source-map',
+  plugins: [
+    new SentryWebpackPlugin({
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      org: 'my-org',
+      project: 'my-app',
+      include: './dist',
+      urlPrefix: '~/static/js',
+      // Source maps are uploaded to Sentry, then can be removed from dist
+    }),
+  ],
+};
+
+// === Strategy 3: Restrict access via server config ===
+// nginx.conf — only allow internal IPs to access source maps
+location ~* \\.map$ {
+  allow 10.0.0.0/8;     // Internal network
+  deny all;              // Block public access
+}
+
+// === Strategy 4: No source maps in production ===
+// Simplest approach but worst debugging experience
+// Only viable if you have good error logging without stack traces
+
+// === Webpack devtool options comparison ===
+// 'source-map'        → Full map, separate file, slowest build
+// 'hidden-source-map' → Full map, no reference in bundle
+// 'nosources-source-map' → Maps line/column but not original source
+// 'cheap-source-map'  → Line-only mapping (no column), faster build

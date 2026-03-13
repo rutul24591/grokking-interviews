@@ -1,0 +1,1 @@
+Alert if error rate > 2% for 5 minutes.

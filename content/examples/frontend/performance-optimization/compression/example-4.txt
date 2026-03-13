@@ -1,0 +1,12 @@
+// Brotli compression levels — typical results for a 500KB JS bundle:
+//
+// Level 0:   ~155 KB  (69% reduction)  — 3ms compression time
+// Level 4:   ~128 KB  (74% reduction)  — 20ms compression time
+// Level 6:   ~118 KB  (76% reduction)  — 50ms compression time
+// Level 9:   ~112 KB  (78% reduction)  — 200ms compression time
+// Level 11:  ~105 KB  (79% reduction)  — 2500ms compression time
+//
+// For dynamic compression: use levels 4-6 (competitive with Gzip speed)
+// For static pre-compression: use level 11 (pay the cost once at build time)
+// Level 11 is ~20KB smaller than Gzip 9 on the same file — significant
+// when multiplied across millions of requests.

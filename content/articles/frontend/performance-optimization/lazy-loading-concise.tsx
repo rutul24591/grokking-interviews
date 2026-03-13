@@ -101,9 +101,9 @@ function LazyImage({ src, alt, width, height, placeholder }) {
   const [inView, setInView] = useState(false);
   const imgRef = useRef(null);
 
-  useEffect(() => {
+  useEffect(() =&gt; {
     const observer = new IntersectionObserver(
-      ([entry]) => {
+      ([entry]) =&gt; {
         if (entry.isIntersecting) {
           setInView(true);
           observer.disconnect();
@@ -113,7 +113,7 @@ function LazyImage({ src, alt, width, height, placeholder }) {
     );
 
     if (imgRef.current) observer.observe(imgRef.current);
-    return () => observer.disconnect();
+    return () =&gt; observer.disconnect();
   }, []);
 
   return (
@@ -136,7 +136,7 @@ function LazyImage({ src, alt, width, height, placeholder }) {
           height={height}
           onLoad={() => setLoaded(true)}
           style={{ opacity: loaded ? 1 : 0, transition: 'opacity 0.3s' }}
-        />
+        /&gt;
       )}
     </div>
   );
@@ -154,7 +154,7 @@ function LazyImage({ src, alt, width, height, placeholder }) {
           <code>{`import { lazy, Suspense, useState, useRef, useEffect } from 'react';
 
 // === Load on user interaction ===
-const RichEditor = lazy(() => import('./RichEditor'));
+const RichEditor = lazy(() =&gt; import('./RichEditor'));
 
 function PostForm() {
   const [showEditor, setShowEditor] = useState(false);
@@ -162,11 +162,11 @@ function PostForm() {
   return (
     <div>
       {!showEditor ? (
-        <button onClick={() => setShowEditor(true)}>
+        <button onClick={() => setShowEditor(true)}&gt;
           Write Post
         </button>
       ) : (
-        <Suspense fallback={<EditorSkeleton />}>
+        <Suspense fallback={<EditorSkeleton />}&gt;
           <RichEditor />
         </Suspense>
       )}
@@ -175,21 +175,21 @@ function PostForm() {
 }
 
 // === Load when scrolled into view ===
-const Comments = lazy(() => import('./Comments'));
+const Comments = lazy(() =&gt; import('./Comments'));
 
 function ArticlePage({ article }) {
   const [showComments, setShowComments] = useState(false);
   const sentinelRef = useRef(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
+  useEffect(() =&gt; {
+    const observer = new IntersectionObserver(([entry]) =&gt; {
       if (entry.isIntersecting) {
         setShowComments(true);
         observer.disconnect();
       }
     });
     if (sentinelRef.current) observer.observe(sentinelRef.current);
-    return () => observer.disconnect();
+    return () =&gt; observer.disconnect();
   }, []);
 
   return (
@@ -197,7 +197,7 @@ function ArticlePage({ article }) {
       <article>{article.content}</article>
       <div ref={sentinelRef} />
       {showComments && (
-        <Suspense fallback={<CommentsSkeleton />}>
+        <Suspense fallback={<CommentsSkeleton />}&gt;
           <Comments articleId={article.id} />
         </Suspense>
       )}
@@ -208,8 +208,8 @@ function ArticlePage({ article }) {
 // === Next.js dynamic import ===
 import dynamic from 'next/dynamic';
 
-const Map = dynamic(() => import('./MapView'), {
-  loading: () => <MapSkeleton />,
+const Map = dynamic(() =&gt; import('./MapView'), {
+  loading: () =&gt; <MapSkeleton />,
   ssr: false, // MapboxGL needs browser APIs
 });`}</code>
         </pre>
@@ -224,21 +224,21 @@ const Map = dynamic(() => import('./MapView'), {
           <code>{`import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-const Home = lazy(() => import('./pages/Home'));
-const Dashboard = lazy(() =>
+const Home = lazy(() =&gt; import('./pages/Home'));
+const Dashboard = lazy(() =&gt;
   import(/* webpackPrefetch: true */ './pages/Dashboard')
 );
-const Settings = lazy(() =>
+const Settings = lazy(() =&gt;
   import(/* webpackPrefetch: true */ './pages/Settings')
 );
 
 function App() {
   return (
-    <Suspense fallback={<PageSkeleton />}>
+    <Suspense fallback={<PageSkeleton />}&gt;
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/settings" element={<Settings />} />
+        <Route path="/" element={<Home />} /&gt;
+        <Route path="/dashboard" element={<Dashboard />} /&gt;
+        <Route path="/settings" element={<Settings />} /&gt;
       </Routes>
     </Suspense>
   );

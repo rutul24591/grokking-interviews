@@ -1,0 +1,14 @@
+// Webpack's intermediate output (before minification):
+
+/* unused harmony export formatCurrency */
+/* unused harmony export parseDate */
+
+// The minifier sees these annotations and removes the exports.
+// Without the annotations, the minifier can't know if removal is safe.
+
+// The /*#__PURE__*/ annotation marks function calls as side-effect free:
+const Button = /*#__PURE__*/ React.forwardRef((props, ref) => {
+  // ...
+});
+// If Button is unused, the minifier knows React.forwardRef() call
+// can be safely removed (it doesn't modify global state).

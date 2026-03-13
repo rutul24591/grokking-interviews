@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1822">Update Consistency: Changing a User's Name</text>
+  <text x="450" y="48" text-anchor="middle" font-size="12" fill="#1a1822">User "Alice" changes her name to "Alicia"</text>
+
+  <!-- LEFT SIDE: Nested Store (Problematic) -->
+  <rect x="20" y="64" width="410" height="420" rx="8" fill="#edeaf5" stroke="#d97843" stroke-width="1.5"/>
+  <text x="225" y="88" text-anchor="middle" font-size="14" font-weight="bold" fill="#d97843">Nested Store — Multiple Updates Required</text>
+
+  <!-- Update 1 -->
+  <rect x="35" y="100" width="380" height="52" rx="6" fill="white" stroke="#d97843" stroke-width="1"/>
+  <rect x="35" y="100" width="28" height="52" rx="6" fill="#d97843"/>
+  <text x="49" y="130" text-anchor="middle" font-size="11" font-weight="bold" fill="white">1</text>
+  <text x="75" y="118" font-size="10" fill="#1a1822" font-weight="bold">posts[0].author.name</text>
+  <text x="75" y="134" font-size="9" fill="#d97843">Find post, navigate to .author, update .name</text>
+  <line x1="300" y1="118" x2="395" y2="118" stroke="#d97843" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="350" y="146" font-size="9" fill="#d97843" font-style="italic">Manual find + update</text>
+
+  <!-- Update 2 -->
+  <rect x="35" y="162" width="380" height="52" rx="6" fill="white" stroke="#d97843" stroke-width="1"/>
+  <rect x="35" y="162" width="28" height="52" rx="6" fill="#d97843"/>
+  <text x="49" y="192" text-anchor="middle" font-size="11" font-weight="bold" fill="white">2</text>
+  <text x="75" y="180" font-size="10" fill="#1a1822" font-weight="bold">posts[0].comments[0].author.name</text>
+  <text x="75" y="196" font-size="9" fill="#d97843">Find post, find comment, navigate to .author, update .name</text>
+  <text x="350" y="208" font-size="9" fill="#d97843" font-style="italic">Manual find + update</text>
+
+  <!-- Update 3 -->
+  <rect x="35" y="224" width="380" height="52" rx="6" fill="white" stroke="#d97843" stroke-width="1"/>
+  <rect x="35" y="224" width="28" height="52" rx="6" fill="#d97843"/>
+  <text x="49" y="254" text-anchor="middle" font-size="11" font-weight="bold" fill="white">3</text>
+  <text x="75" y="242" font-size="10" fill="#1a1822" font-weight="bold">posts[1].author.name</text>
+  <text x="75" y="258" font-size="9" fill="#d97843">Find second post, navigate to .author, update .name</text>
+  <text x="350" y="270" font-size="9" fill="#d97843" font-style="italic">Manual find + update</text>
+
+  <!-- Update 4 -->
+  <rect x="35" y="286" width="380" height="52" rx="6" fill="white" stroke="#d97843" stroke-width="1"/>
+  <rect x="35" y="286" width="28" height="52" rx="6" fill="#d97843"/>
+  <text x="49" y="316" text-anchor="middle" font-size="11" font-weight="bold" fill="white">4</text>
+  <text x="75" y="304" font-size="10" fill="#1a1822" font-weight="bold">posts[2].comments[1].author.name</text>
+  <text x="75" y="320" font-size="9" fill="#d97843">Find third post, find comment, navigate, update...</text>
+  <text x="350" y="332" font-size="9" fill="#d97843" font-style="italic">Manual find + update</text>
+
+  <!-- More updates indicator -->
+  <rect x="35" y="348" width="380" height="36" rx="6" fill="#fff0e3" stroke="#d97843" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="225" y="370" text-anchor="middle" font-size="11" fill="#d97843" font-weight="bold">... N more locations to find and update</text>
+
+  <!-- Problem callout -->
+  <rect x="35" y="396" width="380" height="76" rx="6" fill="#fde8d8" stroke="#d97843" stroke-width="1.5"/>
+  <text x="225" y="418" text-anchor="middle" font-size="11" font-weight="bold" fill="#d97843">Problems:</text>
+  <text x="50" y="436" font-size="10" fill="#1a1822">• Miss one copy → user sees "Alice" AND "Alicia"</text>
+  <text x="50" y="452" font-size="10" fill="#1a1822">• O(n) scan through entire state tree</text>
+  <text x="50" y="468" font-size="10" fill="#1a1822">• Bug-prone: new features add new nested copies</text>
+
+  <!-- RIGHT SIDE: Normalized Store (Clean) -->
+  <rect x="470" y="64" width="410" height="420" rx="8" fill="#edeaf5" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="675" y="88" text-anchor="middle" font-size="14" font-weight="bold" fill="#2f9d74">Normalized Store — Single Update</text>
+
+  <!-- The one update -->
+  <rect x="485" y="110" width="380" height="72" rx="6" fill="white" stroke="#2f9d74" stroke-width="2"/>
+  <rect x="485" y="110" width="28" height="72" rx="6" fill="#2f9d74"/>
+  <text x="499" y="150" text-anchor="middle" font-size="14" font-weight="bold" fill="white">1</text>
+  <text x="525" y="132" font-size="11" fill="#1a1822" font-weight="bold">users.byId["user-1"].name = "Alicia"</text>
+  <text x="525" y="152" font-size="10" fill="#2f9d74">One record. One update. Done.</text>
+  <text x="525" y="170" font-size="9" fill="#1a1822">O(1) direct lookup by ID</text>
+
+  <!-- Arrow from single update to components -->
+  <line x1="675" y1="190" x2="675" y2="216" stroke="#2f9d74" stroke-width="2"/>
+  <polygon points="675,224 668,216 682,216" fill="#2f9d74"/>
+  <text x="675" y="242" text-anchor="middle" font-size="11" fill="#2f9d74" font-weight="bold">All selectors re-derive automatically</text>
+
+  <!-- Component 1 -->
+  <rect x="485" y="258" width="183" height="64" rx="6" fill="#e6f5ee" stroke="#2f9d74" stroke-width="1"/>
+  <text x="576" y="280" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">PostAuthor</text>
+  <text x="576" y="296" text-anchor="middle" font-size="9" fill="#1a1822">reads users.byId[post.authorId]</text>
+  <text x="576" y="310" text-anchor="middle" font-size="9" fill="#2f9d74">→ shows "Alicia" ✓</text>
+
+  <!-- Component 2 -->
+  <rect x="682" y="258" width="183" height="64" rx="6" fill="#e6f5ee" stroke="#2f9d74" stroke-width="1"/>
+  <text x="773" y="280" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">CommentAuthor</text>
+  <text x="773" y="296" text-anchor="middle" font-size="9" fill="#1a1822">reads users.byId[cmt.authorId]</text>
+  <text x="773" y="310" text-anchor="middle" font-size="9" fill="#2f9d74">→ shows "Alicia" ✓</text>
+
+  <!-- Component 3 -->
+  <rect x="485" y="332" width="183" height="64" rx="6" fill="#e6f5ee" stroke="#2f9d74" stroke-width="1"/>
+  <text x="576" y="354" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">ProfileCard</text>
+  <text x="576" y="370" text-anchor="middle" font-size="9" fill="#1a1822">reads users.byId["user-1"]</text>
+  <text x="576" y="384" text-anchor="middle" font-size="9" fill="#2f9d74">→ shows "Alicia" ✓</text>
+
+  <!-- Component 4 -->
+  <rect x="682" y="332" width="183" height="64" rx="6" fill="#e6f5ee" stroke="#2f9d74" stroke-width="1"/>
+  <text x="773" y="354" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">MemberList</text>
+  <text x="773" y="370" text-anchor="middle" font-size="9" fill="#1a1822">reads users.byId for each member</text>
+  <text x="773" y="384" text-anchor="middle" font-size="9" fill="#2f9d74">→ shows "Alicia" ✓</text>
+
+  <!-- Success callout -->
+  <rect x="485" y="410" width="380" height="62" rx="6" fill="#e6f5ee" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="675" y="432" text-anchor="middle" font-size="11" font-weight="bold" fill="#2f9d74">Benefits:</text>
+  <text x="500" y="450" font-size="10" fill="#1a1822">• Guaranteed consistency — impossible to miss a copy</text>
+  <text x="500" y="466" font-size="10" fill="#1a1822">• O(1) update — no scanning, no searching</text>
+</svg>

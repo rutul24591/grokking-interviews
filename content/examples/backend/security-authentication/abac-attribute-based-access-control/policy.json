@@ -1,0 +1,3 @@
+{
+  "rule": "user.department == resource.department"
+}

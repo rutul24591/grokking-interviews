@@ -1,0 +1,30 @@
+// ✅ BEST — Named exports, individually tree-shakeable
+export function Button() { /* ... */ }
+export function Input() { /* ... */ }
+export function Select() { /* ... */ }
+
+// ✅ OK — Default export of a single thing
+export default function App() { /* ... */ }
+
+// ❌ BAD — Default export of an object (NOT tree-shakeable)
+export default {
+  Button,
+  Input,
+  Select,
+};
+// The entire object is the single export — bundler can't remove
+// individual properties. If you import this, you get all three.
+
+// ❌ BAD — Class with static methods (NOT tree-shakeable per-method)
+export class StringUtils {
+  static capitalize(s) { ... }
+  static truncate(s, n) { ... }
+  static slugify(s) { ... }
+}
+// If you use StringUtils.capitalize, you get all methods.
+
+// ✅ GOOD — Individual function exports
+export function capitalize(s) { ... }
+export function truncate(s, n) { ... }
+export function slugify(s) { ... }
+// Only the functions you import end up in the bundle.

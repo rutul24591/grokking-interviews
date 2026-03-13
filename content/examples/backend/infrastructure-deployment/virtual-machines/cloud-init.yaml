@@ -1,0 +1,12 @@
+#cloud-config
+package_update: true
+packages:
+  - nodejs
+  - npm
+write_files:
+  - path: /opt/app/server.js
+    content: |
+      const http = require('http');
+      http.createServer((req, res) => res.end('vm')).listen(3000);
+runcmd:
+  - node /opt/app/server.js &

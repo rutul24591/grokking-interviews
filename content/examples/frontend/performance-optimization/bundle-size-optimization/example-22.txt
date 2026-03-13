@@ -1,0 +1,20 @@
+<!-- Modern browsers load the ES module version (smaller, no polyfills) -->
+<script type="module" src="/assets/app.modern.js"></script>
+
+<!-- Legacy browsers ignore type="module" and load this instead -->
+<script nomodule src="/assets/app.legacy.js"></script>
+
+// Vite handles this automatically with the legacy plugin:
+// vite.config.ts
+import legacy from '@vitejs/plugin-legacy';
+
+export default defineConfig({
+  plugins: [
+    legacy({
+      targets: ['defaults', 'not IE 11'],
+      // Generates both modern and legacy bundles
+      // Modern: ~30% smaller (no polyfills, modern syntax)
+      // Legacy: full polyfills for older browsers
+    }),
+  ],
+});

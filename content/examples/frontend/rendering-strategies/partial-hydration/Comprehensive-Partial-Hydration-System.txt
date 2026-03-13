@@ -1,0 +1,163 @@
+// hydration-orchestrator.ts
+type HydrationCondition =
+  | 'immediate'
+  | 'visible'
+  | 'idle'
+  | 'interaction'
+  | 'media'
+  | { custom: () => boolean };
+
+interface HydrationConfig {
+  condition: HydrationCondition;
+  rootMargin?: string; // For visible
+  timeout?: number; // For idle
+  media?: string; // For media query
+  priority?: number; // Execution order
+}
+
+class HydrationOrchestrator {
+  private hydrated = new Set<string>();
+  private pending = new Map<string, HydrationConfig>();
+
+  register(componentId: string, config: HydrationConfig) {
+    this.pending.set(componentId, config);
+
+    switch (config.condition) {
+      case 'immediate':
+        this.hydrateComponent(componentId);
+        break;
+
+      case 'visible':
+        this.observeVisibility(componentId, config);
+        break;
+
+      case 'idle':
+        this.scheduleIdle(componentId, config);
+        break;
+
+      case 'interaction':
+        this.observeInteraction(componentId);
+        break;
+
+      case 'media':
+        this.observeMedia(componentId, config);
+        break;
+
+      default:
+        if (typeof config.condition === 'object' && config.condition.custom) {
+          this.evaluateCustom(componentId, config.condition.custom);
+        }
+    }
+  }
+
+  private observeVisibility(id: string, config: HydrationConfig) {
+    const element = document.querySelector(`[data-hydrate-id="\${id}"]`);
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          this.hydrateComponent(id);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: config.rootMargin || '50px' }
+    );
+
+    observer.observe(element);
+  }
+
+  private scheduleIdle(id: string, config: HydrationConfig) {
+    const requestIdleCallback =
+      window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
+
+    requestIdleCallback(
+      () => this.hydrateComponent(id),
+      { timeout: config.timeout || 2000 }
+    );
+  }
+
+  private observeInteraction(id: string) {
+    const element = document.querySelector(`[data-hydrate-id="\${id}"]`);
+    if (!element) return;
+
+    const handler = () => {
+      this.hydrateComponent(id);
+      // Remove listeners after hydration
+      ['click', 'mouseenter', 'focus'].forEach(event =>
+        element.removeEventListener(event, handler)
+      );
+    };
+
+    ['click', 'mouseenter', 'focus'].forEach(event =>
+      element.addEventListener(event, handler, { once: true })
+    );
+  }
+
+  private observeMedia(id: string, config: HydrationConfig) {
+    if (!config.media) return;
+
+    const mediaQuery = window.matchMedia(config.media);
+
+    const checkMedia = () => {
+      if (mediaQuery.matches) {
+        this.hydrateComponent(id);
+        mediaQuery.removeEventListener('change', checkMedia);
+      }
+    };
+
+    if (mediaQuery.matches) {
+      this.hydrateComponent(id);
+    } else {
+      mediaQuery.addEventListener('change', checkMedia);
+    }
+  }
+
+  private async hydrateComponent(id: string) {
+    if (this.hydrated.has(id)) return;
+
+    this.hydrated.add(id);
+    const config = this.pending.get(id);
+
+    try {
+      // Dynamic import component code
+      const { default: Component } = await import(`./components/\${id}`);
+
+      // Find DOM node
+      const element = document.querySelector(`[data-hydrate-id="\${id}"]`);
+      if (!element) return;
+
+      // Parse props from data attribute
+      const props = JSON.parse(
+        element.getAttribute('data-hydrate-props') || '{}'
+      );
+
+      // Hydrate (React example, adapt for other frameworks)
+      const { hydrateRoot } = await import('react-dom/client');
+      hydrateRoot(element, <Component {...props} />);
+
+      console.log(`✓ Hydrated: \${id}`, config);
+    } catch (error) {
+      console.error(`✗ Hydration failed: \${id}`, error);
+    }
+  }
+}
+
+// Initialize orchestrator
+const orchestrator = new HydrationOrchestrator();
+
+// Auto-register components on page load
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[data-hydrate-id]').forEach((el) => {
+    const id = el.getAttribute('data-hydrate-id')!;
+    const condition = el.getAttribute('data-hydrate-when')! as HydrationCondition;
+    const rootMargin = el.getAttribute('data-hydrate-root-margin');
+    const media = el.getAttribute('data-hydrate-media');
+
+    orchestrator.register(id, {
+      condition,
+      rootMargin: rootMargin || undefined,
+      media: media || undefined,
+    });
+  });
+});

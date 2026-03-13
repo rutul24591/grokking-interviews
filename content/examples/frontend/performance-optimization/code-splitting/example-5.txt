@@ -1,0 +1,37 @@
+// === Feature flag based splitting ===
+async function loadFeatures(flags) {
+  const modules = [];
+
+  if (flags.newCheckout) {
+    modules.push(import('./features/NewCheckout'));
+  } else {
+    modules.push(import('./features/LegacyCheckout'));
+  }
+
+  if (flags.aiAssistant) {
+    modules.push(import('./features/AIAssistant'));
+  }
+
+  return Promise.all(modules);
+}
+
+// === Device capability based ===
+async function loadVideoPlayer() {
+  const supportsHLS = document.createElement('video')
+    .canPlayType('application/vnd.apple.mpegURL');
+
+  if (supportsHLS) {
+    return import('./players/NativeHLSPlayer');
+  }
+  // hls.js is ~100KB — only load when native HLS isn't supported
+  return import('./players/HLSJSPlayer');
+}
+
+// === Locale-based splitting for i18n ===
+async function loadTranslations(locale) {
+  // Each locale is a separate chunk (~20-50KB each)
+  // Only the user's locale is downloaded
+  const translations = await import(`./locales/\${locale}.json`);
+  return translations.default;
+}
+// Webpack creates chunks: locales/en.json, locales/fr.json, locales/de.json, etc.

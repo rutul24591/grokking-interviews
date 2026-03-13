@@ -1,0 +1,1 @@
+Synthetic checks validate user-facing paths.

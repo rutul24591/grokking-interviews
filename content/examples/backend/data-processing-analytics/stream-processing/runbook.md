@@ -1,0 +1,1 @@
+If lag increases: scale consumers and check downstream sink latency.

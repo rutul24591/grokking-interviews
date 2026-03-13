@@ -1,0 +1,5 @@
+transactions:
+  pattern: saga
+  timeout_ms: 5000
+  retry_budget: 2
+  compensation_required: true

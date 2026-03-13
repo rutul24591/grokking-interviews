@@ -1,0 +1,29 @@
+// Leading-edge debounce — fires on the FIRST call, then suppresses
+function debounceLeading(fn, delay) {
+  let timeoutId = null;
+
+  function debounced(...args) {
+    const shouldCallImmediately = timeoutId === null;
+
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      timeoutId = null;
+    }, delay);
+
+    if (shouldCallImmediately) {
+      fn.apply(this, args);
+    }
+  }
+
+  debounced.cancel = () => {
+    clearTimeout(timeoutId);
+    timeoutId = null;
+  };
+
+  return debounced;
+}
+
+// Fires immediately on first click, ignores clicks for 500ms after
+const handleSubmit = debounceLeading((formData) => {
+  submitOrder(formData);
+}, 500);

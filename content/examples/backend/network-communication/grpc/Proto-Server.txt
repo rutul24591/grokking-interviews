@@ -1,0 +1,13 @@
+// user.proto
+syntax = "proto3";
+service UserService { rpc GetUser (UserRequest) returns (UserReply); }
+message UserRequest { string id = 1; }
+message UserReply { string id = 1; string email = 2; }
+
+// server.js
+const grpc = require("@grpc/grpc-js");
+const service = { GetUser: (call, cb) => cb(null, { id: call.request.id, email: "user@example.com" }) };
+
+const server = new grpc.Server();
+server.addService(UserService.service, service);
+server.bindAsync("0.0.0.0:50051", grpc.ServerCredentials.createInsecure(), () => server.start());

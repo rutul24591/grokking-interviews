@@ -1,0 +1,33 @@
+// service-worker.js — dedup at the network layer
+const inflightRequests = new Map();
+
+self.addEventListener('fetch', (event) => {
+  const { request } = event;
+
+  // Only dedup GET requests to our API
+  if (request.method !== 'GET' || !request.url.includes('/api/')) {
+    return;
+  }
+
+  const key = request.url;
+
+  if (inflightRequests.has(key)) {
+    // Return a clone of the in-flight response
+    event.respondWith(
+      inflightRequests.get(key).then(response => response.clone())
+    );
+    return;
+  }
+
+  const responsePromise = fetch(request).then(response => {
+    // Cache the response for a short window
+    const cache = caches.open('dedup-cache');
+    cache.then(c => c.put(request, response.clone()));
+
+    inflightRequests.delete(key);
+    return response;
+  });
+
+  inflightRequests.set(key, responsePromise);
+  event.respondWith(responsePromise.then(r => r.clone()));
+});

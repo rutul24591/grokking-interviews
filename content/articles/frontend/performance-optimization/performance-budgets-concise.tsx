@@ -203,7 +203,7 @@ module.exports = {
     maxAssetSize: 250000,        // 250KB per asset (warning)
     maxEntrypointSize: 300000,   // 300KB per entry point
     hints: 'error',              // 'warning' | 'error' | false
-    assetFilter: (assetFilename) => {
+    assetFilter: (assetFilename) =&gt; {
       // Only check JS and CSS files
       return /\\.(js|css)$/.test(assetFilename);
     },

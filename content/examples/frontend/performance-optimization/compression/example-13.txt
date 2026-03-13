@@ -1,0 +1,21 @@
+// In Chrome DevTools → Network tab:
+//
+// 1. Enable "Use large request rows" (right-click column headers)
+// 2. Look at the Size column — shows two values:
+//    - Top number: transfer size (compressed bytes over the wire)
+//    - Bottom number: actual size (decompressed resource size)
+//
+// Example:
+//    bundle.js
+//    105 KB (transferred)    ← compressed size (Brotli)
+//    487 KB (resource)       ← actual size
+//    Compression ratio: 78% reduction
+//
+// 3. Click a request → Headers tab → Response Headers:
+//    Content-Encoding: br           ← Brotli is active
+//    Content-Length: 107,253        ← compressed size in bytes
+//    Content-Type: application/javascript
+//    Vary: Accept-Encoding          ← caching is encoding-aware
+//
+// Red flag: If transfer size ≈ resource size for JS/CSS/HTML,
+// compression is NOT active — investigate server configuration.

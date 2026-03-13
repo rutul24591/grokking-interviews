@@ -1,0 +1,61 @@
+// === Understanding the 'sizes' attribute ===
+
+// sizes tells the browser how wide the image will be displayed
+// BEFORE it downloads any image. This is critical because the
+// browser makes the srcset decision during HTML parsing, before
+// CSS is loaded.
+
+<img
+  srcSet="
+    /photo-400.webp 400w,
+    /photo-800.webp 800w,
+    /photo-1200.webp 1200w,
+    /photo-1600.webp 1600w,
+    /photo-2000.webp 2000w
+  "
+  sizes="
+    (max-width: 640px) 100vw,
+    (max-width: 1024px) 50vw,
+    33vw
+  "
+  src="/photo-800.webp"
+  alt="Photo"
+  width={800}
+  height={600}
+/>
+
+// Translation of sizes:
+// Mobile (≤640px):  Image fills 100% of viewport width
+// Tablet (≤1024px): Image fills 50% of viewport width
+// Desktop (>1024px): Image fills 33% of viewport width
+
+// === DPR-based srcset (for fixed-size images) ===
+
+// Use 'x' descriptors for images that are always the same CSS size
+// (avatars, thumbnails, logos)
+<img
+  src="/avatar-48.webp"
+  srcSet="
+    /avatar-48.webp 1x,
+    /avatar-96.webp 2x,
+    /avatar-144.webp 3x
+  "
+  alt="User avatar"
+  width={48}
+  height={48}
+/>
+// 1x display: 48px image (standard screens)
+// 2x display: 96px image (Retina/HiDPI)
+// 3x display: 144px image (iPhone Pro, etc.)
+
+// === Choosing breakpoints ===
+// Don't match CSS breakpoints — match actual image display sizes
+// The goal is ~20KB between each step for photos
+
+// Common widths: 400, 800, 1200, 1600, 2000
+// This covers:
+// - 400: Mobile 1x
+// - 800: Mobile 2x, Tablet 1x
+// - 1200: Tablet 2x, Desktop 1x
+// - 1600: Desktop 2x
+// - 2000: Large desktop 2x

@@ -1,0 +1,20 @@
+<!-- Pattern 1: preload + onload swap (most common) -->
+<link rel="preload" href="/styles.css" as="style"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/styles.css"></noscript>
+
+<!-- Pattern 2: media attribute trick -->
+<!-- "print" media doesn't block rendering for screen -->
+<link rel="stylesheet" href="/styles.css" media="print"
+      onload="this.media='all'">
+
+<!-- Pattern 3: JavaScript-based loading -->
+<script>
+  // Load CSS after the page has rendered
+  requestIdleCallback(() => {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '/styles.css';
+    document.head.appendChild(link);
+  });
+</script>

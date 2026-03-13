@@ -1,0 +1,2 @@
+const history = useUndoState(initialState);
+const [state, setState, undo, redo, canUndo, canRedo] = history;

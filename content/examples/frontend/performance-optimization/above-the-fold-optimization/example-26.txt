@@ -1,0 +1,30 @@
+// Next.js Edge Runtime for specific routes
+// Runs on Vercel's Edge Network (or other edge platforms)
+
+// app/api/above-fold-data/route.ts
+export const runtime = 'edge'; // Run on edge, not Node.js
+
+export async function GET(request: Request) {
+  // Edge cache for 60 seconds, stale-while-revalidate for 1 hour
+  const data = await fetch('https://api.example.com/featured', {
+    next: { revalidate: 60 },
+  });
+
+  return Response.json(await data.json(), {
+    headers: {
+      'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=3600',
+    },
+  });
+}
+
+// Middleware for edge-side personalization
+// middleware.ts
+export const config = { matcher: ['/((?!api|_next|static).*)'] };
+
+export function middleware(request: Request) {
+  // Personalize above-fold content at the edge
+  const country = request.geo?.country || 'US';
+  const response = NextResponse.next();
+  response.headers.set('x-user-country', country);
+  return response;
+}

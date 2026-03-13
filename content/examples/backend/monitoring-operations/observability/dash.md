@@ -1,0 +1,1 @@
+Dashboard includes error rate, p95 latency, and trace sample links.

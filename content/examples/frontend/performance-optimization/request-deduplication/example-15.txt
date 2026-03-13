@@ -1,0 +1,75 @@
+// DataLoader-style request coalescing
+class RequestCoalescer<K, V> {
+  private batch: Map<K, {
+    resolve: (value: V) => void;
+    reject: (error: Error) => void;
+  }[]> = new Map();
+  private timer: ReturnType<typeof setTimeout> | null = null;
+  private batchFn: (keys: K[]) => Promise<Map<K, V>>;
+  private windowMs: number;
+
+  constructor(
+    batchFn: (keys: K[]) => Promise<Map<K, V>>,
+    windowMs = 16 // one animation frame
+  ) {
+    this.batchFn = batchFn;
+    this.windowMs = windowMs;
+  }
+
+  async load(key: K): Promise<V> {
+    return new Promise((resolve, reject) => {
+      if (!this.batch.has(key)) {
+        this.batch.set(key, []);
+      }
+      this.batch.get(key)!.push({ resolve, reject });
+
+      // Schedule batch execution
+      if (!this.timer) {
+        this.timer = setTimeout(() => this.executeBatch(), this.windowMs);
+      }
+    });
+  }
+
+  private async executeBatch() {
+    const currentBatch = new Map(this.batch);
+    this.batch.clear();
+    this.timer = null;
+
+    try {
+      const keys = Array.from(currentBatch.keys());
+      const results = await this.batchFn(keys);
+
+      for (const [key, subscribers] of currentBatch) {
+        const value = results.get(key);
+        if (value !== undefined) {
+          subscribers.forEach(s => s.resolve(value));
+        } else {
+          subscribers.forEach(s =>
+            s.reject(new Error(`No result for key: \${key}`))
+          );
+        }
+      }
+    } catch (err) {
+      for (const subscribers of currentBatch.values()) {
+        subscribers.forEach(s => s.reject(err as Error));
+      }
+    }
+  }
+}
+
+// Usage
+const userLoader = new RequestCoalescer(async (ids: string[]) => {
+  // Single batch request instead of N individual requests
+  const res = await fetch('/api/users/batch', {
+    method: 'POST',
+    body: JSON.stringify({ ids }),
+  });
+  const users = await res.json();
+  return new Map(users.map((u: any) => [u.id, u]));
+});
+
+// Three components call load() in the same frame:
+const user1 = await userLoader.load('abc'); // }
+const user2 = await userLoader.load('def'); // } → ONE POST /api/users/batch
+const user3 = await userLoader.load('abc'); // }   with ids: ['abc', 'def']
+// user1 and user3 get the same object (also deduplicated)

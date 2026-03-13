@@ -1,0 +1,56 @@
+// Next.js Image component — automatic LCP optimization
+import Image from 'next/image';
+
+function ProductHero({ product }) {
+  return (
+    <section className="hero">
+      <Image
+        src={product.heroImage}
+        alt={product.name}
+        width={1200}
+        height={600}
+        // priority: adds preload link + fetchpriority="high"
+        // Tells Next.js this is the LCP image
+        priority
+        // Use responsive sizes for different viewports
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+        // Specify quality for WebP generation
+        quality={85}
+        // Placeholder blur for perceived performance
+        placeholder="blur"
+        blurDataURL={product.blurHash}
+      />
+    </section>
+  );
+}
+
+// Manual responsive image setup (without Next.js)
+function ManualHeroImage({ src, alt }) {
+  return (
+    <picture>
+      {/* AVIF for browsers that support it (smallest file size) */}
+      <source
+        srcSet="/hero-400.avif 400w, /hero-800.avif 800w, /hero-1200.avif 1200w"
+        sizes="(max-width: 768px) 100vw, 1200px"
+        type="image/avif"
+      />
+      {/* WebP fallback */}
+      <source
+        srcSet="/hero-400.webp 400w, /hero-800.webp 800w, /hero-1200.webp 1200w"
+        sizes="(max-width: 768px) 100vw, 1200px"
+        type="image/webp"
+      />
+      {/* JPEG fallback for older browsers */}
+      <img
+        src="/hero-1200.jpg"
+        srcSet="/hero-400.jpg 400w, /hero-800.jpg 800w, /hero-1200.jpg 1200w"
+        sizes="(max-width: 768px) 100vw, 1200px"
+        alt={alt}
+        width={1200}
+        height={600}
+        fetchPriority="high"
+        decoding="async"
+      />
+    </picture>
+  );
+}

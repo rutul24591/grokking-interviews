@@ -1,0 +1,1 @@
+File storage service handles uploads, metadata, and access control.

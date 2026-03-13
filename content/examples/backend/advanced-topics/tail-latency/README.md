@@ -1,0 +1,1 @@
+Tail latency focuses on high-percentile response times, not averages.

@@ -1,0 +1,17 @@
+<!-- Default: Parser-blocking — worst for above-fold -->
+<!-- Downloads and executes immediately, blocking HTML parsing -->
+<script src="/app.js"></script>
+
+<!-- async: Downloads in parallel, executes as soon as downloaded -->
+<!-- Does NOT guarantee execution order -->
+<!-- Good for: analytics, third-party scripts that don't depend on DOM -->
+<script async src="/analytics.js"></script>
+
+<!-- defer: Downloads in parallel, executes after HTML is parsed -->
+<!-- GUARANTEES execution order (in document order) -->
+<!-- Good for: app bundles, framework code, anything that needs DOM -->
+<script defer src="/app.js"></script>
+<script defer src="/vendor.js"></script>
+
+<!-- Module scripts: deferred by default -->
+<script type="module" src="/app.mjs"></script>

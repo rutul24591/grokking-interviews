@@ -1,0 +1,43 @@
+// .lighthouserc.js — full configuration
+module.exports = {
+  ci: {
+    collect: {
+      url: [
+        'http://localhost:3000',
+        'http://localhost:3000/products',
+        'http://localhost:3000/products/1',
+        'http://localhost:3000/checkout',
+      ],
+      numberOfRuns: 3,               // Median of 3 runs reduces noise
+      startServerCommand: 'pnpm start',
+      startServerReadyPattern: 'ready on',
+      startServerReadyTimeout: 30000,
+    },
+    assert: {
+      preset: 'lighthouse:recommended',
+      assertions: {
+        // Timing budgets
+        'largest-contentful-paint': ['error', { maxNumericValue: 2500 }],
+        'first-contentful-paint': ['error', { maxNumericValue: 1800 }],
+        'cumulative-layout-shift': ['error', { maxNumericValue: 0.1 }],
+        'total-blocking-time': ['error', { maxNumericValue: 200 }],
+        'speed-index': ['warn', { maxNumericValue: 3400 }],
+
+        // Rule-based budgets
+        'categories:performance': ['error', { minScore: 0.9 }],
+        'categories:accessibility': ['warn', { minScore: 0.95 }],
+
+        // Resource budgets
+        'resource-summary:script:size': ['error', { maxNumericValue: 200000 }],
+        'resource-summary:stylesheet:size': ['error', { maxNumericValue: 50000 }],
+        'resource-summary:third-party:count': ['warn', { maxNumericValue: 5 }],
+      },
+    },
+    upload: {
+      target: 'temporary-public-storage',
+      // Or use Lighthouse CI Server for historical tracking:
+      // target: 'lhci',
+      // serverBaseUrl: 'https://lhci.your-domain.com',
+    },
+  },
+};

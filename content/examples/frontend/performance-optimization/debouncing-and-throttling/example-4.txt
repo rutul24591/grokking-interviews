@@ -1,0 +1,23 @@
+// Timestamp-based throttle — leading edge only
+function throttle(fn, interval) {
+  let lastTime = 0;
+
+  function throttled(...args) {
+    const now = Date.now();
+    if (now - lastTime >= interval) {
+      lastTime = now;
+      fn.apply(this, args);
+    }
+  }
+
+  throttled.cancel = () => {
+    lastTime = 0;
+  };
+
+  return throttled;
+}
+
+// Fires immediately, then at most once per 200ms
+const handleScroll = throttle(() => {
+  updateProgressBar(window.scrollY);
+}, 200);

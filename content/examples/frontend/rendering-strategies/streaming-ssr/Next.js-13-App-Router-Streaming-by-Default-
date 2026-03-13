@@ -1,0 +1,83 @@
+// app/product/[id]/page.tsx - Server Component
+import { Suspense } from 'react';
+import ProductImage from './ProductImage';
+import ProductDetails from './ProductDetails';
+import Reviews from './Reviews';
+import RecommendedProducts from './RecommendedProducts';
+
+export default async function ProductPage({ params }: { params: { id: string } }) {
+  // Shell renders immediately (fast, no data fetching)
+  return (
+    <div>
+      <header>
+        <nav>Logo | Search | Cart</nav>
+      </header>
+
+      <main>
+        {/* Fast: Static or cached image */}
+        <ProductImage productId={params.id} />
+
+        {/* Suspense: Slow database query */}
+        <Suspense fallback={<ProductDetailsSkeleton />}>
+          <ProductDetails productId={params.id} />
+        </Suspense>
+
+        {/* Suspense: Slow API call */}
+        <Suspense fallback={<ReviewsSkeleton />}>
+          <Reviews productId={params.id} />
+        </Suspense>
+
+        {/* Suspense: Recommendation engine query */}
+        <Suspense fallback={<RecommendationsSkeleton />}>
+          <RecommendedProducts productId={params.id} />
+        </Suspense>
+      </main>
+
+      <footer>© 2026 MyStore</footer>
+    </div>
+  );
+}
+
+// ProductDetails.tsx - Async Server Component
+async function ProductDetails({ productId }: { productId: string }) {
+  // This fetch is awaited; Suspense boundary handles the delay
+  const product = await fetch(`https://api.example.com/products/\${productId}`, {
+    cache: 'no-store', // Force fresh data
+  }).then(res => res.json());
+
+  return (
+    <div>
+      <h1>{product.name}</h1>
+      <p>{product.description}</p>
+      <button>Add to Cart - \${product.price}</button>
+    </div>
+  );
+}
+
+// Reviews.tsx - Async Server Component
+async function Reviews({ productId }: { productId: string }) {
+  // Slow API call (2-3 seconds)
+  const reviews = await fetch(`https://api.example.com/reviews/\${productId}`, {
+    next: { revalidate: 3600 }, // Cache for 1 hour
+  }).then(res => res.json());
+
+  return (
+    <div>
+      <h2>Customer Reviews</h2>
+      {reviews.map((review) => (
+        <div key={review.id}>
+          <p>{review.rating} stars - {review.text}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// Result:
+// - Shell (header, nav, footer) streams in 100ms
+// - ProductImage displays immediately
+// - ProductDetails appears at 800ms (replaces skeleton)
+// - Reviews appear at 2000ms (replaces skeleton)
+// - RecommendedProducts appear at 1500ms (replaces skeleton)
+//
+// User sees structure instantly, content progressively fills in!

@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="system-ui, sans-serif">
+  <rect width="900" height="560" fill="#f3f1f8" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1822">Progressive Image Loading</text>
+
+  <!-- Participant labels -->
+  <rect x="100" y="50" width="90" height="32" rx="6" fill="#6d5bd0" stroke="#5a4bb0" stroke-width="1.5"/>
+  <text x="145" y="71" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">User</text>
+
+  <rect x="370" y="50" width="90" height="32" rx="6" fill="#6d5bd0" stroke="#5a4bb0" stroke-width="1.5"/>
+  <text x="415" y="71" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">Browser</text>
+
+  <rect x="650" y="50" width="90" height="32" rx="6" fill="#6d5bd0" stroke="#5a4bb0" stroke-width="1.5"/>
+  <text x="695" y="71" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">Server</text>
+
+  <!-- Lifelines -->
+  <line x1="145" y1="82" x2="145" y2="540" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="415" y1="82" x2="415" y2="540" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="695" y1="82" x2="695" y2="540" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Phase 1: Initial Page Load -->
+  <rect x="30" y="95" width="810" height="22" rx="4" fill="#e8e4f3"/>
+  <text x="450" y="111" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Initial Page Load</text>
+
+  <line x1="145" y1="130" x2="415" y2="130" stroke="#1a1822" stroke-width="1.5" marker-end="url(#imgArr)"/>
+  <text x="280" y="125" text-anchor="middle" font-size="11" fill="#1a1822">Load page</text>
+
+  <!-- Eager images -->
+  <line x1="415" y1="150" x2="695" y2="150" stroke="#d97843" stroke-width="1.5" marker-end="url(#imgArrO)"/>
+  <text x="555" y="145" text-anchor="middle" font-size="10" fill="#d97843">GET hero-image.jpg (eager)</text>
+
+  <line x1="415" y1="170" x2="695" y2="170" stroke="#d97843" stroke-width="1.5" marker-end="url(#imgArrO)"/>
+  <text x="555" y="165" text-anchor="middle" font-size="10" fill="#d97843">GET product-1.jpg (eager - above fold)</text>
+
+  <line x1="415" y1="190" x2="695" y2="190" stroke="#d97843" stroke-width="1.5" marker-end="url(#imgArrO)"/>
+  <text x="555" y="185" text-anchor="middle" font-size="10" fill="#d97843">GET product-2.jpg (eager - above fold)</text>
+
+  <!-- Note: deferred -->
+  <rect x="380" y="210" width="280" height="28" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="520" y="229" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="600">Images 3-60 deferred (loading="lazy")</text>
+
+  <!-- Phase 2: User Scrolls Down -->
+  <rect x="30" y="255" width="810" height="22" rx="4" fill="#fdf3ec"/>
+  <text x="450" y="271" text-anchor="middle" font-size="11" font-weight="700" fill="#d97843">User Scrolls Down</text>
+
+  <line x1="145" y1="290" x2="415" y2="290" stroke="#1a1822" stroke-width="1.5" marker-end="url(#imgArr)"/>
+  <text x="280" y="285" text-anchor="middle" font-size="11" fill="#1a1822">Scroll to row 2</text>
+
+  <!-- IntersectionObserver fires -->
+  <rect x="395" y="300" width="40" height="20" rx="4" fill="#6d5bd0" opacity="0.3"/>
+  <text x="490" y="315" font-size="10" fill="#1a1822">IntersectionObserver fires</text>
+
+  <line x1="415" y1="330" x2="695" y2="330" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#imgArrG)"/>
+  <text x="555" y="325" text-anchor="middle" font-size="10" fill="#2f9d74">GET product-3.jpg</text>
+
+  <line x1="415" y1="350" x2="695" y2="350" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#imgArrG)"/>
+  <text x="555" y="345" text-anchor="middle" font-size="10" fill="#2f9d74">GET product-4.jpg</text>
+
+  <line x1="415" y1="370" x2="695" y2="370" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#imgArrG)"/>
+  <text x="555" y="365" text-anchor="middle" font-size="10" fill="#2f9d74">GET product-5.jpg</text>
+
+  <rect x="380" y="385" width="200" height="24" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="480" y="401" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="600">Loaded just-in-time</text>
+
+  <!-- Phase 3: User Scrolls More -->
+  <rect x="30" y="425" width="810" height="22" rx="4" fill="#ecf7f1"/>
+  <text x="450" y="441" text-anchor="middle" font-size="11" font-weight="700" fill="#2f9d74">User Scrolls More</text>
+
+  <line x1="145" y1="460" x2="415" y2="460" stroke="#1a1822" stroke-width="1.5" marker-end="url(#imgArr)"/>
+  <text x="280" y="455" text-anchor="middle" font-size="11" fill="#1a1822">Scroll to row 3</text>
+
+  <line x1="415" y1="480" x2="695" y2="480" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#imgArrG)"/>
+  <text x="555" y="475" text-anchor="middle" font-size="10" fill="#2f9d74">GET product-6.jpg</text>
+
+  <line x1="415" y1="500" x2="695" y2="500" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#imgArrG)"/>
+  <text x="555" y="495" text-anchor="middle" font-size="10" fill="#2f9d74">GET product-7.jpg</text>
+
+  <!-- Summary -->
+  <rect x="150" y="525" width="600" height="26" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="450" y="543" text-anchor="middle" font-size="11" fill="#1a1822">Only images near the viewport are fetched - bandwidth saved for unseen images</text>
+
+  <defs>
+    <marker id="imgArr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#1a1822"/>
+    </marker>
+    <marker id="imgArrO" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#d97843"/>
+    </marker>
+    <marker id="imgArrG" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#2f9d74"/>
+    </marker>
+  </defs>
+</svg>

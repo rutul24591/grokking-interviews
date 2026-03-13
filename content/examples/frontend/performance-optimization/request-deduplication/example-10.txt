@@ -1,0 +1,60 @@
+// Cancel-style deduplication for search/typeahead
+const activeControllers = new Map<string, AbortController>();
+
+async function cancelDedupFetch<T>(
+  url: string,
+  groupKey: string // group requests by logical operation
+): Promise<T | undefined> {
+  // Abort any existing request in this group
+  const existing = activeControllers.get(groupKey);
+  if (existing) {
+    existing.abort();
+  }
+
+  const controller = new AbortController();
+  activeControllers.set(groupKey, controller);
+
+  try {
+    const response = await fetch(url, { signal: controller.signal });
+    if (!response.ok) throw new Error(`HTTP \${response.status}`);
+    const data = await response.json();
+    return data as T;
+  } catch (err) {
+    if (err instanceof DOMException && err.name === 'AbortError') {
+      // Silently ignore — this request was superseded
+      return undefined;
+    }
+    throw err; // Re-throw actual errors
+  } finally {
+    // Only clean up if this is still the active controller
+    if (activeControllers.get(groupKey) === controller) {
+      activeControllers.delete(groupKey);
+    }
+  }
+}
+
+// Usage in a search component
+function SearchBox() {
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+
+  useEffect(() => {
+    if (!query) {
+      setResults([]);
+      return;
+    }
+
+    cancelDedupFetch(`/api/search?q=\${encodeURIComponent(query)}`, 'search')
+      .then(data => {
+        if (data) setResults(data.results);
+      })
+      .catch(console.error);
+  }, [query]);
+
+  return (
+    <div>
+      <input value={query} onChange={e => setQuery(e.target.value)} />
+      {results.map(r => <div key={r.id}>{r.title}</div>)}
+    </div>
+  );
+}

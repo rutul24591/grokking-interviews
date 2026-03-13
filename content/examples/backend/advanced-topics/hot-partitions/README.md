@@ -1,0 +1,1 @@
+Hot partitions occur when traffic skews to a small subset of keys.

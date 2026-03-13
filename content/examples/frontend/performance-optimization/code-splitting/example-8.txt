@@ -1,0 +1,45 @@
+// === Next.js dynamic imports (handles SSR automatically) ===
+import dynamic from 'next/dynamic';
+
+// SSR-compatible code splitting
+const DashboardChart = dynamic(
+  () => import('./DashboardChart'),
+  {
+    loading: () => <ChartSkeleton />,
+    // ssr: true is default — component renders on server too
+  }
+);
+
+// Client-only component (e.g., uses window/document)
+const MapView = dynamic(
+  () => import('./MapView'),
+  {
+    ssr: false, // Only renders on client
+    loading: () => <MapSkeleton />,
+  }
+);
+
+// === React 18+ Streaming SSR with Suspense ===
+// In React 18, Suspense boundaries work on the server too.
+// The server streams HTML progressively:
+//   1. Sends initial HTML with Suspense fallbacks
+//   2. As lazy chunks resolve, streams replacement HTML
+//   3. Client hydrates each section independently
+
+// Server entry
+import { renderToPipeableStream } from 'react-dom/server';
+
+app.get('*', (req, res) => {
+  const { pipe } = renderToPipeableStream(<App />, {
+    bootstrapScripts: ['/main.js'],
+    onShellReady() {
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'text/html');
+      pipe(res);
+    },
+  });
+});
+
+// Client entry — hydrateRoot handles streaming HTML
+import { hydrateRoot } from 'react-dom/client';
+hydrateRoot(document.getElementById('root'), <App />);

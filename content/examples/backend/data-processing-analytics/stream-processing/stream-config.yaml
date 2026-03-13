@@ -1,0 +1,4 @@
+stream:
+  topic: orders
+  consumerGroup: realtime-agg
+  windowSeconds: 60

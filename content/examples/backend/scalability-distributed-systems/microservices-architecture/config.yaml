@@ -1,0 +1,4 @@
+services:
+  discovery: consul
+  retries: 2
+  timeouts_ms: 300

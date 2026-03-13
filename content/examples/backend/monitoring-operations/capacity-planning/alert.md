@@ -1,0 +1,1 @@
+Alert when utilization exceeds 70% for 15m.

@@ -1,0 +1,51 @@
+# /etc/nginx/conf.d/compression.conf
+
+# === Gzip Configuration ===
+gzip on;
+gzip_vary on;                    # Add Vary: Accept-Encoding header
+gzip_proxied any;                # Compress responses from upstream proxies too
+gzip_comp_level 6;               # Level 6 — good ratio/speed balance
+gzip_min_length 256;             # Don't compress tiny responses (<256 bytes)
+gzip_buffers 16 8k;              # Buffer allocation for compression
+
+# MIME types to compress — all text-based content
+gzip_types
+  text/plain
+  text/css
+  text/javascript
+  application/javascript
+  application/json
+  application/xml
+  application/rss+xml
+  application/atom+xml
+  image/svg+xml
+  font/woff2
+  application/wasm;
+
+# === Brotli Configuration ===
+# Requires ngx_brotli module (not included by default)
+# Install: https://github.com/google/ngx_brotli
+
+brotli on;                       # Enable dynamic Brotli compression
+brotli_comp_level 6;             # Level 6 for dynamic responses
+brotli_static on;                # Serve pre-compressed .br files if available
+brotli_min_length 256;
+
+brotli_types
+  text/plain
+  text/css
+  text/javascript
+  application/javascript
+  application/json
+  application/xml
+  image/svg+xml
+  font/woff2
+  application/wasm;
+
+# === Serving Pre-Compressed Files ===
+# If bundle.js.br exists, Nginx serves it directly without compressing on-the-fly.
+# If bundle.js.gz exists but no .br, serve the .gz version.
+# Falls back to dynamic compression if no pre-compressed file exists.
+#
+# This is the ideal setup: build-time compression at max level,
+# zero runtime CPU cost for compression.

@@ -1,0 +1,14 @@
+// BAD: using index as key causes remounts when items shift
+{virtualizer.getVirtualItems().map((vItem) => (
+  <div key={vItem.index}>...</div>
+))}
+
+// GOOD: use vItem.key (which maps to stable item identity)
+{virtualizer.getVirtualItems().map((vItem) => (
+  <div key={vItem.key}>...</div>
+))}
+
+// ALSO GOOD: use item's unique ID for maximum stability
+{virtualizer.getVirtualItems().map((vItem) => (
+  <div key={items[vItem.index].id}>...</div>
+))}

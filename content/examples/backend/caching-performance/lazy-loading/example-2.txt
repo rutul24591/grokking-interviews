@@ -1,0 +1,2 @@
+app.get('/users/:id', async (req, res) => { const includeDetails = req.query.details === 'true'; const user = await db.getUser(req.params.id, { includeDetails }); return res.json(user);
+});

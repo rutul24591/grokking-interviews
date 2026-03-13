@@ -1,0 +1,2 @@
+- Track trigger execution time.
+- Alert on failures.

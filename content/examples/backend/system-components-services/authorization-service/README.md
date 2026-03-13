@@ -1,0 +1,1 @@
+Authorization checks enforce RBAC policies before access to resources.

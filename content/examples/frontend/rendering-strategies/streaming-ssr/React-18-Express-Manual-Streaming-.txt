@@ -1,0 +1,76 @@
+// server.js - Node.js Express server with React streaming
+import express from 'express';
+import { renderToPipeableStream } from 'react-dom/server';
+import App from './App';
+
+const app = express();
+
+app.get('/', (req, res) => {
+  // Set headers for streaming
+  res.setHeader('Content-Type', 'text/html');
+  res.setHeader('Transfer-Encoding', 'chunked');
+
+  // Start streaming React
+  const { pipe, abort } = renderToPipeableStream(<App />, {
+    // Called when shell is ready (synchronous components)
+    onShellReady() {
+      // Start sending HTML immediately
+      res.statusCode = 200;
+      pipe(res);
+    },
+    // Called when all content is ready (including Suspense)
+    onAllReady() {
+      console.log('All content rendered');
+    },
+    // Error handling
+    onError(error) {
+      console.error('Streaming error:', error);
+      res.statusCode = 500;
+      res.send('<!doctype html><p>Internal Server Error</p>');
+    },
+  });
+
+  // Cleanup on client disconnect
+  req.on('close', () => {
+    abort();
+  });
+});
+
+app.listen(3000);
+
+// App.jsx - React component with Suspense
+import { Suspense } from 'react';
+import Header from './Header';
+import SlowComponent from './SlowComponent';
+
+function App() {
+  return (
+    <html>
+      <head>
+        <title>Streaming SSR Example</title>
+      </head>
+      <body>
+        <Header /> {/* Fast, renders in shell */}
+
+        <Suspense fallback={<div>Loading content...</div>}>
+          <SlowComponent /> {/* Delayed, streams after shell */}
+        </Suspense>
+
+        <footer>© 2026</footer>
+      </body>
+    </html>
+  );
+}
+
+// SlowComponent.jsx - Simulates slow data fetching
+function SlowComponent() {
+  // In real app, this would be an async data fetch
+  const data = use(fetchData()); // React 'use' hook for async data
+
+  return <div>Slow content loaded: {data}</div>;
+}
+
+// Result:
+// - Browser receives HTML shell (Header + fallback) in ~100ms
+// - SlowComponent streams and replaces fallback after data resolves
+// - Footer streams last

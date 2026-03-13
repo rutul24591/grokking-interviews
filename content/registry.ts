@@ -4,3036 +4,3533 @@ import type { ArticleRegistry } from "@/types/article";
  * Article Registry
  *
  * This registry maps article paths to their metadata and dynamic loaders.
- * Format: "{category}/{subcategory}/{topic}-{version}"
- *
- * Example:
- * "frontend/rendering-strategies/client-side-rendering-concise": {
- *   metadata: {
- *     id: "article-frontend-csr-concise",
- *     title: "Client-Side Rendering (CSR)",
- *     description: "Overview of client-side rendering patterns and implementation.",
- *     category: "frontend",
- *     subcategory: "rendering-strategies",
- *     slug: "client-side-rendering",
- *     version: "concise",
- *     wordCount: 2500,
- *     readingTime: 10,
- *     lastUpdated: "2026-03-05",
- *     tags: ["rendering", "CSR", "browser"],
- *     relatedTopics: ["server-side-rendering", "static-site-generation"],
- *   },
- *   loader: () => import("./articles/frontend/rendering-strategies/client-side-rendering-concise"),
- * },
- *
- * Articles will be added to this registry using the generate-article-stub.ts script.
+ * Format: "{category}/{subcategory}/{topic}"
  */
 export const articleRegistry: ArticleRegistry = {
-  // Articles will be populated here as they are created
-  "backend/fundamentals-building-blocks/client-server-architecture-concise": {
-    metadata: {
-      id: "article-backend-client-server-concise",
-      title: "Client-Server Architecture",
-      description:
-        "Quick overview of client-server architecture for backend interviews and rapid learning.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "client-server-architecture",
-      version: "concise",
-      wordCount: 1350,
-      readingTime: 7,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "architecture", "client-server", "fundamentals"],
-      relatedTopics: [
-        "http-https-protocol",
-        "request-response-lifecycle",
-        "stateless-vs-stateful-services",
-        "api-design-best-practices",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/client-server-architecture-concise"
-      ),
-  },
-  "backend/fundamentals-building-blocks/client-server-architecture-extensive": {
-    metadata: {
-      id: "article-backend-client-server-extensive",
-      title: "Client-Server Architecture",
-      description:
-        "Comprehensive guide to client-server architecture covering fundamentals, variants, trade-offs, and interview readiness.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "client-server-architecture",
-      version: "extensive",
-      wordCount: 4300,
-      readingTime: 22,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "architecture", "client-server", "networking", "scalability"],
-      relatedTopics: [
-        "http-https-protocol",
-        "request-response-lifecycle",
-        "stateless-vs-stateful-services",
-        "tcp-vs-udp",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/client-server-architecture-extensive"
-      ),
-  },
-  "backend/fundamentals-building-blocks/http-https-protocol-concise": {
-    metadata: {
-      id: "article-backend-http-https-concise",
-      title: "HTTP/HTTPS Protocol",
-      description:
-        "Quick overview of HTTP and HTTPS fundamentals for backend interviews and rapid learning.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "http-https-protocol",
-      version: "concise",
-      wordCount: 1350,
-      readingTime: 7,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "http", "https", "protocols"],
-      relatedTopics: [
-        "client-server-architecture",
-        "request-response-lifecycle",
-        "tcp-vs-udp",
-        "api-design-best-practices",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/http-https-protocol-concise"
-      ),
-  },
-  "backend/fundamentals-building-blocks/http-https-protocol-extensive": {
-    metadata: {
-      id: "article-backend-http-https-extensive",
-      title: "HTTP/HTTPS Protocol",
-      description:
-        "Comprehensive guide to HTTP and HTTPS covering methods, status codes, headers, TLS, and performance trade-offs.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "http-https-protocol",
-      version: "extensive",
-      wordCount: 4400,
-      readingTime: 22,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "http", "https", "protocols", "networking"],
-      relatedTopics: [
-        "client-server-architecture",
-        "request-response-lifecycle",
-        "tcp-vs-udp",
-        "serialization-formats",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/http-https-protocol-extensive"
-      ),
-  },
-  "backend/fundamentals-building-blocks/rest-api-design-concise": {
-    metadata: {
-      id: "article-backend-rest-api-design-concise",
-      title: "REST API Design",
-      description:
-        "Quick overview of REST API design principles for backend interviews and rapid learning.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "rest-api-design",
-      version: "concise",
-      wordCount: 1350,
-      readingTime: 7,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "rest", "api", "design"],
-      relatedTopics: [
-        "http-https-protocol",
-        "api-design-best-practices",
-        "request-response-lifecycle",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/rest-api-design-concise"
-      ),
-  },
-  "backend/fundamentals-building-blocks/rest-api-design-extensive": {
-    metadata: {
-      id: "article-backend-rest-api-design-extensive",
-      title: "REST API Design",
-      description:
-        "Comprehensive guide to REST API design, resource modeling, status codes, and real-world trade-offs.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "rest-api-design",
-      version: "extensive",
-      wordCount: 4400,
-      readingTime: 22,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "rest", "api", "design", "architecture"],
-      relatedTopics: [
-        "http-https-protocol",
-        "api-design-best-practices",
-        "request-response-lifecycle",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/rest-api-design-extensive"
-      ),
-  },
-  "backend/fundamentals-building-blocks/api-design-best-practices-concise": {
-    metadata: {
-      id: "article-backend-api-design-best-practices-concise",
-      title: "API Design Best Practices",
-      description:
-        "Quick checklist of API design best practices for backend interviews and rapid learning.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "api-design-best-practices",
-      version: "concise",
-      wordCount: 1400,
-      readingTime: 7,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "api", "design", "best-practices"],
-      relatedTopics: [
-        "rest-api-design",
-        "http-https-protocol",
-        "request-response-lifecycle",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/api-design-best-practices-concise"
-      ),
-  },
-  "backend/fundamentals-building-blocks/api-design-best-practices-extensive": {
-    metadata: {
-      id: "article-backend-api-design-best-practices-extensive",
-      title: "API Design Best Practices",
-      description:
-        "Comprehensive guide to API design best practices including pagination, filtering, errors, versioning, and reliability.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "api-design-best-practices",
-      version: "extensive",
-      wordCount: 4500,
-      readingTime: 23,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "api", "design", "reliability", "standards"],
-      relatedTopics: [
-        "rest-api-design",
-        "http-https-protocol",
-        "request-response-lifecycle",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/api-design-best-practices-extensive"
-      ),
-  },
-  "backend/fundamentals-building-blocks/domain-name-system-concise": {
-    metadata: {
-      id: "article-backend-dns-concise",
-      title: "Domain Name System (DNS)",
-      description:
-        "Quick overview of DNS concepts for backend interviews and rapid learning.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "domain-name-system",
-      version: "concise",
-      wordCount: 1350,
-      readingTime: 7,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "dns", "networking", "fundamentals"],
-      relatedTopics: [
-        "http-https-protocol",
-        "ip-addressing",
-        "request-response-lifecycle",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/domain-name-system-concise"
-      ),
-  },
-  "backend/fundamentals-building-blocks/domain-name-system-extensive": {
-    metadata: {
-      id: "article-backend-dns-extensive",
-      title: "Domain Name System (DNS)",
-      description:
-        "Comprehensive guide to DNS resolution, record types, caching, and operational pitfalls.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "domain-name-system",
-      version: "extensive",
-      wordCount: 4400,
-      readingTime: 22,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "dns", "networking", "infrastructure"],
-      relatedTopics: [
-        "http-https-protocol",
-        "ip-addressing",
-        "networking-fundamentals",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/domain-name-system-extensive"
-      ),
-  },
-  "backend/fundamentals-building-blocks/ip-addressing-concise": {
-    metadata: {
-      id: "article-backend-ip-addressing-concise",
-      title: "IP Addressing",
-      description:
-        "Quick overview of IPv4, IPv6, and subnetting for backend interviews and rapid learning.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "ip-addressing",
-      version: "concise",
-      wordCount: 1350,
-      readingTime: 7,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "ip", "networking", "fundamentals"],
-      relatedTopics: [
-        "domain-name-system",
-        "tcp-vs-udp",
-        "networking-fundamentals",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/ip-addressing-concise"
-      ),
-  },
-  "backend/fundamentals-building-blocks/ip-addressing-extensive": {
-    metadata: {
-      id: "article-backend-ip-addressing-extensive",
-      title: "IP Addressing",
-      description:
-        "Comprehensive guide to IPv4, IPv6, CIDR, and subnetting with practical backend examples.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "ip-addressing",
-      version: "extensive",
-      wordCount: 4400,
-      readingTime: 22,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "ip", "networking", "cidr"],
-      relatedTopics: [
-        "domain-name-system",
-        "tcp-vs-udp",
-        "networking-fundamentals",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/ip-addressing-extensive"
-      ),
-  },
-
-  "backend/fundamentals-building-blocks/tcp-vs-udp-concise": {
-    metadata: {
-      id: "article-backend-tcp-vs-udp-concise",
-      title: "TCP vs UDP",
-      description: "Quick comparison of TCP and UDP for backend interviews and rapid learning.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "tcp-vs-udp",
-      version: "concise",
-      wordCount: 1350,
-      readingTime: 7,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "networking", "tcp", "udp"],
-      relatedTopics: [
-        "http-https-protocol",
-        "request-response-lifecycle",
-        "networking-fundamentals",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/tcp-vs-udp-concise"
-      ),
-  },
-  "backend/fundamentals-building-blocks/tcp-vs-udp-extensive": {
-    metadata: {
-      id: "article-backend-tcp-vs-udp-extensive",
-      title: "TCP vs UDP",
-      description: "Comprehensive guide to TCP vs UDP, reliability, performance trade-offs, and real-world use cases.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "tcp-vs-udp",
-      version: "extensive",
-      wordCount: 4400,
-      readingTime: 22,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "networking", "tcp", "udp"],
-      relatedTopics: [
-        "http-https-protocol",
-        "request-response-lifecycle",
-        "networking-fundamentals",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/tcp-vs-udp-extensive"
-      ),
-  },
-  "backend/fundamentals-building-blocks/osi-model-tcp-ip-stack-concise": {
-    metadata: {
-      id: "article-backend-osi-tcpip-concise",
-      title: "OSI Model & TCP/IP Stack",
-      description: "Quick overview of OSI layers and the TCP/IP stack for backend interviews.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "osi-model-tcp-ip-stack",
-      version: "concise",
-      wordCount: 1350,
-      readingTime: 7,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "networking", "osi", "tcp-ip"],
-      relatedTopics: [
-        "tcp-vs-udp",
-        "networking-fundamentals",
-        "request-response-lifecycle",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/osi-model-tcp-ip-stack-concise"
-      ),
-  },
-  "backend/fundamentals-building-blocks/osi-model-tcp-ip-stack-extensive": {
-    metadata: {
-      id: "article-backend-osi-tcpip-extensive",
-      title: "OSI Model & TCP/IP Stack",
-      description: "Comprehensive guide to OSI and TCP/IP layering, encapsulation, and debugging network issues.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "osi-model-tcp-ip-stack",
-      version: "extensive",
-      wordCount: 4400,
-      readingTime: 22,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "networking", "osi", "tcp-ip"],
-      relatedTopics: [
-        "tcp-vs-udp",
-        "request-response-lifecycle",
-        "networking-fundamentals",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/osi-model-tcp-ip-stack-extensive"
-      ),
-  },
-  "backend/fundamentals-building-blocks/networking-fundamentals-concise": {
-    metadata: {
-      id: "article-backend-networking-fundamentals-concise",
-      title: "Networking Fundamentals",
-      description: "Quick overview of routing, switching, NAT, firewalls, and VPNs for backend interviews.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "networking-fundamentals",
-      version: "concise",
-      wordCount: 1350,
-      readingTime: 7,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "networking", "routing", "firewalls"],
-      relatedTopics: [
-        "ip-addressing",
-        "tcp-vs-udp",
-        "request-response-lifecycle",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/networking-fundamentals-concise"
-      ),
-  },
-  "backend/fundamentals-building-blocks/networking-fundamentals-extensive": {
-    metadata: {
-      id: "article-backend-networking-fundamentals-extensive",
-      title: "Networking Fundamentals",
-      description: "Comprehensive guide to routing, switching, NAT, firewalls, and VPNs for backend systems.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "networking-fundamentals",
-      version: "extensive",
-      wordCount: 4400,
-      readingTime: 22,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "networking", "routing", "security"],
-      relatedTopics: [
-        "ip-addressing",
-        "tcp-vs-udp",
-        "request-response-lifecycle",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/networking-fundamentals-extensive"
-      ),
-  },
-  "backend/fundamentals-building-blocks/horizontal-vs-vertical-scaling-concise": {
-    metadata: {
-      id: "article-backend-horizontal-vertical-concise",
-      title: "Horizontal vs Vertical Scaling",
-      description: "Quick comparison of scaling up vs scaling out for backend interviews.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "horizontal-vs-vertical-scaling",
-      version: "concise",
-      wordCount: 1350,
-      readingTime: 7,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "scaling", "architecture"],
-      relatedTopics: [
-        "stateless-vs-stateful-services",
-        "reliability-fault-tolerance",
-        "caching-performance",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/horizontal-vs-vertical-scaling-concise"
-      ),
-  },
-  "backend/fundamentals-building-blocks/horizontal-vs-vertical-scaling-extensive": {
-    metadata: {
-      id: "article-backend-horizontal-vertical-extensive",
-      title: "Horizontal vs Vertical Scaling",
-      description: "Comprehensive guide to scaling up vs scaling out, trade-offs, and operational patterns.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "horizontal-vs-vertical-scaling",
-      version: "extensive",
-      wordCount: 4400,
-      readingTime: 22,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "scaling", "architecture"],
-      relatedTopics: [
-        "stateless-vs-stateful-services",
-        "caching-performance",
-        "load-balancers",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/horizontal-vs-vertical-scaling-extensive"
-      ),
-  },
-  "backend/fundamentals-building-blocks/stateless-vs-stateful-services-concise": {
-    metadata: {
-      id: "article-backend-stateless-stateful-concise",
-      title: "Stateless vs Stateful Services",
-      description: "Quick comparison of stateless and stateful services for backend interviews.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "stateless-vs-stateful-services",
-      version: "concise",
-      wordCount: 1350,
-      readingTime: 7,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "architecture", "state"],
-      relatedTopics: [
-        "horizontal-vs-vertical-scaling",
-        "request-response-lifecycle",
-        "caching-performance",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/stateless-vs-stateful-services-concise"
-      ),
-  },
-  "backend/fundamentals-building-blocks/stateless-vs-stateful-services-extensive": {
-    metadata: {
-      id: "article-backend-stateless-stateful-extensive",
-      title: "Stateless vs Stateful Services",
-      description: "Comprehensive guide to stateless and stateful services, trade-offs, and scaling impacts.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "stateless-vs-stateful-services",
-      version: "extensive",
-      wordCount: 4400,
-      readingTime: 22,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "architecture", "state"],
-      relatedTopics: [
-        "horizontal-vs-vertical-scaling",
-        "request-response-lifecycle",
-        "caching-performance",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/stateless-vs-stateful-services-extensive"
-      ),
-  },
-  "backend/fundamentals-building-blocks/request-response-lifecycle-concise": {
-    metadata: {
-      id: "article-backend-request-response-concise",
-      title: "Request/Response Lifecycle",
-      description: "Quick walkthrough of the backend request/response lifecycle for interviews.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "request-response-lifecycle",
-      version: "concise",
-      wordCount: 1350,
-      readingTime: 7,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "http", "lifecycle"],
-      relatedTopics: [
-        "http-https-protocol",
-        "client-server-architecture",
-        "networking-fundamentals",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/request-response-lifecycle-concise"
-      ),
-  },
-  "backend/fundamentals-building-blocks/request-response-lifecycle-extensive": {
-    metadata: {
-      id: "article-backend-request-response-extensive",
-      title: "Request/Response Lifecycle",
-      description: "Comprehensive guide to the end-to-end request lifecycle with latency and middleware considerations.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "request-response-lifecycle",
-      version: "extensive",
-      wordCount: 4400,
-      readingTime: 22,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "http", "lifecycle"],
-      relatedTopics: [
-        "http-https-protocol",
-        "client-server-architecture",
-        "networking-fundamentals",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/request-response-lifecycle-extensive"
-      ),
-  },
-  "backend/fundamentals-building-blocks/serialization-formats-concise": {
-    metadata: {
-      id: "article-backend-serialization-formats-concise",
-      title: "Serialization Formats",
-      description: "Quick overview of JSON, Protobuf, Avro, and other serialization formats.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "serialization-formats",
-      version: "concise",
-      wordCount: 1350,
-      readingTime: 7,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "serialization", "formats"],
-      relatedTopics: [
-        "character-encoding",
-        "compression",
-        "request-response-lifecycle",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/serialization-formats-concise"
-      ),
-  },
-  "backend/fundamentals-building-blocks/serialization-formats-extensive": {
-    metadata: {
-      id: "article-backend-serialization-formats-extensive",
-      title: "Serialization Formats",
-      description: "Comprehensive guide to JSON, Protobuf, Avro, Thrift, and trade-offs in serialization.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "serialization-formats",
-      version: "extensive",
-      wordCount: 4400,
-      readingTime: 22,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "serialization", "formats"],
-      relatedTopics: [
-        "character-encoding",
-        "compression",
-        "request-response-lifecycle",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/serialization-formats-extensive"
-      ),
-  },
-  "backend/fundamentals-building-blocks/character-encoding-concise": {
-    metadata: {
-      id: "article-backend-character-encoding-concise",
-      title: "Character Encoding",
-      description: "Quick overview of Unicode, UTF-8, and encoding pitfalls for backend interviews.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "character-encoding",
-      version: "concise",
-      wordCount: 1350,
-      readingTime: 7,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "encoding", "utf-8"],
-      relatedTopics: [
-        "serialization-formats",
-        "compression",
-        "http-https-protocol",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/character-encoding-concise"
-      ),
-  },
-  "backend/fundamentals-building-blocks/character-encoding-extensive": {
-    metadata: {
-      id: "article-backend-character-encoding-extensive",
-      title: "Character Encoding",
-      description: "Comprehensive guide to Unicode, UTF-8, and common encoding pitfalls in backend systems.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "character-encoding",
-      version: "extensive",
-      wordCount: 4400,
-      readingTime: 22,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "encoding", "utf-8"],
-      relatedTopics: [
-        "serialization-formats",
-        "compression",
-        "http-https-protocol",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/character-encoding-extensive"
-      ),
-  },
-  "backend/fundamentals-building-blocks/compression-concise": {
-    metadata: {
-      id: "article-backend-compression-concise",
-      title: "Compression",
-      description: "Quick overview of compression algorithms and trade-offs for backend interviews.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "compression",
-      version: "concise",
-      wordCount: 1750,
-      readingTime: 8,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "compression", "performance"],
-      relatedTopics: [
-        "serialization-formats",
-        "http-https-protocol",
-        "caching-performance",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/compression-concise"
-      ),
-  },
-  "backend/fundamentals-building-blocks/compression-extensive": {
-    metadata: {
-      id: "article-backend-compression-extensive",
-      title: "Compression",
-      description: "Comprehensive guide to compression algorithms, trade-offs, and HTTP content encoding.",
-      category: "backend",
-      subcategory: "fundamentals-building-blocks",
-      slug: "compression",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "compression", "performance"],
-      relatedTopics: [
-        "serialization-formats",
-        "http-https-protocol",
-        "caching-performance",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/fundamentals-building-blocks/compression-extensive"
-      ),
-  },
-  "backend/data-storage-databases/relational-database-design-concise": {
-    metadata: {
-      id: "article-backend-relational-database-design-concise",
-      title: "Relational Database Design",
-      description:
-        "Quick overview of relational database design principles for backend interviews and rapid learning.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "relational-database-design",
-      version: "concise",
-      wordCount: 1750,
-      readingTime: 8,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "sql", "design"],
-      relatedTopics: [
-        "database-indexes",
-        "sql-queries-optimization",
-        "transaction-isolation-levels",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/relational-database-design-concise"
-      ),
-  },
-  "backend/data-storage-databases/relational-database-design-extensive": {
-    metadata: {
-      id: "article-backend-relational-database-design-extensive",
-      title: "Relational Database Design",
-      description:
-        "Comprehensive guide to relational database design, normalization, constraints, and schema trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "relational-database-design",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "sql", "design", "modeling"],
-      relatedTopics: [
-        "acid-properties",
-        "database-indexes",
-        "transaction-isolation-levels",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/relational-database-design-extensive"
-      ),
-  },
-  "backend/data-storage-databases/acid-properties-concise": {
-    metadata: {
-      id: "article-backend-acid-properties-concise",
-      title: "ACID Properties",
-      description:
-        "Quick overview of ACID properties for backend interviews and rapid learning.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "acid-properties",
-      version: "concise",
-      wordCount: 1750,
-      readingTime: 8,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "sql", "acid"],
-      relatedTopics: [
-        "transaction-isolation-levels",
-        "concurrency-control",
-        "database-constraints",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/acid-properties-concise"
-      ),
-  },
-  "backend/data-storage-databases/acid-properties-extensive": {
-    metadata: {
-      id: "article-backend-acid-properties-extensive",
-      title: "ACID Properties",
-      description:
-        "Comprehensive guide to ACID properties, isolation levels, and transactional guarantees.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "acid-properties",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "sql", "acid", "transactions"],
-      relatedTopics: [
-        "transaction-isolation-levels",
-        "concurrency-control",
-        "deadlocks",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/acid-properties-extensive"
-      ),
-  },
-  "backend/data-storage-databases/sql-queries-optimization-concise": {
-    metadata: {
-      id: "article-backend-sql-queries-optimization-concise",
-      title: "SQL Queries & Optimization",
-      description:
-        "Quick overview of SQL query optimization for backend interviews and rapid learning.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "sql-queries-optimization",
-      version: "concise",
-      wordCount: 1750,
-      readingTime: 8,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "sql", "databases", "performance"],
-      relatedTopics: [
-        "database-indexes",
-        "query-optimization-techniques",
-        "connection-pooling",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/sql-queries-optimization-concise"
-      ),
-  },
-  "backend/data-storage-databases/sql-queries-optimization-extensive": {
-    metadata: {
-      id: "article-backend-sql-queries-optimization-extensive",
-      title: "SQL Queries & Optimization",
-      description:
-        "Comprehensive guide to SQL query optimization, execution plans, and indexing strategy.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "sql-queries-optimization",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "sql", "databases", "performance", "optimization"],
-      relatedTopics: [
-        "database-indexes",
-        "query-optimization-techniques",
-        "connection-pooling",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/sql-queries-optimization-extensive"
-      ),
-  },
-  "backend/data-storage-databases/database-indexes-concise": {
-    metadata: {
-      id: "article-backend-database-indexes-concise",
-      title: "Database Indexes",
-      description:
-        "Quick overview of database indexes, how they work, and when to use them.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "database-indexes",
-      version: "concise",
-      wordCount: 1750,
-      readingTime: 8,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "indexes", "performance"],
-      relatedTopics: [
-        "sql-queries-optimization",
-        "index-types",
-        "query-optimization-techniques",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/database-indexes-concise"
-      ),
-  },
-  "backend/data-storage-databases/database-indexes-extensive": {
-    metadata: {
-      id: "article-backend-database-indexes-extensive",
-      title: "Database Indexes",
-      description:
-        "Comprehensive guide to database indexes, internal structures, and performance trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "database-indexes",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "indexes", "performance"],
-      relatedTopics: [
-        "sql-queries-optimization",
-        "index-types",
-        "query-optimization-techniques",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/database-indexes-extensive"
-      ),
-  },
-  "backend/data-storage-databases/index-types-concise": {
-    metadata: {
-      id: "article-backend-index-types-concise",
-      title: "Index Types",
-      description:
-        "Quick overview of primary, unique, composite, partial, and other index types.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "index-types",
-      version: "concise",
-      wordCount: 1750,
-      readingTime: 8,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "indexes", "performance"],
-      relatedTopics: [
-        "database-indexes",
-        "sql-queries-optimization",
-        "query-optimization-techniques",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/index-types-concise"
-      ),
-  },
-  "backend/data-storage-databases/index-types-extensive": {
-    metadata: {
-      id: "article-backend-index-types-extensive",
-      title: "Index Types",
-      description:
-        "Comprehensive guide to primary, unique, composite, partial, and other index types.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "index-types",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "indexes", "performance"],
-      relatedTopics: [
-        "database-indexes",
-        "sql-queries-optimization",
-        "query-optimization-techniques",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/index-types-extensive"
-      ),
-  },
-  "backend/data-storage-databases/query-optimization-techniques-concise": {
-    metadata: {
-      id: "article-backend-query-optimization-techniques-concise",
-      title: "Query Optimization Techniques",
-      description:
-        "Quick overview of practical SQL query optimization techniques for backend interviews.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "query-optimization-techniques",
-      version: "concise",
-      wordCount: 1750,
-      readingTime: 8,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "sql", "databases", "optimization"],
-      relatedTopics: [
-        "sql-queries-optimization",
-        "database-indexes",
-        "index-types",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/query-optimization-techniques-concise"
-      ),
-  },
-  "backend/data-storage-databases/query-optimization-techniques-extensive": {
-    metadata: {
-      id: "article-backend-query-optimization-techniques-extensive",
-      title: "Query Optimization Techniques",
-      description:
-        "Comprehensive guide to SQL query optimization techniques, join strategies, and planner behavior.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "query-optimization-techniques",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "sql", "databases", "optimization", "performance"],
-      relatedTopics: [
-        "sql-queries-optimization",
-        "database-indexes",
-        "index-types",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/query-optimization-techniques-extensive"
-      ),
-  },
-  "backend/data-storage-databases/transaction-isolation-levels-concise": {
-    metadata: {
-      id: "article-backend-transaction-isolation-levels-concise",
-      title: "Transaction Isolation Levels",
-      description:
-        "Quick overview of transaction isolation levels and the anomalies they prevent.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "transaction-isolation-levels",
-      version: "concise",
-      wordCount: 1750,
-      readingTime: 8,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "sql", "transactions"],
-      relatedTopics: [
-        "acid-properties",
-        "concurrency-control",
-        "deadlocks",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/transaction-isolation-levels-concise"
-      ),
-  },
-  "backend/data-storage-databases/transaction-isolation-levels-extensive": {
-    metadata: {
-      id: "article-backend-transaction-isolation-levels-extensive",
-      title: "Transaction Isolation Levels",
-      description:
-        "Comprehensive guide to transaction isolation levels, anomalies, and trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "transaction-isolation-levels",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "sql", "transactions", "isolation"],
-      relatedTopics: [
-        "acid-properties",
-        "concurrency-control",
-        "deadlocks",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/transaction-isolation-levels-extensive"
-      ),
-  },
-  "backend/data-storage-databases/concurrency-control-concise": {
-    metadata: {
-      id: "article-backend-concurrency-control-concise",
-      title: "Concurrency Control",
-      description:
-        "Quick overview of concurrency control, locking strategies, and MVCC.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "concurrency-control",
-      version: "concise",
-      wordCount: 1750,
-      readingTime: 8,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "concurrency", "transactions"],
-      relatedTopics: [
-        "transaction-isolation-levels",
-        "deadlocks",
-        "acid-properties",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/concurrency-control-concise"
-      ),
-  },
-  "backend/data-storage-databases/concurrency-control-extensive": {
-    metadata: {
-      id: "article-backend-concurrency-control-extensive",
-      title: "Concurrency Control",
-      description:
-        "Comprehensive guide to concurrency control, locking, MVCC, and trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "concurrency-control",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "concurrency", "transactions"],
-      relatedTopics: [
-        "transaction-isolation-levels",
-        "deadlocks",
-        "acid-properties",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/concurrency-control-extensive"
-      ),
-  },
-  "backend/data-storage-databases/deadlocks-concise": {
-    metadata: {
-      id: "article-backend-deadlocks-concise",
-      title: "Deadlocks",
-      description:
-        "Quick overview of deadlocks, detection, and prevention strategies.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "deadlocks",
-      version: "concise",
-      wordCount: 1750,
-      readingTime: 8,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "transactions", "deadlocks"],
-      relatedTopics: [
-        "concurrency-control",
-        "transaction-isolation-levels",
-        "acid-properties",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/deadlocks-concise"
-      ),
-  },
-  "backend/data-storage-databases/deadlocks-extensive": {
-    metadata: {
-      id: "article-backend-deadlocks-extensive",
-      title: "Deadlocks",
-      description:
-        "Comprehensive guide to deadlocks, detection, prevention, and recovery strategies.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "deadlocks",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "transactions", "deadlocks"],
-      relatedTopics: [
-        "concurrency-control",
-        "transaction-isolation-levels",
-        "acid-properties",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/deadlocks-extensive"
-      ),
-  },
-  "backend/data-storage-databases/database-partitioning-concise": {
-    metadata: {
-      id: "article-backend-database-partitioning-concise",
-      title: "Database Partitioning",
-      description:
-        "Concise guide to database partitioning strategies, trade-offs, and interview-ready talking points.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "database-partitioning",
-      version: "concise",
-      wordCount: 1900,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "partitioning", "scaling"],
-      relatedTopics: [
-        "read-replicas",
-        "database-indexes",
-        "query-optimization-techniques",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/database-partitioning-concise"
-      ),
-  },
-  "backend/data-storage-databases/database-partitioning-extensive": {
-    metadata: {
-      id: "article-backend-database-partitioning-extensive",
-      title: "Database Partitioning",
-      description:
-        "Deep guide to database partitioning strategies, shard keys, rebalancing, and operational trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "database-partitioning",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "partitioning", "scaling", "sharding"],
-      relatedTopics: [
-        "read-replicas",
-        "database-indexes",
-        "query-optimization-techniques",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/database-partitioning-extensive"
-      ),
-  },
-  "backend/data-storage-databases/read-replicas-concise": {
-    metadata: {
-      id: "article-backend-read-replicas-concise",
-      title: "Read Replicas",
-      description:
-        "Concise guide to read replicas, replication lag, and read scaling for backend interviews.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "read-replicas",
-      version: "concise",
-      wordCount: 1850,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "replication", "scaling"],
-      relatedTopics: [
-        "database-partitioning",
-        "concurrency-control",
-        "transaction-isolation-levels",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/read-replicas-concise"
-      ),
-  },
-  "backend/data-storage-databases/read-replicas-extensive": {
-    metadata: {
-      id: "article-backend-read-replicas-extensive",
-      title: "Read Replicas",
-      description:
-        "Deep guide to read replicas, replication lag, read routing, and availability trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "read-replicas",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "replication", "availability", "scaling"],
-      relatedTopics: [
-        "database-partitioning",
-        "concurrency-control",
-        "transaction-isolation-levels",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/read-replicas-extensive"
-      ),
-  },
-  "backend/data-storage-databases/connection-pooling-concise": {
-    metadata: {
-      id: "article-backend-connection-pooling-concise",
-      title: "Connection Pooling",
-      description:
-        "Concise guide to database connection pooling, sizing, and troubleshooting for backend interviews.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "connection-pooling",
-      version: "concise",
-      wordCount: 1900,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "performance", "pooling"],
-      relatedTopics: [
-        "sql-queries-optimization",
-        "concurrency-control",
-        "read-replicas",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/connection-pooling-concise"
-      ),
-  },
-  "backend/data-storage-databases/connection-pooling-extensive": {
-    metadata: {
-      id: "article-backend-connection-pooling-extensive",
-      title: "Connection Pooling",
-      description:
-        "Deep guide to connection pooling mechanics, sizing, failure modes, and operational tuning.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "connection-pooling",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "performance", "pooling"],
-      relatedTopics: [
-        "sql-queries-optimization",
-        "concurrency-control",
-        "read-replicas",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/connection-pooling-extensive"
-      ),
-  },
-  "backend/data-storage-databases/stored-procedures-functions-concise": {
-    metadata: {
-      id: "article-backend-stored-procedures-functions-concise",
-      title: "Stored Procedures & Functions",
-      description:
-        "Concise guide to stored procedures and functions, use cases, and trade-offs for interviews.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "stored-procedures-functions",
-      version: "concise",
-      wordCount: 1850,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "sql", "stored-procedures"],
-      relatedTopics: [
-        "sql-queries-optimization",
-        "transaction-isolation-levels",
-        "concurrency-control",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/stored-procedures-functions-concise"
-      ),
-  },
-  "backend/data-storage-databases/stored-procedures-functions-extensive": {
-    metadata: {
-      id: "article-backend-stored-procedures-functions-extensive",
-      title: "Stored Procedures & Functions",
-      description:
-        "Deep guide to stored procedures and functions, performance impact, and operational trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "stored-procedures-functions",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "sql", "stored-procedures"],
-      relatedTopics: [
-        "sql-queries-optimization",
-        "transaction-isolation-levels",
-        "concurrency-control",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/stored-procedures-functions-extensive"
-      ),
-  },
-  "backend/data-storage-databases/triggers-concise": {
-    metadata: {
-      id: "article-backend-triggers-concise",
-      title: "Triggers",
-      description:
-        "Concise guide to database triggers, when to use them, and common trade-offs for interviews.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "triggers",
-      version: "concise",
-      wordCount: 1850,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "sql", "triggers"],
-      relatedTopics: [
-        "stored-procedures-functions",
-        "transaction-isolation-levels",
-        "concurrency-control",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/triggers-concise"
-      ),
-  },
-  "backend/data-storage-databases/triggers-extensive": {
-    metadata: {
-      id: "article-backend-triggers-extensive",
-      title: "Triggers",
-      description:
-        "Deep guide to database triggers, execution order, use cases, and operational trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "triggers",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "sql", "triggers"],
-      relatedTopics: [
-        "stored-procedures-functions",
-        "transaction-isolation-levels",
-        "concurrency-control",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/triggers-extensive"
-      ),
-  },
-  "backend/data-storage-databases/views-materialized-views-concise": {
-    metadata: {
-      id: "article-backend-views-materialized-views-concise",
-      title: "Views & Materialized Views",
-      description:
-        "Concise guide to views and materialized views, including trade-offs and interview tips.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "views-materialized-views",
-      version: "concise",
-      wordCount: 1900,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "sql", "views"],
-      relatedTopics: [
-        "sql-queries-optimization",
-        "query-optimization-techniques",
-        "read-replicas",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/views-materialized-views-concise"
-      ),
-  },
-  "backend/data-storage-databases/views-materialized-views-extensive": {
-    metadata: {
-      id: "article-backend-views-materialized-views-extensive",
-      title: "Views & Materialized Views",
-      description:
-        "Deep guide to views and materialized views, performance implications, and refresh strategies.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "views-materialized-views",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "sql", "views", "materialized"],
-      relatedTopics: [
-        "sql-queries-optimization",
-        "query-optimization-techniques",
-        "read-replicas",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/views-materialized-views-extensive"
-      ),
-  },
-  "backend/data-storage-databases/database-constraints-concise": {
-    metadata: {
-      id: "article-backend-database-constraints-concise",
-      title: "Database Constraints",
-      description:
-        "Concise guide to database constraints, integrity guarantees, and trade-offs for interviews.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "database-constraints",
-      version: "concise",
-      wordCount: 1850,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "sql", "constraints"],
-      relatedTopics: [
-        "relational-database-design",
-        "transaction-isolation-levels",
-        "concurrency-control",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/database-constraints-concise"
-      ),
-  },
-  "backend/data-storage-databases/database-constraints-extensive": {
-    metadata: {
-      id: "article-backend-database-constraints-extensive",
-      title: "Database Constraints",
-      description:
-        "Deep guide to database constraints, integrity guarantees, and schema-level validation.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "database-constraints",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "sql", "constraints"],
-      relatedTopics: [
-        "relational-database-design",
-        "transaction-isolation-levels",
-        "concurrency-control",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/database-constraints-extensive"
-      ),
-  },
-  "backend/data-storage-databases/orms-concise": {
-    metadata: {
-      id: "article-backend-orms-concise",
-      title: "ORMs",
-      description:
-        "Concise guide to ORMs, trade-offs, and interview-ready concepts like N+1 and eager loading.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "orms",
-      version: "concise",
-      wordCount: 1900,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "orm", "sql"],
-      relatedTopics: [
-        "sql-queries-optimization",
-        "database-indexes",
-        "query-optimization-techniques",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/orms-concise"
-      ),
-  },
-  "backend/data-storage-databases/orms-extensive": {
-    metadata: {
-      id: "article-backend-orms-extensive",
-      title: "ORMs",
-      description:
-        "Deep guide to ORMs, performance pitfalls, and design patterns for scalable data access.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "orms",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "orm", "sql"],
-      relatedTopics: [
-        "sql-queries-optimization",
-        "database-indexes",
-        "query-optimization-techniques",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/orms-extensive"
-      ),
-  },
-  "backend/data-storage-databases/cap-theorem-concise": {
-    metadata: {
-      id: "article-backend-cap-theorem-concise",
-      title: "CAP Theorem",
-      description:
-        "Concise guide to CAP theorem trade-offs, practical implications, and interview tips.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "cap-theorem",
-      version: "concise",
-      wordCount: 1850,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "distributed-systems", "databases", "cap"],
-      relatedTopics: [
-        "base-properties",
-        "read-replicas",
-        "database-partitioning",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/cap-theorem-concise"
-      ),
-  },
-  "backend/data-storage-databases/cap-theorem-extensive": {
-    metadata: {
-      id: "article-backend-cap-theorem-extensive",
-      title: "CAP Theorem",
-      description:
-        "Deep guide to CAP theorem, consistency models, and practical system trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "cap-theorem",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "distributed-systems", "databases", "cap"],
-      relatedTopics: [
-        "base-properties",
-        "read-replicas",
-        "database-partitioning",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/cap-theorem-extensive"
-      ),
-  },
-  "backend/data-storage-databases/base-properties-concise": {
-    metadata: {
-      id: "article-backend-base-properties-concise",
-      title: "BASE Properties",
-      description:
-        "Concise guide to BASE properties, eventual consistency, and system trade-offs for interviews.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "base-properties",
-      version: "concise",
-      wordCount: 1800,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "distributed-systems", "databases", "base"],
-      relatedTopics: [
-        "cap-theorem",
-        "read-replicas",
-        "consistency-models",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/base-properties-concise"
-      ),
-  },
-  "backend/data-storage-databases/base-properties-extensive": {
-    metadata: {
-      id: "article-backend-base-properties-extensive",
-      title: "BASE Properties",
-      description:
-        "Deep guide to BASE properties, eventual consistency patterns, and system design trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "base-properties",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "distributed-systems", "databases", "base"],
-      relatedTopics: [
-        "cap-theorem",
-        "read-replicas",
-        "consistency-models",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/base-properties-extensive"
-      ),
-  },
-  "backend/data-storage-databases/document-databases-concise": {
-    metadata: {
-      id: "article-backend-document-databases-concise",
-      title: "Document Databases",
-      description:
-        "Concise guide to document databases, document modeling, and interview-ready trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "document-databases",
-      version: "concise",
-      wordCount: 1850,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "nosql", "document"],
-      relatedTopics: [
-        "cap-theorem",
-        "base-properties",
-        "query-optimization-techniques",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/document-databases-concise"
-      ),
-  },
-  "backend/data-storage-databases/document-databases-extensive": {
-    metadata: {
-      id: "article-backend-document-databases-extensive",
-      title: "Document Databases",
-      description:
-        "Deep guide to document databases, modeling patterns, and performance trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "document-databases",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "nosql", "document"],
-      relatedTopics: [
-        "cap-theorem",
-        "base-properties",
-        "query-optimization-techniques",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/document-databases-extensive"
-      ),
-  },
-  "backend/data-storage-databases/key-value-stores-concise": {
-    metadata: {
-      id: "article-backend-key-value-stores-concise",
-      title: "Key-Value Stores",
-      description:
-        "Concise guide to key-value stores, access patterns, and trade-offs for interviews.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "key-value-stores",
-      version: "concise",
-      wordCount: 1800,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "nosql", "key-value"],
-      relatedTopics: [
-        "in-memory-databases",
-        "caching-performance",
-        "cap-theorem",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/key-value-stores-concise"
-      ),
-  },
-  "backend/data-storage-databases/key-value-stores-extensive": {
-    metadata: {
-      id: "article-backend-key-value-stores-extensive",
-      title: "Key-Value Stores",
-      description:
-        "Deep guide to key-value stores, access patterns, consistency, and scalability trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "key-value-stores",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "nosql", "key-value"],
-      relatedTopics: [
-        "in-memory-databases",
-        "caching-performance",
-        "cap-theorem",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/key-value-stores-extensive"
-      ),
-  },
-  "backend/data-storage-databases/column-family-stores-concise": {
-    metadata: {
-      id: "article-backend-column-family-stores-concise",
-      title: "Column-Family Stores",
-      description:
-        "Concise guide to column-family databases, data modeling, and interview-ready trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "column-family-stores",
-      version: "concise",
-      wordCount: 1850,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "nosql", "column-family"],
-      relatedTopics: [
-        "cap-theorem",
-        "base-properties",
-        "query-optimization-techniques",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/column-family-stores-concise"
-      ),
-  },
-  "backend/data-storage-databases/column-family-stores-extensive": {
-    metadata: {
-      id: "article-backend-column-family-stores-extensive",
-      title: "Column-Family Stores",
-      description:
-        "Deep guide to wide-column databases, data modeling patterns, and scalability trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "column-family-stores",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "nosql", "column-family"],
-      relatedTopics: [
-        "cap-theorem",
-        "base-properties",
-        "query-optimization-techniques",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/column-family-stores-extensive"
-      ),
-  },
-  "backend/data-storage-databases/graph-databases-concise": {
-    metadata: {
-      id: "article-backend-graph-databases-concise",
-      title: "Graph Databases",
-      description:
-        "Concise guide to graph databases, graph modeling, and interview-ready trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "graph-databases",
-      version: "concise",
-      wordCount: 1850,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "nosql", "graph"],
-      relatedTopics: [
-        "query-optimization-techniques",
-        "cap-theorem",
-        "base-properties",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/graph-databases-concise"
-      ),
-  },
-  "backend/data-storage-databases/graph-databases-extensive": {
-    metadata: {
-      id: "article-backend-graph-databases-extensive",
-      title: "Graph Databases",
-      description:
-        "Deep guide to graph databases, data modeling, traversal queries, and scalability trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "graph-databases",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "nosql", "graph"],
-      relatedTopics: [
-        "query-optimization-techniques",
-        "cap-theorem",
-        "base-properties",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/graph-databases-extensive"
-      ),
-  },
-  "backend/data-storage-databases/time-series-databases-concise": {
-    metadata: {
-      id: "article-backend-time-series-databases-concise",
-      title: "Time-Series Databases",
-      description:
-        "Concise guide to time-series databases, retention policies, and interview-ready trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "time-series-databases",
-      version: "concise",
-      wordCount: 1850,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "timeseries", "nosql"],
-      relatedTopics: [
-        "column-family-stores",
-        "query-optimization-techniques",
-        "database-partitioning",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/time-series-databases-concise"
-      ),
-  },
-  "backend/data-storage-databases/time-series-databases-extensive": {
-    metadata: {
-      id: "article-backend-time-series-databases-extensive",
-      title: "Time-Series Databases",
-      description:
-        "Deep guide to time-series databases, data modeling, retention, and performance trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "time-series-databases",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "timeseries", "nosql"],
-      relatedTopics: [
-        "column-family-stores",
-        "query-optimization-techniques",
-        "database-partitioning",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/time-series-databases-extensive"
-      ),
-  },
-  "backend/data-storage-databases/search-engines-concise": {
-    metadata: {
-      id: "article-backend-search-engines-concise",
-      title: "Search Engines",
-      description:
-        "Concise guide to search engines, indexing, and interview-ready trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "search-engines",
-      version: "concise",
-      wordCount: 1850,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "search", "databases", "indexing"],
-      relatedTopics: [
-        "query-optimization-techniques",
-        "serialization-formats",
-        "caching-performance",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/search-engines-concise"
-      ),
-  },
-  "backend/data-storage-databases/search-engines-extensive": {
-    metadata: {
-      id: "article-backend-search-engines-extensive",
-      title: "Search Engines",
-      description:
-        "Deep guide to search engines, inverted indexes, relevance ranking, and scalability trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "search-engines",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "search", "databases", "indexing"],
-      relatedTopics: [
-        "query-optimization-techniques",
-        "serialization-formats",
-        "caching-performance",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/search-engines-extensive"
-      ),
-  },
-  "backend/data-storage-databases/consistency-models-concise": {
-    metadata: {
-      id: "article-backend-consistency-models-concise",
-      title: "Consistency Models",
-      description:
-        "Concise guide to consistency models, trade-offs, and interview-ready concepts.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "consistency-models",
-      version: "concise",
-      wordCount: 1850,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "distributed-systems", "databases", "consistency"],
-      relatedTopics: [
-        "cap-theorem",
-        "base-properties",
-        "read-replicas",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/consistency-models-concise"
-      ),
-  },
-  "backend/data-storage-databases/consistency-models-extensive": {
-    metadata: {
-      id: "article-backend-consistency-models-extensive",
-      title: "Consistency Models",
-      description:
-        "Deep guide to consistency models, user-visible guarantees, and system trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "consistency-models",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "distributed-systems", "databases", "consistency"],
-      relatedTopics: [
-        "cap-theorem",
-        "base-properties",
-        "read-replicas",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/consistency-models-extensive"
-      ),
-  },
-  "backend/data-storage-databases/data-modeling-in-nosql-concise": {
-    metadata: {
-      id: "article-backend-data-modeling-nosql-concise",
-      title: "Data Modeling in NoSQL",
-      description:
-        "Concise guide to NoSQL data modeling, denormalization, and interview-ready patterns.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "data-modeling-in-nosql",
-      version: "concise",
-      wordCount: 1850,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "nosql", "modeling"],
-      relatedTopics: [
-        "document-databases",
-        "key-value-stores",
-        "column-family-stores",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/data-modeling-in-nosql-concise"
-      ),
-  },
-  "backend/data-storage-databases/data-modeling-in-nosql-extensive": {
-    metadata: {
-      id: "article-backend-data-modeling-nosql-extensive",
-      title: "Data Modeling in NoSQL",
-      description:
-        "Deep guide to NoSQL data modeling, denormalization patterns, and scalability trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "data-modeling-in-nosql",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "nosql", "modeling"],
-      relatedTopics: [
-        "document-databases",
-        "key-value-stores",
-        "column-family-stores",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/data-modeling-in-nosql-extensive"
-      ),
-  },
-  "backend/data-storage-databases/sharding-strategies-concise": {
-    metadata: {
-      id: "article-backend-sharding-strategies-concise",
-      title: "Sharding Strategies",
-      description:
-        "Concise guide to sharding strategies, partition keys, and interview-ready trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "sharding-strategies",
-      version: "concise",
-      wordCount: 1850,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "sharding", "scaling"],
-      relatedTopics: [
-        "database-partitioning",
-        "cap-theorem",
-        "consistency-models",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/sharding-strategies-concise"
-      ),
-  },
-  "backend/data-storage-databases/sharding-strategies-extensive": {
-    metadata: {
-      id: "article-backend-sharding-strategies-extensive",
-      title: "Sharding Strategies",
-      description:
-        "Deep guide to sharding strategies, key selection, rebalancing, and operational trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "sharding-strategies",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "sharding", "scaling"],
-      relatedTopics: [
-        "database-partitioning",
-        "cap-theorem",
-        "consistency-models",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/sharding-strategies-extensive"
-      ),
-  },
-  "backend/data-storage-databases/replication-in-nosql-concise": {
-    metadata: {
-      id: "article-backend-replication-in-nosql-concise",
-      title: "Replication in NoSQL",
-      description:
-        "Concise guide to NoSQL replication models, trade-offs, and interview-ready concepts.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "replication-in-nosql",
-      version: "concise",
-      wordCount: 1850,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "nosql", "replication"],
-      relatedTopics: [
-        "read-replicas",
-        "consistency-models",
-        "cap-theorem",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/replication-in-nosql-concise"
-      ),
-  },
-  "backend/data-storage-databases/replication-in-nosql-extensive": {
-    metadata: {
-      id: "article-backend-replication-in-nosql-extensive",
-      title: "Replication in NoSQL",
-      description:
-        "Deep guide to NoSQL replication models, consistency trade-offs, and conflict resolution.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "replication-in-nosql",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "nosql", "replication"],
-      relatedTopics: [
-        "read-replicas",
-        "consistency-models",
-        "cap-theorem",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/replication-in-nosql-extensive"
-      ),
-  },
-  "backend/data-storage-databases/conflict-resolution-concise": {
-    metadata: {
-      id: "article-backend-conflict-resolution-concise",
-      title: "Conflict Resolution",
-      description:
-        "Concise guide to conflict resolution in distributed systems and interview-ready strategies.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "conflict-resolution",
-      version: "concise",
-      wordCount: 1800,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "distributed-systems", "consistency", "conflicts"],
-      relatedTopics: [
-        "replication-in-nosql",
-        "consistency-models",
-        "cap-theorem",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/conflict-resolution-concise"
-      ),
-  },
-  "backend/data-storage-databases/conflict-resolution-extensive": {
-    metadata: {
-      id: "article-backend-conflict-resolution-extensive",
-      title: "Conflict Resolution",
-      description:
-        "Deep guide to conflict resolution strategies in distributed systems and their trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "conflict-resolution",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "distributed-systems", "consistency", "conflicts"],
-      relatedTopics: [
-        "replication-in-nosql",
-        "consistency-models",
-        "cap-theorem",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/conflict-resolution-extensive"
-      ),
-  },
-  "backend/data-storage-databases/query-patterns-concise": {
-    metadata: {
-      id: "article-backend-query-patterns-concise",
-      title: "Query Patterns",
-      description:
-        "Concise guide to query patterns, access-driven modeling, and interview-ready trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "query-patterns",
-      version: "concise",
-      wordCount: 1850,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "modeling", "performance"],
-      relatedTopics: [
-        "data-modeling-in-nosql",
-        "query-optimization-techniques",
-        "database-indexes",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/query-patterns-concise"
-      ),
-  },
-  "backend/data-storage-databases/query-patterns-extensive": {
-    metadata: {
-      id: "article-backend-query-patterns-extensive",
-      title: "Query Patterns",
-      description:
-        "Deep guide to query patterns, modeling for access paths, and performance trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "query-patterns",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "modeling", "performance"],
-      relatedTopics: [
-        "data-modeling-in-nosql",
-        "query-optimization-techniques",
-        "database-indexes",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/query-patterns-extensive"
-      ),
-  },
-  "backend/data-storage-databases/object-storage-concise": {
-    metadata: {
-      id: "article-backend-object-storage-concise",
-      title: "Object Storage",
-      description:
-        "Concise guide to object storage, access patterns, and interview-ready trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "object-storage",
-      version: "concise",
-      wordCount: 1800,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "storage", "object-storage"],
-      relatedTopics: [
-        "file-systems",
-        "block-storage",
-        "data-backups-archival",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/object-storage-concise"
-      ),
-  },
-  "backend/data-storage-databases/object-storage-extensive": {
-    metadata: {
-      id: "article-backend-object-storage-extensive",
-      title: "Object Storage",
-      description:
-        "Deep guide to object storage, durability models, and operational trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "object-storage",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "storage", "object-storage"],
-      relatedTopics: [
-        "file-systems",
-        "block-storage",
-        "data-backups-archival",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/object-storage-extensive"
-      ),
-  },
-  "backend/data-storage-databases/file-systems-concise": {
-    metadata: {
-      id: "article-backend-file-systems-concise",
-      title: "File Systems",
-      description:
-        "Concise guide to file systems, POSIX semantics, and interview-ready trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "file-systems",
-      version: "concise",
-      wordCount: 1800,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "storage", "file-systems"],
-      relatedTopics: [
-        "object-storage",
-        "block-storage",
-        "data-backups-archival",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/file-systems-concise"
-      ),
-  },
-  "backend/data-storage-databases/file-systems-extensive": {
-    metadata: {
-      id: "article-backend-file-systems-extensive",
-      title: "File Systems",
-      description:
-        "Deep guide to file systems, POSIX semantics, and distributed file system trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "file-systems",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "storage", "file-systems"],
-      relatedTopics: [
-        "object-storage",
-        "block-storage",
-        "data-backups-archival",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/file-systems-extensive"
-      ),
-  },
-  "backend/data-storage-databases/block-storage-concise": {
-    metadata: {
-      id: "article-backend-block-storage-concise",
-      title: "Block Storage",
-      description:
-        "Concise guide to block storage, performance characteristics, and interview-ready trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "block-storage",
-      version: "concise",
-      wordCount: 1800,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "storage", "block-storage"],
-      relatedTopics: [
-        "file-systems",
-        "object-storage",
-        "data-backups-archival",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/block-storage-concise"
-      ),
-  },
-  "backend/data-storage-databases/block-storage-extensive": {
-    metadata: {
-      id: "article-backend-block-storage-extensive",
-      title: "Block Storage",
-      description:
-        "Deep guide to block storage, performance characteristics, and operational trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "block-storage",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "storage", "block-storage"],
-      relatedTopics: [
-        "file-systems",
-        "object-storage",
-        "data-backups-archival",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/block-storage-extensive"
-      ),
-  },
-  "backend/data-storage-databases/cdn-edge-storage-concise": {
-    metadata: {
-      id: "article-backend-cdn-edge-storage-concise",
-      title: "CDN & Edge Storage",
-      description:
-        "Concise guide to CDN and edge storage concepts, caching, and interview-ready trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "cdn-edge-storage",
-      version: "concise",
-      wordCount: 1800,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "cdn", "edge", "storage"],
-      relatedTopics: [
-        "caching-performance",
-        "object-storage",
-        "compression",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/cdn-edge-storage-concise"
-      ),
-  },
-  "backend/data-storage-databases/cdn-edge-storage-extensive": {
-    metadata: {
-      id: "article-backend-cdn-edge-storage-extensive",
-      title: "CDN & Edge Storage",
-      description:
-        "Deep guide to CDN and edge storage, caching strategies, and global performance trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "cdn-edge-storage",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "cdn", "edge", "storage"],
-      relatedTopics: [
-        "caching-performance",
-        "object-storage",
-        "compression",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/cdn-edge-storage-extensive"
-      ),
-  },
-  "backend/data-storage-databases/data-lakes-concise": {
-    metadata: {
-      id: "article-backend-data-lakes-concise",
-      title: "Data Lakes",
-      description:
-        "Concise guide to data lakes, storage formats, and interview-ready trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "data-lakes",
-      version: "concise",
-      wordCount: 1800,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "data-lake", "analytics", "storage"],
-      relatedTopics: [
-        "data-warehouses",
-        "object-storage",
-        "data-serialization",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/data-lakes-concise"
-      ),
-  },
-  "backend/data-storage-databases/data-lakes-extensive": {
-    metadata: {
-      id: "article-backend-data-lakes-extensive",
-      title: "Data Lakes",
-      description:
-        "Deep guide to data lakes, governance, storage formats, and analytics trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "data-lakes",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "data-lake", "analytics", "storage"],
-      relatedTopics: [
-        "data-warehouses",
-        "object-storage",
-        "data-serialization",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/data-lakes-extensive"
-      ),
-  },
-  "backend/data-storage-databases/data-warehouses-concise": {
-    metadata: {
-      id: "article-backend-data-warehouses-concise",
-      title: "Data Warehouses",
-      description:
-        "Concise guide to data warehouses, OLAP workloads, and interview-ready trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "data-warehouses",
-      version: "concise",
-      wordCount: 1800,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "data-warehouse", "analytics", "olap"],
-      relatedTopics: [
-        "data-lakes",
-        "query-optimization-techniques",
-        "sql-queries-optimization",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/data-warehouses-concise"
-      ),
-  },
-  "backend/data-storage-databases/data-warehouses-extensive": {
-    metadata: {
-      id: "article-backend-data-warehouses-extensive",
-      title: "Data Warehouses",
-      description:
-        "Deep guide to data warehouses, OLAP modeling, and analytics performance trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "data-warehouses",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "data-warehouse", "analytics", "olap"],
-      relatedTopics: [
-        "data-lakes",
-        "query-optimization-techniques",
-        "sql-queries-optimization",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/data-warehouses-extensive"
-      ),
-  },
-  "backend/data-storage-databases/blob-storage-concise": {
-    metadata: {
-      id: "article-backend-blob-storage-concise",
-      title: "Blob Storage",
-      description:
-        "Concise guide to blob storage, access patterns, and interview-ready trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "blob-storage",
-      version: "concise",
-      wordCount: 1800,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "storage", "blob-storage"],
-      relatedTopics: [
-        "object-storage",
-        "file-systems",
-        "cdn-edge-storage",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/blob-storage-concise"
-      ),
-  },
-  "backend/data-storage-databases/blob-storage-extensive": {
-    metadata: {
-      id: "article-backend-blob-storage-extensive",
-      title: "Blob Storage",
-      description:
-        "Deep guide to blob storage, durability models, and operational trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "blob-storage",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "storage", "blob-storage"],
-      relatedTopics: [
-        "object-storage",
-        "file-systems",
-        "cdn-edge-storage",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/blob-storage-extensive"
-      ),
-  },
-  "backend/data-storage-databases/in-memory-databases-concise": {
-    metadata: {
-      id: "article-backend-in-memory-databases-concise",
-      title: "In-Memory Databases",
-      description:
-        "Concise guide to in-memory databases, latency benefits, and interview-ready trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "in-memory-databases",
-      version: "concise",
-      wordCount: 1800,
-      readingTime: 9,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "in-memory", "performance"],
-      relatedTopics: [
-        "caching-performance",
-        "key-value-stores",
-        "connection-pooling",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/in-memory-databases-concise"
-      ),
-  },
-  "backend/data-storage-databases/in-memory-databases-extensive": {
-    metadata: {
-      id: "article-backend-in-memory-databases-extensive",
-      title: "In-Memory Databases",
-      description:
-        "Deep guide to in-memory databases, persistence options, and performance trade-offs.",
-      category: "backend",
-      subcategory: "data-storage-databases",
-      slug: "in-memory-databases",
-      version: "extensive",
-      wordCount: 11000,
-      readingTime: 55,
-      lastUpdated: "2026-03-09",
-      tags: ["backend", "databases", "in-memory", "performance"],
-      relatedTopics: [
-        "caching-performance",
-        "key-value-stores",
-        "connection-pooling",
-      ],
-    },
-    loader: () =>
-      import(
-        "./articles/backend/data-storage-databases/in-memory-databases-extensive"
-      ),
-  },
-  "frontend/rendering-strategies/client-side-rendering-concise": {
-    metadata: {
-      id: "article-frontend-client-sid-concise",
-      title: "Client-Side Rendering (CSR)",
-      description: "Comprehensive guide to Client-Side Rendering (CSR) covering concepts, implementation, and best practices.",
+  "backend/advanced-topics/b-trees-b-trees": {
+    metadata: {
+id: "article-backend-b-trees-b-trees-extensive",
+  title: "B-trees & B+ Trees",
+  description: "In-depth guide to b-trees & b+ trees architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "advanced-topics",
+  slug: "b-trees-b-trees",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'advanced'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/advanced-topics/b-trees-b-trees-concise"),
+  },
+  "backend/advanced-topics/bloom-filters": {
+    metadata: {
+id: "article-backend-bloom-filters-extensive",
+  title: "Bloom Filters",
+  description: "In-depth guide to bloom filters architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "advanced-topics",
+  slug: "bloom-filters",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'advanced'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/advanced-topics/bloom-filters-concise"),
+  },
+  "backend/advanced-topics/conflict-free-replicated-data-types": {
+    metadata: {
+id: "article-backend-conflict-free-replicated-data-types-extensive",
+  title: "Conflict-Free Replicated Data Types",
+  description: "In-depth guide to conflict-free replicated data types architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "advanced-topics",
+  slug: "conflict-free-replicated-data-types",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'advanced'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/advanced-topics/conflict-free-replicated-data-types-concise"),
+  },
+  "backend/advanced-topics/count-min-sketch": {
+    metadata: {
+id: "article-backend-count-min-sketch-extensive",
+  title: "Count-Min Sketch",
+  description: "In-depth guide to count-min sketch architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "advanced-topics",
+  slug: "count-min-sketch",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'advanced'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/advanced-topics/count-min-sketch-concise"),
+  },
+  "backend/advanced-topics/geo-sharding": {
+    metadata: {
+id: "article-backend-geo-sharding-extensive",
+  title: "Geo-Sharding",
+  description: "In-depth guide to geo-sharding architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "advanced-topics",
+  slug: "geo-sharding",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'advanced'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/advanced-topics/geo-sharding-concise"),
+  },
+  "backend/advanced-topics/global-distribution": {
+    metadata: {
+id: "article-backend-global-distribution-extensive",
+  title: "Global Distribution",
+  description: "In-depth guide to global distribution architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "advanced-topics",
+  slug: "global-distribution",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'advanced'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/advanced-topics/global-distribution-concise"),
+  },
+  "backend/advanced-topics/hot-partitions": {
+    metadata: {
+id: "article-backend-hot-partitions-extensive",
+  title: "Hot Partitions",
+  description: "In-depth guide to hot partitions architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "advanced-topics",
+  slug: "hot-partitions",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'advanced'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/advanced-topics/hot-partitions-concise"),
+  },
+  "backend/advanced-topics/hyperloglog": {
+    metadata: {
+id: "article-backend-hyperloglog-extensive",
+  title: "HyperLogLog",
+  description: "In-depth guide to hyperloglog architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "advanced-topics",
+  slug: "hyperloglog",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'advanced'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/advanced-topics/hyperloglog-concise"),
+  },
+  "backend/advanced-topics/leader-election": {
+    metadata: {
+id: "article-backend-leader-election-extensive",
+  title: "Leader Election",
+  description: "In-depth guide to leader election architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "advanced-topics",
+  slug: "leader-election",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'advanced'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/advanced-topics/leader-election-concise"),
+  },
+  "backend/advanced-topics/lsm-trees": {
+    metadata: {
+id: "article-backend-lsm-trees-extensive",
+  title: "LSM Trees",
+  description: "In-depth guide to lsm trees architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "advanced-topics",
+  slug: "lsm-trees",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'advanced'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/advanced-topics/lsm-trees-concise"),
+  },
+  "backend/advanced-topics/merkle-trees": {
+    metadata: {
+id: "article-backend-merkle-trees-extensive",
+  title: "Merkle Trees",
+  description: "In-depth guide to merkle trees architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "advanced-topics",
+  slug: "merkle-trees",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'advanced'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/advanced-topics/merkle-trees-concise"),
+  },
+  "backend/advanced-topics/operational-transformation": {
+    metadata: {
+id: "article-backend-operational-transformation-extensive",
+  title: "Operational Transformation",
+  description: "In-depth guide to operational transformation architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "advanced-topics",
+  slug: "operational-transformation",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'advanced'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/advanced-topics/operational-transformation-concise"),
+  },
+  "backend/advanced-topics/skip-lists": {
+    metadata: {
+id: "article-backend-skip-lists-extensive",
+  title: "Skip Lists",
+  description: "In-depth guide to skip lists architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "advanced-topics",
+  slug: "skip-lists",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'advanced'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/advanced-topics/skip-lists-concise"),
+  },
+  "backend/advanced-topics/snapshot-isolation": {
+    metadata: {
+id: "article-backend-snapshot-isolation-extensive",
+  title: "Snapshot Isolation",
+  description: "In-depth guide to snapshot isolation architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "advanced-topics",
+  slug: "snapshot-isolation",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'advanced'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/advanced-topics/snapshot-isolation-concise"),
+  },
+  "backend/advanced-topics/tail-latency": {
+    metadata: {
+id: "article-backend-tail-latency-extensive",
+  title: "Tail Latency",
+  description: "In-depth guide to tail latency architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "advanced-topics",
+  slug: "tail-latency",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'advanced'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/advanced-topics/tail-latency-concise"),
+  },
+  "backend/advanced-topics/time-series-optimization": {
+    metadata: {
+id: "article-backend-time-series-optimization-extensive",
+  title: "Time-Series Optimization",
+  description: "In-depth guide to time-series optimization architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "advanced-topics",
+  slug: "time-series-optimization",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'advanced'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/advanced-topics/time-series-optimization-concise"),
+  },
+  "backend/advanced-topics/write-ahead-logging": {
+    metadata: {
+id: "article-backend-write-ahead-logging-extensive",
+  title: "Write-Ahead Logging",
+  description: "In-depth guide to write-ahead logging architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "advanced-topics",
+  slug: "write-ahead-logging",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'advanced'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/advanced-topics/write-ahead-logging-concise"),
+  },
+  "backend/advanced-topics/zero-copy-techniques": {
+    metadata: {
+id: "article-backend-zero-copy-techniques-extensive",
+  title: "Zero-Copy Techniques",
+  description: "In-depth guide to zero-copy techniques architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "advanced-topics",
+  slug: "zero-copy-techniques",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'advanced'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/advanced-topics/zero-copy-techniques-concise"),
+  },
+  "backend/caching-performance/application-level-caching": {
+    metadata: {
+id: "article-backend-application-level-caching-extensive", title: "Application-Level Caching", description: "Deep guide to application-level caching patterns, consistency trade-offs, and production reliability.", category: "backend", subcategory: "caching-performance", slug: "application-level-caching",
+wordCount: 5889, readingTime: 30, lastUpdated: "2026-03-10", tags: ["backend", "caching", "performance"], relatedTopics: ["caching-strategies", "distributed-caching", "cache-invalidation"],
+    },
+    loader: () => import("./articles/backend/caching-performance/application-level-caching-concise"),
+  },
+  "backend/caching-performance/cache-breakdown": {
+    metadata: {
+id: "article-backend-cache-breakdown-extensive", title: "Cache Breakdown", description: "Deep guide to hot key expiration, mitigation techniques, and operational safeguards.", category: "backend", subcategory: "caching-performance", slug: "cache-breakdown",
+wordCount: 5125, readingTime: 26, lastUpdated: "2026-03-10", tags: ["backend", "caching", "performance"], relatedTopics: ["cache-stampede", "cache-invalidation", "caching-strategies"],
+    },
+    loader: () => import("./articles/backend/caching-performance/cache-breakdown-concise"),
+  },
+  "backend/caching-performance/cache-coherence": {
+    metadata: {
+id: "article-backend-cache-coherence-extensive", title: "Cache Coherence", description: "Deep guide to cache coherence across layers, consistency trade-offs, and production reliability.", category: "backend", subcategory: "caching-performance", slug: "cache-coherence",
+wordCount: 5375, readingTime: 27, lastUpdated: "2026-03-10", tags: ["backend", "caching", "performance"], relatedTopics: ["cache-invalidation", "distributed-caching", "caching-strategies"],
+    },
+    loader: () => import("./articles/backend/caching-performance/cache-coherence-concise"),
+  },
+  "backend/caching-performance/cache-eviction-policies": {
+    metadata: {
+id: "article-backend-cache-eviction-policies-extensive", title: "Cache Eviction Policies", description: "Deep guide to cache eviction policies, workload fit, and performance trade-offs.", category: "backend", subcategory: "caching-performance", slug: "cache-eviction-policies",
+wordCount: 8962, readingTime: 45, lastUpdated: "2026-03-10", tags: ["backend", "caching", "performance", "redis", "eviction"], relatedTopics: ["caching-strategies", "cache-invalidation", "cache-stampede"],
+    },
+    loader: () => import("./articles/backend/caching-performance/cache-eviction-policies-concise"),
+  },
+  "backend/caching-performance/cache-invalidation": {
+    metadata: {
+id: "article-backend-cache-invalidation-extensive", title: "Cache Invalidation", description: "Deep guide to cache invalidation techniques, consistency trade-offs, and operational patterns.", category: "backend", subcategory: "caching-performance", slug: "cache-invalidation",
+wordCount: 8928, readingTime: 45, lastUpdated: "2026-03-10", tags: ["backend", "caching", "performance", "redis"], relatedTopics: ["caching-strategies", "cache-eviction-policies", "cache-stampede"],
+    },
+    loader: () => import("./articles/backend/caching-performance/cache-invalidation-concise"),
+  },
+  "backend/caching-performance/cache-penetration": {
+    metadata: {
+id: "article-backend-cache-penetration-extensive", title: "Cache Penetration", description: "Deep guide to cache penetration causes, mitigation patterns, and operational safeguards.", category: "backend", subcategory: "caching-performance", slug: "cache-penetration",
+wordCount: 5121, readingTime: 26, lastUpdated: "2026-03-10", tags: ["backend", "caching", "performance"], relatedTopics: ["cache-stampede", "cache-invalidation", "caching-strategies"],
+    },
+    loader: () => import("./articles/backend/caching-performance/cache-penetration-concise"),
+  },
+  "backend/caching-performance/cache-stampede": {
+    metadata: {
+id: "article-backend-cache-stampede-extensive", title: "Cache Stampede", description: "Deep guide to cache stampede causes, mitigation patterns, and production reliability trade-offs.", category: "backend", subcategory: "caching-performance", slug: "cache-stampede",
+wordCount: 9047, readingTime: 46, lastUpdated: "2026-03-10", tags: ["backend", "caching", "performance", "reliability"], relatedTopics: ["cache-invalidation", "cache-eviction-policies", "caching-strategies"],
+    },
+    loader: () => import("./articles/backend/caching-performance/cache-stampede-concise"),
+  },
+  "backend/caching-performance/cache-warming": {
+    metadata: {
+id: "article-backend-cache-warming-extensive", title: "Cache Warming", description: "Deep guide to cache warming strategies, operational risks, and production reliability patterns.", category: "backend", subcategory: "caching-performance", slug: "cache-warming",
+wordCount: 5334, readingTime: 27, lastUpdated: "2026-03-10", tags: ["backend", "caching", "performance"], relatedTopics: ["cache-stampede", "cache-invalidation", "caching-strategies"],
+    },
+    loader: () => import("./articles/backend/caching-performance/cache-warming-concise"),
+  },
+  "backend/caching-performance/caching-strategies": {
+    metadata: {
+id: "article-backend-caching-strategies-extensive", title: "Caching Strategies", description: "Deep guide to caching strategies, write policies, consistency trade-offs, and production patterns.", category: "backend", subcategory: "caching-performance", slug: "caching-strategies",
+wordCount: 10456, readingTime: 53, lastUpdated: "2026-03-10", tags: ["backend", "caching", "performance", "redis", "scalability"], relatedTopics: ["cache-eviction-policies", "cache-invalidation", "distributed-caching"],
+    },
+    loader: () => import("./articles/backend/caching-performance/caching-strategies-concise"),
+  },
+  "backend/caching-performance/cdn-caching": {
+    metadata: {
+id: "article-backend-cdn-caching-extensive", title: "CDN Caching", description: "Deep guide to CDN caching architecture, edge behavior, and production deployment patterns.", category: "backend", subcategory: "caching-performance", slug: "cdn-caching",
+wordCount: 5380, readingTime: 27, lastUpdated: "2026-03-10", tags: ["backend", "caching", "cdn", "performance"], relatedTopics: ["http-caching", "cache-invalidation", "caching-strategies"],
+    },
+    loader: () => import("./articles/backend/caching-performance/cdn-caching-concise"),
+  },
+  "backend/caching-performance/database-connection-pooling": {
+    metadata: {
+id: "article-backend-database-connection-pooling-extensive", title: "Database Connection Pooling", description: "Deep guide to connection pooling design, sizing, and production reliability patterns.", category: "backend", subcategory: "caching-performance", slug: "database-connection-pooling",
+wordCount: 4924, readingTime: 25, lastUpdated: "2026-03-10", tags: ["backend", "performance", "databases"], relatedTopics: ["object-pooling", "query-optimization-techniques", "connection-pooling"],
+    },
+    loader: () => import("./articles/backend/caching-performance/database-connection-pooling-concise"),
+  },
+  "backend/caching-performance/database-query-caching": {
+    metadata: {
+id: "article-backend-database-query-caching-extensive", title: "Database Query Caching", description: "Deep guide to query result caching, invalidation strategies, and production trade-offs in databases.", category: "backend", subcategory: "caching-performance", slug: "database-query-caching",
+wordCount: 5691, readingTime: 29, lastUpdated: "2026-03-10", tags: ["backend", "caching", "databases", "performance"], relatedTopics: ["caching-strategies", "cache-invalidation", "query-optimization-techniques"],
+    },
+    loader: () => import("./articles/backend/caching-performance/database-query-caching-concise"),
+  },
+  "backend/caching-performance/distributed-caching": {
+    metadata: {
+id: "article-backend-distributed-caching-extensive", title: "Distributed Caching", description: "Deep guide to distributed caching architecture, consistency trade-offs, and production operations.", category: "backend", subcategory: "caching-performance", slug: "distributed-caching",
+wordCount: 6542, readingTime: 33, lastUpdated: "2026-03-10", tags: ["backend", "caching", "performance", "redis"], relatedTopics: ["caching-strategies", "cache-eviction-policies", "cache-invalidation"],
+    },
+    loader: () => import("./articles/backend/caching-performance/distributed-caching-concise"),
+  },
+  "backend/caching-performance/http-caching": {
+    metadata: {
+id: "article-backend-http-caching-extensive", title: "HTTP Caching", description: "Deep guide to HTTP caching semantics, cache control directives, and production deployment patterns.", category: "backend", subcategory: "caching-performance", slug: "http-caching",
+wordCount: 5410, readingTime: 28, lastUpdated: "2026-03-10", tags: ["backend", "caching", "http", "performance"], relatedTopics: ["cdn-caching", "cache-invalidation", "caching-strategies"],
+    },
+    loader: () => import("./articles/backend/caching-performance/http-caching-concise"),
+  },
+  "backend/caching-performance/lazy-loading": {
+    metadata: {
+id: "article-backend-lazy-loading-extensive", title: "Lazy Loading", description: "Deep guide to on-demand loading, pagination strategies, and backend performance trade-offs.", category: "backend", subcategory: "caching-performance", slug: "lazy-loading",
+wordCount: 5021, readingTime: 26, lastUpdated: "2026-03-10", tags: ["backend", "performance"], relatedTopics: ["prefetching", "page-caching", "caching-strategies"],
+    },
+    loader: () => import("./articles/backend/caching-performance/lazy-loading-concise"),
+  },
+  "backend/caching-performance/memoization": {
+    metadata: {
+id: "article-backend-memoization-extensive", title: "Memoization", description: "Deep guide to memoization design, cache key strategies, and production trade-offs.", category: "backend", subcategory: "caching-performance", slug: "memoization",
+wordCount: 5215, readingTime: 27, lastUpdated: "2026-03-10", tags: ["backend", "caching", "performance"], relatedTopics: ["application-level-caching", "cache-eviction-policies", "caching-strategies"],
+    },
+    loader: () => import("./articles/backend/caching-performance/memoization-concise"),
+  },
+  "backend/caching-performance/multi-level-caching": {
+    metadata: {
+id: "article-backend-multi-level-caching-extensive", title: "Multi-Level Caching", description: "Deep guide to cache hierarchies, coherence challenges, and production trade-offs.", category: "backend", subcategory: "caching-performance", slug: "multi-level-caching",
+wordCount: 5058, readingTime: 26, lastUpdated: "2026-03-10", tags: ["backend", "caching", "performance"], relatedTopics: ["application-level-caching", "distributed-caching", "cache-coherence"],
+    },
+    loader: () => import("./articles/backend/caching-performance/multi-level-caching-concise"),
+  },
+  "backend/caching-performance/object-pooling": {
+    metadata: {
+id: "article-backend-object-pooling-extensive", title: "Object Pooling", description: "Deep guide to object pooling design, contention control, and production trade-offs.", category: "backend", subcategory: "caching-performance", slug: "object-pooling",
+wordCount: 4936, readingTime: 25, lastUpdated: "2026-03-10", tags: ["backend", "performance"], relatedTopics: ["database-connection-pooling", "application-level-caching", "caching-strategies"],
+    },
+    loader: () => import("./articles/backend/caching-performance/object-pooling-concise"),
+  },
+  "backend/caching-performance/page-caching": {
+    metadata: {
+id: "article-backend-page-caching-extensive", title: "Page Caching", description: "Deep guide to full-page and fragment caching, invalidation strategies, and production trade-offs.", category: "backend", subcategory: "caching-performance", slug: "page-caching",
+wordCount: 5186, readingTime: 26, lastUpdated: "2026-03-10", tags: ["backend", "caching", "performance"], relatedTopics: ["http-caching", "cdn-caching", "cache-invalidation"],
+    },
+    loader: () => import("./articles/backend/caching-performance/page-caching-concise"),
+  },
+  "backend/caching-performance/prefetching": {
+    metadata: {
+id: "article-backend-prefetching-extensive", title: "Prefetching", description: "Deep guide to predictive loading, accuracy trade-offs, and production safeguards.", category: "backend", subcategory: "caching-performance", slug: "prefetching",
+wordCount: 4958, readingTime: 25, lastUpdated: "2026-03-10", tags: ["backend", "performance"], relatedTopics: ["lazy-loading", "cache-warming", "caching-strategies"],
+    },
+    loader: () => import("./articles/backend/caching-performance/prefetching-concise"),
+  },
+  "backend/data-processing-analytics/aggregations": {
+    metadata: {
+id: "article-backend-aggregations-extensive", title: "Aggregations", description: "In-depth guide to aggregations architecture, trade-offs, and operational practice.", category: "backend", subcategory: "data-processing-analytics", slug: "aggregations",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","data","aggregations"], relatedTopics: ["windowing","stream-processing","batch-processing"],
+    },
+    loader: () => import("./articles/backend/data-processing-analytics/aggregations-concise"),
+  },
+  "backend/data-processing-analytics/apache-kafka": {
+    metadata: {
+id: "article-backend-apache-kafka-extensive", title: "Apache Kafka", description: "In-depth guide to apache kafka architecture, trade-offs, and operational practice.", category: "backend", subcategory: "data-processing-analytics", slug: "apache-kafka",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","data","kafka"], relatedTopics: ["stream-processing","message-ordering","exactly-once-semantics"],
+    },
+    loader: () => import("./articles/backend/data-processing-analytics/apache-kafka-concise"),
+  },
+  "backend/data-processing-analytics/apache-spark": {
+    metadata: {
+id: "article-backend-apache-spark-extensive", title: "Apache Spark", description: "In-depth guide to apache spark architecture, trade-offs, and operational practice.", category: "backend", subcategory: "data-processing-analytics", slug: "apache-spark",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","data","spark"], relatedTopics: ["batch-processing","data-serialization","data-partitioning"],
+    },
+    loader: () => import("./articles/backend/data-processing-analytics/apache-spark-concise"),
+  },
+  "backend/data-processing-analytics/batch-processing": {
+    metadata: {
+id: "article-backend-batch-processing-extensive", title: "Batch Processing", description: "In-depth guide to batch processing architecture, trade-offs, and operational practice.", category: "backend", subcategory: "data-processing-analytics", slug: "batch-processing",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","data","batch"], relatedTopics: ["etl-elt-pipelines","mapreduce","apache-spark"],
+    },
+    loader: () => import("./articles/backend/data-processing-analytics/batch-processing-concise"),
+  },
+  "backend/data-processing-analytics/change-data-capture": {
+    metadata: {
+id: "article-backend-change-data-capture-extensive", title: "Change Data Capture", description: "In-depth guide to change data capture architecture, trade-offs, and operational practice.", category: "backend", subcategory: "data-processing-analytics", slug: "change-data-capture",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","data","cdc"], relatedTopics: ["apache-kafka","data-pipelines","exactly-once-semantics"],
+    },
+    loader: () => import("./articles/backend/data-processing-analytics/change-data-capture-concise"),
+  },
+  "backend/data-processing-analytics/data-compression": {
+    metadata: {
+id: "article-backend-data-compression-extensive", title: "Data Compression", description: "In-depth guide to data compression architecture, trade-offs, and operational practice.", category: "backend", subcategory: "data-processing-analytics", slug: "data-compression",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","data","compression"], relatedTopics: ["data-serialization","batch-processing","stream-processing"],
+    },
+    loader: () => import("./articles/backend/data-processing-analytics/data-compression-concise"),
+  },
+  "backend/data-processing-analytics/data-deduplication": {
+    metadata: {
+id: "article-backend-data-deduplication-extensive", title: "Data Deduplication", description: "In-depth guide to data deduplication architecture, trade-offs, and operational practice.", category: "backend", subcategory: "data-processing-analytics", slug: "data-deduplication",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","data","dedup"], relatedTopics: ["exactly-once-semantics","message-ordering","change-data-capture"],
+    },
+    loader: () => import("./articles/backend/data-processing-analytics/data-deduplication-concise"),
+  },
+  "backend/data-processing-analytics/data-partitioning": {
+    metadata: {
+id: "article-backend-data-partitioning-extensive", title: "Data Partitioning", description: "In-depth guide to data partitioning architecture, trade-offs, and operational practice.", category: "backend", subcategory: "data-processing-analytics", slug: "data-partitioning",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","data","partitioning"], relatedTopics: ["data-pipelines","data-deduplication","apache-spark"],
+    },
+    loader: () => import("./articles/backend/data-processing-analytics/data-partitioning-concise"),
+  },
+  "backend/data-processing-analytics/data-pipelines": {
+    metadata: {
+id: "article-backend-data-pipelines-extensive", title: "Data Pipelines", description: "In-depth guide to data pipelines architecture, trade-offs, and operational practice.", category: "backend", subcategory: "data-processing-analytics", slug: "data-pipelines",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","data","pipelines"], relatedTopics: ["etl-elt-pipelines","data-partitioning","apache-kafka"],
+    },
+    loader: () => import("./articles/backend/data-processing-analytics/data-pipelines-concise"),
+  },
+  "backend/data-processing-analytics/data-serialization": {
+    metadata: {
+id: "article-backend-data-serialization-extensive", title: "Data Serialization", description: "In-depth guide to data serialization architecture, trade-offs, and operational practice.", category: "backend", subcategory: "data-processing-analytics", slug: "data-serialization",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","data","serialization"], relatedTopics: ["data-compression","apache-spark","etl-elt-pipelines"],
+    },
+    loader: () => import("./articles/backend/data-processing-analytics/data-serialization-concise"),
+  },
+  "backend/data-processing-analytics/etl-elt-pipelines": {
+    metadata: {
+id: "article-backend-etl-elt-pipelines-extensive", title: "ETL/ELT Pipelines", description: "In-depth guide to etl/elt pipelines architecture, trade-offs, and operational practice.", category: "backend", subcategory: "data-processing-analytics", slug: "etl-elt-pipelines",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","data","etl"], relatedTopics: ["data-pipelines","batch-processing","data-serialization"],
+    },
+    loader: () => import("./articles/backend/data-processing-analytics/etl-elt-pipelines-concise"),
+  },
+  "backend/data-processing-analytics/exactly-once-semantics": {
+    metadata: {
+id: "article-backend-exactly-once-semantics-extensive", title: "Exactly-Once Semantics", description: "In-depth guide to exactly-once semantics architecture, trade-offs, and operational practice.", category: "backend", subcategory: "data-processing-analytics", slug: "exactly-once-semantics",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","data","exactly-once"], relatedTopics: ["message-ordering","data-deduplication","stream-processing"],
+    },
+    loader: () => import("./articles/backend/data-processing-analytics/exactly-once-semantics-concise"),
+  },
+  "backend/data-processing-analytics/kappa-architecture": {
+    metadata: {
+id: "article-backend-kappa-architecture-extensive", title: "Kappa Architecture", description: "In-depth guide to kappa architecture architecture, trade-offs, and operational practice.", category: "backend", subcategory: "data-processing-analytics", slug: "kappa-architecture",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","data","kappa"], relatedTopics: ["lambda-architecture","stream-processing","change-data-capture"],
+    },
+    loader: () => import("./articles/backend/data-processing-analytics/kappa-architecture-concise"),
+  },
+  "backend/data-processing-analytics/lambda-architecture": {
+    metadata: {
+id: "article-backend-lambda-architecture-extensive", title: "Lambda Architecture", description: "In-depth guide to lambda architecture architecture, trade-offs, and operational practice.", category: "backend", subcategory: "data-processing-analytics", slug: "lambda-architecture",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","data","lambda"], relatedTopics: ["kappa-architecture","batch-processing","stream-processing"],
+    },
+    loader: () => import("./articles/backend/data-processing-analytics/lambda-architecture-concise"),
+  },
+  "backend/data-processing-analytics/mapreduce": {
+    metadata: {
+id: "article-backend-mapreduce-extensive", title: "MapReduce", description: "In-depth guide to mapreduce architecture, trade-offs, and operational practice.", category: "backend", subcategory: "data-processing-analytics", slug: "mapreduce",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","data","mapreduce"], relatedTopics: ["batch-processing","apache-spark","data-partitioning"],
+    },
+    loader: () => import("./articles/backend/data-processing-analytics/mapreduce-concise"),
+  },
+  "backend/data-processing-analytics/message-ordering": {
+    metadata: {
+id: "article-backend-message-ordering-extensive", title: "Message Ordering", description: "In-depth guide to message ordering architecture, trade-offs, and operational practice.", category: "backend", subcategory: "data-processing-analytics", slug: "message-ordering",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","data","ordering"], relatedTopics: ["apache-kafka","exactly-once-semantics","data-deduplication"],
+    },
+    loader: () => import("./articles/backend/data-processing-analytics/message-ordering-concise"),
+  },
+  "backend/data-processing-analytics/stream-processing": {
+    metadata: {
+id: "article-backend-stream-processing-extensive", title: "Stream Processing", description: "In-depth guide to stream processing architecture, trade-offs, and operational practice.", category: "backend", subcategory: "data-processing-analytics", slug: "stream-processing",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","data","stream"], relatedTopics: ["apache-kafka","windowing","exactly-once-semantics"],
+    },
+    loader: () => import("./articles/backend/data-processing-analytics/stream-processing-concise"),
+  },
+  "backend/data-processing-analytics/windowing": {
+    metadata: {
+id: "article-backend-windowing-extensive", title: "Windowing", description: "In-depth guide to windowing architecture, trade-offs, and operational practice.", category: "backend", subcategory: "data-processing-analytics", slug: "windowing",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","data","windowing"], relatedTopics: ["stream-processing","aggregations","exactly-once-semantics"],
+    },
+    loader: () => import("./articles/backend/data-processing-analytics/windowing-concise"),
+  },
+  "backend/data-storage-databases/acid-properties": {
+    metadata: {
+id: "article-backend-acid-properties-extensive", title: "ACID Properties", description: "Comprehensive guide to ACID properties, isolation levels, and transactional guarantees.", category: "backend", subcategory: "data-storage-databases", slug: "acid-properties",
+wordCount: 1847, readingTime: 10, lastUpdated: "2026-03-09", tags: ["backend", "databases", "sql", "acid", "transactions"], relatedTopics: [ "transaction-isolation-levels", "concurrency-control", "deadlocks", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/acid-properties-concise"),
+  },
+  "backend/data-storage-databases/base-properties": {
+    metadata: {
+id: "article-backend-base-properties-extensive", title: "BASE Properties", description: "Deep guide to BASE properties, eventual consistency patterns, and system design trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "base-properties",
+wordCount: 1751, readingTime: 9, lastUpdated: "2026-03-09", tags: ["backend", "distributed-systems", "databases", "base"], relatedTopics: [ "cap-theorem", "read-replicas", "consistency-models", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/base-properties-concise"),
+  },
+  "backend/data-storage-databases/blob-storage": {
+    metadata: {
+id: "article-backend-blob-storage-extensive", title: "Blob Storage", description: "Deep guide to blob storage, durability models, and operational trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "blob-storage",
+wordCount: 1576, readingTime: 8, lastUpdated: "2026-03-09", tags: ["backend", "storage", "blob-storage"], relatedTopics: [ "object-storage", "file-systems", "cdn-edge-storage", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/blob-storage-concise"),
+  },
+  "backend/data-storage-databases/block-storage": {
+    metadata: {
+id: "article-backend-block-storage-extensive", title: "Block Storage", description: "Deep guide to block storage, performance characteristics, and operational trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "block-storage",
+wordCount: 1610, readingTime: 9, lastUpdated: "2026-03-09", tags: ["backend", "storage", "block-storage"], relatedTopics: [ "file-systems", "object-storage", "data-backups-archival", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/block-storage-concise"),
+  },
+  "backend/data-storage-databases/cap-theorem": {
+    metadata: {
+id: "article-backend-cap-theorem-extensive", title: "CAP Theorem", description: "Deep guide to CAP theorem, consistency models, and practical system trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "cap-theorem",
+wordCount: 1784, readingTime: 9, lastUpdated: "2026-03-09", tags: ["backend", "distributed-systems", "databases", "cap"], relatedTopics: [ "base-properties", "read-replicas", "database-partitioning", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/cap-theorem-concise"),
+  },
+  "backend/data-storage-databases/cdn-edge-storage": {
+    metadata: {
+id: "article-backend-cdn-edge-storage-extensive", title: "CDN & Edge Storage", description: "Deep guide to CDN and edge storage, caching strategies, and global performance trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "cdn-edge-storage",
+wordCount: 1641, readingTime: 9, lastUpdated: "2026-03-09", tags: ["backend", "cdn", "edge", "storage"], relatedTopics: [ "caching-performance", "object-storage", "compression", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/cdn-edge-storage-concise"),
+  },
+  "backend/data-storage-databases/column-family-stores": {
+    metadata: {
+id: "article-backend-column-family-stores-extensive", title: "Column-Family Stores", description: "Deep guide to wide-column databases, data modeling patterns, and scalability trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "column-family-stores",
+wordCount: 1687, readingTime: 9, lastUpdated: "2026-03-09", tags: ["backend", "databases", "nosql", "column-family"], relatedTopics: [ "cap-theorem", "base-properties", "query-optimization-techniques", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/column-family-stores-concise"),
+  },
+  "backend/data-storage-databases/concurrency-control": {
+    metadata: {
+id: "article-backend-concurrency-control-extensive", title: "Concurrency Control", description: "Comprehensive guide to concurrency control, locking, MVCC, and trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "concurrency-control",
+wordCount: 1778, readingTime: 9, lastUpdated: "2026-03-09", tags: ["backend", "databases", "concurrency", "transactions"], relatedTopics: [ "transaction-isolation-levels", "deadlocks", "acid-properties", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/concurrency-control-concise"),
+  },
+  "backend/data-storage-databases/conflict-resolution": {
+    metadata: {
+id: "article-backend-conflict-resolution-extensive", title: "Conflict Resolution", description: "Deep guide to conflict resolution strategies in distributed systems and their trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "conflict-resolution",
+wordCount: 1661, readingTime: 9, lastUpdated: "2026-03-09", tags: ["backend", "distributed-systems", "consistency", "conflicts"], relatedTopics: [ "replication-in-nosql", "consistency-models", "cap-theorem", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/conflict-resolution-concise"),
+  },
+  "backend/data-storage-databases/connection-pooling": {
+    metadata: {
+id: "article-backend-connection-pooling-extensive", title: "Connection Pooling", description: "Deep guide to connection pooling mechanics, sizing, failure modes, and operational tuning.", category: "backend", subcategory: "data-storage-databases", slug: "connection-pooling",
+wordCount: 1915, readingTime: 10, lastUpdated: "2026-03-09", tags: ["backend", "databases", "performance", "pooling"], relatedTopics: [ "sql-queries-optimization", "concurrency-control", "read-replicas", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/connection-pooling-concise"),
+  },
+  "backend/data-storage-databases/consistency-models": {
+    metadata: {
+id: "article-backend-consistency-models-extensive", title: "Consistency Models", description: "Deep guide to consistency models, user-visible guarantees, and system trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "consistency-models",
+wordCount: 1738, readingTime: 9, lastUpdated: "2026-03-09", tags: ["backend", "distributed-systems", "databases", "consistency"], relatedTopics: [ "cap-theorem", "base-properties", "read-replicas", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/consistency-models-concise"),
+  },
+  "backend/data-storage-databases/data-lakes": {
+    metadata: {
+id: "article-backend-data-lakes-extensive", title: "Data Lakes", description: "Deep guide to data lakes, governance, storage formats, and analytics trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "data-lakes",
+wordCount: 1653, readingTime: 9, lastUpdated: "2026-03-09", tags: ["backend", "data-lake", "analytics", "storage"], relatedTopics: [ "data-warehouses", "object-storage", "data-serialization", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/data-lakes-concise"),
+  },
+  "backend/data-storage-databases/data-modeling-in-nosql": {
+    metadata: {
+id: "article-backend-data-modeling-nosql-extensive", title: "Data Modeling in NoSQL", description: "Deep guide to NoSQL data modeling, denormalization patterns, and scalability trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "data-modeling-in-nosql",
+wordCount: 1654, readingTime: 9, lastUpdated: "2026-03-09", tags: ["backend", "databases", "nosql", "modeling"], relatedTopics: [ "document-databases", "key-value-stores", "column-family-stores", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/data-modeling-in-nosql-concise"),
+  },
+  "backend/data-storage-databases/data-warehouses": {
+    metadata: {
+id: "article-backend-data-warehouses-extensive", title: "Data Warehouses", description: "Deep guide to data warehouses, OLAP modeling, and analytics performance trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "data-warehouses",
+wordCount: 1578, readingTime: 8, lastUpdated: "2026-03-09", tags: ["backend", "data-warehouse", "analytics", "olap"], relatedTopics: [ "data-lakes", "query-optimization-techniques", "sql-queries-optimization", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/data-warehouses-concise"),
+  },
+  "backend/data-storage-databases/database-constraints": {
+    metadata: {
+id: "article-backend-database-constraints-extensive", title: "Database Constraints", description: "Deep guide to database constraints, integrity guarantees, and schema-level validation.", category: "backend", subcategory: "data-storage-databases", slug: "database-constraints",
+wordCount: 1806, readingTime: 10, lastUpdated: "2026-03-09", tags: ["backend", "databases", "sql", "constraints"], relatedTopics: [ "relational-database-design", "transaction-isolation-levels", "concurrency-control", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/database-constraints-concise"),
+  },
+  "backend/data-storage-databases/database-indexes": {
+    metadata: {
+id: "article-backend-database-indexes-extensive", title: "Database Indexes", description: "Comprehensive guide to database indexes, internal structures, and performance trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "database-indexes",
+wordCount: 1721, readingTime: 9, lastUpdated: "2026-03-09", tags: ["backend", "databases", "indexes", "performance"], relatedTopics: [ "sql-queries-optimization", "index-types", "query-optimization-techniques", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/database-indexes-concise"),
+  },
+  "backend/data-storage-databases/database-partitioning": {
+    metadata: {
+id: "article-backend-database-partitioning-extensive", title: "Database Partitioning", description: "Deep guide to database partitioning strategies, shard keys, rebalancing, and operational trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "database-partitioning",
+wordCount: 2491, readingTime: 13, lastUpdated: "2026-03-09", tags: ["backend", "databases", "partitioning", "scaling", "sharding"], relatedTopics: [ "read-replicas", "database-indexes", "query-optimization-techniques", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/database-partitioning-concise"),
+  },
+  "backend/data-storage-databases/deadlocks": {
+    metadata: {
+id: "article-backend-deadlocks-extensive", title: "Deadlocks", description: "Comprehensive guide to deadlocks, detection, prevention, and recovery strategies.", category: "backend", subcategory: "data-storage-databases", slug: "deadlocks",
+wordCount: 1671, readingTime: 9, lastUpdated: "2026-03-09", tags: ["backend", "databases", "transactions", "deadlocks"], relatedTopics: [ "concurrency-control", "transaction-isolation-levels", "acid-properties", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/deadlocks-concise"),
+  },
+  "backend/data-storage-databases/document-databases": {
+    metadata: {
+id: "article-backend-document-databases-extensive", title: "Document Databases", description: "Deep guide to document databases, modeling patterns, and performance trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "document-databases",
+wordCount: 1790, readingTime: 9, lastUpdated: "2026-03-09", tags: ["backend", "databases", "nosql", "document"], relatedTopics: [ "cap-theorem", "base-properties", "query-optimization-techniques", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/document-databases-concise"),
+  },
+  "backend/data-storage-databases/file-systems": {
+    metadata: {
+id: "article-backend-file-systems-extensive", title: "File Systems", description: "Deep guide to file systems, POSIX semantics, and distributed file system trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "file-systems",
+wordCount: 1646, readingTime: 9, lastUpdated: "2026-03-09", tags: ["backend", "storage", "file-systems"], relatedTopics: [ "object-storage", "block-storage", "data-backups-archival", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/file-systems-concise"),
+  },
+  "backend/data-storage-databases/graph-databases": {
+    metadata: {
+id: "article-backend-graph-databases-extensive", title: "Graph Databases", description: "Deep guide to graph databases, data modeling, traversal queries, and scalability trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "graph-databases",
+wordCount: 1699, readingTime: 9, lastUpdated: "2026-03-09", tags: ["backend", "databases", "nosql", "graph"], relatedTopics: [ "query-optimization-techniques", "cap-theorem", "base-properties", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/graph-databases-concise"),
+  },
+  "backend/data-storage-databases/in-memory-databases": {
+    metadata: {
+id: "article-backend-in-memory-databases-extensive", title: "In-Memory Databases", description: "Deep guide to in-memory databases, persistence options, and performance trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "in-memory-databases",
+wordCount: 1594, readingTime: 8, lastUpdated: "2026-03-09", tags: ["backend", "databases", "in-memory", "performance"], relatedTopics: [ "caching-performance", "key-value-stores", "connection-pooling", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/in-memory-databases-concise"),
+  },
+  "backend/data-storage-databases/index-types": {
+    metadata: {
+id: "article-backend-index-types-extensive", title: "Index Types", description: "Comprehensive guide to primary, unique, composite, partial, and other index types.", category: "backend", subcategory: "data-storage-databases", slug: "index-types",
+wordCount: 1797, readingTime: 9, lastUpdated: "2026-03-09", tags: ["backend", "databases", "indexes", "performance"], relatedTopics: [ "database-indexes", "sql-queries-optimization", "query-optimization-techniques", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/index-types-concise"),
+  },
+  "backend/data-storage-databases/key-value-stores": {
+    metadata: {
+id: "article-backend-key-value-stores-extensive", title: "Key-Value Stores", description: "Deep guide to key-value stores, access patterns, consistency, and scalability trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "key-value-stores",
+wordCount: 1768, readingTime: 9, lastUpdated: "2026-03-09", tags: ["backend", "databases", "nosql", "key-value"], relatedTopics: [ "in-memory-databases", "caching-performance", "cap-theorem", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/key-value-stores-concise"),
+  },
+  "backend/data-storage-databases/object-storage": {
+    metadata: {
+id: "article-backend-object-storage-extensive", title: "Object Storage", description: "Deep guide to object storage, durability models, and operational trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "object-storage",
+wordCount: 1641, readingTime: 9, lastUpdated: "2026-03-09", tags: ["backend", "storage", "object-storage"], relatedTopics: [ "file-systems", "block-storage", "data-backups-archival", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/object-storage-concise"),
+  },
+  "backend/data-storage-databases/orms": {
+    metadata: {
+id: "article-backend-orms-extensive", title: "ORMs", description: "Deep guide to ORMs, performance pitfalls, and design patterns for scalable data access.", category: "backend", subcategory: "data-storage-databases", slug: "orms",
+wordCount: 1826, readingTime: 10, lastUpdated: "2026-03-09", tags: ["backend", "databases", "orm", "sql"], relatedTopics: [ "sql-queries-optimization", "database-indexes", "query-optimization-techniques", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/orms-concise"),
+  },
+  "backend/data-storage-databases/query-optimization-techniques": {
+    metadata: {
+id: "article-backend-query-optimization-techniques-extensive", title: "Query Optimization Techniques", description: "Comprehensive guide to SQL query optimization techniques, join strategies, and planner behavior.", category: "backend", subcategory: "data-storage-databases", slug: "query-optimization-techniques",
+wordCount: 1812, readingTime: 10, lastUpdated: "2026-03-09", tags: ["backend", "sql", "databases", "optimization", "performance"], relatedTopics: [ "sql-queries-optimization", "database-indexes", "index-types", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/query-optimization-techniques-concise"),
+  },
+  "backend/data-storage-databases/query-patterns": {
+    metadata: {
+id: "article-backend-query-patterns-extensive", title: "Query Patterns", description: "Deep guide to query patterns, modeling for access paths, and performance trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "query-patterns",
+wordCount: 1664, readingTime: 9, lastUpdated: "2026-03-09", tags: ["backend", "databases", "modeling", "performance"], relatedTopics: [ "data-modeling-in-nosql", "query-optimization-techniques", "database-indexes", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/query-patterns-concise"),
+  },
+  "backend/data-storage-databases/read-replicas": {
+    metadata: {
+id: "article-backend-read-replicas-extensive", title: "Read Replicas", description: "Deep guide to read replicas, replication lag, read routing, and availability trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "read-replicas",
+wordCount: 2143, readingTime: 11, lastUpdated: "2026-03-09", tags: ["backend", "databases", "replication", "availability", "scaling"], relatedTopics: [ "database-partitioning", "concurrency-control", "transaction-isolation-levels", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/read-replicas-concise"),
+  },
+  "backend/data-storage-databases/relational-database-design": {
+    metadata: {
+id: "article-backend-relational-database-design-extensive", title: "Relational Database Design", description: "Comprehensive guide to relational database design, normalization, constraints, and schema trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "relational-database-design",
+wordCount: 2068, readingTime: 11, lastUpdated: "2026-03-09", tags: ["backend", "databases", "sql", "design", "modeling"], relatedTopics: [ "acid-properties", "database-indexes", "transaction-isolation-levels", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/relational-database-design-concise"),
+  },
+  "backend/data-storage-databases/replication-in-nosql": {
+    metadata: {
+id: "article-backend-replication-in-nosql-extensive", title: "Replication in NoSQL", description: "Deep guide to NoSQL replication models, consistency trade-offs, and conflict resolution.", category: "backend", subcategory: "data-storage-databases", slug: "replication-in-nosql",
+wordCount: 1585, readingTime: 8, lastUpdated: "2026-03-09", tags: ["backend", "databases", "nosql", "replication"], relatedTopics: [ "read-replicas", "consistency-models", "cap-theorem", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/replication-in-nosql-concise"),
+  },
+  "backend/data-storage-databases/search-engines": {
+    metadata: {
+id: "article-backend-search-engines-extensive", title: "Search Engines", description: "Deep guide to search engines, inverted indexes, relevance ranking, and scalability trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "search-engines",
+wordCount: 1699, readingTime: 9, lastUpdated: "2026-03-09", tags: ["backend", "search", "databases", "indexing"], relatedTopics: [ "query-optimization-techniques", "serialization-formats", "caching-performance", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/search-engines-concise"),
+  },
+  "backend/data-storage-databases/sharding-strategies": {
+    metadata: {
+id: "article-backend-sharding-strategies-extensive", title: "Sharding Strategies", description: "Deep guide to sharding strategies, key selection, rebalancing, and operational trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "sharding-strategies",
+wordCount: 1603, readingTime: 9, lastUpdated: "2026-03-09", tags: ["backend", "databases", "sharding", "scaling"], relatedTopics: [ "database-partitioning", "cap-theorem", "consistency-models", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/sharding-strategies-concise"),
+  },
+  "backend/data-storage-databases/sql-queries-optimization": {
+    metadata: {
+id: "article-backend-sql-queries-optimization-extensive", title: "SQL Queries & Optimization", description: "Comprehensive guide to SQL query optimization, execution plans, and indexing strategy.", category: "backend", subcategory: "data-storage-databases", slug: "sql-queries-optimization",
+wordCount: 1874, readingTime: 10, lastUpdated: "2026-03-09", tags: ["backend", "sql", "databases", "performance", "optimization"], relatedTopics: [ "database-indexes", "query-optimization-techniques", "connection-pooling", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/sql-queries-optimization-concise"),
+  },
+  "backend/data-storage-databases/stored-procedures-functions": {
+    metadata: {
+id: "article-backend-stored-procedures-functions-extensive", title: "Stored Procedures & Functions", description: "Deep guide to stored procedures and functions, performance impact, and operational trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "stored-procedures-functions",
+wordCount: 1925, readingTime: 10, lastUpdated: "2026-03-09", tags: ["backend", "databases", "sql", "stored-procedures"], relatedTopics: [ "sql-queries-optimization", "transaction-isolation-levels", "concurrency-control", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/stored-procedures-functions-concise"),
+  },
+  "backend/data-storage-databases/time-series-databases": {
+    metadata: {
+id: "article-backend-time-series-databases-extensive", title: "Time-Series Databases", description: "Deep guide to time-series databases, data modeling, retention, and performance trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "time-series-databases",
+wordCount: 1706, readingTime: 9, lastUpdated: "2026-03-09", tags: ["backend", "databases", "timeseries", "nosql"], relatedTopics: [ "column-family-stores", "query-optimization-techniques", "database-partitioning", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/time-series-databases-concise"),
+  },
+  "backend/data-storage-databases/transaction-isolation-levels": {
+    metadata: {
+id: "article-backend-transaction-isolation-levels-extensive", title: "Transaction Isolation Levels", description: "Comprehensive guide to transaction isolation levels, anomalies, and trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "transaction-isolation-levels",
+wordCount: 1693, readingTime: 9, lastUpdated: "2026-03-09", tags: ["backend", "databases", "sql", "transactions", "isolation"], relatedTopics: [ "acid-properties", "concurrency-control", "deadlocks", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/transaction-isolation-levels-concise"),
+  },
+  "backend/data-storage-databases/triggers": {
+    metadata: {
+id: "article-backend-triggers-extensive", title: "Triggers", description: "Deep guide to database triggers, execution order, use cases, and operational trade-offs.", category: "backend", subcategory: "data-storage-databases", slug: "triggers",
+wordCount: 1856, readingTime: 10, lastUpdated: "2026-03-09", tags: ["backend", "databases", "sql", "triggers"], relatedTopics: [ "stored-procedures-functions", "transaction-isolation-levels", "concurrency-control", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/triggers-concise"),
+  },
+  "backend/data-storage-databases/views-materialized-views": {
+    metadata: {
+id: "article-backend-views-materialized-views-extensive", title: "Views & Materialized Views", description: "Deep guide to views and materialized views, performance implications, and refresh strategies.", category: "backend", subcategory: "data-storage-databases", slug: "views-materialized-views",
+wordCount: 1820, readingTime: 10, lastUpdated: "2026-03-09", tags: ["backend", "databases", "sql", "views", "materialized"], relatedTopics: [ "sql-queries-optimization", "query-optimization-techniques", "read-replicas", ],
+    },
+    loader: () => import("./articles/backend/data-storage-databases/views-materialized-views-concise"),
+  },
+  "backend/design-patterns-architectures/adapter-pattern": {
+    metadata: {
+id: "article-backend-adapter-pattern-extensive", title: "Adapter Pattern", description: "In-depth guide to adapter pattern architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "adapter-pattern",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","adapter"], relatedTopics: ["anti-corruption-layer","hexagonal-architecture","repository-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/adapter-pattern-concise"),
+  },
+  "backend/design-patterns-architectures/ambassador-pattern": {
+    metadata: {
+id: "article-backend-ambassador-pattern-extensive", title: "Ambassador Pattern", description: "In-depth guide to ambassador pattern architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "ambassador-pattern",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","ambassador"], relatedTopics: ["sidecar-pattern","adapter-pattern","circuit-breaker-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/ambassador-pattern-concise"),
+  },
+  "backend/design-patterns-architectures/anti-corruption-layer": {
+    metadata: {
+id: "article-backend-anti-corruption-layer-extensive", title: "Anti-Corruption Layer", description: "In-depth guide to anti-corruption layer architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "anti-corruption-layer",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","acl"], relatedTopics: ["adapter-pattern","domain-driven-design","strangler-fig-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/anti-corruption-layer-concise"),
+  },
+  "backend/design-patterns-architectures/api-gateway-pattern": {
+    metadata: {
+id: "article-backend-api-gateway-pattern-extensive", title: "API Gateway Pattern", description: "In-depth guide to api gateway pattern architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "api-gateway-pattern",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","gateway"], relatedTopics: ["microservices-architecture","backend-for-frontend","service-mesh-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/api-gateway-pattern-concise"),
+  },
+  "backend/design-patterns-architectures/backend-for-frontend": {
+    metadata: {
+id: "article-backend-backend-for-frontend-extensive", title: "Backend for Frontend", description: "In-depth guide to backend for frontend architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "backend-for-frontend",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","bff"], relatedTopics: ["api-gateway-pattern","microservices-architecture","service-mesh-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/backend-for-frontend-concise"),
+  },
+  "backend/design-patterns-architectures/bulkhead-pattern": {
+    metadata: {
+id: "article-backend-bulkhead-pattern-extensive", title: "Bulkhead Pattern", description: "In-depth guide to bulkhead pattern architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "bulkhead-pattern",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","resilience"], relatedTopics: ["circuit-breaker-pattern","timeout-pattern","retry-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/bulkhead-pattern-concise"),
+  },
+  "backend/design-patterns-architectures/cache-aside-pattern": {
+    metadata: {
+id: "article-backend-cache-aside-pattern-extensive", title: "Cache-Aside Pattern", description: "In-depth guide to cache-aside pattern architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "cache-aside-pattern",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","cache"], relatedTopics: ["materialized-view-pattern","repository-pattern","unit-of-work-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/cache-aside-pattern-concise"),
+  },
+  "backend/design-patterns-architectures/circuit-breaker-pattern": {
+    metadata: {
+id: "article-backend-circuit-breaker-pattern-extensive", title: "Circuit Breaker Pattern", description: "In-depth guide to circuit breaker pattern architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "circuit-breaker-pattern",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","resilience"], relatedTopics: ["retry-pattern","timeout-pattern","bulkhead-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/circuit-breaker-pattern-concise"),
+  },
+  "backend/design-patterns-architectures/clean-architecture": {
+    metadata: {
+id: "article-backend-clean-architecture-extensive", title: "Clean Architecture", description: "In-depth guide to clean architecture architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "clean-architecture",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","clean"], relatedTopics: ["hexagonal-architecture","layered-architecture","domain-driven-design"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/clean-architecture-concise"),
+  },
+  "backend/design-patterns-architectures/cqrs-pattern": {
+    metadata: {
+id: "article-backend-cqrs-pattern-extensive", title: "CQRS Pattern", description: "In-depth guide to cqrs pattern architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "cqrs-pattern",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","cqrs"], relatedTopics: ["event-sourcing-pattern","materialized-view-pattern","saga-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/cqrs-pattern-concise"),
+  },
+  "backend/design-patterns-architectures/database-per-service": {
+    metadata: {
+id: "article-backend-database-per-service-extensive", title: "Database per Service", description: "In-depth guide to database per service architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "database-per-service",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","data"], relatedTopics: ["microservices-architecture","shared-database-anti-pattern","repository-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/database-per-service-concise"),
+  },
+  "backend/design-patterns-architectures/domain-driven-design": {
+    metadata: {
+id: "article-backend-domain-driven-design-extensive", title: "Domain-Driven Design", description: "In-depth guide to domain-driven design architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "domain-driven-design",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","ddd"], relatedTopics: ["service-decomposition","anti-corruption-layer","cqrs-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/domain-driven-design-concise"),
+  },
+  "backend/design-patterns-architectures/event-driven-architecture": {
+    metadata: {
+id: "article-backend-event-driven-architecture-extensive", title: "Event-Driven Architecture", description: "In-depth guide to event-driven architecture architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "event-driven-architecture",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","event-driven"], relatedTopics: ["event-sourcing-pattern","saga-pattern","cqrs-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/event-driven-architecture-concise"),
+  },
+  "backend/design-patterns-architectures/event-sourcing-pattern": {
+    metadata: {
+id: "article-backend-event-sourcing-pattern-extensive", title: "Event Sourcing Pattern", description: "In-depth guide to event sourcing pattern architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "event-sourcing-pattern",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","events"], relatedTopics: ["cqrs-pattern","event-driven-architecture","saga-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/event-sourcing-pattern-concise"),
+  },
+  "backend/design-patterns-architectures/hexagonal-architecture": {
+    metadata: {
+id: "article-backend-hexagonal-architecture-extensive", title: "Hexagonal Architecture", description: "In-depth guide to hexagonal architecture architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "hexagonal-architecture",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","hexagonal"], relatedTopics: ["clean-architecture","adapter-pattern","layered-architecture"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/hexagonal-architecture-concise"),
+  },
+  "backend/design-patterns-architectures/layered-architecture": {
+    metadata: {
+id: "article-backend-layered-architecture-extensive", title: "Layered Architecture", description: "In-depth guide to layered architecture architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "layered-architecture",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","layered"], relatedTopics: ["clean-architecture","hexagonal-architecture","repository-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/layered-architecture-concise"),
+  },
+  "backend/design-patterns-architectures/materialized-view-pattern": {
+    metadata: {
+id: "article-backend-materialized-view-pattern-extensive", title: "Materialized View Pattern", description: "In-depth guide to materialized view pattern architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "materialized-view-pattern",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","data"], relatedTopics: ["cqrs-pattern","cache-aside-pattern","event-sourcing-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/materialized-view-pattern-concise"),
+  },
+  "backend/design-patterns-architectures/microservices-architecture": {
+    metadata: {
+id: "article-backend-microservices-architecture-extensive", title: "Microservices Architecture", description: "In-depth guide to microservices architecture architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "microservices-architecture",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","microservices"], relatedTopics: ["service-decomposition","api-gateway-pattern","service-mesh-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/microservices-architecture-concise"),
+  },
+  "backend/design-patterns-architectures/monolithic-architecture": {
+    metadata: {
+id: "article-backend-monolithic-architecture-extensive", title: "Monolithic Architecture", description: "In-depth guide to monolithic architecture architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "monolithic-architecture",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","monolith"], relatedTopics: ["microservices-architecture","layered-architecture","strangler-fig-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/monolithic-architecture-concise"),
+  },
+  "backend/design-patterns-architectures/repository-pattern": {
+    metadata: {
+id: "article-backend-repository-pattern-extensive", title: "Repository Pattern", description: "In-depth guide to repository pattern architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "repository-pattern",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","repository"], relatedTopics: ["unit-of-work-pattern","adapter-pattern","layered-architecture"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/repository-pattern-concise"),
+  },
+  "backend/design-patterns-architectures/retry-pattern": {
+    metadata: {
+id: "article-backend-retry-pattern-extensive", title: "Retry Pattern", description: "In-depth guide to retry pattern architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "retry-pattern",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","resilience"], relatedTopics: ["timeout-pattern","circuit-breaker-pattern","throttling-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/retry-pattern-concise"),
+  },
+  "backend/design-patterns-architectures/saga-pattern": {
+    metadata: {
+id: "article-backend-saga-pattern-extensive", title: "Saga Pattern", description: "In-depth guide to saga pattern architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "saga-pattern",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","saga"], relatedTopics: ["cqrs-pattern","event-driven-architecture","event-sourcing-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/saga-pattern-concise"),
+  },
+  "backend/design-patterns-architectures/serverless-architecture": {
+    metadata: {
+id: "article-backend-serverless-architecture-extensive", title: "Serverless Architecture", description: "In-depth guide to serverless architecture architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "serverless-architecture",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","serverless"], relatedTopics: ["event-driven-architecture","microservices-architecture","api-gateway-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/serverless-architecture-concise"),
+  },
+  "backend/design-patterns-architectures/service-mesh-pattern": {
+    metadata: {
+id: "article-backend-service-mesh-pattern-extensive", title: "Service Mesh Pattern", description: "In-depth guide to service mesh pattern architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "service-mesh-pattern",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","mesh"], relatedTopics: ["microservices-architecture","sidecar-pattern","circuit-breaker-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/service-mesh-pattern-concise"),
+  },
+  "backend/design-patterns-architectures/shared-database-anti-pattern": {
+    metadata: {
+id: "article-backend-shared-database-anti-pattern-extensive", title: "Shared Database Anti-Pattern", description: "In-depth guide to shared database anti-pattern architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "shared-database-anti-pattern",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","anti-pattern"], relatedTopics: ["database-per-service","microservices-architecture","anti-corruption-layer"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/shared-database-anti-pattern-concise"),
+  },
+  "backend/design-patterns-architectures/sidecar-pattern": {
+    metadata: {
+id: "article-backend-sidecar-pattern-extensive", title: "Sidecar Pattern", description: "In-depth guide to sidecar pattern architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "sidecar-pattern",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","sidecar"], relatedTopics: ["service-mesh-pattern","ambassador-pattern","bulkhead-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/sidecar-pattern-concise"),
+  },
+  "backend/design-patterns-architectures/strangler-fig-pattern": {
+    metadata: {
+id: "article-backend-strangler-fig-pattern-extensive", title: "Strangler Fig Pattern", description: "In-depth guide to strangler fig pattern architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "strangler-fig-pattern",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","migration"], relatedTopics: ["monolithic-architecture","microservices-architecture","anti-corruption-layer"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/strangler-fig-pattern-concise"),
+  },
+  "backend/design-patterns-architectures/throttling-pattern": {
+    metadata: {
+id: "article-backend-throttling-pattern-extensive", title: "Throttling Pattern", description: "In-depth guide to throttling pattern architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "throttling-pattern",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","resilience"], relatedTopics: ["retry-pattern","bulkhead-pattern","cache-aside-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/throttling-pattern-concise"),
+  },
+  "backend/design-patterns-architectures/timeout-pattern": {
+    metadata: {
+id: "article-backend-timeout-pattern-extensive", title: "Timeout Pattern", description: "In-depth guide to timeout pattern architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "timeout-pattern",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","resilience"], relatedTopics: ["retry-pattern","circuit-breaker-pattern","bulkhead-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/timeout-pattern-concise"),
+  },
+  "backend/design-patterns-architectures/unit-of-work-pattern": {
+    metadata: {
+id: "article-backend-unit-of-work-pattern-extensive", title: "Unit of Work Pattern", description: "In-depth guide to unit of work pattern architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "unit-of-work-pattern",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","uow"], relatedTopics: ["repository-pattern","transaction-isolation-levels","cqrs-pattern"],
+    },
+    loader: () => import("./articles/backend/design-patterns-architectures/unit-of-work-pattern-concise"),
+  },
+  "backend/fundamentals-building-blocks/api-design-best-practices": {
+    metadata: {
+id: "article-backend-api-design-best-practices-extensive", title: "API Design Best Practices", description: "Comprehensive guide to API design best practices including pagination, filtering, errors, versioning, and reliability.", category: "backend", subcategory: "fundamentals-building-blocks", slug: "api-design-best-practices",
+wordCount: 2779, readingTime: 14, lastUpdated: "2026-03-09", tags: ["backend", "api", "design", "reliability", "standards"], relatedTopics: [ "rest-api-design", "http-https-protocol", "request-response-lifecycle", ],
+    },
+    loader: () => import("./articles/backend/fundamentals-building-blocks/api-design-best-practices-concise"),
+  },
+  "backend/fundamentals-building-blocks/character-encoding": {
+    metadata: {
+id: "article-backend-character-encoding-extensive", title: "Character Encoding", description: "Comprehensive guide to Unicode, UTF-8, and common encoding pitfalls in backend systems.", category: "backend", subcategory: "fundamentals-building-blocks", slug: "character-encoding",
+wordCount: 2108, readingTime: 11, lastUpdated: "2026-03-09", tags: ["backend", "encoding", "utf-8"], relatedTopics: ["serialization-formats", "compression", "http-https-protocol"],
+    },
+    loader: () => import("./articles/backend/fundamentals-building-blocks/character-encoding-concise"),
+  },
+  "backend/fundamentals-building-blocks/client-server-architecture": {
+    metadata: {
+id: "article-backend-client-server-extensive", title: "Client-Server Architecture", description: "Comprehensive guide to client-server architecture covering fundamentals, variants, trade-offs, and interview readiness.", category: "backend", subcategory: "fundamentals-building-blocks", slug: "client-server-architecture",
+wordCount: 3751, readingTime: 19, lastUpdated: "2026-03-09", tags: ["backend", "architecture", "client-server", "networking", "scalability"], relatedTopics: [ "http-https-protocol", "request-response-lifecycle", "stateless-vs-stateful-services", "tcp-vs-udp", ],
+    },
+    loader: () => import("./articles/backend/fundamentals-building-blocks/client-server-architecture-concise"),
+  },
+  "backend/fundamentals-building-blocks/compression": {
+    metadata: {
+id: "article-backend-compression-extensive", title: "Compression", description: "Comprehensive guide to compression algorithms, trade-offs, and HTTP content encoding.", category: "backend", subcategory: "fundamentals-building-blocks", slug: "compression",
+wordCount: 2188, readingTime: 11, lastUpdated: "2026-03-09", tags: ["backend", "compression", "performance"], relatedTopics: ["serialization-formats", "http-https-protocol", "caching-performance"],
+    },
+    loader: () => import("./articles/backend/fundamentals-building-blocks/compression-concise"),
+  },
+  "backend/fundamentals-building-blocks/domain-name-system": {
+    metadata: {
+id: "article-backend-dns-extensive", title: "Domain Name System (DNS)", description: "Comprehensive guide to DNS resolution, record types, caching, and operational pitfalls.", category: "backend", subcategory: "fundamentals-building-blocks", slug: "domain-name-system",
+wordCount: 2835, readingTime: 15, lastUpdated: "2026-03-09", tags: ["backend", "dns", "networking", "infrastructure"], relatedTopics: ["http-https-protocol", "ip-addressing", "networking-fundamentals"],
+    },
+    loader: () => import("./articles/backend/fundamentals-building-blocks/domain-name-system-concise"),
+  },
+  "backend/fundamentals-building-blocks/horizontal-vs-vertical-scaling": {
+    metadata: {
+id: "article-backend-horizontal-vertical-extensive", title: "Horizontal vs Vertical Scaling", description: "Comprehensive guide to scaling up vs scaling out, trade-offs, and operational patterns.", category: "backend", subcategory: "fundamentals-building-blocks", slug: "horizontal-vs-vertical-scaling",
+wordCount: 2136, readingTime: 11, lastUpdated: "2026-03-09", tags: ["backend", "scaling", "architecture"], relatedTopics: ["stateless-vs-stateful-services", "caching-performance", "load-balancers"],
+    },
+    loader: () => import("./articles/backend/fundamentals-building-blocks/horizontal-vs-vertical-scaling-concise"),
+  },
+  "backend/fundamentals-building-blocks/http-https-protocol": {
+    metadata: {
+id: "article-backend-http-https-extensive", title: "HTTP/HTTPS Protocol", description: "Comprehensive guide to HTTP and HTTPS covering methods, status codes, headers, TLS, and performance trade-offs.", category: "backend", subcategory: "fundamentals-building-blocks", slug: "http-https-protocol",
+wordCount: 4788, readingTime: 24, lastUpdated: "2026-03-09", tags: ["backend", "http", "https", "protocols", "networking"], relatedTopics: [ "client-server-architecture", "request-response-lifecycle", "tcp-vs-udp", "serialization-formats", ],
+    },
+    loader: () => import("./articles/backend/fundamentals-building-blocks/http-https-protocol-concise"),
+  },
+  "backend/fundamentals-building-blocks/ip-addressing": {
+    metadata: {
+id: "article-backend-ip-addressing-extensive", title: "IP Addressing", description: "Comprehensive guide to IPv4, IPv6, CIDR, and subnetting with practical backend examples.", category: "backend", subcategory: "fundamentals-building-blocks", slug: "ip-addressing",
+wordCount: 2609, readingTime: 14, lastUpdated: "2026-03-09", tags: ["backend", "ip", "networking", "cidr"], relatedTopics: ["domain-name-system", "tcp-vs-udp", "networking-fundamentals"],
+    },
+    loader: () => import("./articles/backend/fundamentals-building-blocks/ip-addressing-concise"),
+  },
+  "backend/fundamentals-building-blocks/networking-fundamentals": {
+    metadata: {
+id: "article-backend-networking-fundamentals-extensive", title: "Networking Fundamentals", description: "Comprehensive guide to routing, switching, NAT, firewalls, and VPNs for backend systems.", category: "backend", subcategory: "fundamentals-building-blocks", slug: "networking-fundamentals",
+wordCount: 2274, readingTime: 12, lastUpdated: "2026-03-09", tags: ["backend", "networking", "routing", "security"], relatedTopics: ["ip-addressing", "tcp-vs-udp", "request-response-lifecycle"],
+    },
+    loader: () => import("./articles/backend/fundamentals-building-blocks/networking-fundamentals-concise"),
+  },
+  "backend/fundamentals-building-blocks/osi-model-tcp-ip-stack": {
+    metadata: {
+id: "article-backend-osi-tcpip-extensive", title: "OSI Model & TCP/IP Stack", description: "Comprehensive guide to OSI and TCP/IP layering, encapsulation, and debugging network issues.", category: "backend", subcategory: "fundamentals-building-blocks", slug: "osi-model-tcp-ip-stack",
+wordCount: 2307, readingTime: 12, lastUpdated: "2026-03-09", tags: ["backend", "networking", "osi", "tcp-ip"], relatedTopics: ["tcp-vs-udp", "request-response-lifecycle", "networking-fundamentals"],
+    },
+    loader: () => import("./articles/backend/fundamentals-building-blocks/osi-model-tcp-ip-stack-concise"),
+  },
+  "backend/fundamentals-building-blocks/request-response-lifecycle": {
+    metadata: {
+id: "article-backend-request-response-extensive", title: "Request/Response Lifecycle", description: "Comprehensive guide to the end-to-end request lifecycle with latency and middleware considerations.", category: "backend", subcategory: "fundamentals-building-blocks", slug: "request-response-lifecycle",
+wordCount: 2212, readingTime: 12, lastUpdated: "2026-03-09", tags: ["backend", "http", "lifecycle"], relatedTopics: ["http-https-protocol", "client-server-architecture", "networking-fundamentals"],
+    },
+    loader: () => import("./articles/backend/fundamentals-building-blocks/request-response-lifecycle-concise"),
+  },
+  "backend/fundamentals-building-blocks/rest-api-design": {
+    metadata: {
+id: "article-backend-rest-api-design-extensive", title: "REST API Design", description: "Comprehensive guide to REST API design, resource modeling, status codes, and real-world trade-offs.", category: "backend", subcategory: "fundamentals-building-blocks", slug: "rest-api-design",
+wordCount: 4347, readingTime: 22, lastUpdated: "2026-03-09", tags: ["backend", "rest", "api", "design", "architecture"], relatedTopics: [ "http-https-protocol", "api-design-best-practices", "request-response-lifecycle", ],
+    },
+    loader: () => import("./articles/backend/fundamentals-building-blocks/rest-api-design-concise"),
+  },
+  "backend/fundamentals-building-blocks/serialization-formats": {
+    metadata: {
+id: "article-backend-serialization-formats-extensive", title: "Serialization Formats", description: "Comprehensive guide to JSON, Protobuf, Avro, Thrift, and trade-offs in serialization.", category: "backend", subcategory: "fundamentals-building-blocks", slug: "serialization-formats",
+wordCount: 2169, readingTime: 11, lastUpdated: "2026-03-09", tags: ["backend", "serialization", "formats"], relatedTopics: ["character-encoding", "compression", "request-response-lifecycle"],
+    },
+    loader: () => import("./articles/backend/fundamentals-building-blocks/serialization-formats-concise"),
+  },
+  "backend/fundamentals-building-blocks/stateless-vs-stateful-services": {
+    metadata: {
+id: "article-backend-stateless-stateful-extensive", title: "Stateless vs Stateful Services", description: "Comprehensive guide to stateless and stateful services, trade-offs, and scaling impacts.", category: "backend", subcategory: "fundamentals-building-blocks", slug: "stateless-vs-stateful-services",
+wordCount: 2107, readingTime: 11, lastUpdated: "2026-03-09", tags: ["backend", "architecture", "state"], relatedTopics: ["horizontal-vs-vertical-scaling", "request-response-lifecycle", "caching-performance"],
+    },
+    loader: () => import("./articles/backend/fundamentals-building-blocks/stateless-vs-stateful-services-concise"),
+  },
+  "backend/fundamentals-building-blocks/tcp-vs-udp": {
+    metadata: {
+id: "article-backend-tcp-vs-udp-extensive", title: "TCP vs UDP", description: "Comprehensive guide to TCP vs UDP, reliability, performance trade-offs, and real-world use cases.", category: "backend", subcategory: "fundamentals-building-blocks", slug: "tcp-vs-udp",
+wordCount: 2461, readingTime: 13, lastUpdated: "2026-03-09", tags: ["backend", "networking", "tcp", "udp"], relatedTopics: ["http-https-protocol", "request-response-lifecycle", "networking-fundamentals"],
+    },
+    loader: () => import("./articles/backend/fundamentals-building-blocks/tcp-vs-udp-concise"),
+  },
+  "backend/infrastructure-deployment/auto-scaling": {
+    metadata: {
+id: "article-backend-auto-scaling-extensive",
+  title: "Auto-Scaling",
+  description: "In-depth guide to auto-scaling architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "infrastructure-deployment",
+  slug: "auto-scaling",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'infra', 'scaling'],
+  relatedTopics: ['container-orchestration', 'load-balancer-configuration', 'capacity-planning'],
+    },
+    loader: () => import("./articles/backend/infrastructure-deployment/auto-scaling-concise"),
+  },
+  "backend/infrastructure-deployment/blue-green-deployment": {
+    metadata: {
+id: "article-backend-blue-green-deployment-extensive",
+  title: "Blue-Green Deployment",
+  description: "In-depth guide to blue-green deployment architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "infrastructure-deployment",
+  slug: "blue-green-deployment",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'infra', 'deployment'],
+  relatedTopics: ['canary-deployment', 'rolling-deployment', 'feature-flags'],
+    },
+    loader: () => import("./articles/backend/infrastructure-deployment/blue-green-deployment-concise"),
+  },
+  "backend/infrastructure-deployment/canary-deployment": {
+    metadata: {
+id: "article-backend-canary-deployment-extensive",
+  title: "Canary Deployment",
+  description: "In-depth guide to canary deployment architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "infrastructure-deployment",
+  slug: "canary-deployment",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'infra', 'deployment'],
+  relatedTopics: ['blue-green-deployment', 'rolling-deployment', 'feature-flags'],
+    },
+    loader: () => import("./articles/backend/infrastructure-deployment/canary-deployment-concise"),
+  },
+  "backend/infrastructure-deployment/ci-cd-pipelines": {
+    metadata: {
+id: "article-backend-ci-cd-pipelines-extensive",
+  title: "CI/CD Pipelines",
+  description: "In-depth guide to ci/cd pipelines architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "infrastructure-deployment",
+  slug: "ci-cd-pipelines",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'infra', 'cicd'],
+  relatedTopics: ['feature-flags', 'blue-green-deployment', 'canary-deployment'],
+    },
+    loader: () => import("./articles/backend/infrastructure-deployment/ci-cd-pipelines-concise"),
+  },
+  "backend/infrastructure-deployment/cloud-services": {
+    metadata: {
+id: "article-backend-cloud-services-extensive",
+  title: "Cloud Services",
+  description: "In-depth guide to cloud services architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "infrastructure-deployment",
+  slug: "cloud-services",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'infra', 'cloud'],
+  relatedTopics: ['auto-scaling', 'networking', 'dns-management'],
+    },
+    loader: () => import("./articles/backend/infrastructure-deployment/cloud-services-concise"),
+  },
+  "backend/infrastructure-deployment/configuration-management": {
+    metadata: {
+id: "article-backend-configuration-management-extensive",
+  title: "Configuration Management",
+  description: "In-depth guide to configuration management architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "infrastructure-deployment",
+  slug: "configuration-management",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'infra', 'config'],
+  relatedTopics: ['infrastructure-as-code', 'immutable-infrastructure', 'ci-cd-pipelines'],
+    },
+    loader: () => import("./articles/backend/infrastructure-deployment/configuration-management-concise"),
+  },
+  "backend/infrastructure-deployment/container-orchestration": {
+    metadata: {
+id: "article-backend-container-orchestration-extensive",
+  title: "Container Orchestration",
+  description: "In-depth guide to container orchestration architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "infrastructure-deployment",
+  slug: "container-orchestration",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'infra', 'orchestration'],
+  relatedTopics: ['containerization', 'auto-scaling', 'service-discovery'],
+    },
+    loader: () => import("./articles/backend/infrastructure-deployment/container-orchestration-concise"),
+  },
+  "backend/infrastructure-deployment/containerization": {
+    metadata: {
+id: "article-backend-containerization-extensive",
+  title: "Containerization",
+  description: "In-depth guide to containerization architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "infrastructure-deployment",
+  slug: "containerization",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'infra', 'containers'],
+  relatedTopics: ['container-orchestration', 'ci-cd-pipelines', 'immutable-infrastructure'],
+    },
+    loader: () => import("./articles/backend/infrastructure-deployment/containerization-concise"),
+  },
+  "backend/infrastructure-deployment/dns-management": {
+    metadata: {
+id: "article-backend-dns-management-extensive",
+  title: "DNS Management",
+  description: "In-depth guide to dns management architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "infrastructure-deployment",
+  slug: "dns-management",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'infra', 'dns'],
+  relatedTopics: ['load-balancer-configuration', 'cloud-services', 'networking'],
+    },
+    loader: () => import("./articles/backend/infrastructure-deployment/dns-management-concise"),
+  },
+  "backend/infrastructure-deployment/feature-flags": {
+    metadata: {
+id: "article-backend-feature-flags-extensive",
+  title: "Feature Flags",
+  description: "In-depth guide to feature flags architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "infrastructure-deployment",
+  slug: "feature-flags",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'infra', 'release'],
+  relatedTopics: ['ci-cd-pipelines', 'canary-deployment', 'gitops'],
+    },
+    loader: () => import("./articles/backend/infrastructure-deployment/feature-flags-concise"),
+  },
+  "backend/infrastructure-deployment/gitops": {
+    metadata: {
+id: "article-backend-gitops-extensive",
+  title: "GitOps",
+  description: "In-depth guide to gitops architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "infrastructure-deployment",
+  slug: "gitops",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'infra', 'gitops'],
+  relatedTopics: ['infrastructure-as-code', 'ci-cd-pipelines', 'immutable-infrastructure'],
+    },
+    loader: () => import("./articles/backend/infrastructure-deployment/gitops-concise"),
+  },
+  "backend/infrastructure-deployment/immutable-infrastructure": {
+    metadata: {
+id: "article-backend-immutable-infrastructure-extensive",
+  title: "Immutable Infrastructure",
+  description: "In-depth guide to immutable infrastructure architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "infrastructure-deployment",
+  slug: "immutable-infrastructure",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'infra', 'immutable'],
+  relatedTopics: ['configuration-management', 'infrastructure-as-code', 'ci-cd-pipelines'],
+    },
+    loader: () => import("./articles/backend/infrastructure-deployment/immutable-infrastructure-concise"),
+  },
+  "backend/infrastructure-deployment/infrastructure-as-code": {
+    metadata: {
+id: "article-backend-infrastructure-as-code-extensive",
+  title: "Infrastructure as Code",
+  description: "In-depth guide to infrastructure as code architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "infrastructure-deployment",
+  slug: "infrastructure-as-code",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'infra', 'iac'],
+  relatedTopics: ['configuration-management', 'gitops', 'cloud-services'],
+    },
+    loader: () => import("./articles/backend/infrastructure-deployment/infrastructure-as-code-concise"),
+  },
+  "backend/infrastructure-deployment/load-balancer-configuration": {
+    metadata: {
+id: "article-backend-load-balancer-configuration-extensive",
+  title: "Load Balancer Configuration",
+  description: "In-depth guide to load balancer configuration architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "infrastructure-deployment",
+  slug: "load-balancer-configuration",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'infra', 'load-balancer'],
+  relatedTopics: ['auto-scaling', 'service-discovery', 'networking'],
+    },
+    loader: () => import("./articles/backend/infrastructure-deployment/load-balancer-configuration-concise"),
+  },
+  "backend/infrastructure-deployment/networking": {
+    metadata: {
+id: "article-backend-networking-extensive",
+  title: "Networking",
+  description: "In-depth guide to networking architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "infrastructure-deployment",
+  slug: "networking",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'infra', 'network'],
+  relatedTopics: ['dns-management', 'load-balancer-configuration', 'cloud-services'],
+    },
+    loader: () => import("./articles/backend/infrastructure-deployment/networking-concise"),
+  },
+  "backend/infrastructure-deployment/rolling-deployment": {
+    metadata: {
+id: "article-backend-rolling-deployment-extensive",
+  title: "Rolling Deployment",
+  description: "In-depth guide to rolling deployment architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "infrastructure-deployment",
+  slug: "rolling-deployment",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'infra', 'deployment'],
+  relatedTopics: ['canary-deployment', 'blue-green-deployment', 'auto-scaling'],
+    },
+    loader: () => import("./articles/backend/infrastructure-deployment/rolling-deployment-concise"),
+  },
+  "backend/infrastructure-deployment/service-discovery": {
+    metadata: {
+id: "article-backend-service-discovery-extensive",
+  title: "Service Discovery",
+  description: "In-depth guide to service discovery architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "infrastructure-deployment",
+  slug: "service-discovery",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'infra', 'discovery'],
+  relatedTopics: ['service-registry', 'container-orchestration', 'load-balancer-configuration'],
+    },
+    loader: () => import("./articles/backend/infrastructure-deployment/service-discovery-concise"),
+  },
+  "backend/infrastructure-deployment/service-registry": {
+    metadata: {
+id: "article-backend-service-registry-extensive",
+  title: "Service Registry",
+  description: "In-depth guide to service registry architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "infrastructure-deployment",
+  slug: "service-registry",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'infra', 'registry'],
+  relatedTopics: ['service-discovery', 'load-balancer-configuration', 'container-orchestration'],
+    },
+    loader: () => import("./articles/backend/infrastructure-deployment/service-registry-concise"),
+  },
+  "backend/infrastructure-deployment/virtual-machines": {
+    metadata: {
+id: "article-backend-virtual-machines-extensive",
+  title: "Virtual Machines",
+  description: "In-depth guide to virtual machines architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "infrastructure-deployment",
+  slug: "virtual-machines",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'infra', 'virtualization'],
+  relatedTopics: ['containerization', 'immutable-infrastructure', 'cloud-services'],
+    },
+    loader: () => import("./articles/backend/infrastructure-deployment/virtual-machines-concise"),
+  },
+  "backend/monitoring-operations/alerting": {
+    metadata: {
+id: "article-backend-alerting-extensive", title: "Alerting", description: "In-depth guide to alerting architecture, trade-offs, and operational practice.", category: "backend", subcategory: "monitoring-operations", slug: "alerting",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","monitoring","alerting"], relatedTopics: ["sli-slo-sla","error-budgets","metrics"],
+    },
+    loader: () => import("./articles/backend/monitoring-operations/alerting-concise"),
+  },
+  "backend/monitoring-operations/anomaly-detection": {
+    metadata: {
+id: "article-backend-anomaly-detection-extensive", title: "Anomaly Detection", description: "In-depth guide to anomaly detection architecture, trade-offs, and operational practice.", category: "backend", subcategory: "monitoring-operations", slug: "anomaly-detection",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","monitoring","anomaly"], relatedTopics: ["metrics","alerting","observability"],
+    },
+    loader: () => import("./articles/backend/monitoring-operations/anomaly-detection-concise"),
+  },
+  "backend/monitoring-operations/apm-application-performance-monitoring": {
+    metadata: {
+id: "article-backend-apm-application-performance-monitoring-extensive", title: "APM (Application Performance Monitoring)", description: "In-depth guide to apm (application performance monitoring) architecture, trade-offs, and operational practice.", category: "backend", subcategory: "monitoring-operations", slug: "apm-application-performance-monitoring",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","monitoring","apm"], relatedTopics: ["tracing","metrics","observability"],
+    },
+    loader: () => import("./articles/backend/monitoring-operations/apm-application-performance-monitoring-concise"),
+  },
+  "backend/monitoring-operations/capacity-planning": {
+    metadata: {
+id: "article-backend-capacity-planning-extensive", title: "Capacity Planning", description: "In-depth guide to capacity planning architecture, trade-offs, and operational practice.", category: "backend", subcategory: "monitoring-operations", slug: "capacity-planning",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","monitoring","capacity"], relatedTopics: ["performance-profiling","metrics","infrastructure-monitoring"],
+    },
+    loader: () => import("./articles/backend/monitoring-operations/capacity-planning-concise"),
+  },
+  "backend/monitoring-operations/dashboards": {
+    metadata: {
+id: "article-backend-dashboards-extensive", title: "Dashboards", description: "In-depth guide to dashboards architecture, trade-offs, and operational practice.", category: "backend", subcategory: "monitoring-operations", slug: "dashboards",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","monitoring","dashboards"], relatedTopics: ["metrics","alerting","apm-application-performance-monitoring"],
+    },
+    loader: () => import("./articles/backend/monitoring-operations/dashboards-concise"),
+  },
+  "backend/monitoring-operations/database-monitoring": {
+    metadata: {
+id: "article-backend-database-monitoring-extensive", title: "Database Monitoring", description: "In-depth guide to database monitoring architecture, trade-offs, and operational practice.", category: "backend", subcategory: "monitoring-operations", slug: "database-monitoring",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","monitoring","database"], relatedTopics: ["database-indexing","metrics","alerting"],
+    },
+    loader: () => import("./articles/backend/monitoring-operations/database-monitoring-concise"),
+  },
+  "backend/monitoring-operations/distributed-tracing": {
+    metadata: {
+id: "article-backend-distributed-tracing-extensive", title: "Distributed Tracing", description: "In-depth guide to distributed tracing architecture, trade-offs, and operational practice.", category: "backend", subcategory: "monitoring-operations", slug: "distributed-tracing",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","monitoring","tracing"], relatedTopics: ["tracing","observability","apm-application-performance-monitoring"],
+    },
+    loader: () => import("./articles/backend/monitoring-operations/distributed-tracing-concise"),
+  },
+  "backend/monitoring-operations/error-budgets": {
+    metadata: {
+id: "article-backend-error-budgets-extensive", title: "Error Budgets", description: "In-depth guide to error budgets architecture, trade-offs, and operational practice.", category: "backend", subcategory: "monitoring-operations", slug: "error-budgets",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","monitoring","sre"], relatedTopics: ["sli-slo-sla","alerting","rollback-strategies"],
+    },
+    loader: () => import("./articles/backend/monitoring-operations/error-budgets-concise"),
+  },
+  "backend/monitoring-operations/health-monitoring": {
+    metadata: {
+id: "article-backend-health-monitoring-extensive", title: "Health Monitoring", description: "In-depth guide to health monitoring architecture, trade-offs, and operational practice.", category: "backend", subcategory: "monitoring-operations", slug: "health-monitoring",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","monitoring","health"], relatedTopics: ["health-checks","alerting","observability"],
+    },
+    loader: () => import("./articles/backend/monitoring-operations/health-monitoring-concise"),
+  },
+  "backend/monitoring-operations/infrastructure-monitoring": {
+    metadata: {
+id: "article-backend-infrastructure-monitoring-extensive", title: "Infrastructure Monitoring", description: "In-depth guide to infrastructure monitoring architecture, trade-offs, and operational practice.", category: "backend", subcategory: "monitoring-operations", slug: "infrastructure-monitoring",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","monitoring","infra"], relatedTopics: ["metrics","capacity-planning","alerting"],
+    },
+    loader: () => import("./articles/backend/monitoring-operations/infrastructure-monitoring-concise"),
+  },
+  "backend/monitoring-operations/log-aggregation": {
+    metadata: {
+id: "article-backend-log-aggregation-extensive", title: "Log Aggregation", description: "In-depth guide to log aggregation architecture, trade-offs, and operational practice.", category: "backend", subcategory: "monitoring-operations", slug: "log-aggregation",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","monitoring","logging"], relatedTopics: ["logging","monitoring-tools","dashboards"],
+    },
+    loader: () => import("./articles/backend/monitoring-operations/log-aggregation-concise"),
+  },
+  "backend/monitoring-operations/logging": {
+    metadata: {
+id: "article-backend-logging-extensive", title: "Logging", description: "In-depth guide to logging architecture, trade-offs, and operational practice.", category: "backend", subcategory: "monitoring-operations", slug: "logging",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","monitoring","logging"], relatedTopics: ["log-aggregation","metrics","tracing"],
+    },
+    loader: () => import("./articles/backend/monitoring-operations/logging-concise"),
+  },
+  "backend/monitoring-operations/metrics": {
+    metadata: {
+id: "article-backend-metrics-extensive", title: "Metrics", description: "In-depth guide to metrics architecture, trade-offs, and operational practice.", category: "backend", subcategory: "monitoring-operations", slug: "metrics",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","monitoring","metrics"], relatedTopics: ["dashboards","alerting","sli-slo-sla"],
+    },
+    loader: () => import("./articles/backend/monitoring-operations/metrics-concise"),
+  },
+  "backend/monitoring-operations/monitoring-tools": {
+    metadata: {
+id: "article-backend-monitoring-tools-extensive", title: "Monitoring Tools", description: "In-depth guide to monitoring tools architecture, trade-offs, and operational practice.", category: "backend", subcategory: "monitoring-operations", slug: "monitoring-tools",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","monitoring","tools"], relatedTopics: ["dashboards","alerting","log-aggregation"],
+    },
+    loader: () => import("./articles/backend/monitoring-operations/monitoring-tools-concise"),
+  },
+  "backend/monitoring-operations/observability": {
+    metadata: {
+id: "article-backend-observability-extensive", title: "Observability", description: "In-depth guide to observability architecture, trade-offs, and operational practice.", category: "backend", subcategory: "monitoring-operations", slug: "observability",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","monitoring","observability"], relatedTopics: ["logging","metrics","tracing"],
+    },
+    loader: () => import("./articles/backend/monitoring-operations/observability-concise"),
+  },
+  "backend/monitoring-operations/performance-profiling": {
+    metadata: {
+id: "article-backend-performance-profiling-extensive", title: "Performance Profiling", description: "In-depth guide to performance profiling architecture, trade-offs, and operational practice.", category: "backend", subcategory: "monitoring-operations", slug: "performance-profiling",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","monitoring","profiling"], relatedTopics: ["apm-application-performance-monitoring","metrics","database-monitoring"],
+    },
+    loader: () => import("./articles/backend/monitoring-operations/performance-profiling-concise"),
+  },
+  "backend/monitoring-operations/sli-slo-sla": {
+    metadata: {
+id: "article-backend-sli-slo-sla-extensive", title: "SLI/SLO/SLA", description: "In-depth guide to sli/slo/sla architecture, trade-offs, and operational practice.", category: "backend", subcategory: "monitoring-operations", slug: "sli-slo-sla",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","monitoring","slo"], relatedTopics: ["error-budgets","alerting","metrics"],
+    },
+    loader: () => import("./articles/backend/monitoring-operations/sli-slo-sla-concise"),
+  },
+  "backend/monitoring-operations/tracing": {
+    metadata: {
+id: "article-backend-tracing-extensive", title: "Tracing", description: "In-depth guide to tracing architecture, trade-offs, and operational practice.", category: "backend", subcategory: "monitoring-operations", slug: "tracing",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","monitoring","tracing"], relatedTopics: ["distributed-tracing","observability","apm-application-performance-monitoring"],
+    },
+    loader: () => import("./articles/backend/monitoring-operations/tracing-concise"),
+  },
+  "backend/network-communication/api-gateway-pattern": {
+    metadata: {
+id: "article-backend-api-gateway-pattern-extensive",
+  title: "API Gateway Pattern",
+  description: "Comprehensive guide to API gateway architecture, policies, and operational practice.",
+  category: "backend",
+  subcategory: "network-communication",
+  slug: "api-gateway-pattern",
+  wordCount: 7200,
+  readingTime: 36,
+  lastUpdated: "2026-03-11",
+  tags: ["backend", "network", "gateway"],
+  relatedTopics: ["service-mesh", "load-balancers", "api-versioning"],
+    },
+    loader: () => import("./articles/backend/network-communication/api-gateway-pattern-concise"),
+  },
+  "backend/network-communication/api-versioning": {
+    metadata: {
+id: "article-backend-api-versioning-extensive",
+  title: "API Versioning",
+  description: "Comprehensive guide to API versioning strategy, governance, and migration.",
+  category: "backend",
+  subcategory: "network-communication",
+  slug: "api-versioning",
+  wordCount: 7200,
+  readingTime: 36,
+  lastUpdated: "2026-03-11",
+  tags: ["backend", "network", "api-versioning"],
+  relatedTopics: ["api-gateway-pattern", "graphql", "grpc"],
+    },
+    loader: () => import("./articles/backend/network-communication/api-versioning-concise"),
+  },
+  "backend/network-communication/bulkhead-pattern": {
+    metadata: {
+id: "article-backend-bulkhead-pattern-extensive",
+  title: "Bulkhead Pattern",
+  description: "Comprehensive guide to bulkhead isolation, sizing, and operations.",
+  category: "backend",
+  subcategory: "network-communication",
+  slug: "bulkhead-pattern",
+  wordCount: 7000,
+  readingTime: 35,
+  lastUpdated: "2026-03-11",
+  tags: ["backend", "network", "resilience"],
+  relatedTopics: ["circuit-breaker-pattern", "timeout-strategies", "request-hedging"],
+    },
+    loader: () => import("./articles/backend/network-communication/bulkhead-pattern-concise"),
+  },
+  "backend/network-communication/circuit-breaker-pattern": {
+    metadata: {
+id: "article-backend-circuit-breaker-pattern-extensive",
+  title: "Circuit Breaker Pattern",
+  description: "Comprehensive guide to circuit breakers, failure handling, and operational tuning.",
+  category: "backend",
+  subcategory: "network-communication",
+  slug: "circuit-breaker-pattern",
+  wordCount: 7100,
+  readingTime: 35,
+  lastUpdated: "2026-03-11",
+  tags: ["backend", "network", "resilience"],
+  relatedTopics: ["retry-mechanisms", "timeout-strategies", "bulkhead-pattern"],
+    },
+    loader: () => import("./articles/backend/network-communication/circuit-breaker-pattern-concise"),
+  },
+  "backend/network-communication/content-delivery-networks": {
+    metadata: {
+id: "article-backend-content-delivery-networks-extensive", title: "Content Delivery Networks", description: "Deep guide to content delivery networks architecture, trade-offs, and operational practice.", category: "backend", subcategory: "network-communication", slug: "content-delivery-networks",
+wordCount: 1335, readingTime: 7, lastUpdated: "2026-03-10", tags: ['backend', 'network', 'cdn'], relatedTopics: ['cdn-caching', 'http-caching', 'cache-invalidation'],
+    },
+    loader: () => import("./articles/backend/network-communication/content-delivery-networks-concise"),
+  },
+  "backend/network-communication/event-streaming": {
+    metadata: {
+id: "article-backend-event-streaming-extensive", title: "Event Streaming", description: "Deep guide to event streaming architecture, trade-offs, and operational practice.", category: "backend", subcategory: "network-communication", slug: "event-streaming",
+wordCount: 1336, readingTime: 7, lastUpdated: "2026-03-10", tags: ['backend', 'messaging', 'streaming'], relatedTopics: ['pub-sub-systems', 'message-queues', 'event-sourcing'],
+    },
+    loader: () => import("./articles/backend/network-communication/event-streaming-concise"),
+  },
+  "backend/network-communication/forward-proxy": {
+    metadata: {
+id: "article-backend-forward-proxy-extensive",
+  title: "Forward Proxy",
+  description: "Comprehensive guide to forward proxies, egress control, and operational practice.",
+  category: "backend",
+  subcategory: "network-communication",
+  slug: "forward-proxy",
+  wordCount: 6800,
+  readingTime: 34,
+  lastUpdated: "2026-03-11",
+  tags: ["backend", "network", "proxy"],
+  relatedTopics: ["reverse-proxy", "content-delivery-networks", "api-gateway-pattern"],
+    },
+    loader: () => import("./articles/backend/network-communication/forward-proxy-concise"),
+  },
+  "backend/network-communication/graphql": {
+    metadata: {
+id: "article-backend-graphql-extensive", title: "GraphQL", description: "Deep guide to graphql architecture, trade-offs, and operational practice.", category: "backend", subcategory: "network-communication", slug: "graphql",
+wordCount: 1326, readingTime: 7, lastUpdated: "2026-03-10", tags: ['backend', 'network', 'api'], relatedTopics: ['api-gateway-pattern', 'api-versioning', 'caching-strategies'],
+    },
+    loader: () => import("./articles/backend/network-communication/graphql-concise"),
+  },
+  "backend/network-communication/grpc": {
+    metadata: {
+id: "article-backend-grpc-extensive", title: "gRPC", description: "Deep guide to grpc architecture, trade-offs, and operational practice.", category: "backend", subcategory: "network-communication", slug: "grpc",
+wordCount: 1348, readingTime: 7, lastUpdated: "2026-03-10", tags: ['backend', 'network', 'rpc'], relatedTopics: ['rpc', 'api-versioning', 'service-discovery'],
+    },
+    loader: () => import("./articles/backend/network-communication/grpc-concise"),
+  },
+  "backend/network-communication/load-balancers": {
+    metadata: {
+id: "article-backend-load-balancers-extensive",
+  title: "Load Balancers",
+  description: "Comprehensive guide to load balancing strategies, failure handling, and operations.",
+  category: "backend",
+  subcategory: "network-communication",
+  slug: "load-balancers",
+  wordCount: 7000,
+  readingTime: 35,
+  lastUpdated: "2026-03-11",
+  tags: ["backend", "network", "load-balancing"],
+  relatedTopics: ["api-gateway-pattern", "reverse-proxy", "service-discovery"],
+    },
+    loader: () => import("./articles/backend/network-communication/load-balancers-concise"),
+  },
+  "backend/network-communication/long-polling": {
+    metadata: {
+id: "article-backend-long-polling-extensive",
+  title: "Long Polling",
+  description: "Comprehensive guide to long polling, scaling limits, and operational practice.",
+  category: "backend",
+  subcategory: "network-communication",
+  slug: "long-polling",
+  wordCount: 6800,
+  readingTime: 34,
+  lastUpdated: "2026-03-11",
+  tags: ["backend", "network", "long-polling"],
+  relatedTopics: ["server-sent-events", "websockets", "event-streaming"],
+    },
+    loader: () => import("./articles/backend/network-communication/long-polling-concise"),
+  },
+  "backend/network-communication/message-queues": {
+    metadata: {
+id: "article-backend-message-queues-extensive",
+  title: "Message Queues",
+  description: "Comprehensive guide to message queues, delivery semantics, and operations.",
+  category: "backend",
+  subcategory: "network-communication",
+  slug: "message-queues",
+  wordCount: 7000,
+  readingTime: 35,
+  lastUpdated: "2026-03-11",
+  tags: ["backend", "network", "messaging"],
+  relatedTopics: ["pub-sub-systems", "event-streaming", "request-hedging"],
+    },
+    loader: () => import("./articles/backend/network-communication/message-queues-concise"),
+  },
+  "backend/network-communication/pub-sub-systems": {
+    metadata: {
+id: "article-backend-pub-sub-systems-extensive",
+  title: "Pub/Sub Systems",
+  description: "Comprehensive guide to pub/sub architecture, delivery, and scaling.",
+  category: "backend",
+  subcategory: "network-communication",
+  slug: "pub-sub-systems",
+  wordCount: 6900,
+  readingTime: 34,
+  lastUpdated: "2026-03-11",
+  tags: ["backend", "network", "messaging"],
+  relatedTopics: ["message-queues", "event-streaming", "websockets"],
+    },
+    loader: () => import("./articles/backend/network-communication/pub-sub-systems-concise"),
+  },
+  "backend/network-communication/request-hedging": {
+    metadata: {
+id: "article-backend-request-hedging-extensive", title: "Request Hedging", description: "Deep guide to request hedging architecture, trade-offs, and operational practice.", category: "backend", subcategory: "network-communication", slug: "request-hedging",
+wordCount: 1329, readingTime: 7, lastUpdated: "2026-03-10", tags: ['backend', 'reliability', 'performance'], relatedTopics: ['retry-mechanisms', 'timeout-strategies', 'load-balancers'],
+    },
+    loader: () => import("./articles/backend/network-communication/request-hedging-concise"),
+  },
+  "backend/network-communication/retry-mechanisms": {
+    metadata: {
+id: "article-backend-retry-mechanisms-extensive",
+  title: "Retry Mechanisms",
+  description: "Comprehensive guide to retries, backoff, idempotency, and safe recovery.",
+  category: "backend",
+  subcategory: "network-communication",
+  slug: "retry-mechanisms",
+  wordCount: 7000,
+  readingTime: 35,
+  lastUpdated: "2026-03-11",
+  tags: ["backend", "network", "resilience"],
+  relatedTopics: ["timeout-strategies", "circuit-breaker-pattern", "request-hedging"],
+    },
+    loader: () => import("./articles/backend/network-communication/retry-mechanisms-concise"),
+  },
+  "backend/network-communication/reverse-proxy": {
+    metadata: {
+id: "article-backend-reverse-proxy-extensive",
+  title: "Reverse Proxy",
+  description: "Comprehensive guide to reverse proxies, routing, and operational trade-offs.",
+  category: "backend",
+  subcategory: "network-communication",
+  slug: "reverse-proxy",
+  wordCount: 7000,
+  readingTime: 35,
+  lastUpdated: "2026-03-11",
+  tags: ["backend", "network", "proxy"],
+  relatedTopics: ["api-gateway-pattern", "load-balancers", "forward-proxy"],
+    },
+    loader: () => import("./articles/backend/network-communication/reverse-proxy-concise"),
+  },
+  "backend/network-communication/rpc": {
+    metadata: {
+id: "article-backend-rpc-extensive", title: "RPC", description: "Deep guide to rpc architecture, trade-offs, and operational practice.", category: "backend", subcategory: "network-communication", slug: "rpc",
+wordCount: 1336, readingTime: 7, lastUpdated: "2026-03-10", tags: ['backend', 'network', 'rpc'], relatedTopics: ['grpc', 'timeout-strategies', 'circuit-breaker-pattern'],
+    },
+    loader: () => import("./articles/backend/network-communication/rpc-concise"),
+  },
+  "backend/network-communication/server-sent-events": {
+    metadata: {
+id: "article-backend-server-sent-events-extensive",
+  title: "Server-Sent Events (SSE)",
+  description: "Comprehensive guide to SSE streaming, reliability, and operational practice.",
+  category: "backend",
+  subcategory: "network-communication",
+  slug: "server-sent-events",
+  wordCount: 6900,
+  readingTime: 34,
+  lastUpdated: "2026-03-11",
+  tags: ["backend", "network", "sse"],
+  relatedTopics: ["websockets", "long-polling", "event-streaming"],
+    },
+    loader: () => import("./articles/backend/network-communication/server-sent-events-concise"),
+  },
+  "backend/network-communication/service-discovery": {
+    metadata: {
+id: "article-backend-service-discovery-extensive",
+  title: "Service Discovery",
+  description: "Comprehensive guide to service discovery models, health checks, and governance.",
+  category: "backend",
+  subcategory: "network-communication",
+  slug: "service-discovery",
+  wordCount: 6900,
+  readingTime: 34,
+  lastUpdated: "2026-03-11",
+  tags: ["backend", "network", "service-discovery"],
+  relatedTopics: ["load-balancers", "service-mesh", "api-gateway-pattern"],
+    },
+    loader: () => import("./articles/backend/network-communication/service-discovery-concise"),
+  },
+  "backend/network-communication/service-mesh": {
+    metadata: {
+id: "article-backend-service-mesh-extensive",
+  title: "Service Mesh",
+  description: "Comprehensive guide to service mesh architecture, policy, and operations.",
+  category: "backend",
+  subcategory: "network-communication",
+  slug: "service-mesh",
+  wordCount: 7000,
+  readingTime: 35,
+  lastUpdated: "2026-03-11",
+  tags: ["backend", "network", "service-mesh"],
+  relatedTopics: ["service-discovery", "circuit-breaker-pattern", "api-gateway-pattern"],
+    },
+    loader: () => import("./articles/backend/network-communication/service-mesh-concise"),
+  },
+  "backend/network-communication/throttling-rate-limiting": {
+    metadata: {
+id: "article-backend-throttling-rate-limiting-extensive",
+  title: "Throttling & Rate Limiting",
+  description: "Comprehensive guide to rate limiting design, enforcement, and operations.",
+  category: "backend",
+  subcategory: "network-communication",
+  slug: "throttling-rate-limiting",
+  wordCount: 7100,
+  readingTime: 35,
+  lastUpdated: "2026-03-11",
+  tags: ["backend", "network", "rate-limiting"],
+  relatedTopics: ["api-gateway-pattern", "timeout-strategies", "load-balancers"],
+    },
+    loader: () => import("./articles/backend/network-communication/throttling-rate-limiting-concise"),
+  },
+  "backend/network-communication/timeout-strategies": {
+    metadata: {
+id: "article-backend-timeout-strategies-extensive",
+  title: "Timeout Strategies",
+  description: "Comprehensive guide to timeout budgets, cascading failure prevention, and tuning.",
+  category: "backend",
+  subcategory: "network-communication",
+  slug: "timeout-strategies",
+  wordCount: 7000,
+  readingTime: 35,
+  lastUpdated: "2026-03-11",
+  tags: ["backend", "network", "resilience"],
+  relatedTopics: ["retry-mechanisms", "circuit-breaker-pattern", "request-hedging"],
+    },
+    loader: () => import("./articles/backend/network-communication/timeout-strategies-concise"),
+  },
+  "backend/network-communication/websockets": {
+    metadata: {
+id: "article-backend-websockets-extensive",
+  title: "WebSockets",
+  description: "Comprehensive guide to WebSockets, scaling, and operational reliability.",
+  category: "backend",
+  subcategory: "network-communication",
+  slug: "websockets",
+  wordCount: 7000,
+  readingTime: 35,
+  lastUpdated: "2026-03-11",
+  tags: ["backend", "network", "websockets"],
+  relatedTopics: ["server-sent-events", "long-polling", "event-streaming"],
+    },
+    loader: () => import("./articles/backend/network-communication/websockets-concise"),
+  },
+  "backend/reliability-fault-tolerance/at-most-once-vs-at-least-once-vs-exactly-once": {
+    metadata: {
+id: "article-backend-at-most-once-vs-at-least-once-vs-exactly-once-extensive", title: "At-Most-Once vs At-Least-Once vs Exactly-Once", description: "In-depth guide to at-most-once vs at-least-once vs exactly-once architecture, trade-offs, and operational practice.", category: "backend", subcategory: "reliability-fault-tolerance", slug: "at-most-once-vs-at-least-once-vs-exactly-once",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","reliability","delivery"], relatedTopics: ["idempotency","dead-letter-queues","error-handling-patterns"],
+    },
+    loader: () => import("./articles/backend/reliability-fault-tolerance/at-most-once-vs-at-least-once-vs-exactly-once-concise"),
+  },
+  "backend/reliability-fault-tolerance/automatic-recovery": {
+    metadata: {
+id: "article-backend-automatic-recovery-extensive", title: "Automatic Recovery", description: "In-depth guide to automatic recovery architecture, trade-offs, and operational practice.", category: "backend", subcategory: "reliability-fault-tolerance", slug: "automatic-recovery",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","reliability","recovery"], relatedTopics: ["health-checks","fault-detection","failover-mechanisms"],
+    },
+    loader: () => import("./articles/backend/reliability-fault-tolerance/automatic-recovery-concise"),
+  },
+  "backend/reliability-fault-tolerance/backup-restore": {
+    metadata: {
+id: "article-backend-backup-restore-extensive", title: "Backup & Restore", description: "In-depth guide to backup & restore architecture, trade-offs, and operational practice.", category: "backend", subcategory: "reliability-fault-tolerance", slug: "backup-restore",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","reliability","backup"], relatedTopics: ["disaster-recovery","data-integrity","rollback-strategies"],
+    },
+    loader: () => import("./articles/backend/reliability-fault-tolerance/backup-restore-concise"),
+  },
+  "backend/reliability-fault-tolerance/chaos-engineering": {
+    metadata: {
+id: "article-backend-chaos-engineering-extensive", title: "Chaos Engineering", description: "In-depth guide to chaos engineering architecture, trade-offs, and operational practice.", category: "backend", subcategory: "reliability-fault-tolerance", slug: "chaos-engineering",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","reliability","chaos"], relatedTopics: ["fault-detection","automatic-recovery","graceful-degradation"],
+    },
+    loader: () => import("./articles/backend/reliability-fault-tolerance/chaos-engineering-concise"),
+  },
+  "backend/reliability-fault-tolerance/data-integrity": {
+    metadata: {
+id: "article-backend-data-integrity-extensive", title: "Data Integrity", description: "In-depth guide to data integrity architecture, trade-offs, and operational practice.", category: "backend", subcategory: "reliability-fault-tolerance", slug: "data-integrity",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","reliability","data-integrity"], relatedTopics: ["backup-restore","error-handling-patterns","rollback-strategies"],
+    },
+    loader: () => import("./articles/backend/reliability-fault-tolerance/data-integrity-concise"),
+  },
+  "backend/reliability-fault-tolerance/dead-letter-queues": {
+    metadata: {
+id: "article-backend-dead-letter-queues-extensive", title: "Dead Letter Queues", description: "In-depth guide to dead letter queues architecture, trade-offs, and operational practice.", category: "backend", subcategory: "reliability-fault-tolerance", slug: "dead-letter-queues",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","reliability","queues"], relatedTopics: ["error-handling-patterns","at-most-once-vs-at-least-once-vs-exactly-once","idempotency"],
+    },
+    loader: () => import("./articles/backend/reliability-fault-tolerance/dead-letter-queues-concise"),
+  },
+  "backend/reliability-fault-tolerance/disaster-recovery": {
+    metadata: {
+id: "article-backend-disaster-recovery-extensive", title: "Disaster Recovery", description: "In-depth guide to disaster recovery architecture, trade-offs, and operational practice.", category: "backend", subcategory: "reliability-fault-tolerance", slug: "disaster-recovery",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","reliability","disaster-recovery"], relatedTopics: ["backup-restore","multi-region-deployment","rollback-strategies"],
+    },
+    loader: () => import("./articles/backend/reliability-fault-tolerance/disaster-recovery-concise"),
+  },
+  "backend/reliability-fault-tolerance/error-handling-patterns": {
+    metadata: {
+id: "article-backend-error-handling-patterns-extensive", title: "Error Handling Patterns", description: "In-depth guide to error handling patterns architecture, trade-offs, and operational practice.", category: "backend", subcategory: "reliability-fault-tolerance", slug: "error-handling-patterns",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","reliability","errors"], relatedTopics: ["graceful-degradation","idempotency","dead-letter-queues"],
+    },
+    loader: () => import("./articles/backend/reliability-fault-tolerance/error-handling-patterns-concise"),
+  },
+  "backend/reliability-fault-tolerance/failover-mechanisms": {
+    metadata: {
+id: "article-backend-failover-mechanisms-extensive", title: "Failover Mechanisms", description: "In-depth guide to failover mechanisms architecture, trade-offs, and operational practice.", category: "backend", subcategory: "reliability-fault-tolerance", slug: "failover-mechanisms",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","reliability","failover"], relatedTopics: ["high-availability","health-checks","multi-region-deployment"],
+    },
+    loader: () => import("./articles/backend/reliability-fault-tolerance/failover-mechanisms-concise"),
+  },
+  "backend/reliability-fault-tolerance/fault-detection": {
+    metadata: {
+id: "article-backend-fault-detection-extensive", title: "Fault Detection", description: "In-depth guide to fault detection architecture, trade-offs, and operational practice.", category: "backend", subcategory: "reliability-fault-tolerance", slug: "fault-detection",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","reliability","monitoring"], relatedTopics: ["health-checks","automatic-recovery","error-handling-patterns"],
+    },
+    loader: () => import("./articles/backend/reliability-fault-tolerance/fault-detection-concise"),
+  },
+  "backend/reliability-fault-tolerance/graceful-degradation": {
+    metadata: {
+id: "article-backend-graceful-degradation-extensive", title: "Graceful Degradation", description: "In-depth guide to graceful degradation architecture, trade-offs, and operational practice.", category: "backend", subcategory: "reliability-fault-tolerance", slug: "graceful-degradation",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","reliability","degradation"], relatedTopics: ["error-handling-patterns","high-availability","fault-detection"],
+    },
+    loader: () => import("./articles/backend/reliability-fault-tolerance/graceful-degradation-concise"),
+  },
+  "backend/reliability-fault-tolerance/health-checks": {
+    metadata: {
+id: "article-backend-health-checks-extensive", title: "Health Checks", description: "In-depth guide to health checks architecture, trade-offs, and operational practice.", category: "backend", subcategory: "reliability-fault-tolerance", slug: "health-checks",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","reliability","health-checks"], relatedTopics: ["failover-mechanisms","fault-detection","automatic-recovery"],
+    },
+    loader: () => import("./articles/backend/reliability-fault-tolerance/health-checks-concise"),
+  },
+  "backend/reliability-fault-tolerance/high-availability": {
+    metadata: {
+id: "article-backend-high-availability-extensive", title: "High Availability", description: "In-depth guide to high availability architecture, trade-offs, and operational practice.", category: "backend", subcategory: "reliability-fault-tolerance", slug: "high-availability",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","reliability","availability"], relatedTopics: ["failover-mechanisms","redundancy","multi-region-deployment"],
+    },
+    loader: () => import("./articles/backend/reliability-fault-tolerance/high-availability-concise"),
+  },
+  "backend/reliability-fault-tolerance/idempotency": {
+    metadata: {
+id: "article-backend-idempotency-extensive", title: "Idempotency", description: "In-depth guide to idempotency architecture, trade-offs, and operational practice.", category: "backend", subcategory: "reliability-fault-tolerance", slug: "idempotency",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","reliability","idempotency"], relatedTopics: ["error-handling-patterns","at-most-once-vs-at-least-once-vs-exactly-once","dead-letter-queues"],
+    },
+    loader: () => import("./articles/backend/reliability-fault-tolerance/idempotency-concise"),
+  },
+  "backend/reliability-fault-tolerance/multi-region-deployment": {
+    metadata: {
+id: "article-backend-multi-region-deployment-extensive", title: "Multi-Region Deployment", description: "In-depth guide to multi-region deployment architecture, trade-offs, and operational practice.", category: "backend", subcategory: "reliability-fault-tolerance", slug: "multi-region-deployment",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","reliability","multi-region"], relatedTopics: ["redundancy","disaster-recovery","high-availability"],
+    },
+    loader: () => import("./articles/backend/reliability-fault-tolerance/multi-region-deployment-concise"),
+  },
+  "backend/reliability-fault-tolerance/redundancy": {
+    metadata: {
+id: "article-backend-redundancy-extensive", title: "Redundancy", description: "In-depth guide to redundancy architecture, trade-offs, and operational practice.", category: "backend", subcategory: "reliability-fault-tolerance", slug: "redundancy",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","reliability","redundancy"], relatedTopics: ["high-availability","multi-region-deployment","backup-restore"],
+    },
+    loader: () => import("./articles/backend/reliability-fault-tolerance/redundancy-concise"),
+  },
+  "backend/reliability-fault-tolerance/rollback-strategies": {
+    metadata: {
+id: "article-backend-rollback-strategies-extensive", title: "Rollback Strategies", description: "In-depth guide to rollback strategies architecture, trade-offs, and operational practice.", category: "backend", subcategory: "reliability-fault-tolerance", slug: "rollback-strategies",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","reliability","rollback"], relatedTopics: ["disaster-recovery","graceful-degradation","high-availability"],
+    },
+    loader: () => import("./articles/backend/reliability-fault-tolerance/rollback-strategies-concise"),
+  },
+  "backend/scalability-distributed-systems/asynchronous-processing": {
+    metadata: {
+id: "article-backend-asynchronous-processing-extensive", title: "Asynchronous Processing", description: "Comprehensive guide to asynchronous processing design, trade-offs, and operations.", category: "backend", subcategory: "scalability-distributed-systems", slug: "asynchronous-processing",
+wordCount: 2825, readingTime: 15, lastUpdated: "2026-03-10", tags: ["backend", "scalability", "distributed"], relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/scalability-distributed-systems/asynchronous-processing-concise"),
+  },
+  "backend/scalability-distributed-systems/consensus-algorithms": {
+    metadata: {
+id: "article-backend-consensus-algorithms-extensive", title: "Consensus Algorithms", description: "Comprehensive guide to consensus algorithms design, trade-offs, and operations.", category: "backend", subcategory: "scalability-distributed-systems", slug: "consensus-algorithms",
+wordCount: 2881, readingTime: 15, lastUpdated: "2026-03-10", tags: ["backend", "scalability", "distributed"], relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/scalability-distributed-systems/consensus-algorithms-concise"),
+  },
+  "backend/scalability-distributed-systems/consistent-hashing": {
+    metadata: {
+id: "article-backend-consistent-hashing-extensive", title: "Consistent Hashing", description: "Comprehensive guide to consistent hashing design, trade-offs, and operations.", category: "backend", subcategory: "scalability-distributed-systems", slug: "consistent-hashing",
+wordCount: 2984, readingTime: 15, lastUpdated: "2026-03-10", tags: ["backend", "scalability", "distributed"], relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/scalability-distributed-systems/consistent-hashing-concise"),
+  },
+  "backend/scalability-distributed-systems/cqrs": {
+    metadata: {
+id: "article-backend-cqrs-extensive", title: "CQRS", description: "Comprehensive guide to cqrs design, trade-offs, and operations.", category: "backend", subcategory: "scalability-distributed-systems", slug: "cqrs",
+wordCount: 2823, readingTime: 15, lastUpdated: "2026-03-10", tags: ["backend", "scalability", "distributed"], relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/scalability-distributed-systems/cqrs-concise"),
+  },
+  "backend/scalability-distributed-systems/data-denormalization": {
+    metadata: {
+id: "article-backend-data-denormalization-extensive", title: "Data Denormalization", description: "Comprehensive guide to data denormalization design, trade-offs, and operations.", category: "backend", subcategory: "scalability-distributed-systems", slug: "data-denormalization",
+wordCount: 2839, readingTime: 15, lastUpdated: "2026-03-10", tags: ["backend", "scalability", "distributed"], relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/scalability-distributed-systems/data-denormalization-concise"),
+  },
+  "backend/scalability-distributed-systems/data-replication": {
+    metadata: {
+id: "article-backend-data-replication-extensive", title: "Data Replication", description: "Comprehensive guide to data replication design, trade-offs, and operations.", category: "backend", subcategory: "scalability-distributed-systems", slug: "data-replication",
+wordCount: 2832, readingTime: 15, lastUpdated: "2026-03-10", tags: ["backend", "scalability", "distributed"], relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/scalability-distributed-systems/data-replication-concise"),
+  },
+  "backend/scalability-distributed-systems/database-read-replicas": {
+    metadata: {
+id: "article-backend-database-read-replicas-extensive", title: "Database Read Replicas", description: "Comprehensive guide to database read replicas design, trade-offs, and operations.", category: "backend", subcategory: "scalability-distributed-systems", slug: "database-read-replicas",
+wordCount: 2860, readingTime: 15, lastUpdated: "2026-03-10", tags: ["backend", "scalability", "distributed"], relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/scalability-distributed-systems/database-read-replicas-concise"),
+  },
+  "backend/scalability-distributed-systems/database-sharding": {
+    metadata: {
+id: "article-backend-database-sharding-extensive", title: "Database Sharding", description: "Comprehensive guide to database sharding design, trade-offs, and operations.", category: "backend", subcategory: "scalability-distributed-systems", slug: "database-sharding",
+wordCount: 2927, readingTime: 15, lastUpdated: "2026-03-10", tags: ["backend", "scalability", "distributed"], relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/scalability-distributed-systems/database-sharding-concise"),
+  },
+  "backend/scalability-distributed-systems/distributed-coordination": {
+    metadata: {
+id: "article-backend-distributed-coordination-extensive", title: "Distributed Coordination", description: "Comprehensive guide to distributed coordination design, trade-offs, and operations.", category: "backend", subcategory: "scalability-distributed-systems", slug: "distributed-coordination",
+wordCount: 2854, readingTime: 15, lastUpdated: "2026-03-10", tags: ["backend", "scalability", "distributed"], relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/scalability-distributed-systems/distributed-coordination-concise"),
+  },
+  "backend/scalability-distributed-systems/distributed-locks": {
+    metadata: {
+id: "article-backend-distributed-locks-extensive", title: "Distributed Locks", description: "Comprehensive guide to distributed locks design, trade-offs, and operations.", category: "backend", subcategory: "scalability-distributed-systems", slug: "distributed-locks",
+wordCount: 2882, readingTime: 15, lastUpdated: "2026-03-10", tags: ["backend", "scalability", "distributed"], relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/scalability-distributed-systems/distributed-locks-concise"),
+  },
+  "backend/scalability-distributed-systems/distributed-transactions": {
+    metadata: {
+id: "article-backend-distributed-transactions-extensive", title: "Distributed Transactions", description: "Comprehensive guide to distributed transactions design, trade-offs, and operations.", category: "backend", subcategory: "scalability-distributed-systems", slug: "distributed-transactions",
+wordCount: 2856, readingTime: 15, lastUpdated: "2026-03-10", tags: ["backend", "scalability", "distributed"], relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/scalability-distributed-systems/distributed-transactions-concise"),
+  },
+  "backend/scalability-distributed-systems/event-sourcing": {
+    metadata: {
+id: "article-backend-event-sourcing-extensive", title: "Event Sourcing", description: "Comprehensive guide to event sourcing design, trade-offs, and operations.", category: "backend", subcategory: "scalability-distributed-systems", slug: "event-sourcing",
+wordCount: 2867, readingTime: 15, lastUpdated: "2026-03-10", tags: ["backend", "scalability", "distributed"], relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/scalability-distributed-systems/event-sourcing-concise"),
+  },
+  "backend/scalability-distributed-systems/gossip-protocol": {
+    metadata: {
+id: "article-backend-gossip-protocol-extensive", title: "Gossip Protocol", description: "Comprehensive guide to gossip protocol design, trade-offs, and operations.", category: "backend", subcategory: "scalability-distributed-systems", slug: "gossip-protocol",
+wordCount: 2825, readingTime: 15, lastUpdated: "2026-03-10", tags: ["backend", "scalability", "distributed"], relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/scalability-distributed-systems/gossip-protocol-concise"),
+  },
+  "backend/scalability-distributed-systems/horizontal-scaling": {
+    metadata: {
+id: "article-backend-horizontal-scaling-extensive", title: "Horizontal Scaling", description: "Comprehensive guide to horizontal scaling design, trade-offs, and operations.", category: "backend", subcategory: "scalability-distributed-systems", slug: "horizontal-scaling",
+wordCount: 2809, readingTime: 15, lastUpdated: "2026-03-10", tags: ["backend", "scalability", "distributed"], relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/scalability-distributed-systems/horizontal-scaling-concise"),
+  },
+  "backend/scalability-distributed-systems/microservices-architecture": {
+    metadata: {
+id: "article-backend-microservices-architecture-extensive", title: "Microservices Architecture", description: "Comprehensive guide to microservices architecture design, trade-offs, and operations.", category: "backend", subcategory: "scalability-distributed-systems", slug: "microservices-architecture",
+wordCount: 2821, readingTime: 15, lastUpdated: "2026-03-10", tags: ["backend", "scalability", "distributed"], relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/scalability-distributed-systems/microservices-architecture-concise"),
+  },
+  "backend/scalability-distributed-systems/partitioning-strategies": {
+    metadata: {
+id: "article-backend-partitioning-strategies-extensive", title: "Partitioning Strategies", description: "Comprehensive guide to partitioning strategies design, trade-offs, and operations.", category: "backend", subcategory: "scalability-distributed-systems", slug: "partitioning-strategies",
+wordCount: 2927, readingTime: 15, lastUpdated: "2026-03-10", tags: ["backend", "scalability", "distributed"], relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/scalability-distributed-systems/partitioning-strategies-concise"),
+  },
+  "backend/scalability-distributed-systems/quorum": {
+    metadata: {
+id: "article-backend-quorum-extensive", title: "Quorum", description: "Comprehensive guide to quorum design, trade-offs, and operations.", category: "backend", subcategory: "scalability-distributed-systems", slug: "quorum",
+wordCount: 2875, readingTime: 15, lastUpdated: "2026-03-10", tags: ["backend", "scalability", "distributed"], relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/scalability-distributed-systems/quorum-concise"),
+  },
+  "backend/scalability-distributed-systems/replication-strategies": {
+    metadata: {
+id: "article-backend-replication-strategies-extensive", title: "Replication Strategies", description: "Comprehensive guide to replication strategies design, trade-offs, and operations.", category: "backend", subcategory: "scalability-distributed-systems", slug: "replication-strategies",
+wordCount: 2871, readingTime: 15, lastUpdated: "2026-03-10", tags: ["backend", "scalability", "distributed"], relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/scalability-distributed-systems/replication-strategies-concise"),
+  },
+  "backend/scalability-distributed-systems/service-decomposition": {
+    metadata: {
+id: "article-backend-service-decomposition-extensive", title: "Service Decomposition", description: "Comprehensive guide to service decomposition design, trade-offs, and operations.", category: "backend", subcategory: "scalability-distributed-systems", slug: "service-decomposition",
+wordCount: 2829, readingTime: 15, lastUpdated: "2026-03-10", tags: ["backend", "scalability", "distributed"], relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/scalability-distributed-systems/service-decomposition-concise"),
+  },
+  "backend/scalability-distributed-systems/split-brain-problem": {
+    metadata: {
+id: "article-backend-split-brain-problem-extensive", title: "Split-Brain Problem", description: "Comprehensive guide to split-brain problem design, trade-offs, and operations.", category: "backend", subcategory: "scalability-distributed-systems", slug: "split-brain-problem",
+wordCount: 2848, readingTime: 15, lastUpdated: "2026-03-10", tags: ["backend", "scalability", "distributed"], relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/scalability-distributed-systems/split-brain-problem-concise"),
+  },
+  "backend/scalability-distributed-systems/vector-clocks": {
+    metadata: {
+id: "article-backend-vector-clocks-extensive", title: "Vector Clocks", description: "Comprehensive guide to vector clocks design, trade-offs, and operations.", category: "backend", subcategory: "scalability-distributed-systems", slug: "vector-clocks",
+wordCount: 2870, readingTime: 15, lastUpdated: "2026-03-10", tags: ["backend", "scalability", "distributed"], relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/scalability-distributed-systems/vector-clocks-concise"),
+  },
+  "backend/scalability-distributed-systems/write-scaling": {
+    metadata: {
+id: "article-backend-write-scaling-extensive", title: "Write Scaling", description: "Comprehensive guide to write scaling design, trade-offs, and operations.", category: "backend", subcategory: "scalability-distributed-systems", slug: "write-scaling",
+wordCount: 2819, readingTime: 15, lastUpdated: "2026-03-10", tags: ["backend", "scalability", "distributed"], relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/scalability-distributed-systems/write-scaling-concise"),
+  },
+  "backend/security-authentication/abac-attribute-based-access-control": {
+    metadata: {
+id: "article-backend-abac-attribute-based-access-control-extensive", title: "ABAC (Attribute-Based Access Control)", description: "In-depth guide to abac (attribute-based access control) architecture, trade-offs, and operational practice.", category: "backend", subcategory: "security-authentication", slug: "abac-attribute-based-access-control",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","security","abac"], relatedTopics: ["rbac-role-based-access-control","api-security","authentication-vs-authorization"],
+    },
+    loader: () => import("./articles/backend/security-authentication/abac-attribute-based-access-control-concise"),
+  },
+  "backend/security-authentication/api-keys-secrets-management": {
+    metadata: {
+id: "article-backend-api-keys-secrets-management-extensive", title: "API Keys & Secrets Management", description: "In-depth guide to api keys & secrets management architecture, trade-offs, and operational practice.", category: "backend", subcategory: "security-authentication", slug: "api-keys-secrets-management",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","security","secrets"], relatedTopics: ["secrets-rotation","api-security","encryption"],
+    },
+    loader: () => import("./articles/backend/security-authentication/api-keys-secrets-management-concise"),
+  },
+  "backend/security-authentication/api-security": {
+    metadata: {
+id: "article-backend-api-security-extensive", title: "API Security", description: "In-depth guide to api security architecture, trade-offs, and operational practice.", category: "backend", subcategory: "security-authentication", slug: "api-security",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","security","api"], relatedTopics: ["oauth-2-0","api-keys-secrets-management","security-headers"],
+    },
+    loader: () => import("./articles/backend/security-authentication/api-security-concise"),
+  },
+  "backend/security-authentication/authentication-vs-authorization": {
+    metadata: {
+id: "article-backend-authentication-vs-authorization-extensive", title: "Authentication vs Authorization", description: "In-depth guide to authentication vs authorization architecture, trade-offs, and operational practice.", category: "backend", subcategory: "security-authentication", slug: "authentication-vs-authorization",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","security","auth"], relatedTopics: ["rbac-role-based-access-control","abac-attribute-based-access-control","session-management"],
+    },
+    loader: () => import("./articles/backend/security-authentication/authentication-vs-authorization-concise"),
+  },
+  "backend/security-authentication/cors-cross-origin-resource-sharing": {
+    metadata: {
+id: "article-backend-cors-cross-origin-resource-sharing-extensive", title: "CORS (Cross-Origin Resource Sharing)", description: "In-depth guide to cors (cross-origin resource sharing) architecture, trade-offs, and operational practice.", category: "backend", subcategory: "security-authentication", slug: "cors-cross-origin-resource-sharing",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","security","cors"], relatedTopics: ["csrf-protection","api-security","security-headers"],
+    },
+    loader: () => import("./articles/backend/security-authentication/cors-cross-origin-resource-sharing-concise"),
+  },
+  "backend/security-authentication/csrf-protection": {
+    metadata: {
+id: "article-backend-csrf-protection-extensive", title: "CSRF Protection", description: "In-depth guide to csrf protection architecture, trade-offs, and operational practice.", category: "backend", subcategory: "security-authentication", slug: "csrf-protection",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","security","csrf"], relatedTopics: ["session-management","security-headers","authentication-vs-authorization"],
+    },
+    loader: () => import("./articles/backend/security-authentication/csrf-protection-concise"),
+  },
+  "backend/security-authentication/encryption": {
+    metadata: {
+id: "article-backend-encryption-extensive", title: "Encryption", description: "In-depth guide to encryption architecture, trade-offs, and operational practice.", category: "backend", subcategory: "security-authentication", slug: "encryption",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","security","encryption"], relatedTopics: ["tls-ssl","hashing-salting","https"],
+    },
+    loader: () => import("./articles/backend/security-authentication/encryption-concise"),
+  },
+  "backend/security-authentication/hashing-salting": {
+    metadata: {
+id: "article-backend-hashing-salting-extensive", title: "Hashing & Salting", description: "In-depth guide to hashing & salting architecture, trade-offs, and operational practice.", category: "backend", subcategory: "security-authentication", slug: "hashing-salting",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","security","hashing"], relatedTopics: ["encryption","session-management","authentication-vs-authorization"],
+    },
+    loader: () => import("./articles/backend/security-authentication/hashing-salting-concise"),
+  },
+  "backend/security-authentication/https": {
+    metadata: {
+id: "article-backend-https-extensive", title: "HTTPS", description: "In-depth guide to https architecture, trade-offs, and operational practice.", category: "backend", subcategory: "security-authentication", slug: "https",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","security","https"], relatedTopics: ["tls-ssl","security-headers","encryption"],
+    },
+    loader: () => import("./articles/backend/security-authentication/https-concise"),
+  },
+  "backend/security-authentication/input-validation-sanitization": {
+    metadata: {
+id: "article-backend-input-validation-sanitization-extensive", title: "Input Validation & Sanitization", description: "In-depth guide to input validation & sanitization architecture, trade-offs, and operational practice.", category: "backend", subcategory: "security-authentication", slug: "input-validation-sanitization",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","security","validation"], relatedTopics: ["xss-prevention","sql-injection-prevention","api-security"],
+    },
+    loader: () => import("./articles/backend/security-authentication/input-validation-sanitization-concise"),
+  },
+  "backend/security-authentication/jwt-json-web-tokens": {
+    metadata: {
+id: "article-backend-jwt-json-web-tokens-extensive", title: "JWT (JSON Web Tokens)", description: "In-depth guide to jwt (json web tokens) architecture, trade-offs, and operational practice.", category: "backend", subcategory: "security-authentication", slug: "jwt-json-web-tokens",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","security","jwt"], relatedTopics: ["oauth-2-0","session-management","security-headers"],
+    },
+    loader: () => import("./articles/backend/security-authentication/jwt-json-web-tokens-concise"),
+  },
+  "backend/security-authentication/multi-factor-authentication": {
+    metadata: {
+id: "article-backend-multi-factor-authentication-extensive", title: "Multi-Factor Authentication", description: "In-depth guide to multi-factor authentication architecture, trade-offs, and operational practice.", category: "backend", subcategory: "security-authentication", slug: "multi-factor-authentication",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","security","mfa"], relatedTopics: ["single-sign-on-sso","authentication-vs-authorization","security-headers"],
+    },
+    loader: () => import("./articles/backend/security-authentication/multi-factor-authentication-concise"),
+  },
+  "backend/security-authentication/oauth-2-0": {
+    metadata: {
+id: "article-backend-oauth-2-0-extensive", title: "OAuth 2.0", description: "In-depth guide to oauth 2.0 architecture, trade-offs, and operational practice.", category: "backend", subcategory: "security-authentication", slug: "oauth-2-0",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","security","oauth"], relatedTopics: ["jwt-json-web-tokens","single-sign-on-sso","api-security"],
+    },
+    loader: () => import("./articles/backend/security-authentication/oauth-2-0-concise"),
+  },
+  "backend/security-authentication/rate-limiting": {
+    metadata: {
+id: "article-backend-rate-limiting-extensive", title: "Rate Limiting", description: "In-depth guide to rate limiting architecture, trade-offs, and operational practice.", category: "backend", subcategory: "security-authentication", slug: "rate-limiting",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","security","rate-limit"], relatedTopics: ["api-security","throttling-rate-limiting","web-application-firewall"],
+    },
+    loader: () => import("./articles/backend/security-authentication/rate-limiting-concise"),
+  },
+  "backend/security-authentication/rbac-role-based-access-control": {
+    metadata: {
+id: "article-backend-rbac-role-based-access-control-extensive", title: "RBAC (Role-Based Access Control)", description: "In-depth guide to rbac (role-based access control) architecture, trade-offs, and operational practice.", category: "backend", subcategory: "security-authentication", slug: "rbac-role-based-access-control",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","security","rbac"], relatedTopics: ["abac-attribute-based-access-control","authentication-vs-authorization","api-security"],
+    },
+    loader: () => import("./articles/backend/security-authentication/rbac-role-based-access-control-concise"),
+  },
+  "backend/security-authentication/secrets-rotation": {
+    metadata: {
+id: "article-backend-secrets-rotation-extensive", title: "Secrets Rotation", description: "In-depth guide to secrets rotation architecture, trade-offs, and operational practice.", category: "backend", subcategory: "security-authentication", slug: "secrets-rotation",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","security","secrets"], relatedTopics: ["api-keys-secrets-management","encryption","authentication-vs-authorization"],
+    },
+    loader: () => import("./articles/backend/security-authentication/secrets-rotation-concise"),
+  },
+  "backend/security-authentication/security-headers": {
+    metadata: {
+id: "article-backend-security-headers-extensive", title: "Security Headers", description: "In-depth guide to security headers architecture, trade-offs, and operational practice.", category: "backend", subcategory: "security-authentication", slug: "security-headers",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","security","headers"], relatedTopics: ["https","xss-prevention","csrf-protection"],
+    },
+    loader: () => import("./articles/backend/security-authentication/security-headers-concise"),
+  },
+  "backend/security-authentication/session-management": {
+    metadata: {
+id: "article-backend-session-management-extensive", title: "Session Management", description: "In-depth guide to session management architecture, trade-offs, and operational practice.", category: "backend", subcategory: "security-authentication", slug: "session-management",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","security","session"], relatedTopics: ["jwt-json-web-tokens","csrf-protection","authentication-vs-authorization"],
+    },
+    loader: () => import("./articles/backend/security-authentication/session-management-concise"),
+  },
+  "backend/security-authentication/single-sign-on-sso": {
+    metadata: {
+id: "article-backend-single-sign-on-sso-extensive", title: "Single Sign-On (SSO)", description: "In-depth guide to single sign-on (sso) architecture, trade-offs, and operational practice.", category: "backend", subcategory: "security-authentication", slug: "single-sign-on-sso",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","security","sso"], relatedTopics: ["oauth-2-0","session-management","multi-factor-authentication"],
+    },
+    loader: () => import("./articles/backend/security-authentication/single-sign-on-sso-concise"),
+  },
+  "backend/security-authentication/sql-injection-prevention": {
+    metadata: {
+id: "article-backend-sql-injection-prevention-extensive", title: "SQL Injection Prevention", description: "In-depth guide to sql injection prevention architecture, trade-offs, and operational practice.", category: "backend", subcategory: "security-authentication", slug: "sql-injection-prevention",
+wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","security","sql"], relatedTopics: ["input-validation-sanitization","orms","security-headers"],
+    },
+    loader: () => import("./articles/backend/security-authentication/sql-injection-prevention-concise"),
+  },
+  "backend/security-authentication/tls-ssl": {
+    metadata: {
+id: "article-backend-tls-ssl-extensive",
+  title: "TLS/SSL",
+  description: "In-depth guide to tls/ssl architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "security-authentication",
+  slug: "tls-ssl",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ["backend", "security", "tls"],
+  relatedTopics: ["https", "encryption", "security-headers"],
+    },
+    loader: () => import("./articles/backend/security-authentication/tls-ssl-concise"),
+  },
+  "backend/security-authentication/vulnerability-scanning": {
+    metadata: {
+id: "article-backend-vulnerability-scanning-extensive",
+  title: "Vulnerability Scanning",
+  description: "In-depth guide to vulnerability scanning architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "security-authentication",
+  slug: "vulnerability-scanning",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ["backend", "security", "scanning"],
+  relatedTopics: ["security-headers", "api-security", "web-application-firewall"],
+    },
+    loader: () => import("./articles/backend/security-authentication/vulnerability-scanning-concise"),
+  },
+  "backend/security-authentication/web-application-firewall": {
+    metadata: {
+id: "article-backend-web-application-firewall-extensive",
+  title: "Web Application Firewall",
+  description: "In-depth guide to web application firewall architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "security-authentication",
+  slug: "web-application-firewall",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ["backend", "security", "waf"],
+  relatedTopics: ["rate-limiting", "sql-injection-prevention", "xss-prevention"],
+    },
+    loader: () => import("./articles/backend/security-authentication/web-application-firewall-concise"),
+  },
+  "backend/security-authentication/xss-prevention": {
+    metadata: {
+id: "article-backend-xss-prevention-extensive",
+  title: "XSS Prevention",
+  description: "In-depth guide to xss prevention architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "security-authentication",
+  slug: "xss-prevention",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ["backend", "security", "xss"],
+  relatedTopics: ["security-headers", "input-validation-sanitization", "csrf-protection"],
+    },
+    loader: () => import("./articles/backend/security-authentication/xss-prevention-concise"),
+  },
+  "backend/system-components-services/a-b-testing-service": {
+    metadata: {
+id: "article-backend-a-b-testing-service-extensive",
+  title: "A/B Testing Service",
+  description: "In-depth guide to a/b testing service architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "system-components-services",
+  slug: "a-b-testing-service",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'services', 'component'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/system-components-services/a-b-testing-service-concise"),
+  },
+  "backend/system-components-services/analytics-service": {
+    metadata: {
+id: "article-backend-analytics-service-extensive",
+  title: "Analytics Service",
+  description: "In-depth guide to analytics service architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "system-components-services",
+  slug: "analytics-service",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'services', 'component'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/system-components-services/analytics-service-concise"),
+  },
+  "backend/system-components-services/audit-logging-service": {
+    metadata: {
+id: "article-backend-audit-logging-service-extensive",
+  title: "Audit Logging Service",
+  description: "In-depth guide to audit logging service architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "system-components-services",
+  slug: "audit-logging-service",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'services', 'compliance'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/system-components-services/audit-logging-service-concise"),
+  },
+  "backend/system-components-services/authentication-service": {
+    metadata: {
+id: "article-backend-authentication-service-extensive",
+  title: "Authentication Service",
+  description: "In-depth guide to authentication service architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "system-components-services",
+  slug: "authentication-service",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'services', 'component'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/system-components-services/authentication-service-concise"),
+  },
+  "backend/system-components-services/authorization-service": {
+    metadata: {
+id: "article-backend-authorization-service-extensive",
+  title: "Authorization Service",
+  description: "In-depth guide to authorization service architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "system-components-services",
+  slug: "authorization-service",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'services', 'component'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/system-components-services/authorization-service-concise"),
+  },
+  "backend/system-components-services/content-moderation-service": {
+    metadata: {
+id: "article-backend-content-moderation-service-extensive",
+  title: "Content Moderation Service",
+  description: "In-depth guide to content moderation service architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "system-components-services",
+  slug: "content-moderation-service",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'services', 'component'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/system-components-services/content-moderation-service-concise"),
+  },
+  "backend/system-components-services/email-service": {
+    metadata: {
+id: "article-backend-email-service-extensive",
+  title: "Email Service",
+  description: "In-depth guide to email service architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "system-components-services",
+  slug: "email-service",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'services', 'component'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/system-components-services/email-service-concise"),
+  },
+  "backend/system-components-services/feature-flag-service": {
+    metadata: {
+id: "article-backend-feature-flag-service-extensive",
+  title: "Feature Flag Service",
+  description: "In-depth guide to feature flag service architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "system-components-services",
+  slug: "feature-flag-service",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'services', 'component'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/system-components-services/feature-flag-service-concise"),
+  },
+  "backend/system-components-services/file-storage-service": {
+    metadata: {
+id: "article-backend-file-storage-service-extensive",
+  title: "File Storage Service",
+  description: "In-depth guide to file storage service architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "system-components-services",
+  slug: "file-storage-service",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'services', 'component'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/system-components-services/file-storage-service-concise"),
+  },
+  "backend/system-components-services/geolocation-service": {
+    metadata: {
+id: "article-backend-geolocation-service-extensive",
+  title: "Geolocation Service",
+  description: "In-depth guide to geolocation service architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "system-components-services",
+  slug: "geolocation-service",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'services', 'component'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/system-components-services/geolocation-service-concise"),
+  },
+  "backend/system-components-services/job-scheduler": {
+    metadata: {
+id: "article-backend-job-scheduler-extensive",
+  title: "Job Scheduler",
+  description: "In-depth guide to job scheduler architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "system-components-services",
+  slug: "job-scheduler",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'services'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/system-components-services/job-scheduler-concise"),
+  },
+  "backend/system-components-services/media-processing-service": {
+    metadata: {
+id: "article-backend-media-processing-service-extensive",
+  title: "Media Processing Service",
+  description: "In-depth guide to media processing service architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "system-components-services",
+  slug: "media-processing-service",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'services', 'component'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/system-components-services/media-processing-service-concise"),
+  },
+  "backend/system-components-services/notification-service": {
+    metadata: {
+id: "article-backend-notification-service-extensive",
+  title: "Notification Service",
+  description: "In-depth guide to notification service architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "system-components-services",
+  slug: "notification-service",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'services', 'component'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/system-components-services/notification-service-concise"),
+  },
+  "backend/system-components-services/payment-processing": {
+    metadata: {
+id: "article-backend-payment-processing-extensive",
+  title: "Payment Processing",
+  description: "In-depth guide to payment processing architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "system-components-services",
+  slug: "payment-processing",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'services', 'compliance'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/system-components-services/payment-processing-concise"),
+  },
+  "backend/system-components-services/rate-limiting-service": {
+    metadata: {
+id: "article-backend-rate-limiting-service-extensive",
+  title: "Rate Limiting Service",
+  description: "In-depth guide to rate limiting service architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "system-components-services",
+  slug: "rate-limiting-service",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'services', 'component'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/system-components-services/rate-limiting-service-concise"),
+  },
+  "backend/system-components-services/recommendation-engine": {
+    metadata: {
+id: "article-backend-recommendation-engine-extensive",
+  title: "Recommendation Engine",
+  description: "In-depth guide to recommendation engine architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "system-components-services",
+  slug: "recommendation-engine",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'services'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/system-components-services/recommendation-engine-concise"),
+  },
+  "backend/system-components-services/search-service": {
+    metadata: {
+id: "article-backend-search-service-extensive",
+  title: "Search Service",
+  description: "In-depth guide to search service architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "system-components-services",
+  slug: "search-service",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'services', 'component'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/system-components-services/search-service-concise"),
+  },
+  "backend/system-components-services/session-management-service": {
+    metadata: {
+id: "article-backend-session-management-service-extensive",
+  title: "Session Management Service",
+  description: "In-depth guide to session management service architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "system-components-services",
+  slug: "session-management-service",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'services', 'component'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/system-components-services/session-management-service-concise"),
+  },
+  "backend/system-components-services/sms-service": {
+    metadata: {
+id: "article-backend-sms-service-extensive",
+  title: "SMS Service",
+  description: "In-depth guide to sms service architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "system-components-services",
+  slug: "sms-service",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'services', 'component'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/system-components-services/sms-service-concise"),
+  },
+  "backend/system-components-services/user-service": {
+    metadata: {
+id: "article-backend-user-service-extensive",
+  title: "User Service",
+  description: "In-depth guide to user service architecture, trade-offs, and operational practice.",
+  category: "backend",
+  subcategory: "system-components-services",
+  slug: "user-service",
+  wordCount: 2800,
+  readingTime: 14,
+  lastUpdated: "2026-03-11",
+  tags: ['backend', 'services', 'component'],
+  relatedTopics: [],
+    },
+    loader: () => import("./articles/backend/system-components-services/user-service-concise"),
+  },
+  "frontend/caching-strategies/browser-caching": {
+    metadata: {
+      id: "article-frontend-browser-caching-concise",
+      title: "Browser Caching",
+      description: "Comprehensive guide to browser caching covering HTTP cache headers (Cache-Control, ETag, Last-Modified, Expires), browser cache storage, and best practices.",
       category: "frontend",
-      subcategory: "rendering-strategies",
-      slug: "client-side-rendering",
-      version: "concise",
-      wordCount: 0,
-      readingTime: 0,
-      lastUpdated: "2026-03-05",
-      tags: ["frontend","rendering"],
+      subcategory: "caching-strategies",
+      slug: "browser-caching",
+      wordCount: 3200,
+      readingTime: 13,
+      lastUpdated: "2026-03-13",
+      tags: ["frontend", "caching", "HTTP", "Cache-Control", "ETag", "performance"],
+      relatedTopics: ["service-worker-caching", "cdn-caching", "stale-while-revalidate"],
+    },
+    loader: () => import("./articles/frontend/caching-strategies/browser-caching-concise"),
+  },
+  "frontend/caching-strategies/service-worker-caching": {
+    metadata: {
+      id: "article-frontend-service-worker-caching-concise",
+      title: "Service Worker Caching",
+      description: "Deep dive into Service Worker caching including SW lifecycle, Cache API, offline-first patterns, and strategies for building resilient web applications.",
+      category: "frontend",
+      subcategory: "caching-strategies",
+      slug: "service-worker-caching",
+      wordCount: 3200,
+      readingTime: 13,
+      lastUpdated: "2026-03-13",
+      tags: ["frontend", "caching", "service-worker", "offline-first", "Cache API", "PWA"],
+      relatedTopics: ["browser-caching", "caching-patterns", "application-cache"],
+    },
+    loader: () => import("./articles/frontend/caching-strategies/service-worker-caching-concise"),
+  },
+  "frontend/caching-strategies/memory-caching": {
+    metadata: {
+      id: "article-frontend-memory-caching-concise",
+      title: "Memory Caching",
+      description: "In-depth guide to in-memory caching for frontend applications including React Query, SWR, custom cache stores, and client-side data management patterns.",
+      category: "frontend",
+      subcategory: "caching-strategies",
+      slug: "memory-caching",
+      wordCount: 3200,
+      readingTime: 13,
+      lastUpdated: "2026-03-13",
+      tags: ["frontend", "caching", "React Query", "SWR", "state management", "in-memory"],
+      relatedTopics: ["stale-while-revalidate", "browser-caching", "cache-invalidation-strategies"],
+    },
+    loader: () => import("./articles/frontend/caching-strategies/memory-caching-concise"),
+  },
+  "frontend/caching-strategies/cdn-caching": {
+    metadata: {
+      id: "article-frontend-cdn-caching-concise",
+      title: "CDN Caching",
+      description: "Comprehensive guide to CDN caching covering edge caching, cache invalidation, cache keys, Vary header, and strategies for global content delivery.",
+      category: "frontend",
+      subcategory: "caching-strategies",
+      slug: "cdn-caching",
+      wordCount: 3200,
+      readingTime: 13,
+      lastUpdated: "2026-03-13",
+      tags: ["frontend", "caching", "CDN", "edge", "Vary header", "cache invalidation"],
+      relatedTopics: ["browser-caching", "cache-invalidation-strategies", "stale-while-revalidate"],
+    },
+    loader: () => import("./articles/frontend/caching-strategies/cdn-caching-concise"),
+  },
+  "frontend/caching-strategies/cache-invalidation-strategies": {
+    metadata: {
+      id: "article-frontend-cache-invalidation-strategies-concise",
+      title: "Cache Invalidation Strategies",
+      description: "Deep dive into cache invalidation strategies including TTL-based, event-driven, versioned URLs, tag-based invalidation, and maintaining cache consistency.",
+      category: "frontend",
+      subcategory: "caching-strategies",
+      slug: "cache-invalidation-strategies",
+      wordCount: 3200,
+      readingTime: 13,
+      lastUpdated: "2026-03-13",
+      tags: ["frontend", "caching", "cache invalidation", "TTL", "versioning", "consistency"],
+      relatedTopics: ["browser-caching", "cdn-caching", "stale-while-revalidate"],
+    },
+    loader: () => import("./articles/frontend/caching-strategies/cache-invalidation-strategies-concise"),
+  },
+  "frontend/caching-strategies/stale-while-revalidate": {
+    metadata: {
+      id: "article-frontend-stale-while-revalidate-concise",
+      title: "Stale-While-Revalidate",
+      description: "Comprehensive guide to the Stale-While-Revalidate pattern covering HTTP header implementation, library patterns (SWR, React Query), and real-world usage.",
+      category: "frontend",
+      subcategory: "caching-strategies",
+      slug: "stale-while-revalidate",
+      wordCount: 3200,
+      readingTime: 13,
+      lastUpdated: "2026-03-13",
+      tags: ["frontend", "caching", "SWR", "stale-while-revalidate", "React Query", "performance"],
+      relatedTopics: ["browser-caching", "memory-caching", "caching-patterns"],
+    },
+    loader: () => import("./articles/frontend/caching-strategies/stale-while-revalidate-concise"),
+  },
+  "frontend/caching-strategies/caching-patterns": {
+    metadata: {
+      id: "article-frontend-caching-patterns-concise",
+      title: "Cache-First, Network-First, Network-Only Strategies",
+      description: "Deep dive into caching strategy patterns including Cache-First, Network-First, Network-Only, Cache-Only, and Stale-While-Revalidate with Workbox implementation.",
+      category: "frontend",
+      subcategory: "caching-strategies",
+      slug: "caching-patterns",
+      wordCount: 3200,
+      readingTime: 13,
+      lastUpdated: "2026-03-13",
+      tags: ["frontend", "caching", "Workbox", "service-worker", "cache-first", "network-first"],
+      relatedTopics: ["service-worker-caching", "stale-while-revalidate", "browser-caching"],
+    },
+    loader: () => import("./articles/frontend/caching-strategies/caching-patterns-concise"),
+  },
+  "frontend/caching-strategies/indexeddb-caching": {
+    metadata: {
+      id: "article-frontend-indexeddb-caching-concise",
+      title: "IndexedDB for Large Data Caching",
+      description: "Comprehensive guide to IndexedDB for frontend caching covering structured storage, Dexie.js, offline data synchronization, and large dataset management.",
+      category: "frontend",
+      subcategory: "caching-strategies",
+      slug: "indexeddb-caching",
+      wordCount: 3200,
+      readingTime: 13,
+      lastUpdated: "2026-03-13",
+      tags: ["frontend", "caching", "IndexedDB", "Dexie.js", "offline", "structured data"],
+      relatedTopics: ["service-worker-caching", "application-cache", "memory-caching"],
+    },
+    loader: () => import("./articles/frontend/caching-strategies/indexeddb-caching-concise"),
+  },
+  "frontend/caching-strategies/application-cache": {
+    metadata: {
+      id: "article-frontend-application-cache-concise",
+      title: "Application Cache (AppCache)",
+      description: "Guide to the deprecated Application Cache API covering its history, why it failed, manifest format, and migration path to Service Workers.",
+      category: "frontend",
+      subcategory: "caching-strategies",
+      slug: "application-cache",
+      wordCount: 3200,
+      readingTime: 13,
+      lastUpdated: "2026-03-13",
+      tags: ["frontend", "caching", "AppCache", "deprecated", "service-worker", "migration"],
+      relatedTopics: ["service-worker-caching", "browser-caching", "caching-patterns"],
+    },
+    loader: () => import("./articles/frontend/caching-strategies/application-cache-concise"),
+  },
+  "frontend/edge-cases-and-user-experience/dark-mode-implementation": {
+    metadata: {
+id: "article-frontend-dark-mode-implementation-extensive",
+      title: "Dark Mode Implementation",
+      description: "Comprehensive guide to dark mode theming, token systems, and contrast compliance.",
+      category: "frontend",
+      subcategory: "edge-cases-and-user-experience",
+      slug: "dark-mode-implementation",
+      wordCount: 1450,
+      readingTime: 7,
+      lastUpdated: "2026-03-10",
+      tags: ["frontend", "ux", "theming", "dark-mode", "tokens"],
+      relatedTopics: ["accessibility", "design-systems", "performance-optimization"],
+    },
+    loader: () => import("./articles/frontend/edge-cases-and-user-experience/dark-mode-implementation-concise"),
+  },
+  "frontend/edge-cases-and-user-experience/empty-states": {
+    metadata: {
+id: "article-frontend-empty-states-extensive",
+      title: "Empty States",
+      description: "Comprehensive guide to empty state strategies, onboarding, and activation design.",
+      category: "frontend",
+      subcategory: "edge-cases-and-user-experience",
+      slug: "empty-states",
+      wordCount: 1631,
+      readingTime: 8,
+      lastUpdated: "2026-03-10",
+      tags: ["frontend", "ux", "empty-states", "onboarding"],
+      relatedTopics: ["loading-states", "error-states", "skeleton-screens"],
+    },
+    loader: () => import("./articles/frontend/edge-cases-and-user-experience/empty-states-concise"),
+  },
+  "frontend/edge-cases-and-user-experience/error-states": {
+    metadata: {
+id: "article-frontend-error-states-extensive",
+      title: "Error States",
+      description: "Comprehensive guide to error taxonomy, recovery UX, and resilient frontend flows.",
+      category: "frontend",
+      subcategory: "edge-cases-and-user-experience",
+      slug: "error-states",
+      wordCount: 1542,
+      readingTime: 8,
+      lastUpdated: "2026-03-10",
+      tags: ["frontend", "ux", "error-handling", "recovery", "observability"],
+      relatedTopics: ["loading-states", "empty-states", "error-handling"],
+    },
+    loader: () => import("./articles/frontend/edge-cases-and-user-experience/error-states-concise"),
+  },
+  "frontend/edge-cases-and-user-experience/infinite-scroll-vs-pagination": {
+    metadata: {
+id: "article-frontend-infinite-scroll-vs-pagination-extensive",
+      title: "Infinite Scroll vs Pagination",
+      description: "Comprehensive guide to choosing list navigation patterns, including UX, SEO, and performance tradeoffs.",
+      category: "frontend",
+      subcategory: "edge-cases-and-user-experience",
+      slug: "infinite-scroll-vs-pagination",
+      wordCount: 1497,
+      readingTime: 7,
+      lastUpdated: "2026-03-10",
+      tags: ["frontend", "ux", "pagination", "infinite-scroll", "performance", "seo"],
+      relatedTopics: ["virtualization-windowing", "performance-optimization", "accessibility"],
+    },
+    loader: () => import("./articles/frontend/edge-cases-and-user-experience/infinite-scroll-vs-pagination-concise"),
+  },
+  "frontend/edge-cases-and-user-experience/keyboard-shortcuts": {
+    metadata: {
+id: "article-frontend-keyboard-shortcuts-extensive",
+      title: "Keyboard Shortcuts",
+      description: "Comprehensive guide to shortcut design, focus management, and cross-platform behavior.",
+      category: "frontend",
+      subcategory: "edge-cases-and-user-experience",
+      slug: "keyboard-shortcuts",
+      wordCount: 1346,
+      readingTime: 7,
+      lastUpdated: "2026-03-10",
+      tags: ["frontend", "ux", "keyboard", "accessibility", "focus"],
+      relatedTopics: ["accessibility", "routing", "error-handling"],
+    },
+    loader: () => import("./articles/frontend/edge-cases-and-user-experience/keyboard-shortcuts-concise"),
+  },
+  "frontend/edge-cases-and-user-experience/loading-states": {
+    metadata: {
+id: "article-frontend-loading-states-extensive",
+      title: "Loading States",
+      description: "Comprehensive guide to loading patterns, perceived performance, and progressive UI strategies.",
+      category: "frontend",
+      subcategory: "edge-cases-and-user-experience",
+      slug: "loading-states",
+      wordCount: 1770,
+      readingTime: 9,
+      lastUpdated: "2026-03-10",
+      tags: ["frontend", "ux", "loading", "states", "skeletons"],
+      relatedTopics: ["skeleton-screens", "performance-optimization", "optimistic-ui-updates"],
+    },
+    loader: () => import("./articles/frontend/edge-cases-and-user-experience/loading-states-concise"),
+  },
+  "frontend/edge-cases-and-user-experience/optimistic-ui-updates": {
+    metadata: {
+id: "article-frontend-optimistic-ui-updates-extensive",
+      title: "Optimistic UI Updates",
+      description: "Comprehensive guide to optimistic updates, conflict resolution, and consistency guarantees.",
+      category: "frontend",
+      subcategory: "edge-cases-and-user-experience",
+      slug: "optimistic-ui-updates",
+      wordCount: 1449,
+      readingTime: 7,
+      lastUpdated: "2026-03-10",
+      tags: ["frontend", "ux", "optimistic-ui", "state", "latency"],
+      relatedTopics: ["loading-states", "error-states", "state-management"],
+    },
+    loader: () => import("./articles/frontend/edge-cases-and-user-experience/optimistic-ui-updates-concise"),
+  },
+  "frontend/edge-cases-and-user-experience/print-stylesheets": {
+    metadata: {
+id: "article-frontend-print-stylesheets-extensive",
+      title: "Print Stylesheets",
+      description: "Comprehensive guide to print media queries, layout simplification, and print-specific UX.",
+      category: "frontend",
+      subcategory: "edge-cases-and-user-experience",
+      slug: "print-stylesheets",
+      wordCount: 1370,
+      readingTime: 7,
+      lastUpdated: "2026-03-10",
+      tags: ["frontend", "ux", "print", "css", "media-queries"],
+      relatedTopics: ["accessibility", "web-standards-and-compatibility", "asset-management"],
+    },
+    loader: () => import("./articles/frontend/edge-cases-and-user-experience/print-stylesheets-concise"),
+  },
+  "frontend/edge-cases-and-user-experience/skeleton-screens": {
+    metadata: {
+id: "article-frontend-skeleton-screens-extensive",
+      title: "Skeleton Screens",
+      description: "Comprehensive guide to skeleton UI patterns, accessibility, and performance tradeoffs.",
+      category: "frontend",
+      subcategory: "edge-cases-and-user-experience",
+      slug: "skeleton-screens",
+      wordCount: 1547,
+      readingTime: 8,
+      lastUpdated: "2026-03-10",
+      tags: ["frontend", "ux", "skeletons", "performance", "accessibility"],
+      relatedTopics: ["loading-states", "performance-optimization", "web-vitals"],
+    },
+    loader: () => import("./articles/frontend/edge-cases-and-user-experience/skeleton-screens-concise"),
+  },
+  "frontend/edge-cases-and-user-experience/undo-redo-functionality": {
+    metadata: {
+id: "article-frontend-undo-redo-functionality-extensive",
+      title: "Undo/Redo Functionality",
+      description: "Comprehensive guide to command patterns, history stacks, and UX design for undo/redo.",
+      category: "frontend",
+      subcategory: "edge-cases-and-user-experience",
+      slug: "undo-redo-functionality",
+      wordCount: 1486,
+      readingTime: 7,
+      lastUpdated: "2026-03-10",
+      tags: ["frontend", "ux", "undo", "redo", "state", "history"],
+      relatedTopics: ["state-management", "optimistic-ui-updates", "error-states"],
+    },
+    loader: () => import("./articles/frontend/edge-cases-and-user-experience/undo-redo-functionality-concise"),
+  },
+  "frontend/performance-optimization/above-the-fold-optimization": {
+    metadata: {
+id: "article-frontend-above-fold-extensive",
+  title: "Above-the-Fold Optimization",
+  description: "Comprehensive guide to above-the-fold optimization techniques for improving perceived performance and Core Web Vitals.",
+  category: "frontend",
+  subcategory: "performance-optimization",
+  slug: "above-the-fold-optimization",
+  wordCount: 11000,
+  readingTime: 44,
+  lastUpdated: "2026-03-10",
+  tags: ["frontend", "performance", "critical-rendering-path", "above-the-fold", "core-web-vitals"],
+  relatedTopics: ["critical-css", "image-optimization", "web-vitals", "resource-hints"],
+    },
+    loader: () => import("./articles/frontend/performance-optimization/above-the-fold-optimization-concise"),
+  },
+  "frontend/performance-optimization/bundle-size-optimization": {
+    metadata: {
+id: "article-frontend-bundle-size-optimization-extensive",
+  title: "Bundle Size Optimization",
+  description: "Comprehensive guide to analyzing, reducing, and monitoring JavaScript bundle sizes with practical strategies, tooling, and real-world optimization workflows.",
+  category: "frontend",
+  subcategory: "performance-optimization",
+  slug: "bundle-size-optimization",
+  wordCount: 10500,
+  readingTime: 42,
+  lastUpdated: "2026-03-09",
+  tags: ["frontend", "performance", "bundle-size", "webpack", "vite", "optimization", "code-splitting"],
+  relatedTopics: ["tree-shaking", "code-splitting", "lazy-loading"],
+    },
+    loader: () => import("./articles/frontend/performance-optimization/bundle-size-optimization-concise"),
+  },
+  "frontend/performance-optimization/code-splitting": {
+    metadata: {
+id: "article-frontend-code-splitting-extensive",
+  title: "Code Splitting",
+  description: "Comprehensive guide to code splitting strategies, implementation patterns, and optimization techniques for frontend performance.",
+  category: "frontend",
+  subcategory: "performance-optimization",
+  slug: "code-splitting",
+  wordCount: 10500,
+  readingTime: 42,
+  lastUpdated: "2026-03-09",
+  tags: ["frontend", "performance", "code-splitting", "lazy-loading", "webpack", "bundling"],
+  relatedTopics: ["lazy-loading", "tree-shaking", "bundle-size-optimization"],
+    },
+    loader: () => import("./articles/frontend/performance-optimization/code-splitting-concise"),
+  },
+  "frontend/performance-optimization/compression": {
+    metadata: {
+id: "article-frontend-compression-extensive",
+  title: "Compression (Gzip, Brotli)",
+  description: "Comprehensive guide to HTTP compression including Gzip, Brotli, and Zstandard — covering content-encoding negotiation, server configuration, pre-compression at build time, dynamic vs static compression strategies, and measuring compression effectiveness for production applications.",
+  category: "frontend",
+  subcategory: "performance-optimization",
+  slug: "compression",
+  wordCount: 10500,
+  readingTime: 42,
+  lastUpdated: "2026-03-09",
+  tags: ["frontend", "performance", "compression", "gzip", "brotli", "zstandard", "content-encoding", "transfer-size"],
+  relatedTopics: ["bundle-size-optimization", "code-splitting", "critical-css", "resource-hints"],
+    },
+    loader: () => import("./articles/frontend/performance-optimization/compression-concise"),
+  },
+  "frontend/performance-optimization/critical-css": {
+    metadata: {
+id: "article-frontend-critical-css-extensive",
+  title: "Critical CSS",
+  description: "Comprehensive guide to critical CSS extraction, render-blocking elimination, font loading strategies, and measuring performance impact for production applications.",
+  category: "frontend",
+  subcategory: "performance-optimization",
+  slug: "critical-css",
+  wordCount: 10500,
+  readingTime: 42,
+  lastUpdated: "2026-03-09",
+  tags: ["frontend", "performance", "critical-css", "render-blocking", "css-optimization", "web-vitals"],
+  relatedTopics: ["code-splitting", "lazy-loading", "server-side-rendering"],
+    },
+    loader: () => import("./articles/frontend/performance-optimization/critical-css-concise"),
+  },
+  "frontend/performance-optimization/debouncing-and-throttling": {
+    metadata: {
+id: "article-frontend-debouncing-throttling-extensive",
+  title: "Debouncing and Throttling",
+  description: "Comprehensive guide to debouncing and throttling techniques for controlling event frequency, with implementations from scratch, React hooks, AbortController integration, and real-world patterns.",
+  category: "frontend",
+  subcategory: "performance-optimization",
+  slug: "debouncing-and-throttling",
+  wordCount: 10500,
+  readingTime: 42,
+  lastUpdated: "2026-03-09",
+  tags: ["frontend", "performance", "debounce", "throttle", "events", "optimization", "react-hooks", "rate-limiting"],
+  relatedTopics: ["memoization-and-react-memo", "web-vitals", "virtualization-windowing"],
+    },
+    loader: () => import("./articles/frontend/performance-optimization/debouncing-and-throttling-concise"),
+  },
+  "frontend/performance-optimization/image-optimization": {
+    metadata: {
+id: "article-frontend-image-optimization-extensive",
+  title: "Image Optimization (WebP, AVIF, responsive images, srcset)",
+  description: "Comprehensive guide to image optimization including modern formats, responsive strategies, CDN delivery, and build-time pipelines.",
+  category: "frontend",
+  subcategory: "performance-optimization",
+  slug: "image-optimization",
+  wordCount: 11200,
+  readingTime: 45,
+  lastUpdated: "2026-03-09",
+  tags: ["frontend", "performance", "images", "WebP", "AVIF", "responsive", "srcset"],
+  relatedTopics: ["lazy-loading", "critical-css", "above-the-fold-optimization"],
+    },
+    loader: () => import("./articles/frontend/performance-optimization/image-optimization-concise"),
+  },
+  "frontend/performance-optimization/lazy-loading": {
+    metadata: {
+id: "article-frontend-lazy-loading-extensive",
+  title: "Lazy Loading (Images, Components, Routes)",
+  description: "Comprehensive guide to lazy loading images, components, and routes for frontend performance optimization.",
+  category: "frontend",
+  subcategory: "performance-optimization",
+  slug: "lazy-loading",
+  wordCount: 11000,
+  readingTime: 44,
+  lastUpdated: "2026-03-09",
+  tags: ["frontend", "performance", "lazy-loading", "images", "intersection-observer"],
+  relatedTopics: ["code-splitting", "image-optimization", "virtualization-windowing"],
+    },
+    loader: () => import("./articles/frontend/performance-optimization/lazy-loading-concise"),
+  },
+  "frontend/performance-optimization/memoization-and-react-memo": {
+    metadata: {
+id: "article-frontend-memoization-react-memo-extensive",
+  title: "Memoization and React.memo",
+  description: "Comprehensive guide to memoization in React including React.memo, useMemo, useCallback, and the React Compiler.",
+  category: "frontend",
+  subcategory: "performance-optimization",
+  slug: "memoization-and-react-memo",
+  wordCount: 10800,
+  readingTime: 43,
+  lastUpdated: "2026-03-09",
+  tags: ["frontend", "performance", "react", "memoization", "React.memo", "useMemo", "useCallback"],
+  relatedTopics: ["virtualization-windowing", "debouncing-and-throttling", "code-splitting"],
+    },
+    loader: () => import("./articles/frontend/performance-optimization/memoization-and-react-memo-concise"),
+  },
+  "frontend/performance-optimization/minification-and-uglification": {
+    metadata: {
+id: "article-frontend-minification-extensive",
+  title: "Minification & Uglification",
+  description:
+    "Comprehensive guide to minification and uglification techniques for optimizing JavaScript, CSS, and HTML delivery.",
+  category: "frontend",
+  subcategory: "performance-optimization",
+  slug: "minification-and-uglification",
+  wordCount: 11000,
+  readingTime: 44,
+  lastUpdated: "2026-03-10",
+  tags: [
+    "frontend",
+    "performance",
+    "minification",
+    "uglification",
+    "bundling",
+  ],
+  relatedTopics: [
+    "tree-shaking",
+    "bundle-size-optimization",
+    "compression",
+  ],
+    },
+    loader: () => import("./articles/frontend/performance-optimization/minification-and-uglification-concise"),
+  },
+  "frontend/performance-optimization/performance-budgets": {
+    metadata: {
+id: "article-frontend-performance-budgets-extensive",
+  title: "Performance Budgets",
+  description: "Comprehensive guide to performance budgets — types, strategies for setting thresholds, CI/CD enforcement, build tool integration, team culture, and real-world examples.",
+  category: "frontend",
+  subcategory: "performance-optimization",
+  slug: "performance-budgets",
+  wordCount: 10500,
+  readingTime: 42,
+  lastUpdated: "2026-03-09",
+  tags: ["frontend", "performance", "performance-budgets", "bundle-size", "CI/CD", "Lighthouse", "web-vitals"],
+  relatedTopics: ["web-vitals", "bundle-size-optimization", "code-splitting"],
+    },
+    loader: () => import("./articles/frontend/performance-optimization/performance-budgets-concise"),
+  },
+  "frontend/performance-optimization/request-deduplication": {
+    metadata: {
+id: "article-frontend-request-deduplication-extensive",
+  title: "Request Deduplication",
+  description: "Comprehensive guide to request deduplication strategies, promise sharing, cache normalization, and framework-level dedup in modern frontend applications.",
+  category: "frontend",
+  subcategory: "performance-optimization",
+  slug: "request-deduplication",
+  wordCount: 10500,
+  readingTime: 42,
+  lastUpdated: "2026-03-09",
+  tags: ["frontend", "performance", "request-deduplication", "caching", "react-query", "swr", "fetch", "graphql"],
+  relatedTopics: ["caching-strategies", "data-fetching", "memoization-and-react-memo"],
+    },
+    loader: () => import("./articles/frontend/performance-optimization/request-deduplication-concise"),
+  },
+  "frontend/performance-optimization/resource-hints": {
+    metadata: {
+id: "article-frontend-resource-hints-extensive",
+  title: "Resource Hints (prefetch, preload, preconnect, dns-prefetch)",
+  description: "Comprehensive guide to resource hints, covering dns-prefetch, preconnect, prefetch, preload, modulepreload, fetchpriority, and the Speculation Rules API for frontend performance optimization.",
+  category: "frontend",
+  subcategory: "performance-optimization",
+  slug: "resource-hints",
+  wordCount: 10500,
+  readingTime: 42,
+  lastUpdated: "2026-03-09",
+  tags: ["frontend", "performance", "resource-hints", "prefetch", "preload", "preconnect", "dns-prefetch", "web-performance"],
+  relatedTopics: ["code-splitting", "lazy-loading", "critical-rendering-path"],
+    },
+    loader: () => import("./articles/frontend/performance-optimization/resource-hints-concise"),
+  },
+  "frontend/performance-optimization/tree-shaking": {
+    metadata: {
+id: "article-frontend-tree-shaking-extensive",
+  title: "Tree Shaking",
+  description: "Comprehensive guide to tree shaking, dead code elimination, and optimizing JavaScript bundles through static analysis.",
+  category: "frontend",
+  subcategory: "performance-optimization",
+  slug: "tree-shaking",
+  wordCount: 10800,
+  readingTime: 43,
+  lastUpdated: "2026-03-09",
+  tags: ["frontend", "performance", "tree-shaking", "dead-code", "webpack", "bundling"],
+  relatedTopics: ["code-splitting", "bundle-size-optimization", "minification-and-uglification"],
+    },
+    loader: () => import("./articles/frontend/performance-optimization/tree-shaking-concise"),
+  },
+  "frontend/performance-optimization/virtualization-windowing": {
+    metadata: {
+id: "article-frontend-virtualization-windowing-extensive",
+  title: "Virtualization/Windowing (for Long Lists)",
+  description: "Comprehensive guide to list and grid virtualization techniques, library comparisons, custom implementations, and production patterns for rendering massive datasets in React.",
+  category: "frontend",
+  subcategory: "performance-optimization",
+  slug: "virtualization-windowing",
+  wordCount: 10500,
+  readingTime: 42,
+  lastUpdated: "2026-03-09",
+  tags: ["frontend", "performance", "virtualization", "windowing", "react-window", "react-virtual", "infinite-scroll", "dom-optimization"],
+  relatedTopics: ["lazy-loading", "web-vitals", "bundle-size-optimization"],
+    },
+    loader: () => import("./articles/frontend/performance-optimization/virtualization-windowing-concise"),
+  },
+  "frontend/performance-optimization/web-vitals": {
+    metadata: {
+id: "article-frontend-web-vitals-extensive",
+  title: "Web Vitals (LCP, FID, CLS, TTFB, INP)",
+  description: "Comprehensive guide to Core Web Vitals, performance measurement, optimization strategies, and real-user monitoring.",
+  category: "frontend",
+  subcategory: "performance-optimization",
+  slug: "web-vitals",
+  wordCount: 11500,
+  readingTime: 46,
+  lastUpdated: "2026-03-09",
+  tags: ["frontend", "performance", "web-vitals", "LCP", "CLS", "INP", "TTFB", "Core Web Vitals"],
+  relatedTopics: ["image-optimization", "critical-css", "code-splitting"],
+    },
+    loader: () => import("./articles/frontend/performance-optimization/web-vitals-concise"),
+  },
+  "frontend/rendering-strategies/client-side-rendering": {
+    metadata: {
+id: "article-frontend-client-sid-extensive",
+  title: "Client-Side Rendering (CSR)",
+  description: "Comprehensive guide to Client-Side Rendering (CSR) covering concepts, implementation, and best practices.",
+  category: "frontend",
+  subcategory: "rendering-strategies",
+  slug: "client-side-rendering",
+  wordCount: 3200,
+  readingTime: 13,
+  lastUpdated: "2026-03-05",
+  tags: ["frontend", "rendering", "CSR", "SPA", "JavaScript"],
+  relatedTopics: ["server-side-rendering", "static-site-generation", "progressive-hydration"],
     },
     loader: () => import("./articles/frontend/rendering-strategies/client-side-rendering-concise"),
   },
-  "frontend/rendering-strategies/client-side-rendering-extensive": {
+  "frontend/rendering-strategies/edge-rendering": {
     metadata: {
-      id: "article-frontend-client-sid-extensive",
-      title: "Client-Side Rendering (CSR)",
-      description: "Comprehensive guide to Client-Side Rendering (CSR) covering concepts, implementation, and best practices.",
-      category: "frontend",
-      subcategory: "rendering-strategies",
-      slug: "client-side-rendering",
-      version: "extensive",
-      wordCount: 0,
-      readingTime: 0,
-      lastUpdated: "2026-03-05",
-      tags: ["frontend","rendering"],
-    },
-    loader: () => import("./articles/frontend/rendering-strategies/client-side-rendering-extensive"),
-  },
-  "frontend/rendering-strategies/server-side-rendering-concise": {
-    metadata: {
-      id: "article-frontend-server-sid-concise",
-      title: "Server-Side Rendering (SSR)",
-      description: "Comprehensive guide to server-side rendering, covering execution, benefits, trade-offs, and implementation strategies.",
-      category: "frontend",
-      subcategory: "rendering-strategies",
-      slug: "server-side-rendering",
-      version: "concise",
-      wordCount: 0,
-      readingTime: 0,
-      lastUpdated: "2026-03-05",
-      tags: ["frontend","rendering","SSR","performance","SEO"],
-    },
-    loader: () => import("./articles/frontend/rendering-strategies/server-side-rendering-concise"),
-  },
-  "frontend/rendering-strategies/server-side-rendering-extensive": {
-    metadata: {
-      id: "article-frontend-server-sid-extensive",
-      title: "Server-Side Rendering (SSR)",
-      description: "Comprehensive guide to server-side rendering, covering execution, benefits, trade-offs, and implementation strategies.",
-      category: "frontend",
-      subcategory: "rendering-strategies",
-      slug: "server-side-rendering",
-      version: "extensive",
-      wordCount: 0,
-      readingTime: 0,
-      lastUpdated: "2026-03-05",
-      tags: ["frontend","rendering","SSR","performance","SEO"],
-    },
-    loader: () => import("./articles/frontend/rendering-strategies/server-side-rendering-extensive"),
-  },
-  "frontend/rendering-strategies/static-site-generation-concise": {
-    metadata: {
-      id: "article-frontend-static-sit-concise",
-      title: "Static Site Generation (SSG)",
-      description: "Deep dive into static site generation, pre-rendering strategies, build-time optimization, and when to use SSG.",
-      category: "frontend",
-      subcategory: "rendering-strategies",
-      slug: "static-site-generation",
-      version: "concise",
-      wordCount: 0,
-      readingTime: 0,
-      lastUpdated: "2026-03-05",
-      tags: ["frontend","rendering","SSG","performance","JAMstack"],
-    },
-    loader: () => import("./articles/frontend/rendering-strategies/static-site-generation-concise"),
-  },
-  "frontend/rendering-strategies/static-site-generation-extensive": {
-    metadata: {
-      id: "article-frontend-static-sit-extensive",
-      title: "Static Site Generation (SSG)",
-      description: "Deep dive into static site generation, pre-rendering strategies, build-time optimization, and when to use SSG.",
-      category: "frontend",
-      subcategory: "rendering-strategies",
-      slug: "static-site-generation",
-      version: "extensive",
-      wordCount: 0,
-      readingTime: 0,
-      lastUpdated: "2026-03-05",
-      tags: ["frontend","rendering","SSG","performance","JAMstack"],
-    },
-    loader: () => import("./articles/frontend/rendering-strategies/static-site-generation-extensive"),
-  },
-  "frontend/rendering-strategies/incremental-static-regeneration-concise": {
-    metadata: {
-      id: "article-frontend-incrementa-concise",
-      title: "Incremental Static Regeneration (ISR)",
-      description: "Complete guide to ISR, combining static generation with on-demand revalidation for dynamic content at scale.",
-      category: "frontend",
-      subcategory: "rendering-strategies",
-      slug: "incremental-static-regeneration",
-      version: "concise",
-      wordCount: 0,
-      readingTime: 0,
-      lastUpdated: "2026-03-05",
-      tags: ["frontend","rendering","ISR","Next.js","hybrid"],
-    },
-    loader: () => import("./articles/frontend/rendering-strategies/incremental-static-regeneration-concise"),
-  },
-  "frontend/rendering-strategies/incremental-static-regeneration-extensive": {
-    metadata: {
-      id: "article-frontend-incrementa-extensive",
-      title: "Incremental Static Regeneration (ISR)",
-      description: "Complete guide to ISR, combining static generation with on-demand revalidation for dynamic content at scale.",
-      category: "frontend",
-      subcategory: "rendering-strategies",
-      slug: "incremental-static-regeneration",
-      version: "extensive",
-      wordCount: 0,
-      readingTime: 0,
-      lastUpdated: "2026-03-05",
-      tags: ["frontend","rendering","ISR","Next.js","hybrid"],
-    },
-    loader: () => import("./articles/frontend/rendering-strategies/incremental-static-regeneration-extensive"),
-  },
-  "frontend/rendering-strategies/progressive-hydration-concise": {
-    metadata: {
-      id: "article-frontend-progressiv-concise",
-      title: "Progressive Hydration",
-      description: "Learn progressive hydration techniques for optimizing time-to-interactive by gradually activating components based on priority.",
-      category: "frontend",
-      subcategory: "rendering-strategies",
-      slug: "progressive-hydration",
-      version: "concise",
-      wordCount: 0,
-      readingTime: 0,
-      lastUpdated: "2026-03-05",
-      tags: ["frontend","rendering","hydration","performance","interactivity"],
-    },
-    loader: () => import("./articles/frontend/rendering-strategies/progressive-hydration-concise"),
-  },
-  "frontend/rendering-strategies/progressive-hydration-extensive": {
-    metadata: {
-      id: "article-frontend-progressiv-extensive",
-      title: "Progressive Hydration",
-      description: "Learn progressive hydration techniques for optimizing time-to-interactive by gradually activating components based on priority.",
-      category: "frontend",
-      subcategory: "rendering-strategies",
-      slug: "progressive-hydration",
-      version: "extensive",
-      wordCount: 0,
-      readingTime: 0,
-      lastUpdated: "2026-03-05",
-      tags: ["frontend","rendering","hydration","performance","interactivity"],
-    },
-    loader: () => import("./articles/frontend/rendering-strategies/progressive-hydration-extensive"),
-  },
-  "frontend/rendering-strategies/selective-hydration-concise": {
-    metadata: {
-      id: "article-frontend-selective--concise",
-      title: "Selective Hydration",
-      description: "Master selective hydration patterns to hydrate only interactive components, reducing JavaScript overhead and improving performance.",
-      category: "frontend",
-      subcategory: "rendering-strategies",
-      slug: "selective-hydration",
-      version: "concise",
-      wordCount: 0,
-      readingTime: 0,
-      lastUpdated: "2026-03-05",
-      tags: ["frontend","rendering","hydration","React","performance"],
-    },
-    loader: () => import("./articles/frontend/rendering-strategies/selective-hydration-concise"),
-  },
-  "frontend/rendering-strategies/selective-hydration-extensive": {
-    metadata: {
-      id: "article-frontend-selective--extensive",
-      title: "Selective Hydration",
-      description: "Master selective hydration patterns to hydrate only interactive components, reducing JavaScript overhead and improving performance.",
-      category: "frontend",
-      subcategory: "rendering-strategies",
-      slug: "selective-hydration",
-      version: "extensive",
-      wordCount: 0,
-      readingTime: 0,
-      lastUpdated: "2026-03-05",
-      tags: ["frontend","rendering","hydration","React","performance"],
-    },
-    loader: () => import("./articles/frontend/rendering-strategies/selective-hydration-extensive"),
-  },
-  "frontend/rendering-strategies/islands-architecture-concise": {
-    metadata: {
-      id: "article-frontend-islands-ar-concise",
-      title: "Islands Architecture",
-      description: "Explore islands architecture pattern for building performant web apps with isolated interactive components in a sea of static content.",
-      category: "frontend",
-      subcategory: "rendering-strategies",
-      slug: "islands-architecture",
-      version: "concise",
-      wordCount: 0,
-      readingTime: 0,
-      lastUpdated: "2026-03-05",
-      tags: ["frontend","rendering","architecture","Astro","performance"],
-    },
-    loader: () => import("./articles/frontend/rendering-strategies/islands-architecture-concise"),
-  },
-  "frontend/rendering-strategies/islands-architecture-extensive": {
-    metadata: {
-      id: "article-frontend-islands-ar-extensive",
-      title: "Islands Architecture",
-      description: "Explore islands architecture pattern for building performant web apps with isolated interactive components in a sea of static content.",
-      category: "frontend",
-      subcategory: "rendering-strategies",
-      slug: "islands-architecture",
-      version: "extensive",
-      wordCount: 0,
-      readingTime: 0,
-      lastUpdated: "2026-03-05",
-      tags: ["frontend","rendering","architecture","Astro","performance"],
-    },
-    loader: () => import("./articles/frontend/rendering-strategies/islands-architecture-extensive"),
-  },
-  "frontend/rendering-strategies/streaming-ssr-concise": {
-    metadata: {
-      id: "article-frontend-streaming--concise",
-      title: "Streaming SSR",
-      description: "Understand streaming server-side rendering for faster time-to-first-byte and improved perceived performance with progressive content delivery.",
-      category: "frontend",
-      subcategory: "rendering-strategies",
-      slug: "streaming-ssr",
-      version: "concise",
-      wordCount: 0,
-      readingTime: 0,
-      lastUpdated: "2026-03-05",
-      tags: ["frontend","rendering","SSR","streaming","React","performance"],
-    },
-    loader: () => import("./articles/frontend/rendering-strategies/streaming-ssr-concise"),
-  },
-  "frontend/rendering-strategies/streaming-ssr-extensive": {
-    metadata: {
-      id: "article-frontend-streaming--extensive",
-      title: "Streaming SSR",
-      description: "Understand streaming server-side rendering for faster time-to-first-byte and improved perceived performance with progressive content delivery.",
-      category: "frontend",
-      subcategory: "rendering-strategies",
-      slug: "streaming-ssr",
-      version: "extensive",
-      wordCount: 0,
-      readingTime: 0,
-      lastUpdated: "2026-03-05",
-      tags: ["frontend","rendering","SSR","streaming","React","performance"],
-    },
-    loader: () => import("./articles/frontend/rendering-strategies/streaming-ssr-extensive"),
-  },
-  "frontend/rendering-strategies/edge-rendering-concise": {
-    metadata: {
-      id: "article-frontend-edge-rende-concise",
-      title: "Edge Rendering",
-      description: "Learn edge rendering strategies for delivering personalized content with minimal latency using edge compute platforms.",
-      category: "frontend",
-      subcategory: "rendering-strategies",
-      slug: "edge-rendering",
-      version: "concise",
-      wordCount: 0,
-      readingTime: 0,
-      lastUpdated: "2026-03-05",
-      tags: ["frontend","rendering","edge","CDN","performance","Vercel"],
+id: "article-frontend-edge-rende-extensive",
+  title: "Edge Rendering",
+  description: "Learn edge rendering strategies for delivering personalized content with minimal latency using edge compute platforms.",
+  category: "frontend",
+  subcategory: "rendering-strategies",
+  slug: "edge-rendering",
+  wordCount: 3600,
+  readingTime: 15,
+  lastUpdated: "2026-03-06",
+  tags: ["frontend", "rendering", "edge", "CDN", "performance", "Vercel", "Cloudflare"],
+  relatedTopics: ["server-side-rendering", "streaming-ssr", "static-site-generation"],
     },
     loader: () => import("./articles/frontend/rendering-strategies/edge-rendering-concise"),
   },
-  "frontend/rendering-strategies/edge-rendering-extensive": {
+  "frontend/rendering-strategies/incremental-static-regeneration": {
     metadata: {
-      id: "article-frontend-edge-rende-extensive",
-      title: "Edge Rendering",
-      description: "Learn edge rendering strategies for delivering personalized content with minimal latency using edge compute platforms.",
-      category: "frontend",
-      subcategory: "rendering-strategies",
-      slug: "edge-rendering",
-      version: "extensive",
-      wordCount: 0,
-      readingTime: 0,
-      lastUpdated: "2026-03-05",
-      tags: ["frontend","rendering","edge","CDN","performance","Vercel"],
+id: "article-frontend-incrementa-extensive",
+  title: "Incremental Static Regeneration (ISR)",
+  description: "Comprehensive guide to Incremental Static Regeneration (ISR) covering stale-while-revalidate patterns, on-demand revalidation, and hybrid rendering approaches.",
+  category: "frontend",
+  subcategory: "rendering-strategies",
+  slug: "incremental-static-regeneration",
+  wordCount: 3450,
+  readingTime: 14,
+  lastUpdated: "2026-03-05",
+  tags: ["frontend", "rendering", "ISR", "Next.js", "performance", "caching"],
+  relatedTopics: ["static-site-generation", "server-side-rendering", "edge-rendering"],
     },
-    loader: () => import("./articles/frontend/rendering-strategies/edge-rendering-extensive"),
+    loader: () => import("./articles/frontend/rendering-strategies/incremental-static-regeneration-concise"),
   },
-  "frontend/rendering-strategies/partial-hydration-concise": {
+  "frontend/rendering-strategies/islands-architecture": {
     metadata: {
-      id: "article-frontend-partial-hy-concise",
-      title: "Partial Hydration",
-      description: "Discover partial hydration techniques for shipping less JavaScript by hydrating only necessary components on demand.",
-      category: "frontend",
-      subcategory: "rendering-strategies",
-      slug: "partial-hydration",
-      version: "concise",
-      wordCount: 0,
-      readingTime: 0,
-      lastUpdated: "2026-03-05",
-      tags: ["frontend","rendering","hydration","performance","optimization"],
+id: "article-frontend-islands-ar-extensive",
+  title: "Islands Architecture",
+  description: "Explore islands architecture pattern for building performant web apps with isolated interactive components in a sea of static content.",
+  category: "frontend",
+  subcategory: "rendering-strategies",
+  slug: "islands-architecture",
+  wordCount: 3400,
+  readingTime: 14,
+  lastUpdated: "2026-03-06",
+  tags: ["frontend", "rendering", "architecture", "Astro", "performance", "partial-hydration"],
+  relatedTopics: ["partial-hydration", "progressive-hydration", "static-site-generation"],
+    },
+    loader: () => import("./articles/frontend/rendering-strategies/islands-architecture-concise"),
+  },
+  "frontend/rendering-strategies/partial-hydration": {
+    metadata: {
+id: "article-frontend-partial-hydration-extensive",
+  title: "Partial Hydration",
+  description: "Comprehensive guide to Partial Hydration covering concepts, implementation techniques, and best practices for conditional component hydration.",
+  category: "frontend",
+  subcategory: "rendering-strategies",
+  slug: "partial-hydration",
+  wordCount: 3180,
+  readingTime: 13,
+  lastUpdated: "2026-03-05",
+  tags: ["frontend", "rendering", "hydration", "performance", "optimization"],
+  relatedTopics: ["progressive-hydration", "selective-hydration", "islands-architecture"],
     },
     loader: () => import("./articles/frontend/rendering-strategies/partial-hydration-concise"),
   },
-  "frontend/rendering-strategies/partial-hydration-extensive": {
+  "frontend/rendering-strategies/progressive-hydration": {
     metadata: {
-      id: "article-frontend-partial-hy-extensive",
-      title: "Partial Hydration",
-      description: "Discover partial hydration techniques for shipping less JavaScript by hydrating only necessary components on demand.",
-      category: "frontend",
-      subcategory: "rendering-strategies",
-      slug: "partial-hydration",
-      version: "extensive",
-      wordCount: 0,
-      readingTime: 0,
-      lastUpdated: "2026-03-05",
-      tags: ["frontend","rendering","hydration","performance","optimization"],
+id: "article-frontend-progressive-hydration-extensive",
+  title: "Progressive Hydration",
+  description: "Comprehensive guide to Progressive Hydration covering concepts, implementation strategies, and best practices for optimizing hydration performance.",
+  category: "frontend",
+  subcategory: "rendering-strategies",
+  slug: "progressive-hydration",
+  wordCount: 3200,
+  readingTime: 13,
+  lastUpdated: "2026-03-05",
+  tags: ["frontend", "rendering", "hydration", "SSR", "performance"],
+  relatedTopics: ["server-side-rendering", "selective-hydration", "streaming-ssr"],
     },
-    loader: () => import("./articles/frontend/rendering-strategies/partial-hydration-extensive"),
+    loader: () => import("./articles/frontend/rendering-strategies/progressive-hydration-concise"),
+  },
+  "frontend/rendering-strategies/selective-hydration": {
+    metadata: {
+id: "article-frontend-selective-hydration-extensive",
+  title: "Selective Hydration",
+  description: "Comprehensive guide to Selective Hydration covering concepts, implementation patterns, and best practices for minimizing JavaScript overhead.",
+  category: "frontend",
+  subcategory: "rendering-strategies",
+  slug: "selective-hydration",
+  wordCount: 3150,
+  readingTime: 13,
+  lastUpdated: "2026-03-05",
+  tags: ["frontend", "rendering", "hydration", "React", "performance"],
+  relatedTopics: ["progressive-hydration", "islands-architecture", "partial-hydration"],
+    },
+    loader: () => import("./articles/frontend/rendering-strategies/selective-hydration-concise"),
+  },
+  "frontend/rendering-strategies/server-side-rendering": {
+    metadata: {
+id: "article-frontend-server-sid-extensive",
+  title: "Server-Side Rendering (SSR)",
+  description: "Comprehensive guide to Server-Side Rendering (SSR) covering concepts, hydration, implementation, and best practices.",
+  category: "frontend",
+  subcategory: "rendering-strategies",
+  slug: "server-side-rendering",
+  wordCount: 3400,
+  readingTime: 14,
+  lastUpdated: "2026-03-05",
+  tags: ["frontend", "rendering", "SSR", "hydration", "performance"],
+  relatedTopics: ["client-side-rendering", "static-site-generation", "streaming-ssr"],
+    },
+    loader: () => import("./articles/frontend/rendering-strategies/server-side-rendering-concise"),
+  },
+  "frontend/rendering-strategies/static-site-generation": {
+    metadata: {
+id: "article-frontend-static-sit-extensive",
+  title: "Static Site Generation (SSG)",
+  description: "Comprehensive guide to Static Site Generation (SSG) covering build-time rendering, revalidation strategies, and best practices.",
+  category: "frontend",
+  subcategory: "rendering-strategies",
+  slug: "static-site-generation",
+  wordCount: 3350,
+  readingTime: 14,
+  lastUpdated: "2026-03-05",
+  tags: ["frontend", "rendering", "SSG", "Jamstack", "performance"],
+  relatedTopics: ["client-side-rendering", "server-side-rendering", "incremental-static-regeneration"],
+    },
+    loader: () => import("./articles/frontend/rendering-strategies/static-site-generation-concise"),
+  },
+  "frontend/rendering-strategies/streaming-ssr": {
+    metadata: {
+id: "article-frontend-streaming--extensive",
+  title: "Streaming SSR",
+  description: "Understand streaming server-side rendering for faster time-to-first-byte and improved perceived performance with progressive content delivery.",
+  category: "frontend",
+  subcategory: "rendering-strategies",
+  slug: "streaming-ssr",
+  wordCount: 3500,
+  readingTime: 14,
+  lastUpdated: "2026-03-06",
+  tags: ["frontend", "rendering", "SSR", "streaming", "React", "performance", "Suspense"],
+  relatedTopics: ["server-side-rendering", "progressive-hydration", "selective-hydration"],
+    },
+    loader: () => import("./articles/frontend/rendering-strategies/streaming-ssr-concise"),
+  },
+  "frontend/web-standards-and-compatibility/browser-feature-detection": {
+    metadata: {
+id: "article-frontend-browser-feature-detection-extensive",
+      title: "Browser Feature Detection",
+      description: "Comprehensive guide to feature detection strategies, progressive enhancement, and compatibility safety.",
+      category: "frontend",
+      subcategory: "web-standards-and-compatibility",
+      slug: "browser-feature-detection",
+      wordCount: 978,
+      readingTime: 5,
+      lastUpdated: "2026-03-11",
+      tags: ["frontend", "web-standards", "feature-detection", "compatibility"],
+      relatedTopics: ["progressive-enhancement", "polyfills-and-transpilation", "critical-css", "web-vitals"],
+    },
+    loader: () => import("./articles/frontend/web-standards-and-compatibility/browser-feature-detection-concise"),
+  },
+  "frontend/web-standards-and-compatibility/cross-browser-testing": {
+    metadata: {
+id: "article-frontend-cross-browser-testing-extensive",
+      title: "Cross-Browser Testing",
+      description: "Comprehensive guide to cross-browser testing strategy, automation, and compatibility risk management.",
+      category: "frontend",
+      subcategory: "web-standards-and-compatibility",
+      slug: "cross-browser-testing",
+      wordCount: 989,
+      readingTime: 5,
+      lastUpdated: "2026-03-11",
+      tags: ["frontend", "testing", "cross-browser", "compatibility"],
+      relatedTopics: ["responsive-design", "accessibility", "web-vitals", "performance-optimization"],
+    },
+    loader: () => import("./articles/frontend/web-standards-and-compatibility/cross-browser-testing-concise"),
+  },
+  "frontend/web-standards-and-compatibility/css-vendor-prefixes": {
+    metadata: {
+id: "article-frontend-css-vendor-prefixes-extensive",
+      title: "CSS Vendor Prefixes",
+      description: "Comprehensive guide to vendor prefix strategy, tooling, and cross-browser CSS compatibility.",
+      category: "frontend",
+      subcategory: "web-standards-and-compatibility",
+      slug: "css-vendor-prefixes",
+      wordCount: 982,
+      readingTime: 5,
+      lastUpdated: "2026-03-11",
+      tags: ["frontend", "css", "vendor-prefixes", "compatibility"],
+      relatedTopics: ["cross-browser-testing", "critical-css", "build-optimization", "responsive-design"],
+    },
+    loader: () => import("./articles/frontend/web-standards-and-compatibility/css-vendor-prefixes-concise"),
+  },
+  "frontend/web-standards-and-compatibility/graceful-degradation": {
+    metadata: {
+id: "article-frontend-graceful-degradation-extensive",
+      title: "Graceful Degradation",
+      description: "Comprehensive guide to designing for degradation paths, fallback UX, and compatibility strategies.",
+      category: "frontend",
+      subcategory: "web-standards-and-compatibility",
+      slug: "graceful-degradation",
+      wordCount: 1016,
+      readingTime: 5,
+      lastUpdated: "2026-03-11",
+      tags: ["frontend", "web-standards", "graceful-degradation", "compatibility"],
+      relatedTopics: ["progressive-enhancement", "legacy-browser-support", "polyfills-and-transpilation", "critical-css"],
+    },
+    loader: () => import("./articles/frontend/web-standards-and-compatibility/graceful-degradation-concise"),
+  },
+  "frontend/web-standards-and-compatibility/legacy-browser-support": {
+    metadata: {
+id: "article-frontend-legacy-browser-support-extensive",
+      title: "Legacy Browser Support",
+      description: "Comprehensive guide to legacy browser strategy, compatibility tradeoffs, and support policies.",
+      category: "frontend",
+      subcategory: "web-standards-and-compatibility",
+      slug: "legacy-browser-support",
+      wordCount: 1000,
+      readingTime: 5,
+      lastUpdated: "2026-03-11",
+      tags: ["frontend", "compatibility", "legacy-browser", "standards"],
+      relatedTopics: ["polyfills-and-transpilation", "graceful-degradation", "bundle-size-optimization", "critical-css"],
+    },
+    loader: () => import("./articles/frontend/web-standards-and-compatibility/legacy-browser-support-concise"),
+  },
+  "frontend/web-standards-and-compatibility/polyfills-and-transpilation": {
+    metadata: {
+id: "article-frontend-polyfills-and-transpilation-extensive",
+      title: "Polyfills and Transpilation",
+      description: "Comprehensive guide to polyfill strategy, transpilation targets, and compatibility tradeoffs.",
+      category: "frontend",
+      subcategory: "web-standards-and-compatibility",
+      slug: "polyfills-and-transpilation",
+      wordCount: 1003,
+      readingTime: 5,
+      lastUpdated: "2026-03-11",
+      tags: ["frontend", "web-standards", "polyfills", "transpilation", "compatibility"],
+      relatedTopics: ["bundle-size-optimization", "minification-and-uglification", "tree-shaking", "legacy-browser-support"],
+    },
+    loader: () => import("./articles/frontend/web-standards-and-compatibility/polyfills-and-transpilation-concise"),
+  },
+  "frontend/web-standards-and-compatibility/progressive-enhancement": {
+    metadata: {
+id: "article-frontend-progressive-enhancement-extensive",
+      title: "Progressive Enhancement",
+      description: "Comprehensive guide to progressive enhancement strategies, layered UX, and resilience across devices and browsers.",
+      category: "frontend",
+      subcategory: "web-standards-and-compatibility",
+      slug: "progressive-enhancement",
+      wordCount: 1079,
+      readingTime: 5,
+      lastUpdated: "2026-03-11",
+      tags: ["frontend", "web-standards", "progressive-enhancement", "accessibility", "compatibility"],
+      relatedTopics: ["graceful-degradation", "browser-feature-detection", "critical-css", "web-vitals"],
+    },
+    loader: () => import("./articles/frontend/web-standards-and-compatibility/progressive-enhancement-concise"),
   },
 };

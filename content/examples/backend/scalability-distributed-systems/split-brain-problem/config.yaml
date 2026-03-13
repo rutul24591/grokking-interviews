@@ -1,0 +1,4 @@
+failover:
+  quorum_required: true
+  fencing_token: enabled
+  auto_promotion: false

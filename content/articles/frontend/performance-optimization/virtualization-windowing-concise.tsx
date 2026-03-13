@@ -96,7 +96,7 @@ export default function VirtualizationWindowingConciseArticle() {
               <tr>
                 <td className="p-3">Time to Interactive</td>
                 <td className="p-3">3-8 seconds</td>
-                <td className="p-3">{'<'}100ms</td>
+                <td className="p-3">{'&lt;'}100ms</td>
               </tr>
             </tbody>
           </table>
@@ -159,7 +159,7 @@ function getVisibleRange(scrollTop, containerHeight, itemHeight, totalItems) {
           <code>{`import { FixedSizeList } from 'react-window';
 
 function UserList({ users }) {
-  const Row = ({ index, style }) => (
+  const Row = ({ index, style }) =&gt; (
     <div style={style} className="flex items-center px-4 border-b">
       <img src={users[index].avatar} className="w-8 h-8 rounded-full mr-3" />
       <span>{users[index].name}</span>
@@ -182,9 +182,9 @@ function UserList({ users }) {
 import { VariableSizeList } from 'react-window';
 
 function MessageList({ messages }) {
-  const getItemSize = (index) => messages[index].isExpanded ? 120 : 48;
+  const getItemSize = (index) =&gt; messages[index].isExpanded ? 120 : 48;
 
-  const Row = ({ index, style }) => (
+  const Row = ({ index, style }) =&gt; (
     <div style={style} className="p-3 border-b">
       <p className="font-medium">{messages[index].sender}</p>
       <p>{messages[index].text}</p>
@@ -218,8 +218,8 @@ function VirtualList({ items }) {
 
   const virtualizer = useVirtualizer({
     count: items.length,
-    getScrollElement: () => parentRef.current,
-    estimateSize: () => 48,
+    getScrollElement: () =&gt; parentRef.current,
+    estimateSize: () =&gt; 48,
     overscan: 5,
   });
 
@@ -232,7 +232,7 @@ function VirtualList({ items }) {
           position: 'relative',
         }}
       >
-        {virtualizer.getVirtualItems().map((virtualRow) => (
+        {virtualizer.getVirtualItems().map((virtualRow) =&gt; (
           <div
             key={virtualRow.key}
             style={{
@@ -273,7 +273,7 @@ function AutoHeightList({ items }) {
           <p>{items[index].description}</p>
         </div>
       )}
-    />
+    /&gt;
   );
 }
 
@@ -283,15 +283,15 @@ function GroupedContactList({ groups, contacts }) {
     <GroupedVirtuoso
       style={{ height: 600 }}
       groupCounts={groups.map((g) => g.count)}
-      groupContent={(index) => (
+      groupContent={(index) =&gt; (
         <div className="bg-gray-100 p-2 font-bold sticky top-0">
           {groups[index].label}
         </div>
       )}
-      itemContent={(index) => (
+      itemContent={(index) =&gt; (
         <div className="p-3 border-b">{contacts[index].name}</div>
       )}
-    />
+    /&gt;
   );
 }`}</code>
         </pre>
@@ -315,24 +315,24 @@ function InfiniteVirtualList() {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: ['items'],
-      queryFn: ({ pageParam = 0 }) => fetchItems(pageParam),
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
+      queryFn: ({ pageParam = 0 }) =&gt; fetchItems(pageParam),
+      getNextPageParam: (lastPage) =&gt; lastPage.nextCursor,
     });
 
-  const allItems = data?.pages.flatMap((p) => p.items) ?? [];
+  const allItems = data?.pages.flatMap((p) =&gt; p.items) ?? [];
 
   const virtualizer = useVirtualizer({
     count: hasNextPage ? allItems.length + 1 : allItems.length,
-    getScrollElement: () => parentRef.current,
-    estimateSize: () => 60,
+    getScrollElement: () =&gt; parentRef.current,
+    estimateSize: () =&gt; 60,
     overscan: 5,
   });
 
   // Fetch next page when approaching the end
-  useEffect(() => {
+  useEffect(() =&gt; {
     const lastItem = virtualizer.getVirtualItems().at(-1);
     if (!lastItem) return;
-    if (lastItem.index >= allItems.length - 1 && hasNextPage && !isFetchingNextPage) {
+    if (lastItem.index &gt;= allItems.length - 1 && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
   }, [virtualizer.getVirtualItems(), hasNextPage, isFetchingNextPage]);
@@ -340,7 +340,7 @@ function InfiniteVirtualList() {
   return (
     <div ref={parentRef} style={{ height: 600, overflow: 'auto' }}>
       <div style={{ height: virtualizer.getTotalSize(), position: 'relative' }}>
-        {virtualizer.getVirtualItems().map((vRow) => (
+        {virtualizer.getVirtualItems().map((vRow) =&gt; (
           <div
             key={vRow.key}
             style={{
@@ -351,7 +351,7 @@ function InfiniteVirtualList() {
               transform: \`translateY(\${vRow.start}px)\`,
             }}
           >
-            {vRow.index < allItems.length
+            {vRow.index &lt; allItems.length
               ? allItems[vRow.index].name
               : 'Loading...'}
           </div>
@@ -370,7 +370,7 @@ function InfiniteVirtualList() {
         </p>
         <ul className="space-y-2">
           <li>
-            <strong>Small lists ({'<'}100 items):</strong> The DOM can handle a few hundred simple elements
+            <strong>Small lists ({'&lt;'}100 items):</strong> The DOM can handle a few hundred simple elements
             without any performance issues. The overhead of virtualization isn't justified.
           </li>
           <li>
@@ -436,7 +436,7 @@ function InfiniteVirtualList() {
             keeps the DOM small while infinite queries fetch data incrementally.
           </li>
           <li>
-            Don't virtualize small lists ({'<'}100 items) — the complexity isn't worth it, and CSS
+            Don't virtualize small lists ({'&lt;'}100 items) — the complexity isn't worth it, and CSS
             <code>content-visibility</code> may suffice for moderate lists.
           </li>
           <li>

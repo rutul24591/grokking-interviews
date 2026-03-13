@@ -1,0 +1,9 @@
+{
+  "name": "split-brain-problem-example-1",
+  "private": true,
+  "version": "0.1.0",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

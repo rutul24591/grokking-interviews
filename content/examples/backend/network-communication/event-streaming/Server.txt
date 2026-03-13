@@ -1,0 +1,23 @@
+const { Kafka } = require("kafkajs");
+const kafka = new Kafka({ clientId: "orders", brokers: ["kafka-1:9092"] });
+const producer = kafka.producer();
+const consumer = kafka.consumer({ groupId: "orders-workers" });
+
+async function run() {
+  await producer.connect();
+  await consumer.connect();
+  await consumer.subscribe({ topic: "orders", fromBeginning: false });
+
+  await producer.send({
+    topic: "orders",
+    messages: [{ key: "order_1", value: "created" }],
+  });
+
+  await consumer.run({
+    eachMessage: async ({ message }) => {
+      console.log(message.key.toString(), message.value.toString());
+    },
+  });
+}
+
+run();

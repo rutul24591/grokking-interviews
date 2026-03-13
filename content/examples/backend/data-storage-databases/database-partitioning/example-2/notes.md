@@ -1,0 +1,2 @@
+- Range keys preserve locality but risk hotspots.
+- Hash keys balance load but scatter queries.

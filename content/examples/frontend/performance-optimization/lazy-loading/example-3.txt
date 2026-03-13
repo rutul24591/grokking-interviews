@@ -1,0 +1,37 @@
+import Image from 'next/image';
+
+// Lazy loaded by default with blur placeholder
+<Image
+  src="/photos/product.jpg"
+  alt="Product photo"
+  width={800}
+  height={600}
+  placeholder="blur"
+  blurDataURL="data:image/jpeg;base64,/9j/4AAQ..."
+  sizes="(max-width: 768px) 100vw, 50vw"
+/>
+
+// Above-the-fold — eager loaded with preload hint
+<Image
+  src="/hero.jpg"
+  alt="Hero banner"
+  width={1200}
+  height={600}
+  priority        // Disables lazy loading, adds <link rel="preload">
+  sizes="100vw"
+/>
+
+// Dynamic import source with lazy loading
+function ProductCard({ product }) {
+  return (
+    <Image
+      src={product.imageUrl}
+      alt={product.name}
+      width={400}
+      height={300}
+      placeholder="blur"
+      blurDataURL={product.blurHash}
+      quality={75}
+    />
+  );
+}

@@ -1,0 +1,9 @@
+{
+  "name": "rollback-strategies-example-1",
+  "private": true,
+  "version": "0.1.0",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

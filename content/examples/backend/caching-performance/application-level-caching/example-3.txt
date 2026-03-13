@@ -1,0 +1,3 @@
+const inflight = new Map(); async function loadUser(id) { if (inflight.has(id)) { return inflight.get(id); } const promise = db.getUserById(id).finally(() => inflight.delete(id)); inflight.set(id, promise); return promise;
+} app.get('/users/:id', async (req, res) => { const user = await loadUser(req.params.id); return res.json(user);
+});

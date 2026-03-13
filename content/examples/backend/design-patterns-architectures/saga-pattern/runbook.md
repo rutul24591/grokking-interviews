@@ -1,0 +1,1 @@
+If saga fails, re-run or compensate based on state.

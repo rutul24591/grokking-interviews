@@ -1,0 +1,1 @@
+Media processing service runs async jobs for resizing and transcoding.

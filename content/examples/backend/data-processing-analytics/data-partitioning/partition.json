@@ -1,0 +1,4 @@
+{
+  "strategy": "hash",
+  "keys": ["userId"]
+}

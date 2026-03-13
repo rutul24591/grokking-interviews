@@ -1,0 +1,1 @@
+Use slow hashes (bcrypt/argon2) and never store plaintext.

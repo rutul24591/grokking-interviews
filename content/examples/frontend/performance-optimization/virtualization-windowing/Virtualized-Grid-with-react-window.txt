@@ -1,0 +1,27 @@
+import { FixedSizeGrid } from 'react-window';
+
+function DataGrid({ data, columns }) {
+  const Cell = ({ columnIndex, rowIndex, style }) => (
+    <div
+      style={style}
+      className={`p-2 border-b border-r text-sm \${
+        rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+      }`}
+    >
+      {data[rowIndex][columns[columnIndex].key]}
+    </div>
+  );
+
+  return (
+    <FixedSizeGrid
+      height={600}
+      width={1000}
+      rowCount={data.length}
+      columnCount={columns.length}
+      rowHeight={40}
+      columnWidth={150}
+    >
+      {Cell}
+    </FixedSizeGrid>
+  );
+}

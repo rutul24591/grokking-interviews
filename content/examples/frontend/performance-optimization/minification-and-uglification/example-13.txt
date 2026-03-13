@@ -1,0 +1,33 @@
+// === SWC minification via @swc/core ===
+const swc = require('@swc/core');
+
+async function minifyWithSwc(code) {
+  const result = await swc.minify(code, {
+    compress: {
+      dead_code: true,
+      drop_console: true,
+      drop_debugger: true,
+      passes: 2,
+      pure_funcs: ['console.log'],
+      toplevel: true,
+      unused: true,
+    },
+    mangle: {
+      toplevel: true,
+    },
+    sourceMap: true,
+  });
+
+  return result;
+}
+
+// === SWC with Webpack ===
+// next.config.js (Next.js uses SWC by default)
+module.exports = {
+  swcMinify: true, // Use SWC instead of Terser (default since Next.js 13)
+  compiler: {
+    removeConsole: {
+      exclude: ['error', 'warn'], // Keep console.error and console.warn
+    },
+  },
+};

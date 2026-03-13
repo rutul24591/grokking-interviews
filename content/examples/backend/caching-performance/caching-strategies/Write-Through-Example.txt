@@ -1,0 +1,2 @@
+app.put('/inventory/:sku', express.json(), async (req, res) => { const { sku } = req.params; const { available } = req.body; const key = `inventory:v1:\${sku}`; // Write-through: update DB and cache synchronously await db.updateInventory(sku, available); await redis.set(key, JSON.stringify({ sku, available }), 'EX', 120); res.status(204).send();
+});

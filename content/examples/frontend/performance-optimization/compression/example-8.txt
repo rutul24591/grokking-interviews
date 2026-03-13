@@ -1,0 +1,26 @@
+// === Cloudflare ===
+// Brotli: Enabled by default on all plans (toggle in Speed → Optimization)
+// Gzip: Always enabled as fallback
+// Cloudflare automatically handles Accept-Encoding negotiation
+// Pre-compressed files: Upload .br/.gz to origin, Cloudflare passes through
+
+// === AWS CloudFront ===
+// CloudFront configuration via behavior settings:
+{
+  "CacheBehavior": {
+    "Compress": true,          // Enable automatic compression
+    "CachedMethods": ["GET", "HEAD"],
+    "ForwardedValues": {
+      "Headers": ["Accept-Encoding"]  // Vary cache by encoding
+    }
+  }
+}
+// CloudFront supports Gzip and Brotli (added 2020)
+// It compresses at the edge if origin sends uncompressed
+// If origin sends pre-compressed, CloudFront passes through
+
+// === Vercel (for Next.js deployments) ===
+// Brotli and Gzip are handled automatically
+// Static assets are pre-compressed at deploy time (Brotli 11, Gzip 9)
+// Dynamic responses (API routes, SSR) compressed on-the-fly
+// No configuration needed — it just works

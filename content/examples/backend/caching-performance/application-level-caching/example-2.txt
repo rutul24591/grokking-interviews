@@ -1,0 +1,2 @@
+const cache = new LRU({ max: 5000, ttl: 60 * 1000 }); app.get('/users/:id', async (req, res) => { const id = req.params.id; const key = 'user:v1:' + id; if (cache.has(key)) { return res.json(cache.get(key)); } const user = await db.getUserById(id); cache.set(key, user); return res.json(user);
+});

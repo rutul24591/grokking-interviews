@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "scan:code-snippets": "tsx scripts/scan-code-snippets.ts",
+    "scan:code-snippets:fix": "tsx scripts/scan-code-snippets.ts --fix"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.19",

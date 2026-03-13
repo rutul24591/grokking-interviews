@@ -1,0 +1,1 @@
+BFF composes from multiple backend services.

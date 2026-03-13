@@ -1,0 +1,47 @@
+import { useCallback, useState } from "react";
+
+type History<T> = {
+  past: T[];
+  present: T;
+  future: T[];
+};
+
+function useUndoState<T>(initial: T) {
+  const [state, setState] = useState<History<T>>({ past: [], present: initial, future: [] });
+
+  const set = useCallback((next: T) => {
+    setState(s => ({ past: [...s.past, s.present], present: next, future: [] }));
+  }, []);
+
+  const undo = useCallback(() => {
+    setState(s => {
+      if (!s.past.length) return s;
+      const previous = s.past[s.past.length - 1];
+      const past = s.past.slice(0, -1);
+      return { past, present: previous, future: [s.present, ...s.future] };
+    });
+  }, []);
+
+  const redo = useCallback(() => {
+    setState(s => {
+      if (!s.future.length) return s;
+      const next = s.future[0];
+      const future = s.future.slice(1);
+      return { past: [...s.past, s.present], present: next, future };
+    });
+  }, []);
+
+  return { state: state.present, set, undo, redo, canUndo: state.past.length > 0, canRedo: state.future.length > 0 };
+}
+
+export function NotesEditor() {
+  const { state, set, undo, redo, canUndo, canRedo } = useUndoState("" as string);
+
+  return (
+    <div>
+      <textarea value={state} onChange={e => set(e.target.value)} />
+      <button disabled={!canUndo} onClick={undo}>Undo</button>
+      <button disabled={!canRedo} onClick={redo}>Redo</button>
+    </div>
+  );
+}

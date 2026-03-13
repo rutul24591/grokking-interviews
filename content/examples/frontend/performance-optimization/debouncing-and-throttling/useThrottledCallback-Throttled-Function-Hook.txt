@@ -1,0 +1,67 @@
+import { useRef, useCallback, useEffect } from 'react';
+
+function useThrottledCallback<T extends (...args: any[]) => any>(
+  callback: T,
+  interval: number
+) {
+  const callbackRef = useRef(callback);
+  const lastTimeRef = useRef<number>(0);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    callbackRef.current = callback;
+  }, [callback]);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
+  const throttledFn = useCallback(
+    (...args: Parameters<T>) => {
+      const now = Date.now();
+      const elapsed = now - lastTimeRef.current;
+
+      if (elapsed >= interval) {
+        lastTimeRef.current = now;
+        callbackRef.current(...args);
+      } else if (!timeoutRef.current) {
+        timeoutRef.current = setTimeout(() => {
+          lastTimeRef.current = Date.now();
+          callbackRef.current(...args);
+          timeoutRef.current = null;
+        }, interval - elapsed);
+      }
+    },
+    [interval]
+  );
+
+  const cancel = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  }, []);
+
+  return { throttledFn, cancel };
+}
+
+// Usage: infinite scroll
+function InfiniteList({ fetchMore }) {
+  const { throttledFn: checkScroll } = useThrottledCallback(() => {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    if (scrollHeight - scrollTop - clientHeight < 500) {
+      fetchMore();
+    }
+  }, 200);
+
+  useEffect(() => {
+    window.addEventListener('scroll', checkScroll, { passive: true });
+    return () => window.removeEventListener('scroll', checkScroll);
+  }, [checkScroll]);
+
+  return <div>{/* list items */}</div>;
+}

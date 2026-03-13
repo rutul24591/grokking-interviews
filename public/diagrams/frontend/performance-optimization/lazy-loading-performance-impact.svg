@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" font-family="system-ui, sans-serif">
+  <rect width="900" height="420" fill="#f3f1f8" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1822">Impact of Lazy Loading on Core Web Vitals</text>
+
+  <!-- Without Lazy Loading -->
+  <rect x="30" y="55" width="410" height="300" rx="8" fill="#fde8e8" stroke="#d94343" stroke-width="1.5"/>
+  <text x="235" y="80" text-anchor="middle" font-size="14" font-weight="700" fill="#d94343">Without Lazy Loading</text>
+
+  <!-- Initial Load bar -->
+  <text x="60" y="115" font-size="11" fill="#1a1822" font-weight="600">Initial Load</text>
+  <rect x="170" y="100" width="250" height="24" rx="4" fill="#d94343"/>
+  <text x="295" y="117" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">3.2 MB</text>
+
+  <!-- FCP -->
+  <text x="60" y="155" font-size="11" fill="#1a1822" font-weight="600">FCP</text>
+  <rect x="170" y="140" width="210" height="24" rx="4" fill="#d97843"/>
+  <text x="275" y="157" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">4.2s</text>
+
+  <!-- LCP -->
+  <text x="60" y="195" font-size="11" fill="#1a1822" font-weight="600">LCP</text>
+  <rect x="170" y="180" width="250" height="24" rx="4" fill="#d97843"/>
+  <text x="295" y="197" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">5.8s</text>
+
+  <!-- TTI -->
+  <text x="60" y="235" font-size="11" fill="#1a1822" font-weight="600">TTI</text>
+  <rect x="170" y="220" width="250" height="24" rx="4" fill="#d94343"/>
+  <text x="295" y="237" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">7.1s</text>
+
+  <!-- Requests -->
+  <text x="60" y="275" font-size="11" fill="#1a1822" font-weight="600">HTTP Requests</text>
+  <rect x="170" y="260" width="230" height="24" rx="4" fill="#d97843"/>
+  <text x="285" y="277" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">65 requests</text>
+
+  <!-- Bandwidth -->
+  <text x="60" y="315" font-size="11" fill="#1a1822" font-weight="600">Bandwidth</text>
+  <rect x="170" y="300" width="250" height="24" rx="4" fill="#d94343"/>
+  <text x="295" y="317" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">All 3.2 MB always</text>
+
+  <!-- With Lazy Loading -->
+  <rect x="460" y="55" width="410" height="300" rx="8" fill="#ecf7f1" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="665" y="80" text-anchor="middle" font-size="14" font-weight="700" fill="#2f9d74">With Lazy Loading</text>
+
+  <!-- Initial Load bar -->
+  <text x="490" y="115" font-size="11" fill="#1a1822" font-weight="600">Initial Load</text>
+  <rect x="600" y="100" width="70" height="24" rx="4" fill="#2f9d74"/>
+  <text x="635" y="117" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">450 KB</text>
+  <text x="690" y="117" font-size="10" fill="#2f9d74" font-weight="700">-86%</text>
+
+  <!-- FCP -->
+  <text x="490" y="155" font-size="11" fill="#1a1822" font-weight="600">FCP</text>
+  <rect x="600" y="140" width="60" height="24" rx="4" fill="#2f9d74"/>
+  <text x="630" y="157" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">1.2s</text>
+  <text x="680" y="157" font-size="10" fill="#2f9d74" font-weight="700">-71%</text>
+
+  <!-- LCP -->
+  <text x="490" y="195" font-size="11" fill="#1a1822" font-weight="600">LCP</text>
+  <rect x="600" y="180" width="77" height="24" rx="4" fill="#2f9d74"/>
+  <text x="638" y="197" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">1.8s</text>
+  <text x="697" y="197" font-size="10" fill="#2f9d74" font-weight="700">-69%</text>
+
+  <!-- TTI -->
+  <text x="490" y="235" font-size="11" fill="#1a1822" font-weight="600">TTI</text>
+  <rect x="600" y="220" width="85" height="24" rx="4" fill="#2f9d74"/>
+  <text x="642" y="237" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">2.4s</text>
+  <text x="705" y="237" font-size="10" fill="#2f9d74" font-weight="700">-66%</text>
+
+  <!-- Requests -->
+  <text x="490" y="275" font-size="11" fill="#1a1822" font-weight="600">HTTP Requests</text>
+  <rect x="600" y="260" width="50" height="24" rx="4" fill="#2f9d74"/>
+  <text x="625" y="277" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">12</text>
+  <text x="670" y="277" font-size="10" fill="#2f9d74" font-weight="700">-82%</text>
+
+  <!-- Bandwidth -->
+  <text x="490" y="315" font-size="11" fill="#1a1822" font-weight="600">Bandwidth</text>
+  <rect x="600" y="300" width="110" height="24" rx="4" fill="#2f9d74"/>
+  <text x="655" y="317" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">~2.7 MB saved</text>
+
+  <!-- Bottom note -->
+  <rect x="150" y="375" width="600" height="30" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="450" y="395" text-anchor="middle" font-size="11" fill="#1a1822">Typical improvements for a content-heavy page (60 images, multiple interactive sections)</text>
+</svg>

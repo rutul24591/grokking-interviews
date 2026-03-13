@@ -1,0 +1,39 @@
+function Autocomplete() {
+  const [query, setQuery] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const debouncedQuery = useDebounce(query, 250);
+
+  useEffect(() => {
+    if (debouncedQuery.length < 2) {
+      setSuggestions([]);
+      return;
+    }
+
+    const controller = new AbortController();
+    fetch(`/api/autocomplete?q=\${debouncedQuery}`, {
+      signal: controller.signal,
+    })
+      .then((res) => res.json())
+      .then((data) => setSuggestions(data.suggestions))
+      .catch((err) => {
+        if (err.name !== 'AbortError') console.error(err);
+      });
+
+    return () => controller.abort();
+  }, [debouncedQuery]);
+
+  return (
+    <div className="relative">
+      <input value={query} onChange={(e) => setQuery(e.target.value)} />
+      {suggestions.length > 0 && (
+        <ul className="absolute top-full left-0 right-0">
+          {suggestions.map((s) => (
+            <li key={s.id} onClick={() => setQuery(s.text)}>
+              {s.text}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}

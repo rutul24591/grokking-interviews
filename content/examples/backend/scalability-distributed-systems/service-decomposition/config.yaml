@@ -1,0 +1,4 @@
+decomposition:
+  bounded_contexts: true
+  shared_db: false
+  strangler_enabled: true

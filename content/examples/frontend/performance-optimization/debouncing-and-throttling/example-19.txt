@@ -1,0 +1,21 @@
+// BUG: stale closure — always reads initial count
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  const debouncedLog = useCallback(
+    debounce(() => {
+      console.log('Count:', count); // Always logs 0!
+    }, 500),
+    [] // Empty deps = stale closure
+  );
+
+  // FIX: use a ref for the current value
+  const countRef = useRef(count);
+  countRef.current = count;
+
+  const debouncedLog = useRef(
+    debounce(() => {
+      console.log('Count:', countRef.current); // Always current
+    }, 500)
+  ).current;
+}

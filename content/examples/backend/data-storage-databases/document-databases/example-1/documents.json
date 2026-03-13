@@ -1,0 +1,13 @@
+{
+  "customers": [
+    { "id": "c1", "name": "Ada" },
+    { "id": "c2", "name": "Grace" }
+  ],
+  "orders_embedded": [
+    { "id": "o1", "customer": { "id": "c1", "name": "Ada" }, "total": 120 },
+    { "id": "o2", "customer": { "id": "c1", "name": "Ada" }, "total": 80 }
+  ],
+  "orders_referenced": [
+    { "id": "o3", "customer_id": "c2", "total": 200 }
+  ]
+}

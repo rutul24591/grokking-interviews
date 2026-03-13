@@ -1,0 +1,31 @@
+import { cache } from 'react';
+
+// Memoized for a single server render pass
+export const getUser = cache(async (userId: string) => {
+  console.log('Fetching user:', userId); // Logs only once per render
+  const res = await fetch(`https://api.example.com/users/\${userId}`);
+  if (!res.ok) throw new Error('Failed to fetch user');
+  return res.json();
+});
+
+// Server Component A
+async function Header() {
+  const user = await getUser('123'); // Calls API
+  return <header>Welcome, {user.name}</header>;
+}
+
+// Server Component B (same render pass)
+async function Sidebar() {
+  const user = await getUser('123'); // Returns memoized result
+  return <aside>{user.role}</aside>;
+}
+
+// Server Component C (same render pass)
+async function ProfileCard() {
+  const user = await getUser('123'); // Returns memoized result
+  return <div>{user.bio}</div>;
+}
+
+// The API is called exactly once during this render.
+// cache() automatically invalidates after the render completes,
+// so the next request gets fresh data.

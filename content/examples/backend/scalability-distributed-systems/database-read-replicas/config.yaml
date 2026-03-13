@@ -1,0 +1,4 @@
+read_replicas:
+  replicas: 2
+  lag_budget_ms: 200
+  read_your_writes: true

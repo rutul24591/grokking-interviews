@@ -1,0 +1,118 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Form Validation Pipeline</text>
+
+  <!-- Stage labels row -->
+  <text x="450" y="56" text-anchor="middle" font-size="11" fill="#1a1822" opacity="0.5">Each stage catches different error categories; earlier stages provide faster feedback</text>
+
+  <!-- Stage 1: User Input -->
+  <rect x="30" y="80" width="120" height="60" rx="8" fill="#6d5bd0"/>
+  <text x="90" y="107" text-anchor="middle" font-size="13" fill="#fff" font-weight="600">User Input</text>
+  <text x="90" y="125" text-anchor="middle" font-size="10" fill="#fff" opacity="0.8">keystroke / blur</text>
+
+  <!-- Arrow 1 -->
+  <line x1="150" y1="110" x2="180" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowFlow)"/>
+
+  <!-- Stage 2: Field-Level Validation -->
+  <rect x="180" y="75" width="140" height="70" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="250" y="100" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="600">Field-Level</text>
+  <text x="250" y="116" text-anchor="middle" font-size="10" fill="#1a1822">Validation</text>
+  <text x="250" y="135" text-anchor="middle" font-size="9" fill="#6d5bd0">onChange / onBlur</text>
+
+  <!-- Trigger labels -->
+  <rect x="185" y="150" width="130" height="42" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1" opacity="0.9"/>
+  <text x="250" y="165" text-anchor="middle" font-size="9" fill="#1a1822">required, minLength,</text>
+  <text x="250" y="178" text-anchor="middle" font-size="9" fill="#1a1822">pattern, format checks</text>
+
+  <!-- Arrow 2 -->
+  <line x1="320" y1="110" x2="350" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowFlow)"/>
+
+  <!-- Stage 3: Schema Validation -->
+  <rect x="350" y="75" width="140" height="70" rx="8" fill="#edeaf5" stroke="#d97843" stroke-width="1.5"/>
+  <text x="420" y="100" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="600">Schema</text>
+  <text x="420" y="116" text-anchor="middle" font-size="10" fill="#1a1822">Validation</text>
+  <text x="420" y="135" text-anchor="middle" font-size="9" fill="#d97843">Zod / Yup resolver</text>
+
+  <rect x="355" y="150" width="130" height="42" rx="6" fill="#fff" stroke="#d97843" stroke-width="1" opacity="0.9"/>
+  <text x="420" y="165" text-anchor="middle" font-size="9" fill="#1a1822">type coercion, nested</text>
+  <text x="420" y="178" text-anchor="middle" font-size="9" fill="#1a1822">object shapes, enums</text>
+
+  <!-- Arrow 3 -->
+  <line x1="490" y1="110" x2="520" y2="110" stroke="#d97843" stroke-width="2" marker-end="url(#arrowOrange)"/>
+
+  <!-- Stage 4: Form-Level Validation -->
+  <rect x="520" y="75" width="140" height="70" rx="8" fill="#edeaf5" stroke="#d97843" stroke-width="1.5"/>
+  <text x="590" y="100" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="600">Form-Level</text>
+  <text x="590" y="116" text-anchor="middle" font-size="10" fill="#1a1822">Validation</text>
+  <text x="590" y="135" text-anchor="middle" font-size="9" fill="#d97843">cross-field rules</text>
+
+  <rect x="525" y="150" width="130" height="42" rx="6" fill="#fff" stroke="#d97843" stroke-width="1" opacity="0.9"/>
+  <text x="590" y="165" text-anchor="middle" font-size="9" fill="#1a1822">password match, date</text>
+  <text x="590" y="178" text-anchor="middle" font-size="9" fill="#1a1822">range, conditional fields</text>
+
+  <!-- Arrow 4 -->
+  <line x1="660" y1="110" x2="690" y2="110" stroke="#d97843" stroke-width="2" marker-end="url(#arrowOrange)"/>
+
+  <!-- Stage 5: Submit -->
+  <rect x="690" y="80" width="100" height="60" rx="8" fill="#d97843"/>
+  <text x="740" y="107" text-anchor="middle" font-size="13" fill="#fff" font-weight="600">Submit</text>
+  <text x="740" y="125" text-anchor="middle" font-size="10" fill="#fff" opacity="0.8">handleSubmit</text>
+
+  <!-- Arrow 5 down to server -->
+  <line x1="740" y1="140" x2="740" y2="230" stroke="#d97843" stroke-width="2" marker-end="url(#arrowOrange)"/>
+
+  <!-- Stage 6: Server-Side Validation -->
+  <rect x="640" y="230" width="200" height="70" rx="8" fill="#edeaf5" stroke="#2f9d74" stroke-width="2"/>
+  <text x="740" y="258" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="600">Server-Side Validation</text>
+  <text x="740" y="276" text-anchor="middle" font-size="10" fill="#2f9d74">uniqueness, auth, business rules</text>
+  <text x="740" y="292" text-anchor="middle" font-size="9" fill="#1a1822">database constraints, permissions</text>
+
+  <!-- Branch: Success -->
+  <line x1="840" y1="265" x2="870" y2="265" stroke="#2f9d74" stroke-width="2"/>
+  <line x1="870" y1="265" x2="870" y2="340" stroke="#2f9d74" stroke-width="2" marker-end="url(#arrowGreenF)"/>
+
+  <rect x="790" y="340" width="100" height="45" rx="8" fill="#2f9d74"/>
+  <text x="840" y="360" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">Success</text>
+  <text x="840" y="376" text-anchor="middle" font-size="9" fill="#fff" opacity="0.8">reset / redirect</text>
+
+  <!-- Branch: Errors -->
+  <line x1="640" y1="265" x2="600" y2="265" stroke="#d97843" stroke-width="2"/>
+  <line x1="600" y1="265" x2="600" y2="340" stroke="#d97843" stroke-width="2" marker-end="url(#arrowOrange)"/>
+
+  <rect x="510" y="340" width="180" height="45" rx="8" fill="#d97843"/>
+  <text x="600" y="360" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">Map Errors to Fields</text>
+  <text x="600" y="376" text-anchor="middle" font-size="9" fill="#fff" opacity="0.8">setError / setFieldError</text>
+
+  <!-- Error feedback arrow back up -->
+  <line x1="510" y1="362" x2="90" y2="362" stroke="#d97843" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <line x1="90" y1="362" x2="90" y2="145" stroke="#d97843" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowOrange)"/>
+  <text x="280" y="355" text-anchor="middle" font-size="9" fill="#d97843">Display errors inline next to fields</text>
+
+  <!-- Timing annotations -->
+  <rect x="30" y="420" width="840" height="70" rx="8" fill="#fff" stroke="#6d5bd0" stroke-width="1" opacity="0.7"/>
+  <text x="50" y="442" font-size="11" fill="#1a1822" font-weight="bold">Validation Timing:</text>
+
+  <circle cx="60" cy="462" r="6" fill="#6d5bd0"/>
+  <text x="75" y="466" font-size="10" fill="#1a1822">Field-level: instant (0ms) - catches typos, missing fields</text>
+
+  <circle cx="360" cy="462" r="6" fill="#d97843"/>
+  <text x="375" y="466" font-size="10" fill="#1a1822">Schema + Form-level: on blur/submit (0-50ms)</text>
+
+  <circle cx="660" cy="462" r="6" fill="#2f9d74"/>
+  <text x="675" y="466" font-size="10" fill="#1a1822">Server: async (100-500ms)</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowFlow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#d97843"/>
+    </marker>
+    <marker id="arrowGreenF" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#2f9d74"/>
+    </marker>
+  </defs>
+</svg>

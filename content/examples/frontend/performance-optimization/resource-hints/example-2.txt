@@ -1,0 +1,7 @@
+<!-- Fallback pattern: dns-prefetch for old browsers,
+     preconnect for modern browsers -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+
+<!-- Modern browsers use preconnect and ignore dns-prefetch.
+     Old browsers ignore preconnect and use dns-prefetch. -->

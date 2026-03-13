@@ -1,0 +1,23 @@
+// Before
+if (condition) {
+  return true;
+} else {
+  return false;
+}
+
+// After: ternary + implicit return simplification
+// Minifier output:
+return condition ? true : false;
+// Further simplified:
+return !!condition;
+
+// More shortening examples:
+// Object property shorthand
+{ name: name, age: age }  →  { name, age }
+
+// Template literal when shorter
+"Hello, " + name + "!"  →  `Hello, \${name}!`
+// (Only if it saves bytes; minifiers measure both)
+
+// Undefined check
+typeof x !== "undefined"  →  void 0 !== x

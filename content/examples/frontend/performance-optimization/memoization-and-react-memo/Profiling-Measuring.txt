@@ -1,0 +1,48 @@
+// === React DevTools Profiler ===
+// 1. Open React DevTools → Profiler tab
+// 2. Click Record → interact with your app → Stop
+// 3. Look for:
+//    - Components with frequent re-renders (orange/red)
+//    - Components with long render times
+//    - Gray components = skipped (memo worked!)
+
+// === why-did-you-render library ===
+// Tracks unnecessary re-renders in development
+// Install: pnpm add @welldone-software/why-did-you-render --save-dev
+
+// wdyr.js (import before React)
+import React from 'react';
+
+if (process.env.NODE_ENV === 'development') {
+  const whyDidYouRender = require('@welldone-software/why-did-you-render');
+  whyDidYouRender(React, {
+    trackAllPureComponents: true,
+  });
+}
+
+// Mark specific components
+MyComponent.whyDidYouRender = true;
+
+// Console output:
+// "MyComponent re-rendered because props.data changed"
+// Shows old vs new value, and whether it was a reference change
+
+// === Performance.mark for timing ===
+function ExpensiveComponent({ data }) {
+  performance.mark('render-start');
+
+  const result = expensiveComputation(data);
+
+  useEffect(() => {
+    performance.mark('render-end');
+    performance.measure('ExpensiveComponent render',
+      'render-start', 'render-end');
+
+    const measure = performance.getEntriesByName(
+      'ExpensiveComponent render'
+    ).pop();
+    console.log(`Render time: \${measure.duration.toFixed(2)}ms`);
+  });
+
+  return <div>{result}</div>;
+}

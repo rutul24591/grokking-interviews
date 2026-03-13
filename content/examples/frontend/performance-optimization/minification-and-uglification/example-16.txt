@@ -1,0 +1,40 @@
+// === Lightning CSS via Node.js API ===
+const lightningcss = require('lightningcss');
+const fs = require('fs');
+
+const { code, map } = lightningcss.transform({
+  filename: 'styles.css',
+  code: fs.readFileSync('styles.css'),
+  minify: true,
+  sourceMap: true,
+  targets: {
+    chrome: 95 << 16,  // Chrome 95+
+    firefox: 90 << 16,
+    safari: 15 << 16,
+  },
+  drafts: {
+    customMedia: true,  // Enable custom media queries
+    nesting: true,      // Enable CSS nesting
+  },
+});
+
+// === Vite with Lightning CSS ===
+// vite.config.js
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  css: {
+    transformer: 'lightningcss',
+    lightningcss: {
+      targets: browserslistToTargets(browserslist('>= 0.25%')),
+      drafts: { customMedia: true },
+    },
+  },
+  build: {
+    cssMinify: 'lightningcss', // Use Lightning CSS for minification
+  },
+});
+
+// Benchmark (500KB CSS):
+// cssnano:       ~1200ms
+// Lightning CSS:  ~12ms (100x faster)

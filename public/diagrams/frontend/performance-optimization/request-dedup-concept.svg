@@ -1,0 +1,111 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="40" text-anchor="middle" font-size="22" font-weight="bold" fill="#1a1822">Request Deduplication: Before vs After</text>
+
+  <!-- WITHOUT DEDUP (left side) -->
+  <text x="225" y="75" text-anchor="middle" font-size="16" font-weight="bold" fill="#d97843">Without Deduplication</text>
+
+  <!-- Components -->
+  <rect x="30" y="100" width="120" height="45" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="90" y="128" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Header</text>
+
+  <rect x="30" y="165" width="120" height="45" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="90" y="193" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Sidebar</text>
+
+  <rect x="30" y="230" width="120" height="45" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="90" y="258" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Profile</text>
+
+  <!-- Three separate arrows to API -->
+  <line x1="150" y1="122" x2="300" y2="122" stroke="#d97843" stroke-width="1.5" marker-end="url(#arrOrange)"/>
+  <text x="225" y="116" text-anchor="middle" font-size="9" fill="#d97843">GET /api/user</text>
+
+  <line x1="150" y1="187" x2="300" y2="187" stroke="#d97843" stroke-width="1.5" marker-end="url(#arrOrange)"/>
+  <text x="225" y="181" text-anchor="middle" font-size="9" fill="#d97843">GET /api/user</text>
+
+  <line x1="150" y1="252" x2="300" y2="252" stroke="#d97843" stroke-width="1.5" marker-end="url(#arrOrange)"/>
+  <text x="225" y="246" text-anchor="middle" font-size="9" fill="#d97843">GET /api/user</text>
+
+  <!-- API Server (left) -->
+  <rect x="300" y="100" width="120" height="195" rx="8" fill="white" stroke="#d97843" stroke-width="2"/>
+  <text x="360" y="170" text-anchor="middle" font-size="12" font-weight="bold" fill="#d97843">API Server</text>
+  <text x="360" y="195" text-anchor="middle" font-size="10" fill="#1a1822">3 identical</text>
+  <text x="360" y="212" text-anchor="middle" font-size="10" fill="#1a1822">DB queries</text>
+  <text x="360" y="235" text-anchor="middle" font-size="10" fill="#d97843">3x load</text>
+
+  <!-- Three response arrows -->
+  <line x1="300" y1="132" x2="150" y2="132" stroke="#d97843" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrOrangeL)"/>
+  <line x1="300" y1="197" x2="150" y2="197" stroke="#d97843" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrOrangeL)"/>
+  <line x1="300" y1="262" x2="150" y2="262" stroke="#d97843" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrOrangeL)"/>
+
+  <!-- Cost callout -->
+  <rect x="60" y="310" width="330" height="50" rx="8" fill="#d97843" opacity="0.1" stroke="#d97843" stroke-width="1"/>
+  <text x="225" y="332" text-anchor="middle" font-size="11" font-weight="bold" fill="#d97843">3 network requests, 3 DB queries</text>
+  <text x="225" y="350" text-anchor="middle" font-size="11" fill="#d97843">Wasted bandwidth, server load, battery</text>
+
+  <!-- Divider -->
+  <line x1="450" y1="70" x2="450" y2="370" stroke="#e0dce8" stroke-width="2"/>
+
+  <!-- WITH DEDUP (right side) -->
+  <text x="675" y="75" text-anchor="middle" font-size="16" font-weight="bold" fill="#2f9d74">With Deduplication</text>
+
+  <!-- Components -->
+  <rect x="480" y="100" width="120" height="45" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="540" y="128" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Header</text>
+
+  <rect x="480" y="165" width="120" height="45" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="540" y="193" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Sidebar</text>
+
+  <rect x="480" y="230" width="120" height="45" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="540" y="258" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Profile</text>
+
+  <!-- All arrows converge to dedup layer -->
+  <line x1="600" y1="122" x2="660" y2="175" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrPurple)"/>
+  <line x1="600" y1="187" x2="660" y2="187" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrPurple)"/>
+  <line x1="600" y1="252" x2="660" y2="200" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrPurple)"/>
+
+  <!-- Dedup layer -->
+  <rect x="660" y="150" width="80" height="75" rx="8" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="700" y="180" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Dedup</text>
+  <text x="700" y="195" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Layer</text>
+  <text x="700" y="215" text-anchor="middle" font-size="9" fill="#6d5bd0">1 promise</text>
+
+  <!-- Single arrow to API -->
+  <line x1="740" y1="187" x2="790" y2="187" stroke="#2f9d74" stroke-width="2.5" marker-end="url(#arrGreen)"/>
+  <text x="765" y="178" text-anchor="middle" font-size="9" fill="#2f9d74" font-weight="600">1 request</text>
+
+  <!-- API Server (right) -->
+  <rect x="790" y="150" width="90" height="75" rx="8" fill="white" stroke="#2f9d74" stroke-width="2"/>
+  <text x="835" y="180" text-anchor="middle" font-size="11" font-weight="bold" fill="#2f9d74">API</text>
+  <text x="835" y="198" text-anchor="middle" font-size="10" fill="#1a1822">1 query</text>
+  <text x="835" y="215" text-anchor="middle" font-size="10" fill="#2f9d74">1x load</text>
+
+  <!-- Response back through dedup -->
+  <line x1="790" y1="200" x2="740" y2="200" stroke="#2f9d74" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrGreenL)"/>
+
+  <!-- Fan out responses -->
+  <line x1="660" y1="175" x2="600" y2="132" stroke="#2f9d74" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrGreenL)"/>
+  <line x1="660" y1="195" x2="600" y2="197" stroke="#2f9d74" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrGreenL)"/>
+  <line x1="660" y1="210" x2="600" y2="262" stroke="#2f9d74" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrGreenL)"/>
+
+  <!-- Benefit callout -->
+  <rect x="510" y="310" width="330" height="50" rx="8" fill="#2f9d74" opacity="0.1" stroke="#2f9d74" stroke-width="1"/>
+  <text x="675" y="332" text-anchor="middle" font-size="11" font-weight="bold" fill="#2f9d74">1 network request, 1 DB query, shared result</text>
+  <text x="675" y="350" text-anchor="middle" font-size="11" fill="#2f9d74">All 3 components get the same data instantly</text>
+
+  <!-- Bottom comparison -->
+  <rect x="100" y="390" width="700" height="90" rx="8" fill="white" stroke="#e0dce8" stroke-width="1"/>
+  <text x="450" y="415" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1822">Impact at Scale</text>
+  <text x="250" y="440" text-anchor="middle" font-size="12" fill="#d97843" font-weight="600">Without: 150+ redundant requests/page</text>
+  <text x="650" y="440" text-anchor="middle" font-size="12" fill="#2f9d74" font-weight="600">With: 30 unique requests/page</text>
+  <text x="250" y="462" text-anchor="middle" font-size="11" fill="#666">30 endpoints x 5 components each</text>
+  <text x="650" y="462" text-anchor="middle" font-size="11" fill="#666">80% reduction in network traffic</text>
+
+  <defs>
+    <marker id="arrOrange" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#d97843"/></marker>
+    <marker id="arrOrangeL" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto"><polygon points="8 0, 0 3, 8 6" fill="#d97843"/></marker>
+    <marker id="arrPurple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#6d5bd0"/></marker>
+    <marker id="arrGreen" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#2f9d74"/></marker>
+    <marker id="arrGreenL" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto"><polygon points="8 0, 0 3, 8 6" fill="#2f9d74"/></marker>
+  </defs>
+</svg>

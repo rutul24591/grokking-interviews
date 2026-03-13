@@ -1,0 +1,28 @@
+// ❌ Full lodash import — 70KB
+import _ from 'lodash';
+const grouped = _.groupBy(items, 'status');
+const unique = _.uniqBy(items, 'id');
+const deep = _.cloneDeep(config);
+const result = _.debounce(handler, 300);
+
+// ✅ lodash-es — tree-shakeable, only include what you use
+import { groupBy, uniqBy, cloneDeep, debounce } from 'lodash-es';
+
+// ✅ Native alternatives — 0KB
+// groupBy → Object.groupBy (Stage 4, widely supported)
+const grouped = Object.groupBy(items, (item) => item.status);
+
+// uniqBy → Set + Map
+const unique = [...new Map(items.map(i => [i.id, i])).values()];
+
+// cloneDeep → structuredClone (native, all modern browsers)
+const deep = structuredClone(config);
+
+// debounce — small custom implementation (~20 lines)
+function debounce(fn, ms) {
+  let timeoutId;
+  return function (...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => fn.apply(this, args), ms);
+  };
+}

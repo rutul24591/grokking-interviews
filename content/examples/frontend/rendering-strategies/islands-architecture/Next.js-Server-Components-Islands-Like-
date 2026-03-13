@@ -1,0 +1,42 @@
+// app/page.tsx - Server Component by default (like static HTML)
+import SearchBar from './SearchBar';
+import Comments from './Comments';
+
+export default function HomePage() {
+  return (
+    <div>
+      <h1>My Next.js Page</h1>
+      <p>This content is a Server Component (no JS sent)</p>
+
+      {/* Client island 1 */}
+      <SearchBar />
+
+      <article>
+        <h2>Article Title</h2>
+        <p>More server-rendered static content...</p>
+      </article>
+
+      {/* Client island 2 */}
+      <Comments postId="123" />
+    </div>
+  );
+}
+
+// SearchBar.tsx - Client Component (island)
+'use client'; // Marks this as an island
+
+import { useState } from 'react';
+
+export default function SearchBar() {
+  const [query, setQuery] = useState('');
+
+  return (
+    <input
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+    />
+  );
+}
+
+// 'use client' directive creates an island boundary
+// Everything else stays as Server Components (static)

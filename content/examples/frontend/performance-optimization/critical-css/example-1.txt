@@ -1,0 +1,72 @@
+// === Build script using 'critical' ===
+// Install: pnpm add -D critical
+
+const critical = require('critical');
+const fs = require('fs');
+const path = require('path');
+
+async function generateCriticalCSS() {
+  // Process multiple pages
+  const pages = [
+    { url: 'https://mysite.com/', output: 'index.html' },
+    { url: 'https://mysite.com/about', output: 'about.html' },
+    { url: 'https://mysite.com/blog', output: 'blog.html' },
+    { url: 'https://mysite.com/pricing', output: 'pricing.html' },
+  ];
+
+  for (const page of pages) {
+    console.log(`Processing: \${page.url}`);
+
+    const { html, css, uncritical } = await critical.generate({
+      src: page.url,
+
+      // Test multiple viewport sizes
+      dimensions: [
+        { width: 375, height: 667 },   // iPhone SE
+        { width: 414, height: 896 },   // iPhone XR
+        { width: 768, height: 1024 },  // iPad
+        { width: 1280, height: 800 },  // Laptop
+        { width: 1920, height: 1080 }, // Desktop
+      ],
+
+      // Inline critical CSS into the HTML
+      inline: {
+        strategy: 'media',    // Preserve media queries in inlined CSS
+        preload: true,        // Add <link rel="preload"> for full CSS
+        noscript: true,       // Add <noscript> fallback
+      },
+
+      // Extract and separate critical from non-critical
+      extract: true,
+
+      // Minify output
+      minify: true,
+
+      // Ignore certain CSS patterns
+      ignore: {
+        atrule: ['@font-face'], // Handle fonts separately
+        decl: [/transition/, /animation/], // Skip animations
+      },
+
+      // Timeout for page rendering (ms)
+      timeout: 30000,
+
+      // Penthouse options (underlying engine)
+      penthouse: {
+        blockJSRequests: false, // Allow JS to run for SPA content
+        puppeteer: {
+          args: ['--no-sandbox'],
+        },
+      },
+    });
+
+    // Write the processed HTML with inlined critical CSS
+    const outputPath = path.join('./dist', page.output);
+    fs.writeFileSync(outputPath, html);
+
+    console.log(`  Critical CSS: \${css.length} bytes`);
+    console.log(`  Non-critical CSS: \${uncritical.length} bytes`);
+  }
+}
+
+generateCriticalCSS().catch(console.error);

@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#f3f1f8" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1822">Component Loading Strategy</text>
+
+  <!-- Immediate Load Group -->
+  <rect x="30" y="50" width="250" height="200" rx="8" fill="#e8e4f3" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="155" y="72" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Immediate Load</text>
+
+  <rect x="60" y="85" width="190" height="40" rx="6" fill="#6d5bd0" stroke="#5a4bb0" stroke-width="1"/>
+  <text x="155" y="102" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">App Shell (50KB)</text>
+  <text x="155" y="118" text-anchor="middle" font-size="9" fill="#e0d8f5">Framework + Router</text>
+
+  <line x1="155" y1="125" x2="80" y2="145" stroke="#1a1822" stroke-width="1"/>
+  <line x1="155" y1="125" x2="155" y2="145" stroke="#1a1822" stroke-width="1"/>
+  <line x1="155" y1="125" x2="230" y2="145" stroke="#1a1822" stroke-width="1"/>
+
+  <rect x="40" y="145" width="80" height="30" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="80" y="165" text-anchor="middle" font-size="10" fill="#1a1822">Header</text>
+
+  <rect x="130" y="145" width="50" height="30" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="155" y="165" text-anchor="middle" font-size="10" fill="#1a1822">Hero</text>
+
+  <rect x="190" y="145" width="80" height="30" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="230" y="165" text-anchor="middle" font-size="10" fill="#1a1822">Product Grid</text>
+
+  <!-- Lazy on Scroll Group -->
+  <rect x="310" y="50" width="260" height="130" rx="8" fill="#fdf3ec" stroke="#d97843" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="440" y="72" text-anchor="middle" font-size="12" font-weight="700" fill="#d97843">Lazy - On Scroll</text>
+
+  <rect x="330" y="85" width="100" height="40" rx="6" fill="#d97843" stroke="#b8622f" stroke-width="1"/>
+  <text x="380" y="102" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">Reviews</text>
+  <text x="380" y="118" text-anchor="middle" font-size="9" fill="#fde8d8">30KB</text>
+
+  <rect x="450" y="85" width="100" height="40" rx="6" fill="#d97843" stroke="#b8622f" stroke-width="1"/>
+  <text x="500" y="102" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">Carousel</text>
+  <text x="500" y="118" text-anchor="middle" font-size="9" fill="#fde8d8">45KB</text>
+
+  <!-- Lazy on Interaction Group -->
+  <rect x="600" y="50" width="270" height="130" rx="8" fill="#ecf7f1" stroke="#2f9d74" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="735" y="72" text-anchor="middle" font-size="12" font-weight="700" fill="#2f9d74">Lazy - On Interaction</text>
+
+  <rect x="615" y="85" width="75" height="40" rx="6" fill="#2f9d74" stroke="#247d5c" stroke-width="1"/>
+  <text x="652" y="102" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">Editor</text>
+  <text x="652" y="116" text-anchor="middle" font-size="8" fill="#d4f0e4">300KB</text>
+
+  <rect x="700" y="85" width="75" height="40" rx="6" fill="#2f9d74" stroke="#247d5c" stroke-width="1"/>
+  <text x="737" y="102" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">Lightbox</text>
+  <text x="737" y="116" text-anchor="middle" font-size="8" fill="#d4f0e4">80KB</text>
+
+  <rect x="785" y="85" width="72" height="40" rx="6" fill="#2f9d74" stroke="#247d5c" stroke-width="1"/>
+  <text x="821" y="102" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">Share</text>
+  <text x="821" y="116" text-anchor="middle" font-size="8" fill="#d4f0e4">25KB</text>
+
+  <!-- Lazy Conditional Group -->
+  <rect x="310" y="200" width="260" height="100" rx="8" fill="#f5f0e0" stroke="#c4a43a" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="440" y="222" text-anchor="middle" font-size="12" font-weight="700" fill="#c4a43a">Lazy - Conditional</text>
+
+  <rect x="330" y="240" width="100" height="40" rx="6" fill="#c4a43a" stroke="#a68a2e" stroke-width="1"/>
+  <text x="380" y="257" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">Admin Tools</text>
+  <text x="380" y="271" text-anchor="middle" font-size="9" fill="#faf3d8">150KB</text>
+
+  <rect x="450" y="240" width="100" height="40" rx="6" fill="#c4a43a" stroke="#a68a2e" stroke-width="1"/>
+  <text x="500" y="257" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">Chat Widget</text>
+  <text x="500" y="271" text-anchor="middle" font-size="9" fill="#faf3d8">120KB</text>
+
+  <!-- Trigger arrows -->
+  <!-- Product Grid -> Reviews (scroll) -->
+  <line x1="270" y1="160" x2="330" y2="105" stroke="#d97843" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#cArr)"/>
+  <rect x="272" y="120" width="50" height="16" rx="3" fill="#fdf3ec"/>
+  <text x="297" y="132" text-anchor="middle" font-size="8" fill="#d97843" font-weight="600">Scroll</text>
+
+  <!-- Reviews -> Carousel (scroll) -->
+  <line x1="430" y1="105" x2="450" y2="105" stroke="#d97843" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#cArr)"/>
+
+  <!-- Product Grid -> Editor (click Write Review) -->
+  <line x1="270" y1="160" x2="615" y2="105" stroke="#2f9d74" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#cArrG)"/>
+
+  <!-- Product Grid -> Lightbox (click Image) -->
+  <line x1="270" y1="160" x2="700" y2="105" stroke="#2f9d74" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#cArrG)"/>
+
+  <!-- Product Grid -> Share (click Share) -->
+  <line x1="270" y1="160" x2="785" y2="105" stroke="#2f9d74" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#cArrG)"/>
+
+  <!-- App Shell -> Admin (role) -->
+  <line x1="155" y1="200" x2="330" y2="260" stroke="#c4a43a" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#cArrY)"/>
+  <text x="210" y="232" font-size="8" fill="#c4a43a" font-weight="600">Admin Role</text>
+
+  <!-- App Shell -> Chat (flag) -->
+  <line x1="155" y1="200" x2="450" y2="260" stroke="#c4a43a" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#cArrY)"/>
+  <text x="320" y="245" font-size="8" fill="#c4a43a" font-weight="600">Feature Flag</text>
+
+  <!-- Trigger labels -->
+  <text x="450" y="155" text-anchor="middle" font-size="8" fill="#2f9d74" font-weight="600">Click</text>
+
+  <!-- Legend -->
+  <rect x="60" y="340" width="780" height="100" rx="8" fill="#fff" stroke="#1a1822" stroke-width="1"/>
+  <text x="450" y="362" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Loading Triggers</text>
+
+  <rect x="90" y="375" width="16" height="16" rx="3" fill="#6d5bd0"/>
+  <text x="115" y="388" font-size="11" fill="#1a1822"><tspan font-weight="600">Immediate:</tspan> App shell, header, hero, above-fold content</text>
+
+  <rect x="90" y="398" width="16" height="16" rx="3" fill="#d97843"/>
+  <text x="115" y="411" font-size="11" fill="#1a1822"><tspan font-weight="600">On Scroll:</tspan> Below-fold sections loaded via IntersectionObserver</text>
+
+  <rect x="90" y="421" width="16" height="16" rx="3" fill="#2f9d74"/>
+  <text x="115" y="434" font-size="11" fill="#1a1822"><tspan font-weight="600">On Interaction:</tspan> Heavy components loaded on click/hover (editor, lightbox, modals)</text>
+
+  <rect x="490" y="375" width="16" height="16" rx="3" fill="#c4a43a"/>
+  <text x="515" y="388" font-size="11" fill="#1a1822"><tspan font-weight="600">Conditional:</tspan> Role-based or feature-flag gated components</text>
+
+  <defs>
+    <marker id="cArr" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+      <path d="M0,0 L7,2.5 L0,5" fill="#d97843"/>
+    </marker>
+    <marker id="cArrG" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+      <path d="M0,0 L7,2.5 L0,5" fill="#2f9d74"/>
+    </marker>
+    <marker id="cArrY" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+      <path d="M0,0 L7,2.5 L0,5" fill="#c4a43a"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,46 @@
+<svg width="22cm" height="12cm" viewBox="343 250 437 222" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#fff" d="M468.075 251.9H540v58h-71.925z"/>
+    <path fill="none" fill-opacity="0" stroke-width="2" stroke="#000" d="M468.075 251.9H540v58h-71.925z"/>
+    <text font-size="12.8" x="504.038" y="284.8" text-anchor="middle" font-family="sans-serif">
+        <tspan x="504.038" y="284.8">
+            Server
+        </tspan>
+    </text>
+    <path fill="#fff" d="M467.975 331.9H539v59h-71.025z"/>
+    <path fill="none" fill-opacity="0" stroke-width="2" stroke="#000" d="M467.975 331.9H539v59h-71.025z"/>
+    <text font-size="12.8" x="503.488" y="365.3" text-anchor="middle" font-family="sans-serif">
+        <tspan x="503.488" y="365.3">
+            Server
+        </tspan>
+    </text>
+    <path fill="#fff" d="M467.875 412.9H539v58h-71.125z"/>
+    <path fill="none" fill-opacity="0" stroke-width="2" stroke="#000" d="M467.875 412.9H539v58h-71.125z"/>
+    <text font-size="12.8" x="503.437" y="445.8" text-anchor="middle" font-family="sans-serif">
+        <tspan x="503.437" y="445.8">
+            Server
+        </tspan>
+    </text>
+    <path fill="#fff" d="M574.875 332.9h90.2v58h-90.2z"/>
+    <path fill="none" fill-opacity="0" stroke-width="2" stroke="#000" d="M574.875 332.9h90.2v58h-90.2z"/>
+    <text font-size="12.8" x="619.975" y="365.8" text-anchor="middle" font-family="sans-serif">
+        <tspan x="619.975" y="365.8">
+            Distributor
+        </tspan>
+    </text>
+    <path fill="#fff" d="M698.625 331.9H779v59h-80.375z"/>
+    <path fill="none" fill-opacity="0" stroke-width="2" stroke="#000" d="M698.625 331.9H779v59h-80.375z"/>
+    <text font-size="12.8" x="738.812" y="365.3" text-anchor="middle" font-family="sans-serif">
+        <tspan x="738.812" y="365.3">
+            Browser
+        </tspan>
+    </text>
+    <path fill="none" fill-opacity="0" stroke-width="2" stroke="#000" d="M540 280.9l34.875 52M539 361.4l35.875.5M539 441.9l35.875-51M665.075 361.9l33.55-.5"/>
+    <path fill="#fff" d="M344.4 331.9h90.2v58h-90.2z"/>
+    <path fill="none" fill-opacity="0" stroke-width="2" stroke="#000" d="M344.4 331.9h90.2v58h-90.2z"/>
+    <text font-size="12.8" x="389.5" y="364.8" text-anchor="middle" font-family="sans-serif">
+        <tspan x="389.5" y="364.8">
+            Database
+        </tspan>
+    </text>
+    <path fill="none" fill-opacity="0" stroke-width="2" stroke="#000" d="M468.075 280.9l-33.475 51M467.975 361.4l-33.375-.5M434.6 389.9l33.275 52"/>
+</svg>

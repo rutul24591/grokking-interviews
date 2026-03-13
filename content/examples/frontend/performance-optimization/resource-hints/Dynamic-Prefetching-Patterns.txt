@@ -1,0 +1,62 @@
+// Pattern 1: Prefetch on hover (intent signal)
+function prefetchOnHover(element, url) {
+  let prefetched = false;
+  element.addEventListener('mouseenter', () => {
+    if (prefetched) return;
+    prefetched = true;
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.href = url;
+    document.head.appendChild(link);
+  }, { once: true });
+}
+
+// Apply to all navigation links
+document.querySelectorAll('nav a').forEach(anchor => {
+  prefetchOnHover(anchor, anchor.href);
+});
+
+// Pattern 2: Prefetch on intersection (viewport-based)
+const prefetchObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const link = document.createElement('link');
+      link.rel = 'prefetch';
+      link.href = entry.target.dataset.prefetch;
+      document.head.appendChild(link);
+      prefetchObserver.unobserve(entry.target);
+    }
+  });
+}, { rootMargin: '200px' });
+
+document.querySelectorAll('[data-prefetch]').forEach(el => {
+  prefetchObserver.observe(el);
+});
+
+// Pattern 3: Prefetch after idle (when main work is done)
+if ('requestIdleCallback' in window) {
+  requestIdleCallback(() => {
+    const routes = ['/dashboard', '/settings', '/profile'];
+    routes.forEach(route => {
+      const link = document.createElement('link');
+      link.rel = 'prefetch';
+      link.href = route;
+      link.as = 'document';
+      document.head.appendChild(link);
+    });
+  }, { timeout: 3000 });
+}
+
+// Pattern 4: Respect user preferences
+function shouldPrefetch() {
+  const conn = navigator.connection;
+  if (conn) {
+    // Don't prefetch on Save-Data
+    if (conn.saveData) return false;
+    // Don't prefetch on slow connections
+    if (conn.effectiveType === '2g' || conn.effectiveType === 'slow-2g') {
+      return false;
+    }
+  }
+  return true;
+}

@@ -1,0 +1,23 @@
+import { useQueryClient } from '@tanstack/react-query';
+
+function NavigationLink({ href, children }: { href: string; children: React.ReactNode }) {
+  const queryClient = useQueryClient();
+
+  const handleMouseEnter = () => {
+    // Prefetch on hover — React Query deduplicates automatically
+    queryClient.prefetchQuery({
+      queryKey: ['page', href],
+      queryFn: () => fetch(`/api/page\${href}`).then(r => r.json()),
+      staleTime: 30000, // Consider fresh for 30s
+    });
+  };
+
+  return (
+    <a href={href} onMouseEnter={handleMouseEnter}>
+      {children}
+    </a>
+  );
+}
+
+// When user clicks and the page component calls useQuery with the same key,
+// it gets the prefetched data instantly (or shares the in-flight promise).

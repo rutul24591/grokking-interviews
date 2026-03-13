@@ -1,0 +1,50 @@
+// routes/product.$id.tsx - Remix route with deferred data
+import { defer } from '@remix-run/node';
+import { Await, useLoaderData } from '@remix-run/react';
+import { Suspense } from 'react';
+
+// Loader: Return fast data immediately, defer slow data
+export async function loader({ params }: LoaderFunctionArgs) {
+  const productPromise = fetchProduct(params.id); // Slow: 2s
+  const imageUrl = await fetchProductImage(params.id); // Fast: 100ms
+
+  return defer({
+    // Fast data: awaited, available immediately
+    imageUrl,
+    // Slow data: NOT awaited, deferred for streaming
+    product: productPromise,
+  });
+}
+
+export default function ProductRoute() {
+  const { imageUrl, product } = useLoaderData<typeof loader>();
+
+  return (
+    <div>
+      <header>Navigation</header>
+
+      {/* Fast: imageUrl is available immediately */}
+      <img src={imageUrl} alt="Product" />
+
+      {/* Slow: product data streams after shell */}
+      <Suspense fallback={<p>Loading product details...</p>}>
+        <Await resolve={product}>
+          {(resolvedProduct) => (
+            <div>
+              <h1>{resolvedProduct.name}</h1>
+              <p>{resolvedProduct.description}</p>
+            </div>
+          )}
+        </Await>
+      </Suspense>
+
+      <footer>Footer</footer>
+    </div>
+  );
+}
+
+// Result:
+// - Shell (header, image, fallback, footer) streams in 150ms
+// - Product details stream in at 2000ms, replacing fallback
+//
+// defer() enables streaming in Remix by marking data as async

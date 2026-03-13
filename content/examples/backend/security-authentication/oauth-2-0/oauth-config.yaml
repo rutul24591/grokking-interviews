@@ -1,0 +1,4 @@
+oauth:
+  clientId: app-123
+  redirectUri: https://app.example.com/callback
+  tokenTtlSeconds: 3600

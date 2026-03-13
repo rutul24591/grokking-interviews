@@ -1,0 +1,4 @@
+recovery:
+  restartPolicy: always
+  maxRestarts: 5
+  backoffSeconds: 10

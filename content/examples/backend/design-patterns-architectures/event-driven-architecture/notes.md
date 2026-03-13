@@ -1,0 +1,1 @@
+Use schemas and versioning to avoid consumer breaks.

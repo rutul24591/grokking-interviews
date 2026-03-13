@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
+  <rect width="900" height="420" fill="#f6f2ff" />
+  <rect x="40" y="40" width="820" height="320" rx="18" fill="#ffffff" stroke="#d8c9ff" />
+  <text x="70" y="95" font-size="28" font-family="Arial" fill="#2e2a44">Distributed Coordination Diagram 1</text>
+  <rect x="80" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
+  <rect x="340" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
+  <rect x="600" y="130" width="220" height="140" rx="14" fill="#efe9ff" stroke="#c7b3ff" />
+  <text x="110" y="210" font-size="18" font-family="Arial" fill="#3c3555">Components</text>
+  <text x="370" y="210" font-size="18" font-family="Arial" fill="#3c3555">Flow</text>
+  <text x="630" y="210" font-size="18" font-family="Arial" fill="#3c3555">Data</text>
+</svg>

@@ -1,0 +1,47 @@
+// Next.js App Router uses streaming SSR automatically with Suspense
+// The HTML structure is:
+// 1. <head> with critical CSS (sent immediately)
+// 2. Above-fold content (sent immediately)
+// 3. Suspense boundaries (sent as fallback, then streamed when ready)
+
+// app/product/[id]/page.tsx
+import { Suspense } from 'react';
+
+export default async function ProductPage({ params }) {
+  // This data is fetched before streaming starts
+  const product = await getProduct(params.id);
+
+  return (
+    <main>
+      {/* Sent in the initial HTML chunk */}
+      <ProductHeader product={product} />
+      <ProductImage product={product} />
+      <ProductPrice product={product} />
+
+      {/* Streamed when data is ready — shows skeleton first */}
+      <Suspense fallback={<ReviewsSkeleton />}>
+        <ProductReviews productId={params.id} />
+      </Suspense>
+
+      <Suspense fallback={<RecommendationsSkeleton />}>
+        <Recommendations category={product.category} />
+      </Suspense>
+    </main>
+  );
+}
+
+// ProductReviews is an async Server Component
+// It fetches its own data and streams when ready
+async function ProductReviews({ productId }) {
+  // This fetch doesn't block above-fold content
+  const reviews = await getReviews(productId);
+
+  return (
+    <section>
+      <h2>Customer Reviews ({reviews.length})</h2>
+      {reviews.map(review => (
+        <ReviewCard key={review.id} review={review} />
+      ))}
+    </section>
+  );
+}

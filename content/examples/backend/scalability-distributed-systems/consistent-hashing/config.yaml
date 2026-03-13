@@ -1,0 +1,5 @@
+hash_ring:
+  virtual_nodes: 128
+  hash_function: md5
+  rebalance_batch: 0.1
+  hot_key_limit: 0.02

@@ -1,0 +1,1 @@
+If alert fires: reduce retries, enable fallback, notify on-call.

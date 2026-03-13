@@ -1,0 +1,4 @@
+SELECT region, SUM(revenue) AS total_revenue
+FROM sales_fact
+JOIN region_dim USING (region_id)
+GROUP BY region;

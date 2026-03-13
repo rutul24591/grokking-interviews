@@ -1,0 +1,15 @@
+const { ApolloServer, gql } = require("apollo-server");
+
+const typeDefs = gql'
+  type Query { user(id: ID!): User }
+  type User { id: ID!, email: String! }
+';
+
+const resolvers = {
+  Query: {
+    user: (_, { id }) => ({ id, email: "user@example.com" }),
+  },
+};
+
+const server = new ApolloServer({ typeDefs, resolvers });
+server.listen({ port: 4000 });

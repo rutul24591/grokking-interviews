@@ -1,0 +1,118 @@
+import { useState, useRef, useCallback, useEffect, useMemo } from 'react';
+
+function useVirtualizer({ count, estimateSize, overscan = 5, getScrollElement }) {
+  const [scrollTop, setScrollTop] = useState(0);
+  const measuredSizes = useRef(new Map());
+
+  // Calculate item sizes — use measured if available, otherwise estimate
+  const getSizeForIndex = useCallback(
+    (index) => measuredSizes.current.get(index) ?? estimateSize(index),
+    [estimateSize]
+  );
+
+  // Build layout information
+  const measurements = useMemo(() => {
+    const items = [];
+    let offset = 0;
+    for (let i = 0; i < count; i++) {
+      const size = getSizeForIndex(i);
+      items.push({ index: i, start: offset, end: offset + size, size });
+      offset += size;
+    }
+    return { items, totalSize: offset };
+  }, [count, getSizeForIndex, scrollTop]); // scrollTop triggers recalc after measurement
+
+  // Determine visible range
+  const getVirtualItems = useCallback(() => {
+    const element = getScrollElement();
+    if (!element) return [];
+    const viewportHeight = element.clientHeight;
+
+    let startIndex = 0;
+    let endIndex = count - 1;
+
+    // Find first visible item (binary search would be faster for large lists)
+    for (let i = 0; i < measurements.items.length; i++) {
+      if (measurements.items[i].end > scrollTop) {
+        startIndex = i;
+        break;
+      }
+    }
+
+    // Find last visible item
+    for (let i = startIndex; i < measurements.items.length; i++) {
+      if (measurements.items[i].start >= scrollTop + viewportHeight) {
+        endIndex = i;
+        break;
+      }
+    }
+
+    // Apply overscan
+    startIndex = Math.max(0, startIndex - overscan);
+    endIndex = Math.min(count - 1, endIndex + overscan);
+
+    return measurements.items.slice(startIndex, endIndex + 1);
+  }, [scrollTop, measurements, count, overscan, getScrollElement]);
+
+  // Scroll listener
+  useEffect(() => {
+    const element = getScrollElement();
+    if (!element) return;
+
+    const onScroll = () => setScrollTop(element.scrollTop);
+    element.addEventListener('scroll', onScroll, { passive: true });
+    return () => element.removeEventListener('scroll', onScroll);
+  }, [getScrollElement]);
+
+  // Measurement callback for dynamic sizing
+  const measureElement = useCallback((element) => {
+    if (!element) return;
+    const index = Number(element.dataset.index);
+    const height = element.getBoundingClientRect().height;
+    if (measuredSizes.current.get(index) !== height) {
+      measuredSizes.current.set(index, height);
+      setScrollTop((s) => s); // Force re-render
+    }
+  }, []);
+
+  return {
+    getVirtualItems,
+    getTotalSize: () => measurements.totalSize,
+    measureElement,
+  };
+}
+
+// Usage
+function MyVirtualList({ items }) {
+  const parentRef = useRef(null);
+
+  const virtualizer = useVirtualizer({
+    count: items.length,
+    estimateSize: () => 48,
+    overscan: 5,
+    getScrollElement: () => parentRef.current,
+  });
+
+  return (
+    <div ref={parentRef} style={{ height: 600, overflow: 'auto' }}>
+      <div style={{ height: virtualizer.getTotalSize(), position: 'relative' }}>
+        {virtualizer.getVirtualItems().map((vItem) => (
+          <div
+            key={vItem.index}
+            data-index={vItem.index}
+            ref={virtualizer.measureElement}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              transform: `translateY(\${vItem.start}px)`,
+            }}
+          >
+            {items[vItem.index].content}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

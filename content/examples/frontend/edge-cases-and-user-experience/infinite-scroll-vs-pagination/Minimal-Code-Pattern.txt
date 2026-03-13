@@ -1,0 +1,7 @@
+const { items, loadMore, hasMore } = useInfiniteQuery(fetchFeed);
+return (
+  <div>
+    {items.map(renderCard)}
+    {hasMore && <button onClick={loadMore}>Load more</button>}
+  </div>
+);

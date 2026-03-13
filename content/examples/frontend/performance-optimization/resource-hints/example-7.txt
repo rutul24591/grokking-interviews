@@ -1,0 +1,39 @@
+<!-- Preload a critical web font -->
+<link
+  rel="preload"
+  href="/fonts/Inter-Bold.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
+
+<!-- Preload the LCP hero image -->
+<link
+  rel="preload"
+  href="/images/hero-banner.webp"
+  as="image"
+  type="image/webp"
+  fetchpriority="high"
+/>
+
+<!-- Preload a critical script loaded by another script -->
+<link rel="preload" href="/static/js/critical-widget.js" as="script" />
+
+<!-- Preload with responsive images -->
+<link
+  rel="preload"
+  href="/images/hero-mobile.webp"
+  as="image"
+  media="(max-width: 768px)"
+/>
+<link
+  rel="preload"
+  href="/images/hero-desktop.webp"
+  as="image"
+  media="(min-width: 769px)"
+/>
+
+<!-- Preload via HTTP header (earlier than HTML parsing) -->
+<!-- In your server response headers: -->
+<!-- Link: </fonts/Inter.woff2>; rel=preload; as=font; crossorigin -->
+<!-- Link: </critical.css>; rel=preload; as=style -->

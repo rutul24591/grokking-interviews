@@ -1,0 +1,2 @@
+app.put('/products/:id', async (req, res) => { const id = req.params.id; await db.updateProduct(id, req.body); // Invalidate the entity and related views await redis.del('product:v1:' + id); await redis.del('product:price:v1:' + id); await redis.del('category:top:v1:' + req.body.categoryId); res.status(204).send();
+});

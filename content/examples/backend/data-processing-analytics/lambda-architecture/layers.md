@@ -1,0 +1,1 @@
+Batch layer computes daily aggregates; speed layer computes real-time deltas.

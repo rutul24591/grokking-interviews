@@ -1,0 +1,54 @@
+// Network-aware hydration strategy
+class NetworkAwareHydration {
+  private connectionType: string = 'unknown';
+
+  constructor() {
+    this.detectConnection();
+  }
+
+  private detectConnection() {
+    const connection =
+      (navigator as any).connection ||
+      (navigator as any).mozConnection ||
+      (navigator as any).webkitConnection;
+
+    if (connection) {
+      this.connectionType = connection.effectiveType;
+
+      connection.addEventListener('change', () => {
+        this.connectionType = connection.effectiveType;
+      });
+    }
+  }
+
+  shouldHydrate(priority: 'critical' | 'high' | 'normal' | 'low'): boolean {
+    // Check save-data mode
+    const connection = (navigator as any).connection;
+    if (connection?.saveData) {
+      return priority === 'critical';
+    }
+
+    // Adapt to connection speed
+    switch (this.connectionType) {
+      case '4g':
+        return true; // Hydrate everything
+
+      case '3g':
+        return priority === 'critical' || priority === 'high';
+
+      case '2g':
+      case 'slow-2g':
+        return priority === 'critical';
+
+      default:
+        return priority !== 'low';
+    }
+  }
+}
+
+const networkAware = new NetworkAwareHydration();
+
+// Use in hydration decision
+if (networkAware.shouldHydrate('high')) {
+  hydrateComponent('product-gallery');
+}

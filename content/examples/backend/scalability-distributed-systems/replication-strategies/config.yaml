@@ -1,0 +1,5 @@
+replication:
+  mode: async
+  replicas: 3
+  lag_threshold_ms: 200
+  promotion_policy: quorum

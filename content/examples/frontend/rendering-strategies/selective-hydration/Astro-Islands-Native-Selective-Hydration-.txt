@@ -1,0 +1,38 @@
+---
+// src/pages/blog/[slug].astro
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import BlogPost from '../../components/BlogPost.astro';
+import LikeButton from '../../components/LikeButton.tsx';
+import CommentSection from '../../components/CommentSection.tsx';
+import Newsletter from '../../components/Newsletter.tsx';
+import Footer from '../../components/Footer.astro';
+
+const { post } = Astro.props;
+---
+
+<Layout title={post.title}>
+  <!-- Static, no hydration -->
+  <Header />
+
+  <!-- Static HTML, zero JavaScript -->
+  <article>
+    <h1>{post.title}</h1>
+    <p class="byline">{post.author} • {post.date}</p>
+
+    <!-- Static content -->
+    <BlogPost content={post.content} />
+
+    <!-- Interactive island: only this gets JavaScript -->
+    <LikeButton client:visible postId={post.id} />
+  </article>
+
+  <!-- Interactive island: hydrates when visible -->
+  <CommentSection client:visible postId={post.id} />
+
+  <!-- Interactive island: hydrates during idle -->
+  <Newsletter client:idle />
+
+  <!-- Static, no hydration -->
+  <Footer />
+</Layout>

@@ -1,0 +1,21 @@
+// The bundler sees these relationships:
+
+// entry.js
+import { Button } from './components';  // References: Button
+import { formatDate } from './utils';   // References: formatDate
+
+// components/index.js (barrel file)
+export { Button } from './Button';       // Re-exports: Button
+export { Input } from './Input';         // Re-exports: Input (unreferenced!)
+export { Select } from './Select';       // Re-exports: Select (unreferenced!)
+
+// utils.js
+export function formatDate() { ... }     // Referenced by entry.js
+export function formatCurrency() { ... } // Unreferenced!
+export function parseDate() { ... }      // Unreferenced!
+
+// Dependency graph with usage info:
+// entry.js → Button (from components) ✓
+// entry.js → formatDate (from utils) ✓
+// components → Button ✓, Input ✗, Select ✗
+// utils → formatDate ✓, formatCurrency ✗, parseDate ✗

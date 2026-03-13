@@ -1,0 +1,28 @@
+// postcss.config.js
+module.exports = {
+  plugins: [
+    require('autoprefixer'),
+    require('cssnano')({
+      preset: ['default', {
+        // Individual plugin configuration
+        discardComments: { removeAll: true },
+        normalizeWhitespace: true,
+        minifySelectors: true,
+        mergeLonghand: true,        // Merge longhand to shorthand
+        mergeRules: true,           // Merge duplicate selectors
+        reduceIdents: false,        // Don't rename @keyframes (can break JS refs)
+        zindex: false,              // Don't rebase z-index (can break stacking)
+        colormin: true,             // Minimize color values
+        convertValues: true,        // Convert between equivalent values
+        discardDuplicates: true,    // Remove duplicate rules
+        discardEmpty: true,         // Remove empty rules
+        normalizeUrl: true,         // Normalize URL strings
+      }],
+    }),
+  ],
+};
+
+// cssnano presets:
+// 'default'  — safe optimizations only
+// 'advanced' — aggressive (may break some edge cases)
+// 'lite'     — minimal (fastest)

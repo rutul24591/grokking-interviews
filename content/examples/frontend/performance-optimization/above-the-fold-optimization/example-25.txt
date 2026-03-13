@@ -1,0 +1,41 @@
+// Server Component — zero JavaScript sent to client
+// Renders to HTML on the server
+export default async function ArticlePage({ params }) {
+  const article = await getArticle(params.slug);
+
+  return (
+    <article>
+      <h1>{article.title}</h1>
+      <time dateTime={article.publishedAt}>
+        {new Date(article.publishedAt).toLocaleDateString()}
+      </time>
+      {/* Server Component can use async/await directly */}
+      <AuthorCard authorId={article.authorId} />
+      <div dangerouslySetInnerHTML={{ __html: article.contentHtml }} />
+    </article>
+  );
+}
+
+// AuthorCard is also a Server Component — fetches its own data
+async function AuthorCard({ authorId }) {
+  const author = await getAuthor(authorId);
+
+  return (
+    <div className="author-card">
+      <img src={author.avatar} alt={author.name} width={48} height={48} />
+      <span>{author.name}</span>
+    </div>
+  );
+}
+
+// Client Components are only used where interactivity is needed
+// They are hydrated on the client, adding to TTI
+'use client';
+function LikeButton({ articleId }) {
+  const [liked, setLiked] = useState(false);
+  return (
+    <button onClick={() => setLiked(!liked)}>
+      {liked ? 'Liked' : 'Like'}
+    </button>
+  );
+}

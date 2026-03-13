@@ -1,0 +1,38 @@
+// React 18 streaming SSR with progressive CSS delivery
+import { renderToPipeableStream } from 'react-dom/server';
+
+app.get('*', (req, res) => {
+  // Base critical CSS sent in the shell
+  const shellCSS = `
+    body { margin: 0; font-family: system-ui, sans-serif; }
+    .header { background: #1a1a2e; color: white; padding: 1rem; }
+    .loading { display: flex; justify-content: center; padding: 2rem; }
+  `;
+
+  const { pipe } = renderToPipeableStream(
+    <html>
+      <head>
+        <style dangerouslySetInnerHTML={{ __html: shellCSS }} />
+      </head>
+      <body>
+        <Header />
+        {/* Each Suspense boundary can include its own CSS */}
+        <Suspense fallback={<div className="loading">Loading...</div>}>
+          <DashboardContent />
+          {/* When this resolves, React streams replacement HTML
+              which can include additional <style> tags */}
+        </Suspense>
+      </body>
+    </html>,
+    {
+      bootstrapScripts: ['/main.js'],
+      onShellReady() {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/html');
+        pipe(res);
+        // Shell HTML + critical CSS sent immediately
+        // Suspense content streams in as it resolves
+      },
+    }
+  );
+});

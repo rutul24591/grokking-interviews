@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1822">Above-the-Fold Optimization Strategy</text>
+
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arw" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#1a1822"/>
+    </marker>
+  </defs>
+
+  <!-- Browser Viewport -->
+  <rect x="30" y="55" width="360" height="420" rx="8" fill="#fff" stroke="#1a1822" stroke-width="2"/>
+  <!-- Browser chrome -->
+  <rect x="30" y="55" width="360" height="30" rx="8" fill="#e0dce8"/>
+  <rect x="30" y="75" width="360" height="10" fill="#e0dce8"/>
+  <circle cx="50" cy="70" r="5" fill="#ff6b6b"/>
+  <circle cx="68" cy="70" r="5" fill="#feca57"/>
+  <circle cx="86" cy="70" r="5" fill="#2f9d74"/>
+  <rect x="110" y="63" width="200" height="14" rx="7" fill="#fff" stroke="#999" stroke-width="0.5"/>
+  <text x="210" y="74" text-anchor="middle" font-size="8" fill="#999">example.com</text>
+
+  <!-- Fold line -->
+  <line x1="30" y1="310" x2="390" y2="310" stroke="#d97843" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="345" y="303" text-anchor="end" font-size="11" font-weight="700" fill="#d97843">THE FOLD</text>
+
+  <!-- Above fold content -->
+  <rect x="40" y="90" width="340" height="210" rx="4" fill="#e6f5ef" stroke="#2f9d74" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="210" y="110" text-anchor="middle" font-size="11" font-weight="700" fill="#2f9d74">ABOVE THE FOLD (Visible)</text>
+
+  <!-- Nav bar -->
+  <rect x="55" y="120" width="310" height="25" rx="4" fill="#6d5bd0"/>
+  <text x="80" y="137" font-size="10" fill="#fff" font-weight="600">Logo</text>
+  <text x="230" y="137" font-size="9" fill="#e0d8f5">Home  About  Products  Contact</text>
+
+  <!-- Hero -->
+  <rect x="55" y="155" width="310" height="100" rx="4" fill="#f0eef8" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="210" y="185" text-anchor="middle" font-size="14" fill="#1a1822" font-weight="700">Hero Section</text>
+  <rect x="75" y="200" width="110" height="22" rx="4" fill="#6d5bd0"/>
+  <text x="130" y="215" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">Hero Image (LCP)</text>
+  <rect x="200" y="200" width="80" height="22" rx="4" fill="#2f9d74"/>
+  <text x="240" y="215" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">CTA Button</text>
+
+  <!-- Subheading -->
+  <rect x="55" y="265" width="310" height="25" rx="4" fill="#f8f7fb"/>
+  <text x="210" y="282" text-anchor="middle" font-size="10" fill="#1a1822">Key value proposition text...</text>
+
+  <!-- Below fold content -->
+  <rect x="40" y="318" width="340" height="145" rx="4" fill="#fdf3ec" stroke="#d97843" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="210" y="340" text-anchor="middle" font-size="11" font-weight="700" fill="#d97843">BELOW THE FOLD (Hidden)</text>
+
+  <rect x="55" y="352" width="145" height="45" rx="4" fill="#f0f0f0" stroke="#ccc" stroke-width="1"/>
+  <text x="127" y="378" text-anchor="middle" font-size="9" fill="#999">Feature Card 1</text>
+
+  <rect x="210" y="352" width="145" height="45" rx="4" fill="#f0f0f0" stroke="#ccc" stroke-width="1"/>
+  <text x="282" y="378" text-anchor="middle" font-size="9" fill="#999">Feature Card 2</text>
+
+  <rect x="55" y="406" width="300" height="35" rx="4" fill="#f0f0f0" stroke="#ccc" stroke-width="1"/>
+  <text x="205" y="428" text-anchor="middle" font-size="9" fill="#999">Comments / Heavy Components</text>
+
+  <!-- Right side: Strategy Boxes -->
+
+  <!-- Prioritize -->
+  <rect x="430" y="55" width="440" height="210" rx="8" fill="#e6f5ef" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="650" y="80" text-anchor="middle" font-size="14" font-weight="bold" fill="#2f9d74">PRIORITIZE (Above the Fold)</text>
+
+  <rect x="450" y="95" width="195" height="40" rx="6" fill="#2f9d74"/>
+  <text x="547" y="112" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">Inline Critical CSS</text>
+  <text x="547" y="127" text-anchor="middle" font-size="9" fill="#d4f0e4">Eliminates render-blocking CSS</text>
+
+  <rect x="655" y="95" width="195" height="40" rx="6" fill="#2f9d74"/>
+  <text x="752" y="112" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">Preload LCP Image</text>
+  <text x="752" y="127" text-anchor="middle" font-size="9" fill="#d4f0e4">fetchpriority="high"</text>
+
+  <rect x="450" y="145" width="195" height="40" rx="6" fill="#2f9d74"/>
+  <text x="547" y="162" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">SSR / SSG HTML</text>
+  <text x="547" y="177" text-anchor="middle" font-size="9" fill="#d4f0e4">Pre-rendered, paint-ready</text>
+
+  <rect x="655" y="145" width="195" height="40" rx="6" fill="#2f9d74"/>
+  <text x="752" y="162" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">Preload Fonts</text>
+  <text x="752" y="177" text-anchor="middle" font-size="9" fill="#d4f0e4">font-display: swap</text>
+
+  <rect x="450" y="195" width="400" height="40" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="650" y="212" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">Set explicit width/height on all above-fold images</text>
+  <text x="650" y="227" text-anchor="middle" font-size="9" fill="#2f9d74">Prevents CLS (Cumulative Layout Shift)</text>
+
+  <!-- Defer -->
+  <rect x="430" y="285" width="440" height="190" rx="8" fill="#fdf3ec" stroke="#d97843" stroke-width="1.5"/>
+  <text x="650" y="310" text-anchor="middle" font-size="14" font-weight="bold" fill="#d97843">DEFER (Below the Fold)</text>
+
+  <rect x="450" y="325" width="195" height="40" rx="6" fill="#d97843"/>
+  <text x="547" y="342" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">Lazy-Load Images</text>
+  <text x="547" y="357" text-anchor="middle" font-size="9" fill="#fde8d8">loading="lazy"</text>
+
+  <rect x="655" y="325" width="195" height="40" rx="6" fill="#d97843"/>
+  <text x="752" y="342" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">Code-Split Components</text>
+  <text x="752" y="357" text-anchor="middle" font-size="9" fill="#fde8d8">React.lazy() + Suspense</text>
+
+  <rect x="450" y="375" width="195" height="40" rx="6" fill="#d97843"/>
+  <text x="547" y="392" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">Defer JS</text>
+  <text x="547" y="407" text-anchor="middle" font-size="9" fill="#fde8d8">async / defer attributes</text>
+
+  <rect x="655" y="375" width="195" height="40" rx="6" fill="#d97843"/>
+  <text x="752" y="392" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">Async CSS</text>
+  <text x="752" y="407" text-anchor="middle" font-size="9" fill="#fde8d8">preload + onload swap</text>
+
+  <rect x="450" y="425" width="400" height="35" rx="6" fill="#fff" stroke="#d97843" stroke-width="1.5"/>
+  <text x="650" y="443" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">IntersectionObserver to trigger loading on scroll</text>
+  <text x="650" y="455" text-anchor="middle" font-size="9" fill="#d97843">Load only when nearing viewport</text>
+
+  <!-- Connecting arrows from viewport to strategy -->
+  <line x1="390" y1="195" x2="428" y2="160" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arw)"/>
+  <line x1="390" y1="380" x2="428" y2="380" stroke="#d97843" stroke-width="1.5" marker-end="url(#arw)"/>
+</svg>

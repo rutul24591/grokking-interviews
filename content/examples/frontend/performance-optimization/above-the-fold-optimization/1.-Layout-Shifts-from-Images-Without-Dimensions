@@ -1,0 +1,14 @@
+// BAD: No dimensions — browser doesn't know image size until it loads
+// Causes layout shift when image appears
+<img src="/hero.webp" alt="Hero" />
+
+// GOOD: Explicit dimensions — browser reserves space immediately
+<img src="/hero.webp" alt="Hero" width={1200} height={600} />
+
+// GOOD: CSS aspect-ratio as alternative
+<img src="/hero.webp" alt="Hero"
+     style={{ aspectRatio: '2/1', width: '100%', height: 'auto' }} />
+
+// GOOD: Next.js Image handles this automatically
+import Image from 'next/image';
+<Image src="/hero.webp" alt="Hero" width={1200} height={600} />

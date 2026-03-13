@@ -1,0 +1,6 @@
+{
+  "panels": [
+    { "name": "p95 latency" },
+    { "name": "error rate" }
+  ]
+}

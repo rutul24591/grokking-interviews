@@ -1,0 +1,1 @@
+SMS service integrates with gateways and tracks delivery status.

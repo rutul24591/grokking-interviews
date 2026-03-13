@@ -1,0 +1,48 @@
+<!-- Boost the LCP image priority -->
+<img
+  src="/hero.webp"
+  alt="Hero banner"
+  fetchpriority="high"
+  width="1200"
+  height="600"
+/>
+
+<!-- Lower priority for below-the-fold images -->
+<img
+  src="/testimonial.webp"
+  alt="Testimonial"
+  fetchpriority="low"
+  loading="lazy"
+/>
+
+<!-- Boost a preload hint -->
+<link
+  rel="preload"
+  href="/fonts/Inter.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+  fetchpriority="high"
+/>
+
+<!-- Lower priority for non-critical scripts -->
+<script src="/analytics.js" fetchpriority="low" defer></script>
+
+<!-- In fetch() API calls -->
+// Critical API call for above-the-fold content
+fetch('/api/hero-data', { priority: 'high' });
+
+// Non-critical background sync
+fetch('/api/analytics', { priority: 'low' });
+
+<!-- Default browser priority heuristics (Chrome):
+     CSS: Highest
+     Fonts: High
+     Scripts (in <head>): High
+     Scripts (async/defer): Low
+     Images (in viewport): High
+     Images (out of viewport): Low
+     fetch(): High
+     XHR: High
+
+     fetchpriority overrides these defaults -->

@@ -1,0 +1,5 @@
+{
+  "rps": 1200,
+  "instanceCapacityRps": 300,
+  "headroomPercent": 30
+}

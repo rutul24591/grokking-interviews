@@ -1,0 +1,3 @@
+async function getUser(id) { const version = await redis.get('user:version:' + id) || '1'; const key = 'user:' + version + ':' + id; const cached = await redis.get(key); if (cached) return JSON.parse(cached); const user = await db.getUserById(id); await redis.set(key, JSON.stringify(user), 'EX', 300); return user;
+} async function updateUser(id, payload) { await db.updateUser(id, payload); await redis.incr('user:version:' + id);
+}

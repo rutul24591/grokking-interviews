@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
+  <rect width="960" height="420" fill="#f8fafc" />
+  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Consistent Hashing Ring</text>
+
+  <circle cx="300" cy="220" r="130" fill="#eef2ff" stroke="#94a3b8" stroke-width="2" />
+  <text x="250" y="215" font-family="Arial" font-size="14" fill="#0f172a">Hash Ring</text>
+
+  <circle cx="300" cy="90" r="14" fill="#60a5fa" />
+  <text x="320" y="95" font-family="Arial" font-size="12" fill="#0f172a">Node A</text>
+
+  <circle cx="420" cy="220" r="14" fill="#60a5fa" />
+  <text x="440" y="225" font-family="Arial" font-size="12" fill="#0f172a">Node B</text>
+
+  <circle cx="300" cy="350" r="14" fill="#60a5fa" />
+  <text x="320" y="355" font-family="Arial" font-size="12" fill="#0f172a">Node C</text>
+
+  <circle cx="180" cy="220" r="14" fill="#60a5fa" />
+  <text x="60" y="225" font-family="Arial" font-size="12" fill="#0f172a">Node D</text>
+
+  <rect x="520" y="120" width="380" height="200" rx="12" fill="#f1f5f9" stroke="#cbd5f5" />
+  <text x="540" y="155" font-family="Arial" font-size="14" fill="#0f172a">Keys map to the next node clockwise</text>
+  <text x="540" y="185" font-family="Arial" font-size="14" fill="#0f172a">Only a fraction of keys move when</text>
+  <text x="540" y="210" font-family="Arial" font-size="14" fill="#0f172a">nodes are added or removed</text>
+  <text x="540" y="240" font-family="Arial" font-size="14" fill="#0f172a">Virtual nodes reduce hot spots</text>
+</svg>

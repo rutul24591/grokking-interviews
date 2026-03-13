@@ -1,0 +1,27 @@
+// PROBLEM: Some libraries ship already-minified code
+// Double-minifying can cause issues and wastes build time
+
+// FIX: Exclude pre-minified files
+// webpack.config.js
+new TerserPlugin({
+  exclude: /\\.min\\.js$/,  // Skip already minified files
+});
+
+// PROBLEM: Some libraries use patterns that break with mangling
+// (e.g., Angular dependency injection, some ORMs)
+
+// FIX: Exclude specific modules
+new TerserPlugin({
+  exclude: /node_modules\\/problematic-library/,
+});
+
+// PROBLEM: Libraries that use Function.prototype.toString()
+// for serialization or dependency injection
+// Mangling breaks this pattern
+
+// FIX: In Terser
+{
+  compress: {
+    keep_fnames: true,  // Preserve function names
+  },
+}

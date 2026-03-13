@@ -1,0 +1,3 @@
+# topic config
+cleanup.policy=compact
+retention.ms=604800000

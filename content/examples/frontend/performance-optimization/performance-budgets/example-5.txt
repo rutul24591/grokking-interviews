@@ -1,0 +1,42 @@
+// package.json — size-limit configuration
+{
+  "size-limit": [
+    {
+      "name": "Main JS bundle",
+      "path": ".next/static/chunks/main-*.js",
+      "limit": "100 kB"
+    },
+    {
+      "name": "Framework bundle",
+      "path": ".next/static/chunks/framework-*.js",
+      "limit": "50 kB"
+    },
+    {
+      "name": "CSS bundle",
+      "path": ".next/static/css/*.css",
+      "limit": "30 kB"
+    },
+    {
+      "name": "Homepage JS",
+      "path": ".next/static/chunks/pages/index-*.js",
+      "limit": "25 kB"
+    },
+    {
+      "name": "Button component",
+      "path": "dist/index.js",
+      "import": "{ Button }",
+      "limit": "5 kB"
+    }
+  ],
+  "scripts": {
+    "size": "size-limit",
+    "size:why": "size-limit --why"
+  }
+}
+
+// CLI output example:
+//  Main JS bundle      98.2 kB (limit: 100 kB)  ✅
+//  Framework bundle    42.1 kB (limit: 50 kB)    ✅
+//  CSS bundle          27.8 kB (limit: 30 kB)    ✅
+//  Homepage JS         23.4 kB (limit: 25 kB)    ✅
+//  Button component     3.1 kB (limit: 5 kB)     ✅

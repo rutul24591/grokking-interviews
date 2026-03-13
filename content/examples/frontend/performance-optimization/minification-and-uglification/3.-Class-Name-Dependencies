@@ -1,0 +1,31 @@
+// PROBLEM: Code depends on function/class names at runtime
+class PaymentProcessor {
+  process(payment) { /* ... */ }
+}
+
+// Logging or routing based on class name
+function logAction(instance) {
+  const className = instance.constructor.name;
+  analytics.track(className + '.action');
+  // After mangling: className = 'a' instead of 'PaymentProcessor'
+}
+
+// FIX 1: Use explicit type identifiers instead of class names
+class PaymentProcessor {
+  static displayName = 'PaymentProcessor';
+  process(payment) { /* ... */ }
+}
+
+// FIX 2: Tell Terser to preserve class names
+{
+  mangle: {
+    keep_classnames: true,  // Don't rename classes
+    keep_fnames: true,      // Don't rename functions
+  },
+  compress: {
+    keep_classnames: true,
+    keep_fnames: true,
+  },
+}
+
+// Note: This increases output size. Only use when necessary.

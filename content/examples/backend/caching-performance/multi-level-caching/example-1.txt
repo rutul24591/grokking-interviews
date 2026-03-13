@@ -1,0 +1,2 @@
+const l1 = new LRU({ max: 5000, ttl: 10000 }); app.get('/users/:id', async (req, res) => { const id = req.params.id; const key = 'user:v1:' + id; if (l1.has(key)) return res.json(l1.get(key)); const cached = await redis.get(key); if (cached) { const value = JSON.parse(cached); l1.set(key, value); return res.json(value); } const user = await db.getUserById(id); await redis.set(key, JSON.stringify(user), 'EX', 60); l1.set(key, user); return res.json(user);
+});

@@ -1,9 +1,12 @@
 "use client";
 
-import { type ReactNode } from "react";
-import { VersionToggle } from "./VersionToggle";
+import { type ReactNode, useContext, useEffect, useMemo, useState } from "react";
 import { Breadcrumbs } from "../Breadcrumbs";
 import type { ArticleMetadata } from "@/types/article";
+import { ExampleContext } from "@/components/articles/ExampleContext";
+import { ExampleViewer } from "@/components/articles/ExampleViewer";
+import { ArticleExampleToggle, useInitialArticleView } from "@/components/articles/ArticleExampleToggle";
+import { classNames } from "@/lib/classNames";
 
 type ArticleLayoutProps = {
   metadata: ArticleMetadata;
@@ -15,6 +18,25 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
     "en-US",
     { year: "numeric", month: "long", day: "numeric" }
   );
+  const { examples } = useContext(ExampleContext);
+  const initialView = useInitialArticleView();
+  const [view, setView] = useState(initialView);
+  const hasExamples = useMemo(() => examples.length > 0, [examples]);
+  const [activeExampleId, setActiveExampleId] = useState(
+    examples[0]?.id ?? ""
+  );
+
+  useEffect(() => {
+    if (!examples.length) return;
+    const exists = examples.some((example) => example.id === activeExampleId);
+    if (!exists) {
+      setActiveExampleId(examples[0].id);
+    }
+  }, [examples, activeExampleId]);
+
+  const activeExample = useMemo(() => {
+    return examples.find((example) => example.id === activeExampleId) ?? examples[0];
+  }, [examples, activeExampleId]);
 
   return (
     <div className="min-h-screen bg-theme">
@@ -53,14 +75,38 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
               </div>
             </div>
             <div className="sm:sticky sm:top-4">
-              <VersionToggle currentVersion={metadata.version} />
+              <ArticleExampleToggle value={view} onChange={setView} />
             </div>
           </div>
         </header>
 
+        {view === "example" && hasExamples && (
+          <div className="mb-6 flex flex-wrap gap-2">
+            {examples.map((example) => (
+              <button
+                key={example.id}
+                type="button"
+                onClick={() => setActiveExampleId(example.id)}
+                className={classNames(
+                  "cursor-pointer rounded-full border border-theme px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] transition",
+                  example.id === activeExample?.id
+                    ? "bg-accent text-white shadow-soft-theme"
+                    : "bg-panel text-muted hover:text-body"
+                )}
+              >
+                {example.label}
+              </button>
+            ))}
+          </div>
+        )}
+
         {/* Article Content */}
         <article className="prose max-w-none">
-          {children}
+          {view === "example" ? (
+            <ExampleViewer example={activeExample} />
+          ) : (
+            children
+          )}
         </article>
 
         {/* Article Footer */}

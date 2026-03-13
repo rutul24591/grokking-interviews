@@ -1,0 +1,71 @@
+// vite.config.ts — production optimization
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { visualizer } from 'rollup-plugin-visualizer';
+import viteCompression from 'vite-plugin-compression';
+
+export default defineConfig({
+  plugins: [
+    react(),
+    // Bundle visualization (only in analyze mode)
+    process.env.ANALYZE && visualizer({
+      open: true,
+      gzipSize: true,
+      filename: 'dist/stats.html',
+    }),
+    // Pre-compress assets
+    viteCompression({ algorithm: 'gzip' }),
+    viteCompression({ algorithm: 'brotliCompress' }),
+  ],
+
+  build: {
+    // Target modern browsers — avoids unnecessary polyfills
+    target: 'es2020',
+
+    // Warn on large chunks
+    chunkSizeWarningLimit: 500, // KB
+
+    // CSS code splitting — each async chunk gets its own CSS
+    cssCodeSplit: true,
+
+    rollupOptions: {
+      output: {
+        // Manual chunk splitting
+        manualChunks: {
+          // React core — cached long-term
+          react: ['react', 'react-dom'],
+
+          // Router — cached separately
+          router: ['react-router-dom'],
+
+          // State management
+          state: ['zustand'],
+        },
+
+        // Or use a function for dynamic chunk assignment
+        // manualChunks(id) {
+        //   if (id.includes('node_modules')) {
+        //     // Group by package name
+        //     const packageName = id.match(
+        //       /node_modules\\/(.+?)\\//
+        //     )?.[1];
+        //
+        //     if (['react', 'react-dom'].includes(packageName)) {
+        //       return 'react';
+        //     }
+        //     return 'vendor';
+        //   }
+        // },
+      },
+    },
+
+    // Minification — esbuild is faster, terser produces smaller output
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
+  },
+});

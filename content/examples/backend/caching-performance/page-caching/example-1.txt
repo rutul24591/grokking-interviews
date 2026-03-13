@@ -1,0 +1,2 @@
+app.get('/products', async (req, res) => { const key = 'page:products'; const cached = await redis.get(key); if (cached) return res.send(cached); const html = await renderProductsPage(); await redis.set(key, html, 'EX', 120); return res.send(html);
+});

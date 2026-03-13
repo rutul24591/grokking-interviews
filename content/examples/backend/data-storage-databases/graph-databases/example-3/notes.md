@@ -1,0 +1,2 @@
+- Partition by community to reduce cross-shard edges.
+- Global traversals are expensive.

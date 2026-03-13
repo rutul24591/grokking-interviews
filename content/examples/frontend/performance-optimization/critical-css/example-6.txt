@@ -1,0 +1,66 @@
+// === styled-components SSR critical CSS ===
+// The server collects styles from rendered components only
+import { ServerStyleSheet } from 'styled-components';
+import { renderToString } from 'react-dom/server';
+
+function handleRequest(req, res) {
+  const sheet = new ServerStyleSheet();
+
+  try {
+    // Collect styles from components that actually render
+    const html = renderToString(
+      sheet.collectStyles(<App />)
+    );
+
+    // Get only the CSS for rendered components
+    const styleTags = sheet.getStyleTags();
+    // Result: <style data-styled="abc123">
+    //   .header-xyz { background: #1a1a2e; }
+    //   .hero-abc { min-height: 60vh; }
+    //   /* Only styles for components in the render tree */
+    // </style>
+
+    res.send(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          \${styleTags}  <!-- Critical CSS automatically! -->
+        </head>
+        <body>
+          <div id="root">\${html}</div>
+        </body>
+      </html>
+    `);
+  } finally {
+    sheet.seal();
+  }
+}
+
+// === Emotion SSR critical CSS ===
+import { CacheProvider } from '@emotion/react';
+import createEmotionServer from '@emotion/server/create-instance';
+import createCache from '@emotion/cache';
+
+function handleRequest(req, res) {
+  const cache = createCache({ key: 'css' });
+  const { extractCriticalToChunks, constructStyleTagsFromChunks }
+    = createEmotionServer(cache);
+
+  const html = renderToString(
+    <CacheProvider value={cache}>
+      <App />
+    </CacheProvider>
+  );
+
+  // Extract only the CSS used by rendered components
+  const chunks = extractCriticalToChunks(html);
+  const styles = constructStyleTagsFromChunks(chunks);
+
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+      <head>\${styles}</head>
+      <body><div id="root">\${html}</div></body>
+    </html>
+  `);
+}

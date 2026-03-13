@@ -1,0 +1,1 @@
+Ambassador hides external service complexity.

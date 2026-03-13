@@ -1,0 +1,32 @@
+import { TableVirtuoso } from 'react-virtuoso';
+
+function VirtualTable({ data }) {
+  return (
+    <TableVirtuoso
+      style={{ height: 600 }}
+      data={data}
+      fixedHeaderContent={() => (
+        <tr className="bg-gray-100">
+          <th className="p-3 text-left font-medium">Name</th>
+          <th className="p-3 text-left font-medium">Email</th>
+          <th className="p-3 text-left font-medium">Role</th>
+          <th className="p-3 text-left font-medium">Status</th>
+        </tr>
+      )}
+      itemContent={(index, user) => (
+        <>
+          <td className="p-3 border-b">{user.name}</td>
+          <td className="p-3 border-b">{user.email}</td>
+          <td className="p-3 border-b">{user.role}</td>
+          <td className="p-3 border-b">
+            <span className={`px-2 py-1 rounded text-xs \${
+              user.active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'
+            }`}>
+              {user.active ? 'Active' : 'Inactive'}
+            </span>
+          </td>
+        </>
+      )}
+    />
+  );
+}

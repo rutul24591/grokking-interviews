@@ -1,0 +1,2 @@
+CREATE TABLE payments ( id BIGSERIAL PRIMARY KEY, user_id BIGINT NOT NULL REFERENCES users(id), amount_cents INT NOT NULL CHECK (amount_cents > 0), status TEXT NOT NULL CHECK (status IN ('pending','captured','failed'))
+);

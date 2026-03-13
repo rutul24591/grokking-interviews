@@ -1,0 +1,5 @@
+async_processing:
+  queue: redis
+  workers: 8
+  retry_policy: exponential
+  dlq_enabled: true

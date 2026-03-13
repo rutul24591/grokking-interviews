@@ -1,0 +1,5 @@
+session:
+  cookieName: sid
+  ttlSeconds: 3600
+  secure: true
+  sameSite: strict

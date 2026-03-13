@@ -1,0 +1,31 @@
+// The /*#__PURE__*/ annotation tells minifiers a function call
+// has no side effects and can be removed if its result is unused.
+
+// Without annotation — minifier keeps the call (might have side effects)
+const memoized = memoize(expensiveFunction);
+
+// With annotation — minifier can remove if 'memoized' is unused
+const memoized = /*#__PURE__*/ memoize(expensiveFunction);
+
+// React uses this extensively:
+const Button = /*#__PURE__*/ React.memo(function Button(props) {
+  return <button>{props.children}</button>;
+});
+
+const StyledButton = /*#__PURE__*/ styled.button`
+  color: blue;
+`;
+
+// Babel plugins add these automatically for common patterns:
+// @babel/plugin-transform-react-pure-annotations
+// Adds /*#__PURE__*/ to React.createElement, React.forwardRef, etc.
+
+// === Webpack's usedExports optimization ===
+// webpack.config.js
+module.exports = {
+  optimization: {
+    usedExports: true,   // Mark unused exports (default in production)
+    minimize: true,       // Remove marked unused exports via minifier
+    concatenateModules: true,  // Scope hoisting — enables better elimination
+  },
+};

@@ -1,0 +1,110 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="40" text-anchor="middle" font-size="22" font-weight="bold" fill="#1a1822">Promise Sharing Mechanism</text>
+
+  <!-- Timeline -->
+  <line x1="80" y1="80" x2="80" y2="460" stroke="#e0dce8" stroke-width="2"/>
+  <text x="75" y="75" text-anchor="end" font-size="12" font-weight="bold" fill="#666">Time</text>
+
+  <!-- t0: First request -->
+  <line x1="80" y1="110" x2="100" y2="110" stroke="#e0dce8" stroke-width="1"/>
+  <text x="70" y="114" text-anchor="end" font-size="11" fill="#666">t0</text>
+
+  <rect x="110" y="90" width="150" height="40" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="185" y="115" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Component A</text>
+
+  <line x1="260" y1="110" x2="330" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#ar1)"/>
+  <text x="295" y="103" text-anchor="middle" font-size="10" fill="#6d5bd0">fetch("/api/user")</text>
+
+  <!-- Promise box created -->
+  <rect x="330" y="85" width="220" height="50" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="440" y="107" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Promise Created</text>
+  <text x="440" y="125" text-anchor="middle" font-size="10" fill="#6d5bd0">status: pending</text>
+
+  <!-- Store in map -->
+  <line x1="550" y1="110" x2="620" y2="110" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#ar1)"/>
+  <rect x="620" y="85" width="240" height="50" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="740" y="107" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">inflightMap.set(</text>
+  <text x="740" y="125" text-anchor="middle" font-size="11" fill="#6d5bd0">"/api/user", promise)</text>
+
+  <!-- t1: Second request -->
+  <line x1="80" y1="175" x2="100" y2="175" stroke="#e0dce8" stroke-width="1"/>
+  <text x="70" y="179" text-anchor="end" font-size="11" fill="#666">t1</text>
+
+  <rect x="110" y="155" width="150" height="40" rx="8" fill="white" stroke="#d97843" stroke-width="2"/>
+  <text x="185" y="180" text-anchor="middle" font-size="12" font-weight="600" fill="#d97843">Component B</text>
+
+  <line x1="260" y1="175" x2="330" y2="175" stroke="#d97843" stroke-width="2" marker-end="url(#ar2)"/>
+  <text x="295" y="168" text-anchor="middle" font-size="10" fill="#d97843">fetch("/api/user")</text>
+
+  <!-- Check map - HIT -->
+  <rect x="330" y="155" width="220" height="40" rx="8" fill="#2f9d74" opacity="0.1" stroke="#2f9d74" stroke-width="2"/>
+  <text x="440" y="180" text-anchor="middle" font-size="12" font-weight="bold" fill="#2f9d74">Map HIT - reuse promise</text>
+
+  <line x1="550" y1="175" x2="620" y2="175" stroke="#2f9d74" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#ar3)"/>
+  <text x="585" y="168" text-anchor="middle" font-size="9" fill="#2f9d74">same ref</text>
+
+  <!-- t2: Third request -->
+  <line x1="80" y1="235" x2="100" y2="235" stroke="#e0dce8" stroke-width="1"/>
+  <text x="70" y="239" text-anchor="end" font-size="11" fill="#666">t2</text>
+
+  <rect x="110" y="215" width="150" height="40" rx="8" fill="white" stroke="#2f9d74" stroke-width="2"/>
+  <text x="185" y="240" text-anchor="middle" font-size="12" font-weight="600" fill="#2f9d74">Component C</text>
+
+  <line x1="260" y1="235" x2="330" y2="235" stroke="#2f9d74" stroke-width="2" marker-end="url(#ar3)"/>
+  <text x="295" y="228" text-anchor="middle" font-size="10" fill="#2f9d74">fetch("/api/user")</text>
+
+  <rect x="330" y="215" width="220" height="40" rx="8" fill="#2f9d74" opacity="0.1" stroke="#2f9d74" stroke-width="2"/>
+  <text x="440" y="240" text-anchor="middle" font-size="12" font-weight="bold" fill="#2f9d74">Map HIT - reuse promise</text>
+
+  <line x1="550" y1="235" x2="620" y2="235" stroke="#2f9d74" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#ar3)"/>
+  <text x="585" y="228" text-anchor="middle" font-size="9" fill="#2f9d74">same ref</text>
+
+  <!-- Network request happening -->
+  <rect x="620" y="150" width="240" height="130" rx="8" fill="white" stroke="#d97843" stroke-width="1" stroke-dasharray="6,3"/>
+  <text x="740" y="178" text-anchor="middle" font-size="11" fill="#d97843">Only 1 actual HTTP request</text>
+  <text x="740" y="198" text-anchor="middle" font-size="11" fill="#d97843">in-flight to server...</text>
+  <text x="740" y="230" text-anchor="middle" font-size="28" fill="#d97843">...</text>
+  <text x="740" y="265" text-anchor="middle" font-size="10" fill="#666">Server processing</text>
+
+  <!-- t3: Response arrives -->
+  <line x1="80" y1="320" x2="100" y2="320" stroke="#e0dce8" stroke-width="1"/>
+  <text x="70" y="324" text-anchor="end" font-size="11" fill="#666">t3</text>
+
+  <rect x="330" y="300" width="530" height="45" rx="8" fill="#2f9d74" opacity="0.15" stroke="#2f9d74" stroke-width="2"/>
+  <text x="595" y="320" text-anchor="middle" font-size="14" font-weight="bold" fill="#2f9d74">Promise Resolves with Response Data</text>
+  <text x="595" y="338" text-anchor="middle" font-size="11" fill="#2f9d74">{ id: 1, name: "Alice", role: "admin" }</text>
+
+  <!-- All three get the data -->
+  <line x1="330" y1="330" x2="260" y2="370" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#ar3)"/>
+  <line x1="330" y1="340" x2="260" y2="400" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#ar3)"/>
+  <line x1="330" y1="345" x2="260" y2="430" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#ar3)"/>
+
+  <rect x="110" y="358" width="150" height="30" rx="6" fill="#6d5bd0" opacity="0.15"/>
+  <text x="185" y="378" text-anchor="middle" font-size="11" fill="#6d5bd0">A receives data</text>
+
+  <rect x="110" y="393" width="150" height="30" rx="6" fill="#d97843" opacity="0.15"/>
+  <text x="185" y="413" text-anchor="middle" font-size="11" fill="#d97843">B receives data</text>
+
+  <rect x="110" y="428" width="150" height="30" rx="6" fill="#2f9d74" opacity="0.15"/>
+  <text x="185" y="448" text-anchor="middle" font-size="11" fill="#2f9d74">C receives data</text>
+
+  <!-- Cleanup -->
+  <line x1="80" y1="395" x2="100" y2="395" stroke="#e0dce8" stroke-width="1"/>
+  <text x="70" y="399" text-anchor="end" font-size="11" fill="#666">t4</text>
+
+  <rect x="330" y="375" width="530" height="35" rx="8" fill="white" stroke="#666" stroke-width="1"/>
+  <text x="595" y="398" text-anchor="middle" font-size="12" fill="#666">inflightMap.delete("/api/user") — cleanup in finally block</text>
+
+  <!-- Bottom note -->
+  <rect x="330" y="430" width="530" height="50" rx="8" fill="white" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="6,3"/>
+  <text x="595" y="452" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Key insight: all callers await the same Promise object</text>
+  <text x="595" y="470" text-anchor="middle" font-size="11" fill="#666">Next request after t4 creates a fresh promise (new data fetch)</text>
+
+  <defs>
+    <marker id="ar1" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#6d5bd0"/></marker>
+    <marker id="ar2" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#d97843"/></marker>
+    <marker id="ar3" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#2f9d74"/></marker>
+  </defs>
+</svg>

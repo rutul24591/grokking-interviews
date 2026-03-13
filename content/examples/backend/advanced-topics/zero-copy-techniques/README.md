@@ -1,0 +1,1 @@
+Zero-copy reduces CPU by avoiding extra data copies between kernel and user space.

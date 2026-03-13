@@ -1,0 +1,36 @@
+// lodash.debounce with maxWait — guaranteed execution within maxWait ms
+import debounce from 'lodash.debounce';
+
+const search = debounce(
+  (query) => fetchResults(query),
+  300,
+  {
+    leading: false,   // Don't fire on first call
+    trailing: true,   // Fire after quiet period
+    maxWait: 1000,    // Guarantee execution within 1s even if user keeps typing
+  }
+);
+
+// use-debounce — React-optimized
+import { useDebounce, useDebouncedCallback } from 'use-debounce';
+
+function SearchComponent() {
+  const [query, setQuery] = useState('');
+
+  // Option 1: Debounce the value
+  const [debouncedQuery] = useDebounce(query, 300);
+
+  // Option 2: Debounce the callback (more control)
+  const debouncedSearch = useDebouncedCallback(
+    (q: string) => fetchResults(q),
+    300,
+    { maxWait: 1000 }
+  );
+
+  return (
+    <input onChange={(e) => {
+      setQuery(e.target.value);
+      debouncedSearch(e.target.value);
+    }} />
+  );
+}

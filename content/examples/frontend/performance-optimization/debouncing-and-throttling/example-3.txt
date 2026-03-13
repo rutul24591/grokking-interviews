@@ -1,0 +1,37 @@
+// Combined leading + trailing debounce
+function debounceBoth(fn, delay) {
+  let timeoutId = null;
+  let lastArgs = null;
+
+  function debounced(...args) {
+    lastArgs = args;
+    const shouldCallImmediately = timeoutId === null;
+
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      // Fire trailing edge only if there were calls after the leading edge
+      if (!shouldCallImmediately && lastArgs) {
+        fn.apply(this, lastArgs);
+      }
+      timeoutId = null;
+      lastArgs = null;
+    }, delay);
+
+    if (shouldCallImmediately) {
+      fn.apply(this, args);
+    }
+  }
+
+  debounced.cancel = () => {
+    clearTimeout(timeoutId);
+    timeoutId = null;
+    lastArgs = null;
+  };
+
+  return debounced;
+}
+
+// Example: tooltip that shows immediately and updates position after movement stops
+const updateTooltipPosition = debounceBoth((x, y) => {
+  tooltip.style.transform = `translate(\${x}px, \${y}px)`;
+}, 150);

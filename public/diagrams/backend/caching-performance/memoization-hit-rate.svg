@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
+  <rect width="960" height="420" fill="#f8fafc" />
+  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Memoization Hit Rate</text>
+
+  <line x1="80" y1="320" x2="880" y2="320" stroke="#94a3b8" stroke-width="2" />
+  <line x1="80" y1="320" x2="80" y2="100" stroke="#94a3b8" stroke-width="2" />
+
+  <path d="M80 300 C 200 260, 320 240, 440 220 C 560 210, 700 205, 880 200" fill="none" stroke="#60a5fa" stroke-width="3" />
+
+  <text x="90" y="345" font-family="Arial" font-size="12" fill="#0f172a">Time</text>
+  <text x="20" y="115" font-family="Arial" font-size="12" fill="#0f172a">Hit Rate</text>
+
+  <rect x="520" y="240" width="320" height="70" rx="12" fill="#f1f5f9" stroke="#cbd5f5" />
+  <text x="540" y="270" font-family="Arial" font-size="12" fill="#0f172a">Low hit rate means poor reuse or high cardinality</text>
+</svg>

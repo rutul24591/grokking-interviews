@@ -1,0 +1,27 @@
+// ❌ uuid — 12KB
+import { v4 as uuidv4 } from 'uuid';
+const id = uuidv4();
+
+// ✅ Native crypto — 0KB
+const id = crypto.randomUUID();
+
+// ❌ axios — 14KB (when fetch is sufficient)
+import axios from 'axios';
+const { data } = await axios.get('/api/users');
+
+// ✅ Native fetch — 0KB (covers most use cases)
+const data = await fetch('/api/users').then(r => r.json());
+
+// ❌ classnames — 2KB (simple cases don't need it)
+import cn from 'classnames';
+const cls = cn('btn', { 'btn-active': isActive });
+
+// ✅ Template literal — 0KB
+const cls = `btn \${isActive ? 'btn-active' : ''}`.trim();
+
+// ❌ numeral.js — 30KB
+import numeral from 'numeral';
+const formatted = numeral(1234567).format('0,0');
+
+// ✅ Native Intl.NumberFormat — 0KB
+const formatted = new Intl.NumberFormat('en-US').format(1234567);

@@ -1,0 +1,4 @@
+test('checkout works in chromium, firefox, webkit', async ({ page }) => {
+  await page.goto('/checkout');
+  await page.click('button[type=submit]');
+});

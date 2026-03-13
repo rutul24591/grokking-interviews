@@ -1,0 +1,1 @@
+Maintain allowlists for known safe paths and log every block with request metadata.

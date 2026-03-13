@@ -1,0 +1,74 @@
+// === Webpack Magic Comments ===
+
+// prefetch: download during browser idle time (low priority)
+const Dashboard = lazy(() =>
+  import(/* webpackPrefetch: true */ './pages/Dashboard')
+);
+// Webpack injects: <link rel="prefetch" href="/dashboard.abc123.js">
+// Downloaded AFTER main bundle loads, during idle time
+
+// preload: download in parallel with current chunk (high priority)
+const CriticalModal = lazy(() =>
+  import(/* webpackPreload: true */ './CriticalModal')
+);
+// Webpack injects: <link rel="preload" href="/critical-modal.def456.js">
+// Downloaded IN PARALLEL with the chunk that imports it
+
+// === Manual Prefetch Strategies ===
+
+// Prefetch on hover — gives 200-400ms head start
+function NavLink({ to, chunk, children }) {
+  const handleMouseEnter = () => {
+    // Calling import() caches the module — subsequent calls resolve instantly
+    chunk();
+  };
+
+  return (
+    <Link to={to} onMouseEnter={handleMouseEnter}>
+      {children}
+    </Link>
+  );
+}
+
+// Usage
+const dashboardChunk = () => import('./pages/Dashboard');
+const Dashboard = lazy(dashboardChunk);
+
+<NavLink to="/dashboard" chunk={dashboardChunk}>
+  Dashboard
+</NavLink>
+
+// === Viewport-based prefetching ===
+function PrefetchOnVisible({ load, children }) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        load(); // Trigger the dynamic import
+        observer.disconnect();
+      }
+    });
+
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [load]);
+
+  return <div ref={ref}>{children}</div>;
+}
+
+// Prefetch dashboard chunk when the nav link scrolls into view
+<PrefetchOnVisible load={dashboardChunk}>
+  <NavLink to="/dashboard">Dashboard</NavLink>
+</PrefetchOnVisible>
+
+// === Route-based prefetch with React Router ===
+// Prefetch all linked routes after initial render
+useEffect(() => {
+  // Wait for initial render to complete
+  requestIdleCallback(() => {
+    import('./pages/Dashboard');
+    import('./pages/Settings');
+    import('./pages/Profile');
+  });
+}, []);

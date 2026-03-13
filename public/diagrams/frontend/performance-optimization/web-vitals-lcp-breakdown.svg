@@ -1,0 +1,103 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="40" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822">LCP Timeline Breakdown</text>
+  <text x="450" y="60" text-anchor="middle" font-size="13" fill="#666">Each phase contributes to total LCP time — optimize each independently</text>
+
+  <!-- Timeline base -->
+  <line x1="60" y1="150" x2="840" y2="150" stroke="#1a1822" stroke-width="2"/>
+
+  <!-- Navigation start marker -->
+  <circle cx="60" cy="150" r="5" fill="#1a1822"/>
+  <text x="60" y="135" text-anchor="middle" font-size="11" fill="#1a1822">Navigation</text>
+  <text x="60" y="120" text-anchor="middle" font-size="11" fill="#1a1822">Start</text>
+
+  <!-- Phase 1: TTFB -->
+  <rect x="60" y="160" width="220" height="50" rx="6" fill="#6d5bd0" opacity="0.9"/>
+  <text x="170" y="182" text-anchor="middle" font-size="14" font-weight="bold" fill="white">TTFB</text>
+  <text x="170" y="200" text-anchor="middle" font-size="11" fill="white">Time to First Byte</text>
+
+  <!-- Subdivisions of TTFB -->
+  <rect x="60" y="220" width="65" height="35" rx="4" fill="white" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="92" y="236" text-anchor="middle" font-size="9" fill="#6d5bd0">DNS</text>
+  <text x="92" y="248" text-anchor="middle" font-size="8" fill="#666">~20ms</text>
+
+  <rect x="130" y="220" width="65" height="35" rx="4" fill="white" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="162" y="236" text-anchor="middle" font-size="9" fill="#6d5bd0">TCP/TLS</text>
+  <text x="162" y="248" text-anchor="middle" font-size="8" fill="#666">~50ms</text>
+
+  <rect x="200" y="220" width="80" height="35" rx="4" fill="white" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="240" y="236" text-anchor="middle" font-size="9" fill="#6d5bd0">Server</text>
+  <text x="240" y="248" text-anchor="middle" font-size="8" fill="#666">~200-600ms</text>
+
+  <!-- Phase 2: Resource Load Delay -->
+  <rect x="280" y="160" width="200" height="50" rx="6" fill="#d97843" opacity="0.9"/>
+  <text x="380" y="182" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Resource Load Delay</text>
+  <text x="380" y="200" text-anchor="middle" font-size="11" fill="white">Discovery + Download</text>
+
+  <rect x="285" y="220" width="90" height="35" rx="4" fill="white" stroke="#d97843" stroke-width="1"/>
+  <text x="330" y="236" text-anchor="middle" font-size="9" fill="#d97843">Parse HTML</text>
+  <text x="330" y="248" text-anchor="middle" font-size="8" fill="#666">Discovery</text>
+
+  <rect x="380" y="220" width="95" height="35" rx="4" fill="white" stroke="#d97843" stroke-width="1"/>
+  <text x="427" y="236" text-anchor="middle" font-size="9" fill="#d97843">Download</text>
+  <text x="427" y="248" text-anchor="middle" font-size="8" fill="#666">Image/Resource</text>
+
+  <!-- Phase 3: Resource Load Time -->
+  <rect x="480" y="160" width="170" height="50" rx="6" fill="#2f9d74" opacity="0.9"/>
+  <text x="565" y="182" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Resource Load Time</text>
+  <text x="565" y="200" text-anchor="middle" font-size="11" fill="white">Decode + Process</text>
+
+  <!-- Phase 4: Render Delay -->
+  <rect x="650" y="160" width="190" height="50" rx="6" fill="#6d5bd0" opacity="0.7"/>
+  <text x="745" y="182" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Render Delay</text>
+  <text x="745" y="200" text-anchor="middle" font-size="11" fill="white">CSS/JS blocking paint</text>
+
+  <!-- LCP marker -->
+  <circle cx="840" cy="150" r="5" fill="#d32f2f"/>
+  <text x="840" y="135" text-anchor="middle" font-size="12" font-weight="bold" fill="#d32f2f">LCP</text>
+  <text x="840" y="120" text-anchor="middle" font-size="11" fill="#d32f2f">Event</text>
+
+  <!-- Target line at 2.5s -->
+  <line x1="580" y1="100" x2="580" y2="155" stroke="#2f9d74" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="580" y="95" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Target: 2.5s</text>
+
+  <!-- Optimization targets -->
+  <text x="450" y="295" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1822">Optimization Targets</text>
+
+  <!-- TTFB optimization -->
+  <rect x="40" y="315" width="200" height="90" rx="8" fill="white" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="140" y="338" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d5bd0">TTFB &lt; 800ms</text>
+  <line x1="55" y1="348" x2="225" y2="348" stroke="#ede9f7" stroke-width="1"/>
+  <text x="60" y="366" font-size="11" fill="#1a1822">CDN for edge delivery</text>
+  <text x="60" y="382" font-size="11" fill="#1a1822">Server-side caching</text>
+  <text x="60" y="398" font-size="11" fill="#1a1822">HTTP/2+ &amp; 103 Early Hints</text>
+
+  <!-- Resource Load optimization -->
+  <rect x="260" y="315" width="200" height="90" rx="8" fill="white" stroke="#d97843" stroke-width="1.5"/>
+  <text x="360" y="338" text-anchor="middle" font-size="13" font-weight="bold" fill="#d97843">Preload LCP Resource</text>
+  <line x1="275" y1="348" x2="445" y2="348" stroke="#fef0e5" stroke-width="1"/>
+  <text x="275" y="366" font-size="11" fill="#1a1822">rel="preload" in &lt;head&gt;</text>
+  <text x="275" y="382" font-size="11" fill="#1a1822">fetchpriority="high"</text>
+  <text x="275" y="398" font-size="11" fill="#1a1822">Avoid lazy-loading LCP</text>
+
+  <!-- Resource Size optimization -->
+  <rect x="480" y="315" width="200" height="90" rx="8" fill="white" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="580" y="338" text-anchor="middle" font-size="13" font-weight="bold" fill="#2f9d74">Optimize Asset Size</text>
+  <line x1="495" y1="348" x2="665" y2="348" stroke="#e6f5ec" stroke-width="1"/>
+  <text x="495" y="366" font-size="11" fill="#1a1822">AVIF/WebP formats</text>
+  <text x="495" y="382" font-size="11" fill="#1a1822">Responsive srcset</text>
+  <text x="495" y="398" font-size="11" fill="#1a1822">Image CDN compression</text>
+
+  <!-- Render Delay optimization -->
+  <rect x="700" y="315" width="170" height="90" rx="8" fill="white" stroke="#6d5bd0" stroke-width="1.5" stroke-opacity="0.7"/>
+  <text x="785" y="338" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d5bd0">Reduce Render Delay</text>
+  <line x1="715" y1="348" x2="855" y2="348" stroke="#ede9f7" stroke-width="1"/>
+  <text x="715" y="366" font-size="11" fill="#1a1822">Inline critical CSS</text>
+  <text x="715" y="382" font-size="11" fill="#1a1822">Defer non-critical JS</text>
+  <text x="715" y="398" font-size="11" fill="#1a1822">Remove render-blocking</text>
+
+  <!-- Bottom note -->
+  <text x="450" y="440" text-anchor="middle" font-size="12" fill="#666">LCP = TTFB + Resource Load Delay + Resource Load Time + Render Delay</text>
+  <text x="450" y="460" text-anchor="middle" font-size="11" font-style="italic" fill="#6d5bd0">On 70%+ of pages, the LCP element is an image — optimizing image delivery is the highest-impact fix</text>
+</svg>

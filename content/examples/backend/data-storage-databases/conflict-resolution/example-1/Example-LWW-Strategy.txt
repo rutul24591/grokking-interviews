@@ -1,0 +1,2 @@
+function resolve(current, incoming) { return incoming.ts > current.ts ? incoming : current;
+}

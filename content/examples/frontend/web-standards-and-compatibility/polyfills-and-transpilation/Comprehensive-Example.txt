@@ -1,0 +1,33 @@
+// file: package.json
+{
+  "browserslist": {
+    "production": ["> 0.5%", "last 2 versions", "not dead"],
+    "legacy": ["ie 11"]
+  }
+}
+
+// file: babel.config.js
+module.exports = {
+  presets: [
+    ["@babel/preset-env", { targets: { ie: "11" }, useBuiltIns: "usage", corejs: 3 }]
+  ]
+};
+
+// file: src/polyfills.ts
+export async function loadPolyfills() {
+  if (!('fetch' in window)) {
+    await import('whatwg-fetch');
+  }
+  if (!('Promise' in window)) {
+    await import('es6-promise/auto');
+  }
+}
+
+// file: src/index.ts
+import { loadPolyfills } from './polyfills';
+
+loadPolyfills().then(() => {
+  // bootstrap app
+}).catch(() => {
+  document.body.innerHTML = '<p>Browser not supported.</p>';
+});

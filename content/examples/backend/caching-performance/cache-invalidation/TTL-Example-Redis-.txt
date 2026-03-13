@@ -1,0 +1,5 @@
+const key = 'product:v1:123';
+const value = JSON.stringify(product);
+// TTL with jitter to reduce synchronized expirations
+const ttlSeconds = 300 + Math.floor(Math.random() * 30);
+await redis.set(key, value, 'EX', ttlSeconds);

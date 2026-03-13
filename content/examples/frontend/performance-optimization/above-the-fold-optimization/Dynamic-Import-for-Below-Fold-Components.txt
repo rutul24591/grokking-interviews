@@ -1,0 +1,32 @@
+// Only import components when they're needed
+// Above-fold component — included in main bundle
+import HeroSection from './HeroSection';
+import Navigation from './Navigation';
+
+// Below-fold components — loaded on demand
+const ProductGrid = React.lazy(() => import('./ProductGrid'));
+const Reviews = React.lazy(() => import('./Reviews'));
+const Footer = React.lazy(() => import('./Footer'));
+
+function ProductPage({ product }) {
+  return (
+    <>
+      {/* Above the fold — renders immediately */}
+      <Navigation />
+      <HeroSection product={product} />
+
+      {/* Below the fold — loads when scrolled into view */}
+      <React.Suspense fallback={<ProductGridSkeleton />}>
+        <ProductGrid category={product.category} />
+      </React.Suspense>
+
+      <React.Suspense fallback={<ReviewsSkeleton />}>
+        <Reviews productId={product.id} />
+      </React.Suspense>
+
+      <React.Suspense fallback={<FooterSkeleton />}>
+        <Footer />
+      </React.Suspense>
+    </>
+  );
+}

@@ -1,0 +1,42 @@
+// webpack.config.js
+module.exports = {
+  mode: 'production', // Enables tree shaking, minification, scope hoisting
+
+  optimization: {
+    usedExports: true,        // Mark unused exports
+    sideEffects: true,        // Respect sideEffects in package.json
+    concatenateModules: true, // Scope hoisting for better dead code elimination
+    minimize: true,           // Run Terser to remove dead code
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          compress: {
+            dead_code: true,
+            drop_console: true,     // Remove console.log
+            pure_funcs: ['console.info', 'console.debug'],
+          },
+          mangle: true,
+        },
+      }),
+    ],
+  },
+
+  // Important: don't compile imports to require()
+  module: {
+    rules: [
+      {
+        test: /\\.js$/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              ['@babel/preset-env', {
+                modules: false, // ← CRITICAL: keep ES modules
+              }],
+            ],
+          },
+        },
+      },
+    ],
+  },
+};

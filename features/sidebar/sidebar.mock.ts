@@ -490,13 +490,79 @@ export const sidebarData: Category[] = [
             name: "Web Standards and Compatibility",
             topics: [
               {
-                id: "topic-frontend-standards",
-                name: "Compatibility Strategy",
+                id: "topic-frontend-progressive-enhancement",
+                name: "Progressive Enhancement",
                 articles: [
                   {
-                    id: "article-frontend-standards",
-                    title: "Web Standards and Compatibility",
-                    slug: "web-standards-and-compatibility",
+                    id: "article-frontend-progressive-enhancement",
+                    title: "Progressive Enhancement",
+                    slug: "progressive-enhancement",
+                  },
+                ],
+              },
+              {
+                id: "topic-frontend-graceful-degradation",
+                name: "Graceful Degradation",
+                articles: [
+                  {
+                    id: "article-frontend-graceful-degradation",
+                    title: "Graceful Degradation",
+                    slug: "graceful-degradation",
+                  },
+                ],
+              },
+              {
+                id: "topic-frontend-polyfills-and-transpilation",
+                name: "Polyfills and Transpilation",
+                articles: [
+                  {
+                    id: "article-frontend-polyfills-and-transpilation",
+                    title: "Polyfills and Transpilation",
+                    slug: "polyfills-and-transpilation",
+                  },
+                ],
+              },
+              {
+                id: "topic-frontend-browser-feature-detection",
+                name: "Browser Feature Detection",
+                articles: [
+                  {
+                    id: "article-frontend-browser-feature-detection",
+                    title: "Browser Feature Detection",
+                    slug: "browser-feature-detection",
+                  },
+                ],
+              },
+              {
+                id: "topic-frontend-css-vendor-prefixes",
+                name: "CSS Vendor Prefixes",
+                articles: [
+                  {
+                    id: "article-frontend-css-vendor-prefixes",
+                    title: "CSS Vendor Prefixes",
+                    slug: "css-vendor-prefixes",
+                  },
+                ],
+              },
+              {
+                id: "topic-frontend-cross-browser-testing",
+                name: "Cross-Browser Testing",
+                articles: [
+                  {
+                    id: "article-frontend-cross-browser-testing",
+                    title: "Cross-Browser Testing",
+                    slug: "cross-browser-testing",
+                  },
+                ],
+              },
+              {
+                id: "topic-frontend-legacy-browser-support",
+                name: "Legacy Browser Support",
+                articles: [
+                  {
+                    id: "article-frontend-legacy-browser-support",
+                    title: "Legacy Browser Support",
+                    slug: "legacy-browser-support",
                   },
                 ],
               },
@@ -504,16 +570,115 @@ export const sidebarData: Category[] = [
           },
           {
             id: "sub-frontend-edgecases",
-            name: "Edge Cases and UX",
+            name: "Edge Cases and User Experience",
             topics: [
               {
                 id: "topic-frontend-edgecases",
-                name: "Edge-case Handling",
+                name: "Loading States",
                 articles: [
                   {
-                    id: "article-frontend-edgecases",
-                    title: "Edge Cases and UX",
-                    slug: "edge-cases-and-ux",
+                    id: "article-frontend-loading-states",
+                    title: "Loading States",
+                    slug: "loading-states",
+                  },
+                ],
+              },
+              {
+                id: "topic-frontend-empty-states",
+                name: "Empty States",
+                articles: [
+                  {
+                    id: "article-frontend-empty-states",
+                    title: "Empty States",
+                    slug: "empty-states",
+                  },
+                ],
+              },
+              {
+                id: "topic-frontend-error-states",
+                name: "Error States",
+                articles: [
+                  {
+                    id: "article-frontend-error-states",
+                    title: "Error States",
+                    slug: "error-states",
+                  },
+                ],
+              },
+              {
+                id: "topic-frontend-skeleton-screens",
+                name: "Skeleton Screens",
+                articles: [
+                  {
+                    id: "article-frontend-skeleton-screens",
+                    title: "Skeleton Screens",
+                    slug: "skeleton-screens",
+                  },
+                ],
+              },
+              {
+                id: "topic-frontend-infinite-scroll-vs-pagination",
+                name: "Infinite Scroll vs Pagination",
+                articles: [
+                  {
+                    id: "article-frontend-infinite-scroll-vs-pagination",
+                    title: "Infinite Scroll vs Pagination",
+                    slug: "infinite-scroll-vs-pagination",
+                  },
+                ],
+              },
+              {
+                id: "topic-frontend-optimistic-ui-updates",
+                name: "Optimistic UI Updates",
+                articles: [
+                  {
+                    id: "article-frontend-optimistic-ui-updates",
+                    title: "Optimistic UI Updates",
+                    slug: "optimistic-ui-updates",
+                  },
+                ],
+              },
+              {
+                id: "topic-frontend-undo-redo-functionality",
+                name: "Undo/Redo Functionality",
+                articles: [
+                  {
+                    id: "article-frontend-undo-redo-functionality",
+                    title: "Undo/Redo Functionality",
+                    slug: "undo-redo-functionality",
+                  },
+                ],
+              },
+              {
+                id: "topic-frontend-keyboard-shortcuts",
+                name: "Keyboard Shortcuts",
+                articles: [
+                  {
+                    id: "article-frontend-keyboard-shortcuts",
+                    title: "Keyboard Shortcuts",
+                    slug: "keyboard-shortcuts",
+                  },
+                ],
+              },
+              {
+                id: "topic-frontend-dark-mode-implementation",
+                name: "Dark Mode Implementation",
+                articles: [
+                  {
+                    id: "article-frontend-dark-mode-implementation",
+                    title: "Dark Mode Implementation",
+                    slug: "dark-mode-implementation",
+                  },
+                ],
+              },
+              {
+                id: "topic-frontend-print-stylesheets",
+                name: "Print Stylesheets",
+                articles: [
+                  {
+                    id: "article-frontend-print-stylesheets",
+                    title: "Print Stylesheets",
+                    slug: "print-stylesheets",
                   },
                 ],
               },

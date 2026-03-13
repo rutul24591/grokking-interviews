@@ -1,0 +1,28 @@
+/* font-display: swap — RECOMMENDED for body text */
+/* Shows fallback immediately, swaps when font loads */
+/* Pros: Fast FCP. Cons: Potential CLS from swap */
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter-var.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+/* font-display: optional — RECOMMENDED for above-fold headings */
+/* Uses font only if it loads very quickly (~100ms) */
+/* If font doesn't load fast enough, uses fallback for the entire page session */
+/* Pros: Zero CLS, fast FCP. Cons: May not show custom font on slow connections */
+@font-face {
+  font-family: 'Playfair';
+  src: url('/fonts/playfair.woff2') format('woff2');
+  font-display: optional;
+}
+
+/* font-display: fallback — good compromise */
+/* Short block period (~100ms), then uses fallback */
+/* Swaps to custom font within ~3 seconds, otherwise fallback is permanent */
+@font-face {
+  font-family: 'SourceSans';
+  src: url('/fonts/source-sans.woff2') format('woff2');
+  font-display: fallback;
+}

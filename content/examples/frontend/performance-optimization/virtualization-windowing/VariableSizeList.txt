@@ -1,0 +1,39 @@
+import { VariableSizeList } from 'react-window';
+import { useRef } from 'react';
+
+function MessageList({ messages }) {
+  const listRef = useRef(null);
+
+  // Must know or estimate heights upfront
+  const getItemSize = (index) => {
+    const msg = messages[index];
+    // Estimate based on content length
+    const lineCount = Math.ceil(msg.text.length / 60);
+    return 40 + lineCount * 20; // base height + line height
+  };
+
+  const Row = ({ index, style }) => (
+    <div style={style} className="p-3 border-b">
+      <div className="font-medium text-sm text-gray-600">{messages[index].sender}</div>
+      <div>{messages[index].text}</div>
+    </div>
+  );
+
+  // If data changes, reset cached measurements
+  const handleDataChange = () => {
+    listRef.current?.resetAfterIndex(0);
+  };
+
+  return (
+    <VariableSizeList
+      ref={listRef}
+      height={600}
+      width="100%"
+      itemCount={messages.length}
+      itemSize={getItemSize}
+      overscanCount={3}
+    >
+      {Row}
+    </VariableSizeList>
+  );
+}

@@ -1,0 +1,27 @@
+// React Router with lazy routes
+import { lazy, Suspense } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+// Each route gets its own chunk — loaded when user navigates
+const Home = lazy(() => import('./pages/Home'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));  // includes chart library
+const Settings = lazy(() => import('./pages/Settings'));
+const Editor = lazy(() => import('./pages/Editor'));         // includes rich text editor
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/editor" element={<Editor />} />
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
+  );
+}
+
+// Next.js App Router does this automatically —
+// each page.tsx in app/ is its own chunk

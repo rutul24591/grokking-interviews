@@ -1,0 +1,44 @@
+// === esbuild via CLI ===
+npx esbuild src/app.js --bundle --minify --sourcemap \\
+  --target=es2020 --outfile=dist/app.min.js
+
+// === esbuild via Node.js API ===
+const esbuild = require('esbuild');
+
+async function buildWithEsbuild() {
+  const result = await esbuild.build({
+    entryPoints: ['src/app.js'],
+    bundle: true,
+    minify: true,                // Enable all minification
+    // Or granular control:
+    // minifyWhitespace: true,
+    // minifyIdentifiers: true,  // Mangling
+    // minifySyntax: true,       // Syntax transforms
+    sourcemap: true,
+    target: ['es2020'],
+    outfile: 'dist/app.min.js',
+    treeShaking: true,
+    drop: ['console', 'debugger'],  // Remove console.* and debugger
+    pure: ['console.log'],          // Mark as side-effect free
+    legalComments: 'none',          // Strip license comments
+    // Or: legalComments: 'external' → put in separate .LEGAL.txt
+  });
+
+  console.log('Build complete:', result);
+}
+
+// === esbuild Transform API (minify a string) ===
+async function minifyCode(code) {
+  const result = await esbuild.transform(code, {
+    minify: true,
+    target: 'es2020',
+    loader: 'js',
+  });
+
+  return result.code;
+}
+
+// Benchmark (1 MB bundle):
+// Terser:  ~4800ms
+// esbuild: ~150ms (32x faster)
+// Output size difference: esbuild is ~2-5% larger

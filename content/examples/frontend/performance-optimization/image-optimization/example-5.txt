@@ -1,0 +1,47 @@
+// === Cloudinary ===
+// Original: https://res.cloudinary.com/demo/image/upload/sample.jpg
+// Optimized: width 800, auto format, auto quality
+const cloudinaryUrl = `https://res.cloudinary.com/\${cloudName}/image/upload/
+  w_800,f_auto,q_auto/\${imageId}.jpg`;
+
+// React component with Cloudinary
+function CloudinaryImage({ publicId, alt, width, height }) {
+  const baseUrl = `https://res.cloudinary.com/\${CLOUD_NAME}/image/upload`;
+
+  return (
+    <picture>
+      <source
+        type="image/avif"
+        srcSet={`
+          \${baseUrl}/w_400,f_avif,q_auto/\${publicId} 400w,
+          \${baseUrl}/w_800,f_avif,q_auto/\${publicId} 800w,
+          \${baseUrl}/w_1200,f_avif,q_auto/\${publicId} 1200w
+        `}
+        sizes="(max-width: 640px) 100vw, 50vw"
+      />
+      <source
+        type="image/webp"
+        srcSet={`
+          \${baseUrl}/w_400,f_webp,q_auto/\${publicId} 400w,
+          \${baseUrl}/w_800,f_webp,q_auto/\${publicId} 800w,
+          \${baseUrl}/w_1200,f_webp,q_auto/\${publicId} 1200w
+        `}
+        sizes="(max-width: 640px) 100vw, 50vw"
+      />
+      <img
+        src={`\${baseUrl}/w_800,f_jpg,q_80/\${publicId}`}
+        alt={alt}
+        width={width}
+        height={height}
+        loading="lazy"
+      />
+    </picture>
+  );
+}
+
+// === Cloudflare Image Resizing ===
+// Transforms at the CDN edge via URL path
+// /cdn-cgi/image/width=800,format=auto,quality=75/original.jpg
+
+// === Imgix ===
+// https://your-source.imgix.net/image.jpg?w=800&auto=format,compress&q=75

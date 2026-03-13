@@ -1,0 +1,43 @@
+// Manual extraction workflow:
+//
+// 1. Open Chrome DevTools → Sources → Coverage (Cmd+Shift+P → "Coverage")
+// 2. Click "Start instrumenting coverage and reload page"
+// 3. DON'T scroll — only above-the-fold content should render
+// 4. Check CSS files — red bars = unused rules, blue bars = used rules
+// 5. Click on a CSS file to see per-line coverage
+// 6. Copy the "used" rules into your critical CSS
+//
+// Alternatively, use the Coverage API programmatically:
+
+const puppeteer = require('puppeteer');
+
+async function extractCriticalCSS(url) {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+
+  // Set viewport
+  await page.setViewport({ width: 1280, height: 800 });
+
+  // Start CSS coverage
+  await page.coverage.startCSSCoverage();
+
+  // Navigate to page
+  await page.goto(url, { waitUntil: 'networkidle0' });
+
+  // Get coverage data
+  const coverage = await page.coverage.stopCSSCoverage();
+
+  let criticalCSS = '';
+  for (const entry of coverage) {
+    for (const range of entry.ranges) {
+      criticalCSS += entry.text.slice(range.start, range.end);
+    }
+  }
+
+  await browser.close();
+
+  console.log(`Critical CSS: \${criticalCSS.length} bytes`);
+  return criticalCSS;
+}
+
+extractCriticalCSS('https://mysite.com');

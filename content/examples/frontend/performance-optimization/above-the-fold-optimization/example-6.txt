@@ -1,0 +1,17 @@
+<!-- Preload the LCP hero image — discovered before parser reaches it -->
+<link rel="preload" href="/hero-banner.webp" as="image"
+      type="image/webp" fetchpriority="high">
+
+<!-- Preload a critical font -->
+<link rel="preload" href="/fonts/inter-var.woff2" as="font"
+      type="font/woff2" crossorigin>
+
+<!-- Preload above-fold data (for client-rendered content) -->
+<link rel="preload" href="/api/featured-products"
+      as="fetch" crossorigin>
+
+<!-- Responsive preload — load different images per viewport -->
+<link rel="preload" href="/hero-mobile.webp" as="image"
+      media="(max-width: 768px)" type="image/webp">
+<link rel="preload" href="/hero-desktop.webp" as="image"
+      media="(min-width: 769px)" type="image/webp">

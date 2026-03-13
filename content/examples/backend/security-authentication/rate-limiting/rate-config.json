@@ -1,0 +1,4 @@
+{
+  "maxTokens": 100,
+  "refillPerSecond": 10
+}

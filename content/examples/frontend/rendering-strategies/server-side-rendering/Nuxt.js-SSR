@@ -1,0 +1,29 @@
+<!-- pages/products/[id].vue -->
+<template>
+  <div>
+    <h1>{{ product.name }}</h1>
+    <p>{{ product.description }}</p>
+    <button @click="addToCart" :disabled="loading">
+      {{ loading ? 'Adding...' : 'Add to Cart' }}
+    </button>
+  </div>
+</template>
+
+<script setup>
+const route = useRoute();
+const loading = ref(false);
+
+// Runs on server during SSR, then on client during navigation
+const { data: product } = await useFetch(
+  `https://api.example.com/products/\${route.params.id}`
+);
+
+const addToCart = async () => {
+  loading.value = true;
+  await $fetch('/api/cart', {
+    method: 'POST',
+    body: { productId: product.value.id }
+  });
+  loading.value = false;
+};
+</script>

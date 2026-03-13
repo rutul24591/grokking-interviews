@@ -1,0 +1,33 @@
+function normalizeRequestKey(url: string, options?: RequestInit): string {
+  // Parse URL relative to current origin
+  const parsed = new URL(url, window.location.origin);
+
+  // Remove trailing slash
+  let pathname = parsed.pathname;
+  if (pathname.length > 1 && pathname.endsWith('/')) {
+    pathname = pathname.slice(0, -1);
+  }
+
+  // Sort query parameters alphabetically
+  parsed.searchParams.sort();
+
+  // Normalize to lowercase pathname
+  const normalizedUrl = pathname.toLowerCase() + parsed.search;
+
+  // Include method (default GET)
+  const method = (options?.method || 'GET').toUpperCase();
+
+  // For requests with bodies, include a hash of the body
+  if (options?.body) {
+    const bodyStr = typeof options.body === 'string'
+      ? options.body
+      : JSON.stringify(options.body);
+    // Simple hash for dedup purposes
+    const hash = Array.from(bodyStr).reduce(
+      (h, c) => ((h << 5) - h + c.charCodeAt(0)) | 0, 0
+    );
+    return `\${method}:\${normalizedUrl}:body(\${hash})`;
+  }
+
+  return `\${method}:\${normalizedUrl}`;
+}

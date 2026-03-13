@@ -1,0 +1,47 @@
+// === Lighthouse CLI for automated auditing ===
+// Install: pnpm add -g lighthouse
+// Run: lighthouse https://mysite.com --output=json --output-path=report.json
+
+// Key audits to check:
+// - "render-blocking-resources" — should show 0 blocking CSS
+// - "first-contentful-paint" — target < 1.8s
+// - "largest-contentful-paint" — target < 2.5s
+// - "unused-css-rules" — percentage of CSS that's unused
+
+// === WebPageTest for real-device testing ===
+// https://webpagetest.org
+// - Run tests from different locations and devices
+// - Filmstrip view shows exactly when content appears
+// - Waterfall chart shows CSS blocking behavior
+// - Compare before/after with visual regression
+
+// === Performance Observer API for real user monitoring ===
+const observer = new PerformanceObserver((list) => {
+  for (const entry of list.getEntries()) {
+    console.log(`\${entry.name}: \${entry.startTime}ms`);
+
+    // Send to analytics
+    sendToAnalytics({
+      metric: entry.name,
+      value: entry.startTime,
+      page: window.location.pathname,
+    });
+  }
+});
+
+// Monitor paint timings
+observer.observe({ type: 'paint', buffered: true });
+// Logs: "first-contentful-paint: 823ms"
+
+// Monitor LCP
+observer.observe({ type: 'largest-contentful-paint', buffered: true });
+// Logs: "largest-contentful-paint: 1450ms"
+
+// === Chrome DevTools Performance Panel ===
+// 1. Open DevTools → Performance
+// 2. Enable "Screenshots" and "Web Vitals"
+// 3. Set CPU throttling to 4x and Network to "Slow 3G"
+// 4. Click Record → Reload page → Stop
+// 5. Look at the "Timings" row for FCP and LCP markers
+// 6. In the "Network" section, verify CSS is not in the
+//    critical path (should load after first paint)

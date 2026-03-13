@@ -1,0 +1,33 @@
+<!-- src/routes/products/[id]/+page.svelte -->
+<script lang="ts">
+  import type { PageData } from './$types';
+  export let data: PageData;
+
+  let loading = false;
+
+  async function addToCart() {
+    loading = true;
+    await fetch('/api/cart', {
+      method: 'POST',
+      body: JSON.stringify({ productId: data.product.id })
+    });
+    loading = false;
+  }
+</script>
+
+<h1>{data.product.name}</h1>
+<p>{data.product.description}</p>
+<button on:click={addToCart} disabled={loading}>
+  {loading ? 'Adding...' : 'Add to Cart'}
+</button>
+
+<!-- src/routes/products/[id]/+page.ts -->
+import type { PageLoad } from './$types';
+
+// Runs on server during SSR
+export const load: PageLoad = async ({ params, fetch }) => {
+  const response = await fetch(`https://api.example.com/products/\${params.id}`);
+  const product = await response.json();
+
+  return { product };
+};

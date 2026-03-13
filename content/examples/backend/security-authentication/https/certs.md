@@ -1,0 +1,1 @@
+Use a trusted CA and automate renewal.

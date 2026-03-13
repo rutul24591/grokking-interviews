@@ -1,0 +1,25 @@
+// BAD: Third-party scripts in <head> block rendering
+<head>
+  <script src="https://analytics.example.com/tracker.js"></script>
+  <script src="https://ads.example.com/ad-loader.js"></script>
+  <script src="https://chat.example.com/widget.js"></script>
+</head>
+
+// GOOD: Defer or lazy-load all third-party scripts
+<head>
+  {/* Preconnect to third-party origins you'll need */}
+  <link rel="preconnect" href="https://analytics.example.com">
+</head>
+<body>
+  {/* Main content first */}
+  <main>...</main>
+
+  {/* Third-party scripts deferred */}
+  <script defer src="https://analytics.example.com/tracker.js"></script>
+
+  {/* Or use Next.js Script component */}
+  <Script
+    src="https://chat.example.com/widget.js"
+    strategy="lazyOnload"
+  />
+</body>

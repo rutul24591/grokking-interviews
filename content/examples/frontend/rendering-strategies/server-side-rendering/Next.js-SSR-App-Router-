@@ -1,0 +1,40 @@
+// app/products/[id]/page.tsx - Server Component (default)
+// Automatically SSR'd on each request
+async function ProductPage({ params }: { params: { id: string } }) {
+  // Data fetching happens on server
+  const product = await fetch(
+    `https://api.example.com/products/\${params.id}`,
+    { cache: 'no-store' } // Force SSR (no caching)
+  ).then(res => res.json());
+
+  return (
+    <div>
+      <h1>{product.name}</h1>
+      <p>{product.description}</p>
+      <AddToCartButton productId={product.id} />
+    </div>
+  );
+}
+
+// app/components/AddToCartButton.tsx - Client Component
+'use client';
+import { useState } from 'react';
+
+export function AddToCartButton({ productId }: { productId: string }) {
+  const [loading, setLoading] = useState(false);
+
+  const handleClick = async () => {
+    setLoading(true);
+    await fetch('/api/cart', {
+      method: 'POST',
+      body: JSON.stringify({ productId })
+    });
+    setLoading(false);
+  };
+
+  return (
+    <button onClick={handleClick} disabled={loading}>
+      {loading ? 'Adding...' : 'Add to Cart'}
+    </button>
+  );
+}

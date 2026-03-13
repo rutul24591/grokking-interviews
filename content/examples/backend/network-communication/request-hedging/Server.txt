@@ -1,0 +1,9 @@
+const express = require("express");
+const app = express();
+
+app.get("/profile", async (req, res) => {
+  const delay = Math.random() * 200;
+  setTimeout(() => res.json({ ok: true, delay }), delay);
+});
+
+app.listen(3000);

@@ -1,0 +1,52 @@
+// routes/blog/[slug].tsx
+import { Handlers, PageProps } from "$fresh/server.ts";
+import LikeButton from "../../islands/LikeButton.tsx";
+import CommentSection from "../../islands/CommentSection.tsx";
+
+export const handler: Handlers = {
+  async GET(req, ctx) {
+    const post = await getPost(ctx.params.slug);
+    return ctx.render({ post });
+  },
+};
+
+// Everything here is static HTML
+export default function BlogPostPage({ data }: PageProps) {
+  const { post } = data;
+
+  return (
+    <div>
+      {/* Static header */}
+      <header>
+        <h1>{post.title}</h1>
+        <p>{post.author} • {post.date}</p>
+      </header>
+
+      {/* Static content */}
+      <article dangerouslySetInnerHTML={{ __html: post.content }} />
+
+      {/* Interactive island - only this gets JavaScript */}
+      <LikeButton postId={post.id} />
+
+      {/* Interactive island */}
+      <CommentSection postId={post.id} />
+
+      {/* Static footer */}
+      <footer>© 2026</footer>
+    </div>
+  );
+}
+
+// islands/LikeButton.tsx
+// Files in /islands automatically become interactive
+import { signal } from "@preact/signals";
+
+export default function LikeButton({ postId }: { postId: string }) {
+  const likes = signal(0);
+
+  return (
+    <button onClick={() => likes.value++}>
+      ❤️ Like ({likes.value})
+    </button>
+  );
+}

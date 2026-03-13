@@ -1,0 +1,28 @@
+// BAD: Custom font with no fallback strategy
+// Text is invisible (FOIT) for up to 3 seconds, then shifts when font loads
+@font-face {
+  font-family: 'CustomFont';
+  src: url('/fonts/custom.woff2') format('woff2');
+  /* No font-display — defaults to 'auto' (usually FOIT behavior) */
+}
+
+// GOOD: font-display + size-adjusted fallback
+@font-face {
+  font-family: 'CustomFont';
+  src: url('/fonts/custom.woff2') format('woff2');
+  font-display: optional; /* No swap = no CLS */
+}
+
+// Or with swap + adjusted fallback to minimize CLS:
+@font-face {
+  font-family: 'CustomFont Fallback';
+  src: local('Arial');
+  size-adjust: 105%;
+  ascent-override: 92%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
+body {
+  font-family: 'CustomFont', 'CustomFont Fallback', sans-serif;
+}

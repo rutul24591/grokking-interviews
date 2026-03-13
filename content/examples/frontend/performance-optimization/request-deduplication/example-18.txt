@@ -1,0 +1,81 @@
+// Testing dedup with a mock fetch counter
+describe('RequestDeduplicator', () => {
+  let fetchCount: number;
+  let dedup: RequestDeduplicator;
+
+  beforeEach(() => {
+    fetchCount = 0;
+    dedup = new RequestDeduplicator(2000);
+
+    global.fetch = jest.fn(() => {
+      fetchCount++;
+      return Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ id: 1, name: 'Test User' }),
+      } as Response);
+    });
+  });
+
+  test('deduplicates concurrent identical requests', async () => {
+    // Fire three concurrent requests
+    const [r1, r2, r3] = await Promise.all([
+      dedup.fetch('/api/user'),
+      dedup.fetch('/api/user'),
+      dedup.fetch('/api/user'),
+    ]);
+
+    expect(fetchCount).toBe(1);        // Only one actual fetch
+    expect(r1).toEqual(r2);             // Same data
+    expect(r2).toEqual(r3);             // Same data
+  });
+
+  test('does not dedup requests with different URLs', async () => {
+    await Promise.all([
+      dedup.fetch('/api/user'),
+      dedup.fetch('/api/posts'),
+    ]);
+
+    expect(fetchCount).toBe(2);         // Two different requests
+  });
+
+  test('serves from time-window cache', async () => {
+    await dedup.fetch('/api/user');      // First request
+    expect(fetchCount).toBe(1);
+
+    await dedup.fetch('/api/user');      // Within 2s window
+    expect(fetchCount).toBe(1);         // No additional fetch
+  });
+
+  test('refetches after window expires', async () => {
+    await dedup.fetch('/api/user');
+    expect(fetchCount).toBe(1);
+
+    // Advance time past dedup window
+    jest.advanceTimersByTime(3000);
+
+    await dedup.fetch('/api/user');
+    expect(fetchCount).toBe(2);         // Fresh request after window
+  });
+
+  test('broadcasts errors to all subscribers', async () => {
+    (global.fetch as jest.Mock).mockRejectedValueOnce(new Error('500'));
+
+    const results = await Promise.allSettled([
+      dedup.fetch('/api/user'),
+      dedup.fetch('/api/user'),
+    ]);
+
+    expect(fetchCount).toBe(1);
+    expect(results[0].status).toBe('rejected');
+    expect(results[1].status).toBe('rejected');
+  });
+
+  test('never deduplicates POST requests', async () => {
+    await Promise.all([
+      dedup.fetch('/api/user', { method: 'POST', body: '{}' }),
+      dedup.fetch('/api/user', { method: 'POST', body: '{}' }),
+    ]);
+
+    expect(fetchCount).toBe(2);         // Both POSTs execute
+  });
+});

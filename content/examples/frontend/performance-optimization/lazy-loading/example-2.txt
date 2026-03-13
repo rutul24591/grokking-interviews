@@ -1,0 +1,92 @@
+import { useState, useRef, useEffect, useCallback } from 'react';
+
+// === Reusable lazy image hook ===
+function useLazyLoad(options = {}) {
+  const { rootMargin = '200px', threshold = 0 } = options;
+  const ref = useRef(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.unobserve(element);
+        }
+      },
+      { rootMargin, threshold }
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [rootMargin, threshold]);
+
+  return { ref, isInView };
+}
+
+// === Progressive image component with blur-up ===
+function ProgressiveImage({ src, placeholder, alt, width, height }) {
+  const { ref, isInView } = useLazyLoad({ rootMargin: '300px' });
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        width,
+        height,
+        position: 'relative',
+        overflow: 'hidden',
+        backgroundColor: '#f0f0f0',
+      }}
+    >
+      {/* Low-quality placeholder (inline base64 or tiny image) */}
+      <img
+        src={placeholder}
+        alt=""
+        aria-hidden="true"
+        style={{
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          filter: loaded ? 'none' : 'blur(20px)',
+          transform: 'scale(1.1)', // Hide blur edges
+          transition: 'filter 0.5s ease-out',
+        }}
+      />
+
+      {/* Full-resolution image — only loads when in view */}
+      {isInView && (
+        <img
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          onLoad={() => setLoaded(true)}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            opacity: loaded ? 1 : 0,
+            transition: 'opacity 0.5s ease-out',
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+// === Usage ===
+<ProgressiveImage
+  src="/photos/landscape-2400.jpg"
+  placeholder="data:image/jpeg;base64,/9j/4AAQ..." // 20x15px base64
+  alt="Mountain landscape"
+  width={800}
+  height={600}
+/>

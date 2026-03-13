@@ -1,0 +1,1 @@
+Compensations must be idempotent.

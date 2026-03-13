@@ -1,0 +1,1 @@
+useHotkeys('mod+k', () => setPaletteOpen(true), { preventDefault: true });

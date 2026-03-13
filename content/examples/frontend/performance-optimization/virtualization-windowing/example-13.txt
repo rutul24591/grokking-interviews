@@ -1,0 +1,99 @@
+import { useVirtualizer } from '@tanstack/react-virtual';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { useRef, useCallback, useEffect } from 'react';
+
+function InfiniteVirtualList({ apiEndpoint }) {
+  const parentRef = useRef(null);
+
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+  } = useInfiniteQuery({
+    queryKey: ['items', apiEndpoint],
+    queryFn: async ({ pageParam = 0 }) => {
+      const res = await fetch(`\${apiEndpoint}?cursor=\${pageParam}&limit=50`);
+      return res.json();
+    },
+    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+  });
+
+  const allItems = data?.pages.flatMap((page) => page.items) ?? [];
+  const totalCount = hasNextPage ? allItems.length + 1 : allItems.length;
+
+  const virtualizer = useVirtualizer({
+    count: totalCount,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 60,
+    overscan: 10,
+  });
+
+  // Trigger fetch when the last virtual item is a loading placeholder
+  useEffect(() => {
+    const virtualItems = virtualizer.getVirtualItems();
+    const lastItem = virtualItems[virtualItems.length - 1];
+
+    if (!lastItem) return;
+
+    if (
+      lastItem.index >= allItems.length - 1 &&
+      hasNextPage &&
+      !isFetchingNextPage
+    ) {
+      fetchNextPage();
+    }
+  }, [
+    virtualizer.getVirtualItems(),
+    hasNextPage,
+    isFetchingNextPage,
+    allItems.length,
+    fetchNextPage,
+  ]);
+
+  if (isLoading) {
+    return <div className="p-8 text-center">Loading...</div>;
+  }
+
+  return (
+    <div ref={parentRef} className="h-[600px] overflow-auto border rounded-lg">
+      <div
+        style={{
+          height: virtualizer.getTotalSize(),
+          width: '100%',
+          position: 'relative',
+        }}
+      >
+        {virtualizer.getVirtualItems().map((virtualRow) => {
+          const isLoadingRow = virtualRow.index >= allItems.length;
+          const item = allItems[virtualRow.index];
+
+          return (
+            <div
+              key={virtualRow.key}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                transform: `translateY(\${virtualRow.start}px)`,
+              }}
+            >
+              {isLoadingRow ? (
+                <div className="p-4 text-center text-gray-400">
+                  Loading more...
+                </div>
+              ) : (
+                <div className="p-4 border-b">
+                  <div className="font-medium">{item.title}</div>
+                  <div className="text-sm text-gray-500">{item.subtitle}</div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

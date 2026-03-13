@@ -1,0 +1,50 @@
+// === Native lazy loading ===
+// Supported in Chrome 76+, Firefox 75+, Safari 15.4+, Edge 79+
+
+// Lazy — deferred until near viewport
+<img
+  src="/product-image.jpg"
+  alt="Product Name"
+  loading="lazy"
+  width={400}
+  height={300}
+  decoding="async"     // Don't block rendering for decode
+/>
+
+// Eager — load immediately (default behavior)
+// Use for above-the-fold images, hero banners, LCP elements
+<img
+  src="/hero-banner.jpg"
+  alt="Welcome to our store"
+  loading="eager"
+  fetchPriority="high"  // Tell browser this is high priority
+  width={1200}
+  height={600}
+/>
+
+// Also works on iframes
+<iframe
+  src="https://www.youtube.com/embed/video-id"
+  loading="lazy"
+  width={560}
+  height={315}
+  title="Video player"
+/>
+
+// === Critical rule: ALWAYS set width and height ===
+// Without dimensions, the browser can't reserve space before loading
+// This causes Cumulative Layout Shift (CLS)
+
+// BAD — causes layout shift
+<img src="/photo.jpg" loading="lazy" alt="Photo" />
+
+// GOOD — browser reserves 400x300 space immediately
+<img src="/photo.jpg" loading="lazy" alt="Photo" width={400} height={300} />
+
+// Or use CSS aspect-ratio
+<img
+  src="/photo.jpg"
+  loading="lazy"
+  alt="Photo"
+  style={{ aspectRatio: '4/3', width: '100%', height: 'auto' }}
+/>

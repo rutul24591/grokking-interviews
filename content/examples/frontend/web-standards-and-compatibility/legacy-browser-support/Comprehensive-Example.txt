@@ -1,0 +1,25 @@
+// file: public/index.html
+<script type="module" src="/app.modern.js"></script>
+<script nomodule src="/app.legacy.js"></script>
+
+// file: src/legacy/polyfills.ts
+export async function ensureLegacySupport() {
+  if (!('fetch' in window)) await import('whatwg-fetch');
+  if (!('Promise' in window)) await import('es6-promise/auto');
+}
+
+// file: src/legacy/bootstrap.ts
+import { ensureLegacySupport } from './polyfills';
+
+ensureLegacySupport().then(() => {
+  // bootstrap legacy app
+}).catch(() => {
+  document.body.innerHTML = '<p>Your browser is no longer supported.</p>';
+});
+
+// file: src/banner.ts
+export function showDeprecationBanner() {
+  const banner = document.createElement('div');
+  banner.textContent = 'Your browser is deprecated. Upgrade for the best experience.';
+  document.body.prepend(banner);
+}

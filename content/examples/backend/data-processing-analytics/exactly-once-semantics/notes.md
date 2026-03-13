@@ -1,0 +1,1 @@
+Combine idempotency with committed offsets for safety.

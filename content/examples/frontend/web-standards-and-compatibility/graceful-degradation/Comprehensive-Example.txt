@@ -1,0 +1,31 @@
+// file: styles/layout.css
+@supports (display: grid) {
+  .layout { display: grid; grid-template-columns: 1fr 300px; gap: 24px; }
+}
+@supports not (display: grid) {
+  .layout { display: block; }
+  .sidebar { margin-top: 16px; }
+}
+
+// file: public/share.js
+const shareBtn = document.querySelector('#share');
+if (!shareBtn) return;
+if ('share' in navigator) {
+  shareBtn.addEventListener('click', async () => {
+    try {
+      await navigator.share({ title: document.title, url: location.href });
+    } catch {
+      alert('Sharing cancelled');
+    }
+  });
+} else {
+  shareBtn.addEventListener('click', () => {
+    window.prompt('Copy link', location.href);
+  });
+}
+
+// file: config/feature-flags.json
+{
+  "enableWebShare": true,
+  "enableGridLayout": true
+}

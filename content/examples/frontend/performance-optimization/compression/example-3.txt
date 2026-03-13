@@ -1,0 +1,9 @@
+// Gzip compression levels — typical results for a 500KB JS bundle:
+//
+// Level 1:  ~165 KB  (67% reduction)  — 5ms compression time
+// Level 4:  ~140 KB  (72% reduction)  — 15ms compression time
+// Level 6:  ~132 KB  (74% reduction)  — 30ms compression time  [default]
+// Level 9:  ~128 KB  (74.4% reduction) — 90ms compression time
+//
+// Notice: Level 6→9 saves only ~4KB but triples compression time.
+// For dynamic compression, the CPU cost of level 9 is rarely justified.

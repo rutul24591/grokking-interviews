@@ -1,0 +1,20 @@
+<!-- Prefetch the next likely page -->
+<link rel="prefetch" href="/products/featured">
+
+<!-- Prefetch a route's JavaScript bundle (code splitting) -->
+<link rel="prefetch" href="/chunks/product-detail.js">
+
+<!-- In Next.js, Link component prefetches by default -->
+import Link from 'next/link';
+
+function Navigation() {
+  return (
+    <nav>
+      {/* Next.js prefetches this route on hover/viewport entry */}
+      <Link href="/products">Products</Link>
+
+      {/* Disable prefetch for less likely routes */}
+      <Link href="/admin" prefetch={false}>Admin</Link>
+    </nav>
+  );
+}

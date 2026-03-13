@@ -1,0 +1,4 @@
+slo:
+  name: checkout-availability
+  target: 99.9
+  windowDays: 30

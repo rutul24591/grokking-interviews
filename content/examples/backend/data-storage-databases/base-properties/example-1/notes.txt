@@ -1,0 +1,1 @@
+Basically Available, Soft state, Eventual consistency.

@@ -1,0 +1,3 @@
+const inflight = new Map(); async function memoizedLoad(key, loader) { if (inflight.has(key)) return inflight.get(key); const promise = loader().finally(() => inflight.delete(key)); inflight.set(key, promise); return promise;
+} app.get('/rules/:id', async (req, res) => { const key = 'rules:' + req.params.id; const data = await memoizedLoad(key, () => db.getRules(req.params.id)); return res.json(data);
+});

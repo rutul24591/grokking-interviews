@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1822">CDN Cache Invalidation Methods &amp; Propagation</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="invArrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#6d5bd0"/>
+    </marker>
+    <marker id="invArrowOrg" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#d97843"/>
+    </marker>
+    <marker id="invArrowGrn" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#2f9d74"/>
+    </marker>
+  </defs>
+
+  <!-- 4 Methods Side by Side -->
+
+  <!-- Method 1: Purge by URL -->
+  <rect x="20" y="50" width="195" height="160" rx="8" fill="#fff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="20" y="50" width="195" height="32" rx="8" fill="#6d5bd0"/>
+  <rect x="20" y="70" width="195" height="12" fill="#6d5bd0"/>
+  <text x="118" y="71" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">Purge by URL</text>
+
+  <text x="35" y="105" font-size="10" fill="#1a1822" font-weight="600">Scope:</text>
+  <text x="85" y="105" font-size="10" fill="#1a1822">Single resource</text>
+  <text x="35" y="125" font-size="10" fill="#1a1822" font-weight="600">Speed:</text>
+  <text x="85" y="125" font-size="10" fill="#2f9d74">Fast (seconds)</text>
+  <text x="35" y="145" font-size="10" fill="#1a1822" font-weight="600">Use:</text>
+  <text x="85" y="145" font-size="10" fill="#1a1822">Fix specific page</text>
+
+  <text x="35" y="170" font-size="9" fill="#6d5bd0">PURGE /products/123</text>
+  <text x="35" y="185" font-size="9" fill="#6d5bd0">→ Only /products/123</text>
+  <text x="35" y="200" font-size="9" fill="#6d5bd0">  is invalidated</text>
+
+  <!-- Method 2: Purge by Tag -->
+  <rect x="235" y="50" width="195" height="160" rx="8" fill="#fff" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="235" y="50" width="195" height="32" rx="8" fill="#2f9d74"/>
+  <rect x="235" y="70" width="195" height="12" fill="#2f9d74"/>
+  <text x="333" y="71" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">Purge by Tag</text>
+
+  <text x="250" y="105" font-size="10" fill="#1a1822" font-weight="600">Scope:</text>
+  <text x="300" y="105" font-size="10" fill="#1a1822">Tagged resources</text>
+  <text x="250" y="125" font-size="10" fill="#1a1822" font-weight="600">Speed:</text>
+  <text x="300" y="125" font-size="10" fill="#2f9d74">Fast (seconds)</text>
+  <text x="250" y="145" font-size="10" fill="#1a1822" font-weight="600">Use:</text>
+  <text x="300" y="145" font-size="10" fill="#1a1822">Data model change</text>
+
+  <text x="250" y="170" font-size="9" fill="#2f9d74">PURGE Tag: product-123</text>
+  <text x="250" y="185" font-size="9" fill="#2f9d74">→ /products/123</text>
+  <text x="250" y="200" font-size="9" fill="#2f9d74">→ /category/electronics</text>
+
+  <!-- Method 3: Purge All -->
+  <rect x="450" y="50" width="195" height="160" rx="8" fill="#fff" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="450" y="50" width="195" height="32" rx="8" fill="#d97843"/>
+  <rect x="450" y="70" width="195" height="12" fill="#d97843"/>
+  <text x="548" y="71" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">Purge All</text>
+
+  <text x="465" y="105" font-size="10" fill="#1a1822" font-weight="600">Scope:</text>
+  <text x="515" y="105" font-size="10" fill="#1a1822">Entire cache</text>
+  <text x="465" y="125" font-size="10" fill="#1a1822" font-weight="600">Speed:</text>
+  <text x="515" y="125" font-size="10" fill="#d97843">Slow (minutes)</text>
+  <text x="465" y="145" font-size="10" fill="#1a1822" font-weight="600">Use:</text>
+  <text x="515" y="145" font-size="10" fill="#1a1822">Major deploy only</text>
+
+  <text x="465" y="170" font-size="9" fill="#d97843">PURGE *</text>
+  <text x="465" y="185" font-size="9" fill="#d97843">→ All cached content</text>
+  <text x="465" y="200" font-size="9" fill="#d97843">⚠ Thundering herd risk</text>
+
+  <!-- Method 4: TTL Expiration -->
+  <rect x="665" y="50" width="210" height="160" rx="8" fill="#fff" stroke="#1a1822" stroke-width="1.5"/>
+  <rect x="665" y="50" width="210" height="32" rx="8" fill="#1a1822"/>
+  <rect x="665" y="70" width="210" height="12" fill="#1a1822"/>
+  <text x="770" y="71" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">TTL Expiration</text>
+
+  <text x="680" y="105" font-size="10" fill="#1a1822" font-weight="600">Scope:</text>
+  <text x="730" y="105" font-size="10" fill="#1a1822">Per resource</text>
+  <text x="680" y="125" font-size="10" fill="#1a1822" font-weight="600">Speed:</text>
+  <text x="730" y="125" font-size="10" fill="#1a1822">s-maxage duration</text>
+  <text x="680" y="145" font-size="10" fill="#1a1822" font-weight="600">Use:</text>
+  <text x="730" y="145" font-size="10" fill="#1a1822">Natural refresh cycle</text>
+
+  <text x="680" y="170" font-size="9" fill="#1a1822">s-maxage=3600</text>
+  <text x="680" y="185" font-size="9" fill="#1a1822">→ Auto-expires after 1hr</text>
+  <text x="680" y="200" font-size="9" fill="#2f9d74">✓ No action required</text>
+
+  <!-- Propagation Timeline Section -->
+  <text x="450" y="248" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1822">Propagation Timeline Across Edge Nodes</text>
+
+  <!-- Timeline axis -->
+  <line x1="60" y1="290" x2="850" y2="290" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="60" y="283" font-size="9" fill="#1a1822">0ms</text>
+  <text x="235" y="283" font-size="9" fill="#1a1822">150ms</text>
+  <text x="420" y="283" font-size="9" fill="#1a1822">1s</text>
+  <text x="575" y="283" font-size="9" fill="#1a1822">30s</text>
+  <text x="720" y="283" font-size="9" fill="#1a1822">1min</text>
+  <text x="830" y="283" font-size="9" fill="#1a1822">2min</text>
+
+  <!-- Tick marks -->
+  <line x1="60" y1="287" x2="60" y2="293" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="235" y1="287" x2="235" y2="293" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="420" y1="287" x2="420" y2="293" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="575" y1="287" x2="575" y2="293" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="720" y1="287" x2="720" y2="293" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="850" y1="287" x2="850" y2="293" stroke="#1a1822" stroke-width="1.5"/>
+
+  <!-- Fastly (instant purge) -->
+  <text x="30" y="318" font-size="10" fill="#1a1822" font-weight="600" text-anchor="end">Fastly</text>
+  <rect x="60" y="308" width="175" height="16" rx="4" fill="#2f9d74" opacity="0.8"/>
+  <text x="148" y="320" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">~150ms globally</text>
+
+  <!-- Vercel -->
+  <text x="30" y="344" font-size="10" fill="#1a1822" font-weight="600" text-anchor="end">Vercel</text>
+  <rect x="60" y="334" width="220" height="16" rx="4" fill="#2f9d74" opacity="0.6"/>
+  <text x="170" y="346" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">~300ms (revalidateTag)</text>
+
+  <!-- Cloudflare -->
+  <text x="30" y="370" font-size="10" fill="#1a1822" font-weight="600" text-anchor="end">Cloudflare</text>
+  <rect x="60" y="360" width="515" height="16" rx="4" fill="#d97843" opacity="0.6"/>
+  <text x="317" y="372" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">~30 seconds globally</text>
+
+  <!-- CloudFront -->
+  <text x="30" y="396" font-size="10" fill="#1a1822" font-weight="600" text-anchor="end">CloudFront</text>
+  <rect x="60" y="386" width="790" height="16" rx="4" fill="#d97843" opacity="0.4"/>
+  <text x="455" y="398" text-anchor="middle" font-size="9" fill="#1a1822" font-weight="600">1-2 minutes</text>
+
+  <!-- Edge Node Visualization -->
+  <text x="450" y="430" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Edge Node States During Purge Propagation</text>
+
+  <!-- Edge nodes row 1: Before purge -->
+  <text x="100" y="455" text-anchor="middle" font-size="10" fill="#1a1822">Before purge:</text>
+  <rect x="180" y="442" width="55" height="22" rx="4" fill="#d97843" opacity="0.7"/>
+  <text x="208" y="457" text-anchor="middle" font-size="8" fill="#fff">STALE</text>
+  <rect x="245" y="442" width="55" height="22" rx="4" fill="#d97843" opacity="0.7"/>
+  <text x="273" y="457" text-anchor="middle" font-size="8" fill="#fff">STALE</text>
+  <rect x="310" y="442" width="55" height="22" rx="4" fill="#d97843" opacity="0.7"/>
+  <text x="338" y="457" text-anchor="middle" font-size="8" fill="#fff">STALE</text>
+  <rect x="375" y="442" width="55" height="22" rx="4" fill="#d97843" opacity="0.7"/>
+  <text x="403" y="457" text-anchor="middle" font-size="8" fill="#fff">STALE</text>
+
+  <!-- Edge nodes row 2: During propagation -->
+  <text x="510" y="455" text-anchor="middle" font-size="10" fill="#1a1822">Propagating:</text>
+  <rect x="570" y="442" width="55" height="22" rx="4" fill="#2f9d74"/>
+  <text x="598" y="457" text-anchor="middle" font-size="8" fill="#fff">PURGED</text>
+  <rect x="635" y="442" width="55" height="22" rx="4" fill="#2f9d74"/>
+  <text x="663" y="457" text-anchor="middle" font-size="8" fill="#fff">PURGED</text>
+  <rect x="700" y="442" width="55" height="22" rx="4" fill="#d97843" opacity="0.7"/>
+  <text x="728" y="457" text-anchor="middle" font-size="8" fill="#fff">STALE</text>
+  <rect x="765" y="442" width="55" height="22" rx="4" fill="#d97843" opacity="0.7"/>
+  <text x="793" y="457" text-anchor="middle" font-size="8" fill="#fff">STALE</text>
+
+  <!-- Arrow between states -->
+  <line x1="440" y1="453" x2="490" y2="453" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#invArrow)"/>
+
+  <!-- After label -->
+  <rect x="330" y="474" width="250" height="20" rx="4" fill="#2f9d74" opacity="0.15"/>
+  <text x="455" y="489" text-anchor="middle" font-size="9" fill="#2f9d74" font-weight="600">After full propagation: all nodes PURGED, ready for fresh fetch</text>
+</svg>

@@ -1,0 +1,4 @@
+idempotency:
+  header: Idempotency-Key
+  ttlSeconds: 86400
+  store: redis://cache:6379

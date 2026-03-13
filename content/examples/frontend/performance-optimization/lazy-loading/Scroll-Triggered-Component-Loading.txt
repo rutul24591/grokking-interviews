@@ -1,0 +1,66 @@
+import { lazy, Suspense, useState, useRef, useEffect } from 'react';
+
+// Generic wrapper for scroll-triggered lazy loading
+function LazySection({ importFn, fallback, rootMargin = '200px', ...props }) {
+  const [Component, setComponent] = useState(null);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          // Dynamic import when section enters viewport
+          importFn().then(mod => {
+            setComponent(() => mod.default);
+          });
+          observer.disconnect();
+        }
+      },
+      { rootMargin }
+    );
+
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [importFn, rootMargin]);
+
+  return (
+    <div ref={ref}>
+      {Component ? <Component {...props} /> : fallback}
+    </div>
+  );
+}
+
+// Usage — sections load as user scrolls
+function LongPage({ data }) {
+  return (
+    <main>
+      {/* Above the fold — loaded immediately */}
+      <HeroSection data={data.hero} />
+      <FeaturedProducts products={data.featured} />
+
+      {/* Below the fold — loaded on scroll */}
+      <LazySection
+        importFn={() => import('./sections/Testimonials')}
+        fallback={<TestimonialsSkeleton />}
+        testimonials={data.testimonials}
+      />
+
+      <LazySection
+        importFn={() => import('./sections/RecentBlogPosts')}
+        fallback={<BlogPostsSkeleton />}
+        posts={data.recentPosts}
+      />
+
+      <LazySection
+        importFn={() => import('./sections/Newsletter')}
+        fallback={<NewsletterSkeleton />}
+        rootMargin="400px" // Load earlier — it's important
+      />
+
+      <LazySection
+        importFn={() => import('./sections/Footer')}
+        fallback={<FooterSkeleton />}
+      />
+    </main>
+  );
+}

@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#1a1822">Image Format Decision Tree</text>
+
+  <!-- Start node -->
+  <rect x="350" y="60" width="200" height="40" rx="20" fill="#6d5bd0" stroke="#5a4ab5" stroke-width="2"/>
+  <text x="450" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#fff">What type of image?</text>
+
+  <!-- Branch lines from start -->
+  <line x1="370" y1="100" x2="140" y2="140" stroke="#1a1822" stroke-width="2"/>
+  <line x1="450" y1="100" x2="450" y2="140" stroke="#1a1822" stroke-width="2"/>
+  <line x1="530" y1="100" x2="760" y2="140" stroke="#1a1822" stroke-width="2"/>
+
+  <!-- Branch labels -->
+  <text x="235" y="118" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#666" transform="rotate(-15, 235, 118)">Photo / complex</text>
+  <text x="450" y="132" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#666">Icon / logo / diagram</text>
+  <text x="665" y="118" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#666" transform="rotate(15, 665, 118)">Animation</text>
+
+  <!-- === PHOTO BRANCH (left) === -->
+  <rect x="40" y="145" width="200" height="40" rx="8" fill="#d97843" stroke="#c06935" stroke-width="2"/>
+  <text x="140" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">Photo / Complex Image</text>
+
+  <!-- Needs transparency? -->
+  <line x1="140" y1="185" x2="140" y2="215" stroke="#1a1822" stroke-width="1.5"/>
+  <rect x="40" y="215" width="200" height="35" rx="8" fill="#fff" stroke="#d97843" stroke-width="1.5"/>
+  <text x="140" y="237" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Needs transparency?</text>
+
+  <!-- Yes transparency -->
+  <line x1="70" y1="250" x2="70" y2="280" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="50" y="270" font-family="system-ui, sans-serif" font-size="10" fill="#2f9d74" font-weight="600">Yes</text>
+  <rect x="10" y="280" width="120" height="55" rx="8" fill="#2f9d74" stroke="#258a63" stroke-width="2"/>
+  <text x="70" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#fff">WebP / AVIF</text>
+  <text x="70" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#d4f5e6">Lossy + alpha</text>
+  <text x="70" y="355" font-family="system-ui, sans-serif" font-size="9" fill="#666" text-anchor="middle">PNG fallback</text>
+
+  <!-- No transparency -->
+  <line x1="210" y1="250" x2="210" y2="280" stroke="#d97843" stroke-width="1.5"/>
+  <text x="218" y="270" font-family="system-ui, sans-serif" font-size="10" fill="#d97843" font-weight="600">No</text>
+  <rect x="150" y="280" width="120" height="55" rx="8" fill="#2f9d74" stroke="#258a63" stroke-width="2"/>
+  <text x="210" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#fff">AVIF &gt; WebP</text>
+  <text x="210" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#d4f5e6">JPEG fallback</text>
+  <text x="210" y="355" font-family="system-ui, sans-serif" font-size="9" fill="#666" text-anchor="middle">Use &lt;picture&gt; chain</text>
+
+  <!-- === ICON / VECTOR BRANCH (center) === -->
+  <rect x="350" y="145" width="200" height="40" rx="8" fill="#d97843" stroke="#c06935" stroke-width="2"/>
+  <text x="450" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">Icon / Logo / Diagram</text>
+
+  <!-- Simple or complex? -->
+  <line x1="450" y1="185" x2="450" y2="215" stroke="#1a1822" stroke-width="1.5"/>
+  <rect x="350" y="215" width="200" height="35" rx="8" fill="#fff" stroke="#d97843" stroke-width="1.5"/>
+  <text x="450" y="237" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Vector-compatible?</text>
+
+  <!-- Yes vector -->
+  <line x1="390" y1="250" x2="390" y2="280" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="370" y="270" font-family="system-ui, sans-serif" font-size="10" fill="#2f9d74" font-weight="600">Yes</text>
+  <rect x="330" y="280" width="120" height="55" rx="8" fill="#6d5bd0" stroke="#5a4ab5" stroke-width="2"/>
+  <text x="390" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#fff">SVG</text>
+  <text x="390" y="316" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#e0daf5">Scalable, tiny size</text>
+  <text x="390" y="355" font-family="system-ui, sans-serif" font-size="9" fill="#666" text-anchor="middle">Inline if &lt;1KB</text>
+
+  <!-- No vector (complex diagram / screenshot) -->
+  <line x1="510" y1="250" x2="510" y2="280" stroke="#d97843" stroke-width="1.5"/>
+  <text x="518" y="270" font-family="system-ui, sans-serif" font-size="10" fill="#d97843" font-weight="600">No</text>
+  <rect x="470" y="280" width="120" height="55" rx="8" fill="#2f9d74" stroke="#258a63" stroke-width="2"/>
+  <text x="530" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#fff">WebP / PNG</text>
+  <text x="530" y="316" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#d4f5e6">Lossless preferred</text>
+  <text x="530" y="355" font-family="system-ui, sans-serif" font-size="9" fill="#666" text-anchor="middle">Screenshots, complex art</text>
+
+  <!-- === ANIMATION BRANCH (right) === -->
+  <rect x="660" y="145" width="200" height="40" rx="8" fill="#d97843" stroke="#c06935" stroke-width="2"/>
+  <text x="760" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">Animation</text>
+
+  <!-- Short or long? -->
+  <line x1="760" y1="185" x2="760" y2="215" stroke="#1a1822" stroke-width="1.5"/>
+  <rect x="660" y="215" width="200" height="35" rx="8" fill="#fff" stroke="#d97843" stroke-width="1.5"/>
+  <text x="760" y="237" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Duration / complexity?</text>
+
+  <!-- Short / simple -->
+  <line x1="700" y1="250" x2="700" y2="280" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="675" y="270" font-family="system-ui, sans-serif" font-size="10" fill="#2f9d74" font-weight="600">Short</text>
+  <rect x="640" y="280" width="120" height="55" rx="8" fill="#2f9d74" stroke="#258a63" stroke-width="2"/>
+  <text x="700" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#fff">WebP anim</text>
+  <text x="700" y="316" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#d4f5e6">50-70% &lt; GIF</text>
+  <text x="700" y="355" font-family="system-ui, sans-serif" font-size="9" fill="#666" text-anchor="middle">Micro-interactions</text>
+
+  <!-- Long / complex -->
+  <line x1="820" y1="250" x2="820" y2="280" stroke="#d97843" stroke-width="1.5"/>
+  <text x="828" y="270" font-family="system-ui, sans-serif" font-size="10" fill="#d97843" font-weight="600">Long</text>
+  <rect x="770" y="280" width="120" height="55" rx="8" fill="#c44569" stroke="#a8385a" stroke-width="2"/>
+  <text x="830" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#fff">&lt;video&gt;</text>
+  <text x="830" y="316" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#fdd">80-95% &lt; GIF</text>
+  <text x="830" y="355" font-family="system-ui, sans-serif" font-size="9" fill="#666" text-anchor="middle">autoplay muted loop</text>
+
+  <!-- Bottom summary -->
+  <rect x="50" y="390" width="800" height="95" rx="8" fill="#fff" stroke="#ccc" stroke-width="1"/>
+  <text x="450" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1a1822">Format Priority Chain for Photos</text>
+
+  <!-- Chain visualization -->
+  <rect x="120" y="430" width="100" height="36" rx="8" fill="#2f9d74"/>
+  <text x="170" y="453" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#fff">AVIF</text>
+  <text x="170" y="476" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#666">Best compression</text>
+
+  <text x="240" y="453" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" fill="#1a1822">&gt;</text>
+
+  <rect x="260" y="430" width="100" height="36" rx="8" fill="#6d5bd0"/>
+  <text x="310" y="453" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#fff">WebP</text>
+  <text x="310" y="476" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#666">Wide support</text>
+
+  <text x="380" y="453" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" fill="#1a1822">&gt;</text>
+
+  <rect x="400" y="430" width="100" height="36" rx="8" fill="#d97843"/>
+  <text x="450" y="453" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#fff">JPEG</text>
+  <text x="450" y="476" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#666">Universal fallback</text>
+
+  <text x="560" y="448" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Use <tspan font-weight="600">&lt;picture&gt;</tspan> element for</text>
+  <text x="560" y="465" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">automatic format negotiation</text>
+</svg>

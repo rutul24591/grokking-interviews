@@ -1,0 +1,1 @@
+-- BEFORE trigger can modify NEW row; AFTER cannot.

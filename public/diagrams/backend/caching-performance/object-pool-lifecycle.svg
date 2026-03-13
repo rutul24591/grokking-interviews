@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
+  <rect width="960" height="420" fill="#f8fafc" />
+  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Object Pool Lifecycle</text>
+
+  <rect x="80" y="120" width="220" height="70" rx="12" fill="#dbeafe" stroke="#60a5fa" />
+  <text x="110" y="160" font-family="Arial" font-size="14" fill="#0f172a">Acquire</text>
+
+  <rect x="360" y="120" width="220" height="70" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
+  <text x="400" y="160" font-family="Arial" font-size="14" fill="#0f172a">Use</text>
+
+  <rect x="640" y="120" width="220" height="70" rx="12" fill="#f1f5f9" stroke="#cbd5f5" />
+  <text x="680" y="160" font-family="Arial" font-size="14" fill="#0f172a">Release</text>
+</svg>

@@ -1,0 +1,54 @@
+// === Google's web-vitals library ===
+import { onLCP, onINP, onCLS, onFCP, onTTFB } from 'web-vitals';
+
+// Send to your analytics endpoint
+function reportVital(metric) {
+  // metric.name: 'LCP' | 'INP' | 'CLS' | 'FCP' | 'TTFB'
+  // metric.value: number (ms for timing, score for CLS)
+  // metric.rating: 'good' | 'needs-improvement' | 'poor'
+  // metric.delta: change since last report
+  // metric.entries: PerformanceEntry objects for debugging
+
+  fetch('/api/vitals', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: metric.name,
+      value: Math.round(metric.value),
+      rating: metric.rating,
+      page: window.location.pathname,
+      userAgent: navigator.userAgent,
+      connectionType: navigator.connection?.effectiveType,
+    }),
+    keepalive: true,  // Survives page unload
+  });
+}
+
+onLCP(reportVital);
+onINP(reportVital);
+onCLS(reportVital);
+onFCP(reportVital);
+onTTFB(reportVital);
+
+// === Next.js built-in Web Vitals reporting ===
+// app/layout.tsx or pages/_app.tsx
+export function reportWebVitals(metric) {
+  console.log(metric);
+  // Send to analytics
+}
+
+// === PerformanceObserver API (low-level) ===
+// For custom metric collection
+const observer = new PerformanceObserver((list) => {
+  for (const entry of list.getEntries()) {
+    if (entry.entryType === 'largest-contentful-paint') {
+      console.log('LCP:', entry.startTime, entry.element);
+    }
+    if (entry.entryType === 'layout-shift' && !entry.hadRecentInput) {
+      console.log('CLS shift:', entry.value, entry.sources);
+    }
+  }
+});
+
+observer.observe({ type: 'largest-contentful-paint', buffered: true });
+observer.observe({ type: 'layout-shift', buffered: true });

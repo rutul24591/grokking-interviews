@@ -1,0 +1,10 @@
+recovery:
+  rtoMinutes: 30
+  rpoMinutes: 5
+  primaryRegion: us-east-1
+  standbyRegion: us-west-2
+  backup:
+    snapshotSchedule: "0 * * * *"
+    logShipping: true
+  promote:
+    runbook: promote-standby.sh

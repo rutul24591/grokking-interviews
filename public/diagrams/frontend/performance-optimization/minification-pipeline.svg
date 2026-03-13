@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="bold" fill="#1a1822">Minification Pipeline: Source to Production</text>
+
+  <!-- Step 1: Source Code -->
+  <rect x="30" y="80" width="150" height="90" rx="8" fill="#6d5bd0" stroke="#5a49b8" stroke-width="1.5"/>
+  <text x="105" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">Source Code</text>
+  <text x="105" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#e0daf5">JS / CSS / HTML</text>
+  <text x="105" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#e0daf5">Comments, whitespace</text>
+
+  <!-- Arrow 1 -->
+  <line x1="180" y1="125" x2="220" y2="125" stroke="#1a1822" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 2: Parse / AST -->
+  <rect x="220" y="80" width="150" height="90" rx="8" fill="#d97843" stroke="#c06835" stroke-width="1.5"/>
+  <text x="295" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">Parse</text>
+  <text x="295" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#fde8d8">Build AST</text>
+  <text x="295" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#fde8d8">(Abstract Syntax Tree)</text>
+
+  <!-- Arrow 2 -->
+  <line x1="370" y1="125" x2="410" y2="125" stroke="#1a1822" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 3: Analyze -->
+  <rect x="410" y="80" width="150" height="90" rx="8" fill="#2f9d74" stroke="#258a63" stroke-width="1.5"/>
+  <text x="485" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">Analyze</text>
+  <text x="485" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#d4f5e8">Scope analysis</text>
+  <text x="485" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#d4f5e8">Reference counting</text>
+
+  <!-- Arrow 3 -->
+  <line x1="560" y1="125" x2="600" y2="125" stroke="#1a1822" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 4: Transform -->
+  <rect x="600" y="80" width="150" height="90" rx="8" fill="#d97843" stroke="#c06835" stroke-width="1.5"/>
+  <text x="675" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">Transform</text>
+  <text x="675" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#fde8d8">Dead code removal</text>
+  <text x="675" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#fde8d8">Constant folding</text>
+
+  <!-- Arrow 4 down -->
+  <line x1="675" y1="170" x2="675" y2="220" stroke="#1a1822" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 5: Mangle -->
+  <rect x="600" y="220" width="150" height="90" rx="8" fill="#6d5bd0" stroke="#5a49b8" stroke-width="1.5"/>
+  <text x="675" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">Mangle</text>
+  <text x="675" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#e0daf5">Rename variables</text>
+  <text x="675" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#e0daf5">Shorten identifiers</text>
+
+  <!-- Arrow 5 left -->
+  <line x1="600" y1="265" x2="560" y2="265" stroke="#1a1822" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 6: Compress -->
+  <rect x="410" y="220" width="150" height="90" rx="8" fill="#2f9d74" stroke="#258a63" stroke-width="1.5"/>
+  <text x="485" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">Compress</text>
+  <text x="485" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#d4f5e8">Remove whitespace</text>
+  <text x="485" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#d4f5e8">Strip comments</text>
+
+  <!-- Arrow 6 left -->
+  <line x1="410" y1="265" x2="370" y2="265" stroke="#1a1822" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 7: Generate -->
+  <rect x="220" y="220" width="150" height="90" rx="8" fill="#d97843" stroke="#c06835" stroke-width="1.5"/>
+  <text x="295" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">Generate</text>
+  <text x="295" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#fde8d8">Code generation</text>
+  <text x="295" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#fde8d8">Source map output</text>
+
+  <!-- Arrow 7 left -->
+  <line x1="220" y1="265" x2="180" y2="265" stroke="#1a1822" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 8: Output -->
+  <rect x="30" y="220" width="150" height="90" rx="8" fill="#6d5bd0" stroke="#5a49b8" stroke-width="1.5"/>
+  <text x="105" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">Output</text>
+  <text x="105" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#e0daf5">Minified bundle</text>
+  <text x="105" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#e0daf5">+ .map file</text>
+
+  <!-- Size comparison at bottom -->
+  <rect x="50" y="350" width="800" height="120" rx="8" fill="#fff" stroke="#6d5bd0" stroke-width="1" opacity="0.9"/>
+  <text x="450" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" fill="#1a1822">Typical Size Reduction Through Pipeline</text>
+
+  <!-- Before bar -->
+  <text x="80" y="410" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Original</text>
+  <rect x="160" y="396" width="600" height="22" rx="4" fill="#d97843" opacity="0.8"/>
+  <text x="470" y="412" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#fff">500 KB (100%)</text>
+
+  <!-- After minify bar -->
+  <text x="80" y="445" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Minified</text>
+  <rect x="160" y="431" width="300" height="22" rx="4" fill="#2f9d74" opacity="0.8"/>
+  <text x="310" y="447" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#fff">200 KB (40%) — 60% smaller</text>
+
+  <!-- Arrowhead marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1822"/>
+    </marker>
+  </defs>
+</svg>

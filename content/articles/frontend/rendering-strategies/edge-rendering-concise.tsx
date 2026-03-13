@@ -1,343 +1,398 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
-  id: "article-frontend-edge-rende-concise",
+  id: "article-frontend-edge-rende-extensive",
   title: "Edge Rendering",
   description: "Learn edge rendering strategies for delivering personalized content with minimal latency using edge compute platforms.",
   category: "frontend",
   subcategory: "rendering-strategies",
   slug: "edge-rendering",
-  version: "concise",
-  wordCount: 2000,
-  readingTime: 8,
+  wordCount: 3600,
+  readingTime: 15,
   lastUpdated: "2026-03-06",
-  tags: ["frontend", "rendering", "edge", "CDN", "performance", "Vercel"],
+  tags: ["frontend", "rendering", "edge", "CDN", "performance", "Vercel", "Cloudflare"],
+  relatedTopics: ["server-side-rendering", "streaming-ssr", "static-site-generation"],
 };
 
 export default function EdgeRenderingConciseArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Quick Overview</h2>
+        <h2>Definition & Context</h2>
         <p>
-          <strong>Edge Rendering</strong> runs server-side rendering (SSR) at CDN edge locations—200-300 globally
-          distributed nodes close to users—rather than centralized origin servers. A user in Tokyo gets HTML rendered
-          in Tokyo (10-30ms latency), not Virginia (200-300ms). This provides consistent 50-100ms TTFB worldwide,
-          eliminating the geography tax of traditional SSR.
+          <strong>Edge Rendering</strong> is a rendering strategy that executes server-side rendering (SSR) logic at
+          edge locations—CDN nodes distributed globally—rather than on a centralized origin server. Instead of routing
+          all requests to a single data center (e.g., us-east-1), edge rendering processes requests at the CDN location
+          closest to the user, dramatically reducing latency and improving Time to First Byte (TTFB).
         </p>
         <p>
-          <strong>Core Principle:</strong> Render where users are, not where servers happen to be. Edge platforms
-          (Cloudflare Workers, Vercel Edge, Deno Deploy) use V8 isolates for fast, lightweight code execution at
-          every CDN location. Enables personalized content (user-specific data, A/B tests, geolocation) with CDN-level
-          performance.
+          Traditional SSR architecture sends every request to an origin server, typically in one geographic region. A
+          user in Sydney requesting a page hosted in Virginia experiences 200-300ms of network latency before the server
+          even starts rendering. <strong>Edge Rendering solves this</strong> by running SSR code in 200-300 global
+          locations simultaneously. The Sydney user hits an edge node in Australia (10-30ms latency), which renders the
+          HTML locally and returns it almost instantly.
+        </p>
+        <p>
+          The pattern emerged with the evolution of <strong>edge computing platforms</strong>: <strong>Cloudflare Workers</strong>
+          (2017), <strong>AWS Lambda@Edge</strong> (2017), <strong>Fastly Compute@Edge</strong> (2019),
+          <strong>Vercel Edge Functions</strong> (2021), and <strong>Deno Deploy</strong> (2021). These platforms moved
+          beyond simple CDN caching to enable arbitrary code execution at the edge. React frameworks like Next.js, Remix,
+          and SvelteKit now support edge runtimes, making edge rendering accessible to mainstream developers. Edge Rendering
+          represents the convergence of SSR and CDN infrastructure: rendering happens where users are, not where servers
+          happen to be.
         </p>
       </section>
 
       <section>
-        <h2>Key Concepts</h2>
+        <h2>Core Concepts</h2>
+        <p>Understanding Edge Rendering requires grasping several fundamental concepts:</p>
         <ul>
           <li>
-            <strong>Distributed Execution:</strong> Code deploys to 200-300 edge locations simultaneously. Requests
-            route to the nearest location via Anycast. Every user gets low-latency rendering regardless of geography.
-            No multi-region deployment complexity.
+            <strong>Edge Locations:</strong> CDN providers operate 200-300 globally distributed Points of Presence (PoPs).
+            Cloudflare has 310+ locations, AWS has 450+ edge locations, Vercel uses Cloudflare{'\''}s network. Edge
+            functions deploy to all locations simultaneously via one deployment, ensuring every user gets low-latency
+            access.
           </li>
           <li>
-            <strong>V8 Isolates:</strong> Edge platforms use V8 isolates (not containers). Cold starts: 0-5ms (vs.
-            100-500ms Lambda). Memory: 128-512MB. Execution time: 10-50ms. Restricted runtime (no Node.js fs,
-            child_process—Web APIs only).
+            <strong>Request Routing:</strong> When a user requests a page, DNS and Anycast routing direct them to the
+            nearest edge location based on network proximity (not just geography). The edge node executes rendering logic
+            locally and returns HTML, eliminating cross-continent round trips to origin servers.
           </li>
           <li>
-            <strong>Edge Cache & KV Stores:</strong> Edge rendering pairs with edge caching (Cloudflare KV, Vercel
-            Edge Config). Cache rendered HTML, user preferences, or API responses at each edge location. Reduces
-            database queries and API calls.
+            <strong>Edge Runtime Constraints:</strong> Edge environments aren{'\''}t full Node.js. They use restricted
+            runtimes (V8 isolates, not containers) with limited APIs. No file system, limited Node.js APIs, smaller memory
+            (128MB-512MB), faster cold starts (0-5ms vs. 100-500ms Lambda). Code must be edge-compatible.
           </li>
           <li>
-            <strong>Global Data Access:</strong> For best performance, use globally distributed databases (Cloudflare
-            D1, PlanetScale, CockroachDB) or edge-replicated databases (Supabase with read replicas). Querying
-            centralized DBs from edge negates latency benefits.
+            <strong>Streaming SSR at the Edge:</strong> Edge rendering pairs naturally with streaming SSR. The edge node
+            streams HTML progressively to users, reducing TTFB even further. React 18{'\''}s <code>renderToReadableStream</code>
+            (Web Streams API) works seamlessly on edge runtimes.
           </li>
           <li>
-            <strong>Hybrid Architecture:</strong> Not all rendering happens at edge. Fast operations (HTML shell,
-            authentication, simple queries) run at edge. Heavy operations (complex DB queries, ML, image processing)
-            fall back to origin servers.
+            <strong>Data Fetching Strategies:</strong> Edge nodes fetch data from nearby databases (Cloudflare D1, Vercel
+            Postgres, Supabase) or origin APIs. For best performance, co-locate data storage with edge compute or use global
+            databases (CockroachDB, PlanetScale, Fauna). Caching (KV stores, in-memory) is critical at the edge.
+          </li>
+          <li>
+            <strong>Personalization at the Edge:</strong> Edge rendering enables personalized content (user-specific data,
+            A/B tests, geolocation) while maintaining CDN-level latency. This was impossible with static CDN caching—you
+            couldn{'\''}t cache per-user pages. Edge rendering makes per-user SSR fast.
+          </li>
+          <li>
+            <strong>Hybrid Architecture:</strong> Not all rendering happens at the edge. Heavy computation, complex database
+            queries, or legacy APIs may still run on origin servers. Edge functions handle fast, lightweight rendering (shell,
+            above-the-fold content) and proxy slow operations to origin.
           </li>
         </ul>
       </section>
 
       <section>
-        <h2>Quick Example</h2>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`// Next.js + Vercel Edge Functions
-// app/products/page.tsx
+        <h2>Architecture & Flow</h2>
+        <p>The Edge Rendering architecture follows this distributed request-response pattern:</p>
 
-// Force edge runtime (not Node.js)
-export const runtime = 'edge';
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Edge Rendering Request Flow</h3>
+          <ol className="space-y-3">
+            <li><strong>1. User Request:</strong> User in Tokyo requests <code>example.com/products</code></li>
+            <li><strong>2. DNS + Anycast Routing:</strong> Request routes to nearest edge location (Tokyo or Singapore, 10-20ms latency)</li>
+            <li><strong>3. Edge Function Execution:</strong> Edge worker (V8 isolate) starts executing rendering code (cold start: 0-5ms)</li>
+            <li><strong>4. Check Edge Cache:</strong> Query KV store for cached data (products list, user preferences)</li>
+            <li><strong>5. Fetch Data (if needed):</strong> Call nearby database (Cloudflare D1, Supabase in ap-southeast-1) or origin API</li>
+            <li><strong>6. Render HTML:</strong> Execute React SSR at the edge, generate HTML with user-specific data</li>
+            <li><strong>7. Stream to User:</strong> Stream HTML chunks progressively (using Web Streams API)</li>
+            <li><strong>8. TTFB:</strong> User receives first byte in 30-80ms (vs. 200-400ms origin SSR)</li>
+            <li><strong>9. Cache Response:</strong> Store rendered HTML in edge cache (if cacheable) with short TTL</li>
+            <li><strong>10. Browser Hydration:</strong> JavaScript downloads and hydrates the page (same as traditional SSR)</li>
+          </ol>
+        </div>
 
-export default async function ProductsPage() {
-  // Runs at 300+ edge locations globally
-  const products = await fetch('https://api.example.com/products', {
-    // Cache at edge for 60 seconds
-    next: { revalidate: 60 },
-  }).then(res => res.json());
+        <ArticleImage
+          src="/diagrams/frontend/rendering-strategies/edge-rendering-architecture.svg"
+          alt="Edge Rendering Architecture"
+          caption="Edge Rendering Architecture - Distributed rendering at CDN locations closest to users"
+        />
 
-  return (
-    <div>
-      <h1>Products</h1>
-      <div className="grid">
-        {products.map((product) => (
-          <div key={product.id}>
-            <h2>{product.name}</h2>
-            <p>\${product.price}</p>
+        <p>
+          This architecture eliminates the geography tax of centralized servers. Whether users are in New York, London,
+          Tokyo, or Sydney, they all experience 50-100ms TTFB because rendering happens locally. Traditional SSR might
+          give New Yorkers 150ms TTFB but Australians 400ms+ TTFB. Edge Rendering equalizes performance globally.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/frontend/rendering-strategies/edge-rendering-flow.svg"
+          alt="Edge Rendering Flow Sequence"
+          caption="Edge Rendering Flow - Fast path uses edge cache and nearby database; heavy operations fall back to origin"
+        />
+      </section>
+
+      <section>
+        <h2>Implementation Examples</h2>
+        <p>Here{'\''}s how Edge Rendering is implemented across popular platforms:</p>
+
+        <div className="space-y-6">
+          <div>
+            <h3 className="mb-3 font-semibold">Vercel Edge Functions + Next.js</h3>
+            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
           </div>
-        ))}
-      </div>
-    </div>
-  );
-}
 
-// Result:
-// - User in Tokyo: 50ms TTFB (Tokyo edge → nearby API)
-// - User in London: 60ms TTFB (London edge → nearby API)
-// - User in Sydney: 70ms TTFB (Sydney edge → nearby API)
-//
-// Traditional SSR (us-east-1 origin):
-// - User in Tokyo: 300ms TTFB (cross-Pacific latency)
-// - User in London: 200ms TTFB (trans-Atlantic latency)
-// - User in Sydney: 400ms TTFB (half-world latency)`}</code>
-        </pre>
+          <div>
+            <h3 className="mb-3 font-semibold">Cloudflare Workers + Remix</h3>
+            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+          </div>
+
+          <div>
+            <h3 className="mb-3 font-semibold">Deno Deploy + Fresh (Islands)</h3>
+            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+          </div>
+        </div>
       </section>
 
       <section>
-        <h2>Pros & Cons</h2>
+        <h2>Edge vs. Origin SSR</h2>
         <table className="w-full">
           <thead>
             <tr>
-              <th className="text-left">Pros</th>
-              <th className="text-left">Cons</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Global Low Latency:</strong> 50-100ms TTFB worldwide</td>
-              <td><strong>Runtime Limits:</strong> No Node.js stdlib, limited APIs</td>
-            </tr>
-            <tr>
-              <td><strong>Auto-Scaling:</strong> CDN handles traffic, no capacity planning</td>
-              <td><strong>Bundle Size:</strong> 1-5MB limit, aggressive tree-shaking needed</td>
-            </tr>
-            <tr>
-              <td><strong>Fast Cold Starts:</strong> 0-5ms V8 isolates</td>
-              <td><strong>Execution Time:</strong> 10-50ms max, heavy ops need origin</td>
-            </tr>
-            <tr>
-              <td><strong>Personalization:</strong> User-specific content at CDN speed</td>
-              <td><strong>Data Latency:</strong> Centralized DBs negate edge benefits</td>
-            </tr>
-            <tr>
-              <td><strong>Cost Efficient:</strong> Pay-per-request, no idle servers</td>
-              <td><strong>Debugging:</strong> Harder to access logs, test locally</td>
-            </tr>
-            <tr>
-              <td><strong>Built-in DDoS:</strong> CDN-level protection</td>
-              <td><strong>Vendor Lock-In:</strong> Platform-specific APIs (KV, D1, etc.)</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <section>
-        <h2>When to Use</h2>
-        <p><strong>Ideal Use Cases:</strong></p>
-        <ul>
-          <li>
-            <strong>Global Applications:</strong> Users distributed worldwide. Traditional SSR penalizes distant users
-            (400ms+ TTFB for Australia if origin in US). Edge rendering equalizes performance (50-100ms everywhere).
-          </li>
-          <li>
-            <strong>Personalized Content:</strong> A/B testing, user segmentation, geolocation-based content,
-            authentication. Edge enables per-user rendering at CDN speed. Previously, caching and personalization were
-            mutually exclusive.
-          </li>
-          <li>
-            <strong>E-Commerce:</strong> Product pages with geo-specific pricing, currency, language. Shopify Hydrogen
-            uses edge rendering for global stores. Fast TTFB improves conversions.
-          </li>
-          <li>
-            <strong>News & Media:</strong> Article pages with geolocation-based ads, paywalls, content restrictions.
-            Fast TTFB critical for SEO and engagement. Edge rendering serves localized content instantly.
-          </li>
-        </ul>
-
-        <p><strong>Not Ideal For:</strong></p>
-        <ul>
-          <li>
-            <strong>Heavy Computation:</strong> Video encoding, image processing, ML inference, large data
-            transformations. These exceed edge execution time limits (10-50ms). Run on origin servers or dedicated
-            compute.
-          </li>
-          <li>
-            <strong>Large Dependencies:</strong> Full Next.js, heavyweight ORMs, large npm packages. Bundle size
-            limits (1-5MB) require aggressive optimization. Use origin SSR if bundles can{'\''}t fit.
-          </li>
-          <li>
-            <strong>Centralized Data:</strong> If your database/API is in one region (us-east-1 RDS) with no
-            replication, edge functions still pay cross-region latency. Edge rendering needs distributed data to
-            fully benefit.
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Popular Platforms</h2>
-        <table className="w-full">
-          <thead>
-            <tr>
-              <th className="text-left">Platform</th>
-              <th className="text-left">Locations</th>
-              <th className="text-left">Runtime</th>
-              <th className="text-left">Pricing</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Cloudflare Workers</strong></td>
-              <td>310+</td>
-              <td>V8, 50ms CPU</td>
-              <td>$5/mo for 10M requests</td>
-            </tr>
-            <tr>
-              <td><strong>Vercel Edge</strong></td>
-              <td>300+ (Cloudflare)</td>
-              <td>V8, 25s wall time</td>
-              <td>$2/million requests</td>
-            </tr>
-            <tr>
-              <td><strong>Deno Deploy</strong></td>
-              <td>35+</td>
-              <td>Deno, TypeScript-native</td>
-              <td>Free: 100K/day</td>
-            </tr>
-            <tr>
-              <td><strong>AWS Lambda@Edge</strong></td>
-              <td>450+</td>
-              <td>Node.js, 10s timeout</td>
-              <td>$0.60/million + duration</td>
-            </tr>
-            <tr>
-              <td><strong>Fastly Compute@Edge</strong></td>
-              <td>300+</td>
-              <td>WebAssembly (Rust, JS)</td>
-              <td>$0.45/million + compute</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <section>
-        <h2>Comparison: Edge vs Origin SSR</h2>
-        <table className="w-full">
-          <thead>
-            <tr>
-              <th className="text-left">Metric</th>
+              <th className="text-left">Aspect</th>
               <th className="text-left">Edge Rendering</th>
               <th className="text-left">Origin SSR</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>TTFB (Global)</td>
-              <td>50-100ms (consistent)</td>
-              <td>100-500ms (varies by location)</td>
+              <td><strong>Latency</strong></td>
+              <td>30-100ms (distributed globally)</td>
+              <td>100-400ms (depends on user location)</td>
             </tr>
             <tr>
-              <td>Cold Start</td>
-              <td>0-5ms</td>
-              <td>100-500ms (Lambda) or 0ms (containers)</td>
+              <td><strong>TTFB</strong></td>
+              <td>Consistent worldwide (50-100ms)</td>
+              <td>Varies by geography (100-500ms)</td>
             </tr>
             <tr>
-              <td>Scaling</td>
-              <td>Automatic (CDN-level)</td>
-              <td>Manual (load balancers, ASGs)</td>
+              <td><strong>Scalability</strong></td>
+              <td>Auto-scales globally, CDN handles traffic</td>
+              <td>Requires manual scaling, load balancers</td>
             </tr>
             <tr>
-              <td>Runtime</td>
-              <td>Restricted (Web APIs only)</td>
-              <td>Full Node.js</td>
+              <td><strong>Cold Starts</strong></td>
+              <td>0-5ms (V8 isolates)</td>
+              <td>100-500ms (Lambda) or persistent containers</td>
             </tr>
             <tr>
-              <td>Execution Time</td>
-              <td>10-50ms</td>
+              <td><strong>Runtime</strong></td>
+              <td>Restricted (no Node.js, limited APIs)</td>
+              <td>Full Node.js, unlimited APIs</td>
+            </tr>
+            <tr>
+              <td><strong>Memory</strong></td>
+              <td>128MB-512MB</td>
+              <td>512MB-10GB</td>
+            </tr>
+            <tr>
+              <td><strong>Execution Time</strong></td>
+              <td>10-50ms (short-lived)</td>
               <td>Unlimited (seconds to minutes)</td>
             </tr>
             <tr>
-              <td>Bundle Size</td>
-              <td>1-5MB</td>
-              <td>Unlimited</td>
+              <td><strong>Cost</strong></td>
+              <td>Pay per request (cheaper at scale)</td>
+              <td>Pay for servers (more expensive at scale)</td>
             </tr>
             <tr>
-              <td>Cost at Scale</td>
-              <td>Cheaper (pay per request)</td>
-              <td>More expensive (always-on servers)</td>
+              <td><strong>Best For</strong></td>
+              <td>Fast, lightweight, personalized content</td>
+              <td>Heavy computation, complex queries, legacy APIs</td>
             </tr>
           </tbody>
         </table>
+
+        <ArticleImage
+          src="/diagrams/frontend/rendering-strategies/edge-rendering-performance.svg"
+          alt="Edge vs Origin SSR Global Performance"
+          caption="Global Performance - Edge rendering provides consistent low latency worldwide; Origin SSR penalizes distant users"
+        />
       </section>
 
       <section>
-        <h2>Interview Tips</h2>
+        <h2>Trade-offs & Limitations</h2>
+        <p><strong>Advantages:</strong></p>
         <ul>
           <li>
-            <strong>Define Clearly:</strong> "Edge Rendering runs SSR at CDN edge locations (300+ globally distributed
-            nodes) instead of centralized origin servers. Provides 50-100ms TTFB worldwide by rendering close to users."
+            <strong>Global Low Latency:</strong> Every user worldwide gets 50-100ms TTFB, regardless of location.
+            Eliminates the geography tax where Australian users suffer 400ms+ TTFB from US servers.
           </li>
           <li>
-            <strong>Key Platforms:</strong> Cloudflare Workers (310+ locations), Vercel Edge (Cloudflare network),
-            Deno Deploy, AWS Lambda@Edge. Show awareness of major platforms and their trade-offs.
+            <strong>Auto-Scaling & Reliability:</strong> CDN infrastructure handles scaling automatically. No need for
+            load balancers, auto-scaling groups, or capacity planning. Built-in DDoS protection and high availability.
           </li>
           <li>
-            <strong>V8 Isolates:</strong> Explain that edge uses V8 isolates (not containers). Fast cold starts (0-5ms),
-            limited memory (128-512MB), restricted runtime (no Node.js). Contrast with Lambda (100-500ms cold starts,
-            full Node.js).
+            <strong>Fast Cold Starts:</strong> V8 isolates start in 0-5ms (vs. 100-500ms for Lambda containers).
+            Users rarely experience cold start delays. Edge functions are always warm.
           </li>
           <li>
-            <strong>Geography Tax:</strong> Emphasize how edge rendering eliminates the geography tax. Traditional SSR:
-            Australian user to US server = 400ms latency. Edge SSR: Australian user to Sydney edge = 60ms latency.
-            Global equality.
+            <strong>Personalization + CDN Speed:</strong> Deliver user-specific content (A/B tests, geolocation,
+            authentication) with CDN-level latency. Previously impossible—caching and personalization were mutually
+            exclusive.
           </li>
           <li>
-            <strong>Trade-offs:</strong> Be clear: better latency but runtime restrictions. No Node.js stdlib, 1-5MB
-            bundle limits, 10-50ms execution time. Heavy operations need origin. Centralized data negates benefits.
+            <strong>Cost Efficiency at Scale:</strong> Pay-per-request pricing is cheaper than always-on servers at
+            high traffic volumes. Cloudflare Workers: $0.50/million requests. Vercel Edge: $2/million requests. No
+            idle server costs.
+          </li>
+        </ul>
+
+        <p><strong>Disadvantages:</strong></p>
+        <ul>
+          <li>
+            <strong>Runtime Restrictions:</strong> No Node.js standard library (fs, child_process, etc.). Limited to
+            Web APIs (fetch, Response, Request). Many npm packages don{'\''}t work. Must use edge-compatible libraries.
           </li>
           <li>
-            <strong>Use Cases:</strong> Describe real scenarios: "E-commerce product page with geo-specific pricing.
-            Tokyo user sees JPY from Tokyo edge (50ms). London user sees GBP from London edge (60ms). Same code,
-            distributed execution."
+            <strong>Small Bundle Size Limits:</strong> Cloudflare Workers: 1-5MB compressed. Vercel Edge: 1MB. Large
+            frameworks or heavy dependencies may not fit. Requires aggressive tree-shaking and code-splitting.
           </li>
           <li>
-            <strong>Data Strategy:</strong> Mention that edge rendering needs distributed data (Cloudflare D1,
-            PlanetScale, CockroachDB) or aggressive caching (KV stores). Querying centralized RDS defeats the
-            purpose—still pay cross-region latency.
+            <strong>Limited Execution Time:</strong> Cloudflare: 50ms CPU time. Vercel: 25s wall time. Heavy
+            computations, large database queries, or slow APIs must run on origin servers. Edge is for fast operations
+            only.
           </li>
           <li>
-            <strong>When NOT to Use:</strong> Heavy computation (video encoding, ML), large dependencies (full Next.js),
-            centralized data without replication. Interviewers appreciate understanding limitations.
+            <strong>Data Access Latency:</strong> If your database is centralized (us-east-1), edge functions still
+            pay that latency cost. Requires globally distributed databases (Cloudflare D1, PlanetScale, CockroachDB)
+            or edge caching to fully benefit.
+          </li>
+          <li>
+            <strong>Debugging Complexity:</strong> Edge logs are harder to access. No local file system for debugging.
+            Errors may only surface in production. Testing edge-specific behavior locally is challenging.
+          </li>
+          <li>
+            <strong>Vendor Lock-In:</strong> Edge platforms have different APIs (Cloudflare KV, Vercel Edge Config,
+            Deno KV). Migrating between platforms requires code changes. Less portability than containerized SSR.
           </li>
         </ul>
       </section>
 
       <section>
-        <h2>Key Takeaways</h2>
+        <h2>Best Practices</h2>
+        <p>To build performant applications with Edge Rendering, follow these practices:</p>
+
+        <p><strong>Use Edge for Fast Operations:</strong> Edge functions should complete in 10-50ms. Perfect for: HTML rendering (SSR), simple data fetching (cached or nearby DB), authentication checks, A/B test logic, geolocation. Offload heavy operations (image processing, ML inference, complex queries) to origin servers or serverless functions.</p>
+
+        <p><strong>Co-Locate Data with Compute:</strong> If using edge rendering, use edge databases (Cloudflare D1, Turso, Supabase with read replicas) or globally distributed DBs (PlanetScale, CockroachDB). Querying us-east-1 RDS from a Sydney edge node negates edge benefits. Cache aggressively in edge KV stores.</p>
+
+        <p><strong>Keep Bundles Small:</strong> Use tree-shaking, code-splitting, and minimal dependencies. Avoid large libraries (moment.js, lodash—use date-fns, lodash-es instead). Measure bundle size with <code>@vercel/ncc</code> or Cloudflare wrangler CLI. Stay under 500KB compressed.</p>
+
+        <p><strong>Graceful Degradation:</strong> If edge rendering fails (timeout, error), fall back to origin SSR or static fallback. Don{'\''}t let edge failures block users entirely. Use try-catch and error boundaries.</p>
+
+        <p><strong>Monitor Edge Performance:</strong> Track TTFB by region, edge cache hit rates, and error rates per edge location. Use Real User Monitoring (RUM) to see actual user experiences. Identify slow regions or cache misses.</p>
+
+        <p><strong>Hybrid Architecture:</strong> Not everything needs edge rendering. Use edge for above-the-fold content (shell, hero, navigation) and origin SSR for below-the-fold or slow operations (comments, recommendations). Combine edge with streaming SSR for best results.</p>
+
+        <p><strong>Test Edge-Specific Behaviors:</strong> Use <code>miniflare</code> (Cloudflare Workers local simulator) or Vercel Edge runtime locally. Test timeouts, memory limits, and API restrictions before deploying. Edge environments differ from Node.js.</p>
+      </section>
+
+      <section>
+        <h2>Real-World Use Cases</h2>
+        <p>Edge Rendering excels in specific scenarios:</p>
+
         <ul>
-          <li>Edge Rendering = SSR at CDN edge locations (300+ worldwide)</li>
-          <li>Consistent 50-100ms TTFB globally; eliminates geography tax</li>
-          <li>Uses V8 isolates: 0-5ms cold starts, 128-512MB memory, 10-50ms execution</li>
-          <li>Restricted runtime: Web APIs only, no Node.js stdlib, 1-5MB bundle limits</li>
-          <li>Best for: Global apps, personalization, fast rendering with distributed data</li>
-          <li>Not for: Heavy computation, large bundles, centralized databases</li>
-          <li>Platforms: Cloudflare Workers, Vercel Edge, Deno Deploy, Lambda@Edge</li>
+          <li>
+            <strong>Global E-Commerce:</strong> Product pages rendered at the edge with geolocation pricing, currency,
+            and language. User in Japan sees JPY prices from Tokyo edge. User in Germany sees EUR from Frankfurt edge.
+            TTFB: 50-80ms globally. Used by Shopify Hydrogen.
+          </li>
+          <li>
+            <strong>Personalized Marketing Pages:</strong> A/B testing, user segmentation, and personalized content at
+            CDN speed. Show different hero images, CTAs, or pricing based on user attributes (location, device, referrer)
+            without sacrificing performance. Used by Vercel, Netlify customers.
+          </li>
+          <li>
+            <strong>News & Media Sites:</strong> Edge rendering for article pages with geolocation-specific ads, paywalls,
+            and content restrictions. Fast TTFB globally is critical for engagement and SEO. Used by major news outlets.
+          </li>
+          <li>
+            <strong>Authentication & Authorization:</strong> Edge middleware checks JWT tokens, session cookies, or OAuth
+            tokens before rendering. Protects pages without origin server round trips. 10-20ms auth checks at the edge.
+          </li>
+          <li>
+            <strong>API Gateways:</strong> Edge functions act as API proxies with caching, rate limiting, and
+            transformation. Reduce origin API load by handling requests at the edge. Used for GraphQL gateways,
+            REST API aggregation.
+          </li>
+        </ul>
+
+        <p>
+          Edge Rendering is <strong>not ideal</strong> for computation-heavy tasks (video encoding, data processing),
+          applications requiring large dependencies (full Next.js, heavyweight ORMs), or pages with complex backend
+          integrations (legacy monoliths, slow databases without replication).
+        </p>
+      </section>
+
+      <section>
+        <h2>Platforms & Ecosystem</h2>
+        <p>Several platforms provide edge rendering capabilities:</p>
+
+        <ul>
+          <li>
+            <strong>Cloudflare Workers:</strong> 310+ locations, V8 isolates, 50ms CPU limit. KV store, D1 (SQLite),
+            Durable Objects. $5/month for 10 million requests. Most mature edge platform. Used by Discord, Shopify.
+          </li>
+          <li>
+            <strong>Vercel Edge Functions:</strong> Built on Cloudflare network. Seamless Next.js integration
+            (<code>export const runtime = {'\'edge\''}</code>). 1MB bundle limit. $2/million requests. Used by
+            Next.js, Vercel customers.
+          </li>
+          <li>
+            <strong>Deno Deploy:</strong> 35+ locations, TypeScript-native, V8 isolates. Deno KV (global key-value
+            store). Free tier: 100K requests/day. Used by Fresh framework, Deno ecosystem.
+          </li>
+          <li>
+            <strong>AWS Lambda@Edge:</strong> 450+ CloudFront locations, Node.js runtime. 10s execution time, 50MB
+            bundle. Integrated with AWS ecosystem (DynamoDB, S3). Used by enterprises with AWS infrastructure.
+          </li>
+          <li>
+            <strong>Fastly Compute@Edge:</strong> WebAssembly-based edge compute, supports Rust, JavaScript,
+            AssemblyScript. 300+ locations. Advanced caching and VCL scripting. Used by Vimeo, Stripe.
+          </li>
+          <li>
+            <strong>Netlify Edge Functions:</strong> Built on Deno, global edge network. Seamless Netlify integration.
+            $20/month for 2 million requests. Used by Netlify customers, Jamstack sites.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul>
+          <li>
+            <a href="https://developers.cloudflare.com/workers/" target="_blank" rel="noopener noreferrer">
+              Cloudflare Workers Documentation
+            </a> - Official guide to edge computing on Cloudflare
+          </li>
+          <li>
+            <a href="https://vercel.com/docs/functions/edge-functions" target="_blank" rel="noopener noreferrer">
+              Vercel Edge Functions
+            </a> - Next.js edge runtime and deployment guide
+          </li>
+          <li>
+            <a href="https://deno.com/deploy/docs" target="_blank" rel="noopener noreferrer">
+              Deno Deploy Documentation
+            </a> - Deno{'\''}s edge runtime and global deployment
+          </li>
+          <li>
+            <a href="https://www.cloudflare.com/learning/serverless/glossary/what-is-edge-computing/" target="_blank" rel="noopener noreferrer">
+              Cloudflare: What is Edge Computing?
+            </a> - Educational resource on edge computing concepts
+          </li>
+          <li>
+            <a href="https://nextjs.org/docs/app/building-your-application/rendering/edge-and-nodejs-runtimes" target="_blank" rel="noopener noreferrer">
+              Next.js Edge and Node.js Runtimes
+            </a> - When to use edge vs Node.js runtime in Next.js
+          </li>
         </ul>
       </section>
     </ArticleLayout>

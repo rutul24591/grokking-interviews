@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
+  <rect width="960" height="420" fill="#f8fafc" />
+  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">On-Demand Loading</text>
+
+  <rect x="80" y="120" width="260" height="70" rx="12" fill="#e2e8f0" stroke="#94a3b8" />
+  <text x="120" y="160" font-family="Arial" font-size="14" fill="#0f172a">User Action</text>
+
+  <rect x="380" y="120" width="260" height="70" rx="12" fill="#dbeafe" stroke="#60a5fa" />
+  <text x="420" y="160" font-family="Arial" font-size="14" fill="#0f172a">Fetch Data</text>
+
+  <rect x="680" y="120" width="200" height="70" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
+  <text x="720" y="160" font-family="Arial" font-size="14" fill="#0f172a">Render</text>
+</svg>

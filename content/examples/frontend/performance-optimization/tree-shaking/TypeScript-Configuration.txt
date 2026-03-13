@@ -1,0 +1,13 @@
+// tsconfig.json — ensure ESM output
+{
+  "compilerOptions": {
+    "module": "esnext",      // ← Output ES modules (NOT "commonjs")
+    "moduleResolution": "bundler", // Let bundler handle resolution
+    "target": "es2020",      // Modern JS features
+    "isolatedModules": true, // Required for esbuild/SWC compatibility
+
+    // DON'T use these — they break tree shaking:
+    // "module": "commonjs"  ← Converts import to require()
+    // "esModuleInterop": true + namespace import patterns
+  }
+}

@@ -1,0 +1,11 @@
+// Before
+a = 1;
+b = 2;
+c = 3;
+return c;
+
+// After
+return a = 1, b = 2, c = 3;
+
+// Or even further optimized
+return a = 1, b = 2, 3;

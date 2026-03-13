@@ -1,0 +1,4 @@
+denormalization:
+  update_fanout: async
+  reconcile_interval_min: 15
+  staleness_budget_sec: 60

@@ -1,0 +1,50 @@
+// 1. Web Vitals library — measure in production (RUM)
+import { onLCP, onFCP, onCLS, onINP, onTTFB } from 'web-vitals';
+
+function sendToAnalytics(metric) {
+  const body = JSON.stringify({
+    name: metric.name,
+    value: metric.value,
+    rating: metric.rating, // 'good', 'needs-improvement', 'poor'
+    delta: metric.delta,
+    id: metric.id,
+    navigationType: metric.navigationType,
+    // Include the LCP element for debugging
+    ...(metric.entries?.[0]?.element && {
+      element: metric.entries[0].element.tagName,
+      url: metric.entries[0].url,
+    }),
+  });
+
+  // Use sendBeacon to avoid losing data on page unload
+  navigator.sendBeacon('/api/vitals', body);
+}
+
+onLCP(sendToAnalytics);
+onFCP(sendToAnalytics);
+onCLS(sendToAnalytics);
+onINP(sendToAnalytics);
+onTTFB(sendToAnalytics);
+
+// 2. Performance Observer API — custom above-fold timing
+const observer = new PerformanceObserver((list) => {
+  for (const entry of list.getEntries()) {
+    if (entry.entryType === 'paint') {
+      console.log(`\${entry.name}: \${entry.startTime}ms`);
+    }
+  }
+});
+observer.observe({ entryTypes: ['paint', 'largest-contentful-paint'] });
+
+// 3. Custom above-fold timing mark
+// Place this at the end of your above-fold HTML
+function AboveFoldMarker() {
+  useEffect(() => {
+    performance.mark('above-fold-rendered');
+    performance.measure('above-fold-time', 'navigationStart', 'above-fold-rendered');
+    const measure = performance.getEntriesByName('above-fold-time')[0];
+    console.log('Above-fold render time:', measure.duration, 'ms');
+  }, []);
+
+  return null;
+}

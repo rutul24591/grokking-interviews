@@ -1,0 +1,41 @@
+// app/layout.tsx — Next.js automatic font optimization
+import { Inter, Playfair_Display } from 'next/font/google';
+
+// next/font automatically:
+// 1. Downloads font at build time (no external request at runtime)
+// 2. Self-hosts the font file
+// 3. Uses CSS size-adjust to eliminate CLS
+// 4. Applies font-display: swap by default
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  display: 'optional', // For decorative headings
+  variable: '--font-playfair',
+});
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" className={`\${inter.variable} \${playfair.variable}`}>
+      <body className={inter.className}>
+        {children}
+      </body>
+    </html>
+  );
+}
+
+// Using local fonts with next/font
+import localFont from 'next/font/local';
+
+const customFont = localFont({
+  src: [
+    { path: './fonts/Custom-Regular.woff2', weight: '400', style: 'normal' },
+    { path: './fonts/Custom-Bold.woff2', weight: '700', style: 'normal' },
+  ],
+  display: 'swap',
+  variable: '--font-custom',
+});

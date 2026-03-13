@@ -50,24 +50,24 @@ export default function RequestDeduplicationConciseArticle() {
           <code>{`// Five components, five identical requests
 function Header() {
   const [user, setUser] = useState(null);
-  useEffect(() => {
-    fetch('/api/user').then(r => r.json()).then(setUser);
+  useEffect(() =&gt; {
+    fetch('/api/user').then(r =&gt; r.json()).then(setUser);
   }, []);
   return <div>Welcome, {user?.name}</div>;
 }
 
 function Sidebar() {
   const [user, setUser] = useState(null);
-  useEffect(() => {
-    fetch('/api/user').then(r => r.json()).then(setUser);
+  useEffect(() =&gt; {
+    fetch('/api/user').then(r =&gt; r.json()).then(setUser);
   }, []);
   return <img src={user?.avatar} />;
 }
 
 function Settings() {
   const [user, setUser] = useState(null);
-  useEffect(() => {
-    fetch('/api/user').then(r => r.json()).then(setUser);
+  useEffect(() =&gt; {
+    fetch('/api/user').then(r =&gt; r.json()).then(setUser);
   }, []);
   return <form>{/* user preferences */}</form>;
 }
@@ -98,7 +98,7 @@ function Settings() {
           <code>{`// SWR — all three components share one request
 import useSWR from 'swr';
 
-const fetcher = (url: string) => fetch(url).then(r => r.json());
+const fetcher = (url: string) =&gt; fetch(url).then(r =&gt; r.json());
 
 function Header() {
   const { data: user } = useSWR('/api/user', fetcher);
@@ -126,7 +126,7 @@ function Settings() {
 function Header() {
   const { data: user } = useQuery({
     queryKey: ['user'],
-    queryFn: () => fetch('/api/user').then(r => r.json()),
+    queryFn: () =&gt; fetch('/api/user').then(r =&gt; r.json()),
   });
   return <div>Welcome, {user?.name}</div>;
 }
@@ -150,7 +150,7 @@ function Header() {
         </p>
         <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
           <code>{`// Simple request deduplication wrapper
-const inflightRequests = new Map<string, Promise<any>>();
+const inflightRequests = new Map<string, Promise<any>&gt;();
 
 async function dedupFetch(url: string, options?: RequestInit): Promise<any> {
   const cacheKey = url;
@@ -162,11 +162,11 @@ async function dedupFetch(url: string, options?: RequestInit): Promise<any> {
 
   // Create the request and store its promise
   const promise = fetch(url, options)
-    .then(response => {
+    .then(response =&gt; {
       if (!response.ok) throw new Error(\`HTTP \${response.status}\`);
       return response.json();
     })
-    .finally(() => {
+    .finally(() =&gt; {
       // Remove from in-flight map when complete (success or error)
       inflightRequests.delete(cacheKey);
     });
@@ -220,7 +220,7 @@ normalizeUrl('/api/users?limit=10&sort=name');`}</code>
         </p>
         <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
           <code>{`const cache = new Map<string, { data: any; timestamp: number }>();
-const inflight = new Map<string, Promise<any>>();
+const inflight = new Map<string, Promise<any>&gt;();
 const DEDUP_WINDOW = 2000; // 2 seconds
 
 async function timedDedupFetch(url: string): Promise<any> {
@@ -228,7 +228,7 @@ async function timedDedupFetch(url: string): Promise<any> {
 
   // Check time-window cache first
   const cached = cache.get(key);
-  if (cached && Date.now() - cached.timestamp < DEDUP_WINDOW) {
+  if (cached && Date.now() - cached.timestamp &lt; DEDUP_WINDOW) {
     return cached.data;
   }
 
@@ -238,12 +238,12 @@ async function timedDedupFetch(url: string): Promise<any> {
   }
 
   const promise = fetch(url)
-    .then(r => r.json())
-    .then(data => {
+    .then(r =&gt; r.json())
+    .then(data =&gt; {
       cache.set(key, { data, timestamp: Date.now() });
       return data;
     })
-    .finally(() => inflight.delete(key));
+    .finally(() =&gt; inflight.delete(key));
 
   inflight.set(key, promise);
   return promise;
@@ -304,7 +304,7 @@ async function cancelDedupFetch(url: string): Promise<any> {
           <code>{`import { cache } from 'react';
 
 // Memoized for the duration of one server render
-const getUser = cache(async (userId: string) => {
+const getUser = cache(async (userId: string) =&gt; {
   const res = await fetch(\`https://api.example.com/users/\${userId}\`);
   return res.json();
 });

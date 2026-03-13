@@ -1,0 +1,2 @@
+app.post('/prefetch', async (req, res) => { const id = req.body.id; const data = await db.getDetails(id); await redis.set('prefetch:detail:' + id, JSON.stringify(data), 'EX', 120); return res.status(202).end();
+});

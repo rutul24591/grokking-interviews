@@ -1,0 +1,1 @@
+CREATE TABLE processed_events(id TEXT PRIMARY KEY);

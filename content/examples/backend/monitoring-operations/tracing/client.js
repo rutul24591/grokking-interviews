@@ -1,0 +1,1 @@
+fetch('http://localhost:3001/a', { headers: { 'x-trace-id': 't1' } });

@@ -1,0 +1,86 @@
+// Island wrapper component
+import { lazy, Suspense } from 'react';
+import { hydrateRoot } from 'react-dom/client';
+
+// Server-side: renders to HTML with island marker
+export function Island({
+  name,
+  Component,
+  props,
+  hydration = 'immediate'
+}) {
+  if (typeof window === 'undefined') {
+    // Server-side: render with island marker
+    return (
+      <div data-island={name} data-hydration={hydration}>
+        <Component {...props} />
+      </div>
+    );
+  }
+
+  // Client-side: hydrate this island
+  return <Component {...props} />;
+}
+
+// Client-side hydration script
+if (typeof window !== 'undefined') {
+  // Find all islands in the page
+  document.querySelectorAll('[data-island]').forEach(async (el) => {
+    const name = el.getAttribute('data-island');
+    const hydration = el.getAttribute('data-hydration');
+
+    // Load component code dynamically
+    const { default: Component } = await import(`./islands/\${name}`);
+
+    // Parse props from data attribute (if any)
+    const props = JSON.parse(el.getAttribute('data-props') || '{}');
+
+    // Hydrate based on strategy
+    if (hydration === 'immediate') {
+      hydrateRoot(el, <Component {...props} />);
+    } else if (hydration === 'visible') {
+      const observer = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) {
+          hydrateRoot(el, <Component {...props} />);
+          observer.disconnect();
+        }
+      });
+      observer.observe(el);
+    }
+  });
+}
+
+// Usage in page
+export default function BlogPost({ post }) {
+  return (
+    <>
+      {/* Static - no JavaScript */}
+      <header>
+        <h1>{post.title}</h1>
+        <p>{post.author}</p>
+      </header>
+
+      {/* Static content */}
+      <article dangerouslySetInnerHTML={{ __html: post.content }} />
+
+      {/* Interactive island */}
+      <Island
+        name="LikeButton"
+        Component={LikeButton}
+        props={{ postId: post.id }}
+        hydration="visible"
+      />
+
+      {/* Interactive island */}
+      <Island
+        name="CommentSection"
+        Component={CommentSection}
+        props={{ postId: post.id }}
+        hydration="visible"
+      />
+
+      {/* Static footer */}
+      <footer>© 2026</footer>
+    </>
+  );
+}

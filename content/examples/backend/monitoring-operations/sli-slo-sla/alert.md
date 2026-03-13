@@ -1,0 +1,1 @@
+Alert when burn rate exceeds budget for 1h.

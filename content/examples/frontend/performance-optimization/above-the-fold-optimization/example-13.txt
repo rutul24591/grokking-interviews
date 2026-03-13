@@ -1,0 +1,27 @@
+// CSR: LCP image not discoverable until JS executes
+// Timeline: HTML (empty) → JS download → JS execute → render → image discovery → image download → paint
+// Total: potentially 4-6 seconds on slow connections
+
+// SSR: LCP image in initial HTML
+// Timeline: HTML (with <img>) → image discovery (immediate) → image download → paint
+// Total: potentially 1.5-2.5 seconds
+
+// Next.js App Router — Server Component (default)
+// This renders on the server, so the <img> is in the initial HTML
+export default async function ProductPage({ params }) {
+  const product = await getProduct(params.id);
+
+  return (
+    <main>
+      <img
+        src={product.image}
+        alt={product.name}
+        width={800}
+        height={600}
+        fetchPriority="high"
+      />
+      <h1>{product.name}</h1>
+      <p>{product.description}</p>
+    </main>
+  );
+}

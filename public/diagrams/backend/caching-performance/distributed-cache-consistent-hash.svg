@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
+  <rect width="1200" height="620" fill="#f8fafc"/>
+  <text x="60" y="70" font-size="28" font-family="Arial" fill="#0f172a">Consistent Hash Ring</text>
+  <circle cx="600" cy="330" r="200" fill="none" stroke="#94a3b8" stroke-width="4"/>
+  <circle cx="600" cy="130" r="10" fill="#0ea5e9"/>
+  <circle cx="800" cy="250" r="10" fill="#22c55e"/>
+  <circle cx="760" cy="470" r="10" fill="#f59e0b"/>
+  <circle cx="440" cy="500" r="10" fill="#ef4444"/>
+  <circle cx="420" cy="220" r="10" fill="#a855f7"/>
+  <text x="560" y="110" font-size="14" font-family="Arial" fill="#0f172a">Node A</text>
+  <text x="820" y="240" font-size="14" font-family="Arial" fill="#0f172a">Node B</text>
+  <text x="780" y="500" font-size="14" font-family="Arial" fill="#0f172a">Node C</text>
+  <text x="380" y="520" font-size="14" font-family="Arial" fill="#0f172a">Node D</text>
+  <text x="360" y="210" font-size="14" font-family="Arial" fill="#0f172a">Node E</text>
+  <text x="60" y="520" font-size="16" font-family="Arial" fill="#475569">Keys map to the next node clockwise, minimizing key movement on scale changes.</text>
+</svg>

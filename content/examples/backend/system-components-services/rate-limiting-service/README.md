@@ -1,0 +1,1 @@
+Rate limiting service enforces token bucket limits per user or IP.

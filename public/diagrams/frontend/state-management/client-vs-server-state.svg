@@ -1,0 +1,75 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Client State vs Server State — Why They Need Different Management</text>
+
+  <!-- Dividing line -->
+  <line x1="450" y1="50" x2="450" y2="460" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="8,4"/>
+
+  <!-- LEFT SIDE: Client State -->
+  <rect x="30" y="55" width="400" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="230" y="80" text-anchor="middle" font-size="15" fill="#fff" font-weight="bold">Client State</text>
+
+  <!-- Properties -->
+  <rect x="30" y="110" width="400" height="145" rx="8" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="50" y="135" font-size="12" fill="#6d5bd0" font-weight="bold">Characteristics</text>
+  <line x1="50" y1="143" x2="410" y2="143" stroke="#d7d1e6"/>
+  <circle cx="58" cy="164" r="4" fill="#6d5bd0"/>
+  <text x="70" y="168" font-size="11" fill="#1a1822"><tspan font-weight="bold">Synchronous</tspan> — available instantly</text>
+  <circle cx="58" cy="188" r="4" fill="#6d5bd0"/>
+  <text x="70" y="192" font-size="11" fill="#1a1822"><tspan font-weight="bold">Owned by app</tspan> — single source of truth</text>
+  <circle cx="58" cy="212" r="4" fill="#6d5bd0"/>
+  <text x="70" y="216" font-size="11" fill="#1a1822"><tspan font-weight="bold">Always up-to-date</tspan> — never stale</text>
+  <circle cx="58" cy="236" r="4" fill="#6d5bd0"/>
+  <text x="70" y="240" font-size="11" fill="#1a1822"><tspan font-weight="bold">Ephemeral</tspan> — lost on refresh</text>
+
+  <!-- Examples -->
+  <rect x="30" y="270" width="400" height="120" rx="8" fill="#fff" stroke="#d7d1e6"/>
+  <text x="50" y="295" font-size="12" fill="#6d5bd0" font-weight="bold">Examples</text>
+  <line x1="50" y1="303" x2="410" y2="303" stroke="#d7d1e6"/>
+  <text x="50" y="323" font-size="11" fill="#1a1822">• UI toggles (dark mode, sidebar open/closed)</text>
+  <text x="50" y="343" font-size="11" fill="#1a1822">• Form input values &amp; validation state</text>
+  <text x="50" y="363" font-size="11" fill="#1a1822">• Selected tab, active modal, scroll position</text>
+  <text x="50" y="383" font-size="11" fill="#1a1822">• Shopping cart (before server sync)</text>
+
+  <!-- Tools -->
+  <rect x="30" y="405" width="400" height="50" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0"/>
+  <text x="50" y="428" font-size="11" fill="#6d5bd0" font-weight="bold">Tools:</text>
+  <text x="96" y="428" font-size="11" fill="#1a1822">useState · useReducer · Zustand · Redux · Jotai</text>
+  <text x="50" y="446" font-size="10" fill="#1a1822">Simple get/set — no loading, error, or staleness states needed</text>
+
+  <!-- RIGHT SIDE: Server State -->
+  <rect x="470" y="55" width="400" height="40" rx="8" fill="#2f9d74"/>
+  <text x="670" y="80" text-anchor="middle" font-size="15" fill="#fff" font-weight="bold">Server State</text>
+
+  <!-- Properties -->
+  <rect x="470" y="110" width="400" height="145" rx="8" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="490" y="135" font-size="12" fill="#2f9d74" font-weight="bold">Characteristics</text>
+  <line x1="490" y1="143" x2="850" y2="143" stroke="#d7d1e6"/>
+  <circle cx="498" cy="164" r="4" fill="#2f9d74"/>
+  <text x="510" y="168" font-size="11" fill="#1a1822"><tspan font-weight="bold">Asynchronous</tspan> — requires fetch + wait</text>
+  <circle cx="498" cy="188" r="4" fill="#2f9d74"/>
+  <text x="510" y="192" font-size="11" fill="#1a1822"><tspan font-weight="bold">Shared ownership</tspan> — other clients mutate it</text>
+  <circle cx="498" cy="212" r="4" fill="#2f9d74"/>
+  <text x="510" y="216" font-size="11" fill="#1a1822"><tspan font-weight="bold">Potentially stale</tspan> — out-of-date by default</text>
+  <circle cx="498" cy="236" r="4" fill="#2f9d74"/>
+  <text x="510" y="240" font-size="11" fill="#1a1822"><tspan font-weight="bold">Persistent</tspan> — lives on the server</text>
+
+  <!-- Examples -->
+  <rect x="470" y="270" width="400" height="120" rx="8" fill="#fff" stroke="#d7d1e6"/>
+  <text x="490" y="295" font-size="12" fill="#2f9d74" font-weight="bold">Examples</text>
+  <line x1="490" y1="303" x2="850" y2="303" stroke="#d7d1e6"/>
+  <text x="490" y="323" font-size="11" fill="#1a1822">• User profile &amp; authentication data</text>
+  <text x="490" y="343" font-size="11" fill="#1a1822">• Product listings &amp; inventory counts</text>
+  <text x="490" y="363" font-size="11" fill="#1a1822">• Notifications, comments, messages</text>
+  <text x="490" y="383" font-size="11" fill="#1a1822">• Dashboard metrics &amp; analytics</text>
+
+  <!-- Tools -->
+  <rect x="470" y="405" width="400" height="50" rx="8" fill="#2f9d74" opacity="0.12" stroke="#2f9d74"/>
+  <text x="490" y="428" font-size="11" fill="#2f9d74" font-weight="bold">Tools:</text>
+  <text x="536" y="428" font-size="11" fill="#1a1822">React Query · SWR · Apollo Client · RTK Query</text>
+  <text x="490" y="446" font-size="10" fill="#1a1822">Manages loading, error, stale, refetch, cache, optimistic updates</text>
+
+  <!-- Bottom callout -->
+  <rect x="130" y="465" width="640" height="28" rx="8" fill="#d97843"/>
+  <text x="450" y="484" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Mixing these in one store (e.g., Redux for everything) leads to unnecessary complexity and bugs</text>
+</svg>

@@ -1,0 +1,32 @@
+// Using the 'critical' npm package
+// Install: pnpm add -D critical
+
+const critical = require('critical');
+
+// Extract critical CSS from HTML
+async function extractCriticalCSS() {
+  const result = await critical.generate({
+    // Source HTML file or URL
+    src: 'https://example.com',
+    // Viewport dimensions to determine "above the fold"
+    width: 1300,
+    height: 900,
+    // Include multiple viewports for responsive
+    dimensions: [
+      { width: 375, height: 667 },  // Mobile
+      { width: 768, height: 1024 }, // Tablet
+      { width: 1440, height: 900 }, // Desktop
+    ],
+    // Inline the critical CSS into the HTML
+    inline: true,
+    // Minify the output
+    minify: true,
+    // Extract: remove critical rules from the full stylesheet
+    extract: true,
+  });
+
+  console.log('Critical CSS size:', result.css.length);
+  console.log('HTML with inlined critical CSS:', result.html);
+}
+
+extractCriticalCSS();

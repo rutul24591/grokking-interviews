@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Structural Sharing: Only Changed Path Is Copied</text>
+
+  <!-- Legend -->
+  <rect x="30" y="460" width="16" height="16" rx="4" fill="#6d5bd0"/>
+  <text x="52" y="474" font-size="12" fill="#1a1822">New reference (copied)</text>
+  <rect x="200" y="460" width="16" height="16" rx="4" fill="#999"/>
+  <text x="222" y="474" font-size="12" fill="#1a1822">Shared reference (reused)</text>
+  <rect x="400" y="460" width="16" height="16" rx="4" fill="#2f9d74"/>
+  <text x="422" y="474" font-size="12" fill="#1a1822">Changed value</text>
+
+  <!-- BEFORE (left side) -->
+  <text x="225" y="70" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1822">Before Update</text>
+
+  <!-- Node A (original root) -->
+  <rect x="180" y="90" width="90" height="40" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="225" y="115" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">A (root)</text>
+
+  <!-- Node B -->
+  <rect x="100" y="175" width="70" height="40" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="135" y="200" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">B</text>
+
+  <!-- Node E -->
+  <rect x="280" y="175" width="70" height="40" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="315" y="200" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">E</text>
+
+  <!-- Node C -->
+  <rect x="100" y="260" width="70" height="40" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="135" y="285" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">C</text>
+
+  <!-- Node F -->
+  <rect x="280" y="260" width="70" height="40" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="315" y="285" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">F</text>
+
+  <!-- Node D -->
+  <rect x="100" y="345" width="70" height="40" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="135" y="370" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">D</text>
+
+  <!-- Edges (before) -->
+  <line x1="210" y1="130" x2="150" y2="175" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="240" y1="130" x2="300" y2="175" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="135" y1="215" x2="135" y2="260" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="315" y1="215" x2="315" y2="260" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="135" y1="300" x2="135" y2="345" stroke="#1a1822" stroke-width="1.5"/>
+
+  <!-- Arrow: update D -->
+  <rect x="80" y="400" width="110" height="28" rx="6" fill="#d97843"/>
+  <text x="135" y="419" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">Update D's value</text>
+
+  <!-- AFTER (right side) -->
+  <text x="675" y="70" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1822">After Update</text>
+
+  <!-- Node A' (new root, purple) -->
+  <rect x="630" y="90" width="90" height="40" rx="8" fill="#6d5bd0" stroke="#5a4ab8" stroke-width="1.5"/>
+  <text x="675" y="115" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">A' (new)</text>
+
+  <!-- Node B' (new, purple) -->
+  <rect x="550" y="175" width="70" height="40" rx="8" fill="#6d5bd0" stroke="#5a4ab8" stroke-width="1.5"/>
+  <text x="585" y="200" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">B'</text>
+
+  <!-- Node E (shared, grey) -->
+  <rect x="730" y="175" width="70" height="40" rx="8" fill="#999" stroke="#777" stroke-width="1.5"/>
+  <text x="765" y="200" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">E</text>
+
+  <!-- Node C' (new, purple) -->
+  <rect x="550" y="260" width="70" height="40" rx="8" fill="#6d5bd0" stroke="#5a4ab8" stroke-width="1.5"/>
+  <text x="585" y="285" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">C'</text>
+
+  <!-- Node F (shared, grey) -->
+  <rect x="730" y="260" width="70" height="40" rx="8" fill="#999" stroke="#777" stroke-width="1.5"/>
+  <text x="765" y="285" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">F</text>
+
+  <!-- Node D' (changed value, green) -->
+  <rect x="550" y="345" width="70" height="40" rx="8" fill="#2f9d74" stroke="#257a5a" stroke-width="1.5"/>
+  <text x="585" y="370" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">D'</text>
+
+  <!-- Edges (after) - new path -->
+  <line x1="660" y1="130" x2="600" y2="175" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="690" y1="130" x2="750" y2="175" stroke="#999" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <line x1="585" y1="215" x2="585" y2="260" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="765" y1="215" x2="765" y2="260" stroke="#999" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <line x1="585" y1="300" x2="585" y2="345" stroke="#6d5bd0" stroke-width="2"/>
+
+  <!-- Shared reference annotations -->
+  <text x="765" y="230" text-anchor="middle" font-size="10" fill="#666" font-style="italic">same ref</text>
+  <text x="765" y="320" text-anchor="middle" font-size="10" fill="#666" font-style="italic">same ref</text>
+
+  <!-- Memory efficiency callout -->
+  <rect x="530" y="405" width="240" height="40" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="650" y="422" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">4 new objects, 2 shared</text>
+  <text x="650" y="438" text-anchor="middle" font-size="10" fill="#6d5bd0">O(depth) instead of O(n) copies</text>
+
+  <!-- Center divider -->
+  <line x1="450" y1="60" x2="450" y2="450" stroke="#ccc" stroke-width="1" stroke-dasharray="6,4"/>
+</svg>

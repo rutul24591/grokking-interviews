@@ -1,0 +1,74 @@
+// === 1. Blur-up (LQIP — Low Quality Image Placeholder) ===
+// Generate a tiny (20px) blurred version as base64
+// Inline it in HTML, then fade in the full image
+
+function BlurUpImage({ src, placeholder, alt, width, height }) {
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    <div style={{ position: 'relative', width, height }}>
+      {/* Tiny placeholder — inlined, no HTTP request */}
+      <img
+        src={placeholder}  // "data:image/jpeg;base64,/9j/4AAQ..."
+        alt=""
+        aria-hidden
+        style={{
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          filter: loaded ? 'blur(0)' : 'blur(20px)',
+          transition: 'filter 0.5s',
+          transform: 'scale(1.1)', // Hide blur edges
+        }}
+      />
+      <img
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        loading="lazy"
+        onLoad={() => setLoaded(true)}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          objectFit: 'cover',
+          opacity: loaded ? 1 : 0,
+          transition: 'opacity 0.5s',
+        }}
+      />
+    </div>
+  );
+}
+
+// === 2. Dominant Color ===
+// Extract the most prominent color and use as background
+function DominantColorPlaceholder({ src, color, alt, width, height }) {
+  return (
+    <div style={{ backgroundColor: color, width, height }}>
+      <img
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        loading="lazy"
+        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+      />
+    </div>
+  );
+}
+
+// === 3. BlurHash (Wolt's algorithm) ===
+// Compact string representation of a blurred image
+// "LEHV6nWB2yk8pyo0adR*.7kCMdnj" → renders a blur
+// Use: blurhash npm package to decode into canvas
+
+// === 4. CSS Skeleton ===
+// Animated gradient placeholder
+function SkeletonImage({ width, height }) {
+  return (
+    <div
+      className="animate-pulse bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200"
+      style={{ width, height, backgroundSize: '200% 100%' }}
+    />
+  );
+}

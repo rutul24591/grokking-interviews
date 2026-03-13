@@ -1,0 +1,53 @@
+// Next.js Image handles all optimization automatically:
+// - Format: Serves AVIF/WebP based on Accept header
+// - Resize: On-demand resizing via /_next/image endpoint
+// - Cache: Optimized images cached on disk and CDN
+// - Lazy: loading="lazy" by default
+// - Blur: placeholder="blur" with auto-generated blurDataURL
+
+import Image from 'next/image';
+
+// === Static imports (best DX) ===
+import heroImage from '../public/hero.jpg';
+
+<Image
+  src={heroImage}              // Static import provides dimensions automatically
+  alt="Hero banner"
+  placeholder="blur"           // Auto-generated blur placeholder
+  priority                     // Above-fold: preload + eager
+  sizes="100vw"
+/>
+
+// === Dynamic/remote images ===
+<Image
+  src="https://cdn.example.com/photos/product-123.jpg"
+  alt="Product"
+  width={800}
+  height={600}
+  sizes="(max-width: 768px) 100vw, 50vw"
+  placeholder="blur"
+  blurDataURL={product.blurHash}  // Provide your own blur hash
+/>
+
+// === next.config.js image configuration ===
+const nextConfig = {
+  images: {
+    // Allowed remote image domains
+    remotePatterns: [
+      { protocol: 'https', hostname: 'cdn.example.com' },
+      { protocol: 'https', hostname: '*.cloudinary.com' },
+    ],
+
+    // Output formats (ordered by preference)
+    formats: ['image/avif', 'image/webp'],
+
+    // Device widths for srcset generation
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+
+    // Image widths for layout="responsive" or fill
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+
+    // Cache TTL for optimized images (seconds)
+    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
+  },
+};

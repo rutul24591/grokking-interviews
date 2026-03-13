@@ -1,0 +1,104 @@
+// webpack.config.js — production optimization
+const TerserPlugin = require('terser-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
+
+module.exports = {
+  mode: 'production',
+
+  optimization: {
+    // Minification
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          compress: {
+            drop_console: true,      // Remove console.log
+            drop_debugger: true,     // Remove debugger statements
+            pure_funcs: ['console.info', 'console.debug'],
+          },
+          mangle: {
+            safari10: true,          // Work around Safari 10 bugs
+          },
+          output: {
+            comments: false,         // Remove all comments
+          },
+        },
+        extractComments: false,
+      }),
+      new CssMinimizerPlugin(),
+    ],
+
+    // Tree shaking
+    usedExports: true,
+
+    // Scope hoisting — merges modules for better dead code elimination
+    concatenateModules: true,
+
+    // Module IDs — deterministic for long-term caching
+    moduleIds: 'deterministic',
+
+    // Runtime chunk — extract Webpack runtime for better caching
+    runtimeChunk: 'single',
+
+    // Split chunks strategy
+    splitChunks: {
+      chunks: 'all',
+      maxInitialRequests: 25,
+      maxAsyncRequests: 25,
+      minSize: 20_000,            // 20KB minimum chunk size
+
+      cacheGroups: {
+        // React ecosystem — changes rarely, cache aggressively
+        react: {
+          test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/,
+          name: 'react',
+          chunks: 'all',
+          priority: 40,
+        },
+
+        // Router — changes with route structure updates
+        router: {
+          test: /[\\/]node_modules[\\/](react-router|react-router-dom)[\\/]/,
+          name: 'router',
+          chunks: 'all',
+          priority: 30,
+        },
+
+        // Other vendor code — moderate cache lifetime
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendor',
+          chunks: 'all',
+          priority: 10,
+        },
+
+        // Shared application code used by multiple routes
+        common: {
+          name: 'common',
+          minChunks: 2,            // Must be used by 2+ chunks
+          chunks: 'all',
+          priority: 5,
+          reuseExistingChunk: true,
+        },
+      },
+    },
+  },
+
+  plugins: [
+    // Generate gzip and Brotli compressed versions
+    new CompressionPlugin({
+      algorithm: 'gzip',
+      test: /\\.(js|css|html|svg)$/,
+      threshold: 10240,            // Only compress files > 10KB
+      minRatio: 0.8,
+    }),
+    new CompressionPlugin({
+      algorithm: 'brotliCompress',
+      test: /\\.(js|css|html|svg)$/,
+      threshold: 10240,
+      minRatio: 0.8,
+      filename: '[path][base].br',
+    }),
+  ],
+};

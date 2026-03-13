@@ -1,0 +1,2 @@
+async function purgeCdn(urls) { await fetch('https://cdn.example.com/purge', { method: 'POST', headers: { 'Authorization': 'Bearer ' + process.env.CDN_TOKEN }, body: JSON.stringify({ urls }) });
+} await purgeCdn(['https://cdn.example.com/catalog']);

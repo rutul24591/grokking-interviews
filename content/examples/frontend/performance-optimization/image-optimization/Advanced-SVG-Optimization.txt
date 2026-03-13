@@ -1,0 +1,50 @@
+// === SVGO — Optimize SVG files ===
+// Install: pnpm add -D svgo
+// Removes metadata, comments, hidden elements, unnecessary attributes
+
+// svgo.config.js
+module.exports = {
+  multipass: true,
+  plugins: [
+    'preset-default',
+    'removeDimensions',  // Use viewBox instead of width/height
+    {
+      name: 'removeAttrs',
+      params: { attrs: ['data-name', 'class'] },
+    },
+  ],
+};
+
+// Result: 50-90% SVG size reduction typical
+
+// === Inline small SVGs (< 1KB) to avoid HTTP requests ===
+function Icon({ name }) {
+  const icons = {
+    close: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+        <path d="M18 6L6 18M6 6l12 12" />
+      </svg>
+    ),
+    menu: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+        <path d="M3 12h18M3 6h18M3 18h18" />
+      </svg>
+    ),
+  };
+
+  return <span className="w-6 h-6 inline-block">{icons[name]}</span>;
+}
+
+// === Use SVG sprites for many icons ===
+// Combine icons into one file, reference by id
+<svg style={{ display: 'none' }}>
+  <symbol id="icon-close" viewBox="0 0 24 24">
+    <path d="M18 6L6 18M6 6l12 12" />
+  </symbol>
+  <symbol id="icon-menu" viewBox="0 0 24 24">
+    <path d="M3 12h18M3 6h18M3 18h18" />
+  </symbol>
+</svg>
+
+// Usage — one HTTP request for all icons
+<svg className="w-6 h-6"><use href="#icon-close" /></svg>

@@ -1,0 +1,36 @@
+// Trailing-edge debounce — fires AFTER the quiet period
+function debounce(fn, delay) {
+  let timeoutId = null;
+
+  function debounced(...args) {
+    // Clear any pending execution
+    clearTimeout(timeoutId);
+
+    // Schedule new execution after delay
+    timeoutId = setTimeout(() => {
+      fn.apply(this, args);
+      timeoutId = null;
+    }, delay);
+  }
+
+  // Allow manual cancellation
+  debounced.cancel = () => {
+    clearTimeout(timeoutId);
+    timeoutId = null;
+  };
+
+  // Check if a call is pending
+  debounced.pending = () => timeoutId !== null;
+
+  return debounced;
+}
+
+// Usage
+const handleSearch = debounce((query) => {
+  fetch(`/api/search?q=\${encodeURIComponent(query)}`);
+}, 300);
+
+input.addEventListener('input', (e) => handleSearch(e.target.value));
+
+// On component teardown:
+handleSearch.cancel();

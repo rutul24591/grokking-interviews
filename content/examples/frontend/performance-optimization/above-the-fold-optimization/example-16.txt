@@ -1,0 +1,74 @@
+import { useEffect, useRef, useState, lazy, Suspense } from 'react';
+
+// Custom hook: only render a component when it enters the viewport
+function useLazyLoad(rootMargin = '200px') {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect(); // Only need to trigger once
+        }
+      },
+      {
+        rootMargin, // Start loading 200px before visible
+      }
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [rootMargin]);
+
+  return { ref, isVisible };
+}
+
+// Usage: lazy-load an interactive chart component
+const InteractiveChart = lazy(() => import('./InteractiveChart'));
+
+function AnalyticsSection({ data }) {
+  const { ref, isVisible } = useLazyLoad('300px');
+
+  return (
+    <section ref={ref} style={{ minHeight: 400 }}>
+      {isVisible ? (
+        <Suspense fallback={<ChartSkeleton />}>
+          <InteractiveChart data={data} />
+        </Suspense>
+      ) : (
+        <ChartSkeleton />
+      )}
+    </section>
+  );
+}
+
+// Lazy-initialize third-party scripts
+function useLoadThirdParty(src: string) {
+  const { ref, isVisible } = useLazyLoad('0px');
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, [isVisible, src]);
+
+  return ref;
+}
+
+// Load chat widget only when user scrolls near footer
+function ChatWidget() {
+  const ref = useLoadThirdParty('https://chat.example.com/widget.js');
+  return <div ref={ref} id="chat-widget" />;
+}

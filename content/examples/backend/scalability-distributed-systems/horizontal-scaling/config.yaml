@@ -1,0 +1,5 @@
+scaling:
+  min_instances: 4
+  max_instances: 50
+  target_cpu: 0.7
+  cooldown_sec: 120

@@ -1,0 +1,4 @@
+{
+  "admin": ["read", "write", "delete"],
+  "user": ["read"]
+}

@@ -82,7 +82,7 @@ export default function CriticalCssConciseArticle() {
           <code>{`<!DOCTYPE html>
 <html>
 <head>
-  <!-- Critical CSS inlined — no network request needed -->
+  <!-- Critical CSS inlined — no network request needed --&gt;
   <style>
     /* Only styles for above-the-fold content */
     body { margin: 0; font-family: system-ui, sans-serif; }
@@ -93,7 +93,7 @@ export default function CriticalCssConciseArticle() {
     /* ... ~10-30KB of critical rules ... */
   </style>
 
-  <!-- Full stylesheet loaded asynchronously -->
+  <!-- Full stylesheet loaded asynchronously --&gt;
   <link rel="preload" href="/styles.css" as="style"
         onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
@@ -101,7 +101,7 @@ export default function CriticalCssConciseArticle() {
   </noscript>
 </head>
 <body>
-  <!-- Above-the-fold content renders immediately -->
+  <!-- Above-the-fold content renders immediately --&gt;
   <header class="header">
     <nav class="nav">...</nav>
   </header>
@@ -197,14 +197,14 @@ module.exports = {
           render-block on stylesheets whose media query matches the current viewport.
         </p>
         <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`<!-- Browser only blocks render on matching media queries -->
+          <code>{`<!-- Browser only blocks render on matching media queries --&gt;
 <link rel="stylesheet" href="/base.css">
 <link rel="stylesheet" href="/tablet.css" media="(min-width: 768px)">
 <link rel="stylesheet" href="/desktop.css" media="(min-width: 1024px)">
 <link rel="stylesheet" href="/print.css" media="print">
 
-<!-- On mobile: only base.css blocks rendering -->
-<!-- tablet.css and desktop.css download but don't block paint -->`}</code>
+<!-- On mobile: only base.css blocks rendering --&gt;
+<!-- tablet.css and desktop.css download but don't block paint --&gt;`}</code>
         </pre>
 
         <h3 className="mt-6 font-semibold">5. Font Loading Optimization</h3>

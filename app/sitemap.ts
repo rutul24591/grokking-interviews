@@ -7,20 +7,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Get all article paths from registry
   const articles = getAllArticlePaths();
 
-  // Create entries for concise versions (default)
+  // Create entries for article pages
   const articleEntries = articles.map((article) => ({
     url: `${baseUrl}/${article.category}/${article.subcategory}/${article.topic}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
     priority: 0.8,
-  }));
-
-  // Create entries for extensive versions
-  const extensiveEntries = articles.map((article) => ({
-    url: `${baseUrl}/${article.category}/${article.subcategory}/${article.topic}/extensive`,
-    lastModified: new Date(),
-    changeFrequency: "weekly" as const,
-    priority: 0.7,
   }));
 
   // Home page
@@ -31,5 +23,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 1.0,
   };
 
-  return [homeEntry, ...articleEntries, ...extensiveEntries];
+  return [homeEntry, ...articleEntries];
 }

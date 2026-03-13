@@ -20,6 +20,15 @@ const nextConfig: NextConfig = {
 
   // Enable static exports for articles
   // output: "export", // Uncomment for static site generation
+  async redirects() {
+    return [
+      {
+        source: "/backend/network-communication/server-sent-events-sse",
+        destination: "/backend/network-communication/server-sent-events",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

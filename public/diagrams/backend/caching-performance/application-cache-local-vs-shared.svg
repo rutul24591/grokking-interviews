@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
+  <rect width="1200" height="620" fill="#f8fafc"/>
+  <text x="60" y="70" font-size="28" font-family="Arial" fill="#0f172a">Local vs Shared Cache</text>
+  <rect x="80" y="140" width="420" height="180" rx="12" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="110" y="190" font-size="18" font-family="Arial" fill="#0f172a">Local Cache</text>
+  <text x="110" y="220" font-size="14" font-family="Arial" fill="#475569">Fast, per-instance</text>
+  <text x="110" y="250" font-size="14" font-family="Arial" fill="#475569">No cross-instance sharing</text>
+  <rect x="700" y="140" width="420" height="180" rx="12" fill="#e0f2fe" stroke="#0ea5e9"/>
+  <text x="730" y="190" font-size="18" font-family="Arial" fill="#0f172a">Shared Cache</text>
+  <text x="730" y="220" font-size="14" font-family="Arial" fill="#475569">Slightly higher latency</text>
+  <text x="730" y="250" font-size="14" font-family="Arial" fill="#475569">Consistent across instances</text>
+  <line x1="500" y1="230" x2="700" y2="230" stroke="#94a3b8" stroke-width="4"/>
+  <text x="60" y="520" font-size="16" font-family="Arial" fill="#475569">Most systems use both: L1 local cache and L2 shared cache.</text>
+</svg>

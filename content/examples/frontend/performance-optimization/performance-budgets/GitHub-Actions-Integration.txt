@@ -1,0 +1,70 @@
+# .github/workflows/performance-budget.yml
+name: Performance Budget
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  # Fast check: bundle size (runs in ~30 seconds)
+  bundle-size:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+      # size-limit with PR comment
+      - uses: andresz1/size-limit-action@v1
+        with:
+          github_token: \${{ secrets.GITHUB_TOKEN }}
+          # Posts a table showing size diff for each bundle
+
+  # Full check: Lighthouse audit (runs in ~2-3 minutes)
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+      - name: Run Lighthouse CI
+        run: |
+          pnpm start &
+          sleep 5
+          npx @lhci/cli autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: \${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+  # Optional: track bundle composition
+  bundle-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: ANALYZE=true pnpm build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bundle-report
+          path: .next/analyze/

@@ -1,0 +1,38 @@
+// Lazy-load heavy components within a page
+import { lazy, Suspense, useState } from 'react';
+
+// These components are NOT in the main bundle
+const MarkdownEditor = lazy(() => import('./MarkdownEditor'));
+const PDFExporter = lazy(() => import('./PDFExporter'));
+const DataVisualizer = lazy(() => import('./DataVisualizer'));
+
+function DocumentPage({ document }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [showViz, setShowViz] = useState(false);
+
+  return (
+    <div>
+      <h1>{document.title}</h1>
+
+      {/* Editor loaded only when user clicks Edit */}
+      {isEditing ? (
+        <Suspense fallback={<div>Loading editor...</div>}>
+          <MarkdownEditor content={document.content} />
+        </Suspense>
+      ) : (
+        <div>
+          <div dangerouslySetInnerHTML={{ __html: document.html }} />
+          <button onClick={() => setIsEditing(true)}>Edit</button>
+        </div>
+      )}
+
+      {/* Visualization loaded only when toggled */}
+      <button onClick={() => setShowViz(true)}>Show Analytics</button>
+      {showViz && (
+        <Suspense fallback={<div>Loading charts...</div>}>
+          <DataVisualizer data={document.analytics} />
+        </Suspense>
+      )}
+    </div>
+  );
+}

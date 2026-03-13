@@ -1,0 +1,21 @@
+/* PROBLEM: CSS minifiers may reorder or merge rules */
+
+/* Original: Both rules are needed due to specificity */
+.btn { color: blue; padding: 8px; }
+.btn.primary { color: white; }
+.btn { background: gray; }  /* Intentional: adds bg to all btns */
+.btn.primary { background: blue; }
+
+/* After aggressive merging: */
+.btn { color: blue; padding: 8px; background: gray; }
+.btn.primary { color: white; background: blue; }
+/* This looks correct but merging rules CAN change cascade order */
+
+/* FIX: Disable mergeRules in cssnano if you have order-dependent CSS */
+// postcss.config.js
+require('cssnano')({
+  preset: ['default', {
+    mergeRules: false,     // Don't merge duplicate selectors
+    uniqueSelectors: false // Don't deduplicate selectors
+  }]
+});

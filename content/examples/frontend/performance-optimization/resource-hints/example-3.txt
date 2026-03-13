@@ -1,0 +1,31 @@
+<!-- preconnect to critical third-party origins -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://api.example.com" />
+
+<!-- Understanding crossorigin behavior:
+
+  Without crossorigin:
+    - Opens a non-CORS connection
+    - Used for: <script>, <img>, <link rel="stylesheet">
+    - Credentials: cookies sent for same-site
+
+  With crossorigin (or crossorigin="anonymous"):
+    - Opens a CORS connection
+    - Used for: fonts, fetch(), <img crossorigin>
+    - Credentials: no cookies by default
+
+  With crossorigin="use-credentials":
+    - Opens a CORS connection WITH credentials
+    - Used for: authenticated cross-origin requests
+
+  IMPORTANT: The crossorigin value must match how the resource
+  will actually be requested. A mismatch means the preconnected
+  connection WON'T be reused, wasting the effort. -->
+
+<!-- Google Fonts needs TWO preconnects:
+     1. fonts.googleapis.com (serves CSS) — no crossorigin
+     2. fonts.gstatic.com (serves font files) — with crossorigin
+        because fonts ALWAYS use CORS -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

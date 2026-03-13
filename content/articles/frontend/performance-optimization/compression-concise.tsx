@@ -169,7 +169,7 @@ module.exports = {
       filename: '[path][base].gz',
       algorithm: 'gzip',
       test: /\\.(js|css|html|svg|json)$/,
-      threshold: 1024,      // Only compress files > 1KB
+      threshold: 1024,      // Only compress files &gt; 1KB
       minRatio: 0.8,        // Only keep if 20%+ smaller
     }),
     // Brotli
@@ -212,7 +212,7 @@ export default defineConfig({
           <li>❌ <strong>Images (JPEG, PNG, WebP):</strong> Already compressed — re-compressing adds CPU cost for 0-2% gain</li>
           <li>❌ <strong>Videos:</strong> Already compressed</li>
           <li>❌ <strong>Fonts (woff2):</strong> WOFF2 includes Brotli compression internally</li>
-          <li>❌ <strong>Files {'<'} 1KB:</strong> HTTP overhead negates compression benefit</li>
+          <li>❌ <strong>Files {'&lt;'} 1KB:</strong> HTTP overhead negates compression benefit</li>
         </ul>
       </section>
 

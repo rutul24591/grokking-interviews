@@ -1,0 +1,5 @@
+consensus:
+  algorithm: raft
+  election_timeout_ms: 300
+  heartbeat_interval_ms: 50
+  snapshot_interval: 10000

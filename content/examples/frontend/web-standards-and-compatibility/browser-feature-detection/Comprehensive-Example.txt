@@ -1,0 +1,36 @@
+// file: src/features.ts
+export const features = {
+  intersectionObserver: 'IntersectionObserver' in window,
+  backdropFilter: CSS.supports('backdrop-filter', 'blur(8px)'),
+};
+
+// file: src/lazy-images.ts
+import { features } from './features';
+
+export function setupLazyImages() {
+  const images = document.querySelectorAll('img[data-src]');
+  if (!features.intersectionObserver) {
+    images.forEach((img) => img.setAttribute('src', img.getAttribute('data-src') || ''));
+    return;
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        const src = img.getAttribute('data-src');
+        if (src) img.setAttribute('src', src);
+        observer.unobserve(img);
+      }
+    });
+  });
+  images.forEach((img) => observer.observe(img));
+}
+
+// file: src/bootstrap.ts
+import { setupLazyImages } from './lazy-images';
+
+try {
+  setupLazyImages();
+} catch {
+  document.body.classList.add('no-lazy');
+}

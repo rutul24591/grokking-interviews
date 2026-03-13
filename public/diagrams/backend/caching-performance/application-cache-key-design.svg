@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
+  <rect width="960" height="420" fill="#f8fafc" />
+  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Cache Key Design</text>
+
+  <rect x="80" y="110" width="800" height="70" rx="12" fill="#e2e8f0" stroke="#94a3b8" />
+  <text x="120" y="153" font-family="Arial" font-size="16" fill="#0f172a">user:v2:profile:12345</text>
+
+  <rect x="80" y="220" width="250" height="80" rx="12" fill="#dbeafe" stroke="#60a5fa" />
+  <text x="110" y="255" font-family="Arial" font-size="14" fill="#0f172a">Entity Prefix</text>
+  <text x="110" y="280" font-family="Arial" font-size="12" fill="#0f172a">Stable namespace</text>
+
+  <rect x="350" y="220" width="250" height="80" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
+  <text x="380" y="255" font-family="Arial" font-size="14" fill="#0f172a">Version</text>
+  <text x="380" y="280" font-family="Arial" font-size="12" fill="#0f172a">Schema changes</text>
+
+  <rect x="620" y="220" width="260" height="80" rx="12" fill="#fee2e2" stroke="#fca5a5" />
+  <text x="650" y="255" font-family="Arial" font-size="14" fill="#0f172a">Identifier</text>
+  <text x="650" y="280" font-family="Arial" font-size="12" fill="#0f172a">Unique resource id</text>
+</svg>

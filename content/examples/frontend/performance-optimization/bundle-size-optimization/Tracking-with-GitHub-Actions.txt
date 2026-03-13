@@ -1,0 +1,27 @@
+# .github/workflows/bundle-size.yml
+name: Bundle Size Report
+on: pull_request
+
+jobs:
+  bundle-size:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install
+      - run: pnpm build
+
+      # Compare bundle size to main branch
+      - uses: andresz1/size-limit-action@v1
+        with:
+          github_token: \${{ secrets.GITHUB_TOKEN }}
+          # Posts a comment on the PR with size diff:
+          # | File         | Size (main) | Size (PR) | Diff    |
+          # |------------- |-------------|-----------|---------|
+          # | main.js      | 142.3 KB    | 148.7 KB  | +6.4 KB |
+          # | vendor.js    | 198.1 KB    | 198.1 KB  | 0 KB    |

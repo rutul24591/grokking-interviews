@@ -1,0 +1,36 @@
+// === Chrome DevTools ===
+// 1. Network tab: filter by "Img" to see image loading order
+// 2. Throttle to "Slow 3G" to observe lazy loading timing
+// 3. Performance tab: check for layout shifts (CLS) from lazy images
+
+// === Lighthouse ===
+// Check these audits:
+// - "Defer offscreen images" (should pass with lazy loading)
+// - "Properly size images"
+// - "Largest Contentful Paint image was lazily loaded" (FAIL — fix this!)
+
+// === Unit testing with Testing Library ===
+import { render, screen } from '@testing-library/react';
+
+test('lazy component loads on interaction', async () => {
+  render(<ProductPage />);
+
+  // Component not loaded yet
+  expect(screen.queryByTestId('review-editor')).not.toBeInTheDocument();
+
+  // Trigger lazy load
+  fireEvent.click(screen.getByText('Write Review'));
+
+  // Wait for lazy component to load
+  const editor = await screen.findByTestId('review-editor');
+  expect(editor).toBeInTheDocument();
+});
+
+// === Mock Intersection Observer in tests ===
+const mockIntersectionObserver = jest.fn();
+mockIntersectionObserver.mockReturnValue({
+  observe: () => null,
+  unobserve: () => null,
+  disconnect: () => null,
+});
+window.IntersectionObserver = mockIntersectionObserver;

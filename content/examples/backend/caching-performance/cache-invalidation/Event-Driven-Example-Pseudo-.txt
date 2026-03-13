@@ -1,0 +1,5 @@
+// Producer
+await db.updateProduct(id, payload);
+await eventBus.publish('product.updated', { id, categoryId }); // Consumer
+eventBus.subscribe('product.updated', async (event) => { await redis.del('product:v1:' + event.id); await redis.del('category:top:v1:' + event.categoryId);
+});

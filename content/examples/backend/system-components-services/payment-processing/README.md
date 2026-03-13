@@ -1,0 +1,1 @@
+Payment service enforces idempotency and validates webhooks from providers.

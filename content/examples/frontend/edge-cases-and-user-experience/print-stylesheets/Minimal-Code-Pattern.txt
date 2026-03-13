@@ -1,0 +1,4 @@
+@media print {
+  nav, button, .no-print { display: none; }
+  main { width: 100%; }
+}

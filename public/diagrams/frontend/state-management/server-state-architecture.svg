@@ -1,0 +1,96 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Server State Architecture — Shared Cache &amp; Request Deduplication</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+  </defs>
+
+  <!-- Component A -->
+  <rect x="40" y="70" width="160" height="56" rx="8" fill="#6d5bd0"/>
+  <text x="120" y="93" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Component A</text>
+  <text x="120" y="112" text-anchor="middle" font-size="10" fill="#ddd">useQuery(["user", 42])</text>
+
+  <!-- Component B -->
+  <rect x="40" y="160" width="160" height="56" rx="8" fill="#6d5bd0"/>
+  <text x="120" y="183" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Component B</text>
+  <text x="120" y="202" text-anchor="middle" font-size="10" fill="#ddd">useQuery(["user", 42])</text>
+
+  <!-- Component C -->
+  <rect x="40" y="250" width="160" height="56" rx="8" fill="#6d5bd0"/>
+  <text x="120" y="273" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Component C</text>
+  <text x="120" y="292" text-anchor="middle" font-size="10" fill="#ddd">useQuery(["user", 42])</text>
+
+  <!-- Arrows from components to QueryClient -->
+  <line x1="200" y1="98" x2="330" y2="168" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="200" y1="188" x2="330" y2="188" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="200" y1="278" x2="330" y2="208" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Label: subscribe -->
+  <text x="260" y="138" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="bold">subscribe</text>
+  <text x="270" y="180" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="bold">subscribe</text>
+  <text x="260" y="252" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="bold">subscribe</text>
+
+  <!-- QueryClient / Cache -->
+  <rect x="332" y="120" width="200" height="140" rx="8" fill="#edeaf5" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="432" y="146" text-anchor="middle" font-size="13" fill="#1a1822" font-weight="bold">QueryClient</text>
+  <line x1="352" y1="156" x2="512" y2="156" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="432" y="176" text-anchor="middle" font-size="11" fill="#1a1822">Cache Map</text>
+  <rect x="355" y="186" width="154" height="30" rx="5" fill="#fff" stroke="#d7d1e6"/>
+  <text x="432" y="205" text-anchor="middle" font-size="10" fill="#1a1822">["user", 42] → {"{"}data{"}"}</text>
+  <text x="432" y="248" text-anchor="middle" font-size="9" fill="#6d5bd0">staleTime · gcTime · refetchInterval</text>
+
+  <!-- Arrow from QueryClient to Dedup layer -->
+  <line x1="532" y1="190" x2="580" y2="190" stroke="#d97843" stroke-width="2" marker-end="url(#arr-orange)"/>
+
+  <!-- Deduplication Layer -->
+  <rect x="582" y="148" width="120" height="84" rx="8" fill="#d97843"/>
+  <text x="642" y="178" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Deduplication</text>
+  <text x="642" y="196" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Layer</text>
+  <text x="642" y="218" text-anchor="middle" font-size="9" fill="#ffe8d5">1 request for N hooks</text>
+
+  <!-- Arrow from Dedup to API Server -->
+  <line x1="702" y1="190" x2="750" y2="190" stroke="#d97843" stroke-width="2" marker-end="url(#arr-orange)"/>
+
+  <!-- API Server -->
+  <rect x="752" y="148" width="120" height="84" rx="8" fill="#2f9d74"/>
+  <text x="812" y="183" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">API Server</text>
+  <text x="812" y="203" text-anchor="middle" font-size="10" fill="#d4f5e6">GET /users/42</text>
+
+  <!-- Return arrow (response) -->
+  <path d="M 812 232 L 812 310 L 432 310 L 432 260" stroke="#2f9d74" stroke-width="2" fill="none" marker-end="url(#arr-green)" stroke-dasharray="6,3"/>
+  <text x="630" y="302" text-anchor="middle" font-size="9" fill="#2f9d74" font-weight="bold">response → cache update → notify subscribers</text>
+
+  <!-- Notification arrows back to components -->
+  <path d="M 332 180 L 280 180 L 280 98 L 200 98" stroke="#2f9d74" stroke-width="1.5" fill="none" marker-end="url(#arr-green)" stroke-dasharray="4,3"/>
+  <path d="M 332 190 L 280 190 L 280 188 L 200 188" stroke="#2f9d74" stroke-width="1.5" fill="none" marker-end="url(#arr-green)" stroke-dasharray="4,3"/>
+  <path d="M 332 200 L 280 200 L 280 278 L 200 278" stroke="#2f9d74" stroke-width="1.5" fill="none" marker-end="url(#arr-green)" stroke-dasharray="4,3"/>
+
+  <!-- Bottom info box -->
+  <rect x="40" y="360" width="820" height="120" rx="8" fill="#fff" stroke="#d7d1e6"/>
+  <text x="60" y="385" font-size="12" fill="#6d5bd0" font-weight="bold">How It Works:</text>
+  <text x="60" y="407" font-size="11" fill="#1a1822">1. Three components call useQuery with the same key ["user", 42] — each subscribes to the QueryClient cache.</text>
+  <text x="60" y="427" font-size="11" fill="#1a1822">2. QueryClient deduplicates: only ONE network request is made, regardless of how many hooks use the same key.</text>
+  <text x="60" y="447" font-size="11" fill="#1a1822">3. When data returns, the cache updates and ALL three components re-render with fresh data simultaneously.</text>
+  <text x="60" y="467" font-size="11" fill="#1a1822">4. Subsequent mounts reuse cached data (if within staleTime), avoiding unnecessary network requests entirely.</text>
+
+  <!-- Legend -->
+  <rect x="40" y="324" width="12" height="12" rx="3" fill="#6d5bd0"/>
+  <text x="58" y="335" font-size="10" fill="#1a1822">Components (subscribers)</text>
+  <rect x="220" y="324" width="12" height="12" rx="3" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="238" y="335" font-size="10" fill="#1a1822">Central Cache</text>
+  <rect x="370" y="324" width="12" height="12" rx="3" fill="#d97843"/>
+  <text x="388" y="335" font-size="10" fill="#1a1822">Deduplication</text>
+  <rect x="520" y="324" width="12" height="12" rx="3" fill="#2f9d74"/>
+  <text x="538" y="335" font-size="10" fill="#1a1822">Server / Response</text>
+  <line x1="670" y1="330" x2="710" y2="330" stroke="#2f9d74" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="718" y="335" font-size="10" fill="#1a1822">Cache notification</text>
+</svg>

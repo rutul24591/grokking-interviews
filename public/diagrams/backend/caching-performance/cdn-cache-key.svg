@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
+  <rect width="960" height="420" fill="#f8fafc" />
+  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">CDN Cache Key</text>
+
+  <rect x="80" y="110" width="800" height="70" rx="12" fill="#e2e8f0" stroke="#94a3b8" />
+  <text x="110" y="150" font-family="Arial" font-size="14" fill="#0f172a">/images/product.png?size=large</text>
+
+  <rect x="80" y="220" width="260" height="80" rx="12" fill="#dbeafe" stroke="#60a5fa" />
+  <text x="110" y="255" font-family="Arial" font-size="14" fill="#0f172a">Path</text>
+  <text x="110" y="280" font-family="Arial" font-size="12" fill="#0f172a">Primary identifier</text>
+
+  <rect x="360" y="220" width="260" height="80" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
+  <text x="390" y="255" font-family="Arial" font-size="14" fill="#0f172a">Query Params</text>
+  <text x="390" y="280" font-family="Arial" font-size="12" fill="#0f172a">Optional variations</text>
+
+  <rect x="640" y="220" width="240" height="80" rx="12" fill="#fee2e2" stroke="#fca5a5" />
+  <text x="670" y="255" font-family="Arial" font-size="14" fill="#0f172a">Headers</text>
+  <text x="670" y="280" font-family="Arial" font-size="12" fill="#0f172a">Vary rules</text>
+</svg>

@@ -1,0 +1,13 @@
+<!-- Import maps — native browser feature, no bundler plugin needed -->
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.2.0",
+    "react-dom": "https://esm.sh/react-dom@18.2.0",
+    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client"
+  }
+}
+</script>
+
+<!-- Application imports resolve to the CDN URLs above -->
+<script type="module" src="/app.js"></script>

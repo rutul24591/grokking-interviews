@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="bold" fill="#1a1822">JS Minifier Speed Comparison (1 MB bundle)</text>
+
+  <!-- Y-axis label -->
+  <text x="25" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#1a1822" transform="rotate(-90, 25, 260)">Build Time (ms) — lower is better</text>
+
+  <!-- Y-axis ticks and gridlines -->
+  <line x1="80" y1="70" x2="80" y2="400" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="80" y1="400" x2="850" y2="400" stroke="#1a1822" stroke-width="1.5"/>
+
+  <!-- Grid lines and labels -->
+  <line x1="80" y1="400" x2="850" y2="400" stroke="#ccc" stroke-width="0.5"/>
+  <text x="70" y="405" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">0</text>
+
+  <line x1="80" y1="334" x2="850" y2="334" stroke="#ccc" stroke-width="0.5"/>
+  <text x="70" y="339" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">1000</text>
+
+  <line x1="80" y1="268" x2="850" y2="268" stroke="#ccc" stroke-width="0.5"/>
+  <text x="70" y="273" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">2000</text>
+
+  <line x1="80" y1="202" x2="850" y2="202" stroke="#ccc" stroke-width="0.5"/>
+  <text x="70" y="207" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">3000</text>
+
+  <line x1="80" y1="136" x2="850" y2="136" stroke="#ccc" stroke-width="0.5"/>
+  <text x="70" y="141" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">4000</text>
+
+  <line x1="80" y1="70" x2="850" y2="70" stroke="#ccc" stroke-width="0.5"/>
+  <text x="70" y="75" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">5000</text>
+
+  <!-- Terser bar (~4800ms) -->
+  <rect x="150" y="83" width="140" height="317" rx="6" fill="#d97843" opacity="0.9"/>
+  <text x="220" y="75" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#d97843">4800 ms</text>
+  <text x="220" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" fill="#1a1822">Terser</text>
+  <text x="220" y="448" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#666">(JavaScript)</text>
+
+  <!-- SWC bar (~600ms) -->
+  <rect x="390" y="360" width="140" height="40" rx="6" fill="#6d5bd0" opacity="0.9"/>
+  <text x="460" y="352" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#6d5bd0">600 ms</text>
+  <text x="460" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" fill="#1a1822">SWC</text>
+  <text x="460" y="448" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#666">(Rust)</text>
+
+  <!-- esbuild bar (~150ms) -->
+  <rect x="630" y="390" width="140" height="10" rx="4" fill="#2f9d74" opacity="0.9"/>
+  <text x="700" y="383" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#2f9d74">150 ms</text>
+  <text x="700" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" fill="#1a1822">esbuild</text>
+  <text x="700" y="448" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#666">(Go)</text>
+
+  <!-- Speed comparison labels -->
+  <rect x="200" y="470" width="500" height="25" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="450" y="488" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">esbuild is ~32x faster than Terser | SWC is ~8x faster than Terser</text>
+</svg>

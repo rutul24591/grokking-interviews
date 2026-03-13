@@ -1,0 +1,15 @@
+<html>
+  <body>
+    <pre id="log"></pre>
+    <script>
+      const log = document.getElementById("log");
+      const es = new EventSource("http://localhost:5300/stream");
+      es.onmessage = (e) => {
+        log.textContent += "\\n" + e.data;
+      };
+      es.onerror = () => {
+        log.textContent += "\\n" + "stream error";
+      };
+    </script>
+  </body>
+</html>

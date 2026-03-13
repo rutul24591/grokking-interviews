@@ -1,0 +1,42 @@
+// Progressive hydration with React 18 Suspense
+import { lazy, Suspense } from 'react';
+
+// Critical components load immediately
+import Navigation from './Navigation';
+import HeroSection from './HeroSection';
+
+// High-priority components lazy load
+const ProductCarousel = lazy(() => import('./ProductCarousel'));
+const VideoPlayer = lazy(() => import('./VideoPlayer'));
+
+// Low-priority components lazy load
+const Footer = lazy(() => import('./Footer'));
+const ChatWidget = lazy(() => import('./ChatWidget'));
+
+export default function HomePage() {
+  return (
+    <>
+      {/* Critical: Hydrates immediately */}
+      <Navigation />
+      <HeroSection />
+
+      {/* High priority: Hydrates with Suspense */}
+      <Suspense fallback={<div>Loading...</div>}>
+        <ProductCarousel />
+      </Suspense>
+
+      <Suspense fallback={<div>Loading video...</div>}>
+        <VideoPlayer />
+      </Suspense>
+
+      {/* Low priority: Hydrates during idle time */}
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
+
+      <Suspense fallback={null}>
+        <ChatWidget />
+      </Suspense>
+    </>
+  );
+}

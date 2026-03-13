@@ -1,0 +1,1 @@
+Ordering is guaranteed only within a partition.

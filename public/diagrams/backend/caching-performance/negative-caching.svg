@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
+  <rect width="960" height="420" fill="#f8fafc" />
+  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Negative Caching</text>
+
+  <rect x="80" y="120" width="220" height="70" rx="12" fill="#e2e8f0" stroke="#94a3b8" />
+  <text x="120" y="160" font-family="Arial" font-size="14" fill="#0f172a">Request</text>
+
+  <rect x="360" y="120" width="220" height="70" rx="12" fill="#dbeafe" stroke="#60a5fa" />
+  <text x="400" y="160" font-family="Arial" font-size="14" fill="#0f172a">Cache</text>
+
+  <rect x="640" y="120" width="220" height="70" rx="12" fill="#fee2e2" stroke="#fca5a5" />
+  <text x="680" y="160" font-family="Arial" font-size="14" fill="#0f172a">DB</text>
+
+  <text x="360" y="240" font-family="Arial" font-size="13" fill="#0f172a">Store NOT_FOUND with short TTL</text>
+</svg>

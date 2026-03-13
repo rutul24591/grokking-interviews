@@ -1,0 +1,78 @@
+import { lazy, Suspense, useState } from 'react';
+
+// === Interaction-triggered lazy loading ===
+const ShareModal = lazy(() => import('./ShareModal'));
+const ImageLightbox = lazy(() => import('./ImageLightbox'));
+
+function ProductPage({ product }) {
+  const [showShare, setShowShare] = useState(false);
+  const [lightboxImage, setLightboxImage] = useState(null);
+
+  return (
+    <div>
+      <ProductDetails product={product} />
+
+      <button onClick={() => setShowShare(true)}>Share</button>
+      <button onClick={() => setLightboxImage(product.images[0])}>
+        View Full Size
+      </button>
+
+      {/* Modal loads on demand */}
+      {showShare && (
+        <Suspense fallback={<ModalSkeleton />}>
+          <ShareModal
+            product={product}
+            onClose={() => setShowShare(false)}
+          />
+        </Suspense>
+      )}
+
+      {/* Lightbox loads on demand */}
+      {lightboxImage && (
+        <Suspense fallback={<div className="loading-overlay" />}>
+          <ImageLightbox
+            image={lightboxImage}
+            onClose={() => setLightboxImage(null)}
+          />
+        </Suspense>
+      )}
+    </div>
+  );
+}
+
+// === Tab-based lazy loading ===
+const OverviewTab = lazy(() => import('./tabs/Overview'));
+const SpecsTab = lazy(() => import('./tabs/Specifications'));
+const ReviewsTab = lazy(() => import('./tabs/Reviews'));
+
+const TAB_COMPONENTS = {
+  overview: OverviewTab,
+  specs: SpecsTab,
+  reviews: ReviewsTab,
+};
+
+function ProductTabs({ productId }) {
+  const [activeTab, setActiveTab] = useState('overview');
+  const TabComponent = TAB_COMPONENTS[activeTab];
+
+  return (
+    <div>
+      <div role="tablist">
+        {Object.keys(TAB_COMPONENTS).map(tab => (
+          <button
+            key={tab}
+            role="tab"
+            aria-selected={activeTab === tab}
+            onClick={() => setActiveTab(tab)}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
+
+      <Suspense fallback={<TabSkeleton />}>
+        <TabComponent productId={productId} />
+      </Suspense>
+    </div>
+  );
+}

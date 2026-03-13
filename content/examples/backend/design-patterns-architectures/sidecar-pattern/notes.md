@@ -1,0 +1,1 @@
+Sidecar runs alongside app to provide cross-cutting concerns.

@@ -1,0 +1,17 @@
+// Problem: Both Express and Nginx compress
+// Express: compression() middleware → compresses response
+// Nginx: gzip on → compresses again
+// Browser: decompresses once → gets Gzip stream instead of JS → error
+
+// Solution: Pick ONE compression layer
+// Option A: Let Nginx handle it (recommended)
+// - Disable in Express: remove compression() middleware
+// - Enable in Nginx: gzip on; brotli on;
+
+// Option B: Let Express handle it
+// - Disable in Nginx: gzip off; (in the server/location block)
+// - Keep compression() middleware in Express
+
+// Detection: curl with verbose headers
+// curl -v -H "Accept-Encoding: gzip" https://yoursite.com/bundle.js
+// If you see Content-Encoding: gzip, gzip — that's double compression

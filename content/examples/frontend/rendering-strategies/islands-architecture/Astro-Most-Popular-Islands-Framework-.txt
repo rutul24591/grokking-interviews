@@ -1,0 +1,56 @@
+<!-- pages/index.astro -->
+---
+import Header from '../components/Header.astro'; // Static component
+import SearchBar from '../components/SearchBar.jsx'; // React island
+import Carousel from '../components/Carousel.vue'; // Vue island
+---
+
+<html>
+  <head>
+    <title>My Astro Site</title>
+  </head>
+  <body>
+    <!-- Static Astro component (no JS) -->
+    <Header />
+
+    <!-- Static content -->
+    <main>
+      <h1>Welcome to My Site</h1>
+      <p>This content is static HTML, no JavaScript needed!</p>
+
+      <!-- Island 1: Load immediately -->
+      <SearchBar client:load />
+
+      <!-- Island 2: Load when visible -->
+      <Carousel client:visible items={products} />
+
+      <!-- Island 3: Load on user interaction -->
+      <Comments client:idle />
+
+      <!-- Static article content -->
+      <article>
+        <h2>Static Blog Post</h2>
+        <p>All this text is pre-rendered HTML...</p>
+      </article>
+    </main>
+  </body>
+</html>
+
+<!-- SearchBar.jsx - React Island -->
+import { useState } from 'react';
+
+export default function SearchBar() {
+  const [query, setQuery] = useState('');
+
+  return (
+    <input
+      type="search"
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+      placeholder="Search..."
+    />
+  );
+}
+
+// This React component only hydrates when client:load directive is used
+// Without the directive, it renders static HTML only

@@ -1,0 +1,45 @@
+// React.memo does SHALLOW comparison (Object.is for each prop)
+
+// Primitives: compared by value ✅
+<MemoizedComponent
+  name="Alice"      // string — stable ✅
+  count={42}        // number — stable ✅
+  isActive={true}   // boolean — stable ✅
+/>
+
+// Objects: compared by REFERENCE ❌ (usually)
+<MemoizedComponent
+  // ❌ New object every render — memo always re-renders
+  config={{ theme: 'dark', size: 'large' }}
+
+  // ❌ New array every render
+  items={products.filter(p => p.inStock)}
+
+  // ❌ New function every render
+  onClick={() => handleClick(id)}
+/>
+
+// Solutions for stable references:
+function Parent() {
+  // ✅ Stable object (defined outside or useMemo)
+  const config = useMemo(() => ({ theme: 'dark', size: 'large' }), []);
+
+  // ✅ Stable array (only changes when products change)
+  const inStockProducts = useMemo(
+    () => products.filter(p => p.inStock),
+    [products]
+  );
+
+  // ✅ Stable function reference
+  const handleClick = useCallback((id) => {
+    setSelected(id);
+  }, []);
+
+  return (
+    <MemoizedComponent
+      config={config}
+      items={inStockProducts}
+      onClick={handleClick}
+    />
+  );
+}

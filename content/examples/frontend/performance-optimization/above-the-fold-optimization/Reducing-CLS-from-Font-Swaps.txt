@@ -1,0 +1,17 @@
+/* Use CSS size-adjust to match fallback font metrics to custom font */
+/* This eliminates layout shift when the font swap occurs */
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial');
+  ascent-override: 90%;
+  descent-override: 22.43%;
+  line-gap-override: 0%;
+  size-adjust: 107.64%;
+}
+
+body {
+  font-family: 'Inter', 'Inter Fallback', system-ui, sans-serif;
+}
+
+/* next/font calculates these overrides automatically */
+/* That's why it's the recommended approach in Next.js */

@@ -1,0 +1,5 @@
+alerts:
+  - name: error-budget-burn
+    expr: error_rate > 0.02
+    for: 5m
+    severity: page

@@ -1,0 +1,64 @@
+import { useMemo } from 'react';
+
+// === Expensive data transformations ===
+function AnalyticsDashboard({ events, dateRange, groupBy }) {
+  // Without useMemo: runs on EVERY render (even unrelated state changes)
+  // With useMemo: only recalculates when events, dateRange, or groupBy change
+
+  const processedData = useMemo(() => {
+    console.log('Processing events...'); // Only logs when deps change
+
+    const filtered = events.filter(e =>
+      e.timestamp >= dateRange.start && e.timestamp <= dateRange.end
+    );
+
+    const grouped = Object.groupBy(filtered, e => e[groupBy]);
+
+    return Object.entries(grouped).map(([key, items]) => ({
+      label: key,
+      count: items.length,
+      total: items.reduce((sum, e) => sum + e.value, 0),
+      average: items.reduce((sum, e) => sum + e.value, 0) / items.length,
+    }));
+  }, [events, dateRange, groupBy]);
+
+  return <Chart data={processedData} />;
+}
+
+// === Creating derived data structures ===
+function UserDirectory({ users }) {
+  // Build a lookup map — O(n) once instead of O(n) per lookup
+  const userById = useMemo(() => {
+    return new Map(users.map(u => [u.id, u]));
+  }, [users]);
+
+  // Build search index
+  const searchIndex = useMemo(() => {
+    return users.map(u => ({
+      id: u.id,
+      searchText: `\${u.name} \${u.email} \${u.department}`.toLowerCase(),
+    }));
+  }, [users]);
+
+  const handleLookup = (id) => {
+    return userById.get(id); // O(1) instead of O(n)
+  };
+}
+
+// === Stabilizing object references for child props ===
+function Parent({ theme, locale }) {
+  // Without useMemo: new object every render breaks child memo
+  // With useMemo: stable reference unless theme or locale change
+  const contextValue = useMemo(() => ({
+    theme,
+    locale,
+    colors: getThemeColors(theme),
+    formatters: getFormatters(locale),
+  }), [theme, locale]);
+
+  return (
+    <AppContext.Provider value={contextValue}>
+      <MemoizedApp />
+    </AppContext.Provider>
+  );
+}

@@ -1,0 +1,9 @@
+async function hedgedFetch(url) {
+  const primary = fetch(url);
+  const hedge = new Promise((resolve) =>
+    setTimeout(() => resolve(fetch(url)), 80)
+  );
+  return Promise.race([primary, hedge]);
+}
+
+hedgedFetch("http://api.example.com/profile");

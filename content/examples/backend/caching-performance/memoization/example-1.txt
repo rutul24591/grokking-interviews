@@ -1,0 +1,4 @@
+const cache = new Map();
+const ttlMs = 60000; function memoize(fn) { return async function(...args) { const key = JSON.stringify(args); const now = Date.now(); if (cache.has(key)) { const entry = cache.get(key); if (now - entry.time < ttlMs) return entry.value; } const value = await fn(...args); cache.set(key, { value, time: now }); return value; };
+} const getPricing = memoize(async (userId, cart) => { return computePricing(userId, cart);
+});

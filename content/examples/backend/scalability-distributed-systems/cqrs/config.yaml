@@ -1,0 +1,4 @@
+cqrs:
+  event_bus: kafka
+  projection_refresh_ms: 500
+  read_model: postgres

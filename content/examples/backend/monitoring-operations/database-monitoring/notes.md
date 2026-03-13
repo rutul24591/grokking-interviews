@@ -1,0 +1,1 @@
+Alert on replication lag and pool exhaustion.

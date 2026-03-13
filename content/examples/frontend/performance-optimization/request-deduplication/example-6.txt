@@ -1,0 +1,25 @@
+// Good: structured keys enable precise deduplication
+useQuery({ queryKey: ['users', { sort: 'name', limit: 10 }], queryFn });
+useQuery({ queryKey: ['users', { limit: 10, sort: 'name' }], queryFn });
+// These are deduplicated — deep equality ignores property order
+
+// Good: hierarchical keys for related data
+useQuery({ queryKey: ['users', userId], queryFn });
+useQuery({ queryKey: ['users', userId, 'posts'], queryFn });
+// Different keys — fetched independently (correct behavior)
+
+// Bad: stringified keys lose structure
+useQuery({ queryKey: ['users?sort=name&limit=10'], queryFn });
+useQuery({ queryKey: ['users?limit=10&sort=name'], queryFn });
+// NOT deduplicated — different strings despite same logical request
+
+// Good pattern: factory functions for consistent keys
+const userKeys = {
+  all:    () => ['users'] as const,
+  lists:  () => [...userKeys.all(), 'list'] as const,
+  list:   (filters: UserFilters) => [...userKeys.lists(), filters] as const,
+  detail: (id: string) => [...userKeys.all(), 'detail', id] as const,
+};
+
+// Usage ensures consistent keys across the app
+useQuery({ queryKey: userKeys.detail('123'), queryFn });

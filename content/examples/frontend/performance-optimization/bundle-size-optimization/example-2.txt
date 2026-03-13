@@ -1,0 +1,19 @@
+# Install
+pnpm add -D source-map-explorer
+
+# Analyze — pass your built JS files
+source-map-explorer dist/assets/index-*.js
+
+# Generate HTML report
+source-map-explorer dist/assets/index-*.js --html report.html
+
+# Analyze multiple bundles at once
+source-map-explorer dist/assets/*.js --html report.html
+
+# For projects using Vite, ensure source maps are enabled:
+// vite.config.ts
+export default defineConfig({
+  build: {
+    sourcemap: true,  // Required for source-map-explorer
+  },
+});

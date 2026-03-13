@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#1a1822">Resource Hints: Browser Timeline</text>
+
+  <!-- Time axis -->
+  <line x1="150" y1="70" x2="870" y2="70" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="150" y="62" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#666">0ms</text>
+  <text x="294" y="62" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#666">200ms</text>
+  <text x="438" y="62" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#666">500ms</text>
+  <text x="582" y="62" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#666">1000ms</text>
+  <text x="726" y="62" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#666">1500ms</text>
+  <text x="870" y="62" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#666">2000ms</text>
+
+  <!-- Tick marks -->
+  <line x1="150" y1="68" x2="150" y2="72" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="294" y1="68" x2="294" y2="72" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="438" y1="68" x2="438" y2="72" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="582" y1="68" x2="582" y2="72" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="726" y1="68" x2="726" y2="72" stroke="#1a1822" stroke-width="1.5"/>
+  <line x1="870" y1="68" x2="870" y2="72" stroke="#1a1822" stroke-width="1.5"/>
+
+  <!-- Row labels -->
+  <text x="25" y="108" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1a1822">HTML Parse</text>
+
+  <!-- HTML Parse bar -->
+  <rect x="150" y="93" width="200" height="24" rx="4" fill="#1a1822" opacity="0.7"/>
+  <text x="250" y="109" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#fff">Parse HTML + Discover hints</text>
+
+  <!-- === dns-prefetch Row === -->
+  <text x="25" y="150" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#6d5bd0">dns-prefetch</text>
+
+  <!-- DNS resolution starts early -->
+  <rect x="180" y="137" width="72" height="22" rx="4" fill="#6d5bd0" opacity="0.4"/>
+  <text x="216" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1a1822">DNS resolve</text>
+  <!-- Saved label -->
+  <text x="265" y="152" font-family="system-ui, sans-serif" font-size="9" fill="#6d5bd0" font-weight="600">-80ms</text>
+
+  <!-- === preconnect Row === -->
+  <text x="25" y="192" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#d97843">preconnect</text>
+
+  <!-- DNS + TCP + TLS -->
+  <rect x="180" y="179" width="72" height="22" rx="4" fill="#d97843" opacity="0.3"/>
+  <text x="216" y="194" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1a1822">DNS</text>
+  <rect x="252" y="179" width="90" height="22" rx="4" fill="#d97843" opacity="0.6"/>
+  <text x="297" y="194" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fff">TCP + TLS</text>
+  <!-- Connection ready marker -->
+  <line x1="342" y1="175" x2="342" y2="205" stroke="#d97843" stroke-width="2" stroke-dasharray="3,2"/>
+  <text x="355" y="194" font-family="system-ui, sans-serif" font-size="9" fill="#d97843" font-weight="600">Ready! -250ms</text>
+
+  <!-- === preload Row === -->
+  <text x="25" y="237" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#c44569">preload</text>
+  <text x="25" y="249" font-family="system-ui, sans-serif" font-size="9" fill="#666">(high priority)</text>
+
+  <!-- Full fetch starts immediately -->
+  <rect x="180" y="224" width="72" height="22" rx="4" fill="#c44569" opacity="0.3"/>
+  <text x="216" y="239" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1a1822">DNS</text>
+  <rect x="252" y="224" width="90" height="22" rx="4" fill="#c44569" opacity="0.5"/>
+  <text x="297" y="239" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fff">Connect</text>
+  <rect x="342" y="224" width="130" height="22" rx="4" fill="#c44569"/>
+  <text x="407" y="239" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fff">Download (HIGH)</text>
+  <!-- Available marker -->
+  <line x1="472" y1="220" x2="472" y2="250" stroke="#c44569" stroke-width="2" stroke-dasharray="3,2"/>
+  <text x="485" y="239" font-family="system-ui, sans-serif" font-size="9" fill="#c44569" font-weight="600">Available!</text>
+
+  <!-- === prefetch Row === -->
+  <text x="25" y="290" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#2f9d74">prefetch</text>
+  <text x="25" y="302" font-family="system-ui, sans-serif" font-size="9" fill="#666">(low priority)</text>
+
+  <!-- Delayed fetch, low priority -->
+  <rect x="438" y="277" width="72" height="22" rx="4" fill="#2f9d74" opacity="0.3"/>
+  <text x="474" y="292" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1a1822">DNS</text>
+  <rect x="510" y="277" width="80" height="22" rx="4" fill="#2f9d74" opacity="0.5"/>
+  <text x="550" y="292" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fff">Connect</text>
+  <rect x="590" y="277" width="160" height="22" rx="4" fill="#2f9d74"/>
+  <text x="670" y="292" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fff">Download (LOW priority)</text>
+  <!-- Available marker -->
+  <text x="438" y="313" font-family="system-ui, sans-serif" font-size="9" fill="#666">Waits for idle bandwidth</text>
+
+  <!-- === Without Hints Row (comparison) === -->
+  <line x1="25" y1="335" x2="870" y2="335" stroke="#1a1822" stroke-width="1" stroke-dasharray="4,4" opacity="0.2"/>
+  <text x="25" y="362" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#999">Without hints</text>
+  <text x="25" y="374" font-family="system-ui, sans-serif" font-size="9" fill="#999">(natural discovery)</text>
+
+  <!-- Delayed discovery: parser finds resource in CSS at ~500ms -->
+  <rect x="438" y="350" width="72" height="22" rx="4" fill="#999" opacity="0.3"/>
+  <text x="474" y="365" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#666">DNS</text>
+  <rect x="510" y="350" width="80" height="22" rx="4" fill="#999" opacity="0.5"/>
+  <text x="550" y="365" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#666">Connect</text>
+  <rect x="590" y="350" width="160" height="22" rx="4" fill="#999"/>
+  <text x="670" y="365" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fff">Download</text>
+  <text x="438" y="386" font-family="system-ui, sans-serif" font-size="9" fill="#999">Discovered after CSS parsed (~500ms)</text>
+
+  <!-- Time saved annotations -->
+  <!-- preconnect savings -->
+  <rect x="150" y="410" width="740" height="80" rx="8" fill="#fff" stroke="#ccc" stroke-width="1"/>
+  <text x="170" y="435" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1a1822">Time Savings Summary</text>
+
+  <circle cx="185" cy="458" r="8" fill="#6d5bd0"/>
+  <text x="200" y="462" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822"><tspan font-weight="600">dns-prefetch:</tspan> 20-120ms (DNS only)</text>
+
+  <circle cx="405" cy="458" r="8" fill="#d97843"/>
+  <text x="420" y="462" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822"><tspan font-weight="600">preconnect:</tspan> 100-300ms</text>
+
+  <circle cx="595" cy="458" r="8" fill="#c44569"/>
+  <text x="610" y="462" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822"><tspan font-weight="600">preload:</tspan> 200-500ms</text>
+
+  <circle cx="185" cy="480" r="8" fill="#2f9d74"/>
+  <text x="200" y="484" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822"><tspan font-weight="600">prefetch:</tspan> Instant navigation (pre-cached)</text>
+</svg>

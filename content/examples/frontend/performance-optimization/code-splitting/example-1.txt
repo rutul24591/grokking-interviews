@@ -1,0 +1,15 @@
+// What you write:
+import Home from './Home';                    // Static → main chunk
+const Dashboard = lazy(() => import('./Dashboard'));  // Dynamic → new chunk
+const Settings = lazy(() => import('./Settings'));    // Dynamic → new chunk
+
+// What the bundler produces:
+// main.abc123.js      → Home + framework + routing + loading runtime
+// dashboard.def456.js → Dashboard + its unique dependencies
+// settings.ghi789.js  → Settings + its unique dependencies
+// shared.jkl012.js    → Dependencies shared between Dashboard and Settings
+
+// At runtime, when user navigates to /dashboard:
+// 1. Loading runtime creates: <script src="/dashboard.def456.js">
+// 2. Browser fetches the chunk
+// 3. Module resolves and React renders the Dashboard component

@@ -1,0 +1,26 @@
+// Custom script to track bundle sizes over time
+// scripts/record-bundle-size.js
+const fs = require('fs');
+const path = require('path');
+
+const distPath = path.join(__dirname, '../dist/assets');
+const files = fs.readdirSync(distPath).filter(f => f.endsWith('.js'));
+
+const sizes = files.map(file => ({
+  name: file.replace(/-[a-f0-9]+\\.js$/, '.js'),
+  size: fs.statSync(path.join(distPath, file)).size,
+  sizeKB: (fs.statSync(path.join(distPath, file)).size / 1024).toFixed(1),
+}));
+
+const record = {
+  timestamp: new Date().toISOString(),
+  commit: process.env.GITHUB_SHA?.slice(0, 7),
+  branch: process.env.GITHUB_REF_NAME,
+  totalSize: sizes.reduce((sum, f) => sum + f.size, 0),
+  files: sizes,
+};
+
+console.log(JSON.stringify(record, null, 2));
+
+// Append to tracking file or send to a metrics service
+// This data powers dashboards showing bundle size trends

@@ -1,0 +1,27 @@
+// In Next.js app/layout.tsx or page head
+export const metadata = {
+  // Next.js generates a preload link for this
+  other: {
+    'link': [
+      {
+        rel: 'preload',
+        href: '/hero-desktop.webp',
+        as: 'image',
+        type: 'image/webp',
+        media: '(min-width: 769px)',
+        fetchpriority: 'high',
+      },
+    ],
+  },
+};
+
+// Or manually in a custom Document / layout:
+<head>
+  <link
+    rel="preload"
+    href="/hero.webp"
+    as="image"
+    type="image/webp"
+    fetchpriority="high"
+  />
+</head>

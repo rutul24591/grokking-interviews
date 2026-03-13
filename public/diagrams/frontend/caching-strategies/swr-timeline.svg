@@ -1,0 +1,77 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Stale-While-Revalidate Timeline</text>
+
+  <!-- Time axis -->
+  <line x1="80" y1="400" x2="850" y2="400" stroke="#1a1822" stroke-width="2"/>
+  <polygon points="850,395 860,400 850,405" fill="#1a1822"/>
+  <text x="870" y="405" font-size="12" fill="#1a1822">Time</text>
+
+  <!-- Time markers -->
+  <line x1="120" y1="395" x2="120" y2="405" stroke="#1a1822" stroke-width="2"/>
+  <text x="120" y="425" text-anchor="middle" font-size="11" fill="#1a1822">0s</text>
+
+  <line x1="340" y1="395" x2="340" y2="405" stroke="#1a1822" stroke-width="2"/>
+  <text x="340" y="425" text-anchor="middle" font-size="11" fill="#1a1822">max-age</text>
+
+  <line x1="660" y1="395" x2="660" y2="405" stroke="#1a1822" stroke-width="2"/>
+  <text x="660" y="425" text-anchor="middle" font-size="11" fill="#1a1822">max-age +</text>
+  <text x="660" y="440" text-anchor="middle" font-size="11" fill="#1a1822">stale-while-revalidate</text>
+
+  <!-- Fresh zone (green) -->
+  <rect x="120" y="280" width="220" height="100" rx="4" fill="#2f9d74" opacity="0.2" stroke="#2f9d74" stroke-width="2"/>
+  <text x="230" y="310" text-anchor="middle" font-size="14" font-weight="bold" fill="#2f9d74">FRESH</text>
+  <text x="230" y="330" text-anchor="middle" font-size="11" fill="#1a1822">Serve from cache</text>
+  <text x="230" y="348" text-anchor="middle" font-size="11" fill="#1a1822">No network request</text>
+  <text x="230" y="366" text-anchor="middle" font-size="11" fill="#2f9d74">Instant response</text>
+
+  <!-- Stale zone (orange) -->
+  <rect x="340" y="280" width="320" height="100" rx="4" fill="#d97843" opacity="0.15" stroke="#d97843" stroke-width="2"/>
+  <text x="500" y="310" text-anchor="middle" font-size="14" font-weight="bold" fill="#d97843">STALE (but usable)</text>
+  <text x="500" y="330" text-anchor="middle" font-size="11" fill="#1a1822">Serve stale from cache</text>
+  <text x="500" y="348" text-anchor="middle" font-size="11" fill="#1a1822">+ Background revalidation</text>
+  <text x="500" y="366" text-anchor="middle" font-size="11" fill="#d97843">Fast response + freshness</text>
+
+  <!-- Expired zone (red) -->
+  <rect x="660" y="280" width="170" height="100" rx="4" fill="#d94343" opacity="0.15" stroke="#d94343" stroke-width="2"/>
+  <text x="745" y="310" text-anchor="middle" font-size="14" font-weight="bold" fill="#d94343">EXPIRED</text>
+  <text x="745" y="330" text-anchor="middle" font-size="11" fill="#1a1822">Must revalidate</text>
+  <text x="745" y="348" text-anchor="middle" font-size="11" fill="#1a1822">Full network request</text>
+  <text x="745" y="366" text-anchor="middle" font-size="11" fill="#d94343">Slow response</text>
+
+  <!-- Request arrows -->
+  <defs>
+    <marker id="arr-grn" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-org" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arr-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d94343"/>
+    </marker>
+  </defs>
+
+  <!-- Request 1: In fresh window -->
+  <line x1="200" y1="265" x2="200" y2="180" stroke="#2f9d74" stroke-width="2" marker-end="url(#arr-grn)"/>
+  <rect x="130" y="155" width="140" height="24" rx="6" fill="#e8f5f0"/>
+  <text x="200" y="171" text-anchor="middle" font-size="11" fill="#2f9d74">Request → Cache Hit</text>
+  <text x="200" y="145" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="bold">~0ms latency</text>
+
+  <!-- Request 2: In stale window -->
+  <line x1="450" y1="265" x2="450" y2="140" stroke="#d97843" stroke-width="2" marker-end="url(#arr-org)"/>
+  <rect x="375" y="100" width="150" height="38" rx="6" fill="#fff3ec"/>
+  <text x="450" y="116" text-anchor="middle" font-size="11" fill="#d97843">Serve stale cache</text>
+  <text x="450" y="132" text-anchor="middle" font-size="11" fill="#6d5bd0">+ async revalidate</text>
+  <text x="450" y="90" text-anchor="middle" font-size="10" fill="#d97843" font-weight="bold">~0ms + background fetch</text>
+
+  <!-- Request 3: After expiry -->
+  <line x1="740" y1="265" x2="740" y2="180" stroke="#d94343" stroke-width="2" marker-end="url(#arr-red)"/>
+  <rect x="670" y="155" width="140" height="24" rx="6" fill="#fde8e8"/>
+  <text x="740" y="171" text-anchor="middle" font-size="11" fill="#d94343">Full network fetch</text>
+  <text x="740" y="145" text-anchor="middle" font-size="10" fill="#d94343" font-weight="bold">~200-500ms latency</text>
+
+  <!-- Header example -->
+  <rect x="120" y="460" width="710" height="28" rx="6" fill="#edeaf5"/>
+  <text x="475" y="479" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="bold">Cache-Control: max-age=60, stale-while-revalidate=300</text>
+</svg>

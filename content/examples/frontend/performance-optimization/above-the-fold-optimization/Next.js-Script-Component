@@ -1,0 +1,22 @@
+import Script from 'next/script';
+
+function Layout({ children }) {
+  return (
+    <>
+      {children}
+
+      {/* afterInteractive (default): loads after page is interactive */}
+      <Script src="/analytics.js" strategy="afterInteractive" />
+
+      {/* lazyOnload: loads during idle time */}
+      <Script src="/chat-widget.js" strategy="lazyOnload" />
+
+      {/* beforeInteractive: loads before page hydration */}
+      {/* Use sparingly — only for critical polyfills */}
+      <Script src="/polyfills.js" strategy="beforeInteractive" />
+
+      {/* worker: loads in a web worker (experimental) */}
+      <Script src="/heavy-computation.js" strategy="worker" />
+    </>
+  );
+}

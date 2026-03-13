@@ -1,0 +1,55 @@
+<!-- Speculation Rules via <script type="speculationrules"> -->
+<script type="speculationrules">
+{
+  "prefetch": [
+    {
+      "source": "list",
+      "urls": ["/dashboard", "/settings"]
+    }
+  ],
+  "prerender": [
+    {
+      "source": "list",
+      "urls": ["/dashboard"],
+      "eagerness": "moderate"
+    },
+    {
+      "source": "document",
+      "where": {
+        "selector": "a[href^='/']",
+        "not": { "selector": "a[data-no-prerender]" }
+      },
+      "eagerness": "conservative"
+    }
+  ]
+}
+</script>
+
+<!-- Eagerness levels:
+     "immediate" — prerender as soon as the rule is observed
+     "eager" — prerender with minimal delay (similar to immediate)
+     "moderate" — prerender on hover (200ms delay)
+     "conservative" — prerender on mousedown/touchstart
+
+     "moderate" and "conservative" are safest for most sites
+     because they limit wasted work to high-intent signals -->
+
+<!-- Dynamic rules via JavaScript -->
+<script>
+function addSpeculationRule(url) {
+  const script = document.createElement('script');
+  script.type = 'speculationrules';
+  script.textContent = JSON.stringify({
+    prerender: [{
+      source: 'list',
+      urls: [url],
+      eagerness: 'moderate',
+    }],
+  });
+  document.head.appendChild(script);
+}
+
+// Prerender based on analytics data showing popular next pages
+const topNextPages = ['/dashboard', '/pricing'];
+topNextPages.forEach(addSpeculationRule);
+</script>

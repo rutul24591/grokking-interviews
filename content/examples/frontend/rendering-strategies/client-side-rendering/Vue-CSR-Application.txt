@@ -1,0 +1,31 @@
+// main.js - Vue entry point
+import { createApp } from 'vue';
+import App from './App.vue';
+
+createApp(App).mount('#app');
+
+// App.vue - Component with data fetching
+<template>
+  <div>
+    <h1>Users</h1>
+    <div v-if="loading">Loading...</div>
+    <div v-else>
+      <div v-for="user in users" :key="user.id">
+        {{ user.name }}
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue';
+
+const users = ref([]);
+const loading = ref(true);
+
+onMounted(async () => {
+  const response = await fetch('/api/users');
+  users.value = await response.json();
+  loading.value = false;
+});
+</script>

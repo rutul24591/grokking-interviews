@@ -1,0 +1,38 @@
+// pages/products/[id].tsx
+import type { GetServerSideProps } from 'next';
+
+interface Props {
+  product: {
+    id: string;
+    name: string;
+    description: string;
+  };
+}
+
+// Runs on server for each request
+export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
+  const { id } = context.params!;
+
+  const response = await fetch(`https://api.example.com/products/\${id}`);
+  const product = await response.json();
+
+  return {
+    props: { product }, // Serialized and sent to client
+  };
+};
+
+export default function ProductPage({ product }: Props) {
+  const [quantity, setQuantity] = React.useState(1);
+
+  return (
+    <div>
+      <h1>{product.name}</h1>
+      <p>{product.description}</p>
+      <input
+        type="number"
+        value={quantity}
+        onChange={(e) => setQuantity(Number(e.target.value))}
+      />
+    </div>
+  );
+}

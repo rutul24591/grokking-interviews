@@ -1,0 +1,38 @@
+// Before
+if (condition) {
+  doSomething();
+}
+
+// After: use logical AND short-circuit
+condition && doSomething();
+
+// Before
+if (x) {
+  return a;
+} else {
+  return b;
+}
+
+// After: ternary
+return x ? a : b;
+
+// Before
+if (!condition) {
+  fallback();
+} else {
+  primary();
+}
+
+// After: flip condition, remove negation
+condition ? primary() : fallback();
+
+// Before: switch with simple returns
+switch(type) {
+  case 'a': return 1;
+  case 'b': return 2;
+  case 'c': return 3;
+  default: return 0;
+}
+
+// After: comma operator chain
+return 'a' === type ? 1 : 'b' === type ? 2 : 'c' === type ? 3 : 0;

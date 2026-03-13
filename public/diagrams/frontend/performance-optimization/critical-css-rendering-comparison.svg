@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#1a1822">Rendering Timeline: With vs Without Critical CSS</text>
+
+  <!-- Time axis labels -->
+  <text x="170" y="72" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#666">0ms</text>
+  <text x="318" y="72" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#666">500ms</text>
+  <text x="466" y="72" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#666">1000ms</text>
+  <text x="614" y="72" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#666">1500ms</text>
+  <text x="762" y="72" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#666">2000ms</text>
+
+  <!-- ===== WITHOUT Critical CSS (top) ===== -->
+  <text x="30" y="110" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#d97843">WITHOUT Critical CSS</text>
+
+  <!-- Timeline bar background -->
+  <rect x="170" y="125" width="592" height="30" rx="4" fill="#e8e5f0" stroke="#ccc" stroke-width="1"/>
+
+  <!-- HTML Download -->
+  <rect x="170" y="125" width="80" height="30" rx="4" fill="#6d5bd0"/>
+  <text x="210" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#fff">HTML</text>
+
+  <!-- CSS Download (blocking) -->
+  <rect x="250" y="125" width="180" height="30" rx="4" fill="#d97843"/>
+  <text x="340" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#fff">CSS Download (BLOCKING)</text>
+
+  <!-- CSSOM Build -->
+  <rect x="430" y="125" width="60" height="30" rx="4" fill="#d97843" opacity="0.7"/>
+  <text x="460" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#fff">CSSOM</text>
+
+  <!-- Render -->
+  <rect x="490" y="125" width="40" height="30" rx="4" fill="#2f9d74"/>
+  <text x="510" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#fff">Paint</text>
+
+  <!-- FCP marker without -->
+  <line x1="530" y1="118" x2="530" y2="162" stroke="#d97843" stroke-width="2" stroke-dasharray="4,2"/>
+  <text x="530" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#d97843">FCP ~1200ms</text>
+
+  <!-- White screen indicator -->
+  <rect x="170" y="190" width="360" height="20" rx="4" fill="#fff" stroke="#d97843" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="350" y="204" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#d97843">User sees white screen</text>
+
+  <!-- Divider -->
+  <line x1="30" y1="230" x2="870" y2="230" stroke="#1a1822" stroke-width="1" stroke-dasharray="6,4" opacity="0.2"/>
+
+  <!-- ===== WITH Critical CSS (bottom) ===== -->
+  <text x="30" y="270" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#2f9d74">WITH Critical CSS</text>
+
+  <!-- Timeline bar background -->
+  <rect x="170" y="285" width="592" height="30" rx="4" fill="#e8e5f0" stroke="#ccc" stroke-width="1"/>
+
+  <!-- HTML + Inlined Critical CSS -->
+  <rect x="170" y="285" width="100" height="30" rx="4" fill="#6d5bd0"/>
+  <text x="220" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#fff">HTML + Critical CSS</text>
+
+  <!-- Immediate CSSOM (tiny) -->
+  <rect x="270" y="285" width="25" height="30" rx="4" fill="#2f9d74" opacity="0.7"/>
+  <text x="282" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#fff">CS</text>
+
+  <!-- First Paint -->
+  <rect x="295" y="285" width="30" height="30" rx="4" fill="#2f9d74"/>
+  <text x="310" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fff">Paint</text>
+
+  <!-- FCP marker with -->
+  <line x1="325" y1="278" x2="325" y2="322" stroke="#2f9d74" stroke-width="2" stroke-dasharray="4,2"/>
+  <text x="325" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#2f9d74">FCP ~500ms</text>
+
+  <!-- Async CSS load (non-blocking, parallel) -->
+  <rect x="270" y="355" width="160" height="24" rx="4" fill="#d97843" opacity="0.5"/>
+  <text x="350" y="372" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#fff">Full CSS (async, non-blocking)</text>
+
+  <!-- Content visible indicator -->
+  <rect x="325" y="390" width="437" height="20" rx="4" fill="#2f9d74" opacity="0.15" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="543" y="404" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#2f9d74">User sees styled content</text>
+
+  <!-- Improvement callout -->
+  <rect x="200" y="435" width="500" height="50" rx="8" fill="#fff" stroke="#2f9d74" stroke-width="2"/>
+  <text x="450" y="457" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#2f9d74">~700ms faster First Contentful Paint (58% improvement)</text>
+  <text x="450" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#666">First paint in 1 RTT instead of waiting for full CSS download</text>
+
+  <!-- Legend -->
+  <rect x="30" y="435" width="14" height="14" rx="3" fill="#6d5bd0"/>
+  <text x="50" y="447" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">HTML/CSS Download</text>
+  <rect x="30" y="458" width="14" height="14" rx="3" fill="#d97843"/>
+  <text x="50" y="470" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Render-Blocking</text>
+  <rect x="30" y="481" width="14" height="14" rx="3" fill="#2f9d74"/>
+  <text x="50" y="493" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Paint / Visible</text>
+</svg>

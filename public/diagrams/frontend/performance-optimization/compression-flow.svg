@@ -1,0 +1,98 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="40" text-anchor="middle" font-size="22" font-weight="bold" fill="#1a1822">HTTP Compression Request/Response Flow</text>
+
+  <!-- Browser -->
+  <rect x="50" y="80" width="180" height="120" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="50" y="80" width="180" height="35" rx="8" fill="#6d5bd0"/>
+  <rect x="50" y="105" width="180" height="10" fill="#6d5bd0"/>
+  <text x="140" y="104" text-anchor="middle" font-size="16" font-weight="bold" fill="white">Browser</text>
+  <text x="140" y="140" text-anchor="middle" font-size="11" fill="#1a1822">Supports: gzip, br, zstd</text>
+  <text x="140" y="160" text-anchor="middle" font-size="11" fill="#1a1822">Decompresses automatically</text>
+  <text x="140" y="180" text-anchor="middle" font-size="11" fill="#666">Transparent to JS code</text>
+
+  <!-- Server -->
+  <rect x="670" y="80" width="180" height="120" rx="8" fill="white" stroke="#2f9d74" stroke-width="2"/>
+  <rect x="670" y="80" width="180" height="35" rx="8" fill="#2f9d74"/>
+  <rect x="670" y="105" width="180" height="10" fill="#2f9d74"/>
+  <text x="760" y="104" text-anchor="middle" font-size="16" font-weight="bold" fill="white">Server</text>
+  <text x="760" y="140" text-anchor="middle" font-size="11" fill="#1a1822">Selects best algorithm</text>
+  <text x="760" y="160" text-anchor="middle" font-size="11" fill="#1a1822">Compresses response body</text>
+  <text x="760" y="180" text-anchor="middle" font-size="11" fill="#666">Nginx, Express, CDN</text>
+
+  <!-- Request arrow -->
+  <line x1="230" y1="120" x2="670" y2="120" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrRight)"/>
+  <rect x="290" y="95" width="320" height="30" rx="6" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="450" y="115" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Accept-Encoding: gzip, deflate, br</text>
+
+  <!-- Response arrow -->
+  <line x1="670" y1="175" x2="230" y2="175" stroke="#2f9d74" stroke-width="2" marker-end="url(#arrLeft)"/>
+  <rect x="290" y="155" width="320" height="30" rx="6" fill="#2f9d74" opacity="0.1" stroke="#2f9d74" stroke-width="1"/>
+  <text x="450" y="175" text-anchor="middle" font-size="12" font-weight="600" fill="#2f9d74">Content-Encoding: br</text>
+
+  <!-- Detailed flow -->
+  <text x="450" y="245" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Step-by-Step Flow</text>
+
+  <!-- Step boxes -->
+  <rect x="30" y="270" width="165" height="75" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+  <circle cx="55" cy="290" r="12" fill="#6d5bd0"/>
+  <text x="55" y="295" text-anchor="middle" font-size="12" font-weight="bold" fill="white">1</text>
+  <text x="120" y="295" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Browser sends</text>
+  <text x="120" y="312" text-anchor="middle" font-size="10" fill="#1a1822">Accept-Encoding</text>
+  <text x="120" y="330" text-anchor="middle" font-size="10" fill="#666">header on request</text>
+
+  <line x1="195" y1="307" x2="215" y2="307" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrRight)"/>
+
+  <rect x="215" y="270" width="165" height="75" rx="8" fill="white" stroke="#2f9d74" stroke-width="2"/>
+  <circle cx="240" cy="290" r="12" fill="#2f9d74"/>
+  <text x="240" y="295" text-anchor="middle" font-size="12" font-weight="bold" fill="white">2</text>
+  <text x="305" y="295" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Server picks best</text>
+  <text x="305" y="312" text-anchor="middle" font-size="10" fill="#1a1822">algorithm (br &gt; gzip)</text>
+  <text x="305" y="330" text-anchor="middle" font-size="10" fill="#666">based on support</text>
+
+  <line x1="380" y1="307" x2="400" y2="307" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arrRight)"/>
+
+  <rect x="400" y="270" width="165" height="75" rx="8" fill="white" stroke="#d97843" stroke-width="2"/>
+  <circle cx="425" cy="290" r="12" fill="#d97843"/>
+  <text x="425" y="295" text-anchor="middle" font-size="12" font-weight="bold" fill="white">3</text>
+  <text x="490" y="295" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Compress body</text>
+  <text x="490" y="312" text-anchor="middle" font-size="10" fill="#1a1822">100KB &rarr; 25KB</text>
+  <text x="490" y="330" text-anchor="middle" font-size="10" fill="#666">75% size reduction</text>
+
+  <line x1="565" y1="307" x2="585" y2="307" stroke="#d97843" stroke-width="1.5" marker-end="url(#arrRight)"/>
+
+  <rect x="585" y="270" width="165" height="75" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+  <circle cx="610" cy="290" r="12" fill="#6d5bd0"/>
+  <text x="610" y="295" text-anchor="middle" font-size="12" font-weight="bold" fill="white">4</text>
+  <text x="675" y="295" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Send compressed</text>
+  <text x="675" y="312" text-anchor="middle" font-size="10" fill="#1a1822">+ Content-Encoding</text>
+  <text x="675" y="330" text-anchor="middle" font-size="10" fill="#666">+ Vary header</text>
+
+  <line x1="750" y1="307" x2="770" y2="307" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrRight)"/>
+
+  <rect x="770" y="270" width="105" height="75" rx="8" fill="white" stroke="#2f9d74" stroke-width="2"/>
+  <circle cx="790" cy="290" r="12" fill="#2f9d74"/>
+  <text x="790" y="295" text-anchor="middle" font-size="12" font-weight="bold" fill="white">5</text>
+  <text x="828" y="300" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Browser</text>
+  <text x="828" y="318" text-anchor="middle" font-size="10" fill="#1a1822">decompresses</text>
+
+  <!-- Size comparison -->
+  <rect x="120" y="380" width="660" height="90" rx="8" fill="white" stroke="#e0dce8" stroke-width="1"/>
+  <text x="450" y="405" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a1822">Transfer Size Comparison</text>
+
+  <!-- Uncompressed bar -->
+  <text x="145" y="432" font-size="11" fill="#666">Uncompressed</text>
+  <rect x="260" y="418" width="500" height="22" rx="4" fill="#e0dce8"/>
+  <text x="770" y="434" font-size="11" font-weight="bold" fill="#1a1822">100 KB</text>
+
+  <!-- Compressed bar -->
+  <text x="145" y="458" font-size="11" fill="#666">Brotli (level 11)</text>
+  <rect x="260" y="444" width="125" height="22" rx="4" fill="#6d5bd0"/>
+  <text x="395" y="460" font-size="11" font-weight="bold" fill="#6d5bd0">25 KB (75% smaller)</text>
+
+  <defs>
+    <marker id="arrRight" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/></marker>
+    <marker id="arrLeft" markerWidth="10" markerHeight="7" refX="1" refY="3.5" orient="auto"><polygon points="10 0, 0 3.5, 10 7" fill="#2f9d74"/></marker>
+  </defs>
+</svg>

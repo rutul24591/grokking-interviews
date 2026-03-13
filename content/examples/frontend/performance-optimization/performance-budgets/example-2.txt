@@ -1,0 +1,54 @@
+// Automated baseline collection script
+// scripts/collect-baseline.js
+const { execSync } = require('child_process');
+const fs = require('fs');
+
+const pages = [
+  { name: 'Homepage', url: 'http://localhost:3000' },
+  { name: 'Product List', url: 'http://localhost:3000/products' },
+  { name: 'Product Detail', url: 'http://localhost:3000/products/1' },
+  { name: 'Dashboard', url: 'http://localhost:3000/dashboard' },
+];
+
+const results = {};
+
+pages.forEach(({ name, url }) => {
+  console.log(`Auditing \${name}...`);
+
+  // Run Lighthouse 5 times and collect results
+  const runs = [];
+  for (let i = 0; i < 5; i++) {
+    const output = execSync(
+      `npx lighthouse \${url} --output=json --quiet --chrome-flags="--headless"`,
+      { encoding: 'utf-8', maxBuffer: 50 * 1024 * 1024 }
+    );
+    const report = JSON.parse(output);
+    runs.push({
+      lcp: report.audits['largest-contentful-paint'].numericValue,
+      fcp: report.audits['first-contentful-paint'].numericValue,
+      tbt: report.audits['total-blocking-time'].numericValue,
+      cls: report.audits['cumulative-layout-shift'].numericValue,
+      score: report.categories.performance.score * 100,
+    });
+  }
+
+  // Use median of 5 runs
+  const median = (arr) => {
+    const sorted = [...arr].sort((a, b) => a - b);
+    return sorted[Math.floor(sorted.length / 2)];
+  };
+
+  results[name] = {
+    lcp: median(runs.map(r => r.lcp)),
+    fcp: median(runs.map(r => r.fcp)),
+    tbt: median(runs.map(r => r.tbt)),
+    cls: median(runs.map(r => r.cls)),
+    score: median(runs.map(r => r.score)),
+  };
+});
+
+fs.writeFileSync(
+  'performance-baseline.json',
+  JSON.stringify(results, null, 2)
+);
+console.log('Baseline saved to performance-baseline.json');

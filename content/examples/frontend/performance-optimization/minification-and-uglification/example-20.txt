@@ -1,0 +1,28 @@
+// Example source map structure
+{
+  "version": 3,
+  "file": "app.min.js",
+  "sources": [
+    "../src/utils/format.js",
+    "../src/components/Cart.jsx",
+    "../src/hooks/useCart.js"
+  ],
+  "sourcesContent": [
+    "// Original source of format.js...",
+    "// Original source of Cart.jsx...",
+    "// Original source of useCart.js..."
+  ],
+  "names": [
+    "calculateTotalPrice",
+    "items",
+    "taxRate",
+    "subtotal"
+  ],
+  "mappings": "AAAA,SAASA,EAAqBC,EAAOC,GAC..."
+}
+
+// The minified file references its source map via a comment:
+//# sourceMappingURL=app.min.js.map
+
+// Or via HTTP header (preferred for security):
+// SourceMap: /maps/app.min.js.map

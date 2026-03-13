@@ -1,0 +1,37 @@
+// file: app/signup/page.tsx
+export default function SignupPage() {
+  return (
+    <form action="/api/signup" method="post" noValidate>
+      <label>Email <input name="email" type="email" required /></label>
+      <button type="submit">Sign up</button>
+    </form>
+  );
+}
+
+// file: public/enhancements/signup.js
+const form = document.querySelector('form');
+if (form && 'reportValidity' in form) {
+  form.addEventListener('submit', async (e) => {
+    if (!form.reportValidity()) {
+      e.preventDefault();
+      return;
+    }
+    if (!('fetch' in window)) return;
+    e.preventDefault();
+    const data = new FormData(form);
+    try {
+      const res = await fetch('/api/signup', { method: 'POST', body: data });
+      if (!res.ok) throw new Error('Signup failed');
+      form.reset();
+    } catch {
+      form.insertAdjacentHTML('afterend', '<p role="alert">Try again later.</p>');
+    }
+  });
+}
+
+// file: next.config.js
+module.exports = {
+  headers() {
+    return [{ source: '/(.*)', headers: [{ key: 'Cache-Control', value: 'no-store' }] }];
+  },
+};

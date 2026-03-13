@@ -1,0 +1,21 @@
+// webpack.config.js — Enforce size limits
+module.exports = {
+  performance: {
+    maxAssetSize: 250000,      // 250 KB per asset (before gzip)
+    maxEntrypointSize: 400000, // 400 KB for entry point
+    hints: 'error',            // Fail build if exceeded
+    assetFilter: (assetFilename) => {
+      return /\\.(js|css)$/.test(assetFilename);
+    },
+  },
+};
+
+// bundlesize CI check (works with any bundler)
+// package.json
+{
+  "bundlesize": [
+    { "path": "dist/**/*.js", "maxSize": "150 kB", "compression": "gzip" },
+    { "path": "dist/**/*.css", "maxSize": "20 kB", "compression": "gzip" }
+  ]
+}
+// Run: npx bundlesize

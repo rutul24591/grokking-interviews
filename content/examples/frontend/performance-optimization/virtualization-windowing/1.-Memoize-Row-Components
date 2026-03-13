@@ -1,0 +1,16 @@
+import { memo } from 'react';
+
+// Without memo: every scroll event re-renders ALL visible rows
+// With memo: only rows whose props changed re-render
+const Row = memo(function Row({ data, index, style }) {
+  return (
+    <div style={style}>
+      {data[index].name}
+    </div>
+  );
+});
+
+// For react-window: use itemData to pass stable references
+<FixedSizeList itemData={users} itemCount={users.length} itemSize={48}>
+  {Row}
+</FixedSizeList>

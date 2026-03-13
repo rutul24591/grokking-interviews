@@ -1,0 +1,126 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <!-- Background -->
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">AppCache Manifest Update Flow</text>
+
+  <!-- ===== FIRST VISIT (Top Row) ===== -->
+  <text x="30" y="64" font-size="14" font-weight="bold" fill="#2f9d74">First Visit (No Cache Exists)</text>
+
+  <!-- Step 1 -->
+  <rect x="30" y="76" width="130" height="50" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="95" y="96" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Browser requests</text>
+  <text x="95" y="112" text-anchor="middle" font-size="11" fill="#555">page with manifest</text>
+
+  <!-- Arrow -->
+  <line x1="160" y1="101" x2="185" y2="101" stroke="#6d5bd0" stroke-width="1.5"/>
+  <polygon points="185,97 193,101 185,105" fill="#6d5bd0"/>
+
+  <!-- Step 2 -->
+  <rect x="193" y="76" width="120" height="50" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="253" y="96" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Normal load</text>
+  <text x="253" y="112" text-anchor="middle" font-size="11" fill="#555">from network</text>
+
+  <!-- Arrow -->
+  <line x1="313" y1="101" x2="338" y2="101" stroke="#6d5bd0" stroke-width="1.5"/>
+  <polygon points="338,97 346,101 338,105" fill="#6d5bd0"/>
+
+  <!-- Step 3 -->
+  <rect x="346" y="76" width="120" height="50" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="406" y="96" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Downloads</text>
+  <text x="406" y="112" text-anchor="middle" font-size="11" fill="#555">manifest file</text>
+
+  <!-- Arrow -->
+  <line x1="466" y1="101" x2="491" y2="101" stroke="#6d5bd0" stroke-width="1.5"/>
+  <polygon points="491,97 499,101 491,105" fill="#6d5bd0"/>
+
+  <!-- Step 4 -->
+  <rect x="499" y="76" width="130" height="50" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="564" y="96" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Caches all listed</text>
+  <text x="564" y="112" text-anchor="middle" font-size="11" fill="#555">resources</text>
+
+  <!-- Arrow -->
+  <line x1="629" y1="101" x2="654" y2="101" stroke="#6d5bd0" stroke-width="1.5"/>
+  <polygon points="654,97 662,101 654,105" fill="#6d5bd0"/>
+
+  <!-- Step 5 (Problem highlight) -->
+  <rect x="662" y="76" width="210" height="50" rx="6" fill="#fff" stroke="#d97843" stroke-width="2"/>
+  <text x="767" y="96" text-anchor="middle" font-size="11" font-weight="600" fill="#d97843">Adds page as master entry</text>
+  <text x="767" y="112" text-anchor="middle" font-size="10" fill="#d97843">(implicit — not in manifest!)</text>
+
+  <!-- ===== SECOND VISIT (Bottom Section) ===== -->
+  <text x="30" y="162" font-size="14" font-weight="bold" fill="#6d5bd0">Second Visit (Cache Exists)</text>
+
+  <!-- Step A: Cache-first -->
+  <rect x="30" y="176" width="170" height="56" rx="6" fill="#fff" stroke="#d97843" stroke-width="2"/>
+  <text x="115" y="196" text-anchor="middle" font-size="11" font-weight="600" fill="#d97843">Serves from AppCache</text>
+  <text x="115" y="212" text-anchor="middle" font-size="10" fill="#d97843">Always cache-first. No bypass.</text>
+  <text x="115" y="226" text-anchor="middle" font-size="9" fill="#d97843" font-style="italic">⚠ User sees OLD version</text>
+
+  <!-- Arrow -->
+  <line x1="200" y1="204" x2="225" y2="204" stroke="#6d5bd0" stroke-width="1.5"/>
+  <polygon points="225,200 233,204 225,208" fill="#6d5bd0"/>
+
+  <!-- Step B: Check manifest -->
+  <rect x="233" y="176" width="150" height="56" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="308" y="196" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Checks manifest</text>
+  <text x="308" y="212" text-anchor="middle" font-size="10" fill="#555">byte-for-byte comparison</text>
+  <text x="308" y="226" text-anchor="middle" font-size="10" fill="#555">(in background)</text>
+
+  <!-- Branch: No Change -->
+  <line x1="383" y1="188" x2="430" y2="175" stroke="#2f9d74" stroke-width="1.5"/>
+  <polygon points="426,171 434,172 429,179" fill="#2f9d74"/>
+  <rect x="434" y="158" width="140" height="36" rx="6" fill="#edeaf5" stroke="#2f9d74" stroke-width="1"/>
+  <text x="504" y="180" text-anchor="middle" font-size="11" fill="#2f9d74">No change → noupdate</text>
+
+  <!-- Branch: Changed -->
+  <line x1="383" y1="216" x2="430" y2="226" stroke="#d97843" stroke-width="1.5"/>
+  <polygon points="426,230 434,229 429,222" fill="#d97843"/>
+
+  <!-- Step C: Re-download ALL -->
+  <rect x="434" y="208" width="170" height="56" rx="6" fill="#fff" stroke="#d97843" stroke-width="2"/>
+  <text x="519" y="228" text-anchor="middle" font-size="11" font-weight="600" fill="#d97843">Re-downloads ALL</text>
+  <text x="519" y="244" text-anchor="middle" font-size="10" fill="#d97843">resources (not just changed)</text>
+  <text x="519" y="258" text-anchor="middle" font-size="9" fill="#d97843" font-style="italic">⚠ No partial updates</text>
+
+  <!-- Arrow -->
+  <line x1="604" y1="236" x2="629" y2="236" stroke="#d97843" stroke-width="1.5"/>
+  <polygon points="629,232 637,236 629,240" fill="#d97843"/>
+
+  <!-- Step D: updateready -->
+  <rect x="637" y="208" width="140" height="56" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="707" y="228" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Fires updateready</text>
+  <text x="707" y="244" text-anchor="middle" font-size="10" fill="#555">New cache stored</text>
+  <text x="707" y="258" text-anchor="middle" font-size="10" fill="#555">but NOT active yet</text>
+
+  <!-- Arrow down to double-reload -->
+  <line x1="707" y1="264" x2="707" y2="290" stroke="#d97843" stroke-width="1.5"/>
+  <polygon points="703,290 707,298 711,290" fill="#d97843"/>
+
+  <!-- Step E: Double Reload Problem (big callout) -->
+  <rect x="540" y="300" width="330" height="70" rx="8" fill="#fff3ec" stroke="#d97843" stroke-width="2.5"/>
+  <text x="705" y="322" text-anchor="middle" font-size="13" font-weight="bold" fill="#d97843">THE DOUBLE-RELOAD PROBLEM</text>
+  <text x="705" y="340" text-anchor="middle" font-size="11" fill="#d97843">User must reload AGAIN to see new version.</text>
+  <text x="705" y="356" text-anchor="middle" font-size="11" fill="#d97843">swapCache() + location.reload() = only workaround.</text>
+
+  <!-- ===== Summary Box ===== -->
+  <rect x="30" y="390" width="460" height="96" rx="8" fill="#fff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="50" y="414" font-size="13" font-weight="bold" fill="#6d5bd0">Key Problems Highlighted</text>
+  <rect x="50" y="424" width="8" height="8" rx="2" fill="#d97843"/>
+  <text x="66" y="432" font-size="11" fill="#1a1822">Pages implicitly cached as master entries (no opt-out)</text>
+  <rect x="50" y="442" width="8" height="8" rx="2" fill="#d97843"/>
+  <text x="66" y="450" font-size="11" fill="#1a1822">All-or-nothing re-download on any manifest change</text>
+  <rect x="50" y="460" width="8" height="8" rx="2" fill="#d97843"/>
+  <text x="66" y="468" font-size="11" fill="#1a1822">Users always one visit behind the latest version</text>
+
+  <!-- Service Worker fix note -->
+  <rect x="540" y="390" width="330" height="96" rx="8" fill="#f0faf5" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="560" y="414" font-size="13" font-weight="bold" fill="#2f9d74">Service Worker Solution</text>
+  <rect x="560" y="424" width="8" height="8" rx="2" fill="#2f9d74"/>
+  <text x="576" y="432" font-size="11" fill="#1a1822">Explicit cache.put() — nothing implicit</text>
+  <rect x="560" y="442" width="8" height="8" rx="2" fill="#2f9d74"/>
+  <text x="576" y="450" font-size="11" fill="#1a1822">Granular per-entry updates via Cache API</text>
+  <rect x="560" y="460" width="8" height="8" rx="2" fill="#2f9d74"/>
+  <text x="576" y="468" font-size="11" fill="#1a1822">skipWaiting() + Clients.claim() = instant activation</text>
+</svg>

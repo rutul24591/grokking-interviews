@@ -58,8 +58,8 @@ export function Breadcrumbs() {
       });
     }
 
-    // Add topic if present (not on extensive version path)
-    if (topicSlug && topicSlug !== "extensive") {
+    // Add topic if present
+    if (topicSlug) {
       crumbs.push({
         label: unslugify(topicSlug),
         onClick: null,

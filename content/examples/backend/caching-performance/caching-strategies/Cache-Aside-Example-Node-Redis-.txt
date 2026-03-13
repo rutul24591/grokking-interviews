@@ -1,0 +1,6 @@
+import express from 'express';
+import Redis from 'ioredis'; const redis = new Redis(process.env.REDIS_URL);
+const app = express(); async function getUserFromDb(id) { // Simulated database call return { id, name: 'Ava', plan: 'pro', updatedAt: Date.now() };
+} app.get('/users/:id', async (req, res) => { const { id } = req.params; const key = `user:v1:\${id}`; const cached = await redis.get(key); if (cached) { return res.json(JSON.parse(cached)); } const user = await getUserFromDb(id); await redis.set(key, JSON.stringify(user), 'EX', 300); // 5 min TTL return res.json(user);
+}); app.put('/users/:id', express.json(), async (req, res) => { const { id } = req.params; // 1) write to DB // 2) invalidate cache await redis.del(`user:v1:\${id}`); res.status(204).send();
+});

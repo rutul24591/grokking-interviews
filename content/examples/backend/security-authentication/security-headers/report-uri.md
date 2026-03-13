@@ -1,0 +1,1 @@
+Configure CSP report-only before enforcing.

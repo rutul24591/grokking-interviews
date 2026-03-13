@@ -1,0 +1,1 @@
+Downsampling and retention reduce storage cost in time-series systems.

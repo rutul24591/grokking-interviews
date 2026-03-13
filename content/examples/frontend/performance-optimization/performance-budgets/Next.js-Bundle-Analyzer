@@ -1,0 +1,22 @@
+// next.config.js
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+module.exports = withBundleAnalyzer({
+  // ... other config
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.performance = {
+        maxAssetSize: 250000,
+        maxEntrypointSize: 300000,
+        hints: process.env.NODE_ENV === 'production' ? 'error' : 'warning',
+      };
+    }
+    return config;
+  },
+});
+
+// Usage:
+// ANALYZE=true pnpm build
+// Opens a treemap in the browser showing every module's size

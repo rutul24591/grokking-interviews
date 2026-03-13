@@ -1,0 +1,1 @@
+If commit fails, retry idempotently.

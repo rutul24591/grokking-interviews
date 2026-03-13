@@ -1,0 +1,9 @@
+health:
+  livenessPath: /health/live
+  readinessPath: /health/ready
+  startupPath: /health/startup
+  timeoutMs: 200
+  threshold: 3
+dependencies:
+  redis: redis://cache:6379
+  db: postgres://db:5432/app

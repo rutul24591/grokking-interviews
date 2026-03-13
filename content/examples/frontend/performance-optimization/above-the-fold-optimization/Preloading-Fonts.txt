@@ -1,0 +1,6 @@
+<!-- Preload critical fonts used above the fold -->
+<link rel="preload" href="/fonts/inter-var.woff2"
+      as="font" type="font/woff2" crossorigin>
+
+<!-- Note: crossorigin is required even for same-origin fonts -->
+<!-- WOFF2 is almost universally supported — no need for other formats -->

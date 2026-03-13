@@ -1,0 +1,3 @@
+// Write locally, replicate asynchronously
+await db.write({ consistency: "local", value: profile }); // Later: replicas converge and conflicts are resolved
+await reconcileConflicts();

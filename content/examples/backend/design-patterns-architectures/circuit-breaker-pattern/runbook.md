@@ -1,0 +1,1 @@
+When open, enable fallback and reduce retries.

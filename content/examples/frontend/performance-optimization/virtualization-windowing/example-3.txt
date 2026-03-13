@@ -1,0 +1,30 @@
+// Variable height calculation with prefix sum
+function calculateVariableRange(scrollTop, viewportHeight, heights) {
+  // Build prefix sum array: offsets[i] = sum of heights[0..i-1]
+  const offsets = [0];
+  for (let i = 0; i < heights.length; i++) {
+    offsets.push(offsets[i] + heights[i]);
+  }
+  const totalHeight = offsets[offsets.length - 1];
+
+  // Binary search for start index
+  let startIndex = binarySearch(offsets, scrollTop);
+  let endIndex = binarySearch(offsets, scrollTop + viewportHeight);
+
+  return {
+    startIndex,
+    endIndex: Math.min(endIndex, heights.length - 1),
+    getOffset: (index) => offsets[index],
+    totalHeight,
+  };
+}
+
+function binarySearch(arr, target) {
+  let lo = 0, hi = arr.length - 1;
+  while (lo < hi) {
+    const mid = (lo + hi) >>> 1;
+    if (arr[mid] < target) lo = mid + 1;
+    else hi = mid;
+  }
+  return Math.max(0, lo - 1);
+}

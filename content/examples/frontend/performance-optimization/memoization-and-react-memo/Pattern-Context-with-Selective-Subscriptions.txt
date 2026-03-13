@@ -1,0 +1,33 @@
+// ❌ Problem: All consumers re-render when ANY context value changes
+const AppContext = createContext();
+
+function AppProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [theme, setTheme] = useState('light');
+  const [notifications, setNotifications] = useState([]);
+
+  // Every state change re-renders ALL consumers
+  const value = { user, setUser, theme, setTheme, notifications, setNotifications };
+
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+}
+
+// ✅ Solution: Split contexts by change frequency
+const UserContext = createContext();
+const ThemeContext = createContext();
+const NotificationContext = createContext();
+
+// Each context only triggers re-renders in its consumers
+
+// ✅ Also: memoize context values
+function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState('light');
+
+  const value = useMemo(() => ({
+    theme,
+    setTheme,
+    colors: getThemeColors(theme),
+  }), [theme]);
+
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+}

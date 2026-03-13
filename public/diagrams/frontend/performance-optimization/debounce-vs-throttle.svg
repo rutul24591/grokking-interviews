@@ -1,0 +1,192 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Debounce vs Throttle: Same Events, Different Behavior</text>
+
+  <!-- Shared event stream -->
+  <text x="50" y="72" text-anchor="end" font-size="11" font-weight="600" fill="#1a1822">Input</text>
+  <text x="50" y="85" text-anchor="end" font-size="11" font-weight="600" fill="#1a1822">Events</text>
+  <line x1="70" y1="78" x2="870" y2="78" stroke="#ccc" stroke-width="1"/>
+
+  <!-- Events: burst, pause, burst, pause -->
+  <g fill="#6d5bd0">
+    <!-- Burst 1: 0-250ms -->
+    <rect x="90" y="60" width="3" height="18" rx="1"/>
+    <rect x="110" y="60" width="3" height="18" rx="1"/>
+    <rect x="130" y="60" width="3" height="18" rx="1"/>
+    <rect x="150" y="60" width="3" height="18" rx="1"/>
+    <rect x="170" y="60" width="3" height="18" rx="1"/>
+    <rect x="190" y="60" width="3" height="18" rx="1"/>
+    <!-- Burst 2: 450-650ms -->
+    <rect x="310" y="60" width="3" height="18" rx="1"/>
+    <rect x="330" y="60" width="3" height="18" rx="1"/>
+    <rect x="350" y="60" width="3" height="18" rx="1"/>
+    <rect x="370" y="60" width="3" height="18" rx="1"/>
+    <rect x="390" y="60" width="3" height="18" rx="1"/>
+    <!-- Burst 3: 800-1050ms -->
+    <rect x="530" y="60" width="3" height="18" rx="1"/>
+    <rect x="550" y="60" width="3" height="18" rx="1"/>
+    <rect x="570" y="60" width="3" height="18" rx="1"/>
+    <rect x="590" y="60" width="3" height="18" rx="1"/>
+    <rect x="610" y="60" width="3" height="18" rx="1"/>
+    <rect x="630" y="60" width="3" height="18" rx="1"/>
+    <rect x="650" y="60" width="3" height="18" rx="1"/>
+  </g>
+
+  <!-- Burst labels -->
+  <text x="140" y="55" text-anchor="middle" font-size="8" fill="#6d5bd0">Burst 1</text>
+  <text x="350" y="55" text-anchor="middle" font-size="8" fill="#6d5bd0">Burst 2</text>
+  <text x="590" y="55" text-anchor="middle" font-size="8" fill="#6d5bd0">Burst 3</text>
+
+  <!-- Time axis for reference -->
+  <line x1="70" y1="94" x2="870" y2="94" stroke="#ddd" stroke-width="0.5"/>
+  <text x="90" y="104" text-anchor="middle" font-size="7" fill="#999">0ms</text>
+  <text x="310" y="104" text-anchor="middle" font-size="7" fill="#999">450ms</text>
+  <text x="530" y="104" text-anchor="middle" font-size="7" fill="#999">800ms</text>
+  <text x="830" y="104" text-anchor="middle" font-size="7" fill="#999">1400ms</text>
+
+  <!-- DEBOUNCE SECTION -->
+  <rect x="30" y="115" width="840" height="170" rx="8" fill="white" stroke="#d97843" stroke-width="1.5"/>
+  <text x="450" y="138" text-anchor="middle" font-size="14" font-weight="bold" fill="#d97843">DEBOUNCE (300ms delay)</text>
+  <text x="450" y="154" text-anchor="middle" font-size="11" fill="#1a1822">Waits for quiet period, then fires once per burst</text>
+
+  <!-- Debounce timeline -->
+  <line x1="70" y1="200" x2="830" y2="200" stroke="#ddd" stroke-width="1"/>
+
+  <!-- Burst 1 events (faded) -->
+  <g opacity="0.3">
+    <rect x="90" y="185" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="110" y="185" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="130" y="185" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="150" y="185" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="170" y="185" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="190" y="185" width="2" height="15" fill="#6d5bd0"/>
+  </g>
+
+  <!-- Timer from last event in burst 1 -->
+  <rect x="190" y="196" width="90" height="6" rx="2" fill="#d97843" opacity="0.3"/>
+  <text x="235" y="218" text-anchor="middle" font-size="8" fill="#d97843">wait 300ms...</text>
+
+  <!-- Execution after burst 1 -->
+  <line x1="280" y1="175" x2="280" y2="200" stroke="#2f9d74" stroke-width="3"/>
+  <circle cx="280" cy="173" r="5" fill="#2f9d74"/>
+  <text x="280" y="166" text-anchor="middle" font-size="8" fill="#2f9d74" font-weight="bold">FIRE</text>
+
+  <!-- Burst 2 events (faded) -->
+  <g opacity="0.3">
+    <rect x="310" y="185" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="330" y="185" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="350" y="185" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="370" y="185" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="390" y="185" width="2" height="15" fill="#6d5bd0"/>
+  </g>
+
+  <!-- Timer from burst 2 -->
+  <rect x="390" y="196" width="90" height="6" rx="2" fill="#d97843" opacity="0.3"/>
+  <text x="435" y="218" text-anchor="middle" font-size="8" fill="#d97843">wait 300ms...</text>
+
+  <!-- Execution after burst 2 -->
+  <line x1="480" y1="175" x2="480" y2="200" stroke="#2f9d74" stroke-width="3"/>
+  <circle cx="480" cy="173" r="5" fill="#2f9d74"/>
+  <text x="480" y="166" text-anchor="middle" font-size="8" fill="#2f9d74" font-weight="bold">FIRE</text>
+
+  <!-- Burst 3 events (faded) -->
+  <g opacity="0.3">
+    <rect x="530" y="185" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="550" y="185" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="570" y="185" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="590" y="185" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="610" y="185" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="630" y="185" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="650" y="185" width="2" height="15" fill="#6d5bd0"/>
+  </g>
+
+  <!-- Timer from burst 3 -->
+  <rect x="650" y="196" width="90" height="6" rx="2" fill="#d97843" opacity="0.3"/>
+  <text x="695" y="218" text-anchor="middle" font-size="8" fill="#d97843">wait 300ms...</text>
+
+  <!-- Execution after burst 3 -->
+  <line x1="740" y1="175" x2="740" y2="200" stroke="#2f9d74" stroke-width="3"/>
+  <circle cx="740" cy="173" r="5" fill="#2f9d74"/>
+  <text x="740" y="166" text-anchor="middle" font-size="8" fill="#2f9d74" font-weight="bold">FIRE</text>
+
+  <!-- Debounce result -->
+  <rect x="70" y="235" width="200" height="35" rx="6" fill="#2f9d74" opacity="0.1" stroke="#2f9d74" stroke-width="1"/>
+  <text x="170" y="252" text-anchor="middle" font-size="11" fill="#2f9d74" font-weight="bold">Result: 3 executions</text>
+  <text x="170" y="265" text-anchor="middle" font-size="9" fill="#2f9d74">One per burst (after silence)</text>
+
+  <!-- THROTTLE SECTION -->
+  <rect x="30" y="295" width="840" height="170" rx="8" fill="white" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="450" y="318" text-anchor="middle" font-size="14" font-weight="bold" fill="#6d5bd0">THROTTLE (200ms interval)</text>
+  <text x="450" y="334" text-anchor="middle" font-size="11" fill="#1a1822">Fires at regular intervals throughout activity</text>
+
+  <!-- Throttle timeline -->
+  <line x1="70" y1="380" x2="830" y2="380" stroke="#ddd" stroke-width="1"/>
+
+  <!-- Interval markers -->
+  <g stroke="#6d5bd0" stroke-width="0.5" stroke-dasharray="3" opacity="0.3">
+    <line x1="90" y1="345" x2="90" y2="395"/>
+    <line x1="190" y1="345" x2="190" y2="395"/>
+    <line x1="290" y1="345" x2="290" y2="395"/>
+    <line x1="390" y1="345" x2="390" y2="395"/>
+    <line x1="490" y1="345" x2="490" y2="395"/>
+    <line x1="590" y1="345" x2="590" y2="395"/>
+    <line x1="690" y1="345" x2="690" y2="395"/>
+    <line x1="790" y1="345" x2="790" y2="395"/>
+  </g>
+
+  <!-- All events faded -->
+  <g opacity="0.2">
+    <rect x="90" y="365" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="110" y="365" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="130" y="365" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="150" y="365" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="170" y="365" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="190" y="365" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="310" y="365" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="330" y="365" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="350" y="365" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="370" y="365" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="390" y="365" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="530" y="365" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="550" y="365" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="570" y="365" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="590" y="365" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="610" y="365" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="630" y="365" width="2" height="15" fill="#6d5bd0"/>
+    <rect x="650" y="365" width="2" height="15" fill="#6d5bd0"/>
+  </g>
+
+  <!-- Throttle executions at interval boundaries where events exist -->
+  <line x1="90" y1="355" x2="90" y2="380" stroke="#2f9d74" stroke-width="3"/>
+  <circle cx="90" cy="353" r="5" fill="#2f9d74"/>
+
+  <line x1="190" y1="355" x2="190" y2="380" stroke="#2f9d74" stroke-width="3"/>
+  <circle cx="190" cy="353" r="5" fill="#2f9d74"/>
+
+  <line x1="310" y1="355" x2="310" y2="380" stroke="#2f9d74" stroke-width="3"/>
+  <circle cx="310" cy="353" r="5" fill="#2f9d74"/>
+
+  <line x1="390" y1="355" x2="390" y2="380" stroke="#2f9d74" stroke-width="3"/>
+  <circle cx="390" cy="353" r="5" fill="#2f9d74"/>
+
+  <line x1="530" y1="355" x2="530" y2="380" stroke="#2f9d74" stroke-width="3"/>
+  <circle cx="530" cy="353" r="5" fill="#2f9d74"/>
+
+  <line x1="590" y1="355" x2="590" y2="380" stroke="#2f9d74" stroke-width="3"/>
+  <circle cx="590" cy="353" r="5" fill="#2f9d74"/>
+
+  <line x1="650" y1="355" x2="650" y2="380" stroke="#2f9d74" stroke-width="3"/>
+  <circle cx="650" cy="353" r="5" fill="#2f9d74"/>
+
+  <!-- Throttle result -->
+  <rect x="70" y="395" width="200" height="35" rx="6" fill="#2f9d74" opacity="0.1" stroke="#2f9d74" stroke-width="1"/>
+  <text x="170" y="412" text-anchor="middle" font-size="11" fill="#2f9d74" font-weight="bold">Result: 7 executions</text>
+  <text x="170" y="425" text-anchor="middle" font-size="9" fill="#2f9d74">Periodic updates throughout</text>
+
+  <!-- Bottom comparison -->
+  <rect x="120" y="475" width="660" height="20" rx="4" fill="#6d5bd0" opacity="0.08"/>
+  <text x="450" y="489" text-anchor="middle" font-size="11" fill="#1a1822">
+    Debounce = "wait until done" (final value)  |  Throttle = "sample periodically" (real-time updates)
+  </text>
+</svg>

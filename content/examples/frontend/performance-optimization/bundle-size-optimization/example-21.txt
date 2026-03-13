@@ -1,0 +1,23 @@
+// webpack.config.js — Host application
+const { ModuleFederationPlugin } = require('webpack').container;
+
+module.exports = {
+  plugins: [
+    new ModuleFederationPlugin({
+      name: 'host',
+      remotes: {
+        // Load dashboard micro-app at runtime
+        dashboard: 'dashboard@https://cdn.example.com/dashboard/remoteEntry.js',
+      },
+      shared: {
+        react: { singleton: true, requiredVersion: '^18.0.0' },
+        'react-dom': { singleton: true, requiredVersion: '^18.0.0' },
+      },
+    }),
+  ],
+};
+
+// In the host app — load remote component
+const DashboardApp = React.lazy(
+  () => import('dashboard/App')  // Loaded from CDN at runtime
+);

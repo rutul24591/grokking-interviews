@@ -1,0 +1,1 @@
+Global distribution uses latency-based routing with health-aware failover.

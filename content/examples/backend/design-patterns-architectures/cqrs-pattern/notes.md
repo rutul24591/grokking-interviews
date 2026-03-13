@@ -1,0 +1,1 @@
+Read model is eventually consistent.

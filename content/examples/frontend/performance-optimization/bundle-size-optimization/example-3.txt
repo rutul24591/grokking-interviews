@@ -1,0 +1,16 @@
+# CLI alternative — check package sizes from terminal
+pnpm add -D bundlesize
+
+# Check sizes of installed packages
+npx cost-of-modules
+
+# Example output:
+# ┌──────────────────┬──────────┬─────────┐
+# │ name             │ children │ size    │
+# ├──────────────────┼──────────┼─────────┤
+# │ moment           │ 0        │ 289.7KB │
+# │ lodash           │ 0        │ 71.5KB  │
+# │ react-dom        │ 1        │ 42.2KB  │
+# │ @mui/material    │ 15       │ 38.1KB  │
+# │ react            │ 1        │ 7.3KB   │
+# └──────────────────┴──────────┴─────────┘

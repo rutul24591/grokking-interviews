@@ -1,0 +1,21 @@
+<!-- Without modulepreload: sequential waterfall -->
+<!-- Browser downloads app.js → discovers utils.js → downloads →
+     discovers math.js → downloads → finally executes -->
+
+<!-- With modulepreload: parallel + pre-parsed -->
+<link rel="modulepreload" href="/js/app.js" />
+<link rel="modulepreload" href="/js/utils.js" />
+<link rel="modulepreload" href="/js/math.js" />
+<script type="module" src="/js/app.js"></script>
+
+<!-- Vite automatically generates modulepreload hints -->
+<!-- In your built HTML: -->
+<link rel="modulepreload" crossorigin href="/assets/index-abc123.js" />
+<link rel="modulepreload" crossorigin href="/assets/vendor-def456.js" />
+<link rel="modulepreload" crossorigin href="/assets/utils-ghi789.js" />
+<script type="module" crossorigin src="/assets/index-abc123.js"></script>
+
+<!-- modulepreload vs preload for modules:
+     preload as="script": downloads only (no parse/compile)
+     modulepreload: downloads + parses + compiles + fetches deps
+     Result: modulepreload is significantly faster for module graphs -->

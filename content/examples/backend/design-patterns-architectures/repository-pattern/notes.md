@@ -1,0 +1,1 @@
+Repository isolates persistence details.

@@ -1,0 +1,54 @@
+function AutoSaveEditor({ documentId, initialContent }) {
+  const [content, setContent] = useState(initialContent);
+  const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'unsaved'>('saved');
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+
+  const { debouncedFn: save, cancel } = useDebouncedCallback(
+    async (text: string) => {
+      setSaveStatus('saving');
+      try {
+        await fetch(`/api/docs/\${documentId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content: text }),
+        });
+        setSaveStatus('saved');
+        setLastSaved(new Date());
+      } catch {
+        setSaveStatus('unsaved');
+      }
+    },
+    1500
+  );
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value);
+    setSaveStatus('unsaved');
+    save(e.target.value);
+  };
+
+  // Flush pending save before navigating away
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (saveStatus === 'unsaved') {
+        e.preventDefault();
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      cancel();
+    };
+  }, [saveStatus, cancel]);
+
+  return (
+    <div>
+      <div className="flex items-center gap-2 text-sm text-gray-500">
+        {saveStatus === 'saving' && 'Saving...'}
+        {saveStatus === 'saved' && `Saved \${lastSaved?.toLocaleTimeString() ?? ''}`}
+        {saveStatus === 'unsaved' && 'Unsaved changes'}
+      </div>
+      <textarea value={content} onChange={handleChange} />
+    </div>
+  );
+}

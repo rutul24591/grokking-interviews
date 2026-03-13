@@ -1,0 +1,1 @@
+Use SameSite cookies and CSRF tokens for state-changing requests.

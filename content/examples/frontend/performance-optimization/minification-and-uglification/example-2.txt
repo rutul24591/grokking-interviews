@@ -1,0 +1,7 @@
+// Terser configuration to preserve license comments only
+{
+  format: {
+    comments: /^!|@license|@preserve/,  // Keep these
+    // All other comments are stripped
+  }
+}

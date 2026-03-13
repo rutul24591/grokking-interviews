@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
+  <rect width="960" height="420" fill="#f8fafc" />
+  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">HTTP Cache Flow</text>
+
+  <rect x="60" y="120" width="200" height="70" rx="12" fill="#e2e8f0" stroke="#94a3b8" />
+  <text x="110" y="160" font-family="Arial" font-size="14" fill="#0f172a">Browser</text>
+
+  <rect x="360" y="120" width="200" height="70" rx="12" fill="#dbeafe" stroke="#60a5fa" />
+  <text x="405" y="160" font-family="Arial" font-size="14" fill="#0f172a">CDN</text>
+
+  <rect x="660" y="120" width="200" height="70" rx="12" fill="#fee2e2" stroke="#fca5a5" />
+  <text x="700" y="160" font-family="Arial" font-size="14" fill="#0f172a">Origin</text>
+
+  <line x1="260" y1="155" x2="360" y2="155" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
+  <line x1="560" y1="155" x2="660" y2="155" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
+
+  <text x="80" y="250" font-family="Arial" font-size="13" fill="#0f172a">Cache hit: served locally</text>
+  <text x="80" y="275" font-family="Arial" font-size="13" fill="#0f172a">Cache miss: forwarded to next layer</text>
+  <text x="80" y="300" font-family="Arial" font-size="13" fill="#0f172a">Revalidation: conditional request to origin</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#475569" />
+    </marker>
+  </defs>
+</svg>

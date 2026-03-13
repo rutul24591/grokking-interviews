@@ -1,0 +1,72 @@
+// webpack.config.js — Production configuration
+const TerserPlugin = require('terser-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+
+module.exports = {
+  mode: 'production', // Enables minification, tree-shaking, scope hoisting
+
+  optimization: {
+    minimize: true,
+    minimizer: [
+      // JavaScript minification
+      new TerserPlugin({
+        parallel: true,              // Use worker threads (faster)
+        extractComments: false,      // Don't create LICENSE.txt files
+        terserOptions: {
+          compress: {
+            dead_code: true,
+            drop_console: true,
+            drop_debugger: true,
+            passes: 2,
+            pure_funcs: ['console.log', 'console.debug'],
+          },
+          mangle: {
+            safari10: true,
+          },
+          format: {
+            comments: false,
+            ascii_only: true,        // Escape non-ASCII (safer for all encodings)
+          },
+        },
+      }),
+
+      // CSS minification
+      new CssMinimizerPlugin({
+        minimizerOptions: {
+          preset: ['default', {
+            discardComments: { removeAll: true },
+          }],
+        },
+      }),
+    ],
+
+    // Code splitting (complements minification)
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        vendor: {
+          test: /[\\\\/]node_modules[\\\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
+  },
+
+  devtool: 'hidden-source-map', // Source maps without public reference
+};
+
+// Tip: To swap Terser for esbuild in Webpack:
+const { EsbuildPlugin } = require('esbuild-loader');
+
+module.exports = {
+  optimization: {
+    minimizer: [
+      new EsbuildPlugin({
+        target: 'es2020',
+        css: true,               // Also minify CSS
+        drop: ['console'],
+      }),
+    ],
+  },
+};

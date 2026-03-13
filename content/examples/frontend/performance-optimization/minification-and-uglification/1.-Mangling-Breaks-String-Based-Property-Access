@@ -1,0 +1,31 @@
+// PROBLEM: Mangling renames the variable, but not the string
+function UserService(apiClient) {
+  this.apiClient = apiClient;
+}
+
+// Later, accessed via string:
+const service = new UserService(client);
+const method = 'apiClient';
+console.log(service[method]); // undefined after mangling!
+
+// After mangling:
+function a(t) {
+  this.apiClient = t; // Property NOT renamed (it's on 'this')
+}
+// But if you used property mangling:
+function a(t) {
+  this.b = t; // 'apiClient' → 'b'
+}
+// service['apiClient'] now fails — string not updated
+
+// FIX: Use Terser's 'reserved' option
+{
+  mangle: {
+    reserved: ['apiClient'],
+    properties: {
+      reserved: ['apiClient'],
+    },
+  },
+}
+
+// BETTER FIX: Avoid string-based property access in production code

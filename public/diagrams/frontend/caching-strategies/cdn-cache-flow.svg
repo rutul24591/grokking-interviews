@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1822">CDN Request Flow: From Client to Origin</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="aGrn" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#2f9d74"/>
+    </marker>
+    <marker id="aOrg" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#d97843"/>
+    </marker>
+    <marker id="aPrp" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#6d5bd0"/>
+    </marker>
+    <marker id="aDrk" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#1a1822"/>
+    </marker>
+  </defs>
+
+  <!-- Step 1: Client Request -->
+  <rect x="30" y="55" width="130" height="50" rx="8" fill="#6d5bd0" stroke="#5a4bb0" stroke-width="1.5"/>
+  <text x="95" y="77" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">Client Request</text>
+  <text x="95" y="93" text-anchor="middle" font-size="9" fill="#e0dbf0">GET /products</text>
+
+  <!-- Arrow 1→2 -->
+  <line x1="160" y1="80" x2="195" y2="80" stroke="#1a1822" stroke-width="1.5" marker-end="url(#aDrk)"/>
+  <text x="178" y="72" text-anchor="middle" font-size="8" fill="#1a1822">1</text>
+
+  <!-- Step 2: DNS Resolution -->
+  <rect x="198" y="55" width="120" height="50" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="258" y="77" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">DNS Lookup</text>
+  <text x="258" y="93" text-anchor="middle" font-size="9" fill="#6d5bd0">Anycast routing</text>
+
+  <!-- Arrow 2→3 -->
+  <line x1="318" y1="80" x2="353" y2="80" stroke="#1a1822" stroke-width="1.5" marker-end="url(#aDrk)"/>
+  <text x="336" y="72" text-anchor="middle" font-size="8" fill="#1a1822">2</text>
+
+  <!-- Step 3: Edge PoP -->
+  <rect x="356" y="45" width="160" height="70" rx="8" fill="#2f9d74" stroke="#258660" stroke-width="1.5"/>
+  <text x="436" y="68" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">Edge PoP (L1)</text>
+  <text x="436" y="85" text-anchor="middle" font-size="10" fill="#d4f5e6">Cache Lookup</text>
+  <text x="436" y="102" text-anchor="middle" font-size="9" fill="#d4f5e6">~1ms latency</text>
+
+  <!-- CACHE HIT Path (green, goes down-left) -->
+  <line x1="400" y1="115" x2="400" y2="160" stroke="#2f9d74" stroke-width="2" marker-end="url(#aGrn)"/>
+  <text x="425" y="142" font-size="10" fill="#2f9d74" font-weight="600">HIT</text>
+
+  <!-- Cache HIT Response Box -->
+  <rect x="310" y="163" width="180" height="55" rx="8" fill="#2f9d74" opacity="0.15" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="400" y="183" text-anchor="middle" font-size="11" fill="#2f9d74" font-weight="600">Return Cached Response</text>
+  <text x="400" y="200" text-anchor="middle" font-size="10" fill="#1a1822">cf-cache-status: HIT</text>
+  <text x="400" y="213" text-anchor="middle" font-size="9" fill="#2f9d74">Total: 1-5ms</text>
+
+  <!-- Arrow back to client from HIT -->
+  <line x1="310" y1="190" x2="120" y2="107" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#aGrn)" stroke-dasharray="5,3"/>
+
+  <!-- CACHE MISS Path (orange, goes right) -->
+  <line x1="516" y1="80" x2="553" y2="80" stroke="#d97843" stroke-width="2" marker-end="url(#aOrg)"/>
+  <text x="535" y="72" font-size="10" fill="#d97843" font-weight="600">MISS</text>
+  <text x="535" y="98" font-size="8" fill="#d97843">3</text>
+
+  <!-- Step 4: Origin Shield -->
+  <rect x="556" y="45" width="160" height="70" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="636" y="68" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="600">Origin Shield (L2)</text>
+  <text x="636" y="85" text-anchor="middle" font-size="10" fill="#6d5bd0">Cache Lookup</text>
+  <text x="636" y="102" text-anchor="middle" font-size="9" fill="#6d5bd0">Consolidates misses</text>
+
+  <!-- Shield HIT path (down) -->
+  <line x1="600" y1="115" x2="600" y2="160" stroke="#2f9d74" stroke-width="2" marker-end="url(#aGrn)"/>
+  <text x="625" y="142" font-size="10" fill="#2f9d74" font-weight="600">HIT</text>
+
+  <!-- Shield HIT Response -->
+  <rect x="510" y="163" width="180" height="55" rx="8" fill="#2f9d74" opacity="0.1" stroke="#2f9d74" stroke-width="1"/>
+  <text x="600" y="183" text-anchor="middle" font-size="11" fill="#2f9d74" font-weight="600">Return from Shield</text>
+  <text x="600" y="200" text-anchor="middle" font-size="10" fill="#1a1822">Cache at Edge PoP</text>
+  <text x="600" y="213" text-anchor="middle" font-size="9" fill="#2f9d74">Total: 10-30ms</text>
+
+  <!-- Shield MISS path (goes down to origin) -->
+  <line x1="680" y1="115" x2="780" y2="245" stroke="#d97843" stroke-width="2" marker-end="url(#aOrg)"/>
+  <text x="745" y="175" font-size="10" fill="#d97843" font-weight="600">MISS</text>
+  <text x="745" y="190" font-size="8" fill="#d97843">4</text>
+
+  <!-- Step 5: Origin Server -->
+  <rect x="720" y="248" width="155" height="65" rx="8" fill="#6d5bd0" stroke="#5a4bb0" stroke-width="1.5"/>
+  <text x="798" y="272" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">Origin Server</text>
+  <text x="798" y="290" text-anchor="middle" font-size="10" fill="#e0dbf0">Process Request</text>
+  <text x="798" y="304" text-anchor="middle" font-size="9" fill="#e0dbf0">50-200ms</text>
+
+  <!-- Response flow back -->
+  <!-- Origin → Shield -->
+  <line x1="720" y1="300" x2="636" y2="340" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#aPrp)"/>
+
+  <!-- Response caching boxes -->
+  <rect x="530" y="330" width="210" height="45" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="635" y="350" text-anchor="middle" font-size="10" fill="#1a1822" font-weight="600">5. Cache at Shield</text>
+  <text x="635" y="366" text-anchor="middle" font-size="9" fill="#6d5bd0">Surrogate-Key: product-123</text>
+
+  <!-- Shield → Edge -->
+  <line x1="530" y1="355" x2="430" y2="385" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#aPrp)"/>
+
+  <rect x="310" y="378" width="210" height="45" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="415" y="398" text-anchor="middle" font-size="10" fill="#1a1822" font-weight="600">6. Cache at Edge PoP</text>
+  <text x="415" y="414" text-anchor="middle" font-size="9" fill="#6d5bd0">s-maxage=3600</text>
+
+  <!-- Edge → Client -->
+  <line x1="310" y1="400" x2="160" y2="440" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#aGrn)"/>
+
+  <rect x="30" y="432" width="210" height="50" rx="8" fill="#2f9d74" opacity="0.15" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="135" y="452" text-anchor="middle" font-size="11" fill="#2f9d74" font-weight="600">7. Return to Client</text>
+  <text x="135" y="468" text-anchor="middle" font-size="10" fill="#1a1822">cf-cache-status: MISS</text>
+  <text x="135" y="479" text-anchor="middle" font-size="9" fill="#d97843">Total: 50-200ms (first request)</text>
+
+  <!-- Timeline annotation -->
+  <rect x="560" y="432" width="310" height="55" rx="8" fill="#fff" stroke="#1a1822" stroke-width="0.5" opacity="0.8"/>
+  <text x="715" y="450" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Subsequent Requests</text>
+  <text x="715" y="465" text-anchor="middle" font-size="9" fill="#2f9d74">Edge HIT: 1-5ms | Shield HIT: 10-30ms</text>
+  <text x="715" y="480" text-anchor="middle" font-size="9" fill="#d97843">Full MISS: 50-200ms (cached for next time)</text>
+</svg>

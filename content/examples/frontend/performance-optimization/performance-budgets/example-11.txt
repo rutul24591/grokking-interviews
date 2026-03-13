@@ -1,0 +1,20 @@
+// Developer workflow for checking budgets locally
+
+// 1. Check bundle size before pushing
+// pnpm build && pnpm size
+// This runs size-limit and shows pass/fail for each budget
+
+// 2. Run Lighthouse locally for timing budgets
+// pnpm build && pnpm start
+// npx lighthouse http://localhost:3000 --view
+
+// 3. Analyze what's in your bundle
+// pnpm size:why
+// Opens a treemap visualization of your bundle contents
+
+// 4. If a budget is exceeded:
+//    a) Run `pnpm size:why` to see what's consuming space
+//    b) Check for unused dependencies: npx depcheck
+//    c) Look for large imports: npx import-cost
+//    d) Consider code-splitting: dynamic(() => import('./HeavyComponent'))
+//    e) If all else fails, follow the exception process

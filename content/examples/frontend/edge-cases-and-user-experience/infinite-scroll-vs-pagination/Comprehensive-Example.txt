@@ -1,0 +1,47 @@
+import { useEffect, useRef, useState } from "react";
+
+export function InfiniteList({ fetchPage }: { fetchPage: (cursor?: string) => Promise<{ items: any[]; next?: string }> }) {
+  const [items, setItems] = useState<any[]>([]);
+  const [cursor, setCursor] = useState<string | undefined>(undefined);
+  const [loading, setLoading] = useState(false);
+  const loaderRef = useRef<HTMLDivElement | null>(null);
+
+  async function loadMore() {
+    if (loading) return;
+    setLoading(true);
+    const res = await fetchPage(cursor);
+    setItems(prev => [...prev, ...res.items]);
+    setCursor(res.next);
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    loadMore();
+  }, []);
+
+  useEffect(() => {
+    if (!loaderRef.current) return;
+    const observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && cursor) loadMore();
+    });
+    observer.observe(loaderRef.current);
+    return () => observer.disconnect();
+  }, [cursor]);
+
+  return (
+    <div>
+      <ul>{items.map(item => <li key={item.id}>{item.name}</li>)}</ul>
+      <div ref={loaderRef} aria-busy={loading}>{loading ? "Loading…" : cursor ? "Load more" : "End"}</div>
+    </div>
+  );
+}
+
+export function Pagination({ page, totalPages, onPageChange }: { page: number; totalPages: number; onPageChange: (p: number) => void }) {
+  return (
+    <nav aria-label="Pagination">
+      <button disabled={page <= 1} onClick={() => onPageChange(page - 1)}>Prev</button>
+      <span>{page} / {totalPages}</span>
+      <button disabled={page >= totalPages} onClick={() => onPageChange(page + 1)}>Next</button>
+    </nav>
+  );
+}

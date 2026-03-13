@@ -1,0 +1,2 @@
+app.get('/products', async (req, res) => { const cursor = req.query.cursor || null; const result = await db.listProducts(20, cursor); // Prefetch next page asynchronously if (result.nextCursor) { db.listProducts(20, result.nextCursor).then(next => { redis.set('prefetch:products:' + result.nextCursor, JSON.stringify(next), 'EX', 60); }); } return res.json(result);
+});

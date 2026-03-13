@@ -1,0 +1,1 @@
+Search service maintains an inverted index for fast lookup.

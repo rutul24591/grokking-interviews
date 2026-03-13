@@ -1,0 +1,56 @@
+// === Webpack splitChunks configuration ===
+module.exports = {
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      maxInitialRequests: 25,
+      minSize: 20000,
+      cacheGroups: {
+        // Core framework — changes rarely, cache aggressively
+        framework: {
+          test: /[\\\\/]node_modules[\\\\/](react|react-dom|scheduler)[\\\\/]/,
+          name: 'framework',
+          priority: 40,
+          chunks: 'all',
+        },
+        // Large libraries get their own chunks
+        charting: {
+          test: /[\\\\/]node_modules[\\\\/](d3|recharts|chart\\.js)[\\\\/]/,
+          name: 'charting',
+          priority: 30,
+          chunks: 'async', // Only in async chunks (loaded with routes that use charts)
+        },
+        // All other vendor code
+        vendor: {
+          test: /[\\\\/]node_modules[\\\\/]/,
+          name: 'vendor',
+          priority: 10,
+          chunks: 'all',
+          reuseExistingChunk: true,
+        },
+        // Shared application code used by 2+ chunks
+        common: {
+          minChunks: 2,
+          priority: 5,
+          reuseExistingChunk: true,
+        },
+      },
+    },
+  },
+};
+
+// === Vite configuration ===
+// vite.config.ts
+export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          'router': ['react-router-dom'],
+          'state': ['zustand', 'immer'],
+        },
+      },
+    },
+  },
+});

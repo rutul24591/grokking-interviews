@@ -1,0 +1,2 @@
+app.get('/users/:id', async (req, res) => { const id = req.params.id; const key = 'user:v1:' + id; const cached = await redis.get(key); if (cached) { if (cached === 'NULL') return res.status(404).end(); return res.json(JSON.parse(cached)); } const user = await db.getUserById(id); if (!user) { await redis.set(key, 'NULL', 'EX', 60); return res.status(404).end(); } await redis.set(key, JSON.stringify(user), 'EX', 300); return res.json(user);
+});

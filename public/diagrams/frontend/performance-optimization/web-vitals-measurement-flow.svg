@@ -1,0 +1,93 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="40" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822">Web Vitals Measurement Flow</text>
+
+  <!-- Lab Data Column -->
+  <rect x="40" y="70" width="180" height="220" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="40" y="70" width="180" height="40" rx="8" fill="#6d5bd0"/>
+  <rect x="40" y="90" width="180" height="20" fill="#6d5bd0"/>
+  <text x="130" y="96" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Lab Data</text>
+  <text x="130" y="125" text-anchor="middle" font-size="11" fill="#666">Simulated environment</text>
+
+  <rect x="55" y="140" width="150" height="30" rx="6" fill="#ede9f7"/>
+  <text x="130" y="160" text-anchor="middle" font-size="12" fill="#6d5bd0">Lighthouse</text>
+
+  <rect x="55" y="178" width="150" height="30" rx="6" fill="#ede9f7"/>
+  <text x="130" y="198" text-anchor="middle" font-size="12" fill="#6d5bd0">Chrome DevTools</text>
+
+  <rect x="55" y="216" width="150" height="30" rx="6" fill="#ede9f7"/>
+  <text x="130" y="236" text-anchor="middle" font-size="12" fill="#6d5bd0">WebPageTest</text>
+
+  <text x="130" y="272" text-anchor="middle" font-size="10" fill="#666">Reproducible, diagnostic</text>
+
+  <!-- Field Data Column -->
+  <rect x="40" y="310" width="180" height="170" rx="8" fill="white" stroke="#d97843" stroke-width="2"/>
+  <rect x="40" y="310" width="180" height="40" rx="8" fill="#d97843"/>
+  <rect x="40" y="330" width="180" height="20" fill="#d97843"/>
+  <text x="130" y="336" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Field Data</text>
+  <text x="130" y="365" text-anchor="middle" font-size="11" fill="#666">Real user metrics</text>
+
+  <rect x="55" y="380" width="150" height="30" rx="6" fill="#fef0e5"/>
+  <text x="130" y="400" text-anchor="middle" font-size="12" fill="#d97843">CrUX (Chrome UX Report)</text>
+
+  <rect x="55" y="418" width="150" height="30" rx="6" fill="#fef0e5"/>
+  <text x="130" y="438" text-anchor="middle" font-size="12" fill="#d97843">RUM (web-vitals lib)</text>
+
+  <text x="130" y="470" text-anchor="middle" font-size="10" fill="#666">Real conditions, P75 ranking</text>
+
+  <!-- Arrow from Lab to Analyze -->
+  <line x1="220" y1="180" x2="310" y2="250" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  <!-- Arrow from Field to Analyze -->
+  <line x1="220" y1="395" x2="310" y2="280" stroke="#d97843" stroke-width="2" marker-end="url(#arrowOrange)"/>
+
+  <!-- Analyze -->
+  <rect x="310" y="230" width="140" height="70" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="380" y="258" text-anchor="middle" font-size="15" font-weight="bold" fill="#6d5bd0">Analyze</text>
+  <text x="380" y="278" text-anchor="middle" font-size="11" fill="#666">Identify bottlenecks</text>
+  <text x="380" y="292" text-anchor="middle" font-size="11" fill="#666">Compare lab vs field</text>
+
+  <!-- Arrow Analyze to Optimize -->
+  <line x1="450" y1="265" x2="510" y2="265" stroke="#1a1822" stroke-width="2" marker-end="url(#arrowBlack)"/>
+
+  <!-- Optimize -->
+  <rect x="510" y="220" width="160" height="90" rx="8" fill="white" stroke="#2f9d74" stroke-width="2"/>
+  <text x="590" y="250" text-anchor="middle" font-size="15" font-weight="bold" fill="#2f9d74">Optimize</text>
+  <text x="590" y="270" text-anchor="middle" font-size="11" fill="#666">LCP: preload, formats</text>
+  <text x="590" y="284" text-anchor="middle" font-size="11" fill="#666">INP: break long tasks</text>
+  <text x="590" y="298" text-anchor="middle" font-size="11" fill="#666">CLS: reserve space</text>
+
+  <!-- Arrow Optimize to Verify -->
+  <line x1="670" y1="265" x2="730" y2="265" stroke="#1a1822" stroke-width="2" marker-end="url(#arrowBlack)"/>
+
+  <!-- Verify -->
+  <rect x="730" y="230" width="140" height="70" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="800" y="258" text-anchor="middle" font-size="15" font-weight="bold" fill="#6d5bd0">Verify</text>
+  <text x="800" y="278" text-anchor="middle" font-size="11" fill="#666">CI/CD budgets</text>
+  <text x="800" y="292" text-anchor="middle" font-size="11" fill="#666">Monitor P75 trends</text>
+
+  <!-- Feedback loop arrow from Verify back to Analyze -->
+  <path d="M 800 300 L 800 370 Q 800 390 780 390 L 400 390 Q 380 390 380 370 L 380 300" fill="none" stroke="#1a1822" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arrowBlack)"/>
+  <text x="590" y="408" text-anchor="middle" font-size="11" font-style="italic" fill="#666">Continuous improvement loop</text>
+
+  <!-- Legend -->
+  <rect x="310" y="100" width="12" height="12" rx="2" fill="#6d5bd0"/>
+  <text x="328" y="111" font-size="11" fill="#1a1822">Lab tools (development)</text>
+  <rect x="310" y="120" width="12" height="12" rx="2" fill="#d97843"/>
+  <text x="328" y="131" font-size="11" fill="#1a1822">Field data (production / ranking)</text>
+  <rect x="310" y="140" width="12" height="12" rx="2" fill="#2f9d74"/>
+  <text x="328" y="151" font-size="11" fill="#1a1822">Apply targeted optimizations</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowPurple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowOrange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#d97843"/>
+    </marker>
+    <marker id="arrowBlack" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1a1822"/>
+    </marker>
+  </defs>
+</svg>

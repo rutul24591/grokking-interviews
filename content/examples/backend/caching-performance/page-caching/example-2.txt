@@ -1,0 +1,3 @@
+async function getRecommendations(userId) { const key = 'reco:v1:' + userId; const cached = await redis.get(key); if (cached) return cached; const html = await renderRecommendations(userId); await redis.set(key, html, 'EX', 60); return html;
+} app.get('/home', async (req, res) => { const recoHtml = await getRecommendations(req.user.id); const page = await renderHomePage({ recoHtml }); return res.send(page);
+});

@@ -1,0 +1,1 @@
+Cross-service queries require APIs or events.

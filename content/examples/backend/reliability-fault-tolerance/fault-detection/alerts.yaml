@@ -1,0 +1,9 @@
+alerts:
+  - name: high-error-rate
+    expr: error_rate > 0.02
+    for: 5m
+    severity: page
+  - name: latency-slo-burn
+    expr: p95_latency_ms > 400
+    for: 10m
+    severity: page

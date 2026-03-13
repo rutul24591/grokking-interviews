@@ -1,0 +1,9 @@
+// PROBLEM: Default sourcemap config exposes your source code
+// Anyone can open DevTools and see your original files
+
+// The minified file contains:
+//# sourceMappingURL=app.min.js.map
+// Browser DevTools automatically loads and displays original source
+
+// FIX: Use 'hidden-source-map' and upload maps to error service only
+// See Source Maps section above for detailed strategies

@@ -1,0 +1,43 @@
+// Per-route budget configuration (Lighthouse CI)
+// .lighthouserc.js
+module.exports = {
+  ci: {
+    collect: {
+      url: [
+        'http://localhost:3000',
+        'http://localhost:3000/pricing',
+        'http://localhost:3000/dashboard',
+        'http://localhost:3000/products/1',
+      ],
+      numberOfRuns: 3,
+    },
+    assert: {
+      assertMatrix: [
+        {
+          // Strict budgets for marketing pages
+          matchingUrlPattern: 'http://localhost:3000/(pricing)?
+    </ArticleLayout>
+  );
+}
+,
+          assertions: {
+            'largest-contentful-paint': ['error', { maxNumericValue: 1500 }],
+            'cumulative-layout-shift': ['error', { maxNumericValue: 0.05 }],
+            'total-blocking-time': ['error', { maxNumericValue: 150 }],
+            'categories:performance': ['error', { minScore: 0.95 }],
+          },
+        },
+        {
+          // Relaxed budgets for app pages
+          matchingUrlPattern: 'http://localhost:3000/(dashboard|products)',
+          assertions: {
+            'largest-contentful-paint': ['error', { maxNumericValue: 3000 }],
+            'cumulative-layout-shift': ['error', { maxNumericValue: 0.1 }],
+            'total-blocking-time': ['error', { maxNumericValue: 300 }],
+            'categories:performance': ['error', { minScore: 0.85 }],
+          },
+        },
+      ],
+    },
+  },
+};

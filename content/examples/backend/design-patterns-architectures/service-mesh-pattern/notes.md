@@ -1,0 +1,1 @@
+Service mesh centralizes traffic policy.

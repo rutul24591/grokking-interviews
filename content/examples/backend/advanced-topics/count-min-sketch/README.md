@@ -1,0 +1,1 @@
+Count-Min Sketch estimates frequencies with bounded error.

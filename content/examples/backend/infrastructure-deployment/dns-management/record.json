@@ -1,0 +1,6 @@
+{
+  "Name": "api.example.com",
+  "Type": "A",
+  "TTL": 60,
+  "ResourceRecords": [{ "Value": "203.0.113.10" }]
+}

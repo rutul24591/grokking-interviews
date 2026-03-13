@@ -1,0 +1,31 @@
+// webpack.config.js
+module.exports = {
+  performance: {
+    // Thresholds in bytes
+    maxAssetSize: 250000,       // 250KB per individual asset
+    maxEntrypointSize: 300000,  // 300KB for entry point (all initial chunks)
+
+    // 'warning' logs but doesn't fail the build
+    // 'error' fails the build
+    hints: 'error',
+
+    // Only check JS and CSS (skip images, fonts, source maps)
+    assetFilter: (assetFilename) => {
+      return !/\\.(map|png|jpe?g|gif|svg|woff2?)$/.test(assetFilename);
+    },
+  },
+};
+
+// For Next.js, add via next.config.js:
+// module.exports = {
+//   webpack: (config, { isServer }) => {
+//     if (!isServer) {
+//       config.performance = {
+//         maxAssetSize: 250000,
+//         maxEntrypointSize: 300000,
+//         hints: 'error',
+//       };
+//     }
+//     return config;
+//   },
+// };

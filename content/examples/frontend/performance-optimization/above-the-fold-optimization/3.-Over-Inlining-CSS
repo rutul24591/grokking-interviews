@@ -1,0 +1,17 @@
+// BAD: Inlining the entire stylesheet (50KB+)
+// Bloats the HTML document, defeats caching, slows TTFB
+<style>
+  /* 50KB of CSS inlined — this is too much */
+  /* The 14KB TCP window won't fit this */
+</style>
+
+// GOOD: Inline only critical above-fold CSS (~5-15KB)
+// Load the rest asynchronously
+<style>
+  /* Only above-fold critical styles: ~8KB */
+  .nav { /* ... */ }
+  .hero { /* ... */ }
+  .hero-image { /* ... */ }
+</style>
+<link rel="preload" href="/full-styles.css" as="style"
+      onload="this.onload=null;this.rel='stylesheet'">

@@ -1,0 +1,93 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Virtualization: Only Visible Items Are Rendered</text>
+
+  <!-- Full list (left side) -->
+  <text x="200" y="70" text-anchor="middle" font-size="14" font-weight="600" fill="#1a1822">Without Virtualization</text>
+  <text x="200" y="88" text-anchor="middle" font-size="12" fill="#6d5bd0">10,000 DOM nodes</text>
+
+  <rect x="100" y="100" width="200" height="380" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+
+  <!-- All items rendered -->
+  <rect x="110" y="108" width="180" height="16" rx="3" fill="#6d5bd0" opacity="0.3"/>
+  <text x="200" y="120" text-anchor="middle" font-size="9" fill="#1a1822">Item 1</text>
+  <rect x="110" y="128" width="180" height="16" rx="3" fill="#6d5bd0" opacity="0.3"/>
+  <text x="200" y="140" text-anchor="middle" font-size="9" fill="#1a1822">Item 2</text>
+  <rect x="110" y="148" width="180" height="16" rx="3" fill="#6d5bd0" opacity="0.3"/>
+  <text x="200" y="160" text-anchor="middle" font-size="9" fill="#1a1822">Item 3</text>
+  <rect x="110" y="168" width="180" height="16" rx="3" fill="#6d5bd0" opacity="0.3"/>
+  <text x="200" y="180" text-anchor="middle" font-size="9" fill="#1a1822">Item 4</text>
+  <rect x="110" y="188" width="180" height="16" rx="3" fill="#6d5bd0" opacity="0.3"/>
+  <text x="200" y="200" text-anchor="middle" font-size="9" fill="#1a1822">Item 5</text>
+  <rect x="110" y="208" width="180" height="16" rx="3" fill="#6d5bd0" opacity="0.3"/>
+  <text x="200" y="220" text-anchor="middle" font-size="9" fill="#1a1822">Item 6</text>
+  <rect x="110" y="228" width="180" height="16" rx="3" fill="#6d5bd0" opacity="0.3"/>
+  <text x="200" y="240" text-anchor="middle" font-size="9" fill="#1a1822">Item 7</text>
+
+  <!-- Dots indicating more -->
+  <text x="200" y="265" text-anchor="middle" font-size="14" fill="#6d5bd0">...</text>
+  <text x="200" y="285" text-anchor="middle" font-size="10" fill="#d97843" font-weight="600">9,993 more items</text>
+  <text x="200" y="300" text-anchor="middle" font-size="10" fill="#d97843">all in the DOM</text>
+  <text x="200" y="320" text-anchor="middle" font-size="14" fill="#6d5bd0">...</text>
+
+  <rect x="110" y="335" width="180" height="16" rx="3" fill="#6d5bd0" opacity="0.3"/>
+  <text x="200" y="347" text-anchor="middle" font-size="9" fill="#1a1822">Item 9998</text>
+  <rect x="110" y="355" width="180" height="16" rx="3" fill="#6d5bd0" opacity="0.3"/>
+  <text x="200" y="367" text-anchor="middle" font-size="9" fill="#1a1822">Item 9999</text>
+  <rect x="110" y="375" width="180" height="16" rx="3" fill="#6d5bd0" opacity="0.3"/>
+  <text x="200" y="387" text-anchor="middle" font-size="9" fill="#1a1822">Item 10000</text>
+
+  <!-- Arrow -->
+  <line x1="370" y1="290" x2="440" y2="290" stroke="#1a1822" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1822"/>
+    </marker>
+  </defs>
+
+  <!-- Virtualized list (right side) -->
+  <text x="650" y="70" text-anchor="middle" font-size="14" font-weight="600" fill="#1a1822">With Virtualization</text>
+  <text x="650" y="88" text-anchor="middle" font-size="12" fill="#2f9d74">~15 DOM nodes</text>
+
+  <rect x="550" y="100" width="200" height="380" rx="8" fill="white" stroke="#2f9d74" stroke-width="2"/>
+
+  <!-- Empty space above viewport -->
+  <rect x="560" y="108" width="180" height="80" rx="4" fill="#f3f1f8" stroke="#ccc" stroke-width="1" stroke-dasharray="4"/>
+  <text x="650" y="145" text-anchor="middle" font-size="10" fill="#999">Items 1-95</text>
+  <text x="650" y="160" text-anchor="middle" font-size="10" fill="#999">not rendered</text>
+  <text x="650" y="175" text-anchor="middle" font-size="9" fill="#999">(empty space with total height)</text>
+
+  <!-- Viewport bracket -->
+  <rect x="545" y="196" width="5" height="130" rx="2" fill="#d97843"/>
+  <text x="535" y="265" text-anchor="end" font-size="10" font-weight="600" fill="#d97843" transform="rotate(-90, 535, 265)">VIEWPORT</text>
+
+  <!-- Visible items -->
+  <rect x="560" y="196" width="180" height="22" rx="3" fill="#2f9d74" opacity="0.8"/>
+  <text x="650" y="211" text-anchor="middle" font-size="10" fill="white" font-weight="600">Item 96</text>
+  <rect x="560" y="222" width="180" height="22" rx="3" fill="#2f9d74" opacity="0.8"/>
+  <text x="650" y="237" text-anchor="middle" font-size="10" fill="white" font-weight="600">Item 97</text>
+  <rect x="560" y="248" width="180" height="22" rx="3" fill="#2f9d74" opacity="0.8"/>
+  <text x="650" y="263" text-anchor="middle" font-size="10" fill="white" font-weight="600">Item 98</text>
+  <rect x="560" y="274" width="180" height="22" rx="3" fill="#2f9d74" opacity="0.8"/>
+  <text x="650" y="289" text-anchor="middle" font-size="10" fill="white" font-weight="600">Item 99</text>
+  <rect x="560" y="300" width="180" height="22" rx="3" fill="#2f9d74" opacity="0.8"/>
+  <text x="650" y="315" text-anchor="middle" font-size="10" fill="white" font-weight="600">Item 100</text>
+
+  <!-- Empty space below viewport -->
+  <rect x="560" y="330" width="180" height="142" rx="4" fill="#f3f1f8" stroke="#ccc" stroke-width="1" stroke-dasharray="4"/>
+  <text x="650" y="390" text-anchor="middle" font-size="10" fill="#999">Items 101-10,000</text>
+  <text x="650" y="405" text-anchor="middle" font-size="10" fill="#999">not rendered</text>
+  <text x="650" y="420" text-anchor="middle" font-size="9" fill="#999">(empty space with total height)</text>
+
+  <!-- Legend -->
+  <rect x="310" y="440" width="12" height="12" rx="2" fill="#6d5bd0" opacity="0.3"/>
+  <text x="328" y="451" font-size="11" fill="#1a1822">Rendered DOM node</text>
+  <rect x="470" y="440" width="12" height="12" rx="2" fill="#f3f1f8" stroke="#ccc" stroke-width="1" stroke-dasharray="4"/>
+  <text x="488" y="451" font-size="11" fill="#1a1822">Empty spacer (no DOM nodes)</text>
+
+  <rect x="310" y="460" width="12" height="12" rx="2" fill="#2f9d74" opacity="0.8"/>
+  <text x="328" y="471" font-size="11" fill="#1a1822">Visible + rendered</text>
+  <rect x="470" y="460" width="12" height="12" rx="2" fill="#d97843"/>
+  <text x="488" y="471" font-size="11" fill="#1a1822">Viewport boundary</text>
+</svg>

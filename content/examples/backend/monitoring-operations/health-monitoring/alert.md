@@ -1,0 +1,1 @@
+Alert if 3 consecutive synthetic checks fail.

@@ -1,0 +1,10 @@
+<!-- Basic dns-prefetch usage -->
+<link rel="dns-prefetch" href="https://api.example.com" />
+<link rel="dns-prefetch" href="https://cdn.example.com" />
+<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+<link rel="dns-prefetch" href="https://www.google-analytics.com" />
+<link rel="dns-prefetch" href="https://connect.facebook.net" />
+
+<!-- dns-prefetch resolves ONLY the DNS — it does NOT open a TCP
+     connection or perform TLS negotiation. This makes it extremely
+     cheap: a single UDP packet to the DNS resolver. -->

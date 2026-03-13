@@ -1,0 +1,48 @@
+// scripts/analyze-compression.js
+// Analyze compression ratios across all static assets
+
+const fs = require('fs');
+const path = require('path');
+const zlib = require('zlib');
+const { promisify } = require('util');
+const glob = require('glob');
+
+const gzip = promisify(zlib.gzip);
+const brotli = promisify(zlib.brotliCompress);
+
+async function analyze(filePath) {
+  const content = await fs.promises.readFile(filePath);
+  const [gz, br] = await Promise.all([
+    gzip(content, { level: 9 }),
+    brotli(content, {
+      params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 11 },
+    }),
+  ]);
+
+  return {
+    file: path.basename(filePath),
+    original: content.length,
+    gzip: gz.length,
+    brotli: br.length,
+    gzipRatio: ((1 - gz.length / content.length) * 100).toFixed(1),
+    brotliRatio: ((1 - br.length / content.length) * 100).toFixed(1),
+    savings: content.length - br.length,
+  };
+}
+
+async function main() {
+  const files = glob.sync('dist/**/*.{js,css,html,json,svg}');
+  const results = await Promise.all(files.map(analyze));
+
+  // Sort by savings (highest first)
+  results.sort((a, b) => b.savings - a.savings);
+
+  console.table(results);
+
+  const totalOriginal = results.reduce((s, r) => s + r.original, 0);
+  const totalBrotli = results.reduce((s, r) => s + r.brotli, 0);
+  console.log(`\\nTotal: \${(totalOriginal/1024).toFixed(0)}KB → \${(totalBrotli/1024).toFixed(0)}KB (Brotli 11)`);
+  console.log(`Overall reduction: \${((1 - totalBrotli/totalOriginal) * 100).toFixed(1)}%`);
+}
+
+main();

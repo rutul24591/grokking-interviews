@@ -1,0 +1,1 @@
+curl -X POST http://api.example.com/rpc   -H "Content-Type: application/json"   -d '{"id":1,"method":"getUser","params":{"id":"1"}}'

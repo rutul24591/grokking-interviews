@@ -1,0 +1,68 @@
+import { lazy, Suspense, useState } from 'react';
+
+// === Modal with heavy content ===
+const RichTextEditor = lazy(() => import('./RichTextEditor'));
+// RichTextEditor bundles draft-js (~300KB) — only load when user opens editor
+
+function CommentSection() {
+  const [editing, setEditing] = useState(false);
+
+  return (
+    <div>
+      <button onClick={() => setEditing(true)}>Write Comment</button>
+      {editing && (
+        <Suspense fallback={<textarea placeholder="Loading editor..." />}>
+          <RichTextEditor onSubmit={handleSubmit} />
+        </Suspense>
+      )}
+    </div>
+  );
+}
+
+// === Chart that loads on scroll into view ===
+const AnalyticsChart = lazy(() => import('./AnalyticsChart'));
+
+function DashboardSection() {
+  const [chartVisible, setChartVisible] = useState(false);
+  const chartRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setChartVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' } // Start loading 200px before visible
+    );
+
+    if (chartRef.current) observer.observe(chartRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={chartRef}>
+      {chartVisible ? (
+        <Suspense fallback={<ChartSkeleton />}>
+          <AnalyticsChart data={data} />
+        </Suspense>
+      ) : (
+        <ChartSkeleton />
+      )}
+    </div>
+  );
+}
+
+// === Conditional feature loading ===
+const AdminTools = lazy(() => import('./AdminTools'));
+const ModeratorTools = lazy(() => import('./ModeratorTools'));
+
+function UserToolbar({ user }) {
+  return (
+    <Suspense fallback={<ToolbarSkeleton />}>
+      {user.role === 'admin' && <AdminTools />}
+      {user.role === 'moderator' && <ModeratorTools />}
+    </Suspense>
+  );
+}

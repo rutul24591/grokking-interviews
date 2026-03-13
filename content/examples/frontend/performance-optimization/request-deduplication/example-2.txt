@@ -1,0 +1,27 @@
+// The core promise-sharing pattern
+const inflightRequests = new Map<string, Promise<any>>();
+
+async function dedupFetch(url: string, options?: RequestInit): Promise<any> {
+  const cacheKey = url;
+
+  // If there's already an in-flight request, return the same promise
+  if (inflightRequests.has(cacheKey)) {
+    return inflightRequests.get(cacheKey)!;
+  }
+
+  // Create the actual fetch and store its promise
+  const promise = fetch(url, options)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error \${response.status}`);
+      }
+      return response.json();
+    })
+    .finally(() => {
+      // Critical: remove from map when settled (success OR error)
+      inflightRequests.delete(cacheKey);
+    });
+
+  inflightRequests.set(cacheKey, promise);
+  return promise;
+}

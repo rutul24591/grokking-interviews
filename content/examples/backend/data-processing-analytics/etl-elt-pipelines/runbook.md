@@ -1,0 +1,1 @@
+Validate row counts and schema drift before loading.

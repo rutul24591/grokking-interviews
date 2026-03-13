@@ -1,0 +1,1 @@
+// browser stores sid cookie and calls /me

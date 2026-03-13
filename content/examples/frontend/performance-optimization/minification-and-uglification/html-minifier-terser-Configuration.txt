@@ -1,0 +1,45 @@
+// === html-minifier-terser via Node.js API ===
+const { minify } = require('html-minifier-terser');
+
+async function minifyHtml(html) {
+  return await minify(html, {
+    // Whitespace
+    collapseWhitespace: true,           // Collapse whitespace to single space
+    conservativeCollapse: false,        // Don't be conservative
+    collapseInlineTagWhitespace: false, // Preserve inline element spacing
+
+    // Comments
+    removeComments: true,               // Remove HTML comments
+    removeCommentsFromCDATA: true,
+
+    // Attributes
+    removeAttributeQuotes: true,        // Remove quotes when safe
+    removeRedundantAttributes: true,    // Remove type="text" from input
+    removeEmptyAttributes: true,        // Remove class="" etc.
+    removeOptionalTags: true,           // Remove </li>, </p>, etc.
+    removeScriptTypeAttributes: true,   // Remove type="text/javascript"
+    removeStyleLinkTypeAttributes: true,// Remove type="text/css"
+    useShortDoctype: true,              // Use short doctype
+
+    // Inline CSS and JS
+    minifyCSS: true,                    // Minify inline <style> content
+    minifyJS: true,                     // Minify inline <script> content
+    minifyURLs: true,                   // Minify URLs in attributes
+
+    // Sorting (improves Gzip compression)
+    sortAttributes: true,               // Alphabetize attributes
+    sortClassName: true,                // Alphabetize class names
+  });
+}
+
+// === Vite plugin ===
+// vite.config.js
+import { createHtmlPlugin } from 'vite-plugin-html';
+
+export default defineConfig({
+  plugins: [
+    createHtmlPlugin({
+      minify: true,  // Uses html-minifier-terser under the hood
+    }),
+  ],
+});

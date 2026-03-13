@@ -1,5 +1,3 @@
-export type ArticleVersion = "extensive" | "concise";
-
 export type ArticleMetadata = {
   id: string;
   title: string;
@@ -7,7 +5,6 @@ export type ArticleMetadata = {
   category: string;
   subcategory: string;
   slug: string;
-  version: ArticleVersion;
   wordCount: number;
   readingTime: number; // minutes
   lastUpdated: string;

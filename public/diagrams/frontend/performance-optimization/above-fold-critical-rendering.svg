@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1822">Critical Rendering Path</text>
+
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#1a1822"/>
+    </marker>
+    <marker id="arr-purple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-orange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#d97843"/>
+    </marker>
+  </defs>
+
+  <!-- Step 1: HTML -->
+  <rect x="30" y="70" width="140" height="60" rx="8" fill="#6d5bd0" stroke="#5a4bb0" stroke-width="1.5"/>
+  <text x="100" y="95" text-anchor="middle" font-size="13" fill="#fff" font-weight="600">HTML Document</text>
+  <text x="100" y="115" text-anchor="middle" font-size="10" fill="#e0d8f5">Download + Parse</text>
+
+  <!-- Arrow 1 -->
+  <line x1="170" y1="100" x2="208" y2="100" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Step 2: Two branches -->
+  <!-- DOM branch -->
+  <rect x="210" y="50" width="120" height="45" rx="8" fill="#6d5bd0" stroke="#5a4bb0" stroke-width="1.5"/>
+  <text x="270" y="70" text-anchor="middle" font-size="13" fill="#fff" font-weight="600">DOM</text>
+  <text x="270" y="85" text-anchor="middle" font-size="10" fill="#e0d8f5">Element Tree</text>
+
+  <!-- CSS discovery + CSSOM branch -->
+  <rect x="210" y="110" width="120" height="45" rx="8" fill="#d97843" stroke="#b8622f" stroke-width="1.5"/>
+  <text x="270" y="130" text-anchor="middle" font-size="13" fill="#fff" font-weight="600">CSSOM</text>
+  <text x="270" y="145" text-anchor="middle" font-size="10" fill="#fde8d8">Style Rules</text>
+
+  <!-- Fork lines from HTML to DOM and CSSOM -->
+  <line x1="170" y1="90" x2="208" y2="72" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr-purple)"/>
+  <line x1="170" y1="110" x2="208" y2="132" stroke="#d97843" stroke-width="1.5" marker-end="url(#arr-orange)"/>
+
+  <!-- Merge arrows to Render Tree -->
+  <line x1="330" y1="72" x2="388" y2="95" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="330" y1="132" x2="388" y2="108" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Step 3: Render Tree -->
+  <rect x="390" y="75" width="130" height="55" rx="8" fill="#2f9d74" stroke="#258a63" stroke-width="1.5"/>
+  <text x="455" y="97" text-anchor="middle" font-size="13" fill="#fff" font-weight="600">Render Tree</text>
+  <text x="455" y="115" text-anchor="middle" font-size="10" fill="#d4f0e4">DOM + Styles</text>
+
+  <!-- Arrow to Layout -->
+  <line x1="520" y1="102" x2="558" y2="102" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Step 4: Layout -->
+  <rect x="560" y="75" width="120" height="55" rx="8" fill="#2f9d74" stroke="#258a63" stroke-width="1.5"/>
+  <text x="620" y="97" text-anchor="middle" font-size="13" fill="#fff" font-weight="600">Layout</text>
+  <text x="620" y="115" text-anchor="middle" font-size="10" fill="#d4f0e4">Position + Size</text>
+
+  <!-- Arrow to Paint -->
+  <line x1="680" y1="102" x2="718" y2="102" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Step 5: Paint -->
+  <rect x="720" y="75" width="140" height="55" rx="8" fill="#2f9d74" stroke="#258a63" stroke-width="1.5"/>
+  <text x="790" y="97" text-anchor="middle" font-size="13" fill="#fff" font-weight="600">Paint</text>
+  <text x="790" y="115" text-anchor="middle" font-size="10" fill="#d4f0e4">Pixels on Screen</text>
+
+  <!-- Render-Blocking Section -->
+  <rect x="30" y="185" width="840" height="135" rx="8" fill="#fdf3ec" stroke="#d97843" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="450" y="210" text-anchor="middle" font-size="14" font-weight="700" fill="#d97843">Render-Blocking Resources (Delay Paint)</text>
+
+  <!-- Blocking CSS -->
+  <rect x="60" y="225" width="175" height="75" rx="8" fill="#fff" stroke="#d97843" stroke-width="1.5"/>
+  <text x="147" y="250" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="600">&lt;link rel="stylesheet"&gt;</text>
+  <text x="147" y="270" text-anchor="middle" font-size="10" fill="#666">Blocks CSSOM construction</text>
+  <text x="147" y="288" text-anchor="middle" font-size="10" fill="#d97843" font-weight="600">Must download + parse fully</text>
+
+  <!-- Blocking JS -->
+  <rect x="265" y="225" width="175" height="75" rx="8" fill="#fff" stroke="#d97843" stroke-width="1.5"/>
+  <text x="352" y="250" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="600">&lt;script src="..."&gt;</text>
+  <text x="352" y="270" text-anchor="middle" font-size="10" fill="#666">Blocks HTML parsing</text>
+  <text x="352" y="288" text-anchor="middle" font-size="10" fill="#d97843" font-weight="600">Parser stops until executed</text>
+
+  <!-- Blocking Fonts -->
+  <rect x="470" y="225" width="175" height="75" rx="8" fill="#fff" stroke="#d97843" stroke-width="1.5"/>
+  <text x="557" y="250" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="600">@font-face</text>
+  <text x="557" y="270" text-anchor="middle" font-size="10" fill="#666">Blocks text rendering</text>
+  <text x="557" y="288" text-anchor="middle" font-size="10" fill="#d97843" font-weight="600">FOIT until font loads</text>
+
+  <!-- Blocking 3rd Party -->
+  <rect x="675" y="225" width="175" height="75" rx="8" fill="#fff" stroke="#d97843" stroke-width="1.5"/>
+  <text x="762" y="250" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="600">Third-Party Scripts</text>
+  <text x="762" y="270" text-anchor="middle" font-size="10" fill="#666">Analytics, A/B testing</text>
+  <text x="762" y="288" text-anchor="middle" font-size="10" fill="#d97843" font-weight="600">Sync = full render block</text>
+
+  <!-- Optimization Solutions -->
+  <rect x="30" y="345" width="840" height="135" rx="8" fill="#e6f5ef" stroke="#2f9d74" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="450" y="370" text-anchor="middle" font-size="14" font-weight="700" fill="#2f9d74">Solutions (Unblock the Critical Path)</text>
+
+  <rect x="60" y="385" width="175" height="75" rx="8" fill="#fff" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="147" y="408" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="600">Inline Critical CSS</text>
+  <text x="147" y="426" text-anchor="middle" font-size="10" fill="#666">Embed in &lt;style&gt; tag</text>
+  <text x="147" y="444" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="600">No network request needed</text>
+
+  <rect x="265" y="385" width="175" height="75" rx="8" fill="#fff" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="352" y="408" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="600">defer / async Scripts</text>
+  <text x="352" y="426" text-anchor="middle" font-size="10" fill="#666">Non-parser-blocking</text>
+  <text x="352" y="444" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="600">HTML parsing continues</text>
+
+  <rect x="470" y="385" width="175" height="75" rx="8" fill="#fff" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="557" y="408" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="600">font-display: swap</text>
+  <text x="557" y="426" text-anchor="middle" font-size="10" fill="#666">Show fallback immediately</text>
+  <text x="557" y="444" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="600">Text visible instantly</text>
+
+  <rect x="675" y="385" width="175" height="75" rx="8" fill="#fff" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="762" y="408" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="600">Preload + Preconnect</text>
+  <text x="762" y="426" text-anchor="middle" font-size="10" fill="#666">Early resource discovery</text>
+  <text x="762" y="444" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="600">Parallel downloads</text>
+</svg>

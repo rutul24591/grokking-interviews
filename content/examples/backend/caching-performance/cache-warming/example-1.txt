@@ -1,0 +1,3 @@
+async function warmTopKeys(keys) { for (const key of keys) { const data = await db.getByKey(key); await redis.set('item:v1:' + key, JSON.stringify(data), 'EX', 600); await new Promise(resolve => setTimeout(resolve, 50)); }
+} const hotKeys = await analytics.getTopKeys(1000);
+await warmTopKeys(hotKeys);

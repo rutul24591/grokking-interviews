@@ -1,0 +1,1 @@
+Each service owns its data and deploys independently.

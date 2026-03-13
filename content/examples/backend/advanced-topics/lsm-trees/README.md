@@ -1,0 +1,1 @@
+LSM trees batch writes in memory and flush to sorted files for efficiency.

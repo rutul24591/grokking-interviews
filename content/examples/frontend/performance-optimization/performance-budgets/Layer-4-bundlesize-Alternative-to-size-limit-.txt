@@ -1,0 +1,23 @@
+// bundlesize.config.json
+{
+  "files": [
+    {
+      "path": ".next/static/chunks/main-*.js",
+      "maxSize": "100 kB",
+      "compression": "gzip"
+    },
+    {
+      "path": ".next/static/chunks/framework-*.js",
+      "maxSize": "50 kB",
+      "compression": "gzip"
+    },
+    {
+      "path": ".next/static/css/*.css",
+      "maxSize": "30 kB",
+      "compression": "gzip"
+    }
+  ]
+}
+
+// bundlesize integrates with GitHub and posts pass/fail status checks
+// on PRs — no extra GitHub Actions configuration needed

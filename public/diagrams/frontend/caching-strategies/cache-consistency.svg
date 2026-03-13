@@ -1,0 +1,132 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Multi-Layer Cache Invalidation Propagation</text>
+
+  <defs>
+    <marker id="a1" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6d5bd0"/>
+    </marker>
+    <marker id="a2" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#d97843"/>
+    </marker>
+    <marker id="a3" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2f9d74"/>
+    </marker>
+  </defs>
+
+  <!-- === CACHE LAYERS (left side) === -->
+  <text x="50" y="65" font-size="13" font-weight="bold" fill="#6d5bd0">Cache Layers</text>
+
+  <!-- Layer 1: App Cache (React Query / SWR) -->
+  <rect x="30" y="80" width="250" height="60" rx="8" fill="#6d5bd0"/>
+  <text x="155" y="102" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="bold">Application Cache</text>
+  <text x="155" y="118" text-anchor="middle" font-size="10" fill="#e8e4f3">React Query / SWR / Zustand</text>
+  <text x="155" y="132" text-anchor="middle" font-size="9" fill="#e8e4f3">In-memory, per-tab</text>
+
+  <!-- Arrow down -->
+  <line x1="155" y1="140" x2="155" y2="155" stroke="#6d5bd0" stroke-width="2" marker-end="url(#a1)"/>
+
+  <!-- Layer 2: Browser HTTP Cache -->
+  <rect x="30" y="160" width="250" height="60" rx="8" fill="#6d5bd0" opacity="0.85"/>
+  <text x="155" y="182" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="bold">Browser HTTP Cache</text>
+  <text x="155" y="198" text-anchor="middle" font-size="10" fill="#e8e4f3">Cache-Control / ETag / Expires</text>
+  <text x="155" y="212" text-anchor="middle" font-size="9" fill="#e8e4f3">Disk/memory, per-browser</text>
+
+  <!-- Arrow down -->
+  <line x1="155" y1="220" x2="155" y2="235" stroke="#6d5bd0" stroke-width="2" marker-end="url(#a1)"/>
+
+  <!-- Layer 3: Service Worker Cache -->
+  <rect x="30" y="240" width="250" height="60" rx="8" fill="#6d5bd0" opacity="0.7"/>
+  <text x="155" y="262" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="bold">Service Worker Cache</text>
+  <text x="155" y="278" text-anchor="middle" font-size="10" fill="#e8e4f3">Cache API / Workbox</text>
+  <text x="155" y="292" text-anchor="middle" font-size="9" fill="#e8e4f3">Persistent, per-origin</text>
+
+  <!-- Arrow down -->
+  <line x1="155" y1="300" x2="155" y2="315" stroke="#6d5bd0" stroke-width="2" marker-end="url(#a1)"/>
+
+  <!-- Layer 4: CDN Edge Cache -->
+  <rect x="30" y="320" width="250" height="60" rx="8" fill="#6d5bd0" opacity="0.55"/>
+  <text x="155" y="342" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="bold">CDN Edge Cache</text>
+  <text x="155" y="358" text-anchor="middle" font-size="10" fill="#e8e4f3">Fastly / Cloudflare / Akamai</text>
+  <text x="155" y="372" text-anchor="middle" font-size="9" fill="#e8e4f3">Distributed, global PoPs</text>
+
+  <!-- Arrow down -->
+  <line x1="155" y1="380" x2="155" y2="395" stroke="#6d5bd0" stroke-width="2" marker-end="url(#a1)"/>
+
+  <!-- Origin -->
+  <rect x="60" y="400" width="190" height="45" rx="8" fill="#2f9d74"/>
+  <text x="155" y="420" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="bold">Origin Server</text>
+  <text x="155" y="436" text-anchor="middle" font-size="10" fill="#e8e4f3">Source of Truth</text>
+
+  <!-- === INVALIDATION FLOW (right side) === -->
+  <text x="380" y="65" font-size="13" font-weight="bold" fill="#d97843">Invalidation Propagation</text>
+
+  <!-- Step 1: Data changes at origin -->
+  <rect x="350" y="400" width="230" height="45" rx="8" fill="#d97843"/>
+  <text x="465" y="418" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">1. Data Changes at Origin</text>
+  <text x="465" y="434" text-anchor="middle" font-size="9" fill="#ffffff">Price: $99 → $79</text>
+
+  <!-- Step 2: CDN Purge -->
+  <rect x="350" y="320" width="230" height="60" rx="8" fill="#edeaf5" stroke="#d97843" stroke-width="1.5"/>
+  <text x="465" y="340" text-anchor="middle" font-size="11" fill="#d97843" font-weight="bold">2. CDN Purge API Call</text>
+  <text x="465" y="356" text-anchor="middle" font-size="9" fill="#1a1822">Tag: product-123</text>
+  <text x="465" y="370" text-anchor="middle" font-size="9" fill="#2f9d74">Latency: 1-5 seconds</text>
+
+  <line x1="465" y1="400" x2="465" y2="385" stroke="#d97843" stroke-width="2" marker-end="url(#a2)"/>
+
+  <!-- Step 3: SW Update -->
+  <rect x="350" y="240" width="230" height="60" rx="8" fill="#edeaf5" stroke="#d97843" stroke-width="1.5"/>
+  <text x="465" y="260" text-anchor="middle" font-size="11" fill="#d97843" font-weight="bold">3. SW Version Check</text>
+  <text x="465" y="276" text-anchor="middle" font-size="9" fill="#1a1822">Polls /api/version endpoint</text>
+  <text x="465" y="290" text-anchor="middle" font-size="9" fill="#d97843">Latency: 0-30 seconds (poll)</text>
+
+  <line x1="465" y1="320" x2="465" y2="305" stroke="#d97843" stroke-width="2" marker-end="url(#a2)"/>
+
+  <!-- Step 4: HTTP Cache -->
+  <rect x="350" y="160" width="230" height="60" rx="8" fill="#edeaf5" stroke="#d97843" stroke-width="1.5"/>
+  <text x="465" y="180" text-anchor="middle" font-size="11" fill="#d97843" font-weight="bold">4. HTTP Cache Expiry</text>
+  <text x="465" y="196" text-anchor="middle" font-size="9" fill="#1a1822">Waits for max-age to expire</text>
+  <text x="465" y="210" text-anchor="middle" font-size="9" fill="#d97843">Latency: 0 - max-age seconds</text>
+
+  <line x1="465" y1="240" x2="465" y2="225" stroke="#d97843" stroke-width="2" marker-end="url(#a2)"/>
+
+  <!-- Step 5: App Cache -->
+  <rect x="350" y="80" width="230" height="60" rx="8" fill="#edeaf5" stroke="#d97843" stroke-width="1.5"/>
+  <text x="465" y="100" text-anchor="middle" font-size="11" fill="#d97843" font-weight="bold">5. App Cache Invalidate</text>
+  <text x="465" y="116" text-anchor="middle" font-size="9" fill="#1a1822">WebSocket event → queryClient</text>
+  <text x="465" y="130" text-anchor="middle" font-size="9" fill="#2f9d74">Latency: ~100ms (push)</text>
+
+  <line x1="465" y1="160" x2="465" y2="145" stroke="#d97843" stroke-width="2" marker-end="url(#a2)"/>
+
+  <!-- === RACE CONDITION WARNING === -->
+  <rect x="630" y="80" width="250" height="175" rx="8" fill="#d97843" opacity="0.1" stroke="#d97843" stroke-width="1.5"/>
+  <text x="755" y="102" text-anchor="middle" font-size="12" font-weight="bold" fill="#d97843">Race Conditions</text>
+
+  <text x="645" y="125" font-size="9" fill="#1a1822" font-weight="bold">Problem 1: Ordering</text>
+  <text x="645" y="140" font-size="8" fill="#1a1822">App cache invalidated (100ms)</text>
+  <text x="645" y="153" font-size="8" fill="#1a1822">but HTTP cache still stale →</text>
+  <text x="645" y="166" font-size="8" fill="#d97843" font-weight="bold">Refetch returns old data!</text>
+
+  <text x="645" y="190" font-size="9" fill="#1a1822" font-weight="bold">Problem 2: Concurrent Reads</text>
+  <text x="645" y="205" font-size="8" fill="#1a1822">User A sees $79 (CDN purged)</text>
+  <text x="645" y="218" font-size="8" fill="#1a1822">User B sees $99 (different PoP,</text>
+  <text x="645" y="231" font-size="8" fill="#d97843" font-weight="bold">not yet purged)</text>
+
+  <!-- === SOLUTION BOX === -->
+  <rect x="630" y="275" width="250" height="170" rx="8" fill="#2f9d74" opacity="0.1" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="755" y="297" text-anchor="middle" font-size="12" font-weight="bold" fill="#2f9d74">Mitigation Strategies</text>
+
+  <text x="645" y="320" font-size="9" fill="#1a1822">1. Short max-age on dynamic data</text>
+  <text x="655" y="335" font-size="8" fill="#2f9d74">max-age=5, stale-while-revalidate=30</text>
+
+  <text x="645" y="358" font-size="9" fill="#1a1822">2. Cache-bust on app invalidation</text>
+  <text x="655" y="373" font-size="8" fill="#2f9d74">Append ?v=timestamp to bypass HTTP cache</text>
+
+  <text x="645" y="396" font-size="9" fill="#1a1822">3. Layered safety nets</text>
+  <text x="655" y="411" font-size="8" fill="#2f9d74">Push invalidation + TTL fallback</text>
+
+  <text x="645" y="434" font-size="9" fill="#1a1822">4. Version headers in responses</text>
+
+  <!-- Bottom note -->
+  <text x="450" y="485" text-anchor="middle" font-size="11" fill="#d97843" font-weight="bold">Each layer has different latency — the total invalidation time is the maximum across all layers</text>
+</svg>

@@ -1,0 +1,13 @@
+const express = require("express");
+const app = express();
+app.use(express.json());
+
+app.post("/rpc", (req, res) => {
+  const { id, method, params } = req.body;
+  if (method == "getUser") {
+    return res.json({ id, result: { id: params.id, email: "user@example.com" } });
+  }
+  return res.json({ id, error: { code: 404, message: "method_not_found" } });
+});
+
+app.listen(3000);

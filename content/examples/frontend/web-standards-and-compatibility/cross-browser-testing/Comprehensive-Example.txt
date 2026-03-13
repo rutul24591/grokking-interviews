@@ -1,0 +1,35 @@
+// file: playwright.config.ts
+import { defineConfig } from '@playwright/test';
+
+export default defineConfig({
+  retries: 1,
+  projects: [
+    { name: 'chromium', use: { browserName: 'chromium' } },
+    { name: 'firefox', use: { browserName: 'firefox' } },
+    { name: 'webkit', use: { browserName: 'webkit' } },
+  ],
+});
+
+// file: tests/checkout.spec.ts
+import { test, expect } from '@playwright/test';
+
+test('checkout completes', async ({ page }) => {
+  await page.goto('/checkout');
+  await page.fill('#email', 'user@example.com');
+  await page.click('button[type=submit]');
+  await expect(page.getByText('Order confirmed')).toBeVisible();
+});
+
+// file: .github/workflows/compat.yml
+name: compatibility
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: npm ci
+      - run: npx playwright install --with-deps
+      - run: npx playwright test

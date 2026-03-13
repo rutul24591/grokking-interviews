@@ -118,9 +118,9 @@ export function Select() { /* ... */ }
 
 // ❌ BAD — Default export of object is NOT tree-shakeable
 export default {
-  Button: () => { /* ... */ },
-  Input: () => { /* ... */ },
-  Select: () => { /* ... */ },
+  Button: () =&gt; { /* ... */ },
+  Input: () =&gt; { /* ... */ },
+  Select: () =&gt; { /* ... */ },
 };
 
 // ✅ GOOD — Barrel file with named re-exports

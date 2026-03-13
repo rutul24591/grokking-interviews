@@ -1,0 +1,35 @@
+/* === Before CSS minification === */
+.card-container {
+  /* Spacing */
+  padding-top: 16px;
+  padding-right: 24px;
+  padding-bottom: 16px;
+  padding-left: 24px;              /* → padding: 16px 24px */
+
+  margin-top: 0px;
+  margin-right: auto;
+  margin-bottom: 0px;
+  margin-left: auto;               /* → margin: 0 auto */
+
+  /* Colors */
+  background-color: #ffffff;       /* → #fff */
+  color: rgb(26, 24, 34);         /* → #1a1822 */
+  border-color: rgba(0,0,0,0.1);  /* → rgba(0,0,0,.1) */
+
+  /* Redundant values */
+  border-width: 1px;
+  border-style: solid;
+  border-color: #cccccc;           /* → border: 1px solid #ccc */
+
+  /* Font */
+  font-weight: 400;                /* → font-weight: 400 (or 'normal') */
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* Zeros */
+  transform: rotate(0deg);         /* → rotate(0) */
+  transition-duration: 0.3s;       /* → .3s */
+  line-height: 1.00;               /* → 1 */
+}
+
+/* === After CSS minification === */
+.card-container{padding:16px 24px;margin:0 auto;background-color:#fff;color:#1a1822;border-color:rgba(0,0,0,.1);border:1px solid #ccc;font-weight:400;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;transform:rotate(0);transition-duration:.3s;line-height:1}

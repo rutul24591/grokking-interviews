@@ -1,0 +1,55 @@
+// === Next.js CSS Optimization (Automatic) ===
+
+// 1. CSS Module code-splitting: each page only loads its own CSS
+// app/page.module.css → only loaded for the home page
+// app/dashboard/page.module.css → only loaded for /dashboard
+
+// 2. next/font: automatic font optimization
+import { Inter } from 'next/font/google';
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',         // font-display: swap
+  preload: true,            // <link rel="preload"> for font files
+  adjustFontFallback: true, // Auto size-adjust for fallback font
+});
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" className={inter.className}>
+      <body>{children}</body>
+    </html>
+  );
+}
+
+// 3. Enable experimental CSS optimization
+// next.config.js
+module.exports = {
+  experimental: {
+    optimizeCss: true, // Critters integration for critical CSS inlining
+  },
+};
+
+// 4. Custom critical CSS for specific pages
+// You can manually inline critical styles using <style> in head
+import Head from 'next/head';
+
+export default function LandingPage() {
+  return (
+    <>
+      <Head>
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            .hero { min-height: 100vh; display: grid; place-items: center; }
+            .hero h1 { font-size: clamp(2rem, 5vw, 4rem); }
+            .cta { padding: 1rem 2rem; background: #3b82f6; color: white; }
+          `
+        }} />
+      </Head>
+      <section className="hero">
+        <h1>Welcome</h1>
+        <button className="cta">Get Started</button>
+      </section>
+    </>
+  );
+}

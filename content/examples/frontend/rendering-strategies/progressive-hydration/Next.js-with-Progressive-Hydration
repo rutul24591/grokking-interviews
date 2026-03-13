@@ -1,0 +1,47 @@
+// pages/index.tsx
+import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
+
+// Critical components
+import Navigation from '@/components/Navigation';
+import Hero from '@/components/Hero';
+
+// Progressive loading with dynamic imports
+const ProductGrid = dynamic(() => import('@/components/ProductGrid'), {
+  loading: () => <div>Loading products...</div>,
+  ssr: true, // Server-render but hydrate progressively
+});
+
+const Reviews = dynamic(() => import('@/components/Reviews'), {
+  loading: () => null,
+  ssr: true,
+  // Hydrate during idle time
+  suspense: true,
+});
+
+const Footer = dynamic(() => import('@/components/Footer'), {
+  ssr: true,
+  // Lowest priority
+  suspense: true,
+});
+
+export default function HomePage() {
+  return (
+    <>
+      <Navigation />
+      <Hero />
+
+      <Suspense fallback={<div>Loading...</div>}>
+        <ProductGrid />
+      </Suspense>
+
+      <Suspense fallback={null}>
+        <Reviews />
+      </Suspense>
+
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
+    </>
+  );
+}

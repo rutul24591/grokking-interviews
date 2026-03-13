@@ -1,0 +1,4 @@
+replication:
+  topology: multi-region
+  mode: async
+  conflict_resolution: vector_clock

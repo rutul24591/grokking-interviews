@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
+  <rect width="960" height="420" fill="#f8fafc" />
+  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Coherence Across Regions</text>
+
+  <rect x="80" y="110" width="300" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
+  <text x="120" y="150" font-family="Arial" font-size="14" fill="#0f172a">Region A Cache</text>
+
+  <rect x="580" y="110" width="300" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
+  <text x="620" y="150" font-family="Arial" font-size="14" fill="#0f172a">Region B Cache</text>
+
+  <line x1="380" y1="155" x2="580" y2="155" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
+  <line x1="580" y1="175" x2="380" y2="175" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" />
+
+  <text x="120" y="250" font-family="Arial" font-size="13" fill="#0f172a">Invalidation events propagate with delay</text>
+  <text x="120" y="275" font-family="Arial" font-size="13" fill="#0f172a">Define explicit staleness budgets per region</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#475569" />
+    </marker>
+  </defs>
+</svg>

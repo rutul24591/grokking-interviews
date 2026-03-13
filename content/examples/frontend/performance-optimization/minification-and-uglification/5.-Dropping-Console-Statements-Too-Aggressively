@@ -1,0 +1,26 @@
+// PROBLEM: drop_console: true removes ALL console methods
+// Including console.error which is valuable for production debugging
+
+// FIX: Use pure_funcs to selectively remove
+{
+  compress: {
+    drop_console: false,  // Don't drop everything
+    pure_funcs: [
+      'console.log',
+      'console.debug',
+      'console.info',
+      'console.trace',
+      // Keep: console.error, console.warn
+    ],
+  },
+}
+
+// ALTERNATIVE: Create a custom logger that's tree-shakeable
+// logger.js
+export function debugLog(...args) {
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[DEBUG]', ...args);
+  }
+}
+// In production build, the entire function body is eliminated
+// because the condition is always false

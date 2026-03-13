@@ -1,0 +1,31 @@
+import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
+
+const client = new ApolloClient({
+  link: new HttpLink({
+    uri: '/graphql',
+    // Apollo deduplicates identical queries by default
+    // Two components running the same query = one network request
+  }),
+  cache: new InMemoryCache(),
+  // Explicit dedup control
+  defaultOptions: {
+    watchQuery: {
+      // 'none' = always fetch, 'all' = dedup all, 'cancel' = cancel previous
+      fetchPolicy: 'cache-first', // serves from cache, dedup on refetch
+    },
+  },
+});
+
+// Component A
+function UserName() {
+  const { data } = useQuery(GET_USER, { variables: { id: '123' } });
+  return <span>{data?.user.name}</span>;
+}
+
+// Component B — identical query + variables = deduplicated
+function UserAvatar() {
+  const { data } = useQuery(GET_USER, { variables: { id: '123' } });
+  return <img src={data?.user.avatar} />;
+}
+
+// Apollo sends ONE GraphQL request for both components

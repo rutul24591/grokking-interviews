@@ -1,0 +1,128 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">HTTP Cache Decision Flow</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+  </defs>
+
+  <!-- Step 1: Browser Request -->
+  <rect x="30" y="55" width="140" height="44" rx="8" fill="#6d5bd0"/>
+  <text x="100" y="82" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="bold">Browser Request</text>
+
+  <line x1="170" y1="77" x2="198" y2="77" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Step 2: Memory Cache -->
+  <rect x="200" y="55" width="140" height="44" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="270" y="73" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Check Memory</text>
+  <text x="270" y="88" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Cache</text>
+
+  <!-- Memory cache hit -->
+  <line x1="270" y1="99" x2="270" y2="135" stroke="#2f9d74" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="290" y="120" font-size="10" fill="#2f9d74" font-weight="bold">Hit</text>
+  <rect x="205" y="137" width="130" height="34" rx="6" fill="#2f9d74"/>
+  <text x="270" y="159" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">Serve Instantly (~0ms)</text>
+
+  <!-- Memory cache miss -->
+  <line x1="340" y1="77" x2="368" y2="77" stroke="#d97843" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <text x="354" y="70" text-anchor="middle" font-size="10" fill="#d97843" font-weight="bold">Miss</text>
+
+  <!-- Step 3: Disk Cache -->
+  <rect x="370" y="55" width="140" height="44" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="440" y="73" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Check Disk</text>
+  <text x="440" y="88" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Cache</text>
+
+  <!-- Disk cache miss -->
+  <line x1="510" y1="77" x2="538" y2="77" stroke="#d97843" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <text x="524" y="70" text-anchor="middle" font-size="10" fill="#d97843" font-weight="bold">Miss</text>
+
+  <!-- Disk cache hit -->
+  <line x1="440" y1="99" x2="440" y2="135" stroke="#2f9d74" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="460" y="120" font-size="10" fill="#2f9d74" font-weight="bold">Hit</text>
+
+  <!-- Step 4: Freshness check (from disk hit) -->
+  <rect x="375" y="137" width="130" height="34" rx="6" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="440" y="159" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Is it fresh?</text>
+
+  <!-- Fresh -->
+  <line x1="375" y1="154" x2="338" y2="154" stroke="#2f9d74" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="357" y="148" font-size="10" fill="#2f9d74" font-weight="bold">Yes</text>
+  <rect x="215" y="185" width="120" height="34" rx="6" fill="#2f9d74"/>
+  <text x="275" y="207" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">Serve from Disk</text>
+
+  <!-- Stale -->
+  <line x1="505" y1="154" x2="538" y2="154" stroke="#d97843" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <text x="522" y="148" font-size="10" fill="#d97843" font-weight="bold">No</text>
+
+  <!-- Step 5: No cache / stale - conditional request block -->
+  <rect x="540" y="55" width="150" height="44" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="615" y="73" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Has ETag or</text>
+  <text x="615" y="88" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Last-Modified?</text>
+
+  <!-- Has validators -->
+  <line x1="615" y1="99" x2="615" y2="135" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="630" y="120" font-size="10" fill="#6d5bd0" font-weight="bold">Yes</text>
+
+  <!-- Conditional request -->
+  <rect x="540" y="137" width="150" height="44" rx="8" fill="#6d5bd0"/>
+  <text x="615" y="155" text-anchor="middle" font-size="10" fill="#ffffff" font-weight="bold">Conditional Request</text>
+  <text x="615" y="170" text-anchor="middle" font-size="9" fill="#edeaf5">If-None-Match / If-Modified-Since</text>
+
+  <!-- No validators -->
+  <line x1="690" y1="77" x2="718" y2="77" stroke="#d97843" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <text x="704" y="70" font-size="10" fill="#d97843" font-weight="bold">No</text>
+
+  <!-- Full network request -->
+  <rect x="720" y="55" width="150" height="44" rx="8" fill="#d97843"/>
+  <text x="795" y="73" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">Full Network</text>
+  <text x="795" y="88" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">Request</text>
+
+  <!-- Server response area -->
+  <rect x="540" y="200" width="330" height="44" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="705" y="227" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">Origin Server</text>
+
+  <line x1="615" y1="181" x2="615" y2="198" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="795" y1="99" x2="795" y2="198" stroke="#d97843" stroke-width="2" marker-end="url(#arrow-orange)"/>
+
+  <!-- Server responses -->
+  <!-- 304 -->
+  <line x1="640" y1="244" x2="640" y2="280" stroke="#2f9d74" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <rect x="560" y="282" width="160" height="44" rx="8" fill="#2f9d74"/>
+  <text x="640" y="300" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">304 Not Modified</text>
+  <text x="640" y="315" text-anchor="middle" font-size="10" fill="#ffffff">Use cached version</text>
+
+  <!-- 200 new -->
+  <line x1="780" y1="244" x2="780" y2="280" stroke="#d97843" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <rect x="720" y="282" width="150" height="44" rx="8" fill="#d97843"/>
+  <text x="795" y="300" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">200 OK</text>
+  <text x="795" y="315" text-anchor="middle" font-size="10" fill="#ffffff">New response + headers</text>
+
+  <!-- Update cache from 200 -->
+  <line x1="795" y1="326" x2="795" y2="360" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="720" y="362" width="150" height="34" rx="6" fill="#6d5bd0"/>
+  <text x="795" y="384" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">Store in Cache</text>
+
+  <!-- Refresh cache from 304 -->
+  <line x1="640" y1="326" x2="640" y2="360" stroke="#2f9d74" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <rect x="560" y="362" width="160" height="34" rx="6" fill="#2f9d74"/>
+  <text x="640" y="384" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">Refresh Freshness</text>
+
+  <!-- Legend -->
+  <rect x="30" y="420" width="840" height="65" rx="8" fill="#edeaf5" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="50" y="445" font-size="12" fill="#1a1822" font-weight="bold">Legend:</text>
+  <rect x="110" y="433" width="16" height="16" rx="3" fill="#2f9d74"/>
+  <text x="132" y="446" font-size="11" fill="#1a1822">Cache Hit / Served from Cache</text>
+  <rect x="320" y="433" width="16" height="16" rx="3" fill="#d97843"/>
+  <text x="342" y="446" font-size="11" fill="#1a1822">Cache Miss / Network Required</text>
+  <rect x="560" y="433" width="16" height="16" rx="3" fill="#6d5bd0"/>
+  <text x="582" y="446" font-size="11" fill="#1a1822">Decision / Action</text>
+  <text x="50" y="470" font-size="10" fill="#6d5bd0">Memory cache: ~0ms (in-process) | Disk cache: ~1-5ms (I/O read) | Conditional request: ~50-200ms (RTT) | Full request: ~100-500ms+ (RTT + download)</text>
+</svg>

@@ -1,0 +1,45 @@
+// webpack.config.js
+// pnpm add -D compression-webpack-plugin
+
+const CompressionPlugin = require('compression-webpack-plugin');
+const zlib = require('zlib');
+
+module.exports = {
+  // ... other config
+  plugins: [
+    // Generate .gz files (Gzip level 9)
+    new CompressionPlugin({
+      filename: '[path][base].gz',
+      algorithm: 'gzip',
+      test: /\\.(js|css|html|svg|json|wasm)$/,
+      threshold: 1024,             // Only compress files > 1KB
+      minRatio: 0.8,               // Only keep if 20%+ smaller
+      compressionOptions: {
+        level: 9,                  // Maximum Gzip compression
+      },
+    }),
+
+    // Generate .br files (Brotli level 11)
+    new CompressionPlugin({
+      filename: '[path][base].br',
+      algorithm: 'brotliCompress',
+      test: /\\.(js|css|html|svg|json|wasm)$/,
+      threshold: 1024,
+      minRatio: 0.8,
+      compressionOptions: {
+        params: {
+          [zlib.constants.BROTLI_PARAM_QUALITY]: 11,  // Maximum Brotli
+        },
+      },
+    }),
+  ],
+};
+
+// Build output:
+// dist/
+//   bundle.js        (500 KB)  — original
+//   bundle.js.gz     (128 KB)  — Gzip 9
+//   bundle.js.br     (105 KB)  — Brotli 11
+//   styles.css       (80 KB)
+//   styles.css.gz    (18 KB)
+//   styles.css.br    (14 KB)

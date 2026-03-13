@@ -1,0 +1,57 @@
+// === Webpack integration with Critters ===
+// Install: pnpm add -D critters-webpack-plugin
+const Critters = require('critters-webpack-plugin');
+
+module.exports = {
+  plugins: [
+    new Critters({
+      // Strategy for loading non-critical CSS
+      preload: 'swap',
+      // Options: 'body' | 'media' | 'swap' | 'js' | 'js-lazy'
+      //   'swap': <link rel="stylesheet" media="print" onload="this.media='all'">
+      //   'media': preserves original media queries
+      //   'js': uses JavaScript to load async CSS
+
+      // Don't inline @font-face rules (handle separately)
+      inlineFonts: false,
+
+      // Don't remove original CSS file
+      pruneSource: false,
+
+      // Merge all <style> tags into one
+      mergeStylesheets: true,
+
+      // Additional CSS to always consider critical
+      additionalStylesheets: ['./src/critical-overrides.css'],
+
+      // Reduce inlined CSS size by compressing
+      compress: true,
+
+      // Log what was inlined
+      logLevel: 'info',
+    }),
+  ],
+};
+
+// === Vite integration ===
+// Install: pnpm add -D vite-plugin-critical
+import criticalPlugin from 'vite-plugin-critical';
+
+export default defineConfig({
+  plugins: [
+    criticalPlugin({
+      criticalUrl: 'http://localhost:3000',
+      criticalBase: './dist',
+      criticalPages: [
+        { uri: '/', template: 'index' },
+        { uri: '/about', template: 'about' },
+      ],
+      criticalConfig: {
+        dimensions: [
+          { width: 375, height: 667 },
+          { width: 1280, height: 800 },
+        ],
+      },
+    }),
+  ],
+});

@@ -1,0 +1,2 @@
+- Higher isolation increases lock waits.
+- Use smaller transactions to reduce contention.

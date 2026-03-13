@@ -1,0 +1,88 @@
+// Vite automatically adds modulepreload for chunk dependencies
+// Built HTML output includes:
+// <link rel="modulepreload" crossorigin href="/assets/vendor-abc.js" />
+// <link rel="modulepreload" crossorigin href="/assets/utils-def.js" />
+
+// Manual resource hints in index.html
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://api.example.com" />
+  <link rel="dns-prefetch" href="https://analytics.example.com" />
+  <link rel="preload" href="/fonts/Inter.woff2" as="font"
+        type="font/woff2" crossorigin />
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
+
+// React hook for dynamic prefetching
+import { useEffect, useCallback, useRef } from 'react';
+
+function usePrefetch(urls: string[]) {
+  const prefetched = useRef(new Set<string>());
+
+  useEffect(() => {
+    if (!('requestIdleCallback' in window)) return;
+
+    const id = requestIdleCallback(() => {
+      urls.forEach(url => {
+        if (prefetched.current.has(url)) return;
+        prefetched.current.add(url);
+
+        const link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = url;
+        document.head.appendChild(link);
+      });
+    }, { timeout: 5000 });
+
+    return () => cancelIdleCallback(id);
+  }, [urls]);
+}
+
+// Usage
+function Navigation() {
+  usePrefetch(['/dashboard.js', '/settings.js']);
+  return <nav>...</nav>;
+}
+
+// Preload component for critical resources
+function Preload({ href, as, type, crossOrigin }: {
+  href: string;
+  as: string;
+  type?: string;
+  crossOrigin?: string;
+}) {
+  useEffect(() => {
+    const existing = document.querySelector(
+      `link[rel="preload"][href="\${href}"]`
+    );
+    if (existing) return;
+
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.href = href;
+    link.as = as;
+    if (type) link.type = type;
+    if (crossOrigin) link.crossOrigin = crossOrigin;
+    document.head.appendChild(link);
+
+    return () => { link.remove(); };
+  }, [href, as, type, crossOrigin]);
+
+  return null;
+}
+
+// Usage in a component
+function App() {
+  return (
+    <>
+      <Preload href="/fonts/Inter.woff2" as="font"
+               type="font/woff2" crossOrigin="anonymous" />
+      <main>...</main>
+    </>
+  );
+}

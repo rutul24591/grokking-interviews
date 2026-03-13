@@ -1,0 +1,3 @@
+await blob.enableVersioning("media");
+await blob.setLifecycle({ rule: "archive after 90 days"
+});

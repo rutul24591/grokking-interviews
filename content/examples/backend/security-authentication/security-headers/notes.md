@@ -1,0 +1,1 @@
+Apply headers at the edge for consistent enforcement.

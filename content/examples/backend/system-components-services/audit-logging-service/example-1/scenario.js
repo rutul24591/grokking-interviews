@@ -1,0 +1,14 @@
+/**
+ * File: scenario.js
+ * What it does: Declares the topic focus and tunable knobs for this example.
+ */
+module.exports = {
+  topic: 'audit-logging-service',
+  title: 'Audit Logging Service',
+  focus: 'Full app demonstrating Audit Logging Service behavior with interactive endpoints.',
+  behavior: 'Full app demonstrating Audit Logging Service behavior with interactive endpoints.',
+  knobs: {
+    simulateLatencyMs: 120,
+    sampleSize: 20,
+  },
+};

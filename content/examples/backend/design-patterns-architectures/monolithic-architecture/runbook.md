@@ -1,0 +1,1 @@
+Deploy as one unit; rollback requires full revert.

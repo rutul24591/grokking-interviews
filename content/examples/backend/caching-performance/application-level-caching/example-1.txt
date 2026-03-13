@@ -1,0 +1,2 @@
+app.get('/orders/:id', async (req, res) => { const perRequestCache = new Map(); async function getOrder(id) { if (perRequestCache.has(id)) { return perRequestCache.get(id); } const order = await db.getOrderById(id); perRequestCache.set(id, order); return order; } const order = await getOrder(req.params.id); const user = await getUser(order.userId); const account = await getAccount(order.accountId); return res.json({ order, user, account });
+});

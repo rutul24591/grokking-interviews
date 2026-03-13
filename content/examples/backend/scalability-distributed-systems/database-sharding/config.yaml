@@ -1,0 +1,5 @@
+sharding:
+  shard_key: user_id
+  strategy: hash
+  rebalance_window: 5m
+  max_migration_rate: 5000

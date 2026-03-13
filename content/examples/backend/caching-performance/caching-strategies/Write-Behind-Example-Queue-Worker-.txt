@@ -1,0 +1,5 @@
+// Writer: update cache and enqueue for persistence
+app.post('/counters/:id/increment', async (req, res) => { const { id } = req.params; const key = `counter:v1:\${id}`; const next = await redis.incr(key); await queue.add('persist-counter', { id, value: next }); res.json({ id, value: next });
+}); // Worker: persist to DB asynchronously
+worker.process('persist-counter', async (job) => { const { id, value } = job.data; await db.updateCounter(id, value);
+});

@@ -1,0 +1,35 @@
+// Second argument to memo: custom comparison function
+// Return true = props are equal (skip re-render)
+// Return false = props changed (re-render)
+
+const HeavyTable = memo(
+  function HeavyTable({ rows, columns, onSort, selectedIds }) {
+    return (
+      <table>
+        {rows.map(row => (
+          <tr key={row.id} className={selectedIds.has(row.id) ? 'selected' : ''}>
+            {columns.map(col => (
+              <td key={col.key}>{row[col.key]}</td>
+            ))}
+          </tr>
+        ))}
+      </table>
+    );
+  },
+  (prevProps, nextProps) => {
+    // Deep compare only what matters
+    return (
+      prevProps.rows === nextProps.rows &&
+      prevProps.columns === nextProps.columns &&
+      // Deep compare selectedIds (Set doesn't have reference stability)
+      prevProps.selectedIds.size === nextProps.selectedIds.size &&
+      [...prevProps.selectedIds].every(id => nextProps.selectedIds.has(id))
+      // Intentionally ignore onSort — we know it's stable
+    );
+  }
+);
+
+// ⚠️ Custom comparisons are error-prone:
+// - Missing a prop comparison means stale renders
+// - Deep comparisons can be expensive (defeating the purpose)
+// - Usually better to fix prop stability upstream

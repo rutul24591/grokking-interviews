@@ -1,0 +1,4 @@
+mesh:
+  mTLS: true
+  retries: 2
+  timeoutsMs: 200

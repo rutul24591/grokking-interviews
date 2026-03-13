@@ -1,0 +1,1 @@
+Merkle trees summarize data for integrity checks and synchronization.

@@ -1,0 +1,5 @@
+proxy_cache_path /var/cache/nginx keys_zone=cdn:10m;
+location /assets/ {
+  proxy_cache cdn;
+  proxy_cache_valid 200 1y;
+}

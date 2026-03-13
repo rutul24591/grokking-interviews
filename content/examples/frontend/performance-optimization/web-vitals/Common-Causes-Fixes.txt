@@ -1,0 +1,88 @@
+// === 1. Images without dimensions ===
+// ❌ BAD: No dimensions → browser can't reserve space
+<img src="/photo.jpg" alt="Photo" />
+
+// ✅ GOOD: Explicit dimensions
+<img src="/photo.jpg" alt="Photo" width={800} height={600} />
+
+// ✅ GOOD: CSS aspect-ratio for responsive images
+<img
+  src="/photo.jpg"
+  alt="Photo"
+  style={{ width: '100%', height: 'auto', aspectRatio: '4/3' }}
+/>
+
+// === 2. Dynamic content injection ===
+// ❌ BAD: Banner pushes content down after load
+function Page() {
+  const [showBanner, setShowBanner] = useState(false);
+  useEffect(() => {
+    fetchBanner().then(() => setShowBanner(true));
+  }, []);
+
+  return (
+    <div>
+      {showBanner && <Banner />}  {/* Shifts everything below */}
+      <Content />
+    </div>
+  );
+}
+
+// ✅ GOOD: Reserve space for dynamic content
+function Page() {
+  const [banner, setBanner] = useState(null);
+
+  return (
+    <div>
+      <div style={{ minHeight: 80 }}>  {/* Reserved space */}
+        {banner && <Banner data={banner} />}
+      </div>
+      <Content />
+    </div>
+  );
+}
+
+// === 3. Web fonts causing FOUT ===
+// ❌ BAD: Font swap causes text to reflow
+@font-face {
+  font-family: 'CustomFont';
+  src: url('/fonts/custom.woff2');
+  font-display: swap;  /* Text visible in fallback font, then swaps */
+}
+
+// ✅ BETTER: Use font-display with size-adjust
+@font-face {
+  font-family: 'CustomFont';
+  src: url('/fonts/custom.woff2');
+  font-display: optional;  /* Uses font if loaded in time, else fallback */
+}
+
+// ✅ BEST: Preload font + size-adjust fallback
+<link rel="preload" href="/fonts/custom.woff2" as="font" crossOrigin="" />
+
+@font-face {
+  font-family: 'CustomFont Fallback';
+  src: local('Arial');
+  size-adjust: 105%;     /* Match metrics to minimize shift */
+  ascent-override: 90%;
+  descent-override: 20%;
+}
+
+// === 4. Animations ===
+// ❌ BAD: Animating layout properties
+.slide-in {
+  animation: slideIn 0.3s;
+}
+@keyframes slideIn {
+  from { height: 0; margin-top: -100px; }
+  to { height: 100px; margin-top: 0; }
+}
+
+// ✅ GOOD: Animate transform (compositor-only, no layout shift)
+.slide-in {
+  animation: slideIn 0.3s;
+}
+@keyframes slideIn {
+  from { transform: translateY(-100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

@@ -1,0 +1,60 @@
+// app/layout.tsx — Next.js root layout with critical CSS strategy
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'My App',
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <head>
+        {/* Inline critical CSS for above-the-fold content */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              /* Reset & base styles */
+              *, *::before, *::after { box-sizing: border-box; margin: 0; }
+              html { font-family: system-ui, sans-serif; line-height: 1.5; }
+              body { min-height: 100vh; }
+
+              /* Navigation (always above fold) */
+              .nav { display: flex; align-items: center; height: 64px;
+                     padding: 0 24px; background: #fff; border-bottom: 1px solid #e5e7eb; }
+              .nav-logo { font-size: 20px; font-weight: 700; }
+
+              /* Hero section (above fold on most viewports) */
+              .hero { padding: 80px 24px; max-width: 1200px; margin: 0 auto; }
+              .hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800;
+                         line-height: 1.1; }
+
+              /* Skeleton loading states */
+              .skeleton { background: linear-gradient(90deg, #f0f0f0 25%,
+                          #e0e0e0 50%, #f0f0f0 75%);
+                          background-size: 200% 100%;
+                          animation: shimmer 1.5s infinite; }
+              @keyframes shimmer { to { background-position: -200% 0; } }
+            `,
+          }}
+        />
+
+        {/* Async-load the full stylesheet */}
+        <link
+          rel="preload"
+          href="/styles/main.css"
+          as="style"
+          // @ts-expect-error onLoad is valid for link elements
+          onLoad="this.onload=null;this.rel='stylesheet'"
+        />
+        <noscript>
+          <link rel="stylesheet" href="/styles/main.css" />
+        </noscript>
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}

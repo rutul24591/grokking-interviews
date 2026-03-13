@@ -1,0 +1,3 @@
+# client timeout budget
+timeout_ms=150
+hedge_after_ms=80

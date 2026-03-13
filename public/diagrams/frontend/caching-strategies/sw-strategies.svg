@@ -1,0 +1,134 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Service Worker Caching Strategies Compared</text>
+
+  <!-- Strategy 1: Cache First -->
+  <rect x="30" y="65" width="168" height="200" rx="8" fill="#edeaf5" stroke="#2f9d74" stroke-width="2"/>
+  <rect x="30" y="65" width="168" height="36" rx="8" fill="#2f9d74"/>
+  <rect x="30" y="90" width="168" height="11" fill="#2f9d74"/>
+  <text x="114" y="88" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">Cache First</text>
+
+  <text x="46" y="122" font-size="10" fill="#1a1822">1. Check cache</text>
+  <rect x="46" y="128" width="90" height="20" rx="4" fill="#2f9d74" opacity="0.15"/>
+  <text x="91" y="142" text-anchor="middle" font-size="9" fill="#2f9d74">cache.match()</text>
+
+  <text x="46" y="166" font-size="10" fill="#1a1822">2. Hit? Return cached</text>
+  <text x="46" y="182" font-size="10" fill="#1a1822">3. Miss? Fetch network</text>
+  <text x="46" y="198" font-size="10" fill="#1a1822">4. Cache response</text>
+
+  <rect x="42" y="212" width="144" height="42" rx="4" fill="#edeaf5" stroke="#2f9d74" stroke-width="1"/>
+  <text x="114" y="228" text-anchor="middle" font-size="9" font-weight="600" fill="#2f9d74">Speed: Fast</text>
+  <text x="114" y="244" text-anchor="middle" font-size="9" fill="#d97843">Freshness: May be stale</text>
+
+  <!-- Strategy 2: Network First -->
+  <rect x="210" y="65" width="168" height="200" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="210" y="65" width="168" height="36" rx="8" fill="#6d5bd0"/>
+  <rect x="210" y="90" width="168" height="11" fill="#6d5bd0"/>
+  <text x="294" y="88" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">Network First</text>
+
+  <text x="226" y="122" font-size="10" fill="#1a1822">1. Fetch from network</text>
+  <rect x="226" y="128" width="90" height="20" rx="4" fill="#6d5bd0" opacity="0.15"/>
+  <text x="271" y="142" text-anchor="middle" font-size="9" fill="#6d5bd0">fetch(request)</text>
+
+  <text x="226" y="166" font-size="10" fill="#1a1822">2. Success? Cache + return</text>
+  <text x="226" y="182" font-size="10" fill="#1a1822">3. Fail? Return cached</text>
+  <text x="226" y="198" font-size="10" fill="#1a1822">4. Offline fallback</text>
+
+  <rect x="222" y="212" width="144" height="42" rx="4" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="294" y="228" text-anchor="middle" font-size="9" font-weight="600" fill="#2f9d74">Freshness: Always fresh</text>
+  <text x="294" y="244" text-anchor="middle" font-size="9" fill="#d97843">Speed: Slower (network)</text>
+
+  <!-- Strategy 3: Stale-While-Revalidate -->
+  <rect x="390" y="65" width="168" height="200" rx="8" fill="#edeaf5" stroke="#d97843" stroke-width="2"/>
+  <rect x="390" y="65" width="168" height="36" rx="8" fill="#d97843"/>
+  <rect x="390" y="90" width="168" height="11" fill="#d97843"/>
+  <text x="474" y="88" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Stale-While-Revali.</text>
+
+  <text x="406" y="122" font-size="10" fill="#1a1822">1. Return cached (fast)</text>
+  <rect x="406" y="128" width="90" height="20" rx="4" fill="#d97843" opacity="0.15"/>
+  <text x="451" y="142" text-anchor="middle" font-size="9" fill="#d97843">Parallel fetch</text>
+
+  <text x="406" y="166" font-size="10" fill="#1a1822">2. Simultaneously fetch</text>
+  <text x="406" y="182" font-size="10" fill="#1a1822">3. Update cache</text>
+  <text x="406" y="198" font-size="10" fill="#1a1822">4. Fresh on next visit</text>
+
+  <rect x="402" y="212" width="144" height="42" rx="4" fill="#edeaf5" stroke="#d97843" stroke-width="1"/>
+  <text x="474" y="228" text-anchor="middle" font-size="9" font-weight="600" fill="#2f9d74">Speed: Fast + Fresh</text>
+  <text x="474" y="244" text-anchor="middle" font-size="9" fill="#d97843">Current req may be stale</text>
+
+  <!-- Strategy 4: Cache Only -->
+  <rect x="570" y="65" width="150" height="200" rx="8" fill="#edeaf5" stroke="#2f9d74" stroke-width="2"/>
+  <rect x="570" y="65" width="150" height="36" rx="8" fill="#2f9d74"/>
+  <rect x="570" y="90" width="150" height="11" fill="#2f9d74"/>
+  <text x="645" y="88" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">Cache Only</text>
+
+  <text x="586" y="122" font-size="10" fill="#1a1822">1. Check cache only</text>
+  <rect x="586" y="128" width="90" height="20" rx="4" fill="#2f9d74" opacity="0.15"/>
+  <text x="631" y="142" text-anchor="middle" font-size="9" fill="#2f9d74">No network</text>
+
+  <text x="586" y="166" font-size="10" fill="#1a1822">2. Return if cached</text>
+  <text x="586" y="182" font-size="10" fill="#1a1822">3. Fail if not cached</text>
+  <text x="586" y="198" font-size="10" fill="#1a1822">4. Precache required</text>
+
+  <rect x="582" y="212" width="126" height="42" rx="4" fill="#edeaf5" stroke="#2f9d74" stroke-width="1"/>
+  <text x="645" y="228" text-anchor="middle" font-size="9" font-weight="600" fill="#2f9d74">Speed: Instant</text>
+  <text x="645" y="244" text-anchor="middle" font-size="9" fill="#d97843">Offline only</text>
+
+  <!-- Strategy 5: Network Only -->
+  <rect x="732" y="65" width="150" height="200" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="732" y="65" width="150" height="36" rx="8" fill="#6d5bd0"/>
+  <rect x="732" y="90" width="150" height="11" fill="#6d5bd0"/>
+  <text x="807" y="88" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">Network Only</text>
+
+  <text x="748" y="122" font-size="10" fill="#1a1822">1. Always fetch network</text>
+  <rect x="748" y="128" width="90" height="20" rx="4" fill="#6d5bd0" opacity="0.15"/>
+  <text x="793" y="142" text-anchor="middle" font-size="9" fill="#6d5bd0">No caching</text>
+
+  <text x="748" y="166" font-size="10" fill="#1a1822">2. Return response</text>
+  <text x="748" y="182" font-size="10" fill="#1a1822">3. Fail if offline</text>
+  <text x="748" y="198" font-size="10" fill="#1a1822">4. Good for POST/PUT</text>
+
+  <rect x="744" y="212" width="126" height="42" rx="4" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="807" y="228" text-anchor="middle" font-size="9" font-weight="600" fill="#2f9d74">Freshness: Always</text>
+  <text x="807" y="244" text-anchor="middle" font-size="9" fill="#d97843">No offline support</text>
+
+  <!-- Best-for section -->
+  <text x="450" y="300" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1822">Best Use Cases</text>
+
+  <!-- Cache First use case -->
+  <rect x="30" y="315" width="168" height="70" rx="6" fill="#2f9d74" opacity="0.1" stroke="#2f9d74" stroke-width="1"/>
+  <text x="114" y="337" text-anchor="middle" font-size="10" font-weight="600" fill="#2f9d74">Static Assets</text>
+  <text x="114" y="355" text-anchor="middle" font-size="9" fill="#1a1822">Hashed JS/CSS bundles</text>
+  <text x="114" y="370" text-anchor="middle" font-size="9" fill="#1a1822">Fonts, images, icons</text>
+
+  <!-- Network First use case -->
+  <rect x="210" y="315" width="168" height="70" rx="6" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="294" y="337" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">API Data</text>
+  <text x="294" y="355" text-anchor="middle" font-size="9" fill="#1a1822">User profiles, settings</text>
+  <text x="294" y="370" text-anchor="middle" font-size="9" fill="#1a1822">Frequently updated content</text>
+
+  <!-- SWR use case -->
+  <rect x="390" y="315" width="168" height="70" rx="6" fill="#d97843" opacity="0.1" stroke="#d97843" stroke-width="1"/>
+  <text x="474" y="337" text-anchor="middle" font-size="10" font-weight="600" fill="#d97843">Tolerant Content</text>
+  <text x="474" y="355" text-anchor="middle" font-size="9" fill="#1a1822">Avatars, social feeds</text>
+  <text x="474" y="370" text-anchor="middle" font-size="9" fill="#1a1822">Config, feature flags</text>
+
+  <!-- Cache Only use case -->
+  <rect x="570" y="315" width="150" height="70" rx="6" fill="#2f9d74" opacity="0.1" stroke="#2f9d74" stroke-width="1"/>
+  <text x="645" y="337" text-anchor="middle" font-size="10" font-weight="600" fill="#2f9d74">Precached Assets</text>
+  <text x="645" y="355" text-anchor="middle" font-size="9" fill="#1a1822">App shell HTML</text>
+  <text x="645" y="370" text-anchor="middle" font-size="9" fill="#1a1822">Offline fallback page</text>
+
+  <!-- Network Only use case -->
+  <rect x="732" y="315" width="150" height="70" rx="6" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="807" y="337" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Real-time Data</text>
+  <text x="807" y="355" text-anchor="middle" font-size="9" fill="#1a1822">Payments, auth tokens</text>
+  <text x="807" y="370" text-anchor="middle" font-size="9" fill="#1a1822">Analytics, non-GET</text>
+
+  <!-- Production Tip -->
+  <rect x="100" y="410" width="700" height="70" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="450" y="435" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Production Tip: Combine Strategies</text>
+  <text x="450" y="455" text-anchor="middle" font-size="11" fill="#1a1822">Most applications use multiple strategies. Match each URL pattern to the appropriate strategy</text>
+  <text x="450" y="470" text-anchor="middle" font-size="11" fill="#1a1822">using Workbox registerRoute(). Cache First for static, SWR for APIs, Network Only for payments.</text>
+</svg>

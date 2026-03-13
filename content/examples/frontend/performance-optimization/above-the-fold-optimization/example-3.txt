@@ -1,0 +1,24 @@
+// Next.js uses Critters automatically for CSS optimization
+// In next.config.js, this is enabled by default:
+module.exports = {
+  experimental: {
+    optimizeCss: true, // Uses Critters internally
+  },
+};
+
+// For custom Webpack setups:
+// pnpm add -D critters-webpack-plugin
+const Critters = require('critters-webpack-plugin');
+
+module.exports = {
+  plugins: [
+    new Critters({
+      // Inline critical CSS and load rest async
+      preload: 'swap',
+      // Include selectors for pseudo-elements
+      inlineFonts: true,
+      // Remove inlined CSS from the external stylesheet
+      pruneSource: true,
+    }),
+  ],
+};

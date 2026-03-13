@@ -1,0 +1,59 @@
+type EmptyVariant = "first-run" | "zero-results" | "filtered" | "permission";
+
+type EmptyStateProps = {
+  variant: EmptyVariant;
+  onPrimaryAction?: () => void;
+  onClearFilters?: () => void;
+};
+
+const EMPTY_COPY: Record<EmptyVariant, { title: string; body: string; cta?: string }> = {
+  "first-run": {
+    title: "Add your first data source",
+    body: "Connect a source to start visualizing your metrics.",
+    cta: "Connect source",
+  },
+  "zero-results": {
+    title: "No results",
+    body: "Try a different search or reset filters.",
+    cta: "Reset filters",
+  },
+  "filtered": {
+    title: "Nothing matches your filters",
+    body: "Clear filters or adjust your date range.",
+    cta: "Clear filters",
+  },
+  "permission": {
+    title: "Request access",
+    body: "You do not have permission to view this data.",
+    cta: "Request access",
+  },
+};
+
+export function EmptyState({ variant, onPrimaryAction, onClearFilters }: EmptyStateProps) {
+  const copy = EMPTY_COPY[variant];
+
+  return (
+    <div role="status" className="empty-state">
+      <h3>{copy.title}</h3>
+      <p>{copy.body}</p>
+      {copy.cta && (
+        <button
+          onClick={variant === "filtered" || variant === "zero-results" ? onClearFilters : onPrimaryAction}
+          aria-label={copy.cta}
+        >
+          {copy.cta}
+        </button>
+      )}
+    </div>
+  );
+}
+
+export function ResultsPanel({ items, isLoading, isError, permissionDenied }: {
+  items: any[]; isLoading: boolean; isError: boolean; permissionDenied: boolean;
+}) {
+  if (isLoading) return <div>Loading…</div>;
+  if (isError) return <div>Something went wrong.</div>;
+  if (permissionDenied) return <EmptyState variant="permission" onPrimaryAction={() => {}} />;
+  if (!items.length) return <EmptyState variant="zero-results" onClearFilters={() => {}} />;
+  return <ul>{items.map(item => <li key={item.id}>{item.name}</li>)}</ul>;
+}

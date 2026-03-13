@@ -1,0 +1,6 @@
+@supports (display: grid) {
+  .layout { display: grid; }
+}
+@supports not (display: grid) {
+  .layout { display: block; }
+}

@@ -1,0 +1,2 @@
+app.get('/users/:id', async (req, res) => { const id = req.params.id; const key = 'user:v1:' + id; try { const cached = await redis.get(key); if (cached) { return res.json(JSON.parse(cached)); } } catch (err) { // Cache failure should not break the request } const user = await db.getUserById(id); const ttlSeconds = 300 + Math.floor(Math.random() * 30); try { await redis.set(key, JSON.stringify(user), 'EX', ttlSeconds); } catch (err) { // Ignore cache set failure } return res.json(user);
+});

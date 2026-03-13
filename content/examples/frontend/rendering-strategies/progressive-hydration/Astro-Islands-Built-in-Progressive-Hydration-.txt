@@ -1,0 +1,26 @@
+---
+// src/pages/index.astro
+import Navigation from '../components/Navigation.astro';
+import Hero from '../components/Hero.astro';
+import ProductCarousel from '../components/ProductCarousel.tsx';
+import Footer from '../components/Footer.astro';
+---
+
+<html>
+  <body>
+    <!-- Static, no hydration needed -->
+    <Navigation />
+
+    <!-- Static, no hydration -->
+    <Hero />
+
+    <!-- Hydrate when visible -->
+    <ProductCarousel client:visible />
+
+    <!-- Hydrate during idle time -->
+    <Footer client:idle />
+
+    <!-- Hydrate on interaction -->
+    <ChatWidget client:only="react" />
+  </body>
+</html>

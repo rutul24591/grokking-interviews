@@ -1,0 +1,26 @@
+# Check if Brotli compression is active
+curl -I -H "Accept-Encoding: br, gzip" https://example.com/bundle.js
+# Look for: Content-Encoding: br
+
+# Check Gzip specifically
+curl -I -H "Accept-Encoding: gzip" https://example.com/bundle.js
+# Look for: Content-Encoding: gzip
+
+# Compare compressed vs uncompressed size
+# Compressed:
+curl -s -o /dev/null -w "%{size_download}" \\
+  -H "Accept-Encoding: br, gzip" https://example.com/bundle.js
+# Output: 107253
+
+# Uncompressed:
+curl -s -o /dev/null -w "%{size_download}" \\
+  -H "Accept-Encoding: identity" https://example.com/bundle.js
+# Output: 498712
+
+# Calculate ratio: 1 - (107253 / 498712) = 78.5% reduction
+
+# Download and decompress to verify integrity
+curl -s -H "Accept-Encoding: br" https://example.com/bundle.js \\
+  --compressed -o bundle-test.js
+# --compressed flag tells curl to decompress automatically
+# If the file is valid JS, compression is working correctly

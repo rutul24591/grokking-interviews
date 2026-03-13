@@ -1,0 +1,25 @@
+// ❌ moment.js — 300KB, not tree-shakeable, mutable API
+import moment from 'moment';
+import 'moment/locale/es';  // Each locale adds more weight
+
+const tomorrow = moment().add(1, 'day').format('YYYY-MM-DD');
+const relative = moment(date).fromNow();
+const isValid = moment(input, 'YYYY-MM-DD', true).isValid();
+
+// ✅ date-fns — ~3KB per function, fully tree-shakeable, immutable
+import { addDays, format, formatDistanceToNow, isValid, parse } from 'date-fns';
+
+const tomorrow = format(addDays(new Date(), 1), 'yyyy-MM-dd');
+const relative = formatDistanceToNow(date, { addSuffix: true });
+const valid = isValid(parse(input, 'yyyy-MM-dd', new Date()));
+
+// ✅ Native Intl — 0KB, excellent browser support
+const formatter = new Intl.DateTimeFormat('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+const formatted = formatter.format(date);
+
+const relativeFormatter = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+const relative = relativeFormatter.format(-1, 'day');  // "yesterday"

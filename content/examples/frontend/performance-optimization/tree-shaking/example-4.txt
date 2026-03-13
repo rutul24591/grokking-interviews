@@ -1,0 +1,40 @@
+// === ES Modules — Statically Analyzable ===
+
+// These MUST be at the top level, can't be conditional:
+import { map } from 'lodash-es';     // ✅ Bundler knows: only 'map' used
+import { format } from 'date-fns';   // ✅ Bundler knows: only 'format' used
+
+// These are COMPILE-TIME constructs — the bundler resolves them
+// before any code runs.
+
+// === CommonJS — Dynamic, Runtime-Resolved ===
+
+// require() is just a function call — it can appear anywhere:
+const _ = require('lodash');           // Imports entire module
+const { map } = require('lodash');     // Still imports entire module!
+
+// Can be conditional — bundler can't predict which branch runs:
+if (process.env.NODE_ENV === 'production') {
+  require('./analytics');
+}
+
+// Can be computed — bundler can't know the module path:
+const moduleName = getModuleName();
+require(moduleName);
+
+// module.exports is an object assignment — any property could be used:
+module.exports = { map, filter, reduce };
+// Bundler can't know which properties consumers will access
+
+// === Hybrid Approach (some libraries) ===
+// Library provides both ESM and CJS versions:
+{
+  "main": "dist/cjs/index.js",      // CommonJS entry (Node.js)
+  "module": "dist/esm/index.js",    // ES module entry (bundlers prefer this)
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  }
+}

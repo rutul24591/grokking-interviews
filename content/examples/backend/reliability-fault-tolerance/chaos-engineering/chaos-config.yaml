@@ -1,0 +1,6 @@
+experiment:
+  name: pricing-latency
+  target: http://pricing:4001
+  injectLatencyMs: 500
+  durationSeconds: 120
+  abortOnErrorRate: 0.02

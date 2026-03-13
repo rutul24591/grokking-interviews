@@ -1,0 +1,27 @@
+// Astro-style islands — each island is code-split
+// Only interactive components ship JavaScript
+
+// Static page with interactive islands
+---
+// This runs at build time — zero JS shipped for static parts
+const posts = await fetch('/api/posts').then(r => r.json());
+---
+
+<html>
+  <body>
+    <!-- Static HTML, no JS -->
+    <header>My Blog</header>
+
+    <!-- Interactive island — separate chunk, hydrates on visible -->
+    <SearchBar client:visible />
+
+    <!-- Static content -->
+    {posts.map(post => <PostCard post={post} />)}
+
+    <!-- Interactive island — separate chunk, hydrates on idle -->
+    <CommentSection client:idle postId={post.id} />
+
+    <!-- Interactive island — separate chunk, hydrates on media query -->
+    <MobileNav client:media="(max-width: 768px)" />
+  </body>
+</html>

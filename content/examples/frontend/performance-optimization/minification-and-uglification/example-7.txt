@@ -1,0 +1,16 @@
+// Before
+function double(x) {
+  return x * 2;
+}
+
+function triple(x) {
+  return x * 3;
+}
+
+const result = double(5) + triple(10);
+
+// After inlining (Terser with passes: 2+)
+const result = 5 * 2 + 10 * 3;
+
+// With constant folding applied next:
+const result = 40;

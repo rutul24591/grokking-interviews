@@ -1,0 +1,32 @@
+// vite.config.js — build size reporting
+import { defineConfig } from 'vite';
+import { visualizer } from 'rollup-plugin-visualizer';
+
+export default defineConfig({
+  build: {
+    // Report compressed sizes in build output
+    reportCompressedSize: true,
+
+    // Warn when chunks exceed this size
+    chunkSizeWarningLimit: 250, // KB
+
+    rollupOptions: {
+      output: {
+        // Manual chunk splitting for budget control
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom'],
+          'vendor-router': ['react-router-dom'],
+          'vendor-ui': ['@radix-ui/react-dialog', '@radix-ui/react-tooltip'],
+        },
+      },
+    },
+  },
+  plugins: [
+    // Generate bundle visualization
+    visualizer({
+      filename: 'dist/bundle-stats.html',
+      open: false,
+      gzipSize: true,
+    }),
+  ],
+});

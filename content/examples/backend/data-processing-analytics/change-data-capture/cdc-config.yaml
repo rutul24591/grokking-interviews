@@ -1,0 +1,4 @@
+cdc:
+  source: postgres
+  table: orders
+  sink: kafka.orders

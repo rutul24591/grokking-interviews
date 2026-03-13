@@ -1,0 +1,13 @@
+- hosts: web
+  become: yes
+  tasks:
+    - name: Install Node
+      apt:
+        name: nodejs
+        state: present
+    - name: Deploy app
+      copy:
+        src: server.js
+        dest: /opt/app/server.js
+    - name: Start service
+      shell: node /opt/app/server.js &

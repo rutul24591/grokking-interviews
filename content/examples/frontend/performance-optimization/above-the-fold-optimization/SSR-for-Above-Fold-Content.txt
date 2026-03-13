@@ -1,0 +1,34 @@
+// Next.js App Router — Server Components (default)
+// Above-fold content renders as HTML on the server
+// No client-side JavaScript needed for static content
+
+// app/page.tsx — Server Component
+export default async function HomePage() {
+  // Data fetching happens on the server
+  const featured = await getFeaturedProducts();
+
+  return (
+    <main>
+      {/* This HTML is sent in the initial response */}
+      <section className="hero">
+        <h1>Welcome to Our Store</h1>
+        <p>Discover our curated collection</p>
+        <img
+          src={featured[0].image}
+          alt={featured[0].name}
+          width={1200}
+          height={600}
+          fetchPriority="high"
+        />
+      </section>
+
+      {/* Interactive elements use Client Components */}
+      <AddToCartButton productId={featured[0].id} />
+
+      {/* Below-fold content can be deferred */}
+      <Suspense fallback={<ProductGridSkeleton />}>
+        <ProductGrid />
+      </Suspense>
+    </main>
+  );
+}

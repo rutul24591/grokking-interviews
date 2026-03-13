@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
+  <rect width="1200" height="620" fill="#f8fafc"/>
+  <text x="60" y="70" font-size="28" font-family="Arial" fill="#0f172a">In-Process LRU Flow</text>
+  <rect x="80" y="140" width="320" height="120" rx="12" fill="#e0f2fe" stroke="#0ea5e9"/>
+  <text x="110" y="195" font-size="18" font-family="Arial" fill="#0f172a">Request</text>
+  <rect x="480" y="140" width="320" height="120" rx="12" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="510" y="195" font-size="18" font-family="Arial" fill="#0f172a">LRU Cache</text>
+  <rect x="880" y="140" width="240" height="120" rx="12" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="900" y="195" font-size="18" font-family="Arial" fill="#0f172a">DB Fetch</text>
+  <line x1="400" y1="200" x2="480" y2="200" stroke="#94a3b8" stroke-width="4"/>
+  <line x1="800" y1="200" x2="880" y2="200" stroke="#94a3b8" stroke-width="4"/>
+  <text x="60" y="520" font-size="16" font-family="Arial" fill="#475569">Hit returns immediately; miss loads from DB and updates the LRU list.</text>
+</svg>

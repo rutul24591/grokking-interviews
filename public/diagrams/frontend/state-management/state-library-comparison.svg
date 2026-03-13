@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">State Management Architecture Comparison</text>
+
+  <!-- Column 1: Redux -->
+  <rect x="20" y="55" width="200" height="420" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="20" y="55" width="200" height="35" rx="8" fill="#6d5bd0"/>
+  <text x="120" y="78" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">Redux</text>
+  <text x="120" y="110" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="600">Single Centralized Store</text>
+
+  <!-- Redux store -->
+  <rect x="55" y="125" width="130" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="120" y="150" text-anchor="middle" font-size="12" font-weight="600" fill="#fff">Store</text>
+
+  <!-- Redux reducers -->
+  <rect x="40" y="185" width="70" height="30" rx="4" fill="#2f9d74"/>
+  <text x="75" y="204" text-anchor="middle" font-size="9" font-weight="600" fill="#fff">Reducer A</text>
+  <rect x="120" y="185" width="70" height="30" rx="4" fill="#2f9d74"/>
+  <text x="155" y="204" text-anchor="middle" font-size="9" font-weight="600" fill="#fff">Reducer B</text>
+
+  <line x1="75" y1="165" x2="75" y2="185" stroke="#2f9d74" stroke-width="1.5"/>
+  <line x1="155" y1="165" x2="155" y2="185" stroke="#2f9d74" stroke-width="1.5"/>
+
+  <!-- Redux middleware -->
+  <rect x="55" y="235" width="130" height="28" rx="4" fill="#d97843"/>
+  <text x="120" y="253" text-anchor="middle" font-size="10" font-weight="600" fill="#fff">Middleware Chain</text>
+
+  <!-- Redux components -->
+  <rect x="40" y="290" width="50" height="30" rx="4" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="65" y="309" text-anchor="middle" font-size="9" fill="#1a1822">Comp A</text>
+  <rect x="100" y="290" width="50" height="30" rx="4" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="125" y="309" text-anchor="middle" font-size="9" fill="#1a1822">Comp B</text>
+  <rect x="160" y="290" width="50" height="30" rx="4" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="185" y="309" text-anchor="middle" font-size="9" fill="#1a1822">Comp C</text>
+
+  <line x1="120" y1="263" x2="65" y2="290" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="3,2"/>
+  <line x1="120" y1="263" x2="125" y2="290" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="3,2"/>
+  <line x1="120" y1="263" x2="185" y2="290" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="3,2"/>
+
+  <text x="120" y="345" text-anchor="middle" font-size="10" fill="#1a1822" font-style="italic">connect() / useSelector</text>
+  <text x="120" y="360" text-anchor="middle" font-size="9" fill="#6d5bd0">All state in one tree</text>
+  <text x="120" y="375" text-anchor="middle" font-size="9" fill="#6d5bd0">Strict unidirectional flow</text>
+
+  <!-- Column 2: Zustand -->
+  <rect x="235" y="55" width="200" height="420" rx="8" fill="#edeaf5" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="235" y="55" width="200" height="35" rx="8" fill="#2f9d74"/>
+  <text x="335" y="78" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">Zustand</text>
+  <text x="335" y="110" text-anchor="middle" font-size="11" fill="#2f9d74" font-weight="600">External Store + Subscriptions</text>
+
+  <!-- Zustand store -->
+  <rect x="270" y="125" width="130" height="40" rx="6" fill="#2f9d74"/>
+  <text x="335" y="145" text-anchor="middle" font-size="11" font-weight="600" fill="#fff">create()</text>
+  <text x="335" y="158" text-anchor="middle" font-size="9" fill="#e0f5ec">No Provider needed</text>
+
+  <!-- Zustand slices -->
+  <rect x="260" y="185" width="65" height="28" rx="4" fill="#edeaf5" stroke="#2f9d74" stroke-width="1"/>
+  <text x="292" y="203" text-anchor="middle" font-size="9" fill="#1a1822">Slice A</text>
+  <rect x="335" y="185" width="65" height="28" rx="4" fill="#edeaf5" stroke="#2f9d74" stroke-width="1"/>
+  <text x="367" y="203" text-anchor="middle" font-size="9" fill="#1a1822">Slice B</text>
+
+  <line x1="305" y1="165" x2="292" y2="185" stroke="#2f9d74" stroke-width="1"/>
+  <line x1="365" y1="165" x2="367" y2="185" stroke="#2f9d74" stroke-width="1"/>
+
+  <!-- Zustand selectors -->
+  <rect x="270" y="235" width="130" height="28" rx="4" fill="#d97843" opacity="0.8"/>
+  <text x="335" y="253" text-anchor="middle" font-size="10" font-weight="600" fill="#fff">Selector Functions</text>
+
+  <!-- Zustand components -->
+  <rect x="255" y="290" width="50" height="30" rx="4" fill="#edeaf5" stroke="#2f9d74" stroke-width="1"/>
+  <text x="280" y="309" text-anchor="middle" font-size="9" fill="#1a1822">Comp A</text>
+  <rect x="315" y="290" width="50" height="30" rx="4" fill="#edeaf5" stroke="#2f9d74" stroke-width="1"/>
+  <text x="340" y="309" text-anchor="middle" font-size="9" fill="#1a1822">Comp B</text>
+  <rect x="375" y="290" width="50" height="30" rx="4" fill="#edeaf5" stroke="#2f9d74" stroke-width="1"/>
+  <text x="400" y="309" text-anchor="middle" font-size="9" fill="#1a1822">Comp C</text>
+
+  <line x1="300" y1="263" x2="280" y2="290" stroke="#2f9d74" stroke-width="1.5"/>
+  <line x1="335" y1="263" x2="340" y2="290" stroke="#2f9d74" stroke-width="1" stroke-dasharray="3,2" opacity="0.4"/>
+  <line x1="370" y1="263" x2="400" y2="290" stroke="#2f9d74" stroke-width="1.5"/>
+
+  <text x="335" y="345" text-anchor="middle" font-size="10" fill="#1a1822" font-style="italic">useStore(selector)</text>
+  <text x="335" y="360" text-anchor="middle" font-size="9" fill="#2f9d74">Minimal API surface</text>
+  <text x="335" y="375" text-anchor="middle" font-size="9" fill="#2f9d74">Only subscribed re-render</text>
+
+  <!-- Column 3: Recoil / Jotai -->
+  <rect x="450" y="55" width="200" height="420" rx="8" fill="#edeaf5" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="450" y="55" width="200" height="35" rx="8" fill="#d97843"/>
+  <text x="550" y="78" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">Recoil / Jotai</text>
+  <text x="550" y="110" text-anchor="middle" font-size="11" fill="#d97843" font-weight="600">Atomic State Graph</text>
+
+  <!-- Atoms -->
+  <circle cx="510" cy="145" r="18" fill="#d97843"/>
+  <text x="510" y="149" text-anchor="middle" font-size="9" font-weight="600" fill="#fff">Atom</text>
+  <circle cx="570" cy="130" r="18" fill="#d97843"/>
+  <text x="570" y="134" text-anchor="middle" font-size="9" font-weight="600" fill="#fff">Atom</text>
+  <circle cx="610" cy="170" r="18" fill="#d97843" opacity="0.8"/>
+  <text x="610" y="174" text-anchor="middle" font-size="9" font-weight="600" fill="#fff">Atom</text>
+
+  <!-- Derived / Selectors -->
+  <rect x="490" y="200" width="55" height="25" rx="4" fill="#6d5bd0"/>
+  <text x="517" y="216" text-anchor="middle" font-size="9" font-weight="600" fill="#fff">Derived</text>
+  <rect x="560" y="210" width="55" height="25" rx="4" fill="#6d5bd0"/>
+  <text x="587" y="226" text-anchor="middle" font-size="9" font-weight="600" fill="#fff">Derived</text>
+
+  <!-- Dependency lines -->
+  <line x1="510" y1="163" x2="517" y2="200" stroke="#6d5bd0" stroke-width="1"/>
+  <line x1="570" y1="148" x2="517" y2="200" stroke="#6d5bd0" stroke-width="1"/>
+  <line x1="570" y1="148" x2="587" y2="210" stroke="#6d5bd0" stroke-width="1"/>
+  <line x1="610" y1="188" x2="587" y2="210" stroke="#6d5bd0" stroke-width="1"/>
+
+  <!-- Jotai components -->
+  <rect x="470" y="290" width="50" height="30" rx="4" fill="#edeaf5" stroke="#d97843" stroke-width="1"/>
+  <text x="495" y="309" text-anchor="middle" font-size="9" fill="#1a1822">Comp A</text>
+  <rect x="530" y="290" width="50" height="30" rx="4" fill="#edeaf5" stroke="#d97843" stroke-width="1"/>
+  <text x="555" y="309" text-anchor="middle" font-size="9" fill="#1a1822">Comp B</text>
+  <rect x="590" y="290" width="50" height="30" rx="4" fill="#edeaf5" stroke="#d97843" stroke-width="1"/>
+  <text x="615" y="309" text-anchor="middle" font-size="9" fill="#1a1822">Comp C</text>
+
+  <line x1="517" y1="225" x2="495" y2="290" stroke="#d97843" stroke-width="1.5"/>
+  <line x1="517" y1="225" x2="555" y2="290" stroke="#d97843" stroke-width="1.5"/>
+  <line x1="587" y1="235" x2="615" y2="290" stroke="#d97843" stroke-width="1.5"/>
+
+  <text x="550" y="345" text-anchor="middle" font-size="10" fill="#1a1822" font-style="italic">useRecoilValue(atom)</text>
+  <text x="550" y="360" text-anchor="middle" font-size="9" fill="#d97843">Bottom-up composition</text>
+  <text x="550" y="375" text-anchor="middle" font-size="9" fill="#d97843">Dependency graph updates</text>
+
+  <!-- Column 4: MobX -->
+  <rect x="665" y="55" width="215" height="420" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="665" y="55" width="215" height="35" rx="8" fill="#6d5bd0" opacity="0.85"/>
+  <text x="772" y="78" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">MobX</text>
+  <text x="772" y="110" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="600">Observable Tree + Reactions</text>
+
+  <!-- Observable Store -->
+  <rect x="705" y="125" width="135" height="55" rx="6" fill="#6d5bd0" opacity="0.85"/>
+  <text x="772" y="145" text-anchor="middle" font-size="11" font-weight="600" fill="#fff">Observable Store</text>
+  <text x="772" y="160" text-anchor="middle" font-size="9" fill="#e0daf5">@observable state</text>
+  <text x="772" y="172" text-anchor="middle" font-size="9" fill="#e0daf5">@computed values</text>
+
+  <!-- Actions -->
+  <rect x="700" y="200" width="65" height="25" rx="4" fill="#d97843"/>
+  <text x="732" y="216" text-anchor="middle" font-size="9" font-weight="600" fill="#fff">@action</text>
+  <rect x="780" y="200" width="65" height="25" rx="4" fill="#2f9d74"/>
+  <text x="812" y="216" text-anchor="middle" font-size="9" font-weight="600" fill="#fff">@computed</text>
+
+  <line x1="745" y1="180" x2="732" y2="200" stroke="#d97843" stroke-width="1"/>
+  <line x1="800" y1="180" x2="812" y2="200" stroke="#2f9d74" stroke-width="1"/>
+
+  <!-- Reactions -->
+  <rect x="720" y="245" width="105" height="25" rx="4" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="772" y="261" text-anchor="middle" font-size="9" fill="#1a1822">autorun / reaction</text>
+
+  <!-- MobX components -->
+  <rect x="685" y="290" width="50" height="30" rx="4" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="710" y="309" text-anchor="middle" font-size="9" fill="#1a1822">Comp A</text>
+  <rect x="748" y="290" width="50" height="30" rx="4" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="773" y="309" text-anchor="middle" font-size="9" fill="#1a1822">Comp B</text>
+  <rect x="810" y="290" width="50" height="30" rx="4" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="835" y="309" text-anchor="middle" font-size="9" fill="#1a1822">Comp C</text>
+
+  <line x1="750" y1="270" x2="710" y2="290" stroke="#6d5bd0" stroke-width="1.5"/>
+  <line x1="772" y1="270" x2="773" y2="290" stroke="#6d5bd0" stroke-width="1.5"/>
+  <line x1="795" y1="270" x2="835" y2="290" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="3,2" opacity="0.4"/>
+
+  <text x="772" y="345" text-anchor="middle" font-size="10" fill="#1a1822" font-style="italic">observer(Component)</text>
+  <text x="772" y="360" text-anchor="middle" font-size="9" fill="#6d5bd0">Auto-tracked dependencies</text>
+  <text x="772" y="375" text-anchor="middle" font-size="9" fill="#6d5bd0">Mutable state, fine-grained</text>
+
+  <!-- Footer note -->
+  <text x="450" y="492" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.6">Faded connection lines indicate components NOT re-rendering (selector/subscription prevents unnecessary updates)</text>
+</svg>

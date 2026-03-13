@@ -1,0 +1,6 @@
+queue:
+  name: payments
+  ackAfterProcess: true
+  retryMax: 5
+dedup:
+  table: processed_messages

@@ -1,0 +1,20 @@
+// Example: deriving budgets from baseline
+const baseline = {
+  homepage: { lcp: 2800, fcp: 1600, tbt: 250, cls: 0.08, jsSize: 245000 },
+  productPage: { lcp: 3200, fcp: 1900, tbt: 320, cls: 0.12, jsSize: 310000 },
+};
+
+const competitor = {
+  homepage: { lcp: 2100, fcp: 1200, tbt: 180, cls: 0.03 },
+};
+
+// Budget = min(baseline * 0.8, competitor value, Google's "good" threshold)
+const budgets = {
+  homepage: {
+    lcp: Math.min(2800 * 0.8, 2100, 2500),  // → 2100 (competitor)
+    fcp: Math.min(1600 * 0.8, 1200, 1800),  // → 1200 (competitor)
+    tbt: Math.min(250 * 0.8, 180, 200),     // → 180 (competitor)
+    cls: Math.min(0.08, 0.03, 0.1),         // → 0.03 (competitor)
+    jsSize: 245000 * 0.8,                   // → 196KB
+  },
+};

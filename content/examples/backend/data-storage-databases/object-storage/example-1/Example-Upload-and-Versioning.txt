@@ -1,0 +1,3 @@
+await storage.putObject({ bucket: "media", key: "avatars/user_1.png", body: fileStream
+}); // Enable versioning for rollback
+await storage.enableVersioning({ bucket: "media" });

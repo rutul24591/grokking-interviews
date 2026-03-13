@@ -1,0 +1,31 @@
+import { FixedSizeList } from 'react-window';
+import { memo } from 'react';
+
+// Memoize row component to prevent unnecessary re-renders
+const Row = memo(({ index, style, data }) => {
+  const user = data[index];
+  return (
+    <div style={style} className="flex items-center px-4 border-b hover:bg-gray-50">
+      <img src={user.avatar} alt="" className="w-8 h-8 rounded-full mr-3" />
+      <div>
+        <div className="font-medium">{user.name}</div>
+        <div className="text-sm text-gray-500">{user.email}</div>
+      </div>
+    </div>
+  );
+});
+
+function UserList({ users }) {
+  return (
+    <FixedSizeList
+      height={600}
+      width="100%"
+      itemCount={users.length}
+      itemSize={56}
+      itemData={users}
+      overscanCount={5}
+    >
+      {Row}
+    </FixedSizeList>
+  );
+}

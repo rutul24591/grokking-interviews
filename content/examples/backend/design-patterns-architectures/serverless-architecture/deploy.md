@@ -1,0 +1,1 @@
+Deploy as FaaS with event trigger.

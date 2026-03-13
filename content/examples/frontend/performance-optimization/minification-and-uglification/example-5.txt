@@ -1,0 +1,15 @@
+// Before
+if (isValid) {
+  submit();
+}
+
+// After
+if(isValid)submit()
+
+// Before
+for (let i = 0; i < items.length; i++) {
+  process(items[i]);
+}
+
+// After
+for(let i=0;i<items.length;i++)process(items[i])

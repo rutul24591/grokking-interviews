@@ -1,0 +1,30 @@
+// BUG: new debounced function every render — debounce never fires
+function SearchInput() {
+  const [query, setQuery] = useState('');
+
+  // This creates a NEW debounced function on every render
+  const debouncedSearch = debounce((q) => fetchResults(q), 300);
+
+  return <input onChange={(e) => debouncedSearch(e.target.value)} />;
+}
+
+// FIX 1: useRef to maintain stable reference
+function SearchInput() {
+  const [query, setQuery] = useState('');
+  const debouncedSearch = useRef(
+    debounce((q) => fetchResults(q), 300)
+  ).current;
+
+  useEffect(() => () => debouncedSearch.cancel(), [debouncedSearch]);
+
+  return <input onChange={(e) => debouncedSearch(e.target.value)} />;
+}
+
+// FIX 2: useDebouncedCallback hook (preferred)
+function SearchInput() {
+  const [query, setQuery] = useState('');
+  const { debouncedFn: search } = useDebouncedCallback(
+    (q) => fetchResults(q), 300
+  );
+  return <input onChange={(e) => search(e.target.value)} />;
+}

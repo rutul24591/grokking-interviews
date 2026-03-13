@@ -1,0 +1,1 @@
+fetch('/signup', { method: 'POST', body: JSON.stringify({ email: 'a@b.com' }) });

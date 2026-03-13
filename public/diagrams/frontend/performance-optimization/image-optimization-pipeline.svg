@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#1a1822">Image Optimization Pipeline</text>
+
+  <!-- === Stage 1: Source Image === -->
+  <rect x="30" y="70" width="140" height="120" rx="8" fill="#fff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="70" width="140" height="32" rx="8" fill="#6d5bd0"/>
+  <rect x="30" y="90" width="140" height="12" fill="#6d5bd0"/>
+  <text x="100" y="92" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#fff">Source Image</text>
+  <text x="100" y="120" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Original upload</text>
+  <text x="100" y="138" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">4000 x 3000px</text>
+  <text x="100" y="156" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">JPEG / PNG</text>
+  <text x="100" y="178" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#d97843">~5 MB</text>
+
+  <!-- Arrow 1 -->
+  <path d="M170 130 L200 130" stroke="#1a1822" stroke-width="2" fill="none" marker-end="url(#pipeArrow)"/>
+
+  <!-- === Stage 2: Resize === -->
+  <rect x="210" y="70" width="140" height="120" rx="8" fill="#fff" stroke="#d97843" stroke-width="2"/>
+  <rect x="210" y="70" width="140" height="32" rx="8" fill="#d97843"/>
+  <rect x="210" y="90" width="140" height="12" fill="#d97843"/>
+  <text x="280" y="92" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#fff">Resize</text>
+  <text x="280" y="118" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">400w, 800w, 1200w</text>
+  <text x="280" y="134" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">1600w, 2000w</text>
+  <text x="280" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#666">Maintains aspect ratio</text>
+  <text x="280" y="178" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#d97843">5 variants per format</text>
+
+  <!-- Arrow 2 -->
+  <path d="M350 130 L380 130" stroke="#1a1822" stroke-width="2" fill="none" marker-end="url(#pipeArrow)"/>
+
+  <!-- === Stage 3: Convert Formats === -->
+  <rect x="390" y="70" width="140" height="120" rx="8" fill="#fff" stroke="#2f9d74" stroke-width="2"/>
+  <rect x="390" y="70" width="140" height="32" rx="8" fill="#2f9d74"/>
+  <rect x="390" y="90" width="140" height="12" fill="#2f9d74"/>
+  <text x="460" y="92" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#fff">Convert</text>
+  <text x="460" y="118" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">AVIF (q:65)</text>
+  <text x="460" y="136" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">WebP (q:75)</text>
+  <text x="460" y="154" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">JPEG (q:80)</text>
+  <text x="460" y="178" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#2f9d74">15 total files</text>
+
+  <!-- Arrow 3 -->
+  <path d="M530 130 L560 130" stroke="#1a1822" stroke-width="2" fill="none" marker-end="url(#pipeArrow)"/>
+
+  <!-- === Stage 4: Compress === -->
+  <rect x="570" y="70" width="140" height="120" rx="8" fill="#fff" stroke="#c44569" stroke-width="2"/>
+  <rect x="570" y="70" width="140" height="32" rx="8" fill="#c44569"/>
+  <rect x="570" y="90" width="140" height="12" fill="#c44569"/>
+  <text x="640" y="92" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#fff">Compress</text>
+  <text x="640" y="118" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Lossy optimization</text>
+  <text x="640" y="136" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Strip metadata</text>
+  <text x="640" y="154" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Progressive JPEG</text>
+  <text x="640" y="178" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#c44569">40-70% smaller</text>
+
+  <!-- Arrow 4 -->
+  <path d="M710 130 L740 130" stroke="#1a1822" stroke-width="2" fill="none" marker-end="url(#pipeArrow)"/>
+
+  <!-- === Stage 5: CDN === -->
+  <rect x="750" y="70" width="130" height="120" rx="8" fill="#fff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="750" y="70" width="130" height="32" rx="8" fill="#6d5bd0"/>
+  <rect x="750" y="90" width="130" height="12" fill="#6d5bd0"/>
+  <text x="815" y="92" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#fff">CDN Deliver</text>
+  <text x="815" y="118" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Edge caching</text>
+  <text x="815" y="136" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Content negotiation</text>
+  <text x="815" y="154" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Cache-Control</text>
+  <text x="815" y="178" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#6d5bd0">~60 KB served</text>
+
+  <!-- Size reduction visualization -->
+  <text x="450" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1a1822">Size Reduction Through Pipeline (800px variant)</text>
+
+  <!-- Bar chart -->
+  <text x="145" y="260" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Original JPEG</text>
+  <rect x="150" y="247" width="700" height="22" rx="4" fill="#d97843" opacity="0.6"/>
+  <text x="860" y="262" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#d97843">5 MB</text>
+
+  <text x="145" y="295" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Resized (800w)</text>
+  <rect x="150" y="282" width="182" height="22" rx="4" fill="#d97843"/>
+  <text x="340" y="297" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#d97843">1.3 MB</text>
+
+  <text x="145" y="330" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">JPEG q:80</text>
+  <rect x="150" y="317" width="34" height="22" rx="4" fill="#c44569"/>
+  <text x="192" y="332" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#c44569">120 KB</text>
+
+  <text x="145" y="365" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">WebP q:75</text>
+  <rect x="150" y="352" width="24" height="22" rx="4" fill="#2f9d74"/>
+  <text x="182" y="367" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#2f9d74">85 KB</text>
+
+  <text x="145" y="400" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">AVIF q:65</text>
+  <rect x="150" y="387" width="17" height="22" rx="4" fill="#6d5bd0"/>
+  <text x="175" y="402" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#6d5bd0">60 KB</text>
+
+  <!-- Percentage labels -->
+  <text x="450" y="440" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1a1822">98.8% total reduction: 5 MB  &gt;  60 KB</text>
+
+  <!-- Tools bar -->
+  <rect x="50" y="455" width="800" height="35" rx="8" fill="#fff" stroke="#ccc" stroke-width="1"/>
+  <text x="70" y="477" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1a1822">Tools:</text>
+  <rect x="120" y="462" width="60" height="20" rx="4" fill="#6d5bd0" opacity="0.15"/>
+  <text x="150" y="476" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6d5bd0" font-weight="600">sharp</text>
+  <rect x="190" y="462" width="80" height="20" rx="4" fill="#d97843" opacity="0.15"/>
+  <text x="230" y="476" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#d97843" font-weight="600">imagemin</text>
+  <rect x="280" y="462" width="75" height="20" rx="4" fill="#2f9d74" opacity="0.15"/>
+  <text x="318" y="476" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#2f9d74" font-weight="600">squoosh</text>
+  <rect x="365" y="462" width="90" height="20" rx="4" fill="#c44569" opacity="0.15"/>
+  <text x="410" y="476" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#c44569" font-weight="600">Cloudinary</text>
+  <rect x="465" y="462" width="55" height="20" rx="4" fill="#6d5bd0" opacity="0.15"/>
+  <text x="492" y="476" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6d5bd0" font-weight="600">imgix</text>
+  <rect x="530" y="462" width="100" height="20" rx="4" fill="#d97843" opacity="0.15"/>
+  <text x="580" y="476" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#d97843" font-weight="600">Next.js Image</text>
+
+  <defs>
+    <marker id="pipeArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1822"/>
+    </marker>
+  </defs>
+</svg>

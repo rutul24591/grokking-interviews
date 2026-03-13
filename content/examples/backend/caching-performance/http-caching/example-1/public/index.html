@@ -1,0 +1,26 @@
+<!--
+  File: public/index.html
+  What it does: Simple UI to interact with the caching/performance scenario.
+-->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Caching & Performance Example</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Caching & Performance</h1>
+      <p id="focus"></p>
+      <div class="controls">
+        <input id="key" value="alpha" />
+        <button id="fetch">Fetch</button>
+        <button id="invalidate">Invalidate</button>
+      </div>
+      <pre id="output"></pre>
+    </main>
+    <script src="/app.js"></script>
+  </body>
+</html>

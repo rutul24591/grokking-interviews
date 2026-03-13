@@ -1,0 +1,10 @@
+[Unit]
+Description=VM App
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/node /opt/app/server.js
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

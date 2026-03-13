@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1822">Global CDN Architecture with Origin Shielding</text>
+
+  <!-- Arrow marker definitions -->
+  <defs>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#2f9d74"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#d97843"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+
+  <!-- Origin Server (center) -->
+  <rect x="370" y="190" width="160" height="60" rx="8" fill="#6d5bd0" stroke="#5a4bb0" stroke-width="1.5"/>
+  <text x="450" y="215" text-anchor="middle" font-size="13" fill="#fff" font-weight="600">Origin Server</text>
+  <text x="450" y="235" text-anchor="middle" font-size="10" fill="#e0dbf0">api.example.com</text>
+
+  <!-- Origin Shield -->
+  <rect x="345" y="300" width="210" height="50" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="450" y="322" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="600">Origin Shield (L2)</text>
+  <text x="450" y="340" text-anchor="middle" font-size="10" fill="#6d5bd0">Regional Cache Layer</text>
+
+  <!-- Arrow: Origin to Shield -->
+  <line x1="450" y1="250" x2="450" y2="298" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+
+  <!-- Edge PoP: North America (left) -->
+  <rect x="40" y="395" width="150" height="50" rx="8" fill="#2f9d74" stroke="#258660" stroke-width="1.5"/>
+  <text x="115" y="417" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">Edge PoP</text>
+  <text x="115" y="434" text-anchor="middle" font-size="10" fill="#d4f5e6">North America</text>
+
+  <!-- Edge PoP: Europe (center-left) -->
+  <rect x="230" y="395" width="150" height="50" rx="8" fill="#2f9d74" stroke="#258660" stroke-width="1.5"/>
+  <text x="305" y="417" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">Edge PoP</text>
+  <text x="305" y="434" text-anchor="middle" font-size="10" fill="#d4f5e6">Europe</text>
+
+  <!-- Edge PoP: Asia (center-right) -->
+  <rect x="520" y="395" width="150" height="50" rx="8" fill="#2f9d74" stroke="#258660" stroke-width="1.5"/>
+  <text x="595" y="417" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">Edge PoP</text>
+  <text x="595" y="434" text-anchor="middle" font-size="10" fill="#d4f5e6">Asia Pacific</text>
+
+  <!-- Edge PoP: South America (right) -->
+  <rect x="710" y="395" width="150" height="50" rx="8" fill="#2f9d74" stroke="#258660" stroke-width="1.5"/>
+  <text x="785" y="417" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">Edge PoP</text>
+  <text x="785" y="434" text-anchor="middle" font-size="10" fill="#d4f5e6">South America</text>
+
+  <!-- Arrows: Shield to Edge PoPs -->
+  <line x1="380" y1="350" x2="140" y2="393" stroke="#6d5bd0" stroke-width="1.2" marker-end="url(#arrowPurple)"/>
+  <line x1="420" y1="350" x2="305" y2="393" stroke="#6d5bd0" stroke-width="1.2" marker-end="url(#arrowPurple)"/>
+  <line x1="500" y1="350" x2="570" y2="393" stroke="#6d5bd0" stroke-width="1.2" marker-end="url(#arrowPurple)"/>
+  <line x1="530" y1="350" x2="760" y2="393" stroke="#6d5bd0" stroke-width="1.2" marker-end="url(#arrowPurple)"/>
+
+  <!-- Users -->
+  <!-- User NA -->
+  <circle cx="80" cy="478" r="12" fill="#edeaf5" stroke="#1a1822" stroke-width="1"/>
+  <text x="80" y="482" text-anchor="middle" font-size="10" fill="#1a1822">U</text>
+  <text x="115" y="480" text-anchor="middle" font-size="9" fill="#1a1822">Users</text>
+  <line x1="95" y1="475" x2="115" y2="447" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+  <!-- User EU -->
+  <circle cx="270" cy="478" r="12" fill="#edeaf5" stroke="#1a1822" stroke-width="1"/>
+  <text x="270" y="482" text-anchor="middle" font-size="10" fill="#1a1822">U</text>
+  <text x="305" y="480" text-anchor="middle" font-size="9" fill="#1a1822">Users</text>
+  <line x1="285" y1="475" x2="305" y2="447" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+  <!-- User APAC -->
+  <circle cx="555" cy="478" r="12" fill="#edeaf5" stroke="#1a1822" stroke-width="1"/>
+  <text x="555" y="482" text-anchor="middle" font-size="10" fill="#1a1822">U</text>
+  <text x="595" y="480" text-anchor="middle" font-size="9" fill="#1a1822">Users</text>
+  <line x1="570" y1="475" x2="595" y2="447" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+  <!-- User SA -->
+  <circle cx="745" cy="478" r="12" fill="#edeaf5" stroke="#1a1822" stroke-width="1"/>
+  <text x="745" y="482" text-anchor="middle" font-size="10" fill="#1a1822">U</text>
+  <text x="785" y="480" text-anchor="middle" font-size="9" fill="#1a1822">Users</text>
+  <line x1="760" y1="475" x2="785" y2="447" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+  <!-- Legend -->
+  <rect x="30" y="50" width="200" height="110" rx="8" fill="#fff" stroke="#1a1822" stroke-width="0.5" opacity="0.8"/>
+  <text x="45" y="70" font-size="11" font-weight="600" fill="#1a1822">Legend</text>
+
+  <!-- Cache HIT -->
+  <line x1="45" y1="88" x2="85" y2="88" stroke="#2f9d74" stroke-width="2"/>
+  <text x="95" y="92" font-size="10" fill="#1a1822">Cache HIT (1-5ms)</text>
+
+  <!-- Cache MISS -->
+  <line x1="45" y1="108" x2="85" y2="108" stroke="#d97843" stroke-width="2"/>
+  <text x="95" y="112" font-size="10" fill="#1a1822">Cache MISS (to origin)</text>
+
+  <!-- Internal routing -->
+  <line x1="45" y1="128" x2="85" y2="128" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="95" y="132" font-size="10" fill="#1a1822">CDN internal routing</text>
+
+  <!-- Shield dashed -->
+  <line x1="45" y1="148" x2="85" y2="148" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="95" y="152" font-size="10" fill="#1a1822">Shield (consolidates misses)</text>
+
+  <!-- Cache HIT flow example (green) - from user to PoP only -->
+  <rect x="625" y="50" width="245" height="60" rx="8" fill="#2f9d74" opacity="0.1" stroke="#2f9d74" stroke-width="1"/>
+  <text x="748" y="70" text-anchor="middle" font-size="11" font-weight="600" fill="#2f9d74">Cache HIT Path</text>
+  <text x="748" y="87" text-anchor="middle" font-size="10" fill="#1a1822">User → Edge PoP → Cached Response</text>
+  <text x="748" y="102" text-anchor="middle" font-size="10" fill="#2f9d74">Latency: 1-5ms</text>
+
+  <!-- Cache MISS flow example (orange) -->
+  <rect x="625" y="120" width="245" height="75" rx="8" fill="#d97843" opacity="0.1" stroke="#d97843" stroke-width="1"/>
+  <text x="748" y="140" text-anchor="middle" font-size="11" font-weight="600" fill="#d97843">Cache MISS Path</text>
+  <text x="748" y="157" text-anchor="middle" font-size="10" fill="#1a1822">User → Edge → Shield → Origin</text>
+  <text x="748" y="172" text-anchor="middle" font-size="10" fill="#1a1822">Response cached at each layer</text>
+  <text x="748" y="187" text-anchor="middle" font-size="10" fill="#d97843">Latency: 50-200ms</text>
+
+  <!-- Anycast DNS label -->
+  <rect x="330" y="125" width="240" height="35" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="450" y="147" text-anchor="middle" font-size="11" fill="#1a1822">Anycast DNS routes to nearest PoP</text>
+</svg>

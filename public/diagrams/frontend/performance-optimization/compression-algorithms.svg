@@ -1,0 +1,93 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="40" text-anchor="middle" font-size="22" font-weight="bold" fill="#1a1822">Compression Algorithms: Ratio vs Speed</text>
+
+  <!-- Chart area -->
+  <rect x="80" y="60" width="500" height="340" rx="8" fill="white" stroke="#e0dce8" stroke-width="1"/>
+
+  <!-- Y axis: Compression Ratio -->
+  <text x="40" y="230" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822" transform="rotate(-90, 40, 230)">Compression Ratio (higher = smaller output)</text>
+  <text x="72" y="85" text-anchor="end" font-size="10" fill="#666">95%</text>
+  <text x="72" y="145" text-anchor="end" font-size="10" fill="#666">85%</text>
+  <text x="72" y="205" text-anchor="end" font-size="10" fill="#666">75%</text>
+  <text x="72" y="265" text-anchor="end" font-size="10" fill="#666">65%</text>
+  <text x="72" y="325" text-anchor="end" font-size="10" fill="#666">55%</text>
+  <text x="72" y="385" text-anchor="end" font-size="10" fill="#666">45%</text>
+
+  <!-- Grid lines -->
+  <line x1="80" y1="80" x2="580" y2="80" stroke="#f0eef5" stroke-width="1"/>
+  <line x1="80" y1="140" x2="580" y2="140" stroke="#f0eef5" stroke-width="1"/>
+  <line x1="80" y1="200" x2="580" y2="200" stroke="#f0eef5" stroke-width="1"/>
+  <line x1="80" y1="260" x2="580" y2="260" stroke="#f0eef5" stroke-width="1"/>
+  <line x1="80" y1="320" x2="580" y2="320" stroke="#f0eef5" stroke-width="1"/>
+  <line x1="80" y1="380" x2="580" y2="380" stroke="#f0eef5" stroke-width="1"/>
+
+  <!-- X axis: Speed -->
+  <text x="330" y="415" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">Compression Speed (left = slower, right = faster)</text>
+  <text x="120" y="400" text-anchor="middle" font-size="10" fill="#666">Slow</text>
+  <text x="540" y="400" text-anchor="middle" font-size="10" fill="#666">Fast</text>
+
+  <!-- Gzip data points -->
+  <circle cx="340" cy="260" r="22" fill="#d97843" opacity="0.2" stroke="#d97843" stroke-width="2"/>
+  <text x="340" y="265" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">gzip-6</text>
+  <circle cx="420" cy="300" r="18" fill="#d97843" opacity="0.2" stroke="#d97843" stroke-width="2"/>
+  <text x="420" y="305" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">gzip-1</text>
+  <circle cx="250" cy="230" r="18" fill="#d97843" opacity="0.2" stroke="#d97843" stroke-width="2"/>
+  <text x="250" y="235" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">gzip-9</text>
+
+  <!-- Brotli data points -->
+  <circle cx="160" cy="120" r="22" fill="#6d5bd0" opacity="0.2" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="160" y="125" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">br-11</text>
+  <circle cx="300" cy="180" r="22" fill="#6d5bd0" opacity="0.2" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="300" y="185" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">br-4</text>
+  <circle cx="430" cy="220" r="18" fill="#6d5bd0" opacity="0.2" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="430" y="225" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">br-1</text>
+
+  <!-- Zstd data points -->
+  <circle cx="480" cy="170" r="22" fill="#2f9d74" opacity="0.2" stroke="#2f9d74" stroke-width="2"/>
+  <text x="480" y="175" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">zstd-3</text>
+  <circle cx="200" cy="100" r="18" fill="#2f9d74" opacity="0.2" stroke="#2f9d74" stroke-width="2"/>
+  <text x="200" y="105" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">zstd-19</text>
+  <circle cx="530" cy="280" r="18" fill="#2f9d74" opacity="0.2" stroke="#2f9d74" stroke-width="2"/>
+  <text x="530" y="285" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">zstd-1</text>
+
+  <!-- "Sweet spot" annotation -->
+  <rect x="260" y="148" width="240" height="90" rx="20" fill="none" stroke="#1a1822" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="380" y="145" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a1822">Sweet spot for dynamic compression</text>
+
+  <!-- Legend -->
+  <text x="450" y="415" text-anchor="middle" font-size="10" fill="#666">(bubble position shows ratio/speed tradeoff for each level)</text>
+
+  <!-- Algorithm detail cards -->
+  <rect x="620" y="60" width="260" height="120" rx="8" fill="white" stroke="#d97843" stroke-width="2"/>
+  <rect x="620" y="60" width="260" height="30" rx="8" fill="#d97843"/>
+  <rect x="620" y="82" width="260" height="8" fill="#d97843"/>
+  <text x="750" y="82" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Gzip (deflate)</text>
+  <text x="640" y="110" font-size="11" fill="#1a1822">Ratio: 60-75%</text>
+  <text x="640" y="128" font-size="11" fill="#1a1822">Speed: Fast (level 1-6)</text>
+  <text x="640" y="146" font-size="11" fill="#1a1822">Levels: 1-9</text>
+  <text x="640" y="164" font-size="11" fill="#2f9d74">Support: 99%+ browsers</text>
+
+  <rect x="620" y="195" width="260" height="120" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="620" y="195" width="260" height="30" rx="8" fill="#6d5bd0"/>
+  <rect x="620" y="217" width="260" height="8" fill="#6d5bd0"/>
+  <text x="750" y="217" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Brotli</text>
+  <text x="640" y="245" font-size="11" fill="#1a1822">Ratio: 70-85%</text>
+  <text x="640" y="263" font-size="11" fill="#1a1822">Speed: Slow at high levels</text>
+  <text x="640" y="281" font-size="11" fill="#1a1822">Levels: 0-11</text>
+  <text x="640" y="299" font-size="11" fill="#2f9d74">Support: 97%+ browsers</text>
+
+  <rect x="620" y="330" width="260" height="120" rx="8" fill="white" stroke="#2f9d74" stroke-width="2"/>
+  <rect x="620" y="330" width="260" height="30" rx="8" fill="#2f9d74"/>
+  <rect x="620" y="352" width="260" height="8" fill="#2f9d74"/>
+  <text x="750" y="352" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Zstandard</text>
+  <text x="640" y="380" font-size="11" fill="#1a1822">Ratio: 65-90%</text>
+  <text x="640" y="398" font-size="11" fill="#1a1822">Speed: Excellent at all levels</text>
+  <text x="640" y="416" font-size="11" fill="#1a1822">Levels: -7 to 22</text>
+  <text x="640" y="434" font-size="11" fill="#d97843">Support: Emerging (~30%)</text>
+
+  <!-- Bottom takeaway -->
+  <rect x="620" y="460" width="260" height="30" rx="6" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="750" y="480" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Use Brotli static, Gzip dynamic fallback</text>
+</svg>

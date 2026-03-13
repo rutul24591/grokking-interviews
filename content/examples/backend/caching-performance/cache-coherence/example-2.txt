@@ -1,0 +1,3 @@
+async function updateProduct(id, payload) { await db.updateProduct(id, payload); await bus.publish('product.updated', { id });
+} bus.subscribe('product.updated', async (event) => { await redis.del('product:v1:' + event.id);
+});

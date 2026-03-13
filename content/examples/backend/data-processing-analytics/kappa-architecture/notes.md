@@ -1,0 +1,1 @@
+Reprocessing uses the same pipeline as real-time events.

@@ -1,0 +1,44 @@
+// package.json — granular per-file budgets
+{
+  "bundlesize": [
+    {
+      "path": "dist/main.*.js",
+      "maxSize": "150KB",
+      "compression": "gzip"
+    },
+    {
+      "path": "dist/vendor.*.js",
+      "maxSize": "200KB",
+      "compression": "gzip"
+    },
+    {
+      "path": "dist/pages/*.js",
+      "maxSize": "50KB",
+      "compression": "gzip"
+    },
+    {
+      "path": "dist/**/*.css",
+      "maxSize": "30KB",
+      "compression": "gzip"
+    }
+  ],
+  "scripts": {
+    "check:bundle": "bundlesize"
+  }
+}
+
+// GitHub Actions workflow
+// .github/workflows/bundle-check.yml
+// name: Bundle Size Check
+// on: [pull_request]
+// jobs:
+//   check:
+//     runs-on: ubuntu-latest
+//     steps:
+//       - uses: actions/checkout@v4
+//       - uses: pnpm/action-setup@v2
+//       - run: pnpm install
+//       - run: pnpm build
+//       - run: pnpm check:bundle
+//         env:
+//           BUNDLESIZE_GITHUB_TOKEN: \${{ secrets.BUNDLESIZE_GITHUB_TOKEN }}

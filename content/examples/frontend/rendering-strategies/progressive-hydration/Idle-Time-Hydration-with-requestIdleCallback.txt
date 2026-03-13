@@ -1,0 +1,38 @@
+// useIdleHydration.ts
+import { useEffect, useState } from 'react';
+
+export function useIdleHydration(timeout = 2000) {
+  const [shouldHydrate, setShouldHydrate] = useState(false);
+
+  useEffect(() => {
+    const requestIdleCallback =
+      window.requestIdleCallback ||
+      ((cb) => setTimeout(cb, 1));
+
+    const handle = requestIdleCallback(
+      () => setShouldHydrate(true),
+      { timeout }
+    );
+
+    return () => {
+      if (window.cancelIdleCallback) {
+        window.cancelIdleCallback(handle);
+      } else {
+        clearTimeout(handle);
+      }
+    };
+  }, [timeout]);
+
+  return shouldHydrate;
+}
+
+// Usage
+function FooterSection() {
+  const shouldHydrate = useIdleHydration();
+
+  if (!shouldHydrate) {
+    return <div dangerouslySetInnerHTML={{ __html: serverHTML }} />;
+  }
+
+  return <Footer />; // Fully interactive
+}

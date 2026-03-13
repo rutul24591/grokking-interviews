@@ -1,0 +1,41 @@
+// Visualize bundle composition
+// npm install webpack-bundle-analyzer
+
+// webpack.config.js
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
+module.exports = {
+  plugins: [
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',         // Generate HTML report
+      reportFilename: 'bundle-report.html',
+      openAnalyzer: false,
+      defaultSizes: 'gzip',           // Show gzip sizes
+      generateStatsFile: true,
+      statsFilename: 'bundle-stats.json',
+    }),
+  ],
+};
+
+// For Next.js:
+// npm install @next/bundle-analyzer
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+module.exports = withBundleAnalyzer(nextConfig);
+// Run: ANALYZE=true next build
+
+// For Vite:
+// npm install rollup-plugin-visualizer
+import { visualizer } from 'rollup-plugin-visualizer';
+
+export default defineConfig({
+  plugins: [
+    visualizer({
+      filename: 'bundle-report.html',
+      gzipSize: true,
+      brotliSize: true,
+    }),
+  ],
+});

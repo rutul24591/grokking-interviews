@@ -1,0 +1,4 @@
+integrity:
+  hash: sha256
+  verifyOnRead: true
+  auditSchedule: "0 */6 * * *"

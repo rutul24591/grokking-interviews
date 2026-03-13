@@ -1,0 +1,9 @@
+backup:
+  fullSnapshot: "0 2 * * *"
+  incremental: "*/15 * * * *"
+  retentionDays: 30
+  encryption: true
+restore:
+  validationQueries:
+    - "SELECT count(*) FROM inventory"
+    - "SELECT max(updated_at) FROM inventory"

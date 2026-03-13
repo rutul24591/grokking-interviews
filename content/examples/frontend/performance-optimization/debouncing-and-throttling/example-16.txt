@@ -1,0 +1,62 @@
+function useDraggable(ref) {
+  const [isDragging, setIsDragging] = useState(false);
+  const positionRef = useRef({ x: 0, y: 0 });
+  const offsetRef = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    // rAF-throttled visual update (smooth at monitor refresh rate)
+    const updatePosition = throttleRAF((clientX, clientY) => {
+      const x = clientX - offsetRef.current.x;
+      const y = clientY - offsetRef.current.y;
+      positionRef.current = { x, y };
+      el.style.transform = `translate(\${x}px, \${y}px)`;
+    });
+
+    // Slower throttle for drop target detection (100ms is sufficient)
+    const checkDropTarget = throttle((clientX, clientY) => {
+      const elementBelow = document.elementFromPoint(clientX, clientY);
+      // Highlight valid drop targets
+      document.querySelectorAll('.drop-zone').forEach((zone) => {
+        zone.classList.toggle('active', zone === elementBelow?.closest('.drop-zone'));
+      });
+    }, 100);
+
+    const handlePointerMove = (e) => {
+      if (!isDragging) return;
+      updatePosition(e.clientX, e.clientY);
+      checkDropTarget(e.clientX, e.clientY);
+    };
+
+    const handlePointerDown = (e) => {
+      setIsDragging(true);
+      offsetRef.current = {
+        x: e.clientX - positionRef.current.x,
+        y: e.clientY - positionRef.current.y,
+      };
+      el.setPointerCapture(e.pointerId);
+    };
+
+    const handlePointerUp = () => {
+      setIsDragging(false);
+      updatePosition.cancel();
+      checkDropTarget.cancel();
+    };
+
+    el.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('pointermove', handlePointerMove);
+    document.addEventListener('pointerup', handlePointerUp);
+
+    return () => {
+      el.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('pointermove', handlePointerMove);
+      document.removeEventListener('pointerup', handlePointerUp);
+      updatePosition.cancel();
+      checkDropTarget.cancel();
+    };
+  }, [ref, isDragging]);
+
+  return { isDragging };
+}

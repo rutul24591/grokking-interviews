@@ -1,0 +1,29 @@
+// Before: 412 bytes
+function calculateShippingCost(orderItems, shippingMethod, customerAddress) {
+  const baseRate = getBaseShippingRate(shippingMethod);
+  const totalWeight = orderItems.reduce(
+    (accumulator, currentItem) => accumulator + currentItem.weight * currentItem.quantity,
+    0
+  );
+  const distanceMultiplier = calculateDistance(customerAddress);
+  const shippingCost = baseRate * totalWeight * distanceMultiplier;
+
+  if (shippingCost > 50) {
+    return applyDiscount(shippingCost, 0.1);
+  }
+
+  return shippingCost;
+}
+
+// After mangling: 198 bytes (52% smaller)
+function c(t,n,r){const e=getBaseShippingRate(n),i=t.reduce((t,n)=>t+n.weight*n.quantity,0),o=calculateDistance(r),s=e*i*o;return s>50?applyDiscount(s,.1):s}
+
+// What was renamed:
+// calculateShippingCost → c
+// orderItems → t, shippingMethod → n, customerAddress → r
+// baseRate → e, totalWeight → i, distanceMultiplier → o
+// shippingCost → s, accumulator → t, currentItem → n
+//
+// What was NOT renamed (external references):
+// getBaseShippingRate, calculateDistance, applyDiscount
+// .weight, .quantity (property access)

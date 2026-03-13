@@ -1,0 +1,16 @@
+service:
+  name: checkout-api
+  zones:
+    - id: zone-a
+      instances: ["http://checkout-a-1:4000", "http://checkout-a-2:4000"]
+    - id: zone-b
+      instances: ["http://checkout-b-1:4000", "http://checkout-b-2:4000"]
+  health:
+    path: /health
+    timeoutMs: 300
+    unhealthyThreshold: 3
+  routing:
+    strategy: zone-aware
+    failoverAfterMs: 1000
+  cache:
+    url: redis://cache:6379

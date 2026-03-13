@@ -1,0 +1,35 @@
+<!-- === Preload critical fonts in HTML head === -->
+<!-- Place BEFORE the <style> tag so the browser discovers them early -->
+<head>
+  <!-- Preload the most important font file -->
+  <link rel="preload" href="/fonts/inter-latin.woff2"
+        as="font" type="font/woff2" crossorigin>
+
+  <!-- Critical CSS (includes @font-face with font-display: swap) -->
+  <style>
+    @font-face {
+      font-family: 'Inter';
+      src: url('/fonts/inter-latin.woff2') format('woff2');
+      font-display: swap;
+    }
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    /* ... rest of critical CSS ... */
+  </style>
+
+  <!-- Full stylesheet async -->
+  <link rel="preload" href="/styles.css" as="style"
+        onload="this.onload=null;this.rel='stylesheet'">
+</head>
+
+<!-- === Next.js next/font (automatic optimization) === -->
+<!--
+  next/font automatically:
+  1. Self-hosts Google Fonts (no external requests)
+  2. Applies font-display: swap
+  3. Generates <link rel="preload"> for font files
+  4. Creates size-adjusted fallback fonts
+  5. Subsets fonts to only used character ranges
+
+  Result: zero layout shift, no external font requests,
+  font available in first paint
+-->

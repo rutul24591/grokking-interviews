@@ -155,7 +155,7 @@ import { groupBy } from 'lodash-es';
 const result = groupBy(items, 'category');
 
 // ✅ Native — 0KB
-const result = Object.groupBy(items, (item) => item.category);`}</code>
+const result = Object.groupBy(items, (item) =&gt; item.category);`}</code>
         </pre>
       </section>
 
@@ -171,8 +171,8 @@ import { PDFViewer } from './PDFViewer';
 import { MarkdownEditor } from './MarkdownEditor';
 
 // ✅ Dynamic import — loaded only when needed
-const PDFViewer = React.lazy(() => import('./PDFViewer'));
-const MarkdownEditor = React.lazy(() => import('./MarkdownEditor'));
+const PDFViewer = React.lazy(() =&gt; import('./PDFViewer'));
+const MarkdownEditor = React.lazy(() =&gt; import('./MarkdownEditor'));
 
 // ✅ Event-driven dynamic import for one-off features
 async function handleExportCSV() {

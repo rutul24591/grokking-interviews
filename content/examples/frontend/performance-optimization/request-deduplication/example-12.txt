@@ -1,0 +1,26 @@
+import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { BatchHttpLink } from '@apollo/client/link/batch-http';
+
+const client = new ApolloClient({
+  link: new BatchHttpLink({
+    uri: '/graphql',
+    batchMax: 10,        // Max 10 queries per batch
+    batchInterval: 20,   // Wait 20ms to collect queries
+  }),
+  cache: new InMemoryCache(),
+});
+
+// Three different queries fired in the same render cycle:
+// useQuery(GET_USER)        — query 1
+// useQuery(GET_POSTS)       — query 2
+// useQuery(GET_NOTIFICATIONS) — query 3
+//
+// BatchHttpLink collects all three and sends ONE HTTP request:
+// POST /graphql
+// Body: [
+//   { query: "{ user { name } }" },
+//   { query: "{ posts { title } }" },
+//   { query: "{ notifications { count } }" }
+// ]
+//
+// Server responds with array of results, Apollo distributes them

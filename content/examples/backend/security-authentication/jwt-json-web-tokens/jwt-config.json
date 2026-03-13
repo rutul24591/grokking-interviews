@@ -1,0 +1,5 @@
+{
+  "issuer": "auth-service",
+  "audience": "api",
+  "ttlSeconds": 3600
+}

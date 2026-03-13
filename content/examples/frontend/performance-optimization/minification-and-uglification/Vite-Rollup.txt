@@ -1,0 +1,52 @@
+// vite.config.js
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins: [react()],
+
+  build: {
+    // === JavaScript minification ===
+    minify: 'esbuild',      // Default: esbuild (fast)
+    // minify: 'terser',     // Alternative: terser (smaller output)
+    // minify: false,        // Disable minification
+
+    // Terser-specific options (only if minify: 'terser')
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+      format: {
+        comments: false,
+      },
+    },
+
+    // === CSS minification ===
+    cssMinify: true,           // Default: esbuild
+    // cssMinify: 'lightningcss', // Alternative: Lightning CSS
+
+    // === Source maps ===
+    sourcemap: 'hidden',       // Generate but don't reference
+
+    // === Target ===
+    target: 'es2020',
+
+    // === Reporting ===
+    reportCompressedSize: true, // Show gzip sizes in output
+
+    // === Rollup options ===
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+        },
+      },
+    },
+  },
+});
+
+// Build output example:
+// dist/assets/index-Dq8R3h4F.js    142.35 kB │ gzip: 45.82 kB
+// dist/assets/vendor-Bk3qW9yP.js    89.21 kB │ gzip: 28.94 kB
+// dist/assets/index-m4Kp2LfS.css    12.47 kB │ gzip:  3.18 kB

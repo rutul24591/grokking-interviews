@@ -1,0 +1,81 @@
+// === Font Optimization (automatic preload) ===
+import { Inter, Roboto_Mono } from 'next/font/google';
+
+// next/font downloads fonts at build time, self-hosts them,
+// and adds preload hints automatically
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',  // font-display: swap for no FOIT
+});
+// Generated HTML:
+// <link rel="preload" href="/_next/static/media/Inter-latin.woff2"
+//       as="font" type="font/woff2" crossorigin />
+
+// === Route Prefetching (automatic via next/link) ===
+import Link from 'next/link';
+
+// Automatically prefetches when link enters viewport
+<Link href="/dashboard">Dashboard</Link>
+
+// Prefetch eagerly (production only)
+<Link href="/dashboard" prefetch={true}>Dashboard</Link>
+
+// Disable prefetch for unlikely navigations
+<Link href="/terms" prefetch={false}>Terms</Link>
+
+// === Script Loading (next/script) ===
+import Script from 'next/script';
+
+// Load before page is interactive (analytics, polyfills)
+<Script src="/critical-polyfill.js" strategy="beforeInteractive" />
+
+// Load after hydration (default — most third-party scripts)
+<Script src="/analytics.js" strategy="afterInteractive" />
+
+// Load during idle time (low-priority tracking, widgets)
+<Script src="/chat-widget.js" strategy="lazyOnload" />
+
+// Inline script with strategy
+<Script id="gtag" strategy="afterInteractive">
+  {`window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());`}
+</Script>
+
+// === Image Optimization (automatic priority) ===
+import Image from 'next/image';
+
+// priority prop adds fetchpriority="high" and preload hint
+<Image
+  src="/hero.webp"
+  alt="Hero"
+  width={1200}
+  height={600}
+  priority  // preloads + fetchpriority="high"
+/>
+
+// Regular images get loading="lazy" by default
+<Image
+  src="/testimonial.webp"
+  alt="Testimonial"
+  width={400}
+  height={300}
+  // loading="lazy" is default — no preload
+/>
+
+// === Manual Preconnect / DNS-Prefetch ===
+// In app/layout.tsx or via metadata
+export const metadata = {
+  other: {
+    'link': [
+      { rel: 'preconnect', href: 'https://api.example.com' },
+    ],
+  },
+};
+
+// Or directly in the head
+import Head from 'next/head';
+<Head>
+  <link rel="preconnect" href="https://api.example.com" />
+  <link rel="dns-prefetch" href="https://cdn.example.com" />
+</Head>

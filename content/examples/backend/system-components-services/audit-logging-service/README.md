@@ -1,0 +1,1 @@
+Audit logging service writes immutable activity records for compliance.

@@ -83,7 +83,7 @@ export default function ImageOptimizationConciseArticle() {
         </table>
 
         <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm mt-4">
-          <code>{`<!-- Serve the best format the browser supports -->
+          <code>{`<!-- Serve the best format the browser supports --&gt;
 <picture>
   <source srcSet="/hero.avif" type="image/avif" />
   <source srcSet="/hero.webp" type="image/webp" />
@@ -91,7 +91,7 @@ export default function ImageOptimizationConciseArticle() {
 </picture>
 
 <!-- The browser picks the FIRST <source> it supports:
-     AVIF → WebP → JPEG fallback -->`}</code>
+     AVIF → WebP → JPEG fallback --&gt;`}</code>
         </pre>
       </section>
 
@@ -102,7 +102,7 @@ export default function ImageOptimizationConciseArticle() {
           choose the right size based on viewport width and device pixel ratio.
         </p>
         <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`<!-- Width-based srcset (most common) -->
+          <code>{`<!-- Width-based srcset (most common) --&gt;
 <img
   src="/product-800.jpg"
   srcSet="
@@ -130,15 +130,15 @@ export default function ImageOptimizationConciseArticle() {
   Example: 375px mobile (2x Retina)
   - sizes says 100vw = 375px display width
   - 375px × 2 = 750px needed
-  - Browser picks product-800.jpg (smallest >= 750)
+  - Browser picks product-800.jpg (smallest &gt;= 750)
 
   Example: 1280px desktop (1x)
   - sizes says 33vw = 422px display width
   - 422px × 1 = 422px needed
   - Browser picks product-800.jpg
--->
+--&gt;
 
-<!-- DPR-based srcset (for fixed-size images like avatars) -->
+<!-- DPR-based srcset (for fixed-size images like avatars) --&gt;
 <img
   src="/avatar-48.jpg"
   srcSet="
@@ -182,7 +182,7 @@ export default function ImageOptimizationConciseArticle() {
   height={600}
   priority  // Disables lazy loading, adds <link rel="preload">
   sizes="100vw"
-/>
+/&gt;
 
 // Fill container (unknown dimensions)
 <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9' }}>

@@ -1,0 +1,19 @@
+// Named chunks for clarity in bundle analysis
+const Dashboard = lazy(() =>
+  import(/* webpackChunkName: "page-dashboard" */ './pages/Dashboard')
+);
+
+const Settings = lazy(() =>
+  import(/* webpackChunkName: "page-settings" */ './pages/Settings')
+);
+
+// Group related chunks
+const Chart = lazy(() =>
+  import(/* webpackChunkName: "viz-chart" */ './components/Chart')
+);
+
+const Table = lazy(() =>
+  import(/* webpackChunkName: "viz-table" */ './components/DataTable')
+);
+
+// Output: page-dashboard.abc123.js, page-settings.def456.js, etc.

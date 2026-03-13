@@ -1,221 +1,23 @@
-"use client";
+"use client"; import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { ArticleImage } from "@/components/articles/ArticleImage";
+import type { ArticleMetadata } from "@/types/article"; export const metadata: ArticleMetadata = { id: "article-backend-rest-api-design-extensive", title: "REST API Design", description: "Comprehensive guide to REST API design, resource modeling, status codes, and real-world trade-offs.", category: "backend", subcategory: "fundamentals-building-blocks", slug: "rest-api-design",
+wordCount: 4347, readingTime: 22, lastUpdated: "2026-03-09", tags: ["backend", "rest", "api", "design", "architecture"], relatedTopics: [ "http-https-protocol", "api-design-best-practices", "request-response-lifecycle", ],
+}; export default function RestApiDesignConciseArticle() { return ( <ArticleLayout metadata={metadata}><section><h2>Definition & Context</h2><p><strong>REST</strong> is an architectural style for building web APIs that rely on a uniform interface, stateless requests, and resource-based modeling. Instead of exposing actions, REST focuses on resources and representations of state transferred over HTTP. </p><p> A well-designed REST API is predictable: URLs are nouns, HTTP methods describe actions, and status codes communicate outcomes. This reduces client complexity and supports long-term evolution. </p></section><section><h2>Resource Modeling</h2><p> Resources map to domain entities such as users, orders, or products. Collections use plural nouns and individual resources use identifiers. </p><ArticleImage src="/diagrams/backend/fundamentals-building-blocks/web-api-diagram.svg" alt="Web API diagram showing clients and API layers" caption="REST APIs expose resources to multiple client types" /><div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div></section><section><h2>Request and Response Semantics</h2><p> REST APIs use standard HTTP semantics. The same method should always mean the same thing, regardless of resource type. </p><ArticleImage src="/diagrams/backend/fundamentals-building-blocks/ajax-request-response.svg" alt="Request response flow diagram" caption="Standard request-response flow in REST APIs" /><div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div></section><section><h2>Status Codes and Error Handling</h2><p> Status codes should communicate the outcome clearly. Avoid returning 200 for errors and use consistent error shapes for clients. </p><div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div></section><section><h2>Performance and Caching</h2><p> REST works well with HTTP caching. Use ETags and Cache-Control to minimize repeated reads, especially for public resources. </p><ArticleImage src="/diagrams/backend/fundamentals-building-blocks/http-pipelining.svg" alt="HTTP pipelining diagram" caption="HTTP features such as keep-alive and pipelining reduce latency" /><div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div></section><section><h2>HATEOAS and Hypermedia</h2><p> Hypermedia links can guide clients through available actions, but they are less common in practical APIs. Most teams prefer simpler JSON with documented endpoints. </p></section><section><h2>Common Pitfalls</h2><ul className="space-y-2"><li>Verb-based URLs such as /getUser or /createOrder.</li><li>Inconsistent naming between endpoints.</li><li>Missing pagination on large collections.</li><li>Overloading 200 OK for all error states.</li><li>Mixing transport errors with business errors.</li></ul></section><section><h2>Practical Example: CRUD Service</h2><div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div></section><section><h2>Resource Modeling overview</h2><p> Model resources around the domain, not the database schema. Favor stable identifiers and avoid exposing join tables directly. When relationships are complex, use sub-resources or link relations. </p><ul className="space-y-2"><li><strong>Sub-resources:</strong> /users/&#123;id&#125;/orders</li><li><strong>Linking:</strong> include URLs for related resources</li><li><strong>State transitions:</strong> use status fields, not custom verbs</li></ul></section><section><h2>Pagination & Filtering Patterns</h2><p> Cursor pagination is recommended for large datasets because it avoids inconsistent results under concurrent writes. Expose filters and sort options but limit complexity to protect backend performance. </p><div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div></section><section><h2>overview: Resource Relationships</h2><p> RESTful resource relationships should be explicit and navigable. Use sub-resources when the relationship is strict ownership, and use link fields when the relationship is loose. Avoid deeply nested paths that become brittle or long. </p><p> In addition, consider how clients consume related data. If most clients always need embedded relations, denormalize responses with expansion parameters. This avoids multiple round trips and improves latency. </p></section><section><h2>overview: Bulk Operations</h2><p> Real systems need batch APIs for performance. Provide endpoints that accept arrays of items and return per-item success or failure. Document partial failure semantics, and avoid all-or-nothing unless strictly required by business rules. </p></section><section><h2>overview: HATEOAS in Practice</h2><p> HATEOAS promises discoverability by embedding links to next actions. In practice, most teams use simpler approaches: documented endpoints and explicit fields. If you do use hypermedia, keep it consistent and stable to avoid client brittleness. </p></section><section><h2>overview: Asynchronous Workflows</h2><p> Some operations take too long for synchronous APIs. Use asynchronous workflows where the client submits a job, receives a job id, and polls or subscribes for status updates. This pattern is common for exports, media processing, and large data migrations. </p><p> For research-grade systems, consider consistency and observability of async workflows. Expose detailed job states (queued, running, failed, completed) and include progress percentages when possible. This allows clients to build better user experiences and reduces repeated polling. </p><div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div></section><section><h2>overview: Webhooks and Event Callbacks</h2><p> REST APIs often integrate with external systems via webhooks. These callbacks require signature verification, retry logic, and idempotency handling to avoid duplicate processing. Document payload schemas clearly and include event ids for deduplication. </p><p> A robust webhook system includes delivery logs, retry schedules, and dead letter queues for repeated failures. Without this, clients struggle to debug missed events and support requests multiply. Many platforms expose a webhook replay API to allow manual recovery. </p></section><section><h2>overview: Versioning Strategies</h2><p> Versioning is a last resort. Prefer backward compatible changes by adding fields, not changing them. When breaking changes are required, support multiple versions simultaneously and publish deprecation timelines. </p><p> Backward compatibility can be tested with contract tests and schema validation. For example, if a field becomes optional, ensure both old and new clients behave correctly. Use feature flags to roll out new fields gradually, and monitor adoption before deprecating old ones. </p></section><section><h2>Resource Naming and URL Design</h2><p> Resource naming is the first impression of your API. Use plural nouns for collections and stable identifiers for individual resources. Avoid verbs in URLs because the HTTP method already encodes the action. When you find yourself adding verbs, it’s often a sign the resource boundary is wrong or the business action should be modeled as a state transition. </p><p> A good design yields predictable URLs: users, orders, invoices, and sessions. It also makes future expansion easier. For example, adding query parameters for filtering or pagination should not require breaking path changes if the underlying resource remains stable. </p><p> Reserve action-style endpoints for truly non-resource operations, such as “/sessions/refresh” or “/reports/export,” and be explicit about their semantics. If you use them, document idempotency and expected side effects. </p></section><section><h2>Consistency, Predictability, and Client Trust</h2><p> The real power of REST is not the style itself but the predictability it enforces. If every list endpoint supports the same pagination shape, every error response uses the same envelope, and every mutation returns consistent status codes, client teams can integrate quickly. </p><p> In practice, most production incidents in APIs are caused by inconsistencies: one endpoint returns 200 for errors, another returns 400; one uses “items,” another uses “data.” These inconsistencies are expensive to debug and reduce trust in the platform. </p><p> Standardize early. Create a small API style guide covering naming, pagination, error shapes, and response envelopes. Enforce it with lint rules or contract tests to prevent drift as the API grows. </p></section><section><h2>Filtering, Sorting, and Query Semantics</h2><p> Filtering and sorting are simple in principle but complex in practice. Your API should expose filters that align with common business queries, not raw database columns. If your data model changes, you should be able to preserve query semantics without breaking clients. </p><p> Avoid unbounded query complexity. Exposing arbitrary filters or search operators can lead to performance bottlenecks and unstable behavior under load. Instead, prefer explicit filter fields and clear limits. </p><p> For sorting, always define a stable default order and document what happens when sort fields are missing or equal. Stable sort ordering is critical for pagination consistency, especially with cursor-based pages. </p></section><section><h2>Pagination Strategies in Detail</h2><p> Pagination is mandatory for collections. Offset-based pagination is easy to understand but can be slow and inconsistent as data changes. Cursor-based pagination scales better, but requires careful design to ensure stable ordering and reproducible cursors. </p><p> Cursor design often uses a composite key (timestamp + id) to handle duplicates. The cursor itself should be opaque and URL-safe, typically a base64-encoded value or token. This avoids exposing internal IDs or database ordering details. </p><p> Always include metadata: next cursor, previous cursor where possible, and total counts only if you can provide them cheaply. For massive data sets, counts can be expensive and should be optional. </p></section><section><h2>Idempotency and Safe Mutations</h2><p> REST assumes clients can retry safely. GET, PUT, and DELETE should be idempotent. POST is not, so for operations that may be retried (payments, order creation), you should implement idempotency keys and deduplication logic on the server. </p><p> The server should treat the idempotency key as part of the request identity. It should return the same response for repeated attempts with the same key. This pattern is critical for resilience, especially when clients timeout or network links are unstable. </p></section><section><h2>Error Design and Developer Experience</h2><p> A predictable error format is as important as a predictable success format. Errors should include a machine-readable code, a human-readable message, and optional fields to identify which input failed validation. </p><p> Use status codes consistently: 400 for malformed requests, 401 for missing authentication, 403 for unauthorized access, 404 for missing resources, 409 for conflicts, and 422 for validation errors. Avoid overloading 200 for errors or burying errors in nested fields. </p><p> Well-designed error responses reduce support tickets and speed up client integration. They also enable automated error handling in SDKs and internal tooling. </p></section><section><h2>Security and Access Control</h2><p> REST APIs are exposed surfaces. Use authentication (OAuth, JWT, or session cookies) and enforce authorization at the resource level. A client authenticated as user A should never be able to access user B’s resources just by changing IDs. </p><p> Common security patterns include scope-based access control and resource ownership checks. For multi-tenant systems, include tenant identifiers in access control logic, not just in URL paths. </p><p> Security should be layered: TLS for transport, auth for identity, authorization for permissions, and rate limiting for abuse protection. </p></section><section><h2>Observability and Operational Practices</h2><p> Production REST APIs require observability. Add request IDs and trace headers so logs can be correlated across services. Capture latency, error rates, and saturation metrics. Without these, debugging incidents becomes guesswork. </p><p> Operationally, define SLOs around availability and latency. If you commit to 99.9% uptime, ensure dependency budgets and retry behavior align with that goal. Rate limiting, caching, and fallbacks are tools to keep SLOs achievable. </p></section><section><h2>Trade-offs vs GraphQL and gRPC</h2><p> REST is widely supported, but it can lead to over-fetching and under- fetching. GraphQL addresses these by letting clients specify fields, while gRPC provides binary efficiency and strong typing for internal services. </p><p> REST remains the default for public APIs because it is simple and interoperable. GraphQL is powerful for complex client requirements, and gRPC is often better for internal, high-throughput service calls. The key is to choose the protocol that fits the use case, not the trend. </p></section><section><h2>Operational Checklist</h2><ul className="space-y-2"><li>Define resource boundaries and naming conventions early.</li><li>Standardize pagination and error envelopes.</li><li>Implement idempotency keys for critical writes.</li><li>Document and enforce versioning policies.</li><li>Measure p95/p99 latency and error rates.</li><li>Use request IDs and trace headers for observability.</li></ul></section><section><h2>Concurrency Control with ETags</h2><p> REST often runs into concurrent update problems. Two clients can read the same resource and issue conflicting updates. ETags and conditional requests provide optimistic concurrency control. The server returns an ETag, and the client sends If-Match with the previous value. If the resource changed, the server responds with 412 Precondition Failed. </p><p> This pattern prevents lost updates without heavy locking. It also makes retries safe and explicit. For APIs that update user profiles, inventory, or orders, conditional updates are one of the simplest ways to protect against accidental overwrites. </p><div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div></section><section><h2>Resource Boundaries and Domain Modeling</h2><p> Resource boundaries should follow domain concepts, not tables. If a “payment” has its own lifecycle, model it as a resource even if it’s stored in the same table as an order. The goal is to make the API match the mental model of the business, not the persistence layer. </p><p> Domain-driven design can help: treat aggregates as REST resources and expose only stable identifiers. When the domain changes, the API should evolve in a backward compatible way by adding fields, not by renaming or removing existing ones. </p></section><section><h2>State Transitions as First-Class Concepts</h2><p> Many business workflows are state machines: order created, paid, shipped, delivered. REST encourages modeling these as resources with state fields rather than custom verb endpoints. This keeps URLs stable and allows clients to react to state transitions consistently. </p><p> Where actions are necessary (e.g., “refund”), encode them as state transitions on a sub-resource or as a dedicated action resource: POST /orders/&#123;id&#125;/refunds is often clearer than POST /refundOrder. </p></section><section><h2>Partial Updates and Patch Semantics</h2><p> PATCH is powerful but vague. Define a clear patch strategy: either JSON Merge Patch (RFC 7396) or JSON Patch (RFC 6902). Without a defined semantics, clients guess and payloads become inconsistent. </p><p> JSON Merge Patch is simpler for most APIs: it treats null as delete and absent fields as “no change.” JSON Patch is more explicit but more complex. Choose one, document it, and enforce it. </p></section><section><h2>Bulk Operations and Partial Failure</h2><p> Bulk operations improve throughput and reduce network overhead, but they introduce partial failure semantics. The response should include per-item success/error results, and the API must clarify whether the operation is atomic or best-effort. </p><p> Many systems use a “207 Multi-Status” style response or a 200 with a result array. The key is consistency: clients must be able to detect which items succeeded and retry only failed items. </p></section><section><h2>Async APIs and Job Resources</h2><p> Long-running operations should return a job resource with 202 Accepted. Clients poll the job resource or subscribe via webhooks. This decouples heavy processing from request latency and protects server capacity. </p><p> Job resources should have explicit states: queued, running, failed, completed, and canceled. Include progress when possible. This makes client UX smoother and reduces support burden. </p></section><section><h2>Rate Limiting and Fair Usage</h2><p> Rate limits protect your API and ensure fairness. Use 429 Too Many Requests with Retry-After. Communicate remaining quota via headers such as X-RateLimit-Remaining. For public APIs, clear limits are essential for client trust. </p><p> Implementing rate limits at the edge reduces load on core services. For tiered products, limits can be enforced per API key or account. </p></section><section><h2>Lifecycle: Deprecation and Backward Compatibility</h2><p> APIs live for years. You need a deprecation policy: announce changes, provide migration windows, and support multiple versions where needed. Breaking clients damages trust more than almost any technical issue. </p><p> Use telemetry to track which clients are on old versions. Provide warnings in response headers to encourage migration. Avoid removing fields without a long compatibility window. </p></section><section><h2>Testing and Contract Enforcement</h2><p> REST APIs benefit from contract tests that validate request/response shapes. Schemas (OpenAPI) allow automated tests and documentation. Without contracts, drift between teams is inevitable. </p><p> Include tests for error cases, pagination, and versioning. These are the most common sources of regressions in real systems. </p></section><section><h2>Representation Design: Fields, Expansion, and Embeds</h2><p> A resource’s representation is what clients actually consume. Decide early whether you return flat objects, nested embeddings, or references to related resources. Embedding reduces round trips but can increase payload size and coupling. Linking keeps payloads smaller but requires additional requests. </p><p> Many APIs support an “expand” parameter: clients request embedded relationships when needed. This pattern keeps defaults lean while allowing richer responses for clients that need them. Keep expansion options limited to avoid unbounded response sizes and performance hits. </p></section><section><h2>Field Selection and Sparse Responses</h2><p> Field selection lets clients request only the fields they need. This reduces bandwidth and can improve performance on mobile networks. A common pattern uses a “fields” parameter, such as: <span className="ml-1">GET /users?fields=id,name,email</span>. </p><p> The trade-off is complexity: the server must validate field lists and ensure security rules still apply. Do not allow clients to request sensitive fields they should not access. </p></section><section><h2>Consistency Models and Read-After-Write</h2><p> REST APIs often sit on top of distributed systems, which may not be strongly consistent. If you return 201 Created, clients expect to read the resource immediately. If your storage is eventually consistent, you must either delay the response or document the consistency window. </p><p> For critical workflows, consider using synchronous writes or read-after- write guarantees by reading from the primary node. For less critical data, document eventual consistency to set client expectations. </p></section><section><h2>Search, Filtering, and Indexing</h2><p> Search endpoints often become performance bottlenecks. Avoid exposing arbitrary query operators unless you have indexing support. For full text search, consider separate search services rather than forcing relational databases to do heavy text queries. </p><p> Pagination and sorting should be aligned with index order to keep query performance predictable. If clients can sort by any column, queries can become expensive and cause outages under load. </p></section><section><h2>API Documentation as a Contract</h2><p> Documentation is not optional; it is a contract. OpenAPI allows you to generate docs, SDKs, and contract tests. The doc should define required fields, error cases, and rate limits. A mismatch between docs and implementation is worse than no docs at all. </p><p> Treat documentation as code. Keep it versioned in the repo and update it in the same PR as API changes. This prevents drift and improves trust with client teams. </p></section><section><h2>Designing for SDKs and Client Integrations</h2><p> Many REST APIs are consumed via SDKs. This changes design priorities: stable naming, consistent error shapes, and predictable pagination are more important than small payload optimizations. </p><p> SDKs often generate types based on schemas. This makes backward compatibility critical. Removing or renaming fields can break builds for thousands of clients, so default to additive changes. </p></section><section><h2>Real-World Example: Orders API</h2><p> Consider an e-commerce orders API. The collection endpoint supports filtering by status, sorting by createdAt, and pagination by cursor. The single resource endpoint returns embedded line items only when requested via an expand parameter. Writes use idempotency keys to prevent duplicate orders on retry. </p><p> This design minimizes payload size for list views while allowing rich detail when required. It also ensures safe retries, predictable errors, and consistent pagination under high write load. </p></section><section><h2>Security: Auth, Scopes, and Least Privilege</h2><p> REST APIs must enforce authorization at the resource level. It is not enough to authenticate the client; each request must be checked against resource ownership or role-based permissions. If a user can guess another user’s ID, they should still be denied access. </p><p> For OAuth-based APIs, scopes define permissions such as “read:orders” or “write:orders.” Combine scopes with tenant isolation in multi-tenant systems. Always log access denials and monitor for repeated violations. </p></section><section><h2>Designing Stable IDs</h2><p> Resource identifiers should be stable and opaque. Avoid exposing sequential integers if they leak business metrics or allow enumeration. UUIDs or ULIDs are common choices. The key is stability: IDs should never change once assigned. </p><p> For user-facing systems, consider using separate public IDs that map to internal IDs. This allows internal refactoring without breaking external clients. </p></section><section><h2>Eventual Consistency and Client Expectations</h2><p> Many REST APIs are backed by distributed systems that are eventually consistent. Document where this applies. For example, a write may return 201 Created, but the resource might not appear in list endpoints for a short period if it relies on asynchronous indexing. </p><p> Client expectations can be managed by returning a “pending” state, providing a job resource, or offering a “refresh” hint. The key is to avoid confusing clients with inconsistent reads. </p></section><section><h2>Designing for Pagination at Scale</h2><p> Cursor pagination is preferred at scale, but it requires stable ordering. Use immutable sort keys such as createdAt + id. If sort keys are mutable, cursor pagination can skip or duplicate results. </p><p> For large lists, clients may need forward-only navigation. Provide clear next-cursor semantics, and avoid “last page” concepts when total counts are expensive to compute. </p></section><section><h2>Schema Evolution and Backward Compatibility</h2><p> Backward compatibility is the default requirement. You can add new fields safely if clients ignore unknown fields. Removing fields or changing types breaks clients and should be avoided or versioned. </p><p> Use explicit deprecation policies and communicate timelines. For APIs with SDKs, breaking changes can cause widespread outages for integrators. </p></section><section><h2>API Governance and Style Guides</h2><p> Large organizations need governance to keep APIs consistent. A style guide defines naming conventions, error formats, pagination rules, and versioning policy. Automated linting can enforce these rules. </p><p> Governance is not bureaucracy when done correctly; it reduces long-term maintenance cost and prevents divergence across teams. </p></section>
 
-import { ArticleLayout } from "@/components/articles/ArticleLayout";
-import type { ArticleMetadata } from "@/types/article";
-
-export const metadata: ArticleMetadata = {
-  id: "article-backend-rest-api-design-concise",
-  title: "REST API Design",
-  description:
-    "Quick overview of REST API design principles for backend interviews and rapid learning.",
-  category: "backend",
-  subcategory: "fundamentals-building-blocks",
-  slug: "rest-api-design",
-  version: "concise",
-  wordCount: 1750,
-  readingTime: 8,
-  lastUpdated: "2026-03-09",
-  tags: ["backend", "rest", "api", "design"],
-  relatedTopics: [
-    "http-https-protocol",
-    "api-design-best-practices",
-    "request-response-lifecycle",
-  ],
-};
-
-export default function RestApiDesignConciseArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Quick Overview</h2>
-        <p>
-          <strong>REST</strong> (Representational State Transfer) is an
-          architectural style for APIs built around resources, standard HTTP
-          methods, and stateless interactions. A REST API models data as
-          resources (users, orders, products) and uses HTTP verbs to create,
-          read, update, or delete them.
-        </p>
-        <p>
-          Good REST design focuses on clear resource naming, predictable
-          semantics, and consistent status codes. It enables simple clients and
-          long-term evolution of services.
-        </p>
-        <p>
-          REST is less about strict rules and more about consistency. When
-          resource boundaries are clear and method semantics are respected,
-          clients can integrate quickly and services can evolve without breaking
-          existing consumers.
-        </p>
+            <section>
+        <h2>Design Trade-offs in Practice</h2>
+        <p>Resource modeling trades simplicity for flexibility. Too many resources fragment the API; too few create overloaded endpoints with complex query semantics.</p>
       </section>
 
       <section>
-        <h2>Key Concepts</h2>
-        <ul className="space-y-2">
-          <li>
-            <strong>Resources:</strong> Use nouns and collections, such as
-            <span className="ml-1">/users</span> or <span className="ml-1">/orders</span>.
-          </li>
-          <li>
-            <strong>Methods:</strong> GET reads, POST creates, PUT replaces,
-            PATCH updates, DELETE removes.
-          </li>
-          <li>
-            <strong>Statelessness:</strong> Each request includes all context.
-          </li>
-          <li>
-            <strong>Representation:</strong> JSON is common; responses represent
-            resource state.
-          </li>
-          <li>
-            <strong>Pagination:</strong> Use cursor or offset to bound collections.
-          </li>
-          <li>
-            <strong>Filtering/Sorting:</strong> Query params like <span className="ml-1">?status=paid&amp;sort=-createdAt</span>.
-          </li>
-          <li>
-            <strong>Idempotency:</strong> Use idempotency keys for retry-safe POSTs.
-          </li>
-          <li>
-            <strong>Error Shape:</strong> Consistent error payloads (code, message, details).
-          </li>
-          <li>
-            <strong>Versioning:</strong> Use URL or header versioning when needed.
-          </li>
-          <li>
-            <strong>Content Negotiation:</strong> Use Accept/Content-Type to select formats.
-          </li>
-        </ul>
-        <p className="mt-4">
-          A good mental model: resources are nouns, actions are HTTP methods,
-          and status codes describe outcomes. The more predictable the contract,
-          the easier it is to scale clients and teams independently.
-        </p>
+        <h2>Operational Pitfalls</h2>
+        <p>Non-idempotent writes without idempotency keys, inconsistent pagination defaults, and improper status codes are the top sources of client errors.</p>
       </section>
 
       <section>
-        <h2>Quick Example</h2>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`// Express: RESTful resource handler
-router.post('/orders', async (req, res) => {
-  const order = await createOrder(req.body);
-  res.status(201)
-    .set('Location', '/orders/' + order.id)
-    .json(order);
-});`}</code>
-        </pre>
+        <h2>Validation and Monitoring</h2>
+        <p>Track client error rates by endpoint and status code, pagination token usage, and latency for read vs write paths. Monitor rollout impact on old clients.</p>
       </section>
 
-      <section>
-        <h2>Pros & Cons</h2>
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Pros</th>
-              <th className="p-3 text-left">Cons</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3">
-                ✓ Simple and widely understood<br />
-                ✓ Works with standard HTTP tooling<br />
-                ✓ Cache friendly when designed well<br />
-                ✓ Clear separation of client and server
-              </td>
-              <td className="p-3">
-                ✗ Over/under-fetching can happen<br />
-                ✗ Strict resource modeling can be limiting<br />
-                ✗ Complex transactions require careful design
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <section>
-        <h2>When to Use</h2>
-        <p><strong>Use REST for:</strong></p>
-        <ul className="mb-4 space-y-1">
-          <li>• Public APIs with broad client support</li>
-          <li>• CRUD-style services</li>
-          <li>• Systems that benefit from HTTP caching</li>
-        </ul>
-
-        <p><strong>Consider alternatives for:</strong></p>
-        <ul className="space-y-1">
-          <li>• Real-time streaming (WebSockets)</li>
-          <li>• Complex client queries (GraphQL)</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Interview Tips</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Talk in resources:</strong> Explain why URLs are nouns and
-            actions are HTTP methods.
-          </li>
-          <li>
-            <strong>Status codes matter:</strong> Use 201 for create, 404 for
-            missing resources, 409 for conflicts.
-          </li>
-          <li>
-            <strong>Pagination choices:</strong> Cursor for large datasets;
-            offset for simple, small collections.
-          </li>
-          <li>
-            <strong>Versioning strategy:</strong> Mention backward compatibility
-            and deprecation.
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Common Interview Questions</h2>
-        <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Why model APIs around resources?</p>
-            <p className="mt-2 text-sm">
-              A: Resources map directly to domain entities and make the API
-              predictable. Clients can reuse patterns across endpoints.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What is the difference between PUT and PATCH?</p>
-            <p className="mt-2 text-sm">
-              A: PUT replaces a resource, PATCH partially updates it. PATCH is
-              useful for sparse updates.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle versioning?</p>
-            <p className="mt-2 text-sm">
-              A: Use URL or header versioning and keep changes backward
-              compatible when possible.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What are common REST pitfalls?</p>
-            <p className="mt-2 text-sm">
-              A: Verb-based URLs, inconsistent status codes, and large payloads
-              without pagination.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Cursor vs offset pagination?</p>
-            <p className="mt-2 text-sm">
-              A: Cursor is stable and efficient at scale; offset is simpler but
-              can be slow and inconsistent under writes.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Why use idempotency keys?</p>
-            <p className="mt-2 text-sm">
-              A: To safely retry POST requests without creating duplicates.
-            </p>
-          </div>
-        </div>
-      </section>
-    </ArticleLayout>
-  );
+<section><h2>Common Interview Questions</h2><div className="space-y-4"><div className="rounded-lg border border-theme bg-panel-soft p-4"><p className="font-semibold">Q: Why model APIs around resources?</p><p className="mt-2 text-sm"> A: Resources map directly to domain entities and make the API predictable. Clients can reuse patterns across endpoints. </p></div><div className="rounded-lg border border-theme bg-panel-soft p-4"><p className="font-semibold">Q: What is the difference between PUT and PATCH?</p><p className="mt-2 text-sm"> A: PUT replaces a resource, PATCH partially updates it. PATCH is useful for sparse updates. </p></div><div className="rounded-lg border border-theme bg-panel-soft p-4"><p className="font-semibold">Q: How do you handle versioning?</p><p className="mt-2 text-sm"> A: Use URL or header versioning and keep changes backward compatible when possible. </p></div><div className="rounded-lg border border-theme bg-panel-soft p-4"><p className="font-semibold">Q: What are common REST pitfalls?</p><p className="mt-2 text-sm"> A: Verb-based URLs, inconsistent status codes, and large payloads without pagination. </p></div><div className="rounded-lg border border-theme bg-panel-soft p-4"><p className="font-semibold">Q: Cursor vs offset pagination?</p><p className="mt-2 text-sm"> A: Cursor is stable and efficient at scale; offset is simpler but can be slow and inconsistent under writes. </p></div><div className="rounded-lg border border-theme bg-panel-soft p-4"><p className="font-semibold">Q: Why use idempotency keys?</p><p className="mt-2 text-sm"> A: To safely retry POST requests without creating duplicates. </p></div></div></section></ArticleLayout> );
 }

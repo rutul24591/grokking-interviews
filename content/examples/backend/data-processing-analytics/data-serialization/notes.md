@@ -1,0 +1,1 @@
+Use schema evolution rules to maintain compatibility.

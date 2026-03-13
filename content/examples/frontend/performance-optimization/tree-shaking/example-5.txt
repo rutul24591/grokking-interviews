@@ -1,0 +1,57 @@
+// === Examples of Side Effects ===
+
+// CSS import — modifies document styles
+import './button.css';  // SIDE EFFECT — must keep
+
+// Polyfill — modifies global scope
+import 'core-js/features/array/flat';  // SIDE EFFECT — adds Array.flat
+
+// Module-level code that runs on import
+let instanceCount = 0;
+export class Widget {
+  constructor() {
+    instanceCount++;  // Side effect happens inside constructor, not on import
+  }
+}
+// BUT if the module has top-level code that runs:
+console.log('Widget module loaded');  // SIDE EFFECT — runs on import
+registerAnalytics('widget-loaded');    // SIDE EFFECT
+
+// === Marking Side-Effect-Free Packages ===
+
+// package.json — entire package is pure
+{
+  "name": "my-utils",
+  "sideEffects": false
+}
+// Tells bundler: "If nothing from this module is imported,
+// it's safe to skip the entire module."
+
+// package.json — most files are pure, except specific ones
+{
+  "name": "my-ui-lib",
+  "sideEffects": [
+    "*.css",
+    "*.scss",
+    "./src/polyfills.js",
+    "./src/register-components.js"
+  ]
+}
+// Bundler will ALWAYS include files matching these patterns,
+// but tree-shake everything else.
+
+// === Webpack sideEffects optimization ===
+// webpack.config.js
+module.exports = {
+  optimization: {
+    sideEffects: true,  // Enable sideEffects flag optimization (default in production)
+  },
+  module: {
+    rules: [
+      {
+        test: /\\.css$/,
+        sideEffects: true,  // CSS files always have side effects
+      },
+    ],
+  },
+};

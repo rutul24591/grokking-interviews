@@ -1,0 +1,75 @@
+import { useRef, useCallback, useEffect } from 'react';
+
+function useDebouncedCallback<T extends (...args: any[]) => any>(
+  callback: T,
+  delay: number
+) {
+  const callbackRef = useRef(callback);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Keep callback ref current without resetting the timer
+  useEffect(() => {
+    callbackRef.current = callback;
+  }, [callback]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
+  const debouncedFn = useCallback(
+    (...args: Parameters<T>) => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        callbackRef.current(...args);
+        timeoutRef.current = null;
+      }, delay);
+    },
+    [delay]
+  );
+
+  const cancel = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  }, []);
+
+  const isPending = useCallback(() => {
+    return timeoutRef.current !== null;
+  }, []);
+
+  return { debouncedFn, cancel, isPending };
+}
+
+// Usage: auto-save form
+function EditableDocument({ documentId }) {
+  const [content, setContent] = useState('');
+
+  const { debouncedFn: autoSave, cancel } = useDebouncedCallback(
+    async (text: string) => {
+      await fetch(`/api/documents/\${documentId}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ content: text }),
+      });
+    },
+    1000
+  );
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newContent = e.target.value;
+    setContent(newContent);
+    autoSave(newContent);
+  };
+
+  // Cancel pending save on unmount (e.g., user navigates away)
+  useEffect(() => () => cancel(), [cancel]);
+
+  return <textarea value={content} onChange={handleChange} />;
+}

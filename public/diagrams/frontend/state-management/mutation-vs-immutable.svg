@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arrowMut" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#1a1822"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#d97843"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#2f9d74"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Mutation vs Immutable Update: Why React Needs New References</text>
+
+  <!-- Center divider -->
+  <line x1="450" y1="45" x2="450" y2="490" stroke="#ccc" stroke-width="1.5" stroke-dasharray="6,4"/>
+
+  <!-- LEFT SIDE: Mutation (Bad) -->
+  <rect x="20" y="48" width="410" height="30" rx="6" fill="#d97843"/>
+  <text x="225" y="68" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">MUTATION (Bug)</text>
+
+  <!-- Step 1: Direct mutation -->
+  <rect x="40" y="95" width="370" height="45" rx="8" fill="#edeaf5" stroke="#d97843" stroke-width="1.5"/>
+  <text x="225" y="115" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">state.user.name = "New"</text>
+  <text x="225" y="131" text-anchor="middle" font-size="10" fill="#d97843">Modifies existing object in place</text>
+
+  <line x1="225" y1="140" x2="225" y2="165" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrowMut)"/>
+
+  <!-- Step 2: Same reference -->
+  <rect x="40" y="170" width="370" height="45" rx="8" fill="#edeaf5" stroke="#d97843" stroke-width="1.5"/>
+  <text x="225" y="190" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">prevState === nextState → true</text>
+  <text x="225" y="206" text-anchor="middle" font-size="10" fill="#d97843">Same object reference (0x3A7F)</text>
+
+  <line x1="225" y1="215" x2="225" y2="240" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrowMut)"/>
+
+  <!-- Step 3: React skips -->
+  <rect x="40" y="245" width="370" height="45" rx="8" fill="#d97843" stroke="#c06830" stroke-width="1.5"/>
+  <text x="225" y="265" text-anchor="middle" font-size="12" font-weight="600" fill="#fff">React: "No change detected"</text>
+  <text x="225" y="281" text-anchor="middle" font-size="10" fill="#fff">Skips re-render entirely</text>
+
+  <line x1="225" y1="290" x2="225" y2="315" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrowMut)"/>
+
+  <!-- Step 4: Stale UI -->
+  <rect x="70" y="320" width="310" height="55" rx="8" fill="#fff" stroke="#d97843" stroke-width="2"/>
+  <text x="225" y="343" text-anchor="middle" font-size="13" font-weight="bold" fill="#d97843">UI Shows Stale Data</text>
+  <text x="225" y="362" text-anchor="middle" font-size="11" fill="#1a1822">User sees "Old" instead of "New"</text>
+
+  <!-- X mark -->
+  <circle cx="225" cy="400" r="18" fill="#d97843"/>
+  <text x="225" y="406" text-anchor="middle" font-size="20" font-weight="bold" fill="#fff">✕</text>
+  <text x="225" y="435" text-anchor="middle" font-size="11" fill="#d97843" font-weight="600">SILENT BUG</text>
+
+  <!-- RIGHT SIDE: Immutable (Correct) -->
+  <rect x="470" y="48" width="410" height="30" rx="6" fill="#2f9d74"/>
+  <text x="675" y="68" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">IMMUTABLE UPDATE (Correct)</text>
+
+  <!-- Step 1: Create new object -->
+  <rect x="490" y="95" width="370" height="45" rx="8" fill="#edeaf5" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="675" y="115" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">{...state, user: {...state.user, name: "New"}}</text>
+  <text x="675" y="131" text-anchor="middle" font-size="10" fill="#2f9d74">Creates new object with change</text>
+
+  <line x1="675" y1="140" x2="675" y2="165" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrowMut)"/>
+
+  <!-- Step 2: New reference -->
+  <rect x="490" y="170" width="370" height="45" rx="8" fill="#edeaf5" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="675" y="190" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">prevState === nextState → false</text>
+  <text x="675" y="206" text-anchor="middle" font-size="10" fill="#2f9d74">Different reference (0x3A7F ≠ 0x8B2C)</text>
+
+  <line x1="675" y1="215" x2="675" y2="240" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrowMut)"/>
+
+  <!-- Step 3: React detects -->
+  <rect x="490" y="245" width="370" height="45" rx="8" fill="#2f9d74" stroke="#257a5a" stroke-width="1.5"/>
+  <text x="675" y="265" text-anchor="middle" font-size="12" font-weight="600" fill="#fff">React: "State changed!"</text>
+  <text x="675" y="281" text-anchor="middle" font-size="10" fill="#fff">Schedules re-render</text>
+
+  <line x1="675" y1="290" x2="675" y2="315" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrowMut)"/>
+
+  <!-- Step 4: Updated UI -->
+  <rect x="520" y="320" width="310" height="55" rx="8" fill="#fff" stroke="#2f9d74" stroke-width="2"/>
+  <text x="675" y="343" text-anchor="middle" font-size="13" font-weight="bold" fill="#2f9d74">UI Updates Correctly</text>
+  <text x="675" y="362" text-anchor="middle" font-size="11" fill="#1a1822">User sees "New" as expected</text>
+
+  <!-- Checkmark -->
+  <circle cx="675" cy="400" r="18" fill="#2f9d74"/>
+  <text x="675" y="406" text-anchor="middle" font-size="20" font-weight="bold" fill="#fff">✓</text>
+  <text x="675" y="435" text-anchor="middle" font-size="11" fill="#2f9d74" font-weight="600">CORRECT BEHAVIOR</text>
+
+  <!-- Bottom summary -->
+  <rect x="200" y="455" width="500" height="35" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="450" y="477" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">React uses === (reference equality) — O(1) comparison instead of deep diff O(n)</text>
+</svg>

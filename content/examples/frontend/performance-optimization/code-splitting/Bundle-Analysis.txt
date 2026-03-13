@@ -1,0 +1,39 @@
+// === Webpack Bundle Analyzer ===
+// Install: pnpm add -D webpack-bundle-analyzer
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin;
+
+module.exports = {
+  plugins: [
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static', // Generate HTML report
+      openAnalyzer: false,
+      reportFilename: 'bundle-report.html',
+    }),
+  ],
+};
+
+// === Vite with rollup-plugin-visualizer ===
+// Install: pnpm add -D rollup-plugin-visualizer
+import { visualizer } from 'rollup-plugin-visualizer';
+
+export default defineConfig({
+  plugins: [
+    visualizer({
+      filename: 'bundle-stats.html',
+      gzipSize: true,
+      brotliSize: true,
+    }),
+  ],
+});
+
+// === Next.js Bundle Analyzer ===
+// Install: pnpm add -D @next/bundle-analyzer
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+module.exports = withBundleAnalyzer({
+  // next.config.js options
+});
+// Run: ANALYZE=true pnpm build

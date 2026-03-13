@@ -1,0 +1,5 @@
+locks:
+  provider: redis
+  ttl_ms: 5000
+  renew_interval_ms: 2000
+  fencing_tokens: true

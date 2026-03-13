@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <!-- Background -->
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">IndexedDB Architecture</text>
+
+  <!-- Database Container -->
+  <rect x="30" y="52" width="840" height="430" rx="8" fill="none" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="6,3"/>
+  <rect x="30" y="52" width="840" height="30" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="72" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">Database: "AppDB" (version 3)</text>
+
+  <!-- Object Store: users -->
+  <rect x="55" y="100" width="250" height="370" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="55" y="100" width="250" height="28" rx="8" fill="#6d5bd0"/>
+  <text x="180" y="119" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Object Store: "users"</text>
+  <text x="180" y="143" text-anchor="middle" font-size="10" fill="#1a1822">keyPath: "id" (autoIncrement)</text>
+
+  <!-- users records -->
+  <rect x="70" y="155" width="220" height="110" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="80" y="172" font-size="10" font-weight="bold" fill="#1a1822">Records</text>
+  <text x="80" y="190" font-size="9" fill="#1a1822">{ id: 1, name: "Alice", email: "alice@co.io",</text>
+  <text x="85" y="203" font-size="9" fill="#1a1822">  role: "admin", lastLogin: Date }</text>
+  <text x="80" y="221" font-size="9" fill="#1a1822">{ id: 2, name: "Bob", email: "bob@co.io",</text>
+  <text x="85" y="234" font-size="9" fill="#1a1822">  role: "viewer", lastLogin: Date }</text>
+  <text x="80" y="252" font-size="9" fill="#888">... 4,832 more records</text>
+
+  <!-- users indexes -->
+  <rect x="70" y="275" width="220" height="85" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1"/>
+  <text x="80" y="292" font-size="10" font-weight="bold" fill="#2f9d74">Indexes (B-tree)</text>
+  <rect x="80" y="300" width="200" height="18" rx="4" fill="#e8f5ee"/>
+  <text x="85" y="313" font-size="9" fill="#1a1822">"by_email" unique on "email"</text>
+  <rect x="80" y="322" width="200" height="18" rx="4" fill="#e8f5ee"/>
+  <text x="85" y="335" font-size="9" fill="#1a1822">"by_role" on "role"</text>
+  <rect x="80" y="344" width="200" height="10" rx="4" fill="#e8f5ee"/>
+  <text x="85" y="352" font-size="9" fill="#1a1822">"by_login" on "lastLogin"</text>
+
+  <!-- users key range example -->
+  <rect x="70" y="370" width="220" height="42" rx="6" fill="#fff" stroke="#d97843" stroke-width="1"/>
+  <text x="80" y="386" font-size="9" font-weight="bold" fill="#d97843">Key Range Query</text>
+  <text x="80" y="402" font-size="8" fill="#1a1822">IDBKeyRange.bound("a@", "b@") on by_email</text>
+
+  <!-- Arrow from key range to records -->
+  <line x1="180" y1="370" x2="180" y2="265" stroke="#d97843" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arrowOrange)"/>
+
+  <!-- Object Store: products -->
+  <rect x="325" y="100" width="250" height="370" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="325" y="100" width="250" height="28" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="119" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Object Store: "products"</text>
+  <text x="450" y="143" text-anchor="middle" font-size="10" fill="#1a1822">keyPath: "sku"</text>
+
+  <!-- products records -->
+  <rect x="340" y="155" width="220" height="110" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="350" y="172" font-size="10" font-weight="bold" fill="#1a1822">Records</text>
+  <text x="350" y="190" font-size="9" fill="#1a1822">{ sku: "WDG-001", name: "Widget A",</text>
+  <text x="355" y="203" font-size="9" fill="#1a1822">  category: "hardware", price: 29.99 }</text>
+  <text x="350" y="221" font-size="9" fill="#1a1822">{ sku: "WDG-002", name: "Widget B",</text>
+  <text x="355" y="234" font-size="9" fill="#1a1822">  category: "software", price: 49.99 }</text>
+  <text x="350" y="252" font-size="9" fill="#888">... 128,450 more records</text>
+
+  <!-- products indexes -->
+  <rect x="340" y="275" width="220" height="85" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1"/>
+  <text x="350" y="292" font-size="10" font-weight="bold" fill="#2f9d74">Indexes (B-tree)</text>
+  <rect x="350" y="300" width="200" height="18" rx="4" fill="#e8f5ee"/>
+  <text x="355" y="313" font-size="9" fill="#1a1822">"by_category" on "category"</text>
+  <rect x="350" y="322" width="200" height="18" rx="4" fill="#e8f5ee"/>
+  <text x="355" y="335" font-size="9" fill="#1a1822">"by_price" on "price"</text>
+  <rect x="350" y="344" width="200" height="10" rx="4" fill="#e8f5ee"/>
+  <text x="355" y="352" font-size="9" fill="#1a1822">"by_name" on "name"</text>
+
+  <!-- products cursor example -->
+  <rect x="340" y="370" width="220" height="42" rx="6" fill="#fff" stroke="#d97843" stroke-width="1"/>
+  <text x="350" y="386" font-size="9" font-weight="bold" fill="#d97843">Cursor Iteration</text>
+  <text x="350" y="402" font-size="8" fill="#1a1822">openCursor(range, "next") on by_price</text>
+
+  <!-- Object Store: orders -->
+  <rect x="595" y="100" width="260" height="370" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="595" y="100" width="260" height="28" rx="8" fill="#6d5bd0"/>
+  <text x="725" y="119" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Object Store: "orders"</text>
+  <text x="725" y="143" text-anchor="middle" font-size="10" fill="#1a1822">keyPath: "orderId" (autoIncrement)</text>
+
+  <!-- orders records -->
+  <rect x="610" y="155" width="230" height="110" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="620" y="172" font-size="10" font-weight="bold" fill="#1a1822">Records</text>
+  <text x="620" y="190" font-size="9" fill="#1a1822">{ orderId: 1, userId: 1,</text>
+  <text x="625" y="203" font-size="9" fill="#1a1822">  items: ["WDG-001"], status: "shipped",</text>
+  <text x="625" y="216" font-size="9" fill="#1a1822">  total: 29.99, createdAt: Date }</text>
+  <text x="620" y="237" font-size="9" fill="#1a1822">{ orderId: 2, userId: 2,</text>
+  <text x="625" y="250" font-size="9" fill="#1a1822">  items: ["WDG-002"], status: "pending" }</text>
+
+  <!-- orders indexes -->
+  <rect x="610" y="275" width="230" height="85" rx="6" fill="#fff" stroke="#2f9d74" stroke-width="1"/>
+  <text x="620" y="292" font-size="10" font-weight="bold" fill="#2f9d74">Indexes (B-tree)</text>
+  <rect x="620" y="300" width="210" height="18" rx="4" fill="#e8f5ee"/>
+  <text x="625" y="313" font-size="9" fill="#1a1822">"by_userId" on "userId"</text>
+  <rect x="620" y="322" width="210" height="18" rx="4" fill="#e8f5ee"/>
+  <text x="625" y="335" font-size="9" fill="#1a1822">"by_status" on "status"</text>
+  <rect x="620" y="344" width="210" height="10" rx="4" fill="#e8f5ee"/>
+  <text x="625" y="352" font-size="9" fill="#1a1822">"by_date" on "createdAt"</text>
+
+  <!-- orders transaction example -->
+  <rect x="610" y="370" width="230" height="42" rx="6" fill="#fff" stroke="#d97843" stroke-width="1"/>
+  <text x="620" y="386" font-size="9" font-weight="bold" fill="#d97843">Transaction Scope</text>
+  <text x="620" y="402" font-size="8" fill="#1a1822">readwrite on ["orders","products"]</text>
+
+  <!-- Legend -->
+  <rect x="70" y="425" width="12" height="12" rx="2" fill="#6d5bd0"/>
+  <text x="88" y="436" font-size="9" fill="#1a1822">Object Store / Database</text>
+  <rect x="220" y="425" width="12" height="12" rx="2" fill="#2f9d74"/>
+  <text x="238" y="436" font-size="9" fill="#1a1822">Indexes (B-tree)</text>
+  <rect x="350" y="425" width="12" height="12" rx="2" fill="#d97843"/>
+  <text x="368" y="436" font-size="9" fill="#1a1822">Query Operations</text>
+  <text x="520" y="436" font-size="9" fill="#888">Same-origin policy: protocol + host + port</text>
+
+  <!-- Relationship arrows between stores -->
+  <text x="450" y="458" text-anchor="middle" font-size="9" fill="#888">orders.userId --> users.id    |    orders.items[] --> products.sku</text>
+  <text x="450" y="472" text-anchor="middle" font-size="9" fill="#888">Relationships are application-enforced (no foreign keys in IndexedDB)</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowOrange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#d97843"/>
+    </marker>
+  </defs>
+</svg>

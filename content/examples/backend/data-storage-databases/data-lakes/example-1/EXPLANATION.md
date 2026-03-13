@@ -1,0 +1,1 @@
+Raw -> cleaned -> curated lifecycle.

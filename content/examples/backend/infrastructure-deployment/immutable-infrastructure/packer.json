@@ -1,0 +1,20 @@
+{
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "region": "us-east-1",
+      "source_ami": "ami-123456",
+      "instance_type": "t3.micro",
+      "ssh_username": "ec2-user"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "sudo yum install -y nodejs",
+        "sudo mkdir -p /opt/app"
+      ]
+    }
+  ]
+}

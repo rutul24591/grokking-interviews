@@ -1,0 +1,1 @@
+Freeze risky deploys when budget is exhausted.

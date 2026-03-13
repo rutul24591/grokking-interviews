@@ -1,0 +1,41 @@
+// .eleventy.js - Fetch data during build
+module.exports = function(eleventyConfig) {
+  // Add global data from API
+  eleventyConfig.addGlobalData('posts', async () => {
+    const response = await fetch('https://cms.example.com/posts');
+    return response.json();
+  });
+
+  return {
+    dir: {
+      input: 'src',
+      output: '_site'
+    }
+  };
+};
+
+// src/blog/posts.11ty.js - Generate pages from data
+class BlogPosts {
+  data() {
+    return {
+      pagination: {
+        data: 'posts',
+        size: 1,
+        alias: 'post',
+      },
+      permalink: (data) => `/blog/\${data.post.slug}/`,
+    };
+  }
+
+  render(data) {
+    return `
+      <article>
+        <h1>\${data.post.title}</h1>
+        <time>\${data.post.publishedAt}</time>
+        <div>\${data.post.content}</div>
+      </article>
+    `;
+  }
+}
+
+module.exports = BlogPosts;

@@ -1,0 +1,21 @@
+// Before
+const MAX_RETRIES = 3;
+const TIMEOUT = 1000 * 60 * 5; // 5 minutes in ms
+const API_VERSION = "v" + 2;
+const IS_PROD = process.env.NODE_ENV === "production";
+const DEBUG = !IS_PROD;
+
+if (DEBUG) {
+  enableDevTools();
+}
+
+for (let i = 0; i < MAX_RETRIES; i++) {
+  attemptConnection(TIMEOUT);
+}
+
+// After constant folding (production build):
+// IS_PROD = true, DEBUG = false → if block removed
+for(let i=0;i<3;i++)attemptConnection(300000);
+// TIMEOUT computed: 1000 * 60 * 5 = 300000
+// API_VERSION = "v2" (if used elsewhere)
+// DEBUG block entirely eliminated

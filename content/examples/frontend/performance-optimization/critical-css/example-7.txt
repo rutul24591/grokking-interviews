@@ -1,0 +1,31 @@
+// tailwind.config.js
+module.exports = {
+  // Tailwind scans these files and only generates classes that are used
+  content: [
+    './app/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+  ],
+  // Output CSS is already small (10-30KB), but can still benefit
+  // from critical CSS inlining for the above-the-fold subset
+};
+
+// === PostCSS pipeline with critical CSS ===
+// postcss.config.js
+module.exports = {
+  plugins: {
+    'tailwindcss': {},
+    'autoprefixer': {},
+    'cssnano': {
+      preset: ['default', {
+        // Aggressive minification for production
+        discardComments: { removeAll: true },
+        normalizeWhitespace: true,
+      }],
+    },
+  },
+};
+
+// After Tailwind purging:
+// - Full CSS: ~25KB (compressed ~6KB)
+// - Critical CSS: ~8KB (compressed ~2KB)
+// - Combined with inlining, first paint needs only ~2KB of CSS

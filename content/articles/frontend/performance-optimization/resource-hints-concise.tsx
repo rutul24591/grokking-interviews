@@ -54,14 +54,14 @@ export default function ResourceHintsConciseArticle() {
           them early removes that latency from the critical path.
         </p>
         <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`<!-- Resolve DNS for your API domain and CDN -->
+          <code>{`<!-- Resolve DNS for your API domain and CDN --&gt;
 <link rel="dns-prefetch" href="https://api.example.com" />
 <link rel="dns-prefetch" href="https://cdn.example.com" />
 <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
 
 <!-- Cost: negligible (just a DNS lookup, ~1KB UDP packet)
      Benefit: saves 20-120ms per domain on first request
-     Browser support: universal (even IE11) -->`}</code>
+     Browser support: universal (even IE11) --&gt;`}</code>
         </pre>
         <p>
           <strong>When to use:</strong> For any third-party domain your page will contact. It is so cheap
@@ -76,7 +76,7 @@ export default function ResourceHintsConciseArticle() {
           server, so limit preconnects to 2-4 critical origins.
         </p>
         <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`<!-- Full connection setup for critical external origins -->
+          <code>{`<!-- Full connection setup for critical external origins --&gt;
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preconnect" href="https://api.example.com" />
@@ -85,11 +85,11 @@ export default function ResourceHintsConciseArticle() {
      Without it: connection is for non-CORS requests (scripts, images)
      With it: connection is for CORS requests (fonts, fetch API)
      Google Fonts needs BOTH origins — .googleapis.com for CSS,
-     .gstatic.com (crossorigin) for the font files themselves -->
+     .gstatic.com (crossorigin) for the font files themselves --&gt;
 
 <!-- Cost: DNS + TCP + TLS (~100-300ms of work done early)
      Connections idle-timeout after ~10s if unused
-     Limit to 2-4 origins to avoid resource waste -->`}</code>
+     Limit to 2-4 origins to avoid resource waste --&gt;`}</code>
         </pre>
         <p>
           <strong>When to use:</strong> For origins where you <em>know</em> you will fetch resources within
@@ -103,19 +103,19 @@ export default function ResourceHintsConciseArticle() {
           it in the HTTP cache. When the user navigates to the next page, the resource is already cached.
         </p>
         <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`<!-- Prefetch the next page's JS bundle -->
+          <code>{`<!-- Prefetch the next page's JS bundle --&gt;
 <link rel="prefetch" href="/static/js/dashboard.chunk.js" />
 
-<!-- Prefetch a data endpoint for the likely next page -->
+<!-- Prefetch a data endpoint for the likely next page --&gt;
 <link rel="prefetch" href="/api/dashboard/summary" as="fetch" crossorigin />
 
-<!-- Prefetch CSS for the next page -->
+<!-- Prefetch CSS for the next page --&gt;
 <link rel="prefetch" href="/static/css/dashboard.css" as="style" />
 
-<!-- Dynamic prefetch on hover (common pattern) -->
+<!-- Dynamic prefetch on hover (common pattern) --&gt;
 <script>
-document.querySelectorAll('a[data-prefetch]').forEach(link => {
-  link.addEventListener('mouseenter', () => {
+document.querySelectorAll('a[data-prefetch]').forEach(link =&gt; {
+  link.addEventListener('mouseenter', () =&gt; {
     const prefetchLink = document.createElement('link');
     prefetchLink.rel = 'prefetch';
     prefetchLink.href = link.href;
@@ -126,7 +126,7 @@ document.querySelectorAll('a[data-prefetch]').forEach(link => {
 
 <!-- Cost: full resource download at LOW priority (idle time)
      Stored in HTTP cache for ~5 minutes
-     Browser may ignore if user is on Save-Data or slow connection -->`}</code>
+     Browser may ignore if user is on Save-Data or slow connection --&gt;`}</code>
         </pre>
         <p>
           <strong>When to use:</strong> For resources needed by the next likely navigation. Great for
@@ -141,7 +141,7 @@ document.querySelectorAll('a[data-prefetch]').forEach(link => {
           loaded by other scripts.
         </p>
         <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`<!-- Preload a critical font (discovered late in CSS) -->
+          <code>{`<!-- Preload a critical font (discovered late in CSS) --&gt;
 <link
   rel="preload"
   href="/fonts/Inter-Bold.woff2"
@@ -150,7 +150,7 @@ document.querySelectorAll('a[data-prefetch]').forEach(link => {
   crossorigin
 />
 
-<!-- Preload the hero image (LCP element) -->
+<!-- Preload the hero image (LCP element) --&gt;
 <link
   rel="preload"
   href="/images/hero-banner.webp"
@@ -158,10 +158,10 @@ document.querySelectorAll('a[data-prefetch]').forEach(link => {
   type="image/webp"
 />
 
-<!-- Preload a critical script not in the initial HTML -->
+<!-- Preload a critical script not in the initial HTML --&gt;
 <link rel="preload" href="/static/js/critical-widget.js" as="script" />
 
-<!-- Preload with media query (responsive images) -->
+<!-- Preload with media query (responsive images) --&gt;
 <link
   rel="preload"
   href="/images/hero-mobile.webp"
@@ -179,7 +179,7 @@ document.querySelectorAll('a[data-prefetch]').forEach(link => {
      Content-Security-Policy compliance. Without it, the browser
      fetches at low priority and may double-fetch the resource.
 
-     Common "as" values: script, style, font, image, fetch -->`}</code>
+     Common "as" values: script, style, font, image, fetch --&gt;`}</code>
         </pre>
         <p>
           <strong>When to use:</strong> For resources critical to the current page that the browser
@@ -306,7 +306,7 @@ export const metadata = {
 import { useCallback } from 'react';
 
 function NavLink({ href, children }) {
-  const handleMouseEnter = useCallback(() => {
+  const handleMouseEnter = useCallback(() =&gt; {
     const link = document.createElement('link');
     link.rel = 'prefetch';
     link.href = href;
@@ -321,14 +321,14 @@ function NavLink({ href, children }) {
 }
 
 // Prefetch on route-level with React.lazy + manual hint
-const Dashboard = React.lazy(() => import('./pages/Dashboard'));
+const Dashboard = React.lazy(() =&gt; import('./pages/Dashboard'));
 
 // Prefetch the chunk after initial load
-useEffect(() => {
-  const timer = requestIdleCallback(() => {
+useEffect(() =&gt; {
+  const timer = requestIdleCallback(() =&gt; {
     import('./pages/Dashboard'); // warms the cache
   });
-  return () => cancelIdleCallback(timer);
+  return () =&gt; cancelIdleCallback(timer);
 }, []);`}</code>
         </pre>
       </section>

@@ -1,0 +1,75 @@
+import { useEffect, useMemo, useReducer } from "react";
+
+type LoadState =
+  | { status: "idle" }
+  | { status: "loading"; requestId: string; startedAt: number }
+  | { status: "success"; requestId: string; finishedAt: number }
+  | { status: "error"; requestId: string; message: string };
+
+type Action =
+  | { type: "FETCH_START"; requestId: string }
+  | { type: "FETCH_SUCCESS"; requestId: string }
+  | { type: "FETCH_ERROR"; requestId: string; message: string };
+
+function reducer(state: LoadState, action: Action): LoadState {
+  switch (action.type) {
+    case "FETCH_START":
+      return { status: "loading", requestId: action.requestId, startedAt: Date.now() };
+    case "FETCH_SUCCESS":
+      if (state.status !== "loading" || state.requestId !== action.requestId) return state;
+      return { status: "success", requestId: action.requestId, finishedAt: Date.now() };
+    case "FETCH_ERROR":
+      if (state.status !== "loading" || state.requestId !== action.requestId) return state;
+      return { status: "error", requestId: action.requestId, message: action.message };
+    default:
+      return state;
+  }
+}
+
+function useDelayedFlag(active: boolean, delayMs: number) {
+  const [show, setShow] = useReducer((_: boolean, next: boolean) => next, false);
+  useEffect(() => {
+    if (!active) {
+      setShow(false);
+      return;
+    }
+    const id = setTimeout(() => setShow(true), delayMs);
+    return () => clearTimeout(id);
+  }, [active, delayMs]);
+  return show;
+}
+
+export function ProfilePanel() {
+  const [state, dispatch] = useReducer(reducer, { status: "idle" });
+  const isLoading = state.status === "loading";
+  const showSkeleton = useDelayedFlag(isLoading, 300);
+
+  const requestId = useMemo(() => crypto.randomUUID(), [state.status]);
+
+  useEffect(() => {
+    if (!isLoading) return;
+    let cancelled = false;
+
+    async function fetchProfile() {
+      try {
+        const res = await fetch("/api/profile", { headers: { "x-request-id": requestId } });
+        if (!res.ok) throw new Error("Fetch failed");
+        if (!cancelled) dispatch({ type: "FETCH_SUCCESS", requestId });
+      } catch (err) {
+        if (!cancelled) dispatch({ type: "FETCH_ERROR", requestId, message: "Try again." });
+      }
+    }
+
+    fetchProfile();
+    return () => {
+      cancelled = true;
+    };
+  }, [isLoading, requestId]);
+
+  return (
+    <section aria-busy={isLoading} aria-live="polite">
+      {showSkeleton ? <div className="skeleton" /> : <div className="content" />}
+      {state.status === "error" && <button onClick={() => dispatch({ type: "FETCH_START", requestId })}>Retry</button>}
+    </section>
+  );
+}

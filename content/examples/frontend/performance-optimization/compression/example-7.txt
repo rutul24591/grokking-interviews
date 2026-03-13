@@ -1,0 +1,20 @@
+// next.config.js
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // Next.js Gzip compression is ON by default.
+  // Disable it when your CDN / reverse proxy handles compression:
+  compress: false,
+
+  // If using output: 'standalone', compression is also handled
+  // by the standalone server — disable if behind Nginx/CDN.
+  output: 'standalone',
+};
+
+module.exports = nextConfig;
+
+// Why disable built-in compression?
+// 1. Nginx/CDN compress more efficiently (native C code vs Node.js)
+// 2. CDN can serve pre-compressed files (.br, .gz) with zero CPU cost
+// 3. Avoids double-compression if both Node.js and proxy compress
+// 4. CDN handles Brotli natively — Next.js only does Gzip by default

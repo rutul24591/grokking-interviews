@@ -1,0 +1,1 @@
+Dashboards should map to user journeys, not internal components.

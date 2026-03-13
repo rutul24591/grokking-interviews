@@ -1,0 +1,1 @@
+Snapshot isolation reads a consistent view without blocking writers.

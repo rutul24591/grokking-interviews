@@ -1,0 +1,1 @@
+WAL ensures durability by persisting intent before applying changes.

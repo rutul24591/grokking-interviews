@@ -1,0 +1,7 @@
+{
+  "tasks": [
+    { "id": "extract", "deps": [] },
+    { "id": "transform", "deps": ["extract"] },
+    { "id": "load", "deps": ["transform"] }
+  ]
+}

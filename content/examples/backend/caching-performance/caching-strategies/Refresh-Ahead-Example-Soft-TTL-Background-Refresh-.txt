@@ -1,0 +1,2 @@
+async function getWithRefreshAhead(key, loader, ttl = 300, refreshWindow = 60) { const cached = await redis.get(key); if (cached) { const { value, expiresAt } = JSON.parse(cached); const now = Date.now(); if (expiresAt - now < refreshWindow * 1000) { // Fire and forget refresh loader().then((fresh) => { redis.set(key, JSON.stringify({ value: fresh, expiresAt: now + ttl * 1000 }), 'EX', ttl); }); } return value; } const value = await loader(); const expiresAt = Date.now() + ttl * 1000; await redis.set(key, JSON.stringify({ value, expiresAt }), 'EX', ttl); return value;
+}

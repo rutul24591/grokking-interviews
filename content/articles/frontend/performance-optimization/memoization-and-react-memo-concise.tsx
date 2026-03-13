@@ -65,7 +65,7 @@ function Dashboard() {
   return (
     <div>
       {/* This re-renders on every click */}
-      <button onClick={() => setCount(c => c + 1)}>
+      <button onClick={() => setCount(c =&gt; c + 1)}&gt;
         Clicked {count} times
       </button>
 
@@ -79,10 +79,10 @@ function Dashboard() {
 // Custom comparison function
 const MemoizedList = memo(
   function UserList({ users, filter }) {
-    return users.filter(filter).map(u => <UserCard key={u.id} user={u} />);
+    return users.filter(filter).map(u =&gt; <UserCard key={u.id} user={u} />);
   },
   // Only re-render if users array or filter function identity changed
-  (prevProps, nextProps) => {
+  (prevProps, nextProps) =&gt; {
     return (
       prevProps.users === nextProps.users &&
       prevProps.filter === nextProps.filter
@@ -104,17 +104,17 @@ const MemoizedList = memo(
 function ProductList({ products, searchTerm, sortBy }) {
   // ❌ BAD: Filters and sorts on EVERY render (even if products didn't change)
   const displayProducts = products
-    .filter(p => p.name.includes(searchTerm))
-    .sort((a, b) => a[sortBy] - b[sortBy]);
+    .filter(p =&gt; p.name.includes(searchTerm))
+    .sort((a, b) =&gt; a[sortBy] - b[sortBy]);
 
   // ✅ GOOD: Only recalculates when dependencies change
-  const displayProducts = useMemo(() => {
+  const displayProducts = useMemo(() =&gt; {
     return products
-      .filter(p => p.name.includes(searchTerm))
-      .sort((a, b) => a[sortBy] - b[sortBy]);
+      .filter(p =&gt; p.name.includes(searchTerm))
+      .sort((a, b) =&gt; a[sortBy] - b[sortBy]);
   }, [products, searchTerm, sortBy]);
 
-  return displayProducts.map(p => <ProductCard key={p.id} product={p} />);
+  return displayProducts.map(p =&gt; <ProductCard key={p.id} product={p} />);
 }
 
 // Good use cases for useMemo:
@@ -123,12 +123,12 @@ function ProductList({ products, searchTerm, sortBy }) {
 // - Creating derived data structures (maps, sets, indexes)
 // - Expensive math or formatting operations
 
-const stats = useMemo(() => {
+const stats = useMemo(() =&gt; {
   return {
-    total: items.reduce((sum, i) => sum + i.price, 0),
-    average: items.reduce((sum, i) => sum + i.price, 0) / items.length,
-    max: Math.max(...items.map(i => i.price)),
-    grouped: Object.groupBy(items, i => i.category),
+    total: items.reduce((sum, i) =&gt; sum + i.price, 0),
+    average: items.reduce((sum, i) =&gt; sum + i.price, 0) / items.length,
+    max: Math.max(...items.map(i =&gt; i.price)),
+    grouped: Object.groupBy(items, i =&gt; i.category),
   };
 }, [items]);`}</code>
         </pre>
@@ -152,18 +152,18 @@ function Toolbar() {
   const [count, setCount] = useState(0);
 
   // ❌ BAD: New function reference every render → MemoizedButton re-renders
-  const handleSave = () => {
+  const handleSave = () =&gt; {
     saveData();
   };
 
   // ✅ GOOD: Stable function reference → MemoizedButton skips re-render
-  const handleSave = useCallback(() => {
+  const handleSave = useCallback(() =&gt; {
     saveData();
   }, []); // Empty deps: function never changes
 
-  const handleDelete = useCallback((id) => {
+  const handleDelete = useCallback((id) =&gt; {
     deleteItem(id);
-    setCount(c => c + 1);
+    setCount(c =&gt; c + 1);
   }, []); // Uses functional updater, no deps needed
 
   return (
@@ -185,7 +185,7 @@ function SimpleForm() {
   const [value, setValue] = useState('');
 
   // Don't wrap this — it adds overhead with no benefit
-  const handleChange = (e) => setValue(e.target.value);
+  const handleChange = (e) =&gt; setValue(e.target.value);
 
   return <input onChange={handleChange} value={value} />;
 }`}</code>
@@ -203,12 +203,12 @@ function SimpleForm() {
           <code>{`// With React Compiler, you just write normal code:
 function ProductList({ products, searchTerm }) {
   // Compiler automatically memoizes this computation
-  const filtered = products.filter(p =>
+  const filtered = products.filter(p =&gt;
     p.name.includes(searchTerm)
   );
 
   // Compiler automatically memoizes child renders
-  return filtered.map(p => <ProductCard key={p.id} product={p} />);
+  return filtered.map(p =&gt; <ProductCard key={p.id} product={p} />);
 }
 
 // No memo(), useMemo(), or useCallback() needed!
@@ -227,7 +227,7 @@ module.exports = {
         <h2>When NOT to Memoize</h2>
         <ul className="space-y-2">
           <li>
-            <strong>Cheap components:</strong> If a component renders in {'<'}1ms, memoization overhead
+            <strong>Cheap components:</strong> If a component renders in {'&lt;'}1ms, memoization overhead
             (prop comparison) may cost more than just re-rendering.
           </li>
           <li>
@@ -254,7 +254,7 @@ module.exports = {
             creates a new object every render. Move constants outside the component or use useMemo.
           </li>
           <li>
-            <strong>Inline callbacks break memo:</strong> <code>{'<Button onClick={() => save()} />'}</code>
+            <strong>Inline callbacks break memo:</strong> <code>{'<Button onClick={() => save()} /&gt;'}</code>
             creates a new function every render. Use useCallback if Button is memoized.
           </li>
           <li>

@@ -1,0 +1,9 @@
+errors:
+  transient:
+    retry: true
+    maxRetries: 3
+    backoffMs: 200
+  persistent:
+    retry: false
+    fallback: true
+    fallbackMode: cached-balance

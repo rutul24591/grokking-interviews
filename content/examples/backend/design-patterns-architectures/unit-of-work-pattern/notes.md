@@ -1,0 +1,1 @@
+Commit as a single transaction when possible.

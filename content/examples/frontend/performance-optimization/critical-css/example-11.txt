@@ -1,0 +1,45 @@
+// Build script: generate critical CSS per route
+const critical = require('critical');
+const fs = require('fs');
+
+const routes = [
+  { path: '/', name: 'home' },
+  { path: '/pricing', name: 'pricing' },
+  { path: '/blog', name: 'blog' },
+  { path: '/dashboard', name: 'dashboard' },
+  { path: '/login', name: 'login' },
+];
+
+async function generatePerRoute() {
+  const criticalCSSMap = {};
+
+  for (const route of routes) {
+    const { css } = await critical.generate({
+      src: `http://localhost:3000\${route.path}`,
+      dimensions: [
+        { width: 375, height: 667 },
+        { width: 1280, height: 800 },
+      ],
+      minify: true,
+    });
+
+    criticalCSSMap[route.name] = css;
+    console.log(`\${route.name}: \${css.length} bytes`);
+  }
+
+  // Write map for server to use at runtime
+  fs.writeFileSync(
+    './dist/critical-css-map.json',
+    JSON.stringify(criticalCSSMap)
+  );
+}
+
+// Server reads the map and injects per-route critical CSS
+const criticalCSSMap = require('./dist/critical-css-map.json');
+
+app.get('*', (req, res) => {
+  const routeName = mapPathToRoute(req.path);
+  const criticalCSS = criticalCSSMap[routeName] || criticalCSSMap['home'];
+
+  res.send(renderHTML({ criticalCSS, route: req.path }));
+});

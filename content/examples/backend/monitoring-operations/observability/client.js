@@ -1,0 +1,1 @@
+fetch('/checkout', { headers: { 'x-trace-id': 't-1' } });

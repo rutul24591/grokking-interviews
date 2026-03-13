@@ -1,0 +1,1 @@
+Include timestamp, corrId, userId, and service name in each log.

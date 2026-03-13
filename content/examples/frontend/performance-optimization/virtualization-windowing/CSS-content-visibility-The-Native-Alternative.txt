@@ -1,0 +1,20 @@
+/* CSS-only virtualization for moderate lists (100-500 items) */
+.list-item {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 60px; /* Estimated height when hidden */
+}
+
+/*
+  How it works:
+  - content-visibility: auto tells the browser to skip rendering for
+    off-screen elements
+  - contain-intrinsic-size provides a placeholder size so the scrollbar
+    remains accurate
+  - The browser handles everything — no JavaScript needed
+
+  Limitations:
+  - Less control than JS virtualization
+  - Browser support: Chrome 85+, Edge 85+, Firefox 125+, Safari 18+
+  - Less aggressive — still creates all DOM nodes, just skips rendering
+  - Not suitable for 10K+ items (DOM nodes still exist in memory)
+*/

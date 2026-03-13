@@ -1,0 +1,1 @@
+Choose compression based on latency and CPU budgets.

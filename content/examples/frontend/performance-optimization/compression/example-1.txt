@@ -1,0 +1,13 @@
+// Original string (simplified example):
+"the cat sat on the mat near the cat"
+
+// After LZ77-style encoding (conceptual):
+"the cat sat on [back 18, copy 4]mat near [back 22, copy 8]"
+
+// The repeated phrases "the " and "the cat" are replaced with
+// back-references, reducing total byte count.
+
+// In real web content, repetition is everywhere:
+// HTML: <div class="card"><div class="card"><div class="card">
+// CSS: margin: 0; padding: 0; margin: 0; padding: 0;
+// JS: function handleClick() { ... } function handleSubmit() { ... }

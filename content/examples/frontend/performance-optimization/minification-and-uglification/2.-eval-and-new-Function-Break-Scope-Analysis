@@ -1,0 +1,24 @@
+// PROBLEM: eval references variables by name as strings
+function calculateBonus(salary, multiplier) {
+  const formula = 'salary * multiplier'; // Referencing by name
+  return eval(formula); // After mangling: eval('salary * multiplier')
+  // But salary → a, multiplier → b ... eval still looks for 'salary'!
+}
+
+// After mangling:
+function c(a, b) {
+  const d = 'salary * multiplier';
+  return eval(d); // ReferenceError: salary is not defined
+}
+
+// FIX: Avoid eval entirely (it's also a security risk)
+// If unavoidable, disable mangling for that file:
+{
+  mangle: false, // For specific files only
+}
+
+// Or use new Function with explicit parameter binding:
+function calculateBonus(salary, multiplier) {
+  const fn = new Function('salary', 'multiplier', 'return salary * multiplier');
+  return fn(salary, multiplier); // Parameters are explicitly bound
+}

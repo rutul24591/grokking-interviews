@@ -1,0 +1,1 @@
+Geolocation service calculates distances and resolves coordinates.

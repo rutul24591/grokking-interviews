@@ -1,0 +1,28 @@
+# Install
+pnpm add -D webpack-bundle-analyzer
+
+// webpack.config.js
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+module.exports = {
+  plugins: [
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',       // Generates HTML file
+      reportFilename: 'bundle-report.html',
+      openAnalyzer: false,           // Don't auto-open in browser
+      defaultSizes: 'gzip',         // Show gzipped sizes
+    }),
+  ],
+};
+
+// For Next.js — use the official plugin
+// next.config.js
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+module.exports = withBundleAnalyzer({
+  // your Next.js config
+});
+
+// Run: ANALYZE=true pnpm build

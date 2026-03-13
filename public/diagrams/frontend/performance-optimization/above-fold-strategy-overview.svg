@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1822">Above-the-Fold Optimization Strategy Map</text>
+
+  <!-- Central node -->
+  <rect x="340" y="48" width="220" height="44" rx="10" fill="#6d5bd0" stroke="#5a4bb0" stroke-width="2"/>
+  <text x="450" y="68" text-anchor="middle" font-size="12" fill="#fff" font-weight="700">Above-the-Fold</text>
+  <text x="450" y="83" text-anchor="middle" font-size="10" fill="#e8e4f3">Optimization Strategies</text>
+
+  <!-- Connecting lines from center -->
+  <!-- Left branch -->
+  <line x1="340" y1="70" x2="200" y2="70" stroke="#c8c3d6" stroke-width="1.5"/>
+  <line x1="200" y1="70" x2="200" y2="130" stroke="#c8c3d6" stroke-width="1.5"/>
+  <line x1="200" y1="70" x2="90" y2="130" stroke="#c8c3d6" stroke-width="1.5"/>
+
+  <!-- Right branch -->
+  <line x1="560" y1="70" x2="700" y2="70" stroke="#c8c3d6" stroke-width="1.5"/>
+  <line x1="700" y1="70" x2="700" y2="130" stroke="#c8c3d6" stroke-width="1.5"/>
+  <line x1="700" y1="70" x2="810" y2="130" stroke="#c8c3d6" stroke-width="1.5"/>
+
+  <!-- Bottom branches -->
+  <line x1="450" y1="92" x2="450" y2="130" stroke="#c8c3d6" stroke-width="1.5"/>
+  <line x1="450" y1="92" x2="330" y2="130" stroke="#c8c3d6" stroke-width="1.5"/>
+  <line x1="450" y1="92" x2="570" y2="130" stroke="#c8c3d6" stroke-width="1.5"/>
+
+  <!-- Strategy 1: Critical CSS -->
+  <rect x="25" y="130" width="150" height="110" rx="8" fill="#fff" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="25" y="130" width="150" height="26" rx="8" fill="#d97843"/>
+  <rect x="25" y="144" width="150" height="12" fill="#d97843"/>
+  <text x="100" y="149" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">Critical CSS</text>
+  <text x="38" y="174" font-size="9" fill="#1a1822">• Extract above-fold CSS</text>
+  <text x="38" y="188" font-size="9" fill="#1a1822">• Inline in &lt;head&gt;</text>
+  <text x="38" y="202" font-size="9" fill="#1a1822">• Async load remainder</text>
+  <text x="38" y="216" font-size="9" fill="#1a1822">• Target ≤ 14KB total</text>
+  <text x="100" y="234" text-anchor="middle" font-size="8" fill="#d97843" font-weight="600">Impacts: FCP</text>
+
+  <!-- Strategy 2: Resource Hints -->
+  <rect x="130" y="130" width="150" height="110" rx="8" fill="#fff" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="130" y="130" width="150" height="26" rx="8" fill="#2f9d74"/>
+  <rect x="130" y="144" width="150" height="12" fill="#2f9d74"/>
+  <text x="205" y="149" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">Resource Hints</text>
+  <text x="143" y="174" font-size="9" fill="#1a1822">• preload LCP image</text>
+  <text x="143" y="188" font-size="9" fill="#1a1822">• preconnect origins</text>
+  <text x="143" y="202" font-size="9" fill="#1a1822">• prefetch next pages</text>
+  <text x="143" y="216" font-size="9" fill="#1a1822">• fetchpriority="high"</text>
+  <text x="205" y="234" text-anchor="middle" font-size="8" fill="#2f9d74" font-weight="600">Impacts: LCP, TTFB</text>
+
+  <!-- Strategy 3: JS Loading -->
+  <rect x="260" y="130" width="150" height="110" rx="8" fill="#fff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="260" y="130" width="150" height="26" rx="8" fill="#6d5bd0"/>
+  <rect x="260" y="144" width="150" height="12" fill="#6d5bd0"/>
+  <text x="335" y="149" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">JS Loading</text>
+  <text x="273" y="174" font-size="9" fill="#1a1822">• defer / async scripts</text>
+  <text x="273" y="188" font-size="9" fill="#1a1822">• Code splitting</text>
+  <text x="273" y="202" font-size="9" fill="#1a1822">• React.lazy + Suspense</text>
+  <text x="273" y="216" font-size="9" fill="#1a1822">• dynamic import()</text>
+  <text x="335" y="234" text-anchor="middle" font-size="8" fill="#6d5bd0" font-weight="600">Impacts: TTI, FCP</text>
+
+  <!-- Strategy 4: Image Optimization -->
+  <rect x="390" y="130" width="150" height="110" rx="8" fill="#fff" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="390" y="130" width="150" height="26" rx="8" fill="#d97843"/>
+  <rect x="390" y="144" width="150" height="12" fill="#d97843"/>
+  <text x="465" y="149" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">Image Optimization</text>
+  <text x="403" y="174" font-size="9" fill="#1a1822">• Responsive srcset</text>
+  <text x="403" y="188" font-size="9" fill="#1a1822">• WebP / AVIF formats</text>
+  <text x="403" y="202" font-size="9" fill="#1a1822">• Explicit dimensions</text>
+  <text x="403" y="216" font-size="9" fill="#1a1822">• Lazy load below-fold</text>
+  <text x="465" y="234" text-anchor="middle" font-size="8" fill="#d97843" font-weight="600">Impacts: LCP, CLS</text>
+
+  <!-- Strategy 5: Font Optimization -->
+  <rect x="500" y="130" width="150" height="110" rx="8" fill="#fff" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="500" y="130" width="150" height="26" rx="8" fill="#2f9d74"/>
+  <rect x="500" y="144" width="150" height="12" fill="#2f9d74"/>
+  <text x="575" y="149" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">Font Loading</text>
+  <text x="513" y="174" font-size="9" fill="#1a1822">• font-display: swap</text>
+  <text x="513" y="188" font-size="9" fill="#1a1822">• Preload key fonts</text>
+  <text x="513" y="202" font-size="9" fill="#1a1822">• Subsetting</text>
+  <text x="513" y="216" font-size="9" fill="#1a1822">• next/font auto-opt</text>
+  <text x="575" y="234" text-anchor="middle" font-size="8" fill="#2f9d74" font-weight="600">Impacts: FCP, CLS</text>
+
+  <!-- Strategy 6: Server Strategies -->
+  <rect x="630" y="130" width="150" height="110" rx="8" fill="#fff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="630" y="130" width="150" height="26" rx="8" fill="#6d5bd0"/>
+  <rect x="630" y="144" width="150" height="12" fill="#6d5bd0"/>
+  <text x="705" y="149" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">Server Strategies</text>
+  <text x="643" y="174" font-size="9" fill="#1a1822">• SSR above-fold HTML</text>
+  <text x="643" y="188" font-size="9" fill="#1a1822">• Streaming SSR</text>
+  <text x="643" y="202" font-size="9" fill="#1a1822">• React Server Comp.</text>
+  <text x="643" y="216" font-size="9" fill="#1a1822">• Edge rendering</text>
+  <text x="705" y="234" text-anchor="middle" font-size="8" fill="#6d5bd0" font-weight="600">Impacts: TTFB, FCP, LCP</text>
+
+  <!-- Strategy 7: Measurement -->
+  <rect x="740" y="130" width="140" height="110" rx="8" fill="#fff" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="740" y="130" width="140" height="26" rx="8" fill="#d97843"/>
+  <rect x="740" y="144" width="140" height="12" fill="#d97843"/>
+  <text x="810" y="149" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">Measurement</text>
+  <text x="753" y="174" font-size="9" fill="#1a1822">• Lighthouse CI</text>
+  <text x="753" y="188" font-size="9" fill="#1a1822">• WebPageTest</text>
+  <text x="753" y="202" font-size="9" fill="#1a1822">• CrUX / RUM</text>
+  <text x="753" y="216" font-size="9" fill="#1a1822">• DevTools filmstrip</text>
+  <text x="810" y="234" text-anchor="middle" font-size="8" fill="#d97843" font-weight="600">Validates all metrics</text>
+
+  <!-- Bottom: Impact flow -->
+  <rect x="40" y="265" width="820" height="30" rx="6" fill="#e8e4f3"/>
+  <text x="450" y="285" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Core Web Vitals Impact Chain</text>
+
+  <!-- Flow boxes -->
+  <rect x="40" y="310" width="150" height="65" rx="8" fill="#6d5bd0"/>
+  <text x="115" y="333" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">Server Response</text>
+  <text x="115" y="350" text-anchor="middle" font-size="9" fill="#e8e4f3">Edge + Cache + Stream</text>
+  <text x="115" y="366" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">TTFB ≤ 800ms</text>
+
+  <text x="205" y="345" text-anchor="middle" font-size="18" fill="#1a1822">→</text>
+
+  <rect x="220" y="310" width="150" height="65" rx="8" fill="#2f9d74"/>
+  <text x="295" y="333" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">First Paint</text>
+  <text x="295" y="350" text-anchor="middle" font-size="9" fill="#e6f5ef">Critical CSS + Fonts</text>
+  <text x="295" y="366" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">FCP ≤ 1800ms</text>
+
+  <text x="385" y="345" text-anchor="middle" font-size="18" fill="#1a1822">→</text>
+
+  <rect x="400" y="310" width="150" height="65" rx="8" fill="#d97843"/>
+  <text x="475" y="333" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">Largest Paint</text>
+  <text x="475" y="350" text-anchor="middle" font-size="9" fill="#fef3ec">Hero Image + Preload</text>
+  <text x="475" y="366" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">LCP ≤ 2500ms</text>
+
+  <text x="565" y="345" text-anchor="middle" font-size="18" fill="#1a1822">→</text>
+
+  <rect x="580" y="310" width="150" height="65" rx="8" fill="#6d5bd0"/>
+  <text x="655" y="333" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">Visual Stability</text>
+  <text x="655" y="350" text-anchor="middle" font-size="9" fill="#e8e4f3">Dimensions + Fallback</text>
+  <text x="655" y="366" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">CLS ≤ 0.1</text>
+
+  <text x="745" y="345" text-anchor="middle" font-size="18" fill="#1a1822">→</text>
+
+  <rect x="760" y="310" width="110" height="65" rx="8" fill="#2f9d74"/>
+  <text x="815" y="333" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">Interactive</text>
+  <text x="815" y="350" text-anchor="middle" font-size="9" fill="#e6f5ef">Defer + Split JS</text>
+  <text x="815" y="366" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">INP ≤ 200ms</text>
+
+  <!-- Bottom summary -->
+  <rect x="40" y="395" width="820" height="90" rx="8" fill="#fff" stroke="#1a1822" stroke-width="1"/>
+  <text x="450" y="418" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a1822">Optimization Priority Order for Above-the-Fold</text>
+
+  <rect x="60" y="430" width="24" height="18" rx="4" fill="#d97843"/>
+  <text x="72" y="443" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">1</text>
+  <text x="95" y="443" font-size="10" fill="#1a1822">Inline critical CSS</text>
+
+  <rect x="210" y="430" width="24" height="18" rx="4" fill="#d97843"/>
+  <text x="222" y="443" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">2</text>
+  <text x="245" y="443" font-size="10" fill="#1a1822">Preload LCP image</text>
+
+  <rect x="370" y="430" width="24" height="18" rx="4" fill="#d97843"/>
+  <text x="382" y="443" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">3</text>
+  <text x="405" y="443" font-size="10" fill="#1a1822">Defer JS below fold</text>
+
+  <rect x="540" y="430" width="24" height="18" rx="4" fill="#d97843"/>
+  <text x="552" y="443" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">4</text>
+  <text x="575" y="443" font-size="10" fill="#1a1822">Optimize fonts</text>
+
+  <rect x="690" y="430" width="24" height="18" rx="4" fill="#d97843"/>
+  <text x="702" y="443" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">5</text>
+  <text x="725" y="443" font-size="10" fill="#1a1822">Set image dims</text>
+
+  <text x="60" y="472" font-size="10" fill="#555">Diminishing returns after step 3. Measure before optimizing — use Lighthouse + CrUX to identify actual bottlenecks.</text>
+</svg>

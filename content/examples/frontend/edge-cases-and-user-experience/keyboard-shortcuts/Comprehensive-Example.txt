@@ -1,0 +1,39 @@
+import { useEffect } from "react";
+
+type Shortcut = {
+  keys: string;
+  description: string;
+  handler: () => void;
+  scope?: string;
+};
+
+const registry: Shortcut[] = [];
+
+export function registerShortcut(shortcut: Shortcut) {
+  registry.push(shortcut);
+  return () => {
+    const idx = registry.indexOf(shortcut);
+    if (idx >= 0) registry.splice(idx, 1);
+  };
+}
+
+export function useGlobalShortcuts() {
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      const key = (e.ctrlKey || e.metaKey ? "mod+" : "") + e.key.toLowerCase();
+      const match = registry.find(s => s.keys === key);
+      if (match) {
+        e.preventDefault();
+        match.handler();
+      }
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+}
+
+export function CommandPalette() {
+  useGlobalShortcuts();
+  useEffect(() => registerShortcut({ keys: "mod+k", description: "Open palette", handler: () => console.log("open") }), []);
+  return null;
+}

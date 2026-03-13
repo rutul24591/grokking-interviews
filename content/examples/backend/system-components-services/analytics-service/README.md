@@ -1,0 +1,1 @@
+Analytics service collects events and aggregates counts for reporting.

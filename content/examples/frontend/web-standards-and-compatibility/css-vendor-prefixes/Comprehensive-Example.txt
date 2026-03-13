@@ -1,0 +1,27 @@
+// file: postcss.config.js
+module.exports = {
+  plugins: {
+    autoprefixer: {}
+  }
+};
+
+// file: package.json
+{
+  "browserslist": ["> 0.5%", "last 2 versions", "not dead"]
+}
+
+// file: styles/button.css
+.button {
+  user-select: none;
+  display: flex;
+}
+
+// file: dist/button.css (generated)
+.button {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}

@@ -1,0 +1,63 @@
+// app/products/[id]/page.tsx
+import { Suspense } from 'react';
+import { ProductDetails } from './ProductDetails';
+import { LiveInventory } from './LiveInventory';
+
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+}
+
+// ISR for stable product info (revalidate every hour)
+async function ProductPage({ params }: { params: { id: string } }) {
+  const product: Product = await fetch(
+    `https://api.example.com/products/\${params.id}`,
+    { next: { revalidate: 3600 } } // 1 hour
+  ).then(res => res.json());
+
+  return (
+    <article>
+      {/* Static content from ISR */}
+      <ProductDetails product={product} />
+
+      {/* Real-time inventory via client-side fetch */}
+      <Suspense fallback={<div>Loading inventory...</div>}>
+        <LiveInventory productId={product.id} />
+      </Suspense>
+    </article>
+  );
+}
+
+// components/LiveInventory.tsx - Client Component
+'use client';
+import { useEffect, useState } from 'react';
+
+export function LiveInventory({ productId }: { productId: string }) {
+  const [stock, setStock] = useState<number | null>(null);
+
+  useEffect(() => {
+    // Fetch real-time inventory client-side
+    fetch(`/api/inventory/\${productId}`)
+      .then(res => res.json())
+      .then(data => setStock(data.stock));
+
+    // Poll every 30 seconds for updates
+    const interval = setInterval(async () => {
+      const res = await fetch(`/api/inventory/\${productId}`);
+      const data = await res.json();
+      setStock(data.stock);
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [productId]);
+
+  return (
+    <div>
+      <p className="text-sm">
+        {stock === null ? 'Loading...' : `\${stock} in stock`}
+      </p>
+    </div>
+  );
+}

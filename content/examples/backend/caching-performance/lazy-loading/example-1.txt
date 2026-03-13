@@ -1,0 +1,2 @@
+app.get('/orders', async (req, res) => { const limit = parseInt(req.query.limit || '20', 10); const cursor = req.query.cursor || null; const result = await db.listOrders(limit, cursor); return res.json({ items: result.items, nextCursor: result.nextCursor });
+});

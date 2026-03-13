@@ -1,320 +1,364 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
-  id: "article-frontend-streaming--concise",
+  id: "article-frontend-streaming--extensive",
   title: "Streaming SSR",
   description: "Understand streaming server-side rendering for faster time-to-first-byte and improved perceived performance with progressive content delivery.",
   category: "frontend",
   subcategory: "rendering-strategies",
   slug: "streaming-ssr",
-  version: "concise",
-  wordCount: 1900,
-  readingTime: 8,
+  wordCount: 3500,
+  readingTime: 14,
   lastUpdated: "2026-03-06",
-  tags: ["frontend", "rendering", "SSR", "streaming", "React", "performance"],
+  tags: ["frontend", "rendering", "SSR", "streaming", "React", "performance", "Suspense"],
+  relatedTopics: ["server-side-rendering", "progressive-hydration", "selective-hydration"],
 };
 
 export default function StreamingSsrConciseArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Quick Overview</h2>
+        <h2>Definition & Context</h2>
         <p>
-          <strong>Streaming SSR</strong> sends HTML to the client progressively in chunks as they{'\''}re rendered,
-          rather than waiting for the entire page to complete. Traditional SSR blocks on the slowest operation (if
-          one API takes 10s, users wait 10s). Streaming SSR sends the page shell immediately (100-200ms TTFB) and
-          streams slow content later, dramatically improving perceived performance.
+          <strong>Streaming SSR (Server-Side Rendering)</strong> is a rendering technique that sends HTML to the
+          client progressively in chunks as they're rendered on the server, rather than waiting for the entire page
+          to complete before sending anything. This allows the browser to start displaying and parsing HTML
+          immediately while the server continues generating remaining content in the background.
         </p>
         <p>
-          <strong>Core Mechanism:</strong> Uses React 18{'\''}s <code>renderToPipeableStream</code> and Suspense
-          boundaries to identify fast vs. slow components. Fast components (shell, navigation, static content)
-          stream first. Slow components (data fetching, APIs) show fallbacks and stream when ready. Enables
-          selective hydration where critical components become interactive first.
+          Traditional SSR (synchronous SSR) has a critical limitation: the server must finish rendering the entire
+          HTML document before sending any bytes to the client. If your page fetches data from 5 APIs and one takes
+          10 seconds, the user sees nothing for 10 seconds—a blank screen or loading spinner. The TTFB (Time to
+          First Byte) is blocked by the slowest operation. <strong>Streaming SSR solves this</strong> by flushing
+          HTML to the client as soon as parts are ready.
+        </p>
+        <p>
+          The pattern gained mainstream adoption with <strong>React 18</strong> (March 2022), which introduced
+          <code>renderToPipeableStream</code> (Node.js) and <code>renderToReadableStream</code> (Web Streams API).
+          These APIs work with React Suspense boundaries to enable granular streaming. <strong>Next.js 13+</strong>
+          (with App Router), <strong>Remix</strong>, and <strong>Hydrogen</strong> (Shopify) have embraced
+          streaming as the default rendering mode. Streaming SSR represents the evolution of SSR: from
+          all-or-nothing blocking renders to progressive, chunk-by-chunk delivery that improves perceived
+          performance dramatically.
         </p>
       </section>
 
       <section>
-        <h2>Key Concepts</h2>
+        <h2>Core Concepts</h2>
+        <p>Understanding Streaming SSR requires grasping several fundamental concepts:</p>
         <ul>
           <li>
-            <strong>Progressive HTML Streaming:</strong> Server sends HTML in chunks using HTTP chunked transfer
-            encoding. Browser parses and displays early chunks (shell) while later chunks (content) are still being
-            generated. Users see structure in 100-200ms instead of waiting 2-5s for everything.
+            <strong>Progressive HTML Streaming:</strong> Instead of buffering the entire HTML document, the server
+            sends HTML in chunks as they're rendered. The browser can start parsing and displaying early chunks
+            (header, navigation, hero) while later chunks (comments, recommendations) are still being generated.
+            Uses HTTP chunked transfer encoding under the hood.
           </li>
           <li>
-            <strong>Suspense Boundaries:</strong> React Suspense wraps slow components. While loading, React sends
-            fallback UI (loading spinner, skeleton) immediately, then replaces with real content once ready. Each
-            Suspense boundary streams independently.
+            <strong>Suspense Boundaries:</strong> React Suspense wraps components that may be slow (data fetching,
+            lazy imports). While these components are loading, React sends a fallback (loading UI) immediately,
+            then replaces it with real content once ready. Suspense is the key to granular streaming—it tells React
+            what can be deferred vs. what must be rendered immediately.
           </li>
           <li>
-            <strong>Out-of-Order Streaming:</strong> Chunks can arrive in any order. React injects content wherever
-            it belongs via inline scripts. Fast footer can stream before slow header widget. Order doesn{'\''}t
-            matter.
+            <strong>Out-of-Order Streaming:</strong> Chunks don't have to arrive in document order. React can stream
+            the page shell first, then inject slow components wherever they belong in the DOM tree via inline scripts.
+            For example, a slow product recommendation widget at the top can be replaced after fast footer content
+            has already been sent.
           </li>
           <li>
-            <strong>Selective Hydration:</strong> Pairs with progressive hydration. React hydrates components as
-            their JavaScript arrives, rather than waiting for the entire bundle. Critical components hydrate first;
-            below-the-fold components hydrate later.
+            <strong>Selective Hydration:</strong> React 18 pairs streaming with selective hydration. Instead of
+            waiting for all JavaScript to download before hydrating anything, React hydrates components as their
+            code arrives. The page becomes interactive progressively: header first, then main content, then
+            sidebar, etc. This drastically reduces Time to Interactive (TTI).
           </li>
           <li>
-            <strong>Shell-First Strategy:</strong> The "shell" (layout, navigation, header, footer) renders and
-            streams immediately. The "content" (articles, comments, dynamic data) defers with Suspense. Shell
-            provides instant visual feedback.
+            <strong>Shell vs. Content:</strong> The "shell" (layout, navigation, header, footer) typically renders
+            fast and streams first, providing instant structure. The "content" (articles, comments, dynamic data)
+            streams afterward. The shell gives users immediate visual feedback even if content is slow.
+          </li>
+          <li>
+            <strong>Automatic Code-Splitting:</strong> With Suspense lazy imports, code-split chunks are
+            automatically prioritized. If a suspended component enters the viewport, its JavaScript bundle is
+            fetched with higher priority. This works seamlessly with streaming SSR.
+          </li>
+          <li>
+            <strong>Back-Pressure Handling:</strong> Streaming SSR respects network back-pressure. If the client
+            is on a slow connection and can{'\''}t consume HTML fast enough, the server pauses rendering until the
+            network buffer clears. This prevents memory exhaustion on the server.
           </li>
         </ul>
       </section>
 
       <section>
-        <h2>Quick Example</h2>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`// Next.js 13+ App Router - Streaming by default
-import { Suspense } from 'react';
+        <h2>Architecture & Flow</h2>
+        <p>The Streaming SSR architecture follows this request-response pattern:</p>
 
-export default async function ProductPage({ params }) {
-  return (
-    <div>
-      {/* Shell: Fast, streams immediately */}
-      <header>Navigation</header>
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Streaming SSR Request Flow</h3>
+          <ol className="space-y-3">
+            <li><strong>1. User Request:</strong> Browser requests <code>/product/123</code></li>
+            <li><strong>2. Server Starts Rendering:</strong> React begins server rendering the component tree</li>
+            <li><strong>3. Flush Shell Immediately:</strong> Send HTML shell (header, nav, layout) as soon as ready (~50-100ms)</li>
+            <li><strong>4. Browser Starts Parsing:</strong> User sees page structure instantly (TTFB {'&lt;'}100ms, FCP {'&lt;'}200ms)</li>
+            <li><strong>5. Suspense Boundaries Detected:</strong> React encounters Suspense around slow components</li>
+            <li><strong>6. Stream Fallback UI:</strong> Send loading placeholders (skeleton UI) for suspended components</li>
+            <li><strong>7. Continue Rendering Other Parts:</strong> Stream fast components (static sections, cached data)</li>
+            <li><strong>8. Resolve Slow Data:</strong> API calls complete, database queries finish</li>
+            <li><strong>9. Stream Real Content:</strong> Replace fallbacks with actual content via inline script tags</li>
+            <li><strong>10. Close Stream:</strong> Send final HTML chunk; connection closes</li>
+            <li><strong>11. Selective Hydration:</strong> React hydrates interactive components progressively as JS downloads</li>
+            <li><strong>12. Fully Interactive:</strong> All components hydrated; page fully interactive (TTI)</li>
+          </ol>
+        </div>
 
-      {/* Fast: Cached image */}
-      <ProductImage id={params.id} />
+        <ArticleImage
+          src="/diagrams/frontend/rendering-strategies/streaming-ssr-sequence.svg"
+          alt="Streaming SSR Flow Sequence"
+          caption="Streaming SSR Flow - Progressive delivery of HTML chunks as they're rendered"
+        />
 
-      {/* Suspense: Slow database query */}
-      <Suspense fallback={<ProductSkeleton />}>
-        <ProductDetails id={params.id} />
-      </Suspense>
+        <p>
+          This progressive approach transforms the user experience. With traditional SSR, users wait 2-3 seconds
+          seeing nothing, then everything appears at once. With Streaming SSR, they see the shell in 100ms, main
+          content in 800ms, and additional content trickles in. The page feels fast even when parts are slow.
+        </p>
 
-      {/* Suspense: Slow API call */}
-      <Suspense fallback={<ReviewsSkeleton />}>
-        <Reviews id={params.id} />
-      </Suspense>
-
-      {/* Shell: Fast, streams with header */}
-      <footer>© 2026</footer>
-    </div>
-  );
-}
-
-// ProductDetails.tsx - Async Server Component
-async function ProductDetails({ id }) {
-  // 800ms database query
-  const product = await db.query('SELECT * FROM products WHERE id = ?', [id]);
-
-  return (
-    <div>
-      <h1>{product.name}</h1>
-      <p>{product.description}</p>
-      <button>Add to Cart</button>
-    </div>
-  );
-}
-
-// Timeline:
-// 100ms: Browser receives shell (header, image, fallbacks, footer)
-// 800ms: ProductDetails streams in, replaces skeleton
-// 2000ms: Reviews stream in, replace skeleton
-//
-// Traditional SSR: Wait 2000ms, then everything appears
-// Streaming SSR: Structure visible in 100ms, content fills progressively`}</code>
-        </pre>
+        <ArticleImage
+          src="/diagrams/frontend/rendering-strategies/streaming-ssr-architecture.svg"
+          alt="Streaming SSR Architecture"
+          caption="Streaming SSR Architecture - Suspense boundaries enable progressive, out-of-order streaming"
+        />
       </section>
 
       <section>
-        <h2>Pros & Cons</h2>
+        <h2>Implementation Examples</h2>
+        <p>Here{'\''}s how Streaming SSR is implemented in modern React frameworks:</p>
+
+        <div className="space-y-6">
+          <div>
+            <h3 className="mb-3 font-semibold">Next.js 13+ App Router (Streaming by Default)</h3>
+            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+          </div>
+
+          <div>
+            <h3 className="mb-3 font-semibold">React 18 + Express (Manual Streaming)</h3>
+            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+          </div>
+
+          <div>
+            <h3 className="mb-3 font-semibold">Remix Deferred Data (Streaming Pattern)</h3>
+            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Streaming vs. Traditional SSR</h2>
         <table className="w-full">
           <thead>
             <tr>
-              <th className="text-left">Pros</th>
-              <th className="text-left">Cons</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Fast TTFB:</strong> Shell in 100-200ms vs. 2-5s traditional SSR</td>
-              <td><strong>Complex Errors:</strong> Can{'\''}t show full error page after shell sent</td>
-            </tr>
-            <tr>
-              <td><strong>Better UX:</strong> Users see structure instantly, no blank screens</td>
-              <td><strong>Caching Hard:</strong> CDNs struggle to cache streaming responses</td>
-            </tr>
-            <tr>
-              <td><strong>Selective Hydration:</strong> Critical content interactive first</td>
-              <td><strong>Server Load:</strong> Connections stay open longer (higher memory)</td>
-            </tr>
-            <tr>
-              <td><strong>Parallel Fetching:</strong> Multiple Suspense resolve simultaneously</td>
-              <td><strong>Debugging:</strong> Harder to inspect partial HTML streams</td>
-            </tr>
-            <tr>
-              <td><strong>Core Web Vitals:</strong> Improves FCP, LCP, TTI</td>
-              <td><strong>HTTP/2 Required:</strong> Works best with HTTP/2 multiplexing</td>
-            </tr>
-            <tr>
-              <td><strong>Resilient:</strong> Slow operations don{'\''}t block fast ones</td>
-              <td><strong>SEO Risk:</strong> Crawlers may timeout before all content streams</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <section>
-        <h2>When to Use</h2>
-        <p><strong>Ideal Use Cases:</strong></p>
-        <ul>
-          <li>
-            <strong>Pages with Mixed Performance:</strong> When some parts are fast (cached, static) and others are
-            slow (API calls, database queries). Product pages, dashboards, news articles.
-          </li>
-          <li>
-            <strong>Content-Heavy Sites:</strong> E-commerce (product details fast, reviews slow), news (article
-            fast, comments slow), social media (feed skeleton immediate, posts stream).
-          </li>
-          <li>
-            <strong>User Experience Priority:</strong> When perceived performance matters more than total load time.
-            Users prefer seeing structure in 100ms vs. staring at blank screens for 3s.
-          </li>
-          <li>
-            <strong>Modern React Apps:</strong> Next.js 13+, Remix with deferred data, or custom React 18 apps
-            using <code>renderToPipeableStream</code>. Works seamlessly with App Router.
-          </li>
-        </ul>
-
-        <p><strong>Not Ideal For:</strong></p>
-        <ul>
-          <li>
-            <strong>Fully Static Sites:</strong> Blogs, marketing pages where everything is fast and cached. SSG
-            (Static Site Generation) is simpler and more cacheable than streaming SSR.
-          </li>
-          <li>
-            <strong>Aggressive CDN Caching:</strong> If your strategy relies on caching full HTML pages at the edge,
-            streaming is incompatible. Traditional SSR or SSG works better for CDN caching.
-          </li>
-          <li>
-            <strong>Simple Pages:</strong> Pages with no slow operations don{'\''}t benefit. Adds complexity without
-            performance gains. Use traditional SSR or SSG instead.
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Comparison: Streaming vs Traditional SSR</h2>
-        <table className="w-full">
-          <thead>
-            <tr>
-              <th className="text-left">Metric</th>
+              <th className="text-left">Aspect</th>
               <th className="text-left">Streaming SSR</th>
               <th className="text-left">Traditional SSR</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>TTFB</td>
-              <td>100-200ms</td>
-              <td>1-5s</td>
+              <td><strong>TTFB</strong></td>
+              <td>Fast (100-200ms) - shell streams immediately</td>
+              <td>Slow (1-5s) - waits for all data</td>
             </tr>
             <tr>
-              <td>FCP</td>
-              <td>150-300ms</td>
-              <td>1-5s</td>
+              <td><strong>FCP</strong></td>
+              <td>Excellent (150-300ms) - users see structure instantly</td>
+              <td>Poor (1-5s) - nothing visible until complete</td>
             </tr>
             <tr>
-              <td>User Experience</td>
-              <td>Progressive display, feels fast</td>
-              <td>Long blank screen, then everything appears</td>
+              <td><strong>Perceived Performance</strong></td>
+              <td>Feels fast - progressive content display</td>
+              <td>Feels slow - long blank screen</td>
             </tr>
             <tr>
-              <td>Hydration</td>
-              <td>Selective (progressive)</td>
-              <td>All-at-once (blocking)</td>
+              <td><strong>Error Handling</strong></td>
+              <td>Complex - partial content already sent</td>
+              <td>Simple - can show full error page</td>
             </tr>
             <tr>
-              <td>Error Handling</td>
-              <td>Complex (inline errors after shell)</td>
-              <td>Simple (full error page)</td>
+              <td><strong>SEO</strong></td>
+              <td>Excellent - all content eventually in HTML</td>
+              <td>Excellent - all content in HTML</td>
             </tr>
             <tr>
-              <td>Caching</td>
-              <td>Difficult (streaming responses)</td>
-              <td>Easy (static HTML documents)</td>
+              <td><strong>Caching</strong></td>
+              <td>Complex - hard to cache streaming responses</td>
+              <td>Simple - cache full HTML document</td>
+            </tr>
+            <tr>
+              <td><strong>Hydration</strong></td>
+              <td>Selective - hydrates progressively</td>
+              <td>All-at-once - waits for full JS bundle</td>
+            </tr>
+            <tr>
+              <td><strong>Server Resources</strong></td>
+              <td>Higher - connection stays open longer</td>
+              <td>Lower - connection closes quickly</td>
             </tr>
           </tbody>
         </table>
+
+        <ArticleImage
+          src="/diagrams/frontend/rendering-strategies/streaming-ssr-performance.svg"
+          alt="Streaming SSR vs Traditional SSR Performance"
+          caption="Performance Timeline - Streaming SSR delivers content progressively vs. Traditional SSR's all-or-nothing approach"
+        />
       </section>
 
       <section>
-        <h2>Frameworks Supporting Streaming</h2>
+        <h2>Trade-offs & Limitations</h2>
+        <p><strong>Advantages:</strong></p>
         <ul>
           <li>
-            <strong>Next.js 13+:</strong> App Router uses streaming by default. Suspense boundaries automatically
-            enable progressive rendering. <code>loading.tsx</code> files create Suspense fallbacks.
+            <strong>Instant First Paint:</strong> Users see page structure in 100-200ms, dramatically improving
+            perceived performance and reducing bounce rates. No more long blank screens.
           </li>
           <li>
-            <strong>Remix:</strong> Use <code>defer()</code> in loaders to mark data as streaming. <code>{'<Await>'}</code>
-            component handles deferred data with Suspense. Granular control over what streams.
+            <strong>Better UX for Slow Operations:</strong> Even if one API takes 10 seconds, users still see the
+            rest of the page immediately. Slow operations don{'\''}t block fast ones.
           </li>
           <li>
-            <strong>React 18 + Express:</strong> Manual setup with <code>renderToPipeableStream</code> or
-            <code>renderToReadableStream</code>. Full control but requires more boilerplate.
+            <strong>Selective Hydration:</strong> Pairs with progressive hydration. Critical above-the-fold content
+            becomes interactive first; below-the-fold content hydrates later. Reduces TTI.
           </li>
           <li>
-            <strong>Hydrogen (Shopify):</strong> Built-in streaming SSR for e-commerce. Optimized for product pages
-            with slow data fetching.
+            <strong>Improved Core Web Vitals:</strong> FCP and LCP are significantly better. TTFB is lower. INP
+            (Interaction to Next Paint) benefits from selective hydration.
+          </li>
+          <li>
+            <strong>Parallel Data Fetching:</strong> Multiple Suspense boundaries can resolve in parallel. Traditional
+            SSR often fetches sequentially. Streaming naturally parallelizes.
+          </li>
+        </ul>
+
+        <p><strong>Disadvantages:</strong></p>
+        <ul>
+          <li>
+            <strong>Complex Error Handling:</strong> If an error occurs after the shell is sent, you can{'\''}t show
+            a full error page. Must handle errors inline. Error boundaries become critical.
+          </li>
+          <li>
+            <strong>Caching Challenges:</strong> CDNs and reverse proxies struggle to cache streaming responses.
+            Traditional SSR can cache full HTML; streaming responses are dynamic by nature. Requires edge computing
+            or cache-everything-except-Suspense strategies.
+          </li>
+          <li>
+            <strong>SEO Complexity:</strong> While all content eventually arrives, search engine crawlers may have
+            timeouts. If a Suspense boundary takes 10+ seconds, crawlers might not see that content. Test carefully.
+          </li>
+          <li>
+            <strong>Increased Server Load:</strong> Connections stay open longer (seconds vs. milliseconds).
+            More concurrent connections means higher memory usage. Requires robust server infrastructure.
+          </li>
+          <li>
+            <strong>Debugging Difficulty:</strong> Inspecting streamed HTML is harder. Chrome DevTools shows partial
+            HTML as it arrives. Traditional SSR sends one complete document that{'\''}s easy to inspect.
+          </li>
+          <li>
+            <strong>HTTP/1.1 Limitations:</strong> Works best over HTTP/2+ for multiplexing. HTTP/1.1 head-of-line
+            blocking can delay chunks. Modern deployment typically requires HTTP/2.
           </li>
         </ul>
       </section>
 
       <section>
-        <h2>Interview Tips</h2>
-        <ul>
-          <li>
-            <strong>Define Clearly:</strong> "Streaming SSR sends HTML in chunks as they{'\''}re rendered, rather
-            than waiting for the entire page. Shell streams first (100ms), slow content streams later."
-          </li>
-          <li>
-            <strong>Key API:</strong> React 18{'\''}s <code>renderToPipeableStream</code> (Node.js) and
-            <code>renderToReadableStream</code> (Web Streams). Suspense boundaries mark streaming points.
-          </li>
-          <li>
-            <strong>TTFB Focus:</strong> Explain how streaming dramatically reduces TTFB (100-200ms vs. 2-5s). Users
-            see structure instantly instead of blank screens. This improves Core Web Vitals (FCP, LCP).
-          </li>
-          <li>
-            <strong>Selective Hydration:</strong> Mention that streaming pairs with selective hydration. Critical
-            components hydrate first, below-the-fold later. Reduces TTI.
-          </li>
-          <li>
-            <strong>Trade-offs:</strong> Be clear: better UX but harder caching. Complex error handling. Higher
-            server load (connections stay open). Not ideal for fully static sites.
-          </li>
-          <li>
-            <strong>Real Example:</strong> Describe product page: "Shell (header, nav) streams in 100ms. Product
-            image (cached) displays. Product details (database query, 800ms) stream next. Reviews (API, 2s) stream
-            last. User can read and add to cart while reviews load."
-          </li>
-          <li>
-            <strong>Framework Knowledge:</strong> Next.js 13+ uses streaming by default. Remix has <code>defer()</code>.
-            Show awareness of ecosystem and React 18 primitives.
-          </li>
-          <li>
-            <strong>When NOT to Use:</strong> Static blogs, pages needing aggressive CDN caching, or simple pages
-            with no slow operations. Interviewers value understanding limitations.
-          </li>
-        </ul>
+        <h2>Best Practices</h2>
+        <p>To build performant applications with Streaming SSR, follow these practices:</p>
+
+        <p><strong>Strategic Suspense Boundaries:</strong> Don{'\''}t wrap everything in Suspense. Wrap only slow operations (database queries, external APIs, heavy computations). Fast components should render in the shell for instant FCP. Over-using Suspense fragments the page and hurts perceived performance.</p>
+
+        <p><strong>Meaningful Fallback UI:</strong> Loading spinners are okay but skeleton screens are better. Show the shape of content (gray boxes, placeholder text) so users understand what{'\''}s coming. Match the skeleton to the actual layout for smooth transitions.</p>
+
+        <p><strong>Prioritize Critical Content:</strong> Ensure above-the-fold content (hero, main heading, navigation) is in the shell and renders fast. Below-the-fold content (comments, related articles, ads) can be deferred with Suspense.</p>
+
+        <p><strong>Error Boundaries Inside Suspense:</strong> Wrap Suspense boundaries with error boundaries to handle failures gracefully. If a suspended component errors, show an inline error message instead of crashing the whole page.</p>
+
+        <p><strong>Test on Real Networks:</strong> Streaming shines on slow networks (3G, rural broadband) where progressive display keeps users engaged. Test with Chrome DevTools network throttling. Ensure timeouts are reasonable (3-5s max for Suspense).</p>
+
+        <p><strong>Monitor TTFB and FCP:</strong> Use Real User Monitoring (RUM) to track TTFB and FCP in production. Streaming should reduce TTFB to {'&lt;'}200ms and FCP to {'&lt;'}500ms. If not, identify slow shell components and optimize them.</p>
+
+        <p><strong>Consider Edge Rendering:</strong> Combine Streaming SSR with edge computing (Vercel Edge, Cloudflare Workers, Deno Deploy) to reduce server-to-client latency. Edge functions can stream HTML from locations close to users.</p>
       </section>
 
       <section>
-        <h2>Key Takeaways</h2>
+        <h2>Real-World Use Cases</h2>
+        <p>Streaming SSR excels in specific scenarios:</p>
+
         <ul>
-          <li>Streaming SSR = Progressive HTML delivery in chunks as they{'\''}re rendered</li>
-          <li>Reduces TTFB from 2-5s to 100-200ms by streaming shell immediately</li>
-          <li>Uses React Suspense to mark slow components for deferred streaming</li>
-          <li>Pairs with selective hydration for progressive interactivity</li>
-          <li>Best for pages with mixed fast/slow operations (e-commerce, dashboards, news)</li>
-          <li>Trade-off: Better UX vs. harder caching and error handling</li>
-          <li>Supported in Next.js 13+, Remix, and React 18 <code>renderToPipeableStream</code></li>
+          <li>
+            <strong>Product Pages with Reviews:</strong> Product details (title, price, description) load fast
+            from cache. Reviews fetch from API (2-3s). Stream product first, reviews stream later. User can read
+            description and add to cart while reviews load.
+          </li>
+          <li>
+            <strong>Dashboard with Multiple Widgets:</strong> Dashboard shell (nav, sidebar) renders immediately.
+            Each widget (analytics chart, notifications, activity feed) fetches data independently and streams when
+            ready. User sees structure instantly instead of staring at blank dashboard.
+          </li>
+          <li>
+            <strong>News Article Pages:</strong> Article text renders fast (static or cached). Comments, related
+            articles, and ads defer with Suspense. Core content (FCP) appears in 200ms; supplementary content
+            trickles in.
+          </li>
+          <li>
+            <strong>Social Media Feeds:</strong> Feed skeleton displays immediately. Posts stream in as they{'\''}re
+            fetched (paginated or lazy-loaded). User scrolls while content loads. Feels instant compared to
+            traditional SSR waiting for entire feed.
+          </li>
+          <li>
+            <strong>Search Results:</strong> Search UI (input, filters) renders in shell. Results stream as search
+            API responds. Facets and refinements (which require aggregation queries) defer with Suspense. Users
+            see structure instantly.
+          </li>
+        </ul>
+
+        <p>
+          Streaming SSR is <strong>not ideal</strong> for simple static pages (blogs, marketing sites) where
+          everything is fast and cacheable—traditional SSG or SSR is simpler. Also challenging for pages requiring
+          aggressive CDN caching, as streaming responses are hard to cache.
+        </p>
+      </section>
+
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul>
+          <li>
+            <a href="https://react.dev/reference/react-dom/server/renderToPipeableStream" target="_blank" rel="noopener noreferrer">
+              React renderToPipeableStream Documentation
+            </a> - Official guide to streaming SSR in React
+          </li>
+          <li>
+            <a href="https://nextjs.org/docs/app/building-your-application/routing/loading-ui-and-streaming" target="_blank" rel="noopener noreferrer">
+              Next.js Streaming and Suspense
+            </a> - Next.js implementation of streaming SSR
+          </li>
+          <li>
+            <a href="https://remix.run/docs/en/main/guides/streaming" target="_blank" rel="noopener noreferrer">
+              Remix Streaming Guide
+            </a> - Remix{'\''}s approach to deferred data and streaming
+          </li>
+          <li>
+            <a href="https://www.patterns.dev/posts/ssr" target="_blank" rel="noopener noreferrer">
+              Patterns.dev: Server-Side Rendering
+            </a> - Comprehensive guide including streaming patterns
+          </li>
+          <li>
+            <a href="https://web.dev/rendering-on-the-web/" target="_blank" rel="noopener noreferrer">
+              Web.dev: Rendering on the Web
+            </a> - Overview of rendering strategies including streaming
+          </li>
         </ul>
       </section>
     </ArticleLayout>

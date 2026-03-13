@@ -1,0 +1,2 @@
+const client = new UserService("localhost:50051", grpc.credentials.createInsecure());
+client.GetUser({ id: "1" }, console.log);

@@ -1,0 +1,30 @@
+// Reading progress bar — rAF throttle for smooth visuals
+function useReadingProgress() {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const updateProgress = throttleRAF(() => {
+      const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+      const totalScrollable = scrollHeight - clientHeight;
+      setProgress(totalScrollable > 0 ? scrollTop / totalScrollable : 0);
+    });
+
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', updateProgress);
+      updateProgress.cancel();
+    };
+  }, []);
+
+  return progress;
+}
+
+function ReadingProgressBar() {
+  const progress = useReadingProgress();
+  return (
+    <div
+      className="fixed top-0 left-0 h-1 bg-blue-500 transition-none"
+      style={{ width: `\${progress * 100}%` }}
+    />
+  );
+}

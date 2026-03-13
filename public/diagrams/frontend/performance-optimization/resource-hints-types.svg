@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#1a1822">Resource Hint Types</text>
+
+  <!-- Connection stages bar at top -->
+  <text x="450" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#666">Browser Connection Stages</text>
+  <rect x="100" y="75" width="150" height="28" rx="4" fill="#6d5bd0" opacity="0.3"/>
+  <text x="175" y="94" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#6d5bd0">DNS Lookup</text>
+  <rect x="260" y="75" width="150" height="28" rx="4" fill="#6d5bd0" opacity="0.5"/>
+  <text x="335" y="94" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#6d5bd0">TCP + TLS</text>
+  <rect x="420" y="75" width="200" height="28" rx="4" fill="#6d5bd0" opacity="0.7"/>
+  <text x="520" y="94" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#6d5bd0">HTTP Request</text>
+  <rect x="630" y="75" width="170" height="28" rx="4" fill="#6d5bd0"/>
+  <text x="715" y="94" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#fff">Response/Parse</text>
+
+  <!-- Arrows between stages -->
+  <path d="M250 89 L260 89" stroke="#6d5bd0" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path d="M410 89 L420 89" stroke="#6d5bd0" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path d="M620 89 L630 89" stroke="#6d5bd0" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- === dns-prefetch === -->
+  <rect x="40" y="130" width="400" height="75" rx="8" fill="#fff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="40" y="130" width="400" height="30" rx="8" fill="#6d5bd0"/>
+  <rect x="40" y="148" width="400" height="12" fill="#6d5bd0"/>
+  <text x="240" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#fff">dns-prefetch</text>
+  <text x="55" y="180" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Resolves DNS only. Saves 20-120ms. Cheapest hint.</text>
+  <text x="55" y="196" font-family="system-ui, sans-serif" font-size="11" fill="#666">&lt;link rel="dns-prefetch" href="//cdn.example.com"&gt;</text>
+  <!-- Coverage bar -->
+  <rect x="100" y="122" width="150" height="4" rx="2" fill="#6d5bd0"/>
+
+  <!-- === preconnect === -->
+  <rect x="460" y="130" width="400" height="75" rx="8" fill="#fff" stroke="#d97843" stroke-width="2"/>
+  <rect x="460" y="130" width="400" height="30" rx="8" fill="#d97843"/>
+  <rect x="460" y="148" width="400" height="12" fill="#d97843"/>
+  <text x="660" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#fff">preconnect</text>
+  <text x="475" y="180" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">DNS + TCP + TLS. Saves 100-300ms. Use for critical origins.</text>
+  <text x="475" y="196" font-family="system-ui, sans-serif" font-size="11" fill="#666">&lt;link rel="preconnect" href="https://fonts.gstatic.com"&gt;</text>
+  <!-- Coverage bar -->
+  <rect x="520" y="122" width="310" height="4" rx="2" fill="#d97843"/>
+
+  <!-- === prefetch === -->
+  <rect x="40" y="230" width="400" height="95" rx="8" fill="#fff" stroke="#2f9d74" stroke-width="2"/>
+  <rect x="40" y="230" width="400" height="30" rx="8" fill="#2f9d74"/>
+  <rect x="40" y="248" width="400" height="12" fill="#2f9d74"/>
+  <text x="240" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#fff">prefetch</text>
+  <text x="55" y="280" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Full download at LOW priority. For future navigations.</text>
+  <text x="55" y="296" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Stored in HTTP cache. Browser may ignore under pressure.</text>
+  <text x="55" y="316" font-family="system-ui, sans-serif" font-size="11" fill="#666">&lt;link rel="prefetch" href="/next-page-bundle.js"&gt;</text>
+  <!-- Coverage bar (full) -->
+  <rect x="100" y="222" width="700" height="4" rx="2" fill="#2f9d74" opacity="0.4"/>
+
+  <!-- === preload === -->
+  <rect x="460" y="230" width="400" height="95" rx="8" fill="#fff" stroke="#c44569" stroke-width="2"/>
+  <rect x="460" y="230" width="400" height="30" rx="8" fill="#c44569"/>
+  <rect x="460" y="248" width="400" height="12" fill="#c44569"/>
+  <text x="660" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#fff">preload</text>
+  <text x="475" y="280" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Full download at HIGH priority. For current page resources.</text>
+  <text x="475" y="296" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Mandatory fetch. Warns if unused within 3s.</text>
+  <text x="475" y="316" font-family="system-ui, sans-serif" font-size="11" fill="#666">&lt;link rel="preload" href="/font.woff2" as="font"&gt;</text>
+  <!-- Coverage bar (full) -->
+  <rect x="520" y="222" width="280" height="4" rx="2" fill="#c44569"/>
+
+  <!-- When to use section -->
+  <line x1="40" y1="350" x2="860" y2="350" stroke="#1a1822" stroke-width="1" stroke-dasharray="4,4" opacity="0.2"/>
+  <text x="450" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1a1822">When to Use Each Hint</text>
+
+  <!-- dns-prefetch use case -->
+  <circle cx="80" cy="415" r="22" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="80" y="419" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#6d5bd0">D</text>
+  <text x="115" y="410" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1a1822">3rd-party origins you may need</text>
+  <text x="115" y="426" font-family="system-ui, sans-serif" font-size="11" fill="#666">Analytics, ads, non-critical APIs</text>
+
+  <!-- preconnect use case -->
+  <circle cx="80" cy="460" r="22" fill="#d97843" opacity="0.15" stroke="#d97843" stroke-width="1.5"/>
+  <text x="80" y="464" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#d97843">C</text>
+  <text x="115" y="455" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1a1822">Critical 3rd-party origins (limit 2-4)</text>
+  <text x="115" y="471" font-family="system-ui, sans-serif" font-size="11" fill="#666">Font CDN, API server, image CDN</text>
+
+  <!-- prefetch use case -->
+  <circle cx="510" cy="415" r="22" fill="#2f9d74" opacity="0.15" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="510" y="419" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#2f9d74">F</text>
+  <text x="545" y="410" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1a1822">Next-page resources</text>
+  <text x="545" y="426" font-family="system-ui, sans-serif" font-size="11" fill="#666">JS bundles, data for likely navigation</text>
+
+  <!-- preload use case -->
+  <circle cx="510" cy="460" r="22" fill="#c44569" opacity="0.15" stroke="#c44569" stroke-width="1.5"/>
+  <text x="510" y="464" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#c44569">L</text>
+  <text x="545" y="455" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1a1822">Current page critical resources</text>
+  <text x="545" y="471" font-family="system-ui, sans-serif" font-size="11" fill="#666">Fonts, hero image, above-fold CSS-in-JS</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

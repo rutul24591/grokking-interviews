@@ -1,0 +1,3 @@
+async function getHotKey() { const key = 'hot:v1'; const cached = await redis.get(key); if (!cached) return refreshKey(); const data = JSON.parse(cached); if (Date.now() > data.softExpiry) { refreshKey(); } return data.value;
+} async function refreshKey() { const value = await db.getHotValue(); const payload = { value, softExpiry: Date.now() + 30000 }; await redis.set('hot:v1', JSON.stringify(payload), 'EX', 120); return value;
+}

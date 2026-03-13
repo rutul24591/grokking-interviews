@@ -1,0 +1,12 @@
+export const PrintStyles = () => (
+  <style>{
+    "@media print {\n" +
+    "  body { font-size: 12pt; color: #000; }\n" +
+    "  nav, button, .no-print { display: none !important; }\n" +
+    "  .page-break { page-break-before: always; }\n" +
+    "  table { width: 100%; border-collapse: collapse; }\n" +
+    "  th, td { border: 1px solid #333; padding: 4pt; }\n" +
+    "  thead { display: table-header-group; }\n" +
+    "}"
+  }</style>
+);

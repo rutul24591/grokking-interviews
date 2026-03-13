@@ -1,0 +1,40 @@
+import { memo } from 'react';
+
+// Method 1: Wrap the component declaration
+const ExpensiveChart = memo(function ExpensiveChart({ data, width, height }) {
+  // This only runs when data, width, or height change (by reference)
+  const processedData = heavyDataProcessing(data);
+
+  return (
+    <canvas width={width} height={height}>
+      {renderChart(processedData)}
+    </canvas>
+  );
+});
+
+// Method 2: Wrap an existing component
+function UserAvatar({ user, size }) {
+  return (
+    <img
+      src={user.avatarUrl}
+      alt={user.name}
+      width={size}
+      height={size}
+      className="rounded-full"
+    />
+  );
+}
+const MemoizedAvatar = memo(UserAvatar);
+
+// Method 3: Arrow function (less common)
+const ProductCard = memo(({ product, onAddToCart }) => {
+  return (
+    <div className="card">
+      <h3>{product.name}</h3>
+      <p>\${product.price}</p>
+      <button onClick={() => onAddToCart(product.id)}>
+        Add to Cart
+      </button>
+    </div>
+  );
+});

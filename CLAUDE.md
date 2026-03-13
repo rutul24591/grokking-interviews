@@ -43,6 +43,7 @@ pnpm lint
 ### State Management
 
 Uses Zustand with middleware patterns:
+
 - **Sidebar state** (`features/sidebar/sidebar.store.ts`): Persisted to localStorage with expand/collapse IDs, selection state, and mobile open state
 - **Theme state** (`features/theme/theme.store.ts`): Theme preference (light/dark/system) with localStorage persistence
 
@@ -51,6 +52,7 @@ Key pattern: Stores are created with `persist` middleware and handle SSR with `s
 ### Content System
 
 Content follows a hierarchical structure:
+
 1. **Category** (e.g., "System Design Concepts")
 2. **SubCategory** (e.g., "Frontend Concepts", "Backend Concepts")
 3. **SubCategoryItem** (e.g., "Rendering Strategies", "Performance Optimization")
@@ -58,6 +60,7 @@ Content follows a hierarchical structure:
 5. **Article** (actual content files in `content/`)
 
 **Content workflow**:
+
 - Text files in `concepts/` directory define the hierarchy (e.g., `frontend-concepts.txt`)
 - Format: Numbered sections for SubCategoryItems, bullets for Topics
 - Parsed via `lib/parseFrontendConcepts.ts` which generates unique IDs using slugification
@@ -87,6 +90,7 @@ Path alias `@/*` maps to root directory (configured in `tsconfig.json`).
 To add a new concept category or topic:
 
 1. **Update concept definition** in `concepts/` directory:
+
    ```
    1. New Subcategory Name
    • Topic One
@@ -105,4 +109,7 @@ To add a new concept category or topic:
 - Use semantic HTML and accessible patterns
 - Handle SSR/hydration carefully - check for `typeof window` before accessing browser APIs
 - Store UI state (expanded items, selections) in Zustand
-- Persist user preferences (theme, sidebar state) to localStorage with SSR-safe patterns
+- Persist user preferences (theme, sidebar state) to localStorage with SSR-safe patterns.
+- Each extensive article should possess in depth information for a staff/principal engineer interview prep/research work.
+- Each extensive article should also contain a comprehension example of code.
+- Do not use Mermaid for diagram creation. We will use svg from publicly available images from web.

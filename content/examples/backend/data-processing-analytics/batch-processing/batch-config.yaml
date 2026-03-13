@@ -1,0 +1,4 @@
+batch:
+  schedule: "0 2 * * *"
+  input: s3://warehouse/orders
+  output: s3://warehouse/daily_summary

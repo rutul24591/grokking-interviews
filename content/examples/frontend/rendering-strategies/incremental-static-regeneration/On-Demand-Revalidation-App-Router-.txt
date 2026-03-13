@@ -1,0 +1,40 @@
+// app/api/revalidate/route.ts
+import { revalidatePath, revalidateTag } from 'next/cache';
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function POST(request: NextRequest) {
+  const secret = request.nextUrl.searchParams.get('secret');
+
+  // Verify webhook secret
+  if (secret !== process.env.REVALIDATE_SECRET) {
+    return NextResponse.json({ message: 'Invalid secret' }, { status: 401 });
+  }
+
+  try {
+    const body = await request.json();
+    const { productId, type } = body;
+
+    if (type === 'path') {
+      // Revalidate specific path
+      revalidatePath(`/products/\${productId}`);
+      revalidatePath('/products'); // Product list page
+    } else if (type === 'tag') {
+      // Revalidate all pages with this cache tag
+      revalidateTag('products');
+    }
+
+    return NextResponse.json({
+      revalidated: true,
+      now: Date.now()
+    });
+  } catch (err) {
+    return NextResponse.json(
+      { message: 'Error revalidating', error: err },
+      { status: 500 }
+    );
+  }
+}
+
+// Example webhook from CMS:
+// POST https://yoursite.com/api/revalidate?secret=YOUR_SECRET
+// Body: { "productId": "123", "type": "path" }

@@ -1,0 +1,63 @@
+// Complete throttle with leading + trailing edges
+function throttle(fn, interval, options = {}) {
+  const { leading = true, trailing = true } = options;
+  let lastTime = 0;
+  let timeoutId = null;
+  let lastArgs = null;
+  let lastContext = null;
+
+  function invoke() {
+    fn.apply(lastContext, lastArgs);
+    lastTime = Date.now();
+    timeoutId = null;
+    lastArgs = null;
+    lastContext = null;
+  }
+
+  function throttled(...args) {
+    const now = Date.now();
+    const elapsed = now - lastTime;
+    lastArgs = args;
+    lastContext = this;
+
+    // Leading edge: fire immediately if interval has passed
+    if (elapsed >= interval) {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
+      if (leading) {
+        invoke();
+      } else {
+        lastTime = now;
+      }
+    }
+
+    // Trailing edge: schedule execution for end of interval
+    if (trailing && !timeoutId) {
+      timeoutId = setTimeout(() => {
+        invoke();
+      }, interval - elapsed);
+    }
+  }
+
+  throttled.cancel = () => {
+    clearTimeout(timeoutId);
+    timeoutId = null;
+    lastTime = 0;
+    lastArgs = null;
+    lastContext = null;
+  };
+
+  return throttled;
+}
+
+// Usage: scroll handler that fires immediately and catches the last position
+const handleScroll = throttle(() => {
+  const scrollPercent = window.scrollY / (
+    document.documentElement.scrollHeight - window.innerHeight
+  );
+  updateProgressBar(scrollPercent);
+}, 100);
+
+window.addEventListener('scroll', handleScroll, { passive: true });

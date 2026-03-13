@@ -1,0 +1,2 @@
+app.get('/products/:id', async (req, res) => { const id = req.params.id; if (!bloomFilter.mightContain(id)) { return res.status(404).end(); } const product = await db.getProductById(id); if (!product) return res.status(404).end(); return res.json(product);
+});

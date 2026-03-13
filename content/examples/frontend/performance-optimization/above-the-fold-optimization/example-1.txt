@@ -1,0 +1,17 @@
+<!-- RENDER-BLOCKING: Prevents any pixels from appearing -->
+<!-- Browser downloads + parses entire file before painting -->
+<link rel="stylesheet" href="/styles.css">
+
+<!-- PARSER-BLOCKING: Stops HTML parsing entirely -->
+<!-- Browser downloads + executes before continuing to parse HTML -->
+<script src="/app.js"></script>
+
+<!-- NON-BLOCKING: Downloads in parallel, executes after HTML parse -->
+<script defer src="/app.js"></script>
+
+<!-- NON-BLOCKING: Downloads in parallel, executes when ready -->
+<script async src="/analytics.js"></script>
+
+<!-- CONDITIONALLY RENDER-BLOCKING: Only blocks if media matches -->
+<link rel="stylesheet" href="/print.css" media="print">
+<link rel="stylesheet" href="/mobile.css" media="(max-width: 768px)">

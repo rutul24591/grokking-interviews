@@ -1,0 +1,1 @@
+IdP issues signed token after user login and redirects to /callback.

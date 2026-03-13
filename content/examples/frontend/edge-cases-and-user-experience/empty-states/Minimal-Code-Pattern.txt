@@ -1,0 +1,4 @@
+if (isLoading) return <Spinner />;
+if (isError) return <ErrorState />;
+if (!items.length) return <EmptyState variant="zero-results" />;
+return <ItemList items={items} />;

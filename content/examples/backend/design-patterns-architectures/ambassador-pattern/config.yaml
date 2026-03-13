@@ -1,0 +1,2 @@
+proxy:
+  target: api.external.com

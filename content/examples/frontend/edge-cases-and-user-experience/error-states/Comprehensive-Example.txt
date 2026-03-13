@@ -1,0 +1,39 @@
+type ApiError = { code: string; message: string; traceId?: string };
+
+type ErrorDescriptor = {
+  title: string;
+  body: string;
+  action?: string;
+  retryable: boolean;
+};
+
+const ERROR_MAP: Record<string, ErrorDescriptor> = {
+  NETWORK: { title: "Network issue", body: "Check your connection and retry.", action: "Retry", retryable: true },
+  UNAUTHORIZED: { title: "Session expired", body: "Please sign in again.", action: "Sign in", retryable: false },
+  RATE_LIMITED: { title: "Slow down", body: "Too many requests. Try again shortly.", action: "Retry", retryable: true },
+  UNKNOWN: { title: "Something went wrong", body: "Please try again.", action: "Retry", retryable: true },
+};
+
+function getErrorDescriptor(error: ApiError): ErrorDescriptor {
+  return ERROR_MAP[error.code] || ERROR_MAP.UNKNOWN;
+}
+
+export function ErrorBanner({ error, onRetry }: { error: ApiError; onRetry: () => void }) {
+  const descriptor = getErrorDescriptor(error);
+  return (
+    <div role="alert" className="error-banner">
+      <strong>{descriptor.title}</strong>
+      <p>{descriptor.body}</p>
+      {descriptor.retryable && <button onClick={onRetry}>{descriptor.action}</button>}
+      {error.traceId && <small>Trace ID: {error.traceId}</small>}
+    </div>
+  );
+}
+
+export async function updateBilling(): Promise<void> {
+  const res = await fetch("/api/billing", { method: "POST" });
+  if (!res.ok) {
+    const payload = await res.json();
+    throw payload as ApiError;
+  }
+}

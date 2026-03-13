@@ -1,0 +1,1 @@
+Bloom filters answer membership queries with a controlled false-positive rate.

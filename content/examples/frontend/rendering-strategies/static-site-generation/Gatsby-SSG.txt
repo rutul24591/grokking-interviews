@@ -1,0 +1,57 @@
+// gatsby-node.js - Create pages at build time
+exports.createPages = async ({ graphql, actions }) => {
+  const { createPage } = actions;
+
+  // Query data from GraphQL (sourced from CMS/files)
+  const result = await graphql(`
+    query {
+      allMarkdownRemark {
+        edges {
+          node {
+            frontmatter {
+              slug
+            }
+          }
+        }
+      }
+    }
+  `);
+
+  // Create a page for each blog post
+  result.data.allMarkdownRemark.edges.forEach(({ node }) => {
+    createPage({
+      path: `/blog/\${node.frontmatter.slug}`,
+      component: require.resolve('./src/templates/blog-post.tsx'),
+      context: {
+        slug: node.frontmatter.slug,
+      },
+    });
+  });
+};
+
+// src/templates/blog-post.tsx
+import { graphql } from 'gatsby';
+
+export const query = graphql`
+  query($slug: String!) {
+    markdownRemark(frontmatter: { slug: { eq: $slug } }) {
+      html
+      frontmatter {
+        title
+        date
+      }
+    }
+  }
+`;
+
+export default function BlogPost({ data }) {
+  const { html, frontmatter } = data.markdownRemark;
+
+  return (
+    <article>
+      <h1>{frontmatter.title}</h1>
+      <time>{frontmatter.date}</time>
+      <div dangerouslySetInnerHTML={{ __html: html }} />
+    </article>
+  );
+}

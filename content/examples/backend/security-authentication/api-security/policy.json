@@ -1,0 +1,5 @@
+{
+  "scopes": {
+    "key_123": ["read:orders"]
+  }
+}

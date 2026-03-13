@@ -1,0 +1,49 @@
+<!-- === Pattern 1: preload + onload (Recommended) === -->
+<!-- Preload tells browser to start downloading immediately at high priority -->
+<!-- onload switches it from preload to an applied stylesheet -->
+<link rel="preload" href="/styles.css" as="style"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript>
+  <link rel="stylesheet" href="/styles.css">
+</noscript>
+
+<!-- === Pattern 2: print media trick === -->
+<!-- media="print" makes it non-render-blocking -->
+<!-- onload switches media to "all" to apply styles -->
+<link rel="stylesheet" href="/styles.css"
+      media="print" onload="this.media='all'">
+<noscript>
+  <link rel="stylesheet" href="/styles.css">
+</noscript>
+
+<!-- === Pattern 3: JavaScript-based loading === -->
+<script>
+  // Create link element after page renders
+  function loadCSS(href) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href;
+    document.head.appendChild(link);
+  }
+
+  // Load after first paint
+  if (window.requestAnimationFrame) {
+    requestAnimationFrame(() => {
+      setTimeout(loadCSS.bind(null, '/styles.css'), 0);
+    });
+  } else {
+    window.addEventListener('load', () => {
+      loadCSS('/styles.css');
+    });
+  }
+</script>
+
+<!-- === Pattern 4: Media query splitting === -->
+<!-- Only matching media queries block render -->
+<link rel="stylesheet" href="/base.css">
+<link rel="stylesheet" href="/tablet.css"
+      media="(min-width: 768px)">
+<link rel="stylesheet" href="/desktop.css"
+      media="(min-width: 1024px)">
+<link rel="stylesheet" href="/print.css" media="print">
+<!-- On a 375px phone, only base.css blocks rendering -->

@@ -1,0 +1,101 @@
+// React hook with time-window deduplication
+import { useState, useEffect, useRef } from 'react';
+
+interface DedupCache {
+  promise: Promise<any> | null;
+  data: any;
+  error: any;
+  timestamp: number;
+}
+
+const globalCache = new Map<string, DedupCache>();
+
+function useDedupFetch<T>(url: string, windowMs = 2000) {
+  const [data, setData] = useState<T | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const mountedRef = useRef(true);
+
+  useEffect(() => {
+    mountedRef.current = true;
+
+    async function fetchData() {
+      const key = url;
+      const cached = globalCache.get(key);
+
+      // Return cached data if within window
+      if (cached?.data && Date.now() - cached.timestamp < windowMs) {
+        if (mountedRef.current) {
+          setData(cached.data);
+          setIsLoading(false);
+        }
+        return;
+      }
+
+      // Share in-flight promise
+      if (cached?.promise) {
+        try {
+          const result = await cached.promise;
+          if (mountedRef.current) {
+            setData(result);
+            setIsLoading(false);
+          }
+        } catch (err) {
+          if (mountedRef.current) {
+            setError(err as Error);
+            setIsLoading(false);
+          }
+        }
+        return;
+      }
+
+      // New request
+      const entry: DedupCache = {
+        promise: null,
+        data: null,
+        error: null,
+        timestamp: 0,
+      };
+
+      entry.promise = fetch(url)
+        .then(r => {
+          if (!r.ok) throw new Error(`HTTP \${r.status}`);
+          return r.json();
+        })
+        .then(result => {
+          entry.data = result;
+          entry.timestamp = Date.now();
+          entry.promise = null;
+          return result;
+        })
+        .catch(err => {
+          entry.error = err;
+          entry.promise = null;
+          throw err;
+        });
+
+      globalCache.set(key, entry);
+
+      try {
+        const result = await entry.promise;
+        if (mountedRef.current) {
+          setData(result);
+          setIsLoading(false);
+        }
+      } catch (err) {
+        if (mountedRef.current) {
+          setError(err as Error);
+          setIsLoading(false);
+        }
+      }
+    }
+
+    fetchData();
+
+    return () => {
+      mountedRef.current = false;
+    };
+  }, [url, windowMs]);
+
+  return { data, error, isLoading };
+}

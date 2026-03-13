@@ -1,0 +1,1 @@
+fetch('/docs/1', { headers: { 'x-dept': 'sales' } });

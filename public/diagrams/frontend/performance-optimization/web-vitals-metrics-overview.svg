@@ -1,0 +1,101 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="40" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822">Core Web Vitals — Metrics &amp; Thresholds</text>
+
+  <!-- LCP Card -->
+  <rect x="40" y="70" width="260" height="390" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="40" y="70" width="260" height="50" rx="8" fill="#6d5bd0"/>
+  <rect x="40" y="95" width="260" height="25" fill="#6d5bd0"/>
+  <text x="170" y="102" text-anchor="middle" font-size="18" font-weight="bold" fill="white">LCP</text>
+  <text x="170" y="145" text-anchor="middle" font-size="13" fill="#1a1822">Largest Contentful Paint</text>
+  <text x="170" y="165" text-anchor="middle" font-size="12" fill="#666">Loading Performance</text>
+
+  <!-- LCP Thresholds -->
+  <rect x="60" y="185" width="220" height="50" rx="6" fill="#e6f5ec"/>
+  <text x="80" y="205" font-size="13" font-weight="bold" fill="#2f9d74">Good</text>
+  <text x="240" y="205" text-anchor="end" font-size="13" fill="#2f9d74">&lt;= 2.5s</text>
+  <rect x="60" y="208" width="220" height="2" fill="#c8e6d0"/>
+  <text x="170" y="228" text-anchor="middle" font-size="11" fill="#2f9d74">Fast perceived load</text>
+
+  <rect x="60" y="245" width="220" height="50" rx="6" fill="#fff3e0"/>
+  <text x="80" y="265" font-size="13" font-weight="bold" fill="#d97843">Needs Improvement</text>
+  <text x="240" y="265" text-anchor="end" font-size="13" fill="#d97843">2.5s — 4.0s</text>
+  <rect x="60" y="268" width="220" height="2" fill="#ffe0b2"/>
+  <text x="170" y="288" text-anchor="middle" font-size="11" fill="#d97843">Noticeable delay</text>
+
+  <rect x="60" y="305" width="220" height="50" rx="6" fill="#fde8e8"/>
+  <text x="80" y="325" font-size="13" font-weight="bold" fill="#d32f2f">Poor</text>
+  <text x="240" y="325" text-anchor="end" font-size="13" fill="#d32f2f">&gt; 4.0s</text>
+  <rect x="60" y="328" width="220" height="2" fill="#f5c6c6"/>
+  <text x="170" y="348" text-anchor="middle" font-size="11" fill="#d32f2f">Users may abandon</text>
+
+  <text x="170" y="385" text-anchor="middle" font-size="11" fill="#666">Measures: largest image/</text>
+  <text x="170" y="400" text-anchor="middle" font-size="11" fill="#666">text block render time</text>
+  <text x="170" y="425" text-anchor="middle" font-size="11" font-style="italic" fill="#6d5bd0">SEO ranking factor</text>
+
+  <!-- INP Card -->
+  <rect x="320" y="70" width="260" height="390" rx="8" fill="white" stroke="#d97843" stroke-width="2"/>
+  <rect x="320" y="70" width="260" height="50" rx="8" fill="#d97843"/>
+  <rect x="320" y="95" width="260" height="25" fill="#d97843"/>
+  <text x="450" y="102" text-anchor="middle" font-size="18" font-weight="bold" fill="white">INP</text>
+  <text x="450" y="145" text-anchor="middle" font-size="13" fill="#1a1822">Interaction to Next Paint</text>
+  <text x="450" y="165" text-anchor="middle" font-size="12" fill="#666">Interactivity (replaced FID)</text>
+
+  <!-- INP Thresholds -->
+  <rect x="340" y="185" width="220" height="50" rx="6" fill="#e6f5ec"/>
+  <text x="360" y="205" font-size="13" font-weight="bold" fill="#2f9d74">Good</text>
+  <text x="520" y="205" text-anchor="end" font-size="13" fill="#2f9d74">&lt;= 200ms</text>
+  <rect x="340" y="208" width="220" height="2" fill="#c8e6d0"/>
+  <text x="450" y="228" text-anchor="middle" font-size="11" fill="#2f9d74">Feels instant</text>
+
+  <rect x="340" y="245" width="220" height="50" rx="6" fill="#fff3e0"/>
+  <text x="360" y="265" font-size="13" font-weight="bold" fill="#d97843">Needs Improvement</text>
+  <text x="520" y="265" text-anchor="end" font-size="13" fill="#d97843">200ms — 500ms</text>
+  <rect x="340" y="268" width="220" height="2" fill="#ffe0b2"/>
+  <text x="450" y="288" text-anchor="middle" font-size="11" fill="#d97843">Perceptible lag</text>
+
+  <rect x="340" y="305" width="220" height="50" rx="6" fill="#fde8e8"/>
+  <text x="360" y="325" font-size="13" font-weight="bold" fill="#d32f2f">Poor</text>
+  <text x="520" y="325" text-anchor="end" font-size="13" fill="#d32f2f">&gt; 500ms</text>
+  <rect x="340" y="328" width="220" height="2" fill="#f5c6c6"/>
+  <text x="450" y="348" text-anchor="middle" font-size="11" fill="#d32f2f">Frustrating delay</text>
+
+  <text x="450" y="385" text-anchor="middle" font-size="11" fill="#666">Measures: worst interaction</text>
+  <text x="450" y="400" text-anchor="middle" font-size="11" fill="#666">delay + processing + paint</text>
+  <text x="450" y="425" text-anchor="middle" font-size="11" font-style="italic" fill="#d97843">Replaced FID March 2024</text>
+
+  <!-- CLS Card -->
+  <rect x="600" y="70" width="260" height="390" rx="8" fill="white" stroke="#2f9d74" stroke-width="2"/>
+  <rect x="600" y="70" width="260" height="50" rx="8" fill="#2f9d74"/>
+  <rect x="600" y="95" width="260" height="25" fill="#2f9d74"/>
+  <text x="730" y="102" text-anchor="middle" font-size="18" font-weight="bold" fill="white">CLS</text>
+  <text x="730" y="145" text-anchor="middle" font-size="13" fill="#1a1822">Cumulative Layout Shift</text>
+  <text x="730" y="165" text-anchor="middle" font-size="12" fill="#666">Visual Stability</text>
+
+  <!-- CLS Thresholds -->
+  <rect x="620" y="185" width="220" height="50" rx="6" fill="#e6f5ec"/>
+  <text x="640" y="205" font-size="13" font-weight="bold" fill="#2f9d74">Good</text>
+  <text x="800" y="205" text-anchor="end" font-size="13" fill="#2f9d74">&lt;= 0.1</text>
+  <rect x="620" y="208" width="220" height="2" fill="#c8e6d0"/>
+  <text x="730" y="228" text-anchor="middle" font-size="11" fill="#2f9d74">Stable layout</text>
+
+  <rect x="620" y="245" width="220" height="50" rx="6" fill="#fff3e0"/>
+  <text x="640" y="265" font-size="13" font-weight="bold" fill="#d97843">Needs Improvement</text>
+  <text x="800" y="265" text-anchor="end" font-size="13" fill="#d97843">0.1 — 0.25</text>
+  <rect x="620" y="268" width="220" height="2" fill="#ffe0b2"/>
+  <text x="730" y="288" text-anchor="middle" font-size="11" fill="#d97843">Some content shifts</text>
+
+  <rect x="620" y="305" width="220" height="50" rx="6" fill="#fde8e8"/>
+  <text x="640" y="325" font-size="13" font-weight="bold" fill="#d32f2f">Poor</text>
+  <text x="800" y="325" text-anchor="end" font-size="13" fill="#d32f2f">&gt; 0.25</text>
+  <rect x="620" y="328" width="220" height="2" fill="#f5c6c6"/>
+  <text x="730" y="348" text-anchor="middle" font-size="11" fill="#d32f2f">Jarring experience</text>
+
+  <text x="730" y="385" text-anchor="middle" font-size="11" fill="#666">Measures: largest burst of</text>
+  <text x="730" y="400" text-anchor="middle" font-size="11" fill="#666">unexpected layout shifts</text>
+  <text x="730" y="425" text-anchor="middle" font-size="11" font-style="italic" fill="#2f9d74">Score, not time-based</text>
+
+  <!-- Footer -->
+  <text x="450" y="485" text-anchor="middle" font-size="12" fill="#666">Google uses 75th percentile of field data (CrUX) for search ranking</text>
+</svg>

@@ -1,0 +1,48 @@
+// Real User Monitoring (RUM) budget alerting
+// lib/performance-monitor.js
+import { onLCP, onINP, onCLS, onFCP, onTTFB } from 'web-vitals';
+
+const BUDGETS = {
+  LCP: 2500,   // ms
+  FCP: 1800,   // ms
+  INP: 200,    // ms
+  CLS: 0.1,    // score
+  TTFB: 800,   // ms
+};
+
+function reportMetric(metric) {
+  const budget = BUDGETS[metric.name];
+  const overBudget = budget && metric.value > budget;
+
+  // Send to analytics backend
+  fetch('/api/analytics/vitals', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: metric.name,
+      value: metric.value,
+      rating: metric.rating,
+      delta: metric.delta,
+      id: metric.id,
+      url: window.location.pathname,
+      overBudget,
+      budgetAmount: budget,
+      overage: overBudget ? metric.value - budget : 0,
+      // Device and connection info for segmentation
+      connection: navigator.connection?.effectiveType || 'unknown',
+      deviceMemory: navigator.deviceMemory || 'unknown',
+      timestamp: Date.now(),
+    }),
+    keepalive: true,
+  });
+}
+
+onLCP(reportMetric);
+onINP(reportMetric);
+onCLS(reportMetric);
+onFCP(reportMetric);
+onTTFB(reportMetric);
+
+// Server-side: alert when P75 of any metric exceeds budget for 24 hours
+// This catches regressions that lab tests miss (e.g., slow API responses,
+// CDN misconfigurations, third-party script degradation)

@@ -1,0 +1,44 @@
+import { useEffect, useState } from "react";
+
+function useDelayedLoading(isLoading: boolean, delay = 300) {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    if (!isLoading) {
+      setVisible(false);
+      return;
+    }
+    const id = setTimeout(() => setVisible(true), delay);
+    return () => clearTimeout(id);
+  }, [isLoading, delay]);
+  return visible;
+}
+
+function SkeletonCard() {
+  return (
+    <div className="skeleton-card" aria-hidden="true">
+      <div className="skeleton avatar" />
+      <div className="skeleton line" />
+      <div className="skeleton line short" />
+    </div>
+  );
+}
+
+export function Feed({ data, isLoading }: { data: { id: string; title: string }[]; isLoading: boolean }) {
+  const showSkeleton = useDelayedLoading(isLoading, 300);
+  if (showSkeleton) {
+    return (
+      <div>
+        {Array.from({ length: 6 }).map((_, i) => (
+          <SkeletonCard key={i} />
+        ))}
+      </div>
+    );
+  }
+  return (
+    <ul>
+      {data.map(item => (
+        <li key={item.id}>{item.title}</li>
+      ))}
+    </ul>
+  );
+}

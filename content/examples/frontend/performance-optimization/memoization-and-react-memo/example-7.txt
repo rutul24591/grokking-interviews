@@ -1,0 +1,54 @@
+// === What you write (with React Compiler) ===
+function TodoList({ todos, filter }) {
+  const filteredTodos = todos.filter(t =>
+    filter === 'all' ? true : t.completed === (filter === 'completed')
+  );
+
+  return (
+    <ul>
+      {filteredTodos.map(todo => (
+        <TodoItem key={todo.id} todo={todo} />
+      ))}
+    </ul>
+  );
+}
+
+function TodoItem({ todo }) {
+  return (
+    <li style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
+      {todo.text}
+    </li>
+  );
+}
+
+// The compiler automatically:
+// 1. Memoizes filteredTodos (equivalent to useMemo)
+// 2. Memoizes TodoItem render (equivalent to React.memo)
+// 3. Handles stable references for inline styles
+
+// === Setup ===
+// babel.config.js
+module.exports = {
+  plugins: [
+    ['babel-plugin-react-compiler', {
+      // Options
+    }],
+  ],
+};
+
+// next.config.js (Next.js 15+)
+module.exports = {
+  experimental: {
+    reactCompiler: true,
+  },
+};
+
+// === Rules of React the compiler enforces ===
+// The compiler requires your code follows the Rules of React:
+// 1. Components must be pure (same props → same output)
+// 2. Hooks must be called at the top level
+// 3. No mutating props, state, or context
+// 4. Hook dependencies must be correct
+
+// The compiler will skip optimizing code that breaks these rules
+// and emit warnings during build.

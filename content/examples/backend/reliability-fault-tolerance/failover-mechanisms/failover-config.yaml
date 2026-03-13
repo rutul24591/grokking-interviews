@@ -1,0 +1,9 @@
+cluster:
+  primary: db-primary
+  standby: db-standby
+  leaseSeconds: 10
+  health:
+    intervalMs: 500
+    timeoutMs: 200
+routing:
+  endpoint: /config/primary

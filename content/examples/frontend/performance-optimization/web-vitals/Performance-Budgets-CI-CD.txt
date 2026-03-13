@@ -1,0 +1,46 @@
+// === Lighthouse CI ===
+// Run Lighthouse in CI and fail builds that regress
+// .lighthouserc.js
+module.exports = {
+  ci: {
+    collect: {
+      url: ['http://localhost:3000', 'http://localhost:3000/products'],
+      numberOfRuns: 3,
+    },
+    assert: {
+      assertions: {
+        'largest-contentful-paint': ['error', { maxNumericValue: 2500 }],
+        'cumulative-layout-shift': ['error', { maxNumericValue: 0.1 }],
+        'total-blocking-time': ['error', { maxNumericValue: 200 }],
+        'first-contentful-paint': ['warn', { maxNumericValue: 1800 }],
+        'interactive': ['warn', { maxNumericValue: 3800 }],
+      },
+    },
+    upload: {
+      target: 'temporary-public-storage',
+    },
+  },
+};
+
+// GitHub Actions workflow
+// .github/workflows/lighthouse.yml
+// name: Lighthouse CI
+// on: pull_request
+// jobs:
+//   lighthouse:
+//     runs-on: ubuntu-latest
+//     steps:
+//       - uses: actions/checkout@v4
+//       - run: npm ci && npm run build && npm start &
+//       - run: npx @lhci/cli autorun
+
+// === Bundle size budgets ===
+// Track bundle size in CI
+// bundlesize.config.json
+{
+  "files": [
+    { "path": ".next/static/chunks/main-*.js", "maxSize": "100 kB" },
+    { "path": ".next/static/chunks/framework-*.js", "maxSize": "50 kB" },
+    { "path": ".next/static/css/*.css", "maxSize": "30 kB" }
+  ]
+}

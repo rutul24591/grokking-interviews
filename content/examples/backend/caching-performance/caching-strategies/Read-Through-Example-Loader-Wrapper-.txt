@@ -1,0 +1,3 @@
+async function readThrough(key, loader, ttlSeconds = 300) { const cached = await redis.get(key); if (cached) return JSON.parse(cached); const value = await loader(); await redis.set(key, JSON.stringify(value), 'EX', ttlSeconds); return value;
+} app.get('/products/:id', async (req, res) => { const { id } = req.params; const key = `product:v2:\${id}`; const product = await readThrough(key, () => db.getProduct(id), 600); res.json(product);
+});

@@ -1,0 +1,1 @@
+If timeouts spike, reduce fanout or enable fallback.

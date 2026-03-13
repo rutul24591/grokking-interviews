@@ -1,0 +1,31 @@
+# Install size-limit with the appropriate preset
+pnpm add -D size-limit @size-limit/preset-app
+
+// package.json
+{
+  "size-limit": [
+    {
+      "path": "dist/assets/index-*.js",
+      "limit": "150 KB"
+    },
+    {
+      "path": "dist/assets/vendor-*.js",
+      "limit": "200 KB"
+    }
+  ],
+  "scripts": {
+    "size": "size-limit",
+    "size:why": "size-limit --why"  // Opens bundle analyzer
+  }
+}
+
+// CI output:
+//   Package size: 143.2 KB (gzip)
+//   Size limit:   150 KB
+//   ✓ Under the limit
+
+// When budget is exceeded:
+//   Package size: 167.8 KB (gzip)
+//   Size limit:   150 KB
+//   ✗ Over the limit by 17.8 KB
+//   exit code 1 → CI fails

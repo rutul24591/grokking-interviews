@@ -1,0 +1,1 @@
+Gateway composes users + orders responses.

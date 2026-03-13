@@ -1,0 +1,1 @@
+Dependencies point inward toward use cases.

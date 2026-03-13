@@ -1,0 +1,73 @@
+import { useCallback, memo, useState } from 'react';
+
+// === The problem useCallback solves ===
+const MemoizedButton = memo(function Button({ onClick, label }) {
+  console.log(`Rendering: \${label}`);
+  return <button onClick={onClick}>{label}</button>;
+});
+
+function Toolbar() {
+  const [count, setCount] = useState(0);
+  const [name, setName] = useState('');
+
+  // ❌ Without useCallback: every time count or name changes,
+  // handleSave is a NEW function → MemoizedButton re-renders
+  const handleSave = () => {
+    apiSave({ count, name });
+  };
+
+  // ✅ With useCallback: function reference stays stable
+  // unless count or name change
+  const handleSave = useCallback(() => {
+    apiSave({ count, name });
+  }, [count, name]);
+
+  // ✅ Even better: use functional updaters to reduce deps
+  const handleIncrement = useCallback(() => {
+    setCount(c => c + 1); // No dependency on count!
+  }, []); // Empty deps = never changes
+
+  return (
+    <div>
+      <input value={name} onChange={e => setName(e.target.value)} />
+      <MemoizedButton onClick={handleSave} label="Save" />
+      <MemoizedButton onClick={handleIncrement} label="+1" />
+    </div>
+  );
+}
+
+// === useCallback with event handlers ===
+function List({ items, onItemClick }) {
+  // ❌ BAD: New function per item per render
+  return items.map(item => (
+    <MemoizedItem
+      key={item.id}
+      item={item}
+      onClick={() => onItemClick(item.id)} // New function every render!
+    />
+  ));
+}
+
+// ✅ GOOD: Single stable handler, item passes its own ID
+function List({ items, onItemClick }) {
+  const handleClick = useCallback((id) => {
+    onItemClick(id);
+  }, [onItemClick]);
+
+  return items.map(item => (
+    <MemoizedItem
+      key={item.id}
+      item={item}
+      onClick={handleClick} // Same reference for all items
+    />
+  ));
+}
+
+// MemoizedItem calls onClick(item.id) internally
+const MemoizedItem = memo(function Item({ item, onClick }) {
+  return (
+    <div onClick={() => onClick(item.id)}>
+      {item.name}
+    </div>
+  );
+});

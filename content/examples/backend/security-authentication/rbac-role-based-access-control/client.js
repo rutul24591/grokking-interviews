@@ -1,0 +1,1 @@
+fetch('/admin/users/1', { method: 'DELETE', headers: { 'x-role': 'admin' } });

@@ -1,0 +1,1 @@
+Retry only idempotent operations.

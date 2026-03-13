@@ -1,0 +1,11 @@
+const [state, setState] = useState<'idle' | 'loading' | 'error' | 'success'>('idle');
+
+async function handleSave() {
+  setState('loading');
+  try {
+    await saveProfile();
+    setState('success');
+  } catch {
+    setState('error');
+  }
+}

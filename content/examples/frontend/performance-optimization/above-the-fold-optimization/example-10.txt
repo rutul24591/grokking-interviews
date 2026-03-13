@@ -1,0 +1,18 @@
+// Programmatically identify the LCP element
+const observer = new PerformanceObserver((list) => {
+  const entries = list.getEntries();
+  const lastEntry = entries[entries.length - 1];
+
+  console.log('LCP element:', lastEntry.element);
+  console.log('LCP time:', lastEntry.startTime, 'ms');
+  console.log('LCP size:', lastEntry.size);
+  console.log('LCP URL:', lastEntry.url); // For images
+
+  // Common LCP elements:
+  // - Hero <img> on landing pages
+  // - Product image on PDP
+  // - Headline <h1> on blog posts
+  // - Background image on marketing pages
+});
+
+observer.observe({ type: 'largest-contentful-paint', buffered: true });

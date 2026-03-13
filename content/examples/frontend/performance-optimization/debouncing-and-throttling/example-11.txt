@@ -1,0 +1,78 @@
+import { useState, useEffect, useRef } from 'react';
+
+function useDebouncedSearch(query: string, delay: number) {
+  const [results, setResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
+  const debouncedQuery = useDebounce(query, delay);
+
+  useEffect(() => {
+    if (!debouncedQuery.trim()) {
+      setResults([]);
+      return;
+    }
+
+    // Abort any in-flight request
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
+    async function search() {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const res = await fetch(
+          `/api/search?q=\${encodeURIComponent(debouncedQuery)}`,
+          { signal: controller.signal }
+        );
+
+        if (!res.ok) throw new Error('Search failed');
+
+        const data = await res.json();
+        setResults(data.results);
+      } catch (err) {
+        // Ignore abort errors — they're intentional
+        if (err instanceof DOMException && err.name === 'AbortError') {
+          return;
+        }
+        setError(err as Error);
+      } finally {
+        // Only clear loading if this is still the active request
+        if (abortControllerRef.current === controller) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    search();
+
+    // Cleanup: abort on unmount or when query changes
+    return () => controller.abort();
+  }, [debouncedQuery]);
+
+  return { results, isLoading, error };
+}
+
+// Usage
+function SearchPage() {
+  const [query, setQuery] = useState('');
+  const { results, isLoading, error } = useDebouncedSearch(query, 300);
+
+  return (
+    <div>
+      <input
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Search articles..."
+      />
+      {isLoading && <Spinner />}
+      {error && <ErrorBanner message={error.message} />}
+      <ResultsList results={results} />
+    </div>
+  );
+}

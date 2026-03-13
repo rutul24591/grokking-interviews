@@ -54,7 +54,7 @@ function debounce(fn, delay) {
   let timeoutId;
   return function (...args) {
     clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => fn.apply(this, args), delay);
+    timeoutId = setTimeout(() =&gt; fn.apply(this, args), delay);
   };
 }
 
@@ -64,9 +64,9 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 function useDebounce(value, delay) {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setDebouncedValue(value), delay);
-    return () => clearTimeout(timer);
+  useEffect(() =&gt; {
+    const timer = setTimeout(() =&gt; setDebouncedValue(value), delay);
+    return () =&gt; clearTimeout(timer);
   }, [value, delay]);
 
   return debouncedValue;
@@ -77,7 +77,7 @@ function SearchInput() {
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, 300);
 
-  useEffect(() => {
+  useEffect(() =&gt; {
     if (debouncedQuery) {
       fetchSearchResults(debouncedQuery);
     }
@@ -88,7 +88,7 @@ function SearchInput() {
       value={query}
       onChange={(e) => setQuery(e.target.value)}
       placeholder="Search..."
-    />
+    /&gt;
   );
 }
 
@@ -119,7 +119,7 @@ function throttle(fn, interval) {
   let lastTime = 0;
   return function (...args) {
     const now = Date.now();
-    if (now - lastTime >= interval) {
+    if (now - lastTime &gt;= interval) {
       lastTime = now;
       fn.apply(this, args);
     }
@@ -131,17 +131,17 @@ function useThrottle(value, interval) {
   const [throttledValue, setThrottledValue] = useState(value);
   const lastUpdated = useRef(Date.now());
 
-  useEffect(() => {
+  useEffect(() =&gt; {
     const now = Date.now();
-    if (now - lastUpdated.current >= interval) {
+    if (now - lastUpdated.current &gt;= interval) {
       lastUpdated.current = now;
       setThrottledValue(value);
     } else {
-      const timer = setTimeout(() => {
+      const timer = setTimeout(() =&gt; {
         lastUpdated.current = Date.now();
         setThrottledValue(value);
       }, interval - (now - lastUpdated.current));
-      return () => clearTimeout(timer);
+      return () =&gt; clearTimeout(timer);
     }
   }, [value, interval]);
 
@@ -152,13 +152,13 @@ function useThrottle(value, interval) {
 function ScrollTracker() {
   const [scrollY, setScrollY] = useState(0);
 
-  useEffect(() => {
-    const handleScroll = throttle(() => {
+  useEffect(() =&gt; {
+    const handleScroll = throttle(() =&gt; {
       setScrollY(window.scrollY);
     }, 100); // Update at most every 100ms (10 times/sec)
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () =&gt; window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return <ProgressBar progress={scrollY / maxScroll} />;

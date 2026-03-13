@@ -1,0 +1,46 @@
+import { useQuery, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // Data is fresh for 30 seconds — no refetch during this window
+      staleTime: 30 * 1000,
+      // Keep unused data in cache for 5 minutes
+      gcTime: 5 * 60 * 1000,
+    },
+  },
+});
+
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Dashboard />
+    </QueryClientProvider>
+  );
+}
+
+function Header() {
+  const { data: user } = useQuery({
+    queryKey: ['user'],
+    queryFn: () => fetch('/api/user').then(r => r.json()),
+  });
+  return <header>{user?.name}</header>;
+}
+
+function Sidebar() {
+  // Same queryKey — automatically deduplicated
+  const { data: user } = useQuery({
+    queryKey: ['user'],
+    queryFn: () => fetch('/api/user').then(r => r.json()),
+  });
+  return <aside>{user?.role}</aside>;
+}
+
+function ProfileCard() {
+  // Same queryKey — still deduplicated
+  const { data: user } = useQuery({
+    queryKey: ['user'],
+    queryFn: () => fetch('/api/user').then(r => r.json()),
+  });
+  return <div>{user?.bio}</div>;
+}

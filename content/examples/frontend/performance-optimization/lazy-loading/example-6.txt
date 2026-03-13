@@ -1,0 +1,62 @@
+// === React Router with lazy loading ===
+import { lazy, Suspense } from 'react';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from 'react-router-dom';
+
+// Each route is a separate chunk
+const Home = lazy(() => import('./pages/Home'));
+const Products = lazy(() =>
+  import(/* webpackPrefetch: true */ './pages/Products')
+);
+const ProductDetail = lazy(() => import('./pages/ProductDetail'));
+const Cart = lazy(() =>
+  import(/* webpackPrefetch: true */ './pages/Cart')
+);
+const Checkout = lazy(() => import('./pages/Checkout'));
+const Account = lazy(() => import('./pages/Account'));
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Layout />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: 'products', element: <Products /> },
+      { path: 'products/:id', element: <ProductDetail /> },
+      { path: 'cart', element: <Cart /> },
+      { path: 'checkout', element: <Checkout /> },
+      { path: 'account/*', element: <Account /> },
+    ],
+  },
+]);
+
+function App() {
+  return (
+    <Suspense fallback={<PageSkeleton />}>
+      <RouterProvider router={router} />
+    </Suspense>
+  );
+}
+
+// === Prefetch on hover for instant navigation ===
+function NavigationLink({ to, importFn, children }) {
+  return (
+    <Link
+      to={to}
+      onMouseEnter={() => importFn()}  // Prefetch on hover
+      onFocus={() => importFn()}       // Prefetch on keyboard focus
+    >
+      {children}
+    </Link>
+  );
+}
+
+// Usage
+const productsImport = () => import('./pages/Products');
+const Products = lazy(productsImport);
+
+<NavigationLink to="/products" importFn={productsImport}>
+  Products
+</NavigationLink>

@@ -1,0 +1,18 @@
+// Combine lazy loading with fetchPriority for fine-grained control
+// Above fold — high priority, eager
+<img src="/hero.jpg" fetchPriority="high" loading="eager" />
+
+// Above fold but not LCP — auto priority, eager
+<img src="/logo.png" fetchPriority="auto" loading="eager" />
+
+// Below fold — low priority, lazy
+<img src="/footer-image.jpg" fetchPriority="low" loading="lazy" />
+
+// Programmatic priority with fetch()
+const prefetchImage = (src) => {
+  const link = document.createElement('link');
+  link.rel = 'preload';
+  link.as = 'image';
+  link.href = src;
+  document.head.appendChild(link);
+};

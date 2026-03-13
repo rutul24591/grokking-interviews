@@ -1,0 +1,91 @@
+// === Complete image optimization pipeline with sharp ===
+import sharp from 'sharp';
+import path from 'path';
+import fs from 'fs/promises';
+
+const WIDTHS = [400, 800, 1200, 1600, 2000];
+const FORMATS = [
+  { name: 'avif', options: { quality: 65, effort: 4 } },
+  { name: 'webp', options: { quality: 75 } },
+  { name: 'jpeg', options: { quality: 80, progressive: true } },
+];
+
+async function optimizeImage(inputPath, outputDir) {
+  const filename = path.basename(inputPath, path.extname(inputPath));
+  const results = { variants: [], placeholder: '' };
+
+  // Get original dimensions
+  const metadata = await sharp(inputPath).metadata();
+
+  for (const width of WIDTHS) {
+    // Skip widths larger than the original
+    if (width > metadata.width) continue;
+
+    for (const format of FORMATS) {
+      const outputName = `\${filename}-\${width}.\${format.name}`;
+      const outputPath = path.join(outputDir, outputName);
+
+      await sharp(inputPath)
+        .resize(width, null, {
+          withoutEnlargement: true,
+          fit: 'inside',
+        })
+        .toFormat(format.name, format.options)
+        .toFile(outputPath);
+
+      const stats = await fs.stat(outputPath);
+      results.variants.push({
+        path: outputName,
+        width,
+        format: format.name,
+        size: stats.size,
+      });
+    }
+  }
+
+  // Generate blur placeholder (20px wide, base64)
+  const placeholderBuffer = await sharp(inputPath)
+    .resize(20)
+    .blur(10)
+    .jpeg({ quality: 30 })
+    .toBuffer();
+
+  results.placeholder = `data:image/jpeg;base64,\${placeholderBuffer.toString('base64')}`;
+
+  // Generate dominant color
+  const { dominant } = await sharp(inputPath).stats();
+  results.dominantColor = `rgb(\${dominant.r},\${dominant.g},\${dominant.b})`;
+
+  return results;
+}
+
+// === Usage in build script ===
+async function processAllImages() {
+  const inputDir = './src/images';
+  const outputDir = './public/optimized';
+
+  await fs.mkdir(outputDir, { recursive: true });
+
+  const files = await fs.readdir(inputDir);
+  const imageFiles = files.filter(f =>
+    /\\.(jpg|jpeg|png|tiff)$/i.test(f)
+  );
+
+  const manifest = {};
+
+  for (const file of imageFiles) {
+    console.log(`Optimizing: \${file}`);
+    manifest[file] = await optimizeImage(
+      path.join(inputDir, file),
+      outputDir,
+    );
+  }
+
+  // Write manifest for use in components
+  await fs.writeFile(
+    './src/image-manifest.json',
+    JSON.stringify(manifest, null, 2),
+  );
+}
+
+processAllImages();

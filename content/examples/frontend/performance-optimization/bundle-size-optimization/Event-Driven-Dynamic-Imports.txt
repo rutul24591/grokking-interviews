@@ -1,0 +1,48 @@
+// Load libraries on-demand for one-off features
+
+// CSV export — loaded only when user clicks "Export"
+async function handleExportCSV(data) {
+  const { stringify } = await import('csv-stringify/browser/esm');
+  const csv = stringify(data, { header: true });
+  downloadFile(csv, 'export.csv', 'text/csv');
+}
+
+// PDF generation — loaded only when user clicks "Download PDF"
+async function handleDownloadPDF(element) {
+  const { default: html2pdf } = await import('html2pdf.js');
+  html2pdf().from(element).save('document.pdf');
+}
+
+// Syntax highlighting — loaded when code block enters viewport
+function CodeBlock({ code, language }) {
+  const [highlighted, setHighlighted] = useState(code);
+
+  useEffect(() => {
+    let cancelled = false;
+    import('highlight.js/lib/core').then(async (hljs) => {
+      // Load only the language grammar needed
+      const lang = await import(`highlight.js/lib/languages/\${language}`);
+      hljs.default.registerLanguage(language, lang.default);
+      if (!cancelled) {
+        setHighlighted(hljs.default.highlight(code, { language }).value);
+      }
+    });
+    return () => { cancelled = true; };
+  }, [code, language]);
+
+  return <pre><code dangerouslySetInnerHTML={{ __html: highlighted }} /></pre>;
+}
+
+// Prefetch on hover — load chunk before user clicks
+function NavLink({ to, children }) {
+  const handleMouseEnter = () => {
+    // Webpack magic comment to prefetch the chunk
+    import(/* webpackPrefetch: true */ `./pages/\${to}`);
+  };
+
+  return (
+    <Link to={to} onMouseEnter={handleMouseEnter}>
+      {children}
+    </Link>
+  );
+}

@@ -1,0 +1,84 @@
+// === 1. Break up long tasks ===
+// Any task > 50ms blocks the main thread and increases INP
+
+// ❌ BAD: One long synchronous task
+function processLargeList(items) {
+  items.forEach(item => {
+    heavyComputation(item);  // 200ms total → blocks interactions
+  });
+}
+
+// ✅ GOOD: Yield to the main thread periodically
+async function processLargeList(items) {
+  for (let i = 0; i < items.length; i++) {
+    heavyComputation(items[i]);
+
+    // Yield every 10 items to let the browser handle user input
+    if (i % 10 === 0) {
+      await scheduler.yield();  // Modern API
+      // Fallback: await new Promise(r => setTimeout(r, 0));
+    }
+  }
+}
+
+// === 2. Use startTransition for non-urgent updates ===
+import { startTransition, useState } from 'react';
+
+function SearchPage() {
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+
+  function handleInput(e) {
+    const value = e.target.value;
+    setQuery(value);  // Urgent: update the input immediately
+
+    startTransition(() => {
+      setResults(filterResults(value));  // Non-urgent: can be deferred
+    });
+  }
+
+  return (
+    <>
+      <input value={query} onChange={handleInput} />
+      <ResultsList results={results} />
+    </>
+  );
+}
+
+// === 3. Move heavy computation to Web Workers ===
+// main.js
+const worker = new Worker('./heavy-worker.js');
+
+function handleClick(data) {
+  worker.postMessage(data);
+}
+
+worker.onmessage = (e) => {
+  updateUI(e.data);  // Only the UI update runs on main thread
+};
+
+// heavy-worker.js
+self.onmessage = (e) => {
+  const result = expensiveComputation(e.data);
+  self.postMessage(result);
+};
+
+// === 4. Reduce JavaScript execution time ===
+// - Code split aggressively (load less JS)
+// - Tree shake unused code
+// - Defer non-critical JS with defer/async
+// - Use lighter libraries (preact instead of react for simple apps)
+
+// === 5. Avoid layout thrashing ===
+// ❌ BAD: Read-write-read pattern forces synchronous layout
+elements.forEach(el => {
+  const height = el.offsetHeight;    // Read → forces layout
+  el.style.height = height + 10 + 'px';  // Write → invalidates layout
+  // Next read will force ANOTHER layout calculation
+});
+
+// ✅ GOOD: Batch reads, then batch writes
+const heights = elements.map(el => el.offsetHeight);  // Batch read
+elements.forEach((el, i) => {
+  el.style.height = heights[i] + 10 + 'px';  // Batch write
+});

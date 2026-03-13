@@ -1,0 +1,22 @@
+// Setting up Lighthouse CI Server for historical tracking
+
+// 1. Deploy the server (Docker)
+// docker run -p 9001:9001 patrickhulce/lhci-server
+
+// 2. Configure your project to upload to it
+// .lighthouserc.js
+module.exports = {
+  ci: {
+    upload: {
+      target: 'lhci',
+      serverBaseUrl: 'https://lhci.your-company.com',
+      token: process.env.LHCI_BUILD_TOKEN,
+    },
+  },
+};
+
+// 3. The server stores every run and provides:
+// - Trend graphs for each metric over time
+// - Comparison between branches
+// - Identification of which commit caused regressions
+// - Diff view showing before/after for any two builds

@@ -1,0 +1,104 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Caching Strategy Patterns Overview</text>
+
+  <!-- Column Headers -->
+  <text x="450" y="58" text-anchor="middle" font-size="11" fill="#6d5bd0">Priority Order &amp; Best Use Case for Each Strategy</text>
+
+  <!-- Strategy 1: Cache-First (green - cache preferred) -->
+  <rect x="30" y="80" width="165" height="185" rx="8" fill="#ffffff" stroke="#2f9d74" stroke-width="2"/>
+  <rect x="30" y="80" width="165" height="36" rx="8" fill="#2f9d74"/>
+  <rect x="30" y="100" width="165" height="16" fill="#2f9d74"/>
+  <text x="112" y="103" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">Cache-First</text>
+  <text x="112" y="136" text-anchor="middle" font-size="10" fill="#1a1822" font-weight="bold">Priority Order:</text>
+  <text x="112" y="152" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="bold">1. Cache</text>
+  <text x="112" y="166" text-anchor="middle" font-size="10" fill="#6d5bd0">2. Network (fallback)</text>
+  <line x1="55" y1="178" x2="170" y2="178" stroke="#edeaf5" stroke-width="1"/>
+  <text x="112" y="196" text-anchor="middle" font-size="9" fill="#1a1822">Versioned static assets</text>
+  <text x="112" y="210" text-anchor="middle" font-size="9" fill="#1a1822">Fonts, hashed bundles</text>
+  <text x="112" y="224" text-anchor="middle" font-size="9" fill="#1a1822">Images from CDN</text>
+  <rect x="52" y="237" width="120" height="20" rx="4" fill="#edeaf5"/>
+  <text x="112" y="251" text-anchor="middle" font-size="9" fill="#2f9d74" font-weight="bold">Speed: ~0ms (cached)</text>
+
+  <!-- Strategy 2: Cache-Only (green - cache preferred) -->
+  <rect x="208" y="80" width="165" height="185" rx="8" fill="#ffffff" stroke="#2f9d74" stroke-width="2"/>
+  <rect x="208" y="80" width="165" height="36" rx="8" fill="#2f9d74"/>
+  <rect x="208" y="100" width="165" height="16" fill="#2f9d74"/>
+  <text x="290" y="103" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">Cache-Only</text>
+  <text x="290" y="136" text-anchor="middle" font-size="10" fill="#1a1822" font-weight="bold">Priority Order:</text>
+  <text x="290" y="152" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="bold">1. Cache</text>
+  <text x="290" y="166" text-anchor="middle" font-size="10" fill="#d97843">2. Fail (no fallback)</text>
+  <line x1="233" y1="178" x2="348" y2="178" stroke="#edeaf5" stroke-width="1"/>
+  <text x="290" y="196" text-anchor="middle" font-size="9" fill="#1a1822">Precached resources only</text>
+  <text x="290" y="210" text-anchor="middle" font-size="9" fill="#1a1822">App shell HTML</text>
+  <text x="290" y="224" text-anchor="middle" font-size="9" fill="#1a1822">Offline fallback page</text>
+  <rect x="230" y="237" width="120" height="20" rx="4" fill="#edeaf5"/>
+  <text x="290" y="251" text-anchor="middle" font-size="9" fill="#2f9d74" font-weight="bold">Speed: ~0ms (cached)</text>
+
+  <!-- Strategy 3: Network-First (purple - network preferred) -->
+  <rect x="386" y="80" width="165" height="185" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="386" y="80" width="165" height="36" rx="8" fill="#6d5bd0"/>
+  <rect x="386" y="100" width="165" height="16" fill="#6d5bd0"/>
+  <text x="468" y="103" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">Network-First</text>
+  <text x="468" y="136" text-anchor="middle" font-size="10" fill="#1a1822" font-weight="bold">Priority Order:</text>
+  <text x="468" y="152" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold">1. Network</text>
+  <text x="468" y="166" text-anchor="middle" font-size="10" fill="#2f9d74">2. Cache (fallback)</text>
+  <line x1="411" y1="178" x2="526" y2="178" stroke="#edeaf5" stroke-width="1"/>
+  <text x="468" y="196" text-anchor="middle" font-size="9" fill="#1a1822">API responses, HTML pages</text>
+  <text x="468" y="210" text-anchor="middle" font-size="9" fill="#1a1822">GraphQL queries</text>
+  <text x="468" y="224" text-anchor="middle" font-size="9" fill="#1a1822">Dynamic content</text>
+  <rect x="408" y="237" width="120" height="20" rx="4" fill="#edeaf5"/>
+  <text x="468" y="251" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="bold">Speed: Network latency</text>
+
+  <!-- Strategy 4: Network-Only (purple - network preferred) -->
+  <rect x="564" y="80" width="165" height="185" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="564" y="80" width="165" height="36" rx="8" fill="#6d5bd0"/>
+  <rect x="564" y="100" width="165" height="16" fill="#6d5bd0"/>
+  <text x="646" y="103" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">Network-Only</text>
+  <text x="646" y="136" text-anchor="middle" font-size="10" fill="#1a1822" font-weight="bold">Priority Order:</text>
+  <text x="646" y="152" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold">1. Network</text>
+  <text x="646" y="166" text-anchor="middle" font-size="10" fill="#d97843">2. Fail (no fallback)</text>
+  <line x1="589" y1="178" x2="704" y2="178" stroke="#edeaf5" stroke-width="1"/>
+  <text x="646" y="196" text-anchor="middle" font-size="9" fill="#1a1822">Auth, payments, mutations</text>
+  <text x="646" y="210" text-anchor="middle" font-size="9" fill="#1a1822">POST/PUT/DELETE</text>
+  <text x="646" y="224" text-anchor="middle" font-size="9" fill="#1a1822">Real-time data</text>
+  <rect x="586" y="237" width="120" height="20" rx="4" fill="#edeaf5"/>
+  <text x="646" y="251" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="bold">Speed: Network latency</text>
+
+  <!-- Strategy 5: SWR (orange - hybrid) -->
+  <rect x="742" y="80" width="140" height="185" rx="8" fill="#ffffff" stroke="#d97843" stroke-width="2"/>
+  <rect x="742" y="80" width="140" height="36" rx="8" fill="#d97843"/>
+  <rect x="742" y="100" width="140" height="16" fill="#d97843"/>
+  <text x="812" y="103" text-anchor="middle" font-size="11" font-weight="bold" fill="#ffffff">Stale-While-Reval.</text>
+  <text x="812" y="136" text-anchor="middle" font-size="10" fill="#1a1822" font-weight="bold">Priority Order:</text>
+  <text x="812" y="152" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="bold">1. Cache (instant)</text>
+  <text x="812" y="166" text-anchor="middle" font-size="10" fill="#6d5bd0">+ Network (background)</text>
+  <line x1="762" y1="178" x2="862" y2="178" stroke="#edeaf5" stroke-width="1"/>
+  <text x="812" y="196" text-anchor="middle" font-size="9" fill="#1a1822">CDN libraries, avatars</text>
+  <text x="812" y="210" text-anchor="middle" font-size="9" fill="#1a1822">User profiles</text>
+  <text x="812" y="224" text-anchor="middle" font-size="9" fill="#1a1822">Semi-dynamic content</text>
+  <rect x="752" y="237" width="120" height="20" rx="4" fill="#edeaf5"/>
+  <text x="812" y="251" text-anchor="middle" font-size="9" fill="#d97843" font-weight="bold">Speed: ~0ms + update</text>
+
+  <!-- Legend -->
+  <rect x="30" y="290" width="852" height="70" rx="8" fill="#ffffff" stroke="#edeaf5" stroke-width="1.5"/>
+  <text x="50" y="312" font-size="11" font-weight="bold" fill="#1a1822">Legend:</text>
+  <rect x="50" y="322" width="14" height="14" rx="3" fill="#2f9d74"/>
+  <text x="72" y="334" font-size="10" fill="#1a1822">Cache-preferred (fastest repeat visits, offline-capable)</text>
+  <rect x="350" y="322" width="14" height="14" rx="3" fill="#6d5bd0"/>
+  <text x="372" y="334" font-size="10" fill="#1a1822">Network-preferred (freshest data, requires connectivity)</text>
+  <rect x="660" y="322" width="14" height="14" rx="3" fill="#d97843"/>
+  <text x="682" y="334" font-size="10" fill="#1a1822">Hybrid (cache speed + background freshness)</text>
+
+  <!-- Decision heuristic -->
+  <rect x="30" y="380" width="852" height="105" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="456" y="402" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Quick Decision Guide</text>
+  <text x="50" y="425" font-size="10" fill="#1a1822">Does the URL change when content changes? (hashed filenames)</text>
+  <text x="550" y="425" font-size="10" fill="#2f9d74" font-weight="bold">YES → Cache-First</text>
+  <text x="50" y="443" font-size="10" fill="#1a1822">Is it precached during install and never changes at runtime?</text>
+  <text x="550" y="443" font-size="10" fill="#2f9d74" font-weight="bold">YES → Cache-Only</text>
+  <text x="50" y="461" font-size="10" fill="#1a1822">Must the user always see the latest data, but offline fallback is nice?</text>
+  <text x="550" y="461" font-size="10" fill="#6d5bd0" font-weight="bold">YES → Network-First</text>
+  <text x="50" y="479" font-size="10" fill="#1a1822">Is it a mutation or correctness-critical? (auth, payments)</text>
+  <text x="550" y="479" font-size="10" fill="#6d5bd0" font-weight="bold">YES → Network-Only</text>
+</svg>

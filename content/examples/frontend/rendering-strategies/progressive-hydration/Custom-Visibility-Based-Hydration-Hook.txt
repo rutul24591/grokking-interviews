@@ -1,0 +1,54 @@
+// useVisibilityHydration.ts
+import { useEffect, useState, useRef } from 'react';
+
+export function useVisibilityHydration() {
+  const [shouldHydrate, setShouldHydrate] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!ref.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldHydrate(true);
+          observer.disconnect();
+        }
+      },
+      {
+        rootMargin: '50px', // Start loading 50px before visible
+      }
+    );
+
+    observer.observe(ref.current);
+
+    return () => observer.disconnect();
+  }, []);
+
+  return { ref, shouldHydrate };
+}
+
+// Usage in component
+function LazySection({ children }) {
+  const { ref, shouldHydrate } = useVisibilityHydration();
+
+  return (
+    <div ref={ref}>
+      {shouldHydrate ? children : <div>Loading...</div>}
+    </div>
+  );
+}
+
+// Use in page
+export default function Page() {
+  return (
+    <>
+      <Navigation />
+      <HeroSection />
+
+      <LazySection>
+        <ExpensiveComponent />
+      </LazySection>
+    </>
+  );
+}

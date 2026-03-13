@@ -1,0 +1,1 @@
+B-trees optimize disk-based range queries with high fan-out nodes.

@@ -1,0 +1,5 @@
+{
+  "requiredRps": 2000,
+  "instanceCapacityRps": 1200,
+  "headroomPercent": 20
+}

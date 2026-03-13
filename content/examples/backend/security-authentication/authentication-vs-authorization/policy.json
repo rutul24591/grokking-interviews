@@ -1,0 +1,3 @@
+roles:
+  editor: ["read", "write"]
+  viewer: ["read"]

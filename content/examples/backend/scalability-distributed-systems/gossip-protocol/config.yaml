@@ -1,0 +1,4 @@
+gossip:
+  interval_ms: 1000
+  fanout: 3
+  failure_detector: phi

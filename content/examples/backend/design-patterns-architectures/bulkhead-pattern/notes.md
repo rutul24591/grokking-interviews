@@ -1,0 +1,1 @@
+Bulkheads isolate resource pools to prevent cascading failures.

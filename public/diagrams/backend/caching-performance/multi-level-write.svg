@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
+  <rect width="960" height="420" fill="#f8fafc" />
+  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Multi-Level Invalidation</text>
+
+  <rect x="80" y="120" width="180" height="70" rx="12" fill="#dbeafe" stroke="#60a5fa" />
+  <text x="120" y="160" font-family="Arial" font-size="14" fill="#0f172a">L1</text>
+
+  <rect x="320" y="120" width="180" height="70" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
+  <text x="360" y="160" font-family="Arial" font-size="14" fill="#0f172a">L2</text>
+
+  <rect x="560" y="120" width="180" height="70" rx="12" fill="#fee2e2" stroke="#fca5a5" />
+  <text x="600" y="160" font-family="Arial" font-size="14" fill="#0f172a">Origin</text>
+
+  <text x="80" y="240" font-family="Arial" font-size="13" fill="#0f172a">Writes invalidate caches from top to bottom</text>
+</svg>

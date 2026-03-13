@@ -1,0 +1,1 @@
+Authentication service issues tokens after validating credentials and rate limits.

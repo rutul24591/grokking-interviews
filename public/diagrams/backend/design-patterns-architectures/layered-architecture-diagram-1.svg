@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
+  <rect width="960" height="420" fill="#f8fafc" />
+  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Layered Architecture Diagram 1</text>
+  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
+  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Layered Architecture</text>
+  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
+  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
+  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
+  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+</svg>

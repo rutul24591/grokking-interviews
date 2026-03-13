@@ -1,0 +1,1 @@
+Operational transformation adjusts concurrent edits to keep document order consistent.

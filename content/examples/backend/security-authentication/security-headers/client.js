@@ -1,0 +1,1 @@
+// browser enforces CSP and framing rules

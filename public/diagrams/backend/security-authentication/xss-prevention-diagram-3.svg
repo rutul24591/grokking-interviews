@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
+  <rect width="960" height="420" fill="#f8fafc" />
+  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">XSS Prevention Diagram 3</text>
+  <rect x="80" y="130" width="260" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
+  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Unsafe HTML</text>
+  <rect x="360" y="130" width="260" height="90" rx="12" fill="#fef9c3" stroke="#facc15" />
+  <text x="395" y="170" font-family="Arial" font-size="14" fill="#0f172a">Violation</text>
+  <rect x="640" y="130" width="220" height="90" rx="12" fill="#dcfce7" stroke="#22c55e" />
+  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Report</text>
+</svg>

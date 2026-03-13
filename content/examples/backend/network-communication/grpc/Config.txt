@@ -1,0 +1,3 @@
+# Envoy gRPC route
+- match: { prefix: "/UserService" }
+  route: { cluster: users_grpc }

@@ -1,0 +1,33 @@
+// app/blog/[slug]/page.tsx
+interface Post {
+  slug: string;
+  title: string;
+  content: string;
+}
+
+// Generate static params at build time
+export async function generateStaticParams() {
+  const posts: Post[] = await fetch('https://cms.example.com/posts')
+    .then(res => res.json());
+
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+
+// Fetch data at build time (default is SSG with caching)
+async function BlogPost({ params }: { params: { slug: string } }) {
+  const post: Post = await fetch(
+    `https://cms.example.com/posts/\${params.slug}`,
+    { next: { revalidate: 3600 } } // Revalidate every hour (ISR)
+  ).then(res => res.json());
+
+  return (
+    <article>
+      <h1>{post.title}</h1>
+      <div dangerouslySetInnerHTML={{ __html: post.content }} />
+    </article>
+  );
+}
+
+export default BlogPost;

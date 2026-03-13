@@ -1,0 +1,1 @@
+Adapters isolate external dependencies from core domain.

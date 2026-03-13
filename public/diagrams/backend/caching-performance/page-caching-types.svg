@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
+  <rect width="960" height="420" fill="#f8fafc" />
+  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Full Page vs Fragment Cache</text>
+
+  <rect x="80" y="100" width="360" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
+  <text x="110" y="145" font-family="Arial" font-size="14" fill="#0f172a">Full Page Cache</text>
+
+  <rect x="520" y="100" width="360" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
+  <text x="550" y="145" font-family="Arial" font-size="14" fill="#0f172a">Fragment Cache</text>
+
+  <rect x="80" y="230" width="360" height="90" rx="12" fill="#f1f5f9" stroke="#cbd5f5" />
+  <text x="110" y="270" font-family="Arial" font-size="12" fill="#0f172a">Cache entire HTML response</text>
+
+  <rect x="520" y="230" width="360" height="90" rx="12" fill="#f1f5f9" stroke="#cbd5f5" />
+  <text x="550" y="270" font-family="Arial" font-size="12" fill="#0f172a">Cache components and assemble</text>
+</svg>

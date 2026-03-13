@@ -1,0 +1,1 @@
+fetch('/orders', { headers: { 'x-api-key': 'key_123', 'x-scope': 'read:orders' } });

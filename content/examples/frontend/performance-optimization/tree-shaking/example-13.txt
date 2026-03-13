@@ -1,0 +1,26 @@
+// === Without scope hoisting (module wrappers) ===
+
+// Webpack wraps each module:
+__webpack_modules__["./utils.js"] = function(module, exports) {
+  // Module code here — minifier can't see across boundaries
+  function formatDate() { ... }
+  function unused() { ... }  // Harder to eliminate
+  exports.formatDate = formatDate;
+  exports.unused = unused;
+};
+
+// === With scope hoisting (concatenated) ===
+
+// Webpack inlines modules into one scope:
+// (from utils.js)
+function formatDate() { ... }
+// unused() is gone — minifier can easily see it's unreferenced
+
+// (from entry.js)
+console.log(formatDate(new Date()));
+
+// Benefits of scope hoisting:
+// 1. Fewer function wrappers → smaller bundle
+// 2. Better minification — names can be mangled across modules
+// 3. Better dead code elimination — full scope visibility
+// 4. Slightly faster runtime — no module lookup overhead

@@ -1,0 +1,33 @@
+// Express middleware to add preload headers
+app.use((req, res, next) => {
+  // Preload critical font
+  res.setHeader('Link', [
+    '</fonts/Inter-Bold.woff2>; rel=preload; as=font; type="font/woff2"; crossorigin',
+    '</critical.css>; rel=preload; as=style',
+  ].join(', '));
+  next();
+});
+
+// In a Next.js middleware or API route
+export function middleware(request) {
+  const response = NextResponse.next();
+  response.headers.set('Link',
+    '</fonts/Inter.woff2>; rel=preload; as=font; crossorigin'
+  );
+  return response;
+}
+
+// With 103 Early Hints (bleeding edge)
+// The server sends a 103 informational response BEFORE the main response
+// This allows preloading to start even before the HTML is generated
+// Supported in Chrome 103+, Cloudflare, and some CDNs
+//
+// HTTP/2 103 Early Hints
+// Link: </fonts/Inter.woff2>; rel=preload; as=font; crossorigin
+// Link: </critical.css>; rel=preload; as=style
+//
+// (server continues processing...)
+//
+// HTTP/2 200 OK
+// Content-Type: text/html
+// <html>...

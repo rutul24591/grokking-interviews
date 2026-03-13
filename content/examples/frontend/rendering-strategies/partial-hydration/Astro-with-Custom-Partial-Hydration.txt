@@ -1,0 +1,36 @@
+---
+// Astro provides built-in partial hydration directives
+import Navigation from '../components/Navigation.astro';
+import VideoPlayer from '../components/VideoPlayer.tsx';
+import ProductGallery from '../components/ProductGallery.tsx';
+import CommentSection from '../components/CommentSection.tsx';
+import Newsletter from '../components/Newsletter.tsx';
+---
+
+<html>
+  <body>
+    <!-- Immediate hydration -->
+    <Navigation />
+
+    <!-- Static content -->
+    <article>
+      <h1>{post.title}</h1>
+      <p>{post.content}</p>
+    </article>
+
+    <!-- Visible-based: hydrates 50px before entering viewport -->
+    <VideoPlayer client:visible videoUrl={post.video} />
+
+    <!-- Idle-based: hydrates during browser idle time -->
+    <ProductGallery client:idle products={post.related} />
+
+    <!-- Media query-based: only hydrates on desktop -->
+    <CommentSection client:media="(min-width: 768px)" postId={post.id} />
+
+    <!-- Load client-side only (no SSR, hydrate on idle) -->
+    <Newsletter client:only="react" />
+
+    <!-- Custom condition via load event -->
+    <Analytics client:load />
+  </body>
+</html>

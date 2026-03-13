@@ -1,0 +1,79 @@
+// scripts/check-budgets.js
+// Custom budget checker that combines multiple sources
+const fs = require('fs');
+const { execSync } = require('child_process');
+
+const budgets = {
+  'Total JS (gzip)': { max: 200, unit: 'KB' },
+  'Total CSS (gzip)': { max: 50, unit: 'KB' },
+  'Largest chunk': { max: 80, unit: 'KB' },
+  'Number of chunks': { max: 15, unit: 'count' },
+  'Third-party JS': { max: 50, unit: 'KB' },
+};
+
+function getActualSizes() {
+  const buildManifest = JSON.parse(
+    fs.readFileSync('.next/build-manifest.json', 'utf-8')
+  );
+
+  // Calculate actual sizes from build output
+  const sizes = {};
+  let totalJS = 0;
+  let totalCSS = 0;
+  let largestChunk = 0;
+  let chunkCount = 0;
+
+  const staticDir = '.next/static';
+  const chunks = fs.readdirSync(`\${staticDir}/chunks`);
+
+  chunks.forEach(file => {
+    if (file.endsWith('.js')) {
+      const size = fs.statSync(`\${staticDir}/chunks/\${file}`).size;
+      totalJS += size;
+      largestChunk = Math.max(largestChunk, size);
+      chunkCount++;
+    }
+  });
+
+  const cssFiles = fs.readdirSync(`\${staticDir}/css`);
+  cssFiles.forEach(file => {
+    if (file.endsWith('.css')) {
+      totalCSS += fs.statSync(`\${staticDir}/css/\${file}`).size;
+    }
+  });
+
+  return {
+    'Total JS (gzip)': Math.round(totalJS / 1024 * 0.3),  // ~30% gzip ratio
+    'Total CSS (gzip)': Math.round(totalCSS / 1024 * 0.2), // ~20% gzip ratio
+    'Largest chunk': Math.round(largestChunk / 1024 * 0.3),
+    'Number of chunks': chunkCount,
+  };
+}
+
+const actual = getActualSizes();
+let failed = false;
+
+console.log('\\nPerformance Budget Report');
+console.log('========================\\n');
+
+Object.entries(budgets).forEach(([metric, { max, unit }]) => {
+  const value = actual[metric];
+  if (value === undefined) return;
+
+  const status = value <= max ? '✅' : '❌';
+  const percentage = Math.round((value / max) * 100);
+
+  console.log(`\${status} \${metric}: \${value}\${unit} / \${max}\${unit} (\${percentage}%)`);
+
+  if (value > max) {
+    failed = true;
+    console.log(`   ↳ Over budget by \${value - max}\${unit}`);
+  }
+});
+
+if (failed) {
+  console.log('\\n❌ Budget exceeded! Fix before merging.\\n');
+  process.exit(1);
+} else {
+  console.log('\\n✅ All budgets passed.\\n');
+}

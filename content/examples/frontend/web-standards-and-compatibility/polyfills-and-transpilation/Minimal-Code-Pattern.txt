@@ -1,0 +1,3 @@
+if (!('fetch' in window)) {
+  await import('whatwg-fetch');
+}

@@ -1,0 +1,72 @@
+// === Express with Gzip compression ===
+// pnpm add compression
+
+const express = require('express');
+const compression = require('compression');
+
+const app = express();
+
+// Basic Gzip setup — handles most cases
+app.use(compression({
+  level: 6,                       // Compression level (1-9)
+  threshold: 1024,                // Only compress responses > 1KB
+  filter: (req, res) => {
+    // Don't compress server-sent events
+    if (req.headers['accept'] === 'text/event-stream') {
+      return false;
+    }
+    // Use default filter (checks Content-Type against compressible types)
+    return compression.filter(req, res);
+  },
+}));
+
+// === Express with Brotli + Gzip via shrink-ray-current ===
+// pnpm add shrink-ray-current
+
+const shrinkRay = require('shrink-ray-current');
+
+app.use(shrinkRay({
+  brotli: {
+    quality: 4,                   // Brotli level 4 for dynamic responses
+  },
+  zlib: {
+    level: 6,                     // Gzip fallback at level 6
+  },
+  threshold: 1024,
+  filter: (req, res) => {
+    return shrinkRay.filter(req, res);
+  },
+}));
+
+// === Manual Brotli with Node.js zlib (built-in since Node 10.16) ===
+const zlib = require('zlib');
+const { promisify } = require('util');
+const brotliCompress = promisify(zlib.brotliCompress);
+
+app.get('/api/data', async (req, res) => {
+  const data = JSON.stringify(await fetchLargeDataset());
+  const acceptEncoding = req.headers['accept-encoding'] || '';
+
+  if (acceptEncoding.includes('br')) {
+    const compressed = await brotliCompress(Buffer.from(data), {
+      params: {
+        [zlib.constants.BROTLI_PARAM_QUALITY]: 4,
+      },
+    });
+    res.set('Content-Encoding', 'br');
+    res.set('Content-Type', 'application/json');
+    res.set('Vary', 'Accept-Encoding');
+    res.send(compressed);
+  } else if (acceptEncoding.includes('gzip')) {
+    const gzipCompress = promisify(zlib.gzip);
+    const compressed = await gzipCompress(Buffer.from(data));
+    res.set('Content-Encoding', 'gzip');
+    res.set('Content-Type', 'application/json');
+    res.set('Vary', 'Accept-Encoding');
+    res.send(compressed);
+  } else {
+    res.json(JSON.parse(data));
+  }
+});
+
+app.listen(3000);

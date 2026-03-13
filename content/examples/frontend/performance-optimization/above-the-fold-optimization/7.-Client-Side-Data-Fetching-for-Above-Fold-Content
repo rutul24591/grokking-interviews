@@ -1,0 +1,21 @@
+// BAD: Above-fold content depends on client-side fetch
+// Timeline: HTML → JS → Execute → Fetch → Wait → Render
+function ProductPage() {
+  const [product, setProduct] = useState(null);
+
+  useEffect(() => {
+    fetch('/api/product/123')
+      .then(res => res.json())
+      .then(setProduct);
+  }, []);
+
+  if (!product) return <Skeleton />;
+  return <ProductHero product={product} />;
+}
+
+// GOOD: Server-side data fetching — content in initial HTML
+// Timeline: Server fetch → HTML with content → Render
+export default async function ProductPage({ params }) {
+  const product = await getProduct(params.id);
+  return <ProductHero product={product} />;
+}

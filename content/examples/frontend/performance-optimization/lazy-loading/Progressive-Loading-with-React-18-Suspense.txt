@@ -1,0 +1,43 @@
+import { Suspense, lazy, startTransition, useState } from 'react';
+
+// Multiple Suspense boundaries for granular loading
+function DashboardPage() {
+  return (
+    <div>
+      {/* Critical content — loads first */}
+      <Suspense fallback={<MetricsSkeleton />}>
+        <KeyMetrics />
+      </Suspense>
+
+      {/* Secondary content — can load later */}
+      <Suspense fallback={<ChartSkeleton />}>
+        <RevenueChart />
+      </Suspense>
+
+      {/* Tertiary content — lowest priority */}
+      <Suspense fallback={<ActivitySkeleton />}>
+        <RecentActivity />
+      </Suspense>
+    </div>
+  );
+}
+
+// Use startTransition to keep current UI while loading
+function Navigation() {
+  const [currentPage, setCurrentPage] = useState('home');
+
+  const navigate = (page) => {
+    startTransition(() => {
+      setCurrentPage(page);
+    });
+    // Current page stays visible until new page's chunk loads
+    // No flash of loading state for fast networks
+  };
+
+  return (
+    <nav>
+      <button onClick={() => navigate('home')}>Home</button>
+      <button onClick={() => navigate('dashboard')}>Dashboard</button>
+    </nav>
+  );
+}

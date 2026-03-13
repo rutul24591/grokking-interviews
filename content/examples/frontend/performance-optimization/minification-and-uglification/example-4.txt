@@ -1,0 +1,20 @@
+// Before
+function processOrder(order) {
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Debug: processing order', order.id);
+    validateOrderSchema(order); // Only in dev
+  }
+
+  const result = calculateTotal(order);
+  return result;
+
+  // This code is unreachable — after return
+  sendAnalytics('order_processed');
+  cleanupTemporaryData();
+}
+
+// After minification in production (NODE_ENV='production'):
+function processOrder(o){return calculateTotal(o)}
+// - Development-only block removed (condition is always false)
+// - Unreachable code after return removed
+// - Variable 'result' inlined

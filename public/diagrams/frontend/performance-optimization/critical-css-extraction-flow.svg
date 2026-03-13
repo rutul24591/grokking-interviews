@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#1a1822">Critical CSS Extraction Flow</text>
+
+  <!-- Step 1: Full CSS -->
+  <rect x="30" y="80" width="170" height="80" rx="8" fill="#6d5bd0" stroke="#5a4ab5" stroke-width="2"/>
+  <text x="115" y="112" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#fff">Full CSS Bundle</text>
+  <text x="115" y="132" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#e0daf5">(200 KB stylesheet)</text>
+
+  <!-- Arrow 1 -->
+  <path d="M200 120 L240 120" stroke="#1a1822" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 2: Identify Selectors -->
+  <rect x="245" y="80" width="170" height="80" rx="8" fill="#d97843" stroke="#c06935" stroke-width="2"/>
+  <text x="330" y="108" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">Identify Above-Fold</text>
+  <text x="330" y="126" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">Selectors</text>
+  <text x="330" y="146" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#fde8d8">(headless browser / static)</text>
+
+  <!-- Arrow 2 -->
+  <path d="M415 120 L455 120" stroke="#1a1822" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 3: Split -->
+  <rect x="460" y="70" width="170" height="100" rx="8" fill="#2f9d74" stroke="#258a63" stroke-width="2"/>
+  <text x="545" y="105" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#fff">Split CSS</text>
+  <text x="545" y="125" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#d4f5e6">Critical: ~15 KB</text>
+  <text x="545" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#d4f5e6">Non-critical: ~185 KB</text>
+
+  <!-- Arrow 3 top: Inline -->
+  <path d="M630 100 L670 100 L670 80 L700 80" stroke="#6d5bd0" stroke-width="2" fill="none" marker-end="url(#arrowPurple)"/>
+
+  <!-- Arrow 3 bottom: Async -->
+  <path d="M630 145 L670 145 L670 160 L700 160" stroke="#d97843" stroke-width="2" fill="none" marker-end="url(#arrowOrange)"/>
+
+  <!-- Step 4a: Inline Critical -->
+  <rect x="705" y="55" width="170" height="55" rx="8" fill="#6d5bd0" stroke="#5a4ab5" stroke-width="2"/>
+  <text x="790" y="77" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">Inline in &lt;head&gt;</text>
+  <text x="790" y="97" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#e0daf5">&lt;style&gt;...critical...&lt;/style&gt;</text>
+
+  <!-- Step 4b: Async Load -->
+  <rect x="705" y="130" width="170" height="55" rx="8" fill="#d97843" stroke="#c06935" stroke-width="2"/>
+  <text x="790" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">Async Load Rest</text>
+  <text x="790" y="172" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#fde8d8">rel="preload" as="style"</text>
+
+  <!-- Detailed breakdown below -->
+  <line x1="50" y1="210" x2="850" y2="210" stroke="#1a1822" stroke-width="1" stroke-dasharray="4,4" opacity="0.3"/>
+  <text x="450" y="240" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1a1822">What Gets Extracted</text>
+
+  <!-- Critical selectors column -->
+  <rect x="50" y="260" width="380" height="210" rx="8" fill="#fff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="50" y="260" width="380" height="36" rx="8" fill="#6d5bd0"/>
+  <rect x="50" y="280" width="380" height="16" fill="#6d5bd0"/>
+  <text x="240" y="284" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#fff">Critical (Inlined)</text>
+
+  <text x="70" y="320" font-family="system-ui, sans-serif" font-size="13" fill="#1a1822">* Reset / normalize styles</text>
+  <text x="70" y="345" font-family="system-ui, sans-serif" font-size="13" fill="#1a1822">* Layout (header, nav, hero grid)</text>
+  <text x="70" y="370" font-family="system-ui, sans-serif" font-size="13" fill="#1a1822">* Typography (above-fold text)</text>
+  <text x="70" y="395" font-family="system-ui, sans-serif" font-size="13" fill="#1a1822">* Background colors &amp; hero image</text>
+  <text x="70" y="420" font-family="system-ui, sans-serif" font-size="13" fill="#1a1822">* Visible buttons &amp; form elements</text>
+  <text x="70" y="450" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#6d5bd0">~ 15 KB (fits in first TCP round-trip)</text>
+
+  <!-- Non-critical selectors column -->
+  <rect x="470" y="260" width="380" height="210" rx="8" fill="#fff" stroke="#d97843" stroke-width="2"/>
+  <rect x="470" y="260" width="380" height="36" rx="8" fill="#d97843"/>
+  <rect x="470" y="280" width="380" height="16" fill="#d97843"/>
+  <text x="660" y="284" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#fff">Non-Critical (Async Loaded)</text>
+
+  <text x="490" y="320" font-family="system-ui, sans-serif" font-size="13" fill="#1a1822">* Footer styles</text>
+  <text x="490" y="345" font-family="system-ui, sans-serif" font-size="13" fill="#1a1822">* Below-fold sections &amp; cards</text>
+  <text x="490" y="370" font-family="system-ui, sans-serif" font-size="13" fill="#1a1822">* Modal / dialog styles</text>
+  <text x="490" y="395" font-family="system-ui, sans-serif" font-size="13" fill="#1a1822">* Animations &amp; transitions</text>
+  <text x="490" y="420" font-family="system-ui, sans-serif" font-size="13" fill="#1a1822">* Print styles &amp; media queries</text>
+  <text x="490" y="450" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#d97843">~ 185 KB (loaded after first paint)</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1822"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+  </defs>
+</svg>

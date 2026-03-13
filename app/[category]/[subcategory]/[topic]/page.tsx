@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
 import { loadArticle } from "@/lib/article-loader";
+import { getExampleGroups } from "@/lib/example-loader";
+import { ExampleProvider } from "@/components/articles/ExampleProvider";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
@@ -13,7 +15,7 @@ type PageProps = {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { category, subcategory, topic } = await params;
-  const article = await loadArticle(category, subcategory, topic, "concise");
+  const article = await loadArticle(category, subcategory, topic);
 
   if (!article) {
     return {
@@ -36,7 +38,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ArticlePage({ params }: PageProps) {
   const { category, subcategory, topic } = await params;
-  const article = await loadArticle(category, subcategory, topic, "concise");
+  const article = await loadArticle(category, subcategory, topic);
+  const exampleGroups = await getExampleGroups(category, subcategory, topic);
 
   if (!article) {
     notFound();
@@ -45,7 +48,9 @@ export default async function ArticlePage({ params }: PageProps) {
   const ArticleComponent = article.component;
   return (
     <Suspense fallback={<ArticleLoadingFallback />}>
-      <ArticleComponent />
+      <ExampleProvider examples={exampleGroups}>
+        <ArticleComponent />
+      </ExampleProvider>
     </Suspense>
   );
 }

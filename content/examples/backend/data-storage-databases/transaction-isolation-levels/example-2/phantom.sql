@@ -1,0 +1,2 @@
+-- Session A: SELECT * FROM inventory WHERE stock > 0;
+-- Session B: INSERT new row;

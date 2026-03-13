@@ -1,0 +1,30 @@
+// Host application — webpack.config.js
+const { ModuleFederationPlugin } = require('webpack').container;
+
+module.exports = {
+  plugins: [
+    new ModuleFederationPlugin({
+      name: 'host',
+      remotes: {
+        // Load dashboard from separate deployment
+        dashboard: 'dashboard@https://dashboard.example.com/remoteEntry.js',
+        settings: 'settings@https://settings.example.com/remoteEntry.js',
+      },
+      shared: {
+        react: { singleton: true },
+        'react-dom': { singleton: true },
+      },
+    }),
+  ],
+};
+
+// In host app — load remote module at runtime
+const RemoteDashboard = lazy(() => import('dashboard/DashboardApp'));
+
+function App() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <RemoteDashboard />
+    </Suspense>
+  );
+}

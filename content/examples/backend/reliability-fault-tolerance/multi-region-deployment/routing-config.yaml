@@ -1,0 +1,11 @@
+regions:
+  - id: us-east
+    role: primary
+    endpoint: api-use1.example.com
+  - id: eu-west
+    role: replica
+    endpoint: api-euw1.example.com
+
+routing:
+  strategy: geo-dns
+  healthCheckPath: /health

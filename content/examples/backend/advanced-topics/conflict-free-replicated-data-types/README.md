@@ -1,0 +1,1 @@
+CRDTs merge state without conflicts using associative, commutative rules.

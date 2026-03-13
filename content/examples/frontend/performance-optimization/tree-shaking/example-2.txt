@@ -1,0 +1,40 @@
+// utils.js — detailed trace example
+
+// USED (imported by entry.js)
+export function formatDate(date) {
+  return internalFormat(date, 'date');  // References internalFormat → KEEP
+}
+
+// USED (referenced by formatDate)
+function internalFormat(value, type) {
+  const config = getConfig(type);  // References getConfig → KEEP
+  return config.formatter(value);
+}
+
+// USED (referenced by internalFormat)
+function getConfig(type) {
+  return CONFIGS[type];  // References CONFIGS → KEEP
+}
+
+// USED (referenced by getConfig)
+const CONFIGS = {
+  date: { formatter: (d) => d.toLocaleDateString() },
+  currency: { formatter: (n) => n.toFixed(2) },
+};
+
+// UNUSED (never imported or referenced from used code)
+export function formatCurrency(amount) {
+  return '
+    </ArticleLayout>
+  );
+}
+ + internalFormat(amount, 'currency');
+}
+// Even though formatCurrency uses internalFormat (which IS kept),
+// formatCurrency itself is removed because no entry point uses it.
+
+// UNUSED
+export function parseDate(str) {
+  return new Date(str);
+}
+// parseDate and all its internal helpers are removed.

@@ -1,0 +1,46 @@
+import { useVirtualizer } from '@tanstack/react-virtual';
+import { useRef, useState, useCallback } from 'react';
+
+function OptimizedList({ items }) {
+  const parentRef = useRef(null);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const scrollTimeoutRef = useRef(null);
+
+  const virtualizer = useVirtualizer({
+    count: items.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 80,
+    // Listen for scroll state changes
+    onChange: () => {
+      setIsScrolling(true);
+      clearTimeout(scrollTimeoutRef.current);
+      scrollTimeoutRef.current = setTimeout(() => setIsScrolling(false), 150);
+    },
+  });
+
+  return (
+    <div ref={parentRef} style={{ height: 600, overflow: 'auto' }}>
+      <div style={{ height: virtualizer.getTotalSize(), position: 'relative' }}>
+        {virtualizer.getVirtualItems().map((vItem) => (
+          <div
+            key={vItem.key}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              transform: `translateY(\${vItem.start}px)`,
+            }}
+          >
+            {/* Show lightweight placeholder during fast scrolling */}
+            {isScrolling ? (
+              <div className="h-20 bg-gray-100 animate-pulse rounded" />
+            ) : (
+              <ExpensiveRowComponent item={items[vItem.index]} />
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

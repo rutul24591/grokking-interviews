@@ -1,0 +1,22 @@
+import { SWRConfig } from 'swr';
+
+function App({ children }) {
+  return (
+    <SWRConfig
+      value={{
+        // Dedup requests within 2s window (default)
+        dedupingInterval: 2000,
+
+        // Or set per-hook
+        // useSWR('/api/user', fetcher, { dedupingInterval: 5000 })
+      }}
+    >
+      {children}
+    </SWRConfig>
+  );
+}
+
+// dedupingInterval: 2000 means:
+// If Component A fetches /api/user at t=0 and Component B mounts at t=1500ms,
+// Component B gets the cached result without a new request.
+// If Component C mounts at t=3000ms (beyond the window), it fires a fresh request.

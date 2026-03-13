@@ -1,0 +1,1 @@
+location /rpc { proxy_pass http://rpc-service; }

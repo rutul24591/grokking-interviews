@@ -1,0 +1,43 @@
+// Throttle using requestAnimationFrame — syncs with browser paint cycle
+function throttleRAF(fn) {
+  let frameId = null;
+  let lastArgs = null;
+
+  function throttled(...args) {
+    lastArgs = args;
+
+    if (frameId === null) {
+      frameId = requestAnimationFrame(() => {
+        fn.apply(this, lastArgs);
+        frameId = null;
+        lastArgs = null;
+      });
+    }
+  }
+
+  throttled.cancel = () => {
+    if (frameId !== null) {
+      cancelAnimationFrame(frameId);
+      frameId = null;
+      lastArgs = null;
+    }
+  };
+
+  return throttled;
+}
+
+// Perfect for visual updates — runs at monitor refresh rate (typically 60fps)
+const handleMouseMove = throttleRAF((e) => {
+  cursor.style.transform = `translate(\${e.clientX}px, \${e.clientY}px)`;
+});
+
+document.addEventListener('mousemove', handleMouseMove);
+
+// Also great for scroll-linked animations
+const handleParallax = throttleRAF(() => {
+  const scrollY = window.scrollY;
+  hero.style.transform = `translateY(\${scrollY * 0.5}px)`;
+  clouds.style.transform = `translateY(\${scrollY * 0.3}px)`;
+});
+
+window.addEventListener('scroll', handleParallax, { passive: true });

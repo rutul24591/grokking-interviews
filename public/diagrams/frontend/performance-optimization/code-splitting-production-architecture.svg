@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" font-family="system-ui, sans-serif">
+  <rect width="900" height="620" fill="#f3f1f8" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1822">Production Splitting Strategy</text>
+
+  <!-- Layer 1: Initial Load -->
+  <rect x="30" y="50" width="840" height="130" rx="8" fill="#e8e4f3" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="60" y="72" font-size="12" font-weight="700" fill="#6d5bd0">Initial Load - 150KB gzip</text>
+
+  <rect x="50" y="85" width="140" height="45" rx="6" fill="#6d5bd0" stroke="#5a4bb0" stroke-width="1"/>
+  <text x="120" y="104" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">framework.js</text>
+  <text x="120" y="118" text-anchor="middle" font-size="9" fill="#e0d8f5">React + ReactDOM 45KB</text>
+
+  <rect x="205" y="85" width="130" height="45" rx="6" fill="#6d5bd0" stroke="#5a4bb0" stroke-width="1"/>
+  <text x="270" y="104" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">main.js</text>
+  <text x="270" y="118" text-anchor="middle" font-size="9" fill="#e0d8f5">App Shell + Router 35KB</text>
+
+  <rect x="350" y="85" width="130" height="45" rx="6" fill="#6d5bd0" stroke="#5a4bb0" stroke-width="1"/>
+  <text x="415" y="104" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">vendor.js</text>
+  <text x="415" y="118" text-anchor="middle" font-size="9" fill="#e0d8f5">Zustand + Utils 15KB</text>
+
+  <rect x="495" y="85" width="120" height="45" rx="6" fill="#6d5bd0" stroke="#5a4bb0" stroke-width="1"/>
+  <text x="555" y="104" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">home.js</text>
+  <text x="555" y="118" text-anchor="middle" font-size="9" fill="#e0d8f5">Home Page 25KB</text>
+
+  <rect x="630" y="85" width="120" height="45" rx="6" fill="#6d5bd0" stroke="#5a4bb0" stroke-width="1"/>
+  <text x="690" y="104" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">styles.css</text>
+  <text x="690" y="118" text-anchor="middle" font-size="9" fill="#e0d8f5">Critical CSS 30KB</text>
+
+  <!-- Layer 2: Route Chunks -->
+  <rect x="30" y="200" width="500" height="110" rx="8" fill="#fdf3ec" stroke="#d97843" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="60" y="222" font-size="12" font-weight="700" fill="#d97843">Route Chunks - On Navigation</text>
+
+  <rect x="50" y="235" width="130" height="45" rx="6" fill="#d97843" stroke="#b8622f" stroke-width="1"/>
+  <text x="115" y="254" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">dashboard.js</text>
+  <text x="115" y="268" text-anchor="middle" font-size="9" fill="#fde8d8">85KB gzip</text>
+
+  <rect x="200" y="235" width="120" height="45" rx="6" fill="#d97843" stroke="#b8622f" stroke-width="1"/>
+  <text x="260" y="254" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">settings.js</text>
+  <text x="260" y="268" text-anchor="middle" font-size="9" fill="#fde8d8">45KB gzip</text>
+
+  <rect x="340" y="235" width="120" height="45" rx="6" fill="#d97843" stroke="#b8622f" stroke-width="1"/>
+  <text x="400" y="254" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">profile.js</text>
+  <text x="400" y="268" text-anchor="middle" font-size="9" fill="#fde8d8">30KB gzip</text>
+
+  <!-- Layer 3: Feature Chunks -->
+  <rect x="30" y="330" width="500" height="110" rx="8" fill="#ecf7f1" stroke="#2f9d74" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="60" y="352" font-size="12" font-weight="700" fill="#2f9d74">Feature Chunks - On Interaction</text>
+
+  <rect x="50" y="365" width="130" height="45" rx="6" fill="#2f9d74" stroke="#247d5c" stroke-width="1"/>
+  <text x="115" y="384" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">chart-lib.js</text>
+  <text x="115" y="398" text-anchor="middle" font-size="9" fill="#d4f0e4">d3 + Recharts 120KB</text>
+
+  <rect x="200" y="365" width="130" height="45" rx="6" fill="#2f9d74" stroke="#247d5c" stroke-width="1"/>
+  <text x="265" y="384" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">editor.js</text>
+  <text x="265" y="398" text-anchor="middle" font-size="9" fill="#d4f0e4">Rich Text 180KB</text>
+
+  <rect x="350" y="365" width="120" height="45" rx="6" fill="#2f9d74" stroke="#247d5c" stroke-width="1"/>
+  <text x="410" y="384" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">map.js</text>
+  <text x="410" y="398" text-anchor="middle" font-size="9" fill="#d4f0e4">MapboxGL 200KB</text>
+
+  <!-- Layer 4: Conditional Chunks -->
+  <rect x="560" y="200" width="310" height="240" rx="8" fill="#f5f0e0" stroke="#c4a43a" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="590" y="222" font-size="12" font-weight="700" fill="#c4a43a">Conditional Chunks</text>
+
+  <rect x="580" y="240" width="140" height="45" rx="6" fill="#c4a43a" stroke="#a68a2e" stroke-width="1"/>
+  <text x="650" y="259" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">admin.js</text>
+  <text x="650" y="273" text-anchor="middle" font-size="9" fill="#faf3d8">Admin Panel 150KB</text>
+
+  <rect x="580" y="300" width="140" height="45" rx="6" fill="#c4a43a" stroke="#a68a2e" stroke-width="1"/>
+  <text x="650" y="319" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">locale-fr.js</text>
+  <text x="650" y="333" text-anchor="middle" font-size="9" fill="#faf3d8">French translations 30KB</text>
+
+  <!-- Arrows: home -> routes -->
+  <line x1="555" y1="130" x2="115" y2="235" stroke="#6d5bd0" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#pArr)"/>
+  <text x="290" y="175" font-size="9" fill="#6d5bd0" font-style="italic">Navigate</text>
+
+  <line x1="555" y1="130" x2="260" y2="235" stroke="#6d5bd0" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#pArr)"/>
+
+  <!-- Arrows: dashboard -> features -->
+  <line x1="115" y1="280" x2="115" y2="365" stroke="#d97843" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#pArrO)"/>
+  <text x="130" y="325" font-size="9" fill="#d97843" font-style="italic">Show Chart</text>
+
+  <line x1="115" y1="280" x2="265" y2="365" stroke="#d97843" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#pArrO)"/>
+  <text x="220" y="325" font-size="9" fill="#d97843" font-style="italic">Open Editor</text>
+
+  <!-- Arrows: settings -> admin -->
+  <line x1="400" y1="280" x2="580" y2="260" stroke="#c4a43a" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#pArrY)"/>
+  <text x="510" y="263" font-size="9" fill="#c4a43a" font-style="italic">Admin Only</text>
+
+  <!-- Summary bar -->
+  <rect x="60" y="470" width="780" height="50" rx="8" fill="#fff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="450" y="493" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="600">Layered chunks loaded progressively based on need:</text>
+  <text x="450" y="510" text-anchor="middle" font-size="11" fill="#1a1822">Framework (always) → Routes (on navigate) → Features (on interact) → Conditional (by role/locale)</text>
+
+  <!-- Progress indicator -->
+  <rect x="60" y="540" width="780" height="8" rx="4" fill="#e0e0e0"/>
+  <rect x="60" y="540" width="195" height="8" rx="4" fill="#6d5bd0"/>
+  <rect x="255" y="540" width="195" height="8" rx="4" fill="#d97843"/>
+  <rect x="450" y="540" width="195" height="8" rx="4" fill="#2f9d74"/>
+  <rect x="645" y="540" width="195" height="8" rx="4" fill="#c4a43a"/>
+
+  <text x="157" y="568" text-anchor="middle" font-size="9" fill="#6d5bd0">Initial</text>
+  <text x="352" y="568" text-anchor="middle" font-size="9" fill="#d97843">Routes</text>
+  <text x="547" y="568" text-anchor="middle" font-size="9" fill="#2f9d74">Features</text>
+  <text x="742" y="568" text-anchor="middle" font-size="9" fill="#c4a43a">Conditional</text>
+
+  <defs>
+    <marker id="pArr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#6d5bd0"/>
+    </marker>
+    <marker id="pArrO" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#d97843"/>
+    </marker>
+    <marker id="pArrY" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#c4a43a"/>
+    </marker>
+  </defs>
+</svg>

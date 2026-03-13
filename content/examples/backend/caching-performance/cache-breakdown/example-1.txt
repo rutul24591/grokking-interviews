@@ -1,0 +1,2 @@
+app.get('/stats', async (req, res) => { const key = 'stats:v1'; const cached = await redis.get(key); if (cached) return res.json(JSON.parse(cached)); const lockKey = 'lock:' + key; const gotLock = await redis.set(lockKey, '1', 'NX', 'EX', 5); if (!gotLock) { const retry = await redis.get(key); if (retry) return res.json(JSON.parse(retry)); } const stats = await db.getStats(); await redis.set(key, JSON.stringify(stats), 'EX', 60); await redis.del(lockKey); return res.json(stats);
+});

@@ -1,0 +1,1 @@
+Leader election picks a single coordinator with a lease to avoid split brain.

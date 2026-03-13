@@ -1,0 +1,49 @@
+// 1. Network Panel
+// - Filter by resource type (Font, Script, etc.)
+// - Check "Connection Start" column — with preconnect it should be ~0
+// - Check "Priority" column — preloaded resources show "High"
+// - Prefetched resources show in a separate section
+
+// 2. Performance Panel
+// - Record a page load
+// - Look at the "Network" row for resource timing
+// - Compare waterfall with and without hints
+
+// 3. Lighthouse
+// - "Preconnect to required origins" audit
+// - "Preload key requests" audit
+// - "Avoid excessive preloads" warning
+// - LCP breakdown showing font/image timing
+
+// 4. Resource Timing API (programmatic measurement)
+const observer = new PerformanceObserver((list) => {
+  for (const entry of list.getEntries()) {
+    const dns = entry.domainLookupEnd - entry.domainLookupStart;
+    const tcp = entry.connectEnd - entry.connectStart;
+    const tls = entry.secureConnectionStart > 0
+      ? entry.connectEnd - entry.secureConnectionStart
+      : 0;
+    const ttfb = entry.responseStart - entry.requestStart;
+    const download = entry.responseEnd - entry.responseStart;
+
+    console.log(`\${entry.name}:
+      DNS: \${dns.toFixed(1)}ms
+      TCP: \${tcp.toFixed(1)}ms
+      TLS: \${tls.toFixed(1)}ms
+      TTFB: \${ttfb.toFixed(1)}ms
+      Download: \${download.toFixed(1)}ms
+      Total: \${(entry.responseEnd - entry.startTime).toFixed(1)}ms`);
+
+    // With preconnect: DNS + TCP + TLS should be ~0ms
+    // Without preconnect: DNS 20-120ms, TCP ~50ms, TLS ~50ms
+  }
+});
+observer.observe({ type: 'resource', buffered: true });
+
+// 5. Core Web Vitals correlation
+// Monitor LCP improvement from font/image preloads
+new PerformanceObserver((list) => {
+  const lcpEntry = list.getEntries().at(-1);
+  console.log('LCP:', lcpEntry.startTime.toFixed(0), 'ms');
+  console.log('LCP Element:', lcpEntry.element?.tagName);
+}).observe({ type: 'largest-contentful-paint', buffered: true });

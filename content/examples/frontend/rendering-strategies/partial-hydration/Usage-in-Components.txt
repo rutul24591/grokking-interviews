@@ -1,0 +1,68 @@
+// Server-side component wrapper
+function PartialHydrateWrapper({
+  id,
+  when,
+  children,
+  rootMargin,
+  media,
+  props = {}
+}) {
+  return (
+    <div
+      data-hydrate-id={id}
+      data-hydrate-when={when}
+      data-hydrate-root-margin={rootMargin}
+      data-hydrate-media={media}
+      data-hydrate-props={JSON.stringify(props)}
+    >
+      {children}
+    </div>
+  );
+}
+
+// Page using partial hydration
+export default function BlogPost({ post }) {
+  return (
+    <>
+      {/* Immediate hydration */}
+      <PartialHydrateWrapper id="nav" when="immediate">
+        <Navigation />
+      </PartialHydrateWrapper>
+
+      {/* Static content (no wrapper = no hydration) */}
+      <article>
+        <h1>{post.title}</h1>
+        <div dangerouslySetInnerHTML={{ __html: post.content }} />
+      </article>
+
+      {/* Visible-based hydration */}
+      <PartialHydrateWrapper
+        id="like-button"
+        when="visible"
+        rootMargin="100px"
+        props={{ postId: post.id }}
+      >
+        <LikeButton postId={post.id} />
+      </PartialHydrateWrapper>
+
+      {/* Idle-based hydration */}
+      <PartialHydrateWrapper id="comments" when="idle">
+        <CommentSection postId={post.id} />
+      </PartialHydrateWrapper>
+
+      {/* Interaction-based hydration */}
+      <PartialHydrateWrapper id="share-modal" when="interaction">
+        <ShareModal post={post} />
+      </PartialHydrateWrapper>
+
+      {/* Media query-based hydration */}
+      <PartialHydrateWrapper
+        id="video-player"
+        when="media"
+        media="(min-width: 768px)"
+      >
+        <VideoPlayer videoUrl={post.video} />
+      </PartialHydrateWrapper>
+    </>
+  );
+}

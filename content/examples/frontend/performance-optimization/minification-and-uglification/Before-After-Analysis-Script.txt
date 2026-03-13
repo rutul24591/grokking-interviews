@@ -1,0 +1,48 @@
+// analyze-bundle.js — Measure minification impact
+const fs = require('fs');
+const path = require('path');
+const zlib = require('zlib');
+
+function analyzeFile(filePath) {
+  const raw = fs.readFileSync(filePath);
+  const gzip = zlib.gzipSync(raw, { level: 9 });
+  const brotli = zlib.brotliCompressSync(raw, {
+    params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 11 },
+  });
+
+  return {
+    file: path.basename(filePath),
+    raw: raw.length,
+    gzip: gzip.length,
+    brotli: brotli.length,
+    gzipRatio: ((1 - gzip.length / raw.length) * 100).toFixed(1),
+    brotliRatio: ((1 - brotli.length / raw.length) * 100).toFixed(1),
+  };
+}
+
+// Analyze all JS and CSS files in dist/
+const distDir = './dist/assets';
+const files = fs.readdirSync(distDir)
+  .filter(f => /\\.(js|css)$/.test(f))
+  .map(f => analyzeFile(path.join(distDir, f)));
+
+console.table(files);
+
+// Example output:
+// ┌──────────────────────────────┬────────┬────────┬─────────┬────────────┬──────────────┐
+// │ file                         │ raw    │ gzip   │ brotli  │ gzipRatio  │ brotliRatio  │
+// ├──────────────────────────────┼────────┼────────┼─────────┼────────────┼──────────────┤
+// │ index-Dq8R3h4F.js            │ 142350 │  45820 │  38240  │ 67.8%      │ 73.1%        │
+// │ vendor-Bk3qW9yP.js           │  89210 │  28940 │  24180  │ 67.6%      │ 72.9%        │
+// │ index-m4Kp2LfS.css           │  12470 │   3180 │   2640  │ 74.5%      │ 78.8%        │
+// └──────────────────────────────┴────────┴────────┴─────────┴────────────┴──────────────┘
+
+// Total bundle analysis
+const totalRaw = files.reduce((sum, f) => sum + f.raw, 0);
+const totalGzip = files.reduce((sum, f) => sum + f.gzip, 0);
+const totalBrotli = files.reduce((sum, f) => sum + f.brotli, 0);
+
+console.log('\\n=== Total Bundle ===');
+console.log('Raw:', (totalRaw / 1024).toFixed(1), 'KB');
+console.log('Gzip:', (totalGzip / 1024).toFixed(1), 'KB');
+console.log('Brotli:', (totalBrotli / 1024).toFixed(1), 'KB');

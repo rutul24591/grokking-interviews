@@ -1,0 +1,1 @@
+Feature flag service evaluates rollout rules and targeting.

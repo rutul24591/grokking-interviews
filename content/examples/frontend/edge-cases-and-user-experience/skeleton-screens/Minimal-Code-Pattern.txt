@@ -1,0 +1,2 @@
+const isSlow = useDelayedLoading(300);
+return isSlow ? <SkeletonCard /> : <ActualCard data={data} />;

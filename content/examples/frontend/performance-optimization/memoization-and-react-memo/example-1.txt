@@ -1,0 +1,21 @@
+// Every component in this tree re-renders when count changes
+function Parent() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <button onClick={() => setCount(c => c + 1)}>
+        Count: {count}
+      </button>
+
+      {/* These ALL re-render on every click, even though
+          their props haven't changed */}
+      <ExpensiveChart data={chartData} />     {/* 50ms render */}
+      <UserList users={users} />              {/* 30ms render */}
+      <Sidebar items={navItems} />            {/* 20ms render */}
+    </div>
+  );
+}
+
+// Total: 100ms of wasted rendering on every click
+// At 60fps, you only have 16ms per frame — this causes jank

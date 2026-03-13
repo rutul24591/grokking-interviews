@@ -1,0 +1,1 @@
+If job fails: re-run for last 2 days and verify output checksums.

@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Local State Update Lifecycle (React 18 Automatic Batching)</text>
+
+  <!-- Row 1: setState calls grouped -->
+  <rect x="30" y="60" width="130" height="50" rx="8" fill="#6d5bd0" stroke="#5a4ab8" stroke-width="1.5"/>
+  <text x="95" y="82" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">setState(a)</text>
+  <text x="95" y="97" text-anchor="middle" font-size="10" fill="#edeaf5">User click handler</text>
+
+  <rect x="170" y="60" width="130" height="50" rx="8" fill="#6d5bd0" stroke="#5a4ab8" stroke-width="1.5"/>
+  <text x="235" y="82" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">setState(b)</text>
+  <text x="235" y="97" text-anchor="middle" font-size="10" fill="#edeaf5">Same handler</text>
+
+  <rect x="310" y="60" width="130" height="50" rx="8" fill="#6d5bd0" stroke="#5a4ab8" stroke-width="1.5"/>
+  <text x="375" y="82" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">setState(c)</text>
+  <text x="375" y="97" text-anchor="middle" font-size="10" fill="#edeaf5">Same handler</text>
+
+  <!-- Batching bracket -->
+  <rect x="20" y="55" width="430" height="62" rx="10" fill="none" stroke="#d97843" stroke-width="2" stroke-dasharray="6,3"/>
+  <rect x="145" y="118" width="180" height="22" rx="6" fill="#d97843"/>
+  <text x="235" y="133" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">React 18 Auto-Batching</text>
+
+  <!-- Arrow down -->
+  <line x1="235" y1="145" x2="235" y2="175" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 2: Enqueue -->
+  <rect x="160" y="178" width="150" height="45" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="235" y="197" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">Enqueue Updates</text>
+  <text x="235" y="212" text-anchor="middle" font-size="10" fill="#6d5bd0">Fiber update queue</text>
+
+  <!-- Arrow down -->
+  <line x1="235" y1="225" x2="235" y2="255" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 3: Reconciliation -->
+  <rect x="140" y="258" width="190" height="45" rx="8" fill="#2f9d74" stroke="#268a64" stroke-width="1.5"/>
+  <text x="235" y="277" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">Reconciliation (Render)</text>
+  <text x="235" y="292" text-anchor="middle" font-size="10" fill="#e0f5ec">Process all queued updates</text>
+
+  <!-- Arrow down -->
+  <line x1="235" y1="305" x2="235" y2="335" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 4: Virtual DOM Diff -->
+  <rect x="145" y="338" width="180" height="45" rx="8" fill="#edeaf5" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="235" y="357" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">Virtual DOM Diff</text>
+  <text x="235" y="372" text-anchor="middle" font-size="10" fill="#2f9d74">Compare prev vs next tree</text>
+
+  <!-- Arrow down -->
+  <line x1="235" y1="385" x2="235" y2="415" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 5: Commit -->
+  <rect x="145" y="418" width="180" height="45" rx="8" fill="#d97843" stroke="#c06835" stroke-width="1.5"/>
+  <text x="235" y="437" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">Commit to DOM</text>
+  <text x="235" y="452" text-anchor="middle" font-size="10" fill="#fff">Single batched update</text>
+
+  <!-- Right side: React 17 vs 18 comparison -->
+  <rect x="490" y="60" width="385" height="200" rx="8" fill="#fff" stroke="#6d5bd0" stroke-width="1"/>
+
+  <text x="682" y="85" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1822">Batching Comparison</text>
+
+  <!-- React 17 -->
+  <text x="520" y="115" font-size="12" font-weight="600" fill="#d97843">React 17 (Legacy)</text>
+  <rect x="520" y="125" width="60" height="25" rx="4" fill="#d97843" opacity="0.8"/>
+  <text x="550" y="142" text-anchor="middle" font-size="9" fill="#fff">render 1</text>
+  <rect x="585" y="125" width="60" height="25" rx="4" fill="#d97843" opacity="0.8"/>
+  <text x="615" y="142" text-anchor="middle" font-size="9" fill="#fff">render 2</text>
+  <rect x="650" y="125" width="60" height="25" rx="4" fill="#d97843" opacity="0.8"/>
+  <text x="680" y="142" text-anchor="middle" font-size="9" fill="#fff">render 3</text>
+  <text x="740" y="142" font-size="10" fill="#d97843" font-weight="600">3 re-renders</text>
+
+  <text x="520" y="155" font-size="9" fill="#888">In event handlers: batched | In promises/setTimeout: NOT batched</text>
+
+  <!-- React 18 -->
+  <text x="520" y="185" font-size="12" font-weight="600" fill="#2f9d74">React 18 (Automatic)</text>
+  <rect x="520" y="195" width="190" height="25" rx="4" fill="#2f9d74" opacity="0.8"/>
+  <text x="615" y="212" text-anchor="middle" font-size="9" fill="#fff">single batched render</text>
+  <text x="740" y="212" font-size="10" fill="#2f9d74" font-weight="600">1 re-render</text>
+
+  <text x="520" y="232" font-size="9" fill="#888">ALL updates batched: event handlers, promises, setTimeout, native events</text>
+
+  <!-- Right side: Stale closure warning -->
+  <rect x="490" y="280" width="385" height="185" rx="8" fill="#fff" stroke="#d97843" stroke-width="1"/>
+
+  <text x="682" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1822">Closure &amp; Stale State</text>
+
+  <text x="520" y="330" font-size="11" fill="#d97843" font-weight="600">Problem: Stale closure captures old value</text>
+  <rect x="520" y="340" width="330" height="30" rx="4" fill="#edeaf5"/>
+  <text x="535" y="360" font-size="10" fill="#1a1822" font-family="monospace">setState(count + 1) // always reads same count</text>
+
+  <text x="520" y="395" font-size="11" fill="#2f9d74" font-weight="600">Solution: Functional update reads latest state</text>
+  <rect x="520" y="405" width="330" height="30" rx="4" fill="#e0f5ec"/>
+  <text x="535" y="425" font-size="10" fill="#1a1822" font-family="monospace">setState(prev =&gt; prev + 1) // always current</text>
+
+  <text x="520" y="455" font-size="9" fill="#888">Functional updates guarantee access to the most recent state value,</text>
+
+  <!-- Arrowhead marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#1a1822"/>
+    </marker>
+  </defs>
+</svg>

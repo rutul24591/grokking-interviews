@@ -1,0 +1,2 @@
+app.get('/products/:id', async (req, res) => { const id = req.params.id; const product = await db.getProductById(id); const etag = '"' + product.updatedAt.getTime() + '"'; res.set('ETag', etag); res.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=30'); if (req.headers['if-none-match'] === etag) { return res.status(304).end(); } return res.json(product);
+});

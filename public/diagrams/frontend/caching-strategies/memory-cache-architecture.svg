@@ -1,0 +1,110 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">In-Memory Cache Architecture (React Query / SWR)</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arr-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arr-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+  </defs>
+
+  <!-- Component Tree (left column) -->
+  <rect x="30" y="60" width="170" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="115" y="85" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">ComponentA</text>
+  <text x="115" y="110" text-anchor="middle" font-size="10" fill="#6d5bd0">useQuery(["users"])</text>
+
+  <rect x="30" y="130" width="170" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="115" y="155" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">ComponentB</text>
+  <text x="115" y="180" text-anchor="middle" font-size="10" fill="#6d5bd0">useQuery(["users"])</text>
+
+  <rect x="30" y="200" width="170" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="115" y="225" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">ComponentC</text>
+  <text x="115" y="250" text-anchor="middle" font-size="10" fill="#6d5bd0">useQuery(["posts"])</text>
+
+  <!-- Deduplication label -->
+  <rect x="20" y="270" width="190" height="30" rx="6" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="115" y="290" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Same key = shared entry</text>
+
+  <!-- Dedup bracket -->
+  <line x1="205" y1="75" x2="220" y2="75" stroke="#d97843" stroke-width="2"/>
+  <line x1="220" y1="75" x2="220" y2="145" stroke="#d97843" stroke-width="2"/>
+  <line x1="205" y1="145" x2="220" y2="145" stroke="#d97843" stroke-width="2"/>
+  <text x="235" y="115" font-size="10" fill="#d97843" font-weight="bold">Dedup</text>
+
+  <!-- Hook Layer -->
+  <rect x="270" y="65" width="140" height="50" rx="8" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="340" y="87" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">useQuery Hook</text>
+  <text x="340" y="103" text-anchor="middle" font-size="10" fill="#6d5bd0">Subscribe to cache</text>
+
+  <rect x="270" y="200" width="140" height="50" rx="8" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="340" y="222" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">useQuery Hook</text>
+  <text x="340" y="238" text-anchor="middle" font-size="10" fill="#6d5bd0">Subscribe to cache</text>
+
+  <!-- Arrows from components to hooks -->
+  <line x1="200" y1="80" x2="268" y2="85" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="200" y1="150" x2="268" y2="95" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="200" y1="220" x2="268" y2="225" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Query Cache (center) -->
+  <rect x="460" y="55" width="220" height="260" rx="8" fill="#fff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="570" y="80" text-anchor="middle" font-size="14" fill="#1a1822" font-weight="bold">Query Cache</text>
+  <text x="570" y="96" text-anchor="middle" font-size="10" fill="#6d5bd0">In-Memory Map</text>
+
+  <!-- Cache entry 1 -->
+  <rect x="475" y="110" width="190" height="70" rx="6" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="570" y="128" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">key: ["users"]</text>
+  <rect x="485" y="134" width="55" height="18" rx="4" fill="#2f9d74"/>
+  <text x="512" y="147" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">FRESH</text>
+  <text x="570" y="168" text-anchor="middle" font-size="9" fill="#1a1822">data: [...] | updatedAt: 12:03</text>
+
+  <!-- Cache entry 2 -->
+  <rect x="475" y="190" width="190" height="70" rx="6" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="570" y="208" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">key: ["posts"]</text>
+  <rect x="485" y="214" width="55" height="18" rx="4" fill="#d97843"/>
+  <text x="512" y="227" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">STALE</text>
+  <text x="570" y="248" text-anchor="middle" font-size="9" fill="#1a1822">data: [...] | updatedAt: 11:58</text>
+
+  <!-- Cache entry 3 -->
+  <rect x="475" y="270" width="190" height="30" rx="6" fill="#edeaf5" stroke="#d7d1e6"/>
+  <text x="570" y="290" text-anchor="middle" font-size="10" fill="#1a1822">key: ["comments", 42] ...</text>
+
+  <!-- Arrows from hooks to cache -->
+  <line x1="410" y1="90" x2="458" y2="135" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="410" y1="225" x2="458" y2="225" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- API Server -->
+  <rect x="740" y="140" width="130" height="60" rx="8" fill="#2f9d74"/>
+  <text x="805" y="167" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">API Server</text>
+  <text x="805" y="185" text-anchor="middle" font-size="10" fill="#fff">/api/users, /api/posts</text>
+
+  <!-- Background refetch arrow (stale entry) -->
+  <line x1="665" y1="225" x2="738" y2="185" stroke="#d97843" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arr-orange)"/>
+  <text x="710" y="220" text-anchor="middle" font-size="9" fill="#d97843" font-weight="bold">Background</text>
+  <text x="710" y="232" text-anchor="middle" font-size="9" fill="#d97843">Refetch</text>
+
+  <!-- Response arrow back -->
+  <line x1="738" y1="165" x2="682" y2="150" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr-green)"/>
+  <text x="720" y="145" text-anchor="middle" font-size="9" fill="#2f9d74">Response</text>
+
+  <!-- Bottom legend -->
+  <rect x="30" y="340" width="840" height="140" rx="8" fill="#fff" stroke="#d7d1e6"/>
+  <text x="450" y="365" text-anchor="middle" font-size="13" fill="#1a1822" font-weight="bold">How Deduplication Works</text>
+
+  <rect x="50" y="385" width="12" height="12" rx="3" fill="#6d5bd0"/>
+  <text x="70" y="395" font-size="11" fill="#1a1822"><tspan font-weight="bold">Multiple components</tspan> using the same query key (e.g., ["users"]) share a single cache entry.</text>
+
+  <rect x="50" y="410" width="12" height="12" rx="3" fill="#2f9d74"/>
+  <text x="70" y="420" font-size="11" fill="#1a1822"><tspan font-weight="bold">Fresh data</tspan> is returned immediately from cache without network request.</text>
+
+  <rect x="50" y="435" width="12" height="12" rx="3" fill="#d97843"/>
+  <text x="70" y="445" font-size="11" fill="#1a1822"><tspan font-weight="bold">Stale data</tspan> is returned from cache, then a background refetch updates the entry and re-renders subscribers.</text>
+
+  <text x="70" y="468" font-size="11" fill="#1a1822"><tspan font-weight="bold">Only one network request</tspan> is made regardless of how many components subscribe to the same key.</text>
+  <rect x="50" y="458" width="12" height="12" rx="3" fill="#edeaf5" stroke="#d7d1e6"/>
+</svg>

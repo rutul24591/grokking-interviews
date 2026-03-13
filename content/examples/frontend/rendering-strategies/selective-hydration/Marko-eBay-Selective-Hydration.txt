@@ -1,0 +1,42 @@
+<!-- page.marko -->
+<layout>
+  <!-- Static components (no JavaScript) -->
+  <header>
+    <h1>\${post.title}</h1>
+    <p>\${post.author} • \${post.date}</p>
+  </header>
+
+  <!-- Static content -->
+  <article>
+    <\${post.content}/>
+  </article>
+
+  <!-- Interactive component: gets JavaScript -->
+  <like-button:interactive postId=post.id/>
+
+  <!-- Interactive component -->
+  <comment-section:interactive postId=post.id/>
+
+  <!-- Static footer -->
+  <footer>
+    <p>© 2026 Blog</p>
+  </footer>
+</layout>
+
+<!-- like-button.marko -->
+<script>
+  // Only runs on client when component is interactive
+  class {
+    onCreate() {
+      this.state = { likes: 0 };
+    }
+
+    incrementLikes() {
+      this.state.likes++;
+    }
+  }
+</script>
+
+<button on-click('incrementLikes')>
+  ❤️ Like (\${state.likes})
+</button>

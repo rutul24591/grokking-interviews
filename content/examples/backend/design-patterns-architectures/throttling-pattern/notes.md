@@ -1,0 +1,1 @@
+Throttle protects resources during spikes.

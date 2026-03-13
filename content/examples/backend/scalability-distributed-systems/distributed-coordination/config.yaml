@@ -1,0 +1,4 @@
+coordination:
+  store: etcd
+  lease_ttl_ms: 10000
+  retry_backoff_ms: 100

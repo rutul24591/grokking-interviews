@@ -1,0 +1,12 @@
+// Chrome DevTools Console warning:
+// "The resource https://example.com/font.woff2 was preloaded
+//  using link preload but not used within a few seconds from
+//  the window's load event. Please make sure it has an appropriate
+//  'as' value and it is preloaded intentionally."
+
+// Common causes of this warning:
+// 1. Preloaded resource is for a different page (use prefetch instead)
+// 2. Preloaded resource type doesn't match 'as' attribute
+// 3. crossorigin mismatch (especially for fonts)
+// 4. Preloaded resource is conditionally used (media query, A/B test)
+// 5. Resource URL in preload doesn't match the actual request URL

@@ -1,0 +1,1 @@
+// browser enforces HTTPS via HSTS

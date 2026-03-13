@@ -1,0 +1,4 @@
+vector_clocks:
+  max_entries: 20
+  merge_strategy: last_write_wins
+  prune_policy: least_recent

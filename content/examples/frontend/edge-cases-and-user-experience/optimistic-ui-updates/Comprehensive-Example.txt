@@ -1,0 +1,56 @@
+import { useState } from "react";
+
+type Item = { id: string; title: string };
+
+type Mutation = {
+  id: string;
+  apply: (items: Item[]) => Item[];
+  rollback: (items: Item[]) => Item[];
+};
+
+export function OptimisticList() {
+  const [items, setItems] = useState<Item[]>([]);
+  const [pending, setPending] = useState<Record<string, boolean>>({});
+
+  async function addItem(title: string) {
+    const id = crypto.randomUUID();
+    const mutation: Mutation = {
+      id,
+      apply: items => [{ id, title }, ...items],
+      rollback: items => items.filter(item => item.id !== id),
+    };
+
+    setItems(mutation.apply);
+    setPending(prev => ({ ...prev, [id]: true }));
+
+    try {
+      const res = await fetch("/api/items", { method: "POST", body: JSON.stringify({ title, id }) });
+      if (!res.ok) throw new Error("Failed");
+      setPending(prev => {
+        const next = { ...prev };
+        delete next[id];
+        return next;
+      });
+    } catch {
+      setItems(mutation.rollback);
+      setPending(prev => {
+        const next = { ...prev };
+        delete next[id];
+        return next;
+      });
+    }
+  }
+
+  return (
+    <div>
+      <button onClick={() => addItem("New item")}>Add</button>
+      <ul>
+        {items.map(item => (
+          <li key={item.id}>
+            {item.title} {pending[item.id] && <em>(syncing)</em>}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}

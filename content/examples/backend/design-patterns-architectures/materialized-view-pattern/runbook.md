@@ -1,0 +1,1 @@
+Rebuild view from source if drift detected.

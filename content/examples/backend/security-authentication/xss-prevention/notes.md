@@ -1,0 +1,1 @@
+Auto-escaping templates reduce risk, but CSP adds a strong browser-side safety net.

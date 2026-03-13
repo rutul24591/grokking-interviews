@@ -1,0 +1,30 @@
+// vite.config.js
+// pnpm add -D vite-plugin-compression
+
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import compression from 'vite-plugin-compression';
+
+export default defineConfig({
+  plugins: [
+    react(),
+
+    // Gzip pre-compression
+    compression({
+      algorithm: 'gzip',
+      ext: '.gz',
+      threshold: 1024,
+      compressionOptions: { level: 9 },
+    }),
+
+    // Brotli pre-compression
+    compression({
+      algorithm: 'brotliCompress',
+      ext: '.br',
+      threshold: 1024,
+      compressionOptions: {
+        params: { 0: 11 },        // BROTLI_PARAM_QUALITY = 11
+      },
+    }),
+  ],
+});

@@ -1,0 +1,1 @@
+Email service handles templating, delivery, and bounce tracking.

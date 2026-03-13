@@ -1,0 +1,24 @@
+// ESLint rule to warn about heavy imports
+// .eslintrc.js (using eslint-plugin-import)
+module.exports = {
+  rules: {
+    'no-restricted-imports': ['error', {
+      paths: [
+        {
+          name: 'moment',
+          message: 'Use date-fns instead (67KB → 2KB tree-shaken).',
+        },
+        {
+          name: 'lodash',
+          message: 'Use lodash-es for tree-shaking, or native methods.',
+        },
+      ],
+      patterns: [
+        {
+          group: ['@mui/icons-material'],
+          message: 'Import specific icons: @mui/icons-material/Search',
+        },
+      ],
+    }],
+  },
+};

@@ -1,0 +1,118 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Caching Strategy Comparison</text>
+
+  <defs>
+    <marker id="a-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="a-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="a-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+  </defs>
+
+  <!-- Column 1: Stale-While-Revalidate -->
+  <rect x="30" y="55" width="270" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="165" y="80" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">Stale-While-Revalidate</text>
+
+  <rect x="60" y="115" width="210" height="30" rx="6" fill="#edeaf5"/>
+  <text x="165" y="135" text-anchor="middle" font-size="12" fill="#1a1822">1. Request arrives</text>
+
+  <line x1="165" y1="145" x2="165" y2="165" stroke="#6d5bd0" stroke-width="2" marker-end="url(#a-purple)"/>
+
+  <rect x="45" y="170" width="120" height="28" rx="6" fill="#e8f5f0" stroke="#2f9d74"/>
+  <text x="105" y="189" text-anchor="middle" font-size="11" fill="#2f9d74">Return cache</text>
+
+  <rect x="175" y="170" width="120" height="28" rx="6" fill="#edeaf5" stroke="#6d5bd0"/>
+  <text x="235" y="189" text-anchor="middle" font-size="11" fill="#6d5bd0">Fetch network</text>
+
+  <text x="152" y="185" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="bold">+</text>
+
+  <line x1="235" y1="198" x2="235" y2="218" stroke="#6d5bd0" stroke-width="2" marker-end="url(#a-purple)"/>
+
+  <rect x="60" y="225" width="210" height="28" rx="6" fill="#e8f5f0"/>
+  <text x="165" y="243" text-anchor="middle" font-size="11" fill="#2f9d74">3. Update cache silently</text>
+
+  <rect x="50" y="270" width="230" height="50" rx="6" fill="#fff" stroke="#2f9d74"/>
+  <text x="165" y="290" text-anchor="middle" font-size="11" fill="#2f9d74" font-weight="bold">Fast + Eventually Fresh</text>
+  <text x="165" y="308" text-anchor="middle" font-size="10" fill="#1a1822">Best for: feeds, listings, dashboards</text>
+
+  <!-- Column 2: Cache-First -->
+  <rect x="320" y="55" width="270" height="40" rx="8" fill="#2f9d74"/>
+  <text x="455" y="80" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">Cache-First</text>
+
+  <rect x="350" y="115" width="210" height="30" rx="6" fill="#edeaf5"/>
+  <text x="455" y="135" text-anchor="middle" font-size="12" fill="#1a1822">1. Request arrives</text>
+
+  <line x1="455" y1="145" x2="455" y2="165" stroke="#2f9d74" stroke-width="2" marker-end="url(#a-green)"/>
+
+  <rect x="370" y="170" width="170" height="28" rx="6" fill="#e8f5f0" stroke="#2f9d74"/>
+  <text x="455" y="189" text-anchor="middle" font-size="11" fill="#2f9d74">2. Check cache</text>
+
+  <line x1="400" y1="198" x2="400" y2="218" stroke="#2f9d74" stroke-width="2" marker-end="url(#a-green)"/>
+  <line x1="510" y1="198" x2="510" y2="218" stroke="#d97843" stroke-width="2" marker-end="url(#a-orange)"/>
+
+  <rect x="340" y="225" width="100" height="28" rx="6" fill="#e8f5f0"/>
+  <text x="390" y="243" text-anchor="middle" font-size="11" fill="#2f9d74">HIT: Return</text>
+
+  <rect x="460" y="225" width="120" height="28" rx="6" fill="#fff3ec"/>
+  <text x="520" y="243" text-anchor="middle" font-size="11" fill="#d97843">MISS: Network</text>
+
+  <rect x="340" y="270" width="230" height="50" rx="6" fill="#fff" stroke="#2f9d74"/>
+  <text x="455" y="290" text-anchor="middle" font-size="11" fill="#2f9d74" font-weight="bold">Fastest (if cached)</text>
+  <text x="455" y="308" text-anchor="middle" font-size="10" fill="#1a1822">Best for: fonts, images, static assets</text>
+
+  <!-- Column 3: Network-First -->
+  <rect x="610" y="55" width="270" height="40" rx="8" fill="#d97843"/>
+  <text x="745" y="80" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">Network-First</text>
+
+  <rect x="640" y="115" width="210" height="30" rx="6" fill="#edeaf5"/>
+  <text x="745" y="135" text-anchor="middle" font-size="12" fill="#1a1822">1. Request arrives</text>
+
+  <line x1="745" y1="145" x2="745" y2="165" stroke="#d97843" stroke-width="2" marker-end="url(#a-orange)"/>
+
+  <rect x="660" y="170" width="170" height="28" rx="6" fill="#fff3ec" stroke="#d97843"/>
+  <text x="745" y="189" text-anchor="middle" font-size="11" fill="#d97843">2. Try network first</text>
+
+  <line x1="690" y1="198" x2="690" y2="218" stroke="#2f9d74" stroke-width="2" marker-end="url(#a-green)"/>
+  <line x1="800" y1="198" x2="800" y2="218" stroke="#d97843" stroke-width="2" marker-end="url(#a-orange)"/>
+
+  <rect x="630" y="225" width="110" height="28" rx="6" fill="#e8f5f0"/>
+  <text x="685" y="243" text-anchor="middle" font-size="11" fill="#2f9d74">OK: Cache+Return</text>
+
+  <rect x="750" y="225" width="120" height="28" rx="6" fill="#fff3ec"/>
+  <text x="810" y="243" text-anchor="middle" font-size="11" fill="#d97843">FAIL: Use cache</text>
+
+  <rect x="630" y="270" width="230" height="50" rx="6" fill="#fff" stroke="#d97843"/>
+  <text x="745" y="290" text-anchor="middle" font-size="11" fill="#d97843" font-weight="bold">Freshest Data</text>
+  <text x="745" y="308" text-anchor="middle" font-size="10" fill="#1a1822">Best for: API data, user content</text>
+
+  <!-- Comparison summary -->
+  <rect x="50" y="345" width="800" height="140" rx="8" fill="#fff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="370" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1822">Quick Comparison</text>
+
+  <text x="100" y="395" font-size="12" fill="#1a1822" font-weight="bold">Aspect</text>
+  <text x="300" y="395" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="bold">SWR</text>
+  <text x="500" y="395" text-anchor="middle" font-size="12" fill="#2f9d74" font-weight="bold">Cache-First</text>
+  <text x="700" y="395" text-anchor="middle" font-size="12" fill="#d97843" font-weight="bold">Network-First</text>
+
+  <line x1="80" y1="405" x2="820" y2="405" stroke="#d7d1e6" stroke-width="1"/>
+
+  <text x="100" y="425" font-size="11" fill="#1a1822">Speed</text>
+  <text x="300" y="425" text-anchor="middle" font-size="11" fill="#2f9d74">Fast (cached)</text>
+  <text x="500" y="425" text-anchor="middle" font-size="11" fill="#2f9d74">Fastest (cached)</text>
+  <text x="700" y="425" text-anchor="middle" font-size="11" fill="#d97843">Slower (network)</text>
+
+  <text x="100" y="445" font-size="11" fill="#1a1822">Freshness</text>
+  <text x="300" y="445" text-anchor="middle" font-size="11" fill="#d97843">Eventually fresh</text>
+  <text x="500" y="445" text-anchor="middle" font-size="11" fill="#d94343">May be stale</text>
+  <text x="700" y="445" text-anchor="middle" font-size="11" fill="#2f9d74">Always fresh</text>
+
+  <text x="100" y="465" font-size="11" fill="#1a1822">Offline</text>
+  <text x="300" y="465" text-anchor="middle" font-size="11" fill="#2f9d74">Yes</text>
+  <text x="500" y="465" text-anchor="middle" font-size="11" fill="#2f9d74">Yes</text>
+  <text x="700" y="465" text-anchor="middle" font-size="11" fill="#d97843">Fallback only</text>
+</svg>

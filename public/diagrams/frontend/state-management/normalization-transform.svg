@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="32" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1822">Normalization Transform: Nested API Response → Flat Entity Tables</text>
+
+  <!-- LEFT SIDE: Nested API Response -->
+  <rect x="20" y="50" width="370" height="420" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="205" y="74" text-anchor="middle" font-size="14" font-weight="bold" fill="#6d5bd0">Nested (API Response)</text>
+
+  <!-- posts array -->
+  <rect x="35" y="88" width="340" height="370" rx="6" fill="white" stroke="#d97843" stroke-width="1"/>
+  <text x="45" y="108" font-size="11" font-weight="bold" fill="#d97843">posts: [</text>
+
+  <!-- Post 1 -->
+  <rect x="50" y="116" width="310" height="165" rx="4" fill="#fff8f3" stroke="#d97843" stroke-width="0.8" stroke-dasharray="4,2"/>
+  <text x="60" y="134" font-size="10" fill="#1a1822">{ id: "post-1", title: "State Patterns",</text>
+
+  <!-- Embedded author (duplicated user) -->
+  <rect x="65" y="142" width="280" height="42" rx="4" fill="#fde8d8" stroke="#d97843" stroke-width="0.8"/>
+  <text x="75" y="158" font-size="10" fill="#d97843" font-weight="bold">author: {</text>
+  <text x="85" y="172" font-size="9" fill="#1a1822">id: "user-1", name: "Alice", avatar: "a.png"</text>
+  <text x="75" y="182" font-size="10" fill="#d97843">}</text>
+
+  <!-- Embedded comments with nested author -->
+  <text x="65" y="200" font-size="10" fill="#1a1822">comments: [</text>
+  <rect x="80" y="206" width="265" height="66" rx="4" fill="#fde8d8" stroke="#d97843" stroke-width="0.8"/>
+  <text x="90" y="222" font-size="9" fill="#1a1822">{ id: "cmt-1", body: "Great post!",</text>
+  <rect x="95" y="228" width="235" height="36" rx="3" fill="#fcd5b8" stroke="#d97843" stroke-width="0.5"/>
+  <text x="105" y="244" font-size="9" fill="#d97843" font-weight="bold">author: {</text>
+  <text x="115" y="256" font-size="8" fill="#1a1822">id: "user-1", name: "Alice", avatar: "a.png"</text>
+  <text x="105" y="262" font-size="9" fill="#d97843">}</text>
+  <text x="65" y="282" font-size="10" fill="#1a1822">] }</text>
+
+  <!-- Duplicate warning -->
+  <rect x="50" y="290" width="310" height="155" rx="4" fill="#fff8f3" stroke="#d97843" stroke-width="0.8" stroke-dasharray="4,2"/>
+  <text x="60" y="308" font-size="10" fill="#1a1822">{ id: "post-2", title: "Redux Tips",</text>
+  <rect x="65" y="316" width="280" height="42" rx="4" fill="#fde8d8" stroke="#d97843" stroke-width="0.8"/>
+  <text x="75" y="332" font-size="10" fill="#d97843" font-weight="bold">author: {</text>
+  <text x="85" y="346" font-size="9" fill="#1a1822">id: "user-1", name: "Alice", avatar: "a.png"</text>
+  <text x="75" y="356" font-size="10" fill="#d97843">}</text>
+
+  <text x="65" y="374" font-size="10" fill="#1a1822">comments: [</text>
+  <rect x="80" y="380" width="265" height="52" rx="4" fill="#fde8d8" stroke="#d97843" stroke-width="0.8"/>
+  <text x="90" y="396" font-size="9" fill="#1a1822">{ id: "cmt-2", body: "Thanks!",</text>
+  <rect x="95" y="402" width="235" height="24" rx="3" fill="#fcd5b8" stroke="#d97843" stroke-width="0.5"/>
+  <text x="105" y="418" font-size="8" fill="#1a1822">author: { id: "user-2", name: "Bob" }</text>
+  <text x="65" y="442" font-size="10" fill="#1a1822">] }</text>
+
+  <!-- Duplication callout -->
+  <text x="205" y="468" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">⚠ "user-1" duplicated 3 times</text>
+
+  <!-- Arrow -->
+  <polygon points="408,250 430,240 430,246 460,246 460,254 430,254 430,260" fill="#6d5bd0"/>
+  <text x="445" y="235" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="bold">normalize()</text>
+
+  <!-- RIGHT SIDE: Normalized Store -->
+  <rect x="478" y="50" width="405" height="420" rx="8" fill="#edeaf5" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="680" y="74" text-anchor="middle" font-size="14" font-weight="bold" fill="#2f9d74">Normalized (Store)</text>
+
+  <!-- Users entity table -->
+  <rect x="493" y="88" width="375" height="100" rx="6" fill="white" stroke="#2f9d74" stroke-width="1"/>
+  <text x="503" y="108" font-size="12" font-weight="bold" fill="#2f9d74">users</text>
+  <text x="503" y="124" font-size="10" fill="#1a1822">byId: {</text>
+  <rect x="513" y="130" width="340" height="22" rx="3" fill="#e6f5ee" stroke="#2f9d74" stroke-width="0.5"/>
+  <text x="523" y="146" font-size="9" fill="#1a1822">"user-1": { id: "user-1", name: "Alice", avatar: "a.png" }</text>
+  <rect x="513" y="155" width="340" height="22" rx="3" fill="#e6f5ee" stroke="#2f9d74" stroke-width="0.5"/>
+  <text x="523" y="171" font-size="9" fill="#1a1822">"user-2": { id: "user-2", name: "Bob" }</text>
+  <text x="503" y="186" font-size="10" fill="#1a1822">allIds: ["user-1", "user-2"]</text>
+
+  <!-- Posts entity table -->
+  <rect x="493" y="198" width="375" height="108" rx="6" fill="white" stroke="#2f9d74" stroke-width="1"/>
+  <text x="503" y="218" font-size="12" font-weight="bold" fill="#2f9d74">posts</text>
+  <text x="503" y="234" font-size="10" fill="#1a1822">byId: {</text>
+  <rect x="513" y="240" width="340" height="22" rx="3" fill="#e6f5ee" stroke="#2f9d74" stroke-width="0.5"/>
+  <text x="523" y="256" font-size="9" fill="#1a1822">"post-1": { id: "post-1", title: "State Patterns", authorId: "user-1", commentIds: ["cmt-1"] }</text>
+  <rect x="513" y="265" width="340" height="22" rx="3" fill="#e6f5ee" stroke="#2f9d74" stroke-width="0.5"/>
+  <text x="523" y="281" font-size="9" fill="#1a1822">"post-2": { id: "post-2", title: "Redux Tips", authorId: "user-1", commentIds: ["cmt-2"] }</text>
+  <text x="503" y="300" font-size="10" fill="#1a1822">allIds: ["post-1", "post-2"]</text>
+
+  <!-- Comments entity table -->
+  <rect x="493" y="316" width="375" height="108" rx="6" fill="white" stroke="#2f9d74" stroke-width="1"/>
+  <text x="503" y="336" font-size="12" font-weight="bold" fill="#2f9d74">comments</text>
+  <text x="503" y="352" font-size="10" fill="#1a1822">byId: {</text>
+  <rect x="513" y="358" width="340" height="22" rx="3" fill="#e6f5ee" stroke="#2f9d74" stroke-width="0.5"/>
+  <text x="523" y="374" font-size="9" fill="#1a1822">"cmt-1": { id: "cmt-1", body: "Great post!", postId: "post-1", authorId: "user-1" }</text>
+  <rect x="513" y="383" width="340" height="22" rx="3" fill="#e6f5ee" stroke="#2f9d74" stroke-width="0.5"/>
+  <text x="523" y="399" font-size="9" fill="#1a1822">"cmt-2": { id: "cmt-2", body: "Thanks!", postId: "post-2", authorId: "user-2" }</text>
+  <text x="503" y="418" font-size="10" fill="#1a1822">allIds: ["cmt-1", "cmt-2"]</text>
+
+  <!-- Single source callout -->
+  <text x="680" y="448" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">✓ Each entity stored exactly once</text>
+  <text x="680" y="462" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">✓ Relationships via ID references</text>
+</svg>

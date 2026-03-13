@@ -1,0 +1,49 @@
+// === Step 1: Check if modules are ESM ===
+// Look at the library's package.json:
+// "module" field → ESM entry (good)
+// "type": "module" → ESM package (good)
+// Only "main" field → likely CommonJS (bad)
+
+// === Step 2: Check your transpilation ===
+// Babel should NOT convert imports to require:
+// .babelrc
+{
+  "presets": [
+    ["@babel/preset-env", { "modules": false }]  // ← Keep ES modules
+  ]
+}
+
+// === Step 3: Use Webpack stats ===
+// webpack.config.js
+module.exports = {
+  stats: {
+    usedExports: true,    // Show which exports are used
+    optimizationBailout: true,  // Show WHY tree shaking failed
+  },
+};
+
+// Run: npx webpack --stats-reasons
+// Output shows why each module was included
+
+// === Step 4: Bundle Analyzer ===
+// Install: pnpm add -D webpack-bundle-analyzer
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+module.exports = {
+  plugins: [new BundleAnalyzerPlugin()],
+};
+
+// Look for:
+// - Unexpectedly large modules
+// - Libraries you only partially import showing full size
+// - node_modules that should be smaller
+
+// === Step 5: Check for scope hoisting ===
+// Webpack's ModuleConcatenationPlugin (scope hoisting) enables
+// better tree shaking. If it bails out, check the stats:
+// "ModuleConcatenation bailout: Module is not an ECMAScript module"
+// This means the module uses CommonJS → can't be tree-shaken
+
+// === Step 6: importCost VS Code extension ===
+// Shows the import cost inline in your editor
+// import { map } from 'lodash';     // 70.7KB (red — full library!)
+// import { map } from 'lodash-es';  // 2.1KB  (green — tree-shaken)

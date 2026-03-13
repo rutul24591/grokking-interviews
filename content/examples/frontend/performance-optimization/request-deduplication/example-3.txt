@@ -1,0 +1,28 @@
+import useSWR from 'swr';
+
+const fetcher = (url: string) => fetch(url).then(r => r.json());
+
+// Component A
+function Header() {
+  const { data: user, isLoading } = useSWR('/api/user', fetcher);
+  if (isLoading) return <Skeleton />;
+  return <header>Welcome, {user.name}</header>;
+}
+
+// Component B — same key, same fetcher
+function Sidebar() {
+  const { data: user, isLoading } = useSWR('/api/user', fetcher);
+  if (isLoading) return <Skeleton />;
+  return <aside><img src={user.avatar} /></aside>;
+}
+
+// Component C — same key, same fetcher
+function Settings() {
+  const { data: user, isLoading } = useSWR('/api/user', fetcher);
+  if (isLoading) return <Skeleton />;
+  return <form defaultValue={user.email}>{/* ... */}</form>;
+}
+
+// All three components render on the same page.
+// SWR fires exactly ONE fetch('/api/user') call.
+// All three receive the same data object.

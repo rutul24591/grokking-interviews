@@ -1,0 +1,109 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Cache Invalidation Strategies</text>
+
+  <!-- Column 1: TTL-Based -->
+  <rect x="20" y="55" width="200" height="50" rx="8" fill="#6d5bd0"/>
+  <text x="120" y="76" text-anchor="middle" font-size="13" fill="#ffffff" font-weight="bold">TTL-Based</text>
+  <text x="120" y="93" text-anchor="middle" font-size="10" fill="#e8e4f3">(Time-to-Live Expiry)</text>
+
+  <!-- Timer icon -->
+  <circle cx="120" cy="135" r="20" fill="none" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="120" y1="135" x2="120" y2="122" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="120" y1="135" x2="130" y2="135" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="120" y="170" text-anchor="middle" font-size="10" fill="#1a1822">Auto-expire after</text>
+  <text x="120" y="183" text-anchor="middle" font-size="10" fill="#1a1822">set duration</text>
+
+  <rect x="30" y="200" width="180" height="130" rx="6" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="120" y="220" text-anchor="middle" font-size="11" fill="#2f9d74" font-weight="bold">Pros</text>
+  <text x="40" y="238" font-size="9" fill="#1a1822">+ Simple to implement</text>
+  <text x="40" y="253" font-size="9" fill="#1a1822">+ No origin coordination</text>
+  <text x="40" y="268" font-size="9" fill="#1a1822">+ Scales independently</text>
+  <text x="120" y="290" text-anchor="middle" font-size="11" fill="#d97843" font-weight="bold">Cons</text>
+  <text x="40" y="308" font-size="9" fill="#1a1822">- Staleness window = TTL</text>
+  <text x="40" y="323" font-size="9" fill="#1a1822">- No control over freshness</text>
+
+  <!-- Column 2: Event-Driven -->
+  <rect x="240" y="55" width="200" height="50" rx="8" fill="#6d5bd0"/>
+  <text x="340" y="76" text-anchor="middle" font-size="13" fill="#ffffff" font-weight="bold">Event-Driven</text>
+  <text x="340" y="93" text-anchor="middle" font-size="10" fill="#e8e4f3">(Push Invalidation)</text>
+
+  <!-- Webhook/push icon -->
+  <rect x="315" y="118" width="50" height="30" rx="4" fill="#2f9d74"/>
+  <text x="340" y="137" text-anchor="middle" font-size="9" fill="#ffffff" font-weight="bold">EVENT</text>
+  <line x1="340" y1="148" x2="320" y2="168" stroke="#2f9d74" stroke-width="2"/>
+  <line x1="340" y1="148" x2="340" y2="172" stroke="#2f9d74" stroke-width="2"/>
+  <line x1="340" y1="148" x2="360" y2="168" stroke="#2f9d74" stroke-width="2"/>
+  <text x="340" y="190" text-anchor="middle" font-size="10" fill="#1a1822">Origin pushes changes</text>
+
+  <rect x="250" y="200" width="180" height="130" rx="6" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="340" y="220" text-anchor="middle" font-size="11" fill="#2f9d74" font-weight="bold">Pros</text>
+  <text x="260" y="238" font-size="9" fill="#1a1822">+ Near real-time freshness</text>
+  <text x="260" y="253" font-size="9" fill="#1a1822">+ Precise invalidation</text>
+  <text x="260" y="268" font-size="9" fill="#1a1822">+ Minimal stale window</text>
+  <text x="340" y="290" text-anchor="middle" font-size="11" fill="#d97843" font-weight="bold">Cons</text>
+  <text x="260" y="308" font-size="9" fill="#1a1822">- Complex infrastructure</text>
+  <text x="260" y="323" font-size="9" fill="#1a1822">- Delivery reliability risk</text>
+
+  <!-- Column 3: Versioned URLs -->
+  <rect x="460" y="55" width="200" height="50" rx="8" fill="#6d5bd0"/>
+  <text x="560" y="76" text-anchor="middle" font-size="13" fill="#ffffff" font-weight="bold">Versioned URLs</text>
+  <text x="560" y="93" text-anchor="middle" font-size="10" fill="#e8e4f3">(Content Hashing)</text>
+
+  <!-- File with hash icon -->
+  <rect x="535" y="118" width="50" height="35" rx="3" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="560" y="132" text-anchor="middle" font-size="7" fill="#6d5bd0">main.</text>
+  <text x="560" y="143" text-anchor="middle" font-size="7" fill="#d97843" font-weight="bold">a1b2c3.js</text>
+  <text x="560" y="170" text-anchor="middle" font-size="10" fill="#1a1822">New hash = new URL</text>
+  <text x="560" y="183" text-anchor="middle" font-size="10" fill="#1a1822">Old URL stays cached</text>
+
+  <rect x="470" y="200" width="180" height="130" rx="6" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="560" y="220" text-anchor="middle" font-size="11" fill="#2f9d74" font-weight="bold">Pros</text>
+  <text x="480" y="238" font-size="9" fill="#1a1822">+ Perfect consistency</text>
+  <text x="480" y="253" font-size="9" fill="#1a1822">+ Aggressive long caching</text>
+  <text x="480" y="268" font-size="9" fill="#1a1822">+ No invalidation needed</text>
+  <text x="560" y="290" text-anchor="middle" font-size="11" fill="#d97843" font-weight="bold">Cons</text>
+  <text x="480" y="308" font-size="9" fill="#1a1822">- Only for static assets</text>
+  <text x="480" y="323" font-size="9" fill="#1a1822">- Requires build tooling</text>
+
+  <!-- Column 4: Tag-Based -->
+  <rect x="680" y="55" width="200" height="50" rx="8" fill="#6d5bd0"/>
+  <text x="780" y="76" text-anchor="middle" font-size="13" fill="#ffffff" font-weight="bold">Tag-Based</text>
+  <text x="780" y="93" text-anchor="middle" font-size="10" fill="#e8e4f3">(Surrogate Keys)</text>
+
+  <!-- Tag group icon -->
+  <rect x="750" y="118" width="60" height="18" rx="9" fill="#d97843"/>
+  <text x="780" y="131" text-anchor="middle" font-size="8" fill="#ffffff" font-weight="bold">product-123</text>
+  <rect x="755" y="140" width="50" height="16" rx="8" fill="#2f9d74"/>
+  <text x="780" y="152" text-anchor="middle" font-size="8" fill="#ffffff" font-weight="bold">author-7</text>
+  <rect x="760" y="160" width="40" height="16" rx="8" fill="#6d5bd0"/>
+  <text x="780" y="172" text-anchor="middle" font-size="8" fill="#ffffff" font-weight="bold">blog</text>
+  <text x="780" y="190" text-anchor="middle" font-size="10" fill="#1a1822">Purge by tag group</text>
+
+  <rect x="690" y="200" width="180" height="130" rx="6" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="780" y="220" text-anchor="middle" font-size="11" fill="#2f9d74" font-weight="bold">Pros</text>
+  <text x="700" y="238" font-size="9" fill="#1a1822">+ Group invalidation</text>
+  <text x="700" y="253" font-size="9" fill="#1a1822">+ Flexible taxonomy</text>
+  <text x="700" y="268" font-size="9" fill="#1a1822">+ Fast CDN propagation</text>
+  <text x="780" y="290" text-anchor="middle" font-size="11" fill="#d97843" font-weight="bold">Cons</text>
+  <text x="700" y="308" font-size="9" fill="#1a1822">- CDN vendor lock-in</text>
+  <text x="700" y="323" font-size="9" fill="#1a1822">- Purge API rate limits</text>
+
+  <!-- Bottom summary bar -->
+  <rect x="20" y="350" width="860" height="140" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="450" y="375" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1822">Choosing a Strategy</text>
+
+  <text x="40" y="400" font-size="11" fill="#6d5bd0" font-weight="bold">Static assets?</text>
+  <text x="40" y="416" font-size="10" fill="#1a1822">Use Versioned URLs with immutable caching</text>
+
+  <text x="260" y="400" font-size="11" fill="#6d5bd0" font-weight="bold">CMS / catalog content?</text>
+  <text x="260" y="416" font-size="10" fill="#1a1822">Use Tag-Based with surrogate keys</text>
+
+  <text x="510" y="400" font-size="11" fill="#6d5bd0" font-weight="bold">Real-time data?</text>
+  <text x="510" y="416" font-size="10" fill="#1a1822">Use Event-Driven with WebSocket push</text>
+
+  <text x="710" y="400" font-size="11" fill="#6d5bd0" font-weight="bold">General API data?</text>
+  <text x="710" y="416" font-size="10" fill="#1a1822">Use TTL + stale-while-revalidate</text>
+
+  <text x="450" y="470" text-anchor="middle" font-size="11" fill="#d97843" font-weight="bold">Production systems combine multiple strategies — use TTL as a safety net for all push-based approaches</text>
+</svg>

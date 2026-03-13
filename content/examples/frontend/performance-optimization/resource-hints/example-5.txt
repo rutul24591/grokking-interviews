@@ -1,0 +1,7 @@
+<!-- Static prefetch hints in HTML -->
+<link rel="prefetch" href="/static/js/dashboard.chunk.js" />
+<link rel="prefetch" href="/static/css/dashboard.css" as="style" />
+<link rel="prefetch" href="/api/dashboard/summary" as="fetch" crossorigin />
+
+<!-- Prefetch a full page (HTML document) -->
+<link rel="prefetch" href="/dashboard" as="document" />

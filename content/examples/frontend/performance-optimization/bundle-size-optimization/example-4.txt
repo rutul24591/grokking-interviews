@@ -1,0 +1,27 @@
+# Find duplicate packages in your bundle
+npx duplicate-package-checker-webpack-plugin
+
+# With pnpm — deduplicate dependencies
+pnpm dedupe
+
+# Inspect why a package is installed (dependency chain)
+pnpm why lodash
+
+# Example output:
+# dependencies:
+#   react-table 7.8.0
+#     dependencies:
+#       lodash 4.17.21
+#   formik 2.4.5
+#     dependencies:
+#       lodash 4.17.21  ← duplicate!
+
+# Fix: hoist to a single version in package.json
+# or use pnpm overrides to force a single version
+{
+  "pnpm": {
+    "overrides": {
+      "lodash": "4.17.21"
+    }
+  }
+}
