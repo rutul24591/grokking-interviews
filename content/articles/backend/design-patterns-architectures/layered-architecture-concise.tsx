@@ -1,7 +1,223 @@
-"use client"; import { ArticleLayout } from "@/components/articles/ArticleLayout";
-import { ArticleImage } from "@/components/articles/ArticleImage";
-import type { ArticleMetadata } from "@/types/article"; export const metadata: ArticleMetadata = { id: "article-backend-layered-architecture-extensive", title: "Layered Architecture", description: "In-depth guide to layered architecture architecture, trade-offs, and operational practice.", category: "backend", subcategory: "design-patterns-architectures", slug: "layered-architecture",
-wordCount: 2800, readingTime: 14, lastUpdated: "2026-03-11", tags: ["backend","architecture","layered"], relatedTopics: ["clean-architecture","hexagonal-architecture","repository-pattern"],
-}; export default function LayeredArchitectureConciseArticle() { return ( <ArticleLayout metadata={metadata}> <section> <h2>Definition and Scope</h2> <p> Layered Architecture is a structural pattern that shapes how components interact, evolve, and fail. </p>  <p> A reliable choice is driven by constraints: team structure, scale, and failure tolerance. </p> </section> <section> <h2>Architecture Overview</h2> <ArticleImage src="/diagrams/backend/design-patterns-architectures/layered-architecture-diagram-1.svg" alt="Layered Architecture architecture diagram" caption="Layered Architecture system overview." /> <p> Architecture decisions should make boundaries explicit and reduce hidden coupling. </p>  <p> The success of a pattern depends on operational maturity and clear ownership. </p> </section> <section> <h2>Pattern Mechanisms</h2> <ArticleImage src="/diagrams/backend/design-patterns-architectures/layered-architecture-diagram-2.svg" alt="Layered Architecture decision map" caption="Key decision points and trade-offs." /> <p> Mechanisms include well-defined interfaces, consistent contracts, and safe evolution paths. </p>  <p> Patterns must be enforced in code, not just documented. </p> </section> <section> <h2>Failure Modes and Mitigations</h2> <ArticleImage src="/diagrams/backend/design-patterns-architectures/layered-architecture-diagram-3.svg" alt="Layered Architecture failure modes" caption="Failure paths and mitigation strategies." /> <p> Common failures include unclear boundaries, data ownership conflicts, and over-optimization for hypothetical scale. </p>  <p> Mitigation includes audits of dependencies, clear contracts, and staged migrations. </p> </section> <section> <h2>Operational Playbook</h2> <p> Operational playbooks should include rollback plans, migration sequencing, and incident response specific to the pattern. </p>  <p> When the pattern fails, simplify first before adding more complexity. </p> </section> <section> <h2>Trade-offs</h2> <p> Patterns trade simplicity for flexibility. The best choice minimizes operational risk while meeting requirements. </p>  <p> Avoid adopting patterns that exceed team capacity to operate. </p> </section> <section> <h2>Implementation Example</h2> <p>Mini app showing controller, service, and repository layers.</p><p className="mt-4 font-semibold">controller.js</p><div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div> <p className="mt-4 font-semibold">service.js</p><div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div> <p className="mt-4 font-semibold">repo.js</p><div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div> <p className="mt-4 font-semibold">notes.md</p><div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div> </section> <section> <h2>Testing and Validation</h2> <p> Test boundary contracts, failure isolation, and migration paths in staging. </p>  <p> Use observability to confirm that boundaries behave as designed under load. </p> </section> <section> <h2>Checklist</h2> <ul className="space-y-2"> <li>Define boundaries and ownership.</li> <li>Document contracts and enforce in code.</li> <li>Plan for migration and rollback.</li> <li>Measure change failure rate and incident impact.</li> <li>Revisit pattern choice as scale evolves.</li> </ul> </section> <section> <h2>Summary</h2> <p>Layered Architecture succeeds when boundaries are explicit, contracts are enforced, and operational practice matches the pattern’s complexity.</p> </section>
+"use client";
 
-      <section> <h2>Interview Questions</h2> <div className="space-y-4"> <div className="rounded-lg border border-theme bg-panel-soft p-4"> <p className="font-semibold">Q: What problem does Layered Architecture solve?</p> <p className="mt-2 text-sm">A: It provides a repeatable structural approach to reduce coupling and improve system evolution.</p> </div> <div className="rounded-lg border border-theme bg-panel-soft p-4"> <p className="font-semibold">Q: What is the biggest risk?</p> <p className="mt-2 text-sm">A: Adopting the pattern without the operational maturity to support it.</p> </div> <div className="rounded-lg border border-theme bg-panel-soft p-4"> <p className="font-semibold">Q: How do you validate it?</p> <p className="mt-2 text-sm">A: Measure change lead time, incident rate, and boundary stability over time.</p> </div> <div className="rounded-lg border border-theme bg-panel-soft p-4"> <p className="font-semibold">Q: What trade-off is common?</p> <p className="mt-2 text-sm">A: Balancing flexibility against complexity and cost.</p> </div> </div> </section> </ArticleLayout> ); }
+import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { ArticleImage } from "@/components/articles/ArticleImage";
+import type { ArticleMetadata } from "@/types/article";
+
+export const metadata: ArticleMetadata = {
+  id: "article-backend-layered-architecture-extensive",
+  title: "Layered Architecture",
+  description:
+    "Structure an application into layers (presentation, application, domain, infrastructure) to control dependencies, simplify change, and keep responsibilities clear.",
+  category: "backend",
+  subcategory: "design-patterns-architectures",
+  slug: "layered-architecture",
+  wordCount: 0,
+  readingTime: 0,
+  lastUpdated: "2026-03-14",
+  tags: ["backend", "architecture", "layered"],
+  relatedTopics: ["clean-architecture", "hexagonal-architecture", "repository-pattern", "unit-of-work-pattern"],
+};
+
+export default function LayeredArchitectureArticle() {
+  return (
+    <ArticleLayout metadata={metadata}>
+      <section>
+        <h2>Definition: A Simple Dependency and Responsibility Model</h2>
+        <p>
+          <strong>Layered architecture</strong> organizes code into layers with clear responsibilities and a clear
+          dependency direction. The canonical layers are:
+          <strong> presentation</strong> (HTTP, UI), <strong>application</strong> (use-case orchestration),{" "}
+          <strong>domain</strong> (business rules), and <strong>infrastructure</strong> (databases, external systems).
+        </p>
+        <p>
+          The value is clarity: when you find a bug or need to change behavior, you can predict where the change belongs.
+          The layers also create a vocabulary for code review: &quot;this controller is doing domain logic&quot; or
+          &quot;this domain object depends on a database client.&quot;
+        </p>
+        <ArticleImage
+          src="/diagrams/backend/design-patterns-architectures/layered-architecture-diagram-1.svg"
+          alt="Layered architecture diagram showing presentation, application, domain, and infrastructure layers"
+          caption="Layering is a dependency discipline: keep responsibilities separated so change does not propagate unpredictably."
+        />
+      </section>
+
+      <section>
+        <h2>What Makes Layering Work</h2>
+        <p>
+          Many teams say they have layers, but the layers only exist as folders. Real layering requires clear rules about
+          dependencies and about what belongs in each layer.
+        </p>
+        <ul className="mt-4 space-y-2">
+          <li>
+            <strong>Presentation:</strong> parse inputs, authenticate/authorize at the edge, map to application calls,
+            and shape responses. Avoid business rules here.
+          </li>
+          <li>
+            <strong>Application:</strong> coordinate workflows, manage transactions, call domain rules, and invoke
+            dependencies through abstractions. Keep it focused on &quot;what happens&quot; rather than &quot;how
+            persistence works.&quot;
+          </li>
+          <li>
+            <strong>Domain:</strong> encode invariants and meaning. This is where correctness lives.
+          </li>
+          <li>
+            <strong>Infrastructure:</strong> implement persistence and external integrations, including failure semantics
+            and operational concerns (timeouts, retries, mapping).
+          </li>
+        </ul>
+        <p className="mt-4">
+          Layering is successful when you can change infrastructure without rewriting domain meaning, and when domain
+          changes do not require rewriting transport logic.
+        </p>
+      </section>
+
+      <section>
+        <h2>Strict vs Relaxed Layers</h2>
+        <p>
+          Layering has variants. In a <strong>strict</strong> layered architecture, each layer can depend only on the
+          layer directly below it. In a <strong>relaxed</strong> approach, upper layers may depend on deeper layers
+          directly. Strict layering improves isolation but can create boilerplate. Relaxed layering reduces ceremony but
+          can increase coupling.
+        </p>
+        <ArticleImage
+          src="/diagrams/backend/design-patterns-architectures/layered-architecture-diagram-2.svg"
+          alt="Decision map showing strict vs relaxed layering and dependency inversion points"
+          caption="Choose strictness intentionally. The goal is stability and clarity, not bureaucracy."
+        />
+        <p className="mt-4">
+          Many teams use a hybrid rule: strict around the domain core (domain should not depend on infrastructure),
+          relaxed for adapters and glue code where the cost of strictness is not worth it.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>
+          Layered architecture is popular because it is easy to explain, but it is easy to degrade into ineffective
+          layering. The most common failure is a &quot;service layer&quot; that becomes a dump for everything.
+        </p>
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-3 text-lg font-semibold">Pitfalls That Cause Long-Term Pain</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Anemic domain:</strong> domain objects carry data only; business rules live in controllers or
+              services.
+            </li>
+            <li>
+              <strong>Leaky persistence:</strong> query builders, table schemas, or ORM models leak into application and
+              domain decisions.
+            </li>
+            <li>
+              <strong>Circular dependencies:</strong> &quot;helper&quot; utilities become a dependency knot across layers.
+            </li>
+            <li>
+              <strong>Inconsistent policy:</strong> timeouts/retries/validation implemented inconsistently at different
+              entry points.
+            </li>
+          </ul>
+        </div>
+        <p>
+          The remedy is to treat layering as an enforcement tool: architecture tests, code review conventions, and
+          explicit modules that make boundary violations difficult.
+        </p>
+      </section>
+
+      <section>
+        <h2>Operational Implications</h2>
+        <p>
+          Layering changes how you instrument and debug systems. If the application layer represents workflows, then
+          logging and tracing around application boundaries makes incidents easier to interpret. If your logs only exist
+          at controller level, you often miss the workflow context that matters.
+        </p>
+        <p>
+          Layering also helps with safe rollouts. When domain changes are isolated, you can ship new domain rules with
+          confidence that transport and persistence concerns were not accidentally modified. Conversely, when
+          infrastructure changes are isolated, you can tune databases or swap providers without rewriting business logic.
+        </p>
+      </section>
+
+      <section>
+        <h2>Failure Modes and Mitigations</h2>
+        <ArticleImage
+          src="/diagrams/backend/design-patterns-architectures/layered-architecture-diagram-3.svg"
+          alt="Layered architecture failure modes: leaking layers, god services, and circular dependencies"
+          caption="Layering fails when boundaries are not enforced. The result is coupling and unpredictable change."
+        />
+        <ul className="mt-6 space-y-2">
+          <li>
+            <strong>Boundary leakage:</strong> persistence or HTTP concepts influence domain decisions. Mitigation: use
+            repositories/adapters and keep domain language pure.
+          </li>
+          <li>
+            <strong>God application services:</strong> one layer accumulates everything. Mitigation: split by use case and
+            align code to workflows.
+          </li>
+          <li>
+            <strong>Unclear transaction boundaries:</strong> long transactions leak across layers. Mitigation: define
+            transaction boundaries in the application layer explicitly.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Scenario Walkthrough: Turning a &quot;Ball of Mud&quot; Into Layers</h2>
+        <p>
+          A monolithic service grows quickly. Controllers call the database directly, and business rules are scattered
+          across HTTP handlers. Incidents are hard to debug because behavior depends on which handler path was taken.
+        </p>
+        <p>
+          The team introduces an application layer for the highest-value workflows and moves domain rules into domain
+          objects. Database access is moved behind a repository abstraction so the domain stops depending on ORM models.
+          Over time, layering makes changes smaller and reduces regressions because responsibilities are explicit.
+        </p>
+      </section>
+
+      <section>
+        <h2>Checklist</h2>
+        <ul className="space-y-2">
+          <li>Define responsibilities per layer and enforce dependency direction, especially around the domain core.</li>
+          <li>Keep business invariants in the domain layer; keep request parsing and response shaping in presentation.</li>
+          <li>Use the application layer to define workflow and transaction boundaries explicitly.</li>
+          <li>Prevent persistence and framework leakage by using adapters/repositories at the boundary.</li>
+          <li>Instrument workflows at the application layer so incidents have domain context.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interview Questions</h2>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: What is layered architecture trying to optimize for?</p>
+            <p className="mt-2 text-sm">
+              A: Clarity of responsibilities and controlled dependencies so change is localized and correctness is easier
+              to maintain.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: What is the difference between strict and relaxed layering?</p>
+            <p className="mt-2 text-sm">
+              A: Strict layering restricts dependencies to adjacent layers, improving isolation but adding boilerplate.
+              Relaxed layering reduces ceremony but can increase coupling if abused.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: What is the most common failure mode in layered systems?</p>
+            <p className="mt-2 text-sm">
+              A: Boundary leakage: controllers and persistence concerns absorb business rules, producing a tangled service
+              layer and inconsistent behavior.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: Where should transaction boundaries live?</p>
+            <p className="mt-2 text-sm">
+              A: Typically in the application layer, where workflows are orchestrated and consistency boundaries are
+              defined explicitly.
+            </p>
+          </div>
+        </div>
+      </section>
+    </ArticleLayout>
+  );
+}
+

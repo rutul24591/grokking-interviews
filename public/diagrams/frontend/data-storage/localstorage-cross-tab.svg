@@ -1,0 +1,93 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Cross-Tab Communication via Storage Event</text>
+
+  <!-- Tab 1 (Writer) -->
+  <rect x="40" y="65" width="220" height="110" rx="8" fill="#d97843" stroke="#d97843" stroke-width="2"/>
+  <text x="150" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">Tab 1 (Writer)</text>
+  <rect x="55" y="100" width="190" height="60" rx="6" fill="#fff8f0"/>
+  <text x="150" y="120" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">localStorage.setItem(</text>
+  <text x="150" y="136" text-anchor="middle" font-size="11" fill="#d97843">"theme", "dark"</text>
+  <text x="150" y="152" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">)</text>
+
+  <!-- Tab 2 (Listener) -->
+  <rect x="340" y="65" width="220" height="110" rx="8" fill="#2f9d74" stroke="#2f9d74" stroke-width="2"/>
+  <text x="450" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">Tab 2 (Listener)</text>
+  <rect x="355" y="100" width="190" height="60" rx="6" fill="#f0faf5"/>
+  <text x="450" y="120" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">window.addEventListener(</text>
+  <text x="450" y="136" text-anchor="middle" font-size="11" fill="#2f9d74">"storage", handler</text>
+  <text x="450" y="152" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">)</text>
+
+  <!-- Tab 3 (Listener) -->
+  <rect x="640" y="65" width="220" height="110" rx="8" fill="#2f9d74" stroke="#2f9d74" stroke-width="2"/>
+  <text x="750" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">Tab 3 (Listener)</text>
+  <rect x="655" y="100" width="190" height="60" rx="6" fill="#f0faf5"/>
+  <text x="750" y="120" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">window.addEventListener(</text>
+  <text x="750" y="136" text-anchor="middle" font-size="11" fill="#2f9d74">"storage", handler</text>
+  <text x="750" y="152" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">)</text>
+
+  <!-- localStorage shared store -->
+  <rect x="250" y="215" width="400" height="55" rx="8" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="240" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">Shared localStorage (Same Origin)</text>
+  <text x="450" y="258" text-anchor="middle" font-size="11" fill="#edeaf5">theme: "light" → "dark"</text>
+
+  <!-- Arrow: Tab 1 writes to localStorage -->
+  <path d="M 150 175 L 150 242 L 250 242" fill="none" stroke="#d97843" stroke-width="2.5" marker-end="url(#arrowOrange2)"/>
+  <text x="130" y="200" font-size="11" fill="#d97843" font-weight="bold">WRITE</text>
+
+  <!-- Tab 1 "NO EVENT" indicator -->
+  <rect x="55" y="290" width="190" height="40" rx="6" fill="#fff3e8" stroke="#d97843" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="150" y="315" text-anchor="middle" font-size="13" font-weight="bold" fill="#d97843">✗ NO storage event</text>
+
+  <!-- Arrow: localStorage fires event to Tab 2 -->
+  <path d="M 450 270 L 450 310 L 450 340" fill="none" stroke="#2f9d74" stroke-width="2.5" marker-end="url(#arrowGreen2)"/>
+  <text x="408" y="305" font-size="11" fill="#2f9d74" font-weight="bold">EVENT</text>
+
+  <!-- Arrow: localStorage fires event to Tab 3 -->
+  <path d="M 550 270 L 750 270 L 750 340" fill="none" stroke="#2f9d74" stroke-width="2.5" marker-end="url(#arrowGreen2)"/>
+  <text x="710" y="305" font-size="11" fill="#2f9d74" font-weight="bold">EVENT</text>
+
+  <!-- StorageEvent details for Tab 2 -->
+  <rect x="310" y="340" width="280" height="145" rx="8" fill="#f0faf5" stroke="#2f9d74" stroke-width="2"/>
+  <text x="450" y="365" text-anchor="middle" font-size="13" font-weight="bold" fill="#2f9d74">StorageEvent Properties</text>
+
+  <text x="330" y="390" font-size="12" fill="#1a1822"><tspan font-weight="bold">key:</tspan></text>
+  <text x="430" y="390" font-size="12" fill="#6d5bd0">"theme"</text>
+
+  <text x="330" y="412" font-size="12" fill="#1a1822"><tspan font-weight="bold">oldValue:</tspan></text>
+  <text x="430" y="412" font-size="12" fill="#6d5bd0">"light"</text>
+
+  <text x="330" y="434" font-size="12" fill="#1a1822"><tspan font-weight="bold">newValue:</tspan></text>
+  <text x="430" y="434" font-size="12" fill="#6d5bd0">"dark"</text>
+
+  <text x="330" y="456" font-size="12" fill="#1a1822"><tspan font-weight="bold">url:</tspan></text>
+  <text x="430" y="456" font-size="12" fill="#6d5bd0">"https://app.example.com"</text>
+
+  <text x="330" y="478" font-size="12" fill="#1a1822"><tspan font-weight="bold">storageArea:</tspan></text>
+  <text x="430" y="478" font-size="12" fill="#6d5bd0">localStorage</text>
+
+  <!-- StorageEvent received by Tab 3 -->
+  <rect x="640" y="340" width="220" height="90" rx="8" fill="#f0faf5" stroke="#2f9d74" stroke-width="2"/>
+  <text x="750" y="365" text-anchor="middle" font-size="13" font-weight="bold" fill="#2f9d74">Tab 3 Receives</text>
+  <text x="750" y="388" text-anchor="middle" font-size="11" fill="#1a1822">Same StorageEvent object</text>
+  <text x="750" y="406" text-anchor="middle" font-size="11" fill="#2f9d74">✓ Can react to change</text>
+  <text x="750" y="422" text-anchor="middle" font-size="11" fill="#2f9d74">✓ Update local UI state</text>
+
+  <!-- Key insight callout -->
+  <rect x="40" y="345" width="250" height="70" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="165" y="368" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Key Design Choice</text>
+  <text x="165" y="388" text-anchor="middle" font-size="11" fill="#1a1822">Writing tab never receives its</text>
+  <text x="165" y="404" text-anchor="middle" font-size="11" fill="#1a1822">own event — prevents infinite loops</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowOrange2" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843"/>
+    </marker>
+    <marker id="arrowGreen2" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+  </defs>
+</svg>

@@ -30,9 +30,9 @@ export default function DatabaseShardingConciseArticle() {
       how shard key and rebalancing decisions shape reliability, and how failure domains are bounded.
     </p>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/database-sharding-diagram-1.svg"
-      alt="Database Sharding architecture overview"
-      caption="High-level view of database sharding in a distributed system"
+      src="/diagrams/backend/scalability-distributed-systems/sharding-database.webp"
+      alt="Sharding splits a large database"
+      caption="Large dataset divided into multiple shards"
     />
   </section>
 
@@ -53,9 +53,9 @@ export default function DatabaseShardingConciseArticle() {
       <li>Rebalancing and resharding</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/database-sharding-diagram-2.svg"
-      alt="Database Sharding core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/scalability-distributed-systems/sharding-architecture.webp"
+      alt="Database sharding architecture"
+      caption="Sharding topology versus a single data server"
     />
   </section>
 
@@ -106,9 +106,9 @@ export default function DatabaseShardingConciseArticle() {
       <li>Complex resharding operations</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/database-sharding-diagram-3.svg"
-      alt="Database Sharding failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/scalability-distributed-systems/sharding-key-based.webp"
+      alt="Key-based sharding"
+      caption="Hash-based distribution across shard servers"
     />
   </section>
 

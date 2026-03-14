@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <filter id="shadow2" x="-4%" y="-4%" width="108%" height="108%">
+      <feDropShadow dx="1" dy="2" stdDeviation="3" flood-opacity="0.10" />
+    </filter>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0" />
+    </marker>
+    <marker id="arrowOrange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d97843" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="500" rx="12" fill="#f3f1f8" />
+
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1822">Web SQL Architecture: The Single-Implementation Problem</text>
+
+  <!-- ===== MAIN FLOW (top section) ===== -->
+
+  <!-- JavaScript App -->
+  <rect x="30" y="65" width="150" height="70" rx="8" fill="#6d5bd0" filter="url(#shadow2)" />
+  <text x="105" y="97" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#fff">JavaScript</text>
+  <text x="105" y="117" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#e0dbf0">Application Code</text>
+
+  <!-- Arrow 1 -->
+  <line x1="180" y1="100" x2="228" y2="100" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)" />
+  <text x="204" y="92" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6d5bd0">calls</text>
+
+  <!-- Web SQL API -->
+  <rect x="230" y="65" width="150" height="70" rx="8" fill="#6d5bd0" filter="url(#shadow2)" />
+  <text x="305" y="93" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#fff">Web SQL API</text>
+  <text x="305" y="113" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#e0dbf0">openDatabase()</text>
+  <text x="305" y="126" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#e0dbf0">transaction() / executeSql()</text>
+
+  <!-- Arrow 2 -->
+  <line x1="380" y1="100" x2="428" y2="100" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)" />
+  <text x="404" y="92" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6d5bd0">delegates</text>
+
+  <!-- SQLite Engine -->
+  <rect x="430" y="55" width="180" height="90" rx="8" fill="#d97843" filter="url(#shadow2)" />
+  <text x="520" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#fff">SQLite Engine</text>
+  <text x="520" y="103" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#fff">Embedded in Browser</text>
+  <text x="520" y="118" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#fff">Parses &amp; executes SQL</text>
+  <rect x="444" y="127" width="152" height="14" rx="3" fill="#c0380a" />
+  <text x="520" y="138" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#fff">THE PROBLEM LAYER</text>
+
+  <!-- Arrow 3 -->
+  <line x1="610" y1="100" x2="658" y2="100" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)" />
+  <text x="634" y="92" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6d5bd0">reads/writes</text>
+
+  <!-- On-Disk Database -->
+  <rect x="660" y="65" width="210" height="70" rx="8" fill="#2f9d74" filter="url(#shadow2)" />
+  <text x="765" y="93" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#fff">On-Disk Database</text>
+  <text x="765" y="113" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#fff">SQLite .db file (per origin)</text>
+
+  <!-- ===== PROBLEM EXPLANATION (middle section) ===== -->
+  <rect x="30" y="170" width="840" height="120" rx="8" fill="#fff" filter="url(#shadow2)" />
+  <rect x="30" y="170" width="840" height="30" rx="8" fill="#d97843" />
+  <rect x="30" y="188" width="840" height="12" fill="#d97843" />
+  <text x="450" y="191" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#fff">Why Standardization Failed: The Single-Implementation Dependency</text>
+
+  <text x="50" y="222" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">W3C requires at least two independent implementations for a specification to become a standard.</text>
+  <text x="50" y="242" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Every browser that implemented Web SQL used the exact same SQLite library. This meant the "spec" was</text>
+  <text x="50" y="262" font-family="system-ui, sans-serif" font-size="12" fill="#d97843" font-weight="600">effectively "do what SQLite does" rather than a formal, independently implementable standard.</text>
+  <text x="50" y="280" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Any SQLite bug or behavior change would propagate to every browser identically - a monoculture risk.</text>
+
+  <!-- ===== BROWSER SUPPORT (bottom section) ===== -->
+  <text x="450" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#1a1822">Browser Implementation Status</text>
+
+  <!-- Supported browsers -->
+  <rect x="30" y="340" width="260" height="140" rx="8" fill="#fff" filter="url(#shadow2)" />
+  <rect x="30" y="340" width="260" height="28" rx="8" fill="#2f9d74" />
+  <rect x="30" y="356" width="260" height="12" fill="#2f9d74" />
+  <text x="160" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#fff">Implemented (then removed)</text>
+
+  <text x="50" y="394" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822" font-weight="600">Chrome</text>
+  <text x="170" y="394" font-family="system-ui, sans-serif" font-size="11" fill="#6d5bd0">v4-118 (removed 2024)</text>
+  <text x="50" y="418" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822" font-weight="600">Safari</text>
+  <text x="170" y="418" font-family="system-ui, sans-serif" font-size="11" fill="#6d5bd0">v3.1+ (still present)</text>
+  <text x="50" y="442" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822" font-weight="600">Opera</text>
+  <text x="170" y="442" font-family="system-ui, sans-serif" font-size="11" fill="#6d5bd0">v10.5+ (Chromium removal)</text>
+  <text x="50" y="466" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822" font-weight="600">Android Browser</text>
+  <text x="170" y="466" font-family="system-ui, sans-serif" font-size="11" fill="#6d5bd0">v2.1+ (legacy)</text>
+
+  <!-- Never supported -->
+  <rect x="320" y="340" width="260" height="140" rx="8" fill="#fff" filter="url(#shadow2)" />
+  <rect x="320" y="340" width="260" height="28" rx="8" fill="#d97843" />
+  <rect x="320" y="356" width="260" height="12" fill="#d97843" />
+  <text x="450" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#fff">Never Implemented</text>
+
+  <text x="340" y="394" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822" font-weight="600">Firefox</text>
+  <text x="460" y="394" font-family="system-ui, sans-serif" font-size="11" fill="#d97843">Refused: single-impl concern</text>
+  <text x="340" y="418" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822" font-weight="600">IE / Edge (Legacy)</text>
+  <text x="460" y="418" font-family="system-ui, sans-serif" font-size="11" fill="#d97843">Never shipped</text>
+  <text x="340" y="450" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822" font-style="italic">Mozilla explicitly cited the W3C</text>
+  <text x="340" y="466" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822" font-style="italic">requirement for multiple independent</text>
+  <text x="340" y="482" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822" font-style="italic">implementations as the blocker.</text>
+
+  <!-- The alternative -->
+  <rect x="610" y="340" width="260" height="140" rx="8" fill="#fff" filter="url(#shadow2)" />
+  <rect x="610" y="340" width="260" height="28" rx="8" fill="#2f9d74" />
+  <rect x="610" y="356" width="260" height="12" fill="#2f9d74" />
+  <text x="740" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#fff">The Replacement: IndexedDB</text>
+
+  <text x="630" y="394" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Designed without SQLite dependency</text>
+  <text x="630" y="414" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Each browser has its own engine:</text>
+  <text x="644" y="434" font-family="system-ui, sans-serif" font-size="11" fill="#2f9d74" font-weight="600">Chrome: LevelDB-based</text>
+  <text x="644" y="454" font-family="system-ui, sans-serif" font-size="11" fill="#2f9d74" font-weight="600">Firefox: Custom B-tree impl</text>
+  <text x="644" y="474" font-family="system-ui, sans-serif" font-size="11" fill="#2f9d74" font-weight="600">Safari: SQLite-backed (internal)</text>
+</svg>

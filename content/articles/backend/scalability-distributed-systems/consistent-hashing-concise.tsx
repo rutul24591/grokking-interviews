@@ -30,9 +30,9 @@ export default function ConsistentHashingConciseArticle() {
       how ring and rebalancing decisions shape reliability, and how failure domains are bounded.
     </p>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/consistent-hashing-diagram-1.svg"
-      alt="Consistent Hashing architecture overview"
-      caption="High-level view of consistent hashing in a distributed system"
+      src="/diagrams/backend/scalability-distributed-systems/consistent-hashing-dynamo.svg"
+      alt="Consistent hashing ring"
+      caption="Key assignment around a consistent hashing ring"
     />
   </section>
 
@@ -53,9 +53,9 @@ export default function ConsistentHashingConciseArticle() {
       <li>Hot-key detection and mitigation</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/consistent-hashing-diagram-2.svg"
-      alt="Consistent Hashing core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/scalability-distributed-systems/consistent-hashing-sample.png"
+      alt="Consistent hashing sample"
+      caption="Node placement and key ranges on the ring"
     />
   </section>
 
@@ -106,9 +106,9 @@ export default function ConsistentHashingConciseArticle() {
       <li>Large rebalances during frequent scale events</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/consistent-hashing-diagram-3.svg"
-      alt="Consistent Hashing failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/scalability-distributed-systems/dht-structured-network.png"
+      alt="Structured DHT overlay"
+      caption="Structured peer-to-peer overlay for consistent hashing"
     />
   </section>
 

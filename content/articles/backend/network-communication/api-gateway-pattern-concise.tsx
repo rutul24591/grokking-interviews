@@ -31,9 +31,9 @@ export default function APIGatewayPatternConciseArticle() {
       recover in production.
     </p>
     <ArticleImage
-      src="/diagrams/backend/network-communication/api-gateway-pattern-diagram-1.svg"
-      alt="API Gateway Pattern architecture overview"
-      caption="High-level view of api gateway pattern in a production traffic path"
+      src="/diagrams/backend/network-communication/api-gateway-wmf-architecture.png"
+      alt="API gateway architecture routing to backend services"
+      caption="Gateway front door coordinating multiple backend services"
     />
   </section>
 
@@ -55,9 +55,9 @@ export default function APIGatewayPatternConciseArticle() {
       <li>Aggregation and response transformation</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/api-gateway-pattern-diagram-2.svg"
-      alt="API Gateway Pattern core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/network-communication/api-gateway-wmf-portal.png"
+      alt="API gateway developer portal and management"
+      caption="Gateway management and developer-facing portal"
     />
   </section>
 
@@ -109,9 +109,9 @@ export default function APIGatewayPatternConciseArticle() {
       <li>Centralized policy bugs that block valid traffic</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/api-gateway-pattern-diagram-3.svg"
-      alt="API Gateway Pattern failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/network-communication/proxy-website-diagram.svg"
+      alt="Gateway-style proxy in front of origin servers"
+      caption="Gateway-style proxying between clients and upstream services"
     />
   </section>
 

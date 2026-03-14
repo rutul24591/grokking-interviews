@@ -31,9 +31,9 @@ export default function RPCConciseArticle() {
       recover in production.
     </p>
     <ArticleImage
-      src="/diagrams/backend/network-communication/rpc-diagram-1.svg"
-      alt="RPC architecture overview"
-      caption="High-level view of rpc in a production traffic path"
+      src="/diagrams/backend/network-communication/rpc-call-steps.png"
+      alt="RPC call steps"
+      caption="Client stub, server stub, and network call sequence"
     />
   </section>
 
@@ -54,9 +54,9 @@ export default function RPCConciseArticle() {
       <li>Transport protocols</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/rpc-diagram-2.svg"
-      alt="RPC core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/network-communication/traditional-client-server.svg"
+      alt="Client-server request-response"
+      caption="Request-response model underlying RPC"
     />
   </section>
 
@@ -108,9 +108,9 @@ export default function RPCConciseArticle() {
       <li>Serialization overhead</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/rpc-diagram-3.svg"
-      alt="RPC failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/network-communication/recommendation-service-sequence.jpg"
+      alt="RPC sequence between services"
+      caption="Service-to-service RPC sequence flow"
     />
   </section>
 

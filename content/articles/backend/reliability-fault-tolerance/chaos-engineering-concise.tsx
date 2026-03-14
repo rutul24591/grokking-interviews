@@ -31,7 +31,11 @@ export default function ChaosEngineeringConciseArticle() {
         <h2>Principles of Chaos</h2>
         <p>Define a steady state (SLOs, latency, throughput) and then introduce a controlled fault. Observe whether the system stays within acceptable bounds.</p>
         <p>Start small and increase scope gradually. A single-instance failure in staging is a safe first step. Region-level experiments belong only to mature systems with strong safeguards.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/chaos-engineering-diagram-1.svg" alt="Chaos Engineering diagram 1" caption="Chaos Engineering overview diagram 1." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/chaos-engineering-flywheel.png"
+          alt="Chaos engineering scientific method flywheel"
+          caption="Chaos engineering lifecycle: steady state, hypothesis, experiment, verify, improve."
+        />
       </section>
 
       <section>
@@ -44,7 +48,11 @@ export default function ChaosEngineeringConciseArticle() {
         <h2>Failure Modes</h2>
         <p>The biggest failure is running chaos experiments without adequate guardrails, leading to avoidable outages. Another is running experiments without clear hypotheses, which yields little learning.</p>
         <p>Chaos can also expose organizational weaknesses: unclear ownership, missing runbooks, or poor communication during incidents.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/chaos-engineering-diagram-2.svg" alt="Chaos Engineering diagram 2" caption="Chaos Engineering overview diagram 2." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/chaos-fis-architecture.png"
+          alt="Fault injection simulator architecture"
+          caption="Fault injection simulator architecture with experiments, safeguards, and monitored resources."
+        />
       </section>
 
       <section>
@@ -57,7 +65,11 @@ export default function ChaosEngineeringConciseArticle() {
         <h2>Trade-offs</h2>
         <p>Chaos testing consumes engineering time and increases risk. The benefit is reduced production incident severity. For critical systems, the trade-off is usually favorable.</p>
         <p>Small teams may prioritize targeted failure testing over broad chaos programs to balance cost and benefit.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/chaos-engineering-diagram-3.svg" alt="Chaos Engineering diagram 3" caption="Chaos Engineering overview diagram 3." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/chaos-toolkit-flow.svg"
+          alt="Chaos Toolkit experiment flow"
+          caption="Chaos Toolkit experiment flow from steady state checks to rollback."
+        />
       </section>
 
       <section>

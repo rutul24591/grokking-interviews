@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 550" width="800" height="550" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="550" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">Offline-First Sync Flow</text>
+
+  <!-- Column headers -->
+  <text x="180" y="60" text-anchor="middle" font-size="14" font-weight="600" fill="#3B82F6">Client</text>
+  <text x="620" y="60" text-anchor="middle" font-size="14" font-weight="600" fill="#10B981">Server</text>
+
+  <!-- Vertical lifelines -->
+  <line x1="180" y1="70" x2="180" y2="520" stroke="#3B82F6" stroke-width="2" stroke-dasharray="4,4"/>
+  <line x1="620" y1="70" x2="620" y2="520" stroke="#10B981" stroke-width="2" stroke-dasharray="4,4"/>
+
+  <!-- Step 1: User writes locally -->
+  <rect x="60" y="80" width="240" height="36" rx="6" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.5"/>
+  <text x="68" y="96" font-size="10" font-weight="700" fill="#3B82F6">1</text>
+  <text x="84" y="96" font-size="11" font-weight="500" fill="#1e293b">User writes to local store</text>
+  <text x="84" y="110" font-size="9" fill="#64748b">IndexedDB updated, UI re-renders</text>
+
+  <!-- Step 2: Mutation queued -->
+  <rect x="60" y="126" width="240" height="36" rx="6" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.5"/>
+  <text x="68" y="142" font-size="10" font-weight="700" fill="#3B82F6">2</text>
+  <text x="84" y="142" font-size="11" font-weight="500" fill="#1e293b">Mutation queued in outbox</text>
+  <text x="84" y="156" font-size="9" fill="#64748b">Serialized op appended to queue</text>
+
+  <!-- Offline band -->
+  <rect x="310" y="170" width="180" height="80" rx="6" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="400" y="193" text-anchor="middle" font-size="11" font-weight="600" fill="#94a3b8">OFFLINE PERIOD</text>
+  <text x="400" y="210" text-anchor="middle" font-size="10" fill="#94a3b8">User continues working</text>
+  <text x="400" y="225" text-anchor="middle" font-size="10" fill="#94a3b8">Queue grows with mutations</text>
+  <text x="400" y="240" text-anchor="middle" font-size="10" fill="#94a3b8">UI stays responsive</text>
+
+  <!-- Step 3: Network available -->
+  <rect x="60" y="260" width="240" height="36" rx="6" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+  <text x="68" y="276" font-size="10" font-weight="700" fill="#10B981">3</text>
+  <text x="84" y="276" font-size="11" font-weight="500" fill="#1e293b">Network becomes available</text>
+  <text x="84" y="290" font-size="9" fill="#64748b">Sync engine detects connectivity</text>
+
+  <!-- Step 4: Sync engine sends batch -->
+  <line x1="300" y1="316" x2="620" y2="316" stroke="#3B82F6" stroke-width="2" marker-end="url(#arrowSyncGreen)"/>
+  <rect x="340" y="304" width="180" height="20" rx="4" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1"/>
+  <text x="360" y="318" font-size="10" fill="#3B82F6" font-weight="500">4. Send queued mutations</text>
+
+  <!-- Step 5: Server processes -->
+  <rect x="500" y="336" width="240" height="50" rx="6" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+  <text x="508" y="352" font-size="10" font-weight="700" fill="#10B981">5</text>
+  <text x="524" y="352" font-size="11" font-weight="500" fill="#1e293b">Server processes batch</text>
+  <text x="524" y="368" font-size="9" fill="#64748b">Validates, applies mutations</text>
+  <text x="524" y="380" font-size="9" fill="#64748b">Detects conflicts if any</text>
+
+  <!-- Step 5 response arrow -->
+  <line x1="620" y1="396" x2="300" y2="396" stroke="#10B981" stroke-width="2" marker-end="url(#arrowSyncBlue)"/>
+  <rect x="340" y="384" width="200" height="20" rx="4" fill="#FEF2F2" stroke="#EF4444" stroke-width="1"/>
+  <text x="360" y="398" font-size="10" fill="#EF4444" font-weight="500">5b. Returns confirmations + conflicts</text>
+
+  <!-- Step 6: Client resolves conflicts -->
+  <rect x="60" y="416" width="240" height="36" rx="6" fill="#FEF2F2" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="68" y="432" font-size="10" font-weight="700" fill="#EF4444">6</text>
+  <text x="84" y="432" font-size="11" font-weight="500" fill="#1e293b">Client resolves conflicts</text>
+  <text x="84" y="446" font-size="9" fill="#64748b">LWW, CRDTs, or manual resolution</text>
+
+  <!-- Step 7: UI updates -->
+  <rect x="60" y="462" width="240" height="36" rx="6" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.5"/>
+  <text x="68" y="478" font-size="10" font-weight="700" fill="#3B82F6">7</text>
+  <text x="84" y="478" font-size="11" font-weight="500" fill="#1e293b">Local store updated, UI synced</text>
+  <text x="84" y="492" font-size="9" fill="#64748b">Server IDs, timestamps applied</text>
+
+  <!-- Final state indicator -->
+  <rect x="60" y="508" width="680" height="24" rx="4" fill="#ECFDF5"/>
+  <text x="400" y="524" text-anchor="middle" font-size="11" font-weight="600" fill="#10B981">All changes saved - Local and remote state converged</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowSyncGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#10B981"/>
+    </marker>
+    <marker id="arrowSyncBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#3B82F6"/>
+    </marker>
+  </defs>
+</svg>

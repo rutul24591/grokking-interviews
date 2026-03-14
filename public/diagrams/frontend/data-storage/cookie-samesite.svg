@@ -1,0 +1,93 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="36" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822">SameSite Cookie Policy Comparison</text>
+  <text x="450" y="56" text-anchor="middle" font-size="12" fill="#666">Which cross-site scenarios send cookies for each SameSite value</text>
+
+  <!-- Column Headers -->
+  <!-- Strict -->
+  <rect x="50" y="80" width="250" height="44" rx="8" fill="#6d5bd0"/>
+  <text x="175" y="107" text-anchor="middle" font-size="15" font-weight="bold" fill="white">SameSite=Strict</text>
+
+  <!-- Lax -->
+  <rect x="325" y="80" width="250" height="44" rx="8" fill="#d97843"/>
+  <text x="450" y="107" text-anchor="middle" font-size="15" font-weight="bold" fill="white">SameSite=Lax</text>
+
+  <!-- None -->
+  <rect x="600" y="80" width="250" height="44" rx="8" fill="#2f9d74"/>
+  <text x="725" y="107" text-anchor="middle" font-size="15" font-weight="bold" fill="white">SameSite=None</text>
+
+  <!-- Subtitles -->
+  <text x="175" y="140" text-anchor="middle" font-size="10" fill="#666">Never cross-site</text>
+  <text x="450" y="140" text-anchor="middle" font-size="10" fill="#666">Top-level GET only</text>
+  <text x="725" y="140" text-anchor="middle" font-size="10" fill="#666">Always (requires Secure)</text>
+
+  <!-- Row labels and cells -->
+  <!-- Row 1: Top-Level Navigation (GET link click) -->
+  <text x="50" y="175" font-size="11" font-weight="600" fill="#1a1822">Top-Level Navigation</text>
+  <text x="50" y="188" font-size="9" fill="#666">User clicks link from other site</text>
+
+  <!-- Strict: Blocked -->
+  <rect x="50" y="196" width="250" height="32" rx="6" fill="#fff0f0" stroke="#d94343" stroke-width="1"/>
+  <text x="175" y="216" text-anchor="middle" font-size="11" font-weight="600" fill="#d94343">BLOCKED</text>
+
+  <!-- Lax: Sent -->
+  <rect x="325" y="196" width="250" height="32" rx="6" fill="#f0fff4" stroke="#2f9d74" stroke-width="1"/>
+  <text x="450" y="216" text-anchor="middle" font-size="11" font-weight="600" fill="#2f9d74">SENT</text>
+
+  <!-- None: Sent -->
+  <rect x="600" y="196" width="250" height="32" rx="6" fill="#f0fff4" stroke="#2f9d74" stroke-width="1"/>
+  <text x="725" y="216" text-anchor="middle" font-size="11" font-weight="600" fill="#2f9d74">SENT</text>
+
+  <!-- Row 2: Iframe Embed -->
+  <text x="50" y="255" font-size="11" font-weight="600" fill="#1a1822">Iframe Embed</text>
+  <text x="50" y="268" font-size="9" fill="#666">Your site loaded in cross-site iframe</text>
+
+  <!-- Strict: Blocked -->
+  <rect x="50" y="276" width="250" height="32" rx="6" fill="#fff0f0" stroke="#d94343" stroke-width="1"/>
+  <text x="175" y="296" text-anchor="middle" font-size="11" font-weight="600" fill="#d94343">BLOCKED</text>
+
+  <!-- Lax: Blocked -->
+  <rect x="325" y="276" width="250" height="32" rx="6" fill="#fff0f0" stroke="#d94343" stroke-width="1"/>
+  <text x="450" y="296" text-anchor="middle" font-size="11" font-weight="600" fill="#d94343">BLOCKED</text>
+
+  <!-- None: Sent -->
+  <rect x="600" y="276" width="250" height="32" rx="6" fill="#f0fff4" stroke="#2f9d74" stroke-width="1"/>
+  <text x="725" y="296" text-anchor="middle" font-size="11" font-weight="600" fill="#2f9d74">SENT</text>
+
+  <!-- Row 3: fetch / XHR -->
+  <text x="50" y="335" font-size="11" font-weight="600" fill="#1a1822">fetch / XHR (Cross-Origin)</text>
+  <text x="50" y="348" font-size="9" fill="#666">API call from other-site.com to your-site.com</text>
+
+  <!-- Strict: Blocked -->
+  <rect x="50" y="356" width="250" height="32" rx="6" fill="#fff0f0" stroke="#d94343" stroke-width="1"/>
+  <text x="175" y="376" text-anchor="middle" font-size="11" font-weight="600" fill="#d94343">BLOCKED</text>
+
+  <!-- Lax: Blocked -->
+  <rect x="325" y="356" width="250" height="32" rx="6" fill="#fff0f0" stroke="#d94343" stroke-width="1"/>
+  <text x="450" y="376" text-anchor="middle" font-size="11" font-weight="600" fill="#d94343">BLOCKED</text>
+
+  <!-- None: Sent -->
+  <rect x="600" y="356" width="250" height="32" rx="6" fill="#f0fff4" stroke="#2f9d74" stroke-width="1"/>
+  <text x="725" y="376" text-anchor="middle" font-size="11" font-weight="600" fill="#2f9d74">SENT</text>
+
+  <!-- Row 4: Form POST -->
+  <text x="50" y="415" font-size="11" font-weight="600" fill="#1a1822">Form POST (Cross-Site)</text>
+  <text x="50" y="428" font-size="9" fill="#666">Form on other site submits to your site</text>
+
+  <!-- Strict: Blocked -->
+  <rect x="50" y="436" width="250" height="32" rx="6" fill="#fff0f0" stroke="#d94343" stroke-width="1"/>
+  <text x="175" y="456" text-anchor="middle" font-size="11" font-weight="600" fill="#d94343">BLOCKED</text>
+
+  <!-- Lax: Blocked -->
+  <rect x="325" y="436" width="250" height="32" rx="6" fill="#fff0f0" stroke="#d94343" stroke-width="1"/>
+  <text x="450" y="456" text-anchor="middle" font-size="11" font-weight="600" fill="#d94343">BLOCKED</text>
+
+  <!-- None: Sent -->
+  <rect x="600" y="436" width="250" height="32" rx="6" fill="#f0fff4" stroke="#2f9d74" stroke-width="1"/>
+  <text x="725" y="456" text-anchor="middle" font-size="11" font-weight="600" fill="#2f9d74">SENT</text>
+
+  <!-- Footer note -->
+  <rect x="600" y="475" width="250" height="18" rx="4" fill="#edeaf5"/>
+  <text x="725" y="488" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">SameSite=None requires Secure flag</text>
+</svg>

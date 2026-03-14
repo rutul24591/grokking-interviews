@@ -31,9 +31,9 @@ export default function PubSubSystemsConciseArticle() {
       recover in production.
     </p>
     <ArticleImage
-      src="/diagrams/backend/network-communication/pub-sub-systems-diagram-1.svg"
-      alt="Pub/Sub Systems architecture overview"
-      caption="High-level view of pub/sub systems in a production traffic path"
+      src="/diagrams/backend/network-communication/pubsub-azure-pattern.png"
+      alt="Publish-subscribe pattern"
+      caption="Publishers send to topics, subscribers receive"
     />
   </section>
 
@@ -54,9 +54,9 @@ export default function PubSubSystemsConciseArticle() {
       <li>Delivery guarantees</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/pub-sub-systems-diagram-2.svg"
-      alt="Pub/Sub Systems core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/network-communication/pubsub-opcua.jpg"
+      alt="Pub-sub event distribution"
+      caption="Event distribution via publisher and subscribers"
     />
   </section>
 
@@ -107,11 +107,7 @@ export default function PubSubSystemsConciseArticle() {
       <li>At-least-once duplicates</li>
       <li>Topic explosion without governance</li>
     </ul>
-    <ArticleImage
-      src="/diagrams/backend/network-communication/pub-sub-systems-diagram-3.svg"
-      alt="Pub/Sub Systems failure modes"
-      caption="Typical failure modes and mitigation points"
-    />
+    
   </section>
 
   

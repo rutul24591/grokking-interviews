@@ -31,8 +31,8 @@ export default function VectorClocksConciseArticle() {
     </p>
     <ArticleImage
       src="/diagrams/backend/scalability-distributed-systems/vector-clocks-diagram-1.svg"
-      alt="Vector Clocks architecture overview"
-      caption="High-level view of vector clocks in a distributed system"
+      alt="Vector clock per node"
+      caption="Each node maintains a vector of counters"
     />
   </section>
 
@@ -54,8 +54,8 @@ export default function VectorClocksConciseArticle() {
     </ul>
     <ArticleImage
       src="/diagrams/backend/scalability-distributed-systems/vector-clocks-diagram-2.svg"
-      alt="Vector Clocks core workflow"
-      caption="Core workflow and control points"
+      alt="Causality comparison"
+      caption="Vector comparisons detect concurrency"
     />
   </section>
 
@@ -107,8 +107,8 @@ export default function VectorClocksConciseArticle() {
     </ul>
     <ArticleImage
       src="/diagrams/backend/scalability-distributed-systems/vector-clocks-diagram-3.svg"
-      alt="Vector Clocks failure modes"
-      caption="Typical failure modes and mitigation points"
+      alt="Merge of vector clocks"
+      caption="Vectors merged after synchronization"
     />
   </section>
 

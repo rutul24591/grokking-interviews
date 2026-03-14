@@ -1,106 +1,246 @@
 "use client";
 
-import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-backend-write-ahead-logging-extensive",
   title: "Write-Ahead Logging",
-  description: "In-depth guide to write-ahead logging architecture, trade-offs, and operational practice.",
+  description:
+    "Make writes durable without sacrificing throughput: WAL fundamentals, checkpoints, group commit, recovery behavior, and operational signals that prevent long crash recovery and disk incidents.",
   category: "backend",
   subcategory: "advanced-topics",
   slug: "write-ahead-logging",
   wordCount: 2800,
   readingTime: 14,
-  lastUpdated: "2026-03-11",
-  tags: ['backend', 'advanced'],
-  relatedTopics: [],
+  lastUpdated: "2026-03-14",
+  tags: ["backend", "advanced", "databases", "durability"],
+  relatedTopics: ["snapshot-isolation", "transaction-isolation-levels", "lsm-trees"],
 };
 
-export default function WriteaheadloggingConciseArticle() {
+export default function WriteAheadLoggingConciseArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition and Scope</h2>
-        <p>Write-Ahead Logging addresses advanced systems challenges that emerge at scale or under strict correctness requirements.</p>
-        <p>It introduces specialized techniques to manage performance, consistency, or operational complexity.</p>
-      </section>
-      <section>
-        <h2>Architecture Overview</h2>
-        
-        <p>Typical architectures include dedicated components, background processing, and careful coordination across nodes.</p>
-        <p>The design must explicitly handle failure scenarios and ensure observability for rare edge cases.</p>
-      </section>
-      <section>
-        <h2>Operational Mechanisms</h2>
-        
-        <p>Core mechanisms include deterministic algorithms, probabilistic data structures, or replication strategies.</p>
-        <p>These mechanisms trade off exactness, cost, and complexity depending on requirements.</p>
-      </section>
-      <section>
-        <h2>Failure Modes and Mitigations</h2>
-        
-        <p>Common failures include incorrect assumptions, hidden edge cases, and insufficient monitoring for write-ahead logging workloads.</p>
-        <p>Failures often occur when assumptions about data distribution, latency, or ordering are violated.</p>
-      </section>
-      <section>
-        <h2>Operational Playbook</h2>
-        <p>Establish correctness budgets, run simulations, and monitor drift or errors continuously.</p>
-        <p>Document operational procedures for failover, repair, and reprocessing.</p>
-      </section>
-      <section>
-        <h2>Trade-offs</h2>
-        <p>Advanced techniques improve scale or correctness but add implementation and operational overhead.</p>
-        <p>Choosing the wrong technique can create more complexity than benefit.</p>
-      </section>
-      <section>
-        <h2>Implementation Example</h2>
-        <p>Mini example illustrating write-ahead logging behavior.</p>
-        <p className="mt-4 font-semibold">wal.js</p>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-        <p className="mt-4 font-semibold">demo.js</p>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-        <p className="mt-4 font-semibold">README.md</p>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-      </section>
-      <section>
-        <h2>Testing and Validation</h2>
-        <p>Validate correctness using property tests or replayed traffic samples.</p>
-        <p>Stress test performance and monitor tail latency behavior.</p>
-      </section>
-      <section>
-        <h2>Checklist</h2>
-        <ul className="space-y-2">
-          <li>Define correctness and performance targets.</li>
-          <li>Document assumptions and failure modes.</li>
-          <li>Add observability for edge cases.</li>
-          <li>Test under skewed or worst-case inputs.</li>
-          <li>Plan for repair and recovery workflows.</li>
-        </ul>
-      </section>
-      <section>
-        <h2>Summary</h2>
-        <p>Write-Ahead Logging delivers results when assumptions are explicit and operational safeguards are in place.</p>
+        <h2>What Write-Ahead Logging Is</h2>
+        <p>
+          <strong>Write-Ahead Logging (WAL)</strong> is a durability technique where changes are recorded in an
+          append-only log before they are applied to the main data files. If the system crashes, it can replay the log
+          to recover committed updates and restore consistent state.
+        </p>
+        <p>
+          WAL exists because in-place data updates are hard to make crash-safe at scale. The log provides a sequential,
+          durable history that can be flushed efficiently, while data pages can be written back later and in different
+          orders.
+        </p>
+        <ArticleImage
+          src="/diagrams/backend/advanced-topics/write-ahead-logging-diagram-1.svg"
+          alt="Write-ahead logging diagram showing log append before data page updates"
+          caption="WAL turns random writes into durable sequential appends. Data pages can be updated later, and crashes are recovered by replaying the log."
+        />
       </section>
 
       <section>
-        <h2>Interview Questions</h2>
+        <h2>Durability Mechanics: Commit and Flush</h2>
+        <p>
+          The central question is: when do you consider a transaction committed? Under WAL, a transaction is typically
+          considered durable when its log records are flushed to stable storage. Data pages may not yet be written.
+        </p>
+        <p>
+          This creates a tunable trade-off between latency and throughput. Flushing for every transaction yields strong
+          durability but higher latency. Group commit batches flushes across multiple transactions, improving throughput
+          while still providing durability guarantees.
+        </p>
+        <ArticleImage
+          src="/diagrams/backend/advanced-topics/write-ahead-logging-diagram-2.svg"
+          alt="WAL control points: group commit, fsync frequency, checkpoints, and recovery time"
+          caption="WAL performance is controlled by flush policy and checkpoints. Group commit improves throughput; checkpoints bound recovery time and log growth."
+        />
+      </section>
+
+      <section>
+        <h2>Checkpoints: Bounding Recovery Time and Log Growth</h2>
+        <p>
+          WAL can grow indefinitely if the system never writes dirty pages back to data files. <strong>Checkpoints</strong>
+          address this by periodically ensuring that a set of data pages has been persisted. After a checkpoint, older
+          portions of the log may no longer be needed for recovery.
+        </p>
+        <p>
+          Checkpoints are an operational trade-off. Frequent checkpoints reduce recovery time and limit log size, but
+          they increase write I/O and can create latency spikes if not smoothed. Infrequent checkpoints reduce write
+          pressure but can lead to long recovery after a crash and higher storage usage.
+        </p>
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-3 text-lg font-semibold">Two Failure Goals</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Bound crash recovery time:</strong> keep log replay work within an operationally acceptable window.
+            </li>
+            <li>
+              <strong>Prevent log runaway:</strong> avoid disk full events driven by log accumulation.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>WAL in Different Engine Designs</h2>
+        <p>
+          WAL is used in both B-tree and LSM-based databases, but its role can differ. In LSM engines, the WAL often
+          protects the in-memory memtable so that data can be recovered before flush. In page-oriented engines, WAL
+          records modifications to pages so recovery can redo or undo changes as needed.
+        </p>
+        <p>
+          Regardless of engine, WAL is an operational dependency. If log storage is slow or unstable, write performance
+          collapses. If log retention is misconfigured, recovery and replication can break.
+        </p>
+      </section>
+
+      <section>
+        <h2>Replication and WAL Shipping</h2>
+        <p>
+          Many databases replicate by shipping WAL records to replicas. This makes WAL a shared artifact for durability
+          and replication. It also introduces lag semantics: replicas apply WAL records asynchronously, and the system
+          must decide how far behind replicas are allowed to be for serving reads and for failover readiness.
+        </p>
+        <p>
+          Operationally, WAL shipping requires retention settings that keep logs available until replicas have consumed
+          them, and monitoring that alerts when lag approaches dangerous thresholds.
+        </p>
+      </section>
+
+      <section>
+        <h2>Failure Modes and Mitigations</h2>
+        <p>
+          WAL failures are typically storage and operational failures: disk becomes full, flush latency spikes, or log
+          replay takes too long after a crash. The mitigations are about capacity, checkpoint policy, and observability.
+        </p>
+        <ArticleImage
+          src="/diagrams/backend/advanced-topics/write-ahead-logging-diagram-3.svg"
+          alt="WAL failure modes: disk full, long recovery, flush stalls, and replication lag"
+          caption="WAL risk is operational: flush stalls impact write latency, log growth can fill disks, and infrequent checkpoints can make recovery unacceptably long."
+        />
+        <div className="my-6 grid gap-4 sm:grid-cols-2">
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold">Disk full from log growth</h3>
+            <p className="mt-2 text-sm text-muted">
+              WAL segments accumulate due to misconfigured retention or stalled checkpoints and fill disk.
+            </p>
+            <ul className="mt-3 space-y-1 text-sm">
+              <li>
+                <strong>Mitigation:</strong> set retention appropriately, monitor log growth rate, and ensure checkpoints keep pace.
+              </li>
+              <li>
+                <strong>Signal:</strong> WAL usage grows steadily and does not drop after checkpoints; replica lag prevents retention cleanup.
+              </li>
+            </ul>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold">Flush stalls and tail latency</h3>
+            <p className="mt-2 text-sm text-muted">
+              Storage latency spikes cause WAL fsync to stall, pushing transaction latency into the tail.
+            </p>
+            <ul className="mt-3 space-y-1 text-sm">
+              <li>
+                <strong>Mitigation:</strong> provision fast durable storage, use group commit, and smooth checkpoint I/O.
+              </li>
+              <li>
+                <strong>Signal:</strong> p99 commit latency correlates with storage fsync latency and checkpoint activity.
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="my-6 grid gap-4 sm:grid-cols-2">
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold">Long crash recovery</h3>
+            <p className="mt-2 text-sm text-muted">
+              After a crash, replaying large WAL history takes too long and delays service restoration.
+            </p>
+            <ul className="mt-3 space-y-1 text-sm">
+              <li>
+                <strong>Mitigation:</strong> checkpoint regularly, keep WAL bounded, and validate recovery time in drills.
+              </li>
+              <li>
+                <strong>Signal:</strong> recovery time grows over time and correlates with checkpoint intervals and WAL volume.
+              </li>
+            </ul>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold">Replica lag and retention pressure</h3>
+            <p className="mt-2 text-sm text-muted">
+              Slow replicas prevent WAL cleanup, increasing disk usage and putting the primary at risk.
+            </p>
+            <ul className="mt-3 space-y-1 text-sm">
+              <li>
+                <strong>Mitigation:</strong> monitor lag, provision replica resources, and define policies for lagging replicas (throttle, resync, or drop).
+              </li>
+              <li>
+                <strong>Signal:</strong> retention grows due to lagging replicas and failover readiness degrades.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Scenario: Crash During Peak Write Load</h2>
+        <p>
+          A database crashes during peak writes. On restart, it must replay WAL to restore committed transactions. If
+          checkpoints are infrequent, replay time can be long and user-visible recovery slow. If flush policy is too
+          aggressive, peak write latency may be high even without crashes.
+        </p>
+        <p>
+          A mature operational posture balances these: use group commit for throughput, keep checkpoints frequent enough
+          to bound recovery, and validate recovery time regularly rather than assuming it will be fast.
+        </p>
+      </section>
+
+      <section>
+        <h2>Checklist</h2>
+        <ul className="space-y-2">
+          <li>
+            Commit semantics are defined in terms of WAL persistence, and flush policy balances latency and throughput.
+          </li>
+          <li>
+            Checkpoints are configured to bound recovery time and WAL growth without causing pathological write spikes.
+          </li>
+          <li>
+            WAL storage is provisioned for durable low-latency writes, with monitoring on fsync latency.
+          </li>
+          <li>
+            WAL retention is aligned with replication needs, and replica lag is monitored to prevent retention-driven disk incidents.
+          </li>
+          <li>
+            Recovery time is measured in drills and treated as an operational SLO.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Why is write-ahead logging important?</p>
-            <p className="mt-2 text-sm">A: It enables correctness or scale that basic designs cannot provide.</p>
+            <p className="font-semibold">Q: Why does WAL improve performance compared to in-place writes?</p>
+            <p className="mt-2 text-sm text-muted">
+              A: WAL writes are sequential and efficient. Data pages can be written back later and in batches, while durability is ensured by flushing the log.
+            </p>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What is a key risk?</p>
-            <p className="mt-2 text-sm">A: Implementing it without validating assumptions and failure modes.</p>
+            <p className="font-semibold">Q: What is the purpose of checkpoints?</p>
+            <p className="mt-2 text-sm text-muted">
+              A: To bound recovery time and log growth by ensuring a consistent set of data pages is persisted so that older WAL segments are no longer needed for recovery.
+            </p>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you validate it?</p>
-            <p className="mt-2 text-sm">A: Use targeted tests, simulations, and production observability.</p>
+            <p className="font-semibold">Q: What is a common operational failure mode with WAL?</p>
+            <p className="mt-2 text-sm text-muted">
+              A: Disk full due to retained WAL segments, often caused by lagging replicas or misconfigured retention. Monitoring WAL growth and replica lag is essential.
+            </p>
           </div>
         </div>
       </section>
     </ArticleLayout>
   );
 }
+

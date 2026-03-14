@@ -30,9 +30,9 @@ export default function DistributedCoordinationConciseArticle() {
       how metadata and locks decisions shape reliability, and how failure domains are bounded.
     </p>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/distributed-coordination-diagram-1.svg"
-      alt="Distributed Coordination architecture overview"
-      caption="High-level view of distributed coordination in a distributed system"
+      src="/diagrams/backend/scalability-distributed-systems/distributed-coordination-diagram-1.png"
+      alt="Coordinator with participants"
+      caption="Coordination service manages locks and membership"
     />
   </section>
 
@@ -53,9 +53,9 @@ export default function DistributedCoordinationConciseArticle() {
       <li>Watch/notify mechanisms</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/distributed-coordination-diagram-2.svg"
-      alt="Distributed Coordination core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/scalability-distributed-systems/distributed-coordination-diagram-2.png"
+      alt="Coordination via shared store"
+      caption="Clients use coordination service for state"
     />
   </section>
 
@@ -106,9 +106,9 @@ export default function DistributedCoordinationConciseArticle() {
       <li>Misuse of locks causing deadlocks</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/distributed-coordination-diagram-3.svg"
-      alt="Distributed Coordination failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/scalability-distributed-systems/distributed-coordination-diagram-3.png"
+      alt="Leader election and heartbeats"
+      caption="Nodes coordinate via heartbeats and elections"
     />
   </section>
 

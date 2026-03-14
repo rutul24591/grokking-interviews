@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="500" fill="white"/>
+
+  <!-- Title -->
+  <text x="400" y="32" text-anchor="middle" font-size="16" font-weight="700" fill="#1E293B">Periodic Background Sync — 24-Hour Timeline</text>
+
+  <!-- Timeline axis -->
+  <line x1="60" y1="120" x2="760" y2="120" stroke="#CBD5E1" stroke-width="2"/>
+  <!-- Hour markers -->
+  <g font-size="11" fill="#64748B" text-anchor="middle">
+    <line x1="60" y1="115" x2="60" y2="125" stroke="#94A3B8" stroke-width="1.5"/>
+    <text x="60" y="140">0h</text>
+    <line x1="176" y1="115" x2="176" y2="125" stroke="#94A3B8" stroke-width="1.5"/>
+    <text x="176" y="140">4h</text>
+    <line x1="293" y1="115" x2="293" y2="125" stroke="#94A3B8" stroke-width="1.5"/>
+    <text x="293" y="140">8h</text>
+    <line x1="410" y1="115" x2="410" y2="125" stroke="#94A3B8" stroke-width="1.5"/>
+    <text x="410" y="140">12h</text>
+    <line x1="527" y1="115" x2="527" y2="125" stroke="#94A3B8" stroke-width="1.5"/>
+    <text x="527" y="140">16h</text>
+    <line x1="643" y1="115" x2="643" y2="125" stroke="#94A3B8" stroke-width="1.5"/>
+    <text x="643" y="140">20h</text>
+    <line x1="760" y1="115" x2="760" y2="125" stroke="#94A3B8" stroke-width="1.5"/>
+    <text x="760" y="140">24h</text>
+  </g>
+
+  <!-- Registration event at hour 0 -->
+  <circle cx="60" cy="120" r="6" fill="#3B82F6"/>
+  <line x1="60" y1="126" x2="60" y2="170" stroke="#3B82F6" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <rect x="10" y="170" width="100" height="40" rx="6" fill="#3B82F6" opacity="0.1" stroke="#3B82F6" stroke-width="1.5"/>
+  <text x="60" y="186" text-anchor="middle" font-size="10" font-weight="600" fill="#3B82F6">PWA Registers</text>
+  <text x="60" y="200" text-anchor="middle" font-size="9" fill="#3B82F6">minInterval: 12h</text>
+
+  <!-- First sync fires at ~hour 13 -->
+  <circle cx="440" cy="120" r="6" fill="#10B981"/>
+  <line x1="440" y1="126" x2="440" y2="170" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <rect x="370" y="170" width="140" height="55" rx="6" fill="#10B981" opacity="0.1" stroke="#10B981" stroke-width="1.5"/>
+  <text x="440" y="186" text-anchor="middle" font-size="10" font-weight="600" fill="#047857">Sync #1 Fires (~13h)</text>
+  <text x="440" y="200" text-anchor="middle" font-size="9" fill="#047857">SW wakes up</text>
+  <text x="440" y="214" text-anchor="middle" font-size="9" fill="#047857">Fetch data + cache</text>
+
+  <!-- Annotation: browser adjusted timing -->
+  <path d="M 350 80 Q 395 55 440 80" fill="none" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="395" y="55" text-anchor="middle" font-size="9" fill="#D97706" font-style="italic">Browser adjusted (+1h)</text>
+
+  <!-- User opens app at hour 14 -->
+  <circle cx="498" cy="120" r="6" fill="#F59E0B"/>
+  <line x1="498" y1="126" x2="498" y2="260" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <rect x="530" y="245" width="150" height="55" rx="6" fill="#F59E0B" opacity="0.1" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="605" y="263" text-anchor="middle" font-size="10" font-weight="600" fill="#B45309">User Opens App (14h)</text>
+  <text x="605" y="277" text-anchor="middle" font-size="9" fill="#B45309">Reads from local cache</text>
+  <text x="605" y="291" text-anchor="middle" font-size="9" fill="#B45309">Fresh content instantly!</text>
+
+  <!-- Arrow from sync to user -->
+  <path d="M 460 220 C 470 240 490 255 530 265" fill="none" stroke="#10B981" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+  <defs>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#10B981"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#3B82F6"/>
+    </marker>
+  </defs>
+
+  <!-- Second sync fires at ~hour 25 (shown at edge) -->
+  <circle cx="730" cy="120" r="6" fill="#10B981"/>
+  <line x1="730" y1="126" x2="730" y2="170" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <rect x="670" y="170" width="120" height="55" rx="6" fill="#10B981" opacity="0.1" stroke="#10B981" stroke-width="1.5"/>
+  <text x="730" y="186" text-anchor="middle" font-size="10" font-weight="600" fill="#047857">Sync #2 (~25h)</text>
+  <text x="730" y="200" text-anchor="middle" font-size="9" fill="#047857">SW wakes again</text>
+  <text x="730" y="214" text-anchor="middle" font-size="9" fill="#047857">Refresh cache</text>
+
+  <!-- Annotation: browser adjusted again -->
+  <path d="M 660 80 Q 695 55 730 80" fill="none" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="695" y="55" text-anchor="middle" font-size="9" fill="#D97706" font-style="italic">Browser batched syncs</text>
+
+  <!-- Process detail boxes at bottom -->
+  <rect x="50" y="350" width="200" height="110" rx="8" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.5"/>
+  <text x="150" y="375" text-anchor="middle" font-size="12" font-weight="700" fill="#1E40AF">Service Worker Sync</text>
+  <text x="60" y="395" font-size="10" fill="#1E40AF">1. Browser wakes SW</text>
+  <text x="60" y="412" font-size="10" fill="#1E40AF">2. periodicsync event fires</text>
+  <text x="60" y="429" font-size="10" fill="#1E40AF">3. Fetch fresh data from API</text>
+  <text x="60" y="446" font-size="10" fill="#1E40AF">4. Store in Cache / IndexedDB</text>
+
+  <rect x="300" y="350" width="200" height="110" rx="8" fill="#F0FDF4" stroke="#10B981" stroke-width="1.5"/>
+  <text x="400" y="375" text-anchor="middle" font-size="12" font-weight="700" fill="#065F46">App Opens</text>
+  <text x="310" y="395" font-size="10" fill="#065F46">1. User launches PWA</text>
+  <text x="310" y="412" font-size="10" fill="#065F46">2. Read from local cache</text>
+  <text x="310" y="429" font-size="10" fill="#065F46">3. Display fresh content</text>
+  <text x="310" y="446" font-size="10" fill="#065F46">4. Optional: revalidate</text>
+
+  <rect x="550" y="350" width="200" height="110" rx="8" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="650" y="375" text-anchor="middle" font-size="12" font-weight="700" fill="#92400E">Key Insight</text>
+  <text x="560" y="395" font-size="10" fill="#92400E">Browser controls timing</text>
+  <text x="560" y="412" font-size="10" fill="#92400E">minInterval is a suggestion</text>
+  <text x="560" y="429" font-size="10" fill="#92400E">Syncs may be batched</text>
+  <text x="560" y="446" font-size="10" fill="#92400E">Actual interval varies</text>
+
+  <!-- Arrows connecting boxes -->
+  <path d="M 250 405 L 295 405" fill="none" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <path d="M 500 405 L 545 405" fill="none" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <defs>
+    <marker id="arrowGray" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#64748B"/>
+    </marker>
+  </defs>
+</svg>

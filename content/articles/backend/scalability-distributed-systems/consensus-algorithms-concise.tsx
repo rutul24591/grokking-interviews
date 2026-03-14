@@ -31,8 +31,8 @@ export default function ConsensusAlgorithmsConciseArticle() {
     </p>
     <ArticleImage
       src="/diagrams/backend/scalability-distributed-systems/consensus-algorithms-diagram-1.svg"
-      alt="Consensus Algorithms architecture overview"
-      caption="High-level view of consensus algorithms in a distributed system"
+      alt="Consensus with leader election"
+      caption="Leader coordinates log replication"
     />
   </section>
 
@@ -53,9 +53,9 @@ export default function ConsensusAlgorithmsConciseArticle() {
       <li>Quorum-based agreement</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/consensus-algorithms-diagram-2.svg"
-      alt="Consensus Algorithms core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/scalability-distributed-systems/consensus-algorithms-diagram-2.png"
+      alt="Consensus message flow"
+      caption="Proposal and acceptance flow across nodes"
     />
   </section>
 
@@ -107,8 +107,8 @@ export default function ConsensusAlgorithmsConciseArticle() {
     </ul>
     <ArticleImage
       src="/diagrams/backend/scalability-distributed-systems/consensus-algorithms-diagram-3.svg"
-      alt="Consensus Algorithms failure modes"
-      caption="Typical failure modes and mitigation points"
+      alt="Consensus state transitions"
+      caption="State progression during elections and commits"
     />
   </section>
 

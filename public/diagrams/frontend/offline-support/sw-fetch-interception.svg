@@ -1,0 +1,101 @@
+<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="450" fill="#ffffff"/>
+  <text x="400" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Service Worker Fetch Interception</text>
+
+  <defs>
+    <marker id="arr-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3B82F6"/>
+    </marker>
+    <marker id="arr-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10B981"/>
+    </marker>
+    <marker id="arr-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#F59E0B"/>
+    </marker>
+  </defs>
+
+  <!-- Browser -->
+  <rect x="30" y="70" width="120" height="45" rx="8" fill="#DBEAFE" stroke="#3B82F6" stroke-width="2"/>
+  <text x="90" y="97" text-anchor="middle" font-size="13" font-weight="600" fill="#1E40AF">Browser</text>
+
+  <!-- Arrow: Browser -> SW -->
+  <line x1="150" y1="92" x2="220" y2="92" stroke="#3B82F6" stroke-width="2" marker-end="url(#arr-blue)"/>
+  <text x="185" y="83" text-anchor="middle" font-size="10" fill="#6B7280">fetch request</text>
+
+  <!-- Service Worker -->
+  <rect x="230" y="60" width="150" height="65" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+  <text x="305" y="87" text-anchor="middle" font-size="13" font-weight="600" fill="#5B21B6">Service Worker</text>
+  <text x="305" y="105" text-anchor="middle" font-size="10" fill="#7C3AED">intercepts request</text>
+
+  <!-- Decision Diamond -->
+  <polygon points="305,165 370,205 305,245 240,205" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/>
+  <text x="305" y="202" text-anchor="middle" font-size="11" font-weight="600" fill="#92400E">In cache?</text>
+
+  <!-- Arrow: SW -> Diamond -->
+  <line x1="305" y1="125" x2="305" y2="163" stroke="#7C3AED" stroke-width="2" marker-end="url(#arr-amber)"/>
+
+  <!-- YES path: Cache Hit -->
+  <line x1="240" y1="205" x2="140" y2="205" stroke="#10B981" stroke-width="2" marker-end="url(#arr-green)"/>
+  <text x="190" y="195" text-anchor="middle" font-size="11" font-weight="600" fill="#10B981">YES</text>
+
+  <!-- Cache -->
+  <rect x="30" y="180" width="110" height="45" rx="8" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+  <text x="85" y="207" text-anchor="middle" font-size="12" font-weight="600" fill="#065F46">Cache API</text>
+
+  <!-- Arrow: Cache -> Browser (cached response) -->
+  <path d="M 85 180 L 85 145 L 85 115" stroke="#10B981" stroke-width="2" fill="none" marker-end="url(#arr-green)"/>
+  <text x="100" y="148" font-size="9" fill="#059669">cached response</text>
+
+  <!-- NO path: Network -->
+  <line x1="370" y1="205" x2="470" y2="205" stroke="#3B82F6" stroke-width="2" marker-end="url(#arr-blue)"/>
+  <text x="420" y="195" text-anchor="middle" font-size="11" font-weight="600" fill="#EF4444">NO</text>
+
+  <!-- Network -->
+  <rect x="480" y="180" width="110" height="45" rx="8" fill="#DBEAFE" stroke="#3B82F6" stroke-width="2"/>
+  <text x="535" y="207" text-anchor="middle" font-size="12" font-weight="600" fill="#1E40AF">Network</text>
+
+  <!-- Arrow: Network -> Cache (store) -->
+  <path d="M 480 220 L 140 240 L 140 225" stroke="#F59E0B" stroke-width="1.5" fill="none" marker-end="url(#arr-amber)" stroke-dasharray="5,3"/>
+  <text x="310" y="238" text-anchor="middle" font-size="9" fill="#B45309">cache response (clone)</text>
+
+  <!-- Arrow: Network -> Browser (response) -->
+  <path d="M 535 180 C 535 130, 200 60, 130 70" stroke="#3B82F6" stroke-width="2" fill="none" marker-end="url(#arr-blue)"/>
+  <text x="350" y="60" text-anchor="middle" font-size="9" fill="#1E40AF">network response</text>
+
+  <!-- Strategy Boxes -->
+  <text x="400" y="295" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1822">Common Strategies</text>
+
+  <!-- Cache First -->
+  <rect x="30" y="310" width="145" height="55" rx="8" fill="#D1FAE5" stroke="#10B981" stroke-width="1.5"/>
+  <text x="102" y="330" text-anchor="middle" font-size="11" font-weight="600" fill="#065F46">Cache First</text>
+  <text x="102" y="345" text-anchor="middle" font-size="9" fill="#4B5563">Cache -> Network fallback</text>
+  <text x="102" y="357" text-anchor="middle" font-size="8" fill="#6B7280">Best for: static assets</text>
+
+  <!-- Network First -->
+  <rect x="190" y="310" width="145" height="55" rx="8" fill="#DBEAFE" stroke="#3B82F6" stroke-width="1.5"/>
+  <text x="262" y="330" text-anchor="middle" font-size="11" font-weight="600" fill="#1E40AF">Network First</text>
+  <text x="262" y="345" text-anchor="middle" font-size="9" fill="#4B5563">Network -> Cache fallback</text>
+  <text x="262" y="357" text-anchor="middle" font-size="8" fill="#6B7280">Best for: HTML, API data</text>
+
+  <!-- Stale While Revalidate -->
+  <rect x="350" y="310" width="145" height="55" rx="8" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="422" y="330" text-anchor="middle" font-size="10" font-weight="600" fill="#92400E">Stale-While-Revalidate</text>
+  <text x="422" y="345" text-anchor="middle" font-size="9" fill="#4B5563">Cache + background update</text>
+  <text x="422" y="357" text-anchor="middle" font-size="8" fill="#6B7280">Best for: avatars, feeds</text>
+
+  <!-- Cache Only -->
+  <rect x="510" y="310" width="130" height="55" rx="8" fill="#E0E7FF" stroke="#6366F1" stroke-width="1.5"/>
+  <text x="575" y="330" text-anchor="middle" font-size="11" font-weight="600" fill="#3730A3">Cache Only</text>
+  <text x="575" y="345" text-anchor="middle" font-size="9" fill="#4B5563">Cache or fail</text>
+  <text x="575" y="357" text-anchor="middle" font-size="8" fill="#6B7280">Best for: offline shell</text>
+
+  <!-- Network Only -->
+  <rect x="655" y="310" width="130" height="55" rx="8" fill="#FCE7F3" stroke="#EC4899" stroke-width="1.5"/>
+  <text x="720" y="330" text-anchor="middle" font-size="11" font-weight="600" fill="#9D174D">Network Only</text>
+  <text x="720" y="345" text-anchor="middle" font-size="9" fill="#4B5563">Network or fail</text>
+  <text x="720" y="357" text-anchor="middle" font-size="8" fill="#6B7280">Best for: analytics, POST</text>
+
+  <!-- Footer -->
+  <rect x="30" y="395" width="740" height="40" rx="6" fill="#F9FAFB" stroke="#E5E7EB"/>
+  <text x="400" y="420" text-anchor="middle" font-size="11" fill="#6B7280">The fetch event handler decides the strategy based on request URL, method, and content type</text>
+</svg>

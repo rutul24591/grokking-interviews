@@ -31,9 +31,9 @@ export default function CircuitBreakerPatternConciseArticle() {
       recover in production.
     </p>
     <ArticleImage
-      src="/diagrams/backend/network-communication/circuit-breaker-pattern-diagram-1.svg"
-      alt="Circuit Breaker Pattern architecture overview"
-      caption="High-level view of circuit breaker pattern in a production traffic path"
+      src="/diagrams/backend/network-communication/circuit-breaker-state-diagram.svg"
+      alt="Circuit breaker state machine"
+      caption="Closed, open, and half-open states with transitions"
     />
   </section>
 
@@ -54,9 +54,9 @@ export default function CircuitBreakerPatternConciseArticle() {
       <li>Fallback responses</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/circuit-breaker-pattern-diagram-2.svg"
-      alt="Circuit Breaker Pattern core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/network-communication/circuit-breaker-pattern.svg"
+      alt="Circuit breaker pattern flow"
+      caption="Breaker protecting downstream service calls"
     />
   </section>
 
@@ -107,11 +107,7 @@ export default function CircuitBreakerPatternConciseArticle() {
       <li>Unbounded retries that bypass the breaker</li>
       <li>Missing fallback paths leading to user errors</li>
     </ul>
-    <ArticleImage
-      src="/diagrams/backend/network-communication/circuit-breaker-pattern-diagram-3.svg"
-      alt="Circuit Breaker Pattern failure modes"
-      caption="Typical failure modes and mitigation points"
-    />
+    
   </section>
 
   

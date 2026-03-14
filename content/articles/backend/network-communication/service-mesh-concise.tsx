@@ -31,9 +31,9 @@ export default function ServiceMeshConciseArticle() {
       recover in production.
     </p>
     <ArticleImage
-      src="/diagrams/backend/network-communication/service-mesh-diagram-1.svg"
-      alt="Service Mesh architecture overview"
-      caption="High-level view of service mesh in a production traffic path"
+      src="/diagrams/backend/network-communication/istio-architecture.svg"
+      alt="Istio service mesh architecture"
+      caption="Control plane and data plane components"
     />
   </section>
 
@@ -54,9 +54,9 @@ export default function ServiceMeshConciseArticle() {
       <li>Traffic policies and telemetry</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/service-mesh-diagram-2.svg"
-      alt="Service Mesh core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/network-communication/istio-ztunnel-datapath.png"
+      alt="Istio ztunnel data path"
+      caption="Ambient mesh data path through ztunnel"
     />
   </section>
 
@@ -108,9 +108,9 @@ export default function ServiceMeshConciseArticle() {
       <li>Policy misconfiguration leading to outages</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/service-mesh-diagram-3.svg"
-      alt="Service Mesh failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/network-communication/istio-ztunnel-waypoint-datapath.png"
+      alt="Istio waypoint proxy data path"
+      caption="Waypoint proxy path for L7 policies"
     />
   </section>
 

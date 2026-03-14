@@ -31,7 +31,11 @@ export default function AutomaticRecoveryConciseArticle() {
         <h2>Recovery Patterns</h2>
         <p>Common patterns include process restarts, instance replacement, auto-scaling, traffic rerouting, and configuration rollback. Recovery can happen at different layers depending on where the fault is detected.</p>
         <p>Some systems use progressive recovery: attempt a light-weight action first, then escalate if symptoms persist. This reduces risk and preserves stability.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/automatic-recovery-diagram-1.svg" alt="Automatic Recovery diagram 1" caption="Automatic Recovery overview diagram 1." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/self-healing-cycle.png"
+          alt="Self-healing recovery cycle"
+          caption="Self-healing cycle illustrating detect, isolate, recover, and verify steps."
+        />
       </section>
 
       <section>
@@ -44,7 +48,11 @@ export default function AutomaticRecoveryConciseArticle() {
         <h2>Failure Modes</h2>
         <p>Automation can create feedback loops. If a recovery action increases load or triggers repeated restarts, the system may thrash. Rate limiting and backoff are essential.</p>
         <p>Another failure mode is silent automation. If the system auto-recovers repeatedly without visibility, teams may miss underlying structural issues that need fixes.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/automatic-recovery-diagram-2.svg" alt="Automatic Recovery diagram 2" caption="Automatic Recovery overview diagram 2." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/autogenous-self-healing.png"
+          alt="Autogenous self healing states"
+          caption="Autogenous self-healing mechanism highlighting automated corrective actions."
+        />
       </section>
 
       <section>
@@ -57,7 +65,11 @@ export default function AutomaticRecoveryConciseArticle() {
         <h2>Trade-offs</h2>
         <p>Automatic recovery reduces downtime but increases system complexity. Too much automation can hide problems and reduce operator understanding.</p>
         <p>There is also a correctness trade-off. Faster recovery can risk data consistency if it involves promoting replicas or replaying logs without enough validation.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/automatic-recovery-diagram-3.svg" alt="Automatic Recovery diagram 3" caption="Automatic Recovery overview diagram 3." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/chaos-gears-auto-recovery-state-machine.png"
+          alt="Auto recovery state machine"
+          caption="State machine for automated recovery showing decision gates and escalation steps."
+        />
       </section>
 
       <section>

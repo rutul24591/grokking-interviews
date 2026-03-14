@@ -30,9 +30,9 @@ export default function AsynchronousProcessingConciseArticle() {
       how queues and backpressure decisions shape reliability, and how failure domains are bounded.
     </p>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/asynchronous-processing-diagram-1.svg"
-      alt="Asynchronous Processing architecture overview"
-      caption="High-level view of asynchronous processing in a distributed system"
+      src="/diagrams/backend/scalability-distributed-systems/asynchronous-processing-diagram-1.png"
+      alt="Async pipeline with queues"
+      caption="Work moves through queues and workers asynchronously"
     />
   </section>
 
@@ -54,8 +54,8 @@ export default function AsynchronousProcessingConciseArticle() {
     </ul>
     <ArticleImage
       src="/diagrams/backend/scalability-distributed-systems/asynchronous-processing-diagram-2.svg"
-      alt="Asynchronous Processing core workflow"
-      caption="Core workflow and control points"
+      alt="Producer-consumer async flow"
+      caption="Decoupled producer and consumer with buffer"
     />
   </section>
 
@@ -106,9 +106,9 @@ export default function AsynchronousProcessingConciseArticle() {
       <li>Out-of-order completion</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/asynchronous-processing-diagram-3.svg"
-      alt="Asynchronous Processing failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/scalability-distributed-systems/asynchronous-processing-diagram-3.jpg"
+      alt="Async processing stages"
+      caption="Stages execute without blocking callers"
     />
   </section>
 

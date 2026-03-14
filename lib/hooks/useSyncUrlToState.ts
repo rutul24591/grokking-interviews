@@ -26,7 +26,7 @@ export function useSyncUrlToState({
 
   useEffect(() => {
     // Skip if pathname hasn't changed (prevents unnecessary store updates)
-    if (prevPathname.current === pathname && prevPathname.current !== pathname) return;
+    if (prevPathname.current === pathname) return;
     prevPathname.current = pathname;
 
     const {
@@ -77,43 +77,43 @@ export function useSyncUrlToState({
 
           if (itemSlug !== subcategorySlug) continue;
 
+          // We always select the matching subcategory item once found (even if a deeper segment exists).
+          setSelectedSubCategoryId(subCategory.id);
+          setSelectedSubCategoryItemId(subCategoryItem.id);
+
+          const idsToExpand = [
+            category.id,
+            subCategory.id,
+            ...expandedIds,
+          ];
+          setExpanded(Array.from(new Set(idsToExpand)));
+
+          // SubCategoryItem level (e.g., /frontend/rendering-strategies)
           if (segments.length === 2) {
-            setSelectedSubCategoryId(subCategory.id);
-            setSelectedSubCategoryItemId(subCategoryItem.id);
             setSelectedTopicId(null);
-            const idsToExpand = [
-              category.id,
-              subCategory.id,
-              ...expandedIds,
-            ];
-            setExpanded(Array.from(new Set(idsToExpand)));
             return;
           }
 
           // Topic level (e.g., /frontend/rendering-strategies/client-side-rendering)
           if (topicSlug) {
             for (const topic of subCategoryItem.topics || []) {
-              const topicSlugged = slugify(topic.name.replace(/\s*\([^)]*\)/g, "").trim());
+              const topicSlugged = slugify(
+                topic.name.replace(/\s*\([^)]*\)/g, "").trim(),
+              );
 
               if (
                 topicSlugged.includes(topicSlug) ||
                 topicSlug.includes(topicSlugged)
               ) {
-                setSelectedSubCategoryId(subCategory.id);
-                setSelectedSubCategoryItemId(subCategoryItem.id);
                 setSelectedTopicId(topic.id);
-
-                const idsToExpand = [
-                  category.id,
-                  subCategory.id,
-                  subCategoryItem.id,
-                  ...expandedIds,
-                ];
-                setExpanded(Array.from(new Set(idsToExpand)));
                 return;
               }
             }
           }
+
+          // Topic not found (or not applicable for this subcategory)
+          setSelectedTopicId(null);
+          return;
         }
       }
     }

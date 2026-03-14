@@ -1,0 +1,314 @@
+Functional Requirements Framework for System Design Interviews
+
+1. Identity & Access
+
+Frontend
+
+-   Signup interface
+-   Login interface
+-   Logout
+-   Password reset
+-   Email verification
+-   Phone verification
+-   Multi-factor authentication setup
+-   Social login options
+-   Session persistence
+-   Device/session management UI
+-   Profile settings UI
+-   Account settings UI
+-   Account recovery UI
+-   Security settings UI
+
+Backend
+
+-   User registration service
+-   Authentication service
+-   Token generation (JWT/OAuth)
+-   Session management
+-   Device session tracking
+-   Password hashing and validation
+-   Role-based access control (RBAC)
+-   Permission validation
+-   Account verification
+-   Login attempt tracking
+-   Account lockout
+-   Session revocation
+-   Credential rotation
+-   Security audit logging
+
+Other
+
+-   OAuth providers
+-   SSO integrations
+-   Identity providers
+-   Access control policies
+-   Authentication audit logs
+
+------------------------------------------------------------------------
+
+2. Content / Core Resource Management
+
+Frontend
+
+-   Create content UI
+-   Edit content UI
+-   Delete content UI
+-   View content pages
+-   Content preview
+-   Media upload
+-   File attachments
+-   Rich text editor
+-   Draft saving
+-   Content sharing interface
+-   Content scheduling UI
+-   Content tagging UI
+-   Content categorization UI
+
+Backend
+
+-   CRUD APIs
+-   Content storage
+-   Metadata storage
+-   Content validation
+-   Content versioning
+-   Soft delete
+-   Content lifecycle management
+-   Publishing workflow
+-   Media processing
+-   File upload APIs
+-   Tagging and categorization management
+
+Other
+
+-   Object storage
+-   CDN delivery
+-   Media processing pipelines
+-   Image optimization
+-   Video transcoding
+
+------------------------------------------------------------------------
+
+3. Discovery (Search / Feed / Browsing)
+
+Frontend
+
+-   Search bar
+-   Search results UI
+-   Autocomplete suggestions
+-   Filters
+-   Sorting
+-   Category navigation
+-   Trending sections
+-   Recommendation sections
+-   Infinite scrolling
+-   Related content suggestions
+
+Backend
+
+-   Search indexing
+-   Query processing
+-   Full-text search
+-   Feed generation
+-   Recommendation algorithms
+-   Ranking algorithms
+-   Trending computation
+-   Personalization engine
+
+Other
+
+-   Search engines (Elasticsearch/OpenSearch)
+-   Feed caching
+-   ML recommendation pipelines
+-   Indexing pipelines
+
+------------------------------------------------------------------------
+
+4. Interaction & Engagement
+
+Frontend
+
+-   Like / reaction UI
+-   Comment UI
+-   Reply UI
+-   Share UI
+-   Bookmark / save UI
+-   Follow / subscribe UI
+-   Rating / review UI
+-   Upvote/downvote UI
+-   Reaction counters
+
+Backend
+
+-   Interaction APIs
+-   Relationship graphs
+-   Reaction storage
+-   Comment threads
+-   Aggregation counters
+-   Engagement tracking
+-   Share tracking
+-   Activity feeds
+
+Other
+
+-   Event streams
+-   Analytics pipelines
+-   Engagement metrics collection
+
+------------------------------------------------------------------------
+
+5. Communication
+
+Frontend
+
+-   Chat interface
+-   Messaging UI
+-   Notification center
+-   Real-time activity indicators
+-   Typing indicators
+-   Message status indicators
+-   Notification preferences UI
+
+Backend
+
+-   Messaging services
+-   Notification generation
+-   Notification delivery
+-   Message persistence
+-   Delivery tracking
+-   Presence tracking
+-   Real-time broadcasting
+
+Other
+
+-   WebSocket infrastructure
+-   Pub/Sub messaging
+-   Push notifications
+-   Email delivery services
+-   SMS gateways
+-   Message queues
+
+------------------------------------------------------------------------
+
+6. Transactions / State Changes
+
+Frontend
+
+-   Checkout flows
+-   Booking workflows
+-   Payment UI
+-   Confirmation screens
+-   Order history UI
+-   Transaction history UI
+-   Subscription management UI
+
+Backend
+
+-   Payment processing APIs
+-   Order management services
+-   State machines
+-   Transaction tracking
+-   Refund processing
+-   Subscription lifecycle management
+-   Billing services
+-   Idempotent operations
+
+Other
+
+-   Payment gateways
+-   Billing platforms
+-   Financial logs
+-   Event sourcing systems
+
+------------------------------------------------------------------------
+
+7. Administration & Moderation
+
+Frontend
+
+-   Admin dashboards
+-   Moderation tools
+-   User management UI
+-   Content moderation UI
+-   Analytics dashboards
+-   Reporting tools
+-   Feature configuration UI
+
+Backend
+
+-   Admin APIs
+-   User management services
+-   Moderation services
+-   Abuse detection
+-   Feature flag management
+-   Configuration services
+
+Other
+
+-   Monitoring tools
+-   Alerting systems
+-   Audit logs
+-   Compliance tools
+
+------------------------------------------------------------------------
+
+8. Other (Cross-cutting Functional Requirements)
+
+Safety & Moderation
+
+-   Abuse reporting
+-   Content reporting
+-   User blocking
+-   User muting
+-   Spam detection
+-   Content flagging
+
+Privacy Controls
+
+-   Privacy settings
+-   Profile visibility
+-   Data sharing preferences
+-   Access history logs
+-   Permission management
+
+Content Lifecycle Enhancements
+
+-   Draft saving
+-   Content scheduling
+-   Content archiving
+-   Content version history
+-   Content recovery
+
+Notifications & Preferences
+
+-   Notification preferences
+-   Notification muting
+-   Email digest preferences
+-   Notification frequency controls
+
+Personalization
+
+-   Saved preferences
+-   Theme settings
+-   Language settings
+-   Personalized recommendations
+-   Recently viewed content
+
+Data Portability
+
+-   Export user data
+-   Import user data
+-   Data download requests
+
+Compliance
+
+-   GDPR data requests
+-   Data deletion requests
+-   Consent management
+-   Terms acceptance tracking
+
+Reliability Features
+
+-   Retry mechanisms
+-   Duplicate request handling
+-   Conflict resolution
+-   Idempotent requests

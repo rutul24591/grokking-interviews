@@ -31,7 +31,11 @@ export default function BackupRestoreConciseArticle() {
         <h2>Backup Strategies</h2>
         <p>Common strategies include full backups, incremental backups, and continuous log shipping. Full backups are straightforward but heavy; incremental backups reduce storage but complicate restore; log shipping offers near-real-time recovery but requires careful ordering.</p>
         <p>Retention policies matter. Keep short-term fast access backups for immediate recovery and long-term archival backups for audit or compliance.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/backup-restore-diagram-1.svg" alt="Backup and Restore diagram 1" caption="Backup and Restore overview diagram 1." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/backup-method-comparison-azure.png"
+          alt="Full differential and incremental backup comparison"
+          caption="Comparison of full, differential, and incremental backup strategies."
+        />
       </section>
 
       <section>
@@ -44,7 +48,11 @@ export default function BackupRestoreConciseArticle() {
         <h2>Failure Modes</h2>
         <p>The most common failure is untested backups. Teams discover missing data, corrupted archives, or incompatible formats only during incidents.</p>
         <p>Another failure is backup drift: schema changes, new services, or new storage systems are not included in the backup plan, leaving gaps during recovery.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/backup-restore-diagram-2.svg" alt="Backup and Restore diagram 2" caption="Backup and Restore overview diagram 2." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/backup-restore-architecture-aws.png"
+          alt="AWS backup and restore architecture"
+          caption="Backup and restore architecture showing cross-region protection and restore paths."
+        />
       </section>
 
       <section>
@@ -57,7 +65,11 @@ export default function BackupRestoreConciseArticle() {
         <h2>Trade-offs</h2>
         <p>More frequent backups reduce data loss but increase cost and operational load. Faster restore paths require more storage and dedicated recovery environments.</p>
         <p>Backup encryption and access controls improve security but can slow recovery if keys or credentials are not readily available.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/backup-restore-diagram-3.svg" alt="Backup and Restore diagram 3" caption="Backup and Restore overview diagram 3." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/backup-restore-test-aws.png"
+          alt="Backup restore testing workflow"
+          caption="Automated restore testing workflow to validate backup reliability."
+        />
       </section>
 
       <section>

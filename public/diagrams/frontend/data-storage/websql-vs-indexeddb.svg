@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <filter id="shadow1" x="-4%" y="-4%" width="108%" height="108%">
+      <feDropShadow dx="1" dy="2" stdDeviation="3" flood-opacity="0.10" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="500" rx="12" fill="#f3f1f8" />
+
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1a1822">Web SQL vs IndexedDB: W3C Standardization Outcome</text>
+
+  <!-- Timeline bar -->
+  <rect x="60" y="58" width="780" height="36" rx="6" fill="#edeaf5" />
+  <text x="80" y="81" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#6d5bd0">2009</text>
+  <text x="80" y="81" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822" dx="36">W3C Spec</text>
+  <line x1="165" y1="64" x2="165" y2="88" stroke="#6d5bd0" stroke-width="1.5" />
+  <text x="180" y="81" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#d97843">2010</text>
+  <text x="180" y="81" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822" dx="36">Spec Abandoned</text>
+  <line x1="310" y1="64" x2="310" y2="88" stroke="#d97843" stroke-width="1.5" />
+  <text x="325" y="81" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#2f9d74">2015</text>
+  <text x="325" y="81" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822" dx="36">IndexedDB 2.0</text>
+  <line x1="460" y1="64" x2="460" y2="88" stroke="#2f9d74" stroke-width="1.5" />
+  <text x="475" y="81" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#2f9d74">2024</text>
+  <text x="475" y="81" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822" dx="36">Chrome removes Web SQL</text>
+  <line x1="660" y1="64" x2="660" y2="88" stroke="#d97843" stroke-width="1.5" />
+  <text x="675" y="81" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#2f9d74">Now</text>
+  <text x="675" y="81" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822" dx="28">IndexedDB Standard</text>
+
+  <!-- LEFT: Web SQL panel -->
+  <rect x="40" y="110" width="390" height="370" rx="8" fill="#fff" filter="url(#shadow1)" />
+  <rect x="40" y="110" width="390" height="44" rx="8" fill="#d97843" />
+  <rect x="40" y="132" width="390" height="22" fill="#d97843" />
+  <text x="235" y="138" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#fff">Web SQL Database</text>
+  <rect x="288" y="118" width="120" height="22" rx="4" fill="#c0380a" />
+  <text x="348" y="133" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#fff">DEPRECATED</text>
+
+  <!-- Web SQL features -->
+  <rect x="60" y="170" width="350" height="38" rx="6" fill="#edeaf5" />
+  <text x="80" y="193" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1a1822">SQL Queries</text>
+  <text x="370" y="193" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#6d5bd0">SELECT, INSERT, UPDATE, DELETE</text>
+
+  <rect x="60" y="218" width="350" height="38" rx="6" fill="#edeaf5" />
+  <text x="80" y="241" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1a1822">Table-Based Schema</text>
+  <text x="370" y="241" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#6d5bd0">Relational rows &amp; columns</text>
+
+  <rect x="60" y="266" width="350" height="38" rx="6" fill="#edeaf5" />
+  <text x="80" y="289" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1a1822">SQLite Dependency</text>
+  <text x="370" y="289" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#d97843">Single implementation only</text>
+
+  <rect x="60" y="314" width="350" height="38" rx="6" fill="#edeaf5" />
+  <text x="80" y="337" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1a1822">Callback-Based API</text>
+  <text x="370" y="337" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#6d5bd0">Async via nested callbacks</text>
+
+  <rect x="60" y="362" width="350" height="38" rx="6" fill="#edeaf5" />
+  <text x="80" y="385" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1a1822">5 MB Default Quota</text>
+  <text x="370" y="385" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#6d5bd0">User prompt for more</text>
+
+  <!-- Browser support -->
+  <text x="100" y="425" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Browser support:</text>
+  <rect x="195" y="413" width="62" height="20" rx="4" fill="#2f9d74" />
+  <text x="226" y="427" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">Chrome</text>
+  <rect x="263" y="413" width="55" height="20" rx="4" fill="#2f9d74" />
+  <text x="290" y="427" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">Safari</text>
+  <rect x="324" y="413" width="55" height="20" rx="4" fill="#d97843" />
+  <text x="351" y="427" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">Opera</text>
+
+  <text x="100" y="460" font-family="system-ui, sans-serif" font-size="11" fill="#d97843" font-weight="600">Never supported: Firefox, IE/Edge</text>
+
+  <!-- RIGHT: IndexedDB panel -->
+  <rect x="470" y="110" width="390" height="370" rx="8" fill="#fff" filter="url(#shadow1)" />
+  <rect x="470" y="110" width="390" height="44" rx="8" fill="#2f9d74" />
+  <rect x="470" y="132" width="390" height="22" fill="#2f9d74" />
+  <text x="665" y="138" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#fff">IndexedDB</text>
+  <rect x="738" y="118" width="100" height="22" rx="4" fill="#1e7a57" />
+  <text x="788" y="133" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#fff">STANDARD</text>
+
+  <!-- IndexedDB features -->
+  <rect x="490" y="170" width="350" height="38" rx="6" fill="#edeaf5" />
+  <text x="510" y="193" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1a1822">Key-Value + Indexes</text>
+  <text x="800" y="193" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#2f9d74">Cursor-based querying</text>
+
+  <rect x="490" y="218" width="350" height="38" rx="6" fill="#edeaf5" />
+  <text x="510" y="241" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1a1822">Object Stores</text>
+  <text x="800" y="241" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#2f9d74">Schema-free JSON objects</text>
+
+  <rect x="490" y="266" width="350" height="38" rx="6" fill="#edeaf5" />
+  <text x="510" y="289" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1a1822">Multiple Implementations</text>
+  <text x="800" y="289" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#2f9d74">Every browser, independent</text>
+
+  <rect x="490" y="314" width="350" height="38" rx="6" fill="#edeaf5" />
+  <text x="510" y="337" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1a1822">Event-Based Async API</text>
+  <text x="800" y="337" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#2f9d74">IDBRequest + onsuccess</text>
+
+  <rect x="490" y="362" width="350" height="38" rx="6" fill="#edeaf5" />
+  <text x="510" y="385" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1a1822">Large Quotas</text>
+  <text x="800" y="385" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#2f9d74">Up to 50%+ of disk space</text>
+
+  <!-- IndexedDB browser support -->
+  <text x="530" y="425" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Browser support:</text>
+  <rect x="625" y="413" width="62" height="20" rx="4" fill="#2f9d74" />
+  <text x="656" y="427" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">Chrome</text>
+  <rect x="693" y="413" width="55" height="20" rx="4" fill="#2f9d74" />
+  <text x="720" y="427" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">Firefox</text>
+  <rect x="754" y="413" width="55" height="20" rx="4" fill="#2f9d74" />
+  <text x="781" y="427" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#fff">Safari</text>
+
+  <text x="530" y="460" font-family="system-ui, sans-serif" font-size="11" fill="#2f9d74" font-weight="600">All modern browsers supported</text>
+</svg>

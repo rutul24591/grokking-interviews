@@ -1,0 +1,103 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="36" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822">IndexedDB Hierarchical Structure</text>
+
+  <!-- Origin Layer -->
+  <rect x="30" y="55" width="840" height="430" rx="8" fill="none" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="6,4"/>
+  <rect x="35" y="58" width="180" height="24" rx="4" fill="#edeaf5"/>
+  <text x="125" y="75" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Origin: https://myapp.com</text>
+
+  <!-- Database Box -->
+  <rect x="60" y="95" width="780" height="375" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2" opacity="0.9"/>
+  <rect x="65" y="100" width="170" height="26" rx="4" fill="#6d5bd0"/>
+  <text x="150" y="118" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Database: MyAppDB</text>
+  <text x="610" y="118" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="600">version: 3</text>
+
+  <!-- Object Store 1: users -->
+  <rect x="85" y="140" width="345" height="310" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="90" y="145" width="220" height="24" rx="4" fill="#6d5bd0" opacity="0.85"/>
+  <text x="200" y="162" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Object Store: "users"</text>
+  <text x="340" y="162" text-anchor="middle" font-size="10" fill="#6d5bd0">keyPath: "id" | autoIncrement</text>
+
+  <!-- Records in users -->
+  <rect x="100" y="180" width="160" height="60" rx="6" fill="white" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="180" y="198" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Record (key: 1)</text>
+  <text x="180" y="214" text-anchor="middle" font-size="9" fill="#1a1822">{ id: 1, name: "Alice",</text>
+  <text x="180" y="228" text-anchor="middle" font-size="9" fill="#1a1822">email: "alice@..." }</text>
+
+  <rect x="270" y="180" width="148" height="60" rx="6" fill="white" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="344" y="198" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Record (key: 2)</text>
+  <text x="344" y="214" text-anchor="middle" font-size="9" fill="#1a1822">{ id: 2, name: "Bob",</text>
+  <text x="344" y="228" text-anchor="middle" font-size="9" fill="#1a1822">email: "bob@..." }</text>
+
+  <!-- Indexes for users store -->
+  <text x="140" y="265" font-size="11" font-weight="bold" fill="#d97843">Indexes (B-tree)</text>
+
+  <rect x="100" y="275" width="145" height="50" rx="6" fill="white" stroke="#d97843" stroke-width="1.5"/>
+  <text x="172" y="295" text-anchor="middle" font-size="10" font-weight="600" fill="#d97843">Index: "email"</text>
+  <text x="172" y="312" text-anchor="middle" font-size="9" fill="#1a1822">unique: true</text>
+
+  <rect x="255" y="275" width="160" height="50" rx="6" fill="white" stroke="#d97843" stroke-width="1.5"/>
+  <text x="335" y="295" text-anchor="middle" font-size="10" font-weight="600" fill="#d97843">Index: "createdAt"</text>
+  <text x="335" y="312" text-anchor="middle" font-size="9" fill="#1a1822">unique: false</text>
+
+  <!-- Index arrows pointing to records -->
+  <line x1="155" y1="275" x2="155" y2="240" stroke="#d97843" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arrOrange)"/>
+  <line x1="190" y1="275" x2="310" y2="240" stroke="#d97843" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arrOrange)"/>
+  <line x1="305" y1="275" x2="175" y2="240" stroke="#d97843" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arrOrange)"/>
+  <line x1="370" y1="275" x2="345" y2="240" stroke="#d97843" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arrOrange)"/>
+
+  <!-- Cursor -->
+  <rect x="100" y="340" width="316" height="40" rx="6" fill="#2f9d74" opacity="0.1" stroke="#2f9d74" stroke-width="1"/>
+  <text x="258" y="358" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="600">Cursor: iterate records with IDBKeyRange</text>
+  <text x="258" y="372" text-anchor="middle" font-size="9" fill="#2f9d74">IDBKeyRange.bound("a@...", "m@...") on email index</text>
+
+  <!-- Object Store 2: products -->
+  <rect x="455" y="140" width="370" height="310" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="460" y="145" width="240" height="24" rx="4" fill="#6d5bd0" opacity="0.85"/>
+  <text x="580" y="162" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Object Store: "products"</text>
+  <text x="740" y="162" text-anchor="middle" font-size="10" fill="#6d5bd0">keyPath: "sku"</text>
+
+  <!-- Records in products -->
+  <rect x="470" y="180" width="160" height="60" rx="6" fill="white" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="550" y="198" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Record (key: "A1")</text>
+  <text x="550" y="214" text-anchor="middle" font-size="9" fill="#1a1822">{ sku: "A1", name: "Widget",</text>
+  <text x="550" y="228" text-anchor="middle" font-size="9" fill="#1a1822">price: 29.99, cat: "hw" }</text>
+
+  <rect x="642" y="180" width="170" height="60" rx="6" fill="white" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="727" y="198" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Record (key: "B2")</text>
+  <text x="727" y="214" text-anchor="middle" font-size="9" fill="#1a1822">{ sku: "B2", name: "Gadget",</text>
+  <text x="727" y="228" text-anchor="middle" font-size="9" fill="#1a1822">price: 49.99, cat: "elec" }</text>
+
+  <!-- Indexes for products store -->
+  <text x="510" y="265" font-size="11" font-weight="bold" fill="#d97843">Indexes (B-tree)</text>
+
+  <rect x="470" y="275" width="155" height="50" rx="6" fill="white" stroke="#d97843" stroke-width="1.5"/>
+  <text x="547" y="295" text-anchor="middle" font-size="10" font-weight="600" fill="#d97843">Index: "category"</text>
+  <text x="547" y="312" text-anchor="middle" font-size="9" fill="#1a1822">unique: false</text>
+
+  <rect x="638" y="275" width="172" height="50" rx="6" fill="white" stroke="#d97843" stroke-width="1.5"/>
+  <text x="724" y="295" text-anchor="middle" font-size="10" font-weight="600" fill="#d97843">Index: "price"</text>
+  <text x="724" y="312" text-anchor="middle" font-size="9" fill="#1a1822">unique: false</text>
+
+  <!-- Index arrows for products -->
+  <line x1="520" y1="275" x2="540" y2="240" stroke="#d97843" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arrOrange)"/>
+  <line x1="575" y1="275" x2="720" y2="240" stroke="#d97843" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arrOrange)"/>
+  <line x1="690" y1="275" x2="560" y2="240" stroke="#d97843" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arrOrange)"/>
+  <line x1="755" y1="275" x2="735" y2="240" stroke="#d97843" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arrOrange)"/>
+
+  <!-- Legend at bottom of products -->
+  <rect x="470" y="340" width="340" height="95" rx="6" fill="white" stroke="#e0dce8" stroke-width="1"/>
+  <text x="640" y="360" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1822">Key Concepts</text>
+  <rect x="485" y="370" width="12" height="12" rx="2" fill="#6d5bd0"/>
+  <text x="505" y="381" font-size="10" fill="#1a1822">Database / Object Store (schema-level)</text>
+  <rect x="485" y="390" width="12" height="12" rx="2" fill="#2f9d74"/>
+  <text x="505" y="401" font-size="10" fill="#1a1822">Records (data, stored via structured clone)</text>
+  <rect x="485" y="410" width="12" height="12" rx="2" fill="#d97843"/>
+  <text x="505" y="421" font-size="10" fill="#1a1822">Indexes (B-tree secondary access paths)</text>
+
+  <defs>
+    <marker id="arrOrange" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#d97843"/></marker>
+  </defs>
+</svg>

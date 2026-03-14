@@ -1,0 +1,75 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="38" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822">sessionStorage: Tab-Scoped Isolation</text>
+  <text x="450" y="58" text-anchor="middle" font-size="12" fill="#666">Same origin (https://app.example.com) -- each tab has its own isolated store</text>
+
+  <!-- Browser chrome bar -->
+  <rect x="40" y="80" width="820" height="30" rx="8" fill="#e0dce8"/>
+  <text x="450" y="100" text-anchor="middle" font-size="11" fill="#666">Browser Window -- 3 Tabs Open</text>
+
+  <!-- Tab 1 -->
+  <rect x="50" y="120" width="240" height="260" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="50" y="120" width="240" height="36" rx="8" fill="#6d5bd0"/>
+  <rect x="50" y="148" width="240" height="8" fill="#6d5bd0"/>
+  <text x="170" y="143" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Tab 1 -- /dashboard</text>
+
+  <rect x="70" y="170" width="200" height="30" rx="6" fill="#edeaf5"/>
+  <text x="170" y="190" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">sessionStorage (Tab 1)</text>
+
+  <rect x="80" y="210" width="180" height="24" rx="4" fill="white" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="90" y="227" font-size="10" fill="#1a1822">wizardStep: "3"</text>
+  <rect x="80" y="240" width="180" height="24" rx="4" fill="white" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="90" y="257" font-size="10" fill="#1a1822">formDraft: "{...}"</text>
+  <rect x="80" y="270" width="180" height="24" rx="4" fill="white" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="90" y="287" font-size="10" fill="#1a1822">csrfToken: "abc12"</text>
+
+  <text x="170" y="320" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="600">Data A</text>
+
+  <!-- Tab 2 -->
+  <rect x="330" y="120" width="240" height="260" rx="8" fill="white" stroke="#2f9d74" stroke-width="2"/>
+  <rect x="330" y="120" width="240" height="36" rx="8" fill="#2f9d74"/>
+  <rect x="330" y="148" width="240" height="8" fill="#2f9d74"/>
+  <text x="450" y="143" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Tab 2 -- /settings</text>
+
+  <rect x="350" y="170" width="200" height="30" rx="6" fill="#e8f5ee"/>
+  <text x="450" y="190" text-anchor="middle" font-size="11" font-weight="600" fill="#2f9d74">sessionStorage (Tab 2)</text>
+
+  <rect x="360" y="210" width="180" height="24" rx="4" fill="white" stroke="#2f9d74" stroke-width="1"/>
+  <text x="370" y="227" font-size="10" fill="#1a1822">unsavedPrefs: "true"</text>
+  <rect x="360" y="240" width="180" height="24" rx="4" fill="white" stroke="#2f9d74" stroke-width="1"/>
+  <text x="370" y="257" font-size="10" fill="#1a1822">csrfToken: "xyz99"</text>
+
+  <text x="450" y="300" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="600">Data B (completely independent)</text>
+
+  <!-- Tab 3 (duplicated) -->
+  <rect x="610" y="120" width="240" height="260" rx="8" fill="white" stroke="#d97843" stroke-width="2"/>
+  <rect x="610" y="120" width="240" height="36" rx="8" fill="#d97843"/>
+  <rect x="610" y="148" width="240" height="8" fill="#d97843"/>
+  <text x="730" y="143" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Tab 3 -- duplicated from 1</text>
+
+  <rect x="630" y="170" width="200" height="30" rx="6" fill="#fdf0e7"/>
+  <text x="730" y="190" text-anchor="middle" font-size="11" font-weight="600" fill="#d97843">sessionStorage (Tab 3)</text>
+
+  <rect x="640" y="210" width="180" height="24" rx="4" fill="white" stroke="#d97843" stroke-width="1"/>
+  <text x="650" y="227" font-size="10" fill="#1a1822">wizardStep: "3"</text>
+  <rect x="640" y="240" width="180" height="24" rx="4" fill="white" stroke="#d97843" stroke-width="1"/>
+  <text x="650" y="257" font-size="10" fill="#1a1822">formDraft: "{...}"</text>
+  <rect x="640" y="270" width="180" height="24" rx="4" fill="white" stroke="#d97843" stroke-width="1"/>
+  <text x="650" y="287" font-size="10" fill="#d97843" font-style="italic">wizardStep: "5"</text>
+
+  <text x="730" y="320" text-anchor="middle" font-size="10" fill="#d97843" font-weight="600">Starts as copy of A, then diverges</text>
+
+  <!-- Close tab illustration -->
+  <rect x="50" y="400" width="820" height="80" rx="8" fill="white" stroke="#e0dce8" stroke-width="1"/>
+  <text x="450" y="425" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1822">Tab Close Behavior</text>
+
+  <text x="170" y="455" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="600">Close Tab 1</text>
+  <text x="170" y="472" text-anchor="middle" font-size="10" fill="#1a1822">Data A destroyed permanently</text>
+
+  <text x="450" y="455" text-anchor="middle" font-size="11" fill="#2f9d74" font-weight="600">Tab 2 unaffected</text>
+  <text x="450" y="472" text-anchor="middle" font-size="10" fill="#1a1822">Data B still intact</text>
+
+  <text x="730" y="455" text-anchor="middle" font-size="11" fill="#d97843" font-weight="600">Tab 3 unaffected</text>
+  <text x="730" y="472" text-anchor="middle" font-size="10" fill="#1a1822">Its diverged copy survives</text>
+</svg>

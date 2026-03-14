@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="32" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1822">File System Access API — Permission Flow</text>
+
+  <!-- ========== READ ACCESS PATH (top) ========== -->
+  <text x="450" y="62" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Read Access Flow</text>
+
+  <!-- Step 1: User Gesture -->
+  <rect x="30" y="78" width="130" height="52" rx="8" fill="#6d5bd0" stroke="#5a4bb0" stroke-width="1.5"/>
+  <text x="95" y="100" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">User Gesture</text>
+  <text x="95" y="116" text-anchor="middle" font-size="9" fill="#e8e4f3">click / keydown</text>
+
+  <line x1="160" y1="104" x2="185" y2="104" stroke="#1a1822" stroke-width="1.5" marker-end="url(#permArr)"/>
+
+  <!-- Step 2: showOpenFilePicker -->
+  <rect x="185" y="78" width="170" height="52" rx="8" fill="#6d5bd0" stroke="#5a4bb0" stroke-width="1.5"/>
+  <text x="270" y="100" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">showOpenFilePicker()</text>
+  <text x="270" y="116" text-anchor="middle" font-size="9" fill="#e8e4f3">Requires transient activation</text>
+
+  <line x1="355" y1="104" x2="380" y2="104" stroke="#1a1822" stroke-width="1.5" marker-end="url(#permArr)"/>
+
+  <!-- Step 3: Browser Prompt -->
+  <rect x="380" y="78" width="150" height="52" rx="8" fill="#d97843" stroke="#c06a38" stroke-width="1.5"/>
+  <text x="455" y="100" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">OS File Picker</text>
+  <text x="455" y="116" text-anchor="middle" font-size="9" fill="#fef3ec">User selects file(s)</text>
+
+  <line x1="530" y1="104" x2="555" y2="104" stroke="#1a1822" stroke-width="1.5" marker-end="url(#permArr)"/>
+
+  <!-- Step 4: Handle Created -->
+  <rect x="555" y="78" width="150" height="52" rx="8" fill="#2f9d74" stroke="#278562" stroke-width="1.5"/>
+  <text x="630" y="100" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">FileHandle Created</text>
+  <text x="630" y="116" text-anchor="middle" font-size="9" fill="#e6f5ef">mode: "read"</text>
+
+  <line x1="705" y1="104" x2="730" y2="104" stroke="#1a1822" stroke-width="1.5" marker-end="url(#permArr)"/>
+
+  <!-- Step 5: Read -->
+  <rect x="730" y="78" width="140" height="52" rx="8" fill="#2f9d74" stroke="#278562" stroke-width="1.5"/>
+  <text x="800" y="100" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">Read Access</text>
+  <text x="800" y="116" text-anchor="middle" font-size="9" fill="#e6f5ef">handle.getFile()</text>
+
+  <!-- Divider -->
+  <line x1="30" y1="155" x2="870" y2="155" stroke="#c8c3d6" stroke-width="1" stroke-dasharray="5,3"/>
+
+  <!-- ========== WRITE ACCESS PATH (middle) ========== -->
+  <text x="450" y="178" text-anchor="middle" font-size="12" font-weight="bold" fill="#d97843">Write Access Flow (from existing handle)</text>
+
+  <!-- Step 1W: Existing Handle -->
+  <rect x="80" y="194" width="160" height="52" rx="8" fill="#2f9d74" stroke="#278562" stroke-width="1.5"/>
+  <text x="160" y="216" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">Existing FileHandle</text>
+  <text x="160" y="232" text-anchor="middle" font-size="9" fill="#e6f5ef">mode: "read" only</text>
+
+  <line x1="240" y1="220" x2="270" y2="220" stroke="#1a1822" stroke-width="1.5" marker-end="url(#permArr)"/>
+
+  <!-- Step 2W: Request Permission -->
+  <rect x="270" y="194" width="180" height="52" rx="8" fill="#6d5bd0" stroke="#5a4bb0" stroke-width="1.5"/>
+  <text x="360" y="216" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">requestPermission()</text>
+  <text x="360" y="232" text-anchor="middle" font-size="9" fill="#e8e4f3">{mode: "readwrite"}</text>
+
+  <line x1="450" y1="220" x2="480" y2="220" stroke="#1a1822" stroke-width="1.5" marker-end="url(#permArr)"/>
+
+  <!-- Step 3W: Second Prompt -->
+  <rect x="480" y="194" width="150" height="52" rx="8" fill="#d97843" stroke="#c06a38" stroke-width="1.5"/>
+  <text x="555" y="216" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">Permission Prompt</text>
+  <text x="555" y="232" text-anchor="middle" font-size="9" fill="#fef3ec">"Allow editing?"</text>
+
+  <line x1="630" y1="220" x2="660" y2="220" stroke="#1a1822" stroke-width="1.5" marker-end="url(#permArr)"/>
+
+  <!-- Step 4W: Write Access -->
+  <rect x="660" y="194" width="160" height="52" rx="8" fill="#2f9d74" stroke="#278562" stroke-width="1.5"/>
+  <text x="740" y="216" text-anchor="middle" font-size="11" fill="#fff" font-weight="600">Write Access</text>
+  <text x="740" y="232" text-anchor="middle" font-size="9" fill="#e6f5ef">createWritable()</text>
+
+  <!-- Divider -->
+  <line x1="30" y1="270" x2="870" y2="270" stroke="#c8c3d6" stroke-width="1" stroke-dasharray="5,3"/>
+
+  <!-- ========== PERMISSION LIFECYCLE (bottom) ========== -->
+  <text x="450" y="295" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a1822">Permission Lifecycle</text>
+
+  <!-- Session box -->
+  <rect x="40" y="310" width="380" height="170" rx="8" fill="#fff" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="40" y="310" width="380" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="40" y="326" width="380" height="12" fill="#2f9d74"/>
+  <text x="230" y="330" text-anchor="middle" font-size="12" fill="#fff" font-weight="700">During Session</text>
+
+  <text x="60" y="360" font-size="10" fill="#2f9d74" font-weight="600">&#x2713; Permission persists for tab lifetime</text>
+  <text x="60" y="380" font-size="10" fill="#2f9d74" font-weight="600">&#x2713; Multiple reads/writes without re-prompting</text>
+  <text x="60" y="400" font-size="10" fill="#2f9d74" font-weight="600">&#x2713; Handle can be stored in IndexedDB</text>
+  <text x="60" y="420" font-size="10" fill="#555">&#x2022; queryPermission() to check state</text>
+  <text x="60" y="440" font-size="10" fill="#555">&#x2022; Returns: "granted" | "denied" | "prompt"</text>
+  <text x="60" y="460" font-size="10" fill="#555">&#x2022; No prompt if already granted this session</text>
+
+  <!-- Reset box -->
+  <rect x="480" y="310" width="380" height="170" rx="8" fill="#fff" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="480" y="310" width="380" height="28" rx="8" fill="#d97843"/>
+  <rect x="480" y="326" width="380" height="12" fill="#d97843"/>
+  <text x="670" y="330" text-anchor="middle" font-size="12" fill="#fff" font-weight="700">After Page Reload / New Session</text>
+
+  <text x="500" y="360" font-size="10" fill="#d97843" font-weight="600">&#x2717; Permission resets to "prompt"</text>
+  <text x="500" y="380" font-size="10" fill="#d97843" font-weight="600">&#x2717; Must re-request on user gesture</text>
+  <text x="500" y="400" font-size="10" fill="#d97843" font-weight="600">&#x2717; Handle is valid but permission is not</text>
+  <text x="500" y="420" font-size="10" fill="#555">&#x2022; Stored handle in IndexedDB survives reload</text>
+  <text x="500" y="440" font-size="10" fill="#555">&#x2022; Call requestPermission() to re-grant</text>
+  <text x="500" y="460" font-size="10" fill="#555">&#x2022; Persistent permissions API (Chrome 122+)</text>
+
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="permArr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#1a1822"/>
+    </marker>
+  </defs>
+</svg>

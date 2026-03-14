@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="400" fill="white"/>
+
+  <!-- Title -->
+  <text x="400" y="32" text-anchor="middle" font-size="16" font-weight="700" fill="#1E293B">Regular Fetch vs. Background Sync</text>
+
+  <!-- Divider -->
+  <line x1="400" y1="50" x2="400" y2="380" stroke="#E2E8F0" stroke-width="2"/>
+
+  <!-- === LEFT SIDE: Regular Fetch === -->
+  <text x="200" y="68" text-anchor="middle" font-size="14" font-weight="700" fill="#EF4444">Regular Fetch</text>
+  <text x="200" y="84" text-anchor="middle" font-size="10" fill="#94A3B8">No Service Worker / No Outbox</text>
+
+  <!-- Step 1: User submits -->
+  <rect x="80" y="100" width="240" height="44" rx="8" fill="#3B82F6"/>
+  <text x="200" y="120" text-anchor="middle" font-size="11" font-weight="600" fill="white">User Submits Form</text>
+  <text x="200" y="134" text-anchor="middle" font-size="10" fill="#DBEAFE">onClick → fetch('/api/submit', ...)</text>
+
+  <!-- Arrow down -->
+  <line x1="200" y1="144" x2="200" y2="168" stroke="#3B82F6" stroke-width="2" marker-end="url(#vsArrowBlue)"/>
+
+  <!-- Step 2: fetch() -->
+  <rect x="80" y="168" width="240" height="44" rx="8" fill="#6366F1"/>
+  <text x="200" y="188" text-anchor="middle" font-size="11" font-weight="600" fill="white">fetch() Fires</text>
+  <text x="200" y="202" text-anchor="middle" font-size="10" fill="#E0E7FF">Request leaves browser</text>
+
+  <!-- Arrow down -->
+  <line x1="200" y1="212" x2="200" y2="236" stroke="#6366F1" stroke-width="2" marker-end="url(#vsArrowIndigo)"/>
+
+  <!-- Step 3: Network Error -->
+  <rect x="80" y="236" width="240" height="44" rx="8" fill="#FEE2E2" stroke="#EF4444" stroke-width="2"/>
+  <text x="200" y="256" text-anchor="middle" font-size="11" font-weight="600" fill="#DC2626">Network Error!</text>
+  <text x="200" y="270" text-anchor="middle" font-size="10" fill="#EF4444">No connection / timeout</text>
+
+  <!-- Arrow down -->
+  <line x1="200" y1="280" x2="200" y2="304" stroke="#EF4444" stroke-width="2" marker-end="url(#vsArrowRed)"/>
+
+  <!-- Step 4: Data LOST -->
+  <rect x="80" y="304" width="240" height="56" rx="8" fill="#EF4444"/>
+  <text x="165" y="328" text-anchor="middle" font-size="13" font-weight="700" fill="white">Data Lost!</text>
+  <!-- Red X -->
+  <circle cx="280" cy="332" r="18" fill="#DC2626" stroke="white" stroke-width="2"/>
+  <line x1="270" y1="322" x2="290" y2="342" stroke="white" stroke-width="3" stroke-linecap="round"/>
+  <line x1="290" y1="322" x2="270" y2="342" stroke="white" stroke-width="3" stroke-linecap="round"/>
+  <text x="200" y="350" text-anchor="middle" font-size="10" fill="#FEE2E2">If user closes tab, data is gone forever</text>
+
+  <!-- === RIGHT SIDE: Background Sync === -->
+  <text x="600" y="68" text-anchor="middle" font-size="14" font-weight="700" fill="#10B981">Background Sync</text>
+  <text x="600" y="84" text-anchor="middle" font-size="10" fill="#94A3B8">Service Worker + IndexedDB Outbox</text>
+
+  <!-- Step 1: User submits -->
+  <rect x="480" y="100" width="240" height="44" rx="8" fill="#3B82F6"/>
+  <text x="600" y="120" text-anchor="middle" font-size="11" font-weight="600" fill="white">User Submits Form</text>
+  <text x="600" y="134" text-anchor="middle" font-size="10" fill="#DBEAFE">onClick → save to IndexedDB</text>
+
+  <!-- Arrow down -->
+  <line x1="600" y1="144" x2="600" y2="168" stroke="#3B82F6" stroke-width="2" marker-end="url(#vsArrowBlue)"/>
+
+  <!-- Step 2: IndexedDB + Register -->
+  <rect x="480" y="168" width="240" height="44" rx="8" fill="#F59E0B"/>
+  <text x="600" y="188" text-anchor="middle" font-size="11" font-weight="600" fill="white">Stored + Sync Registered</text>
+  <text x="600" y="202" text-anchor="middle" font-size="10" fill="#FEF3C7">IDB outbox + sync.register()</text>
+
+  <!-- Arrow down (dashed, showing time passes) -->
+  <line x1="600" y1="212" x2="600" y2="236" stroke="#9CA3AF" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#vsArrowGray)"/>
+  <text x="645" y="228" font-size="9" fill="#9CA3AF">later...</text>
+
+  <!-- Step 3: SW Sync fires -->
+  <rect x="480" y="236" width="240" height="44" rx="8" fill="#6366F1"/>
+  <text x="600" y="256" text-anchor="middle" font-size="11" font-weight="600" fill="white">SW Sync Event Fires</text>
+  <text x="600" y="270" text-anchor="middle" font-size="10" fill="#E0E7FF">Browser wakes SW when online</text>
+
+  <!-- Arrow down -->
+  <line x1="600" y1="280" x2="600" y2="304" stroke="#6366F1" stroke-width="2" marker-end="url(#vsArrowIndigo)"/>
+
+  <!-- Step 4: Success! -->
+  <rect x="480" y="304" width="240" height="56" rx="8" fill="#10B981"/>
+  <text x="565" y="328" text-anchor="middle" font-size="13" font-weight="700" fill="white">Data Delivered!</text>
+  <!-- Green checkmark -->
+  <circle cx="680" cy="332" r="18" fill="#059669" stroke="white" stroke-width="2"/>
+  <polyline points="670,332 677,340 692,324" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="600" y="350" text-anchor="middle" font-size="10" fill="#D1FAE5">Even if tab was closed hours ago</text>
+
+  <!-- Bottom comparison callout -->
+  <rect x="120" y="374" width="560" height="20" rx="4" fill="#F8FAFC"/>
+  <text x="400" y="388" text-anchor="middle" font-size="10" font-weight="600" fill="#64748B">Key Difference: Background Sync survives page close — regular fetch does not</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="vsArrowBlue" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#3B82F6"/>
+    </marker>
+    <marker id="vsArrowRed" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#EF4444"/>
+    </marker>
+    <marker id="vsArrowGreen" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#10B981"/>
+    </marker>
+    <marker id="vsArrowIndigo" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#6366F1"/>
+    </marker>
+    <marker id="vsArrowGray" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#9CA3AF"/>
+    </marker>
+    <marker id="vsArrowAmber" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#F59E0B"/>
+    </marker>
+  </defs>
+</svg>

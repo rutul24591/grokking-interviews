@@ -31,9 +31,9 @@ export default function APIVersioningConciseArticle() {
       recover in production.
     </p>
     <ArticleImage
-      src="/diagrams/backend/network-communication/api-versioning-diagram-1.svg"
-      alt="API Versioning architecture overview"
-      caption="High-level view of api versioning in a production traffic path"
+      src="/diagrams/backend/network-communication/semantic-versioning.svg"
+      alt="Semantic versioning format"
+      caption="Major.minor.patch versioning scheme"
     />
   </section>
 
@@ -54,9 +54,9 @@ export default function APIVersioningConciseArticle() {
       <li>Backward compatibility testing</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/api-versioning-diagram-2.svg"
-      alt="API Versioning core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/network-communication/semver-example.jpg"
+      alt="Semantic versioning examples"
+      caption="Examples of compatible and breaking versions"
     />
   </section>
 
@@ -108,9 +108,9 @@ export default function APIVersioningConciseArticle() {
       <li>Deprecation deadlines missed, leading to indefinite support</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/api-versioning-diagram-3.svg"
-      alt="API Versioning failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/network-communication/content-negotiation.png"
+      alt="Content negotiation for versioning"
+      caption="Header-based version negotiation"
     />
   </section>
 

@@ -1,0 +1,103 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822">Cache API vs HTTP Cache: Two Distinct Layers</text>
+
+  <!-- Divider line -->
+  <line x1="450" y1="55" x2="450" y2="485" stroke="#1a1822" stroke-width="1" stroke-dasharray="6,4" opacity="0.3"/>
+  <text x="450" y="495" text-anchor="middle" font-size="10" fill="#666" font-style="italic">These are separate layers that work together, not alternatives</text>
+
+  <!-- LEFT SIDE: HTTP Cache -->
+  <text x="225" y="65" text-anchor="middle" font-size="16" font-weight="bold" fill="#d97843">HTTP Cache (Browser-Managed)</text>
+
+  <!-- HTTP Cache box -->
+  <rect x="30" y="80" width="390" height="120" rx="8" fill="white" stroke="#d97843" stroke-width="2"/>
+  <rect x="30" y="80" width="390" height="30" rx="8" fill="#d97843"/>
+  <rect x="30" y="102" width="390" height="8" fill="#d97843"/>
+  <text x="225" y="101" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Automatic &amp; Header-Driven</text>
+
+  <text x="50" y="130" font-size="11" fill="#1a1822">Cache-Control: max-age=31536000</text>
+  <text x="50" y="148" font-size="11" fill="#1a1822">ETag: "abc123"</text>
+  <text x="50" y="166" font-size="11" fill="#1a1822">Last-Modified: Thu, 01 Jan 2026</text>
+  <text x="50" y="184" font-size="11" fill="#666" font-style="italic">Browser decides when to cache &amp; evict</text>
+
+  <!-- HTTP Cache characteristics -->
+  <rect x="30" y="215" width="390" height="250" rx="8" fill="white" stroke="#d97843" stroke-width="1.5"/>
+
+  <rect x="45" y="228" width="18" height="18" rx="4" fill="#d97843" opacity="0.15" stroke="#d97843" stroke-width="1"/>
+  <text x="54" y="241" text-anchor="middle" font-size="12" fill="#d97843" font-weight="bold">A</text>
+  <text x="75" y="241" font-size="11" font-weight="600" fill="#1a1822">Automatic</text>
+  <text x="75" y="256" font-size="10" fill="#666">No code required; browser handles everything</text>
+
+  <rect x="45" y="270" width="18" height="18" rx="4" fill="#d97843" opacity="0.15" stroke="#d97843" stroke-width="1"/>
+  <text x="54" y="283" text-anchor="middle" font-size="12" fill="#d97843" font-weight="bold">H</text>
+  <text x="75" y="283" font-size="11" font-weight="600" fill="#1a1822">Header-Driven</text>
+  <text x="75" y="298" font-size="10" fill="#666">Controlled via Cache-Control, ETag, Vary</text>
+
+  <rect x="45" y="312" width="18" height="18" rx="4" fill="#d97843" opacity="0.15" stroke="#d97843" stroke-width="1"/>
+  <text x="54" y="325" text-anchor="middle" font-size="12" fill="#d97843" font-weight="bold">N</text>
+  <text x="75" y="325" font-size="11" font-weight="600" fill="#1a1822">No Programmatic Access</text>
+  <text x="75" y="340" font-size="10" fill="#666">Cannot inspect, add, or delete entries via JS</text>
+
+  <rect x="45" y="354" width="18" height="18" rx="4" fill="#d97843" opacity="0.15" stroke="#d97843" stroke-width="1"/>
+  <text x="54" y="367" text-anchor="middle" font-size="12" fill="#d97843" font-weight="bold">E</text>
+  <text x="75" y="367" font-size="11" font-weight="600" fill="#1a1822">Automatic Eviction</text>
+  <text x="75" y="382" font-size="10" fill="#666">Browser evicts based on LRU and disk limits</text>
+
+  <rect x="45" y="396" width="18" height="18" rx="4" fill="#d97843" opacity="0.15" stroke="#d97843" stroke-width="1"/>
+  <text x="54" y="409" text-anchor="middle" font-size="12" fill="#d97843" font-weight="bold">T</text>
+  <text x="75" y="409" font-size="11" font-weight="600" fill="#1a1822">Transparent to Application</text>
+  <text x="75" y="424" font-size="10" fill="#666">fetch() uses HTTP cache implicitly unless bypassed</text>
+
+  <rect x="45" y="438" width="18" height="18" rx="4" fill="#d97843" opacity="0.15" stroke="#d97843" stroke-width="1"/>
+  <text x="54" y="451" text-anchor="middle" font-size="12" fill="#d97843" font-weight="bold">S</text>
+  <text x="75" y="451" font-size="11" font-weight="600" fill="#1a1822">Shared with CDN/Proxy</text>
+  <text x="75" y="466" font-size="10" fill="#666">Same headers control CDN and browser caching</text>
+
+  <!-- RIGHT SIDE: Cache API -->
+  <text x="675" y="65" text-anchor="middle" font-size="16" font-weight="bold" fill="#6d5bd0">Cache API (Developer-Managed)</text>
+
+  <!-- Cache API box -->
+  <rect x="480" y="80" width="390" height="120" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="480" y="80" width="390" height="30" rx="8" fill="#6d5bd0"/>
+  <rect x="480" y="102" width="390" height="8" fill="#6d5bd0"/>
+  <text x="675" y="101" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Manual &amp; Code-Driven</text>
+
+  <text x="500" y="130" font-size="11" fill="#1a1822">caches.open('static-v3')</text>
+  <text x="500" y="148" font-size="11" fill="#1a1822">cache.put(request, response.clone())</text>
+  <text x="500" y="166" font-size="11" fill="#1a1822">cache.match(request)</text>
+  <text x="500" y="184" font-size="11" fill="#666" font-style="italic">Developer decides everything programmatically</text>
+
+  <!-- Cache API characteristics -->
+  <rect x="480" y="215" width="390" height="250" rx="8" fill="white" stroke="#6d5bd0" stroke-width="1.5"/>
+
+  <rect x="495" y="228" width="18" height="18" rx="4" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="504" y="241" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="bold">M</text>
+  <text x="525" y="241" font-size="11" font-weight="600" fill="#1a1822">Manual Control</text>
+  <text x="525" y="256" font-size="10" fill="#666">Explicit add, match, delete operations in code</text>
+
+  <rect x="495" y="270" width="18" height="18" rx="4" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="504" y="283" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="bold">P</text>
+  <text x="525" y="283" font-size="11" font-weight="600" fill="#1a1822">Promise-Based API</text>
+  <text x="525" y="298" font-size="10" fill="#666">Async operations, non-blocking main thread</text>
+
+  <rect x="495" y="312" width="18" height="18" rx="4" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="504" y="325" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="bold">F</text>
+  <text x="525" y="325" font-size="11" font-weight="600" fill="#1a1822">Full CRUD Access</text>
+  <text x="525" y="340" font-size="10" fill="#666">Inspect, enumerate, add, and remove any entry</text>
+
+  <rect x="495" y="354" width="18" height="18" rx="4" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="504" y="367" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="bold">N</text>
+  <text x="525" y="367" font-size="11" font-weight="600" fill="#1a1822">No Automatic Expiration</text>
+  <text x="525" y="382" font-size="10" fill="#666">Entries persist until explicitly deleted by code</text>
+
+  <rect x="495" y="396" width="18" height="18" rx="4" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="504" y="409" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="bold">D</text>
+  <text x="525" y="409" font-size="11" font-weight="600" fill="#1a1822">Dual Context Access</text>
+  <text x="525" y="424" font-size="10" fill="#666">Available in both window and Service Worker</text>
+
+  <rect x="495" y="438" width="18" height="18" rx="4" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="504" y="451" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="bold">O</text>
+  <text x="525" y="451" font-size="11" font-weight="600" fill="#1a1822">Offline-First Enabler</text>
+  <text x="525" y="466" font-size="10" fill="#666">Primary mechanism for serving content offline</text>
+</svg>

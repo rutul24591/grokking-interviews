@@ -31,9 +31,9 @@ export default function RequestHedgingConciseArticle() {
       recover in production.
     </p>
     <ArticleImage
-      src="/diagrams/backend/network-communication/request-hedging-diagram-1.svg"
-      alt="Request Hedging architecture overview"
-      caption="High-level view of request hedging in a production traffic path"
+      src="/diagrams/backend/network-communication/request-hedging-grpc-basic.svg"
+      alt="gRPC hedged requests"
+      caption="Client issues hedged requests to reduce tail latency"
     />
   </section>
 
@@ -54,9 +54,9 @@ export default function RequestHedgingConciseArticle() {
       <li>Cost controls</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/request-hedging-diagram-2.svg"
-      alt="Request Hedging core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/network-communication/load-balancer-fanout.svg"
+      alt="Request fanout to replicas"
+      caption="Parallel requests to multiple replicas"
     />
   </section>
 
@@ -108,9 +108,9 @@ export default function RequestHedgingConciseArticle() {
       <li>Downstream overload during incidents</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/request-hedging-diagram-3.svg"
-      alt="Request Hedging failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/network-communication/grpc-client-server-communication.svg"
+      alt="gRPC client-server communication"
+      caption="gRPC client and server interaction"
     />
   </section>
 

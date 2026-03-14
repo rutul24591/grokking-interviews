@@ -1,0 +1,120 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822">Cache API Architecture: CacheStorage &amp; Named Caches</text>
+
+  <!-- Window Context -->
+  <rect x="30" y="55" width="160" height="70" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="55" width="160" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="30" y="75" width="160" height="8" fill="#6d5bd0"/>
+  <text x="110" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Window Context</text>
+  <text x="110" y="105" text-anchor="middle" font-size="10" fill="#1a1822">caches.open()</text>
+  <text x="110" y="118" text-anchor="middle" font-size="10" fill="#1a1822">caches.match()</text>
+
+  <!-- Service Worker Context -->
+  <rect x="710" y="55" width="160" height="70" rx="8" fill="white" stroke="#2f9d74" stroke-width="2"/>
+  <rect x="710" y="55" width="160" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="710" y="75" width="160" height="8" fill="#2f9d74"/>
+  <text x="790" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Service Worker</text>
+  <text x="790" y="105" text-anchor="middle" font-size="10" fill="#1a1822">fetch event handler</text>
+  <text x="790" y="118" text-anchor="middle" font-size="10" fill="#1a1822">install / activate</text>
+
+  <!-- Arrows from both contexts to CacheStorage -->
+  <line x1="190" y1="90" x2="280" y2="160" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="6,3"/>
+  <polygon points="280,160 270,152 274,163" fill="#6d5bd0"/>
+  <line x1="710" y1="90" x2="620" y2="160" stroke="#2f9d74" stroke-width="2" stroke-dasharray="6,3"/>
+  <polygon points="620,160 626,152 630,163" fill="#2f9d74"/>
+
+  <text x="235" y="118" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="600">accesses</text>
+  <text x="665" y="118" text-anchor="middle" font-size="9" fill="#2f9d74" font-weight="600">accesses</text>
+
+  <!-- CacheStorage container -->
+  <rect x="100" y="150" width="700" height="335" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2.5"/>
+  <rect x="100" y="150" width="700" height="32" rx="8" fill="#edeaf5"/>
+  <rect x="100" y="174" width="700" height="8" fill="#edeaf5"/>
+  <text x="450" y="172" text-anchor="middle" font-size="15" font-weight="bold" fill="#6d5bd0">CacheStorage (caches global)</text>
+  <text x="450" y="205" text-anchor="middle" font-size="10" fill="#666">caches.open() | caches.match() | caches.delete() | caches.keys() | caches.has()</text>
+
+  <!-- Named Cache 1: static-v1 -->
+  <rect x="125" y="220" width="200" height="245" rx="8" fill="white" stroke="#6d5bd0" stroke-width="1.5"/>
+  <rect x="125" y="220" width="200" height="28" rx="8" fill="#6d5bd0"/>
+  <rect x="125" y="240" width="200" height="8" fill="#6d5bd0"/>
+  <text x="225" y="240" text-anchor="middle" font-size="12" font-weight="bold" fill="white">static-v1</text>
+
+  <!-- Entries in static-v1 -->
+  <rect x="140" y="260" width="170" height="38" rx="6" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="155" y="276" font-size="9" font-weight="600" fill="#6d5bd0">Request</text>
+  <text x="155" y="290" font-size="8" fill="#1a1822">/app.js</text>
+  <text x="260" y="276" font-size="9" font-weight="600" fill="#2f9d74">Response</text>
+  <text x="260" y="290" font-size="8" fill="#1a1822">200 OK (JS)</text>
+
+  <rect x="140" y="305" width="170" height="38" rx="6" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="155" y="321" font-size="9" font-weight="600" fill="#6d5bd0">Request</text>
+  <text x="155" y="335" font-size="8" fill="#1a1822">/styles.css</text>
+  <text x="260" y="321" font-size="9" font-weight="600" fill="#2f9d74">Response</text>
+  <text x="260" y="335" font-size="8" fill="#1a1822">200 OK (CSS)</text>
+
+  <rect x="140" y="350" width="170" height="38" rx="6" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="155" y="366" font-size="9" font-weight="600" fill="#6d5bd0">Request</text>
+  <text x="155" y="380" font-size="8" fill="#1a1822">/index.html</text>
+  <text x="260" y="366" font-size="9" font-weight="600" fill="#2f9d74">Response</text>
+  <text x="260" y="380" font-size="8" fill="#1a1822">200 OK (HTML)</text>
+
+  <text x="225" y="415" text-anchor="middle" font-size="9" fill="#666">cache.put() | cache.match()</text>
+  <text x="225" y="430" text-anchor="middle" font-size="9" fill="#666">cache.add() | cache.delete()</text>
+  <text x="225" y="445" text-anchor="middle" font-size="9" fill="#666">cache.keys() | cache.addAll()</text>
+
+  <!-- Named Cache 2: api-v2 -->
+  <rect x="350" y="220" width="200" height="245" rx="8" fill="white" stroke="#2f9d74" stroke-width="1.5"/>
+  <rect x="350" y="220" width="200" height="28" rx="8" fill="#2f9d74"/>
+  <rect x="350" y="240" width="200" height="8" fill="#2f9d74"/>
+  <text x="450" y="240" text-anchor="middle" font-size="12" font-weight="bold" fill="white">api-v2</text>
+
+  <rect x="365" y="260" width="170" height="38" rx="6" fill="#edeaf5" stroke="#2f9d74" stroke-width="1"/>
+  <text x="380" y="276" font-size="9" font-weight="600" fill="#6d5bd0">Request</text>
+  <text x="380" y="290" font-size="8" fill="#1a1822">/api/users</text>
+  <text x="485" y="276" font-size="9" font-weight="600" fill="#2f9d74">Response</text>
+  <text x="485" y="290" font-size="8" fill="#1a1822">200 (JSON)</text>
+
+  <rect x="365" y="305" width="170" height="38" rx="6" fill="#edeaf5" stroke="#2f9d74" stroke-width="1"/>
+  <text x="380" y="321" font-size="9" font-weight="600" fill="#6d5bd0">Request</text>
+  <text x="380" y="335" font-size="8" fill="#1a1822">/api/products</text>
+  <text x="485" y="321" font-size="9" font-weight="600" fill="#2f9d74">Response</text>
+  <text x="485" y="335" font-size="8" fill="#1a1822">200 (JSON)</text>
+
+  <rect x="365" y="350" width="170" height="38" rx="6" fill="#edeaf5" stroke="#2f9d74" stroke-width="1"/>
+  <text x="380" y="366" font-size="9" font-weight="600" fill="#6d5bd0">Request</text>
+  <text x="380" y="380" font-size="8" fill="#1a1822">/api/config</text>
+  <text x="485" y="366" font-size="9" font-weight="600" fill="#2f9d74">Response</text>
+  <text x="485" y="380" font-size="8" fill="#1a1822">200 (JSON)</text>
+
+  <text x="450" y="420" text-anchor="middle" font-size="9" fill="#666">Runtime-cached via</text>
+  <text x="450" y="435" text-anchor="middle" font-size="9" fill="#666">stale-while-revalidate</text>
+
+  <!-- Named Cache 3: images -->
+  <rect x="575" y="220" width="200" height="245" rx="8" fill="white" stroke="#d97843" stroke-width="1.5"/>
+  <rect x="575" y="220" width="200" height="28" rx="8" fill="#d97843"/>
+  <rect x="575" y="240" width="200" height="8" fill="#d97843"/>
+  <text x="675" y="240" text-anchor="middle" font-size="12" font-weight="bold" fill="white">images</text>
+
+  <rect x="590" y="260" width="170" height="38" rx="6" fill="#edeaf5" stroke="#d97843" stroke-width="1"/>
+  <text x="605" y="276" font-size="9" font-weight="600" fill="#6d5bd0">Request</text>
+  <text x="605" y="290" font-size="8" fill="#1a1822">/img/logo.png</text>
+  <text x="710" y="276" font-size="9" font-weight="600" fill="#2f9d74">Response</text>
+  <text x="710" y="290" font-size="8" fill="#1a1822">200 (PNG)</text>
+
+  <rect x="590" y="305" width="170" height="38" rx="6" fill="#edeaf5" stroke="#d97843" stroke-width="1"/>
+  <text x="605" y="321" font-size="9" font-weight="600" fill="#6d5bd0">Request</text>
+  <text x="605" y="335" font-size="8" fill="#1a1822">/img/hero.webp</text>
+  <text x="710" y="321" font-size="9" font-weight="600" fill="#2f9d74">Response</text>
+  <text x="710" y="335" font-size="8" fill="#1a1822">200 (WebP)</text>
+
+  <rect x="590" y="350" width="170" height="38" rx="6" fill="#edeaf5" stroke="#d97843" stroke-width="1"/>
+  <text x="605" y="366" font-size="9" font-weight="600" fill="#6d5bd0">Request</text>
+  <text x="605" y="380" font-size="8" fill="#1a1822">/img/avatar.jpg</text>
+  <text x="710" y="366" font-size="9" font-weight="600" fill="#2f9d74">Response</text>
+  <text x="710" y="380" font-size="8" fill="#1a1822">200 (JPEG)</text>
+
+  <text x="675" y="420" text-anchor="middle" font-size="9" fill="#666">Cache First with</text>
+  <text x="675" y="435" text-anchor="middle" font-size="9" fill="#666">max 200 entries</text>
+</svg>

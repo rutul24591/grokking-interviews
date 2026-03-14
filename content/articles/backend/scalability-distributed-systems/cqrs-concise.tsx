@@ -31,8 +31,8 @@ export default function CQRSConciseArticle() {
     </p>
     <ArticleImage
       src="/diagrams/backend/scalability-distributed-systems/cqrs-diagram-1.svg"
-      alt="CQRS architecture overview"
-      caption="High-level view of cqrs in a distributed system"
+      alt="CQRS read/write separation"
+      caption="Commands update write model; queries read projections"
     />
   </section>
 
@@ -53,9 +53,9 @@ export default function CQRSConciseArticle() {
       <li>Eventual consistency</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/cqrs-diagram-2.svg"
-      alt="CQRS core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/scalability-distributed-systems/cqrs-diagram-2.png"
+      alt="Event-driven read model"
+      caption="Read projections updated from events"
     />
   </section>
 
@@ -106,9 +106,9 @@ export default function CQRSConciseArticle() {
       <li>Complexity explosion</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/cqrs-diagram-3.svg"
-      alt="CQRS failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/scalability-distributed-systems/cqrs-diagram-3.png"
+      alt="CQRS with separate stores"
+      caption="Write store and read store optimized independently"
     />
   </section>
 

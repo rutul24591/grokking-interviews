@@ -30,9 +30,9 @@ export default function SplitBrainProblemConciseArticle() {
       how partition and quorum decisions shape reliability, and how failure domains are bounded.
     </p>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/split-brain-problem-diagram-1.svg"
-      alt="Split-Brain Problem architecture overview"
-      caption="High-level view of split-brain problem in a distributed system"
+      src="/diagrams/backend/scalability-distributed-systems/split-brain-problem-diagram-1.png"
+      alt="Network partition split brain"
+      caption="Partitioned clusters accept writes independently"
     />
   </section>
 
@@ -54,8 +54,8 @@ export default function SplitBrainProblemConciseArticle() {
     </ul>
     <ArticleImage
       src="/diagrams/backend/scalability-distributed-systems/split-brain-problem-diagram-2.svg"
-      alt="Split-Brain Problem core workflow"
-      caption="Core workflow and control points"
+      alt="Split brain with quorum"
+      caption="Quorum prevents dual leaders"
     />
   </section>
 
@@ -106,9 +106,9 @@ export default function SplitBrainProblemConciseArticle() {
       <li>Extended unavailability during recovery</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/split-brain-problem-diagram-3.svg"
-      alt="Split-Brain Problem failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/scalability-distributed-systems/split-brain-problem-diagram-3.png"
+      alt="Recovery and merge"
+      caption="Rejoining partitions and conflict resolution"
     />
   </section>
 

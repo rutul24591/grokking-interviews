@@ -31,9 +31,9 @@ export default function WebSocketsConciseArticle() {
       recover in production.
     </p>
     <ArticleImage
-      src="/diagrams/backend/network-communication/websockets-diagram-1.svg"
-      alt="WebSockets architecture overview"
-      caption="High-level view of websockets in a production traffic path"
+      src="/diagrams/backend/network-communication/websocket-connection.png"
+      alt="WebSocket connection lifecycle"
+      caption="Upgrade handshake and persistent connection"
     />
   </section>
 
@@ -54,9 +54,9 @@ export default function WebSocketsConciseArticle() {
       <li>Backpressure and flow control</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/websockets-diagram-2.svg"
-      alt="WebSockets core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/network-communication/websocket-diagram.png"
+      alt="WebSocket bidirectional communication"
+      caption="Full-duplex channel between client and server"
     />
   </section>
 
@@ -108,9 +108,9 @@ export default function WebSocketsConciseArticle() {
       <li>Backpressure causing memory growth</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/websockets-diagram-3.svg"
-      alt="WebSockets failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/network-communication/websocket-frame-header.png"
+      alt="WebSocket frame header"
+      caption="Frame header structure for WebSocket messages"
     />
   </section>
 

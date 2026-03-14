@@ -31,9 +31,9 @@ export default function TimeoutStrategiesConciseArticle() {
       recover in production.
     </p>
     <ArticleImage
-      src="/diagrams/backend/network-communication/timeout-strategies-diagram-1.svg"
-      alt="Timeout Strategies architecture overview"
-      caption="High-level view of timeout strategies in a production traffic path"
+      src="/diagrams/backend/network-communication/tcp-timeout.png"
+      alt="TCP timeout sequence"
+      caption="TCP timeout behavior when acknowledgements are delayed"
     />
   </section>
 
@@ -54,9 +54,9 @@ export default function TimeoutStrategiesConciseArticle() {
       <li>Budgeting across calls</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/timeout-strategies-diagram-2.svg"
-      alt="Timeout Strategies core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/network-communication/tcp-ack-timeout.png"
+      alt="TCP acknowledgment timeout"
+      caption="Timeouts triggered by missing ACKs"
     />
   </section>
 
@@ -108,9 +108,9 @@ export default function TimeoutStrategiesConciseArticle() {
       <li>Retries exceeding deadline budgets</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/timeout-strategies-diagram-3.svg"
-      alt="Timeout Strategies failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/network-communication/ident-timeout.svg"
+      alt="Timeout on identity lookup"
+      caption="Timeout scenario for dependent network calls"
     />
   </section>
 

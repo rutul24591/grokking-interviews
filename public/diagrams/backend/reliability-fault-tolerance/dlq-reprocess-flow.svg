@@ -1,0 +1,16 @@
+<svg width="960" height="480" xmlns="http://www.w3.org/2000/svg">
+  <rect x="120" y="160" width="180" height="100" fill="#e0f2ff" stroke="#1f4e79" stroke-width="4" rx="10"/>
+  <text x="210" y="210" font-family="Arial" font-size="20" text-anchor="middle" fill="#1f4e79">Main queue</text>
+  <rect x="360" y="160" width="180" height="100" fill="#fde3a7" stroke="#1f4e79" stroke-width="4" rx="10"/>
+  <text x="450" y="210" font-family="Arial" font-size="20" text-anchor="middle" fill="#1f4e79">Dead letter queue</text>
+  <rect x="600" y="160" width="180" height="100" fill="#d1e7dd" stroke="#1f4e79" stroke-width="4" rx="10"/>
+  <text x="690" y="210" font-family="Arial" font-size="20" text-anchor="middle" fill="#1f4e79">Reprocessing job</text>
+  <line x1="300" y1="210" x2="360" y2="210" stroke="#1f4e79" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="540" y1="210" x2="600" y2="210" stroke="#1f4e79" stroke-width="4" marker-end="url(#arrow)"/>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 Z" fill="#1f4e79"/>
+    </marker>
+  </defs>
+  <text x="480" y="360" font-family="Arial" font-size="18" text-anchor="middle" fill="#1f4e79">Retry backlog & monitoring</text>
+</svg>

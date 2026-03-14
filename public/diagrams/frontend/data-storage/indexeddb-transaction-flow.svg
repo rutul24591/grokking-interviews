@@ -1,0 +1,125 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="36" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822">IndexedDB Transaction Lifecycle</text>
+
+  <!-- ====== MAIN FLOW (top half) ====== -->
+  <text x="450" y="65" text-anchor="middle" font-size="13" fill="#6d5bd0" font-weight="600">Transaction Lifecycle: Open, Execute, Auto-Commit or Abort</text>
+
+  <!-- Step 1: Open Transaction -->
+  <rect x="30" y="85" width="150" height="70" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="105" y="110" text-anchor="middle" font-size="11" font-weight="bold" fill="#6d5bd0">Open Transaction</text>
+  <text x="105" y="126" text-anchor="middle" font-size="9" fill="#1a1822">db.transaction(</text>
+  <text x="105" y="140" text-anchor="middle" font-size="9" fill="#1a1822">stores, mode)</text>
+
+  <!-- Arrow 1->2 -->
+  <line x1="180" y1="120" x2="215" y2="120" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrPurple)"/>
+
+  <!-- Step 2: Acquire Lock -->
+  <rect x="215" y="85" width="140" height="70" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="285" y="108" text-anchor="middle" font-size="11" font-weight="bold" fill="#6d5bd0">Acquire Lock</text>
+  <text x="285" y="125" text-anchor="middle" font-size="9" fill="#1a1822">readonly: shared lock</text>
+  <text x="285" y="139" text-anchor="middle" font-size="9" fill="#1a1822">readwrite: exclusive lock</text>
+
+  <!-- Arrow 2->3 -->
+  <line x1="355" y1="120" x2="390" y2="120" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrPurple)"/>
+
+  <!-- Step 3: Queue Operations -->
+  <rect x="390" y="85" width="150" height="70" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="465" y="108" text-anchor="middle" font-size="11" font-weight="bold" fill="#6d5bd0">Queue Operations</text>
+  <text x="465" y="125" text-anchor="middle" font-size="9" fill="#1a1822">put(), get(), delete(),</text>
+  <text x="465" y="139" text-anchor="middle" font-size="9" fill="#1a1822">openCursor(), getAll()</text>
+
+  <!-- Arrow 3->4 -->
+  <line x1="540" y1="120" x2="575" y2="120" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrPurple)"/>
+
+  <!-- Step 4: Execute -->
+  <rect x="575" y="85" width="140" height="70" rx="8" fill="white" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="645" y="108" text-anchor="middle" font-size="11" font-weight="bold" fill="#6d5bd0">Execute Async</text>
+  <text x="645" y="125" text-anchor="middle" font-size="9" fill="#1a1822">IDBRequest fires</text>
+  <text x="645" y="139" text-anchor="middle" font-size="9" fill="#1a1822">onsuccess / onerror</text>
+
+  <!-- Branch: Success path -->
+  <line x1="715" y1="105" x2="755" y2="95" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arrGreen)"/>
+  <!-- Branch: Error path -->
+  <line x1="715" y1="140" x2="755" y2="155" stroke="#d97843" stroke-width="1.5" marker-end="url(#arrOrange)"/>
+
+  <!-- Step 5a: Auto-Commit -->
+  <rect x="755" y="75" width="130" height="40" rx="8" fill="#2f9d74" opacity="0.15" stroke="#2f9d74" stroke-width="2"/>
+  <text x="820" y="100" text-anchor="middle" font-size="11" font-weight="bold" fill="#2f9d74">Auto-Commit</text>
+
+  <!-- Step 5b: Abort -->
+  <rect x="755" y="140" width="130" height="40" rx="8" fill="#d97843" opacity="0.15" stroke="#d97843" stroke-width="2"/>
+  <text x="820" y="165" text-anchor="middle" font-size="11" font-weight="bold" fill="#d97843">Abort + Rollback</text>
+
+  <!-- Annotation: no pending requests -->
+  <text x="820" y="72" text-anchor="middle" font-size="8" fill="#2f9d74">all requests done,</text>
+  <text x="820" y="60" text-anchor="middle" font-size="8" fill="#2f9d74">no new ops queued</text>
+
+  <text x="820" y="192" text-anchor="middle" font-size="8" fill="#d97843">any request error or</text>
+  <text x="820" y="203" text-anchor="middle" font-size="8" fill="#d97843">explicit tx.abort()</text>
+
+  <!-- ====== CONCURRENCY (bottom half) ====== -->
+  <line x1="30" y1="225" x2="870" y2="225" stroke="#e0dce8" stroke-width="1.5"/>
+  <text x="450" y="250" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1822">Transaction Concurrency Model</text>
+
+  <!-- Time axis -->
+  <line x1="80" y1="280" x2="840" y2="280" stroke="#1a1822" stroke-width="1" marker-end="url(#arrBlack)"/>
+  <text x="855" y="284" font-size="10" fill="#1a1822">time</text>
+
+  <!-- Object Store label -->
+  <text x="50" y="310" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0" transform="rotate(-90,50,340)">Object Store: "users"</text>
+
+  <!-- Lane labels -->
+  <text x="80" y="310" font-size="10" fill="#1a1822" font-weight="600">Tab A</text>
+  <text x="80" y="350" font-size="10" fill="#1a1822" font-weight="600">Tab B</text>
+  <text x="80" y="390" font-size="10" fill="#1a1822" font-weight="600">Tab C</text>
+
+  <!-- Scenario 1: Concurrent readonly -->
+  <rect x="140" y="297" width="200" height="22" rx="4" fill="#2f9d74" opacity="0.25" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="240" y="313" text-anchor="middle" font-size="9" font-weight="600" fill="#2f9d74">readonly tx</text>
+
+  <rect x="160" y="337" width="180" height="22" rx="4" fill="#2f9d74" opacity="0.25" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="250" y="353" text-anchor="middle" font-size="9" font-weight="600" fill="#2f9d74">readonly tx</text>
+
+  <rect x="180" y="377" width="160" height="22" rx="4" fill="#2f9d74" opacity="0.25" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="260" y="393" text-anchor="middle" font-size="9" font-weight="600" fill="#2f9d74">readonly tx</text>
+
+  <!-- Concurrent OK annotation -->
+  <rect x="135" y="410" width="215" height="28" rx="4" fill="#edeaf5"/>
+  <text x="242" y="429" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="600">Concurrent: All readonly overlap OK</text>
+
+  <!-- Divider -->
+  <line x1="395" y1="290" x2="395" y2="440" stroke="#e0dce8" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Scenario 2: readwrite blocks readwrite -->
+  <rect x="420" y="297" width="180" height="22" rx="4" fill="#d97843" opacity="0.25" stroke="#d97843" stroke-width="1.5"/>
+  <text x="510" y="313" text-anchor="middle" font-size="9" font-weight="600" fill="#d97843">readwrite tx</text>
+
+  <!-- Tab B readwrite: waiting then executing -->
+  <rect x="420" y="337" width="180" height="22" rx="4" fill="#d97843" opacity="0.08" stroke="#d97843" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="510" y="353" text-anchor="middle" font-size="9" fill="#d97843">blocked (waiting for lock)</text>
+
+  <rect x="600" y="337" width="180" height="22" rx="4" fill="#d97843" opacity="0.25" stroke="#d97843" stroke-width="1.5"/>
+  <text x="690" y="353" text-anchor="middle" font-size="9" font-weight="600" fill="#d97843">readwrite tx (runs after A)</text>
+
+  <!-- Tab C: readonly can run concurrently with readwrite on other store, but same store is blocked -->
+  <rect x="420" y="377" width="180" height="22" rx="4" fill="#2f9d74" opacity="0.25" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="510" y="393" text-anchor="middle" font-size="9" font-weight="600" fill="#2f9d74">readonly tx (allowed!)</text>
+
+  <!-- Annotations -->
+  <rect x="415" y="410" width="380" height="44" rx="4" fill="#edeaf5"/>
+  <text x="605" y="427" text-anchor="middle" font-size="10" fill="#d97843" font-weight="600">readwrite blocks other readwrite on same store</text>
+  <text x="605" y="443" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="600">readonly can run concurrently with readwrite</text>
+
+  <!-- Version change note -->
+  <rect x="130" y="460" width="660" height="28" rx="6" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="460" y="479" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="600">versionchange tx: exclusive lock on entire database -- blocks ALL other transactions across ALL tabs</text>
+
+  <defs>
+    <marker id="arrPurple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#6d5bd0"/></marker>
+    <marker id="arrGreen" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#2f9d74"/></marker>
+    <marker id="arrOrange" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#d97843"/></marker>
+    <marker id="arrBlack" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1a1822"/></marker>
+  </defs>
+</svg>

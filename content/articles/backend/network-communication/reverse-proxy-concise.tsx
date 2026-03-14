@@ -31,9 +31,9 @@ export default function ReverseProxyConciseArticle() {
       recover in production.
     </p>
     <ArticleImage
-      src="/diagrams/backend/network-communication/reverse-proxy-diagram-1.svg"
-      alt="Reverse Proxy architecture overview"
-      caption="High-level view of reverse proxy in a production traffic path"
+      src="/diagrams/backend/network-communication/reverse-proxy-h2g2bob.svg"
+      alt="Reverse proxy between clients and servers"
+      caption="Reverse proxy fronting multiple backend servers"
     />
   </section>
 
@@ -54,9 +54,9 @@ export default function ReverseProxyConciseArticle() {
       <li>Caching and compression</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/reverse-proxy-diagram-2.svg"
-      alt="Reverse Proxy core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/network-communication/proxy-website-diagram.svg"
+      alt="Reverse proxy website traffic flow"
+      caption="Reverse proxy handling inbound web traffic"
     />
   </section>
 
@@ -108,9 +108,9 @@ export default function ReverseProxyConciseArticle() {
       <li>Caching of private data</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/reverse-proxy-diagram-3.svg"
-      alt="Reverse Proxy failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/network-communication/proxy-schematic.svg"
+      alt="Proxy schematic with upstream and downstream"
+      caption="Proxy routing between clients and upstream services"
     />
   </section>
 

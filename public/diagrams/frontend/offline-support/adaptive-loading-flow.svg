@@ -1,0 +1,75 @@
+<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="450" fill="#ffffff"/>
+  <text x="400" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Adaptive Loading Decision Flow</text>
+  <text x="400" y="52" text-anchor="middle" font-size="12" fill="#6b7280">Adjust content quality based on navigator.connection.effectiveType and saveData</text>
+
+  <defs>
+    <marker id="af" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+  </defs>
+
+  <!-- Start node -->
+  <rect x="310" y="70" width="180" height="44" rx="22" fill="#7C3AED" stroke="#7C3AED"/>
+  <text x="400" y="97" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">Check Connection</text>
+
+  <!-- saveData check -->
+  <rect x="580" y="70" width="180" height="44" rx="8" fill="#EF4444" fill-opacity="0.12" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="670" y="88" text-anchor="middle" font-size="11" font-weight="bold" fill="#991B1B">saveData === true?</text>
+  <text x="670" y="104" text-anchor="middle" font-size="10" fill="#991B1B">Respect Data Saver</text>
+  <line x1="490" y1="92" x2="578" y2="92" stroke="#6b7280" stroke-width="1.5" marker-end="url(#af)"/>
+  <text x="534" y="85" text-anchor="middle" font-size="10" fill="#6b7280">first</text>
+
+  <!-- saveData result -->
+  <rect x="600" y="135" width="160" height="36" rx="6" fill="#EF4444" fill-opacity="0.08" stroke="#EF4444" stroke-dasharray="4,3"/>
+  <text x="680" y="158" text-anchor="middle" font-size="10" fill="#991B1B">Minimal assets only</text>
+  <line x1="670" y1="114" x2="670" y2="133" stroke="#EF4444" stroke-width="1.5" marker-end="url(#af)"/>
+
+  <!-- Vertical line down from start -->
+  <line x1="400" y1="114" x2="400" y2="150" stroke="#6b7280" stroke-width="1.5"/>
+  <text x="415" y="140" font-size="10" fill="#6b7280">else</text>
+
+  <!-- Diamond: effectiveType -->
+  <polygon points="400,155 475,190 400,225 325,190" fill="#F3F4F6" stroke="#6b7280" stroke-width="1.5"/>
+  <text x="400" y="188" text-anchor="middle" font-size="10" font-weight="bold" fill="#374151">effectiveType?</text>
+
+  <!-- 4g branch -->
+  <line x1="475" y1="190" x2="555" y2="190" stroke="#6b7280" stroke-width="1.5" marker-end="url(#af)"/>
+  <text x="515" y="183" text-anchor="middle" font-size="10" font-weight="bold" fill="#10B981">4g</text>
+  <rect x="560" y="195" width="210" height="70" rx="8" fill="#10B981" fill-opacity="0.12" stroke="#10B981" stroke-width="1.5"/>
+  <text x="665" y="215" text-anchor="middle" font-size="12" font-weight="bold" fill="#065F46">Full Experience</text>
+  <text x="665" y="232" text-anchor="middle" font-size="10" fill="#374151">HD images, prefetch links</text>
+  <text x="665" y="248" text-anchor="middle" font-size="10" fill="#374151">Animations, video autoplay</text>
+  <text x="665" y="258" text-anchor="middle" font-size="9" fill="#6b7280">downlink > 10 Mbps, rtt &lt; 50ms</text>
+
+  <!-- 3g branch -->
+  <line x1="400" y1="225" x2="400" y2="275" stroke="#6b7280" stroke-width="1.5" marker-end="url(#af)"/>
+  <text x="415" y="255" font-size="10" font-weight="bold" fill="#3B82F6">3g</text>
+  <rect x="280" y="280" width="240" height="60" rx="8" fill="#3B82F6" fill-opacity="0.12" stroke="#3B82F6" stroke-width="1.5"/>
+  <text x="400" y="300" text-anchor="middle" font-size="12" font-weight="bold" fill="#1E40AF">Standard Experience</text>
+  <text x="400" y="318" text-anchor="middle" font-size="10" fill="#374151">Compressed images, lazy loading</text>
+  <text x="400" y="332" text-anchor="middle" font-size="10" fill="#374151">Reduced animations, defer non-critical</text>
+
+  <!-- 2g branch -->
+  <line x1="325" y1="190" x2="245" y2="190" stroke="#6b7280" stroke-width="1.5" marker-end="url(#af)"/>
+  <text x="285" y="183" text-anchor="middle" font-size="10" font-weight="bold" fill="#F59E0B">2g</text>
+  <rect x="30" y="170" width="210" height="60" rx="8" fill="#F59E0B" fill-opacity="0.12" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="135" y="190" text-anchor="middle" font-size="12" font-weight="bold" fill="#92400E">Lite Experience</text>
+  <text x="135" y="208" text-anchor="middle" font-size="10" fill="#374151">Text-first, small thumbnails</text>
+  <text x="135" y="222" text-anchor="middle" font-size="10" fill="#374151">No video, no animations</text>
+
+  <!-- slow-2g branch -->
+  <line x1="135" y1="230" x2="135" y2="280" stroke="#6b7280" stroke-width="1.5" marker-end="url(#af)"/>
+  <text x="150" y="260" font-size="10" font-weight="bold" fill="#EF4444">slow-2g</text>
+  <rect x="30" y="285" width="210" height="60" rx="8" fill="#EF4444" fill-opacity="0.12" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="135" y="305" text-anchor="middle" font-size="12" font-weight="bold" fill="#991B1B">Minimal Experience</text>
+  <text x="135" y="323" text-anchor="middle" font-size="10" fill="#374151">Text only, critical CSS inline</text>
+  <text x="135" y="337" text-anchor="middle" font-size="10" fill="#374151">No images, skeleton UI</text>
+
+  <!-- Legend -->
+  <rect x="30" y="390" width="740" height="50" rx="8" fill="#F9FAFB" stroke="#E5E7EB"/>
+  <text x="50" y="412" font-size="11" font-weight="bold" fill="#374151">Key API:</text>
+  <text x="50" y="428" font-size="10" fill="#6b7280">navigator.connection.effectiveType | navigator.connection.saveData | navigator.connection.downlink | navigator.connection.rtt</text>
+  <circle cx="520" cy="408" r="5" fill="#F59E0B"/>
+  <text x="530" y="412" font-size="10" fill="#374151">Chromium only (Chrome, Edge, Opera, Samsung Internet)</text>
+</svg>

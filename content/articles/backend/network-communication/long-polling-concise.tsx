@@ -31,9 +31,9 @@ export default function LongPollingConciseArticle() {
       recover in production.
     </p>
     <ArticleImage
-      src="/diagrams/backend/network-communication/long-polling-diagram-1.svg"
-      alt="Long Polling architecture overview"
-      caption="High-level view of long polling in a production traffic path"
+      src="/diagrams/backend/network-communication/long-polling-diagram.png"
+      alt="Long polling request lifecycle"
+      caption="Client holds request open until server responds"
     />
   </section>
 
@@ -54,9 +54,9 @@ export default function LongPollingConciseArticle() {
       <li>Server resource management</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/long-polling-diagram-2.svg"
-      alt="Long Polling core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/network-communication/polling-system.svg"
+      alt="Polling system flow"
+      caption="Polling loop with server responses"
     />
   </section>
 
@@ -108,9 +108,9 @@ export default function LongPollingConciseArticle() {
       <li>Client-side retry storms</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/long-polling-diagram-3.svg"
-      alt="Long Polling failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/network-communication/http-persistent-connection.svg"
+      alt="Persistent HTTP connection"
+      caption="Long-lived connection behavior used in long polling"
     />
   </section>
 

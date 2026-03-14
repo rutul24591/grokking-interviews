@@ -2,8 +2,12 @@ import { notFound } from "next/navigation";
 import { loadArticle } from "@/lib/article-loader";
 import { getExampleGroups } from "@/lib/example-loader";
 import { ExampleProvider } from "@/components/articles/ExampleProvider";
+import { SubCategoryPageContent } from "@/components/SubCategoryPageContent";
+import { parseFunctionalRequirements } from "@/lib/parseFunctionalRequirements";
 import { Metadata } from "next";
 import { Suspense } from "react";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 
 type PageProps = {
   params: Promise<{
@@ -15,6 +19,32 @@ type PageProps = {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { category, subcategory, topic } = await params;
+
+  if (category === "functional-requirements") {
+    try {
+      const functionalReqsPath = path.join(
+        process.cwd(),
+        "concepts",
+        "system_design_functional_requirements.txt",
+      );
+      const functionalReqsRaw = await readFile(functionalReqsPath, "utf8");
+      const parsed = parseFunctionalRequirements(functionalReqsRaw);
+      const entry = parsed.find((cat) => cat.slug === subcategory);
+      const group = entry?.groups.find((g) => g.slug === topic);
+
+      if (!entry || !group) {
+        return { title: "Not Found | Interview Prep Studio" };
+      }
+
+      return {
+        title: `${group.name} | ${entry.name} | Interview Prep Studio`,
+        description: `Functional requirements: ${group.name} items for ${entry.name}.`,
+      };
+    } catch {
+      return { title: "Not Found | Interview Prep Studio" };
+    }
+  }
+
   const article = await loadArticle(category, subcategory, topic);
 
   if (!article) {
@@ -38,6 +68,38 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ArticlePage({ params }: PageProps) {
   const { category, subcategory, topic } = await params;
+
+  if (category === "functional-requirements") {
+    try {
+      const functionalReqsPath = path.join(
+        process.cwd(),
+        "concepts",
+        "system_design_functional_requirements.txt",
+      );
+      const functionalReqsRaw = await readFile(functionalReqsPath, "utf8");
+      const parsed = parseFunctionalRequirements(functionalReqsRaw);
+      const entry = parsed.find((cat) => cat.slug === subcategory);
+      const group = entry?.groups.find((g) => g.slug === topic);
+
+      if (!entry || !group) {
+        notFound();
+      }
+
+      return (
+        <SubCategoryPageContent
+          categorySlug={category}
+          subCategoryName="Functional Requirements"
+          subcategorySlug={subcategory}
+          itemName={group.name}
+          topics={group.items}
+          disableTopicLinks
+        />
+      );
+    } catch {
+      notFound();
+    }
+  }
+
   const article = await loadArticle(category, subcategory, topic);
   const exampleGroups = await getExampleGroups(category, subcategory, topic);
 

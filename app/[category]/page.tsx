@@ -12,25 +12,27 @@ type PageProps = {
 };
 
 function findSubCategory(categorySlug: string) {
-  const category = sidebarData[0];
-  if (!category) return null;
-
-  for (const subCategory of category.subCategories) {
-    const slug = slugify(subCategory.name).replace(/-concepts$/, "");
-    if (slug === categorySlug) {
-      return subCategory;
+  for (const category of sidebarData) {
+    for (const subCategory of category.subCategories) {
+      const slug = slugify(subCategory.name).replace(/-concepts$/, "");
+      if (slug === categorySlug) {
+        return subCategory;
+      }
     }
   }
   return null;
 }
 
 export async function generateStaticParams() {
-  const category = sidebarData[0];
-  if (!category) return [];
+  const results: { category: string }[] = [];
 
-  return category.subCategories.map((sub) => ({
-    category: slugify(sub.name).replace(/-concepts$/, ""),
-  }));
+  for (const category of sidebarData) {
+    for (const sub of category.subCategories) {
+      results.push({ category: slugify(sub.name).replace(/-concepts$/, "") });
+    }
+  }
+
+  return results;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

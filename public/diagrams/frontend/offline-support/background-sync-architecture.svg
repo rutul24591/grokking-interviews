@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="450" fill="white"/>
+
+  <!-- Title -->
+  <text x="400" y="32" text-anchor="middle" font-size="16" font-weight="700" fill="#1E293B">Background Sync Architecture</text>
+
+  <!-- === TOP LAYER: Web Page === -->
+  <rect x="40" y="60" width="720" height="100" rx="12" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <text x="60" y="82" font-size="13" font-weight="700" fill="#1D4ED8">Web Page Context</text>
+
+  <!-- User Action box -->
+  <rect x="60" y="92" width="140" height="52" rx="8" fill="#3B82F6"/>
+  <text x="130" y="115" text-anchor="middle" font-size="11" font-weight="600" fill="white">User Action</text>
+  <text x="130" y="130" text-anchor="middle" font-size="10" fill="#DBEAFE">Form submit / mutation</text>
+
+  <!-- Arrow to IDB -->
+  <line x1="200" y1="118" x2="240" y2="118" stroke="#3B82F6" stroke-width="2" marker-end="url(#archArrowBlue)"/>
+
+  <!-- IndexedDB Outbox -->
+  <rect x="240" y="92" width="160" height="52" rx="8" fill="#F59E0B"/>
+  <text x="320" y="112" text-anchor="middle" font-size="11" font-weight="600" fill="white">IndexedDB Outbox</text>
+  <text x="320" y="127" text-anchor="middle" font-size="10" fill="#FEF3C7">Store request payload</text>
+
+  <!-- Arrow to SyncManager -->
+  <line x1="400" y1="118" x2="440" y2="118" stroke="#F59E0B" stroke-width="2" marker-end="url(#archArrowAmber)"/>
+
+  <!-- SyncManager.register -->
+  <rect x="440" y="92" width="170" height="52" rx="8" fill="#6366F1"/>
+  <text x="525" y="112" text-anchor="middle" font-size="11" font-weight="600" fill="white">SyncManager</text>
+  <text x="525" y="127" text-anchor="middle" font-size="10" fill="#E0E7FF">sync.register('tag')</text>
+
+  <!-- UI Feedback -->
+  <rect x="640" y="92" width="106" height="52" rx="8" fill="#10B981"/>
+  <text x="693" y="112" text-anchor="middle" font-size="11" font-weight="600" fill="white">UI Feedback</text>
+  <text x="693" y="127" text-anchor="middle" font-size="10" fill="#D1FAE5">"Queued"</text>
+
+  <!-- Arrow from User Action to UI Feedback (curved) -->
+  <path d="M 130 144 L 130 150 Q 130 155 135 155 L 688 155 Q 693 155 693 150 L 693 144" stroke="#10B981" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+
+  <!-- === MIDDLE LAYER: Browser Scheduler === -->
+  <rect x="240" y="185" width="320" height="44" rx="10" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="400" y="212" text-anchor="middle" font-size="12" font-weight="600" fill="#64748B">Browser Sync Scheduler (invisible)</text>
+
+  <!-- Arrow down from SyncManager to Scheduler -->
+  <line x1="525" y1="144" x2="525" y2="185" stroke="#6366F1" stroke-width="2" marker-end="url(#archArrowIndigo)"/>
+  <text x="535" y="170" font-size="9" fill="#6366F1">register</text>
+
+  <!-- Arrow down from Scheduler to SW -->
+  <line x1="400" y1="229" x2="400" y2="270" stroke="#94A3B8" stroke-width="2" marker-end="url(#archArrowGray)"/>
+  <text x="410" y="255" font-size="9" fill="#64748B">wake + dispatch</text>
+
+  <!-- === BOTTOM-MIDDLE LAYER: Service Worker === -->
+  <rect x="40" y="270" width="720" height="80" rx="12" fill="#F5F3FF" stroke="#6366F1" stroke-width="2"/>
+  <text x="60" y="292" font-size="13" font-weight="700" fill="#4338CA">Service Worker Context</text>
+
+  <!-- Sync Event Listener -->
+  <rect x="60" y="302" width="160" height="38" rx="8" fill="#6366F1"/>
+  <text x="140" y="325" text-anchor="middle" font-size="11" font-weight="600" fill="white">sync event listener</text>
+
+  <!-- Arrow to Read IDB -->
+  <line x1="220" y1="321" x2="250" y2="321" stroke="#6366F1" stroke-width="2" marker-end="url(#archArrowIndigo)"/>
+
+  <!-- Read IDB -->
+  <rect x="250" y="302" width="140" height="38" rx="8" fill="#F59E0B"/>
+  <text x="320" y="325" text-anchor="middle" font-size="11" font-weight="600" fill="white">Read IndexedDB</text>
+
+  <!-- Arrow up from SW IDB read to Page IDB (dashed, showing shared access) -->
+  <path d="M 320 302 L 320 160 Q 320 155 320 150 L 320 144" stroke="#F59E0B" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+  <text x="300" y="240" font-size="9" fill="#D97706" transform="rotate(-90, 300, 240)">shared IndexedDB</text>
+
+  <!-- Arrow to fetch -->
+  <line x1="390" y1="321" x2="420" y2="321" stroke="#F59E0B" stroke-width="2" marker-end="url(#archArrowAmber)"/>
+
+  <!-- fetch() -->
+  <rect x="420" y="302" width="120" height="38" rx="8" fill="#3B82F6"/>
+  <text x="480" y="325" text-anchor="middle" font-size="11" font-weight="600" fill="white">fetch() replay</text>
+
+  <!-- Arrow to cleanup -->
+  <line x1="540" y1="321" x2="570" y2="321" stroke="#3B82F6" stroke-width="2" marker-end="url(#archArrowBlue)"/>
+
+  <!-- Cleanup IDB -->
+  <rect x="570" y="302" width="170" height="38" rx="8" fill="#10B981"/>
+  <text x="655" y="325" text-anchor="middle" font-size="11" font-weight="600" fill="white">Clear IDB on success</text>
+
+  <!-- === BOTTOM LAYER: Server === -->
+  <rect x="200" y="385" width="400" height="50" rx="12" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+  <text x="400" y="415" text-anchor="middle" font-size="13" font-weight="700" fill="#065F46">Server / API</text>
+
+  <!-- Arrow from fetch to server -->
+  <line x1="480" y1="340" x2="480" y2="385" stroke="#3B82F6" stroke-width="2" marker-end="url(#archArrowBlue)"/>
+  <text x="490" y="368" font-size="9" fill="#3B82F6">HTTP request</text>
+
+  <!-- Response arrow -->
+  <line x1="440" y1="385" x2="440" y2="340" stroke="#10B981" stroke-width="2" marker-end="url(#archArrowGreen)"/>
+  <text x="420" y="368" font-size="9" fill="#10B981" text-anchor="end">response</text>
+
+  <!-- BroadcastChannel arrow from SW to Page -->
+  <path d="M 700 302 L 720 302 Q 730 302 730 292 L 730 170 Q 730 160 720 160 L 700 160" stroke="#10B981" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+  <text x="740" y="230" font-size="9" fill="#10B981" transform="rotate(-90, 740, 230)">BroadcastChannel notify</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="archArrowBlue" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#3B82F6"/>
+    </marker>
+    <marker id="archArrowGreen" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#10B981"/>
+    </marker>
+    <marker id="archArrowAmber" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#F59E0B"/>
+    </marker>
+    <marker id="archArrowIndigo" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#6366F1"/>
+    </marker>
+    <marker id="archArrowGray" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#94A3B8"/>
+    </marker>
+  </defs>
+</svg>

@@ -30,9 +30,9 @@ export default function ReplicationStrategiesConciseArticle() {
       how master-slave and multi-master decisions shape reliability, and how failure domains are bounded.
     </p>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/replication-strategies-diagram-1.svg"
-      alt="Replication Strategies architecture overview"
-      caption="High-level view of replication strategies in a distributed system"
+      src="/diagrams/backend/scalability-distributed-systems/replication-common-scenarios.gif"
+      alt="Replication topology variants"
+      caption="Single-master, cascading, and multi-master setups"
     />
   </section>
 
@@ -53,9 +53,9 @@ export default function ReplicationStrategiesConciseArticle() {
       <li>Failover topology</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/replication-strategies-diagram-2.svg"
-      alt="Replication Strategies core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/scalability-distributed-systems/mysql-async-replication.png"
+      alt="Asynchronous replication"
+      caption="Async replication from source to replicas"
     />
   </section>
 
@@ -106,9 +106,9 @@ export default function ReplicationStrategiesConciseArticle() {
       <li>Write conflicts in multi-master setups</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/replication-strategies-diagram-3.svg"
-      alt="Replication Strategies failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/scalability-distributed-systems/mysql-semisync-replication.png"
+      alt="Semi-synchronous replication"
+      caption="Replica acknowledgments before commit"
     />
   </section>
 

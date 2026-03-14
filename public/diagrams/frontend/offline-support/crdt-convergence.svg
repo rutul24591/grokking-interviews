@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="450" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#1E293B">CRDT Convergence: Order Independence</text>
+  <text x="400" y="48" text-anchor="middle" font-size="11" fill="#64748B">G-Set (Grow-Only Set) — same operations in different order = same result</text>
+
+  <!-- Replica A -->
+  <rect x="30" y="70" width="230" height="290" rx="8" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.5"/>
+  <rect x="30" y="70" width="230" height="32" rx="8" fill="#3B82F6"/>
+  <rect x="30" y="90" width="230" height="12" fill="#3B82F6"/>
+  <text x="145" y="91" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">Replica A</text>
+
+  <text x="50" y="125" font-size="11" fill="#1E40AF" font-weight="600">Initial State:</text>
+  <rect x="50" y="132" width="190" height="24" rx="4" fill="#ffffff" stroke="#93C5FD" stroke-width="1"/>
+  <text x="145" y="148" text-anchor="middle" font-size="11" fill="#1E293B">{"{ }"}</text>
+
+  <text x="50" y="178" font-size="11" fill="#1E40AF" font-weight="600">Operations (in order):</text>
+  <text x="60" y="198" font-size="10" fill="#475569">1. add("apple")</text>
+  <text x="60" y="214" font-size="10" fill="#475569">2. add("banana")</text>
+  <text x="60" y="230" font-size="10" fill="#475569">3. add("cherry")</text>
+
+  <text x="50" y="260" font-size="11" fill="#1E40AF" font-weight="600">Final State:</text>
+  <rect x="50" y="267" width="190" height="28" rx="4" fill="#DBEAFE" stroke="#3B82F6" stroke-width="1.5"/>
+  <text x="145" y="285" text-anchor="middle" font-size="10" font-weight="600" fill="#1E40AF">{"{ apple, banana, cherry }"}</text>
+
+  <circle cx="145" cy="330" r="16" fill="#3B82F6" opacity="0.15" stroke="#3B82F6" stroke-width="1.5"/>
+  <text x="145" y="335" text-anchor="middle" font-size="14" fill="#3B82F6">&#10003;</text>
+
+  <!-- Replica B -->
+  <rect x="285" y="70" width="230" height="290" rx="8" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+  <rect x="285" y="70" width="230" height="32" rx="8" fill="#10B981"/>
+  <rect x="285" y="90" width="230" height="12" fill="#10B981"/>
+  <text x="400" y="91" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">Replica B</text>
+
+  <text x="305" y="125" font-size="11" fill="#065F46" font-weight="600">Initial State:</text>
+  <rect x="305" y="132" width="190" height="24" rx="4" fill="#ffffff" stroke="#6EE7B7" stroke-width="1"/>
+  <text x="400" y="148" text-anchor="middle" font-size="11" fill="#1E293B">{"{ }"}</text>
+
+  <text x="305" y="178" font-size="11" fill="#065F46" font-weight="600">Operations (in order):</text>
+  <text x="315" y="198" font-size="10" fill="#475569">1. add("cherry")</text>
+  <text x="315" y="214" font-size="10" fill="#475569">2. add("apple")</text>
+  <text x="315" y="230" font-size="10" fill="#475569">3. add("banana")</text>
+
+  <text x="305" y="260" font-size="11" fill="#065F46" font-weight="600">Final State:</text>
+  <rect x="305" y="267" width="190" height="28" rx="4" fill="#D1FAE5" stroke="#10B981" stroke-width="1.5"/>
+  <text x="400" y="285" text-anchor="middle" font-size="10" font-weight="600" fill="#065F46">{"{ apple, banana, cherry }"}</text>
+
+  <circle cx="400" cy="330" r="16" fill="#10B981" opacity="0.15" stroke="#10B981" stroke-width="1.5"/>
+  <text x="400" y="335" text-anchor="middle" font-size="14" fill="#10B981">&#10003;</text>
+
+  <!-- Replica C -->
+  <rect x="540" y="70" width="230" height="290" rx="8" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5"/>
+  <rect x="540" y="70" width="230" height="32" rx="8" fill="#F59E0B"/>
+  <rect x="540" y="90" width="230" height="12" fill="#F59E0B"/>
+  <text x="655" y="91" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">Replica C</text>
+
+  <text x="560" y="125" font-size="11" fill="#92400E" font-weight="600">Initial State:</text>
+  <rect x="560" y="132" width="190" height="24" rx="4" fill="#ffffff" stroke="#FCD34D" stroke-width="1"/>
+  <text x="655" y="148" text-anchor="middle" font-size="11" fill="#1E293B">{"{ }"}</text>
+
+  <text x="560" y="178" font-size="11" fill="#92400E" font-weight="600">Operations (in order):</text>
+  <text x="570" y="198" font-size="10" fill="#475569">1. add("banana")</text>
+  <text x="570" y="214" font-size="10" fill="#475569">2. add("cherry")</text>
+  <text x="570" y="230" font-size="10" fill="#475569">3. add("apple")</text>
+
+  <text x="560" y="260" font-size="11" fill="#92400E" font-weight="600">Final State:</text>
+  <rect x="560" y="267" width="190" height="28" rx="4" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="655" y="285" text-anchor="middle" font-size="10" font-weight="600" fill="#92400E">{"{ apple, banana, cherry }"}</text>
+
+  <circle cx="655" cy="330" r="16" fill="#F59E0B" opacity="0.15" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="655" y="335" text-anchor="middle" font-size="14" fill="#F59E0B">&#10003;</text>
+
+  <!-- Convergence indicator -->
+  <rect x="150" y="380" width="500" height="50" rx="10" fill="#F0FDF4" stroke="#10B981" stroke-width="2"/>
+  <text x="400" y="402" text-anchor="middle" font-size="13" font-weight="bold" fill="#065F46">All 3 replicas converge to identical state</text>
+  <text x="400" y="420" text-anchor="middle" font-size="11" fill="#047857">Order does not matter — same operations = same result (commutativity)</text>
+
+  <!-- Equality arrows -->
+  <line x1="200" y1="340" x2="350" y2="380" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="400" y1="350" x2="400" y2="380" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="600" y1="340" x2="450" y2="380" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4,3"/>
+</svg>

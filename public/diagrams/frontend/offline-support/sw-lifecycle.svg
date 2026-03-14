@@ -1,0 +1,85 @@
+<svg viewBox="0 0 800 550" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="550" fill="#ffffff"/>
+  <text x="400" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Service Worker Lifecycle</text>
+
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3B82F6"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10B981"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#EF4444"/>
+    </marker>
+    <marker id="arrow-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#9CA3AF"/>
+    </marker>
+  </defs>
+
+  <!-- Registering -->
+  <rect x="60" y="90" width="140" height="50" rx="10" fill="#DBEAFE" stroke="#3B82F6" stroke-width="2"/>
+  <text x="130" y="120" text-anchor="middle" font-size="14" font-weight="600" fill="#1E40AF">Registering</text>
+
+  <!-- Arrow: Registering -> Installing -->
+  <line x1="200" y1="115" x2="250" y2="115" stroke="#3B82F6" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <text x="225" y="105" text-anchor="middle" font-size="10" fill="#6B7280">register()</text>
+
+  <!-- Installing -->
+  <rect x="260" y="90" width="140" height="50" rx="10" fill="#DBEAFE" stroke="#3B82F6" stroke-width="2"/>
+  <text x="330" y="120" text-anchor="middle" font-size="14" font-weight="600" fill="#1E40AF">Installing</text>
+
+  <!-- Arrow: Installing -> Waiting -->
+  <line x1="400" y1="115" x2="450" y2="115" stroke="#3B82F6" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <text x="425" y="105" text-anchor="middle" font-size="10" fill="#6B7280">install event</text>
+
+  <!-- Waiting -->
+  <rect x="460" y="90" width="140" height="50" rx="10" fill="#F3F4F6" stroke="#9CA3AF" stroke-width="2"/>
+  <text x="530" y="120" text-anchor="middle" font-size="14" font-weight="600" fill="#4B5563">Waiting</text>
+
+  <!-- Arrow: Waiting -> Activating -->
+  <path d="M 530 140 L 530 200" stroke="#3B82F6" stroke-width="2" fill="none" marker-end="url(#arrow-blue)"/>
+  <text x="545" y="175" font-size="10" fill="#6B7280">old SW gone</text>
+  <text x="545" y="187" font-size="10" fill="#6B7280">or skipWaiting()</text>
+
+  <!-- Activating -->
+  <rect x="460" y="210" width="140" height="50" rx="10" fill="#DBEAFE" stroke="#3B82F6" stroke-width="2"/>
+  <text x="530" y="240" text-anchor="middle" font-size="14" font-weight="600" fill="#1E40AF">Activating</text>
+
+  <!-- Arrow: Activating -> Activated -->
+  <path d="M 460 235 L 400 235" stroke="#10B981" stroke-width="2" fill="none" marker-end="url(#arrow-green)"/>
+  <text x="430" y="225" text-anchor="middle" font-size="10" fill="#6B7280">activate event</text>
+
+  <!-- Activated -->
+  <rect x="260" y="210" width="140" height="50" rx="10" fill="#D1FAE5" stroke="#10B981" stroke-width="2.5"/>
+  <text x="330" y="240" text-anchor="middle" font-size="14" font-weight="700" fill="#065F46">Activated</text>
+
+  <!-- Fetch events loop on Activated -->
+  <path d="M 260 235 C 230 235, 220 210, 260 210" stroke="#10B981" stroke-width="1.5" fill="none" marker-end="url(#arrow-green)" stroke-dasharray="4,3"/>
+  <text x="215" y="208" text-anchor="middle" font-size="10" fill="#059669">fetch, push,</text>
+  <text x="215" y="220" text-anchor="middle" font-size="10" fill="#059669">sync events</text>
+
+  <!-- Redundant -->
+  <rect x="330" y="370" width="140" height="50" rx="10" fill="#FEE2E2" stroke="#EF4444" stroke-width="2"/>
+  <text x="400" y="400" text-anchor="middle" font-size="14" font-weight="600" fill="#991B1B">Redundant</text>
+
+  <!-- Arrow: Installing -> Redundant (install fails) -->
+  <path d="M 330 140 C 330 180, 350 320, 380 360" stroke="#EF4444" stroke-width="1.5" fill="none" marker-end="url(#arrow-red)" stroke-dasharray="5,3"/>
+  <text x="310" y="260" font-size="10" fill="#EF4444" transform="rotate(-70, 310, 260)">install fails</text>
+
+  <!-- Arrow: Activated -> Redundant (new SW detected) -->
+  <path d="M 330 260 L 385 360" stroke="#EF4444" stroke-width="1.5" fill="none" marker-end="url(#arrow-red)" stroke-dasharray="5,3"/>
+  <text x="385" y="310" font-size="10" fill="#EF4444">new SW replaces</text>
+
+  <!-- Legend -->
+  <rect x="50" y="460" width="700" height="70" rx="8" fill="#F9FAFB" stroke="#E5E7EB"/>
+  <text x="70" y="485" font-size="12" font-weight="600" fill="#374151">Legend:</text>
+  <rect x="70" y="495" width="16" height="12" rx="3" fill="#DBEAFE" stroke="#3B82F6"/>
+  <text x="92" y="506" font-size="11" fill="#4B5563">Transitional State</text>
+  <rect x="230" y="495" width="16" height="12" rx="3" fill="#F3F4F6" stroke="#9CA3AF"/>
+  <text x="252" y="506" font-size="11" fill="#4B5563">Waiting (Parked)</text>
+  <rect x="390" y="495" width="16" height="12" rx="3" fill="#D1FAE5" stroke="#10B981"/>
+  <text x="412" y="506" font-size="11" fill="#4B5563">Active (Handling Events)</text>
+  <rect x="580" y="495" width="16" height="12" rx="3" fill="#FEE2E2" stroke="#EF4444"/>
+  <text x="602" y="506" font-size="11" fill="#4B5563">Redundant (Discarded)</text>
+</svg>

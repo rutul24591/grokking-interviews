@@ -31,8 +31,8 @@ export default function QuorumConciseArticle() {
     </p>
     <ArticleImage
       src="/diagrams/backend/scalability-distributed-systems/quorum-diagram-1.svg"
-      alt="Quorum architecture overview"
-      caption="High-level view of quorum in a distributed system"
+      alt="Read/write quorum sets"
+      caption="R and W intersection guarantees consistency"
     />
   </section>
 
@@ -54,8 +54,8 @@ export default function QuorumConciseArticle() {
     </ul>
     <ArticleImage
       src="/diagrams/backend/scalability-distributed-systems/quorum-diagram-2.svg"
-      alt="Quorum core workflow"
-      caption="Core workflow and control points"
+      alt="Quorum with replica set"
+      caption="Reads and writes across replicas"
     />
   </section>
 
@@ -106,9 +106,9 @@ export default function QuorumConciseArticle() {
       <li>Clock skew impacting conflict resolution</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/quorum-diagram-3.svg"
-      alt="Quorum failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/scalability-distributed-systems/quorum-diagram-3.png"
+      alt="Quorum configuration"
+      caption="N, R, W choices for consistency"
     />
   </section>
 

@@ -8,6 +8,8 @@ type ArticleImageProps = {
   caption?: string;
   width?: number;
   height?: number;
+  // Mirrors next/image API. For SVG we map this to eager loading.
+  priority?: boolean;
 };
 
 export function ArticleImage({
@@ -16,6 +18,7 @@ export function ArticleImage({
   caption,
   width = 900,
   height = 500,
+  priority = false,
 }: ArticleImageProps) {
   const isSvg = src.endsWith(".svg");
 
@@ -29,7 +32,7 @@ export function ArticleImage({
             width={width}
             height={height}
             className="rounded max-w-full h-auto"
-            loading="lazy"
+            loading={priority ? "eager" : "lazy"}
           />
         ) : (
           <Image
@@ -39,6 +42,7 @@ export function ArticleImage({
             height={height}
             className="rounded max-w-full h-auto"
             unoptimized={src.startsWith("http")}
+            priority={priority}
           />
         )}
       </div>

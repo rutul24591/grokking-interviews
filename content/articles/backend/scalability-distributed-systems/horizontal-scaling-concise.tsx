@@ -30,9 +30,9 @@ export default function HorizontalScalingConciseArticle() {
       how stateless and elasticity decisions shape reliability, and how failure domains are bounded.
     </p>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/horizontal-scaling-diagram-1.svg"
-      alt="Horizontal Scaling architecture overview"
-      caption="High-level view of horizontal scaling in a distributed system"
+      src="/diagrams/backend/scalability-distributed-systems/horizontal-vs-vertical-scaling.svg"
+      alt="Horizontal versus vertical scaling"
+      caption="Scale out versus scale up comparison"
     />
   </section>
 
@@ -53,9 +53,9 @@ export default function HorizontalScalingConciseArticle() {
       <li>Session management</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/horizontal-scaling-diagram-2.svg"
-      alt="Horizontal Scaling core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/scalability-distributed-systems/scaling-out.svg"
+      alt="Scaling out with additional nodes"
+      caption="Scale-out by adding servers to share load"
     />
   </section>
 
@@ -106,9 +106,9 @@ export default function HorizontalScalingConciseArticle() {
       <li>Autoscaling oscillations</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/horizontal-scaling-diagram-3.svg"
-      alt="Horizontal Scaling failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/scalability-distributed-systems/stateful-scaling-out.svg"
+      alt="Stateful scaling out"
+      caption="Stateful scale-out with data placement considerations"
     />
   </section>
 

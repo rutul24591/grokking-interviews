@@ -30,9 +30,9 @@ export default function MicroservicesArchitectureConciseArticle() {
       how boundaries and communication decisions shape reliability, and how failure domains are bounded.
     </p>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/microservices-architecture-diagram-1.svg"
-      alt="Microservices Architecture architecture overview"
-      caption="High-level view of microservices architecture in a distributed system"
+      src="/diagrams/backend/scalability-distributed-systems/microservices-architecture-diagram-1.png"
+      alt="Microservices topology"
+      caption="Services communicate over APIs"
     />
   </section>
 
@@ -53,9 +53,9 @@ export default function MicroservicesArchitectureConciseArticle() {
       <li>Autonomous deployments</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/microservices-architecture-diagram-2.svg"
-      alt="Microservices Architecture core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/scalability-distributed-systems/microservices-architecture-diagram-2.png"
+      alt="Service boundaries and data"
+      caption="Independent services with isolated data"
     />
   </section>
 
@@ -106,9 +106,9 @@ export default function MicroservicesArchitectureConciseArticle() {
       <li>Operational overhead from too many services</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/microservices-architecture-diagram-3.svg"
-      alt="Microservices Architecture failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/scalability-distributed-systems/microservices-architecture-diagram-3.png"
+      alt="Edge and service mesh"
+      caption="Ingress, services, and shared infrastructure"
     />
   </section>
 

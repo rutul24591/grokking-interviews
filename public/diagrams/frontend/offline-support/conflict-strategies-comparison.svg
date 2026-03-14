@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="500" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#1E293B">Conflict Resolution Strategies — Comparison Matrix</text>
+
+  <!-- Legend -->
+  <circle cx="520" cy="52" r="6" fill="#10B981"/>
+  <text x="532" y="56" font-size="10" fill="#475569">Low / Good</text>
+  <circle cx="610" cy="52" r="6" fill="#F59E0B"/>
+  <text x="622" y="56" font-size="10" fill="#475569">Medium</text>
+  <circle cx="690" cy="52" r="6" fill="#EF4444"/>
+  <text x="702" y="56" font-size="10" fill="#475569">High / Concerning</text>
+
+  <!-- Column headers -->
+  <rect x="20" y="72" width="760" height="36" rx="6" fill="#F1F5F9"/>
+  <text x="110" y="95" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">Strategy</text>
+  <text x="270" y="95" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">Complexity</text>
+  <text x="390" y="95" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">Data Safety</text>
+  <text x="510" y="95" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">Real-time</text>
+  <text x="620" y="95" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">Offline</text>
+  <text x="730" y="95" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">Storage</text>
+
+  <!-- Row 1: LWW -->
+  <rect x="20" y="114" width="760" height="80" rx="0" fill="#ffffff" stroke="#E2E8F0" stroke-width="1"/>
+  <rect x="25" y="119" width="170" height="70" rx="6" fill="#EFF6FF"/>
+  <text x="110" y="145" text-anchor="middle" font-size="13" font-weight="bold" fill="#1E40AF">Last-Write-Wins</text>
+  <text x="110" y="162" text-anchor="middle" font-size="9" fill="#64748B">Timestamp-based</text>
+  <text x="110" y="175" text-anchor="middle" font-size="9" fill="#64748B">winner selection</text>
+
+  <!-- LWW: Complexity = Low (green) -->
+  <circle cx="270" cy="154" r="14" fill="#D1FAE5" stroke="#10B981" stroke-width="1.5"/>
+  <text x="270" y="158" text-anchor="middle" font-size="9" font-weight="bold" fill="#065F46">Low</text>
+
+  <!-- LWW: Data Safety = Low (red) -->
+  <circle cx="390" cy="154" r="14" fill="#FEE2E2" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="390" y="158" text-anchor="middle" font-size="9" font-weight="bold" fill="#991B1B">Low</text>
+
+  <!-- LWW: Real-time = Yes (green) -->
+  <circle cx="510" cy="154" r="14" fill="#D1FAE5" stroke="#10B981" stroke-width="1.5"/>
+  <text x="510" y="158" text-anchor="middle" font-size="9" font-weight="bold" fill="#065F46">Yes</text>
+
+  <!-- LWW: Offline = Yes (green) -->
+  <circle cx="620" cy="154" r="14" fill="#D1FAE5" stroke="#10B981" stroke-width="1.5"/>
+  <text x="620" y="158" text-anchor="middle" font-size="9" font-weight="bold" fill="#065F46">Yes</text>
+
+  <!-- LWW: Storage = Low (green) -->
+  <circle cx="730" cy="154" r="14" fill="#D1FAE5" stroke="#10B981" stroke-width="1.5"/>
+  <text x="730" y="158" text-anchor="middle" font-size="9" font-weight="bold" fill="#065F46">Low</text>
+
+  <!-- Row 2: Three-Way Merge -->
+  <rect x="20" y="198" width="760" height="80" rx="0" fill="#FAFAFA" stroke="#E2E8F0" stroke-width="1"/>
+  <rect x="25" y="203" width="170" height="70" rx="6" fill="#ECFDF5"/>
+  <text x="110" y="229" text-anchor="middle" font-size="13" font-weight="bold" fill="#065F46">Three-Way Merge</text>
+  <text x="110" y="246" text-anchor="middle" font-size="9" fill="#64748B">Ancestor + local +</text>
+  <text x="110" y="259" text-anchor="middle" font-size="9" fill="#64748B">remote comparison</text>
+
+  <!-- 3WM: Complexity = Medium (amber) -->
+  <circle cx="270" cy="238" r="14" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="270" y="242" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400E">Med</text>
+
+  <!-- 3WM: Data Safety = High (green) -->
+  <circle cx="390" cy="238" r="14" fill="#D1FAE5" stroke="#10B981" stroke-width="1.5"/>
+  <text x="390" y="242" text-anchor="middle" font-size="9" font-weight="bold" fill="#065F46">High</text>
+
+  <!-- 3WM: Real-time = No (red) -->
+  <circle cx="510" cy="238" r="14" fill="#FEE2E2" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="510" y="242" text-anchor="middle" font-size="9" font-weight="bold" fill="#991B1B">No</text>
+
+  <!-- 3WM: Offline = Yes (green) -->
+  <circle cx="620" cy="238" r="14" fill="#D1FAE5" stroke="#10B981" stroke-width="1.5"/>
+  <text x="620" y="242" text-anchor="middle" font-size="9" font-weight="bold" fill="#065F46">Yes</text>
+
+  <!-- 3WM: Storage = Medium (amber) -->
+  <circle cx="730" cy="238" r="14" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="730" y="242" text-anchor="middle" font-size="9" font-weight="bold" fill="#92400E">Med</text>
+
+  <!-- Row 3: OT -->
+  <rect x="20" y="282" width="760" height="80" rx="0" fill="#ffffff" stroke="#E2E8F0" stroke-width="1"/>
+  <rect x="25" y="287" width="170" height="70" rx="6" fill="#EDE9FE"/>
+  <text x="110" y="310" text-anchor="middle" font-size="13" font-weight="bold" fill="#4338CA">Operational</text>
+  <text x="110" y="326" text-anchor="middle" font-size="13" font-weight="bold" fill="#4338CA">Transformation</text>
+  <text x="110" y="346" text-anchor="middle" font-size="9" fill="#64748B">Server-coordinated</text>
+
+  <!-- OT: Complexity = High (red) -->
+  <circle cx="270" cy="322" r="14" fill="#FEE2E2" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="270" y="326" text-anchor="middle" font-size="9" font-weight="bold" fill="#991B1B">High</text>
+
+  <!-- OT: Data Safety = High (green) -->
+  <circle cx="390" cy="322" r="14" fill="#D1FAE5" stroke="#10B981" stroke-width="1.5"/>
+  <text x="390" y="326" text-anchor="middle" font-size="9" font-weight="bold" fill="#065F46">High</text>
+
+  <!-- OT: Real-time = Yes (green) -->
+  <circle cx="510" cy="322" r="14" fill="#D1FAE5" stroke="#10B981" stroke-width="1.5"/>
+  <text x="510" y="326" text-anchor="middle" font-size="9" font-weight="bold" fill="#065F46">Yes</text>
+
+  <!-- OT: Offline = No (red) -->
+  <circle cx="620" cy="322" r="14" fill="#FEE2E2" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="620" y="326" text-anchor="middle" font-size="9" font-weight="bold" fill="#991B1B">No</text>
+
+  <!-- OT: Storage = Low (green) -->
+  <circle cx="730" cy="322" r="14" fill="#D1FAE5" stroke="#10B981" stroke-width="1.5"/>
+  <text x="730" y="326" text-anchor="middle" font-size="9" font-weight="bold" fill="#065F46">Low</text>
+
+  <!-- Row 4: CRDTs -->
+  <rect x="20" y="366" width="760" height="80" rx="0" fill="#FAFAFA" stroke="#E2E8F0" stroke-width="1"/>
+  <rect x="25" y="371" width="170" height="70" rx="6" fill="#FFF7ED"/>
+  <text x="110" y="400" text-anchor="middle" font-size="13" font-weight="bold" fill="#C2410C">CRDTs</text>
+  <text x="110" y="418" text-anchor="middle" font-size="9" fill="#64748B">Conflict-free by design</text>
+  <text x="110" y="431" text-anchor="middle" font-size="9" fill="#64748B">No coordination needed</text>
+
+  <!-- CRDTs: Complexity = Medium-High (amber) -->
+  <circle cx="270" cy="406" r="14" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="270" y="410" text-anchor="middle" font-size="8" font-weight="bold" fill="#92400E">M-Hi</text>
+
+  <!-- CRDTs: Data Safety = High (green) -->
+  <circle cx="390" cy="406" r="14" fill="#D1FAE5" stroke="#10B981" stroke-width="1.5"/>
+  <text x="390" y="410" text-anchor="middle" font-size="9" font-weight="bold" fill="#065F46">High</text>
+
+  <!-- CRDTs: Real-time = Yes (green) -->
+  <circle cx="510" cy="406" r="14" fill="#D1FAE5" stroke="#10B981" stroke-width="1.5"/>
+  <text x="510" y="410" text-anchor="middle" font-size="9" font-weight="bold" fill="#065F46">Yes</text>
+
+  <!-- CRDTs: Offline = Yes (green) -->
+  <circle cx="620" cy="406" r="14" fill="#D1FAE5" stroke="#10B981" stroke-width="1.5"/>
+  <text x="620" y="410" text-anchor="middle" font-size="9" font-weight="bold" fill="#065F46">Yes</text>
+
+  <!-- CRDTs: Storage = High (red) -->
+  <circle cx="730" cy="406" r="14" fill="#FEE2E2" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="730" y="410" text-anchor="middle" font-size="9" font-weight="bold" fill="#991B1B">High</text>
+
+  <!-- Footer note -->
+  <text x="400" y="475" text-anchor="middle" font-size="10" fill="#94A3B8">CRDTs offer the best balance for offline-first apps; OT excels for server-coordinated real-time editing</text>
+  <text x="400" y="492" text-anchor="middle" font-size="10" fill="#94A3B8">Production systems often combine multiple strategies (hybrid approach) based on data type</text>
+</svg>

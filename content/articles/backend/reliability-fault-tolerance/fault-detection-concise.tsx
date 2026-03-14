@@ -31,7 +31,11 @@ export default function FaultDetectionConciseArticle() {
         <h2>Signal Design</h2>
         <p>Good detection uses a mix of signals: SLO-based error rates, latency percentiles, saturation metrics, and dependency health. Relying on a single signal causes blind spots or false positives.</p>
         <p>Use burn-rate alerts rather than static thresholds. Burn-rate alerts translate errors into risk of violating SLOs, making the detection system more aligned with business impact.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/fault-detection-diagram-1.svg" alt="Fault Detection diagram 1" caption="Fault Detection overview diagram 1." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/observability-logging-monitoring-1.jpg"
+          alt="Observability pipeline for logs and metrics"
+          caption="Observability pipeline showing telemetry ingestion, storage, and analytics that power fault detection."
+        />
       </section>
 
       <section>
@@ -44,7 +48,11 @@ export default function FaultDetectionConciseArticle() {
         <h2>Failure Modes</h2>
         <p>False positives are expensive. They can trigger unnecessary failover and create self-induced outages. False negatives are worse: you fail to detect a real problem and prolong customer impact.</p>
         <p>Signal overload is a common failure. When alerts are too noisy, teams miss real incidents. A reliable detection system is selective and focused.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/fault-detection-diagram-2.svg" alt="Fault Detection diagram 2" caption="Fault Detection overview diagram 2." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/observability-logging-monitoring-2.jpg"
+          alt="Monitoring signal enrichment and alerting"
+          caption="Monitoring stack with metric aggregation, alerting rules, and incident response coordination."
+        />
       </section>
 
       <section>
@@ -57,7 +65,11 @@ export default function FaultDetectionConciseArticle() {
         <h2>Trade-offs</h2>
         <p>Aggressive detection reduces time to mitigation but increases false positives. Conservative detection reduces false positives but delays response. The right balance depends on service criticality and the cost of intervention.</p>
         <p>Detection is also a capacity trade-off: deep instrumentation consumes resources. Sampling, aggregation, and careful metric selection keep costs manageable.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/fault-detection-diagram-3.svg" alt="Fault Detection diagram 3" caption="Fault Detection overview diagram 3." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/monitoring-architecture-diagram.png"
+          alt="Monitoring architecture with collectors and dashboards"
+          caption="Monitoring architecture illustrating collectors, anomaly detection, and dashboards for verifying signals."
+        />
       </section>
 
       <section>

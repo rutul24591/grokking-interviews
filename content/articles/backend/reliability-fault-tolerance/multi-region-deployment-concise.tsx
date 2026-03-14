@@ -31,7 +31,11 @@ export default function MultiRegionDeploymentConciseArticle() {
         <h2>Deployment Models</h2>
         <p>Active-active models serve traffic from multiple regions concurrently, while active-passive models keep a standby region ready for failover. Active-active offers better availability but complicates data consistency.</p>
         <p>Hybrid models are common: read-heavy workloads may use multi-region reads, while writes are centralized for simplicity.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/multi-region-deployment-diagram-1.svg" alt="Multi-Region Deployment diagram 1" caption="Multi-Region Deployment overview diagram 1." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/multi-region-active-active-azure.png"
+          alt="Active-active multi-region traffic routing"
+          caption="Active-active multi-region routing with a global entry point and multiple active regions."
+        />
       </section>
 
       <section>
@@ -44,7 +48,11 @@ export default function MultiRegionDeploymentConciseArticle() {
         <h2>Failure Modes</h2>
         <p>Network partitions and inconsistent routing can cause split-brain or data divergence. Poorly tuned DNS failover can route users to unhealthy regions.</p>
         <p>Configuration drift between regions is another failure: if one region lags on software or configuration, failover can introduce new errors.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/multi-region-deployment-diagram-2.svg" alt="Multi-Region Deployment diagram 2" caption="Multi-Region Deployment overview diagram 2." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/multi-region-active-passive-azure.png"
+          alt="Active-passive multi-region failover"
+          caption="Active-passive deployment with a primary region and a warm standby."
+        />
       </section>
 
       <section>
@@ -57,7 +65,11 @@ export default function MultiRegionDeploymentConciseArticle() {
         <h2>Trade-offs</h2>
         <p>Multi-region improves availability but increases cost, complexity, and operational overhead. It can also introduce consistency challenges that are difficult to reason about.</p>
         <p>For some workloads, regional isolation is too complex. In those cases, multi-region may be limited to DR rather than active traffic serving.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/multi-region-deployment-diagram-3.svg" alt="Multi-Region Deployment diagram 3" caption="Multi-Region Deployment overview diagram 3." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/multi-region-gcp-regional-deployment.svg"
+          alt="Regional deployment with cross-region routing"
+          caption="Regional deployment architecture with cross-region routing and regional services."
+        />
       </section>
 
       <section>

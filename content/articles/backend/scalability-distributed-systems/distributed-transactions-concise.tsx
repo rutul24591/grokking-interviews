@@ -30,9 +30,9 @@ export default function DistributedTransactionsConciseArticle() {
       how 2PC and sagas decisions shape reliability, and how failure domains are bounded.
     </p>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/distributed-transactions-diagram-1.svg"
-      alt="Distributed Transactions architecture overview"
-      caption="High-level view of distributed transactions in a distributed system"
+      src="/diagrams/backend/scalability-distributed-systems/distributed-transactions-diagram-1.png"
+      alt="Two-phase commit"
+      caption="Prepare and commit across participants"
     />
   </section>
 
@@ -53,9 +53,9 @@ export default function DistributedTransactionsConciseArticle() {
       <li>Compensation logic</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/distributed-transactions-diagram-2.svg"
-      alt="Distributed Transactions core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/scalability-distributed-systems/distributed-transactions-diagram-2.png"
+      alt="Saga orchestration"
+      caption="Orchestrated compensating transactions"
     />
   </section>
 
@@ -106,9 +106,9 @@ export default function DistributedTransactionsConciseArticle() {
       <li>Compensation failures in sagas</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/distributed-transactions-diagram-3.svg"
-      alt="Distributed Transactions failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/scalability-distributed-systems/distributed-transactions-diagram-3.png"
+      alt="Saga choreography"
+      caption="Event-driven coordination between services"
     />
   </section>
 

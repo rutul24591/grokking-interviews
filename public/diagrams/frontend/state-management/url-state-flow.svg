@@ -1,0 +1,87 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Bidirectional URL ↔ State Synchronization</text>
+
+  <defs>
+    <marker id="u-arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="u-grn" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+  </defs>
+
+  <!-- Flow 1: State → URL (top section) -->
+  <rect x="30" y="55" width="840" height="180" rx="10" fill="#fff" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="450" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#6d5bd0">State → URL (User Interaction)</text>
+
+  <rect x="60" y="100" width="140" height="50" rx="8" fill="#6d5bd0"/>
+  <text x="130" y="120" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">User clicks</text>
+  <text x="130" y="137" text-anchor="middle" font-size="10" fill="#d7d1e6">filter/sort/page</text>
+
+  <line x1="200" y1="125" x2="235" y2="125" stroke="#6d5bd0" stroke-width="2" marker-end="url(#u-arr)"/>
+
+  <rect x="240" y="100" width="140" height="50" rx="8" fill="#edeaf5" stroke="#6d5bd0"/>
+  <text x="310" y="120" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Update State</text>
+  <text x="310" y="137" text-anchor="middle" font-size="10" fill="#6d5bd0">setState / dispatch</text>
+
+  <line x1="380" y1="125" x2="415" y2="125" stroke="#6d5bd0" stroke-width="2" marker-end="url(#u-arr)"/>
+
+  <rect x="420" y="100" width="140" height="50" rx="8" fill="#edeaf5" stroke="#6d5bd0"/>
+  <text x="490" y="120" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Serialize</text>
+  <text x="490" y="137" text-anchor="middle" font-size="10" fill="#6d5bd0">to URLSearchParams</text>
+
+  <line x1="560" y1="125" x2="595" y2="125" stroke="#6d5bd0" stroke-width="2" marker-end="url(#u-arr)"/>
+
+  <rect x="600" y="100" width="140" height="50" rx="8" fill="#edeaf5" stroke="#6d5bd0"/>
+  <text x="670" y="120" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Push/Replace</text>
+  <text x="670" y="137" text-anchor="middle" font-size="10" fill="#6d5bd0">history.pushState</text>
+
+  <line x1="740" y1="125" x2="775" y2="125" stroke="#6d5bd0" stroke-width="2" marker-end="url(#u-arr)"/>
+
+  <rect x="780" y="100" width="70" height="50" rx="8" fill="#2f9d74"/>
+  <text x="815" y="120" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">URL</text>
+  <text x="815" y="137" text-anchor="middle" font-size="10" fill="#d1f0e3">Updated</text>
+
+  <text x="450" y="195" text-anchor="middle" font-size="11" fill="#6d5bd0">push = new history entry (back button works) | replace = no history entry (silent update)</text>
+  <text x="450" y="215" text-anchor="middle" font-size="10" fill="#d97843">Tip: Use replace for debounced search, push for pagination/filter changes</text>
+
+  <!-- Flow 2: URL → State (bottom section) -->
+  <rect x="30" y="260" width="840" height="180" rx="10" fill="#fff" stroke="#2f9d74" stroke-width="1"/>
+  <text x="450" y="283" text-anchor="middle" font-size="14" font-weight="bold" fill="#2f9d74">URL → State (Navigation / Deep Link)</text>
+
+  <rect x="60" y="305" width="140" height="50" rx="8" fill="#2f9d74"/>
+  <text x="130" y="323" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">URL Changes</text>
+  <text x="130" y="340" text-anchor="middle" font-size="10" fill="#d1f0e3">back/fwd/bookmark</text>
+
+  <line x1="200" y1="330" x2="235" y2="330" stroke="#2f9d74" stroke-width="2" marker-end="url(#u-grn)"/>
+
+  <rect x="240" y="305" width="140" height="50" rx="8" fill="#e8f5f0" stroke="#2f9d74"/>
+  <text x="310" y="323" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">popstate Event</text>
+  <text x="310" y="340" text-anchor="middle" font-size="10" fill="#2f9d74">browser fires event</text>
+
+  <line x1="380" y1="330" x2="415" y2="330" stroke="#2f9d74" stroke-width="2" marker-end="url(#u-grn)"/>
+
+  <rect x="420" y="305" width="140" height="50" rx="8" fill="#e8f5f0" stroke="#2f9d74"/>
+  <text x="490" y="323" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Deserialize</text>
+  <text x="490" y="340" text-anchor="middle" font-size="10" fill="#2f9d74">parse search params</text>
+
+  <line x1="560" y1="330" x2="595" y2="330" stroke="#2f9d74" stroke-width="2" marker-end="url(#u-grn)"/>
+
+  <rect x="600" y="305" width="140" height="50" rx="8" fill="#e8f5f0" stroke="#2f9d74"/>
+  <text x="670" y="323" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Update State</text>
+  <text x="670" y="340" text-anchor="middle" font-size="10" fill="#2f9d74">setState with URL values</text>
+
+  <line x1="740" y1="330" x2="775" y2="330" stroke="#2f9d74" stroke-width="2" marker-end="url(#u-grn)"/>
+
+  <rect x="780" y="305" width="70" height="50" rx="8" fill="#6d5bd0"/>
+  <text x="815" y="323" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">UI</text>
+  <text x="815" y="340" text-anchor="middle" font-size="10" fill="#d7d1e6">Re-renders</text>
+
+  <text x="450" y="400" text-anchor="middle" font-size="11" fill="#2f9d74">Also triggered: direct URL entry, shared link, page refresh (SSR reads URL on server)</text>
+  <text x="450" y="420" text-anchor="middle" font-size="10" fill="#d97843">Warning: Avoid infinite loops — don't push URL inside popstate handler</text>
+
+  <!-- Key insight -->
+  <rect x="150" y="460" width="600" height="30" rx="8" fill="#edeaf5"/>
+  <text x="450" y="480" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="bold">URL is the "single source of truth" — React state should mirror it, not the other way around</text>
+</svg>

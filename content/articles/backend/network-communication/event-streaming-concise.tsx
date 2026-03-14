@@ -31,9 +31,9 @@ export default function EventStreamingConciseArticle() {
       recover in production.
     </p>
     <ArticleImage
-      src="/diagrams/backend/network-communication/event-streaming-diagram-1.svg"
-      alt="Event Streaming architecture overview"
-      caption="High-level view of event streaming in a production traffic path"
+      src="/diagrams/backend/network-communication/kafka-job-queue.svg"
+      alt="Kafka-style event stream partitions"
+      caption="Partitioned log for streaming events"
     />
   </section>
 
@@ -54,9 +54,9 @@ export default function EventStreamingConciseArticle() {
       <li>Retention and replay</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/event-streaming-diagram-2.svg"
-      alt="Event Streaming core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/network-communication/message-broker.png"
+      alt="Event broker with producers and consumers"
+      caption="Producers publish events, consumers subscribe"
     />
   </section>
 
@@ -108,9 +108,9 @@ export default function EventStreamingConciseArticle() {
       <li>Retention misconfigurations leading to data loss</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/event-streaming-diagram-3.svg"
-      alt="Event Streaming failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/network-communication/pubsub-azure-pattern.png"
+      alt="Event distribution with topics and subscribers"
+      caption="Topic-based event distribution across services"
     />
   </section>
 

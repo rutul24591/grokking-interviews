@@ -31,9 +31,9 @@ export default function ForwardProxyConciseArticle() {
       recover in production.
     </p>
     <ArticleImage
-      src="/diagrams/backend/network-communication/forward-proxy-diagram-1.svg"
-      alt="Forward Proxy architecture overview"
-      caption="High-level view of forward proxy in a production traffic path"
+      src="/diagrams/backend/network-communication/forward-proxy-h2g2bob.svg"
+      alt="Forward proxy between clients and origin servers"
+      caption="Client requests routed through a forward proxy"
     />
   </section>
 
@@ -54,9 +54,9 @@ export default function ForwardProxyConciseArticle() {
       <li>Logging and policy enforcement</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/forward-proxy-diagram-2.svg"
-      alt="Forward Proxy core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/network-communication/proxy-website-diagram.svg"
+      alt="Proxy handling outbound web requests"
+      caption="Outbound traffic routed through a proxy"
     />
   </section>
 
@@ -108,9 +108,9 @@ export default function ForwardProxyConciseArticle() {
       <li>TLS interception issues</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/forward-proxy-diagram-3.svg"
-      alt="Forward Proxy failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/network-communication/proxy-schematic.svg"
+      alt="Proxy schematic with client and upstream"
+      caption="Forward proxy mediating client access to servers"
     />
   </section>
 

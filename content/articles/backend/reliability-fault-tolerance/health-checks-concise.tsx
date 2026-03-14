@@ -31,7 +31,11 @@ export default function HealthChecksConciseArticle() {
         <h2>Types of Health Checks</h2>
         <p>Liveness checks answer “is the process alive?” Readiness checks answer “can this node serve traffic now?” Startup checks validate expensive initialization. External synthetic checks validate a full end-to-end path.</p>
         <p>Combining signals is safer than relying on a single probe. Pair process-level checks with dependency checks (database, cache, queue) to reduce false negatives and false positives.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/health-checks-diagram-1.svg" alt="Health Checks diagram 1" caption="Health Checks overview diagram 1." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/heartbeat-table-health-check.png"
+          alt="Heartbeat table health check flow"
+          caption="Heartbeat table illustrating frequent health probes and the decision to promote or eject instances."
+        />
       </section>
 
       <section>
@@ -44,7 +48,11 @@ export default function HealthChecksConciseArticle() {
         <h2>Failure Modes</h2>
         <p>Misconfigured health checks are a top cause of outages. If readiness depends on a downstream dependency that is only partially degraded, all nodes can be ejected simultaneously.</p>
         <p>Overly lenient checks can keep broken nodes in rotation, causing persistent errors and tail latency spikes. The wrong threshold can be worse than no check at all.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/health-checks-diagram-2.svg" alt="Health Checks diagram 2" caption="Health Checks overview diagram 2." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/failover-route53-health-check-weighted.png"
+          alt="Route 53 health check failover"
+          caption="Route 53 weighted health check failover that ejects unhealthy endpoints and reroutes traffic."
+        />
       </section>
 
       <section>
@@ -57,7 +65,11 @@ export default function HealthChecksConciseArticle() {
         <h2>Trade-offs</h2>
         <p>More sophisticated checks improve correctness but increase latency and complexity. A good compromise is multi-layer checks: a cheap liveness probe, a readiness probe that validates core dependencies, and a separate synthetic monitor for end-to-end behavior.</p>
         <p>Health checks are also a governance issue. Teams must agree on what “healthy” means, otherwise different systems may eject nodes based on incompatible signals.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/health-checks-diagram-3.svg" alt="Health Checks diagram 3" caption="Health Checks overview diagram 3." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/failover-route53-latency-alias-weighted.png"
+          alt="Latency-based health routing"
+          caption="Latency-aware routing showing trade-offs between aggressive failover and maintaining capacity."
+        />
       </section>
 
       <section>

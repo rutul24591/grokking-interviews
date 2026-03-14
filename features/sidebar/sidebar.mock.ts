@@ -722,4 +722,92 @@ export const sidebarData: Category[] = [
       },
     ],
   },
+  {
+    id: "cat-requirements",
+    name: "Requirements",
+    subCategories: [
+      {
+        id: "sub-functional-requirements",
+        name: "Functional Requirements",
+        subCategories: [
+          {
+            id: "sub-functional-requirements-identity-access",
+            name: "Identity & Access",
+            topics: [],
+          },
+          {
+            id: "sub-functional-requirements-content-core-resource-management",
+            name: "Content / Core Resource Management",
+            topics: [],
+          },
+          {
+            id: "sub-functional-requirements-discovery-search-feed-browsing",
+            name: "Discovery (Search / Feed / Browsing)",
+            topics: [],
+          },
+          {
+            id: "sub-functional-requirements-interaction-engagement",
+            name: "Interaction & Engagement",
+            topics: [],
+          },
+          {
+            id: "sub-functional-requirements-communication",
+            name: "Communication",
+            topics: [],
+          },
+          {
+            id: "sub-functional-requirements-transactions-state-changes",
+            name: "Transactions / State Changes",
+            topics: [],
+          },
+          {
+            id: "sub-functional-requirements-administration-moderation",
+            name: "Administration & Moderation",
+            topics: [],
+          },
+          {
+            id: "sub-functional-requirements-other-cross-cutting-functional-requirements",
+            name: "Other (Cross-cutting Functional Requirements)",
+            topics: [],
+          },
+        ],
+      },
+      {
+        id: "sub-non-functional-requirements",
+        name: "Non-Functional Requirements",
+        subCategories: [
+          {
+            id: "sub-non-functional-requirements-frontend-non-functional-requirements",
+            name: "Frontend Non-Functional Requirements",
+            topics: [],
+          },
+          {
+            id: "sub-non-functional-requirements-backend-non-functional-requirements",
+            name: "Backend Non-Functional Requirements",
+            topics: [],
+          },
+          {
+            id: "sub-non-functional-requirements-shared-cross-cutting-nfrs",
+            name: "Shared / Cross-Cutting NFRs",
+            topics: [],
+          },
+          {
+            id: "sub-non-functional-requirements-bonus-advanced-nfrs",
+            name: "Bonus / Advanced NFRs",
+            topics: [],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "cat-languages",
+    name: "Languages (Coming soon)",
+    subCategories: [],
+  },
+  {
+    id: "cat-ai",
+    name: "AI (Coming soon)",
+    subCategories: [],
+  },
 ];

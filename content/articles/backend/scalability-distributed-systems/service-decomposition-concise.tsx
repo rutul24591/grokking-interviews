@@ -30,9 +30,9 @@ export default function ServiceDecompositionConciseArticle() {
       how domains and boundaries decisions shape reliability, and how failure domains are bounded.
     </p>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/service-decomposition-diagram-1.svg"
-      alt="Service Decomposition architecture overview"
-      caption="High-level view of service decomposition in a distributed system"
+      src="/diagrams/backend/scalability-distributed-systems/service-decomposition-diagram-1.png"
+      alt="Monolith to services"
+      caption="Breaking a monolith into bounded services"
     />
   </section>
 
@@ -53,9 +53,9 @@ export default function ServiceDecompositionConciseArticle() {
       <li>Interface contracts</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/service-decomposition-diagram-2.svg"
-      alt="Service Decomposition core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/scalability-distributed-systems/service-decomposition-diagram-2.png"
+      alt="Domain-driven boundaries"
+      caption="Service boundaries based on domains"
     />
   </section>
 
@@ -106,9 +106,9 @@ export default function ServiceDecompositionConciseArticle() {
       <li>Over-decomposition creating operational overhead</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/service-decomposition-diagram-3.svg"
-      alt="Service Decomposition failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/scalability-distributed-systems/service-decomposition-diagram-3.png"
+      alt="Service interactions"
+      caption="Inter-service collaboration paths"
     />
   </section>
 

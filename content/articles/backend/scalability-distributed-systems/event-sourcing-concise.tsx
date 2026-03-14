@@ -31,8 +31,8 @@ export default function EventSourcingConciseArticle() {
     </p>
     <ArticleImage
       src="/diagrams/backend/scalability-distributed-systems/event-sourcing-diagram-1.svg"
-      alt="Event Sourcing architecture overview"
-      caption="High-level view of event sourcing in a distributed system"
+      alt="Event log and projections"
+      caption="Immutable event log driving state"
     />
   </section>
 
@@ -53,9 +53,9 @@ export default function EventSourcingConciseArticle() {
       <li>Snapshots for efficiency</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/event-sourcing-diagram-2.svg"
-      alt="Event Sourcing core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/scalability-distributed-systems/event-sourcing-diagram-2.png"
+      alt="Rebuild state from events"
+      caption="State is reconstructed from event stream"
     />
   </section>
 
@@ -106,9 +106,9 @@ export default function EventSourcingConciseArticle() {
       <li>Inconsistent projections</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/event-sourcing-diagram-3.svg"
-      alt="Event Sourcing failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/scalability-distributed-systems/event-sourcing-diagram-3.jpg"
+      alt="Event store with snapshots"
+      caption="Snapshots accelerate rebuilds"
     />
   </section>
 

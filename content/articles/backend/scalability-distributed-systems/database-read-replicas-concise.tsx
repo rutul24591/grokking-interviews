@@ -30,9 +30,9 @@ export default function DatabaseReadReplicasConciseArticle() {
       how read scaling and lag decisions shape reliability, and how failure domains are bounded.
     </p>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/database-read-replicas-diagram-1.svg"
-      alt="Database Read Replicas architecture overview"
-      caption="High-level view of database read replicas in a distributed system"
+      src="/diagrams/backend/scalability-distributed-systems/rds-read-replica.png"
+      alt="Primary database with read replica"
+      caption="Asynchronous replication to a read replica"
     />
   </section>
 
@@ -53,9 +53,9 @@ export default function DatabaseReadReplicasConciseArticle() {
       <li>Consistency trade-offs</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/database-read-replicas-diagram-2.svg"
-      alt="Database Read Replicas core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/scalability-distributed-systems/rds-read-and-standby-replica.png"
+      alt="Read and standby replicas"
+      caption="Read replica alongside a synchronous standby"
     />
   </section>
 
@@ -106,9 +106,9 @@ export default function DatabaseReadReplicasConciseArticle() {
       <li>Incorrect routing for critical reads</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/database-read-replicas-diagram-3.svg"
-      alt="Database Read Replicas failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/scalability-distributed-systems/rds-read-replicas.gif"
+      alt="Read replica fleet"
+      caption="Multiple read replicas serving read traffic"
     />
   </section>
 

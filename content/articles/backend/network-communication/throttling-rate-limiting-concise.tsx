@@ -31,9 +31,9 @@ export default function ThrottlingRateLimitingConciseArticle() {
       recover in production.
     </p>
     <ArticleImage
-      src="/diagrams/backend/network-communication/throttling-rate-limiting-diagram-1.svg"
-      alt="Throttling & Rate Limiting architecture overview"
-      caption="High-level view of throttling & rate limiting in a production traffic path"
+      src="/diagrams/backend/network-communication/token-bucket.svg"
+      alt="Token bucket algorithm"
+      caption="Token bucket enforcing burst limits"
     />
   </section>
 
@@ -54,9 +54,9 @@ export default function ThrottlingRateLimitingConciseArticle() {
       <li>Burst handling</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/throttling-rate-limiting-diagram-2.svg"
-      alt="Throttling & Rate Limiting core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/network-communication/leaky-bucket.svg"
+      alt="Leaky bucket algorithm"
+      caption="Leaky bucket smoothing traffic"
     />
   </section>
 
@@ -108,9 +108,9 @@ export default function ThrottlingRateLimitingConciseArticle() {
       <li>Burst traffic causing sudden rejections</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/throttling-rate-limiting-diagram-3.svg"
-      alt="Throttling & Rate Limiting failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/network-communication/rate-limiting-tiers.svg"
+      alt="Rate limiting tiers"
+      caption="Tiered rate limits by client class"
     />
   </section>
 

@@ -31,9 +31,9 @@ export default function ContentDeliveryNetworksConciseArticle() {
       recover in production.
     </p>
     <ArticleImage
-      src="/diagrams/backend/network-communication/content-delivery-networks-diagram-1.svg"
-      alt="Content Delivery Networks architecture overview"
-      caption="High-level view of content delivery networks in a production traffic path"
+      src="/diagrams/backend/network-communication/cdn-content-distribution-network.svg"
+      alt="CDN distribution network"
+      caption="Edge nodes caching content close to users"
     />
   </section>
 
@@ -54,9 +54,9 @@ export default function ContentDeliveryNetworksConciseArticle() {
       <li>Purge and invalidation controls</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/content-delivery-networks-diagram-2.svg"
-      alt="Content Delivery Networks core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/network-communication/cdn-ncdn-cdn.svg"
+      alt="Hierarchical CDN layers"
+      caption="Origin, parent, and edge CDN hierarchy"
     />
   </section>
 
@@ -108,9 +108,9 @@ export default function ContentDeliveryNetworksConciseArticle() {
       <li>Regional outages causing uneven performance</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/content-delivery-networks-diagram-3.svg"
-      alt="Content Delivery Networks failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/network-communication/cdn-content-aware-slb.png"
+      alt="Content-aware CDN load balancing"
+      caption="Routing content requests to optimal edges"
     />
   </section>
 

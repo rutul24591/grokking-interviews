@@ -30,9 +30,9 @@ export default function DataReplicationConciseArticle() {
       how sync and async decisions shape reliability, and how failure domains are bounded.
     </p>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/data-replication-diagram-1.svg"
-      alt="Data Replication architecture overview"
-      caption="High-level view of data replication in a distributed system"
+      src="/diagrams/backend/scalability-distributed-systems/storage-sr-servertoserver.png"
+      alt="Server-to-server replication"
+      caption="Direct replication between two servers"
     />
   </section>
 
@@ -53,9 +53,9 @@ export default function DataReplicationConciseArticle() {
       <li>Replica promotion</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/data-replication-diagram-2.svg"
-      alt="Data Replication core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/scalability-distributed-systems/storage-sr-clustertocluster.png"
+      alt="Cluster-to-cluster replication"
+      caption="Replication between two clusters"
     />
   </section>
 
@@ -106,9 +106,9 @@ export default function DataReplicationConciseArticle() {
       <li>Data loss on async failover</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/data-replication-diagram-3.svg"
-      alt="Data Replication failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/scalability-distributed-systems/storage-sr-stretchcluster.png"
+      alt="Stretch cluster replication"
+      caption="Replication across sites for stretch clusters"
     />
   </section>
 

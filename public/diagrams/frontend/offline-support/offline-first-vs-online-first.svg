@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="450" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">Online-First vs Offline-First</text>
+
+  <!-- Divider line -->
+  <line x1="400" y1="50" x2="400" y2="430" stroke="#E2E8F0" stroke-width="2" stroke-dasharray="6,4"/>
+
+  <!-- Left: Online-First -->
+  <text x="200" y="65" text-anchor="middle" font-size="15" font-weight="700" fill="#EF4444">Online-First</text>
+  <text x="200" y="82" text-anchor="middle" font-size="10" fill="#94a3b8">Network is required</text>
+
+  <!-- Online-First flow -->
+  <!-- Step 1 -->
+  <rect x="60" y="100" width="280" height="38" rx="8" fill="#FEF2F2" stroke="#EF4444" stroke-width="1.5"/>
+  <circle cx="85" cy="119" r="12" fill="#EF4444"/>
+  <text x="85" y="123" text-anchor="middle" font-size="10" font-weight="700" fill="white">1</text>
+  <text x="105" y="115" font-size="12" font-weight="500" fill="#1e293b">User Action</text>
+  <text x="105" y="130" font-size="9" fill="#64748b">Click, type, submit</text>
+
+  <line x1="200" y1="138" x2="200" y2="158" stroke="#EF4444" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+
+  <!-- Step 2 -->
+  <rect x="60" y="158" width="280" height="38" rx="8" fill="#FEF2F2" stroke="#EF4444" stroke-width="1.5"/>
+  <circle cx="85" cy="177" r="12" fill="#EF4444"/>
+  <text x="85" y="181" text-anchor="middle" font-size="10" font-weight="700" fill="white">2</text>
+  <text x="105" y="173" font-size="12" font-weight="500" fill="#1e293b">API Call to Server</text>
+  <text x="105" y="188" font-size="9" fill="#64748b">fetch() / axios POST</text>
+
+  <line x1="200" y1="196" x2="200" y2="216" stroke="#EF4444" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+
+  <!-- Step 3: Waiting (highlighted) -->
+  <rect x="60" y="216" width="280" height="52" rx="8" fill="#FEE2E2" stroke="#EF4444" stroke-width="2.5"/>
+  <circle cx="85" cy="242" r="12" fill="#EF4444"/>
+  <text x="85" y="246" text-anchor="middle" font-size="10" font-weight="700" fill="white">3</text>
+  <text x="105" y="233" font-size="12" font-weight="600" fill="#DC2626">Waiting for Response...</text>
+  <text x="105" y="248" font-size="9" fill="#DC2626">Spinner shown to user</text>
+  <text x="105" y="261" font-size="9" fill="#DC2626" font-weight="600">200ms - 5000ms+ latency</text>
+  <!-- Spinner icon -->
+  <circle cx="320" cy="242" r="10" fill="none" stroke="#EF4444" stroke-width="2" stroke-dasharray="15,8" opacity="0.6"/>
+
+  <line x1="200" y1="268" x2="200" y2="288" stroke="#EF4444" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+
+  <!-- Step 4 -->
+  <rect x="60" y="288" width="280" height="38" rx="8" fill="#FEF2F2" stroke="#EF4444" stroke-width="1.5"/>
+  <circle cx="85" cy="307" r="12" fill="#EF4444"/>
+  <text x="85" y="311" text-anchor="middle" font-size="10" font-weight="700" fill="white">4</text>
+  <text x="105" y="303" font-size="12" font-weight="500" fill="#1e293b">Server Response</text>
+  <text x="105" y="318" font-size="9" fill="#64748b">Success or error</text>
+
+  <line x1="200" y1="326" x2="200" y2="346" stroke="#EF4444" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+
+  <!-- Step 5 -->
+  <rect x="60" y="346" width="280" height="38" rx="8" fill="#FEF2F2" stroke="#EF4444" stroke-width="1.5"/>
+  <circle cx="85" cy="365" r="12" fill="#EF4444"/>
+  <text x="85" y="369" text-anchor="middle" font-size="10" font-weight="700" fill="white">5</text>
+  <text x="105" y="361" font-size="12" font-weight="500" fill="#1e293b">Update UI</text>
+  <text x="105" y="376" font-size="9" fill="#64748b">Finally show result to user</text>
+
+  <!-- Online-First failure callout -->
+  <rect x="80" y="395" width="240" height="30" rx="6" fill="#FEE2E2"/>
+  <text x="200" y="414" text-anchor="middle" font-size="10" font-weight="600" fill="#DC2626">If offline: ERROR - app breaks</text>
+
+  <!-- Right: Offline-First -->
+  <text x="600" y="65" text-anchor="middle" font-size="15" font-weight="700" fill="#10B981">Offline-First</text>
+  <text x="600" y="82" text-anchor="middle" font-size="10" fill="#94a3b8">Network is optional</text>
+
+  <!-- Offline-First flow -->
+  <!-- Step 1 -->
+  <rect x="460" y="100" width="280" height="38" rx="8" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+  <circle cx="485" cy="119" r="12" fill="#10B981"/>
+  <text x="485" y="123" text-anchor="middle" font-size="10" font-weight="700" fill="white">1</text>
+  <text x="505" y="115" font-size="12" font-weight="500" fill="#1e293b">User Action</text>
+  <text x="505" y="130" font-size="9" fill="#64748b">Click, type, submit</text>
+
+  <line x1="600" y1="138" x2="600" y2="158" stroke="#10B981" stroke-width="1.5" marker-end="url(#arrowGreenFlow)"/>
+
+  <!-- Step 2 -->
+  <rect x="460" y="158" width="280" height="38" rx="8" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+  <circle cx="485" cy="177" r="12" fill="#10B981"/>
+  <text x="485" y="181" text-anchor="middle" font-size="10" font-weight="700" fill="white">2</text>
+  <text x="505" y="173" font-size="12" font-weight="500" fill="#1e293b">Write to Local Store</text>
+  <text x="505" y="188" font-size="9" fill="#64748b">IndexedDB updated instantly</text>
+
+  <line x1="600" y1="196" x2="600" y2="216" stroke="#10B981" stroke-width="1.5" marker-end="url(#arrowGreenFlow)"/>
+
+  <!-- Step 3: Instant (highlighted) -->
+  <rect x="460" y="216" width="280" height="52" rx="8" fill="#D1FAE5" stroke="#10B981" stroke-width="2.5"/>
+  <circle cx="485" cy="242" r="12" fill="#10B981"/>
+  <text x="485" y="246" text-anchor="middle" font-size="10" font-weight="700" fill="white">3</text>
+  <text x="505" y="233" font-size="12" font-weight="600" fill="#059669">UI Updated Instantly!</text>
+  <text x="505" y="248" font-size="9" fill="#059669">No spinner, no waiting</text>
+  <text x="505" y="261" font-size="9" fill="#059669" font-weight="600">&lt; 10ms response</text>
+  <!-- Checkmark icon -->
+  <path d="M715,235 L722,244 L735,228" fill="none" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <line x1="600" y1="268" x2="600" y2="288" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowGrayFlow)"/>
+
+  <!-- Step 4 (background) -->
+  <rect x="460" y="288" width="280" height="38" rx="8" fill="#F8FAFC" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <circle cx="485" cy="307" r="12" fill="#94a3b8"/>
+  <text x="485" y="311" text-anchor="middle" font-size="10" font-weight="700" fill="white">4</text>
+  <text x="505" y="303" font-size="12" font-weight="500" fill="#64748b">Background Sync</text>
+  <text x="505" y="318" font-size="9" fill="#94a3b8">Sync engine sends when online</text>
+
+  <line x1="600" y1="326" x2="600" y2="346" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowGrayFlow)"/>
+
+  <!-- Step 5 (background) -->
+  <rect x="460" y="346" width="280" height="38" rx="8" fill="#F8FAFC" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <circle cx="485" cy="365" r="12" fill="#94a3b8"/>
+  <text x="485" y="369" text-anchor="middle" font-size="10" font-weight="700" fill="white">5</text>
+  <text x="505" y="361" font-size="12" font-weight="500" fill="#64748b">Server Confirms</text>
+  <text x="505" y="376" font-size="9" fill="#94a3b8">Resolve conflicts if any</text>
+
+  <!-- Offline-First success callout -->
+  <rect x="480" y="395" width="240" height="30" rx="6" fill="#D1FAE5"/>
+  <text x="600" y="414" text-anchor="middle" font-size="10" font-weight="600" fill="#059669">If offline: works perfectly</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#EF4444"/>
+    </marker>
+    <marker id="arrowGreenFlow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#10B981"/>
+    </marker>
+    <marker id="arrowGrayFlow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#94a3b8"/>
+    </marker>
+  </defs>
+</svg>

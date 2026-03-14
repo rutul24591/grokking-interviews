@@ -31,8 +31,8 @@ export default function WriteScalingConciseArticle() {
     </p>
     <ArticleImage
       src="/diagrams/backend/scalability-distributed-systems/write-scaling-diagram-1.svg"
-      alt="Write Scaling architecture overview"
-      caption="High-level view of write scaling in a distributed system"
+      alt="Write sharding"
+      caption="Writes distributed across shards"
     />
   </section>
 
@@ -54,8 +54,8 @@ export default function WriteScalingConciseArticle() {
     </ul>
     <ArticleImage
       src="/diagrams/backend/scalability-distributed-systems/write-scaling-diagram-2.svg"
-      alt="Write Scaling core workflow"
-      caption="Core workflow and control points"
+      alt="Write-behind buffering"
+      caption="Buffering writes to smooth spikes"
     />
   </section>
 
@@ -106,9 +106,9 @@ export default function WriteScalingConciseArticle() {
       <li>Increased write latency from batching</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/write-scaling-diagram-3.svg"
-      alt="Write Scaling failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/scalability-distributed-systems/write-scaling-diagram-3.png"
+      alt="Scaling writes with replicas"
+      caption="Primary/replica layout for write throughput"
     />
   </section>
 

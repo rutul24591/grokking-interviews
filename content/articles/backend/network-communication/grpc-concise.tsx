@@ -31,9 +31,9 @@ export default function gRPCConciseArticle() {
       recover in production.
     </p>
     <ArticleImage
-      src="/diagrams/backend/network-communication/grpc-diagram-1.svg"
-      alt="gRPC architecture overview"
-      caption="High-level view of grpc in a production traffic path"
+      src="/diagrams/backend/network-communication/grpc-client-server-communication.svg"
+      alt="gRPC client-server communication"
+      caption="Unary and streaming communication over HTTP/2"
     />
   </section>
 
@@ -54,9 +54,9 @@ export default function gRPCConciseArticle() {
       <li>HTTP/2 multiplexing</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/grpc-diagram-2.svg"
-      alt="gRPC core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/network-communication/http2-hpack.svg"
+      alt="HTTP/2 HPACK header compression"
+      caption="HTTP/2 framing and header compression used by gRPC"
     />
   </section>
 
@@ -108,9 +108,9 @@ export default function gRPCConciseArticle() {
       <li>Backpressure handling in streams</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/grpc-diagram-3.svg"
-      alt="gRPC failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/network-communication/http2-vs-http3-protocol-stack.svg"
+      alt="HTTP/2 vs HTTP/3 protocol stacks"
+      caption="Transport stack comparison relevant to gRPC over HTTP/2"
     />
   </section>
 

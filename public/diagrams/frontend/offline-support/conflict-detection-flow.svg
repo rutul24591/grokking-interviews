@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 550" width="800" height="550" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="550" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#1E293B">Conflict Detection & Resolution Flow</text>
+
+  <!-- Participant labels -->
+  <rect x="80" y="50" width="120" height="36" rx="6" fill="#3B82F6" opacity="0.15" stroke="#3B82F6" stroke-width="1.5"/>
+  <text x="140" y="73" text-anchor="middle" font-size="13" font-weight="600" fill="#3B82F6">Client A</text>
+
+  <rect x="340" y="50" width="120" height="36" rx="6" fill="#6366F1" opacity="0.15" stroke="#6366F1" stroke-width="1.5"/>
+  <text x="400" y="73" text-anchor="middle" font-size="13" font-weight="600" fill="#6366F1">Server</text>
+
+  <rect x="600" y="50" width="120" height="36" rx="6" fill="#10B981" opacity="0.15" stroke="#10B981" stroke-width="1.5"/>
+  <text x="660" y="73" text-anchor="middle" font-size="13" font-weight="600" fill="#10B981">Client B</text>
+
+  <!-- Lifelines -->
+  <line x1="140" y1="86" x2="140" y2="530" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="400" y1="86" x2="400" y2="530" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="660" y1="86" x2="660" y2="530" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4,4"/>
+
+  <!-- Step 1: Both read v1 -->
+  <text x="20" y="118" font-size="10" fill="#64748B" font-weight="600">1</text>
+  <line x1="400" y1="115" x2="160" y2="115" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+  <text x="270" y="108" text-anchor="middle" font-size="10" fill="#475569">Read v1</text>
+
+  <line x1="400" y1="130" x2="640" y2="130" stroke="#10B981" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+  <text x="530" y="123" text-anchor="middle" font-size="10" fill="#475569">Read v1</text>
+
+  <!-- Step 2: Client A goes offline -->
+  <text x="20" y="168" font-size="10" fill="#64748B" font-weight="600">2</text>
+  <rect x="60" y="155" width="160" height="24" rx="4" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1"/>
+  <text x="140" y="171" text-anchor="middle" font-size="10" fill="#92400E">Client A goes offline</text>
+
+  <!-- Step 3: Client A edits locally -->
+  <text x="20" y="208" font-size="10" fill="#64748B" font-weight="600">3</text>
+  <rect x="70" y="195" width="140" height="24" rx="4" fill="#DBEAFE" stroke="#3B82F6" stroke-width="1"/>
+  <text x="140" y="211" text-anchor="middle" font-size="10" fill="#1E40AF">Edit → v2a (local)</text>
+
+  <!-- Step 4: Client B edits and syncs -->
+  <text x="20" y="248" font-size="10" fill="#64748B" font-weight="600">4</text>
+  <rect x="590" y="235" width="140" height="24" rx="4" fill="#D1FAE5" stroke="#10B981" stroke-width="1"/>
+  <text x="660" y="251" text-anchor="middle" font-size="10" fill="#065F46">Edit → v2b</text>
+
+  <text x="20" y="283" font-size="10" fill="#64748B" font-weight="600">5</text>
+  <line x1="640" y1="280" x2="420" y2="280" stroke="#10B981" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+  <text x="530" y="273" text-anchor="middle" font-size="10" fill="#475569">Sync v2b (base: v1)</text>
+
+  <rect x="340" y="290" width="120" height="24" rx="4" fill="#EDE9FE" stroke="#6366F1" stroke-width="1"/>
+  <text x="400" y="306" text-anchor="middle" font-size="10" fill="#4338CA">Server now at v2b</text>
+
+  <!-- Step 5: Client A comes online and syncs -->
+  <text x="20" y="340" font-size="10" fill="#64748B" font-weight="600">6</text>
+  <rect x="60" y="328" width="160" height="24" rx="4" fill="#D1FAE5" stroke="#10B981" stroke-width="1"/>
+  <text x="140" y="344" text-anchor="middle" font-size="10" fill="#065F46">Client A reconnects</text>
+
+  <text x="20" y="375" font-size="10" fill="#64748B" font-weight="600">7</text>
+  <line x1="160" y1="372" x2="380" y2="372" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+  <text x="270" y="365" text-anchor="middle" font-size="10" fill="#475569">Sync v2a (base: v1)</text>
+
+  <!-- Step 6: Server detects conflict -->
+  <text x="20" y="410" font-size="10" fill="#64748B" font-weight="600">8</text>
+  <rect x="320" y="393" width="160" height="32" rx="4" fill="#FEE2E2" stroke="#EF4444" stroke-width="2"/>
+  <text x="400" y="407" text-anchor="middle" font-size="11" font-weight="bold" fill="#DC2626">CONFLICT DETECTED</text>
+  <text x="400" y="419" text-anchor="middle" font-size="9" fill="#991B1B">v2a vs v2b (both from v1)</text>
+
+  <!-- Step 7: Resolution -->
+  <text x="20" y="452" font-size="10" fill="#64748B" font-weight="600">9</text>
+  <rect x="320" y="438" width="160" height="28" rx="4" fill="#EDE9FE" stroke="#6366F1" stroke-width="1.5"/>
+  <text x="400" y="456" text-anchor="middle" font-size="10" font-weight="600" fill="#4338CA">Apply Resolution Strategy</text>
+
+  <!-- Step 8: Broadcast resolved state -->
+  <text x="20" y="492" font-size="10" fill="#64748B" font-weight="600">10</text>
+  <rect x="335" y="475" width="130" height="24" rx="4" fill="#E0E7FF" stroke="#6366F1" stroke-width="1"/>
+  <text x="400" y="491" text-anchor="middle" font-size="10" font-weight="600" fill="#4338CA">Merged → v3</text>
+
+  <line x1="380" y1="510" x2="160" y2="510" stroke="#6366F1" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+  <text x="270" y="503" text-anchor="middle" font-size="10" fill="#475569">Push v3</text>
+
+  <line x1="420" y1="520" x2="640" y2="520" stroke="#6366F1" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+  <text x="530" y="513" text-anchor="middle" font-size="10" fill="#475569">Push v3</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#3B82F6"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#10B981"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#6366F1"/>
+    </marker>
+  </defs>
+</svg>

@@ -30,9 +30,9 @@ export default function PartitioningStrategiesConciseArticle() {
       how range and hash decisions shape reliability, and how failure domains are bounded.
     </p>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/partitioning-strategies-diagram-1.svg"
-      alt="Partitioning Strategies architecture overview"
-      caption="High-level view of partitioning strategies in a distributed system"
+      src="/diagrams/backend/scalability-distributed-systems/partitioning-strategies-diagram-1.png"
+      alt="Range partitioning"
+      caption="Data split by ordered ranges"
     />
   </section>
 
@@ -53,9 +53,9 @@ export default function PartitioningStrategiesConciseArticle() {
       <li>Partition pruning</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/partitioning-strategies-diagram-2.svg"
-      alt="Partitioning Strategies core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/scalability-distributed-systems/partitioning-strategies-diagram-2.png"
+      alt="Hash partitioning"
+      caption="Hash-based distribution of keys"
     />
   </section>
 
@@ -107,8 +107,8 @@ export default function PartitioningStrategiesConciseArticle() {
     </ul>
     <ArticleImage
       src="/diagrams/backend/scalability-distributed-systems/partitioning-strategies-diagram-3.svg"
-      alt="Partitioning Strategies failure modes"
-      caption="Typical failure modes and mitigation points"
+      alt="Directory-based partitioning"
+      caption="Lookup service maps keys to partitions"
     />
   </section>
 

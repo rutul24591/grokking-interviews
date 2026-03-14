@@ -31,9 +31,9 @@ export default function LoadBalancersConciseArticle() {
       recover in production.
     </p>
     <ArticleImage
-      src="/diagrams/backend/network-communication/load-balancers-diagram-1.svg"
-      alt="Load Balancers architecture overview"
-      caption="High-level view of load balancers in a production traffic path"
+      src="/diagrams/backend/network-communication/load-balancing-cluster-nat.svg"
+      alt="Load balancing cluster with NAT"
+      caption="Clustered load balancer distributing traffic across service instances"
     />
   </section>
 
@@ -54,9 +54,9 @@ export default function LoadBalancersConciseArticle() {
       <li>Session affinity</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/load-balancers-diagram-2.svg"
-      alt="Load Balancers core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/network-communication/load-balancer-fanout.svg"
+      alt="Load balancer fanout to multiple backends"
+      caption="Fanout pattern for distributing requests across replicas"
     />
   </section>
 
@@ -108,9 +108,9 @@ export default function LoadBalancersConciseArticle() {
       <li>Single load balancer as a bottleneck</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/load-balancers-diagram-3.svg"
-      alt="Load Balancers failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/network-communication/cdn-content-aware-slb.png"
+      alt="Content-aware server load balancing"
+      caption="Layer 7 routing that selects backends based on content rules"
     />
   </section>
 

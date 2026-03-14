@@ -30,9 +30,9 @@ export default function DataDenormalizationConciseArticle() {
       how redundancy and read performance decisions shape reliability, and how failure domains are bounded.
     </p>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/data-denormalization-diagram-1.svg"
-      alt="Data Denormalization architecture overview"
-      caption="High-level view of data denormalization in a distributed system"
+      src="/diagrams/backend/scalability-distributed-systems/data-denormalization-diagram-1.png"
+      alt="Denormalized read model"
+      caption="Precomputed views reduce join costs"
     />
   </section>
 
@@ -53,9 +53,9 @@ export default function DataDenormalizationConciseArticle() {
       <li>Write amplification</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/data-denormalization-diagram-2.svg"
-      alt="Data Denormalization core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/scalability-distributed-systems/data-denormalization-diagram-2.png"
+      alt="Duplicated data layout"
+      caption="Data copies stored for faster access"
     />
   </section>
 
@@ -106,9 +106,9 @@ export default function DataDenormalizationConciseArticle() {
       <li>Difficulty debugging source of truth</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/data-denormalization-diagram-3.svg"
-      alt="Data Denormalization failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/scalability-distributed-systems/data-denormalization-diagram-3.png"
+      alt="Aggregation tables"
+      caption="Precomputed aggregates for read-heavy workloads"
     />
   </section>
 

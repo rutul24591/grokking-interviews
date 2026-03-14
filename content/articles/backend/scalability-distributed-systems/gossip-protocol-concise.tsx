@@ -31,8 +31,8 @@ export default function GossipProtocolConciseArticle() {
     </p>
     <ArticleImage
       src="/diagrams/backend/scalability-distributed-systems/gossip-protocol-diagram-1.svg"
-      alt="Gossip Protocol architecture overview"
-      caption="High-level view of gossip protocol in a distributed system"
+      alt="Epidemic gossip spread"
+      caption="Updates propagate node-to-node"
     />
   </section>
 
@@ -53,9 +53,9 @@ export default function GossipProtocolConciseArticle() {
       <li>Eventual convergence</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/gossip-protocol-diagram-2.svg"
-      alt="Gossip Protocol core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/scalability-distributed-systems/gossip-protocol-diagram-2.png"
+      alt="Push-pull anti-entropy"
+      caption="Nodes exchange state to converge"
     />
   </section>
 
@@ -107,8 +107,8 @@ export default function GossipProtocolConciseArticle() {
     </ul>
     <ArticleImage
       src="/diagrams/backend/scalability-distributed-systems/gossip-protocol-diagram-3.svg"
-      alt="Gossip Protocol failure modes"
-      caption="Typical failure modes and mitigation points"
+      alt="Gossip membership view"
+      caption="Membership updates disseminate through gossip"
     />
   </section>
 

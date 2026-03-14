@@ -31,9 +31,9 @@ export default function ServerSentEventsSSEConciseArticle() {
       recover in production.
     </p>
     <ArticleImage
-      src="/diagrams/backend/network-communication/server-sent-events-diagram-1.svg"
-      alt="Server-Sent Events (SSE) architecture overview"
-      caption="High-level view of server-sent events (sse) in a production traffic path"
+      src="/diagrams/backend/network-communication/server-sent-events.png"
+      alt="Server-sent events over HTTP"
+      caption="Unidirectional event stream from server to client"
     />
   </section>
 
@@ -54,9 +54,9 @@ export default function ServerSentEventsSSEConciseArticle() {
       <li>Heartbeat and keep-alive</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/server-sent-events-diagram-2.svg"
-      alt="Server-Sent Events (SSE) core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/network-communication/http-persistent-connection.svg"
+      alt="Persistent HTTP connection"
+      caption="Long-lived connection for SSE streams"
     />
   </section>
 
@@ -108,9 +108,9 @@ export default function ServerSentEventsSSEConciseArticle() {
       <li>Proxy timeouts</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/server-sent-events-diagram-3.svg"
-      alt="Server-Sent Events (SSE) failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/network-communication/technology-push.png"
+      alt="Server push delivery model"
+      caption="Server push model for continuous updates"
     />
   </section>
 

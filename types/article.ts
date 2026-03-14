@@ -5,6 +5,9 @@ export type ArticleMetadata = {
   category: string;
   subcategory: string;
   slug: string;
+  // Some content files distinguish between "concise" and "extensive" variants.
+  // Keep optional so older/newer content can coexist without breaking builds.
+  version?: "concise" | "extensive";
   wordCount: number;
   readingTime: number; // minutes
   lastUpdated: string;

@@ -30,9 +30,9 @@ export default function DistributedLocksConciseArticle() {
       how mutual exclusion and leases decisions shape reliability, and how failure domains are bounded.
     </p>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/distributed-locks-diagram-1.svg"
-      alt="Distributed Locks architecture overview"
-      caption="High-level view of distributed locks in a distributed system"
+      src="/diagrams/backend/scalability-distributed-systems/distributed-locks-diagram-1.gif"
+      alt="Central lock service"
+      caption="Clients acquire locks from a lock service"
     />
   </section>
 
@@ -53,9 +53,9 @@ export default function DistributedLocksConciseArticle() {
       <li>Failure detection</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/distributed-locks-diagram-2.svg"
-      alt="Distributed Locks core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/scalability-distributed-systems/distributed-locks-diagram-2.png"
+      alt="Lock acquisition flow"
+      caption="Acquire, renew, and release lock lifecycle"
     />
   </section>
 
@@ -107,8 +107,8 @@ export default function DistributedLocksConciseArticle() {
     </ul>
     <ArticleImage
       src="/diagrams/backend/scalability-distributed-systems/distributed-locks-diagram-3.svg"
-      alt="Distributed Locks failure modes"
-      caption="Typical failure modes and mitigation points"
+      alt="Locking with quorum"
+      caption="Distributed lock requiring multiple confirmations"
     />
   </section>
 

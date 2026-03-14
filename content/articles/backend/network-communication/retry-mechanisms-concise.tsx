@@ -31,9 +31,9 @@ export default function RetryMechanismsConciseArticle() {
       recover in production.
     </p>
     <ArticleImage
-      src="/diagrams/backend/network-communication/retry-mechanisms-diagram-1.svg"
-      alt="Retry Mechanisms architecture overview"
-      caption="High-level view of retry mechanisms in a production traffic path"
+      src="/diagrams/backend/network-communication/retry-backoff-architecture.png"
+      alt="Retry flow between services"
+      caption="Retries after transient errors with eventual success"
     />
   </section>
 
@@ -54,9 +54,9 @@ export default function RetryMechanismsConciseArticle() {
       <li>Retry budgets</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/retry-mechanisms-diagram-2.svg"
-      alt="Retry Mechanisms core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/network-communication/retry-backoff-jitter.png"
+      alt="Exponential backoff with jitter"
+      caption="Backoff windows and jitter to reduce synchronized retries"
     />
   </section>
 
@@ -107,11 +107,7 @@ export default function RetryMechanismsConciseArticle() {
       <li>Duplicate side effects on non-idempotent operations</li>
       <li>Increased tail latency</li>
     </ul>
-    <ArticleImage
-      src="/diagrams/backend/network-communication/retry-mechanisms-diagram-3.svg"
-      alt="Retry Mechanisms failure modes"
-      caption="Typical failure modes and mitigation points"
-    />
+    
   </section>
 
   

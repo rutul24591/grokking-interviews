@@ -31,9 +31,9 @@ export default function BulkheadPatternConciseArticle() {
       recover in production.
     </p>
     <ArticleImage
-      src="/diagrams/backend/network-communication/bulkhead-pattern-diagram-1.svg"
-      alt="Bulkhead Pattern architecture overview"
-      caption="High-level view of bulkhead pattern in a production traffic path"
+      src="/diagrams/backend/network-communication/watertight-compartment.jpg"
+      alt="Watertight bulkhead compartments"
+      caption="Physical bulkheads isolating failures"
     />
   </section>
 
@@ -54,9 +54,9 @@ export default function BulkheadPatternConciseArticle() {
       <li>Isolated failure domains</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/bulkhead-pattern-diagram-2.svg"
-      alt="Bulkhead Pattern core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/network-communication/bulkheads-and-longitudinals.png"
+      alt="Ship bulkheads and compartments"
+      caption="Compartmentalization to limit damage"
     />
   </section>
 
@@ -108,9 +108,9 @@ export default function BulkheadPatternConciseArticle() {
       <li>Shared dependencies that bypass isolation</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/bulkhead-pattern-diagram-3.svg"
-      alt="Bulkhead Pattern failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/network-communication/bulkhead-psf.png"
+      alt="Bulkhead pattern in software"
+      caption="Bulkheads isolating resource pools"
     />
   </section>
 

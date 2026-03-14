@@ -31,9 +31,9 @@ export default function MessageQueuesConciseArticle() {
       recover in production.
     </p>
     <ArticleImage
-      src="/diagrams/backend/network-communication/message-queues-diagram-1.svg"
-      alt="Message Queues architecture overview"
-      caption="High-level view of message queues in a production traffic path"
+      src="/diagrams/backend/network-communication/message-broker.png"
+      alt="Message broker with producers and consumers"
+      caption="Producers enqueue messages for consumers"
     />
   </section>
 
@@ -54,9 +54,9 @@ export default function MessageQueuesConciseArticle() {
       <li>Dead-letter queues</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/message-queues-diagram-2.svg"
-      alt="Message Queues core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/network-communication/kafka-job-queue.svg"
+      alt="Queue partitioning and workers"
+      caption="Partitioned queue with consumer groups"
     />
   </section>
 
@@ -108,9 +108,9 @@ export default function MessageQueuesConciseArticle() {
       <li>At-least-once delivery duplicates</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/message-queues-diagram-3.svg"
-      alt="Message Queues failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/network-communication/heap-message-queue.jpg"
+      alt="Priority queue behavior"
+      caption="Queue ordering and priority handling"
     />
   </section>
 

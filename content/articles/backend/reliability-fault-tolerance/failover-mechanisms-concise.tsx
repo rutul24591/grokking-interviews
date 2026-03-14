@@ -31,7 +31,11 @@ export default function FailoverMechanismsConciseArticle() {
         <h2>Types of Failover</h2>
         <p>Common patterns include active-passive with a hot standby, active-active with distributed routing, and tier-specific failover (web tier independent from data tier). Each pattern carries different risk profiles for consistency and recovery time.</p>
         <p>Control-plane choice matters. DNS-based failover is slow but simple; load balancer failover is faster but depends on health signal quality; client-side failover can be fastest but requires safe client logic and circuit breakers.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/failover-mechanisms-diagram-1.svg" alt="Failover Mechanisms diagram 1" caption="Failover Mechanisms overview diagram 1." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/failover-route53-health-check-weighted.png"
+          alt="Route 53 health-check weighted routing"
+          caption="Health-check driven weighted routing to shift traffic during failover."
+        />
       </section>
 
       <section>
@@ -44,7 +48,11 @@ export default function FailoverMechanismsConciseArticle() {
         <h2>Failure Modes</h2>
         <p>Split-brain occurs when two nodes believe they are primary. This can corrupt data or violate invariants. Use quorum-based consensus, fencing tokens, or external coordination to prevent it.</p>
         <p>Failback is another common failure. A node that recovers should not immediately resume primary duties. Warm-up, data catch-up, and health verification are required before re-entry.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/failover-mechanisms-diagram-2.svg" alt="Failover Mechanisms diagram 2" caption="Failover Mechanisms overview diagram 2." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/failover-route53-latency-alias-weighted.png"
+          alt="Route 53 latency-based failover routing"
+          caption="Latency-based routing with health checks to steer traffic to healthy regions."
+        />
       </section>
 
       <section>
@@ -57,7 +65,11 @@ export default function FailoverMechanismsConciseArticle() {
         <h2>Trade-offs</h2>
         <p>Failover latency vs correctness is the core trade-off. Faster failover can reduce downtime but risks inconsistency. Slower failover improves correctness but may violate availability targets.</p>
         <p>Failover also interacts with cost. Active-active requires double capacity and more complex data replication; active-passive is cheaper but increases RTO.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/failover-mechanisms-diagram-3.svg" alt="Failover Mechanisms diagram 3" caption="Failover Mechanisms overview diagram 3." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/failover-keepalived-vrrp.webp"
+          alt="VRRP based active passive failover"
+          caption="VRRP-based active-passive failover with a floating virtual IP."
+        />
       </section>
 
       <section>

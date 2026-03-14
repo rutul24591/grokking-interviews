@@ -31,9 +31,9 @@ export default function GraphQLConciseArticle() {
       recover in production.
     </p>
     <ArticleImage
-      src="/diagrams/backend/network-communication/graphql-diagram-1.svg"
-      alt="GraphQL architecture overview"
-      caption="High-level view of graphql in a production traffic path"
+      src="/diagrams/backend/network-communication/graphql-representation.jpg"
+      alt="GraphQL graph representation"
+      caption="Graph-shaped API representation"
     />
   </section>
 
@@ -54,9 +54,9 @@ export default function GraphQLConciseArticle() {
       <li>Caching and batching</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/graphql-diagram-2.svg"
-      alt="GraphQL core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/network-communication/graphql-schema-graph.png"
+      alt="GraphQL schema graph"
+      caption="Schema relationships and types"
     />
   </section>
 
@@ -108,9 +108,9 @@ export default function GraphQLConciseArticle() {
       <li>Schema drift without versioning discipline</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/graphql-diagram-3.svg"
-      alt="GraphQL failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/network-communication/graphql-example.png"
+      alt="GraphQL query and response"
+      caption="Query-driven response shaping"
     />
   </section>
 

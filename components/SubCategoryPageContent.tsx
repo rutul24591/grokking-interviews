@@ -11,14 +11,15 @@ type SubCategoryPageContentProps = {
   subcategorySlug: string;
   itemName: string;
   topics: Topic[];
+  disableTopicLinks?: boolean;
 };
 
 export function SubCategoryPageContent({
   categorySlug,
-  subCategoryName,
   subcategorySlug,
   itemName,
   topics,
+  disableTopicLinks,
 }: SubCategoryPageContentProps) {
   return (
     <section className="flex h-full flex-col gap-6">
@@ -35,6 +36,20 @@ export function SubCategoryPageContent({
         {topics.map((topic) => {
           const topicNameClean = topic.name.replace(/\s*\([^)]*\)/g, "").trim();
           const topicSlug = slugify(topicNameClean);
+
+          if (disableTopicLinks) {
+            return (
+              <div
+                key={topic.id}
+                className="flex h-full flex-col rounded-2xl border border-theme bg-panel-soft p-5 text-left"
+              >
+                <h3 className="text-lg font-semibold text-heading">
+                  {topic.name}
+                </h3>
+                <p className="mt-2 text-sm text-muted">Checklist item</p>
+              </div>
+            );
+          }
 
           return (
             <Link

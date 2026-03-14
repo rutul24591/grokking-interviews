@@ -31,9 +31,9 @@ export default function ServiceDiscoveryConciseArticle() {
       recover in production.
     </p>
     <ArticleImage
-      src="/diagrams/backend/network-communication/service-discovery-diagram-1.svg"
-      alt="Service Discovery architecture overview"
-      caption="High-level view of service discovery in a production traffic path"
+      src="/diagrams/backend/network-communication/consul-service-discovery-registration.png"
+      alt="Service registration with service discovery"
+      caption="Services register themselves with the catalog"
     />
   </section>
 
@@ -54,9 +54,9 @@ export default function ServiceDiscoveryConciseArticle() {
       <li>Client-side vs server-side discovery</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/service-discovery-diagram-2.svg"
-      alt="Service Discovery core workflow"
-      caption="Core workflow and control points"
+      src="/diagrams/backend/network-communication/consul-service-discovery-query.png"
+      alt="Service discovery query flow"
+      caption="Clients query discovery to find service instances"
     />
   </section>
 
@@ -108,9 +108,9 @@ export default function ServiceDiscoveryConciseArticle() {
       <li>Split-brain in multi-region registries</li>
     </ul>
     <ArticleImage
-      src="/diagrams/backend/network-communication/service-discovery-diagram-3.svg"
-      alt="Service Discovery failure modes"
-      caption="Typical failure modes and mitigation points"
+      src="/diagrams/backend/network-communication/consul-service-discovery-catalog.png"
+      alt="Service discovery catalog"
+      caption="Catalog of available services and health"
     />
   </section>
 

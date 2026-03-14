@@ -31,7 +31,11 @@ export default function DisasterRecoveryConciseArticle() {
         <h2>DR Strategies</h2>
         <p>Cold standby keeps minimal infrastructure ready but requires long setup time. Warm standby keeps partial infrastructure running with moderate recovery time. Hot standby maintains fully running replicas and can switch quickly at high cost.</p>
         <p>Strategy should be selected per service based on business impact and acceptable downtime. Not all services need the same DR tier.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/disaster-recovery-diagram-1.svg" alt="Disaster Recovery diagram 1" caption="Disaster Recovery overview diagram 1." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/dr-pilot-light-aws.png"
+          alt="Pilot light disaster recovery architecture"
+          caption="Pilot light architecture keeping critical components ready for rapid scale-up."
+        />
       </section>
 
       <section>
@@ -44,7 +48,11 @@ export default function DisasterRecoveryConciseArticle() {
         <h2>Failure Modes</h2>
         <p>The most common failure is an untested DR plan. Teams discover that runbooks are incomplete, credentials are missing, or replication is misconfigured only during real incidents.</p>
         <p>Another failure is dependency gaps: critical systems that are not replicated or included in DR scope, such as billing or identity.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/disaster-recovery-diagram-2.svg" alt="Disaster Recovery diagram 2" caption="Disaster Recovery overview diagram 2." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/dr-warm-standby-aws.png"
+          alt="Warm standby disaster recovery architecture"
+          caption="Warm standby architecture with minimal active capacity in the recovery region."
+        />
       </section>
 
       <section>
@@ -57,7 +65,11 @@ export default function DisasterRecoveryConciseArticle() {
         <h2>Trade-offs</h2>
         <p>Hot standby reduces downtime but doubles cost and operational burden. Cold standby is cheaper but risks long downtime and higher data loss.</p>
         <p>Full DR for all services can be unnecessary. A tiered approach focuses resources on revenue-critical and user-facing systems.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/disaster-recovery-diagram-3.svg" alt="Disaster Recovery diagram 3" caption="Disaster Recovery overview diagram 3." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/dr-multi-site-active-active-aws.png"
+          alt="Multi-site active active disaster recovery architecture"
+          caption="Multi-site active-active architecture for near real-time recovery."
+        />
       </section>
 
       <section>

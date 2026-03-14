@@ -1,0 +1,69 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="500" fill="#ffffff"/>
+  <text x="400" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Network Status Detection Layers</text>
+  <text x="400" y="56" text-anchor="middle" font-size="12" fill="#6b7280">Multi-signal approach: combine layers for accurate connectivity detection</text>
+
+  <!-- Layer 5 (top, most reliable) -->
+  <rect x="180" y="80" width="440" height="60" rx="8" fill="#10B981" fill-opacity="0.15" stroke="#10B981" stroke-width="2"/>
+  <rect x="180" y="80" width="6" height="60" rx="3" fill="#10B981"/>
+  <text x="210" y="105" font-size="13" font-weight="bold" fill="#065F46">Layer 5: Fetch Monitoring / Heartbeat</text>
+  <text x="210" y="125" font-size="11" fill="#374151">Periodic HEAD /api/health + track failed fetch() calls</text>
+  <text x="640" y="115" text-anchor="middle" font-size="11" font-weight="bold" fill="#10B981">HIGHEST ACCURACY</text>
+
+  <!-- Layer 4 -->
+  <rect x="180" y="155" width="440" height="60" rx="8" fill="#3B82F6" fill-opacity="0.1" stroke="#3B82F6" stroke-width="2"/>
+  <rect x="180" y="155" width="6" height="60" rx="3" fill="#3B82F6"/>
+  <text x="210" y="180" font-size="13" font-weight="bold" fill="#1E40AF">Layer 4: Network Information API</text>
+  <text x="210" y="200" font-size="11" fill="#374151">navigator.connection (effectiveType, downlink, rtt, saveData)</text>
+  <text x="640" y="190" text-anchor="middle" font-size="11" font-weight="bold" fill="#3B82F6">QUALITY INFO</text>
+
+  <!-- Layer 3 -->
+  <rect x="180" y="230" width="440" height="60" rx="8" fill="#F59E0B" fill-opacity="0.1" stroke="#F59E0B" stroke-width="2"/>
+  <rect x="180" y="230" width="6" height="60" rx="3" fill="#F59E0B"/>
+  <text x="210" y="255" font-size="13" font-weight="bold" fill="#92400E">Layer 3: Online / Offline Events</text>
+  <text x="210" y="275" font-size="11" fill="#374151">window 'online' and 'offline' event listeners for transitions</text>
+  <text x="640" y="265" text-anchor="middle" font-size="11" font-weight="bold" fill="#F59E0B">TRANSITION ONLY</text>
+
+  <!-- Layer 2 -->
+  <rect x="180" y="305" width="440" height="60" rx="8" fill="#F97316" fill-opacity="0.1" stroke="#F97316" stroke-width="2"/>
+  <rect x="180" y="305" width="6" height="60" rx="3" fill="#F97316"/>
+  <text x="210" y="330" font-size="13" font-weight="bold" fill="#9A3412">Layer 2: navigator.onLine</text>
+  <text x="210" y="350" font-size="11" fill="#374151">Boolean property — only checks if network adapter is enabled</text>
+  <text x="640" y="340" text-anchor="middle" font-size="11" font-weight="bold" fill="#F97316">UNRELIABLE</text>
+
+  <!-- Layer 1 (bottom) -->
+  <rect x="180" y="380" width="440" height="60" rx="8" fill="#EF4444" fill-opacity="0.1" stroke="#EF4444" stroke-width="2"/>
+  <rect x="180" y="380" width="6" height="60" rx="3" fill="#EF4444"/>
+  <text x="210" y="405" font-size="13" font-weight="bold" fill="#991B1B">Layer 1: Network Adapter Status</text>
+  <text x="210" y="425" font-size="11" fill="#374151">Physical hardware state — WiFi/Ethernet adapter on or off</text>
+  <text x="640" y="415" text-anchor="middle" font-size="11" font-weight="bold" fill="#EF4444">LOWEST ACCURACY</text>
+
+  <!-- Reliability arrow (left side) -->
+  <line x1="120" y1="410" x2="120" y2="110" stroke="#10B981" stroke-width="2" marker-end="url(#arr-rel)"/>
+  <text x="115" y="260" text-anchor="middle" font-size="12" font-weight="bold" fill="#10B981" transform="rotate(-90, 115, 260)">Reliability</text>
+
+  <!-- Speed arrow (right side) -->
+  <line x1="680" y1="110" x2="680" y2="410" stroke="#EF4444" stroke-width="2" marker-end="url(#arr-spd)"/>
+  <text x="685" y="260" text-anchor="middle" font-size="12" font-weight="bold" fill="#EF4444" transform="rotate(90, 685, 260)">Speed</text>
+
+  <defs>
+    <marker id="arr-rel" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10B981"/>
+    </marker>
+    <marker id="arr-spd" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#EF4444"/>
+    </marker>
+  </defs>
+
+  <!-- Combined output -->
+  <rect x="200" y="458" width="400" height="32" rx="6" fill="#7C3AED" fill-opacity="0.1" stroke="#7C3AED" stroke-width="2"/>
+  <text x="400" y="479" text-anchor="middle" font-size="12" font-weight="bold" fill="#5B21B6">Combined Connectivity Status → UI</text>
+
+  <!-- Arrows from layers to combined -->
+  <line x1="400" y1="440" x2="400" y2="456" stroke="#7C3AED" stroke-width="2" marker-end="url(#arr-comb)"/>
+  <defs>
+    <marker id="arr-comb" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7C3AED"/>
+    </marker>
+  </defs>
+</svg>

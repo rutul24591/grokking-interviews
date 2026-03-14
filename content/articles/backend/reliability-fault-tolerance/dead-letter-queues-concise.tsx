@@ -31,7 +31,11 @@ export default function DeadLetterQueuesConciseArticle() {
         <h2>Why DLQs Matter</h2>
         <p>Without DLQs, a single bad message can stall an entire queue, causing backlogs and outages. DLQs isolate failures so the system can continue processing healthy traffic.</p>
         <p>DLQs also create an audit trail. They allow teams to analyze failure patterns and improve validation or processing logic.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/dead-letter-queues-diagram-1.svg" alt="Dead Letter Queues diagram 1" caption="Dead Letter Queues overview diagram 1." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/dead-letter-queue-flow.webp"
+          alt="Dead letter queue isolates failed messages"
+          caption="High-level DLQ flow that isolates failing messages while the main queue continues."
+        />
       </section>
 
       <section>
@@ -44,7 +48,11 @@ export default function DeadLetterQueuesConciseArticle() {
         <h2>Failure Modes</h2>
         <p>A common failure is ignoring the DLQ. If no process reads it, the system accumulates failed work and hides serious issues.</p>
         <p>Another failure is poisoning the DLQ with sensitive data without proper access control, creating a security risk.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/dead-letter-queues-diagram-2.svg" alt="Dead Letter Queues diagram 2" caption="Dead Letter Queues overview diagram 2." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/service-bus-architecture.png"
+          alt="Azure Service Bus dead-letter queue topology"
+          caption="Service Bus topology showing a dead-letter queue alongside primary processing and auditing."
+        />
       </section>
 
       <section>
@@ -57,7 +65,11 @@ export default function DeadLetterQueuesConciseArticle() {
         <h2>Trade-offs</h2>
         <p>Aggressive retries reduce DLQ volume but can waste resources and increase latency. Conservative retries push more messages to the DLQ, requiring human handling.</p>
         <p>Reprocessing DLQ messages can reintroduce errors if the underlying cause is not fixed. DLQ workflows must include root-cause remediation.</p>
-        <ArticleImage src="/diagrams/backend/reliability-fault-tolerance/dead-letter-queues-diagram-3.svg" alt="Dead Letter Queues diagram 3" caption="Dead Letter Queues overview diagram 3." />
+        <ArticleImage
+          src="/diagrams/backend/reliability-fault-tolerance/dlq-reprocess-flow.svg"
+          alt="DLQ reprocessing workflow"
+          caption="Reprocessing workflow that routes poisoned messages from the DLQ back through validation."
+        />
       </section>
 
       <section>
