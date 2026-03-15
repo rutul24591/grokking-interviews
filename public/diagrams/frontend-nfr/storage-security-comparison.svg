@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 500">
+  <defs>
+    <style>
+      .title { font: bold 20px system-ui, -apple-system, sans-serif; fill: #1a1a2e; }
+      .label { font: 14px system-ui, -apple-system, sans-serif; fill: #333; }
+      .small-label { font: 12px system-ui, -apple-system, sans-serif; fill: #555; }
+      .box-safe { fill: #e8f5e9; stroke: #4caf50; stroke-width: 2; }
+      .box-warning { fill: #fff3e0; stroke: #ff9800; stroke-width: 2; }
+      .box-danger { fill: #ffebee; stroke: #f44336; stroke-width: 2; }
+      .shield { fill: #4caf50; }
+      .warning-icon { fill: #ff9800; }
+      .danger-icon { fill: #f44336; }
+    </style>
+  </defs>
+  
+  <!-- Title -->
+  <text x="425" y="35" text-anchor="middle" class="title">Client Storage Security Comparison</text>
+  <text x="425" y="55" text-anchor="middle" class="small-label">XSS vulnerability and HttpOnly protection across storage mechanisms</text>
+  
+  <!-- localStorage -->
+  <rect x="30" y="80" width="180" height="100" class="box-danger" rx="6"/>
+  <text x="120" y="105" text-anchor="middle" class="label" font-weight="bold">localStorage</text>
+  <line x1="50" y1="115" x2="190" y2="115" stroke="#f44336" stroke-width="1"/>
+  <text x="120" y="135" text-anchor="middle" class="small-label">❌ XSS Accessible</text>
+  <text x="120" y="152" text-anchor="middle" class="small-label">❌ No HttpOnly</text>
+  <text x="120" y="172" text-anchor="middle" class="small-label">📦 5-10MB</text>
+  
+  <!-- sessionStorage -->
+  <rect x="230" y="80" width="180" height="100" class="box-danger" rx="6"/>
+  <text x="320" y="105" text-anchor="middle" class="label" font-weight="bold">sessionStorage</text>
+  <line x1="250" y1="115" x2="390" y2="115" stroke="#f44336" stroke-width="1"/>
+  <text x="320" y="135" text-anchor="middle" class="small-label">❌ XSS Accessible</text>
+  <text x="320" y="152" text-anchor="middle" class="small-label">❌ No HttpOnly</text>
+  <text x="320" y="172" text-anchor="middle" class="small-label">📦 5-10MB (per tab)</text>
+  
+  <!-- Cookies HttpOnly -->
+  <rect x="430" y="80" width="180" height="100" class="box-safe" rx="6"/>
+  <text x="520" y="105" text-anchor="middle" class="label" font-weight="bold">Cookies (HttpOnly)</text>
+  <line x1="450" y1="115" x2="590" y2="115" stroke="#4caf50" stroke-width="1"/>
+  <text x="520" y="135" text-anchor="middle" class="small-label">✅ XSS Protected</text>
+  <text x="520" y="152" text-anchor="middle" class="small-label">✅ HttpOnly + Secure</text>
+  <text x="520" y="172" text-anchor="middle" class="small-label">📦 4KB per cookie</text>
+  
+  <!-- IndexedDB -->
+  <rect x="630" y="80" width="180" height="100" class="box-danger" rx="6"/>
+  <text x="720" y="105" text-anchor="middle" class="label" font-weight="bold">IndexedDB</text>
+  <line x1="650" y1="115" x2="790" y2="115" stroke="#f44336" stroke-width="1"/>
+  <text x="720" y="135" text-anchor="middle" class="small-label">❌ XSS Accessible</text>
+  <text x="720" y="152" text-anchor="middle" class="small-label">❌ No HttpOnly</text>
+  <text x="720" y="172" text-anchor="middle" class="small-label">📦 50MB+</text>
+  
+  <!-- In-Memory -->
+  <rect x="330" y="200" width="180" height="100" class="box-warning" rx="6"/>
+  <text x="420" y="225" text-anchor="middle" class="label" font-weight="bold">In-Memory (Variables)</text>
+  <line x1="350" y1="235" x2="490" y2="235" stroke="#ff9800" stroke-width="1"/>
+  <text x="420" y="255" text-anchor="middle" class="small-label">⚠️ XSS while page open</text>
+  <text x="420" y="272" text-anchor="middle" class="small-label">✅ Cleared on refresh</text>
+  <text x="420" y="292" text-anchor="middle" class="small-label">📦 Limited by RAM</text>
+  
+  <!-- XSS Attack Vector Diagram -->
+  <text x="425" y="340" text-anchor="middle" class="label" font-weight="bold" font-size="16">XSS Attack Vector</text>
+  
+  <!-- Vulnerable Storage -->
+  <rect x="50" y="360" width="200" height="110" fill="#ffebee" stroke="#f44336" rx="6"/>
+  <text x="150" y="385" text-anchor="middle" class="small-label" font-weight="bold">Vulnerable Storage</text>
+  <text x="150" y="405" text-anchor="middle" class="small-label">(localStorage, IndexedDB)</text>
+  
+  <rect x="70" y="420" width="160" height="40" fill="#ffcdd2" stroke="#f44336" rx="3"/>
+  <text x="150" y="435" text-anchor="middle" class="small-label" font-weight="bold">🔑 Auth Tokens</text>
+  <text x="150" y="450" text-anchor="middle" class="small-label">😢 PII Data</text>
+  
+  <!-- XSS Script -->
+  <polygon points="250,415 280,415 280,395 310,415 310,435 280,415 280,435" fill="#f44336"/>
+  <text x="330" y="430" class="small-label" font-weight="bold">Malicious Script</text>
+  
+  <line x1="380" y1="425" x2="410" y2="425" stroke="#f44336" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Attacker -->
+  <rect x="420" y="390" width="140" height="70" fill="#ffcdd2" stroke="#f44336" rx="4"/>
+  <text x="490" y="415" text-anchor="middle" class="small-label" font-weight="bold">Attacker</text>
+  <text x="490" y="432" text-anchor="middle" class="small-label">Steals tokens</text>
+  <text x="490" y="447" text-anchor="middle" class="small-label">Session hijack</text>
+  
+  <!-- Protected Storage -->
+  <rect x="600" y="360" width="200" height="110" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+  <text x="700" y="385" text-anchor="middle" class="small-label" font-weight="bold">HttpOnly Cookies</text>
+  <text x="700" y="405" text-anchor="middle" class="small-label">(XSS Protected)</text>
+  
+  <rect x="620" y="420" width="160" height="40" fill="#c8e6c9" stroke="#4caf50" rx="3"/>
+  <text x="700" y="435" text-anchor="middle" class="small-label" font-weight="bold">🔑 Auth Tokens</text>
+  <text x="700" y="450" text-anchor="middle" class="small-label">✅ Inaccessible to JS</text>
+  
+  <!-- Shield icon -->
+  <circle cx="700" cy="365" r="15" fill="#4caf50"/>
+  <path d="M 700 355 L 700 375 M 693 362 L 707 362" stroke="white" stroke-width="2"/>
+  
+  <!-- Recommendation Box -->
+  <rect x="570" y="200" width="240" height="120" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="690" y="225" text-anchor="middle" class="label" font-weight="bold">Security Recommendations</text>
+  <line x1="590" y1="235" x2="790" y2="235" stroke="#999" stroke-width="1"/>
+  <text x="690" y="255" text-anchor="middle" class="small-label">✅ Use HttpOnly cookies for tokens</text>
+  <text x="690" y="275" text-anchor="middle" class="small-label">✅ Encrypt sensitive data in IndexedDB</text>
+  <text x="690" y="295" text-anchor="middle" class="small-label">⚠️ Memory for temporary sensitive data</text>
+  <text x="690" y="315" text-anchor="middle" class="small-label">❌ Never store tokens in localStorage</text>
+</svg>

@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <style>
+      .title { font: bold 20px system-ui, -apple-system, sans-serif; fill: #1a1a2e; }
+      .label { font: 14px system-ui, -apple-system, sans-serif; fill: #333; }
+      .small-label { font: 12px system-ui, -apple-system, sans-serif; fill: #555; }
+      .ltr { fill: #e3f2fd; stroke: #2196f3; stroke-width: 2; }
+      .rtl { fill: #fce4ec; stroke: #e91e63; stroke-width: 2; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; }
+    </style>
+  </defs>
+  
+  <text x="400" y="35" text-anchor="middle" class="title">RTL Layout Flip</text>
+  <text x="400" y="55" text-anchor="middle" class="small-label">LTR vs RTL layout comparison — navigation, icons, and content flow mirroring</text>
+  
+  <!-- LTR Layout -->
+  <rect x="30" y="80" width="340" height="180" class="ltr" rx="6"/>
+  <text x="200" y="105" text-anchor="middle" class="label" font-weight="bold">LTR (Left-to-Right)</text>
+  <text x="200" y="122" text-anchor="middle" class="small-label">English, Spanish, Chinese, etc.</text>
+  <line x1="50" y1="132" x2="350" y2="132" stroke="#2196f3" stroke-width="1"/>
+  
+  <!-- LTR Browser Mockup -->
+  <rect x="50" y="142" width="300" height="100" fill="white" stroke="#2196f3" rx="3"/>
+  
+  <!-- LTR Navigation -->
+  <rect x="55" y="147" width="60" height="90" fill="#bbdefb" stroke="#2196f3" rx="2"/>
+  <text x="85" y="170" text-anchor="middle" class="small-label" fill="#1565c0">Nav</text>
+  <text x="85" y="185" text-anchor="middle" class="small-label" fill="#1565c0">← Left</text>
+  <text x="85" y="200" text-anchor="middle" class="small-label" fill="#1565c0">side</text>
+  
+  <!-- LTR Content -->
+  <rect x="125" y="147" width="220" height="90" fill="#e3f2fd" stroke="#2196f3" rx="2"/>
+  <text x="145" y="165" text-anchor="start" class="small-label">Reading direction →</text>
+  <text x="145" y="182" text-anchor="start" class="small-label">Text starts left</text>
+  <text x="145" y="199" text-anchor="start" class="small-label">Icons point right</text>
+  
+  <!-- LTR Icons -->
+  <text x="310" y="175" text-anchor="middle" class="small-label">→</text>
+  <text x="310" y="195" text-anchor="middle" class="small-label">›</text>
+  <text x="310" y="215" text-anchor="middle" class="small-label">»</text>
+  
+  <!-- Arrow between -->
+  <line x1="380" y1="170" x2="420" y2="170" class="arrow" marker-end="url(#arrowhead)"/>
+  <line x1="420" y1="190" x2="380" y2="190" class="arrow" marker-end="url(#arrowhead)"/>
+  <text x="400" y="185" text-anchor="middle" class="small-label">Flip</text>
+  
+  <!-- RTL Layout -->
+  <rect x="430" y="80" width="340" height="180" class="rtl" rx="6"/>
+  <text x="600" y="105" text-anchor="middle" class="label" font-weight="bold">RTL (Right-to-Left)</text>
+  <text x="600" y="122" text-anchor="middle" class="small-label">Arabic, Hebrew, Persian, Urdu</text>
+  <line x1="450" y1="132" x2="750" y2="132" stroke="#e91e63" stroke-width="1"/>
+  
+  <!-- RTL Browser Mockup -->
+  <rect x="450" y="142" width="300" height="100" fill="white" stroke="#e91e63" rx="3"/>
+  
+  <!-- RTL Navigation -->
+  <rect x="685" y="147" width="60" height="90" fill="#f8bbd9" stroke="#e91e63" rx="2"/>
+  <text x="715" y="170" text-anchor="middle" class="small-label" fill="#c2185b">Nav</text>
+  <text x="715" y="185" text-anchor="middle" class="small-label" fill="#c2185b">Right</text>
+  <text x="715" y="200" text-anchor="middle" class="small-label" fill="#c2185b">side →</text>
+  
+  <!-- RTL Content -->
+  <rect x="460" y="147" width="215" height="90" fill="#fce4ec" stroke="#e91e63" rx="2"/>
+  <text x="655" y="165" text-anchor="end" class="small-label">← Reading direction</text>
+  <text x="655" y="182" text-anchor="end" class="small-label">Text starts right</text>
+  <text x="655" y="199" text-anchor="end" class="small-label">Icons point left</text>
+  
+  <!-- RTL Icons -->
+  <text x="490" y="175" text-anchor="middle" class="small-label">←</text>
+  <text x="490" y="195" text-anchor="middle" class="small-label">‹</text>
+  <text x="490" y="215" text-anchor="middle" class="small-label">«</text>
+  
+  <!-- CSS Logical Properties -->
+  <rect x="30" y="285" width="360" height="140" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="210" y="310" text-anchor="middle" class="label" font-weight="bold">CSS Logical Properties</text>
+  <line x1="50" y1="320" x2="370" y2="320" stroke="#999" stroke-width="1"/>
+  
+  <text x="70" y="345" text-anchor="start" class="small-label" font-weight="bold">Physical → Logical</text>
+  <text x="70" y="365" text-anchor="start" class="small-label">margin-left → margin-inline-start</text>
+  <text x="70" y="382" text-anchor="start" class="small-label">margin-right → margin-inline-end</text>
+  <text x="70" y="399" text-anchor="start" class="small-label">padding-top → padding-block-start</text>
+  <text x="70" y="416" text-anchor="start" class="small-label">left: 0 → inset-inline-start: 0</text>
+  
+  <!-- RTL Implementation -->
+  <rect x="410" y="285" width="360" height="140" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="590" y="310" text-anchor="middle" class="label" font-weight="bold">RTL Implementation Checklist</text>
+  <line x1="430" y1="320" x2="750" y2="320" stroke="#999" stroke-width="1"/>
+  
+  <text x="450" y="345" text-anchor="start" class="small-label" fill="#4caf50">✓ Add dir="rtl" to html tag</text>
+  <text x="450" y="362" text-anchor="start" class="small-label" fill="#4caf50">✓ Use CSS logical properties</text>
+  <text x="450" y="379" text-anchor="start" class="small-label" fill="#4caf50">✓ Flip navigation to right</text>
+  <text x="450" y="396" text-anchor="start" class="small-label" fill="#4caf50">✓ Mirror icons and chevrons</text>
+  <text x="640" y="345" text-anchor="start" class="small-label" fill="#ff9800">⚠ Test with actual RTL content</text>
+  <text x="640" y="362" text-anchor="start" class="small-label" fill="#ff9800">⚠ Check form layouts</text>
+  <text x="640" y="379" text-anchor="start" class="small-label" fill="#ff9800">⚠ Verify images make sense</text>
+  <text x="640" y="396" text-anchor="start" class="small-label" fill="#ff9800">⚠ Mixed LTR/RTL content</text>
+</svg>

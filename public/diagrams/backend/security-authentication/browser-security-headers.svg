@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">Browser Security Headers Enforcement</title>
+  <desc id="desc">Browser enforcing security policies from headers including CSP, HSTS, X-Frame-Options, and Referrer-Policy</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="500" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Browser Security Headers Enforcement</text>
+  
+  <!-- Browser Window -->
+  <rect x="100" y="70" width="600" height="280" rx="8" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="2"/>
+  
+  <!-- Browser Chrome -->
+  <rect x="110" y="80" width="580" height="40" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="140" y="105" text-anchor="start" font-size="12" fill="white">🔒 https://example.com</text>
+  
+  <!-- Security Indicators -->
+  <rect x="550" y="85" width="130" height="30" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="615" y="105" text-anchor="middle" font-size="10" fill="white">✓ HSTS Active</text>
+  
+  <!-- Content Area -->
+  <rect x="110" y="130" width="580" height="210" rx="4" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  
+  <!-- Blocked Script -->
+  <rect x="130" y="150" width="540" height="50" rx="6" fill="var(--bg-theme, #fee2e2)" stroke="var(--border-theme, #dc2626)" stroke-width="2"/>
+  <text x="400" y="175" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #dc2626">⛔ CSP: Blocked inline script execution</text>
+  <text x="400" y="195" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Refused to execute inline script because it violates CSP</text>
+  
+  <!-- Blocked Iframe -->
+  <rect x="130" y="220" width="540" height="50" rx="6" fill="var(--bg-theme, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="400" y="245" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #b45309">⛔ X-Frame-Options: DENY</text>
+  <text x="400" y="265" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Refused to display page in iframe (clickjacking prevention)</text>
+  
+  <!-- Secure Connection -->
+  <rect x="130" y="290" width="540" height="40" rx="6" fill="var(--bg-theme, #d1fae5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="400" y="315" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #059669">✓ HSTS: All connections upgraded to HTTPS</text>
+  
+  <!-- Headers Reference -->
+  <rect x="50" y="380" width="340" height="100" rx="8" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="220" y="405" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #1e293b">Response Headers</text>
+  
+  <text x="70" y="430" text-anchor="start" font-size="8" fill="var(--text-theme, #64748b" font-family="monospace">Content-Security-Policy: default-src 'self'</text>
+  <text x="70" y="445" text-anchor="start" font-size="8" fill="var(--text-theme, #64748b" font-family="monospace">Strict-Transport-Security: max-age=31536000</text>
+  <text x="70" y="460" text-anchor="start" font-size="8" fill="var(--text-theme, #64748b" font-family="monospace">X-Frame-Options: DENY</text>
+  <text x="70" y="475" text-anchor="start" font-size="8" fill="var(--text-theme, #64748b" font-family="monospace">X-Content-Type-Options: nosniff</text>
+  
+  <!-- Attack Surface Reduction -->
+  <rect x="430" y="380" width="320" height="100" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="590" y="405" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #1e293b">Attack Surface Reduced</text>
+  
+  <rect x="450" y="420" width="130" height="50" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="515" y="442" text-anchor="middle" font-size="9" fill="white">XSS Risk</text>
+  <text x="515" y="460" text-anchor="middle" font-size="12" font-weight="bold" fill="white">LOW</text>
+  
+  <rect x="600" y="420" width="130" height="50" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="665" y="442" text-anchor="middle" font-size="9" fill="white">Clickjacking</text>
+  <text x="665" y="460" text-anchor="middle" font-size="12" font-weight="bold" fill="white">BLOCKED</text>
+</svg>

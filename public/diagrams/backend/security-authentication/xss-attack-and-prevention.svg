@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 700" role="img" aria-labelledby="title desc">
+  <title id="title">Cross-Site Scripting (XSS) Attack and Prevention</title>
+  <desc id="desc">Comprehensive visualization of XSS attack types (Reflected, Stored, DOM-based) and prevention mechanisms including output encoding and Content Security Policy</desc>
+  
+  <!-- Background -->
+  <rect width="950" height="700" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="475" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="var(--text-theme, #1e293b)">Cross-Site Scripting (XSS) Attack and Prevention</text>
+  <text x="475" y="60" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">How attackers inject malicious scripts and how to prevent it</text>
+  
+  <!-- XSS Types Section -->
+  <rect x="30" y="80" width="890" height="240" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="475" y="108" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #b45309)">Three Types of XSS Attacks</text>
+  
+  <!-- Reflected XSS -->
+  <rect x="50" y="130" width="275" height="175" rx="6" fill="white" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <rect x="50" y="130" width="275" height="32" rx="6" fill="var(--bg-theme, #ef4444)"/>
+  <text x="187" y="152" text-anchor="middle" font-size="13" font-weight="bold" fill="white">1. Reflected XSS</text>
+  
+  <text x="187" y="185" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b)">Malicious script in URL,</text>
+  <text x="187" y="200" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b)">immediate response</text>
+  
+  <rect x="65" y="215" width="245" height="80" rx="4" fill="var(--bg-panel-soft, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="187" y="235" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #b91c1c)">Attack Flow:</text>
+  <text x="187" y="252" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b)">1. Attacker sends malicious link</text>
+  <text x="187" y="265" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b)">2. Victim clicks link</text>
+  <text x="187" y="278" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b)">3. Script executes in victim's browser</text>
+  
+  <text x="187" y="300" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b)">Example: Search results, error pages</text>
+  
+  <!-- Stored XSS -->
+  <rect x="340" y="130" width="275" height="175" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <rect x="340" y="130" width="275" height="32" rx="6" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="477" y="152" text-anchor="middle" font-size="13" font-weight="bold" fill="white">2. Stored (Persistent) XSS</text>
+  
+  <text x="477" y="185" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b)">Malicious script stored</text>
+  <text x="477" y="200" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b)">on server (database)</text>
+  
+  <rect x="355" y="215" width="245" height="80" rx="4" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="477" y="235" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #b45309)">Attack Flow:</text>
+  <text x="477" y="252" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b)">1. Attacker submits malicious content</text>
+  <text x="477" y="265" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b)">2. Content stored in database</text>
+  <text x="477" y="278" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b)">3. All viewers execute the script</text>
+  
+  <text x="477" y="300" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b)">Example: Comments, forums, profiles</text>
+  
+  <!-- DOM-based XSS -->
+  <rect x="630" y="130" width="275" height="175" rx="6" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <rect x="630" y="130" width="275" height="32" rx="6" fill="var(--bg-theme, #8b5cf6)"/>
+  <text x="767" y="152" text-anchor="middle" font-size="13" font-weight="bold" fill="white">3. DOM-based XSS</text>
+  
+  <text x="767" y="185" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b)">Client-side script</text>
+  <text x="767" y="200" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b)">manipulates DOM</text>
+  
+  <rect x="645" y="215" width="245" height="80" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  <text x="767" y="235" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #6d28d9)">Attack Flow:</text>
+  <text x="767" y="252" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b)">1. Attacker crafts malicious URL</text>
+  <text x="767" y="265" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b)">2. Victim visits URL</text>
+  <text x="767" y="278" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b)">3. Client JS writes to DOM unsafely</text>
+  
+  <text x="767" y="300" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b)">Example: document.write(), innerHTML</text>
+  
+  <!-- Prevention Section -->
+  <rect x="30" y="335" width="890" height="345" rx="8" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="475" y="363" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #059669)">XSS Prevention Strategies</text>
+  
+  <!-- Prevention 1: Output Encoding -->
+  <rect x="50" y="385" width="275" height="280" rx="6" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <rect x="50" y="385" width="275" height="35" rx="6" fill="var(--bg-theme, #10b981)"/>
+  <text x="187" y="410" text-anchor="middle" font-size="14" font-weight="bold" fill="white">1. Output Encoding</text>
+  
+  <text x="187" y="445" text-anchor="middle" font-size="11" fill="var(--text-theme, #1e293b)">Escape special characters</text>
+  <text x="187" y="462" text-anchor="middle" font-size="11" fill="var(--text-theme, #1e293b)">before rendering</text>
+  
+  <rect x="65" y="475" width="245" height="105" rx="4" fill="var(--bg-panel-hover, #f0fdf4)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="187" y="495" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b)">Character Escaping:</text>
+  <text x="187" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b)" font-family="monospace">&lt; → &amp;lt;</text>
+  <text x="187" y="530" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b)" font-family="monospace">&gt; → &amp;gt;</text>
+  <text x="187" y="545" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b)" font-family="monospace">&amp; → &amp;amp;</text>
+  <text x="187" y="560" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b)" font-family="monospace">" → &amp;quot;</text>
+  <text x="187" y="575" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b)" font-family="monospace">' → &amp;#x27;</text>
+  
+  <rect x="65" y="590" width="245" height="60" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="187" y="610" text-anchor="middle" font-size="10" font-weight="bold" fill="white">✓ Context-aware encoding</text>
+  <text x="187" y="627" text-anchor="middle" font-size="10" font-weight="bold" fill="white">✓ HTML, JS, URL, CSS</text>
+  <text x="187" y="644" text-anchor="middle" font-size="10" font-weight="bold" fill="white">✓ Use framework defaults</text>
+  
+  <!-- Prevention 2: Content Security Policy -->
+  <rect x="340" y="385" width="275" height="280" rx="6" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <rect x="340" y="385" width="275" height="35" rx="6" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="477" y="410" text-anchor="middle" font-size="14" font-weight="bold" fill="white">2. Content Security Policy</text>
+  
+  <text x="477" y="445" text-anchor="middle" font-size="11" fill="var(--text-theme, #1e293b)">HTTP header that restricts</text>
+  <text x="477" y="462" text-anchor="middle" font-size="11" fill="var(--text-theme, #1e293b)">script sources</text>
+  
+  <rect x="355" y="475" width="245" height="105" rx="4" fill="var(--bg-panel-hover, #eff6ff)" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="477" y="495" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b)">CSP Header Example:</text>
+  <text x="477" y="515" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b)" font-family="monospace">Content-Security-Policy:</text>
+  <text x="477" y="530" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b)" font-family="monospace">default-src 'self';</text>
+  <text x="477" y="545" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b)" font-family="monospace">script-src 'self' https://cdn;</text>
+  <text x="477" y="560" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b)" font-family="monospace">style-src 'self' 'unsafe-inline';</text>
+  <text x="477" y="575" text-anchor="middle" font-size="8" fill="var(--text-theme, #ef4444)" font-family="monospace">⚠ Avoid 'unsafe-inline'</text>
+  
+  <rect x="355" y="590" width="245" height="60" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="477" y="610" text-anchor="middle" font-size="10" font-weight="bold" fill="white">✓ Blocks inline scripts</text>
+  <text x="477" y="627" text-anchor="middle" font-size="10" font-weight="bold" fill="white">✓ Whitelist trusted domains</text>
+  <text x="477" y="644" text-anchor="middle" font-size="10" font-weight="bold" fill="white">✓ Report violations</text>
+  
+  <!-- Prevention 3: Input Validation -->
+  <rect x="630" y="385" width="275" height="280" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <rect x="630" y="385" width="275" height="35" rx="6" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="767" y="410" text-anchor="middle" font-size="14" font-weight="bold" fill="white">3. Input Validation</text>
+  
+  <text x="767" y="445" text-anchor="middle" font-size="11" fill="var(--text-theme, #1e293b)">Sanitize user input</text>
+  <text x="767" y="462" text-anchor="middle" font-size="11" fill="var(--text-theme, #1e293b)">on entry</text>
+  
+  <rect x="645" y="475" width="245" height="105" rx="4" fill="var(--bg-panel-hover, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="767" y="495" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #b45309)">Validation Techniques:</text>
+  <text x="767" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b)">• Whitelist allowed patterns</text>
+  <text x="767" y="530" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b)">• Strip dangerous tags</text>
+  <text x="767" y="545" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b)">• Use HTML sanitization libs</text>
+  <text x="767" y="560" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b)">• Validate content type</text>
+  <text x="767" y="575" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b)">• Enforce length limits</text>
+  
+  <rect x="645" y="590" width="245" height="60" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="767" y="610" text-anchor="middle" font-size="10" font-weight="bold" fill="white">✓ Defense in depth</text>
+  <text x="767" y="627" text-anchor="middle" font-size="10" font-weight="bold" fill="white">✓ Use libraries (DOMPurify)</text>
+  <text x="767" y="644" text-anchor="middle" font-size="10" font-weight="bold" fill="white">✓ Never trust input</text>
+  
+  <!-- Additional Defenses -->
+  <rect x="30" y="690" width="890" height="80" rx="6" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="475" y="715" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309)">Additional XSS Defenses</text>
+  
+  <rect x="50" y="725" width="135" height="35" rx="4" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="117" y="747" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b)">HttpOnly Cookies</text>
+  <text x="117" y="762" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b)">Prevent JS access</text>
+  
+  <rect x="200" y="725" width="135" height="35" rx="4" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="267" y="747" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b)">Secure Frameworks</text>
+  <text x="267" y="762" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b)">React, Vue auto-escape</text>
+  
+  <rect x="350" y="725" width="135" height="35" rx="4" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="417" y="747" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b)">Avoid innerHTML</text>
+  <text x="417" y="762" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b)">Use textContent</text>
+  
+  <rect x="500" y="725" width="135" height="35" rx="4" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="567" y="747" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b)">XSS Testing</text>
+  <text x="567" y="762" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b)">Pentest &amp; scanners</text>
+  
+  <rect x="650" y="725" width="135" height="35" rx="4" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="717" y="747" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b)">Security Headers</text>
+  <text x="717" y="762" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b)">X-XSS-Protection</text>
+  
+  <rect x="800" y="725" width="110" height="35" rx="4" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="855" y="747" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b)">WAF Rules</text>
+  <text x="855" y="762" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b)">Block XSS patterns</text>
+</svg>

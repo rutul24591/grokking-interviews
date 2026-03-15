@@ -1,0 +1,181 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 750" role="img" aria-labelledby="title desc">
+  <title id="title">Session Management</title>
+  <desc id="desc">Comprehensive visualization of session management flows, storage options, session fixation attacks, and invalidation patterns</desc>
+  
+  <!-- Background -->
+  <rect width="950" height="750" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="475" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="var(--text-theme, #1e293b)">Session Management</text>
+  <text x="475" y="60" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Session creation, storage, and invalidation patterns</text>
+  
+  <!-- Session Creation Flow -->
+  <rect x="30" y="80" width="890" height="180" rx="8" fill="var(--bg-panel-hover, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="475" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #1e40af">Session Creation Flow</text>
+  
+  <!-- Login Step -->
+  <rect x="50" y="125" width="160" height="120" rx="6" fill="white" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="130" y="155" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #1e40af">1. Login</text>
+  
+  <rect x="70" y="170" width="120" height="60" rx="4" fill="var(--bg-panel-soft, #dbeafe)" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="130" y="190" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Username +</text>
+  <text x="130" y="205" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Password</text>
+  <text x="130" y="220" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">+ MFA</text>
+  
+  <!-- Arrow -->
+  <line x1="210" y1="185" x2="245" y2="185" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Validation Step -->
+  <rect x="250" y="125" width="160" height="120" rx="6" fill="white" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="330" y="155" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #1e40af">2. Validate</text>
+  
+  <rect x="270" y="170" width="120" height="60" rx="4" fill="var(--bg-panel-soft, #dbeafe)" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="330" y="190" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Check credentials</text>
+  <text x="330" y="205" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">against database</text>
+  <text x="330" y="220" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">or identity provider</text>
+  
+  <!-- Arrow -->
+  <line x1="410" y1="185" x2="445" y2="185" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Session Creation Step -->
+  <rect x="450" y="125" width="160" height="120" rx="6" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="530" y="155" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">3. Create Session</text>
+  
+  <rect x="470" y="170" width="120" height="60" rx="4" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="530" y="190" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Generate session ID</text>
+  <text x="530" y="205" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">(cryptographically</text>
+  <text x="530" y="220" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">secure random)</text>
+  
+  <!-- Arrow -->
+  <line x1="610" y1="185" x2="645" y2="185" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Store Step -->
+  <rect x="650" y="125" width="160" height="120" rx="6" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="730" y="155" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">4. Store Session</text>
+  
+  <rect x="670" y="170" width="120" height="60" rx="4" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="730" y="190" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Store in Redis,</text>
+  <text x="730" y="205" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">database, or</text>
+  <text x="730" y="220" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">JWT token</text>
+  
+  <!-- Arrow -->
+  <line x1="810" y1="185" x2="845" y2="185" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Return Step -->
+  <rect x="850" y="125" width="60" height="120" rx="6" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="880" y="185" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Set</text>
+  <text x="880" y="205" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Cookie</text>
+  <text x="880" y="225" text-anchor="middle" font-size="9" fill="#bfdbfe">or</text>
+  <text x="880" y="240" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Return</text>
+  <text x="880" y="260" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Token</text>
+  
+  <!-- Session Storage Options -->
+  <rect x="30" y="275" width="570" height="220" rx="8" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="315" y="300" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #b45309">Session Storage Options</text>
+  
+  <!-- Server-Side Session -->
+  <rect x="50" y="320" width="255" height="165" rx="6" fill="white" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="177" y="345" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #b45309">Server-Side Sessions</text>
+  
+  <rect x="70" y="360" width="215" height="115" rx="4" fill="var(--bg-panel-hover, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="177" y="380" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b">How it works:</text>
+  <text x="177" y="398" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Session ID in cookie</text>
+  <text x="177" y="413" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Session data on server</text>
+  <text x="177" y="428" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Redis, Memcached, DB</text>
+  <text x="177" y="443" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Easy invalidation</text>
+  <text x="177" y="458" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Server memory overhead</text>
+  
+  <rect x="70" y="480" width="215" height="35" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="177" y="502" text-anchor="middle" font-size="9" font-weight="bold" fill="white">✓ Best for: High security apps</text>
+  
+  <!-- Client-Side Session (JWT) -->
+  <rect x="325" y="320" width="255" height="165" rx="6" fill="white" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="452" y="345" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #b45309">Client-Side Sessions (JWT)</text>
+  
+  <rect x="345" y="360" width="215" height="115" rx="4" fill="var(--bg-panel-hover, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="452" y="380" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b">How it works:</text>
+  <text x="452" y="398" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Session data in token</text>
+  <text x="452" y="413" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Signed with secret key</text>
+  <text x="452" y="428" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Stateless verification</text>
+  <text x="452" y="443" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Hard to revoke early</text>
+  <text x="452" y="458" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Token size overhead</text>
+  
+  <rect x="345" y="480" width="215" height="35" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="452" y="502" text-anchor="middle" font-size="9" font-weight="bold" fill="white">△ Best for: Microservices, APIs</text>
+  
+  <!-- Session Fixation Attack -->
+  <rect x="615" y="275" width="305" height="220" rx="8" fill="var(--bg-panel-hover, #fef2f2)" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <text x="767" y="300" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #b91c1c">Session Fixation Attack</text>
+  
+  <!-- Attack Flow -->
+  <rect x="630" y="320" width="275" height="165" rx="4" fill="white" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  
+  <text x="767" y="345" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b91c1c">Attack Steps:</text>
+  
+  <rect x="645" y="355" width="245" height="25" rx="3" fill="var(--bg-panel-soft, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="767" y="372" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">1. Attacker gets session ID from server</text>
+  
+  <rect x="645" y="385" width="245" height="25" rx="3" fill="var(--bg-panel-soft, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="767" y="402" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">2. Tricks victim into using that session ID</text>
+  
+  <rect x="645" y="415" width="245" height="25" rx="3" fill="var(--bg-panel-soft, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="767" y="432" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">3. Victim logs in, session now authenticated</text>
+  
+  <rect x="645" y="445" width="245" height="25" rx="3" fill="var(--bg-panel-soft, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="767" y="462" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">4. Attacker uses same session ID to access account</text>
+  
+  <rect x="630" y="490" width="275" height="35" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="767" y="512" text-anchor="middle" font-size="9" font-weight="bold" fill="white">✓ Prevention: Regenerate session ID after login</text>
+  
+  <!-- Session Invalidation Patterns -->
+  <rect x="30" y="510" width="890" height="220" rx="8" fill="var(--bg-panel-soft, #f0fdf4)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="475" y="535" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #059669">Session Invalidation Patterns</text>
+  
+  <!-- Logout -->
+  <rect x="50" y="555" width="270" height="165" rx="6" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="185" y="580" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #059669">Explicit Logout</text>
+  
+  <rect x="70" y="595" width="230" height="115" rx="4" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="185" y="615" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b">Server-Side:</text>
+  <text x="185" y="633" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Delete session from store</text>
+  <text x="185" y="648" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Clear session cookie</text>
+  <text x="185" y="663" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Invalidate all user sessions</text>
+  <text x="185" y="678" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">optional (logout everywhere)</text>
+  
+  <text x="185" y="700" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b">JWT:</text>
+  <text x="185" y="715" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Add to token denylist</text>
+  
+  <!-- Expiration -->
+  <rect x="340" y="555" width="270" height="165" rx="6" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="475" y="580" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #059669">Session Expiration</text>
+  
+  <rect x="360" y="595" width="230" height="115" rx="4" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="475" y="615" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b">Types:</text>
+  <text x="475" y="633" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Absolute timeout (e.g., 24h)</text>
+  <text x="475" y="648" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Sliding/rolling timeout (e.g., 30min idle)</text>
+  <text x="475" y="663" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Hard expiration (fixed timestamp)</text>
+  
+  <rect x="360" y="715" width="230" height="35" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="475" y="737" text-anchor="middle" font-size="9" font-weight="bold" fill="white">✓ Use both absolute + sliding</text>
+  
+  <!-- Revocation -->
+  <rect x="630" y="555" width="270" height="165" rx="6" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="765" y="580" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #059669">Session Revocation</text>
+  
+  <rect x="650" y="595" width="230" height="115" rx="4" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="765" y="615" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b">Triggers:</text>
+  <text x="765" y="633" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Password change</text>
+  <text x="765" y="648" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Suspicious activity detected</text>
+  <text x="765" y="663" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• User deactivation</text>
+  <text x="765" y="678" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Permission changes</text>
+  
+  <rect x="650" y="715" width="230" height="35" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="765" y="737" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #b45309">⚠️ JWT: Need denylist/allowlist</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

@@ -5,7 +5,10 @@ import { Breadcrumbs } from "../Breadcrumbs";
 import type { ArticleMetadata } from "@/types/article";
 import { ExampleContext } from "@/components/articles/ExampleContext";
 import { ExampleViewer } from "@/components/articles/ExampleViewer";
-import { ArticleExampleToggle, useArticleViewMode } from "@/components/articles/ArticleExampleToggle";
+import {
+  ArticleExampleToggle,
+  useArticleViewMode,
+} from "@/components/articles/ArticleExampleToggle";
 import { classNames } from "@/lib/classNames";
 
 type ArticleLayoutProps = {
@@ -16,14 +19,12 @@ type ArticleLayoutProps = {
 export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
   const formattedDate = new Date(metadata.lastUpdated).toLocaleDateString(
     "en-US",
-    { year: "numeric", month: "long", day: "numeric" }
+    { year: "numeric", month: "long", day: "numeric" },
   );
   const { examples } = useContext(ExampleContext);
   const [view, setView] = useArticleViewMode();
   const hasExamples = useMemo(() => examples.length > 0, [examples]);
-  const [activeExampleId, setActiveExampleId] = useState(
-    examples[0]?.id ?? ""
-  );
+  const [activeExampleId, setActiveExampleId] = useState(examples[0]?.id ?? "");
 
   const resolvedActiveExampleId = useMemo(() => {
     if (!examples.length) return "";
@@ -32,7 +33,10 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
   }, [examples, activeExampleId]);
 
   const activeExample = useMemo(() => {
-    return examples.find((example) => example.id === resolvedActiveExampleId) ?? examples[0];
+    return (
+      examples.find((example) => example.id === resolvedActiveExampleId) ??
+      examples[0]
+    );
   }, [examples, resolvedActiveExampleId]);
 
   return (
@@ -62,7 +66,7 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
                     {metadata.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="rounded-full bg-accent/10 px-3 py-1 text-accent"
+                        className="rounded-full bg-accent/10 px-3 py-1 text-accent font-semibold"
                       >
                         {tag}
                       </span>
@@ -88,7 +92,7 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
                   "cursor-pointer rounded-full border border-theme px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] transition",
                   example.id === activeExample?.id
                     ? "bg-accent text-white shadow-soft-theme"
-                    : "bg-panel text-muted hover:text-body"
+                    : "bg-panel text-muted hover:text-body",
                 )}
               >
                 {example.label}
@@ -100,7 +104,10 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
         {/* Article Content */}
         <article className="prose max-w-none">
           {view === "example" ? (
-            <ExampleViewer key={activeExample?.id ?? "no-example"} example={activeExample} />
+            <ExampleViewer
+              key={activeExample?.id ?? "no-example"}
+              example={activeExample}
+            />
           ) : (
             children
           )}
@@ -108,9 +115,7 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
 
         {/* Article Footer */}
         <footer className="mt-12 border-t border-theme pt-6">
-          <p className="text-sm text-muted">
-            Last updated: {formattedDate}
-          </p>
+          <p className="text-sm text-muted">Last updated: {formattedDate}</p>
 
           {/* Related Topics */}
           {metadata.relatedTopics && metadata.relatedTopics.length > 0 && (
@@ -126,7 +131,13 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
                     className="group rounded-lg border border-theme bg-panel-soft p-4 transition hover:border-accent hover:shadow-soft-theme"
                   >
                     <span className="text-body group-hover:text-accent">
-                      {slug.split("-").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")}
+                      {slug
+                        .split("-")
+                        .map(
+                          (word) =>
+                            word.charAt(0).toUpperCase() + word.slice(1),
+                        )
+                        .join(" ")}
                     </span>
                   </a>
                 ))}

@@ -30,9 +30,9 @@ export default function DistributedLocksConciseArticle() {
       how mutual exclusion and leases decisions shape reliability, and how failure domains are bounded.
     </p>
     <ArticleImage
-      src="/diagrams/backend/scalability-distributed-systems/distributed-locks-diagram-1.gif"
+      src="/diagrams/backend/scalability-distributed-systems/distributed-locks-diagram-1.svg"
       alt="Central lock service"
-      caption="Clients acquire locks from a lock service"
+      caption="Clients acquire locks from a central lock service for mutual exclusion"
     />
   </section>
 

@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 450">
+  <defs>
+    <style>
+      .title { font: bold 20px system-ui, -apple-system, sans-serif; fill: #1a1a2e; }
+      .label { font: 14px system-ui, -apple-system, sans-serif; fill: #333; }
+      .small-label { font: 12px system-ui, -apple-system, sans-serif; fill: #555; }
+      .box { fill: #f5f5f5; stroke: #666; stroke-width: 2; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <text x="425" y="35" text-anchor="middle" class="title">WebSocket Architecture</text>
+  <text x="425" y="55" text-anchor="middle" class="small-label">Connection management, message flow, reconnection, and state management integration</text>
+  
+  <!-- Connection Flow -->
+  <rect x="50" y="80" width="120" height="50" fill="#e3f2fd" stroke="#2196f3" rx="4"/>
+  <text x="110" y="105" text-anchor="middle" class="small-label" font-weight="bold">Client</text>
+  <text x="110" y="120" text-anchor="middle" class="small-label">Browser/App</text>
+  
+  <line x1="170" y1="105" x2="210" y2="105" class="arrow"/>
+  <text x="190" y="95" text-anchor="middle" class="small-label">Upgrade</text>
+  
+  <rect x="210" y="80" width="120" height="50" fill="#e8f5e9" stroke="#4caf50" rx="4"/>
+  <text x="270" y="105" text-anchor="middle" class="small-label" font-weight="bold">WebSocket</text>
+  <text x="270" y="120" text-anchor="middle" class="small-label">Handshake</text>
+  
+  <line x1="330" y1="105" x2="370" y2="105" class="arrow"/>
+  
+  <rect x="370" y="80" width="120" height="50" fill="#fff3e0" stroke="#ff9800" rx="4"/>
+  <text x="430" y="105" text-anchor="middle" class="small-label" font-weight="bold">Server</text>
+  <text x="430" y="120" text-anchor="middle" class="small-label">Accepts</text>
+  
+  <line x1="490" y1="105" x2="530" y2="105" class="arrow"/>
+  
+  <rect x="530" y="80" width="120" height="50" fill="#c8e6c9" stroke="#4caf50" rx="4"/>
+  <text x="590" y="105" text-anchor="middle" class="small-label" font-weight="bold">Connection</text>
+  <text x="590" y="120" text-anchor="middle" class="small-label">Established</text>
+  
+  <!-- Message Flow -->
+  <rect x="50" y="160" width="180" height="100" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="140" y="185" text-anchor="middle" class="label" font-weight="bold">Message Flow</text>
+  <line x1="70" y1="195" x2="210" y2="195" stroke="#999" stroke-width="1"/>
+  
+  <text x="80" y="220" text-anchor="start" class="small-label">1. Client sends message</text>
+  <text x="80" y="240" text-anchor="start" class="small-label">2. Server processes</text>
+  <text x="80" y="260" text-anchor="start" class="small-label">3. Server broadcasts</text>
+  <text x="80" y="280" text-anchor="start" class="small-label">4. All clients receive</text>
+  
+  <!-- Reconnection -->
+  <rect x="250" y="160" width="180" height="100" fill="#fff3e0" stroke="#ff9800" rx="6"/>
+  <text x="340" y="185" text-anchor="middle" class="label" font-weight="bold">Reconnection</text>
+  <line x1="270" y1="195" x2="410" y2="195" stroke="#ff9800" stroke-width="1"/>
+  
+  <text x="280" y="220" text-anchor="start" class="small-label">• Exponential backoff</text>
+  <text x="280" y="240" text-anchor="start" class="small-label">• 1s, 2s, 4s, 8s, max 30s</text>
+  <text x="280" y="260" text-anchor="start" class="small-label">• Add jitter</text>
+  <text x="280" y="280" text-anchor="start" class="small-label">• Queue messages</text>
+  
+  <!-- State Management -->
+  <rect x="450" y="160" width="180" height="100" fill="#e3f2fd" stroke="#2196f3" rx="6"/>
+  <text x="540" y="185" text-anchor="middle" class="label" font-weight="bold">State Integration</text>
+  <line x1="470" y1="195" x2="610" y2="195" stroke="#2196f3" stroke-width="1"/>
+  
+  <text x="480" y="220" text-anchor="start" class="small-label">• Dispatch to store</text>
+  <text x="480" y="240" text-anchor="start" class="small-label">• Update UI reactively</text>
+  <text x="480" y="260" text-anchor="start" class="small-label">• Optimistic updates</text>
+  <text x="480" y="280" text-anchor="start" class="small-label">• Sync with server state</text>
+  
+  <!-- Scaling -->
+  <rect x="650" y="160" width="180" height="100" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="740" y="185" text-anchor="middle" class="label" font-weight="bold">Scaling</text>
+  <line x1="670" y1="195" x2="810" y2="195" stroke="#999" stroke-width="1"/>
+  
+  <text x="680" y="220" text-anchor="start" class="small-label">• Sticky sessions</text>
+  <text x="680" y="240" text-anchor="start" class="small-label">• Redis Pub/Sub</text>
+  <text x="680" y="260" text-anchor="start" class="small-label">• Managed services</text>
+  <text x="680" y="280" text-anchor="start" class="small-label">• Connection limits</text>
+  
+  <!-- Connection States -->
+  <rect x="50" y="280" width="380" height="80" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="240" y="305" text-anchor="middle" class="label" font-weight="bold">Connection States</text>
+  <line x1="70" y1="315" x2="410" y2="315" stroke="#999" stroke-width="1"/>
+  
+  <text x="80" y="340" text-anchor="start" class="small-label">CONNECTING (0) → OPEN (1) → CLOSING (2) → CLOSED (3)</text>
+  
+  <!-- Best Practices -->
+  <rect x="450" y="280" width="380" height="80" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+  <text x="640" y="305" text-anchor="middle" class="label" font-weight="bold">Best Practices</text>
+  <line x1="470" y1="315" x2="810" y2="315" stroke="#4caf50" stroke-width="1"/>
+  
+  <text x="480" y="340" text-anchor="start" class="small-label" fill="#4caf50">✓ Handle all connection states</text>
+  <text x="480" y="360" text-anchor="start" class="small-label" fill="#4caf50">✓ Implement reconnection</text>
+  <text x="680" y="340" text-anchor="start" class="small-label" fill="#ff9800">⚠ Queue messages while disconnected</text>
+  <text x="680" y="360" text-anchor="start" class="small-label" fill="#ff9800">⚠ Show connection status to user</text>
+</svg>

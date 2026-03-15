@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 700" role="img" aria-labelledby="title desc">
+  <title id="title">SSO with OpenID Connect Flow</title>
+  <desc id="desc">OpenID Connect authentication flow showing authorization code flow with PKCE and token exchange</desc>
+  
+  <!-- Background -->
+  <rect width="950" height="700" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="475" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="var(--text-theme, #1e293b">SSO with OpenID Connect (OIDC)</text>
+  <text x="475" y="60" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b">Modern authentication protocol built on OAuth 2.0</text>
+  
+  <!-- OIDC Authorization Code Flow -->
+  <rect x="30" y="80" width="570" height="380" rx="8" fill="var(--bg-panel-hover, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="315" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #1e40af">OIDC Authorization Code Flow with PKCE</text>
+  
+  <!-- User -->
+  <rect x="50" y="125" width="100" height="70" rx="6" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="100" y="155" text-anchor="middle" font-size="11" font-weight="bold" fill="white">User</text>
+  <text x="100" y="175" text-anchor="middle" font-size="9" fill="#bfdbfe">Browser</text>
+  
+  <!-- Arrow -->
+  <line x1="150" y1="160" x2="185" y2="160" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Client App -->
+  <rect x="190" y="125" width="120" height="70" rx="6" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="250" y="155" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Client App</text>
+  <text x="250" y="175" text-anchor="middle" font-size="9" fill="#6ee7b7">SPA/Mobile</text>
+  
+  <!-- Step 1 -->
+  <text x="167" y="150" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">1. Login</text>
+  
+  <!-- Arrow -->
+  <line x1="310" y1="160" x2="345" y2="160" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Authorization Server -->
+  <rect x="350" y="125" width="140" height="70" rx="6" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="420" y="155" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Authorization</text>
+  <text x="420" y="175" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Server (IdP)</text>
+  
+  <!-- Step 2 -->
+  <text x="327" y="150" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">2. Auth Request</text>
+  <text x="327" y="180" text-anchor="middle" font-size="7" fill="var(--text-theme, #64748b">+ code_verifier</text>
+  
+  <!-- Arrow -->
+  <line x1="490" y1="160" x2="525" y2="160" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- User Authentication -->
+  <rect x="530" y="125" width="60" height="70" rx="6" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="2"/>
+  <text x="560" y="155" text-anchor="middle" font-size="9" font-weight="bold" fill="white">User</text>
+  <text x="560" y="175" text-anchor="middle" font-size="9" font-weight="bold" fill="white">Auth</text>
+  
+  <!-- Step 3 -->
+  <text x="507" y="150" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">3. Login</text>
+  
+  <!-- Arrow back -->
+  <path d="M 560 195 L 560 220 L 420 220 L 420 195" stroke="var(--text-theme, #8b5cf6)" stroke-width="2" fill="none" marker-end="url(#arrowPurple)"/>
+  
+  <!-- Step 4 -->
+  <text x="420" y="235" text-anchor="middle" font-size="8" fill="var(--text-theme, #6d28d9">4. Auth Code + code_challenge</text>
+  
+  <!-- Arrow back to client -->
+  <path d="M 350 180 L 350 245 L 250 245 L 250 195" stroke="var(--text-theme, #10b981)" stroke-width="2" fill="none" marker-end="url(#arrowGreen)"/>
+  
+  <!-- Step 5 -->
+  <text x="300" y="260" text-anchor="middle" font-size="8" fill="var(--text-theme, #059669">5. Authorization Code</text>
+  
+  <!-- Token Exchange -->
+  <rect x="50" y="280" width="530" height="170" rx="6" fill="white" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="315" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e40af">Token Exchange</text>
+  
+  <!-- Client to Auth Server -->
+  <line x1="150" y1="330" x2="420" y2="330" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <text x="285" y="320" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b">6. Token Request</text>
+  <text x="285" y="338" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Auth Code + code_verifier + client_id</text>
+  
+  <!-- Auth Server to Client -->
+  <line x1="420" y1="360" x2="150" y2="360" stroke="var(--text-theme, #8b5cf6)" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  
+  <text x="285" y="350" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #6d28d9">7. ID Token + Access Token</text>
+  <text x="285" y="368" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">+ Refresh Token (optional)</text>
+  
+  <!-- Token Contents -->
+  <rect x="50" y="385" width="240" height="55" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  <text x="170" y="405" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #6d28d9">ID Token (JWT)</text>
+  <text x="170" y="425" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">User identity (sub, name, email)</text>
+  <text x="170" y="438" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">Signed by IdP, for client app</text>
+  
+  <rect x="300" y="385" width="240" height="55" rx="4" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="420" y="405" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309">Access Token</text>
+  <text x="420" y="425" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">Resource access (scope-based)</text>
+  <text x="420" y="438" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">For API calls to resource server</text>
+  
+  <!-- SSO Session -->
+  <rect x="615" y="80" width="305" height="380" rx="8" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="767" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #059669">SSO Session Management</text>
+  
+  <!-- SSO Session at IdP -->
+  <rect x="630" y="125" width="275" height="100" rx="4" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="767" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">SSO Session at IdP</text>
+  
+  <text x="645" y="175" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ User authenticates once at IdP</text>
+  <text x="645" y="190" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ IdP creates SSO session cookie</text>
+  <text x="645" y="205" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Session valid for hours/days</text>
+  <text x="645" y="220" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Subsequent app logins are silent</text>
+  
+  <rect x="630" y="235" width="275" height="100" rx="4" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="767" y="260" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">Silent Authentication</text>
+  
+  <text x="645" y="285" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ App redirects to IdP</text>
+  <text x="645" y="300" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ IdP checks SSO session</text>
+  <text x="645" y="315" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Valid session = auto-approve</text>
+  <text x="645" y="330" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ No user interaction needed</text>
+  
+  <rect x="630" y="345" width="275" height="105" rx="4" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="767" y="370" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">Single Logout (SLO)</text>
+  
+  <text x="645" y="395" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ User logs out from one app</text>
+  <text x="645" y="410" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ App notifies IdP</text>
+  <text x="645" y="425" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ IdP destroys SSO session</text>
+  <text x="645" y="440" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ IdP notifies all connected apps</text>
+  <text x="645" y="455" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ All sessions terminated</text>
+  
+  <!-- OIDC vs SAML -->
+  <rect x="30" y="475" width="890" height="205" rx="8" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="475" y="500" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #b45309">OIDC vs SAML Comparison</text>
+  
+  <!-- OIDC -->
+  <rect x="50" y="520" width="420" height="150" rx="6" fill="white" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="260" y="545" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #b45309">OpenID Connect (OIDC)</text>
+  
+  <rect x="65" y="560" width="390" height="100" rx="4" fill="var(--bg-panel-hover, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="260" y="580" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309">✓ Modern (REST/JSON-based)</text>
+  <text x="260" y="600" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Built on OAuth 2.0</text>
+  <text x="260" y="615" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• JWT tokens (compact, easy to parse)</text>
+  <text x="260" y="630" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Mobile-friendly, SPA-friendly</text>
+  <text x="260" y="645" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Simple implementation</text>
+  <text x="260" y="660" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Google, Microsoft, Okta support</text>
+  
+  <!-- SAML -->
+  <rect x="490" y="520" width="420" height="150" rx="6" fill="white" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="700" y="545" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #b45309">SAML 2.0</text>
+  
+  <rect x="505" y="560" width="390" height="100" rx="4" fill="var(--bg-panel-hover, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="700" y="580" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309">✓ Enterprise Standard (XML-based)</text>
+  <text x="700" y="600" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Mature, widely adopted in enterprise</text>
+  <text x="700" y="615" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• XML assertions (verbose)</text>
+  <text x="700" y="630" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Browser redirect-based</text>
+  <text x="700" y="645" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Complex implementation</text>
+  <text x="700" y="660" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Legacy enterprise systems</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #8b5cf6)"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #10b981)"/>
+    </marker>
+  </defs>
+</svg>

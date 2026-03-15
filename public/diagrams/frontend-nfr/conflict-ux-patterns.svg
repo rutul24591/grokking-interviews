@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 400">
+  <defs>
+    <style>
+      .title { font: bold 20px system-ui, -apple-system, sans-serif; fill: #1a1a2e; }
+      .label { font: 14px system-ui, -apple-system, sans-serif; fill: #333; }
+      .small-label { font: 12px system-ui, -apple-system, sans-serif; fill: #555; }
+      .box { fill: #f5f5f5; stroke: #666; stroke-width: 2; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <text x="425" y="35" text-anchor="middle" class="title">Conflict UX Patterns</text>
+  <text x="425" y="55" text-anchor="middle" class="small-label">Notification, comparison, attribution, and merge review</text>
+  
+  <!-- Conflict Notification -->
+  <rect x="30" y="80" width="190" height="120" fill="#ffebee" stroke="#f44336" rx="6"/>
+  <text x="125" y="105" text-anchor="middle" class="label" font-weight="bold">Conflict Notification</text>
+  <line x1="50" y1="115" x2="200" y2="115" stroke="#f44336" stroke-width="1"/>
+  
+  <text x="60" y="140" text-anchor="start" class="small-label">• Alert user clearly</text>
+  <text x="60" y="160" text-anchor="start" class="small-label">• Explain what happened</text>
+  <text x="60" y="180" text-anchor="start" class="small-label">• Provide next steps</text>
+  <text x="60" y="200" text-anchor="start" class="small-label">Example: "Modified on another device"</text>
+  
+  <!-- Side-by-Side -->
+  <rect x="240" y="80" width="190" height="120" fill="#e3f2fd" stroke="#2196f3" rx="6"/>
+  <text x="335" y="105" text-anchor="middle" class="label" font-weight="bold">Side-by-Side Comparison</text>
+  <line x1="260" y1="115" x2="410" y2="115" stroke="#2196f3" stroke-width="1"/>
+  
+  <text x="270" y="140" text-anchor="start" class="small-label">• Show both versions</text>
+  <text x="270" y="160" text-anchor="start" class="small-label">• Highlight differences</text>
+  <text x="270" y="180" text-anchor="start" class="small-label">• Allow selecting parts</text>
+  <text x="270" y="200" text-anchor="start" class="small-label">Used in: Git merge tools</text>
+  
+  <!-- Change Attribution -->
+  <rect x="450" y="80" width="190" height="120" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+  <text x="545" y="105" text-anchor="middle" class="label" font-weight="bold">Change Attribution</text>
+  <line x1="470" y1="115" x2="620" y2="115" stroke="#4caf50" stroke-width="1"/>
+  
+  <text x="480" y="140" text-anchor="start" class="small-label">• Show who changed</text>
+  <text x="480" y="160" text-anchor="start" class="small-label">• Include timestamp</text>
+  <text x="480" y="180" text-anchor="start" class="small-label">• Color-code by user</text>
+  <text x="480" y="200" text-anchor="start" class="small-label">Used in: Google Docs, Figma</text>
+  
+  <!-- Preserve Both -->
+  <rect x="660" y="80" width="170" height="120" fill="#fff3e0" stroke="#ff9800" rx="6"/>
+  <text x="745" y="105" text-anchor="middle" class="label" font-weight="bold">Preserve Both Versions</text>
+  <line x1="680" y1="115" x2="810" y2="115" stroke="#ff9800" stroke-width="1"/>
+  
+  <text x="690" y="140" text-anchor="start" class="small-label">• Create conflicted copy</text>
+  <text x="690" y="160" text-anchor="start" class="small-label">• "Document (conflicted)"</text>
+  <text x="690" y="180" text-anchor="start" class="small-label">• Let user decide later</text>
+  <text x="690" y="200" text-anchor="start" class="small-label">Used in: Dropbox, Drive</text>
+  
+  <!-- Auto Merge with Review -->
+  <rect x="30" y="220" width="250" height="100" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="155" y="245" text-anchor="middle" class="label" font-weight="bold">Auto-Merge with Review</text>
+  <line x1="50" y1="255" x2="260" y2="255" stroke="#999" stroke-width="1"/>
+  
+  <text x="60" y="280" text-anchor="start" class="small-label">• Auto-merge non-conflicting</text>
+  <text x="60" y="300" text-anchor="start" class="small-label">• Highlight merged changes</text>
+  <text x="60" y="320" text-anchor="start" class="small-label">• User can accept/revert</text>
+  
+  <!-- UX Best Practices -->
+  <rect x="300" y="220" width="270" height="100" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+  <text x="435" y="245" text-anchor="middle" class="label" font-weight="bold">UX Best Practices</text>
+  <line x1="320" y1="255" x2="550" y2="255" stroke="#4caf50" stroke-width="1"/>
+  
+  <text x="330" y="280" text-anchor="start" class="small-label" fill="#4caf50">✓ Never silently lose data</text>
+  <text x="330" y="300" text-anchor="start" class="small-label" fill="#4caf50">✓ Make comparison clear</text>
+  <text x="330" y="320" text-anchor="start" class="small-label" fill="#4caf50">✓ Provide actionable options</text>
+  
+  <!-- When to Resolve -->
+  <rect x="590" y="220" width="240" height="100" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="710" y="245" text-anchor="middle" class="label" font-weight="bold">When to Resolve</text>
+  <line x1="610" y1="255" x2="810" y2="255" stroke="#999" stroke-width="1"/>
+  
+  <text x="620" y="280" text-anchor="start" class="small-label">• On sync (coming online)</text>
+  <text x="620" y="300" text-anchor="start" class="small-label">• On save (before commit)</text>
+  <text x="620" y="320" text-anchor="start" class="small-label">• On open (when loading)</text>
+</svg>

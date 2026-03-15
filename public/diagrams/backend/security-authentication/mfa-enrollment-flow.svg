@@ -1,0 +1,207 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 700" role="img" aria-labelledby="title desc">
+  <title id="title">MFA Enrollment and Authentication Flow</title>
+  <desc id="desc">Comprehensive visualization of MFA enrollment process and authentication flow with TOTP and push notifications</desc>
+  
+  <!-- Background -->
+  <rect width="950" height="700" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="475" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="var(--text-theme, #1e293b)">MFA Enrollment &amp; Authentication Flow</text>
+  <text x="475" y="60" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Setting up and using multi-factor authentication</text>
+  
+  <!-- MFA Enrollment Flow -->
+  <rect x="30" y="80" width="570" height="340" rx="8" fill="var(--bg-panel-hover, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="315" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #1e40af">MFA Enrollment Process</text>
+  
+  <!-- Step 1: User Initiates -->
+  <rect x="50" y="125" width="150" height="80" rx="6" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="125" y="155" text-anchor="middle" font-size="11" font-weight="bold" fill="white">1. User Initiates</text>
+  
+  <rect x="65" y="170" width="120" height="25" rx="3" fill="var(--bg-panel-soft, #dbeafe)" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="125" y="187" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">Account settings</text>
+  <text x="125" y="200" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">→ Enable MFA</text>
+  
+  <!-- Arrow -->
+  <line x1="200" y1="165" x2="230" y2="165" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 2: Generate Secret -->
+  <rect x="235" y="125" width="150" height="80" rx="6" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="310" y="155" text-anchor="middle" font-size="11" font-weight="bold" fill="white">2. Generate Secret</text>
+  
+  <rect x="250" y="170" width="120" height="25" rx="3" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="310" y="187" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">Server generates</text>
+  <text x="310" y="200" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">TOTP secret key</text>
+  
+  <!-- Arrow -->
+  <line x1="385" y1="165" x2="415" y2="165" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 3: Display QR -->
+  <rect x="420" y="125" width="150" height="80" rx="6" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="2"/>
+  <text x="495" y="155" text-anchor="middle" font-size="11" font-weight="bold" fill="white">3. Display QR Code</text>
+  
+  <rect x="435" y="170" width="120" height="25" rx="3" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="495" y="187" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">QR contains:</text>
+  <text x="495" y="200" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">otpauth:// URI</text>
+  
+  <!-- Arrow -->
+  <line x1="570" y1="165" x2="600" y2="165" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 4: User Scans -->
+  <rect x="50" y="225" width="150" height="80" rx="6" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="125" y="255" text-anchor="middle" font-size="11" font-weight="bold" fill="white">4. User Scans QR</text>
+  
+  <rect x="65" y="270" width="120" height="25" rx="3" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  <text x="125" y="287" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">Authenticator app</text>
+  <text x="125" y="300" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">scans and stores</text>
+  
+  <!-- Arrow -->
+  <line x1="200" y1="265" x2="230" y2="265" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 5: Enter Code -->
+  <rect x="235" y="225" width="150" height="80" rx="6" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="310" y="255" text-anchor="middle" font-size="11" font-weight="bold" fill="white">5. Enter TOTP Code</text>
+  
+  <rect x="250" y="270" width="120" height="25" rx="3" fill="var(--bg-panel-soft, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="310" y="287" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">User enters 6-digit</text>
+  <text x="310" y="300" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">code from app</text>
+  
+  <!-- Arrow -->
+  <line x1="385" y1="265" x2="415" y2="265" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 6: Verify -->
+  <rect x="420" y="225" width="150" height="80" rx="6" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="495" y="255" text-anchor="middle" font-size="11" font-weight="bold" fill="white">6. Server Verifies</text>
+  
+  <rect x="435" y="270" width="120" height="25" rx="3" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="495" y="287" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">Server validates</text>
+  <text x="495" y="300" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">TOTP code</text>
+  
+  <!-- Arrow -->
+  <line x1="570" y1="265" x2="600" y2="265" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 7: Backup Codes -->
+  <rect x="50" y="330" width="150" height="80" rx="6" fill="var(--bg-theme, #06b6d4)" stroke="var(--border-theme, #0891b2)" stroke-width="2"/>
+  <text x="125" y="360" text-anchor="middle" font-size="11" font-weight="bold" fill="white">7. Backup Codes</text>
+  
+  <rect x="65" y="375" width="120" height="25" rx="3" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #67e8f9)" stroke-width="1"/>
+  <text x="125" y="392" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">Download/save</text>
+  <text x="125" y="405" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">recovery codes</text>
+  
+  <!-- TOTP Algorithm -->
+  <rect x="615" y="80" width="305" height="340" rx="8" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="767" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #b45309">TOTP Algorithm</text>
+  
+  <rect x="630" y="125" width="275" height="285" rx="4" fill="white" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  
+  <text x="767" y="155" text-anchor="middle" font-size="11" fill="var(--text-theme, #1e293b">Time-based One-Time Password</text>
+  
+  <rect x="645" y="170" width="245" height="230" rx="3" fill="var(--bg-panel-hover, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  
+  <text x="767" y="195" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309">How TOTP Works:</text>
+  
+  <text x="660" y="220" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">1. Shared secret (K) stored on</text>
+  <text x="680" y="235" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">both server and authenticator</text>
+  
+  <text x="660" y="255" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">2. Current time (T) divided by</text>
+  <text x="680" y="270" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">30 seconds = time step</text>
+  
+  <text x="660" y="290" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">3. HMAC-SHA1(K, T) generates</text>
+  <text x="680" y="305" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">hash value</text>
+  
+  <text x="660" y="325" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">4. Dynamic truncation extracts</text>
+  <text x="680" y="340" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">4 bytes from hash</text>
+  
+  <text x="660" y="360" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">5. Modulo 10^6 produces</text>
+  <text x="680" y="375" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">6-digit code</text>
+  
+  <text x="767" y="395" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #b45309">Code changes every 30 seconds</text>
+  
+  <!-- MFA Authentication Flow -->
+  <rect x="30" y="435" width="890" height="245" rx="8" fill="var(--bg-panel-soft, #f0fdf4)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="475" y="460" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #059669">MFA Authentication Flow</text>
+  
+  <!-- Login Step -->
+  <rect x="50" y="480" width="160" height="190" rx="6" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="130" y="510" text-anchor="middle" font-size="12" font-weight="bold" fill="white">1. Primary Auth</text>
+  
+  <rect x="65" y="525" width="130" height="135" rx="4" fill="var(--bg-panel-hover, #dbeafe)" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="130" y="545" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">User enters</text>
+  <text x="130" y="560" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">username +</text>
+  <text x="130" y="575" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">password</text>
+  <text x="130" y="595" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Server validates</text>
+  <text x="130" y="610" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">credentials</text>
+  <text x="130" y="625" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">✓ Password correct</text>
+  <text x="130" y="640" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">→ Prompt for MFA</text>
+  
+  <!-- Arrow -->
+  <line x1="210" y1="575" x2="240" y2="575" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- MFA Challenge -->
+  <rect x="245" y="480" width="160" height="190" rx="6" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="2"/>
+  <text x="325" y="510" text-anchor="middle" font-size="12" font-weight="bold" fill="white">2. MFA Challenge</text>
+  
+  <rect x="260" y="525" width="130" height="135" rx="4" fill="var(--bg-panel-hover, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="325" y="545" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Server prompts</text>
+  <text x="325" y="560" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">for second factor:</text>
+  <text x="325" y="580" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• TOTP code</text>
+  <text x="325" y="595" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Push notification</text>
+  <text x="325" y="610" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• SMS code</text>
+  <text x="325" y="625" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Hardware key</text>
+  <text x="325" y="640" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Backup code</text>
+  
+  <!-- Arrow -->
+  <line x1="405" y1="575" x2="435" y2="575" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- User Response -->
+  <rect x="440" y="480" width="160" height="190" rx="6" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="520" y="510" text-anchor="middle" font-size="12" font-weight="bold" fill="white">3. User Response</text>
+  
+  <rect x="455" y="525" width="130" height="135" rx="4" fill="var(--bg-panel-hover, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  <text x="520" y="545" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">User provides</text>
+  <text x="520" y="560" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">MFA response:</text>
+  <text x="520" y="580" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Opens authenticator</text>
+  <text x="520" y="595" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Reads 6-digit code</text>
+  <text x="520" y="610" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Enters code</text>
+  <text x="520" y="625" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">OR approves push</text>
+  <text x="520" y="640" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">notification</text>
+  
+  <!-- Arrow -->
+  <line x1="600" y1="575" x2="630" y2="575" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Verification -->
+  <rect x="635" y="480" width="160" height="190" rx="6" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="715" y="510" text-anchor="middle" font-size="12" font-weight="bold" fill="white">4. Verification</text>
+  
+  <rect x="650" y="525" width="130" height="135" rx="4" fill="var(--bg-panel-hover, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="715" y="545" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Server verifies</text>
+  <text x="715" y="560" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">MFA response:</text>
+  <text x="715" y="580" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Generate expected</text>
+  <text x="715" y="595" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">TOTP code</text>
+  <text x="715" y="610" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Compare with</text>
+  <text x="715" y="625" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">user input</text>
+  <text x="715" y="640" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Allow time drift ±1</text>
+  
+  <!-- Arrow -->
+  <line x1="795" y1="575" x2="825" y2="575" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Access Granted/Denied -->
+  <rect x="830" y="480" width="80" height="190" rx="6" fill="var(--bg-theme, #06b6d4)" stroke="var(--border-theme, #0891b2)" stroke-width="2"/>
+  <text x="870" y="530" text-anchor="middle" font-size="11" font-weight="bold" fill="white">5. Result</text>
+  
+  <rect x="845" y="545" width="50" height="55" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="870" y="565" text-anchor="middle" font-size="9" font-weight="bold" fill="white">✓</text>
+  <text x="870" y="580" text-anchor="middle" font-size="8" fill="#6ee7b7">Grant</text>
+  <text x="870" y="595" text-anchor="middle" font-size="8" fill="#6ee7b7">access</text>
+  
+  <rect x="845" y="610" width="50" height="55" rx="3" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
+  <text x="870" y="630" text-anchor="middle" font-size="9" font-weight="bold" fill="white">✗</text>
+  <text x="870" y="645" text-anchor="middle" font-size="8" fill="#fca5a5">Deny</text>
+  <text x="870" y="660" text-anchor="middle" font-size="8" fill="#fca5a5">access</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

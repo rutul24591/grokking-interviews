@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 450">
+  <defs>
+    <style>
+      .title { font: bold 20px system-ui, -apple-system, sans-serif; fill: #1a1a2e; }
+      .label { font: 14px system-ui, -apple-system, sans-serif; fill: #333; }
+      .small-label { font: 12px system-ui, -apple-system, sans-serif; fill: #555; }
+      .box { fill: #f5f5f5; stroke: #666; stroke-width: 2; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <text x="425" y="35" text-anchor="middle" class="title">SPACE Framework for DX Metrics</text>
+  <text x="425" y="55" text-anchor="middle" class="small-label">Satisfaction, Performance, Activity, Communication, Efficiency</text>
+  
+  <!-- SPACE Framework Pentagon -->
+  <polygon points="425,100 650,200 550,400 300,400 200,200" fill="#e8f5e9" stroke="#4caf50" stroke-width="3"/>
+  
+  <!-- Vertices -->
+  <circle cx="425" cy="100" r="8" fill="#4caf50"/>
+  <text x="425" y="85" text-anchor="middle" class="label" font-weight="bold">Satisfaction</text>
+  
+  <circle cx="650" cy="200" r="8" fill="#4caf50"/>
+  <text x="680" y="205" text-anchor="start" class="label" font-weight="bold">Performance</text>
+  
+  <circle cx="550" cy="400" r="8" fill="#4caf50"/>
+  <text x="550" y="425" text-anchor="middle" class="label" font-weight="bold">Efficiency</text>
+  
+  <circle cx="300" cy="400" r="8" fill="#4caf50"/>
+  <text x="300" y="425" text-anchor="middle" class="label" font-weight="bold">Communication</text>
+  
+  <circle cx="200" cy="200" r="8" fill="#4caf50"/>
+  <text x="170" y="205" text-anchor="end" class="label" font-weight="bold">Activity</text>
+  
+  <!-- Center label -->
+  <text x="425" y="260" text-anchor="middle" class="label" font-weight="bold" font-size="18">SPACE</text>
+  <text x="425" y="280" text-anchor="middle" class="small-label">Framework</text>
+  
+  <!-- Metrics Details -->
+  <rect x="30" y="80" width="150" height="100" fill="#f5f5f5" stroke="#666" rx="4"/>
+  <text x="105" y="105" text-anchor="middle" class="small-label" font-weight="bold">Satisfaction</text>
+  <text x="50" y="125" text-anchor="start" class="small-label">• Developer surveys</text>
+  <text x="50" y="145" text-anchor="start" class="small-label">• Well-being score</text>
+  <text x="50" y="165" text-anchor="start" class="small-label">• Retention rate</text>
+  
+  <rect x="670" y="80" width="150" height="100" fill="#f5f5f5" stroke="#666" rx="4"/>
+  <text x="745" y="105" text-anchor="middle" class="small-label" font-weight="bold">Performance</text>
+  <text x="690" y="125" text-anchor="start" class="small-label">• Output quality</text>
+  <text x="690" y="145" text-anchor="start" class="small-label">• Bug rate</text>
+  <text x="690" y="165" text-anchor="start" class="small-label">• Code review quality</text>
+  
+  <rect x="550" y="420" width="150" height="80" fill="#f5f5f5" stroke="#666" rx="4"/>
+  <text x="625" y="445" text-anchor="middle" class="small-label" font-weight="bold">Efficiency</text>
+  <text x="570" y="465" text-anchor="start" class="small-label">• Flow state time</text>
+  <text x="570" y="485" text-anchor="start" class="small-label">• Uninterrupted work</text>
+  
+  <rect x="275" y="420" width="150" height="80" fill="#f5f5f5" stroke="#666" rx="4"/>
+  <text x="350" y="445" text-anchor="middle" class="small-label" font-weight="bold">Communication</text>
+  <text x="295" y="465" text-anchor="start" class="small-label">• Knowledge sharing</text>
+  <text x="295" y="485" text-anchor="start" class="small-label">• Collaboration quality</text>
+  
+  <rect x="30" y="320" width="150" height="100" fill="#f5f5f5" stroke="#666" rx="4"/>
+  <text x="105" y="345" text-anchor="middle" class="small-label" font-weight="bold">Activity</text>
+  <text x="50" y="365" text-anchor="start" class="small-label">• Commits, PRs</text>
+  <text x="50" y="385" text-anchor="start" class="small-label">• Code reviews</text>
+  <text x="50" y="405" text-anchor="start" class="small-label">• Documentation</text>
+  
+  <!-- Key Metrics Table -->
+  <rect x="30" y="240" width="380" height="140" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="220" y="265" text-anchor="middle" class="label" font-weight="bold">Quantitative Metrics</text>
+  <line x1="50" y1="275" x2="390" y2="275" stroke="#999" stroke-width="1"/>
+  
+  <text x="60" y="300" text-anchor="start" class="small-label" font-weight="bold">Build Times:</text>
+  <text x="150" y="300" text-anchor="start" class="small-label">&lt;5s dev start, &lt;1s HMR</text>
+  
+  <text x="60" y="320" text-anchor="start" class="small-label" font-weight="bold">Test Duration:</text>
+  <text x="160" y="320" text-anchor="start" class="small-label">&lt;100ms/unit test</text>
+  
+  <text x="60" y="340" text-anchor="start" class="small-label" font-weight="bold">CI Pipeline:</text>
+  <text x="150" y="340" text-anchor="start" class="small-label">&lt;10 minutes total</text>
+  
+  <text x="60" y="365" text-anchor="start" class="small-label" font-weight="bold">Deployment:</text>
+  <text x="140" y="365" text-anchor="start" class="small-label">Frequency, lead time</text>
+  
+  <!-- Best Practices -->
+  <rect x="430" y="240" width="390" height="140" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+  <text x="625" y="265" text-anchor="middle" class="label" font-weight="bold">Measurement Best Practices</text>
+  <line x1="450" y1="275" x2="800" y2="275" stroke="#4caf50" stroke-width="1"/>
+  
+  <text x="460" y="300" text-anchor="start" class="small-label" fill="#4caf50">✓ Track percentiles, not averages</text>
+  <text x="460" y="320" text-anchor="start" class="small-label" fill="#4caf50">✓ Combine quantitative + qualitative</text>
+  <text x="460" y="340" text-anchor="start" class="small-label" fill="#4caf50">✓ Survey developers quarterly</text>
+  
+  <text x="650" y="300" text-anchor="start" class="small-label" fill="#ff9800">⚠ Avoid vanity metrics</text>
+  <text x="650" y="320" text-anchor="start" class="small-label" fill="#ff9800">⚠ Focus on outcomes, not output</text>
+  <text x="650" y="340" text-anchor="start" class="small-label" fill="#ff9800">⚠ Act on findings</text>
+</svg>

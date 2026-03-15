@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 400">
+  <defs>
+    <style>
+      .title { font: bold 20px system-ui, -apple-system, sans-serif; fill: #1a1a2e; }
+      .label { font: 14px system-ui, -apple-system, sans-serif; fill: #333; }
+      .small-label { font: 12px system-ui, -apple-system, sans-serif; fill: #555; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <text x="425" y="35" text-anchor="middle" class="title">Token Refresh Flow</text>
+  <text x="425" y="55" text-anchor="middle" class="small-label">Silent refresh, refresh on 401, and concurrent request handling</text>
+  
+  <!-- Silent Refresh Flow -->
+  <rect x="30" y="80" width="250" height="140" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+  <text x="155" y="105" text-anchor="middle" class="label" font-weight="bold">Silent Refresh (Proactive)</text>
+  <line x1="50" y1="115" x2="260" y2="115" stroke="#4caf50" stroke-width="1"/>
+  
+  <text x="60" y="140" text-anchor="start" class="small-label">1. Access token expires in 5min</text>
+  <text x="60" y="157" text-anchor="start" class="small-label">2. Background refresh request</text>
+  <text x="60" y="174" text-anchor="start" class="small-label">3. New access token received</text>
+  <text x="60" y="191" text-anchor="start" class="small-label">4. Store in memory</text>
+  <text x="60" y="208" text-anchor="start" class="small-label">User never notices expiry</text>
+  
+  <!-- Refresh on 401 Flow -->
+  <rect x="300" y="80" width="250" height="140" fill="#e3f2fd" stroke="#2196f3" rx="6"/>
+  <text x="425" y="105" text-anchor="middle" class="label" font-weight="bold">Refresh on 401 (Reactive)</text>
+  <line x1="320" y1="115" x2="530" y2="115" stroke="#2196f3" stroke-width="1"/>
+  
+  <text x="330" y="140" text-anchor="start" class="small-label">1. API call with expired token</text>
+  <text x="330" y="157" text-anchor="start" class="small-label">2. Server returns 401</text>
+  <text x="330" y="174" text-anchor="start" class="small-label">3. Catch 401, call refresh</text>
+  <text x="330" y="191" text-anchor="start" class="small-label">4. Retry original request</text>
+  <text x="330" y="208" text-anchor="start" class="small-label">One extra round-trip</text>
+  
+  <!-- Concurrent Request Handling -->
+  <rect x="570" y="80" width="250" height="140" fill="#fff3e0" stroke="#ff9800" rx="6"/>
+  <text x="695" y="105" text-anchor="middle" class="label" font-weight="bold">Concurrent Request Handling</text>
+  <line x1="590" y1="115" x2="800" y2="115" stroke="#ff9800" stroke-width="1"/>
+  
+  <text x="580" y="140" text-anchor="start" class="small-label">1. Multiple requests get 401</text>
+  <text x="580" y="157" text-anchor="start" class="small-label">2. Queue all requests</text>
+  <text x="580" y="174" text-anchor="start" class="small-label">3. Single refresh call</text>
+  <text x="580" y="191" text-anchor="start" class="small-label">4. Retry all with new token</text>
+  <text x="580" y="208" text-anchor="start" class="small-label">Prevents refresh storms</text>
+  
+  <!-- Detailed Flow Diagram -->
+  <text x="425" y="255" text-anchor="middle" class="label" font-weight="bold" font-size="16">Detailed 401 Handling Flow</text>
+  
+  <!-- Request -->
+  <rect x="50" y="275" width="100" height="40" fill="#bbdefb" stroke="#2196f3" rx="3"/>
+  <text x="100" y="300" text-anchor="middle" class="small-label">API Request</text>
+  
+  <line x1="150" y1="295" x2="180" y2="295" class="arrow"/>
+  
+  <!-- Response -->
+  <rect x="180" y="275" width="80" height="40" fill="#ffcdd2" stroke="#f44336" rx="3"/>
+  <text x="220" y="295" text-anchor="middle" class="small-label" font-weight="bold">401</text>
+  
+  <line x1="260" y1="295" x2="290" y2="295" class="arrow"/>
+  
+  <!-- Check Refreshing -->
+  <rect x="290" y="275" width="100" height="40" fill="#fff" stroke="#666" rx="3"/>
+  <text x="340" y="295" text-anchor="middle" class="small-label">Already</text>
+  <text x="340" y="308" text-anchor="middle" class="small-label">Refreshing?</text>
+  
+  <!-- Yes path -->
+  <line x1="340" y1="315" x2="340" y2="340" class="arrow"/>
+  <text x="355" y="330" text-anchor="start" class="small-label">Yes</text>
+  
+  <!-- Wait -->
+  <rect x="290" y="340" width="100" height="35" fill="#f5f5f5" stroke="#666" rx="3"/>
+  <text x="340" y="362" text-anchor="middle" class="small-label">Add to queue</text>
+  
+  <!-- No path -->
+  <line x1="390" y1="295" x2="420" y2="295" class="arrow"/>
+  <text x="405" y="285" text-anchor="start" class="small-label">No</text>
+  
+  <!-- Set Refreshing -->
+  <rect x="420" y="275" width="100" height="40" fill="#fff3e0" stroke="#ff9800" rx="3"/>
+  <text x="470" y="295" text-anchor="middle" class="small-label">Set isRefreshing</text>
+  
+  <line x1="520" y1="295" x2="550" y2="295" class="arrow"/>
+  
+  <!-- Refresh Call -->
+  <rect x="550" y="275" width="100" height="40" fill="#c8e6c9" stroke="#4caf50" rx="3"/>
+  <text x="600" y="295" text-anchor="middle" class="small-label">POST /refresh</text>
+  
+  <line x1="650" y1="295" x2="680" y2="295" class="arrow"/>
+  
+  <!-- New Token -->
+  <rect x="680" y="275" width="100" height="40" fill="#e8f5e9" stroke="#4caf50" rx="3"/>
+  <text x="730" y="295" text-anchor="middle" class="small-label">Store new token</text>
+  
+  <line x1="730" y1="315" x2="730" y2="345" class="arrow"/>
+  
+  <!-- Process Queue -->
+  <rect x="680" y="345" width="100" height="35" fill="#bbdefb" stroke="#2196f3" rx="3"/>
+  <text x="730" y="367" text-anchor="middle" class="small-label">Process queue</text>
+  
+  <!-- Implementation Note -->
+  <rect x="30" y="390" width="790" height="40" fill="#f5f5f5" stroke="#666" rx="4"/>
+  <text x="425" y="415" text-anchor="middle" class="small-label" font-weight="bold">Implementation: Use axios interceptors or React Query mutations for automatic handling</text>
+</svg>

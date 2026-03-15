@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">ABAC Cross-Project Access Control</title>
+  <desc id="desc">ABAC tag-based policies controlling cross-project access between different AWS projects and teams</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="500" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b">ABAC: Cross-Project Access with Tags</text>
+  
+  <!-- Project A -->
+  <rect x="50" y="70" width="340" height="200" rx="8" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="220" y="95" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Project Alpha</text>
+  
+  <!-- Project A Resources -->
+  <rect x="70" y="110" width="140" height="50" rx="6" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="140" y="130" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b">S3 Bucket</text>
+  <text x="140" y="148" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">tag: project=alpha</text>
+  
+  <rect x="230" y="110" width="140" height="50" rx="6" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="300" y="130" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b">RDS Database</text>
+  <text x="300" y="148" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">tag: project=alpha</text>
+  
+  <!-- Project A Users -->
+  <rect x="70" y="175" width="300" height="80" rx="6" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="220" y="195" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #1e293b">Team Members</text>
+  <text x="220" y="215" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Alice: tag: team=alpha, role=developer</text>
+  <text x="220" y="232" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Bob: tag: team=alpha, role=admin</text>
+  <text x="220" y="249" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Carol: tag: team=alpha, role=viewer</text>
+  
+  <!-- Project B -->
+  <rect x="410" y="70" width="340" height="200" rx="8" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="580" y="95" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Project Beta</text>
+  
+  <!-- Project B Resources -->
+  <rect x="430" y="110" width="140" height="50" rx="6" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="500" y="130" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b">Lambda Functions</text>
+  <text x="500" y="148" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">tag: project=beta</text>
+  
+  <rect x="590" y="110" width="140" height="50" rx="6" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="660" y="130" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b">DynamoDB Table</text>
+  <text x="660" y="148" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">tag: project=beta</text>
+  
+  <!-- Project B Users -->
+  <rect x="430" y="175" width="300" height="80" rx="6" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="580" y="195" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #1e293b">Team Members</text>
+  <text x="580" y="215" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Dave: tag: team=beta, role=developer</text>
+  <text x="580" y="232" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Eve: tag: team=beta, role=admin</text>
+  <text x="580" y="249" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Frank: tag: team=beta, role=viewer</text>
+  
+  <!-- Policy Engine in Middle -->
+  <rect x="300" y="290" width="200" height="180" rx="8" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="3"/>
+  <text x="400" y="315" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Policy Engine</text>
+  
+  <!-- Policy Rules -->
+  <rect x="320" y="330" width="160" height="130" rx="6" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #7c3aed)" stroke-width="2"/>
+  <text x="400" y="350" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b">Tag-Based Policies</text>
+  
+  <text x="400" y="370" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Policy 1: Same Project Access</text>
+  <text x="400" y="382" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">IF principal.tag.team == resource.tag.project</text>
+  <text x="400" y="394" text-anchor="middle" font-size="8" fill="var(--text-theme, #10b981">→ ALLOW</text>
+  
+  <text x="400" y="412" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Policy 2: Cross-Project Admin</text>
+  <text x="400" y="424" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">IF principal.tag.role == "admin"</text>
+  <text x="400" y="436" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">AND resource.tag.shared == "true"</text>
+  <text x="400" y="448" text-anchor="middle" font-size="8" fill="var(--text-theme, #f59e0b">→ ALLOW (Audit Logged)</text>
+  
+  <!-- Access Flow Arrows -->
+  <defs>
+    <marker id="arrowAccess" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #8b5cf6)"/>
+    </marker>
+    <marker id="arrowAllow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #10b981)"/>
+    </marker>
+    <marker id="arrowDeny" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #dc2626)"/>
+    </marker>
+  </defs>
+  
+  <!-- Alice accessing Alpha resources (allowed) -->
+  <line x1="220" y1="255" x2="300" y2="320" stroke="var(--text-theme, #10b981)" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowAllow)"/>
+  <text x="250" y="280" text-anchor="middle" font-size="8" fill="var(--text-theme, #10b981">✓ Same project</text>
+  
+  <!-- Dave accessing Beta resources (allowed) -->
+  <line x1="580" y1="255" x2="500" y2="320" stroke="var(--text-theme, #10b981)" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowAllow)"/>
+  <text x="550" y="280" text-anchor="middle" font-size="8" fill="var(--text-theme, #10b981">✓ Same project</text>
+  
+  <!-- Alice trying to access Beta (denied) -->
+  <line x1="220" y1="255" x2="450" y2="300" stroke="var(--text-theme, #dc2626)" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowDeny)"/>
+  <text x="320" y="270" text-anchor="middle" font-size="8" fill="var(--text-theme, #dc2626">✗ Different project</text>
+  
+  <!-- Bob (admin) accessing Beta shared resources (allowed with audit) -->
+  <line x1="220" y1="255" x2="550" y2="300" stroke="var(--text-theme, #f59e0b)" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowAccess)"/>
+  <text x="420" y="270" text-anchor="middle" font-size="8" fill="var(--text-theme, #f59e0b">⚠ Admin cross-access (logged)</text>
+  
+  <!-- Legend -->
+  <rect x="550" y="290" width="200" height="80" rx="6" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="650" y="310" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #1e293b">Access Legend</text>
+  <line x1="565" y1="325" x2="585" y2="325" stroke="var(--text-theme, #10b981)" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="600" y="330" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">Same project (ALLOW)</text>
+  <line x1="565" y1="345" x2="585" y2="345" stroke="var(--text-theme, #dc2626)" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="600" y="350" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">Different project (DENY)</text>
+  <line x1="565" y1="365" x2="585" y2="365" stroke="var(--text-theme, #f59e0b)" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="600" y="370" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">Admin cross-access (AUDIT)</text>
+</svg>

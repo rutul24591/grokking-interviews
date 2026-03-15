@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">Session Timeout Strategies</title>
+  <desc id="desc">Comparison of idle timeout vs absolute timeout strategies for session management</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="500" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Session Timeout Strategies</text>
+  
+  <!-- Idle Timeout Graph -->
+  <rect x="50" y="70" width="340" height="200" rx="8" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="2"/>
+  <text x="220" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Idle Timeout (Sliding Window)</text>
+  
+  <!-- Idle timeout timeline -->
+  <line x1="80" y1="180" x2="360" y2="180" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  <text x="370" y="185" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">Time →</text>
+  
+  <!-- Activity markers -->
+  <circle cx="120" cy="180" r="8" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="120" y="200" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Login</text>
+  
+  <circle cx="180" cy="180" r="8" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="180" y="200" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Click</text>
+  
+  <circle cx="240" cy="180" r="8" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="240" y="200" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Click</text>
+  
+  <circle cx="300" cy="180" r="8" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="300" y="200" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Click</text>
+  
+  <!-- Session active bar -->
+  <rect x="120" y="140" width="200" height="20" rx="4" fill="var(--bg-theme, #10b981)" opacity="0.6"/>
+  <text x="220" y="155" text-anchor="middle" font-size="9" fill="white">Session Active (extends with activity)</text>
+  
+  <!-- Idle timeout marker -->
+  <line x1="340" y1="130" x2="340" y2="230" stroke="var(--text-theme, #dc2626)" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="340" y="245" text-anchor="middle" font-size="9" fill="var(--text-theme, #dc2626">Expire after 15min idle</text>
+  
+  <!-- Absolute Timeout Graph -->
+  <rect x="410" y="70" width="340" height="200" rx="8" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="2"/>
+  <text x="580" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Absolute Timeout (Fixed Window)</text>
+  
+  <!-- Absolute timeout timeline -->
+  <line x1="440" y1="180" x2="720" y2="180" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  <text x="730" y="185" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">Time →</text>
+  
+  <!-- Activity markers -->
+  <circle cx="480" cy="180" r="8" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="480" y="200" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Login</text>
+  
+  <circle cx="540" cy="180" r="8" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="540" y="200" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Click</text>
+  
+  <circle cx="600" cy="180" r="8" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="600" y="200" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Click</text>
+  
+  <circle cx="660" cy="180" r="8" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="660" y="200" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Click</text>
+  
+  <!-- Session active bar -->
+  <rect x="480" y="140" width="200" height="20" rx="4" fill="var(--bg-theme, #f59e0b)" opacity="0.6"/>
+  <text x="580" y="155" text-anchor="middle" font-size="9" fill="white">Session Active (fixed 8hr window)</text>
+  
+  <!-- Absolute timeout marker -->
+  <line x1="680" y1="130" x2="680" y2="230" stroke="var(--text-theme, #dc2626)" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="680" y="245" text-anchor="middle" font-size="9" fill="var(--text-theme, #dc2626">Expire at 8hr (fixed)</text>
+  
+  <!-- Comparison Table -->
+  <rect x="50" y="300" width="340" height="180" rx="8" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="220" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Idle Timeout</text>
+  
+  <rect x="70" y="340" width="300" height="35" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="220" y="362" text-anchor="middle" font-size="10" fill="white">✓ Better UX for active users</text>
+  
+  <rect x="70" y="385" width="300" height="35" rx="4" fill="var(--bg-theme, #dc2626)" stroke="var(--border-theme, #991b1b)" stroke-width="1"/>
+  <text x="220" y="407" text-anchor="middle" font-size="10" fill="white">✗ Session can last indefinitely</text>
+  
+  <rect x="70" y="430" width="300" height="35" rx="4" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="220" y="452" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Use: Low-security apps, internal tools</text>
+  
+  <!-- Absolute Timeout Comparison -->
+  <rect x="410" y="300" width="340" height="180" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="580" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Absolute Timeout</text>
+  
+  <rect x="430" y="340" width="300" height="35" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="580" y="362" text-anchor="middle" font-size="10" fill="white">✓ Limits session hijacking window</text>
+  
+  <rect x="430" y="385" width="300" height="35" rx="4" fill="var(--bg-theme, #dc2626)" stroke="var(--border-theme, #991b1b)" stroke-width="1"/>
+  <text x="580" y="407" text-anchor="middle" font-size="10" fill="white">✗ Users must re-login periodically</text>
+  
+  <rect x="430" y="430" width="300" height="35" rx="4" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="580" y="452" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Use: Banking, healthcare, high-security</text>
+  
+  <!-- Recommendation -->
+  <rect x="50" y="490" width="700" height="40" rx="8" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="400" y="515" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Best Practice: Use BOTH idle timeout (15-30min) AND absolute timeout (8-24hr)</text>
+</svg>

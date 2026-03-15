@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 450">
+  <defs>
+    <style>
+      .title { font: bold 20px system-ui, -apple-system, sans-serif; fill: #1a1a2e; }
+      .label { font: 14px system-ui, -apple-system, sans-serif; fill: #333; }
+      .small-label { font: 12px system-ui, -apple-system, sans-serif; fill: #555; }
+      .mobile { fill: #e3f2fd; stroke: #2196f3; stroke-width: 2; }
+      .tablet { fill: #e8f5e9; stroke: #4caf50; stroke-width: 2; }
+      .desktop { fill: #fff3e0; stroke: #ff9800; stroke-width: 2; }
+    </style>
+  </defs>
+  
+  <text x="425" y="35" text-anchor="middle" class="title">Mobile-First Approach</text>
+  <text x="425" y="55" text-anchor="middle" class="small-label">Starting with mobile base styles and progressively enhancing for larger screens</text>
+  
+  <!-- Mobile First Flow -->
+  <rect x="50" y="80" width="150" height="180" fill="#e3f2fd" stroke="#2196f3" rx="6"/>
+  <text x="125" y="105" text-anchor="middle" class="label" font-weight="bold">1. Mobile Base</text>
+  <text x="125" y="122" text-anchor="middle" class="small-label" fill="#1565c0">(No media query)</text>
+  <line x1="70" y1="132" x2="180" y2="132" stroke="#2196f3" stroke-width="1"/>
+  
+  <rect x="80" y="145" width="90" height="100" fill="#bbdefb" stroke="#2196f3" rx="3"/>
+  <text x="125" y="180" text-anchor="middle" class="small-label">Single column</text>
+  <text x="125" y="197" text-anchor="middle" class="small-label">Stacked layout</text>
+  <text x="125" y="214" text-anchor="middle" class="small-label">Touch-friendly</text>
+  <text x="125" y="231" text-anchor="middle" class="small-label">Minimal CSS</text>
+  
+  <line x1="200" y1="170" x2="240" y2="170" class="arrow"/>
+  <text x="220" y="160" text-anchor="middle" class="small-label">@media</text>
+  <text x="220" y="175" text-anchor="middle" class="small-label">(min-width:</text>
+  <text x="220" y="190" text-anchor="middle" class="small-label">768px)</text>
+  
+  <!-- Tablet -->
+  <rect x="260" y="80" width="150" height="180" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+  <text x="335" y="105" text-anchor="middle" class="label" font-weight="bold">2. Tablet</text>
+  <text x="335" y="122" text-anchor="middle" class="small-label" fill="#2e7d32">(Enhanced)</text>
+  <line x1="280" y1="132" x2="390" y2="132" stroke="#4caf50" stroke-width="1"/>
+  
+  <rect x="290" y="145" width="120" height="100" fill="#c8e6c9" stroke="#4caf50" rx="3"/>
+  <text x="350" y="180" text-anchor="middle" class="small-label">Two columns</text>
+  <text x="350" y="197" text-anchor="middle" class="small-label">More spacing</text>
+  <text x="350" y="214" text-anchor="middle" class="small-label">Enhanced nav</text>
+  
+  <line x1="410" y1="170" x2="450" y2="170" class="arrow"/>
+  <text x="430" y="160" text-anchor="middle" class="small-label">@media</text>
+  <text x="430" y="175" text-anchor="middle" class="small-label">(min-width:</text>
+  <text x="430" y="190" text-anchor="middle" class="small-label">1024px)</text>
+  
+  <!-- Desktop -->
+  <rect x="470" y="80" width="150" height="180" fill="#fff3e0" stroke="#ff9800" rx="6"/>
+  <text x="545" y="105" text-anchor="middle" class="label" font-weight="bold">3. Desktop</text>
+  <text x="545" y="122" text-anchor="middle" class="small-label" fill="#ef6c00">(Full)</text>
+  <line x1="490" y1="132" x2="600" y2="132" stroke="#ff9800" stroke-width="1"/>
+  
+  <rect x="500" y="145" width="100" height="100" fill="#ffe0b2" stroke="#ff9800" rx="3"/>
+  <text x="550" y="180" text-anchor="middle" class="small-label">Multi-column</text>
+  <text x="550" y="197" text-anchor="middle" class="small-label">Full nav</text>
+  <text x="550" y="214" text-anchor="middle" class="small-label">Hover states</text>
+  <text x="550" y="231" text-anchor="middle" class="small-label">Max width</text>
+  
+  <!-- CSS Example -->
+  <rect x="50" y="280" width="350" height="150" fill="#263238" stroke="#666" rx="6"/>
+  <text x="225" y="305" text-anchor="middle" class="label" font-weight="bold" fill="#fff">CSS Example</text>
+  <line x1="70" y1="315" x2="380" y2="315" stroke="#666" stroke-width="1"/>
+  
+  <text x="80" y="335" text-anchor="start" class="small-label" fill="#4caf50">/* Base (Mobile) */</text>
+  <text x="80" y="352" text-anchor="start" class="small-label" fill="#fff">.container { padding: 1rem; }</text>
+  <text x="80" y="369" text-anchor="start" class="small-label" fill="#fff">.nav { flex-direction: column; }</text>
+  
+  <text x="80" y="395" text-anchor="start" class="small-label" fill="#ff9800">/* Tablet+ */</text>
+  <text x="80" y="412" text-anchor="start" class="small-label" fill="#fff">@media (min-width: 768px) {</text>
+  <text x="100" y="427" text-anchor="start" class="small-label" fill="#fff">.container { padding: 2rem; }</text>
+  
+  <!-- Why Mobile First -->
+  <rect x="420" y="280" width="200" height="150" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="520" y="305" text-anchor="middle" class="label" font-weight="bold">Why Mobile-First?</text>
+  <line x1="440" y1="315" x2="600" y2="315" stroke="#999" stroke-width="1"/>
+  
+  <text x="450" y="340" text-anchor="start" class="small-label" fill="#4caf50">✓ Performance (minimal CSS)</text>
+  <text x="450" y="360" text-anchor="start" class="small-label" fill="#4caf50">✓ Focus on essentials</text>
+  <text x="450" y="380" text-anchor="start" class="small-label" fill="#4caf50">✓ Google mobile-first indexing</text>
+  <text x="450" y="400" text-anchor="start" class="small-label" fill="#4caf50">✓ Easier to add than remove</text>
+  
+  <!-- Breakpoints -->
+  <rect x="640" y="280" width="190" height="150" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="735" y="305" text-anchor="middle" class="label" font-weight="bold">Common Breakpoints</text>
+  <line x1="660" y1="315" x2="810" y2="315" stroke="#999" stroke-width="1"/>
+  
+  <text x="670" y="340" text-anchor="start" class="small-label">320px - Small phones</text>
+  <text x="670" y="360" text-anchor="start" class="small-label">768px - Tablets</text>
+  <text x="670" y="380" text-anchor="start" class="small-label">1024px - Laptops</text>
+  <text x="670" y="400" text-anchor="start" class="small-label">1280px+ - Desktops</text>
+</svg>

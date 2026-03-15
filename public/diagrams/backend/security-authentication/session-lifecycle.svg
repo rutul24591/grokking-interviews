@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">Session Lifecycle Management</title>
+  <desc id="desc">Session lifecycle showing issuance, validation, rotation, and invalidation flow</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="500" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Session Lifecycle Management</text>
+  
+  <!-- Session Issuance -->
+  <rect x="50" y="70" width="160" height="100" rx="8" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="130" y="105" text-anchor="middle" font-size="12" font-weight="bold" fill="white">1. Issuance</text>
+  <text x="130" y="135" text-anchor="middle" font-size="9" fill="white">User login</text>
+  <text x="130" y="150" text-anchor="middle" font-size="9" fill="white">Generate session ID</text>
+  <text x="130" y="165" text-anchor="middle" font-size="9" fill="white">Set cookie</text>
+  
+  <!-- Session Storage -->
+  <rect x="250" y="70" width="160" height="100" rx="8" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="330" y="105" text-anchor="middle" font-size="12" font-weight="bold" fill="white">2. Storage</text>
+  <text x="330" y="135" text-anchor="middle" font-size="9" fill="white">Redis/Memcached</text>
+  <text x="330" y="150" text-anchor="middle" font-size="9" fill="white">Session data + TTL</text>
+  <text x="330" y="165" text-anchor="middle" font-size="9" fill="white">User ID, roles</text>
+  
+  <!-- Session Validation -->
+  <rect x="450" y="70" width="160" height="100" rx="8" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #d97706)" stroke-width="2"/>
+  <text x="530" y="105" text-anchor="middle" font-size="12" font-weight="bold" fill="white">3. Validation</text>
+  <text x="530" y="135" text-anchor="middle" font-size="9" fill="white">Check session exists</text>
+  <text x="530" y="150" text-anchor="middle" font-size="9" fill="white">Verify not expired</text>
+  <text x="530" y="165" text-anchor="middle" font-size="9" fill="white">Refresh TTL</text>
+  
+  <!-- Session Termination -->
+  <rect x="650" y="70" width="100" height="100" rx="8" fill="var(--bg-theme, #dc2626)" stroke="var(--border-theme, #991b1b)" stroke-width="2"/>
+  <text x="700" y="105" text-anchor="middle" font-size="12" font-weight="bold" fill="white">4. End</text>
+  <text x="700" y="135" text-anchor="middle" font-size="9" fill="white">Logout</text>
+  <text x="700" y="150" text-anchor="middle" font-size="9" fill="white">Expire</text>
+  <text x="700" y="165" text-anchor="middle" font-size="9" fill="white">Revoke</text>
+  
+  <!-- Flow Arrows -->
+  <defs>
+    <marker id="arrowSession" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #3b82f6)"/>
+    </marker>
+  </defs>
+  
+  <line x1="210" y1="120" x2="250" y2="120" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrowSession)"/>
+  <line x1="410" y1="120" x2="450" y2="120" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrowSession)"/>
+  <line x1="610" y1="120" x2="650" y2="120" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrowSession)"/>
+  
+  <!-- Session Cookie Details -->
+  <rect x="50" y="200" width="340" height="140" rx="8" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="2"/>
+  <text x="220" y="225" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Secure Session Cookie</text>
+  
+  <rect x="70" y="240" width="300" height="35" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="220" y="262" text-anchor="middle" font-size="10" fill="white">HttpOnly: Prevent XSS access</text>
+  
+  <rect x="70" y="285" width="300" height="35" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="220" y="307" text-anchor="middle" font-size="10" fill="white">Secure: HTTPS only transmission</text>
+  
+  <rect x="70" y="330" width="300" height="35" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="220" y="352" text-anchor="middle" font-size="10" fill="white">SameSite=Strict: CSRF protection</text>
+  
+  <!-- Session Rotation -->
+  <rect x="430" y="200" width="320" height="140" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="590" y="225" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Session Rotation</text>
+  
+  <rect x="450" y="245" width="280" height="40" rx="4" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="590" y="267" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Rotate on privilege change</text>
+  <text x="590" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Prevent session fixation attacks</text>
+  
+  <rect x="450" y="295" width="280" height="40" rx="4" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="590" y="317" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Rotate after inactivity</text>
+  <text x="590" y="330" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Limit session hijacking window</text>
+  
+  <!-- Session Invalidation -->
+  <rect x="50" y="370" width="340" height="110" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #dc2626)" stroke-width="2"/>
+  <text x="220" y="395" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Invalidation Strategies</text>
+  
+  <rect x="70" y="410" width="300" height="30" rx="4" fill="var(--bg-theme, #dc2626)" stroke="var(--border-theme, #991b1b)" stroke-width="1"/>
+  <text x="220" y="430" text-anchor="middle" font-size="10" fill="white">Logout: Delete from session store</text>
+  
+  <rect x="70" y="450" width="300" height="25" rx="4" fill="var(--bg-theme, #dc2626)" stroke="var(--border-theme, #991b1b)" stroke-width="1"/>
+  <text x="220" y="468" text-anchor="middle" font-size="9" fill="white">Password change: Invalidate all sessions</text>
+  
+  <!-- Session Timeout -->
+  <rect x="430" y="370" width="320" height="110" rx="8" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="590" y="395" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Timeout Types</text>
+  
+  <rect x="450" y="410" width="130" height="60" rx="4" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="515" y="432" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b">Idle Timeout</text>
+  <text x="515" y="452" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">15-30 minutes</text>
+  <text x="515" y="465" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">No activity</text>
+  
+  <rect x="600" y="410" width="130" height="60" rx="4" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="665" y="432" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b">Absolute Timeout</text>
+  <text x="665" y="452" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">8-24 hours</text>
+  <text x="665" y="465" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Max session age</text>
+</svg>

@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 500">
+  <defs>
+    <style>
+      .title { font: bold 20px system-ui, -apple-system, sans-serif; fill: #1a1a2e; }
+      .label { font: 14px system-ui, -apple-system, sans-serif; fill: #333; }
+      .small-label { font: 12px system-ui, -apple-system, sans-serif; fill: #555; }
+      .box-server { fill: #e3f2fd; stroke: #2196f3; stroke-width: 2; }
+      .box-client { fill: #e8f5e9; stroke: #4caf50; stroke-width: 2; }
+      .box-url { fill: #fff3e0; stroke: #ff9800; stroke-width: 2; }
+      .box-form { fill: #fce4ec; stroke: #e91e63; stroke-width: 2; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="425" y="35" text-anchor="middle" class="title">Server State vs Client State Architecture</text>
+  <text x="425" y="55" text-anchor="middle" class="small-label">Separation of concerns — each handled by appropriate tools</text>
+  
+  <!-- Server State Section -->
+  <rect x="30" y="80" width="380" height="200" class="box-server" rx="8"/>
+  <text x="220" y="105" text-anchor="middle" class="label" font-weight="bold" font-size="16">Server State</text>
+  <text x="220" y="125" text-anchor="middle" class="small-label" fill="#2196f3">(Data from APIs)</text>
+  <line x1="50" y1="135" x2="390" y2="135" stroke="#2196f3" stroke-width="1"/>
+  
+  <!-- Server State Characteristics -->
+  <text x="60" y="155" text-anchor="start" class="small-label" font-weight="bold">Characteristics:</text>
+  <text x="60" y="175" text-anchor="start" class="small-label">• Owned by server (client is cache)</text>
+  <text x="60" y="192" text-anchor="start" class="small-label">• Can become stale</text>
+  <text x="60" y="209" text-anchor="start" class="small-label">• Shared across users</text>
+  <text x="60" y="226" text-anchor="start" class="small-label">• Requires network requests</text>
+  <text x="60" y="243" text-anchor="start" class="small-label">• Needs caching, deduplication</text>
+  
+  <!-- Server State Tools -->
+  <rect x="60" y="255" width="310" height="20" fill="#bbdefb" stroke="#2196f3" rx="3"/>
+  <text x="215" y="270" text-anchor="middle" class="small-label" font-weight="bold">Tools: React Query, SWR, Apollo Client</text>
+  
+  <!-- Client State Section -->
+  <rect x="440" y="80" width="380" height="200" class="box-client" rx="8"/>
+  <text x="630" y="105" text-anchor="middle" class="label" font-weight="bold" font-size="16">Client State</text>
+  <text x="630" y="125" text-anchor="middle" class="small-label" fill="#4caf50">(UI State)</text>
+  <line x1="460" y1="135" x2="800" y2="135" stroke="#4caf50" stroke-width="1"/>
+  
+  <!-- Client State Characteristics -->
+  <text x="470" y="155" text-anchor="start" class="small-label" font-weight="bold">Characteristics:</text>
+  <text x="470" y="175" text-anchor="start" class="small-label">• Owned by client (fully controlled)</text>
+  <text x="470" y="192" text-anchor="start" class="small-label">• Always in sync</text>
+  <text x="470" y="209" text-anchor="start" class="small-label">• Specific to user/session</text>
+  <text x="470" y="226" text-anchor="start" class="small-label">• Instant access (no network)</text>
+  <text x="470" y="243" text-anchor="start" class="small-label">• Simple CRUD operations</text>
+  
+  <!-- Client State Tools -->
+  <rect x="460" y="255" width="340" height="20" fill="#c8e6c9" stroke="#4caf50" rx="3"/>
+  <text x="630" y="270" text-anchor="middle" class="small-label" font-weight="bold">Tools: Zustand, Context, Redux</text>
+  
+  <!-- URL State Section -->
+  <rect x="30" y="300" width="250" height="100" class="box-url" rx="6"/>
+  <text x="155" y="325" text-anchor="middle" class="label" font-weight="bold">URL State</text>
+  <line x1="50" y1="335" x2="260" y2="335" stroke="#ff9800" stroke-width="1"/>
+  <text x="155" y="355" text-anchor="middle" class="small-label">Query params, route params</text>
+  <text x="155" y="372" text-anchor="middle" class="small-label">Filters, pagination, sorting</text>
+  <rect x="50" y="380" width="210" height="15" fill="#ffe0b2" stroke="#ff9800" rx="2"/>
+  <text x="155" y="391" text-anchor="middle" class="small-label">Use: React Router, searchParams</text>
+  
+  <!-- Form State Section -->
+  <rect x="300" y="300" width="250" height="100" class="box-form" rx="6"/>
+  <text x="425" y="325" text-anchor="middle" class="label" font-weight="bold">Form State</text>
+  <line x1="320" y1="335" x2="530" y2="335" stroke="#e91e63" stroke-width="1"/>
+  <text x="425" y="355" text-anchor="middle" class="small-label">Input values, validation, errors</text>
+  <text x="425" y="372" text-anchor="middle" class="small-label">Dirty/pristine, touched states</text>
+  <rect x="320" y="380" width="210" height="15" fill="#f8bbd9" stroke="#e91e63" rx="2"/>
+  <text x="425" y="391" text-anchor="middle" class="small-label">Use: React Hook Form, Formik</text>
+  
+  <!-- Local Component State -->
+  <rect x="570" y="300" width="250" height="100" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="695" y="325" text-anchor="middle" class="label" font-weight="bold">Local Component State</text>
+  <line x1="590" y1="335" x2="800" y2="335" stroke="#999" stroke-width="1"/>
+  <text x="695" y="355" text-anchor="middle" class="small-label">Toggle, input, loading states</text>
+  <text x="695" y="372" text-anchor="middle" class="small-label">Specific to one component</text>
+  <rect x="590" y="380" width="210" height="15" fill="#e0e0e0" stroke="#666" rx="2"/>
+  <text x="695" y="391" text-anchor="middle" class="small-label">Use: useState, useReducer</text>
+  
+  <!-- Recommended Architecture -->
+  <rect x="30" y="420" width="790" height="70" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="425" y="445" text-anchor="middle" class="label" font-weight="bold">Recommended Architecture for Most Applications</text>
+  <line x1="50" y1="455" x2="800" y2="455" stroke="#999" stroke-width="1"/>
+  
+  <text x="100" y="475" text-anchor="start" class="small-label">
+    <tspan fill="#2196f3" font-weight="bold">Server State:</tspan> React Query / SWR
+  </text>
+  <text x="280" y="475" text-anchor="start" class="small-label">
+    <tspan fill="#4caf50" font-weight="bold">Client State:</tspan> Zustand / Context
+  </text>
+  <text x="480" y="475" text-anchor="start" class="small-label">
+    <tspan fill="#2196f3" font-weight="bold">URL State:</tspan> React Router
+  </text>
+  <text x="650" y="475" text-anchor="start" class="small-label">
+    <tspan fill="#e91e63" font-weight="bold">Form State:</tspan> React Hook Form
+  </text>
+</svg>

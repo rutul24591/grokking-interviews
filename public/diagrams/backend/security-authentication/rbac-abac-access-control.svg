@@ -1,0 +1,211 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 750" role="img" aria-labelledby="title desc">
+  <title id="title">RBAC and ABAC Access Control Models</title>
+  <desc id="desc">Comprehensive comparison of Role-Based Access Control (RBAC) and Attribute-Based Access Control (ABAC) with AWS examples and implementation patterns</desc>
+  
+  <!-- Background -->
+  <rect width="950" height="750" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="475" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="var(--text-theme, #1e293b)">RBAC vs ABAC Access Control Models</text>
+  <text x="475" y="60" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Role-Based and Attribute-Based authorization for modern systems</text>
+  
+  <!-- RBAC Section -->
+  <rect x="30" y="80" width="435" height="380" rx="8" fill="var(--bg-panel-hover, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="247" y="108" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e40af)">Role-Based Access Control (RBAC)</text>
+  
+  <!-- RBAC Diagram -->
+  <rect x="50" y="125" width="395" height="160" rx="6" fill="white" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  
+  <!-- Users -->
+  <rect x="70" y="145" width="80" height="120" rx="6" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="110" y="175" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Users</text>
+  <text x="110" y="195" text-anchor="middle" font-size="9" fill="#bfdbfe">Alice</text>
+  <text x="110" y="210" text-anchor="middle" font-size="9" fill="#bfdbfe">Bob</text>
+  <text x="110" y="225" text-anchor="middle" font-size="9" fill="#bfdbfe">Charlie</text>
+  <text x="110" y="240" text-anchor="middle" font-size="9" fill="#bfdbfe">Diana</text>
+  
+  <!-- Arrow -->
+  <line x1="150" y1="205" x2="180" y2="205" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="165" y="195" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">assigned</text>
+  <text x="165" y="220" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">to</text>
+  
+  <!-- Roles -->
+  <rect x="190" y="145" width="100" height="120" rx="6" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="240" y="175" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Roles</text>
+  <text x="240" y="195" text-anchor="middle" font-size="9" fill="#c4b5fd">Admin</text>
+  <text x="240" y="210" text-anchor="middle" font-size="9" fill="#c4b5fd">Editor</text>
+  <text x="240" y="225" text-anchor="middle" font-size="9" fill="#c4b5fd">Viewer</text>
+  <text x="240" y="240" text-anchor="middle" font-size="9" fill="#c4b5fd">Auditor</text>
+  
+  <!-- Arrow -->
+  <line x1="290" y1="205" x2="320" y2="205" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="305" y="195" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">grants</text>
+  <text x="305" y="220" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">access</text>
+  <text x="305" y="235" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">to</text>
+  
+  <!-- Permissions -->
+  <rect x="330" y="145" width="100" height="120" rx="6" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="380" y="175" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Permissions</text>
+  <text x="380" y="195" text-anchor="middle" font-size="9" fill="#6ee7b7">read:*</text>
+  <text x="380" y="210" text-anchor="middle" font-size="9" fill="#6ee7b7">write:docs</text>
+  <text x="380" y="225" text-anchor="middle" font-size="9" fill="#6ee7b7">delete:own</text>
+  <text x="380" y="240" text-anchor="middle" font-size="9" fill="#6ee7b7">admin:users</text>
+  
+  <!-- RBAC Characteristics -->
+  <rect x="50" y="300" width="395" height="145" rx="6" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="247" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">RBAC Characteristics</text>
+  
+  <text x="70" y="350" text-anchor="start" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b">✓ Advantages:</text>
+  <text x="85" y="368" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Simple to understand and implement</text>
+  <text x="85" y="383" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Easy to audit (who has what role)</text>
+  <text x="85" y="398" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Good for stable organizational structures</text>
+  <text x="85" y="413" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Built-in support in most systems</text>
+  
+  <text x="260" y="350" text-anchor="start" font-size="10" font-weight="bold" fill="var(--text-theme, #ef4444">✗ Limitations:</text>
+  <text x="275" y="368" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Role explosion (too many roles)</text>
+  <text x="275" y="383" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Inflexible for dynamic conditions</text>
+  <text x="275" y="398" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Context-unaware (time, location)</text>
+  <text x="275" y="413" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Hard to scale in complex orgs</text>
+  
+  <!-- ABAC Section -->
+  <rect x="485" y="80" width="435" height="380" rx="8" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="702" y="108" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #059669">Attribute-Based Access Control (ABAC)</text>
+  
+  <!-- ABAC Diagram -->
+  <rect x="505" y="125" width="395" height="200" rx="6" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  
+  <!-- Subject Attributes -->
+  <rect x="520" y="145" width="100" height="160" rx="6" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="570" y="170" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Subject</text>
+  <text x="570" y="190" text-anchor="middle" font-size="9" fill="#bfdbfe">Attributes:</text>
+  <text x="570" y="208" text-anchor="middle" font-size="8" fill="#bfdbfe">• role=admin</text>
+  <text x="570" y="223" text-anchor="middle" font-size="8" fill="#bfdbfe">• dept=engineering</text>
+  <text x="570" y="238" text-anchor="middle" font-size="8" fill="#bfdbfe">• clearance=L4</text>
+  <text x="570" y="253" text-anchor="middle" font-size="8" fill="#bfdbfe">• mfa=true</text>
+  <text x="570" y="268" text-anchor="middle" font-size="8" fill="#bfdbfe">• location=US</text>
+  <text x="570" y="283" text-anchor="middle" font-size="8" fill="#bfdbfe">• time=09:00</text>
+  
+  <!-- Arrow -->
+  <line x1="620" y1="225" x2="645" y2="225" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Policy Decision Point -->
+  <rect x="650" y="145" width="110" height="160" rx="6" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="2"/>
+  <text x="705" y="170" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Policy</text>
+  <text x="705" y="188" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Decision</text>
+  <text x="705" y="208" text-anchor="middle" font-size="9" fill="#fcd34d">PDP evaluates:</text>
+  <text x="705" y="228" text-anchor="middle" font-size="8" fill="#fcd34d">Subject + Resource</text>
+  <text x="705" y="243" text-anchor="middle" font-size="8" fill="#fcd34d">+ Action + Context</text>
+  <text x="705" y="263" text-anchor="middle" font-size="8" fill="#fcd34d">Against policies</text>
+  <text x="705" y="283" text-anchor="middle" font-size="9" fill="white" font-weight="bold">Allow/Deny</text>
+  
+  <!-- Arrow -->
+  <line x1="760" y1="225" x2="785" y2="225" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Resource Attributes -->
+  <rect x="790" y="145" width="100" height="160" rx="6" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="840" y="170" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Resource</text>
+  <text x="840" y="190" text-anchor="middle" font-size="9" fill="#6ee7b7">Attributes:</text>
+  <text x="840" y="208" text-anchor="middle" font-size="8" fill="#6ee7b7">• type=document</text>
+  <text x="840" y="223" text-anchor="middle" font-size="8" fill="#6ee7b7">• owner=alice</text>
+  <text x="840" y="238" text-anchor="middle" font-size="8" fill="#6ee7b7">• sensitivity=confidential</text>
+  <text x="840" y="253" text-anchor="middle" font-size="8" fill="#6ee7b7">• dept=engineering</text>
+  <text x="840" y="268" text-anchor="middle" font-size="8" fill="#6ee7b7">• classification=internal</text>
+  
+  <!-- ABAC Policy Examples -->
+  <rect x="505" y="340" width="395" height="105" rx="6" fill="var(--bg-panel-hover, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="702" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #059669">ABAC Policy Examples</text>
+  
+  <rect x="520" y="375" width="365" height="60" rx="4" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="535" y="395" text-anchor="start" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b">Policy 1:</text>
+  <text x="535" y="410" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">IF subject.role == "admin" AND subject.mfa == true</text>
+  <text x="535" y="425" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">AND resource.classification != "top-secret"</text>
+  <text x="700" y="425" text-anchor="end" font-size="9" font-weight="bold" fill="var(--text-theme, #10b981">→ ALLOW</text>
+  
+  <!-- ABAC Characteristics -->
+  <rect x="505" y="455" width="395" height="145" rx="6" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="702" y="480" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">ABAC Characteristics</text>
+  
+  <text x="525" y="505" text-anchor="start" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b">✓ Advantages:</text>
+  <text x="540" y="523" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Highly flexible and granular</text>
+  <text x="540" y="538" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Context-aware (time, location, device)</text>
+  <text x="540" y="553" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Scales better for complex orgs</text>
+  <text x="540" y="568" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Dynamic access decisions</text>
+  
+  <text x="715" y="505" text-anchor="start" font-size="10" font-weight="bold" fill="var(--text-theme, #ef4444">✗ Limitations:</text>
+  <text x="730" y="523" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Complex to design and manage</text>
+  <text x="730" y="538" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Policy conflicts possible</text>
+  <text x="730" y="553" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Requires attribute infrastructure</text>
+  <text x="730" y="568" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Harder to audit</text>
+  
+  <!-- AWS Comparison Section -->
+  <rect x="30" y="475" width="890" height="255" rx="8" fill="var(--bg-panel-hover, #faf5ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="475" y="503" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #6d28d9">AWS Implementation Comparison</text>
+  
+  <!-- AWS RBAC -->
+  <rect x="50" y="520" width="420" height="195" rx="6" fill="white" stroke="var(--border-theme, #a78bfa)" stroke-width="1"/>
+  <text x="260" y="545" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #6d28d9">AWS RBAC (IAM Roles)</text>
+  
+  <rect x="65" y="555" width="390" height="150" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  
+  <text x="80" y="580" text-anchor="start" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b">Example IAM Policy:</text>
+  <text x="80" y="600" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">{</text>
+  <text x="95" y="615" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">"Effect": "Allow",</text>
+  <text x="95" y="630" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">"Principal": {"AWS": "arn:aws:iam::123456789:role/Admin"},</text>
+  <text x="95" y="645" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">"Action": ["s3:GetObject", "s3:PutObject"],</text>
+  <text x="95" y="660" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">"Resource": "arn:aws:s3:::my-bucket/*"</text>
+  <text x="80" y="675" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">}</text>
+  
+  <text x="280" y="580" text-anchor="start" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b">Use Cases:</text>
+  <text x="295" y="600" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• EC2 instance roles</text>
+  <text x="295" y="618" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Cross-account access</text>
+  <text x="295" y="636" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Service-linked roles</text>
+  <text x="295" y="654" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• User/Group permissions</text>
+  <text x="295" y="672" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Lambda execution roles</text>
+  
+  <!-- AWS ABAC -->
+  <rect x="490" y="520" width="420" height="195" rx="6" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="700" y="545" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #059669">AWS ABAC (Attribute-Based)</text>
+  
+  <rect x="505" y="555" width="390" height="150" rx="4" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  
+  <text x="520" y="580" text-anchor="start" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b">Example IAM Policy with Tags:</text>
+  <text x="520" y="600" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">{</text>
+  <text x="535" y="615" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">"Effect": "Allow",</text>
+  <text x="535" y="630" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">"Action": "s3:*",</text>
+  <text x="535" y="645" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">"Resource": "*",</text>
+  <text x="535" y="660" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">"Condition": {</text>
+  <text x="550" y="675" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">"StringEquals": {</text>
+  <text x="565" y="690" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">"aws:PrincipalTag/Department": "${aws:ResourceTag/Department}"</text>
+  <text x="550" y="705" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">}</text>
+  <text x="520" y="720" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">}</text>
+  
+  <text x="720" y="580" text-anchor="start" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b">Use Cases:</text>
+  <text x="735" y="600" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Resource tagging policies</text>
+  <text x="735" y="618" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Cost center-based access</text>
+  <text x="735" y="636" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Project-based permissions</text>
+  <text x="735" y="654" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Environment isolation</text>
+  <text x="735" y="672" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Compliance boundaries</text>
+  
+  <!-- Decision Matrix -->
+  <rect x="30" y="740" width="890" height="90" rx="6" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="475" y="765" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">When to Use Each Model</text>
+  
+  <rect x="50" y="775" width="270" height="45" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="185" y="795" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #1e40af">Choose RBAC When:</text>
+  <text x="185" y="812" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Stable org, simple permissions, quick setup</text>
+  
+  <rect x="340" y="775" width="270" height="45" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="475" y="795" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #059669">Choose ABAC When:</text>
+  <text x="475" y="812" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Dynamic access, fine-grained control, complex org</text>
+  
+  <rect x="630" y="775" width="270" height="45" rx="4" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="765" y="795" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309">Hybrid Approach:</text>
+  <text x="765" y="812" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">RBAC for base access + ABAC for restrictions</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <style>
+      .title { font: bold 20px system-ui, -apple-system, sans-serif; fill: #1a1a2e; }
+      .label { font: 14px system-ui, -apple-system, sans-serif; fill: #333; }
+      .small-label { font: 12px system-ui, -apple-system, sans-serif; fill: #555; }
+      .box-app { fill: #e3f2fd; stroke: #2196f3; stroke-width: 2; }
+      .box-route { fill: #fff3e0; stroke: #ff9800; stroke-width: 2; }
+      .box-component { fill: #e8f5e9; stroke: #4caf50; stroke-width: 2; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .dashed { stroke: #999; stroke-width: 2; stroke-dasharray: 5,5; fill: none; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" class="title">Error Boundary Hierarchy</text>
+  <text x="400" y="55" text-anchor="middle" class="small-label">Multi-level error containment for graceful degradation</text>
+  
+  <!-- App Level Boundary -->
+  <rect x="50" y="80" width="700" height="120" class="box-app" rx="8"/>
+  <text x="400" y="105" text-anchor="middle" class="label" font-weight="bold">App-Level Error Boundary</text>
+  <text x="400" y="125" text-anchor="middle" class="small-label">Catches any unhandled error • Shows "Something went wrong" • Last line of defense</text>
+  
+  <!-- App Level Fallback -->
+  <rect x="550" y="140" width="180" height="50" fill="#ffcdd2" stroke="#f44336" rx="4"/>
+  <text x="640" y="160" text-anchor="middle" class="small-label" font-weight="bold">Fallback UI</text>
+  <text x="640" y="175" text-anchor="middle" class="small-label">Reload / Contact Support</text>
+  
+  <!-- Arrow down -->
+  <line x1="400" y1="200" x2="400" y2="230" class="arrow"/>
+  
+  <!-- Route Level Boundaries -->
+  <rect x="100" y="230" width="180" height="100" class="box-route" rx="6"/>
+  <text x="190" y="255" text-anchor="middle" class="label" font-weight="bold">Route A</text>
+  <text x="190" y="275" text-anchor="middle" class="small-label">Boundary</text>
+  <rect x="110" y="290" width="160" height="30" fill="#ffe0b2" stroke="#ff9800" rx="3"/>
+  <text x="190" y="310" text-anchor="middle" class="small-label">Route-specific fallback</text>
+  
+  <rect x="310" y="230" width="180" height="100" class="box-route" rx="6"/>
+  <text x="400" y="255" text-anchor="middle" class="label" font-weight="bold">Route B</text>
+  <text x="400" y="275" text-anchor="middle" class="small-label">Boundary</text>
+  <rect x="320" y="290" width="160" height="30" fill="#ffe0b2" stroke="#ff9800" rx="3"/>
+  <text x="400" y="310" text-anchor="middle" class="small-label">Route-specific fallback</text>
+  
+  <rect x="520" y="230" width="180" height="100" class="box-route" rx="6"/>
+  <text x="610" y="255" text-anchor="middle" class="label" font-weight="bold">Route C</text>
+  <text x="610" y="275" text-anchor="middle" class="small-label">Boundary</text>
+  <rect x="530" y="290" width="160" height="30" fill="#ffe0b2" stroke="#ff9800" rx="3"/>
+  <text x="610" y="310" text-anchor="middle" class="small-label">Route-specific fallback</text>
+  
+  <!-- Arrow down -->
+  <line x1="400" y1="330" x2="400" y2="360" class="arrow"/>
+  
+  <!-- Component Level Boundaries -->
+  <text x="400" y="385" text-anchor="middle" class="label" font-weight="bold">Component-Level Boundaries</text>
+  
+  <rect x="100" y="400" width="120" height="70" class="box-component" rx="4"/>
+  <text x="160" y="425" text-anchor="middle" class="small-label" font-weight="bold">Comments</text>
+  <text x="160" y="445" text-anchor="middle" class="small-label">Widget</text>
+  <text x="160" y="460" text-anchor="middle" class="small-label" fill="#4caf50">✓ Article still shows</text>
+  
+  <rect x="240" y="400" width="120" height="70" class="box-component" rx="4"/>
+  <text x="300" y="425" text-anchor="middle" class="small-label" font-weight="bold">Recommend-</text>
+  <text x="300" y="440" text-anchor="middle" class="small-label" font-weight="bold">ations</text>
+  <text x="300" y="460" text-anchor="middle" class="small-label" fill="#4caf50">✓ Defaults shown</text>
+  
+  <rect x="380" y="400" width="120" height="70" class="box-component" rx="4"/>
+  <text x="440" y="425" text-anchor="middle" class="small-label" font-weight="bold">User</text>
+  <text x="440" y="440" text-anchor="middle" class="small-label" font-weight="bold">Profile</text>
+  <text x="440" y="460" text-anchor="middle" class="small-label" fill="#4caf50">✓ Page functional</text>
+  
+  <rect x="520" y="400" width="120" height="70" class="box-component" rx="4"/>
+  <text x="580" y="425" text-anchor="middle" class="small-label" font-weight="bold">Related</text>
+  <text x="580" y="440" text-anchor="middle" class="small-label" font-weight="bold">Articles</text>
+  <text x="580" y="460" text-anchor="middle" class="small-label" fill="#4caf50">✓ Content visible</text>
+  
+  <!-- Benefits callout -->
+  <rect x="650" y="400" width="130" height="70" fill="#f5f5f5" stroke="#999" rx="4"/>
+  <text x="715" y="420" text-anchor="middle" class="small-label" font-weight="bold">Benefits:</text>
+  <text x="715" y="438" text-anchor="middle" class="small-label">• Partial functionality</text>
+  <text x="715" y="453" text-anchor="middle" class="small-label">• Graceful degradation</text>
+  <text x="715" y="468" text-anchor="middle" class="small-label">• Better UX</text>
+</svg>

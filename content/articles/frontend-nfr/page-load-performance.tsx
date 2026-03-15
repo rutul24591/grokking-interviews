@@ -7,15 +7,15 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-frontend-nfr-page-load-performance",
   title: "Page Load Performance",
-  description: "Comprehensive guide to frontend page load performance optimization, covering metrics, strategies, trade-offs, and production patterns for staff/principal engineer interviews.",
+  description: "Comprehensive guide to frontend page load performance optimization, covering metrics, strategies, trade-offs, RUM, and production patterns for staff/principal engineer interviews.",
   category: "frontend",
   subcategory: "nfr",
   slug: "page-load-performance",
   version: "extensive",
-  wordCount: 11200,
-  readingTime: 45,
+  wordCount: 15000,
+  readingTime: 60,
   lastUpdated: "2026-03-15",
-  tags: ["frontend", "nfr", "performance", "page-load", "web-vitals", "optimization"],
+  tags: ["frontend", "nfr", "performance", "page-load", "web-vitals", "optimization", "rum"],
   relatedTopics: ["perceived-performance", "rendering-strategy", "web-vitals", "critical-css"],
 };
 
@@ -690,6 +690,97 @@ export default function PageLoadPerformanceArticle() {
             biggest bottlenecks for your specific users, then optimize those.
           </li>
         </ul>
+      </section>
+
+      <section>
+        <h2>Real User Monitoring (RUM)</h2>
+        <p>
+          Real User Monitoring (RUM) collects performance data from actual users in production. Unlike lab tools
+          (Lighthouse, WebPageTest), RUM captures the full distribution of user experiences across devices,
+          networks, and geographies.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Why RUM Matters</h3>
+        <ul className="space-y-2">
+          <li>
+            <strong>Lab data is synthetic:</strong> Lighthouse runs on a single device/network. Your users have
+            hundreds of device/network combinations.
+          </li>
+          <li>
+            <strong>Field data reflects reality:</strong> RUM shows how real users experience your site — slow
+            3G in rural areas, old Android phones, congested networks.
+          </li>
+          <li>
+            <strong>Statistical significance:</strong> RUM aggregates thousands of page loads, showing percentiles
+            (p50, p75, p95) not just averages.
+          </li>
+          <li>
+            <strong>Business correlation:</strong> RUM data can be correlated with conversions, bounce rate, and
+            revenue to quantify performance impact.
+          </li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">RUM Data Sources</h3>
+        <ul className="space-y-2">
+          <li>
+            <strong>Chrome UX Report (CrUX):</strong> Aggregated, anonymized data from Chrome users. Available via
+            PageSpeed Insights API, Search Console, or BigQuery. Free, but limited to Chrome users and popular
+            sites.
+          </li>
+          <li>
+            <strong>web-vitals library:</strong> Google's JavaScript library for measuring Core Web Vitals in
+            production. Send metrics to your analytics platform using navigator.sendBeacon().
+          </li>
+          <li>
+            <strong>Commercial RUM tools:</strong> SpeedCurve, New Relic, Datadog, Akamai mPulse, Cloudflare
+            Browser Insights. Provide dashboards, alerting, and analysis.
+          </li>
+          <li>
+            <strong>Custom RUM:</strong> Build your own using the Performance API (performance.getEntriesByType('navigation'))
+            and send data to your backend.
+          </li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Key RUM Metrics</h3>
+        <p>
+          Track these metrics across percentiles (p50, p75, p95):
+        </p>
+        <ul className="space-y-2">
+          <li><strong>LCP:</strong> Largest Contentful Paint — loading performance</li>
+          <li><strong>INP:</strong> Interaction to Next Paint — interactivity and responsiveness</li>
+          <li><strong>CLS:</strong> Cumulative Layout Shift — visual stability</li>
+          <li><strong>FCP:</strong> First Contentful Paint — initial rendering</li>
+          <li><strong>TTFB:</strong> Time to First Byte — server responsiveness</li>
+          <li><strong>TBT:</strong> Total Blocking Time — main thread blocking</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Implementing RUM with web-vitals</h3>
+        <p>
+          Install the web-vitals package and send metrics to your analytics endpoint:
+        </p>
+        <ul className="space-y-2">
+          <li>Import metrics: <code>onLCP, onINP, onCLS, onFCP, onTTFB</code> from web-vitals library</li>
+          <li>Each callback receives metric object with value, rating, id, delta</li>
+          <li>Send using <code>navigator.sendBeacon()</code> for reliability (works during page unload)</li>
+          <li>Aggregate by URL, device type, network, geography</li>
+          <li>Track percentiles (p75 is Google's standard for Core Web Vitals)</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">RUM Best Practices</h3>
+        <ul className="space-y-2">
+          <li>Sample data (1-10% of users) to reduce volume and cost</li>
+          <li>Respect user.compliance (GDPR, CCPA) — anonymize IPs, get consent</li>
+          <li>Set up alerts for metric degradation (p75 LCP increases by 20%+)</li>
+          <li>Segment by device class (desktop, mobile, tablet), network (4G, 3G), and geography</li>
+          <li>Correlate with business metrics (conversion rate, bounce rate, session duration)</li>
+          <li>Use p75 percentile for Core Web Vitals (Google's standard)</li>
+        </ul>
+
+        <ArticleImage
+          src="/diagrams/frontend-nfr/rum-data-flow.svg"
+          alt="RUM Data Flow"
+          caption="Real User Monitoring data flow — from browser Performance API through analytics pipeline to dashboards and alerts"
+        />
       </section>
 
       <section>

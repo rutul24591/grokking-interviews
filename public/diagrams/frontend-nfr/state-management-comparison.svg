@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 500">
+  <defs>
+    <style>
+      .title { font: bold 20px system-ui, -apple-system, sans-serif; fill: #1a1a2e; }
+      .label { font: 14px system-ui, -apple-system, sans-serif; fill: #333; }
+      .small-label { font: 12px system-ui, -apple-system, sans-serif; fill: #555; }
+      .box-context { fill: #e3f2fd; stroke: #2196f3; stroke-width: 2; }
+      .box-zustand { fill: #e8f5e9; stroke: #4caf50; stroke-width: 2; }
+      .box-redux { fill: #fff3e0; stroke: #ff9800; stroke-width: 2; }
+      .box-recoil { fill: #fce4ec; stroke: #e91e63; stroke-width: 2; }
+      .box-mobx { fill: #f3e5f5; stroke: #9c27b0; stroke-width: 2; }
+    </style>
+  </defs>
+  
+  <!-- Title -->
+  <text x="425" y="35" text-anchor="middle" class="title">State Management Library Comparison</text>
+  <text x="425" y="55" text-anchor="middle" class="small-label">Trade-offs across boilerplate, learning curve, devtools, and use cases</text>
+  
+  <!-- React Context -->
+  <rect x="30" y="80" width="160" height="140" class="box-context" rx="6"/>
+  <text x="110" y="105" text-anchor="middle" class="label" font-weight="bold">Context</text>
+  <line x1="50" y1="115" x2="170" y2="115" stroke="#2196f3" stroke-width="1"/>
+  <text x="110" y="135" text-anchor="middle" class="small-label">Boilerplate: Low</text>
+  <text x="110" y="152" text-anchor="middle" class="small-label">Learning: Low</text>
+  <text x="110" y="169" text-anchor="middle" class="small-label">Devtools: Basic</text>
+  <text x="110" y="189" text-anchor="middle" class="small-label" fill="#4caf50">✓ Built-in</text>
+  <text x="110" y="206" text-anchor="middle" class="small-label">Simple shared state</text>
+  
+  <!-- Zustand -->
+  <rect x="210" y="80" width="160" height="140" class="box-zustand" rx="6"/>
+  <text x="290" y="105" text-anchor="middle" class="label" font-weight="bold">Zustand</text>
+  <line x1="230" y1="115" x2="350" y2="115" stroke="#4caf50" stroke-width="1"/>
+  <text x="290" y="135" text-anchor="middle" class="small-label">Boilerplate: Low</text>
+  <text x="290" y="152" text-anchor="middle" class="small-label">Learning: Low</text>
+  <text x="290" y="169" text-anchor="middle" class="small-label">Devtools: Good</text>
+  <text x="290" y="189" text-anchor="middle" class="small-label" fill="#4caf50">✓ Minimal API</text>
+  <text x="290" y="206" text-anchor="middle" class="small-label">Most applications</text>
+  
+  <!-- Redux Toolkit -->
+  <rect x="390" y="80" width="160" height="140" class="box-redux" rx="6"/>
+  <text x="470" y="105" text-anchor="middle" class="label" font-weight="bold">Redux Toolkit</text>
+  <line x1="410" y1="115" x2="530" y2="115" stroke="#ff9800" stroke-width="1"/>
+  <text x="470" y="135" text-anchor="middle" class="small-label">Boilerplate: Medium</text>
+  <text x="470" y="152" text-anchor="middle" class="small-label">Learning: Medium</text>
+  <text x="470" y="169" text-anchor="middle" class="small-label">Devtools: Excellent</text>
+  <text x="470" y="189" text-anchor="middle" class="small-label" fill="#4caf50">✓ Time-travel</text>
+  <text x="470" y="206" text-anchor="middle" class="small-label">Complex apps, teams</text>
+  
+  <!-- Recoil/Jotai -->
+  <rect x="570" y="80" width="160" height="140" class="box-recoil" rx="6"/>
+  <text x="650" y="105" text-anchor="middle" class="label" font-weight="bold">Recoil/Jotai</text>
+  <line x1="590" y1="115" x2="710" y2="115" stroke="#e91e63" stroke-width="1"/>
+  <text x="650" y="135" text-anchor="middle" class="small-label">Boilerplate: Medium</text>
+  <text x="650" y="152" text-anchor="middle" class="small-label">Learning: Medium-High</text>
+  <text x="650" y="169" text-anchor="middle" class="small-label">Devtools: Good</text>
+  <text x="650" y="189" text-anchor="middle" class="small-label" fill="#4caf50">✓ Atomic state</text>
+  <text x="650" y="206" text-anchor="middle" class="small-label">Derived state, fine-grained</text>
+  
+  <!-- MobX -->
+  <rect x="750" y="80" width="80" height="140" class="box-mobx" rx="6"/>
+  <text x="790" y="105" text-anchor="middle" class="label" font-weight="bold">MobX</text>
+  <line x1="770" y1="115" x2="810" y2="115" stroke="#9c27b0" stroke-width="1"/>
+  <text x="790" y="135" text-anchor="middle" class="small-label">Boilerplate: Low</text>
+  <text x="790" y="152" text-anchor="middle" class="small-label">Learning: Medium</text>
+  <text x="790" y="169" text-anchor="middle" class="small-label">Devtools: Good</text>
+  <text x="790" y="189" text-anchor="middle" class="small-label" fill="#4caf50">✓ Observable</text>
+  <text x="790" y="206" text-anchor="middle" class="small-label">OOP teams</text>
+  
+  <!-- Decision Framework -->
+  <text x="425" y="260" text-anchor="middle" class="label" font-weight="bold" font-size="16">Decision Framework</text>
+  
+  <!-- Decision boxes -->
+  <rect x="50" y="280" width="180" height="180" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="140" y="305" text-anchor="middle" class="small-label" font-weight="bold">Simple Shared State?</text>
+  <line x1="70" y1="315" x2="210" y2="315" stroke="#999" stroke-width="1"/>
+  <text x="140" y="340" text-anchor="middle" class="small-label">Theme, locale, auth user</text>
+  <text x="140" y="360" text-anchor="middle" class="small-label" fill="#2196f3">→ Use Context</text>
+  <text x="140" y="380" text-anchor="middle" class="small-label">Low-frequency updates</text>
+  <text x="140" y="400" text-anchor="middle" class="small-label">No external deps needed</text>
+  <text x="140" y="420" text-anchor="middle" class="small-label" fill="#f44336">✗ High-freq updates</text>
+  <text x="140" y="440" text-anchor="middle" class="small-label">✗ Complex state logic</text>
+  
+  <rect x="250" y="280" width="180" height="180" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="340" y="305" text-anchor="middle" class="small-label" font-weight="bold">Medium Complexity?</text>
+  <line x1="270" y1="315" x2="410" y2="315" stroke="#999" stroke-width="1"/>
+  <text x="340" y="340" text-anchor="middle" class="small-label">Multiple components</text>
+  <text x="340" y="360" text-anchor="middle" class="small-label" fill="#4caf50">→ Use Zustand</text>
+  <text x="340" y="380" text-anchor="middle" class="small-label">Minimal boilerplate</text>
+  <text x="340" y="400" text-anchor="middle" class="small-label">TypeScript support</text>
+  <text x="340" y="420" text-anchor="middle" class="small-label">Good devtools</text>
+  <text x="340" y="440" text-anchor="middle" class="small-label" fill="#ff9800">⚠ Smaller ecosystem</text>
+  
+  <rect x="450" y="280" width="180" height="180" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="540" y="305" text-anchor="middle" class="small-label" font-weight="bold">Complex App / Team?</text>
+  <line x1="470" y1="315" x2="610" y2="315" stroke="#999" stroke-width="1"/>
+  <text x="540" y="340" text-anchor="middle" class="small-label">Large team, strict patterns</text>
+  <text x="540" y="360" text-anchor="middle" class="small-label" fill="#ff9800">→ Use Redux Toolkit</text>
+  <text x="540" y="380" text-anchor="middle" class="small-label">Time-travel debugging</text>
+  <text x="540" y="400" text-anchor="middle" class="small-label">Middleware ecosystem</text>
+  <text x="540" y="420" text-anchor="middle" class="small-label">Audit trails, logging</text>
+  <text x="540" y="440" text-anchor="middle" class="small-label" fill="#f44336">✗ More boilerplate</text>
+  
+  <rect x="650" y="280" width="180" height="180" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="740" y="305" text-anchor="middle" class="small-label" font-weight="bold">Atomic / Derived State?</text>
+  <line x1="670" y1="315" x2="810" y2="315" stroke="#999" stroke-width="1"/>
+  <text x="740" y="340" text-anchor="middle" class="small-label">Dynamic dependencies</text>
+  <text x="740" y="360" text-anchor="middle" class="small-label" fill="#e91e63">→ Use Recoil/Jotai</text>
+  <text x="740" y="380" text-anchor="middle" class="small-label">Fine-grained reactivity</text>
+  <text x="740" y="400" text-anchor="middle" class="small-label">Concurrent mode</text>
+  <text x="740" y="420" text-anchor="middle" class="small-label">Derived state atoms</text>
+  <text x="740" y="440" text-anchor="middle" class="small-label" fill="#ff9800">⚠ Learning curve</text>
+  
+  <!-- Server State Note -->
+  <rect x="50" y="475" width="780" height="20" fill="#e8f5e9" stroke="#4caf50" rx="3"/>
+  <text x="440" y="490" text-anchor="middle" class="small-label" fill="#4caf50" font-weight="bold">⚡ Important: For Server State (API data), use React Query or SWR — NOT global state managers!</text>
+</svg>

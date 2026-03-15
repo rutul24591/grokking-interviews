@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 450">
+  <defs>
+    <style>
+      .title { font: bold 20px system-ui, -apple-system, sans-serif; fill: #1a1a2e; }
+      .label { font: 14px system-ui, -apple-system, sans-serif; fill: #333; }
+      .small-label { font: 12px system-ui, -apple-system, sans-serif; fill: #555; }
+      .ssg { fill: #e8f5e9; stroke: #4caf50; stroke-width: 2; }
+      .ssr { fill: #e3f2fd; stroke: #2196f3; stroke-width: 2; }
+      .csr { fill: #ffebee; stroke: #f44336; stroke-width: 2; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <text x="425" y="35" text-anchor="middle" class="title">SEO & Rendering Strategies</text>
+  <text x="425" y="55" text-anchor="middle" class="small-label">How rendering strategies affect SEO — SSR/SSG provide immediate content, CSR requires JavaScript execution</text>
+  
+  <!-- SSG -->
+  <rect x="30" y="80" width="250" height="160" class="ssg" rx="6"/>
+  <text x="155" y="105" text-anchor="middle" class="label" font-weight="bold">Static Site Generation (SSG)</text>
+  <text x="155" y="122" text-anchor="middle" class="small-label" fill="#4caf50" font-weight="bold">⭐ Best for SEO</text>
+  <line x1="50" y1="132" x2="260" y2="132" stroke="#4caf50" stroke-width="1"/>
+  
+  <!-- SSG Flow -->
+  <rect x="60" y="142" width="60" height="40" fill="#c8e6c9" stroke="#4caf50" rx="3"/>
+  <text x="90" y="165" text-anchor="middle" class="small-label">Build</text>
+  
+  <line x1="120" y1="162" x2="150" y2="162" class="arrow"/>
+  
+  <rect x="150" y="142" width="60" height="40" fill="#a5d6a7" stroke="#4caf50" rx="3"/>
+  <text x="180" y="165" text-anchor="middle" class="small-label">HTML</text>
+  
+  <line x1="210" y1="162" x2="240" y2="162" class="arrow"/>
+  
+  <rect x="240" y="142" width="30" height="40" fill="#81c784" stroke="#4caf50" rx="3"/>
+  <text x="255" y="165" text-anchor="middle" class="small-label">CDN</text>
+  
+  <text x="155" y="200" text-anchor="middle" class="small-label">✅ Full HTML in response</text>
+  <text x="155" y="217" text-anchor="middle" class="small-label">✅ Instant content for crawlers</text>
+  <text x="155" y="234" text-anchor="middle" class="small-label">✅ Fastest FCP/LCP</text>
+  <text x="155" y="251" text-anchor="middle" class="small-label" fill="#ff9800">⚠ Content must be known at build</text>
+  
+  <!-- SSR -->
+  <rect x="300" y="80" width="250" height="160" class="ssr" rx="6"/>
+  <text x="425" y="105" text-anchor="middle" class="label" font-weight="bold">Server-Side Rendering (SSR)</text>
+  <text x="425" y="122" text-anchor="middle" class="small-label" fill="#2196f3" font-weight="bold">✅ Great for SEO</text>
+  <line x1="320" y1="132" x2="530" y2="132" stroke="#2196f3" stroke-width="1"/>
+  
+  <!-- SSR Flow -->
+  <rect x="330" y="142" width="50" height="40" fill="#bbdefb" stroke="#2196f3" rx="3"/>
+  <text x="355" y="165" text-anchor="middle" class="small-label">Request</text>
+  
+  <line x1="380" y1="162" x2="410" y2="162" class="arrow"/>
+  
+  <rect x="410" y="142" width="50" height="40" fill="#90caf9" stroke="#2196f3" rx="3"/>
+  <text x="435" y="165" text-anchor="middle" class="small-label">Server</text>
+  
+  <line x1="460" y1="162" x2="490" y2="162" class="arrow"/>
+  
+  <rect x="490" y="142" width="50" height="40" fill="#64b5f6" stroke="#2196f3" rx="3"/>
+  <text x="515" y="165" text-anchor="middle" class="small-label">HTML</text>
+  
+  <text x="425" y="200" text-anchor="middle" class="small-label">✅ Full HTML in response</text>
+  <text x="425" y="217" text-anchor="middle" class="small-label">✅ Content for crawlers</text>
+  <text x="425" y="234" text-anchor="middle" class="small-label">✅ Dynamic content supported</text>
+  <text x="425" y="251" text-anchor="middle" class="small-label" fill="#ff9800">⚠ Server load per request</text>
+  
+  <!-- CSR -->
+  <rect x="570" y="80" width="250" height="160" class="csr" rx="6"/>
+  <text x="695" y="105" text-anchor="middle" class="label" font-weight="bold">Client-Side Rendering (CSR)</text>
+  <text x="695" y="122" text-anchor="middle" class="small-label" fill="#f44336" font-weight="bold">⚠ Problematic for SEO</text>
+  <line x1="590" y1="132" x2="800" y2="132" stroke="#f44336" stroke-width="1"/>
+  
+  <!-- CSR Flow -->
+  <rect x="600" y="142" width="50" height="40" fill="#ffcdd2" stroke="#f44336" rx="3"/>
+  <text x="625" y="165" text-anchor="middle" class="small-label">Request</text>
+  
+  <line x1="650" y1="162" x2="680" y2="162" class="arrow"/>
+  
+  <rect x="680" y="142" width="50" height="40" fill="#ef9a9a" stroke="#f44336" rx="3"/>
+  <text x="705" y="165" text-anchor="middle" class="small-label">Empty</text>
+  
+  <line x1="730" y1="162" x2="760" y2="162" class="arrow"/>
+  
+  <rect x="760" y="142" width="50" height="40" fill="#e57373" stroke="#f44336" rx="3"/>
+  <text x="785" y="165" text-anchor="middle" class="small-label">JS</text>
+  
+  <text x="695" y="200" text-anchor="middle" class="small-label">❌ Empty HTML shell</text>
+  <text x="695" y="217" text-anchor="middle" class="small-label">❌ Requires JS execution</text>
+  <text x="695" y="234" text-anchor="middle" class="small-label">❌ Delayed content for crawlers</text>
+  <text x="695" y="251" text-anchor="middle" class="small-label" fill="#4caf50">✓ OK for authenticated apps</text>
+  
+  <!-- Comparison Table -->
+  <rect x="30" y="265" width="790" height="100" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="425" y="290" text-anchor="middle" class="label" font-weight="bold">SEO Comparison</text>
+  <line x1="50" y1="300" x2="800" y2="300" stroke="#999" stroke-width="1"/>
+  
+  <text x="100" y="320" text-anchor="middle" class="small-label" font-weight="bold">SSG</text>
+  <text x="250" y="320" text-anchor="middle" class="small-label" font-weight="bold">SSR</text>
+  <text x="400" y="320" text-anchor="middle" class="small-label" font-weight="bold">CSR</text>
+  <text x="550" y="320" text-anchor="middle" class="small-label" font-weight="bold">Hybrid</text>
+  <text x="700" y="320" text-anchor="middle" class="small-label" font-weight="bold">Best Use</text>
+  
+  <line x1="50" y1="330" x2="800" y2="330" stroke="#ddd" stroke-width="1"/>
+  
+  <text x="100" y="350" text-anchor="middle" class="small-label" fill="#4caf50">Excellent</text>
+  <text x="250" y="350" text-anchor="middle" class="small-label" fill="#4caf50">Excellent</text>
+  <text x="400" y="350" text-anchor="middle" class="small-label" fill="#f44336">Poor</text>
+  <text x="550" y="350" text-anchor="middle" class="small-label" fill="#4caf50">Excellent</text>
+  <text x="700" y="350" text-anchor="middle" class="small-label">SEO Critical</text>
+  
+  <text x="100" y="370" text-anchor="middle" class="small-label" fill="#4caf50">Fastest</text>
+  <text x="250" y="370" text-anchor="middle" class="small-label" fill="#2196f3">Fast</text>
+  <text x="400" y="370" text-anchor="middle" class="small-label" fill="#f44336">Slow</text>
+  <text x="550" y="370" text-anchor="middle" class="small-label" fill="#4caf50">Fast</text>
+  <text x="700" y="370" text-anchor="middle" class="small-label">FCP/LCP</text>
+  
+  <text x="100" y="390" text-anchor="middle" class="small-label">Static content</text>
+  <text x="250" y="390" text-anchor="middle" class="small-label">Dynamic content</text>
+  <text x="400" y="390" text-anchor="middle" class="small-label">Dashboards</text>
+  <text x="550" y="390" text-anchor="middle" class="small-label">Mixed content</text>
+  <text x="700" y="390" text-anchor="middle" class="small-label">Use Case</text>
+  
+  <!-- Recommendation -->
+  <rect x="30" y="385" width="790" height="50" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+  <text x="425" y="410" text-anchor="middle" class="small-label" font-weight="bold">Recommendation:</text>
+  <text x="150" y="427" text-anchor="start" class="small-label" fill="#4caf50">✓ SSG/SSR for public SEO pages</text>
+  <text x="400" y="427" text-anchor="start" class="small-label" fill="#4caf50">✓ CSR for authenticated dashboards</text>
+  <text x="650" y="427" text-anchor="start" class="small-label" fill="#2196f3">✓ Hybrid for most applications</text>
+</svg>

@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 500">
+  <defs>
+    <style>
+      .title { font: bold 20px system-ui, -apple-system, sans-serif; fill: #1a1a2e; }
+      .label { font: 14px system-ui, -apple-system, sans-serif; fill: #333; }
+      .small-label { font: 12px system-ui, -apple-system, sans-serif; fill: #555; }
+      .box { fill: #f5f5f5; stroke: #666; stroke-width: 2; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .decision { fill: #fff; stroke: #666; stroke-width: 2; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <text x="425" y="35" text-anchor="middle" class="title">Locale Detection Flow</text>
+  <text x="425" y="55" text-anchor="middle" class="small-label">Decision tree for determining user's preferred locale</text>
+  
+  <!-- Start -->
+  <rect x="350" y="80" width="150" height="40" fill="#e8f5e9" stroke="#4caf50" rx="20"/>
+  <text x="425" y="105" text-anchor="middle" class="small-label" font-weight="bold">User Visits Site</text>
+  
+  <line x1="425" y1="120" x2="425" y2="150" class="arrow"/>
+  
+  <!-- Has URL locale? -->
+  <rect x="350" y="150" width="150" height="50" class="decision" rx="4"/>
+  <text x="425" y="170" text-anchor="middle" class="small-label" font-weight="bold">URL has locale?</text>
+  <text x="425" y="187" text-anchor="middle" class="small-label">/en/, /de/, /ja/</text>
+  
+  <!-- Yes path -->
+  <line x1="500" y1="175" x2="550" y2="175" class="arrow"/>
+  <text x="525" y="165" text-anchor="middle" class="small-label">Yes</text>
+  
+  <rect x="550" y="155" width="140" height="40" fill="#e3f2fd" stroke="#2196f3" rx="4"/>
+  <text x="620" y="180" text-anchor="middle" class="small-label" font-weight="bold">Use URL Locale</text>
+  <text x="620" y="195" text-anchor="middle" class="small-label">Explicit choice</text>
+  
+  <!-- No path -->
+  <line x1="425" y1="200" x2="425" y2="230" class="arrow"/>
+  <text x="440" y="215" text-anchor="middle" class="small-label">No</text>
+  
+  <!-- Returning user? -->
+  <rect x="350" y="230" width="150" height="50" class="decision" rx="4"/>
+  <text x="425" y="250" text-anchor="middle" class="small-label" font-weight="bold">Returning User?</text>
+  <text x="425" y="267" text-anchor="middle" class="small-label">Saved preference</text>
+  
+  <!-- Yes path -->
+  <line x1="500" y1="255" x2="550" y2="255" class="arrow"/>
+  <text x="525" y="245" text-anchor="middle" class="small-label">Yes</text>
+  
+  <rect x="550" y="235" width="140" height="40" fill="#e3f2fd" stroke="#2196f3" rx="4"/>
+  <text x="620" y="260" text-anchor="middle" class="small-label" font-weight="bold">Use Saved Locale</text>
+  <text x="620" y="275" text-anchor="middle" class="small-label">From profile/cookie</text>
+  
+  <!-- No path -->
+  <line x1="425" y1="280" x2="425" y2="310" class="arrow"/>
+  <text x="440" y="295" text-anchor="middle" class="small-label">No</text>
+  
+  <!-- Browser language -->
+  <rect x="350" y="310" width="150" height="50" class="decision" rx="4"/>
+  <text x="425" y="330" text-anchor="middle" class="small-label" font-weight="bold">Browser Language</text>
+  <text x="425" y="347" text-anchor="middle" class="small-label">navigator.language</text>
+  
+  <!-- Supported? -->
+  <line x1="425" y1="360" x2="425" y2="390" class="arrow"/>
+  
+  <rect x="350" y="390" width="150" height="50" class="decision" rx="4"/>
+  <text x="425" y="410" text-anchor="middle" class="small-label" font-weight="bold">Locale Supported?</text>
+  <text x="425" y="427" text-anchor="middle" class="small-label">Have translations</text>
+  
+  <!-- Yes path -->
+  <line x1="350" y1="415" x2="280" y2="415" class="arrow"/>
+  <text x="315" y="405" text-anchor="middle" class="small-label">Yes</text>
+  
+  <rect x="150" y="395" width="130" height="40" fill="#e3f2fd" stroke="#2196f3" rx="4"/>
+  <text x="215" y="420" text-anchor="middle" class="small-label" font-weight="bold">Use Browser Locale</text>
+  
+  <!-- No path -->
+  <line x1="425" y1="440" x2="425" y2="470" class="arrow"/>
+  <text x="440" y="455" text-anchor="middle" class="small-label">No</text>
+  
+  <!-- Fallback -->
+  <rect x="350" y="470" width="150" height="40" fill="#fff3e0" stroke="#ff9800" rx="4"/>
+  <text x="425" y="495" text-anchor="middle" class="small-label" font-weight="bold">Use Fallback Locale</text>
+  <text x="425" y="510" text-anchor="middle" class="small-label">Usually English (en)</text>
+  
+  <!-- Geolocation fallback -->
+  <line x1="500" y1="335" x2="550" y2="335" class="arrow"/>
+  <text x="525" y="325" text-anchor="middle" class="small-label">Unknown</text>
+  
+  <rect x="550" y="315" width="140" height="40" fill="#fff3e0" stroke="#ff9800" rx="4"/>
+  <text x="620" y="340" text-anchor="middle" class="small-label" font-weight="bold">Geolocation Fallback</text>
+  <text x="620" y="355" text-anchor="middle" class="small-label">IP-based estimate</text>
+  
+  <!-- URL Structure Options -->
+  <rect x="700" y="80" width="130" height="180" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="765" y="105" text-anchor="middle" class="small-label" font-weight="bold">URL Structures</text>
+  <line x1="720" y1="115" x2="810" y2="115" stroke="#999" stroke-width="1"/>
+  
+  <text x="720" y="140" text-anchor="start" class="small-label" fill="#4caf50">✓ Path: /en/ (SEO)</text>
+  <text x="720" y="157" text-anchor="start" class="small-label">✓ Subdomain: en.example.com</text>
+  <text x="720" y="174" text-anchor="start" class="small-label" fill="#f44336">✗ Query: ?lang=en</text>
+  <text x="720" y="191" text-anchor="start" class="small-label">✓ Domain: example.de</text>
+  
+  <text x="765" y="220" text-anchor="middle" class="small-label" font-weight="bold">Recommended:</text>
+  <text x="765" y="240" text-anchor="middle" class="small-label" fill="#2196f3">Path-based (/en/)</text>
+  <text x="765" y="257" text-anchor="middle" class="small-label">Best for SEO</text>
+  
+  <!-- Language Switcher -->
+  <rect x="700" y="280" width="130" height="100" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="765" y="305" text-anchor="middle" class="small-label" font-weight="bold">Switcher UX</text>
+  <line x1="720" y1="315" x2="810" y2="315" stroke="#999" stroke-width="1"/>
+  
+  <text x="720" y="340" text-anchor="start" class="small-label">• Native names</text>
+  <text x="720" y="357" text-anchor="start" class="small-label">• Preserve page</text>
+  <text x="720" y="374" text-anchor="start" class="small-label">• Remember choice</text>
+</svg>

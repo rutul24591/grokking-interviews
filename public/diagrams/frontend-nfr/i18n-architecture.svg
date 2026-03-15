@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 450">
+  <defs>
+    <style>
+      .title { font: bold 20px system-ui, -apple-system, sans-serif; fill: #1a1a2e; }
+      .label { font: 14px system-ui, -apple-system, sans-serif; fill: #333; }
+      .small-label { font: 12px system-ui, -apple-system, sans-serif; fill: #555; }
+      .box { fill: #f5f5f5; stroke: #666; stroke-width: 2; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .highlight { fill: #e3f2fd; stroke: #2196f3; stroke-width: 2; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <text x="425" y="35" text-anchor="middle" class="title">i18n Architecture</text>
+  <text x="425" y="55" text-anchor="middle" class="small-label">Translation files, i18n library, locale detection, and rendering pipeline</text>
+  
+  <!-- Translation Files -->
+  <rect x="30" y="80" width="150" height="120" class="box" rx="4"/>
+  <text x="105" y="105" text-anchor="middle" class="small-label" font-weight="bold">Translation Files</text>
+  <line x1="50" y1="115" x2="160" y2="115" stroke="#999" stroke-width="1"/>
+  <text x="105" y="135" text-anchor="middle" class="small-label">en/</text>
+  <text x="105" y="152" text-anchor="middle" class="small-label">  common.json</text>
+  <text x="105" y="169" text-anchor="middle" class="small-label">  forms.json</text>
+  <text x="105" y="186" text-anchor="middle" class="small-label">de/, ja/, fr/...</text>
+  
+  <line x1="180" y1="140" x2="220" y2="140" class="arrow"/>
+  
+  <!-- i18n Library -->
+  <rect x="220" y="80" width="150" height="120" class="highlight" rx="4"/>
+  <text x="295" y="105" text-anchor="middle" class="small-label" font-weight="bold">i18n Library</text>
+  <line x1="240" y1="115" x2="350" y2="115" stroke="#2196f3" stroke-width="1"/>
+  <text x="295" y="135" text-anchor="middle" class="small-label">react-i18next</text>
+  <text x="295" y="152" text-anchor="middle" class="small-label">FormatJS</text>
+  <text x="295" y="169" text-anchor="middle" class="small-label">Lingui, next-intl</text>
+  <text x="295" y="186" text-anchor="middle" class="small-label">Interpolation, plural</text>
+  
+  <line x1="370" y1="140" x2="410" y2="140" class="arrow"/>
+  
+  <!-- Locale Detection -->
+  <rect x="410" y="80" width="150" height="120" class="box" rx="4"/>
+  <text x="485" y="105" text-anchor="middle" class="small-label" font-weight="bold">Locale Detection</text>
+  <line x1="430" y1="115" x2="540" y2="115" stroke="#999" stroke-width="1"/>
+  <text x="485" y="135" text-anchor="middle" class="small-label">1. URL path (/en/)</text>
+  <text x="485" y="152" text-anchor="middle" class="small-label">2. User preference</text>
+  <text x="485" y="169" text-anchor="middle" class="small-label">3. Browser language</text>
+  <text x="485" y="186" text-anchor="middle" class="small-label">4. Geolocation</text>
+  
+  <line x1="560" y1="140" x2="600" y2="140" class="arrow"/>
+  
+  <!-- Rendering -->
+  <rect x="600" y="80" width="220" height="120" class="highlight" rx="4"/>
+  <text x="710" y="105" text-anchor="middle" class="small-label" font-weight="bold">Rendering</text>
+  <line x1="620" y1="115" x2="800" y2="115" stroke="#2196f3" stroke-width="1"/>
+  <text x="710" y="135" text-anchor="middle" class="small-label">t('key') → Translated text</text>
+  <text x="710" y="155" text-anchor="middle" class="small-label">{`{ name }`} interpolation</text>
+  <text x="710" y="175" text-anchor="middle" class="small-label">Plural: {`{ count, plural, ... }`}</text>
+  <text x="710" y="195" text-anchor="middle" class="small-label">RTL layout if needed</text>
+  
+  <!-- RTL Support -->
+  <rect x="30" y="230" width="250" height="100" fill="#f3e5f5" stroke="#9c27b0" rx="4"/>
+  <text x="155" y="255" text-anchor="middle" class="small-label" font-weight="bold">RTL Support (Arabic, Hebrew)</text>
+  <line x1="50" y1="265" x2="260" y2="265" stroke="#9c27b0" stroke-width="1"/>
+  <text x="155" y="285" text-anchor="middle" class="small-label">dir="rtl" on html tag</text>
+  <text x="155" y="302" text-anchor="middle" class="small-label">CSS logical properties</text>
+  <text x="155" y="319" text-anchor="middle" class="small-label">Layout mirroring</text>
+  
+  <!-- Date/Number Formatting -->
+  <rect x="300" y="230" width="250" height="100" fill="#e8f5e9" stroke="#4caf50" rx="4"/>
+  <text x="425" y="255" text-anchor="middle" class="small-label" font-weight="bold">Date/Number Formatting</text>
+  <line x1="320" y1="265" x2="530" y2="265" stroke="#4caf50" stroke-width="1"/>
+  <text x="425" y="285" text-anchor="middle" class="small-label">Intl.DateTimeFormat</text>
+  <text x="425" y="302" text-anchor="middle" class="small-label">Intl.NumberFormat</text>
+  <text x="425" y="319" text-anchor="middle" class="small-label">Locale-specific formats</text>
+  
+  <!-- Language Switcher -->
+  <rect x="570" y="230" width="250" height="100" fill="#fff3e0" stroke="#ff9800" rx="4"/>
+  <text x="695" y="255" text-anchor="middle" class="small-label" font-weight="bold">Language Switcher UX</text>
+  <line x1="590" y1="265" x2="800" y2="265" stroke="#ff9800" stroke-width="1"/>
+  <text x="695" y="285" text-anchor="middle" class="small-label">Native names (Deutsch)</text>
+  <text x="695" y="302" text-anchor="middle" class="small-label">Preserve current page</text>
+  <text x="695" y="319" text-anchor="middle" class="small-label">Remember preference</text>
+  
+  <!-- Best Practices -->
+  <rect x="30" y="355" width="790" height="80" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="425" y="380" text-anchor="middle" class="label" font-weight="bold">Best Practices</text>
+  <line x1="50" y1="390" x2="800" y2="390" stroke="#999" stroke-width="1"/>
+  
+  <text x="80" y="410" text-anchor="start" class="small-label" fill="#4caf50">✓ Namespace by feature (not page)</text>
+  <text x="300" y="410" text-anchor="start" class="small-label" fill="#4caf50">✓ Use interpolation (no concatenation)</text>
+  <text x="550" y="410" text-anchor="start" class="small-label" fill="#4caf50">✓ ICU plural rules</text>
+  
+  <text x="80" y="427" text-anchor="start" class="small-label" fill="#ff9800">⚠ Text expansion (German +30%)</text>
+  <text x="300" y="427" text-anchor="start" class="small-label" fill="#ff9800">⚠ RTL from design phase</text>
+  <text x="550" y="427" text-anchor="start" class="small-label" fill="#ff9800">⚠ Lazy load namespaces</text>
+</svg>

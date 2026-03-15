@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">ABAC Attribute-Based Access Control</title>
+  <desc id="desc">ABAC concept showing how attributes (user, resource, environment) are evaluated by a policy engine to derive permissions</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="500" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">ABAC: Attribute-Based Access Control</text>
+  
+  <!-- Subject Attributes -->
+  <rect x="50" y="70" width="200" height="180" rx="8" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="150" y="95" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Subject Attributes</text>
+  
+  <rect x="70" y="110" width="160" height="30" rx="4" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="150" y="130" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">UserID: alice</text>
+  
+  <rect x="70" y="145" width="160" height="30" rx="4" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="150" y="165" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Role: Developer</text>
+  
+  <rect x="70" y="180" width="160" height="30" rx="4" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="150" y="200" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Department: Engineering</text>
+  
+  <rect x="70" y="215" width="160" height="30" rx="4" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="150" y="235" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Clearance: Level-3</text>
+  
+  <!-- Resource Attributes -->
+  <rect x="550" y="70" width="200" height="180" rx="8" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="650" y="95" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Resource Attributes</text>
+  
+  <rect x="570" y="110" width="160" height="30" rx="4" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="650" y="130" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Type: Database</text>
+  
+  <rect x="570" y="145" width="160" height="30" rx="4" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="650" y="165" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Classification: Internal</text>
+  
+  <rect x="570" y="180" width="160" height="30" rx="4" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="650" y="200" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Owner: Engineering</text>
+  
+  <rect x="570" y="215" width="160" height="30" rx="4" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="650" y="235" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Region: us-east-1</text>
+  
+  <!-- Environment Attributes -->
+  <rect x="50" y="270" width="200" height="120" rx="8" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #d97706)" stroke-width="2"/>
+  <text x="150" y="295" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Environment Attributes</text>
+  
+  <rect x="70" y="310" width="160" height="25" rx="4" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="150" y="327" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Time: 10:30 AM</text>
+  
+  <rect x="70" y="340" width="160" height="25" rx="4" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="150" y="357" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Location: Office</text>
+  
+  <rect x="70" y="370" width="160" height="15" rx="4" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="150" y="382" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Device: Corporate</text>
+  
+  <!-- Policy Engine -->
+  <rect x="300" y="200" width="200" height="200" rx="8" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="3"/>
+  <text x="400" y="230" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Policy Engine</text>
+  
+  <!-- Policy Evaluation -->
+  <rect x="320" y="245" width="160" height="140" rx="6" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #7c3aed)" stroke-width="2"/>
+  <text x="400" y="270" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #1e293b">Policy Evaluation</text>
+  
+  <text x="400" y="295" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">IF</text>
+  <text x="400" y="310" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">subject.department == resource.owner</text>
+  <text x="400" y="325" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">AND subject.clearance &gt;= 3</text>
+  <text x="400" y="340" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">AND environment.time in business_hours</text>
+  <text x="400" y="360" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981" font-weight="bold">THEN ALLOW</text>
+  
+  <!-- Arrows to Policy Engine -->
+  <defs>
+    <marker id="arrowAttr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #8b5cf6)"/>
+    </marker>
+  </defs>
+  
+  <line x1="250" y1="160" x2="300" y2="230" stroke="var(--text-theme, #8b5cf6)" stroke-width="2" marker-end="url(#arrowAttr)"/>
+  <line x1="550" y1="160" x2="500" y2="230" stroke="var(--text-theme, #8b5cf6)" stroke-width="2" marker-end="url(#arrowAttr)"/>
+  <line x1="250" y1="330" x2="300" y2="350" stroke="var(--text-theme, #8b5cf6)" stroke-width="2" marker-end="url(#arrowAttr)"/>
+  
+  <!-- Access Request -->
+  <rect x="300" y="70" width="200" height="60" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="400" y="95" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #1e293b">Access Request</text>
+  <text x="400" y="115" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">alice wants to READ database</text>
+  
+  <!-- Arrow from request to engine -->
+  <line x1="400" y1="130" x2="400" y2="200" stroke="var(--text-theme, #8b5cf6)" stroke-width="2" marker-end="url(#arrowAttr)"/>
+  
+  <!-- Decision Output -->
+  <rect x="300" y="420" width="200" height="60" rx="8" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="400" y="445" text-anchor="middle" font-size="14" font-weight="bold" fill="white">✓ ACCESS ALLOWED</text>
+  <text x="400" y="465" text-anchor="middle" font-size="10" fill="white">Policy matched: eng-db-access</text>
+  
+  <!-- Arrow from engine to decision -->
+  <line x1="400" y1="400" x2="400" y2="420" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrowAttr)"/>
+  
+  <!-- Key Benefits -->
+  <rect x="550" y="270" width="200" height="120" rx="8" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="650" y="292" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #1e293b">ABAC Benefits</text>
+  <text x="650" y="315" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Fine-grained control</text>
+  <text x="650" y="332" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Dynamic decisions</text>
+  <text x="650" y="349" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Context-aware</text>
+  <text x="650" y="366" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Scalable policies</text>
+  <text x="650" y="383" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• No role explosion</text>
+</svg>

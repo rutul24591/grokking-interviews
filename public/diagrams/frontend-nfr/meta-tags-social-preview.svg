@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 450">
+  <defs>
+    <style>
+      .title { font: bold 20px system-ui, -apple-system, sans-serif; fill: #1a1a2e; }
+      .label { font: 14px system-ui, -apple-system, sans-serif; fill: #333; }
+      .small-label { font: 12px system-ui, -apple-system, sans-serif; fill: #555; }
+      .search { fill: #e8f5e9; stroke: #4caf50; stroke-width: 2; }
+      .social { fill: #e3f2fd; stroke: #2196f3; stroke-width: 2; }
+    </style>
+  </defs>
+  
+  <text x="425" y="35" text-anchor="middle" class="title">Meta Tags & Social Preview</text>
+  <text x="425" y="55" text-anchor="middle" class="small-label">How meta tags appear in search results and social media previews</text>
+  
+  <!-- Search Result Preview -->
+  <rect x="30" y="80" width="380" height="140" class="search" rx="6"/>
+  <text x="220" y="105" text-anchor="middle" class="label" font-weight="bold">Google Search Result</text>
+  <line x1="50" y1="115" x2="390" y2="115" stroke="#4caf50" stroke-width="1"/>
+  
+  <text x="60" y="140" text-anchor="start" class="small-label" fill="#1a0dab" font-size="18" font-weight="bold">Page Title | Site Name</text>
+  <text x="60" y="155" text-anchor="start" class="small-label" fill="#006621">https://example.com/page-url</text>
+  <text x="60" y="175" text-anchor="start" class="small-label">This is the meta description that appears</text>
+  <text x="60" y="192" text-anchor="start" class="small-label">in search results. Keep it 150-160 chars</text>
+  <text x="60" y="209" text-anchor="start" class="small-label">for optimal display without truncation.</text>
+  
+  <text x="220" y="135" text-anchor="middle" class="small-label" fill="#666">Title: 50-60 chars</text>
+  <text x="220" y="152" text-anchor="middle" class="small-label" fill="#666">URL: Canonical</text>
+  <text x="220" y="169" text-anchor="middle" class="small-label" fill="#666">Description: 150-160 chars</text>
+  
+  <!-- Social Preview - Facebook/LinkedIn -->
+  <rect x="440" y="80" width="380" height="140" class="social" rx="6"/>
+  <text x="630" y="105" text-anchor="middle" class="label" font-weight="bold">Facebook/LinkedIn Preview</text>
+  <line x1="460" y1="115" x2="800" y2="115" stroke="#2196f3" stroke-width="1"/>
+  
+  <!-- Social Card Mockup -->
+  <rect x="460" y="125" width="360" height="85" fill="white" stroke="#2196f3" rx="4"/>
+  <rect x="465" y="130" width="350" height="50" fill="#bbdefb" stroke="#2196f3" rx="2"/>
+  <text x="640" y="160" text-anchor="middle" class="small-label" fill="#1565c0">og:image (1200×630)</text>
+  
+  <text x="480" y="195" text-anchor="start" class="small-label" font-weight="bold" fill="#1565c0">og:title - Page Title</text>
+  <text x="480" y="210" text-anchor="start" class="small-label" fill="#666">og:description appears here...</text>
+  
+  <!-- Twitter Card -->
+  <rect x="30" y="245" width="380" height="120" fill="#e0f7fa" stroke="#00bcd4" rx="6"/>
+  <text x="220" y="270" text-anchor="middle" class="label" font-weight="bold">Twitter Card Preview</text>
+  <line x1="50" y1="280" x2="390" y2="280" stroke="#00bcd4" stroke-width="1"/>
+  
+  <rect x="60" y="290" width="340" height="65" fill="white" stroke="#00bcd4" rx="4"/>
+  <rect x="65" y="295" width="330" height="35" fill="#b2ebf2" stroke="#00bcd4" rx="2"/>
+  <text x="230" y="318" text-anchor="middle" class="small-label" fill="#006064">twitter:image (1200×600)</text>
+  <text x="80" y="345" text-anchor="start" class="small-label" font-weight="bold" fill="#006064">twitter:title</text>
+  <text x="80" y="357" text-anchor="start" class="small-label" fill="#666">twitter:description...</text>
+  
+  <!-- Meta Tags Reference -->
+  <rect x="440" y="245" width="380" height="120" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="630" y="270" text-anchor="middle" class="label" font-weight="bold">Essential Meta Tags</text>
+  <line x1="460" y1="280" x2="800" y2="280" stroke="#999" stroke-width="1"/>
+  
+  <text x="480" y="305" text-anchor="start" class="small-label" font-weight="bold">SEO:</text>
+  <text x="480" y="322" text-anchor="start" class="small-label">&lt;title&gt;Page | Site&lt;/title&gt;</text>
+  <text x="480" y="339" text-anchor="start" class="small-label">&lt;meta name="description"&gt;</text>
+  <text x="480" y="356" text-anchor="start" class="small-label">&lt;link rel="canonical"&gt;</text>
+  
+  <text x="650" y="305" text-anchor="start" class="small-label" font-weight="bold">Open Graph:</text>
+  <text x="650" y="322" text-anchor="start" class="small-label">og:title, og:description</text>
+  <text x="650" y="339" text-anchor="start" class="small-label">og:image (1200×630)</text>
+  <text x="650" y="356" text-anchor="start" class="small-label">og:url, og:type</text>
+  
+  <!-- Best Practices -->
+  <rect x="30" y="385" width="790" height="50" fill="#fff3e0" stroke="#ff9800" rx="6"/>
+  <text x="425" y="410" text-anchor="middle" class="small-label" font-weight="bold">Best Practices:</text>
+  <text x="100" y="427" text-anchor="start" class="small-label" fill="#4caf50">✓ Unique title per page</text>
+  <text x="250" y="427" text-anchor="start" class="small-label" fill="#4caf50">✓ Description 150-160 chars</text>
+  <text x="450" y="427" text-anchor="start" class="small-label" fill="#4caf50">✓ og:image 1200×630</text>
+  <text x="620" y="427" text-anchor="start" class="small-label" fill="#4caf50">✓ Canonical URL</text>
+  <text x="750" y="427" text-anchor="start" class="small-label" fill="#ff9800">⚠ Test with tools</text>
+</svg>

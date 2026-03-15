@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 450">
+  <defs>
+    <style>
+      .title { font: bold 20px system-ui, -apple-system, sans-serif; fill: #1a1a2e; }
+      .label { font: 14px system-ui, -apple-system, sans-serif; fill: #333; }
+      .small-label { font: 12px system-ui, -apple-system, sans-serif; fill: #555; }
+      .box { fill: #f5f5f5; stroke: #666; stroke-width: 2; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <text x="425" y="35" text-anchor="middle" class="title">Conflict Detection Methods</text>
+  <text x="425" y="55" text-anchor="middle" class="small-label">Version vectors, timestamps, field-level tracking, and operation logs</text>
+  
+  <!-- Version Vectors -->
+  <rect x="30" y="80" width="190" height="140" fill="#e3f2fd" stroke="#2196f3" rx="6"/>
+  <text x="125" y="105" text-anchor="middle" class="label" font-weight="bold">Version Vectors</text>
+  <line x1="50" y1="115" x2="200" y2="115" stroke="#2196f3" stroke-width="1"/>
+  
+  <text x="60" y="140" text-anchor="start" class="small-label">• Track version per node</text>
+  <text x="60" y="160" text-anchor="start" class="small-label">• {A:1, B:2, C:1}</text>
+  <text x="60" y="180" text-anchor="start" class="small-label">• Concurrent = conflict</text>
+  <text x="60" y="200" text-anchor="start" class="small-label">Used in: DynamoDB, Riak</text>
+  
+  <!-- Timestamps -->
+  <rect x="240" y="80" width="190" height="140" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+  <text x="335" y="105" text-anchor="middle" class="label" font-weight="bold">Timestamps (LWW)</text>
+  <line x1="260" y1="115" x2="410" y2="115" stroke="#4caf50" stroke-width="1"/>
+  
+  <text x="270" y="140" text-anchor="start" class="small-label">• Last-write-wins</text>
+  <text x="270" y="160" text-anchor="start" class="small-label">• Simple but loses data</text>
+  <text x="270" y="180" text-anchor="start" class="small-label">• Clock skew issues</text>
+  <text x="270" y="200" text-anchor="start" class="small-label">Use server timestamps</text>
+  
+  <!-- Field-Level Tracking -->
+  <rect x="450" y="80" width="190" height="140" fill="#fff3e0" stroke="#ff9800" rx="6"/>
+  <text x="545" y="105" text-anchor="middle" class="label" font-weight="bold">Field-Level Tracking</text>
+  <line x1="470" y1="115" x2="620" y2="115" stroke="#ff9800" stroke-width="1"/>
+  
+  <text x="480" y="140" text-anchor="start" class="small-label">• Track per field</text>
+  <text x="480" y="160" text-anchor="start" class="small-label">• Merge non-conflicting</text>
+  <text x="480" y="180" text-anchor="start" class="small-label">• Only conflict same field</text>
+  <text x="480" y="200" text-anchor="start" class="small-label">Used in: Google Docs</text>
+  
+  <!-- Operation Logs -->
+  <rect x="660" y="80" width="170" height="140" fill="#fce4ec" stroke="#e91e63" rx="6"/>
+  <text x="745" y="105" text-anchor="middle" class="label" font-weight="bold">Operation Logs</text>
+  <line x1="680" y1="115" x2="810" y2="115" stroke="#e91e63" stroke-width="1"/>
+  
+  <text x="690" y="140" text-anchor="start" class="small-label">• Record each operation</text>
+  <text x="690" y="160" text-anchor="start" class="small-label">• Replay to detect</text>
+  <text x="690" y="180" text-anchor="start" class="small-label">• Transform operations</text>
+  <text x="690" y="200" text-anchor="start" class="small-label">Used in: OT, CRDTs</text>
+  
+  <!-- Comparison -->
+  <rect x="30" y="240" width="380" height="120" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="220" y="265" text-anchor="middle" class="label" font-weight="bold">Comparison</text>
+  <line x1="50" y1="275" x2="390" y2="275" stroke="#999" stroke-width="1"/>
+  
+  <text x="60" y="300" text-anchor="start" class="small-label" font-weight="bold">Version Vectors:</text>
+  <text x="60" y="317" text-anchor="start" class="small-label">Accurate, complex, distributed</text>
+  
+  <text x="60" y="340" text-anchor="start" class="small-label" font-weight="bold">Timestamps:</text>
+  <text x="60" y="357" text-anchor="start" class="small-label">Simple, loses data, clock issues</text>
+  
+  <!-- Field-Level vs Operation Logs -->
+  <rect x="430" y="240" width="400" height="120" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="630" y="265" text-anchor="middle" class="label" font-weight="bold">Field-Level vs Operation Logs</text>
+  <line x1="450" y1="275" x2="810" y2="275" stroke="#999" stroke-width="1"/>
+  
+  <text x="460" y="300" text-anchor="start" class="small-label" font-weight="bold">Field-Level:</text>
+  <text x="460" y="317" text-anchor="start" class="small-label">Good for documents, forms</text>
+  
+  <text x="460" y="340" text-anchor="start" class="small-label" font-weight="bold">Operation Logs:</text>
+  <text x="460" y="357" text-anchor="start" class="small-label">Real-time collaboration, CRDTs</text>
+  
+  <!-- Recommendation -->
+  <rect x="30" y="380" width="800" height="50" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+  <text x="430" y="405" text-anchor="middle" class="small-label" font-weight="bold">Recommendation: Use field-level tracking for most apps, CRDTs for real-time collaboration</text>
+</svg>

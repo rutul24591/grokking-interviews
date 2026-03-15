@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 700" role="img" aria-labelledby="title desc">
+  <title id="title">Authentication vs Authorization</title>
+  <desc id="desc">Comprehensive comparison of Authentication and Authorization showing differences, protocols, and implementation patterns</desc>
+  
+  <!-- Background -->
+  <rect width="950" height="700" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="475" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="var(--text-theme, #1e293b">Authentication vs Authorization</text>
+  <text x="475" y="60" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b">Understanding the critical difference</text>
+  
+  <!-- Authentication Section -->
+  <rect x="30" y="80" width="435" height="300" rx="8" fill="var(--bg-panel-hover, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="247" y="105" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e40af">Authentication (AuthN)</text>
+  <text x="247" y="128" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b">"Who are you?"</text>
+  
+  <!-- AuthN Definition -->
+  <rect x="50" y="145" width="395" height="100" rx="6" fill="white" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="247" y="170" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #1e40af">Definition</text>
+  
+  <text x="247" y="195" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Process of verifying the identity of a user,</text>
+  <text x="247" y="210" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">system, or entity attempting to access resources</text>
+  
+  <rect x="65" y="220" width="365" height="50" rx="4" fill="var(--bg-panel-soft, #dbeafe)" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="247" y="240" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">✓ Establishes identity</text>
+  <text x="247" y="255" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">✓ Happens first in security flow</text>
+  <text x="247" y="270" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">✓ Credentials are validated</text>
+  
+  <!-- AuthN Methods -->
+  <rect x="50" y="255" width="395" height="115" rx="6" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="247" y="280" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">Authentication Methods</text>
+  
+  <text x="65" y="305" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Passwords / PINs</text>
+  <text x="65" y="320" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Multi-Factor (MFA)</text>
+  <text x="65" y="335" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Biometrics (fingerprint, face)</text>
+  <text x="247" y="305" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ OAuth / OIDC</text>
+  <text x="247" y="320" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ SAML / SSO</text>
+  <text x="247" y="335" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Magic links / WebAuthn</text>
+  
+  <!-- Authorization Section -->
+  <rect x="485" y="80" width="435" height="300" rx="8" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="702" y="105" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #059669">Authorization (AuthZ)</text>
+  <text x="702" y="128" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b">"What can you do?"</text>
+  
+  <!-- AuthZ Definition -->
+  <rect x="505" y="145" width="395" height="100" rx="6" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="702" y="170" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #059669">Definition</text>
+  
+  <text x="702" y="195" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Process of determining what an authenticated</text>
+  <text x="702" y="210" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">identity is permitted to access or do</text>
+  
+  <rect x="520" y="220" width="365" height="50" rx="4" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="702" y="240" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">✓ Grants or denies permissions</text>
+  <text x="702" y="255" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">✓ Happens after authentication</text>
+  <text x="702" y="270" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">✓ Based on policies and roles</text>
+  
+  <!-- AuthZ Models -->
+  <rect x="505" y="255" width="395" height="115" rx="6" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="702" y="280" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">Authorization Models</text>
+  
+  <text x="520" y="305" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ RBAC (Role-Based)</text>
+  <text x="520" y="320" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ ABAC (Attribute-Based)</text>
+  <text x="520" y="335" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ PBAC (Policy-Based)</text>
+  <text x="702" y="305" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ ReBAC (Relationship-Based)</text>
+  <text x="702" y="320" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ ACL (Access Control Lists)</text>
+  <text x="702" y="335" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Capabilities</text>
+  
+  <!-- Key Differences Table -->
+  <rect x="30" y="395" width="890" height="180" rx="8" fill="var(--bg-panel-soft, #f0fdf4)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="475" y="420" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #059669">Key Differences</text>
+  
+  <!-- Header -->
+  <rect x="45" y="440" width="270" height="30" rx="3" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="180" y="460" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #1e293b">Aspect</text>
+  
+  <rect x="325" y="440" width="290" height="30" rx="3" fill="var(--bg-panel-hover, #eff6ff)" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="470" y="460" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #1e40af">Authentication</text>
+  
+  <rect x="625" y="440" width="280" height="30" rx="3" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="765" y="460" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #059669">Authorization</text>
+  
+  <!-- Row 1 -->
+  <rect x="45" y="475" width="270" height="25" rx="3" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="180" y="492" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Question</text>
+  
+  <rect x="325" y="475" width="290" height="25" rx="3" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="470" y="492" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">"Who are you?"</text>
+  
+  <rect x="625" y="475" width="280" height="25" rx="3" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="765" y="492" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">"What can you do?"</text>
+  
+  <!-- Row 2 -->
+  <rect x="45" y="505" width="270" height="25" rx="3" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="180" y="522" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Order</text>
+  
+  <rect x="325" y="505" width="290" height="25" rx="3" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="470" y="522" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">First (prerequisite)</text>
+  
+  <rect x="625" y="505" width="280" height="25" rx="3" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="765" y="522" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Second (depends on AuthN)</text>
+  
+  <!-- Row 3 -->
+  <rect x="45" y="535" width="270" height="25" rx="3" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="180" y="552" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Information Visible</text>
+  
+  <rect x="325" y="535" width="290" height="25" rx="3" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="470" y="552" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">To the user (credentials)</text>
+  
+  <rect x="625" y="535" width="280" height="25" rx="3" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="765" y="552" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">To the system (policies)</text>
+  
+  <!-- Row 4 -->
+  <rect x="45" y="565" width="270" height="25" rx="3" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="180" y="582" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Data Transmission</text>
+  
+  <rect x="325" y="565" width="290" height="25" rx="3" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="470" y="582" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Via authentication channel</text>
+  
+  <rect x="625" y="565" width="280" height="25" rx="3" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="765" y="582" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Via tokens/attributes</text>
+  
+  <!-- Row 5 -->
+  <rect x="45" y="595" width="270" height="25" rx="3" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="180" y="612" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Example</text>
+  
+  <rect x="325" y="595" width="290" height="25" rx="3" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="470" y="612" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Login with password + MFA</text>
+  
+  <rect x="625" y="595" width="280" height="25" rx="3" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="765" y="612" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Admin can delete users</text>
+  
+  <!-- Real-World Flow -->
+  <rect x="30" y="590" width="890" height="90" rx="8" fill="var(--bg-panel-hover, #faf5ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="475" y="615" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #6d28d9">Real-World Flow: Both AuthN and AuthZ Work Together</text>
+  
+  <rect x="50" y="630" width="200" height="40" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="150" y="655" text-anchor="middle" font-size="10" font-weight="bold" fill="white">1. User Logs In (AuthN)</text>
+  
+  <line x1="250" y1="650" x2="280" y2="650" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <rect x="285" y="630" width="200" height="40" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="385" y="655" text-anchor="middle" font-size="10" font-weight="bold" fill="white">2. Identity Verified (AuthN)</text>
+  
+  <line x1="485" y1="650" x2="515" y2="650" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <rect x="520" y="630" width="200" height="40" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="620" y="655" text-anchor="middle" font-size="10" font-weight="bold" fill="white">3. Permissions Checked (AuthZ)</text>
+  
+  <line x1="720" y1="650" x2="750" y2="650" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <rect x="755" y="630" width="150" height="40" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="830" y="655" text-anchor="middle" font-size="10" font-weight="bold" fill="white">4. Access Granted/Denied</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

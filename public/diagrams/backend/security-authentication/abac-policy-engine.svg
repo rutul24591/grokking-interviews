@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">ABAC Policy Engine Architecture</title>
+  <desc id="desc">ABAC policy engine showing attribute evaluation, policy decision point (PDP), and policy enforcement point (PEP) flow</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="500" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b">ABAC Policy Engine Architecture</text>
+  
+  <!-- Request Source -->
+  <rect x="50" y="70" width="150" height="80" rx="8" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="125" y="100" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Access Request</text>
+  <text x="125" y="120" text-anchor="middle" font-size="10" fill="white">Subject + Action</text>
+  <text x="125" y="135" text-anchor="middle" font-size="10" fill="white">+ Resource</text>
+  
+  <!-- PEP -->
+  <rect x="250" y="70" width="150" height="80" rx="8" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #d97706)" stroke-width="2"/>
+  <text x="325" y="95" text-anchor="middle" font-size="13" font-weight="bold" fill="white">PEP</text>
+  <text x="325" y="115" text-anchor="middle" font-size="10" fill="white">Policy Enforcement</text>
+  <text x="325" y="130" text-anchor="middle" font-size="10" fill="white">Point</text>
+  <text x="325" y="145" text-anchor="middle" font-size="9" fill="white">(Gateway/Service)</text>
+  
+  <!-- PDP -->
+  <rect x="450" y="70" width="180" height="120" rx="8" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="3"/>
+  <text x="540" y="95" text-anchor="middle" font-size="14" font-weight="bold" fill="white">PDP</text>
+  <text x="540" y="115" text-anchor="middle" font-size="11" fill="white">Policy Decision</text>
+  <text x="540" y="130" text-anchor="middle" font-size="11" fill="white">Point</text>
+  <text x="540" y="150" text-anchor="middle" font-size="10" fill="white">(Policy Engine)</text>
+  <text x="540" y="170" text-anchor="middle" font-size="9" fill="white">Evaluates policies</text>
+  <text x="540" y="185" text-anchor="middle" font-size="9" fill="white">Returns Permit/Deny</text>
+  
+  <!-- PIP -->
+  <rect x="650" y="70" width="100" height="80" rx="8" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="700" y="95" text-anchor="middle" font-size="13" font-weight="bold" fill="white">PIP</text>
+  <text x="700" y="115" text-anchor="middle" font-size="10" fill="white">Policy Info</text>
+  <text x="700" y="130" text-anchor="middle" font-size="10" fill="white">Point</text>
+  <text x="700" y="145" text-anchor="middle" font-size="9" fill="white">(Attribute DB)</text>
+  
+  <!-- PAP -->
+  <rect x="450" y="220" width="180" height="80" rx="8" fill="var(--bg-theme, #dc2626)" stroke="var(--border-theme, #991b1b)" stroke-width="2"/>
+  <text x="540" y="245" text-anchor="middle" font-size="13" font-weight="bold" fill="white">PAP</text>
+  <text x="540" y="265" text-anchor="middle" font-size="10" fill="white">Policy Admin</text>
+  <text x="540" y="280" text-anchor="middle" font-size="10" fill="white">Point</text>
+  <text x="540" y="295" text-anchor="middle" font-size="9" fill="white">(Policy Management)</text>
+  
+  <!-- Policy Store -->
+  <rect x="650" y="220" width="100" height="80" rx="8" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="2"/>
+  <text x="700" y="245" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #1e293b">Policy</text>
+  <text x="700" y="265" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #1e293b">Store</text>
+  <text x="700" y="285" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">(XACML/JSON)</text>
+  
+  <!-- Resource -->
+  <rect x="50" y="350" width="150" height="80" rx="8" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="125" y="380" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Resource</text>
+  <text x="125" y="400" text-anchor="middle" font-size="10" fill="white">API / Database</text>
+  <text x="125" y="415" text-anchor="middle" font-size="10" fill="white">/ Storage</text>
+  
+  <!-- Attribute Sources -->
+  <rect x="250" y="350" width="150" height="80" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="325" y="375" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #1e293b">Attribute Sources</text>
+  <text x="325" y="395" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• LDAP/AD (User)</text>
+  <text x="325" y="410" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• CMDB (Resource)</text>
+  <text x="325" y="425" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Time/Location</text>
+  
+  <!-- Decision Response -->
+  <rect x="450" y="350" width="180" height="80" rx="8" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="2"/>
+  <text x="540" y="375" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #1e293b">Decision Response</text>
+  <text x="540" y="395" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Permit / Deny / Indeterminate</text>
+  <text x="540" y="410" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">+ Obligations</text>
+  <text x="540" y="425" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">+ Advice</text>
+  
+  <!-- Audit Log -->
+  <rect x="650" y="350" width="100" height="80" rx="8" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #d97706)" stroke-width="2"/>
+  <text x="700" y="375" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Audit</text>
+  <text x="700" y="395" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Log</text>
+  <text x="700" y="415" text-anchor="middle" font-size="9" fill="white">(All decisions)</text>
+  
+  <!-- Flow Arrows -->
+  <defs>
+    <marker id="arrowFlow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #3b82f6)"/>
+    </marker>
+    <marker id="arrowDecision" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #8b5cf6)"/>
+    </marker>
+  </defs>
+  
+  <!-- Request Flow -->
+  <line x1="200" y1="110" x2="250" y2="110" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrowFlow)"/>
+  <text x="225" y="105" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Request</text>
+  
+  <line x1="400" y1="110" x2="450" y2="110" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrowFlow)"/>
+  <text x="425" y="105" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">AuthZ Req</text>
+  
+  <line x1="630" y1="110" x2="650" y2="110" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrowFlow)"/>
+  <text x="640" y="105" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Get Attrs</text>
+  
+  <!-- PDP to PAP -->
+  <line x1="540" y1="190" x2="540" y2="220" stroke="var(--text-theme, #8b5cf6)" stroke-width="2" marker-end="url(#arrowDecision)"/>
+  <text x="555" y="210" text-anchor="start" font-size="8" fill="var(--text-theme, #64748b">Load Policies</text>
+  
+  <!-- PAP to Policy Store -->
+  <line x1="630" y1="260" x2="650" y2="260" stroke="var(--text-theme, #dc2626)" stroke-width="2" marker-end="url(#arrowFlow)"/>
+  <text x="640" y="255" text-anchor="start" font-size="8" fill="var(--text-theme, #64748b">Manage</text>
+  
+  <!-- PDP to Decision -->
+  <line x1="540" y1="310" x2="540" y2="350" stroke="var(--text-theme, #8b5cf6)" stroke-width="2" marker-end="url(#arrowDecision)"/>
+  <text x="555" y="335" text-anchor="start" font-size="8" fill="var(--text-theme, #64748b">Decision</text>
+  
+  <!-- Decision to PEP -->
+  <path d="M 450 390 L 400 390 L 400 150 L 250 150" stroke="var(--text-theme, #8b5cf6)" stroke-width="2" fill="none" marker-end="url(#arrowDecision)"/>
+  <text x="380" y="145" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Permit/Deny</text>
+  
+  <!-- PEP to Resource -->
+  <path d="M 250 390 L 200 390" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrowFlow)"/>
+  <text x="225" y="385" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">If Permit</text>
+  
+  <!-- PEP to Audit -->
+  <path d="M 325 150 L 325 180 L 700 180 L 700 350" stroke="var(--text-theme, #f59e0b)" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowFlow)"/>
+  <text x="715" y="280" text-anchor="start" font-size="8" fill="var(--text-theme, #64748b">Log</text>
+  
+  <!-- Attribute Sources to PIP -->
+  <path d="M 325 350 L 325 300 L 700 300 L 700 150" stroke="var(--text-theme, #10b981)" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowFlow)"/>
+  <text x="340" y="320" text-anchor="start" font-size="8" fill="var(--text-theme, #64748b">Fetch</text>
+</svg>

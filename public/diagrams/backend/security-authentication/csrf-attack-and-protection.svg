@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 650" role="img" aria-labelledby="title desc">
+  <title id="title">CSRF Attack and Protection</title>
+  <desc id="desc">Cross-Site Request Forgery attack flow showing how attackers exploit authenticated sessions and protection mechanisms including CSRF tokens and SameSite cookies</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="650" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--text-theme, #1e293b)">CSRF Attack and Protection</text>
+  <text x="450" y="58" text-anchor="middle" font-size="12" fill="var(--text-theme, #64748b)">How attackers exploit authenticated sessions and how to prevent it</text>
+  
+  <!-- Attack Flow Section -->
+  <rect x="30" y="80" width="840" height="280" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="450" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #b45309)">CSRF Attack Flow</text>
+  
+  <!-- Attacker -->
+  <rect x="60" y="130" width="140" height="80" rx="6" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="130" y="165" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Attacker</text>
+  <text x="130" y="185" text-anchor="middle" font-size="11" fill="#fca5a5">Malicious Site</text>
+  <text x="130" y="200" text-anchor="middle" font-size="10" fill="#fca5a5">evil.com</text>
+  
+  <!-- Victim Browser -->
+  <rect x="330" y="130" width="140" height="80" rx="6" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="400" y="165" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Victim</text>
+  <text x="400" y="185" text-anchor="middle" font-size="11" fill="#93c5fd">Authenticated User</text>
+  <text x="400" y="200" text-anchor="middle" font-size="10" fill="#93c5fd">Session Cookie</text>
+  
+  <!-- Target Site -->
+  <rect x="620" y="130" width="140" height="80" rx="6" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="690" y="165" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Target Site</text>
+  <text x="690" y="185" text-anchor="middle" font-size="11" fill="#6ee7b7">bank.com</text>
+  <text x="690" y="200" text-anchor="middle" font-size="10" fill="#6ee7b7">Transfer API</text>
+  
+  <!-- Attack Arrows -->
+  <defs>
+    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #ef4444)"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #3b82f6)"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #10b981)"/>
+    </marker>
+  </defs>
+  
+  <!-- Step 1: Attacker tricks victim -->
+  <path d="M 200 170 Q 265 170 265 130 Q 265 110 330 110" stroke="var(--text-theme, #ef4444)" stroke-width="2" fill="none" marker-end="url(#arrowRed)"/>
+  <text x="265" y="105" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309)">1. Visit malicious link</text>
+  <text x="265" y="120" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b)">Hidden form/image</text>
+  
+  <!-- Step 2: Browser sends forged request -->
+  <line x1="470" y1="170" x2="620" y2="170" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrowBlue)"/>
+  <text x="545" y="165" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b)">2. POST /transfer</text>
+  <text x="545" y="180" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b)">Auto-submitted form</text>
+  
+  <!-- Cookie included -->
+  <rect x="470" y="185" width="150" height="20" rx="3" fill="white" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="545" y="198" text-anchor="middle" font-size="8" fill="var(--text-theme, #3b82f6)">Cookie: session=abc123</text>
+  
+  <!-- Step 3: Server processes -->
+  <rect x="620" y="225" width="140" height="30" rx="4" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="690" y="245" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b)">3. Server validates</text>
+  <text x="690" y="260" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444)">⚠ Cookie valid = Process!</text>
+  
+  <!-- Protection Section -->
+  <rect x="30" y="380" width="840" height="250" rx="8" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="450" y="405" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #059669)">CSRF Protection Mechanisms</text>
+  
+  <!-- CSRF Token Protection -->
+  <rect x="50" y="430" width="260" height="180" rx="6" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="180" y="455" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">CSRF Token</text>
+  
+  <!-- Token Flow -->
+  <rect x="70" y="470" width="80" height="40" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="110" y="490" text-anchor="middle" font-size="9" fill="white">Server</text>
+  <text x="110" y="503" text-anchor="middle" font-size="9" fill="#c4b5fd">Generates</text>
+  
+  <line x1="150" y1="490" x2="180" y2="490" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <rect x="185" y="470" width="110" height="40" rx="4" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="240" y="490" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b)">Hidden Field</text>
+  <text x="240" y="503" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b)">token=xyz789</text>
+  
+  <line x1="110" y1="510" x2="110" y2="540" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="110" y1="540" x2="240" y2="540" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <rect x="70" y="555" width="220" height="45" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
+  <text x="180" y="575" text-anchor="middle" font-size="9" font-weight="bold" fill="white">Attack Blocked!</text>
+  <text x="180" y="590" text-anchor="middle" font-size="8" fill="#fca5a5">Missing/invalid token</text>
+  
+  <text x="180" y="625" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b)">✓ Unique per session</text>
+  <text x="180" y="640" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b)">✓ Validated on server</text>
+  
+  <!-- SameSite Cookies -->
+  <rect x="330" y="430" width="260" height="180" rx="6" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="460" y="455" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">SameSite Cookies</text>
+  
+  <rect x="350" y="470" width="220" height="50" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="460" y="495" text-anchor="middle" font-size="10" fill="white">Set-Cookie: session=abc123</text>
+  <text x="460" y="512" text-anchor="middle" font-size="10" fill="white">SameSite=Strict</text>
+  
+  <rect x="350" y="535" width="220" height="65" rx="4" fill="var(--bg-panel-hover, #eff6ff)" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="460" y="555" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b)">Browser Behavior:</text>
+  <text x="365" y="575" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b)">• SameSite=Strict: Never send</text>
+  <text x="365" y="590" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b)">• SameSite=Lax: Safe top-level</text>
+  <text x="365" y="605" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b)">• Cross-site requests blocked</text>
+  
+  <!-- Origin/Referer Check -->
+  <rect x="610" y="430" width="260" height="180" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="740" y="455" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">Origin/Referer Check</text>
+  
+  <rect x="630" y="470" width="220" height="40" rx="4" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="740" y="490" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b)">Origin: https://evil.com</text>
+  <text x="740" y="505" text-anchor="middle" font-size="9" fill="var(--text-theme, #b45309)">✗ Does not match bank.com</text>
+  
+  <rect x="630" y="525" width="220" height="75" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
+  <text x="740" y="550" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Request Rejected</text>
+  <text x="740" y="570" text-anchor="middle" font-size="9" fill="#fca5a5">Origin/Referer validation</text>
+  <text x="740" y="585" text-anchor="middle" font-size="9" fill="#fca5a5">failed - cross-site request</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

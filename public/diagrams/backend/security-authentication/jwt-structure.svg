@@ -1,0 +1,172 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 550" role="img" aria-labelledby="title desc">
+  <title id="title">JWT Structure and Flow</title>
+  <desc id="desc">JSON Web Token structure showing header, payload, signature encoding and JWT issuance flow</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">JWT (JSON Web Token) Structure</text>
+  
+  <!-- JWT Token Structure -->
+  <rect x="50" y="60" width="700" height="140" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="400" y="85" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">JWT Token Format: header.payload.signature</text>
+  
+  <!-- Header Section -->
+  <rect x="70" y="100" width="200" height="80" rx="6" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="170" y="125" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Header (Base64URL)</text>
+  <rect x="80" y="135" width="180" height="35" rx="4" fill="var(--bg-panel-soft, #1e40af)"/>
+  <text x="170" y="150" text-anchor="middle" font-size="8" fill="#93c5fd">{ "alg": "HS256",</text>
+  <text x="170" y="163" text-anchor="middle" font-size="8" fill="#93c5fd">  "typ": "JWT" }</text>
+  
+  <!-- Dot separator -->
+  <circle cx="285" cy="140" r="5" fill="var(--text-theme, #64748b)"/>
+  
+  <!-- Payload Section -->
+  <rect x="300" y="100" width="200" height="80" rx="6" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="400" y="125" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Payload (Base64URL)</text>
+  <rect x="310" y="135" width="180" height="35" rx="4" fill="var(--bg-panel-soft, #059669)"/>
+  <text x="400" y="150" text-anchor="middle" font-size="8" fill="#6ee7b7">{ "sub": "1234567890",</text>
+  <text x="400" y="163" text-anchor="middle" font-size="8" fill="#6ee7b7">  "name": "John Doe",</text>
+  <text x="400" y="173" text-anchor="middle" font-size="8" fill="#6ee7b7">  "iat": 1516239022 }</text>
+  
+  <!-- Dot separator -->
+  <circle cx="515" cy="140" r="5" fill="var(--text-theme, #64748b)"/>
+  
+  <!-- Signature Section -->
+  <rect x="530" y="100" width="200" height="80" rx="6" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="2"/>
+  <text x="630" y="125" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Signature</text>
+  <rect x="540" y="135" width="180" height="35" rx="4" fill="var(--bg-panel-soft, #b45309)"/>
+  <text x="630" y="155" text-anchor="middle" font-size="8" fill="#fcd34d">HMACSHA256(</text>
+  <text x="630" y="168" text-anchor="middle" font-size="8" fill="#fcd34d">base64UrlEncode(header) + "." +</text>
+  <text x="630" y="178" text-anchor="middle" font-size="8" fill="#fcd34d">base64UrlEncode(payload),</text>
+  <text x="630" y="188" text-anchor="middle" font-size="8" fill="#fcd34d">secret)</text>
+  
+  <!-- Encoding Process -->
+  <rect x="50" y="220" width="340" height="150" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="220" y="245" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">Token Encoding Process</text>
+  
+  <!-- Step 1 -->
+  <rect x="70" y="260" width="80" height="50" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="110" y="285" text-anchor="middle" font-size="10" fill="white">Header</text>
+  <text x="110" y="300" text-anchor="middle" font-size="9" fill="#bfdbfe">JSON</text>
+  
+  <line x1="150" y1="285" x2="170" y2="285" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="160" y="280" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b)">Encode</text>
+  
+  <rect x="175" y="260" width="80" height="50" rx="4" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="215" y="285" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b)">Base64Url</text>
+  <text x="215" y="300" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b)">String</text>
+  
+  <!-- Step 2 -->
+  <rect x="70" y="325" width="80" height="50" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="110" y="350" text-anchor="middle" font-size="10" fill="white">Payload</text>
+  <text x="110" y="365" text-anchor="middle" font-size="9" fill="#6ee7b7">Claims</text>
+  
+  <line x1="150" y1="350" x2="170" y2="350" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="160" y="345" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b)">Encode</text>
+  
+  <rect x="175" y="325" width="80" height="50" rx="4" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="215" y="350" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b)">Base64Url</text>
+  <text x="215" y="365" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b)">String</text>
+  
+  <!-- Combine -->
+  <line x1="255" y1="285" x2="275" y2="285" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  <line x1="255" y1="350" x2="275" y2="350" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  <line x1="275" y1="285" x2="275" y2="350" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  <line x1="275" y1="317" x2="295" y2="317" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="285" y="312" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #64748b)">.</text>
+  
+  <rect x="300" y="295" width="80" height="45" rx="4" fill="var(--bg-panel-hover, #f8fafc)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="340" y="315" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b)">Combined</text>
+  <text x="340" y="330" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b)">header.payload</text>
+  
+  <!-- Signature Creation -->
+  <rect x="70" y="390" width="120" height="40" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="130" y="410" text-anchor="middle" font-size="10" fill="white">Signing Key</text>
+  <text x="130" y="423" text-anchor="middle" font-size="9" fill="#c4b5fd">Secret/Private</text>
+  
+  <line x1="190" y1="320" x2="210" y2="320" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  <line x1="210" y1="320" x2="210" y2="410" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  <line x1="210" y1="410" x2="295" y2="410" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="250" y="405" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b)">Sign</text>
+  
+  <rect x="300" y="385" width="80" height="50" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="340" y="410" text-anchor="middle" font-size="10" fill="white">Signature</text>
+  <text x="340" y="425" text-anchor="middle" font-size="8" fill="#fcd34d">HMAC</text>
+  
+  <!-- Final Token -->
+  <rect x="410" y="295" width="320" height="145" rx="8" fill="var(--bg-theme, #1e293b)" stroke="var(--border-theme, #0f172a)" stroke-width="2"/>
+  <text x="570" y="320" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Final JWT Token</text>
+  
+  <rect x="425" y="335" width="290" height="90" rx="4" fill="var(--bg-panel, #334155)"/>
+  <text x="570" y="355" text-anchor="middle" font-size="9" fill="#93c5fd" font-family="monospace">eyJhbGciOiJIUzI1NiIs</text>
+  <text x="570" y="370" text-anchor="middle" font-size="9" fill="#93c5fd" font-family="monospace">InR5cCI6IkpXVCJ9.</text>
+  <text x="570" y="388" text-anchor="middle" font-size="9" fill="#6ee7b7" font-family="monospace">eyJzdWIiOiIxMjM0NTY</text>
+  <text x="570" y="403" text-anchor="middle" font-size="9" fill="#6ee7b7" font-family="monospace">3ODkwIiwibmFtZSI6I</text>
+  <text x="570" y="418" text-anchor="middle" font-size="9" fill="#6ee7b7" font-family="monospace">kp9eIuWkp9Lg.</text>
+  <text x="570" y="436" text-anchor="middle" font-size="9" fill="#fcd34d" font-family="monospace">sflKxwRJSMeKKF2QT4</text>
+  <text x="570" y="451" text-anchor="middle" font-size="9" fill="#fcd34d" font-family="monospace">fwpMeJf36JFVnWWhs</text>
+  
+  <!-- JWT Flow Diagram -->
+  <rect x="410" y="60" width="340" height="140" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="580" y="85" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">JWT Issuance &amp; Verification</text>
+  
+  <!-- Client -->
+  <rect x="430" y="100" width="70" height="40" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="465" y="125" text-anchor="middle" font-size="10" fill="white">Client</text>
+  
+  <!-- Auth Server -->
+  <rect x="545" y="100" width="90" height="40" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="590" y="120" text-anchor="middle" font-size="10" fill="white">Auth</text>
+  <text x="590" y="133" text-anchor="middle" font-size="10" fill="white">Server</text>
+  
+  <!-- API Server -->
+  <rect x="680" y="100" width="70" height="40" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="715" y="125" text-anchor="middle" font-size="10" fill="white">API</text>
+  
+  <!-- Flow arrows -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+  
+  <line x1="500" y1="120" x2="540" y2="120" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="520" y="115" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b)">1. Login</text>
+  
+  <line x1="540" y1="135" x2="500" y2="135" stroke="var(--text-theme, #8b5cf6)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="520" y="150" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b)">2. JWT</text>
+  
+  <line x1="500" y1="155" x2="675" y2="155" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="675" y1="155" x2="675" y2="145" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="590" y="170" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b)">3. API Request + JWT</text>
+  
+  <rect x="590" y="145" width="80" height="20" rx="3" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="630" y="158" text-anchor="middle" font-size="7" fill="var(--text-theme, #64748b)">Verify Signature</text>
+  
+  <line x1="675" y1="120" x2="755" y2="120" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="715" y="115" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b)">4. Response</text>
+  
+  <!-- Key Claims Section -->
+  <rect x="410" y="450" width="340" height="90" rx="8" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="580" y="475" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">Common JWT Claims</text>
+  
+  <text x="430" y="500" text-anchor="start" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b)">Registered:</text>
+  <text x="500" y="500" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b)">iss (issuer), sub (subject),</text>
+  <text x="500" y="515" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b)">aud (audience), exp (expiry),</text>
+  <text x="500" y="530" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b)">iat (issued at), nbf (not before)</text>
+  
+  <text x="650" y="500" text-anchor="start" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b)">Custom:</text>
+  <text x="700" y="500" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b)">user_id, roles,</text>
+  <text x="700" y="515" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b)">permissions,</text>
+  <text x="700" y="530" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b)">tenant_id</text>
+  
+  <!-- Security Notes -->
+  <rect x="50" y="450" width="340" height="90" rx="8" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="220" y="475" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309)">Security Best Practices</text>
+  <text x="70" y="500" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b)">• Use RS256 (asymmetric) for production</text>
+  <text x="70" y="515" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b)">• Keep tokens short-lived (15-60 min)</text>
+  <text x="70" y="530" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b)">• Validate all claims (iss, aud, exp)</text>
+  <text x="220" y="545" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b)">• Never store sensitive data in payload</text>
+</svg>

@@ -1,0 +1,196 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 750" role="img" aria-labelledby="title desc">
+  <title id="title">Security Headers</title>
+  <desc id="desc">Comprehensive visualization of essential HTTP security headers including CSP, HSTS, X-Frame-Options, and their defense-in-depth impact</desc>
+  
+  <!-- Background -->
+  <rect width="950" height="750" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="475" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="var(--text-theme, #1e293b)">Security Headers</text>
+  <text x="475" y="60" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">HTTP headers that enhance web application security</text>
+  
+  <!-- Security Headers Overview -->
+  <rect x="30" y="80" width="890" height="180" rx="8" fill="var(--bg-panel-hover, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="475" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #1e40af">Why Security Headers Matter</text>
+  
+  <rect x="50" y="125" width="260" height="125" rx="6" fill="white" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="180" y="150" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #1e40af">🛡️ Attack Prevention</text>
+  <text x="180" y="175" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">XSS, Clickjacking,</text>
+  <text x="180" y="190" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">MIME Sniffing</text>
+  <text x="180" y="210" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Protocol Downgrade</text>
+  <text x="180" y="225" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Information Leakage</text>
+  <text x="180" y="240" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Mixed Content</text>
+  
+  <rect x="325" y="125" width="260" height="125" rx="6" fill="white" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="455" y="150" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #1e40af">⚙️ Easy to Implement</text>
+  <text x="455" y="175" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Web server config</text>
+  <text x="455" y="190" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Reverse proxy</text>
+  <text x="455" y="210" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">CDN configuration</text>
+  <text x="455" y="225" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Application middleware</text>
+  <text x="455" y="240" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Low performance impact</text>
+  
+  <rect x="600" y="125" width="260" height="125" rx="6" fill="white" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="730" y="150" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #1e40af">📊 Defense in Depth</text>
+  <text x="730" y="175" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Additional layer</text>
+  <text x="730" y="190" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Client-side protection</text>
+  <text x="730" y="210" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Browser enforcement</text>
+  <text x="730" y="225" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Compliance requirement</text>
+  <text x="730" y="240" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Security best practice</text>
+  
+  <!-- Essential Security Headers -->
+  <rect x="30" y="275" width="570" height="455" rx="8" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="315" y="300" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #b45309">Essential Security Headers</text>
+  
+  <!-- HSTS -->
+  <rect x="50" y="320" width="530" height="70" rx="6" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="315" y="345" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #059669">Strict-Transport-Security (HSTS)</text>
+  
+  <rect x="70" y="355" width="490" height="25" rx="3" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="85" y="372" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">max-age=31536000; includeSubDomains; preload</text>
+  
+  <text x="315" y="385" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">✓ Forces HTTPS, prevents protocol downgrade attacks</text>
+  
+  <!-- X-Frame-Options -->
+  <rect x="50" y="400" width="530" height="70" rx="6" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="315" y="425" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #1e40af">X-Frame-Options</text>
+  
+  <rect x="70" y="435" width="490" height="25" rx="3" fill="var(--bg-panel-hover, #dbeafe)" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="85" y="452" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">DENY</text>
+  <text x="315" y="452" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">or</text>
+  <text x="400" y="452" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">SAMEORIGIN</text>
+  
+  <text x="315" y="465" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">✓ Prevents clickjacking attacks</text>
+  
+  <!-- X-Content-Type-Options -->
+  <rect x="50" y="480" width="530" height="70" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="315" y="505" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #b45309">X-Content-Type-Options</text>
+  
+  <rect x="70" y="515" width="490" height="25" rx="3" fill="var(--bg-panel-hover, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="85" y="532" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">nosniff</text>
+  
+  <text x="315" y="545" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">✓ Prevents MIME type sniffing</text>
+  
+  <!-- Content-Security-Policy -->
+  <rect x="50" y="560" width="530" height="85" rx="6" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="315" y="585" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #6d28d9">Content-Security-Policy (CSP)</text>
+  
+  <rect x="70" y="595" width="490" height="40" rx="3" fill="var(--bg-panel-hover, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  <text x="85" y="612" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">default-src 'self'; script-src 'self' https://cdn.example.com;</text>
+  <text x="85" y="627" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;</text>
+  
+  <text x="315" y="640" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">✓ Prevents XSS, controls resource loading</text>
+  
+  <!-- Referrer-Policy -->
+  <rect x="50" y="655" width="530" height="65" rx="6" fill="white" stroke="var(--border-theme, #06b6d4)" stroke-width="1"/>
+  <text x="315" y="680" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #0891b2">Referrer-Policy</text>
+  
+  <rect x="70" y="690" width="490" height="20" rx="3" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #67e8f9)" stroke-width="1"/>
+  <text x="85" y="705" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">strict-origin-when-cross-origin</text>
+  <text x="350" y="705" text-anchor="start" font-size="8" fill="var(--text-theme, #64748b">or</text>
+  <text x="400" y="705" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">no-referrer</text>
+  
+  <!-- Additional Headers -->
+  <rect x="615" y="275" width="305" height="455" rx="8" fill="var(--bg-panel-soft, #f0fdf4)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="767" y="300" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #059669">Additional Security Headers</text>
+  
+  <!-- Permissions-Policy -->
+  <rect x="630" y="320" width="275" height="75" rx="4" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="767" y="345" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">Permissions-Policy</text>
+  
+  <text x="645" y="365" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">geolocation=(), microphone=()</text>
+  <text x="767" y="385" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Controls browser features</text>
+  
+  <!-- X-XSS-Protection -->
+  <rect x="630" y="405" width="275" height="60" rx="4" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="767" y="430" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">X-XSS-Protection</text>
+  
+  <text x="645" y="450" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">1; mode=block</text>
+  <text x="767" y="460" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Legacy, deprecated</text>
+  
+  <!-- Cross-Origin Headers -->
+  <rect x="630" y="475" width="275" height="90" rx="4" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="767" y="500" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">Cross-Origin Headers</text>
+  
+  <text x="645" y="520" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">Cross-Origin-Embedder-Policy:</text>
+  <text x="645" y="533" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">require-corp</text>
+  <text x="645" y="548" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">Cross-Origin-Opener-Policy:</text>
+  <text x="645" y="561" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">same-origin</text>
+  
+  <!-- Cache-Control -->
+  <rect x="630" y="575" width="275" height="75" rx="4" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="767" y="600" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">Cache-Control</text>
+  
+  <text x="645" y="620" text-anchor="start" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">no-store, no-cache</text>
+  <text x="767" y="640" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Prevents sensitive data caching</text>
+  
+  <!-- Implementation -->
+  <rect x="630" y="660" width="275" height="60" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="767" y="685" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Implementation</text>
+  <text x="767" y="705" text-anchor="middle" font-size="9" fill="#6ee7b7">Nginx, Apache, Cloudflare,</text>
+  <text x="767" y="720" text-anchor="middle" font-size="9" fill="#6ee7b7">Express, Application code</text>
+  
+  <!-- CSP Directives -->
+  <rect x="30" y="540" width="890" height="190" rx="8" fill="var(--bg-panel-hover, #faf5ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="475" y="565" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #6d28d9">CSP Directive Reference</text>
+  
+  <rect x="50" y="585" width="270" height="135" rx="6" fill="white" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  <text x="185" y="610" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #6d28d9">Source Values</text>
+  
+  <text x="65" y="630" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">'self'</text>
+  <text x="140" y="630" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">- Same origin</text>
+  
+  <text x="65" y="648" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">'none'</text>
+  <text x="140" y="648" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">- Block all</text>
+  
+  <text x="65" y="666" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">'unsafe-inline'</text>
+  <text x="140" y="666" text-anchor="start" font-size="9" fill="var(--text-theme, #ef4444">- Allow inline (risky)</text>
+  
+  <text x="65" y="684" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">'unsafe-eval'</text>
+  <text x="140" y="684" text-anchor="start" font-size="9" fill="var(--text-theme, #ef4444">- Allow eval() (risky)</text>
+  
+  <text x="65" y="702" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">https://cdn.example.com</text>
+  <text x="140" y="702" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">- Specific domain</text>
+  
+  <rect x="335" y="585" width="270" height="135" rx="6" fill="white" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  <text x="470" y="610" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #6d28d9">Common Directives</text>
+  
+  <text x="350" y="630" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">default-src</text>
+  <text x="450" y="630" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">- Fallback for all</text>
+  
+  <text x="350" y="648" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">script-src</text>
+  <text x="450" y="648" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">- JavaScript sources</text>
+  
+  <text x="350" y="666" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">style-src</text>
+  <text x="450" y="666" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">- CSS sources</text>
+  
+  <text x="350" y="684" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">img-src</text>
+  <text x="450" y="684" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">- Image sources</text>
+  
+  <text x="350" y="702" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">connect-src</text>
+  <text x="450" y="702" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">- XHR/Fetch/WebSocket</text>
+  
+  <rect x="620" y="585" width="280" height="135" rx="6" fill="white" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  <text x="760" y="610" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #6d28d9">More Directives</text>
+  
+  <text x="635" y="630" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">font-src</text>
+  <text x="735" y="630" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">- Font sources</text>
+  
+  <text x="635" y="648" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">object-src</text>
+  <text x="735" y="648" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">- Plugin content</text>
+  
+  <text x="635" y="666" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">frame-src</text>
+  <text x="735" y="666" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">- iframe sources</text>
+  
+  <text x="635" y="684" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">base-uri</text>
+  <text x="735" y="684" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">- &lt;base&gt; URLs</text>
+  
+  <text x="635" y="702" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">form-action</text>
+  <text x="735" y="702" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">- Form submission</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

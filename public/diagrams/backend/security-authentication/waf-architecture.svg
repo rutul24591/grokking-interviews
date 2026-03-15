@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 700" role="img" aria-labelledby="title desc">
+  <title id="title">Web Application Firewall (WAF)</title>
+  <desc id="desc">Web Application Firewall architecture showing protection against OWASP Top 10 attacks, deployment modes, and rule types</desc>
+  
+  <!-- Background -->
+  <rect width="950" height="700" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="475" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="var(--text-theme, #1e293b)">Web Application Firewall (WAF)</text>
+  <text x="475" y="60" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Protecting web applications from OWASP Top 10 and other attacks</text>
+  
+  <!-- WAF Position Section -->
+  <rect x="30" y="80" width="890" height="140" rx="8" fill="var(--bg-panel-hover, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="475" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #1e40af)">WAF Position in Network Architecture</text>
+  
+  <!-- Internet -->
+  <rect x="50" y="125" width="100" height="60" rx="6" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="100" y="155" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Internet</text>
+  <text x="100" y="172" text-anchor="middle" font-size="10" fill="#bfdbfe">Users/Bots</text>
+  
+  <!-- Arrow -->
+  <line x1="150" y1="155" x2="195" y2="155" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- WAF -->
+  <rect x="200" y="125" width="140" height="60" rx="6" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="270" y="150" text-anchor="middle" font-size="13" font-weight="bold" fill="white">WAF</text>
+  <text x="270" y="170" text-anchor="middle" font-size="10" fill="#c4b5fd">Inspects &amp; Filters</text>
+  
+  <!-- Arrow -->
+  <line x1="340" y1="155" x2="385" y2="155" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Load Balancer -->
+  <rect x="390" y="125" width="120" height="60" rx="6" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="2"/>
+  <text x="450" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Load</text>
+  <text x="450" y="170" text-anchor="middle" font-size="10" fill="#fcd34d">Balancer</text>
+  
+  <!-- Arrow -->
+  <line x1="510" y1="155" x2="555" y2="155" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- App Servers -->
+  <rect x="560" y="125" width="140" height="60" rx="6" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="630" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="white">App Servers</text>
+  <text x="630" y="170" text-anchor="middle" font-size="10" fill="#6ee7b7">Backend</text>
+  
+  <!-- Arrow -->
+  <line x1="700" y1="155" x2="745" y2="155" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Database -->
+  <rect x="750" y="125" width="140" height="60" rx="6" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="820" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Database</text>
+  <text x="820" y="170" text-anchor="middle" font-size="10" fill="#fca5a5">Data Store</text>
+  
+  <!-- Blocked Attack -->
+  <path d="M 270 125 L 270 100 L 100 100" stroke="var(--text-theme, #ef4444)" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowRed)"/>
+  <text x="185" y="95" text-anchor="middle" font-size="9" fill="var(--text-theme, #b91c1c">Malicious requests blocked</text>
+  
+  <!-- WAF Protection Section -->
+  <rect x="30" y="235" width="570" height="300" rx="8" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="315" y="260" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #b45309">WAF Protection Against OWASP Top 10</text>
+  
+  <!-- SQL Injection -->
+  <rect x="50" y="280" width="250" height="55" rx="4" fill="white" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="175" y="305" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #b91c1c">SQL Injection</text>
+  <text x="175" y="322" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Detects malicious SQL in input</text>
+  
+  <!-- XSS -->
+  <rect x="320" y="280" width="250" height="55" rx="4" fill="white" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="445" y="305" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #b91c1c">Cross-Site Scripting (XSS)</text>
+  <text x="445" y="322" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Blocks malicious scripts</text>
+  
+  <!-- CSRF -->
+  <rect x="50" y="350" width="250" height="55" rx="4" fill="white" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="175" y="375" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #b91c1c">CSRF Attacks</text>
+  <text x="175" y="392" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Validates request origins</text>
+  
+  <!-- Path Traversal -->
+  <rect x="320" y="350" width="250" height="55" rx="4" fill="white" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="445" y="375" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #b91c1c">Path Traversal</text>
+  <text x="445" y="392" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Prevents directory access</text>
+  
+  <!-- Rate Limiting -->
+  <rect x="50" y="420" width="250" height="55" rx="4" fill="white" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="175" y="445" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #b91c1c">Rate Limiting / DDoS</text>
+  <text x="175" y="462" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Throttles excessive requests</text>
+  
+  <!-- Bot Protection -->
+  <rect x="320" y="420" width="250" height="55" rx="4" fill="white" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="445" y="445" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #b91c1c">Bot Protection</text>
+  <text x="445" y="462" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Identifies and blocks bots</text>
+  
+  <!-- WAF Rule Types -->
+  <rect x="615" y="235" width="305" height="300" rx="8" fill="var(--bg-panel-soft, #f0fdf4)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="767" y="260" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #059669">WAF Rule Types</text>
+  
+  <!-- Managed Rules -->
+  <rect x="630" y="280" width="275" height="65" rx="4" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="767" y="305" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #059669">Managed Rules</text>
+  <text x="767" y="325" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Pre-built rules from vendor</text>
+  <text x="767" y="340" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">OWASP Top 10, CVE patches</text>
+  
+  <!-- Custom Rules -->
+  <rect x="630" y="360" width="275" height="65" rx="4" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="767" y="385" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #059669">Custom Rules</text>
+  <text x="767" y="405" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Organization-specific rules</text>
+  <text x="767" y="420" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Business logic protection</text>
+  
+  <!-- Rate-Based Rules -->
+  <rect x="630" y="440" width="275" height="65" rx="4" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="767" y="465" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #059669">Rate-Based Rules</text>
+  <text x="767" y="485" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Block IPs exceeding threshold</text>
+  <text x="767" y="500" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">DDoS and brute-force protection</text>
+  
+  <!-- Deployment Modes -->
+  <rect x="30" y="550" width="890" height="130" rx="8" fill="var(--bg-panel-hover, #faf5ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="475" y="575" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #6d28d9">WAF Deployment Modes</text>
+  
+  <!-- Block Mode -->
+  <rect x="50" y="590" width="270" height="80" rx="6" fill="white" stroke="var(--border-theme, #a78bfa)" stroke-width="1"/>
+  <text x="185" y="615" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #6d28d9">Block Mode</text>
+  
+  <text x="185" y="635" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Actively blocks malicious</text>
+  <text x="185" y="650" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">requests with 403 response</text>
+  
+  <rect x="70" y="658" width="230" height="20" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="185" y="672" text-anchor="middle" font-size="8" fill="white">✓ Production protection</text>
+  
+  <!-- Monitor Mode -->
+  <rect x="340" y="590" width="270" height="80" rx="6" fill="white" stroke="var(--border-theme, #a78bfa)" stroke-width="1"/>
+  <text x="475" y="615" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #6d28d9">Monitor/Log Mode</text>
+  
+  <text x="475" y="635" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Logs threats without blocking</text>
+  <text x="475" y="650" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Useful for tuning rules</text>
+  
+  <rect x="360" y="658" width="230" height="20" rx="3" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="475" y="672" text-anchor="middle" font-size="8" fill="var(--text-theme, #b45309">△ Testing and tuning</text>
+  
+  <!-- Count Mode -->
+  <rect x="630" y="590" width="270" height="80" rx="6" fill="white" stroke="var(--border-theme, #a78bfa)" stroke-width="1"/>
+  <text x="765" y="615" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #6d28d9">Count Mode</text>
+  
+  <text x="765" y="635" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Counts matching requests</text>
+  <text x="765" y="650" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">For metrics and alerting</text>
+  
+  <rect x="650" y="658" width="230" height="20" rx="3" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="765" y="672" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e40af">△ Visibility and metrics</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #ef4444)"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 450">
+  <defs>
+    <style>
+      .title { font: bold 20px system-ui, -apple-system, sans-serif; fill: #1a1a2e; }
+      .label { font: 14px system-ui, -apple-system, sans-serif; fill: #333; }
+      .small-label { font: 12px system-ui, -apple-system, sans-serif; fill: #555; }
+      .box { fill: #f5f5f5; stroke: #666; stroke-width: 2; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <text x="425" y="35" text-anchor="middle" class="title">Third-Party Risk Vectors</text>
+  <text x="425" y="55" text-anchor="middle" class="small-label">Supply chain attacks, data exfiltration, DOM manipulation, and privacy concerns</text>
+  
+  <!-- Your Website -->
+  <rect x="350" y="80" width="150" height="80" fill="#e3f2fd" stroke="#2196f3" rx="6"/>
+  <text x="425" y="105" text-anchor="middle" class="label" font-weight="bold">Your Website</text>
+  <line x1="370" y1="115" x2="480" y2="115" stroke="#2196f3" stroke-width="1"/>
+  <text x="425" y="140" text-anchor="middle" class="small-label">User data</text>
+  <text x="425" y="155" text-anchor="middle" class="small-label">Cookies, tokens</text>
+  
+  <!-- Third-Party Scripts -->
+  <rect x="50" y="200" width="180" height="100" fill="#ffebee" stroke="#f44336" rx="6"/>
+  <text x="140" y="225" text-anchor="middle" class="label" font-weight="bold">Analytics Scripts</text>
+  <line x1="70" y1="235" x2="210" y2="235" stroke="#f44336" stroke-width="1"/>
+  <text x="140" y="260" text-anchor="middle" class="small-label">Google Analytics</text>
+  <text x="140" y="277" text-anchor="middle" class="small-label">Mixpanel, etc.</text>
+  <text x="140" y="294" text-anchor="middle" class="small-label" fill="#f44336">⚠ Full page access</text>
+  
+  <rect x="250" y="200" width="180" height="100" fill="#ffebee" stroke="#f44336" rx="6"/>
+  <text x="340" y="225" text-anchor="middle" class="label" font-weight="bold">Ad Scripts</text>
+  <line x1="270" y1="235" x2="410" y2="235" stroke="#f44336" stroke-width="1"/>
+  <text x="340" y="260" text-anchor="middle" class="small-label">Ad networks</text>
+  <text x="340" y="277" text-anchor="middle" class="small-label">AdSense, etc.</text>
+  <text x="340" y="294" text-anchor="middle" class="small-label" fill="#f44336">⚠ High risk</text>
+  
+  <rect x="450" y="200" width="180" height="100" fill="#ffebee" stroke="#f44336" rx="6"/>
+  <text x="540" y="225" text-anchor="middle" class="label" font-weight="bold">Widget Scripts</text>
+  <line x1="470" y1="235" x2="610" y2="235" stroke="#f44336" stroke-width="1"/>
+  <text x="540" y="260" text-anchor="middle" class="small-label">Chat widgets</text>
+  <text x="540" y="277" text-anchor="middle" class="small-label">Social buttons</text>
+  <text x="540" y="294" text-anchor="middle" class="small-label" fill="#f44336">⚠ DOM access</text>
+  
+  <rect x="650" y="200" width="180" height="100" fill="#ffebee" stroke="#f44336" rx="6"/>
+  <text x="740" y="225" text-anchor="middle" class="label" font-weight="bold">Tag Managers</text>
+  <line x1="670" y1="235" x2="810" y2="235" stroke="#f44336" stroke-width="1"/>
+  <text x="740" y="260" text-anchor="middle" class="small-label">GTM, Tealium</text>
+  <text x="740" y="277" text-anchor="middle" class="small-label">Load other scripts</text>
+  <text x="740" y="294" text-anchor="middle" class="small-label" fill="#f44336">⚠ Single point of failure</text>
+  
+  <!-- Attack Vectors -->
+  <rect x="50" y="330" width="180" height="100" fill="#fff3e0" stroke="#ff9800" rx="6"/>
+  <text x="140" y="355" text-anchor="middle" class="label" font-weight="bold">Supply Chain Attack</text>
+  <line x1="70" y1="365" x2="210" y2="365" stroke="#ff9800" stroke-width="1"/>
+  <text x="140" y="390" text-anchor="middle" class="small-label">Compromised vendor</text>
+  <text x="140" y="407" text-anchor="middle" class="small-label">serves malicious code</text>
+  <text x="140" y="424" text-anchor="middle" class="small-label">Example: Magecart</text>
+  
+  <rect x="250" y="330" width="180" height="100" fill="#fff3e0" stroke="#ff9800" rx="6"/>
+  <text x="340" y="355" text-anchor="middle" class="label" font-weight="bold">Data Exfiltration</text>
+  <line x1="270" y1="365" x2="410" y2="365" stroke="#ff9800" stroke-width="1"/>
+  <text x="340" y="390" text-anchor="middle" class="small-label">Read cookies, tokens</text>
+  <text x="340" y="407" text-anchor="middle" class="small-label">Capture keystrokes</text>
+  <text x="340" y="424" text-anchor="middle" class="small-label">Send to attacker</text>
+  
+  <rect x="450" y="330" width="180" height="100" fill="#fff3e0" stroke="#ff9800" rx="6"/>
+  <text x="540" y="355" text-anchor="middle" class="label" font-weight="bold">DOM Manipulation</text>
+  <line x1="470" y1="365" x2="610" y2="365" stroke="#ff9800" stroke-width="1"/>
+  <text x="540" y="390" text-anchor="middle" class="small-label">Modify page content</text>
+  <text x="540" y="407" text-anchor="middle" class="small-label">Inject fake forms</text>
+  <text x="540" y="424" text-anchor="middle" class="small-label">Redirect to phishing</text>
+  
+  <rect x="650" y="330" width="180" height="100" fill="#fff3e0" stroke="#ff9800" rx="6"/>
+  <text x="740" y="355" text-anchor="middle" class="label" font-weight="bold">Privacy Concerns</text>
+  <line x1="670" y1="365" x2="810" y2="365" stroke="#ff9800" stroke-width="1"/>
+  <text x="740" y="390" text-anchor="middle" class="small-label">Cross-site tracking</text>
+  <text x="740" y="407" text-anchor="middle" class="small-label">GDPR/CCPA issues</text>
+  <text x="740" y="424" text-anchor="middle" class="small-label">User fingerprinting</text>
+</svg>

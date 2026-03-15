@@ -825,6 +825,231 @@ export const sidebarData: Category[] = [
                   slug: "media-optimization",
                 }],
               },
+              {
+                id: "topic-nfr-frontend-network-efficiency",
+                name: "Network Efficiency",
+                articles: [{
+                  id: "article-frontend-nfr-network-efficiency",
+                  title: "Network Efficiency",
+                  slug: "network-efficiency",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-client-edge-caching",
+                name: "Client & Edge Caching",
+                articles: [{
+                  id: "article-frontend-nfr-client-edge-caching",
+                  title: "Client & Edge Caching",
+                  slug: "client-edge-caching",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-accessibility",
+                name: "Accessibility (a11y)",
+                articles: [{
+                  id: "article-frontend-nfr-accessibility",
+                  title: "Accessibility",
+                  slug: "accessibility",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-cross-browser-compatibility",
+                name: "Cross-Browser Compatibility",
+                articles: [{
+                  id: "article-frontend-nfr-cross-browser-compatibility",
+                  title: "Cross-Browser Compatibility",
+                  slug: "cross-browser-compatibility",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-xss-injection-protection",
+                name: "XSS & Injection Protection",
+                articles: [{
+                  id: "article-frontend-nfr-xss-injection-protection",
+                  title: "XSS & Injection Protection",
+                  slug: "xss-injection-protection",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-error-ux-recovery",
+                name: "Error UX & Recovery",
+                articles: [{
+                  id: "article-frontend-nfr-error-ux-recovery",
+                  title: "Error UX & Recovery",
+                  slug: "error-ux-recovery",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-secure-client-storage",
+                name: "Secure Client Storage",
+                articles: [{
+                  id: "article-frontend-nfr-secure-client-storage",
+                  title: "Secure Client Storage",
+                  slug: "secure-client-storage",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-state-management-strategy",
+                name: "State Management Strategy",
+                articles: [{
+                  id: "article-frontend-nfr-state-management-strategy",
+                  title: "State Management Strategy",
+                  slug: "state-management-strategy",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-internationalization-localization",
+                name: "Internationalization & Localization",
+                articles: [{
+                  id: "article-frontend-nfr-internationalization-localization",
+                  title: "Internationalization & Localization",
+                  slug: "internationalization-localization",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-seo-discoverability",
+                name: "SEO & Discoverability",
+                articles: [{
+                  id: "article-frontend-nfr-seo-discoverability",
+                  title: "SEO & Discoverability",
+                  slug: "seo-discoverability",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-authentication-ux-flows",
+                name: "Authentication UX Flows",
+                articles: [{
+                  id: "article-frontend-nfr-authentication-ux-flows",
+                  title: "Authentication UX Flows",
+                  slug: "authentication-ux-flows",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-client-persistence-strategy",
+                name: "Client Persistence Strategy",
+                articles: [{
+                  id: "article-frontend-nfr-client-persistence-strategy",
+                  title: "Client Persistence Strategy",
+                  slug: "client-persistence-strategy",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-multi-tab-synchronization",
+                name: "Multi-Tab Synchronization",
+                articles: [{
+                  id: "article-frontend-nfr-multi-tab-synchronization",
+                  title: "Multi-Tab Synchronization",
+                  slug: "multi-tab-synchronization",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-frontend-testing-strategy",
+                name: "Frontend Testing Strategy",
+                articles: [{
+                  id: "article-frontend-nfr-frontend-testing-strategy",
+                  title: "Frontend Testing Strategy",
+                  slug: "frontend-testing-strategy",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-device-responsiveness",
+                name: "Device Responsiveness",
+                articles: [{
+                  id: "article-frontend-nfr-device-responsiveness",
+                  title: "Device Responsiveness",
+                  slug: "device-responsiveness",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-third-party-script-safety",
+                name: "Third-Party Script Safety",
+                articles: [{
+                  id: "article-frontend-nfr-third-party-script-safety",
+                  title: "Third-Party Script Safety",
+                  slug: "third-party-script-safety",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-conflict-resolution-ux",
+                name: "Conflict Resolution UX",
+                articles: [{
+                  id: "article-frontend-nfr-conflict-resolution-ux",
+                  title: "Conflict Resolution UX",
+                  slug: "conflict-resolution-ux",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-realtime-ui-handling",
+                name: "Real-Time UI Handling",
+                articles: [{
+                  id: "article-frontend-nfr-realtime-ui-handling",
+                  title: "Real-Time UI Handling",
+                  slug: "realtime-ui-handling",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-frontend-observability-rum",
+                name: "Frontend Observability (RUM)",
+                articles: [{
+                  id: "article-frontend-nfr-frontend-observability-rum",
+                  title: "Frontend Observability (RUM)",
+                  slug: "frontend-observability-rum",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-developer-experience",
+                name: "Developer Experience",
+                articles: [{
+                  id: "article-frontend-nfr-developer-experience",
+                  title: "Developer Experience (DX)",
+                  slug: "developer-experience",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-build-optimization",
+                name: "Build Optimization",
+                articles: [{
+                  id: "article-frontend-nfr-build-optimization",
+                  title: "Build Optimization",
+                  slug: "build-optimization",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-frontend-deployment-strategy",
+                name: "Frontend Deployment Strategy",
+                articles: [{
+                  id: "article-frontend-nfr-frontend-deployment-strategy",
+                  title: "Frontend Deployment Strategy",
+                  slug: "frontend-deployment-strategy",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-offline-support-pwa",
+                name: "Offline Support / PWA",
+                articles: [{
+                  id: "article-frontend-nfr-offline-support-pwa",
+                  title: "Offline Support / PWA",
+                  slug: "offline-support-pwa",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-privacy-consent-ux",
+                name: "Privacy & Consent UX",
+                articles: [{
+                  id: "article-frontend-nfr-privacy-consent-ux",
+                  title: "Privacy & Consent UX",
+                  slug: "privacy-consent-ux",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-feature-flagging-rollouts",
+                name: "Feature Flagging & Rollouts",
+                articles: [{
+                  id: "article-frontend-nfr-feature-flagging-rollouts",
+                  title: "Feature Flagging & Rollouts",
+                  slug: "feature-flagging-rollouts",
+                }],
+              },
             ],
           },
           {

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">CSP and HSTS Protection Mechanisms</title>
+  <desc id="desc">Content Security Policy and HSTS header protection mechanisms showing attack prevention</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="500" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">CSP and HSTS Protection Mechanisms</text>
+  
+  <!-- CSP Section -->
+  <rect x="50" y="70" width="340" height="200" rx="8" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="220" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Content Security Policy (CSP)</text>
+  
+  <!-- CSP Attack Blocked -->
+  <rect x="70" y="120" width="300" height="70" rx="6" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #dc2626)" stroke-width="2"/>
+  <text x="220" y="145" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #dc2626">XSS Attack Blocked</text>
+  <text x="220" y="165" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">&lt;script src="evil.com"&gt; → BLOCKED</text>
+  <text x="220" y="180" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Not in script-src allowlist</text>
+  
+  <!-- CSP Policy -->
+  <rect x="70" y="200" width="300" height="60" rx="6" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="220" y="222" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b">Policy: default-src 'self'; script-src 'self' 'nonce-abc'</text>
+  <text x="220" y="240" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Only allow scripts from same origin or with valid nonce</text>
+  
+  <!-- HSTS Section -->
+  <rect x="410" y="70" width="340" height="200" rx="8" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="580" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="white">HSTS (HTTP Strict Transport Security)</text>
+  
+  <!-- HSTS Downgrade Prevention -->
+  <rect x="430" y="120" width="300" height="70" rx="6" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="580" y="145" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #10b981">HTTPS Downgrade Prevented</text>
+  <text x="580" y="165" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">HTTP request → Auto-redirect to HTTPS</text>
+  <text x="580" y="180" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">SSL stripping attack blocked</text>
+  
+  <!-- HSTS Header -->
+  <rect x="430" y="200" width="300" height="60" rx="6" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="580" y="222" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b">Strict-Transport-Security: max-age=31536000</text>
+  <text x="580" y="240" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Force HTTPS for 1 year, include subdomains</text>
+  
+  <!-- Attack Vectors -->
+  <rect x="50" y="300" width="340" height="180" rx="8" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="2"/>
+  <text x="220" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">CSP Prevents</text>
+  
+  <rect x="70" y="340" width="300" height="30" rx="4" fill="var(--bg-theme, #dc2626)" stroke="var(--border-theme, #991b1b)" stroke-width="1"/>
+  <text x="220" y="360" text-anchor="middle" font-size="10" fill="white">✗ Inline script injection (XSS)</text>
+  
+  <rect x="70" y="380" width="300" height="30" rx="4" fill="var(--bg-theme, #dc2626)" stroke="var(--border-theme, #991b1b)" stroke-width="1"/>
+  <text x="220" y="400" text-anchor="middle" font-size="10" fill="white">✗ External script from untrusted domains</text>
+  
+  <rect x="70" y="420" width="300" height="30" rx="4" fill="var(--bg-theme, #dc2626)" stroke="var(--border-theme, #991b1b)" stroke-width="1"/>
+  <text x="220" y="440" text-anchor="middle" font-size="10" fill="white">✗ Data exfiltration to attacker servers</text>
+  
+  <!-- HSTS Benefits -->
+  <rect x="430" y="300" width="320" height="180" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="590" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">HSTS Prevents</text>
+  
+  <rect x="450" y="345" width="280" height="35" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="590" y="367" text-anchor="middle" font-size="10" fill="white">✓ Protocol downgrade attacks</text>
+  
+  <rect x="450" y="390" width="280" height="35" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="590" y="412" text-anchor="middle" font-size="10" fill="white">✓ SSL stripping</text>
+  
+  <rect x="450" y="435" width="280" height="35" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="590" y="457" text-anchor="middle" font-size="10" fill="white">✓ Cookie hijacking over HTTP</text>
+</svg>

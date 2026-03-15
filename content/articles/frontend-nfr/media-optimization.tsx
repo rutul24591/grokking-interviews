@@ -7,15 +7,15 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-frontend-nfr-media-optimization",
   title: "Media Optimization",
-  description: "Comprehensive guide to optimizing images, video, and audio for web performance. Covers modern formats, responsive media, lazy loading, and CDN delivery.",
+  description: "Comprehensive guide to optimizing images, video, and audio for web performance. Covers modern formats, responsive media, lazy loading, video codecs, and CDN delivery.",
   category: "frontend",
   subcategory: "nfr",
   slug: "media-optimization",
   version: "extensive",
-  wordCount: 10500,
-  readingTime: 42,
+  wordCount: 12000,
+  readingTime: 48,
   lastUpdated: "2026-03-15",
-  tags: ["frontend", "nfr", "performance", "images", "video", "optimization", "webp", "avif"],
+  tags: ["frontend", "nfr", "performance", "images", "video", "optimization", "webp", "avif", "codecs"],
   relatedTopics: ["page-load-performance", "lazy-loading", "cdn-caching"],
 };
 
@@ -210,6 +210,60 @@ export default function MediaOptimizationArticle() {
           <li>Consider GIF alternatives (short looping video)</li>
         </ul>
 
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Video Codec Comparison</h3>
+        <table className="w-full border-collapse text-sm">
+          <thead>
+            <tr className="border-b border-theme">
+              <th className="p-3 text-left">Codec</th>
+              <th className="p-3 text-left">Compression</th>
+              <th className="p-3 text-left">Quality</th>
+              <th className="p-3 text-left">Browser Support</th>
+              <th className="p-3 text-left">Use Case</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-theme">
+            <tr>
+              <td className="p-3"><strong>H.264 (AVC)</strong></td>
+              <td className="p-3">Good</td>
+              <td className="p-3">High</td>
+              <td className="p-3">98%+ (universal)</td>
+              <td className="p-3">Maximum compatibility, iOS Safari</td>
+            </tr>
+            <tr>
+              <td className="p-3"><strong>H.265 (HEVC)</strong></td>
+              <td className="p-3">Very Good (50% better than H.264)</td>
+              <td className="p-3">Very High</td>
+              <td className="p-3">80% (Safari, Edge, no Chrome/Firefox)</td>
+              <td className="p-3">4K/HDR content, Apple ecosystem</td>
+            </tr>
+            <tr>
+              <td className="p-3"><strong>VP9</strong></td>
+              <td className="p-3">Very Good (similar to HEVC)</td>
+              <td className="p-3">High</td>
+              <td className="p-3">90%+ (Chrome, Firefox, Edge)</td>
+              <td className="p-3">YouTube, Android, web delivery</td>
+            </tr>
+            <tr>
+              <td className="p-3"><strong>AV1</strong></td>
+              <td className="p-3">Excellent (30% better than VP9)</td>
+              <td className="p-3">Very High</td>
+              <td className="p-3">85%+ (modern browsers, 2024+)</td>
+              <td className="p-3">Next-gen web video, bandwidth-constrained</td>
+            </tr>
+            <tr>
+              <td className="p-3"><strong>AVIF (for animated)</strong></td>
+              <td className="p-3">Excellent</td>
+              <td className="p-3">High</td>
+              <td className="p-3">80%+ (2024+ browsers)</td>
+              <td className="p-3">GIF replacement, short loops</td>
+            </tr>
+          </tbody>
+        </table>
+        <p className="mt-4 text-sm text-muted">
+          Note: For maximum compatibility, serve MP4 (H.264) as fallback with WebM (VP9) or MP4 (AV1/HEVC)
+          as primary sources using the video element with multiple source tags.
+        </p>
+
         <h3 className="mt-6 mb-3 text-lg font-semibold">Autoplay Considerations</h3>
         <ul className="space-y-2">
           <li>Mute required for autoplay in most browsers</li>
@@ -235,11 +289,10 @@ export default function MediaOptimizationArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">URL Parameters</h3>
         <p>
-          Most services support on-the-fly optimization via URL:
+          Most services support on-the-fly optimization via URL parameters. Example:
+          <code>cdn.example.com/image.jpg?w=800&amp;h=600&amp;fit=crop&amp;fmt=webp&amp;q=80</code>
+          resizes to 800×600, crops to fit, converts to WebP, and sets quality to 80%.
         </p>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-panel-soft p-4 text-sm">
-          <code>{`https://cdn.example.com/image.jpg?w=800&h=600&fit=crop&fmt=webp&q=80`}</code>
-        </pre>
 
         <ArticleImage
           src="/diagrams/frontend-nfr/media-cdn-delivery.svg"

@@ -7,15 +7,15 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-frontend-nfr-offline-support-pwa",
   title: "Offline Support / PWA",
-  description: "Comprehensive guide to offline-first architecture, Progressive Web Apps, Service Workers, and building resilient web applications that work without connectivity.",
+  description: "Comprehensive guide to offline-first architecture, Progressive Web Apps, Service Workers, background sync, conflict resolution, and PWA deployment checklist.",
   category: "frontend",
   subcategory: "nfr",
   slug: "offline-support-pwa",
   version: "extensive",
-  wordCount: 11000,
-  readingTime: 44,
+  wordCount: 14500,
+  readingTime: 58,
   lastUpdated: "2026-03-15",
-  tags: ["frontend", "nfr", "offline", "pwa", "service-worker", "resilience"],
+  tags: ["frontend", "nfr", "offline", "pwa", "service-worker", "resilience", "background-sync"],
   relatedTopics: ["page-load-performance", "caching-strategies", "network-status"],
 };
 
@@ -206,24 +206,18 @@ export default function OfflineSupportPWAArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">One-Time Sync</h3>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-panel-soft p-4 text-sm">
-          <code>{`// Register sync when user submits form
-if ('serviceWorker' in navigator && 'sync' in window) {
-  const registration = await navigator.serviceWorker.ready;
-  await registration.sync.register('send-message');
-}`}</code>
-        </pre>
+        <p>
+          Register sync when user submits form. Use
+          <code>registration.sync.register('send-message')</code> after service worker is ready.
+          The service worker's sync event fires when connectivity returns.
+        </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Periodic Sync</h3>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-panel-soft p-4 text-sm">
-          <code>{`// Register periodic sync for content updates
-if ('periodicSync' in window) {
-  const registration = await navigator.serviceWorker.ready;
-  await registration.periodicSync.register('fetch-news', {
-    minInterval: 24 * 60 * 60 * 1000 // 24 hours
-  });
-}`}</code>
-        </pre>
+        <p>
+          Register periodic sync for content updates. Use
+          <code>{`registration.periodicSync.register('fetch-news', { minInterval: 86400000 })`}</code>
+          for daily sync (24 hours in milliseconds). Requires user engagement and site added to home screen.
+        </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Use Cases</h3>
         <ul className="space-y-2">
@@ -307,6 +301,72 @@ if ('periodicSync' in window) {
             </tr>
           </tbody>
         </table>
+      </section>
+
+      <section>
+        <h2>PWA Deployment Checklist</h2>
+        <p>
+          Before deploying a Progressive Web App to production, verify all requirements for installability
+          and offline functionality.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Core Requirements</h3>
+        <ul className="space-y-2">
+          <li><strong>HTTPS:</strong> Required for production (localhost exempt for development)</li>
+          <li><strong>Service Worker:</strong> Registered and active with fetch handler</li>
+          <li><strong>Web App Manifest:</strong> Valid manifest.json linked in HTML head</li>
+          <li><strong>Icons:</strong> 192×192 and 512×512 PNG icons in manifest</li>
+          <li><strong>Start URL:</strong> Valid start_url in manifest (same origin as page)</li>
+          <li><strong>Name:</strong> Both name and short_name in manifest</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Service Worker Checklist</h3>
+        <ul className="space-y-2">
+          <li>Service worker file served from root (not subdirectory)</li>
+          <li>Scope covers all pages that need offline support</li>
+          <li>Install event caches app shell (HTML, CSS, JS, critical assets)</li>
+          <li>Fetch event intercepts requests and serves from cache</li>
+          <li>Activate event cleans up old caches</li>
+          <li>Offline fallback page configured</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Manifest Checklist</h3>
+        <ul className="space-y-2">
+          <li>Manifest linked with <code>&lt;link rel="manifest" href="/manifest.json"&gt;</code></li>
+          <li>display set to standalone, fullscreen, or minimal-ui</li>
+          <li>theme_color and background_color defined</li>
+          <li>Icons in multiple sizes (72×72 to 512×512)</li>
+          <li>Manifest served with correct Content-Type (application/manifest+json)</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Testing Checklist</h3>
+        <ul className="space-y-2">
+          <li>Lighthouse PWA audit passes (score 90+)</li>
+          <li>Chrome DevTools Application panel shows service worker active</li>
+          <li>Offline mode works (DevTools Network tab → Offline)</li>
+          <li>Add to Home Screen prompt appears (Chrome: three-dot menu → Install)</li>
+          <li>App launches from home screen without browser UI</li>
+          <li>Push notifications work (if implemented)</li>
+          <li>Background sync triggers when connectivity returns</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Common Issues</h3>
+        <ul className="space-y-2">
+          <li><strong>Service worker not registering:</strong> Check scope, HTTPS, browser support</li>
+          <li><strong>Install prompt not showing:</strong> Verify manifest validity, user engagement</li>
+          <li><strong>Offline not working:</strong> Check cache strategy, cached asset URLs</li>
+          <li><strong>Stale content:</strong> Implement cache invalidation, versioning</li>
+          <li><strong>iOS issues:</strong> iOS requires additional meta tags, limited service worker support</li>
+        </ul>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">iOS Safari Considerations</h3>
+          <p>
+            iOS Safari has limited PWA support. Service workers work but require HTTPS and user interaction
+            to register. Add to Home Screen is manual (share button → Add to Home Screen). Include iOS-specific
+            meta tags: apple-mobile-web-app-capable, apple-mobile-web-app-status-bar-style, apple-touch-icon.
+          </p>
+        </div>
       </section>
 
       <section>

@@ -34,8 +34,7 @@ export function SubCategoryPageContent({
 
       <div className="grid gap-4 pb-6 sm:grid-cols-2 xl:grid-cols-3">
         {topics.map((topic) => {
-          const topicNameClean = topic.name.replace(/\s*\([^)]*\)/g, "").trim();
-          const topicSlug = slugify(topicNameClean);
+          const topicSlug = slugify(topic.name);
 
           if (disableTopicLinks) {
             return (

@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 750" role="img" aria-labelledby="title desc">
+  <title id="title">SSO and SAML Authentication Flow</title>
+  <desc id="desc">Single Sign-On (SSO) and Security Assertion Markup Language (SAML) authentication flow showing Identity Provider (IdP) and Service Provider (SP) interactions</desc>
+  
+  <!-- Background -->
+  <rect width="950" height="750" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="475" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="var(--text-theme, #1e293b)">SSO and SAML Authentication Flow</text>
+  <text x="475" y="60" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Single Sign-On with Security Assertion Markup Language 2.0</text>
+  
+  <!-- SSO Concept Section -->
+  <rect x="30" y="80" width="890" height="100" rx="8" fill="var(--bg-panel-hover, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="475" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #1e40af)">Single Sign-On (SSO) Benefits</text>
+  
+  <rect x="50" y="120" width="200" height="50" rx="4" fill="white" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="150" y="145" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b">✓ One Login, Many Apps</text>
+  <text x="150" y="162" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">User authenticates once</text>
+  
+  <rect x="270" y="120" width="200" height="50" rx="4" fill="white" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="370" y="145" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b">✓ Centralized Management</text>
+  <text x="370" y="162" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">IT controls access centrally</text>
+  
+  <rect x="490" y="120" width="200" height="50" rx="4" fill="white" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="590" y="145" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b">✓ Improved Security</text>
+  <text x="590" y="162" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Fewer passwords to manage</text>
+  
+  <rect x="710" y="120" width="200" height="50" rx="4" fill="white" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="810" y="145" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b">✓ Better UX</text>
+  <text x="810" y="162" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">No repeated logins</text>
+  
+  <!-- SAML Flow Section -->
+  <rect x="30" y="195" width="890" height="380" rx="8" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="475" y="223" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #b45309">SAML 2.0 Authentication Flow</text>
+  
+  <!-- User -->
+  <rect x="60" y="250" width="120" height="70" rx="6" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="120" y="280" text-anchor="middle" font-size="13" font-weight="bold" fill="white">User</text>
+  <text x="120" y="300" text-anchor="middle" font-size="11" fill="#bfdbfe">Browser</text>
+  
+  <!-- Service Provider -->
+  <rect x="385" y="250" width="180" height="70" rx="6" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="475" y="280" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Service Provider</text>
+  <text x="475" y="300" text-anchor="middle" font-size="11" fill="#6ee7b7">Application (SP)</text>
+  
+  <!-- Identity Provider -->
+  <rect x="710" y="250" width="180" height="70" rx="6" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="800" y="280" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Identity Provider</text>
+  <text x="800" y="300" text-anchor="middle" font-size="11" fill="#c4b5fd">IdP (Okta, Azure AD)</text>
+  
+  <!-- Step 1: User requests app -->
+  <line x1="180" y1="285" x2="380" y2="285" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrowBlue)"/>
+  <text x="280" y="275" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #1e40af)">1. Request App</text>
+  
+  <!-- Step 2: SP redirects to IdP -->
+  <path d="M 475 320 L 475 350 L 800 350 L 800 325" stroke="var(--text-theme, #10b981)" stroke-width="2" fill="none" marker-end="url(#arrowGreen)"/>
+  <text x="640" y="365" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #059669)">2. SAML Request (AuthnRequest)</text>
+  
+  <!-- Step 3: User authenticates with IdP -->
+  <rect x="710" y="380" width="180" height="60" rx="6" fill="var(--bg-panel-hover, #f5f3ff)" stroke="var(--border-theme, #a78bfa)" stroke-width="2"/>
+  <text x="800" y="405" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #6d28d9">3. User Authentication</text>
+  <text x="800" y="425" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">MFA, Password, etc.</text>
+  
+  <!-- Step 4: IdP sends SAML Response -->
+  <path d="M 800 440 L 800 470 L 475 470 L 475 445" stroke="var(--text-theme, #8b5cf6)" stroke-width="2" fill="none" marker-end="url(#arrowPurple)"/>
+  <text x="640" y="485" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #6d28d9">4. SAML Response (Assertion)</text>
+  
+  <!-- Step 5: SP grants access -->
+  <line x1="380" y1="405" x2="180" y2="405" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <text x="280" y="395" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #059669">5. Access Granted</text>
+  
+  <!-- SAML Assertion Details -->
+  <rect x="60" y="470" width="300" height="90" rx="6" fill="white" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="210" y="495" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">SAML Assertion Contains</text>
+  
+  <text x="80" y="520" text-anchor="start" font-size="10" fill="var(--text-theme, #1e293b">• Subject (user identity)</text>
+  <text x="80" y="538" text-anchor="start" font-size="10" fill="var(--text-theme, #1e293b">• Authentication statement</text>
+  <text x="80" y="556" text-anchor="start" font-size="10" fill="var(--text-theme, #1e293b">• Attributes (email, roles, groups)</text>
+  
+  <!-- SAML Response Structure -->
+  <rect x="380" y="470" width="290" height="90" rx="6" fill="white" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="525" y="495" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">SAML Response Structure</text>
+  
+  <rect x="395" y="505" width="260" height="45" rx="4" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="525" y="525" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">&lt;Response&gt;</text>
+  <text x="525" y="540" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">  &lt;Assertion&gt;...&lt;/Assertion&gt;</text>
+  <text x="525" y="555" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">&lt;/Response&gt;</text>
+  
+  <!-- Trust Relationship -->
+  <rect x="690" y="470" width="210" height="90" rx="6" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="795" y="495" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #059669">Trust Relationship</text>
+  
+  <text x="795" y="520" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">SP and IdP exchange</text>
+  <text x="795" y="535" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">metadata (certificates,</text>
+  <text x="795" y="550" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">endpoints) beforehand</text>
+  
+  <!-- SSO Session -->
+  <rect x="30" y="590" width="890" height="140" rx="8" fill="var(--bg-panel-hover, #f0fdf4)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="475" y="615" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #059669">SSO Session Management</text>
+  
+  <!-- Session Flow -->
+  <rect x="50" y="630" width="270" height="90" rx="6" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="185" y="655" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #059669">Session Cookie</text>
+  
+  <text x="185" y="675" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">After SAML auth, SP creates</text>
+  <text x="185" y="690" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">local session for user</text>
+  <text x="185" y="705" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Subsequent requests use session</text>
+  
+  <rect x="340" y="630" width="270" height="90" rx="6" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="475" y="655" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #059669">IdP Session</text>
+  
+  <text x="475" y="675" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">IdP maintains SSO session</text>
+  <text x="475" y="690" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">User can access other SPs</text>
+  <text x="475" y="705" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">without re-authenticating</text>
+  
+  <rect x="630" y="630" width="270" height="90" rx="6" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="765" y="655" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #059669">Single Logout (SLO)</text>
+  
+  <text x="765" y="675" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Logout from one app</text>
+  <text x="765" y="690" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">terminates all sessions</text>
+  <text x="765" y="705" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">across all connected apps</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #3b82f6)"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #10b981)"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #8b5cf6)"/>
+    </marker>
+  </defs>
+</svg>

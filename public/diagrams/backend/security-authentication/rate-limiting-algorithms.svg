@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 750" role="img" aria-labelledby="title desc">
+  <title id="title">Rate Limiting Algorithms</title>
+  <desc id="desc">Comprehensive visualization of rate limiting algorithms including fixed window, sliding window, token bucket, and leaky bucket with distributed rate limiting architecture</desc>
+  
+  <!-- Background -->
+  <rect width="950" height="750" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="475" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="var(--text-theme, #1e293b)">Rate Limiting Algorithms</text>
+  <text x="475" y="60" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Protecting APIs from abuse and ensuring fair usage</text>
+  
+  <!-- Rate Limiting Purpose -->
+  <rect x="30" y="80" width="890" height="90" rx="8" fill="var(--bg-panel-hover, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="475" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #1e40af">Why Rate Limiting?</text>
+  
+  <rect x="50" y="120" width="200" height="40" rx="4" fill="white" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="150" y="145" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">🛡️ Prevent DDoS attacks</text>
+  
+  <rect x="270" y="120" width="200" height="40" rx="4" fill="white" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="370" y="145" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">🎯 Ensure fair usage</text>
+  
+  <rect x="490" y="120" width="200" height="40" rx="4" fill="white" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="590" y="145" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">💰 Control costs</text>
+  
+  <rect x="710" y="120" width="200" height="40" rx="4" fill="white" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="810" y="145" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">📊 Protect backend</text>
+  
+  <!-- Algorithm Comparison -->
+  <rect x="30" y="185" width="570" height="380" rx="8" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="315" y="210" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #b45309">Rate Limiting Algorithms Comparison</text>
+  
+  <!-- Fixed Window -->
+  <rect x="50" y="230" width="250" height="160" rx="6" fill="white" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="175" y="255" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #b45309">Fixed Window</text>
+  
+  <rect x="70" y="270" width="210" height="110" rx="4" fill="var(--bg-panel-hover, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="175" y="290" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Divides time into fixed windows</text>
+  <text x="175" y="305" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">(e.g., 1 minute)</text>
+  <text x="175" y="325" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b">Example: 100 requests/minute</text>
+  <text x="175" y="345" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">✓ Simple, low memory</text>
+  <text x="175" y="360" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">✗ Burst at window boundaries</text>
+  
+  <!-- Sliding Window -->
+  <rect x="320" y="230" width="250" height="160" rx="6" fill="white" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="445" y="255" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #b45309">Sliding Window</text>
+  
+  <rect x="340" y="270" width="210" height="110" rx="4" fill="var(--bg-panel-hover, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="445" y="290" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Tracks requests in rolling window</text>
+  <text x="445" y="305" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Uses weighted average</text>
+  <text x="445" y="325" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b">Example: 100 requests/minute</text>
+  <text x="445" y="345" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ No boundary bursts</text>
+  <text x="445" y="360" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">✗ More memory than fixed</text>
+  
+  <!-- Token Bucket -->
+  <rect x="50" y="410" width="250" height="145" rx="6" fill="white" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="175" y="435" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #b45309">Token Bucket</text>
+  
+  <rect x="70" y="450" width="210" height="95" rx="4" fill="var(--bg-panel-hover, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="175" y="470" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Bucket holds tokens, refills over time</text>
+  <text x="175" y="490" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b">Example: 10 tokens, 1/sec refill</text>
+  <text x="175" y="510" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Allows controlled bursts</text>
+  <text x="175" y="525" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Smooth traffic shaping</text>
+  <text x="175" y="540" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">△ Moderate complexity</text>
+  
+  <!-- Leaky Bucket -->
+  <rect x="320" y="410" width="250" height="145" rx="6" fill="white" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="445" y="435" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #b45309">Leaky Bucket</text>
+  
+  <rect x="340" y="450" width="210" height="95" rx="4" fill="var(--bg-panel-hover, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="445" y="470" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Queue holds requests, drains at fixed rate</text>
+  <text x="445" y="490" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b">Example: Process 10 req/sec</text>
+  <text x="445" y="510" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Smooth output rate</text>
+  <text x="445" y="525" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">✗ No burst allowance</text>
+  <text x="445" y="540" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">△ Queue overflow handling</text>
+  
+  <!-- Distributed Rate Limiting -->
+  <rect x="615" y="185" width="305" height="380" rx="8" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="767" y="210" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #059669">Distributed Rate Limiting</text>
+  
+  <!-- Architecture -->
+  <rect x="630" y="230" width="275" height="325" rx="4" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  
+  <!-- Clients -->
+  <rect x="645" y="245" width="245" height="50" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="767" y="270" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Multiple API Servers</text>
+  <text x="767" y="285" text-anchor="middle" font-size="9" fill="#bfdbfe">Node 1, Node 2, Node 3...</text>
+  
+  <!-- Arrow -->
+  <line x1="767" y1="295" x2="767" y2="315" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Central Store -->
+  <rect x="645" y="320" width="245" height="70" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="767" y="350" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Central Rate Limit Store</text>
+  <text x="767" y="368" text-anchor="middle" font-size="9" fill="#6ee7b7">Redis with Lua scripting</text>
+  <text x="767" y="383" text-anchor="middle" font-size="9" fill="#6ee7b7">or Redis Cluster</text>
+  
+  <!-- Arrow -->
+  <line x1="767" y1="390" x2="767" y2="410" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Algorithm -->
+  <rect x="645" y="415" width="245" height="50" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="2"/>
+  <text x="767" y="440" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Sliding Window + Lua</text>
+  <text x="767" y="458" text-anchor="middle" font-size="9" fill="#fcd34d">Atomic operations</text>
+  
+  <!-- Arrow -->
+  <line x1="767" y1="465" x2="767" y2="485" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Response -->
+  <rect x="645" y="490" width="245" height="50" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="767" y="515" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Allow/Deny Decision</text>
+  <text x="767" y="533" text-anchor="middle" font-size="9" fill="#bfdbfe">Return to API server</text>
+  
+  <!-- Rate Limit Headers -->
+  <rect x="630" y="560" width="275" height="125" rx="4" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="767" y="585" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #059669">Rate Limit Headers</text>
+  
+  <text x="645" y="605" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">X-RateLimit-Limit:</text>
+  <text x="780" y="605" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">1000</text>
+  
+  <text x="645" y="625" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">X-RateLimit-Remaining:</text>
+  <text x="780" y="625" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">847</text>
+  
+  <text x="645" y="645" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">X-RateLimit-Reset:</text>
+  <text x="780" y="645" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">1647388800</text>
+  
+  <text x="645" y="665" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">Retry-After:</text>
+  <text x="780" y="665" text-anchor="start" font-size="9" fill="var(--text-theme, #ef4444">60 (when limited)</text>
+  
+  <!-- Rate Limit Tiers -->
+  <rect x="30" y="580" width="570" height="150" rx="8" fill="var(--bg-panel-hover, #f0fdf4)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="315" y="605" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #059669">Rate Limit Tiers & Strategies</text>
+  
+  <!-- Tiers -->
+  <rect x="50" y="625" width="160" height="95" rx="4" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="130" y="650" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #059669">By User Type</text>
+  
+  <text x="130" y="675" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Anonymous: 10/min</text>
+  <text x="130" y="690" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Authenticated: 100/min</text>
+  <text x="130" y="705" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Premium: 1000/min</text>
+  <text x="130" y="720" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Enterprise: Custom</text>
+  
+  <!-- Strategies -->
+  <rect x="225" y="625" width="180" height="95" rx="4" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="315" y="650" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #059669">By Endpoint</text>
+  
+  <text x="315" y="675" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Search: 10/min (expensive)</text>
+  <text x="315" y="690" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Read: 100/min (normal)</text>
+  <text x="315" y="705" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Write: 20/min (strict)</text>
+  <text x="315" y="720" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Auth: 5/min (very strict)</text>
+  
+  <!-- Response Codes -->
+  <rect x="420" y="625" width="165" height="95" rx="4" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="502" y="650" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #059669">HTTP 429</text>
+  
+  <text x="502" y="675" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Too Many Requests</text>
+  
+  <rect x="435" y="690" width="135" height="25" rx="3" fill="var(--bg-panel-soft, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="502" y="707" text-anchor="middle" font-size="8" fill="var(--text-theme, #b91c1c">Include Retry-After</text>
+  
+  <text x="502" y="725" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">header with seconds</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

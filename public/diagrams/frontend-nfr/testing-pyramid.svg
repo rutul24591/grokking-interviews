@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 450">
+  <defs>
+    <style>
+      .title { font: bold 20px system-ui, -apple-system, sans-serif; fill: #1a1a2e; }
+      .label { font: 14px system-ui, -apple-system, sans-serif; fill: #333; }
+      .small-label { font: 12px system-ui, -apple-system, sans-serif; fill: #555; }
+      .pyramid { fill: #e8f5e9; stroke: #4caf50; stroke-width: 2; }
+      .pyramid-mid { fill: #fff3e0; stroke: #ff9800; stroke-width: 2; }
+      .pyramid-top { fill: #ffebee; stroke: #f44336; stroke-width: 2; }
+    </style>
+  </defs>
+  
+  <text x="425" y="35" text-anchor="middle" class="title">Testing Pyramid</text>
+  <text x="425" y="55" text-anchor="middle" class="small-label">Frontend testing pyramid — unit tests at base, integration in middle, E2E at top</text>
+  
+  <!-- Testing Pyramid -->
+  <polygon points="425,100 650,400 200,400" fill="#f5f5f5" stroke="#666" stroke-width="2"/>
+  
+  <!-- Unit Tests (Base) -->
+  <polygon points="425,100 580,320 270,320" fill="#e8f5e9" stroke="#4caf50" stroke-width="2"/>
+  <text x="425" y="280" text-anchor="middle" class="label" font-weight="bold">Unit Tests</text>
+  <text x="425" y="300" text-anchor="middle" class="small-label">Fast, isolated, many tests</text>
+  <text x="425" y="315" text-anchor="middle" class="small-label">Components, utilities, hooks</text>
+  
+  <!-- Integration Tests (Middle) -->
+  <polygon points="425,100 520,220 330,220" fill="#fff3e0" stroke="#ff9800" stroke-width="2"/>
+  <text x="425" y="185" text-anchor="middle" class="label" font-weight="bold">Integration Tests</text>
+  <text x="425" y="205" text-anchor="middle" class="small-label">Component interactions</text>
+  <text x="425" y="220" text-anchor="middle" class="small-label">Fewer tests, medium speed</text>
+  
+  <!-- E2E Tests (Top) -->
+  <polygon points="425,100 470,140 380,140" fill="#ffebee" stroke="#f44336" stroke-width="2"/>
+  <text x="425" y="125" text-anchor="middle" class="label" font-weight="bold">E2E Tests</text>
+  <text x="425" y="145" text-anchor="middle" class="small-label">Critical user flows</text>
+  <text x="425" y="160" text-anchor="middle" class="small-label">Few tests, slow</text>
+  
+  <!-- Visual/Accessibility (Cross-cutting) -->
+  <rect x="680" y="150" width="150" height="80" fill="#e3f2fd" stroke="#2196f3" rx="4"/>
+  <text x="755" y="175" text-anchor="middle" class="label" font-weight="bold">Visual Regression</text>
+  <text x="755" y="195" text-anchor="middle" class="small-label">Screenshot comparison</text>
+  <text x="755" y="215" text-anchor="middle" class="small-label">UI consistency</text>
+  
+  <rect x="680" y="250" width="150" height="80" fill="#fce4ec" stroke="#e91e63" rx="4"/>
+  <text x="755" y="275" text-anchor="middle" class="label" font-weight="bold">Accessibility</text>
+  <text x="755" y="295" text-anchor="middle" class="small-label">axe-core, manual testing</text>
+  <text x="755" y="315" text-anchor="middle" class="small-label">Screen readers, keyboard</text>
+  
+  <!-- Characteristics -->
+  <rect x="30" y="250" width="150" height="120" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="105" y="275" text-anchor="middle" class="label" font-weight="bold">Unit Tests</text>
+  <line x1="50" y1="285" x2="160" y2="285" stroke="#999" stroke-width="1"/>
+  
+  <text x="60" y="310" text-anchor="start" class="small-label">Speed: Fast (&lt;100ms)</text>
+  <text x="60" y="327" text-anchor="start" class="small-label">Count: Many (100s)</text>
+  <text x="60" y="344" text-anchor="start" class="small-label">Isolation: High</text>
+  <text x="60" y="361" text-anchor="start" class="small-label">Tools: Jest, RTL</text>
+  
+  <rect x="30" y="390" width="150" height="50" fill="#f5f5f5" stroke="#666" rx="4"/>
+  <text x="105" y="415" text-anchor="middle" class="label" font-weight="bold">Integration</text>
+  <text x="105" y="432" text-anchor="middle" class="small-label">Medium speed, fewer</text>
+  
+  <rect x="200" y="390" width="150" height="50" fill="#f5f5f5" stroke="#666" rx="4"/>
+  <text x="275" y="415" text-anchor="middle" class="label" font-weight="bold">E2E</text>
+  <text x="275" y="432" text-anchor="middle" class="small-label">Slow, critical paths only</text>
+  
+  <!-- Best Practices -->
+  <rect x="370" y="350" width="460" height="90" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+  <text x="600" y="375" text-anchor="middle" class="label" font-weight="bold">Best Practices</text>
+  <line x1="390" y1="385" x2="810" y2="385" stroke="#4caf50" stroke-width="1"/>
+  
+  <text x="400" y="410" text-anchor="start" class="small-label" fill="#4caf50">✓ Follow the pyramid (more unit, fewer E2E)</text>
+  <text x="400" y="427" text-anchor="start" class="small-label" fill="#4caf50">✓ Run unit tests on every commit</text>
+  <text x="650" y="410" text-anchor="start" class="small-label" fill="#ff9800">⚠ E2E on staging before deploy</text>
+  <text x="650" y="427" text-anchor="start" class="small-label" fill="#ff9800">⚠ Don't test implementation details</text>
+</svg>

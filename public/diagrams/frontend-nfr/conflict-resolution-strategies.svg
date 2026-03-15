@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 450">
+  <defs>
+    <style>
+      .title { font: bold 20px system-ui, -apple-system, sans-serif; fill: #1a1a2e; }
+      .label { font: 14px system-ui, -apple-system, sans-serif; fill: #333; }
+      .small-label { font: 12px system-ui, -apple-system, sans-serif; fill: #555; }
+      .box { fill: #f5f5f5; stroke: #666; stroke-width: 2; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <text x="425" y="35" text-anchor="middle" class="title">Conflict Resolution Strategies</text>
+  <text x="425" y="55" text-anchor="middle" class="small-label">LWW, field merge, manual resolution, OT, and CRDTs</text>
+  
+  <!-- LWW -->
+  <rect x="30" y="80" width="160" height="120" fill="#ffebee" stroke="#f44336" rx="6"/>
+  <text x="110" y="105" text-anchor="middle" class="label" font-weight="bold">Last-Write-Wins</text>
+  <line x1="50" y1="115" x2="170" y2="115" stroke="#f44336" stroke-width="1"/>
+  
+  <text x="60" y="140" text-anchor="start" class="small-label">• Most recent wins</text>
+  <text x="60" y="160" text-anchor="start" class="small-label">• Simple</text>
+  <text x="60" y="180" text-anchor="start" class="small-label" fill="#f44336">✗ Loses user data</text>
+  <text x="60" y="200" text-anchor="start" class="small-label">Use: Ephemeral data</text>
+  
+  <!-- Field Merge -->
+  <rect x="210" y="80" width="160" height="120" fill="#fff3e0" stroke="#ff9800" rx="6"/>
+  <text x="290" y="105" text-anchor="middle" class="label" font-weight="bold">Field-Level Merge</text>
+  <line x1="230" y1="115" x2="350" y2="115" stroke="#ff9800" stroke-width="1"/>
+  
+  <text x="220" y="140" text-anchor="start" class="small-label">• Merge per field</text>
+  <text x="220" y="160" text-anchor="start" class="small-label">• Non-conflicting kept</text>
+  <text x="220" y="180" text-anchor="start" class="small-label" fill="#4caf50">✓ Preserves data</text>
+  <text x="220" y="200" text-anchor="start" class="small-label">Use: Documents, forms</text>
+  
+  <!-- Manual -->
+  <rect x="390" y="80" width="160" height="120" fill="#e3f2fd" stroke="#2196f3" rx="6"/>
+  <text x="470" y="105" text-anchor="middle" class="label" font-weight="bold">Manual Resolution</text>
+  <line x1="410" y1="115" x2="530" y2="115" stroke="#2196f3" stroke-width="1"/>
+  
+  <text x="400" y="140" text-anchor="start" class="small-label">• Show to user</text>
+  <text x="400" y="160" text-anchor="start" class="small-label">• Side-by-side compare</text>
+  <text x="400" y="180" text-anchor="start" class="small-label" fill="#4caf50">✓ User decides</text>
+  <text x="400" y="200" text-anchor="start" class="small-label">Use: Critical data</text>
+  
+  <!-- OT -->
+  <rect x="570" y="80" width="130" height="120" fill="#f3e5f5" stroke="#9c27b0" rx="6"/>
+  <text x="635" y="105" text-anchor="middle" class="label" font-weight="bold">OT</text>
+  <line x1="590" y1="115" x2="680" y2="115" stroke="#9c27b0" stroke-width="1"/>
+  
+  <text x="580" y="140" text-anchor="start" class="small-label">• Transform ops</text>
+  <text x="580" y="160" text-anchor="start" class="small-label">• Google Docs</text>
+  <text x="580" y="180" text-anchor="start" class="small-label" fill="#ff9800">⚠ Complex</text>
+  <text x="580" y="200" text-anchor="start" class="small-label">Use: Real-time collab</text>
+  
+  <!-- CRDTs -->
+  <rect x="720" y="80" width="110" height="120" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+  <text x="775" y="105" text-anchor="middle" class="label" font-weight="bold">CRDTs</text>
+  <line x1="740" y1="115" x2="810" y2="115" stroke="#4caf50" stroke-width="1"/>
+  
+  <text x="730" y="140" text-anchor="start" class="small-label">• Auto converge</text>
+  <text x="730" y="160" text-anchor="start" class="small-label">• No coordination</text>
+  <text x="730" y="180" text-anchor="start" class="small-label" fill="#4caf50">✓ Mathematical guarantee</text>
+  <text x="730" y="200" text-anchor="start" class="small-label">Use: P2P, offline-first</text>
+  
+  <!-- Decision Tree -->
+  <rect x="30" y="220" width="400" height="140" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="230" y="245" text-anchor="middle" class="label" font-weight="bold">Selection Guide</text>
+  <line x1="50" y1="255" x2="410" y2="255" stroke="#999" stroke-width="1"/>
+  
+  <text x="60" y="280" text-anchor="start" class="small-label" font-weight="bold">Simple app, rare conflicts?</text>
+  <text x="80" y="300" text-anchor="start" class="small-label">→ Last-Write-Wins</text>
+  
+  <text x="60" y="325" text-anchor="start" class="small-label" font-weight="bold">Documents with multiple fields?</text>
+  <text x="80" y="345" text-anchor="start" class="small-label">→ Field-Level Merge</text>
+  
+  <text x="250" y="280" text-anchor="start" class="small-label" font-weight="bold">Critical data?</text>
+  <text x="270" y="300" text-anchor="start" class="small-label">→ Manual Resolution</text>
+  
+  <text x="250" y="325" text-anchor="start" class="small-label" font-weight="bold">Real-time collaboration?</text>
+  <text x="270" y="345" text-anchor="start" class="small-label">→ OT or CRDTs</text>
+  
+  <!-- Libraries -->
+  <rect x="450" y="220" width="380" height="140" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="640" y="245" text-anchor="middle" class="label" font-weight="bold">Libraries</text>
+  <line x1="470" y1="255" x2="810" y2="255" stroke="#999" stroke-width="1"/>
+  
+  <text x="480" y="280" text-anchor="start" class="small-label" font-weight="bold">CRDTs:</text>
+  <text x="480" y="300" text-anchor="start" class="small-label">• Yjs (popular, well-documented)</text>
+  <text x="480" y="320" text-anchor="start" class="small-label">• Automerge (JSON-like API)</text>
+  
+  <text x="650" y="280" text-anchor="start" class="small-label" font-weight="bold">OT:</text>
+  <text x="650" y="300" text-anchor="start" class="small-label">• ShareDB</text>
+  <text x="650" y="320" text-anchor="start" class="small-label">• ot.js</text>
+</svg>

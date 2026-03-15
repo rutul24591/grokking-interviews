@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">HTTPS Certificate Chain</title>
+  <desc id="desc">Trust chain from root CA to intermediate CA to leaf certificate showing certificate validation hierarchy</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="500" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">TLS Certificate Chain of Trust</text>
+  
+  <!-- Root CA -->
+  <rect x="300" y="70" width="200" height="80" rx="8" fill="var(--bg-theme, #dc2626)" stroke="var(--border-theme, #991b1b)" stroke-width="3"/>
+  <text x="400" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Root CA</text>
+  <text x="400" y="120" text-anchor="middle" font-size="11" fill="white">Self-Signed</text>
+  <text x="400" y="138" text-anchor="middle" font-size="10" fill="white">Valid: 10-25 years</text>
+  
+  <!-- Trust Anchor Label -->
+  <text x="400" y="165" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #dc2626)">⬇ Trust Anchor (Pre-installed)</text>
+  
+  <!-- Intermediate CA 1 -->
+  <rect x="150" y="190" width="200" height="70" rx="8" fill="var(--bg-theme, #ea580c)" stroke="var(--border-theme, #9a3412)" stroke-width="2"/>
+  <text x="250" y="215" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Intermediate CA 1</text>
+  <text x="250" y="235" text-anchor="middle" font-size="10" fill="white">Signed by Root</text>
+  <text x="250" y="250" text-anchor="middle" font-size="10" fill="white">Valid: 5-10 years</text>
+  
+  <!-- Intermediate CA 2 -->
+  <rect x="450" y="190" width="200" height="70" rx="8" fill="var(--bg-theme, #ea580c)" stroke="var(--border-theme, #9a3412)" stroke-width="2"/>
+  <text x="550" y="215" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Intermediate CA 2</text>
+  <text x="550" y="235" text-anchor="middle" font-size="10" fill="white">Signed by Root</text>
+  <text x="550" y="250" text-anchor="middle" font-size="10" fill="white">Valid: 5-10 years</text>
+  
+  <!-- Connection Lines from Root to Intermediates -->
+  <line x1="350" y1="150" x2="250" y2="190" stroke="var(--text-theme, #dc2626)" stroke-width="2" stroke-dasharray="5,3"/>
+  <line x1="450" y1="150" x2="550" y2="190" stroke="var(--text-theme, #dc2626)" stroke-width="2" stroke-dasharray="5,3"/>
+  
+  <!-- Leaf Certificates -->
+  <rect x="50" y="290" width="180" height="70" rx="8" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="140" y="315" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Leaf Certificate</text>
+  <text x="140" y="335" text-anchor="middle" font-size="10" fill="white">example.com</text>
+  <text x="140" y="350" text-anchor="middle" font-size="10" fill="white">Valid: 1 year</text>
+  
+  <rect x="260" y="290" width="180" height="70" rx="8" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="350" y="315" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Leaf Certificate</text>
+  <text x="350" y="335" text-anchor="middle" font-size="10" fill="white">api.example.com</text>
+  <text x="350" y="350" text-anchor="middle" font-size="10" fill="white">Valid: 1 year</text>
+  
+  <rect x="470" y="290" width="180" height="70" rx="8" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="560" y="315" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Leaf Certificate</text>
+  <text x="560" y="335" text-anchor="middle" font-size="10" fill="white">cdn.example.com</text>
+  <text x="560" y="350" text-anchor="middle" font-size="10" fill="white">Valid: 1 year</text>
+  
+  <!-- Connection Lines from Intermediates to Leaves -->
+  <line x1="200" y1="260" x2="140" y2="290" stroke="var(--text-theme, #ea580c)" stroke-width="2" stroke-dasharray="5,3"/>
+  <line x1="250" y1="260" x2="350" y2="290" stroke="var(--text-theme, #ea580c)" stroke-width="2" stroke-dasharray="5,3"/>
+  <line x1="550" y1="260" x2="560" y2="290" stroke="var(--text-theme, #ea580c)" stroke-width="2" stroke-dasharray="5,3"/>
+  
+  <!-- Validation Process -->
+  <rect x="50" y="390" width="700" height="100" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="400" y="415" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">Certificate Validation Process</text>
+  
+  <!-- Validation Steps -->
+  <g transform="translate(70, 430)">
+    <text x="0" y="0" font-size="10" fill="var(--text-theme, #64748b)">1. Client receives server certificate</text>
+    <text x="200" y="0" font-size="10" fill="var(--text-theme, #64748b)">2. Verify signature chain to trusted root</text>
+    <text x="420" y="0" font-size="10" fill="var(--text-theme, #64748b)">3. Check validity dates</text>
+    <text x="580" y="0" font-size="10" fill="var(--text-theme, #64748b)">4. Verify domain match</text>
+    
+    <text x="0" y="25" font-size="10" fill="var(--text-theme, #64748b)">5. Check revocation (CRL/OCSP)</text>
+    <text x="200" y="25" font-size="10" fill="var(--text-theme, #64748b)">6. Validate certificate purpose</text>
+    <text x="420" y="25" font-size="10" fill="var(--text-theme, #64748b)">✓ All checks pass → Secure connection</text>
+    <text x="580" y="25" font-size="10" fill="var(--text-theme, #dc2626)">✗ Any fail → Connection rejected</text>
+  </g>
+  
+  <!-- Legend -->
+  <rect x="550" y="80" width="200" height="70" rx="6" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="650" y="100" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #1e293b)">Certificate Types</text>
+  <rect x="565" y="110" width="15" height="15" rx="3" fill="var(--bg-theme, #dc2626)"/>
+  <text x="585" y="122" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b)">Root CA (Trust Anchor)</text>
+  <rect x="565" y="130" width="15" height="15" rx="3" fill="var(--bg-theme, #ea580c)"/>
+  <text x="585" y="142" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b)">Intermediate CA</text>
+  <rect x="565" y="150" width="15" height="15" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="585" y="162" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b)">Leaf (Server) Certificate</text>
+</svg>

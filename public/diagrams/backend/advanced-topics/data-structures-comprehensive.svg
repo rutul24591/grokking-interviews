@@ -1,0 +1,295 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 800" role="img" aria-labelledby="title desc">
+  <title id="title">Advanced Data Structures for System Design</title>
+  <desc id="desc">Comprehensive visualization of B-Trees, Bloom Filters, LSM Trees, Merkle Trees, and Skip Lists with use cases and performance characteristics</desc>
+  
+  <!-- Background -->
+  <rect width="950" height="800" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="475" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="var(--text-theme, #1e293b)">Advanced Data Structures for System Design</text>
+  <text x="475" y="60" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">B-Trees, Bloom Filters, LSM Trees, Merkle Trees, and Skip Lists</text>
+  
+  <!-- B-Tree Section -->
+  <rect x="30" y="80" width="435" height="230" rx="8" fill="var(--bg-panel-hover, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="247" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #1e40af)">B-Tree (Balanced Tree)</text>
+  
+  <!-- B-Tree Visualization -->
+  <rect x="50" y="120" width="395" height="120" rx="6" fill="white" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  
+  <!-- Root Node -->
+  <rect x="170" y="130" width="100" height="35" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="220" y="152" text-anchor="middle" font-size="10" fill="white">[50]</text>
+  
+  <!-- Lines to children -->
+  <line x1="195" y1="165" x2="140" y2="195" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  <line x1="220" y1="165" x2="220" y2="195" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  <line x1="245" y1="165" x2="300" y2="195" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  
+  <!-- Level 1 Nodes -->
+  <rect x="90" y="195" width="100" height="35" rx="4" fill="var(--bg-panel-soft, #dbeafe)" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="140" y="217" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b)">[20, 35]</text>
+  
+  <rect x="195" y="195" width="50" height="35" rx="4" fill="var(--bg-panel-soft, #dbeafe)" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="220" y="217" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">[60]</text>
+  
+  <rect x="270" y="195" width="100" height="35" rx="4" fill="var(--bg-panel-soft, #dbeafe)" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="320" y="217" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">[80, 95]</text>
+  
+  <!-- B-Tree Info -->
+  <rect x="50" y="250" width="395" height="50" rx="4" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="247" y="270" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309">Characteristics:</text>
+  <text x="247" y="285" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">O(log n) search/insert/delete | Self-balancing | Multiple children per node</text>
+  <text x="247" y="297" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Use Cases: Database indexes (MySQL, PostgreSQL), File systems (NTFS, ext4)</text>
+  
+  <!-- Bloom Filter Section -->
+  <rect x="485" y="80" width="435" height="230" rx="8" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="702" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #059669">Bloom Filter</text>
+  
+  <!-- Bloom Filter Visualization -->
+  <rect x="505" y="120" width="395" height="120" rx="6" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  
+  <!-- Bit Array -->
+  <rect x="520" y="140" width="360" height="40" rx="4" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="2"/>
+  
+  <!-- Individual bits -->
+  <rect x="530" y="145" width="30" height="30" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="545" y="165" text-anchor="middle" font-size="11" font-weight="bold" fill="white">1</text>
+  
+  <rect x="565" y="145" width="30" height="30" rx="3" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="580" y="165" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #64748b">0</text>
+  
+  <rect x="600" y="145" width="30" height="30" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="615" y="165" text-anchor="middle" font-size="11" font-weight="bold" fill="white">1</text>
+  
+  <rect x="635" y="145" width="30" height="30" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="650" y="165" text-anchor="middle" font-size="11" font-weight="bold" fill="white">1</text>
+  
+  <rect x="670" y="145" width="30" height="30" rx="3" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="685" y="165" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #64748b">0</text>
+  
+  <rect x="705" y="145" width="30" height="30" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="720" y="165" text-anchor="middle" font-size="11" font-weight="bold" fill="white">1</text>
+  
+  <rect x="740" y="145" width="30" height="30" rx="3" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="755" y="165" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #64748b">0</text>
+  
+  <rect x="775" y="145" width="30" height="30" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="790" y="165" text-anchor="middle" font-size="11" font-weight="bold" fill="white">1</text>
+  
+  <rect x="810" y="145" width="30" height="30" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="825" y="165" text-anchor="middle" font-size="11" font-weight="bold" fill="white">1</text>
+  
+  <rect x="845" y="145" width="30" height="30" rx="3" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="860" y="165" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #64748b">0</text>
+  
+  <!-- Hash Functions -->
+  <circle cx="600" y="210" r="25" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="600" y="215" text-anchor="middle" font-size="9" fill="white">h1</text>
+  
+  <circle cx="702" y="210" r="25" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="702" y="215" text-anchor="middle" font-size="9" fill="white">h2</text>
+  
+  <circle cx="804" y="210" r="25" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="804" y="215" text-anchor="middle" font-size="9" fill="white">h3</text>
+  
+  <!-- Input -->
+  <rect x="650" y="245" width="104" height="25" rx="4" fill="var(--bg-panel-hover, #f5f3ff)" stroke="var(--border-theme, #a78bfa)" stroke-width="1"/>
+  <text x="702" y="262" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">"apple"</text>
+  
+  <!-- Bloom Filter Info -->
+  <rect x="505" y="250" width="395" height="50" rx="4" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="702" y="270" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309">Characteristics:</text>
+  <text x="702" y="285" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">O(k) insert/lookup | Space-efficient | False positives possible, NO false negatives</text>
+  <text x="702" y="297" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Use Cases: Caching (avoid cache penetration), Distributed systems, Spell checkers</text>
+  
+  <!-- LSM Tree Section -->
+  <rect x="30" y="325" width="435" height="230" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="247" y="350" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #b45309">LSM Tree (Log-Structured Merge)</text>
+  
+  <!-- LSM Tree Visualization -->
+  <rect x="50" y="365" width="395" height="120" rx="6" fill="white" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  
+  <!-- MemTable -->
+  <rect x="65" y="380" width="100" height="90" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="115" y="405" text-anchor="middle" font-size="11" font-weight="bold" fill="white">MemTable</text>
+  <text x="115" y="425" text-anchor="middle" font-size="9" fill="#bfdbfe">(In-Memory)</text>
+  <text x="115" y="440" text-anchor="middle" font-size="8" fill="#bfdbfe">• Red-Black Tree</text>
+  <text x="115" y="453" text-anchor="middle" font-size="8" fill="#bfdbfe">• Sorted</text>
+  <text x="115" y="466" text-anchor="middle" font-size="8" fill="#bfdbfe">• WAL backed</text>
+  
+  <!-- Arrow -->
+  <line x1="165" y1="425" x2="195" y2="425" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="180" y="415" text-anchor="middle" font-size="7" fill="var(--text-theme, #64748b">flush</text>
+  
+  <!-- SSTables -->
+  <rect x="205" y="380" width="60" height="90" rx="4" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="235" y="400" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #b45309">L0</text>
+  <text x="235" y="415" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">SSTable</text>
+  <text x="235" y="430" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">unsorted</text>
+  
+  <rect x="275" y="380" width="60" height="90" rx="4" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="305" y="400" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #b45309">L1</text>
+  <text x="305" y="415" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">SSTable</text>
+  <text x="305" y="430" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">sorted</text>
+  
+  <rect x="345" y="380" width="80" height="90" rx="4" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="385" y="400" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #b45309">L2...Ln</text>
+  <text x="385" y="415" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">SSTables</text>
+  <text x="385" y="430" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">sorted</text>
+  <text x="385" y="445" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">larger levels</text>
+  
+  <!-- Compaction arrow -->
+  <path d="M 235 470 Q 235 495 305 495 Q 345 495 345 470" stroke="var(--text-theme, #64748b)" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="290" y="505" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">compaction</text>
+  
+  <!-- LSM Tree Info -->
+  <rect x="50" y="495" width="395" height="50" rx="4" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="247" y="515" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309">Characteristics:</text>
+  <text x="247" y="530" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Write-optimized | Sequential I/O | Background compaction | Read amplification</text>
+  <text x="247" y="542" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Use Cases: RocksDB, Cassandra, LevelDB, HBase, Write-heavy workloads</text>
+  
+  <!-- Merkle Tree Section -->
+  <rect x="485" y="325" width="435" height="230" rx="8" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="702" y="350" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #6d28d9">Merkle Tree (Hash Tree)</text>
+  
+  <!-- Merkle Tree Visualization -->
+  <rect x="505" y="365" width="395" height="120" rx="6" fill="white" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  
+  <!-- Root Hash -->
+  <rect x="652" y="375" width="100" height="30" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="702" y="395" text-anchor="middle" font-size="9" fill="white">H(ABCD)</text>
+  
+  <!-- Lines -->
+  <line x1="677" y1="405" x2="627" y2="425" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  <line x1="727" y1="405" x2="777" y2="425" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  
+  <!-- Level 1 -->
+  <rect x="580" y="425" width="90" height="30" rx="4" fill="var(--bg-panel-soft, #ede9fe)" stroke="var(--border-theme, #a78bfa)" stroke-width="1"/>
+  <text x="625" y="445" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">H(AB)</text>
+  
+  <rect x="730" y="425" width="90" height="30" rx="4" fill="var(--bg-panel-soft, #ede9fe)" stroke="var(--border-theme, #a78bfa)" stroke-width="1"/>
+  <text x="775" y="445" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">H(CD)</text>
+  
+  <!-- Lines -->
+  <line x1="602" y1="455" x2="562" y2="475" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  <line x1="647" y1="455" x2="607" y2="475" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  <line x1="752" y1="455" x2="712" y2="475" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  <line x1="797" y1="455" x2="837" y2="475" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  
+  <!-- Leaf Nodes -->
+  <rect x="530" y="475" width="60" height="30" rx="4" fill="var(--bg-panel-hover, #faf5ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  <text x="560" y="495" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">H(A)</text>
+  
+  <rect x="595" y="475" width="60" height="30" rx="4" fill="var(--bg-panel-hover, #faf5ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  <text x="625" y="495" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">H(B)</text>
+  
+  <rect x="680" y="475" width="60" height="30" rx="4" fill="var(--bg-panel-hover, #faf5ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  <text x="710" y="495" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">H(C)</text>
+  
+  <rect x="745" y="475" width="60" height="30" rx="4" fill="var(--bg-panel-hover, #faf5ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  <text x="775" y="495" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">H(D)</text>
+  
+  <!-- Data Blocks -->
+  <rect x="540" y="510" width="40" height="15" rx="2" fill="var(--bg-panel-soft, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="560" y="521" text-anchor="middle" font-size="7" fill="var(--text-theme, #64748b">Block A</text>
+  
+  <rect x="605" y="510" width="40" height="15" rx="2" fill="var(--bg-panel-soft, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="625" y="521" text-anchor="middle" font-size="7" fill="var(--text-theme, #64748b">Block B</text>
+  
+  <rect x="690" y="510" width="40" height="15" rx="2" fill="var(--bg-panel-soft, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="710" y="521" text-anchor="middle" font-size="7" fill="var(--text-theme, #64748b">Block C</text>
+  
+  <rect x="755" y="510" width="40" height="15" rx="2" fill="var(--bg-panel-soft, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="775" y="521" text-anchor="middle" font-size="7" fill="var(--text-theme, #64748b">Block D</text>
+  
+  <!-- Merkle Tree Info -->
+  <rect x="505" y="495" width="395" height="50" rx="4" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="702" y="515" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309">Characteristics:</text>
+  <text x="702" y="530" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">O(log n) verification | Tamper detection | Efficient sync | Cryptographic hashes</text>
+  <text x="702" y="542" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Use Cases: Blockchain (Bitcoin), Git, Distributed systems, Data integrity</text>
+  
+  <!-- Skip List Section -->
+  <rect x="30" y="570" width="890" height="210" rx="8" fill="var(--bg-panel-hover, #fef2f2)" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <text x="475" y="595" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #b91c1c">Skip List (Probabilistic Balanced Tree Alternative)</text>
+  
+  <!-- Skip List Visualization -->
+  <rect x="50" y="610" width="850" height="110" rx="6" fill="white" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  
+  <!-- Header -->
+  <rect x="60" y="620" width="50" height="90" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="85" y="640" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Header</text>
+  <text x="85" y="655" text-anchor="middle" font-size="8" fill="#fca5a5">Level 3</text>
+  <text x="85" y="670" text-anchor="middle" font-size="8" fill="#fca5a5">Level 2</text>
+  <text x="85" y="685" text-anchor="middle" font-size="8" fill="#fca5a5">Level 1</text>
+  <text x="85" y="700" text-anchor="middle" font-size="8" fill="#fca5a5">Level 0</text>
+  
+  <!-- Level 3 -->
+  <line x1="110" y1="630" x2="250" y2="630" stroke="var(--text-theme, #ef4444)" stroke-width="2"/>
+  <rect x="250" y="620" width="60" height="20" rx="3" fill="var(--bg-panel-soft, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="280" y="634" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">25</text>
+  
+  <line x1="310" y1="630" x2="550" y2="630" stroke="var(--text-theme, #ef4444)" stroke-width="2"/>
+  <rect x="550" y="620" width="60" height="20" rx="3" fill="var(--bg-panel-soft, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="580" y="634" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">75</text>
+  
+  <line x1="610" y1="630" x2="850" y2="630" stroke="var(--text-theme, #ef4444)" stroke-width="2"/>
+  <rect x="850" y="620" width="40" height="20" rx="3" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="870" y="634" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">∞</text>
+  
+  <!-- Level 2 -->
+  <line x1="110" y1="655" x2="190" y2="655" stroke="var(--text-theme, #f97316)" stroke-width="2"/>
+  <rect x="190" y="645" width="60" height="20" rx="3" fill="var(--bg-panel-soft, #ffedd5)" stroke="var(--border-theme, #fb923c)" stroke-width="1"/>
+  <text x="220" y="659" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">15</text>
+  
+  <line x1="250" y1="655" x2="370" y2="655" stroke="var(--text-theme, #f97316)" stroke-width="2"/>
+  <rect x="370" y="645" width="60" height="20" rx="3" fill="var(--bg-panel-soft, #ffedd5)" stroke="var(--border-theme, #fb923c)" stroke-width="1"/>
+  <text x="400" y="659" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">42</text>
+  
+  <line x1="430" y1="655" x2="490" y2="655" stroke="var(--text-theme, #f97316)" stroke-width="2"/>
+  <rect x="490" y="645" width="60" height="20" rx="3" fill="var(--bg-panel-soft, #ffedd5)" stroke="var(--border-theme, #fb923c)" stroke-width="1"/>
+  <text x="520" y="659" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">60</text>
+  
+  <line x1="550" y1="655" x2="850" y2="655" stroke="var(--text-theme, #f97316)" stroke-width="2"/>
+  
+  <!-- Level 1 -->
+  <line x1="110" y1="680" x2="145" y2="680" stroke="var(--text-theme, #eab308)" stroke-width="2"/>
+  <rect x="145" y="670" width="45" height="20" rx="3" fill="var(--bg-panel-soft, #fef9c3)" stroke="var(--border-theme, #fde047)" stroke-width="1"/>
+  <text x="167" y="684" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">8</text>
+  
+  <line x1="190" y1="680" x2="850" y2="680" stroke="var(--text-theme, #eab308)" stroke-width="2"/>
+  
+  <!-- Level 0 (all nodes) -->
+  <line x1="110" y1="705" x2="850" y2="705" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  
+  <!-- All nodes at level 0 -->
+  <rect x="145" y="695" width="45" height="20" rx="3" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="167" y="709" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">8</text>
+  
+  <rect x="190" y="695" width="45" height="20" rx="3" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="212" y="709" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">15</text>
+  
+  <rect x="250" y="695" width="45" height="20" rx="3" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="272" y="709" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">25</text>
+  
+  <rect x="370" y="695" width="45" height="20" rx="3" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="392" y="709" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">42</text>
+  
+  <rect x="490" y="695" width="45" height="20" rx="3" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="512" y="709" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">60</text>
+  
+  <rect x="550" y="695" width="45" height="20" rx="3" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="572" y="709" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">75</text>
+  
+  <!-- Skip List Info -->
+  <rect x="50" y="730" width="850" height="40" rx="4" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="475" y="745" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309">Characteristics:</text>
+  <text x="475" y="760" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">O(log n) average search/insert/delete | Probabilistic balancing | Simpler than AVL/Red-Black trees</text>
+  <text x="475" y="772" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Use Cases: Redis Sorted Sets, Database indexes, In-memory ordered collections</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,167 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 700" role="img" aria-labelledby="title desc">
+  <title id="title">WAF Deployment Modes and Rule Types</title>
+  <desc id="desc">Web Application Firewall deployment modes (block, monitor, count) and WAF rule types with matching patterns</desc>
+  
+  <!-- Background -->
+  <rect width="950" height="700" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="475" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="var(--text-theme, #1e293b)">WAF Deployment Modes &amp; Rule Types</text>
+  <text x="475" y="60" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Configuring WAF for optimal protection</text>
+  
+  <!-- WAF Deployment Modes -->
+  <rect x="30" y="80" width="570" height="300" rx="8" fill="var(--bg-panel-hover, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="315" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #1e40af">WAF Deployment Modes</text>
+  
+  <!-- Block Mode -->
+  <rect x="50" y="125" width="160" height="245" rx="6" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="130" y="155" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Block Mode</text>
+  
+  <rect x="65" y="170" width="130" height="190" rx="4" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="130" y="195" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #059669">Action: Block Request</text>
+  
+  <text x="80" y="220" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Actively blocks</text>
+  <text x="80" y="235" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">malicious requests</text>
+  <text x="80" y="255" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Returns 403 Forbidden</text>
+  <text x="80" y="270" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Production mode</text>
+  <text x="80" y="290" text-anchor="start" font-size="9" fill="var(--text-theme, #ef4444">⚠️ Risk of false positives</text>
+  <text x="80" y="305" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Best after tuning</text>
+  <text x="80" y="320" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Use with monitoring</text>
+  <text x="80" y="335" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Log all blocks</text>
+  
+  <!-- Arrow -->
+  <line x1="210" y1="247" x2="240" y2="247" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Monitor Mode -->
+  <rect x="245" y="125" width="160" height="245" rx="6" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="2"/>
+  <text x="325" y="155" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Monitor Mode</text>
+  
+  <rect x="260" y="170" width="130" height="190" rx="4" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="325" y="195" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309">Action: Log Only</text>
+  
+  <text x="275" y="220" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Allows all requests</text>
+  <text x="275" y="235" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Logs violations</text>
+  <text x="275" y="255" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ No user impact</text>
+  <text x="275" y="270" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Initial deployment</text>
+  <text x="275" y="290" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Rule tuning phase</text>
+  <text x="275" y="305" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Baseline traffic</text>
+  <text x="275" y="320" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Identify false positives</text>
+  <text x="275" y="335" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Safe testing mode</text>
+  
+  <!-- Arrow -->
+  <line x1="405" y1="247" x2="435" y2="247" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Count Mode -->
+  <rect x="440" y="125" width="160" height="245" rx="6" fill="var(--bg-theme, #06b6d4)" stroke="var(--border-theme, #0891b2)" stroke-width="2"/>
+  <text x="520" y="155" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Count Mode</text>
+  
+  <rect x="455" y="170" width="130" height="190" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #67e8f9)" stroke-width="1"/>
+  <text x="520" y="195" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #0891b2">Action: Count Matches</text>
+  
+  <text x="470" y="220" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Allows all requests</text>
+  <text x="470" y="235" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Counts rule matches</text>
+  <text x="470" y="255" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Metrics only</text>
+  <text x="470" y="270" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Traffic analysis</text>
+  <text x="470" y="290" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Rule evaluation</text>
+  <text x="470" y="305" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Threshold setting</text>
+  <text x="470" y="320" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Alert configuration</text>
+  <text x="470" y="335" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Capacity planning</text>
+  
+  <!-- WAF Rule Types -->
+  <rect x="615" y="80" width="305" height="300" rx="8" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="767" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #b45309">WAF Rule Types</text>
+  
+  <!-- Managed Rules -->
+  <rect x="630" y="125" width="275" height="80" rx="4" fill="white" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="767" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">Managed Rules</text>
+  
+  <text x="645" y="175" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Pre-built by vendor</text>
+  <text x="645" y="190" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ OWASP Top 10 coverage</text>
+  <text x="645" y="205" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ CVE protection</text>
+  
+  <rect x="645" y="215" width="245" height="20" rx="3" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="767" y="229" text-anchor="middle" font-size="8" fill="var(--text-theme, #b45309">AWS WAF, Cloudflare, Azure WAF</text>
+  
+  <!-- Custom Rules -->
+  <rect x="630" y="215" width="275" height="80" rx="4" fill="white" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="767" y="240" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">Custom Rules</text>
+  
+  <text x="645" y="265" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Organization-specific</text>
+  <text x="645" y="280" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Business logic protection</text>
+  <text x="645" y="295" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Custom patterns</text>
+  
+  <!-- Rate-Based Rules -->
+  <rect x="630" y="305" width="275" height="65" rx="4" fill="white" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="767" y="330" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">Rate-Based Rules</text>
+  
+  <text x="645" y="350" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Block IPs exceeding threshold</text>
+  <text x="645" y="365" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ DDoS and brute-force protection</text>
+  
+  <!-- WAF Rule Matching -->
+  <rect x="30" y="395" width="890" height="285" rx="8" fill="var(--bg-panel-soft, #f0fdf4)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="475" y="420" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #059669">WAF Rule Matching Patterns</text>
+  
+  <!-- SQL Injection Rules -->
+  <rect x="50" y="440" width="270" height="110" rx="6" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="185" y="465" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">SQL Injection Rules</text>
+  
+  <rect x="65" y="480" width="240" height="60" rx="4" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="185" y="500" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">MATCH: UNION SELECT</text>
+  <text x="185" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">MATCH: OR 1=1</text>
+  <text x="185" y="530" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">MATCH: DROP TABLE</text>
+  
+  <!-- XSS Rules -->
+  <rect x="340" y="440" width="270" height="110" rx="6" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="475" y="465" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">XSS Rules</text>
+  
+  <rect x="355" y="480" width="240" height="60" rx="4" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="475" y="500" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">MATCH: &lt;script&gt;</text>
+  <text x="475" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">MATCH: onerror=</text>
+  <text x="475" y="530" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">MATCH: javascript:</text>
+  
+  <!-- Path Traversal Rules -->
+  <rect x="630" y="440" width="270" height="110" rx="6" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="765" y="465" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">Path Traversal Rules</text>
+  
+  <rect x="645" y="480" width="240" height="60" rx="4" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="765" y="500" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">MATCH: ../</text>
+  <text x="765" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">MATCH: /etc/passwd</text>
+  <text x="765" y="530" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">MATCH: %2e%2e%2f</text>
+  
+  <!-- WAF Best Practices -->
+  <rect x="50" y="565" width="270" height="105" rx="6" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="185" y="590" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">WAF Best Practices</text>
+  
+  <text x="65" y="615" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Start in Monitor mode</text>
+  <text x="65" y="630" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Tune for 1-2 weeks</text>
+  <text x="65" y="645" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Review false positives</text>
+  <text x="65" y="660" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Switch to Block mode</text>
+  <text x="65" y="675" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Enable managed rules</text>
+  
+  <!-- Common Pitfalls -->
+  <rect x="340" y="565" width="270" height="105" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="475" y="590" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">Common Pitfalls</text>
+  
+  <text x="355" y="615" text-anchor="start" font-size="9" fill="var(--text-theme, #ef4444">✗ Block mode without tuning</text>
+  <text x="355" y="630" text-anchor="start" font-size="9" fill="var(--text-theme, #ef4444">✗ Too many false positives</text>
+  <text x="355" y="645" text-anchor="start" font-size="9" fill="var(--text-theme, #ef4444">✗ Not reviewing logs</text>
+  <text x="355" y="660" text-anchor="start" font-size="9" fill="var(--text-theme, #ef4444">✗ Outdated rule sets</text>
+  <text x="355" y="675" text-anchor="start" font-size="9" fill="var(--text-theme, #ef4444">✗ No monitoring alerts</text>
+  
+  <!-- Integration Points -->
+  <rect x="630" y="565" width="270" height="105" rx="6" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="765" y="590" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">Integration Points</text>
+  
+  <text x="645" y="615" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ CloudFront / CDN</text>
+  <text x="645" y="630" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Application Load Balancer</text>
+  <text x="645" y="645" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ API Gateway</text>
+  <text x="645" y="660" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Cloudflare / Akamai</text>
+  <text x="645" y="675" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Kubernetes Ingress</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

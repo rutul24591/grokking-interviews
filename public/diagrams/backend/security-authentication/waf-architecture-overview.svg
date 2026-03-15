@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">WAF Architecture Overview</title>
+  <desc id="desc">Web Application Firewall architecture showing WAF filtering malicious API traffic before it reaches backend services</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="500" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">WAF: Web Application Firewall Architecture</text>
+  
+  <!-- Internet/Attackers -->
+  <rect x="50" y="70" width="120" height="100" rx="8" fill="var(--bg-theme, #dc2626)" stroke="var(--border-theme, #991b1b)" stroke-width="2"/>
+  <text x="110" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Internet</text>
+  <text x="110" y="125" text-anchor="middle" font-size="9" fill="white">Legitimate Traffic</text>
+  <text x="110" y="142" text-anchor="middle" font-size="9" fill="white">SQL Injection</text>
+  <text x="110" y="157" text-anchor="middle" font-size="9" fill="white">XSS Attempts</text>
+  
+  <!-- CDN/Edge -->
+  <rect x="200" y="70" width="100" height="60" rx="8" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #d97706)" stroke-width="2"/>
+  <text x="250" y="95" text-anchor="middle" font-size="11" font-weight="bold" fill="white">CDN/Edge</text>
+  <text x="250" y="115" text-anchor="middle" font-size="9" fill="white">CloudFront</text>
+  
+  <!-- WAF -->
+  <rect x="330" y="70" width="180" height="150" rx="8" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="3"/>
+  <text x="420" y="95" text-anchor="middle" font-size="14" font-weight="bold" fill="white">WAF</text>
+  <text x="420" y="115" text-anchor="middle" font-size="11" fill="white">Web Application</text>
+  <text x="420" y="130" text-anchor="middle" font-size="11" fill="white">Firewall</text>
+  <text x="420" y="155" text-anchor="middle" font-size="10" fill="white">Rule Engine</text>
+  <text x="420" y="175" text-anchor="middle" font-size="10" fill="white">Rate Limiting</text>
+  <text x="420" y="195" text-anchor="middle" font-size="10" fill="white">Bot Protection</text>
+  
+  <!-- API Gateway -->
+  <rect x="540" y="70" width="120" height="80" rx="8" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="600" y="95" text-anchor="middle" font-size="12" font-weight="bold" fill="white">API Gateway</text>
+  <text x="600" y="115" text-anchor="middle" font-size="9" fill="white">Auth/Z</text>
+  <text x="600" y="130" text-anchor="middle" font-size="9" fill="white">Rate Limit</text>
+  
+  <!-- Backend Services -->
+  <rect x="690" y="70" width="60" height="150" rx="8" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="720" y="95" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Backend</text>
+  <text x="720" y="115" text-anchor="middle" font-size="9" fill="white">Services</text>
+  <text x="720" y="140" text-anchor="middle" font-size="9" fill="white">APIs</text>
+  <text x="720" y="160" text-anchor="middle" font-size="9" fill="white">DB</text>
+  <text x="720" y="180" text-anchor="middle" font-size="9" fill="white">Cache</text>
+  <text x="720" y="200" text-anchor="middle" font-size="9" fill="white">Queue</text>
+  
+  <!-- Flow Arrows -->
+  <defs>
+    <marker id="arrowFlow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #3b82f6)"/>
+    </marker>
+    <marker id="arrowBlocked" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #dc2626)"/>
+    </marker>
+    <marker id="arrowAllowed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #10b981)"/>
+    </marker>
+  </defs>
+  
+  <line x1="170" y1="120" x2="200" y2="120" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrowFlow)"/>
+  <line x1="300" y1="120" x2="330" y2="120" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrowFlow)"/>
+  <line x1="510" y1="120" x2="540" y2="120" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrowFlow)"/>
+  <line x1="660" y1="120" x2="690" y2="120" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrowFlow)"/>
+  
+  <!-- WAF Inspection Details -->
+  <rect x="50" y="250" width="340" height="140" rx="8" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="2"/>
+  <text x="220" y="275" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">WAF Inspection Layers</text>
+  
+  <!-- Layer 1: IP Reputation -->
+  <rect x="70" y="290" width="300" height="25" rx="4" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="220" y="307" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">1. IP Reputation Check</text>
+  <text x="330" y="307" text-anchor="start" font-size="9" fill="var(--text-theme, #10b981">✓ Allow known IPs</text>
+  
+  <!-- Layer 2: Rate Limiting -->
+  <rect x="70" y="320" width="300" height="25" rx="4" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="220" y="337" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">2. Rate Limiting</text>
+  <text x="330" y="337" text-anchor="start" font-size="9" fill="var(--text-theme, #f59e0b">⚠ Throttle high volume</text>
+  
+  <!-- Layer 3: Signature Detection -->
+  <rect x="70" y="350" width="300" height="25" rx="4" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="220" y="367" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">3. Signature Detection (OWASP Top 10)</text>
+  <text x="330" y="367" text-anchor="start" font-size="9" fill="var(--text-theme, #dc2626">✗ Block SQLi, XSS</text>
+  
+  <!-- Layer 4: Anomaly Detection -->
+  <rect x="70" y="380" width="300" height="25" rx="4" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="220" y="397" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">4. Anomaly/Behavioral Analysis</text>
+  <text x="330" y="397" text-anchor="start" font-size="9" fill="var(--text-theme, #f59e0b">⚠ Flag suspicious patterns</text>
+  
+  <!-- Blocked Traffic -->
+  <rect x="420" y="250" width="150" height="80" rx="8" fill="var(--bg-theme, #dc2626)" stroke="var(--border-theme, #991b1b)" stroke-width="2"/>
+  <text x="495" y="275" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Blocked Traffic</text>
+  <text x="495" y="295" text-anchor="middle" font-size="9" fill="white">• SQL Injection</text>
+  <text x="495" y="310" text-anchor="middle" font-size="9" fill="white">• XSS Attempts</text>
+  <text x="495" y="325" text-anchor="middle" font-size="9" fill="white">• Bad Bots</text>
+  
+  <!-- Allowed Traffic -->
+  <rect x="600" y="250" width="150" height="80" rx="8" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="675" y="275" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Allowed Traffic</text>
+  <text x="675" y="295" text-anchor="middle" font-size="9" fill="white">• Valid API Calls</text>
+  <text x="675" y="310" text-anchor="middle" font-size="9" fill="white">• Authenticated Users</text>
+  <text x="675" y="325" text-anchor="middle" font-size="9" fill="white">• Good Bots (SEO)</text>
+  
+  <!-- CloudWatch Logs -->
+  <rect x="420" y="350" width="150" height="60" rx="8" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #d97706)" stroke-width="2"/>
+  <text x="495" y="375" text-anchor="middle" font-size="11" font-weight="bold" fill="white">CloudWatch</text>
+  <text x="495" y="395" text-anchor="middle" font-size="9" fill="white">Logs &amp; Metrics</text>
+  
+  <!-- SNS Alerts -->
+  <rect x="600" y="350" width="150" height="60" rx="8" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="675" y="375" text-anchor="middle" font-size="11" font-weight="bold" fill="white">SNS Alerts</text>
+  <text x="675" y="395" text-anchor="middle" font-size="9" fill="white">Security Team</text>
+  
+  <!-- Arrows from WAF -->
+  <line x1="420" y1="180" x2="420" y2="250" stroke="var(--text-theme, #dc2626)" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowBlocked)"/>
+  <text x="405" y="220" text-anchor="end" font-size="8" fill="var(--text-theme, #dc2626">Blocked</text>
+  
+  <line x1="510" y1="140" x2="600" y2="280" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrowAllowed)"/>
+  <text x="540" y="200" text-anchor="start" font-size="8" fill="var(--text-theme, #10b981">Allowed</text>
+  
+  <!-- AWS WAF Rules Box -->
+  <rect x="550" y="170" width="200" height="70" rx="6" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="650" y="190" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #1e293b">AWS WAF Rules</text>
+  <text x="650" y="208" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Managed rule groups (OWASP)</text>
+  <text x="650" y="223" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Custom rules (regex, geo)</text>
+  <text x="650" y="238" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Rate-based rules</text>
+</svg>

@@ -1,0 +1,172 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 700" role="img" aria-labelledby="title desc">
+  <title id="title">CSRF Token Flow and Validation</title>
+  <desc id="desc">Detailed visualization of CSRF token generation, validation flow, and SameSite cookie behavior for CSRF protection</desc>
+  
+  <!-- Background -->
+  <rect width="950" height="700" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="475" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="var(--text-theme, #1e293b)">CSRF Token Flow &amp; SameSite Cookies</text>
+  <text x="475" y="60" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Token-based CSRF protection mechanisms</text>
+  
+  <!-- CSRF Token Generation Flow -->
+  <rect x="30" y="80" width="570" height="300" rx="8" fill="var(--bg-panel-hover, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="315" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #1e40af">CSRF Token Generation &amp; Validation</text>
+  
+  <!-- Token Generation -->
+  <rect x="50" y="125" width="240" height="110" rx="6" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="170" y="150" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Token Generation</text>
+  
+  <rect x="65" y="165" width="210" height="60" rx="4" fill="var(--bg-panel-soft, #dbeafe)" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="170" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Cryptographically secure random</text>
+  <text x="170" y="200" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Unique per session/user</text>
+  <text x="170" y="215" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Stored server-side (session)</text>
+  <text x="170" y="230" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Sent to client (hidden field/cookie)</text>
+  
+  <!-- Arrow -->
+  <line x1="290" y1="180" x2="325" y2="180" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Token in Form -->
+  <rect x="330" y="125" width="240" height="110" rx="6" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="450" y="150" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Token in Request</text>
+  
+  <rect x="345" y="165" width="210" height="60" rx="4" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="450" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Hidden form field</text>
+  <text x="450" y="200" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Custom header (X-CSRF-Token)</text>
+  <text x="450" y="215" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Request parameter</text>
+  <text x="450" y="230" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Double-submit cookie</text>
+  
+  <!-- Arrow -->
+  <line x1="570" y1="180" x2="605" y2="180" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Token Validation -->
+  <rect x="610" y="125" width="290" height="110" rx="6" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="755" y="150" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Server-Side Validation</text>
+  
+  <rect x="625" y="165" width="260" height="60" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  <text x="755" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Compare token from request</text>
+  <text x="755" y="200" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Against server-side stored token</text>
+  <text x="755" y="215" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Constant-time comparison</text>
+  <text x="755" y="230" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Reject if mismatch or missing</text>
+  
+  <!-- Token Validation Result -->
+  <rect x="50" y="250" width="240" height="120" rx="6" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="170" y="275" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #1e293b">✓ Valid Token</text>
+  
+  <rect x="65" y="290" width="210" height="70" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="170" y="310" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Token matches session</text>
+  <text x="170" y="325" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Token not expired</text>
+  <text x="170" y="340" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Origin/Referer validated</text>
+  <text x="170" y="355" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Process request normally</text>
+  
+  <rect x="310" y="250" width="240" height="120" rx="6" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="430" y="275" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #ef4444">✗ Invalid Token</text>
+  
+  <rect x="325" y="290" width="210" height="70" rx="4" fill="var(--bg-panel-soft, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="430" y="310" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Token mismatch</text>
+  <text x="430" y="325" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Token missing</text>
+  <text x="430" y="340" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Token expired</text>
+  <text x="430" y="355" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Return 403 Forbidden</text>
+  
+  <rect x="570" y="250" width="330" height="120" rx="6" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="735" y="275" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #b45309">Best Practices</text>
+  
+  <text x="585" y="295" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Use framework-built CSRF protection</text>
+  <text x="585" y="310" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Rotate tokens on authentication</text>
+  <text x="585" y="325" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Validate Origin/Referer headers</text>
+  <text x="585" y="340" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Use SameSite cookies as defense-in-depth</text>
+  <text x="585" y="355" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Exclude safe methods (GET, HEAD, OPTIONS)</text>
+  
+  <!-- SameSite Cookies -->
+  <rect x="615" y="80" width="305" height="300" rx="8" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="767" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #059669">SameSite Cookie Attribute</text>
+  
+  <!-- SameSite Strict -->
+  <rect x="630" y="125" width="275" height="75" rx="4" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="767" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">SameSite=Strict</text>
+  
+  <text x="645" y="170" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Cookie NEVER sent cross-site</text>
+  <text x="645" y="185" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Maximum CSRF protection</text>
+  <text x="645" y="200" text-anchor="start" font-size="9" fill="var(--text-theme, #ef4444">✗ Breaks legitimate cross-site flows</text>
+  
+  <rect x="645" y="210" width="245" height="20" rx="3" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="767" y="224" text-anchor="middle" font-size="8" fill="var(--text-theme, #059669">Use case: Highly sensitive apps (banking)</text>
+  
+  <!-- SameSite Lax -->
+  <rect x="630" y="210" width="275" height="75" rx="4" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="767" y="235" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">SameSite=Lax (Default)</text>
+  
+  <text x="645" y="255" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Cookie sent on top-level navigation</text>
+  <text x="645" y="270" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Allows legitimate cross-site links</text>
+  <text x="645" y="285" text-anchor="start" font-size="9" fill="var(--text-theme, #ef4444">✗ Less protection than Strict</text>
+  
+  <rect x="645" y="295" width="245" height="20" rx="3" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="767" y="309" text-anchor="middle" font-size="8" fill="var(--text-theme, #059669">Use case: Most web applications (recommended)</text>
+  
+  <!-- SameSite None -->
+  <rect x="630" y="295" width="275" height="75" rx="4" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="767" y="320" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">SameSite=None</text>
+  
+  <text x="645" y="340" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Cookie sent on ALL cross-site requests</text>
+  <text x="645" y="355" text-anchor="start" font-size="9" fill="var(--text-theme, #ef4444">✗ Requires Secure attribute (HTTPS)</text>
+  <text x="645" y="370" text-anchor="start" font-size="9" fill="var(--text-theme, #ef4444">✗ No CSRF protection from SameSite</text>
+  
+  <rect x="645" y="380" width="245" height="20" rx="3" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="767" y="394" text-anchor="middle" font-size="8" fill="var(--text-theme, #b45309">Use case: Third-party services, embedded content</text>
+  
+  <!-- Defense in Depth -->
+  <rect x="30" y="395" width="890" height="285" rx="8" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="475" y="420" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #b45309">CSRF Defense in Depth</text>
+  
+  <!-- Primary Defense -->
+  <rect x="50" y="440" width="270" height="230" rx="6" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="185" y="465" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #059669">Primary Defense</text>
+  
+  <rect x="65" y="480" width="240" height="180" rx="4" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="185" y="500" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #059669">CSRF Tokens</text>
+  <text x="185" y="520" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">✓ Synchronizer Token Pattern</text>
+  <text x="185" y="535" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">✓ HMAC-based tokens</text>
+  <text x="185" y="550" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">✓ Double-submit cookie</text>
+  <text x="185" y="565" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">✓ Encrypted token pattern</text>
+  <text x="185" y="585" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #059669">Implementation:</text>
+  <text x="185" y="600" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• OWASP CSRFGuard</text>
+  <text x="185" y="615" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Framework built-ins</text>
+  <text x="185" y="630" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">• Custom middleware</text>
+  
+  <!-- Secondary Defense -->
+  <rect x="340" y="440" width="270" height="230" rx="6" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="475" y="465" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #1e40af">Secondary Defense</text>
+  
+  <rect x="355" y="480" width="240" height="180" rx="4" fill="var(--bg-panel-hover, #dbeafe)" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="475" y="500" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #1e40af">Origin/Referer Validation</text>
+  <text x="475" y="520" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">✓ Check Origin header</text>
+  <text x="475" y="535" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">✓ Fallback to Referer</text>
+  <text x="475" y="550" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">✓ Validate against allowlist</text>
+  <text x="475" y="565" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">✓ Reject if mismatch</text>
+  <text x="475" y="585" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e40af">Headers:</text>
+  <text x="475" y="600" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b" font-family="monospace">Origin: https://trusted.com</text>
+  <text x="475" y="615" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b" font-family="monospace">Referer: https://trusted.com/page</text>
+  <text x="475" y="630" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">⚠️ Referer can be stripped by privacy</text>
+  
+  <!-- Tertiary Defense -->
+  <rect x="630" y="440" width="270" height="230" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="765" y="465" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #b45309">Tertiary Defense</text>
+  
+  <rect x="645" y="480" width="240" height="180" rx="4" fill="var(--bg-panel-hover, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="765" y="500" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #b45309">Additional Measures</text>
+  <text x="765" y="520" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">✓ SameSite cookies</text>
+  <text x="765" y="535" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">✓ Re-authentication for sensitive actions</text>
+  <text x="765" y="550" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">✓ CAPTCHA for critical operations</text>
+  <text x="765" y="565" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">✓ Custom request headers (AJAX)</text>
+  <text x="765" y="585" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #b45309">Note:</text>
+  <text x="765" y="600" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">These are NOT sufficient alone</text>
+  <text x="765" y="615" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Use as defense-in-depth only</text>
+  <text x="765" y="630" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Always implement CSRF tokens</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

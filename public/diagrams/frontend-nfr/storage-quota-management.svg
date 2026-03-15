@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 450">
+  <defs>
+    <style>
+      .title { font: bold 20px system-ui, -apple-system, sans-serif; fill: #1a1a2e; }
+      .label { font: 14px system-ui, -apple-system, sans-serif; fill: #333; }
+      .small-label { font: 12px system-ui, -apple-system, sans-serif; fill: #555; }
+      .box { fill: #f5f5f5; stroke: #666; stroke-width: 2; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <text x="425" y="35" text-anchor="middle" class="title">Storage Quota Management</text>
+  <text x="425" y="55" text-anchor="middle" class="small-label">Checking available space, requesting persistence, and implementing eviction policies</text>
+  
+  <!-- Storage Quota Check -->
+  <rect x="50" y="80" width="150" height="120" fill="#e3f2fd" stroke="#2196f3" rx="6"/>
+  <text x="125" y="105" text-anchor="middle" class="label" font-weight="bold">Check Quota</text>
+  <line x1="70" y1="115" x2="180" y2="115" stroke="#2196f3" stroke-width="1"/>
+  
+  <text x="80" y="140" text-anchor="start" class="small-label">navigator.storage</text>
+  <text x="80" y="157" text-anchor="start" class="small-label">.estimate()</text>
+  <text x="80" y="180" text-anchor="start" class="small-label">Returns:</text>
+  <text x="80" y="195" text-anchor="start" class="small-label">• quota (total)</text>
+  <text x="80" y="210" text-anchor="start" class="small-label">• usage (used)</text>
+  
+  <line x1="200" y1="140" x2="240" y2="140" class="arrow"/>
+  
+  <!-- Decision -->
+  <rect x="240" y="80" width="150" height="60" fill="#fff" stroke="#666" rx="4"/>
+  <text x="315" y="110" text-anchor="middle" class="small-label" font-weight="bold">Usage {'>'} 80%?</text>
+  
+  <!-- Yes path -->
+  <line x1="315" y1="140" x2="315" y2="170" class="arrow"/>
+  <text x="330" y="155" text-anchor="start" class="small-label">Yes</text>
+  
+  <!-- Eviction -->
+  <rect x="240" y="170" width="150" height="80" fill="#fff3e0" stroke="#ff9800" rx="4"/>
+  <text x="315" y="195" text-anchor="middle" class="small-label" font-weight="bold">Apply Eviction Policy</text>
+  <text x="315" y="215" text-anchor="middle" class="small-label">LRU / TTL / Priority</text>
+  <text x="315" y="235" text-anchor="middle" class="small-label">Delete old/low-priority</text>
+  
+  <!-- No path -->
+  <line x1="390" y1="110" x2="430" y2="110" class="arrow"/>
+  <text x="410" y="100" text-anchor="middle" class="small-label">No</text>
+  
+  <!-- Request Persistence -->
+  <rect x="430" y="80" width="150" height="60" fill="#e8f5e9" stroke="#4caf50" rx="4"/>
+  <text x="505" y="105" text-anchor="middle" class="small-label" font-weight="bold">Request Persistence</text>
+  <text x="505" y="125" text-anchor="middle" class="small-label">navigator.storage.persist()</text>
+  
+  <line x1="580" y1="110" x2="620" y2="110" class="arrow"/>
+  
+  <!-- Granted? -->
+  <rect x="620" y="80" width="100" height="60" fill="#fff" stroke="#666" rx="4"/>
+  <text x="670" y="110" text-anchor="middle" class="small-label" font-weight="bold">Granted?</text>
+  
+  <!-- Yes -->
+  <line x1="670" y1="140" x2="670" y2="170" class="arrow"/>
+  <text x="685" y="155" text-anchor="start" class="small-label">Yes</text>
+  
+  <rect x="620" y="170" width="100" height="40" fill="#c8e6c9" stroke="#4caf50" rx="4"/>
+  <text x="670" y="195" text-anchor="middle" class="small-label" font-weight="bold">Persistent</text>
+  <text x="670" y="208" text-anchor="middle" class="small-label">Protected from eviction</text>
+  
+  <!-- No -->
+  <line x1="720" y1="110" x2="760" y2="110" class="arrow"/>
+  <text x="740" y="100" text-anchor="middle" class="small-label">No</text>
+  
+  <rect x="760" y="80" width="70" height="60" fill="#ffebee" stroke="#f44336" rx="4"/>
+  <text x="795" y="110" text-anchor="middle" class="small-label">Best-effort</text>
+  
+  <!-- Eviction Policies -->
+  <rect x="50" y="230" width="200" height="120" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="150" y="255" text-anchor="middle" class="label" font-weight="bold">Eviction Policies</text>
+  <line x1="70" y1="265" x2="230" y2="265" stroke="#999" stroke-width="1"/>
+  
+  <text x="80" y="290" text-anchor="start" class="small-label" font-weight="bold">LRU:</text>
+  <text x="80" y="307" text-anchor="start" class="small-label">Least Recently Used first</text>
+  
+  <text x="80" y="330" text-anchor="start" class="small-label" font-weight="bold">TTL:</text>
+  <text x="80" y="347" text-anchor="start" class="small-label">Expire after time threshold</text>
+  
+  <!-- Priority-Based -->
+  <rect x="270" y="230" width="200" height="120" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="370" y="255" text-anchor="middle" class="label" font-weight="bold">Priority-Based Eviction</text>
+  <line x1="290" y1="265" x2="450" y2="265" stroke="#999" stroke-width="1"/>
+  
+  <rect x="300" y="280" width="160" height="25" fill="#c8e6c9" stroke="#4caf50" rx="3"/>
+  <text x="380" y="297" text-anchor="middle" class="small-label">High: User data (keep)</text>
+  
+  <rect x="300" y="310" width="160" height="25" fill="#fff3e0" stroke="#ff9800" rx="3"/>
+  <text x="380" y="327" text-anchor="middle" class="small-label">Medium: Cache (evict if needed)</text>
+  
+  <rect x="300" y="340" width="160" height="25" fill="#ffcdd2" stroke="#f44336" rx="3"/>
+  <text x="380" y="357" text-anchor="middle" class="small-label">Low: Temp data (evict first)</text>
+  
+  <!-- Quota by Storage Type -->
+  <rect x="490" y="230" width="170" height="120" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="575" y="255" text-anchor="middle" class="label" font-weight="bold">Storage Quotas</text>
+  <line x1="510" y1="265" x2="640" y2="265" stroke="#999" stroke-width="1"/>
+  
+  <text x="520" y="290" text-anchor="start" class="small-label">localStorage: 5-10MB</text>
+  <text x="520" y="310" text-anchor="start" class="small-label">IndexedDB: 50MB+</text>
+  <text x="520" y="330" text-anchor="start" class="small-label">Cache API: Generous</text>
+  
+  <!-- Handle Errors -->
+  <rect x="680" y="230" width="150" height="120" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="755" y="255" text-anchor="middle" class="label" font-weight="bold">Handle Errors</text>
+  <line x1="700" y1="265" x2="810" y2="265" stroke="#999" stroke-width="1"/>
+  
+  <text x="710" y="290" text-anchor="start" class="small-label" fill="#f44336">QuotaExceededError</text>
+  <text x="710" y="307" text-anchor="start" class="small-label">→ Evict and retry</text>
+  <text x="710" y="330" text-anchor="start" class="small-label" fill="#ff9800">Permission denied</text>
+  <text x="710" y="347" text-anchor="start" class="small-label">→ Inform user</text>
+  
+  <!-- Best Practices -->
+  <rect x="50" y="370" width="780" height="60" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+  <text x="440" y="395" text-anchor="middle" class="small-label" font-weight="bold">Best Practices:</text>
+  <text x="120" y="415" text-anchor="start" class="small-label" fill="#4caf50">✓ Monitor usage proactively</text>
+  <text x="320" y="415" text-anchor="start" class="small-label" fill="#4caf50">✓ Implement LRU eviction</text>
+  <text x="520" y="415" text-anchor="start" class="small-label" fill="#4caf50">✓ Request persistence for critical data</text>
+  <text x="750" y="415" text-anchor="start" class="small-label" fill="#4caf50">✓ Handle quota errors gracefully</text>
+</svg>

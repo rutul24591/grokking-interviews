@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">Security Posture Management</title>
+  <desc id="desc">Security posture improvement over time showing vulnerability reduction through scanning and remediation</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="500" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Security Posture Improvement</text>
+  
+  <!-- Graph Area -->
+  <rect x="80" y="80" width="600" height="250" rx="8" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="2"/>
+  
+  <!-- Y Axis -->
+  <line x1="120" y1="100" x2="120" y2="300" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  <text x="100" y="110" text-anchor="end" font-size="10" fill="var(--text-theme, #64748b">Vulnerabilities</text>
+  <text x="100" y="200" text-anchor="end" font-size="10" fill="var(--text-theme, #64748b">Count</text>
+  
+  <!-- X Axis -->
+  <line x1="120" y1="300" x2="650" y2="300" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  <text x="400" y="330" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Time →</text>
+  
+  <!-- Critical Line (red, decreasing) -->
+  <polyline points="120,120 200,140 280,130 360,100 440,90 520,85 600,80" 
+    fill="none" stroke="var(--bg-theme, #dc2626)" stroke-width="3" stroke-dasharray="5,3"/>
+  <text x="620" y="85" text-anchor="start" font-size="10" fill="var(--text-theme, #dc2626" font-weight="bold">Critical</text>
+  
+  <!-- High Line (orange, decreasing) -->
+  <polyline points="120,150 200,180 280,190 360,160 440,140 520,120 600,110" 
+    fill="none" stroke="var(--bg-theme, #f59e0b)" stroke-width="3"/>
+  <text x="620" y="115" text-anchor="start" font-size="10" fill="var(--text-theme, #f59e0b" font-weight="bold">High</text>
+  
+  <!-- Medium Line (yellow, decreasing) -->
+  <polyline points="120,190 200,220 280,240 360,230 440,210 520,190 600,170" 
+    fill="none" stroke="var(--bg-theme, #eab308)" stroke-width="3"/>
+  <text x="620" y="175" text-anchor="start" font-size="10" fill="var(--text-theme, #eab308" font-weight="bold">Medium</text>
+  
+  <!-- Low Line (green, decreasing) -->
+  <polyline points="120,240 200,260 280,270 360,265 440,255 520,245 600,230" 
+    fill="none" stroke="var(--bg-theme, #10b981)" stroke-width="3"/>
+  <text x="620" y="235" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981" font-weight="bold">Low</text>
+  
+  <!-- Milestone markers -->
+  <line x1="280" y1="100" x2="280" y2="300" stroke="var(--text-theme, #3b82f6)" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="280" y="315" text-anchor="middle" font-size="9" fill="var(--text-theme, #3b82f6">Scanning</text>
+  <text x="280" y="327" text-anchor="middle" font-size="9" fill="var(--text-theme, #3b82f6">Implemented</text>
+  
+  <line x1="440" y1="100" x2="440" y2="300" stroke="var(--text-theme, #8b5cf6)" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="440" y="315" text-anchor="middle" font-size="9" fill="var(--text-theme, #8b5cf6">CI/CD Gates</text>
+  <text x="440" y="327" text-anchor="middle" font-size="9" fill="var(--text-theme, #8b5cf6">Enabled</text>
+  
+  <!-- Metrics Box -->
+  <rect x="80" y="360" width="300" height="120" rx="8" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="230" y="385" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Key Metrics</text>
+  
+  <rect x="100" y="400" width="260" height="30" rx="4" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="230" y="420" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Mean Time to Remediation (MTTR): 7 days</text>
+  
+  <rect x="100" y="440" width="260" height="30" rx="4" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="230" y="460" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Vulnerability Density: 0.5 per 1K LOC</text>
+  
+  <!-- Improvement Actions -->
+  <rect x="420" y="360" width="300" height="120" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="570" y="385" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Improvement Actions</text>
+  
+  <rect x="440" y="400" width="260" height="25" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="570" y="417" text-anchor="middle" font-size="9" fill="white">✓ Automated dependency updates</text>
+  
+  <rect x="440" y="432" width="260" height="25" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="570" y="449" text-anchor="middle" font-size="9" fill="white">✓ Security champion program</text>
+  
+  <rect x="440" y="464" width="260" height="25" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #d97706)" stroke-width="1"/>
+  <text x="570" y="481" text-anchor="middle" font-size="9" fill="white">⚠ Legacy system modernization (in progress)</text>
+  
+  <!-- Shield Icon -->
+  <rect x="680" y="80" width="80" height="80" rx="8" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="720" y="115" text-anchor="middle" font-size="24" fill="white">🛡️</text>
+  <text x="720" y="145" text-anchor="middle" font-size="10" fill="white">Security</text>
+  <text x="720" y="160" text-anchor="middle" font-size="10" fill="white">Posture</text>
+</svg>

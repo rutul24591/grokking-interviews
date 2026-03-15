@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 400">
+  <defs>
+    <style>
+      .title { font: bold 20px system-ui, -apple-system, sans-serif; fill: #1a1a2e; }
+      .label { font: 14px system-ui, -apple-system, sans-serif; fill: #333; }
+      .small-label { font: 12px system-ui, -apple-system, sans-serif; fill: #555; }
+      .box { fill: #f5f5f5; stroke: #666; stroke-width: 2; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <text x="425" y="35" text-anchor="middle" class="title">Third-Party Performance Impact</text>
+  <text x="425" y="55" text-anchor="middle" class="small-label">Network requests, JavaScript execution, and main thread blocking</text>
+  
+  <!-- Network Overhead -->
+  <rect x="30" y="80" width="250" height="140" fill="#e3f2fd" stroke="#2196f3" rx="6"/>
+  <text x="155" y="105" text-anchor="middle" class="label" font-weight="bold">Network Overhead</text>
+  <line x1="50" y1="115" x2="260" y2="115" stroke="#2196f3" stroke-width="1"/>
+  
+  <text x="60" y="140" text-anchor="start" class="small-label" font-weight="bold">Each script = HTTP request:</text>
+  <text x="60" y="160" text-anchor="start" class="small-label">• DNS lookup (20-120ms)</text>
+  <text x="60" y="180" text-anchor="start" class="small-label">• TCP handshake (1.5 × RTT)</text>
+  <text x="60" y="200" text-anchor="start" class="small-label">• TLS negotiation (1-2 RTT)</text>
+  <text x="60" y="220" text-anchor="start" class="small-label">• Download time</text>
+  
+  <!-- JavaScript Execution -->
+  <rect x="300" y="80" width="250" height="140" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+  <text x="425" y="105" text-anchor="middle" class="label" font-weight="bold">JavaScript Execution</text>
+  <line x1="320" y1="115" x2="530" y2="115" stroke="#4caf50" stroke-width="1"/>
+  
+  <text x="330" y="140" text-anchor="start" class="small-label" font-weight="bold">Main thread blocking:</text>
+  <text x="330" y="160" text-anchor="start" class="small-label">• Parse time</text>
+  <text x="330" y="180" text-anchor="start" class="small-label">• Compile time</text>
+  <text x="330" y="200" text-anchor="start" class="small-label">• Execution time</text>
+  <text x="330" y="220" text-anchor="start" class="small-label">• Long tasks (&gt;50ms)</text>
+  
+  <!-- Render Blocking -->
+  <rect x="570" y="80" width="250" height="140" fill="#fff3e0" stroke="#ff9800" rx="6"/>
+  <text x="695" y="105" text-anchor="middle" class="label" font-weight="bold">Render Blocking</text>
+  <line x1="590" y1="115" x2="800" y2="115" stroke="#ff9800" stroke-width="1"/>
+  
+  <text x="580" y="140" text-anchor="start" class="small-label" font-weight="bold">Scripts in &lt;head&gt;:</text>
+  <text x="580" y="160" text-anchor="start" class="small-label">• Block HTML parsing</text>
+  <text x="580" y="180" text-anchor="start" class="small-label">• Delay first paint</text>
+  <text x="580" y="200" text-anchor="start" class="small-label">• Impact LCP</text>
+  
+  <!-- Statistics -->
+  <rect x="30" y="240" width="380" height="80" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="220" y="265" text-anchor="middle" class="label" font-weight="bold">Performance Statistics</text>
+  <line x1="50" y1="275" x2="390" y2="275" stroke="#999" stroke-width="1"/>
+  
+  <text x="60" y="300" text-anchor="start" class="small-label">• Average page: 70+ third-party requests</text>
+  <text x="60" y="320" text-anchor="start" class="small-label">• Third-party JS: 30-50% of total JS</text>
+  
+  <!-- Mitigation -->
+  <rect x="430" y="240" width="390" height="80" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+  <text x="625" y="265" text-anchor="middle" class="label" font-weight="bold">Mitigation Strategies</text>
+  <line x1="450" y1="275" x2="800" y2="275" stroke="#4caf50" stroke-width="1"/>
+  
+  <text x="460" y="300" text-anchor="start" class="small-label" fill="#4caf50">✓ Load async/defer</text>
+  <text x="620" y="300" text-anchor="start" class="small-label" fill="#4caf50">✓ Use requestIdleCallback</text>
+  <text x="460" y="320" text-anchor="start" class="small-label" fill="#4caf50">✓ Set performance budgets</text>
+  <text x="620" y="320" text-anchor="start" class="small-label" fill="#4caf50">✓ Monitor continuously</text>
+</svg>

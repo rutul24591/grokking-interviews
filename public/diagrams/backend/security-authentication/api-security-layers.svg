@@ -1,0 +1,175 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 750" role="img" aria-labelledby="title desc">
+  <title id="title">API Security Layers</title>
+  <desc id="desc">Comprehensive visualization of API security layers including authentication, authorization, encryption, rate limiting, and API gateway security patterns</desc>
+  
+  <!-- Background -->
+  <rect width="950" height="750" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="475" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="var(--text-theme, #1e293b)">API Security Layers</text>
+  <text x="475" y="60" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Defense in depth for API protection</text>
+  
+  <!-- API Security Onion -->
+  <rect x="30" y="80" width="570" height="400" rx="8" fill="var(--bg-panel-hover, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="315" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #1e40af">API Security Defense Layers</text>
+  
+  <!-- Layer 1: Network Security -->
+  <rect x="50" y="125" width="530" height="55" rx="6" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="315" y="150" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Layer 1: Network Security</text>
+  <text x="315" y="168" text-anchor="middle" font-size="10" fill="#bfdbfe">TLS/HTTPS, DDoS Protection, WAF, IP Allowlisting</text>
+  
+  <!-- Layer 2: Authentication -->
+  <rect x="50" y="190" width="530" height="55" rx="6" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="315" y="215" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Layer 2: Authentication</text>
+  <text x="315" y="233" text-anchor="middle" font-size="10" fill="#6ee7b7">API Keys, OAuth 2.0, JWT, mTLS</text>
+  
+  <!-- Layer 3: Authorization -->
+  <rect x="50" y="255" width="530" height="55" rx="6" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="2"/>
+  <text x="315" y="280" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Layer 3: Authorization</text>
+  <text x="315" y="298" text-anchor="middle" font-size="10" fill="#fcd34d">RBAC, ABAC, Scope Validation, Resource Ownership</text>
+  
+  <!-- Layer 4: Input Validation -->
+  <rect x="50" y="320" width="530" height="55" rx="6" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="315" y="345" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Layer 4: Input Validation</text>
+  <text x="315" y="363" text-anchor="middle" font-size="10" fill="#c4b5fd">Schema Validation, Sanitization, SQLi/XSS Prevention</text>
+  
+  <!-- Layer 5: Rate Limiting -->
+  <rect x="50" y="385" width="530" height="55" rx="6" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="315" y="410" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Layer 5: Rate Limiting & Throttling</text>
+  <text x="315" y="428" text-anchor="middle" font-size="10" fill="#fca5a5">Request Quotas, Burst Control, Cost Limits</text>
+  
+  <!-- Layer 6: Monitoring -->
+  <rect x="50" y="450" width="530" height="55" rx="6" fill="var(--bg-theme, #06b6d4)" stroke="var(--border-theme, #0891b2)" stroke-width="2"/>
+  <text x="315" y="475" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Layer 6: Monitoring & Audit</text>
+  <text x="315" y="493" text-anchor="middle" font-size="10" fill="#67e8f9">Logging, Anomaly Detection, Alerting, Audit Trails</text>
+  
+  <!-- Authentication Methods Comparison -->
+  <rect x="615" y="80" width="305" height="400" rx="8" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="767" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #b45309">Authentication Methods</text>
+  
+  <!-- API Keys -->
+  <rect x="630" y="125" width="275" height="70" rx="4" fill="white" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="767" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">API Keys</text>
+  
+  <text x="645" y="170" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Simple to implement</text>
+  <text x="645" y="185" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Good for server-to-server</text>
+  <text x="645" y="200" text-anchor="start" font-size="9" fill="var(--text-theme, #ef4444">✗ No user context</text>
+  
+  <!-- OAuth 2.0 / OIDC -->
+  <rect x="630" y="205" width="275" height="85" rx="4" fill="white" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="767" y="230" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">OAuth 2.0 + OIDC</text>
+  
+  <text x="645" y="255" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ User delegation supported</text>
+  <text x="645" y="270" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Fine-grained scopes</text>
+  <text x="645" y="285" text-anchor="start" font-size="9" fill="var(--text-theme, #ef4444">✗ Complex implementation</text>
+  
+  <!-- JWT -->
+  <rect x="630" y="300" width="275" height="70" rx="4" fill="white" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="767" y="325" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">JWT Tokens</text>
+  
+  <text x="645" y="345" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Stateless verification</text>
+  <text x="645" y="360" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Contains claims</text>
+  <text x="645" y="375" text-anchor="start" font-size="9" fill="var(--text-theme, #ef4444">✗ Hard to revoke</text>
+  
+  <!-- mTLS -->
+  <rect x="630" y="380" width="275" height="70" rx="4" fill="white" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="767" y="405" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">mTLS</text>
+  
+  <text x="645" y="425" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Strong mutual auth</text>
+  <text x="645" y="440" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Service-to-service</text>
+  <text x="645" y="455" text-anchor="start" font-size="9" fill="var(--text-theme, #ef4444">✗ Certificate management</text>
+  
+  <!-- API Gateway Security -->
+  <rect x="30" y="495" width="890" height="235" rx="8" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="475" y="520" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #059669">API Gateway Security Pattern</text>
+  
+  <!-- Request Flow -->
+  <rect x="50" y="540" width="850" height="180" rx="6" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  
+  <!-- Client -->
+  <rect x="70" y="560" width="100" height="60" rx="6" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="120" y="590" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Client</text>
+  <text x="120" y="608" text-anchor="middle" font-size="9" fill="#bfdbfe">App/Mobile</text>
+  
+  <!-- Arrow -->
+  <line x1="170" y1="590" x2="205" y2="590" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- API Gateway -->
+  <rect x="210" y="550" width="200" height="140" rx="6" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="310" y="575" text-anchor="middle" font-size="13" font-weight="bold" fill="white">API Gateway</text>
+  
+  <!-- Gateway Security Checks -->
+  <rect x="225" y="590" width="170" height="90" rx="4" fill="var(--bg-panel-hover, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="310" y="610" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #059669">Security Checks:</text>
+  <text x="310" y="628" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">• TLS Termination</text>
+  <text x="310" y="643" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">• Auth Validation</text>
+  <text x="310" y="658" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">• Rate Limiting</text>
+  <text x="310" y="673" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">• Request Validation</text>
+  
+  <!-- Arrow -->
+  <line x1="410" y1="620" x2="445" y2="620" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="427" y="610" text-anchor="middle" font-size="8" fill="var(--text-theme, #10b981">Valid</text>
+  
+  <!-- Backend Services -->
+  <rect x="450" y="560" width="180" height="120" rx="6" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="540" y="590" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Backend</text>
+  <text x="540" y="610" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Services</text>
+  <text x="540" y="630" text-anchor="middle" font-size="10" fill="#c4b5fd">• User Service</text>
+  <text x="540" y="650" text-anchor="middle" font-size="10" fill="#c4b5fd">• Order Service</text>
+  <text x="540" y="670" text-anchor="middle" font-size="10" fill="#c4b5fd">• Payment Service</text>
+  
+  <!-- Arrow -->
+  <line x1="630" y1="620" x2="665" y2="620" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Database -->
+  <rect x="670" y="580" width="100" height="80" rx="6" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="720" y="615" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Database</text>
+  <text x="720" y="635" text-anchor="middle" font-size="10" fill="#fca5a5">Data Layer</text>
+  
+  <!-- Rejected Request -->
+  <rect x="210" y="700" width="200" height="50" rx="6" fill="var(--bg-panel-hover, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="310" y="720" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #b91c1c">Rejected Requests</text>
+  <text x="310" y="738" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">401 Unauthorized, 403 Forbidden, 429 Too Many</text>
+  
+  <!-- Arrow from gateway to rejected -->
+  <line x1="310" y1="690" x2="310" y2="695" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrowRed)"/>
+  <text x="325" y="685" text-anchor="start" font-size="8" fill="var(--text-theme, #b91c1c">Invalid</text>
+  
+  <!-- Security Best Practices -->
+  <rect x="50" y="540" width="850" height="180" rx="6" fill="var(--bg-panel-hover, #f0fdf4)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="475" y="565" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #059669">API Security Best Practices</text>
+  
+  <rect x="70" y="585" width="240" height="120" rx="4" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="190" y="605" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #059669">Always</text>
+  <text x="190" y="625" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Use HTTPS everywhere</text>
+  <text x="190" y="640" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Validate all input</text>
+  <text x="190" y="655" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Implement rate limiting</text>
+  <text x="190" y="670" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Use proper auth (OAuth/JWT)</text>
+  <text x="190" y="685" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✓ Log all requests</text>
+  
+  <rect x="325" y="585" width="240" height="120" rx="4" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="445" y="605" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #b45309">Never</text>
+  <text x="445" y="625" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✗ Expose internal errors</text>
+  <text x="445" y="640" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✗ Trust client input</text>
+  <text x="445" y="655" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✗ Use HTTP for sensitive data</text>
+  <text x="445" y="670" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✗ Hardcode secrets</text>
+  <text x="445" y="685" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b">✗ Skip authentication</text>
+  
+  <rect x="580" y="585" width="300" height="120" rx="4" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="730" y="605" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #1e40af">Response Headers</text>
+  <text x="730" y="625" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">X-Content-Type-Options: nosniff</text>
+  <text x="730" y="640" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">X-Frame-Options: DENY</text>
+  <text x="730" y="655" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">Strict-Transport-Security</text>
+  <text x="730" y="670" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">Content-Security-Policy</text>
+  <text x="730" y="685" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">X-Request-ID: &lt;uuid&gt;</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #ef4444)"/>
+    </marker>
+  </defs>
+</svg>

@@ -7,15 +7,15 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-frontend-nfr-cross-browser-compatibility",
   title: "Cross-Browser Compatibility",
-  description: "Comprehensive guide to ensuring web applications work consistently across browsers. Covers feature detection, polyfills, testing strategies, and graceful degradation.",
+  description: "Comprehensive guide to ensuring web applications work consistently across browsers. Covers feature detection, polyfills, CSS @supports, Autoprefixer, testing strategies, and graceful degradation.",
   category: "frontend",
   subcategory: "nfr",
   slug: "cross-browser-compatibility",
   version: "extensive",
-  wordCount: 9500,
-  readingTime: 38,
+  wordCount: 13000,
+  readingTime: 52,
   lastUpdated: "2026-03-15",
-  tags: ["frontend", "nfr", "compatibility", "browsers", "polyfills", "testing"],
+  tags: ["frontend", "nfr", "compatibility", "browsers", "polyfills", "testing", "autoprefixer", "css-supports"],
   relatedTopics: ["web-standards", "accessibility", "progressive-enhancement"],
 };
 
@@ -211,6 +211,100 @@ if (navigator.userAgent.includes('Chrome')) {
           <li>CSS enhances visual experience</li>
           <li>JavaScript adds interactivity</li>
         </ul>
+      </section>
+
+      <section>
+        <h2>CSS Feature Queries (@supports)</h2>
+        <p>
+          The <code>@supports</code> rule (CSS Feature Queries) allows conditional CSS based on browser
+          feature support. This is the CSS equivalent of feature detection in JavaScript.
+        </p>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Basic Syntax</h3>
+        <p>
+          Use <code>@supports (property: value)</code> to wrap enhanced CSS. Provide fallback styles outside
+          the query. Combine conditions with <code>and</code> or use <code>not</code> for negation.
+          Example: <code>@supports (display: grid)</code> for Grid support,
+          <code>@supports not (backdrop-filter: blur(10px))</code> for fallback when backdrop-filter is unsupported.
+        </p>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Common Use Cases</h3>
+        <ul className="space-y-2">
+          <li>
+            <strong>CSS Grid with Flexbox fallback:</strong> Grid for modern browsers, flex for older
+          </li>
+          <li>
+            <strong>Custom properties (CSS variables):</strong> Provide hardcoded fallback values
+          </li>
+          <li>
+            <strong>Modern layout features:</strong> gap, subgrid, container queries with fallbacks
+          </li>
+          <li>
+            <strong>Visual effects:</strong> backdrop-filter, mix-blend-mode with solid color fallbacks
+          </li>
+        </ul>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Browser Support</h3>
+        <p>
+          <code>@supports</code> has excellent support (95%+). Safari 9+, Chrome 49+, Firefox 49+, Edge 12+.
+          For older browsers, the enhanced CSS is simply ignored (which is the correct graceful degradation).
+        </p>
+      </section>
+
+      <section>
+        <h2>Autoprefixer & PostCSS</h2>
+        <p>
+          Vendor prefixes (<code>-webkit-</code>, <code>-moz-</code>, <code>-ms-</code>) were historically
+          required for experimental CSS features. Managing them manually is error-prone. Autoprefixer
+          automates this process.
+        </p>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">How Autoprefixer Works</h3>
+        <ul className="space-y-2">
+          <li>Parses your CSS for properties that need vendor prefixes</li>
+          <li>Uses caniuse.com database to determine which prefixes are needed</li>
+          <li>Adds only the prefixes required for your target browsers</li>
+          <li>Removes outdated prefixes when browsers add unprefixed support</li>
+        </ul>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Configuration</h3>
+        <p>
+          Configure target browsers in <code>package.json</code> using the <code>browserslist</code> field.
+          Common config: <code>{"> 1%, last 2 versions, not dead, not ie 11"}</code>. Or use a separate
+          <code>.browserslistrc</code> file.
+        </p>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Integration</h3>
+        <ul className="space-y-2">
+          <li>
+            <strong>PostCSS:</strong> Add autoprefixer plugin to PostCSS config
+          </li>
+          <li>
+            <strong>Webpack:</strong> css-loader + postcss-loader + autoprefixer
+          </li>
+          <li>
+            <strong>Vite:</strong> Built-in PostCSS support, configure in postcss.config.js
+          </li>
+          <li>
+            <strong>CLI:</strong> Run <code>autoprefixer</code> command with browserslist option
+          </li>
+        </ul>
+
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Example Output</h3>
+        <p>
+          Input <code>backdrop-filter: blur(10px)</code> outputs prefixed versions for Safari
+          (<code>-webkit-backdrop-filter</code>) and older browsers. Input <code>display: grid</code> outputs
+          <code>-ms-grid</code> for IE 10-11. Autoprefixer only adds prefixes needed for your target browsers.
+        </p>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">Best Practice</h3>
+          <p>
+            Write clean, unprefixed CSS and let Autoprefixer handle vendor prefixes based on your
+            <code>browserslist</code> configuration. This keeps your source CSS maintainable while
+            ensuring compatibility with your target browsers.
+          </p>
+        </div>
       </section>
 
       <section>

@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 450">
+  <defs>
+    <style>
+      .title { font: bold 20px system-ui, -apple-system, sans-serif; fill: #1a1a2e; }
+      .label { font: 14px system-ui, -apple-system, sans-serif; fill: #333; }
+      .small-label { font: 12px system-ui, -apple-system, sans-serif; fill: #555; }
+      .box { fill: #f5f5f5; stroke: #666; stroke-width: 2; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <text x="425" y="35" text-anchor="middle" class="title">Real-Time UI Patterns</text>
+  <text x="425" y="55" text-anchor="middle" class="small-label">Live feeds, presence indicators, optimistic updates, and connection status</text>
+  
+  <!-- Live Feeds -->
+  <rect x="30" y="80" width="190" height="120" fill="#e3f2fd" stroke="#2196f3" rx="6"/>
+  <text x="125" y="105" text-anchor="middle" class="label" font-weight="bold">Live Feeds</text>
+  <line x1="50" y1="115" x2="200" y2="115" stroke="#2196f3" stroke-width="1"/>
+  
+  <text x="60" y="140" text-anchor="start" class="small-label">• Prepend new items</text>
+  <text x="60" y="160" text-anchor="start" class="small-label">• "New messages" indicator</text>
+  <text x="60" y="180" text-anchor="start" class="small-label">• Auto-scroll (with opt-out)</text>
+  <text x="60" y="200" text-anchor="start" class="small-label">• Batch rapid updates</text>
+  
+  <!-- Presence -->
+  <rect x="240" y="80" width="190" height="120" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+  <text x="335" y="105" text-anchor="middle" class="label" font-weight="bold">Presence Indicators</text>
+  <line x1="260" y1="115" x2="410" y2="115" stroke="#4caf50" stroke-width="1"/>
+  
+  <text x="270" y="140" text-anchor="start" class="small-label">• Online/offline status</text>
+  <text x="270" y="160" text-anchor="start" class="small-label">• "User is typing..."</text>
+  <text x="270" y="180" text-anchor="start" class="small-label">• "User was here X min ago"</text>
+  <text x="270" y="200" text-anchor="start" class="small-label">• Debounce typing indicators</text>
+  
+  <!-- Optimistic Updates -->
+  <rect x="450" y="80" width="190" height="120" fill="#fff3e0" stroke="#ff9800" rx="6"/>
+  <text x="545" y="105" text-anchor="middle" class="label" font-weight="bold">Optimistic Updates</text>
+  <line x1="470" y1="115" x2="620" y2="115" stroke="#ff9800" stroke-width="1"/>
+  
+  <text x="480" y="140" text-anchor="start" class="small-label">• Update UI immediately</text>
+  <text x="480" y="160" text-anchor="start" class="small-label">• Send in background</text>
+  <text x="480" y="180" text-anchor="start" class="small-label">• Rollback on error</text>
+  <text x="480" y="200" text-anchor="start" class="small-label">• Show pending state</text>
+  
+  <!-- Connection Status -->
+  <rect x="660" y="80" width="170" height="120" fill="#fce4ec" stroke="#e91e63" rx="6"/>
+  <text x="745" y="105" text-anchor="middle" class="label" font-weight="bold">Connection Status</text>
+  <line x1="680" y1="115" x2="810" y2="115" stroke="#e91e63" stroke-width="1"/>
+  
+  <text x="690" y="140" text-anchor="start" class="small-label">• Show status indicator</text>
+  <text x="690" y="160" text-anchor="start" class="small-label">• "Reconnecting..."</text>
+  <text x="690" y="180" text-anchor="start" class="small-label">• "You're offline"</text>
+  <text x="690" y="200" text-anchor="start" class="small-label">• Queue actions offline</text>
+  
+  <!-- Performance -->
+  <rect x="30" y="220" width="250" height="100" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="155" y="245" text-anchor="middle" class="label" font-weight="bold">Performance Considerations</text>
+  <line x1="50" y1="255" x2="260" y2="255" stroke="#999" stroke-width="1"/>
+  
+  <text x="60" y="280" text-anchor="start" class="small-label" fill="#4caf50">✓ Throttle rapid updates</text>
+  <text x="60" y="300" text-anchor="start" class="small-label" fill="#4caf50">✓ Batch messages</text>
+  <text x="60" y="320" text-anchor="start" class="small-label" fill="#ff9800">⚠ Virtualize long lists</text>
+  
+  <!-- Error Handling -->
+  <rect x="300" y="220" width="250" height="100" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="425" y="245" text-anchor="middle" class="label" font-weight="bold">Error Handling</text>
+  <line x1="320" y1="255" x2="530" y2="255" stroke="#999" stroke-width="1"/>
+  
+  <text x="330" y="280" text-anchor="start" class="small-label" fill="#4caf50">✓ Exponential backoff</text>
+  <text x="330" y="300" text-anchor="start" class="small-label" fill="#4caf50">✓ Acknowledge messages</text>
+  <text x="330" y="320" text-anchor="start" class="small-label" fill="#ff9800">⚠ Handle out-of-order</text>
+  
+  <!-- Best Practices -->
+  <rect x="570" y="220" width="260" height="100" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+  <text x="700" y="245" text-anchor="middle" class="label" font-weight="bold">Best Practices</text>
+  <line x1="590" y1="255" x2="810" y2="255" stroke="#4caf50" stroke-width="1"/>
+  
+  <text x="600" y="280" text-anchor="start" class="small-label" fill="#4caf50">✓ Show connection status</text>
+  <text x="600" y="300" text-anchor="start" class="small-label" fill="#4caf50">✓ Queue actions while offline</text>
+  <text x="600" y="320" text-anchor="start" class="small-label" fill="#4caf50">✓ Sync on reconnect</text>
+</svg>

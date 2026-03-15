@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">HTTP Security Headers Architecture</title>
+  <desc id="desc">Security headers flow from server to browser showing CSP, HSTS, X-Frame-Options and other protective headers</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="500" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">HTTP Security Headers Architecture</text>
+  
+  <!-- Web Server -->
+  <rect x="50" y="70" width="180" height="100" rx="8" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="140" y="105" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Web Server</text>
+  <text x="140" y="130" text-anchor="middle" font-size="10" fill="white">Nginx, Apache</text>
+  <text x="140" y="150" text-anchor="middle" font-size="10" fill="white">Node.js, etc.</text>
+  
+  <!-- Security Headers -->
+  <rect x="280" y="60" width="240" height="200" rx="8" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="3"/>
+  <text x="400" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Security Headers</text>
+  
+  <!-- Header List -->
+  <rect x="300" y="110" width="200" height="30" rx="4" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="400" y="130" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Strict-Transport-Security</text>
+  
+  <rect x="300" y="145" width="200" height="30" rx="4" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="400" y="165" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Content-Security-Policy</text>
+  
+  <rect x="300" y="180" width="200" height="30" rx="4" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="400" y="200" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">X-Frame-Options</text>
+  
+  <rect x="300" y="215" width="200" height="30" rx="4" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="400" y="235" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">X-Content-Type-Options</text>
+  
+  <!-- Browser -->
+  <rect x="570" y="70" width="180" height="100" rx="8" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="660" y="105" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Browser</text>
+  <text x="660" y="130" text-anchor="middle" font-size="10" fill="white">Chrome, Firefox</text>
+  <text x="660" y="150" text-anchor="middle" font-size="10" fill="white">Safari, Edge</text>
+  
+  <!-- Flow Arrow -->
+  <defs>
+    <marker id="arrowHeaders" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #8b5cf6)"/>
+    </marker>
+  </defs>
+  
+  <line x1="230" y1="120" x2="280" y2="120" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrowHeaders)"/>
+  <text x="255" y="115" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Response</text>
+  
+  <line x1="520" y1="120" x2="570" y2="120" stroke="var(--text-theme, #8b5cf6)" stroke-width="2" marker-end="url(#arrowHeaders)"/>
+  <text x="545" y="115" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Headers</text>
+  
+  <!-- Protection Mechanisms -->
+  <rect x="50" y="300" width="340" height="180" rx="8" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="2"/>
+  <text x="220" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Header Protection Mechanisms</text>
+  
+  <!-- HSTS -->
+  <rect x="70" y="340" width="300" height="35" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="220" y="362" text-anchor="middle" font-size="10" fill="white">HSTS: Force HTTPS, prevent downgrade attacks</text>
+  
+  <!-- CSP -->
+  <rect x="70" y="380" width="300" height="35" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="220" y="402" text-anchor="middle" font-size="10" fill="white">CSP: Prevent XSS, control resource loading</text>
+  
+  <!-- X-Frame-Options -->
+  <rect x="70" y="420" width="300" height="35" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #d97706)" stroke-width="1"/>
+  <text x="220" y="442" text-anchor="middle" font-size="10" fill="white">X-Frame-Options: Prevent clickjacking attacks</text>
+  
+  <!-- Browser Enforcement -->
+  <rect x="430" y="300" width="320" height="100" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="590" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Browser Enforcement</text>
+  
+  <rect x="450" y="345" width="280" height="45" rx="6" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="590" y="367" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">✓ Block mixed content</text>
+  <text x="590" y="382" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Inline scripts blocked without nonce</text>
+  
+  <rect x="450" y="400" width="280" height="45" rx="6" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="590" y="422" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">✓ Refuse to load in iframe</text>
+  <text x="590" y="437" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">When X-Frame-Options: DENY</text>
+</svg>

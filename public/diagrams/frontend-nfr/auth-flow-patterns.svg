@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 500">
+  <defs>
+    <style>
+      .title { font: bold 20px system-ui, -apple-system, sans-serif; fill: #1a1a2e; }
+      .label { font: 14px system-ui, -apple-system, sans-serif; fill: #333; }
+      .small-label { font: 12px system-ui, -apple-system, sans-serif; fill: #555; }
+      .box { fill: #f5f5f5; stroke: #666; stroke-width: 2; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <text x="425" y="35" text-anchor="middle" class="title">Authentication Flow Patterns</text>
+  <text x="425" y="55" text-anchor="middle" class="small-label">Standard login, passwordless, social login, and MFA flows</text>
+  
+  <!-- Standard Login -->
+  <rect x="30" y="80" width="250" height="180" fill="#e3f2fd" stroke="#2196f3" rx="6"/>
+  <text x="155" y="105" text-anchor="middle" class="label" font-weight="bold">Standard Login</text>
+  <line x1="50" y1="115" x2="260" y2="115" stroke="#2196f3" stroke-width="1"/>
+  
+  <text x="60" y="140" text-anchor="start" class="small-label">1. Enter email/password</text>
+  <text x="60" y="157" text-anchor="start" class="small-label">2. POST /login</text>
+  <text x="60" y="174" text-anchor="start" class="small-label">3. Server validates</text>
+  <text x="60" y="191" text-anchor="start" class="small-label">4. Set HttpOnly cookie</text>
+  <text x="60" y="208" text-anchor="start" class="small-label">5. Redirect to dashboard</text>
+  <text x="60" y="230" text-anchor="start" class="small-label" fill="#4caf50">✓ Familiar UX</text>
+  <text x="160" y="230" text-anchor="start" class="small-label" fill="#ff9800">⚠ Password fatigue</text>
+  
+  <!-- Passwordless -->
+  <rect x="300" y="80" width="250" height="180" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+  <text x="425" y="105" text-anchor="middle" class="label" font-weight="bold">Passwordless (Magic Link)</text>
+  <line x1="320" y1="115" x2="530" y2="115" stroke="#4caf50" stroke-width="1"/>
+  
+  <text x="330" y="140" text-anchor="start" class="small-label">1. Enter email only</text>
+  <text x="330" y="157" text-anchor="start" class="small-label">2. POST /magic-link</text>
+  <text x="330" y="174" text-anchor="start" class="small-label">3. Email with link sent</text>
+  <text x="330" y="191" text-anchor="start" class="small-label">4. User clicks link</text>
+  <text x="330" y="208" text-anchor="start" class="small-label">5. Auto-login, redirect</text>
+  <text x="330" y="230" text-anchor="start" class="small-label" fill="#4caf50">✓ No password</text>
+  <text x="430" y="230" text-anchor="start" class="small-label" fill="#ff9800">⚠ Email dependency</text>
+  
+  <!-- Social Login -->
+  <rect x="570" y="80" width="250" height="180" fill="#fff3e0" stroke="#ff9800" rx="6"/>
+  <text x="695" y="105" text-anchor="middle" class="label" font-weight="bold">Social Login (OAuth)</text>
+  <line x1="590" y1="115" x2="800" y2="115" stroke="#ff9800" stroke-width="1"/>
+  
+  <text x="580" y="140" text-anchor="start" class="small-label">1. Click "Login with Google"</text>
+  <text x="580" y="157" text-anchor="start" class="small-label">2. Redirect to provider</text>
+  <text x="580" y="174" text-anchor="start" class="small-label">3. User consents</text>
+  <text x="580" y="191" text-anchor="start" class="small-label">4. Callback with token</text>
+  <text x="580" y="208" text-anchor="start" class="small-label">5. Exchange for session</text>
+  <text x="580" y="230" text-anchor="start" class="small-label" fill="#4caf50">✓ Fast signup</text>
+  <text x="680" y="230" text-anchor="start" class="small-label" fill="#ff9800">⚠ Provider dependency</text>
+  
+  <!-- MFA Flow -->
+  <rect x="30" y="280" width="380" height="140" fill="#fce4ec" stroke="#e91e63" rx="6"/>
+  <text x="220" y="305" text-anchor="middle" class="label" font-weight="bold">Multi-Factor Authentication (MFA)</text>
+  <line x1="50" y1="315" x2="390" y2="315" stroke="#e91e63" stroke-width="1"/>
+  
+  <text x="60" y="340" text-anchor="start" class="small-label">1. Enter password ✓</text>
+  <text x="60" y="357" text-anchor="start" class="small-label">2. Prompt for 2nd factor:</text>
+  <text x="80" y="374" text-anchor="start" class="small-label">• SMS code (less secure)</text>
+  <text x="80" y="391" text-anchor="start" class="small-label">• Authenticator app (TOTP)</text>
+  <text x="80" y="408" text-anchor="start" class="small-label">• Hardware key (YubiKey)</text>
+  <text x="250" y="340" text-anchor="start" class="small-label">• Biometric (Touch ID)</text>
+  <text x="250" y="357" text-anchor="start" class="small-label">• Backup codes</text>
+  <text x="60" y="430" text-anchor="start" class="small-label" fill="#4caf50">✓ Prevents account takeover</text>
+  <text x="250" y="430" text-anchor="start" class="small-label" fill="#ff9800">⚠ Extra friction</text>
+  
+  <!-- Token Flow -->
+  <rect x="430" y="280" width="390" height="140" fill="#f5f5f5" stroke="#666" rx="6"/>
+  <text x="625" y="305" text-anchor="middle" class="label" font-weight="bold">Token Storage & Refresh</text>
+  <line x1="450" y1="315" x2="800" y2="315" stroke="#999" stroke-width="1"/>
+  
+  <rect x="460" y="330" width="80" height="35" fill="#bbdefb" stroke="#2196f3" rx="3"/>
+  <text x="500" y="352" text-anchor="middle" class="small-label">Access Token</text>
+  <text x="500" y="365" text-anchor="middle" class="small-label">(Memory)</text>
+  
+  <line x1="540" y1="347" x2="570" y2="347" class="arrow"/>
+  
+  <rect x="570" y="330" width="80" height="35" fill="#c8e6c9" stroke="#4caf50" rx="3"/>
+  <text x="610" y="352" text-anchor="middle" class="small-label">Refresh Token</text>
+  <text x="610" y="365" text-anchor="middle" class="small-label">(HttpOnly)</text>
+  
+  <line x1="650" y1="347" x2="680" y2="347" class="arrow"/>
+  
+  <rect x="680" y="330" width="100" height="35" fill="#fff3e0" stroke="#ff9800" rx="3"/>
+  <text x="730" y="352" text-anchor="middle" class="small-label">401 Detected</text>
+  
+  <line x1="730" y1="365" x2="730" y2="390" class="arrow"/>
+  
+  <rect x="680" y="390" width="100" height="25" fill="#e8f5e9" stroke="#4caf50" rx="3"/>
+  <text x="730" y="407" text-anchor="middle" class="small-label">Refresh Token</text>
+  
+  <!-- Security Best Practices -->
+  <rect x="30" y="440" width="790" height="50" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
+  <text x="425" y="465" text-anchor="middle" class="small-label" font-weight="bold">Security Best Practices:</text>
+  <text x="100" y="482" text-anchor="start" class="small-label" fill="#4caf50">✓ HttpOnly cookies for tokens</text>
+  <text x="300" y="482" text-anchor="start" class="small-label" fill="#4caf50">✓ Short-lived access tokens</text>
+  <text x="500" y="482" text-anchor="start" class="small-label" fill="#4caf50">✓ Rate limiting on login</text>
+  <text x="700" y="482" text-anchor="start" class="small-label" fill="#4caf50">✓ MFA for sensitive apps</text>
+</svg>

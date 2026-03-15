@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 700" role="img" aria-labelledby="title desc">
+  <title id="title">DOM-Based XSS Attack and Prevention</title>
+  <desc id="desc">Detailed visualization of DOM-based XSS attack flow and prevention techniques including safe DOM manipulation</desc>
+  
+  <!-- Background -->
+  <rect width="950" height="700" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="475" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="var(--text-theme, #1e293b)">DOM-Based XSS Attack &amp; Prevention</text>
+  <text x="475" y="60" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Client-side XSS vulnerabilities and secure coding</text>
+  
+  <!-- DOM-Based XSS Attack Flow -->
+  <rect x="30" y="80" width="570" height="300" rx="8" fill="var(--bg-panel-hover, #fef2f2)" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <text x="315" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #b91c1c">DOM-Based XSS Attack Flow</text>
+  
+  <!-- Source -->
+  <rect x="50" y="125" width="150" height="100" rx="6" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="125" y="155" text-anchor="middle" font-size="12" font-weight="bold" fill="white">1. Source</text>
+  
+  <rect x="65" y="170" width="120" height="45" rx="4" fill="var(--bg-panel-soft, #dbeafe)" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="125" y="190" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Attacker-controlled</text>
+  <text x="125" y="205" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">data enters DOM</text>
+  
+  <text x="125" y="235" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">• document.location</text>
+  <text x="125" y="250" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">• document.URL</text>
+  <text x="125" y="265" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">• document.referrer</text>
+  
+  <!-- Arrow -->
+  <line x1="200" y1="175" x2="235" y2="175" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Vulnerable Sink -->
+  <rect x="240" y="125" width="150" height="100" rx="6" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="315" y="155" text-anchor="middle" font-size="12" font-weight="bold" fill="white">2. Vulnerable Sink</text>
+  
+  <rect x="255" y="170" width="120" height="45" rx="4" fill="var(--bg-panel-soft, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="315" y="190" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Dangerous DOM APIs</text>
+  <text x="315" y="205" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">that execute code</text>
+  
+  <text x="315" y="235" text-anchor="middle" font-size="8" fill="var(--text-theme, #b91c1c">• element.innerHTML</text>
+  <text x="315" y="250" text-anchor="middle" font-size="8" fill="var(--text-theme, #b91c1c">• document.write()</text>
+  <text x="315" y="265" text-anchor="middle" font-size="8" fill="var(--text-theme, #b91c1c">• eval()</text>
+  
+  <!-- Arrow -->
+  <line x1="390" y1="175" x2="425" y2="175" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Execution -->
+  <rect x="430" y="125" width="150" height="100" rx="6" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="505" y="155" text-anchor="middle" font-size="12" font-weight="bold" fill="white">3. Execution</text>
+  
+  <rect x="445" y="170" width="120" height="45" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  <text x="505" y="190" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Malicious script</text>
+  <text x="505" y="205" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">executes in browser</text>
+  
+  <text x="505" y="235" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">• Cookie theft</text>
+  <text x="505" y="250" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">• Session hijacking</text>
+  <text x="505" y="265" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">• Phishing redirects</text>
+  
+  <!-- Attack Example -->
+  <rect x="50" y="240" width="530" height="130" rx="6" fill="white" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="315" y="265" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b91c1c">Attack Example</text>
+  
+  <rect x="65" y="280" width="500" height="80" rx="4" fill="var(--bg-panel-soft, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="315" y="300" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">// Vulnerable code:</text>
+  <text x="315" y="318" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444" font-family="monospace">document.getElementById('output').innerHTML = location.hash.substring(1);</text>
+  <text x="315" y="338" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">// Malicious URL:</text>
+  <text x="315" y="356" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444" font-family="monospace">https://site.com#&lt;img src=x onerror=alert('XSS')&gt;</text>
+  
+  <!-- Prevention Techniques -->
+  <rect x="615" y="80" width="305" height="300" rx="8" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="767" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #059669">Prevention Techniques</text>
+  
+  <!-- Safe Sinks -->
+  <rect x="630" y="125" width="275" height="120" rx="4" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="767" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">Use Safe Sinks</text>
+  
+  <rect x="645" y="165" width="245" height="70" rx="3" fill="var(--bg-panel-hover, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="767" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Replace dangerous APIs:</text>
+  
+  <text x="660" y="205" text-anchor="start" font-size="8" fill="var(--text-theme, #ef4444" font-family="monospace">✗ element.innerHTML</text>
+  <text x="660" y="220" text-anchor="start" font-size="8" fill="var(--text-theme, #10b981" font-family="monospace">✓ element.textContent</text>
+  <text x="660" y="235" text-anchor="start" font-size="8" fill="var(--text-theme, #10b981" font-family="monospace">✓ element.innerText</text>
+  
+  <!-- Sanitization -->
+  <rect x="630" y="255" width="275" height="115" rx="4" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="767" y="280" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">Input Sanitization</text>
+  
+  <rect x="645" y="295" width="245" height="65" rx="3" fill="var(--bg-panel-hover, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="767" y="315" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">Use sanitization libraries:</text>
+  <text x="767" y="333" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">• DOMPurify</text>
+  <text x="767" y="348" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">• sanitize-html</text>
+  
+  <!-- CSP -->
+  <rect x="630" y="380" width="275" height="90" rx="4" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="767" y="405" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">Content Security Policy</text>
+  
+  <rect x="645" y="420" width="245" height="40" rx="3" fill="var(--bg-panel-hover, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="767" y="440" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b" font-family="monospace">script-src 'self'</text>
+  <text x="767" y="455" text-anchor="middle" font-size="8" fill="var(--text-theme, #1e293b">Blocks inline scripts</text>
+  
+  <!-- Safe vs Unsafe DOM Manipulation -->
+  <rect x="30" y="395" width="890" height="285" rx="8" fill="var(--bg-panel-soft, #f0fdf4)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="475" y="420" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #059669">Safe vs Unsafe DOM Manipulation</text>
+  
+  <!-- Unsafe Methods -->
+  <rect x="50" y="440" width="420" height="230" rx="6" fill="white" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="260" y="465" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #b91c1c">✗ Unsafe Methods (Avoid)</text>
+  
+  <rect x="65" y="480" width="390" height="180" rx="4" fill="var(--bg-panel-hover, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  
+  <text x="80" y="500" text-anchor="start" font-size="9" fill="var(--text-theme, #b91c1c" font-family="monospace">element.innerHTML = userInput</text>
+  <text x="80" y="518" text-anchor="start" font-size="8" fill="var(--text-theme, #64748b">Parses HTML, executes scripts</text>
+  
+  <text x="80" y="540" text-anchor="start" font-size="9" fill="var(--text-theme, #b91c1c" font-family="monospace">document.write(userInput)</text>
+  <text x="80" y="558" text-anchor="start" font-size="8" fill="var(--text-theme, #64748b">Writes directly to document stream</text>
+  
+  <text x="80" y="580" text-anchor="start" font-size="9" fill="var(--text-theme, #b91c1c" font-family="monospace">element.insertAdjacentHTML('beforeend', input)</text>
+  <text x="80" y="598" text-anchor="start" font-size="8" fill="var(--text-theme, #64748b">Inserts parsed HTML</text>
+  
+  <text x="250" y="625" text-anchor="middle" font-size="9" fill="var(--text-theme, #b91c1c" font-weight="bold">⚠️ All execute JavaScript in user input</text>
+  
+  <!-- Safe Methods -->
+  <rect x="490" y="440" width="420" height="230" rx="6" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="700" y="465" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #059669">✓ Safe Methods (Use These)</text>
+  
+  <rect x="505" y="480" width="390" height="180" rx="4" fill="var(--bg-panel-hover, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  
+  <text x="520" y="500" text-anchor="start" font-size="9" fill="var(--text-theme, #10b981" font-family="monospace">element.textContent = userInput</text>
+  <text x="520" y="518" text-anchor="start" font-size="8" fill="var(--text-theme, #64748b">Sets text only, no HTML parsing</text>
+  
+  <text x="520" y="540" text-anchor="start" font-size="9" fill="var(--text-theme, #10b981" font-family="monospace">element.innerText = userInput</text>
+  <text x="520" y="558" text-anchor="start" font-size="8" fill="var(--text-theme, #64748b">Sets text, respects CSS styling</text>
+  
+  <text x="520" y="580" text-anchor="start" font-size="9" fill="var(--text-theme, #10b981" font-family="monospace">element.setAttribute('href', url)</text>
+  <text x="520" y="598" text-anchor="start" font-size="8" fill="var(--text-theme, #64748b">Safely sets attribute values</text>
+  
+  <text x="520" y="620" text-anchor="start" font-size="9" fill="var(--text-theme, #10b981" font-family="monospace">document.createElement(tagName)</text>
+  <text x="520" y="638" text-anchor="start" font-size="8" fill="var(--text-theme, #64748b">Creates elements programmatically</text>
+  
+  <text x="700" y="660" text-anchor="middle" font-size="9" fill="var(--text-theme, #059669" font-weight="bold">✓ All treat input as DATA, not code</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

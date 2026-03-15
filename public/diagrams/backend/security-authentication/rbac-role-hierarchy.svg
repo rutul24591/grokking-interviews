@@ -1,0 +1,174 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 700" role="img" aria-labelledby="title desc">
+  <title id="title">RBAC Role Hierarchy and Permission Mapping</title>
+  <desc id="desc">Role-Based Access Control showing role hierarchy, permission mapping, and user-role assignments</desc>
+  
+  <!-- Background -->
+  <rect width="950" height="700" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="475" y="35" text-anchor="middle" font-size="22" font-weight="bold" fill="var(--text-theme, #1e293b">RBAC: Role Hierarchy &amp; Permission Mapping</text>
+  <text x="475" y="60" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b">Users → Roles → Permissions model</text>
+  
+  <!-- RBAC Core Model -->
+  <rect x="30" y="80" width="570" height="300" rx="8" fill="var(--bg-panel-hover, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="315" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #1e40af">RBAC Core Model</text>
+  
+  <!-- Users -->
+  <rect x="50" y="125" width="150" height="245" rx="6" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="125" y="150" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Users</text>
+  
+  <rect x="65" y="165" width="120" height="35" rx="4" fill="var(--bg-panel-soft, #dbeafe)" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="125" y="187" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">alice@company.com</text>
+  
+  <rect x="65" y="205" width="120" height="35" rx="4" fill="var(--bg-panel-soft, #dbeafe)" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="125" y="227" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">bob@company.com</text>
+  
+  <rect x="65" y="245" width="120" height="35" rx="4" fill="var(--bg-panel-soft, #dbeafe)" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="125" y="267" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">charlie@company.com</text>
+  
+  <rect x="65" y="285" width="120" height="35" rx="4" fill="var(--bg-panel-soft, #dbeafe)" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="125" y="307" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">diana@company.com</text>
+  
+  <rect x="65" y="325" width="120" height="35" rx="4" fill="var(--bg-panel-soft, #dbeafe)" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="125" y="347" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">... (more users)</text>
+  
+  <!-- Arrow -->
+  <line x1="200" y1="247" x2="235" y2="247" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="217" y="237" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">assigned</text>
+  <text x="217" y="267" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">to roles</text>
+  
+  <!-- Roles -->
+  <rect x="240" y="125" width="150" height="245" rx="6" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="315" y="150" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Roles</text>
+  
+  <rect x="255" y="165" width="120" height="35" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  <text x="315" y="187" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #6d28d9">Admin</text>
+  
+  <rect x="255" y="205" width="120" height="35" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  <text x="315" y="227" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #6d28d9">Manager</text>
+  
+  <rect x="255" y="245" width="120" height="35" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  <text x="315" y="267" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #6d28d9">Developer</text>
+  
+  <rect x="255" y="285" width="120" height="35" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  <text x="315" y="307" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #6d28d9">Viewer</text>
+  
+  <rect x="255" y="325" width="120" height="35" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  <text x="315" y="347" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #6d28d9">... (more roles)</text>
+  
+  <!-- Arrow -->
+  <line x1="390" y1="247" x2="425" y2="247" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="407" y="237" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">grants</text>
+  <text x="407" y="267" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">permissions</text>
+  
+  <!-- Permissions -->
+  <rect x="430" y="125" width="160" height="245" rx="6" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="510" y="150" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Permissions</text>
+  
+  <rect x="445" y="165" width="130" height="30" rx="3" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="510" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">users:read</text>
+  
+  <rect x="445" y="200" width="130" height="30" rx="3" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="510" y="220" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">users:write</text>
+  
+  <rect x="445" y="235" width="130" height="30" rx="3" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="510" y="255" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">users:delete</text>
+  
+  <rect x="445" y="270" width="130" height="30" rx="3" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="510" y="290" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">projects:read</text>
+  
+  <rect x="445" y="305" width="130" height="30" rx="3" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="510" y="325" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">projects:write</text>
+  
+  <rect x="445" y="340" width="130" height="25" rx="3" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="510" y="360" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">... (more)</text>
+  
+  <!-- Role Hierarchy -->
+  <rect x="615" y="80" width="305" height="300" rx="8" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="767" y="105" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #b45309">Role Hierarchy</text>
+  
+  <!-- Hierarchy Tree -->
+  <rect x="630" y="125" width="275" height="245" rx="4" fill="white" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  
+  <!-- Super Admin -->
+  <rect x="680" y="145" width="175" height="40" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="767" y="170" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Super Admin</text>
+  
+  <!-- Arrow -->
+  <line x1="767" y1="185" x2="767" y2="200" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Admin -->
+  <rect x="680" y="205" width="175" height="40" rx="4" fill="var(--bg-theme, #f97316)" stroke="var(--border-theme, #c2410c)" stroke-width="2"/>
+  <text x="767" y="230" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Admin</text>
+  
+  <!-- Arrow -->
+  <line x1="767" y1="245" x2="700" y2="260" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="767" y1="245" x2="834" y2="260" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Manager and Developer -->
+  <rect x="630" y="265" width="135" height="40" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="697" y="290" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Manager</text>
+  
+  <rect x="767" y="265" width="135" height="40" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="834" y="290" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Developer</text>
+  
+  <!-- Arrow -->
+  <line x1="697" y1="305" x2="697" y2="320" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="834" y1="305" x2="834" y2="320" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Viewer -->
+  <rect x="680" y="325" width="175" height="40" rx="4" fill="var(--bg-theme, #6b7280)" stroke="var(--border-theme, #374151)" stroke-width="2"/>
+  <text x="767" y="350" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Viewer</text>
+  
+  <text x="767" y="385" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Higher roles inherit lower role permissions</text>
+  
+  <!-- User-Role Assignment Table -->
+  <rect x="30" y="395" width="890" height="285" rx="8" fill="var(--bg-panel-soft, #f0fdf4)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="475" y="420" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #059669">User-Role Assignment Example</text>
+  
+  <!-- Table Header -->
+  <rect x="50" y="440" width="850" height="35" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="150" y="463" text-anchor="middle" font-size="11" font-weight="bold" fill="white">User</text>
+  <text x="350" y="463" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Assigned Roles</text>
+  <text x="600" y="463" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Effective Permissions</text>
+  <text x="850" y="463" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Department</text>
+  
+  <!-- Row 1 -->
+  <rect x="50" y="480" width="850" height="40" rx="3" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="150" y="503" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">alice@company.com</text>
+  <text x="350" y="503" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Admin, Developer</text>
+  <text x="600" y="495" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">users:read/write/delete,</text>
+  <text x="600" y="510" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">projects:read/write</text>
+  <text x="850" y="503" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Engineering</text>
+  
+  <!-- Row 2 -->
+  <rect x="50" y="525" width="850" height="40" rx="3" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="150" y="548" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">bob@company.com</text>
+  <text x="350" y="548" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Manager</text>
+  <text x="600" y="540" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">users:read,</text>
+  <text x="600" y="555" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">projects:read/write</text>
+  <text x="850" y="548" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Product</text>
+  
+  <!-- Row 3 -->
+  <rect x="50" y="570" width="850" height="40" rx="3" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="150" y="593" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">charlie@company.com</text>
+  <text x="350" y="593" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Developer</text>
+  <text x="600" y="585" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">users:read,</text>
+  <text x="600" y="600" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">projects:read/write</text>
+  <text x="850" y="593" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Engineering</text>
+  
+  <!-- Row 4 -->
+  <rect x="50" y="615" width="850" height="40" rx="3" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <text x="150" y="638" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">diana@company.com</text>
+  <text x="350" y="638" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Viewer</text>
+  <text x="600" y="630" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">users:read,</text>
+  <text x="600" y="645" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">projects:read</text>
+  <text x="850" y="638" text-anchor="middle" font-size="10" fill="var(--text-theme, #1e293b">Marketing</text>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

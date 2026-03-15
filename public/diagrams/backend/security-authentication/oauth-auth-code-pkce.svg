@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">OAuth 2.0 Authorization Code Flow with PKCE</title>
+  <desc id="desc">OAuth 2.0 authorization code flow with PKCE (Proof Key for Code Exchange) showing code verifier, code challenge, and secure token exchange</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="500" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">OAuth 2.0 Authorization Code Flow with PKCE</text>
+  
+  <!-- Participants -->
+  <rect x="50" y="70" width="140" height="70" rx="8" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="120" y="100" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Public Client</text>
+  <text x="120" y="120" text-anchor="middle" font-size="10" fill="white">(SPA/Mobile)</text>
+  
+  <rect x="280" y="70" width="160" height="70" rx="8" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="360" y="95" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Authorization</text>
+  <text x="360" y="115" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Server</text>
+  <text x="360" y="130" text-anchor="middle" font-size="10" fill="white">(AuthZ)</text>
+  
+  <rect x="520" y="70" width="140" height="70" rx="8" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="590" y="100" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Resource</text>
+  <text x="590" y="120" text-anchor="middle" font-size="10" fill="white">Server (API)</text>
+  
+  <!-- User -->
+  <rect x="680" y="70" width="70" height="70" rx="8" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #d97706)" stroke-width="2"/>
+  <text x="715" y="105" text-anchor="middle" font-size="12" font-weight="bold" fill="white">User</text>
+  
+  <!-- PKCE Step 1: Generate Code Verifier -->
+  <rect x="50" y="160" width="140" height="60" rx="6" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="2"/>
+  <text x="120" y="185" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b">1. Generate</text>
+  <text x="120" y="205" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">code_verifier</text>
+  <text x="120" y="215" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">(random 32-128 chars)</text>
+  
+  <!-- PKCE Step 2: Create Code Challenge -->
+  <rect x="50" y="230" width="140" height="60" rx="6" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="2"/>
+  <text x="120" y="255" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b">2. Hash to</text>
+  <text x="120" y="275" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">code_challenge</text>
+  <text x="120" y="285" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">(SHA256 + base64url)</text>
+  
+  <!-- Step 3: Authorization Request -->
+  <defs>
+    <marker id="arrowAuth" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #3b82f6)"/>
+    </marker>
+    <marker id="arrowCode" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #8b5cf6)"/>
+    </marker>
+    <marker id="arrowToken" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #10b981)"/>
+    </marker>
+  </defs>
+  
+  <line x1="190" y1="190" x2="280" y2="190" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrowAuth)"/>
+  <text x="235" y="185" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b">3. Auth Request</text>
+  <text x="235" y="200" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">+ code_challenge</text>
+  
+  <!-- Step 4: User Authentication -->
+  <rect x="280" y="160" width="160" height="60" rx="6" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="360" y="185" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b">4. User Login</text>
+  <text x="360" y="205" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Authenticate + Consent</text>
+  
+  <!-- Step 5: Authorization Code -->
+  <line x1="280" y1="240" x2="190" y2="240" stroke="var(--text-theme, #8b5cf6)" stroke-width="2" marker-end="url(#arrowCode)"/>
+  <text x="235" y="235" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b">5. Auth Code</text>
+  <text x="235" y="250" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">(via redirect)</text>
+  
+  <!-- Step 6: Token Request -->
+  <line x1="190" y1="300" x2="280" y2="300" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrowAuth)"/>
+  <text x="235" y="295" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b">6. Token Request</text>
+  <text x="235" y="310" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">+ code_verifier</text>
+  
+  <!-- Step 7: Verify and Issue Tokens -->
+  <rect x="280" y="240" width="160" height="80" rx="6" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="360" y="265" text-anchor="middle" font-size="10" font-weight="bold" fill="white">7. Verify PKCE</text>
+  <text x="360" y="285" text-anchor="middle" font-size="9" fill="white">Hash code_verifier</text>
+  <text x="360" y="300" text-anchor="middle" font-size="9" fill="white">Compare with stored challenge</text>
+  <text x="360" y="315" text-anchor="middle" font-size="9" fill="white">✓ Match → Issue tokens</text>
+  
+  <!-- Step 8: Tokens -->
+  <line x1="280" y1="340" x2="190" y2="340" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrowToken)"/>
+  <text x="235" y="335" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b">8. Tokens</text>
+  <text x="235" y="350" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">(access + refresh)</text>
+  
+  <!-- Step 9: API Request -->
+  <line x1="190" y1="390" x2="520" y2="390" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrowAuth)"/>
+  <text x="355" y="385" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b">9. API Request</text>
+  <text x="355" y="400" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">(with access token)</text>
+  
+  <!-- Step 10: Protected Resource -->
+  <line x1="520" y1="430" x2="190" y2="430" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrowToken)"/>
+  <text x="355" y="425" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b">10. Response</text>
+  <text x="355" y="440" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">(protected data)</text>
+  
+  <!-- Security Benefits Box -->
+  <rect x="520" y="160" width="230" height="140" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="635" y="182" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #10b981">PKCE Security Benefits</text>
+  <text x="635" y="205" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Prevents authorization code</text>
+  <text x="635" y="220" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">  interception attacks</text>
+  <text x="635" y="240" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• code_verifier never transmitted</text>
+  <text x="635" y="260" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Attacker can't exchange code</text>
+  <text x="635" y="275" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">  without verifier</text>
+  <text x="635" y="295" text-anchor="start" font-size="9" fill="var(--text-theme, #10b981" font-weight="bold">✓ Required for public clients</text>
+</svg>
