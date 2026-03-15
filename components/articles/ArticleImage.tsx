@@ -26,12 +26,11 @@ export function ArticleImage({
     <figure className="my-8">
       <div className="flex justify-center rounded-lg border border-theme bg-panel p-4 overflow-x-auto">
         {isSvg ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
           <img
             src={src}
             alt={alt}
-            width={width}
-            height={height}
-            className="rounded max-w-full h-auto"
+            className="rounded max-w-full h-auto block"
             loading={priority ? "eager" : "lazy"}
           />
         ) : (

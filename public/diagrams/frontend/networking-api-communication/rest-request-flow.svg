@@ -1,0 +1,107 @@
+<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="450" fill="#ffffff"/>
+  <text x="400" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e293b">REST Request Lifecycle from Frontend to API</text>
+
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3B82F6"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10B981"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#EF4444"/>
+    </marker>
+  </defs>
+
+  <!-- Client Box -->
+  <rect x="30" y="60" width="160" height="340" rx="12" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.5"/>
+  <text x="110" y="84" text-anchor="middle" font-size="13" font-weight="bold" fill="#3B82F6">Frontend Client</text>
+
+  <!-- Server Box -->
+  <rect x="470" y="60" width="160" height="340" rx="12" fill="#F0FDF4" stroke="#10B981" stroke-width="1.5"/>
+  <text x="550" y="84" text-anchor="middle" font-size="13" font-weight="bold" fill="#10B981">API Server</text>
+
+  <!-- UI Update Box -->
+  <rect x="660" y="60" width="120" height="340" rx="12" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="720" y="84" text-anchor="middle" font-size="13" font-weight="bold" fill="#F59E0B">UI Layer</text>
+
+  <!-- Step 1: Build Request -->
+  <rect x="45" y="100" width="130" height="48" rx="8" fill="#3B82F6"/>
+  <text x="110" y="120" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">1. Build Request</text>
+  <text x="110" y="136" text-anchor="middle" font-size="9" fill="#DBEAFE">URL + params</text>
+
+  <!-- Step 2: Set Headers -->
+  <rect x="45" y="162" width="130" height="48" rx="8" fill="#3B82F6"/>
+  <text x="110" y="182" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">2. Set Headers</text>
+  <text x="110" y="198" text-anchor="middle" font-size="9" fill="#DBEAFE">Auth, Content-Type, Accept</text>
+
+  <!-- Step 3: Send Request -->
+  <rect x="45" y="224" width="130" height="48" rx="8" fill="#6366F1"/>
+  <text x="110" y="244" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">3. Send Request</text>
+  <text x="110" y="260" text-anchor="middle" font-size="9" fill="#E0E7FF">GET / POST / PUT / DELETE</text>
+
+  <!-- Arrow from Send to Server -->
+  <line x1="175" y1="248" x2="468" y2="150" stroke="#6366F1" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+  <!-- HTTP Method annotation -->
+  <rect x="250" y="170" width="150" height="42" rx="6" fill="#F5F3FF" stroke="#6366F1" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="325" y="186" text-anchor="middle" font-size="9" fill="#6366F1" font-weight="bold">HTTP Request</text>
+  <text x="325" y="200" text-anchor="middle" font-size="8" fill="#6366F1">Method + Headers + Body</text>
+
+  <!-- Server Processing -->
+  <rect x="485" y="108" width="130" height="48" rx="8" fill="#10B981"/>
+  <text x="550" y="128" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">4. Route & Process</text>
+  <text x="550" y="144" text-anchor="middle" font-size="9" fill="#D1FAE5">Validate, execute logic</text>
+
+  <!-- Server Response -->
+  <rect x="485" y="172" width="130" height="48" rx="8" fill="#10B981"/>
+  <text x="550" y="192" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">5. Build Response</text>
+  <text x="550" y="208" text-anchor="middle" font-size="9" fill="#D1FAE5">Status + Headers + Body</text>
+
+  <!-- Arrow from Server back to Client -->
+  <line x1="483" y1="210" x2="178" y2="310" stroke="#10B981" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+  <!-- Response annotation -->
+  <rect x="250" y="240" width="150" height="52" rx="6" fill="#F0FDF4" stroke="#10B981" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="325" y="256" text-anchor="middle" font-size="9" fill="#10B981" font-weight="bold">HTTP Response</text>
+  <text x="325" y="270" text-anchor="middle" font-size="8" fill="#10B981">Status: 200 / 201 / 4xx / 5xx</text>
+  <text x="325" y="282" text-anchor="middle" font-size="8" fill="#10B981">ETag, Cache-Control, Body</text>
+
+  <!-- Step 6: Handle Response -->
+  <rect x="45" y="290" width="130" height="48" rx="8" fill="#3B82F6"/>
+  <text x="110" y="310" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">6. Parse Response</text>
+  <text x="110" y="326" text-anchor="middle" font-size="9" fill="#DBEAFE">Status routing, extract data</text>
+
+  <!-- Step 7: Error or Success -->
+  <rect x="45" y="352" width="130" height="36" rx="8" fill="#6366F1"/>
+  <text x="110" y="374" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">7. Normalize & Cache</text>
+
+  <!-- Arrow to UI -->
+  <line x1="175" y1="370" x2="658" y2="200" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+  <!-- UI Update -->
+  <rect x="672" y="175" width="96" height="48" rx="8" fill="#F59E0B"/>
+  <text x="720" y="195" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">8. UI Update</text>
+  <text x="720" y="209" text-anchor="middle" font-size="9" fill="#FEF3C7">Render data</text>
+
+  <!-- Error path -->
+  <rect x="672" y="248" width="96" height="48" rx="8" fill="#EF4444"/>
+  <text x="720" y="268" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Error UI</text>
+  <text x="720" y="282" text-anchor="middle" font-size="9" fill="#FEE2E2">Retry / feedback</text>
+
+  <!-- Error arrow annotation -->
+  <text x="672" y="238" font-size="8" fill="#EF4444">4xx / 5xx path</text>
+
+  <!-- Legend -->
+  <rect x="30" y="418" width="12" height="12" rx="3" fill="#3B82F6"/>
+  <text x="48" y="428" font-size="10" fill="#64748b">Client steps</text>
+  <rect x="150" y="418" width="12" height="12" rx="3" fill="#10B981"/>
+  <text x="168" y="428" font-size="10" fill="#64748b">Server steps</text>
+  <rect x="270" y="418" width="12" height="12" rx="3" fill="#6366F1"/>
+  <text x="288" y="428" font-size="10" fill="#64748b">Transport</text>
+  <rect x="370" y="418" width="12" height="12" rx="3" fill="#F59E0B"/>
+  <text x="388" y="428" font-size="10" fill="#64748b">Success path</text>
+  <rect x="490" y="418" width="12" height="12" rx="3" fill="#EF4444"/>
+  <text x="508" y="428" font-size="10" fill="#64748b">Error path</text>
+</svg>

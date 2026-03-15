@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <rect width="900" height="500" fill="#f8fafc"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Browser Market Share 2026</text>
+  
+  <!-- Desktop pie chart representation -->
+  <rect x="50" y="80" width="380" height="200" fill="white" stroke="#6366f1" stroke-width="2" rx="8"/>
+  <text x="240" y="105" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e40af">Desktop Market Share</text>
+  <line x1="70" y1="120" x2="410" y2="120" stroke="#6366f1" stroke-width="1"/>
+  
+  <!-- Bars for desktop -->
+  <rect x="80" y="140" width="260" height="25" fill="#3b82f6" rx="2"/>
+  <text x="90" y="158" font-size="10" fill="white">Chrome 65%</text>
+  
+  <rect x="80" y="170" width="40" height="25" fill="#1d4ed8" rx="2"/>
+  <text x="90" y="188" font-size="10" fill="white">Safari 10%</text>
+  
+  <rect x="80" y="200" width="32" height="25" fill="#2563eb" rx="2"/>
+  <text x="90" y="218" font-size="10" fill="white">Edge 8%</text>
+  
+  <rect x="80" y="230" width="20" height="25" fill="#1e40af" rx="2"/>
+  <text x="90" y="248" font-size="10" fill="white">Firefox 5%</text>
+  
+  <rect x="80" y="260" width="48" height="25" fill="#cbd5e1" rx="2"/>
+  <text x="90" y="278" font-size="10" fill="#1e293b">Other 12%</text>
+  
+  <!-- Mobile pie chart representation -->
+  <rect x="470" y="80" width="380" height="200" fill="white" stroke="#6366f1" stroke-width="2" rx="8"/>
+  <text x="660" y="105" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e40af">Mobile Market Share</text>
+  <line x1="490" y1="120" x2="830" y2="120" stroke="#6366f1" stroke-width="1"/>
+  
+  <!-- Bars for mobile -->
+  <rect x="500" y="140" width="220" height="25" fill="#3b82f6" rx="2"/>
+  <text x="510" y="158" font-size="10" fill="white">Chrome (Android) 55%</text>
+  
+  <rect x="500" y="170" width="140" height="25" fill="#1d4ed8" rx="2"/>
+  <text x="510" y="188" font-size="10" fill="white">Safari (iOS) 35%</text>
+  
+  <rect x="500" y="200" width="20" height="25" fill="#2563eb" rx="2"/>
+  <text x="510" y="218" font-size="10" fill="white">Samsung 5%</text>
+  
+  <rect x="500" y="230" width="20" height="25" fill="#cbd5e1" rx="2"/>
+  <text x="510" y="248" font-size="10" fill="#1e293b">Other 5%</text>
+  
+  <!-- Key insight -->
+  <rect x="50" y="310" width="800" height="80" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="8"/>
+  <text x="450" y="335" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">Key Insight: Safari on iOS</text>
+  <line x1="70" y1="350" x2="830" y2="350" stroke="#f59e0b" stroke-width="1"/>
+  <text x="70" y="375" font-size="11" fill="#78350f">⚠️ All iOS browsers use WebKit (Safari engine)</text>
+  <text x="70" y="395" font-size="11" fill="#78350f">⚠️ Safari determines iOS web capabilities</text>
+  <text x="450" y="375" font-size="11" fill="#78350f">⚠️ Safari often lags on new features</text>
+  <text x="450" y="395" font-size="11" fill="#78350f">✓ Test on real iOS devices</text>
+  
+  <!-- Support strategy -->
+  <rect x="50" y="420" width="800" height="60" fill="#f1f5f9" stroke="#64748b" stroke-width="1" rx="6"/>
+  <text x="450" y="440" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">Browser Support Strategy</text>
+  <line x1="70" y1="450" x2="830" y2="450" stroke="#64748b" stroke-width="1"/>
+  <text x="100" y="465" font-size="11" fill="#475569">✓ Support last 2 versions of major browsers</text>
+  <text x="450" y="465" font-size="11" fill="#475569">✓ Test on Safari (iOS + desktop)</text>
+  <text x="70" y="480" font-size="11" fill="#475569">✓ Use feature detection, not browser detection</text>
+  <text x="450" y="480" font-size="11" fill="#475569">✓ Polyfill based on browser support</text>
+  
+</svg>

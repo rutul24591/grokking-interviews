@@ -1,0 +1,102 @@
+<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="400" fill="#ffffff"/>
+  <text x="400" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Request Batching Flow Timeline</text>
+
+  <!-- Timeline axis -->
+  <line x1="60" y1="360" x2="760" y2="360" stroke="#94a3b8" stroke-width="2"/>
+  <text x="60" y="385" text-anchor="middle" font-size="10" fill="#64748b">0ms</text>
+  <text x="180" y="385" text-anchor="middle" font-size="10" fill="#64748b">1ms</text>
+  <text x="300" y="385" text-anchor="middle" font-size="10" fill="#64748b">2ms</text>
+  <text x="420" y="385" text-anchor="middle" font-size="10" fill="#64748b">3ms</text>
+  <text x="500" y="385" text-anchor="middle" font-size="10" fill="#64748b">5ms</text>
+  <text x="620" y="385" text-anchor="middle" font-size="10" fill="#64748b">~50ms</text>
+  <text x="740" y="385" text-anchor="middle" font-size="10" fill="#64748b">~55ms</text>
+
+  <!-- Time tick marks -->
+  <line x1="60" y1="355" x2="60" y2="365" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="180" y1="355" x2="180" y2="365" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="300" y1="355" x2="300" y2="365" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="420" y1="355" x2="420" y2="365" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="500" y1="355" x2="500" y2="365" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="620" y1="355" x2="620" y2="365" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="740" y1="355" x2="740" y2="365" stroke="#94a3b8" stroke-width="2"/>
+
+  <!-- Individual requests arriving -->
+  <rect x="45" y="55" width="90" height="28" rx="6" fill="#3B82F6"/>
+  <text x="90" y="74" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="600">Req 1 (t=0)</text>
+
+  <rect x="165" y="95" width="90" height="28" rx="6" fill="#3B82F6"/>
+  <text x="210" y="114" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="600">Req 2 (t=1)</text>
+
+  <rect x="285" y="135" width="90" height="28" rx="6" fill="#3B82F6"/>
+  <text x="330" y="154" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="600">Req 3 (t=2)</text>
+
+  <rect x="345" y="175" width="90" height="28" rx="6" fill="#3B82F6"/>
+  <text x="390" y="194" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="600">Req 4 (t=3)</text>
+
+  <rect x="375" y="215" width="90" height="28" rx="6" fill="#3B82F6"/>
+  <text x="420" y="234" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="600">Req 5 (t=4)</text>
+
+  <!-- Arrows from requests to batch collector -->
+  <defs>
+    <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6366F1"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#10B981"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#F59E0B"/>
+    </marker>
+  </defs>
+
+  <!-- Collection window bracket -->
+  <rect x="490" y="50" width="20" height="230" rx="4" fill="#6366F1" opacity="0.15"/>
+  <rect x="495" y="55" width="10" height="220" rx="3" fill="#6366F1" opacity="0.3"/>
+
+  <!-- Arrows into collector -->
+  <line x1="135" y1="69" x2="490" y2="100" stroke="#6366F1" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowBlue)"/>
+  <line x1="255" y1="109" x2="490" y2="120" stroke="#6366F1" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowBlue)"/>
+  <line x1="375" y1="149" x2="490" y2="150" stroke="#6366F1" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowBlue)"/>
+  <line x1="435" y1="189" x2="490" y2="180" stroke="#6366F1" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowBlue)"/>
+  <line x1="465" y1="229" x2="490" y2="210" stroke="#6366F1" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowBlue)"/>
+
+  <!-- Batch label -->
+  <text x="500" y="290" text-anchor="middle" font-size="10" fill="#6366F1" font-weight="600">BATCH</text>
+  <text x="500" y="303" text-anchor="middle" font-size="10" fill="#6366F1">WINDOW</text>
+  <text x="500" y="316" text-anchor="middle" font-size="10" fill="#6366F1">(5ms)</text>
+
+  <!-- Single batch request -->
+  <rect x="530" y="110" width="100" height="110" rx="8" fill="#10B981" stroke="#10B981" stroke-width="2"/>
+  <text x="580" y="135" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">Single</text>
+  <text x="580" y="152" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">Network</text>
+  <text x="580" y="169" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">Request</text>
+  <text x="580" y="190" text-anchor="middle" font-size="9" fill="#ffffff">[1,2,3,4,5]</text>
+  <text x="580" y="210" text-anchor="middle" font-size="9" fill="#ffffff">POST /api/batch</text>
+
+  <!-- Arrow to response -->
+  <line x1="630" y1="165" x2="670" y2="165" stroke="#10B981" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+  <!-- Single response -->
+  <rect x="675" y="80" width="100" height="110" rx="8" fill="#F59E0B" stroke="#F59E0B" stroke-width="2"/>
+  <text x="725" y="105" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">Single</text>
+  <text x="725" y="122" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">Response</text>
+  <text x="725" y="148" text-anchor="middle" font-size="9" fill="#ffffff">Demux to</text>
+  <text x="725" y="163" text-anchor="middle" font-size="9" fill="#ffffff">5 callers</text>
+  <text x="725" y="183" text-anchor="middle" font-size="9" fill="#ffffff">[R1,R2,R3,R4,R5]</text>
+
+  <!-- Response arrows back -->
+  <line x1="725" y1="195" x2="725" y2="330" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <rect x="670" y="330" width="110" height="22" rx="4" fill="#F59E0B" opacity="0.2"/>
+  <text x="725" y="345" text-anchor="middle" font-size="9" fill="#92400e" font-weight="600">Promises Resolved</text>
+
+  <!-- Legend -->
+  <rect x="60" y="330" width="8" height="8" rx="2" fill="#3B82F6"/>
+  <text x="73" y="338" font-size="9" fill="#64748b">Individual Requests</text>
+  <rect x="180" y="330" width="8" height="8" rx="2" fill="#6366F1"/>
+  <text x="193" y="338" font-size="9" fill="#64748b">Collection Window</text>
+  <rect x="300" y="330" width="8" height="8" rx="2" fill="#10B981"/>
+  <text x="313" y="338" font-size="9" fill="#64748b">Batched Request</text>
+  <rect x="410" y="330" width="8" height="8" rx="2" fill="#F59E0B"/>
+  <text x="423" y="338" font-size="9" fill="#64748b">Demuxed Response</text>
+</svg>

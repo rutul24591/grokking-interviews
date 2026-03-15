@@ -1,11 +1,11 @@
 "use client";
 
-import { type ReactNode, useContext, useEffect, useMemo, useState } from "react";
+import { type ReactNode, useContext, useMemo, useState } from "react";
 import { Breadcrumbs } from "../Breadcrumbs";
 import type { ArticleMetadata } from "@/types/article";
 import { ExampleContext } from "@/components/articles/ExampleContext";
 import { ExampleViewer } from "@/components/articles/ExampleViewer";
-import { ArticleExampleToggle, useInitialArticleView } from "@/components/articles/ArticleExampleToggle";
+import { ArticleExampleToggle, useArticleViewMode } from "@/components/articles/ArticleExampleToggle";
 import { classNames } from "@/lib/classNames";
 
 type ArticleLayoutProps = {
@@ -19,24 +19,21 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
     { year: "numeric", month: "long", day: "numeric" }
   );
   const { examples } = useContext(ExampleContext);
-  const initialView = useInitialArticleView();
-  const [view, setView] = useState(initialView);
+  const [view, setView] = useArticleViewMode();
   const hasExamples = useMemo(() => examples.length > 0, [examples]);
   const [activeExampleId, setActiveExampleId] = useState(
     examples[0]?.id ?? ""
   );
 
-  useEffect(() => {
-    if (!examples.length) return;
+  const resolvedActiveExampleId = useMemo(() => {
+    if (!examples.length) return "";
     const exists = examples.some((example) => example.id === activeExampleId);
-    if (!exists) {
-      setActiveExampleId(examples[0].id);
-    }
+    return exists ? activeExampleId : examples[0].id;
   }, [examples, activeExampleId]);
 
   const activeExample = useMemo(() => {
-    return examples.find((example) => example.id === activeExampleId) ?? examples[0];
-  }, [examples, activeExampleId]);
+    return examples.find((example) => example.id === resolvedActiveExampleId) ?? examples[0];
+  }, [examples, resolvedActiveExampleId]);
 
   return (
     <div className="min-h-screen bg-theme">
@@ -103,7 +100,7 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
         {/* Article Content */}
         <article className="prose max-w-none">
           {view === "example" ? (
-            <ExampleViewer example={activeExample} />
+            <ExampleViewer key={activeExample?.id ?? "no-example"} example={activeExample} />
           ) : (
             children
           )}

@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+  <defs>
+    <marker id="arrow-psych" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="600" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Psychology of Waiting</text>
+  
+  <!-- Left side: Factors that make waits feel LONGER -->
+  <rect x="30" y="70" width="400" height="240" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="8"/>
+  <text x="230" y="100" text-anchor="middle" font-size="16" font-weight="bold" fill="#991b1b">Feels LONGER ❌</text>
+  <line x1="50" y1="115" x2="410" y2="115" stroke="#ef4444" stroke-width="1"/>
+  
+  <text x="55" y="145" font-size="13" fill="#7f1d1d">• Unoccupied time (nothing to do)</text>
+  <text x="55" y="170" font-size="13" fill="#7f1d1d">• Unexplained waits (don't know why)</text>
+  <text x="55" y="195" font-size="13" fill="#7f1d1d">• Uncertain duration (no progress bar)</text>
+  <text x="55" y="220" font-size="13" fill="#7f1d1d">• Unfair waits (seem unnecessary)</text>
+  <text x="55" y="245" font-size="13" fill="#7f1d1d">• Anxiety-inducing (critical action)</text>
+  <text x="55" y="270" font-size="13" fill="#7f1d1d">• Rough start, abrupt end</text>
+  
+  <!-- Right side: Factors that make waits feel SHORTER -->
+  <rect x="470" y="70" width="400" height="240" fill="#d1fae5" stroke="#10b981" stroke-width="2" rx="8"/>
+  <text x="670" y="100" text-anchor="middle" font-size="16" font-weight="bold" fill="#065f46">Feels SHORTER ✅</text>
+  <line x1="490" y1="115" x2="850" y2="115" stroke="#10b981" stroke-width="1"/>
+  
+  <text x="495" y="145" font-size="13" fill="#064e3b">• Occupied time (engaged/distraction)</text>
+  <text x="495" y="170" font-size="13" fill="#064e3b">• Explained waits (understand why)</text>
+  <text x="495" y="195" font-size="13" fill="#064e3b">• Certain duration (progress indicator)</text>
+  <text x="495" y="220" font-size="13" fill="#064e3b">• Fair waits (seem necessary)</text>
+  <text x="495" y="245" font-size="13" fill="#064e3b">• Low anxiety (routine action)</text>
+  <text x="495" y="270" font-size="13" fill="#064e3b">• Smooth start, smooth end</text>
+  
+  <!-- Peak-End Rule Diagram -->
+  <rect x="30" y="330" width="840" height="250" fill="white" stroke="#6366f1" stroke-width="2" rx="8"/>
+  <text x="450" y="360" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e40af">The Peak-End Rule</text>
+  <line x1="50" y1="375" x2="850" y2="375" stroke="#6366f1" stroke-width="1"/>
+  
+  <!-- Graph axes -->
+  <line x1="80" y1="540" x2="820" y2="540" stroke="#1e293b" stroke-width="2" marker-end="url(#arrow-psych)"/>
+  <line x1="80" y1="540" x2="80" y2="400" stroke="#1e293b" stroke-width="2" marker-end="url(#arrow-psych)"/>
+  <text x="830" y="545" font-size="12" fill="#1e293b">Time</text>
+  <text x="50" y="395" font-size="12" fill="#1e293b">Experience</text>
+  
+  <!-- Bad experience curve -->
+  <path d="M 100 520 Q 200 450 300 420 L 400 420 Q 500 420 600 500 L 700 520" 
+        fill="none" stroke="#ef4444" stroke-width="3" stroke-dasharray="5,5"/>
+  <text x="400" y="400" text-anchor="middle" font-size="11" fill="#ef4444">Bad experience</text>
+  
+  <!-- Good experience curve -->
+  <path d="M 100 500 Q 200 480 300 470 L 400 460 Q 500 450 600 440 L 700 430" 
+        fill="none" stroke="#10b981" stroke-width="3"/>
+  <text x="400" y="420" text-anchor="middle" font-size="11" fill="#10b981">Good experience</text>
+  
+  <!-- Peak marker -->
+  <circle cx="300" cy="420" r="6" fill="#ef4444"/>
+  <text x="300" y="390" text-anchor="middle" font-size="10" fill="#ef4444">Peak</text>
+  
+  <!-- End marker -->
+  <circle cx="700" cy="520" r="6" fill="#ef4444"/>
+  <text x="700" y="555" text-anchor="middle" font-size="10" fill="#ef4444">End</text>
+  
+  <!-- Memory box -->
+  <rect x="550" y="460" width="260" height="70" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="6"/>
+  <text x="680" y="485" text-anchor="middle" font-size="12" font-weight="bold" fill="#92400e">Users Remember:</text>
+  <text x="680" y="505" text-anchor="middle" font-size="11" fill="#78350f">Peak moment + End moment</text>
+  <text x="680" y="522" text-anchor="middle" font-size="11" fill="#78350f">NOT the average</text>
+  
+</svg>

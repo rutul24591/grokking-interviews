@@ -563,6 +563,29 @@
       "concise": { "status": "complete", "wordCount": 3200, "lastUpdated": "2026-03-14" }
     }
   },
+  "offline-support": {
+    "progressive-web-apps": {
+      "concise": { "status": "complete", "wordCount": 3200, "lastUpdated": "2026-03-14" }
+    },
+    "service-workers": {
+      "concise": { "status": "complete", "wordCount": 3200, "lastUpdated": "2026-03-14" }
+    },
+    "offline-first-architecture": {
+      "concise": { "status": "complete", "wordCount": 3200, "lastUpdated": "2026-03-14" }
+    },
+    "background-sync": {
+      "concise": { "status": "complete", "wordCount": 3200, "lastUpdated": "2026-03-14" }
+    },
+    "periodic-background-sync": {
+      "concise": { "status": "complete", "wordCount": 3200, "lastUpdated": "2026-03-14" }
+    },
+    "conflict-resolution": {
+      "concise": { "status": "complete", "wordCount": 3200, "lastUpdated": "2026-03-14" }
+    },
+    "network-status-detection": {
+      "concise": { "status": "complete", "wordCount": 3200, "lastUpdated": "2026-03-14" }
+    }
+  },
   "routing": {},
   "authentication-authorization": {},
   "error-handling": {},

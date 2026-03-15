@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 650">
+  <defs>
+    <marker id="arrowhead2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="850" height="650" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="425" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Page Load Optimization Strategies</text>
+  
+  <!-- Network Layer -->
+  <rect x="30" y="60" width="250" height="130" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="8"/>
+  <text x="155" y="85" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">Network Layer</text>
+  <line x1="50" y1="95" x2="260" y2="95" stroke="#3b82f6" stroke-width="1"/>
+  <text x="55" y="115" font-size="11" fill="#1e3a8a">• CDN for static assets</text>
+  <text x="55" y="135" font-size="11" fill="#1e3a8a">• HTTP/2 or HTTP/3</text>
+  <text x="55" y="155" font-size="11" fill="#1e3a8a">• Enable Brotli compression</text>
+  <text x="55" y="175" font-size="11" fill="#1e3a8a">• DNS prefetch for 3rd party</text>
+  
+  <!-- Server Layer -->
+  <rect x="300" y="60" width="250" height="130" fill="#d1fae5" stroke="#10b981" stroke-width="2" rx="8"/>
+  <text x="425" y="85" text-anchor="middle" font-size="14" font-weight="bold" fill="#065f46">Server Layer</text>
+  <line x1="320" y1="95" x2="530" y2="95" stroke="#10b981" stroke-width="1"/>
+  <text x="325" y="115" font-size="11" fill="#064e3b">• Minimize TTFB (&lt;600ms)</text>
+  <text x="325" y="135" font-size="11" fill="#064e3b">• SSR for content pages</text>
+  <text x="325" y="155" font-size="11" fill="#064e3b">• SSG for static content</text>
+  <text x="325" y="175" font-size="11" fill="#064e3b">• Edge computing (Lambda@Edge)</text>
+  
+  <!-- HTML/CSS Layer -->
+  <rect x="570" y="60" width="250" height="130" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="8"/>
+  <text x="695" y="85" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">HTML/CSS Layer</text>
+  <line x1="590" y1="95" x2="780" y2="95" stroke="#f59e0b" stroke-width="1"/>
+  <text x="595" y="115" font-size="11" fill="#78350f">• Inline critical CSS</text>
+  <text x="595" y="135" font-size="11" fill="#78350f">• Defer non-critical CSS</text>
+  <text x="595" y="155" font-size="11" fill="#78350f">• Preload key resources</text>
+  <text x="595" y="175" font-size="11" fill="#78350f">• Remove unused CSS</text>
+  
+  <!-- JavaScript Layer -->
+  <rect x="30" y="220" width="250" height="130" fill="#ede9fe" stroke="#8b5cf6" stroke-width="2" rx="8"/>
+  <text x="155" y="245" text-anchor="middle" font-size="14" font-weight="bold" fill="#5b21b6">JavaScript Layer</text>
+  <line x1="50" y1="255" x2="260" y2="255" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="55" y="275" font-size="11" fill="#4c1d95">• Code splitting by route</text>
+  <text x="55" y="295" font-size="11" fill="#4c1d95">• Tree shaking (remove dead code)</text>
+  <text x="55" y="315" font-size="11" fill="#4c1d95">• Lazy load non-critical</text>
+  <text x="55" y="335" font-size="11" fill="#4c1d95">• Target &lt;200KB initial bundle</text>
+  
+  <!-- Image Layer -->
+  <rect x="300" y="220" width="250" height="130" fill="#fce7f3" stroke="#ec4899" stroke-width="2" rx="8"/>
+  <text x="425" y="245" text-anchor="middle" font-size="14" font-weight="bold" fill="#9d174d">Image Layer</text>
+  <line x1="320" y1="255" x2="530" y2="255" stroke="#ec4899" stroke-width="1"/>
+  <text x="325" y="275" font-size="11" fill="#831843">• Use WebP/AVIF formats</text>
+  <text x="325" y="295" font-size="11" fill="#831843">• Responsive images (srcset)</text>
+  <text x="325" y="315" font-size="11" fill="#831843">• Lazy load below-the-fold</text>
+  <text x="325" y="335" font-size="11" fill="#831843">• Specify width/height (CLS)</text>
+  
+  <!-- Font Layer -->
+  <rect x="570" y="220" width="250" height="130" fill="#ccfbf1" stroke="#14b8a6" stroke-width="2" rx="8"/>
+  <text x="695" y="245" text-anchor="middle" font-size="14" font-weight="bold" fill="#115e59">Font Layer</text>
+  <line x1="590" y1="255" x2="780" y2="255" stroke="#14b8a6" stroke-width="1"/>
+  <text x="595" y="275" font-size="11" fill="#134e4a">• font-display: swap</text>
+  <text x="595" y="295" font-size="11" fill="#134e4a">• Preload critical fonts</text>
+  <text x="595" y="315" font-size="11" fill="#134e4a">• Subset fonts (remove unused)</text>
+  <text x="595" y="335" font-size="11" fill="#134e4a">• Consider variable fonts</text>
+  
+  <!-- Arrow down to Browser -->
+  <line x1="425" y1="350" x2="425" y2="370" stroke="#6366f1" stroke-width="2" marker-end="url(#arrowhead2)"/>
+  
+  <!-- Browser Rendering -->
+  <rect x="150" y="380" width="550" height="140" fill="white" stroke="#6366f1" stroke-width="2" rx="8"/>
+  <text x="425" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Browser Rendering (Critical Path)</text>
+  <line x1="170" y1="415" x2="680" y2="415" stroke="#6366f1" stroke-width="1"/>
+  
+  <!-- Browser steps -->
+  <rect x="180" y="430" width="80" height="35" fill="#3b82f6" rx="4"/>
+  <text x="220" y="445" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Parse</text>
+  <text x="220" y="458" text-anchor="middle" font-size="9" fill="white">HTML→DOM</text>
+  
+  <line x1="260" y1="447" x2="280" y2="447" stroke="#6366f1" stroke-width="2" marker-end="url(#arrowhead2)"/>
+  
+  <rect x="290" y="430" width="80" height="35" fill="#8b5cf6" rx="4"/>
+  <text x="330" y="445" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Combine</text>
+  <text x="330" y="458" text-anchor="middle" font-size="9" fill="white">DOM+CSSOM</text>
+  
+  <line x1="370" y1="447" x2="390" y2="447" stroke="#6366f1" stroke-width="2" marker-end="url(#arrowhead2)"/>
+  
+  <rect x="400" y="430" width="80" height="35" fill="#f59e0b" rx="4"/>
+  <text x="440" y="445" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Layout</text>
+  <text x="440" y="458" text-anchor="middle" font-size="9" fill="white">(Reflow)</text>
+  
+  <line x1="480" y1="447" x2="500" y2="447" stroke="#6366f1" stroke-width="2" marker-end="url(#arrowhead2)"/>
+  
+  <rect x="510" y="430" width="80" height="35" fill="#ec4899" rx="4"/>
+  <text x="550" y="445" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Paint</text>
+  <text x="550" y="458" text-anchor="middle" font-size="9" fill="white">(Fill pixels)</text>
+  
+  <line x1="590" y1="447" x2="610" y2="447" stroke="#6366f1" stroke-width="2" marker-end="url(#arrowhead2)"/>
+  
+  <rect x="620" y="430" width="80" height="35" fill="#06b6d4" rx="4"/>
+  <text x="660" y="445" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Composite</text>
+  <text x="660" y="458" text-anchor="middle" font-size="9" fill="white">(Layers)</text>
+  
+  <!-- Performance Budget -->
+  <rect x="30" y="540" width="380" height="100" fill="#f1f5f9" stroke="#475569" stroke-width="2" rx="8"/>
+  <text x="220" y="565" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">Performance Budget Targets</text>
+  <line x1="50" y1="575" x2="390" y2="575" stroke="#475569" stroke-width="1"/>
+  <text x="55" y="595" font-size="11" fill="#1e293b">LCP: &lt; 2.5s</text>
+  <text x="150" y="595" font-size="11" fill="#1e293b">INP: &lt; 200ms</text>
+  <text x="250" y="595" font-size="11" fill="#1e293b">CLS: &lt; 0.1</text>
+  <text x="330" y="595" font-size="11" fill="#1e293b">Bundle: &lt; 200KB</text>
+  <text x="55" y="615" font-size="11" fill="#1e293b">TTFB: &lt; 600ms</text>
+  <text x="150" y="615" font-size="11" fill="#1e293b">FCP: &lt; 1.8s</text>
+  <text x="250" y="615" font-size="11" fill="#1e293b">TTI: &lt; 3.8s</text>
+  <text x="330" y="615" font-size="11" fill="#1e293b">Requests: &lt; 50</text>
+  
+  <!-- Impact Box -->
+  <rect x="430" y="540" width="390" height="100" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="8"/>
+  <text x="625" y="565" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">Business Impact</text>
+  <line x1="450" y1="575" x2="800" y2="575" stroke="#f59e0b" stroke-width="1"/>
+  <text x="455" y="595" font-size="11" fill="#78350f">• Walmart: +2% conversions per 1s improvement</text>
+  <text x="455" y="615" font-size="11" fill="#78350f">• Pinterest: +15% SEO traffic after 40% faster load</text>
+  <text x="455" y="635" font-size="11" fill="#78350f">• Vodafone: +8% sales after LCP 5.2s→2.1s</text>
+</svg>

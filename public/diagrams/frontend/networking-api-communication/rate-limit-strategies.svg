@@ -1,0 +1,116 @@
+<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="400" fill="#ffffff"/>
+  <text x="400" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1e2e">Client-Side Rate Limit Strategies Compared</text>
+
+  <!-- Strategy 1: Naive Retry -->
+  <rect x="20" y="52" width="180" height="325" rx="10" fill="#FEF2F2" stroke="#EF4444" stroke-width="1.5"/>
+  <rect x="20" y="52" width="180" height="36" rx="10" fill="#EF4444"/>
+  <rect x="20" y="76" width="180" height="12" fill="#EF4444"/>
+  <text x="110" y="74" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="600">Naive Retry</text>
+
+  <text x="35" y="108" font-size="10" fill="#1e1e2e" font-weight="600">How it works:</text>
+  <text x="35" y="123" font-size="10" fill="#475569">Retry immediately after</text>
+  <text x="35" y="136" font-size="10" fill="#475569">receiving a 429 response.</text>
+
+  <text x="35" y="163" font-size="10" fill="#1e1e2e" font-weight="600">Problems:</text>
+  <text x="35" y="178" font-size="10" fill="#EF4444">- Thundering herd effect</text>
+  <text x="35" y="193" font-size="10" fill="#EF4444">- Worsens server load</text>
+  <text x="35" y="208" font-size="10" fill="#EF4444">- Can trigger IP bans</text>
+  <text x="35" y="223" font-size="10" fill="#EF4444">- Wastes bandwidth</text>
+
+  <!-- Timeline bars -->
+  <text x="35" y="250" font-size="10" fill="#1e1e2e" font-weight="600">Request pattern:</text>
+  <rect x="35" y="258" width="15" height="10" fill="#EF4444" rx="2"/>
+  <rect x="55" y="258" width="15" height="10" fill="#EF4444" rx="2"/>
+  <rect x="75" y="258" width="15" height="10" fill="#EF4444" rx="2"/>
+  <rect x="95" y="258" width="15" height="10" fill="#EF4444" rx="2"/>
+  <rect x="115" y="258" width="15" height="10" fill="#EF4444" rx="2"/>
+  <text x="35" y="286" font-size="9" fill="#94a3b8">No gaps between retries</text>
+
+  <rect x="40" y="300" width="150" height="28" rx="6" fill="#FEE2E2"/>
+  <text x="115" y="319" text-anchor="middle" font-size="11" font-weight="600" fill="#991B1B">Avoid</text>
+  <text x="115" y="340" text-anchor="middle" font-size="9" fill="#94a3b8">Effectiveness: 1/5</text>
+
+  <!-- Strategy 2: Exponential Backoff -->
+  <rect x="215" y="52" width="180" height="325" rx="10" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/>
+  <rect x="215" y="52" width="180" height="36" rx="10" fill="#F59E0B"/>
+  <rect x="215" y="76" width="180" height="12" fill="#F59E0B"/>
+  <text x="305" y="74" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="600">Exponential Backoff</text>
+
+  <text x="230" y="108" font-size="10" fill="#1e1e2e" font-weight="600">How it works:</text>
+  <text x="230" y="123" font-size="10" fill="#475569">Wait 1s, 2s, 4s, 8s...</text>
+  <text x="230" y="136" font-size="10" fill="#475569">between retries + jitter.</text>
+
+  <text x="230" y="163" font-size="10" fill="#1e1e2e" font-weight="600">Benefits:</text>
+  <text x="230" y="178" font-size="10" fill="#10B981">+ Reduces server pressure</text>
+  <text x="230" y="193" font-size="10" fill="#10B981">+ Jitter prevents storms</text>
+  <text x="230" y="208" font-size="10" fill="#F59E0B">- Still reactive, not proactive</text>
+  <text x="230" y="223" font-size="10" fill="#F59E0B">- Delay can be long</text>
+
+  <text x="230" y="250" font-size="10" fill="#1e1e2e" font-weight="600">Request pattern:</text>
+  <rect x="230" y="258" width="12" height="10" fill="#F59E0B" rx="2"/>
+  <rect x="260" y="258" width="12" height="10" fill="#F59E0B" rx="2"/>
+  <rect x="300" y="258" width="12" height="10" fill="#F59E0B" rx="2"/>
+  <rect x="355" y="258" width="12" height="10" fill="#F59E0B" rx="2"/>
+  <text x="230" y="286" font-size="9" fill="#94a3b8">Increasing gaps: 1s, 2s, 4s...</text>
+
+  <rect x="235" y="300" width="150" height="28" rx="6" fill="#FEF3C7"/>
+  <text x="310" y="319" text-anchor="middle" font-size="11" font-weight="600" fill="#92400E">Good baseline</text>
+  <text x="310" y="340" text-anchor="middle" font-size="9" fill="#94a3b8">Effectiveness: 3/5</text>
+
+  <!-- Strategy 3: Proactive Throttling -->
+  <rect x="410" y="52" width="180" height="325" rx="10" fill="#EEF2FF" stroke="#6366F1" stroke-width="1.5"/>
+  <rect x="410" y="52" width="180" height="36" rx="10" fill="#6366F1"/>
+  <rect x="410" y="76" width="180" height="12" fill="#6366F1"/>
+  <text x="500" y="74" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="600">Proactive Throttling</text>
+
+  <text x="425" y="108" font-size="10" fill="#1e1e2e" font-weight="600">How it works:</text>
+  <text x="425" y="123" font-size="10" fill="#475569">Track RateLimit-Remaining</text>
+  <text x="425" y="136" font-size="10" fill="#475569">and slow down preemptively.</text>
+
+  <text x="425" y="163" font-size="10" fill="#1e1e2e" font-weight="600">Benefits:</text>
+  <text x="425" y="178" font-size="10" fill="#10B981">+ Avoids 429 entirely</text>
+  <text x="425" y="193" font-size="10" fill="#10B981">+ Predictable throughput</text>
+  <text x="425" y="208" font-size="10" fill="#10B981">+ Respects server capacity</text>
+  <text x="425" y="223" font-size="10" fill="#F59E0B">- Requires header support</text>
+
+  <text x="425" y="250" font-size="10" fill="#1e1e2e" font-weight="600">Request pattern:</text>
+  <rect x="425" y="258" width="12" height="10" fill="#6366F1" rx="2"/>
+  <rect x="447" y="258" width="12" height="10" fill="#6366F1" rx="2"/>
+  <rect x="469" y="258" width="12" height="10" fill="#6366F1" rx="2"/>
+  <rect x="491" y="258" width="12" height="10" fill="#6366F1" rx="2"/>
+  <rect x="513" y="258" width="12" height="10" fill="#6366F1" rx="2"/>
+  <text x="425" y="286" font-size="9" fill="#94a3b8">Even spacing, never hits limit</text>
+
+  <rect x="430" y="300" width="150" height="28" rx="6" fill="#EEF2FF"/>
+  <text x="505" y="319" text-anchor="middle" font-size="11" font-weight="600" fill="#4338CA">Recommended</text>
+  <text x="505" y="340" text-anchor="middle" font-size="9" fill="#94a3b8">Effectiveness: 4/5</text>
+
+  <!-- Strategy 4: Request Queue -->
+  <rect x="605" y="52" width="180" height="325" rx="10" fill="#F0FDF4" stroke="#10B981" stroke-width="1.5"/>
+  <rect x="605" y="52" width="180" height="36" rx="10" fill="#10B981"/>
+  <rect x="605" y="76" width="180" height="12" fill="#10B981"/>
+  <text x="695" y="74" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="600">Request Queuing</text>
+
+  <text x="620" y="108" font-size="10" fill="#1e1e2e" font-weight="600">How it works:</text>
+  <text x="620" y="123" font-size="10" fill="#475569">Queue requests, drain at</text>
+  <text x="620" y="136" font-size="10" fill="#475569">allowed rate. Prioritize.</text>
+
+  <text x="620" y="163" font-size="10" fill="#1e1e2e" font-weight="600">Benefits:</text>
+  <text x="620" y="178" font-size="10" fill="#10B981">+ No requests dropped</text>
+  <text x="620" y="193" font-size="10" fill="#10B981">+ Prioritization support</text>
+  <text x="620" y="208" font-size="10" fill="#10B981">+ Batching potential</text>
+  <text x="620" y="223" font-size="10" fill="#10B981">+ Full control</text>
+
+  <text x="620" y="250" font-size="10" fill="#1e1e2e" font-weight="600">Request pattern:</text>
+  <rect x="620" y="258" width="12" height="10" fill="#10B981" rx="2"/>
+  <rect x="640" y="258" width="12" height="10" fill="#D1FAE5" rx="2" stroke="#10B981" stroke-width="0.5"/>
+  <rect x="660" y="258" width="12" height="10" fill="#10B981" rx="2"/>
+  <rect x="680" y="258" width="12" height="10" fill="#D1FAE5" rx="2" stroke="#10B981" stroke-width="0.5"/>
+  <rect x="700" y="258" width="12" height="10" fill="#10B981" rx="2"/>
+  <text x="620" y="286" font-size="9" fill="#94a3b8">Queued + prioritized draining</text>
+
+  <rect x="625" y="300" width="150" height="28" rx="6" fill="#D1FAE5"/>
+  <text x="700" y="319" text-anchor="middle" font-size="11" font-weight="600" fill="#065F46">Best practice</text>
+  <text x="700" y="340" text-anchor="middle" font-size="9" fill="#94a3b8">Effectiveness: 5/5</text>
+</svg>

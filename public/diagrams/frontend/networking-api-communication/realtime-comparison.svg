@@ -1,0 +1,182 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="450" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-size="16" font-weight="700" fill="#1E293B">Real-Time Communication Approaches Comparison</text>
+
+  <!-- Column headers -->
+  <rect x="10" y="50" width="110" height="40" rx="6" fill="#1E293B"/>
+  <text x="65" y="75" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Approach</text>
+
+  <rect x="125" y="50" width="100" height="40" rx="6" fill="#1E293B"/>
+  <text x="175" y="75" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Direction</text>
+
+  <rect x="230" y="50" width="85" height="40" rx="6" fill="#1E293B"/>
+  <text x="272" y="75" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Latency</text>
+
+  <rect x="320" y="50" width="105" height="40" rx="6" fill="#1E293B"/>
+  <text x="372" y="75" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Connection</text>
+
+  <rect x="430" y="50" width="90" height="40" rx="6" fill="#1E293B"/>
+  <text x="475" y="75" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Protocol</text>
+
+  <rect x="525" y="50" width="100" height="40" rx="6" fill="#1E293B"/>
+  <text x="575" y="75" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Browser</text>
+
+  <rect x="630" y="50" width="160" height="40" rx="6" fill="#1E293B"/>
+  <text x="710" y="75" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Best Use Case</text>
+
+  <!-- Row 1: WebSocket -->
+  <rect x="10" y="96" width="110" height="76" rx="6" fill="#3B82F6"/>
+  <text x="65" y="130" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">WebSocket</text>
+  <text x="65" y="148" text-anchor="middle" font-size="9" fill="#DBEAFE">RFC 6455</text>
+
+  <rect x="125" y="96" width="100" height="76" rx="4" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1"/>
+  <text x="175" y="126" text-anchor="middle" font-size="10" font-weight="600" fill="#1E40AF">Bidirectional</text>
+  <text x="175" y="142" text-anchor="middle" font-size="9" fill="#3B82F6">Client + Server</text>
+  <text x="175" y="156" text-anchor="middle" font-size="9" fill="#3B82F6">push freely</text>
+
+  <rect x="230" y="96" width="85" height="76" rx="4" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
+  <text x="272" y="130" text-anchor="middle" font-size="10" font-weight="700" fill="#15803D">Lowest</text>
+  <text x="272" y="148" text-anchor="middle" font-size="9" fill="#10B981">~2-6 byte</text>
+  <text x="272" y="160" text-anchor="middle" font-size="9" fill="#10B981">overhead</text>
+
+  <rect x="320" y="96" width="105" height="76" rx="4" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1"/>
+  <text x="372" y="126" text-anchor="middle" font-size="10" font-weight="600" fill="#1E40AF">Persistent</text>
+  <text x="372" y="142" text-anchor="middle" font-size="9" fill="#3B82F6">Single TCP</text>
+  <text x="372" y="156" text-anchor="middle" font-size="9" fill="#3B82F6">long-lived</text>
+
+  <rect x="430" y="96" width="90" height="76" rx="4" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1"/>
+  <text x="475" y="126" text-anchor="middle" font-size="10" font-weight="600" fill="#1E40AF">ws:// wss://</text>
+  <text x="475" y="142" text-anchor="middle" font-size="9" fill="#3B82F6">Binary framing</text>
+  <text x="475" y="156" text-anchor="middle" font-size="9" fill="#3B82F6">protocol</text>
+
+  <rect x="525" y="96" width="100" height="76" rx="4" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
+  <text x="575" y="130" text-anchor="middle" font-size="10" font-weight="600" fill="#15803D">All modern</text>
+  <text x="575" y="148" text-anchor="middle" font-size="9" fill="#10B981">Since IE10</text>
+  <text x="575" y="160" text-anchor="middle" font-size="9" fill="#10B981">(2012)</text>
+
+  <rect x="630" y="96" width="160" height="76" rx="4" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1"/>
+  <text x="710" y="122" text-anchor="middle" font-size="9" font-weight="600" fill="#1E40AF">Chat, gaming,</text>
+  <text x="710" y="136" text-anchor="middle" font-size="9" fill="#3B82F6">collaborative editing,</text>
+  <text x="710" y="150" text-anchor="middle" font-size="9" fill="#3B82F6">trading platforms,</text>
+  <text x="710" y="164" text-anchor="middle" font-size="9" fill="#3B82F6">multiplayer apps</text>
+
+  <!-- Row 2: SSE -->
+  <rect x="10" y="178" width="110" height="76" rx="6" fill="#10B981"/>
+  <text x="65" y="208" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">SSE</text>
+  <text x="65" y="226" text-anchor="middle" font-size="9" fill="#D1FAE5">EventSource API</text>
+
+  <rect x="125" y="178" width="100" height="76" rx="4" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
+  <text x="175" y="208" text-anchor="middle" font-size="10" font-weight="600" fill="#15803D">Unidirectional</text>
+  <text x="175" y="224" text-anchor="middle" font-size="9" fill="#10B981">Server to Client</text>
+  <text x="175" y="238" text-anchor="middle" font-size="9" fill="#10B981">only</text>
+
+  <rect x="230" y="178" width="85" height="76" rx="4" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
+  <text x="272" y="212" text-anchor="middle" font-size="10" font-weight="700" fill="#15803D">Low</text>
+  <text x="272" y="228" text-anchor="middle" font-size="9" fill="#10B981">~50-100 byte</text>
+  <text x="272" y="240" text-anchor="middle" font-size="9" fill="#10B981">overhead</text>
+
+  <rect x="320" y="178" width="105" height="76" rx="4" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
+  <text x="372" y="208" text-anchor="middle" font-size="10" font-weight="600" fill="#15803D">Persistent</text>
+  <text x="372" y="224" text-anchor="middle" font-size="9" fill="#10B981">Auto-reconnect</text>
+  <text x="372" y="238" text-anchor="middle" font-size="9" fill="#10B981">Last-Event-ID</text>
+
+  <rect x="430" y="178" width="90" height="76" rx="4" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
+  <text x="475" y="208" text-anchor="middle" font-size="10" font-weight="600" fill="#15803D">HTTP/1.1+</text>
+  <text x="475" y="224" text-anchor="middle" font-size="9" fill="#10B981">text/event-</text>
+  <text x="475" y="236" text-anchor="middle" font-size="9" fill="#10B981">stream</text>
+
+  <rect x="525" y="178" width="100" height="76" rx="4" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
+  <text x="575" y="212" text-anchor="middle" font-size="10" font-weight="600" fill="#15803D">All modern</text>
+  <text x="575" y="228" text-anchor="middle" font-size="9" fill="#10B981">No IE (polyfill</text>
+  <text x="575" y="240" text-anchor="middle" font-size="9" fill="#10B981">available)</text>
+
+  <rect x="630" y="178" width="160" height="76" rx="4" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
+  <text x="710" y="204" text-anchor="middle" font-size="9" font-weight="600" fill="#15803D">Live feeds,</text>
+  <text x="710" y="218" text-anchor="middle" font-size="9" fill="#10B981">notifications,</text>
+  <text x="710" y="232" text-anchor="middle" font-size="9" fill="#10B981">dashboard updates,</text>
+  <text x="710" y="246" text-anchor="middle" font-size="9" fill="#10B981">log streaming</text>
+
+  <!-- Row 3: Short Polling -->
+  <rect x="10" y="260" width="110" height="76" rx="6" fill="#F59E0B"/>
+  <text x="65" y="290" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Short</text>
+  <text x="65" y="306" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Polling</text>
+  <text x="65" y="322" text-anchor="middle" font-size="9" fill="#FEF3C7">setInterval</text>
+
+  <rect x="125" y="260" width="100" height="76" rx="4" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1"/>
+  <text x="175" y="290" text-anchor="middle" font-size="10" font-weight="600" fill="#92400E">Client-initiated</text>
+  <text x="175" y="306" text-anchor="middle" font-size="9" fill="#D97706">Req-Res per</text>
+  <text x="175" y="318" text-anchor="middle" font-size="9" fill="#D97706">interval</text>
+
+  <rect x="230" y="260" width="85" height="76" rx="4" fill="#FEF2F2" stroke="#FECACA" stroke-width="1"/>
+  <text x="272" y="294" text-anchor="middle" font-size="10" font-weight="700" fill="#DC2626">High</text>
+  <text x="272" y="310" text-anchor="middle" font-size="9" fill="#EF4444">= poll interval</text>
+  <text x="272" y="322" text-anchor="middle" font-size="9" fill="#EF4444">(1-30s typical)</text>
+
+  <rect x="320" y="260" width="105" height="76" rx="4" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1"/>
+  <text x="372" y="290" text-anchor="middle" font-size="10" font-weight="600" fill="#92400E">Stateless</text>
+  <text x="372" y="306" text-anchor="middle" font-size="9" fill="#D97706">New connection</text>
+  <text x="372" y="318" text-anchor="middle" font-size="9" fill="#D97706">each poll</text>
+
+  <rect x="430" y="260" width="90" height="76" rx="4" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
+  <text x="475" y="294" text-anchor="middle" font-size="10" font-weight="600" fill="#15803D">HTTP</text>
+  <text x="475" y="310" text-anchor="middle" font-size="9" fill="#10B981">Standard</text>
+  <text x="475" y="322" text-anchor="middle" font-size="9" fill="#10B981">REST/JSON</text>
+
+  <rect x="525" y="260" width="100" height="76" rx="4" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
+  <text x="575" y="294" text-anchor="middle" font-size="10" font-weight="600" fill="#15803D">Universal</text>
+  <text x="575" y="310" text-anchor="middle" font-size="9" fill="#10B981">Works</text>
+  <text x="575" y="322" text-anchor="middle" font-size="9" fill="#10B981">everywhere</text>
+
+  <rect x="630" y="260" width="160" height="76" rx="4" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1"/>
+  <text x="710" y="286" text-anchor="middle" font-size="9" font-weight="600" fill="#92400E">Infrequent updates,</text>
+  <text x="710" y="300" text-anchor="middle" font-size="9" fill="#D97706">simple dashboards,</text>
+  <text x="710" y="314" text-anchor="middle" font-size="9" fill="#D97706">status checks,</text>
+  <text x="710" y="328" text-anchor="middle" font-size="9" fill="#D97706">legacy systems</text>
+
+  <!-- Row 4: Long Polling -->
+  <rect x="10" y="342" width="110" height="76" rx="6" fill="#6366F1"/>
+  <text x="65" y="372" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Long</text>
+  <text x="65" y="388" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Polling</text>
+  <text x="65" y="404" text-anchor="middle" font-size="9" fill="#E0E7FF">Comet pattern</text>
+
+  <rect x="125" y="342" width="100" height="76" rx="4" fill="#EEF2FF" stroke="#C7D2FE" stroke-width="1"/>
+  <text x="175" y="372" text-anchor="middle" font-size="10" font-weight="600" fill="#4338CA">Server-push</text>
+  <text x="175" y="388" text-anchor="middle" font-size="9" fill="#6366F1">via held HTTP</text>
+  <text x="175" y="400" text-anchor="middle" font-size="9" fill="#6366F1">request</text>
+
+  <rect x="230" y="342" width="85" height="76" rx="4" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1"/>
+  <text x="272" y="376" text-anchor="middle" font-size="10" font-weight="700" fill="#92400E">Medium</text>
+  <text x="272" y="392" text-anchor="middle" font-size="9" fill="#D97706">Near-instant on</text>
+  <text x="272" y="404" text-anchor="middle" font-size="9" fill="#D97706">new data</text>
+
+  <rect x="320" y="342" width="105" height="76" rx="4" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1"/>
+  <text x="372" y="372" text-anchor="middle" font-size="10" font-weight="600" fill="#92400E">Semi-persistent</text>
+  <text x="372" y="388" text-anchor="middle" font-size="9" fill="#D97706">Reconnect after</text>
+  <text x="372" y="400" text-anchor="middle" font-size="9" fill="#D97706">each response</text>
+
+  <rect x="430" y="342" width="90" height="76" rx="4" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
+  <text x="475" y="376" text-anchor="middle" font-size="10" font-weight="600" fill="#15803D">HTTP</text>
+  <text x="475" y="392" text-anchor="middle" font-size="9" fill="#10B981">Standard</text>
+  <text x="475" y="404" text-anchor="middle" font-size="9" fill="#10B981">request held</text>
+
+  <rect x="525" y="342" width="100" height="76" rx="4" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
+  <text x="575" y="376" text-anchor="middle" font-size="10" font-weight="600" fill="#15803D">Universal</text>
+  <text x="575" y="392" text-anchor="middle" font-size="9" fill="#10B981">Fallback for</text>
+  <text x="575" y="404" text-anchor="middle" font-size="9" fill="#10B981">WS/SSE</text>
+
+  <rect x="630" y="342" width="160" height="76" rx="4" fill="#EEF2FF" stroke="#C7D2FE" stroke-width="1"/>
+  <text x="710" y="368" text-anchor="middle" font-size="9" font-weight="600" fill="#4338CA">Fallback transport,</text>
+  <text x="710" y="382" text-anchor="middle" font-size="9" fill="#6366F1">restrictive proxies,</text>
+  <text x="710" y="396" text-anchor="middle" font-size="9" fill="#6366F1">Socket.IO compat,</text>
+  <text x="710" y="410" text-anchor="middle" font-size="9" fill="#6366F1">legacy browsers</text>
+
+  <!-- Color-coded performance indicators legend -->
+  <rect x="10" y="428" width="12" height="12" rx="2" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
+  <text x="28" y="438" font-size="9" fill="#64748B">Good</text>
+  <rect x="80" y="428" width="12" height="12" rx="2" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1"/>
+  <text x="98" y="438" font-size="9" fill="#64748B">Moderate</text>
+  <rect x="168" y="428" width="12" height="12" rx="2" fill="#FEF2F2" stroke="#FECACA" stroke-width="1"/>
+  <text x="186" y="438" font-size="9" fill="#64748B">Poor</text>
+</svg>

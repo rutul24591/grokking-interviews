@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <marker id="arrow-render" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+  </defs>
+  
+  <rect width="900" height="500" fill="#f8fafc"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Rendering Strategy Spectrum</text>
+  
+  <!-- X-axis: Static to Dynamic -->
+  <line x1="100" y1="450" x2="800" y2="450" stroke="#1e293b" stroke-width="2" marker-end="url(#arrow-render)"/>
+  <text x="450" y="480" text-anchor="middle" font-size="14" fill="#1e293b">Content Freshness →</text>
+  <text x="100" y="470" text-anchor="middle" font-size="11" fill="#64748b">Static</text>
+  <text x="800" y="470" text-anchor="middle" font-size="11" fill="#64748b">Dynamic</text>
+  
+  <!-- Y-axis: Server to Client -->
+  <line x1="100" y1="400" x2="100" y2="100" stroke="#1e293b" stroke-width="2" marker-end="url(#arrow-render)"/>
+  <text x="60" y="250" text-anchor="middle" font-size="14" fill="#1e293b" transform="rotate(-90, 60, 250)">← Server</text>
+  <text x="100" y="90" text-anchor="middle" font-size="11" fill="#64748b">Client</text>
+  
+  <!-- SSG box -->
+  <rect x="150" y="300" width="120" height="80" fill="#d1fae5" stroke="#10b981" stroke-width="2" rx="6"/>
+  <text x="210" y="335" text-anchor="middle" font-size="13" font-weight="bold" fill="#065f46">SSG</text>
+  <text x="210" y="355" text-anchor="middle" font-size="10" fill="#064e3b">Build time</text>
+  <text x="210" y="370" text-anchor="middle" font-size="10" fill="#064e3b">CDN served</text>
+  
+  <!-- ISR box -->
+  <rect x="300" y="300" width="120" height="80" fill="#ccfbf1" stroke="#14b8a6" stroke-width="2" rx="6"/>
+  <text x="360" y="335" text-anchor="middle" font-size="13" font-weight="bold" fill="#115e59">ISR</text>
+  <text x="360" y="355" text-anchor="middle" font-size="10" fill="#134e4a">Build + background</text>
+  <text x="360" y="370" text-anchor="middle" font-size="10" fill="#134e4a">CDN served</text>
+  
+  <!-- SSR box -->
+  <rect x="450" y="200" width="120" height="80" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="6"/>
+  <text x="510" y="235" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e40af">SSR</text>
+  <text x="510" y="255" text-anchor="middle" font-size="10" fill="#1e3a8a">Request time</text>
+  <text x="510" y="270" text-anchor="middle" font-size="10" fill="#1e3a8a">Server rendered</text>
+  
+  <!-- Edge SSR box -->
+  <rect x="500" y="150" width="120" height="40" fill="#bfdbfe" stroke="#2563eb" stroke-width="2" rx="4"/>
+  <text x="560" y="175" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e40af">Edge SSR</text>
+  
+  <!-- CSR box -->
+  <rect x="600" y="120" width="120" height="80" fill="#ede9fe" stroke="#8b5cf6" stroke-width="2" rx="6"/>
+  <text x="660" y="155" text-anchor="middle" font-size="13" font-weight="bold" fill="#5b21b6">CSR</text>
+  <text x="660" y="175" text-anchor="middle" font-size="10" fill="#4c1d95">Runtime</text>
+  <text x="660" y="190" text-anchor="middle" font-size="10" fill="#4c1d95">Browser rendered</text>
+  
+  <!-- Legend -->
+  <rect x="650" y="350" width="220" height="120" fill="white" stroke="#6366f1" stroke-width="2" rx="6"/>
+  <text x="760" y="375" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e40af">Characteristics</text>
+  <line x1="670" y1="385" x2="850" y2="385" stroke="#6366f1" stroke-width="1"/>
+  <text x="680" y="410" font-size="10" fill="#1e293b">■ SSG: Fastest, stale content</text>
+  <text x="680" y="425" font-size="10" fill="#1e293b">■ ISR: Fast, fresh content</text>
+  <text x="680" y="440" font-size="10" fill="#1e293b">■ SSR: Good SEO, server load</text>
+  <text x="680" y="455" font-size="10" fill="#1e293b">■ CSR: Rich interactivity, slow initial</text>
+  
+</svg>

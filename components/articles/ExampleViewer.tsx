@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { classNames } from "@/lib/classNames";
-import type { ExampleFile, ExampleGroup } from "@/types/examples";
+import type { ExampleGroup } from "@/types/examples";
 
 type ExampleViewerProps = {
   example?: ExampleGroup;
@@ -46,13 +46,14 @@ export function ExampleViewer({ example }: ExampleViewerProps) {
   }, [visibleFiles]);
 
   const [selected, setSelected] = useState(defaultFile?.name ?? "");
-
-  useEffect(() => {
-    setSelected(defaultFile?.name ?? "");
-  }, [defaultFile?.name, example?.id]);
+  const resolvedSelected = useMemo(() => {
+    if (!visibleFiles.length) return "";
+    const exists = visibleFiles.some((file) => file.name === selected);
+    return exists ? selected : (defaultFile?.name ?? "");
+  }, [visibleFiles, selected, defaultFile?.name]);
 
   const active =
-    visibleFiles.find((file) => file.name === selected) ?? defaultFile;
+    visibleFiles.find((file) => file.name === resolvedSelected) ?? defaultFile;
 
   if (!files.length) {
     return (

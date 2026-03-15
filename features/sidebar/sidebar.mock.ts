@@ -779,7 +779,53 @@ export const sidebarData: Category[] = [
           {
             id: "sub-non-functional-requirements-frontend-non-functional-requirements",
             name: "Frontend Non-Functional Requirements",
-            topics: [],
+            topics: [
+              {
+                id: "topic-nfr-frontend-page-load-performance",
+                name: "Page Load Performance",
+                articles: [{
+                  id: "article-frontend-nfr-page-load-performance",
+                  title: "Page Load Performance",
+                  slug: "page-load-performance",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-perceived-performance",
+                name: "Perceived Performance",
+                articles: [{
+                  id: "article-frontend-nfr-perceived-performance",
+                  title: "Perceived Performance",
+                  slug: "perceived-performance",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-rendering-strategy",
+                name: "Rendering Strategy",
+                articles: [{
+                  id: "article-frontend-nfr-rendering-strategy",
+                  title: "Rendering Strategy",
+                  slug: "rendering-strategy",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-virtualization-windowing",
+                name: "Virtualization / Windowing",
+                articles: [{
+                  id: "article-frontend-nfr-virtualization-windowing",
+                  title: "Virtualization / Windowing",
+                  slug: "virtualization-windowing",
+                }],
+              },
+              {
+                id: "topic-nfr-frontend-media-optimization",
+                name: "Media Optimization",
+                articles: [{
+                  id: "article-frontend-nfr-media-optimization",
+                  title: "Media Optimization",
+                  slug: "media-optimization",
+                }],
+              },
+            ],
           },
           {
             id: "sub-non-functional-requirements-backend-non-functional-requirements",
@@ -803,6 +849,16 @@ export const sidebarData: Category[] = [
   {
     id: "cat-languages",
     name: "Languages (Coming soon)",
+    subCategories: [],
+  },
+  {
+    id: "cat-data-structure-algorithms",
+    name: "Data Structure & Algorithms (Coming soon)",
+    subCategories: [],
+  },
+  {
+    id: "cat-leetcode",
+    name: "Leetcode (Coming soon)",
     subCategories: [],
   },
   {

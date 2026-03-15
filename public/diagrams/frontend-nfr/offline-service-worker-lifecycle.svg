@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550">
+  <defs>
+    <marker id="arrow-sw" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+  </defs>
+  
+  <rect width="900" height="550" fill="#f8fafc"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Service Worker Lifecycle</text>
+  
+  <!-- Registration -->
+  <rect x="50" y="80" width="160" height="100" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="8"/>
+  <text x="130" y="115" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e40af">1. Registration</text>
+  <line x1="70" y1="130" x2="190" y2="130" stroke="#3b82f6" stroke-width="1"/>
+  <text x="130" y="155" text-anchor="middle" font-size="10" fill="#1e3a8a">Browser downloads</text>
+  <text x="130" y="170" text-anchor="middle" font-size="10" fill="#1e3a8a">SW script</text>
+  
+  <!-- Arrow -->
+  <line x1="210" y1="130" x2="250" y2="130" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-sw)"/>
+  
+  <!-- Installation -->
+  <rect x="260" y="80" width="160" height="100" fill="#d1fae5" stroke="#10b981" stroke-width="2" rx="8"/>
+  <text x="340" y="115" text-anchor="middle" font-size="13" font-weight="bold" fill="#065f46">2. Installation</text>
+  <line x1="280" y1="130" x2="400" y2="130" stroke="#10b981" stroke-width="1"/>
+  <text x="340" y="155" text-anchor="middle" font-size="10" fill="#064e3b">Cache app shell</text>
+  <text x="340" y="170" text-anchor="middle" font-size="10" fill="#064e3b">(static assets)</text>
+  
+  <!-- Arrow -->
+  <line x1="420" y1="130" x2="460" y2="130" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-sw)"/>
+  
+  <!-- Activation -->
+  <rect x="470" y="80" width="160" height="100" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="8"/>
+  <text x="550" y="115" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">3. Activation</text>
+  <line x1="490" y1="130" x2="610" y2="130" stroke="#f59e0b" stroke-width="1"/>
+  <text x="550" y="155" text-anchor="middle" font-size="10" fill="#78350f">Clean old caches</text>
+  <text x="550" y="170" text-anchor="middle" font-size="10" fill="#78350f">Take control</text>
+  
+  <!-- Arrow -->
+  <line x1="630" y1="130" x2="670" y2="130" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-sw)"/>
+  
+  <!-- Fetch Interception -->
+  <rect x="680" y="80" width="180" height="100" fill="#ede9fe" stroke="#8b5cf6" stroke-width="2" rx="8"/>
+  <text x="770" y="115" text-anchor="middle" font-size="13" font-weight="bold" fill="#5b21b6">4. Fetch Interception</text>
+  <line x1="700" y1="130" x2="840" y2="130" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="770" y="155" text-anchor="middle" font-size="10" fill="#4c1d95">Handle all requests</text>
+  <text x="770" y="170" text-anchor="middle" font-size="10" fill="#4c1d95">Cache ↔ Network</text>
+  
+  <!-- Request Flow Diagram -->
+  <rect x="50" y="220" width="800" height="200" fill="white" stroke="#6366f1" stroke-width="2" rx="8"/>
+  <text x="450" y="245" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">Request Flow with Service Worker</text>
+  <line x1="70" y1="260" x2="830" y2="260" stroke="#6366f1" stroke-width="1"/>
+  
+  <!-- User -->
+  <circle cx="120" cy="320" r="30" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="120" y="325" text-anchor="middle" font-size="10" fill="#1e40af">User</text>
+  
+  <!-- Arrow to SW -->
+  <line x1="150" y1="320" x2="220" y2="320" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-sw)"/>
+  <text x="185" y="310" text-anchor="middle" font-size="9" fill="#4f46e5">Request</text>
+  
+  <!-- Service Worker -->
+  <rect x="230" y="280" width="140" height="80" fill="#ede9fe" stroke="#8b5cf6" stroke-width="2" rx="6"/>
+  <text x="300" y="310" text-anchor="middle" font-size="11" font-weight="bold" fill="#5b21b6">Service Worker</text>
+  <text x="300" y="330" text-anchor="middle" font-size="9" fill="#4c1d95">Intercept &amp; Decide</text>
+  <text x="300" y="345" text-anchor="middle" font-size="9" fill="#4c1d95">Cache or Network?</text>
+  
+  <!-- Arrow to Cache -->
+  <line x1="370" y1="300" x2="420" y2="300" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-sw)"/>
+  <text x="395" y="290" text-anchor="middle" font-size="9" fill="#4f46e5">Cache?</text>
+  
+  <!-- Cache -->
+  <rect x="430" y="280" width="100" height="80" fill="#d1fae5" stroke="#10b981" stroke-width="2" rx="6"/>
+  <text x="480" y="315" text-anchor="middle" font-size="11" font-weight="bold" fill="#065f46">Cache</text>
+  <text x="480" y="340" text-anchor="middle" font-size="9" fill="#064e3b">Stored assets</text>
+  
+  <!-- Arrow to Network -->
+  <line x1="370" y1="340" x2="420" y2="340" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-sw)"/>
+  <text x="395" y="355" text-anchor="middle" font-size="9" fill="#4f46e5">Network?</text>
+  
+  <!-- Network -->
+  <rect x="430" y="320" width="100" height="80" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="6"/>
+  <text x="480" y="355" text-anchor="middle" font-size="11" font-weight="bold" fill="#92400e">Network</text>
+  <text x="480" y="380" text-anchor="middle" font-size="9" fill="#78350f">Server</text>
+  
+  <!-- Response arrows -->
+  <line x1="530" y1="320" x2="600" y2="320" stroke="#10b981" stroke-width="2" marker-end="url(#arrow-sw)"/>
+  <text x="565" y="310" text-anchor="middle" font-size="9" fill="#059669">Response</text>
+  
+  <line x1="530" y1="360" x2="600" y2="360" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow-sw)"/>
+  <text x="565" y="375" text-anchor="middle" font-size="9" fill="#d97706">Response</text>
+  
+  <!-- Back to user -->
+  <line x1="600" y1="340" x2="700" y2="340" stroke="#6366f1" stroke-width="2"/>
+  <line x1="700" y1="340" x2="700" y2="320" stroke="#6366f1" stroke-width="2"/>
+  <line x1="700" y1="320" x2="230" y2="320" stroke="#6366f1" stroke-width="2" stroke-dasharray="4,2"/>
+  
+  <!-- Response to user -->
+  <line x1="230" y1="320" x2="150" y2="320" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow-sw)"/>
+  <text x="185" y="335" text-anchor="middle" font-size="9" fill="#4f46e5">Response</text>
+  
+  <!-- Strategies -->
+  <rect x="50" y="450" width="800" height="80" fill="#f1f5f9" stroke="#64748b" stroke-width="1" rx="6"/>
+  <text x="450" y="470" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">Caching Strategies</text>
+  <line x1="70" y1="480" x2="830" y2="480" stroke="#64748b" stroke-width="1"/>
+  <text x="100" y="500" font-size="10" fill="#475569">■ Cache-First: Static assets</text>
+  <text x="280" y="500" font-size="10" fill="#475569">■ Network-First: Dynamic content</text>
+  <text x="500" y="500" font-size="10" fill="#475569">■ Stale-While-Revalidate: Balanced</text>
+  <text x="100" y="520" font-size="10" fill="#475569">■ Cache-Only: Truly static</text>
+  <text x="280" y="520" font-size="10" fill="#475569">■ Network-Only: Real-time data</text>
+  
+</svg>

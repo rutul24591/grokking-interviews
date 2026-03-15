@@ -1,0 +1,87 @@
+<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="450" fill="#ffffff"/>
+  <text x="400" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1e2e">API Rate Limiting: Client-Server Flow</text>
+
+  <defs>
+    <marker id="arr-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3B82F6"/>
+    </marker>
+    <marker id="arr-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10B981"/>
+    </marker>
+    <marker id="arr-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#EF4444"/>
+    </marker>
+    <marker id="arr-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#F59E0B"/>
+    </marker>
+  </defs>
+
+  <!-- Actor boxes -->
+  <rect x="60" y="55" width="120" height="40" rx="8" fill="#3B82F6"/>
+  <text x="120" y="80" text-anchor="middle" font-size="13" fill="#ffffff" font-weight="600">Client</text>
+
+  <rect x="310" y="55" width="120" height="40" rx="8" fill="#6366F1"/>
+  <text x="370" y="80" text-anchor="middle" font-size="13" fill="#ffffff" font-weight="600">Rate Limiter</text>
+
+  <rect x="560" y="55" width="120" height="40" rx="8" fill="#10B981"/>
+  <text x="620" y="80" text-anchor="middle" font-size="13" fill="#ffffff" font-weight="600">API Server</text>
+
+  <!-- Lifelines -->
+  <line x1="120" y1="95" x2="120" y2="420" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="370" y1="95" x2="370" y2="420" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="620" y1="95" x2="620" y2="420" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="6,4"/>
+
+  <!-- Step 1: Request -->
+  <line x1="120" y1="125" x2="360" y2="125" stroke="#3B82F6" stroke-width="2" marker-end="url(#arr-blue)"/>
+  <rect x="155" y="109" width="170" height="18" rx="4" fill="#EFF6FF"/>
+  <text x="240" y="122" text-anchor="middle" font-size="11" fill="#1e3a5f">1. HTTP Request</text>
+
+  <!-- Step 2a: Under limit - forward -->
+  <rect x="230" y="143" width="310" height="85" rx="6" fill="#F0FDF4" stroke="#10B981" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="385" y="157" text-anchor="middle" font-size="10" font-weight="600" fill="#10B981">UNDER LIMIT PATH</text>
+
+  <line x1="370" y1="175" x2="610" y2="175" stroke="#10B981" stroke-width="2" marker-end="url(#arr-green)"/>
+  <rect x="410" y="163" width="140" height="16" rx="3" fill="#D1FAE5"/>
+  <text x="480" y="175" text-anchor="middle" font-size="10" fill="#065F46">2a. Forward request</text>
+
+  <line x1="620" y1="200" x2="130" y2="200" stroke="#10B981" stroke-width="2" marker-end="url(#arr-green)"/>
+  <rect x="280" y="188" width="220" height="16" rx="3" fill="#D1FAE5"/>
+  <text x="390" y="200" text-anchor="middle" font-size="10" fill="#065F46">3a. 200 OK + RateLimit headers</text>
+
+  <!-- Step 2b: Over limit - reject -->
+  <rect x="100" y="243" width="310" height="90" rx="6" fill="#FEF2F2" stroke="#EF4444" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="255" y="257" text-anchor="middle" font-size="10" font-weight="600" fill="#EF4444">OVER LIMIT PATH</text>
+
+  <line x1="370" y1="280" x2="130" y2="280" stroke="#EF4444" stroke-width="2" marker-end="url(#arr-red)"/>
+  <rect x="150" y="268" width="200" height="16" rx="3" fill="#FEE2E2"/>
+  <text x="250" y="280" text-anchor="middle" font-size="10" fill="#991B1B">2b. 429 + Retry-After: 30s</text>
+
+  <line x1="120" y1="305" x2="120" y2="305" stroke="none"/>
+  <rect x="115" y="298" width="135" height="16" rx="3" fill="#FEF3C7"/>
+  <text x="182" y="310" text-anchor="middle" font-size="10" fill="#92400E">Client waits 30 seconds</text>
+
+  <!-- Step 3b: Retry -->
+  <rect x="100" y="345" width="540" height="60" rx="6" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="370" y="359" text-anchor="middle" font-size="10" font-weight="600" fill="#F59E0B">RETRY AFTER WAIT</text>
+
+  <line x1="120" y1="380" x2="360" y2="380" stroke="#F59E0B" stroke-width="2" marker-end="url(#arr-amber)"/>
+  <rect x="155" y="368" width="170" height="16" rx="3" fill="#FEF3C7"/>
+  <text x="240" y="380" text-anchor="middle" font-size="10" fill="#92400E">3b. Retry request</text>
+
+  <line x1="370" y1="395" x2="610" y2="395" stroke="#10B981" stroke-width="2" marker-end="url(#arr-green)"/>
+  <rect x="420" y="383" width="130" height="16" rx="3" fill="#D1FAE5"/>
+  <text x="485" y="395" text-anchor="middle" font-size="10" fill="#065F46">Forward (now allowed)</text>
+
+  <!-- Legend -->
+  <rect x="630" y="250" width="155" height="100" rx="6" fill="#F8FAFC" stroke="#e2e8f0"/>
+  <text x="707" y="268" text-anchor="middle" font-size="10" font-weight="600" fill="#475569">Legend</text>
+  <line x1="645" y1="282" x2="675" y2="282" stroke="#10B981" stroke-width="2"/>
+  <text x="682" y="286" font-size="10" fill="#475569">Success path</text>
+  <line x1="645" y1="302" x2="675" y2="302" stroke="#EF4444" stroke-width="2"/>
+  <text x="682" y="306" font-size="10" fill="#475569">Rate limited</text>
+  <line x1="645" y1="322" x2="675" y2="322" stroke="#F59E0B" stroke-width="2"/>
+  <text x="682" y="326" font-size="10" fill="#475569">Retry</text>
+  <line x1="645" y1="342" x2="675" y2="342" stroke="#3B82F6" stroke-width="2"/>
+  <text x="682" y="346" font-size="10" fill="#475569">Initial request</text>
+</svg>

@@ -12,11 +12,11 @@ export async function loadArticle(
   }
 
   try {
-    const module = await entry.loader();
+    const loaded = await entry.loader();
 
     return {
       metadata: entry.metadata,
-      component: module.default,
+      component: loaded.default,
     };
   } catch (error) {
     console.error(`Failed to load article at path: ${path}`, error);

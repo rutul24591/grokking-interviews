@@ -1,0 +1,129 @@
+<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="450" fill="#ffffff"/>
+  <text x="400" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">GraphQL Query Lifecycle</text>
+
+  <defs>
+    <marker id="qf-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#3B82F6"/>
+    </marker>
+    <marker id="qf-arrow-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#10B981"/>
+    </marker>
+    <marker id="qf-arrow-amber" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#F59E0B"/>
+    </marker>
+    <marker id="qf-arrow-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6366F1"/>
+    </marker>
+  </defs>
+
+  <!-- Step 1: Component Renders -->
+  <rect x="30" y="60" width="120" height="56" rx="8" fill="#6366F1"/>
+  <text x="90" y="83" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Component</text>
+  <text x="90" y="97" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Renders</text>
+  <text x="90" y="52" text-anchor="middle" font-size="9" fill="#6366F1" font-weight="600">Step 1</text>
+
+  <!-- Arrow 1->2 -->
+  <line x1="150" y1="88" x2="178" y2="88" stroke="#6366F1" stroke-width="1.5" marker-end="url(#qf-arrow-purple)"/>
+
+  <!-- Step 2: useQuery Hook -->
+  <rect x="182" y="60" width="120" height="56" rx="8" fill="#EEF2FF" stroke="#6366F1" stroke-width="1.5"/>
+  <text x="242" y="83" text-anchor="middle" font-size="10" fill="#4338CA" font-weight="bold">useQuery</text>
+  <text x="242" y="97" text-anchor="middle" font-size="10" fill="#4338CA" font-weight="bold">Hook Called</text>
+  <text x="242" y="52" text-anchor="middle" font-size="9" fill="#6366F1" font-weight="600">Step 2</text>
+
+  <!-- Arrow 2->3 -->
+  <line x1="302" y1="88" x2="330" y2="88" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#qf-arrow)"/>
+
+  <!-- Step 3: Cache Check (diamond) -->
+  <polygon points="400,55 460,88 400,121 340,88" fill="#DBEAFE" stroke="#3B82F6" stroke-width="1.5"/>
+  <text x="400" y="85" text-anchor="middle" font-size="10" fill="#1D4ED8" font-weight="bold">Cache</text>
+  <text x="400" y="97" text-anchor="middle" font-size="10" fill="#1D4ED8" font-weight="bold">Hit?</text>
+  <text x="400" y="47" text-anchor="middle" font-size="9" fill="#3B82F6" font-weight="600">Step 3</text>
+
+  <!-- Cache HIT path (goes down-left) -->
+  <line x1="370" y1="105" x2="250" y2="175" stroke="#10B981" stroke-width="1.5" marker-end="url(#qf-arrow-green)"/>
+  <text x="290" y="142" font-size="9" fill="#10B981" font-weight="600">HIT</text>
+
+  <!-- Cache HIT: Return cached data -->
+  <rect x="170" y="178" width="160" height="44" rx="8" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+  <text x="250" y="200" text-anchor="middle" font-size="10" fill="#059669" font-weight="bold">Return Cached Data</text>
+  <text x="250" y="214" text-anchor="middle" font-size="9" fill="#059669">(instant, no network)</text>
+
+  <!-- Arrow from cached data down to re-render -->
+  <line x1="250" y1="222" x2="250" y2="370" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="250" y1="370" x2="598" y2="370" stroke="#10B981" stroke-width="1.5" marker-end="url(#qf-arrow-green)"/>
+
+  <!-- Cache MISS path (goes right) -->
+  <line x1="460" y1="88" x2="488" y2="88" stroke="#F59E0B" stroke-width="1.5" marker-end="url(#qf-arrow-amber)"/>
+  <text x="474" y="80" font-size="9" fill="#F59E0B" font-weight="600">MISS</text>
+
+  <!-- Step 4: Network Request -->
+  <rect x="492" y="60" width="120" height="56" rx="8" fill="#FFF7ED" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="552" y="83" text-anchor="middle" font-size="10" fill="#B45309" font-weight="bold">Network</text>
+  <text x="552" y="97" text-anchor="middle" font-size="10" fill="#B45309" font-weight="bold">Request</text>
+  <text x="552" y="52" text-anchor="middle" font-size="9" fill="#F59E0B" font-weight="600">Step 4</text>
+
+  <!-- Arrow 4->5 -->
+  <line x1="612" y1="88" x2="640" y2="88" stroke="#F59E0B" stroke-width="1.5" marker-end="url(#qf-arrow-amber)"/>
+
+  <!-- Step 5: Server Resolves -->
+  <rect x="644" y="60" width="120" height="56" rx="8" fill="#F59E0B"/>
+  <text x="704" y="83" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Server</text>
+  <text x="704" y="97" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Resolves</text>
+  <text x="704" y="52" text-anchor="middle" font-size="9" fill="#F59E0B" font-weight="600">Step 5</text>
+
+  <!-- Arrow 5->6 (down) -->
+  <line x1="704" y1="116" x2="704" y2="168" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#qf-arrow)"/>
+
+  <!-- Step 6: Response -->
+  <rect x="644" y="172" width="120" height="56" rx="8" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.5"/>
+  <text x="704" y="195" text-anchor="middle" font-size="10" fill="#1D4ED8" font-weight="bold">JSON</text>
+  <text x="704" y="209" text-anchor="middle" font-size="10" fill="#1D4ED8" font-weight="bold">Response</text>
+  <text x="770" y="200" font-size="9" fill="#3B82F6" font-weight="600">6</text>
+
+  <!-- Arrow 6->7 (down) -->
+  <line x1="704" y1="228" x2="704" y2="265" stroke="#10B981" stroke-width="1.5" marker-end="url(#qf-arrow-green)"/>
+
+  <!-- Step 7: Normalize & Cache -->
+  <rect x="614" y="268" width="180" height="56" rx="8" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+  <text x="704" y="291" text-anchor="middle" font-size="10" fill="#059669" font-weight="bold">Normalize Response</text>
+  <text x="704" y="305" text-anchor="middle" font-size="10" fill="#059669" font-weight="bold">& Update Cache</text>
+  <text x="800" y="295" font-size="9" fill="#10B981" font-weight="600">7</text>
+
+  <!-- Normalize detail -->
+  <rect x="500" y="275" width="100" height="36" rx="4" fill="#ffffff" stroke="#10B981" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="550" y="292" text-anchor="middle" font-size="8" fill="#059669">Flatten entities</text>
+  <text x="550" y="304" text-anchor="middle" font-size="8" fill="#059669">__typename + id</text>
+
+  <!-- Arrow 7->8 (down) -->
+  <line x1="704" y1="324" x2="704" y2="348" stroke="#6366F1" stroke-width="1.5" marker-end="url(#qf-arrow-purple)"/>
+
+  <!-- Step 8: Component Re-renders -->
+  <rect x="604" y="352" width="200" height="50" rx="8" fill="#6366F1"/>
+  <text x="704" y="375" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Component Re-renders</text>
+  <text x="704" y="391" text-anchor="middle" font-size="9" fill="#C7D2FE">with fresh data</text>
+
+  <!-- Label for the step -->
+  <text x="704" y="344" text-anchor="middle" font-size="9" fill="#6366F1" font-weight="600">Step 8</text>
+
+  <!-- Timing annotations -->
+  <rect x="30" y="250" width="130" height="80" rx="6" fill="#FEF3C7" stroke="#F59E0B" stroke-width="0.5"/>
+  <text x="95" y="268" text-anchor="middle" font-size="9" fill="#92400E" font-weight="bold">Cache Policies</text>
+  <text x="45" y="284" font-size="8" fill="#92400E">cache-first: fastest</text>
+  <text x="45" y="296" font-size="8" fill="#92400E">network-only: freshest</text>
+  <text x="45" y="308" font-size="8" fill="#92400E">cache-and-network:</text>
+  <text x="45" y="320" font-size="8" fill="#92400E">  show cached, then refetch</text>
+
+  <!-- Legend -->
+  <rect x="30" y="420" width="10" height="10" rx="2" fill="#6366F1"/>
+  <text x="46" y="429" font-size="9" fill="#1e293b">Component lifecycle</text>
+  <rect x="170" y="420" width="10" height="10" rx="2" fill="#3B82F6"/>
+  <text x="186" y="429" font-size="9" fill="#1e293b">Client library</text>
+  <rect x="280" y="420" width="10" height="10" rx="2" fill="#10B981"/>
+  <text x="296" y="429" font-size="9" fill="#1e293b">Cache operations</text>
+  <rect x="400" y="420" width="10" height="10" rx="2" fill="#F59E0B"/>
+  <text x="416" y="429" font-size="9" fill="#1e293b">Network / Server</text>
+  <line x1="520" y1="425" x2="550" y2="425" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="556" y="429" font-size="9" fill="#1e293b">Cache hit shortcut</text>
+</svg>

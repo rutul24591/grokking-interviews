@@ -1,0 +1,94 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="500" fill="#ffffff"/>
+  <text x="400" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1e2e">CORS Preflight Request Flow</text>
+
+  <defs>
+    <marker id="a-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3B82F6"/>
+    </marker>
+    <marker id="a-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10B981"/>
+    </marker>
+    <marker id="a-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#EF4444"/>
+    </marker>
+    <marker id="a-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366F1"/>
+    </marker>
+  </defs>
+
+  <!-- Actors -->
+  <rect x="50" y="48" width="130" height="38" rx="8" fill="#3B82F6"/>
+  <text x="115" y="72" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="600">Browser (origin A)</text>
+
+  <rect x="310" y="48" width="130" height="38" rx="8" fill="#6366F1"/>
+  <text x="375" y="72" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="600">CORS Engine</text>
+
+  <rect x="570" y="48" width="150" height="38" rx="8" fill="#10B981"/>
+  <text x="645" y="72" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="600">API Server (origin B)</text>
+
+  <!-- Lifelines -->
+  <line x1="115" y1="86" x2="115" y2="480" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="375" y1="86" x2="375" y2="480" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="645" y1="86" x2="645" y2="480" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="6,4"/>
+
+  <!-- Step 1: JS makes cross-origin request -->
+  <line x1="115" y1="115" x2="365" y2="115" stroke="#3B82F6" stroke-width="2" marker-end="url(#a-blue)"/>
+  <rect x="130" y="100" width="210" height="17" rx="3" fill="#EFF6FF"/>
+  <text x="235" y="113" text-anchor="middle" font-size="10" fill="#1e3a5f">1. JS calls fetch() to origin B</text>
+
+  <!-- Step 2: Browser detects cross-origin -->
+  <rect x="310" y="128" width="130" height="26" rx="5" fill="#EEF2FF" stroke="#6366F1" stroke-width="1"/>
+  <text x="375" y="145" text-anchor="middle" font-size="10" fill="#4338CA">2. Detects cross-origin</text>
+
+  <!-- Step 3: Send OPTIONS preflight -->
+  <line x1="375" y1="168" x2="635" y2="168" stroke="#6366F1" stroke-width="2" marker-end="url(#a-purple)"/>
+  <rect x="390" y="153" width="220" height="17" rx="3" fill="#EEF2FF"/>
+  <text x="500" y="166" text-anchor="middle" font-size="10" fill="#4338CA">3. OPTIONS /api/data (preflight)</text>
+
+  <!-- Preflight request details -->
+  <rect x="425" y="178" width="260" height="48" rx="5" fill="#F8FAFC" stroke="#e2e8f0"/>
+  <text x="435" y="193" font-size="9" fill="#6366F1" font-family="monospace">Access-Control-Request-Method: PUT</text>
+  <text x="435" y="206" font-size="9" fill="#6366F1" font-family="monospace">Access-Control-Request-Headers:</text>
+  <text x="445" y="219" font-size="9" fill="#6366F1" font-family="monospace">Content-Type, Authorization</text>
+
+  <!-- Step 4: Server responds with CORS headers -->
+  <line x1="645" y1="245" x2="385" y2="245" stroke="#10B981" stroke-width="2" marker-end="url(#a-green)"/>
+  <rect x="415" y="232" width="200" height="17" rx="3" fill="#F0FDF4"/>
+  <text x="515" y="245" text-anchor="middle" font-size="10" fill="#065F46">4. Preflight response (200)</text>
+
+  <rect x="425" y="256" width="260" height="58" rx="5" fill="#F8FAFC" stroke="#e2e8f0"/>
+  <text x="435" y="271" font-size="9" fill="#10B981" font-family="monospace">Access-Control-Allow-Origin: A</text>
+  <text x="435" y="284" font-size="9" fill="#10B981" font-family="monospace">Access-Control-Allow-Methods: PUT</text>
+  <text x="435" y="297" font-size="9" fill="#10B981" font-family="monospace">Access-Control-Allow-Headers: ...</text>
+  <text x="435" y="310" font-size="9" fill="#10B981" font-family="monospace">Access-Control-Max-Age: 86400</text>
+
+  <!-- Step 5: Browser checks - passes -->
+  <rect x="310" y="322" width="130" height="26" rx="5" fill="#D1FAE5" stroke="#10B981" stroke-width="1"/>
+  <text x="375" y="339" text-anchor="middle" font-size="10" fill="#065F46">5. CORS check passes</text>
+
+  <!-- Step 6: Send actual request -->
+  <line x1="375" y1="362" x2="635" y2="362" stroke="#3B82F6" stroke-width="2" marker-end="url(#a-blue)"/>
+  <rect x="410" y="349" width="190" height="17" rx="3" fill="#EFF6FF"/>
+  <text x="505" y="362" text-anchor="middle" font-size="10" fill="#1e3a5f">6. PUT /api/data (actual request)</text>
+
+  <!-- Step 7: Response -->
+  <line x1="645" y1="390" x2="385" y2="390" stroke="#10B981" stroke-width="2" marker-end="url(#a-green)"/>
+  <rect x="430" y="377" width="180" height="17" rx="3" fill="#F0FDF4"/>
+  <text x="520" y="390" text-anchor="middle" font-size="10" fill="#065F46">7. 200 OK + CORS headers</text>
+
+  <!-- Step 8: Data to JS -->
+  <line x1="375" y1="415" x2="125" y2="415" stroke="#10B981" stroke-width="2" marker-end="url(#a-green)"/>
+  <rect x="155" y="402" width="190" height="17" rx="3" fill="#D1FAE5"/>
+  <text x="250" y="415" text-anchor="middle" font-size="10" fill="#065F46">8. Response delivered to JS</text>
+
+  <!-- CORS Failure path -->
+  <rect x="30" y="440" width="350" height="45" rx="6" fill="#FEF2F2" stroke="#EF4444" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="45" y="457" font-size="10" font-weight="600" fill="#EF4444">On CORS failure (step 5):</text>
+  <text x="45" y="473" font-size="10" fill="#991B1B">Browser blocks response. JS gets opaque NetworkError.</text>
+
+  <!-- Note -->
+  <rect x="420" y="440" width="360" height="45" rx="6" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="435" y="457" font-size="10" font-weight="600" fill="#F59E0B">Preflight caching:</text>
+  <text x="435" y="473" font-size="10" fill="#92400E">Max-Age caches preflight result; skips OPTIONS on repeat.</text>
+</svg>

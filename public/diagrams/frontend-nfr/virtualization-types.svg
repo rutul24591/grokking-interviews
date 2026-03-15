@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550">
+  <rect width="900" height="550" fill="#f8fafc"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Virtualization Types</text>
+  
+  <!-- Fixed Size -->
+  <rect x="30" y="70" width="270" height="220" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="8"/>
+  <text x="165" y="95" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">Fixed-Size Items</text>
+  <line x1="50" y1="110" x2="280" y2="110" stroke="#3b82f6" stroke-width="1"/>
+  
+  <!-- Visual representation -->
+  <rect x="60" y="125" width="220" height="30" fill="#93c5fd" rx="2"/>
+  <text x="170" y="145" text-anchor="middle" font-size="10" fill="#1e3a8a">50px</text>
+  <rect x="60" y="160" width="220" height="30" fill="#93c5fd" rx="2"/>
+  <text x="170" y="180" text-anchor="middle" font-size="10" fill="#1e3a8a">50px</text>
+  <rect x="60" y="195" width="220" height="30" fill="#93c5fd" rx="2"/>
+  <text x="170" y="215" text-anchor="middle" font-size="10" fill="#1e3a8a">50px</text>
+  <text x="285" y="180" font-size="10" fill="#6366f1">All same height</text>
+  
+  <text x="50" y="250" font-size="11" fill="#1e3a8a">✓ Fast calculations</text>
+  <text x="50" y="270" font-size="11" fill="#1e3a8a">✓ Best performance</text>
+  <text x="50" y="290" font-size="11" fill="#ef4444">✗ Inflexible</text>
+  <text x="50" y="310" font-size="11" fill="#1e3a8a">Best for: Uniform lists</text>
+  
+  <!-- Dynamic Size -->
+  <rect x="315" y="70" width="270" height="220" fill="#d1fae5" stroke="#10b981" stroke-width="2" rx="8"/>
+  <text x="450" y="95" text-anchor="middle" font-size="14" font-weight="bold" fill="#065f46">Dynamic-Size Items</text>
+  <line x1="335" y1="110" x2="565" y2="110" stroke="#10b981" stroke-width="1"/>
+  
+  <!-- Visual representation -->
+  <rect x="345" y="125" width="220" height="25" fill="#86efac" rx="2"/>
+  <text x="570" y="142" font-size="9" fill="#065f46">40px</text>
+  <rect x="345" y="155" width="220" height="45" fill="#86efac" rx="2"/>
+  <text x="570" y="182" font-size="9" fill="#065f46">70px</text>
+  <rect x="345" y="205" width="220" height="30" fill="#86efac" rx="2"/>
+  <text x="570" y="225" font-size="9" fill="#065f46">50px</text>
+  
+  <text x="335" y="250" font-size="11" fill="#064e3b">✓ Handles any content</text>
+  <text x="335" y="270" font-size="11" fill="#064e3b">✓ Flexible</text>
+  <text x="335" y="290" font-size="11" fill="#f59e0b">~ Measurement overhead</text>
+  <text x="335" y="310" font-size="11" fill="#064e3b">Best for: Variable content</text>
+  
+  <!-- Grid -->
+  <rect x="600" y="70" width="270" height="220" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="8"/>
+  <text x="735" y="95" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">Grid (2D)</text>
+  <line x1="620" y1="110" x2="850" y2="110" stroke="#f59e0b" stroke-width="1"/>
+  
+  <!-- Visual representation -->
+  <rect x="630" y="125" width="50" height="40" fill="#fcd34d" rx="2"/>
+  <rect x="685" y="125" width="50" height="40" fill="#fcd34d" rx="2"/>
+  <rect x="740" y="125" width="50" height="40" fill="#fcd34d" rx="2"/>
+  <rect x="630" y="170" width="50" height="40" fill="#fcd34d" rx="2"/>
+  <rect x="685" y="170" width="50" height="40" fill="#fcd34d" rx="2"/>
+  <rect x="740" y="170" width="50" height="40" fill="#fcd34d" rx="2"/>
+  <rect x="630" y="215" width="50" height="40" fill="#fcd34d" rx="2"/>
+  <rect x="685" y="215" width="50" height="40" fill="#fcd34d" rx="2"/>
+  <rect x="740" y="215" width="50" height="40" fill="#fcd34d" rx="2"/>
+  
+  <text x="620" y="250" font-size="11" fill="#78350f">✓ 2D virtualization</text>
+  <text x="620" y="270" font-size="11" fill="#78350f">✓ Tables, galleries</text>
+  <text x="620" y="290" font-size="11" fill="#ef4444">✗ Most complex</text>
+  <text x="620" y="310" font-size="11" fill="#78350f">Best for: Data tables</text>
+  
+  <!-- Comparison table -->
+  <rect x="30" y="320" width="840" height="210" fill="white" stroke="#6366f1" stroke-width="2" rx="8"/>
+  <text x="450" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">Implementation Comparison</text>
+  <line x1="50" y1="360" x2="850" y2="360" stroke="#6366f1" stroke-width="1"/>
+  
+  <!-- Headers -->
+  <text x="100" y="385" font-size="11" font-weight="bold" fill="#1e293b">Type</text>
+  <text x="280" y="385" font-size="11" font-weight="bold" fill="#1e293b">Complexity</text>
+  <text x="450" y="385" font-size="11" font-weight="bold" fill="#1e293b">Performance</text>
+  <text x="620" y="385" font-size="11" font-weight="bold" fill="#1e293b">Use Case</text>
+  <line x1="50" y1="400" x2="850" y2="400" stroke="#6366f1" stroke-width="1"/>
+  
+  <!-- Rows -->
+  <text x="100" y="425" font-size="11" fill="#1e40af">Fixed</text>
+  <rect x="250" y="415" width="60" height="15" fill="#10b981" rx="2"/>
+  <text x="280" y="427" font-size="10" fill="white">Low</text>
+  <rect x="420" y="415" width="80" height="15" fill="#10b981" rx="2"/>
+  <text x="460" y="427" font-size="10" fill="white">Best</text>
+  <text x="620" y="425" font-size="11" fill="#1e293b">Contacts, files</text>
+  
+  <text x="100" y="455" font-size="11" fill="#065f46">Dynamic</text>
+  <rect x="250" y="445" width="60" height="15" fill="#f59e0b" rx="2"/>
+  <text x="280" y="457" font-size="10" fill="white">Medium</text>
+  <rect x="420" y="445" width="70" height="15" fill="#10b981" rx="2"/>
+  <text x="455" y="457" font-size="10" fill="white">Good</text>
+  <text x="620" y="455" font-size="11" fill="#1e293b">Comments, feeds</text>
+  
+  <text x="100" y="485" font-size="11" fill="#92400e">Grid</text>
+  <rect x="250" y="475" width="60" height="15" fill="#ef4444" rx="2"/>
+  <text x="280" y="487" font-size="10" fill="white">High</text>
+  <rect x="420" y="475" width="70" height="15" fill="#f59e0b" rx="2"/>
+  <text x="455" y="487" font-size="10" fill="white">Medium</text>
+  <text x="620" y="485" font-size="11" fill="#1e293b">Tables, spreadsheets</text>
+  
+  <!-- Recommendation -->
+  <rect x="50" y="505" width="800" height="20" fill="#f1f5f9" rx="4"/>
+  <text x="450" y="520" text-anchor="middle" font-size="11" fill="#475569">Recommendation: Start with fixed-size. Use dynamic only when necessary.</text>
+  
+</svg>

@@ -99,18 +99,36 @@ export default async function SubCategoryPage({ params }: PageProps) {
   let disableTopicLinks = false;
 
   if (category === "non-functional-requirements") {
-    disableTopicLinks = true;
-    try {
-      const nfrChecklistPath = path.join(
-        process.cwd(),
-        "concepts",
-        "NFR_Master_Checklist.md",
-      );
-      const nfrChecklistRaw = await readFile(nfrChecklistPath, "utf8");
-      const parsed = parseNfrMasterChecklist(nfrChecklistRaw);
-      overrideTopics = parsed[subcategory as keyof typeof parsed] ?? [];
-    } catch {
-      overrideTopics = [];
+    // For frontend NFRs, check if articles exist in registry and enable links
+    if (subcategory === "frontend-non-functional-requirements") {
+      disableTopicLinks = false; // Enable links for frontend NFRs that have articles
+      try {
+        const nfrChecklistPath = path.join(
+          process.cwd(),
+          "concepts",
+          "NFR_Master_Checklist.md",
+        );
+        const nfrChecklistRaw = await readFile(nfrChecklistPath, "utf8");
+        const parsed = parseNfrMasterChecklist(nfrChecklistRaw);
+        overrideTopics = parsed[subcategory as keyof typeof parsed] ?? [];
+      } catch {
+        overrideTopics = [];
+      }
+    } else {
+      // For other NFR categories (backend, shared, bonus), keep links disabled
+      disableTopicLinks = true;
+      try {
+        const nfrChecklistPath = path.join(
+          process.cwd(),
+          "concepts",
+          "NFR_Master_Checklist.md",
+        );
+        const nfrChecklistRaw = await readFile(nfrChecklistPath, "utf8");
+        const parsed = parseNfrMasterChecklist(nfrChecklistRaw);
+        overrideTopics = parsed[subcategory as keyof typeof parsed] ?? [];
+      } catch {
+        overrideTopics = [];
+      }
     }
   } else if (category === "functional-requirements") {
     try {

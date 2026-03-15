@@ -1,0 +1,115 @@
+<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="450" fill="#ffffff"/>
+  <text x="400" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Real-Time Communication Pattern Comparison</text>
+
+  <!-- Column headers -->
+  <rect x="10" y="50" width="130" height="36" rx="4" fill="#1e293b"/>
+  <text x="75" y="73" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">Dimension</text>
+
+  <rect x="145" y="50" width="155" height="36" rx="4" fill="#3B82F6"/>
+  <text x="222" y="73" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">Short Polling</text>
+
+  <rect x="305" y="50" width="155" height="36" rx="4" fill="#6366F1"/>
+  <text x="382" y="73" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">Long Polling</text>
+
+  <rect x="465" y="50" width="155" height="36" rx="4" fill="#10B981"/>
+  <text x="542" y="73" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">SSE</text>
+
+  <rect x="625" y="50" width="165" height="36" rx="4" fill="#F59E0B"/>
+  <text x="707" y="73" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">WebSocket</text>
+
+  <!-- Row backgrounds -->
+  <rect x="10" y="90" width="780" height="56" fill="#f8fafc"/>
+  <rect x="10" y="146" width="780" height="56" fill="#ffffff"/>
+  <rect x="10" y="202" width="780" height="56" fill="#f8fafc"/>
+  <rect x="10" y="258" width="780" height="56" fill="#ffffff"/>
+  <rect x="10" y="314" width="780" height="56" fill="#f8fafc"/>
+  <rect x="10" y="370" width="780" height="56" fill="#ffffff"/>
+
+  <!-- Row labels -->
+  <text x="75" y="115" text-anchor="middle" font-size="11" fill="#1e293b" font-weight="bold">Latency</text>
+  <text x="75" y="171" text-anchor="middle" font-size="11" fill="#1e293b" font-weight="bold">Server Load</text>
+  <text x="75" y="227" text-anchor="middle" font-size="11" fill="#1e293b" font-weight="bold">Complexity</text>
+  <text x="75" y="283" text-anchor="middle" font-size="11" fill="#1e293b" font-weight="bold">Browser</text>
+  <text x="75" y="296" text-anchor="middle" font-size="11" fill="#1e293b" font-weight="bold">Support</text>
+  <text x="75" y="339" text-anchor="middle" font-size="11" fill="#1e293b" font-weight="bold">Proxy/</text>
+  <text x="75" y="352" text-anchor="middle" font-size="11" fill="#1e293b" font-weight="bold">Firewall</text>
+  <text x="75" y="395" text-anchor="middle" font-size="11" fill="#1e293b" font-weight="bold">Direction</text>
+
+  <!-- Short Polling column -->
+  <text x="222" y="108" text-anchor="middle" font-size="10" fill="#64748b">Half interval avg</text>
+  <text x="222" y="121" text-anchor="middle" font-size="9" fill="#EF4444" font-weight="bold">High (seconds)</text>
+
+  <text x="222" y="164" text-anchor="middle" font-size="10" fill="#64748b">Many empty requests</text>
+  <text x="222" y="177" text-anchor="middle" font-size="9" fill="#EF4444" font-weight="bold">High</text>
+
+  <text x="222" y="220" text-anchor="middle" font-size="10" fill="#64748b">Standard HTTP</text>
+  <text x="222" y="233" text-anchor="middle" font-size="9" fill="#10B981" font-weight="bold">Very Low</text>
+
+  <text x="222" y="289" text-anchor="middle" font-size="10" fill="#10B981" font-weight="bold">Universal</text>
+
+  <text x="222" y="345" text-anchor="middle" font-size="10" fill="#10B981" font-weight="bold">Perfect</text>
+
+  <text x="222" y="398" text-anchor="middle" font-size="10" fill="#64748b">Client-initiated</text>
+
+  <!-- Long Polling column -->
+  <text x="382" y="108" text-anchor="middle" font-size="10" fill="#64748b">Near-instant on event</text>
+  <text x="382" y="121" text-anchor="middle" font-size="9" fill="#10B981" font-weight="bold">Low (ms)</text>
+
+  <text x="382" y="164" text-anchor="middle" font-size="10" fill="#64748b">Held connections</text>
+  <text x="382" y="177" text-anchor="middle" font-size="9" fill="#F59E0B" font-weight="bold">Medium</text>
+
+  <text x="382" y="220" text-anchor="middle" font-size="10" fill="#64748b">Async server required</text>
+  <text x="382" y="233" text-anchor="middle" font-size="9" fill="#F59E0B" font-weight="bold">Medium</text>
+
+  <text x="382" y="289" text-anchor="middle" font-size="10" fill="#10B981" font-weight="bold">Universal</text>
+
+  <text x="382" y="345" text-anchor="middle" font-size="10" fill="#10B981" font-weight="bold">Good</text>
+
+  <text x="382" y="398" text-anchor="middle" font-size="10" fill="#64748b">Server push</text>
+
+  <!-- SSE column -->
+  <text x="542" y="108" text-anchor="middle" font-size="10" fill="#64748b">Instant on event</text>
+  <text x="542" y="121" text-anchor="middle" font-size="9" fill="#10B981" font-weight="bold">Very Low (ms)</text>
+
+  <text x="542" y="164" text-anchor="middle" font-size="10" fill="#64748b">Persistent stream</text>
+  <text x="542" y="177" text-anchor="middle" font-size="9" fill="#10B981" font-weight="bold">Low</text>
+
+  <text x="542" y="220" text-anchor="middle" font-size="10" fill="#64748b">EventSource API</text>
+  <text x="542" y="233" text-anchor="middle" font-size="9" fill="#10B981" font-weight="bold">Low</text>
+
+  <text x="542" y="282" text-anchor="middle" font-size="10" fill="#64748b">All modern browsers</text>
+  <text x="542" y="296" text-anchor="middle" font-size="9" fill="#F59E0B" font-weight="bold">No IE</text>
+
+  <text x="542" y="338" text-anchor="middle" font-size="10" fill="#64748b">Some proxies buffer</text>
+  <text x="542" y="352" text-anchor="middle" font-size="9" fill="#F59E0B" font-weight="bold">Fair</text>
+
+  <text x="542" y="398" text-anchor="middle" font-size="10" fill="#64748b">Server push only</text>
+
+  <!-- WebSocket column -->
+  <text x="707" y="108" text-anchor="middle" font-size="10" fill="#64748b">Instant both ways</text>
+  <text x="707" y="121" text-anchor="middle" font-size="9" fill="#10B981" font-weight="bold">Lowest (ms)</text>
+
+  <text x="707" y="164" text-anchor="middle" font-size="10" fill="#64748b">Persistent connection</text>
+  <text x="707" y="177" text-anchor="middle" font-size="9" fill="#10B981" font-weight="bold">Lowest per msg</text>
+
+  <text x="707" y="220" text-anchor="middle" font-size="10" fill="#64748b">Custom protocol</text>
+  <text x="707" y="233" text-anchor="middle" font-size="9" fill="#EF4444" font-weight="bold">High</text>
+
+  <text x="707" y="282" text-anchor="middle" font-size="10" fill="#64748b">All modern browsers</text>
+  <text x="707" y="296" text-anchor="middle" font-size="9" fill="#F59E0B" font-weight="bold">No IE9-</text>
+
+  <text x="707" y="338" text-anchor="middle" font-size="10" fill="#64748b">Upgrade may be blocked</text>
+  <text x="707" y="352" text-anchor="middle" font-size="9" fill="#EF4444" font-weight="bold">Problematic</text>
+
+  <text x="707" y="398" text-anchor="middle" font-size="10" fill="#64748b">Full duplex</text>
+
+  <!-- Grid lines -->
+  <line x1="140" y1="50" x2="140" y2="426" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="300" y1="50" x2="300" y2="426" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="460" y1="50" x2="460" y2="426" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="620" y1="50" x2="620" y2="426" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Bottom note -->
+  <text x="400" y="443" text-anchor="middle" font-size="9" fill="#94a3b8">Green = advantage, Yellow = acceptable, Red = disadvantage for the dimension</text>
+</svg>

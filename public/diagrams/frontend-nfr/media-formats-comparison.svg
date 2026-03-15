@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550">
+  <rect width="900" height="550" fill="#f8fafc"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Image Formats Comparison</text>
+  
+  <!-- AVIF -->
+  <rect x="30" y="70" width="200" height="140" fill="#d1fae5" stroke="#10b981" stroke-width="2" rx="6"/>
+  <text x="130" y="95" text-anchor="middle" font-size="14" font-weight="bold" fill="#065f46">AVIF</text>
+  <line x1="50" y1="110" x2="210" y2="110" stroke="#10b981" stroke-width="1"/>
+  <text x="50" y="135" font-size="11" fill="#064e3b">Compression: ★★★★★</text>
+  <text x="50" y="155" font-size="11" fill="#064e3b">Quality: ★★★★★</text>
+  <text x="50" y="175" font-size="11" fill="#064e3b">Support: 85%</text>
+  <text x="50" y="195" font-size="11" fill="#064e3b">Size: -50% vs JPEG</text>
+  <rect x="50" y="205" width="150" height="4" fill="#10b981" rx="2"/>
+  
+  <!-- WebP -->
+  <rect x="250" y="70" width="200" height="140" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="6"/>
+  <text x="350" y="95" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">WebP</text>
+  <line x1="270" y1="110" x2="430" y2="110" stroke="#3b82f6" stroke-width="1"/>
+  <text x="270" y="135" font-size="11" fill="#1e3a8a">Compression: ★★★★☆</text>
+  <text x="270" y="155" font-size="11" fill="#1e3a8a">Quality: ★★★★☆</text>
+  <text x="270" y="175" font-size="11" fill="#1e3a8a">Support: 97%</text>
+  <text x="270" y="195" font-size="11" fill="#1e3a8a">Size: -30% vs JPEG</text>
+  <rect x="270" y="205" width="150" height="4" fill="#3b82f6" rx="2"/>
+  
+  <!-- JPEG -->
+  <rect x="470" y="70" width="200" height="140" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="6"/>
+  <text x="570" y="95" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">JPEG</text>
+  <line x1="490" y1="110" x2="650" y2="110" stroke="#f59e0b" stroke-width="1"/>
+  <text x="490" y="135" font-size="11" fill="#78350f">Compression: ★★★☆☆</text>
+  <text x="490" y="155" font-size="11" fill="#78350f">Quality: ★★★☆☆</text>
+  <text x="490" y="175" font-size="11" fill="#78350f">Support: 100%</text>
+  <text x="490" y="195" font-size="11" fill="#78350f">Size: Baseline</text>
+  <rect x="490" y="205" width="100" height="4" fill="#f59e0b" rx="2"/>
+  
+  <!-- PNG -->
+  <rect x="690" y="70" width="200" height="140" fill="#ede9fe" stroke="#8b5cf6" stroke-width="2" rx="6"/>
+  <text x="790" y="95" text-anchor="middle" font-size="14" font-weight="bold" fill="#5b21b6">PNG</text>
+  <line x1="710" y1="110" x2="870" y2="110" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="710" y="135" font-size="11" fill="#4c1d95">Compression: ★★☆☆☆</text>
+  <text x="710" y="155" font-size="11" fill="#4c1d95">Quality: ★★★★★</text>
+  <text x="710" y="175" font-size="11" fill="#4c1d95">Support: 100%</text>
+  <text x="710" y="195" font-size="11" fill="#4c1d95">Size: +200% vs JPEG</text>
+  <rect x="710" y="205" width="170" height="4" fill="#8b5cf6" rx="2"/>
+  
+  <!-- Use cases -->
+  <rect x="30" y="240" width="840" height="120" fill="white" stroke="#6366f1" stroke-width="2" rx="8"/>
+  <text x="450" y="265" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">Best Use Cases</text>
+  <line x1="50" y1="280" x2="850" y2="280" stroke="#6366f1" stroke-width="1"/>
+  
+  <text x="70" y="310" font-size="12" fill="#1e293b">AVIF:</text>
+  <text x="130" y="310" font-size="11" fill="#475569">Photos, hero images (with fallback)</text>
+  
+  <text x="70" y="335" font-size="12" fill="#1e293b">WebP:</text>
+  <text x="130" y="335" font-size="11" fill="#475569">General purpose, best compatibility</text>
+  
+  <text x="70" y="360" font-size="12" fill="#1e293b">JPEG:</text>
+  <text x="130" y="360" font-size="11" fill="#475569">Legacy support, simple photos</text>
+  
+  <text x="70" y="385" font-size="12" fill="#1e293b">PNG:</text>
+  <text x="130" y="385" font-size="11" fill="#475569">Transparency, screenshots, graphics</text>
+  
+  <!-- Size comparison visual -->
+  <rect x="30" y="390" width="840" height="140" fill="#f8fafc" stroke="#6366f1" stroke-width="2" rx="8"/>
+  <text x="450" y="415" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">File Size Comparison (Same Image)</text>
+  <line x1="50" y1="430" x2="850" y2="430" stroke="#6366f1" stroke-width="1"/>
+  
+  <!-- Bars -->
+  <text x="80" y="460" font-size="11" fill="#1e293b">AVIF</text>
+  <rect x="130" y="445" width="100" height="25" fill="#10b981" rx="3"/>
+  <text x="140" y="462" font-size="10" fill="white">50KB</text>
+  
+  <text x="80" y="490" font-size="11" fill="#1e293b">WebP</text>
+  <rect x="130" y="475" width="140" height="25" fill="#3b82f6" rx="3"/>
+  <text x="140" y="492" font-size="10" fill="white">70KB</text>
+  
+  <text x="80" y="520" font-size="11" fill="#1e293b">JPEG</text>
+  <rect x="130" y="505" width="200" height="25" fill="#f59e0b" rx="3"/>
+  <text x="140" y="522" font-size="10" fill="white">100KB</text>
+  
+  <text x="380" y="460" font-size="11" fill="#1e293b">PNG</text>
+  <rect x="430" y="445" width="400" height="25" fill="#8b5cf6" rx="3"/>
+  <text x="440" y="462" font-size="10" fill="white">300KB</text>
+  
+  <text x="380" y="490" font-size="11" fill="#1e293b">GIF</text>
+  <rect x="430" y="475" width="600" height="25" fill="#ef4444" rx="3"/>
+  <text x="440" y="492" font-size="10" fill="white">500KB (avoid for photos!)</text>
+  
+</svg>

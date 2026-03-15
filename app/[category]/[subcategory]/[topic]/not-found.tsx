@@ -26,7 +26,7 @@ export default function ArticleNotFound() {
           Article Not Found
         </h1>
         <p className="mb-8 text-lg text-muted">
-          The article you're looking for doesn't exist yet or has been moved.
+          The article you&apos;re looking for doesn&apos;t exist yet or has been moved.
         </p>
         <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
           <Link

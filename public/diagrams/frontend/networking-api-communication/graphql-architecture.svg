@@ -1,0 +1,105 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="500" fill="#ffffff"/>
+  <text x="400" y="32" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Frontend GraphQL Architecture</text>
+
+  <defs>
+    <marker id="arrow-blue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#3B82F6"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#10B981"/>
+    </marker>
+    <marker id="arrow-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6366F1"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#F59E0B"/>
+    </marker>
+  </defs>
+
+  <!-- Layer 1: React Components -->
+  <rect x="40" y="55" width="720" height="60" rx="8" fill="#EEF2FF" stroke="#6366F1" stroke-width="1.5"/>
+  <text x="60" y="78" font-size="11" font-weight="bold" fill="#6366F1">REACT COMPONENTS</text>
+  <rect x="60" y="86" width="100" height="22" rx="4" fill="#6366F1"/>
+  <text x="110" y="101" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">UserProfile</text>
+  <rect x="170" y="86" width="100" height="22" rx="4" fill="#6366F1"/>
+  <text x="220" y="101" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">PostList</text>
+  <rect x="280" y="86" width="100" height="22" rx="4" fill="#6366F1"/>
+  <text x="330" y="101" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">CommentThread</text>
+  <rect x="390" y="86" width="120" height="22" rx="4" fill="#6366F1"/>
+  <text x="450" y="101" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">useQuery / useMutation</text>
+  <text x="540" y="101" font-size="9" fill="#4338CA">Typed hooks from codegen</text>
+
+  <!-- Arrow: Components -> Apollo Client -->
+  <line x1="400" y1="115" x2="400" y2="142" stroke="#6366F1" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+
+  <!-- Layer 2: Apollo Client / Client Library -->
+  <rect x="40" y="145" width="720" height="70" rx="8" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.5"/>
+  <text x="60" y="168" font-size="11" font-weight="bold" fill="#3B82F6">APOLLO CLIENT / URQL / RELAY</text>
+
+  <!-- Link Chain sub-boxes -->
+  <rect x="60" y="176" width="90" height="28" rx="4" fill="#3B82F6"/>
+  <text x="105" y="194" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">Auth Link</text>
+  <rect x="158" y="176" width="90" height="28" rx="4" fill="#3B82F6"/>
+  <text x="203" y="194" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">Error Link</text>
+  <rect x="256" y="176" width="90" height="28" rx="4" fill="#3B82F6"/>
+  <text x="301" y="194" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">Retry Link</text>
+  <rect x="354" y="176" width="110" height="28" rx="4" fill="#3B82F6"/>
+  <text x="409" y="194" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">Persisted Query</text>
+  <rect x="472" y="176" width="90" height="28" rx="4" fill="#3B82F6"/>
+  <text x="517" y="194" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">HTTP Link</text>
+  <text x="580" y="194" font-size="9" fill="#1D4ED8">Link chain (middleware)</text>
+
+  <!-- Arrow: Apollo -> Normalized Cache (bidirectional) -->
+  <line x1="200" y1="215" x2="200" y2="248" stroke="#10B981" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+  <line x1="215" y1="248" x2="215" y2="215" stroke="#10B981" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+
+  <!-- Arrow: Apollo -> HTTP -->
+  <line x1="550" y1="215" x2="550" y2="305" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+  <text x="558" y="262" font-size="9" fill="#64748B">POST /graphql</text>
+
+  <!-- Layer 3: Normalized Cache (side entity) -->
+  <rect x="40" y="250" width="370" height="90" rx="8" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+  <text x="60" y="273" font-size="11" font-weight="bold" fill="#10B981">NORMALIZED CACHE</text>
+  <text x="60" y="292" font-size="9" fill="#1e293b" font-weight="600">User:1</text>
+  <text x="120" y="292" font-size="9" fill="#64748B">{"{ name: 'Alice', posts: [ref('Post:1'), ref('Post:2')] }"}</text>
+  <text x="60" y="308" font-size="9" fill="#1e293b" font-weight="600">Post:1</text>
+  <text x="120" y="308" font-size="9" fill="#64748B">{"{ title: 'GraphQL Guide', author: ref('User:1') }"}</text>
+  <text x="60" y="324" font-size="9" fill="#1e293b" font-weight="600">Post:2</text>
+  <text x="120" y="324" font-size="9" fill="#64748B">{"{ title: 'Caching Tips', author: ref('User:1') }"}</text>
+
+  <!-- Layer 4: Network / HTTP -->
+  <rect x="440" y="308" width="320" height="40" rx="8" fill="#FFF7ED" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="460" y="332" font-size="11" font-weight="bold" fill="#F59E0B">HTTP TRANSPORT</text>
+  <text x="600" y="332" font-size="9" fill="#92400E">JSON over HTTPS (or WebSocket for subscriptions)</text>
+
+  <!-- Arrow: HTTP -> GraphQL Server -->
+  <line x1="600" y1="348" x2="600" y2="375" stroke="#F59E0B" stroke-width="1.5" marker-end="url(#arrow-amber)"/>
+
+  <!-- Layer 5: GraphQL Server -->
+  <rect x="440" y="378" width="320" height="105" rx="8" fill="#F5F3FF" stroke="#6366F1" stroke-width="1.5"/>
+  <text x="460" y="400" font-size="11" font-weight="bold" fill="#6366F1">GRAPHQL SERVER</text>
+  <rect x="460" y="408" width="80" height="24" rx="4" fill="#6366F1"/>
+  <text x="500" y="424" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">Schema</text>
+  <rect x="548" y="408" width="80" height="24" rx="4" fill="#6366F1"/>
+  <text x="588" y="424" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">Resolvers</text>
+  <rect x="636" y="408" width="100" height="24" rx="4" fill="#6366F1"/>
+  <text x="686" y="424" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">DataLoader</text>
+  <rect x="460" y="440" width="80" height="24" rx="4" fill="#818CF8"/>
+  <text x="500" y="456" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">Database</text>
+  <rect x="548" y="440" width="80" height="24" rx="4" fill="#818CF8"/>
+  <text x="588" y="456" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">REST APIs</text>
+  <rect x="636" y="440" width="100" height="24" rx="4" fill="#818CF8"/>
+  <text x="686" y="456" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">Microservices</text>
+  <text x="460" y="478" font-size="8" fill="#64748B">Data Sources</text>
+
+  <!-- Legend -->
+  <rect x="40" y="460" width="12" height="12" rx="2" fill="#6366F1"/>
+  <text x="58" y="470" font-size="9" fill="#1e293b">Components / Server</text>
+  <rect x="170" y="460" width="12" height="12" rx="2" fill="#3B82F6"/>
+  <text x="188" y="470" font-size="9" fill="#1e293b">Client Library</text>
+  <rect x="270" y="460" width="12" height="12" rx="2" fill="#10B981"/>
+  <text x="288" y="470" font-size="9" fill="#1e293b">Normalized Cache</text>
+  <rect x="385" y="460" width="12" height="12" rx="2" fill="#F59E0B"/>
+  <text x="403" y="470" font-size="9" fill="#1e293b">Transport</text>
+</svg>

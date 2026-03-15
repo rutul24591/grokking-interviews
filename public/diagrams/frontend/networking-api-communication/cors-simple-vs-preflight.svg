@@ -1,0 +1,85 @@
+<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="400" fill="#ffffff"/>
+  <text x="400" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1e2e">Simple Request vs Preflight Decision</text>
+
+  <!-- Start node -->
+  <ellipse cx="400" cy="70" rx="90" ry="22" fill="#3B82F6"/>
+  <text x="400" y="75" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="600">Cross-Origin Request</text>
+
+  <!-- Decision 1: Method check -->
+  <rect x="300" y="110" width="200" height="44" rx="6" fill="#EEF2FF" stroke="#6366F1" stroke-width="1.5"/>
+  <text x="400" y="130" text-anchor="middle" font-size="11" fill="#4338CA" font-weight="600">Method is GET, HEAD,</text>
+  <text x="400" y="145" text-anchor="middle" font-size="11" fill="#4338CA" font-weight="600">or POST?</text>
+
+  <line x1="400" y1="92" x2="400" y2="110" stroke="#6366F1" stroke-width="1.5"/>
+
+  <!-- Yes path from Method -->
+  <line x1="300" y1="132" x2="200" y2="132" stroke="#10B981" stroke-width="1.5"/>
+  <line x1="200" y1="132" x2="200" y2="190" stroke="#10B981" stroke-width="1.5"/>
+  <text x="245" y="127" font-size="10" fill="#10B981" font-weight="600">Yes</text>
+
+  <!-- No path from Method -->
+  <line x1="500" y1="132" x2="620" y2="132" stroke="#EF4444" stroke-width="1.5"/>
+  <line x1="620" y1="132" x2="620" y2="250" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="545" y="127" font-size="10" fill="#EF4444" font-weight="600">No (PUT, DELETE, PATCH...)</text>
+
+  <!-- Decision 2: Headers check -->
+  <rect x="90" y="190" width="220" height="54" rx="6" fill="#EEF2FF" stroke="#6366F1" stroke-width="1.5"/>
+  <text x="200" y="208" text-anchor="middle" font-size="10" fill="#4338CA" font-weight="600">Only simple headers?</text>
+  <text x="200" y="222" text-anchor="middle" font-size="9" fill="#6366F1">Accept, Accept-Language,</text>
+  <text x="200" y="234" text-anchor="middle" font-size="9" fill="#6366F1">Content-Language, Content-Type*</text>
+
+  <!-- Yes path from Headers -->
+  <line x1="90" y1="217" x2="40" y2="217" stroke="#10B981" stroke-width="1.5"/>
+  <line x1="40" y1="217" x2="40" y2="270" stroke="#10B981" stroke-width="1.5"/>
+  <text x="60" y="212" font-size="10" fill="#10B981" font-weight="600">Yes</text>
+
+  <!-- No path from Headers -->
+  <line x1="310" y1="217" x2="400" y2="217" stroke="#EF4444" stroke-width="1.5"/>
+  <line x1="400" y1="217" x2="400" y2="250" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="340" y="212" font-size="10" fill="#EF4444" font-weight="600">No</text>
+
+  <!-- Decision 3: Content-Type check -->
+  <rect x="325" y="250" width="190" height="44" rx="6" fill="#EEF2FF" stroke="#6366F1" stroke-width="1.5"/>
+  <text x="420" y="270" text-anchor="middle" font-size="10" fill="#4338CA" font-weight="600">Custom headers like</text>
+  <text x="420" y="283" text-anchor="middle" font-size="10" fill="#4338CA" font-weight="600">Authorization, X-API-Key</text>
+
+  <!-- Content-Type note -->
+  <rect x="20" y="270" width="180" height="44" rx="6" fill="#F0FDF4" stroke="#10B981" stroke-width="1.5"/>
+  <text x="110" y="287" text-anchor="middle" font-size="10" fill="#065F46" font-weight="600">Content-Type check:</text>
+  <text x="110" y="302" text-anchor="middle" font-size="9" fill="#065F46">Only form-data, urlencoded,</text>
+
+  <!-- Yes from Content-Type -->
+  <line x1="110" y1="314" x2="110" y2="340" stroke="#10B981" stroke-width="1.5"/>
+
+  <!-- Simple Request result -->
+  <rect x="30" y="340" width="160" height="40" rx="8" fill="#10B981"/>
+  <text x="110" y="356" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="700">SIMPLE REQUEST</text>
+  <text x="110" y="372" text-anchor="middle" font-size="10" fill="#D1FAE5">No preflight needed</text>
+
+  <!-- Preflight Required result -->
+  <rect x="540" y="250" width="190" height="40" rx="8" fill="#EF4444"/>
+  <text x="635" y="266" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="700">PREFLIGHT REQUIRED</text>
+  <text x="635" y="282" text-anchor="middle" font-size="10" fill="#FEE2E2">OPTIONS sent first</text>
+
+  <line x1="420" y1="294" x2="540" y2="270" stroke="#EF4444" stroke-width="1.5"/>
+
+  <!-- Also leads to preflight -->
+  <line x1="620" y1="250" x2="620" y2="250" stroke="#EF4444" stroke-width="1.5"/>
+
+  <!-- Simple request details -->
+  <rect x="220" y="340" width="250" height="50" rx="6" fill="#F8FAFC" stroke="#e2e8f0"/>
+  <text x="345" y="357" text-anchor="middle" font-size="10" fill="#475569" font-weight="600">Simple request flow:</text>
+  <text x="345" y="373" text-anchor="middle" font-size="9" fill="#475569">Browser sends request directly with Origin header.</text>
+  <text x="345" y="385" text-anchor="middle" font-size="9" fill="#475569">Server responds with Access-Control-Allow-Origin.</text>
+
+  <!-- Preflight details -->
+  <rect x="500" y="302" width="280" height="58" rx="6" fill="#F8FAFC" stroke="#e2e8f0"/>
+  <text x="640" y="319" text-anchor="middle" font-size="10" fill="#475569" font-weight="600">Preflight flow:</text>
+  <text x="640" y="333" text-anchor="middle" font-size="9" fill="#475569">1. Browser sends OPTIONS with request details</text>
+  <text x="640" y="345" text-anchor="middle" font-size="9" fill="#475569">2. Server responds with allowed methods/headers</text>
+  <text x="640" y="357" text-anchor="middle" font-size="9" fill="#475569">3. If allowed, browser sends actual request</text>
+
+  <!-- Note -->
+  <text x="200" y="322" font-size="8" fill="#94a3b8">*Content-Type: text/plain only</text>
+</svg>

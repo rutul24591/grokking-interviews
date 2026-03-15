@@ -1,0 +1,86 @@
+<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="400" fill="#ffffff"/>
+  <text x="400" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">DataLoader Pattern - Batching &amp; Deduplication</text>
+
+  <!-- Components requesting data -->
+  <rect x="30" y="60" width="130" height="50" rx="8" fill="#3B82F6"/>
+  <text x="95" y="82" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">Component A</text>
+  <text x="95" y="98" text-anchor="middle" font-size="10" fill="#dbeafe">load(user:1)</text>
+
+  <rect x="30" y="130" width="130" height="50" rx="8" fill="#3B82F6"/>
+  <text x="95" y="152" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">Component B</text>
+  <text x="95" y="168" text-anchor="middle" font-size="10" fill="#dbeafe">load(user:2)</text>
+
+  <rect x="30" y="200" width="130" height="50" rx="8" fill="#3B82F6"/>
+  <text x="95" y="222" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="bold">Component C</text>
+  <text x="95" y="238" text-anchor="middle" font-size="10" fill="#dbeafe">load(user:1)</text>
+
+  <!-- Arrows to DataLoader -->
+  <defs>
+    <marker id="dlArrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6366F1"/>
+    </marker>
+    <marker id="dlArrowGreen" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#10B981"/>
+    </marker>
+    <marker id="dlArrowOrange" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#F59E0B"/>
+    </marker>
+  </defs>
+
+  <line x1="160" y1="85" x2="230" y2="130" stroke="#6366F1" stroke-width="2" marker-end="url(#dlArrow)"/>
+  <line x1="160" y1="155" x2="230" y2="155" stroke="#6366F1" stroke-width="2" marker-end="url(#dlArrow)"/>
+  <line x1="160" y1="225" x2="230" y2="180" stroke="#6366F1" stroke-width="2" marker-end="url(#dlArrow)"/>
+
+  <!-- DataLoader box -->
+  <rect x="235" y="95" width="150" height="120" rx="10" fill="#6366F1" stroke="#4f46e5" stroke-width="2"/>
+  <text x="310" y="120" text-anchor="middle" font-size="13" fill="#ffffff" font-weight="bold">DataLoader</text>
+  <line x1="250" y1="130" x2="370" y2="130" stroke="#a5b4fc" stroke-width="1"/>
+  <text x="310" y="148" text-anchor="middle" font-size="10" fill="#e0e7ff">Pending Keys:</text>
+  <text x="310" y="165" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="600">[user:1, user:2]</text>
+  <text x="310" y="185" text-anchor="middle" font-size="9" fill="#c7d2fe">user:1 deduped!</text>
+  <text x="310" y="200" text-anchor="middle" font-size="9" fill="#c7d2fe">Flush on microtask</text>
+
+  <!-- Arrow to batch fetch -->
+  <line x1="385" y1="155" x2="440" y2="155" stroke="#10B981" stroke-width="2" marker-end="url(#dlArrowGreen)"/>
+
+  <!-- Batch fetch -->
+  <rect x="445" y="105" width="140" height="100" rx="10" fill="#10B981" stroke="#059669" stroke-width="2"/>
+  <text x="515" y="130" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="bold">Batch Fetch</text>
+  <line x1="460" y1="140" x2="570" y2="140" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="515" y="158" text-anchor="middle" font-size="10" fill="#ecfdf5">GET /api/users</text>
+  <text x="515" y="175" text-anchor="middle" font-size="10" fill="#ecfdf5">?ids=1,2</text>
+  <text x="515" y="195" text-anchor="middle" font-size="9" fill="#a7f3d0">Single network call</text>
+
+  <!-- Arrow to server -->
+  <line x1="585" y1="155" x2="635" y2="155" stroke="#10B981" stroke-width="2" marker-end="url(#dlArrowGreen)"/>
+
+  <!-- Server response -->
+  <rect x="640" y="105" width="130" height="100" rx="10" fill="#F59E0B" stroke="#d97706" stroke-width="2"/>
+  <text x="705" y="128" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="bold">Response</text>
+  <line x1="655" y1="138" x2="755" y2="138" stroke="#fde68a" stroke-width="1"/>
+  <text x="705" y="158" text-anchor="middle" font-size="10" fill="#ffffff">{`{user:1: Alice}`}</text>
+  <text x="705" y="175" text-anchor="middle" font-size="10" fill="#ffffff">{`{user:2: Bob}`}</text>
+  <text x="705" y="195" text-anchor="middle" font-size="9" fill="#fef3c7">Ordered by keys</text>
+
+  <!-- Distribution arrows back -->
+  <path d="M640 180 Q 500 260 160 85" fill="none" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#dlArrowOrange)"/>
+  <path d="M640 190 Q 400 280 160 155" fill="none" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#dlArrowOrange)"/>
+  <path d="M640 200 Q 450 310 160 225" fill="none" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#dlArrowOrange)"/>
+
+  <!-- Result labels -->
+  <rect x="200" y="280" width="110" height="22" rx="4" fill="#fef3c7"/>
+  <text x="255" y="295" text-anchor="middle" font-size="9" fill="#92400e" font-weight="600">A gets Alice</text>
+
+  <rect x="345" y="280" width="110" height="22" rx="4" fill="#fef3c7"/>
+  <text x="400" y="295" text-anchor="middle" font-size="9" fill="#92400e" font-weight="600">B gets Bob</text>
+
+  <rect x="490" y="280" width="145" height="22" rx="4" fill="#fef3c7"/>
+  <text x="562" y="295" text-anchor="middle" font-size="9" fill="#92400e" font-weight="600">C gets Alice (cached)</text>
+
+  <!-- Cache indicator -->
+  <rect x="230" y="320" width="340" height="55" rx="8" fill="#f0fdf4" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="400" y="340" text-anchor="middle" font-size="11" fill="#065f46" font-weight="bold">Cache Map</text>
+  <text x="400" y="358" text-anchor="middle" font-size="10" fill="#047857">user:1 -&gt; Promise&lt;Alice&gt; | user:2 -&gt; Promise&lt;Bob&gt;</text>
+  <text x="400" y="372" text-anchor="middle" font-size="9" fill="#6b7280">Subsequent load(user:1) returns cached Promise instantly</text>
+</svg>

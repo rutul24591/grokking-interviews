@@ -1,0 +1,112 @@
+<svg viewBox="0 0 800 350" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="350" fill="#ffffff"/>
+  <text x="400" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e293b">Retry Strategies Comparison</text>
+
+  <!-- Table header -->
+  <rect x="30" y="55" width="170" height="40" rx="0" fill="#1e293b"/>
+  <text x="115" y="80" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Strategy</text>
+
+  <rect x="200" y="55" width="190" height="40" rx="0" fill="#1e293b"/>
+  <text x="295" y="80" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Thundering Herd Risk</text>
+
+  <rect x="390" y="55" width="190" height="40" rx="0" fill="#1e293b"/>
+  <text x="485" y="80" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Server Recovery</text>
+
+  <rect x="580" y="55" width="190" height="40" rx="0" fill="#1e293b"/>
+  <text x="675" y="80" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Client UX</text>
+
+  <!-- Row 1: Fixed Delay -->
+  <rect x="30" y="95" width="170" height="55" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="115" y="118" text-anchor="middle" font-size="12" font-weight="600" fill="#1e293b">Fixed Delay</text>
+  <text x="115" y="133" text-anchor="middle" font-size="10" fill="#64748b">1s, 1s, 1s, 1s</text>
+
+  <rect x="200" y="95" width="190" height="55" fill="#fef2f2" stroke="#e2e8f0" stroke-width="1"/>
+  <circle cx="235" cy="120" r="10" fill="#EF4444"/>
+  <text x="235" y="124" text-anchor="middle" font-size="10" fill="#ffffff" font-weight="bold">!</text>
+  <text x="330" y="118" text-anchor="middle" font-size="11" fill="#991b1b">HIGH</text>
+  <text x="330" y="133" text-anchor="middle" font-size="9" fill="#64748b">Synchronized bursts</text>
+
+  <rect x="390" y="95" width="190" height="55" fill="#fef2f2" stroke="#e2e8f0" stroke-width="1"/>
+  <circle cx="425" cy="120" r="10" fill="#EF4444"/>
+  <text x="425" y="124" text-anchor="middle" font-size="10" fill="#ffffff" font-weight="bold">!</text>
+  <text x="520" y="118" text-anchor="middle" font-size="11" fill="#991b1b">POOR</text>
+  <text x="520" y="133" text-anchor="middle" font-size="9" fill="#64748b">Constant pressure</text>
+
+  <rect x="580" y="95" width="190" height="55" fill="#fffbeb" stroke="#e2e8f0" stroke-width="1"/>
+  <circle cx="615" cy="120" r="10" fill="#F59E0B"/>
+  <text x="615" y="124" text-anchor="middle" font-size="10" fill="#ffffff" font-weight="bold">~</text>
+  <text x="710" y="118" text-anchor="middle" font-size="11" fill="#92400e">FAIR</text>
+  <text x="710" y="133" text-anchor="middle" font-size="9" fill="#64748b">Predictable waits</text>
+
+  <!-- Row 2: Linear Backoff -->
+  <rect x="30" y="150" width="170" height="55" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="115" y="173" text-anchor="middle" font-size="12" font-weight="600" fill="#1e293b">Linear Backoff</text>
+  <text x="115" y="188" text-anchor="middle" font-size="10" fill="#64748b">1s, 2s, 3s, 4s</text>
+
+  <rect x="200" y="150" width="190" height="55" fill="#fffbeb" stroke="#e2e8f0" stroke-width="1"/>
+  <circle cx="235" cy="175" r="10" fill="#F59E0B"/>
+  <text x="235" y="179" text-anchor="middle" font-size="10" fill="#ffffff" font-weight="bold">~</text>
+  <text x="330" y="173" text-anchor="middle" font-size="11" fill="#92400e">MODERATE</text>
+  <text x="330" y="188" text-anchor="middle" font-size="9" fill="#64748b">Slight spread</text>
+
+  <rect x="390" y="150" width="190" height="55" fill="#fffbeb" stroke="#e2e8f0" stroke-width="1"/>
+  <circle cx="425" cy="175" r="10" fill="#F59E0B"/>
+  <text x="425" y="179" text-anchor="middle" font-size="10" fill="#ffffff" font-weight="bold">~</text>
+  <text x="520" y="173" text-anchor="middle" font-size="11" fill="#92400e">MODERATE</text>
+  <text x="520" y="188" text-anchor="middle" font-size="9" fill="#64748b">Linear pressure drop</text>
+
+  <rect x="580" y="150" width="190" height="55" fill="#fffbeb" stroke="#e2e8f0" stroke-width="1"/>
+  <circle cx="615" cy="175" r="10" fill="#F59E0B"/>
+  <text x="615" y="179" text-anchor="middle" font-size="10" fill="#ffffff" font-weight="bold">~</text>
+  <text x="710" y="173" text-anchor="middle" font-size="11" fill="#92400e">FAIR</text>
+  <text x="710" y="188" text-anchor="middle" font-size="9" fill="#64748b">Reasonable growth</text>
+
+  <!-- Row 3: Exponential Backoff -->
+  <rect x="30" y="205" width="170" height="55" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="115" y="228" text-anchor="middle" font-size="12" font-weight="600" fill="#1e293b">Exponential Backoff</text>
+  <text x="115" y="243" text-anchor="middle" font-size="10" fill="#64748b">1s, 2s, 4s, 8s</text>
+
+  <rect x="200" y="205" width="190" height="55" fill="#fffbeb" stroke="#e2e8f0" stroke-width="1"/>
+  <circle cx="235" cy="230" r="10" fill="#F59E0B"/>
+  <text x="235" y="234" text-anchor="middle" font-size="10" fill="#ffffff" font-weight="bold">~</text>
+  <text x="330" y="228" text-anchor="middle" font-size="11" fill="#92400e">MODERATE</text>
+  <text x="330" y="243" text-anchor="middle" font-size="9" fill="#64748b">Same timing, no jitter</text>
+
+  <rect x="390" y="205" width="190" height="55" fill="#f0fdf4" stroke="#e2e8f0" stroke-width="1"/>
+  <circle cx="425" cy="230" r="10" fill="#10B981"/>
+  <text x="425" y="234" text-anchor="middle" font-size="14" fill="#ffffff" font-weight="bold">&#10003;</text>
+  <text x="520" y="228" text-anchor="middle" font-size="11" fill="#065f46">GOOD</text>
+  <text x="520" y="243" text-anchor="middle" font-size="9" fill="#64748b">Rapid pressure drop</text>
+
+  <rect x="580" y="205" width="190" height="55" fill="#fffbeb" stroke="#e2e8f0" stroke-width="1"/>
+  <circle cx="615" cy="230" r="10" fill="#F59E0B"/>
+  <text x="615" y="234" text-anchor="middle" font-size="10" fill="#ffffff" font-weight="bold">~</text>
+  <text x="710" y="228" text-anchor="middle" font-size="11" fill="#92400e">FAIR</text>
+  <text x="710" y="243" text-anchor="middle" font-size="9" fill="#64748b">Later retries slow</text>
+
+  <!-- Row 4: Exponential + Jitter (recommended) -->
+  <rect x="30" y="260" width="170" height="55" fill="#eef2ff" stroke="#6366F1" stroke-width="2"/>
+  <text x="115" y="280" text-anchor="middle" font-size="12" font-weight="700" fill="#6366F1">Exponential + Jitter</text>
+  <text x="115" y="298" text-anchor="middle" font-size="10" fill="#6366F1">Recommended</text>
+
+  <rect x="200" y="260" width="190" height="55" fill="#f0fdf4" stroke="#6366F1" stroke-width="2"/>
+  <circle cx="235" cy="285" r="10" fill="#10B981"/>
+  <text x="235" y="289" text-anchor="middle" font-size="14" fill="#ffffff" font-weight="bold">&#10003;</text>
+  <text x="330" y="283" text-anchor="middle" font-size="11" fill="#065f46">LOW</text>
+  <text x="330" y="298" text-anchor="middle" font-size="9" fill="#64748b">Even distribution</text>
+
+  <rect x="390" y="260" width="190" height="55" fill="#f0fdf4" stroke="#6366F1" stroke-width="2"/>
+  <circle cx="425" cy="285" r="10" fill="#10B981"/>
+  <text x="425" y="289" text-anchor="middle" font-size="14" fill="#ffffff" font-weight="bold">&#10003;</text>
+  <text x="520" y="283" text-anchor="middle" font-size="11" fill="#065f46">EXCELLENT</text>
+  <text x="520" y="298" text-anchor="middle" font-size="9" fill="#64748b">Smooth recovery</text>
+
+  <rect x="580" y="260" width="190" height="55" fill="#f0fdf4" stroke="#6366F1" stroke-width="2"/>
+  <circle cx="615" cy="285" r="10" fill="#10B981"/>
+  <text x="615" y="289" text-anchor="middle" font-size="14" fill="#ffffff" font-weight="bold">&#10003;</text>
+  <text x="710" y="283" text-anchor="middle" font-size="11" fill="#065f46">BEST</text>
+  <text x="710" y="298" text-anchor="middle" font-size="9" fill="#64748b">Optimal aggregate</text>
+
+  <!-- Legend indicator -->
+  <rect x="30" y="328" width="740" height="2" fill="#6366F1" opacity="0.3"/>
+</svg>

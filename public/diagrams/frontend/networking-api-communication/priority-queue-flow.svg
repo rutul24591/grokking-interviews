@@ -1,0 +1,98 @@
+<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="400" fill="#ffffff"/>
+  <text x="400" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">Priority Queue Flow - Request Processing</text>
+
+  <defs>
+    <marker id="pqArrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#64748b"/>
+    </marker>
+    <marker id="pqArrowRed" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#EF4444"/>
+    </marker>
+  </defs>
+
+  <!-- Timeline -->
+  <text x="40" y="60" font-size="10" fill="#64748b" font-weight="600">TIME</text>
+  <line x1="30" y1="70" x2="30" y2="380" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="40" y="90" font-size="9" fill="#94a3b8">t=0</text>
+  <text x="40" y="140" font-size="9" fill="#94a3b8">t=1</text>
+  <text x="40" y="190" font-size="9" fill="#94a3b8">t=2</text>
+  <text x="40" y="240" font-size="9" fill="#94a3b8">t=3</text>
+  <text x="40" y="290" font-size="9" fill="#94a3b8">t=4</text>
+  <text x="40" y="340" font-size="9" fill="#94a3b8">t=5</text>
+
+  <!-- Queue state at t=0: 3 normal requests arrive -->
+  <rect x="80" y="72" width="110" height="30" rx="5" fill="#3B82F6"/>
+  <text x="135" y="91" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">Normal: Req A</text>
+  <rect x="195" y="72" width="110" height="30" rx="5" fill="#3B82F6"/>
+  <text x="250" y="91" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">Normal: Req B</text>
+  <rect x="310" y="72" width="110" height="30" rx="5" fill="#3B82F6"/>
+  <text x="365" y="91" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">Normal: Req C</text>
+
+  <!-- Processing slots at t=0 -->
+  <rect x="520" y="55" width="250" height="55" rx="8" fill="#f0fdf4" stroke="#10B981" stroke-width="1.5"/>
+  <text x="645" y="72" text-anchor="middle" font-size="10" fill="#065f46" font-weight="bold">Processing (max 3)</text>
+  <rect x="530" y="82" width="70" height="20" rx="4" fill="#10B981"/>
+  <text x="565" y="96" text-anchor="middle" font-size="8" fill="#fff">Req A</text>
+  <rect x="605" y="82" width="70" height="20" rx="4" fill="#10B981"/>
+  <text x="640" y="96" text-anchor="middle" font-size="8" fill="#fff">Req B</text>
+  <rect x="680" y="82" width="70" height="20" rx="4" fill="#10B981"/>
+  <text x="715" y="96" text-anchor="middle" font-size="8" fill="#fff">Req C</text>
+
+  <line x1="420" y1="87" x2="515" y2="87" stroke="#64748b" stroke-width="1.5" marker-end="url(#pqArrow)"/>
+  <text x="467" y="82" text-anchor="middle" font-size="8" fill="#64748b">dispatch</text>
+
+  <!-- t=1: Low priority and high priority arrive -->
+  <rect x="80" y="122" width="110" height="30" rx="5" fill="#F59E0B"/>
+  <text x="135" y="141" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">Low: Req D</text>
+  <rect x="195" y="122" width="110" height="30" rx="5" fill="#EF4444"/>
+  <text x="250" y="141" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">HIGH: Req E</text>
+
+  <text x="350" y="141" font-size="9" fill="#64748b">Queue full - both wait</text>
+
+  <!-- Queue state visualization -->
+  <rect x="520" y="120" width="250" height="35" rx="6" fill="#fef2f2" stroke="#EF4444" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="645" y="142" text-anchor="middle" font-size="9" fill="#EF4444" font-weight="600">Waiting: [HIGH: E] then [LOW: D] (priority sorted)</text>
+
+  <!-- t=2: Req A completes, HIGH priority jumps in -->
+  <rect x="80" y="172" width="180" height="30" rx="5" fill="#f0fdf4" stroke="#10B981" stroke-width="1.5"/>
+  <text x="170" y="191" text-anchor="middle" font-size="9" fill="#065f46" font-weight="600">Req A completes - slot opens</text>
+
+  <!-- Arrow showing E jumping ahead of D -->
+  <rect x="520" y="168" width="250" height="55" rx="8" fill="#f0fdf4" stroke="#10B981" stroke-width="1.5"/>
+  <text x="645" y="185" text-anchor="middle" font-size="10" fill="#065f46" font-weight="bold">Processing (3/3)</text>
+  <rect x="530" y="195" width="70" height="20" rx="4" fill="#EF4444"/>
+  <text x="565" y="209" text-anchor="middle" font-size="8" fill="#fff">Req E!</text>
+  <rect x="605" y="195" width="70" height="20" rx="4" fill="#10B981"/>
+  <text x="640" y="209" text-anchor="middle" font-size="8" fill="#fff">Req B</text>
+  <rect x="680" y="195" width="70" height="20" rx="4" fill="#10B981"/>
+  <text x="715" y="209" text-anchor="middle" font-size="8" fill="#fff">Req C</text>
+
+  <line x1="300" y1="187" x2="515" y2="200" stroke="#EF4444" stroke-width="2" marker-end="url(#pqArrowRed)"/>
+  <text x="400" y="180" text-anchor="middle" font-size="9" fill="#EF4444" font-weight="bold">HIGH priority jumps ahead!</text>
+
+  <!-- t=3: D still waiting -->
+  <rect x="520" y="240" width="250" height="35" rx="6" fill="#fffbeb" stroke="#F59E0B" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="645" y="262" text-anchor="middle" font-size="9" fill="#92400e" font-weight="600">Still waiting: [LOW: D] (aging: 2 ticks)</text>
+
+  <!-- t=4: B completes, D finally dispatches -->
+  <rect x="80" y="280" width="180" height="30" rx="5" fill="#f0fdf4" stroke="#10B981" stroke-width="1.5"/>
+  <text x="170" y="299" text-anchor="middle" font-size="9" fill="#065f46" font-weight="600">Req B completes - slot opens</text>
+
+  <rect x="520" y="278" width="250" height="55" rx="8" fill="#f0fdf4" stroke="#10B981" stroke-width="1.5"/>
+  <text x="645" y="295" text-anchor="middle" font-size="10" fill="#065f46" font-weight="bold">Processing (3/3)</text>
+  <rect x="530" y="305" width="70" height="20" rx="4" fill="#F59E0B"/>
+  <text x="565" y="319" text-anchor="middle" font-size="8" fill="#fff">Req D</text>
+  <rect x="605" y="305" width="70" height="20" rx="4" fill="#10B981"/>
+  <text x="640" y="319" text-anchor="middle" font-size="8" fill="#fff">Req E</text>
+  <rect x="680" y="305" width="70" height="20" rx="4" fill="#10B981"/>
+  <text x="715" y="319" text-anchor="middle" font-size="8" fill="#fff">Req C</text>
+
+  <line x1="300" y1="295" x2="515" y2="310" stroke="#F59E0B" stroke-width="1.5" marker-end="url(#pqArrow)"/>
+  <text x="400" y="290" text-anchor="middle" font-size="9" fill="#F59E0B">D finally dispatched</text>
+
+  <!-- Summary -->
+  <rect x="80" y="348" width="690" height="40" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="425" y="365" text-anchor="middle" font-size="10" fill="#1e293b" font-weight="bold">Key Insight:</text>
+  <text x="425" y="380" text-anchor="middle" font-size="9" fill="#64748b">High-priority Req E was dispatched before low-priority Req D despite arriving later. D waited 3 ticks but was never starved.</text>
+</svg>

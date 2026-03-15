@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550">
+  <rect width="900" height="550" fill="#f8fafc"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">WCAG Principles (POUR)</text>
+  
+  <!-- Perceivable -->
+  <rect x="30" y="80" width="270" height="140" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="8"/>
+  <text x="165" y="110" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e40af">Perceivable 👁️</text>
+  <line x1="50" y1="125" x2="280" y2="125" stroke="#3b82f6" stroke-width="1"/>
+  <text x="50" y="150" font-size="11" fill="#1e3a8a">Users can perceive content</text>
+  <text x="50" y="175" font-size="11" fill="#1e3a8a">• Alt text for images</text>
+  <text x="50" y="195" font-size="11" fill="#1e3a8a">• Captions for video</text>
+  <text x="50" y="215" font-size="11" fill="#1e3a8a">• Color contrast (4.5:1)</text>
+  
+  <!-- Operable -->
+  <rect x="315" y="80" width="270" height="140" fill="#d1fae5" stroke="#10b981" stroke-width="2" rx="8"/>
+  <text x="450" y="110" text-anchor="middle" font-size="16" font-weight="bold" fill="#065f46">Operable 🖐️</text>
+  <line x1="335" y1="125" x2="565" y2="125" stroke="#10b981" stroke-width="1"/>
+  <text x="335" y="150" font-size="11" fill="#064e3b">Users can operate interface</text>
+  <text x="335" y="175" font-size="11" fill="#064e3b">• Keyboard accessible</text>
+  <text x="335" y="195" font-size="11" fill="#064e3b">• Enough time to read</text>
+  <text x="335" y="215" font-size="11" fill="#064e3b">• No seizure-inducing content</text>
+  
+  <!-- Understandable -->
+  <rect x="600" y="80" width="270" height="140" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="8"/>
+  <text x="735" y="110" text-anchor="middle" font-size="16" font-weight="bold" fill="#92400e">Understandable 🧠</text>
+  <line x1="620" y1="125" x2="850" y2="125" stroke="#f59e0b" stroke-width="1"/>
+  <text x="620" y="150" font-size="11" fill="#78350f">Users understand content</text>
+  <text x="620" y="175" font-size="11" fill="#78350f">• Readable text</text>
+  <text x="620" y="195" font-size="11" fill="#78350f">• Predictable behavior</text>
+  <text x="620" y="215" font-size="11" fill="#78350f">• Input assistance</text>
+  
+  <!-- Robust -->
+  <rect x="30" y="250" width="270" height="140" fill="#ede9fe" stroke="#8b5cf6" stroke-width="2" rx="8"/>
+  <text x="165" y="280" text-anchor="middle" font-size="16" font-weight="bold" fill="#5b21b6">Robust 🛠️</text>
+  <line x1="50" y1="295" x2="280" y2="295" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="50" y="320" font-size="11" fill="#4c1d95">Works with assistive tech</text>
+  <text x="50" y="345" font-size="11" fill="#4c1d95">• Valid HTML</text>
+  <text x="50" y="365" font-size="11" fill="#4c1d95">• ARIA when needed</text>
+  <text x="50" y="385" font-size="11" fill="#4c1d95">• Compatible with tools</text>
+  
+  <!-- Conformance levels -->
+  <rect x="315" y="250" width="555" height="140" fill="white" stroke="#6366f1" stroke-width="2" rx="8"/>
+  <text x="592" y="275" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">Conformance Levels</text>
+  <line x1="335" y1="290" x2="850" y2="290" stroke="#6366f1" stroke-width="1"/>
+  
+  <!-- Level A -->
+  <rect x="350" y="310" width="150" height="60" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="4"/>
+  <text x="425" y="335" text-anchor="middle" font-size="12" font-weight="bold" fill="#991b1b">Level A</text>
+  <text x="425" y="355" text-anchor="middle" font-size="10" fill="#7f1d1d">25 criteria</text>
+  <text x="425" y="370" text-anchor="middle" font-size="9" fill="#7f1d1d">Minimum</text>
+  
+  <!-- Level AA -->
+  <rect x="520" y="310" width="150" height="60" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="4"/>
+  <text x="595" y="335" text-anchor="middle" font-size="12" font-weight="bold" fill="#92400e">Level AA</text>
+  <text x="595" y="355" text-anchor="middle" font-size="10" fill="#78350f">+13 criteria</text>
+  <text x="595" y="370" text-anchor="middle" font-size="9" fill="#78350f">Standard target</text>
+  
+  <!-- Level AAA -->
+  <rect x="690" y="310" width="150" height="60" fill="#d1fae5" stroke="#10b981" stroke-width="2" rx="4"/>
+  <text x="765" y="335" text-anchor="middle" font-size="12" font-weight="bold" fill="#065f46">Level AAA</text>
+  <text x="765" y="355" text-anchor="middle" font-size="10" fill="#064e3b">+23 criteria</text>
+  <text x="765" y="370" text-anchor="middle" font-size="9" fill="#064e3b">Highest level</text>
+  
+  <!-- Testing methods -->
+  <rect x="30" y="420" width="840" height="110" fill="#f1f5f9" stroke="#64748b" stroke-width="1" rx="6"/>
+  <text x="450" y="440" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">Testing Methods</text>
+  <line x1="50" y1="450" x2="850" y2="450" stroke="#64748b" stroke-width="1"/>
+  
+  <text x="80" y="475" font-size="11" fill="#475569">🔧 Automated (30%): axe, Lighthouse</text>
+  <text x="350" y="475" font-size="11" fill="#475569">⌨️ Keyboard testing</text>
+  <text x="550" y="475" font-size="11" fill="#475569">🔊 Screen readers: NVDA, VoiceOver</text>
+  <text x="80" y="505" font-size="11" fill="#475569">👥 User testing with disabilities</text>
+  <text x="350" y="505" font-size="11" fill="#475569">✓ Manual checklist</text>
+  
+</svg>

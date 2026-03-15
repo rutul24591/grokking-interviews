@@ -5,6 +5,13 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  // Content-heavy TSX articles use a lot of inline prose; enforcing entity escaping is noisy and low value here.
+  {
+    files: ["content/articles/**/*.tsx", "content/system-design-concepts/**/*.tsx"],
+    rules: {
+      "react/no-unescaped-entities": "off",
+    },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:
@@ -12,6 +19,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Example code is displayed as content and is not meant to follow repo lint rules.
+    "content/examples/**",
   ]),
 ]);
 

@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550">
+  <rect width="900" height="550" fill="#f8fafc"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Keyboard Navigation Patterns</text>
+  
+  <!-- Focus management -->
+  <rect x="30" y="70" width="270" height="140" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="8"/>
+  <text x="165" y="95" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e40af">Focus Management</text>
+  <line x1="50" y1="110" x2="280" y2="110" stroke="#3b82f6" stroke-width="1"/>
+  
+  <text x="50" y="135" font-size="11" fill="#1e3a8a">✓ All interactive elements focusable</text>
+  <text x="50" y="160" font-size="11" fill="#1e3a8a">✓ Visible focus indicator (outline)</text>
+  <text x="50" y="185" font-size="11" fill="#1e3a8a">✓ Logical focus order</text>
+  <text x="50" y="210" font-size="11" fill="#1e3a8a">✓ Modal traps focus</text>
+  
+  <!-- Tab order -->
+  <rect x="315" y="70" width="270" height="140" fill="#d1fae5" stroke="#10b981" stroke-width="2" rx="8"/>
+  <text x="450" y="95" text-anchor="middle" font-size="13" font-weight="bold" fill="#065f46">Tab Order</text>
+  <line x1="335" y1="110" x2="565" y2="110" stroke="#10b981" stroke-width="1"/>
+  
+  <text x="335" y="135" font-size="11" fill="#064e3b">1. Header links</text>
+  <text x="335" y="160" font-size="11" fill="#064e3b">2. Main navigation</text>
+  <text x="335" y="185" font-size="11" fill="#064e3b">3. Main content</text>
+  <text x="335" y="210" font-size="11" fill="#064e3b">4. Footer links</text>
+  
+  <!-- Common shortcuts -->
+  <rect x="600" y="70" width="270" height="140" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="8"/>
+  <text x="735" y="95" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">Common Shortcuts</text>
+  <line x1="620" y1="110" x2="850" y2="110" stroke="#f59e0b" stroke-width="1"/>
+  
+  <text x="620" y="135" font-size="11" fill="#78350f">Tab / Shift+Tab: Navigate</text>
+  <text x="620" y="160" font-size="11" fill="#78350f">Enter / Space: Activate</text>
+  <text x="620" y="185" font-size="11" fill="#78350f">Arrow keys: Move within</text>
+  <text x="620" y="210" font-size="11" fill="#78350f">Escape: Close/Cancel</text>
+  
+  <!-- Focus trap example -->
+  <rect x="30" y="240" width="410" height="140" fill="#ede9fe" stroke="#8b5cf6" stroke-width="2" rx="8"/>
+  <text x="235" y="265" text-anchor="middle" font-size="13" font-weight="bold" fill="#5b21b6">Focus Trap (Modal)</text>
+  <line x1="50" y1="280" x2="420" y2="280" stroke="#8b5cf6" stroke-width="1"/>
+  
+  <rect x="70" y="295" width="350" height="70" fill="#c4b5fd" stroke="#7c3aed" stroke-width="2" rx="4"/>
+  <text x="245" y="320" text-anchor="middle" font-size="11" font-weight="bold" fill="#5b21b6">Modal Dialog</text>
+  <text x="245" y="340" text-anchor="middle" font-size="10" fill="#4c1d95">Tab cycles within modal</text>
+  <text x="245" y="355" text-anchor="middle" font-size="10" fill="#4c1d95">Escape closes modal</text>
+  
+  <!-- Skip links -->
+  <rect x="460" y="240" width="410" height="140" fill="white" stroke="#6366f1" stroke-width="2" rx="8"/>
+  <text x="665" y="265" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e40af">Skip Links</text>
+  <line x1="480" y1="280" x2="850" y2="280" stroke="#6366f1" stroke-width="1"/>
+  
+  <rect x="500" y="295" width="350" height="35" fill="#e0e7ff" stroke="#6366f1" stroke-width="2" rx="4"/>
+  <text x="675" y="320" text-anchor="middle" font-size="11" fill="#1e40af">Skip to main content</text>
+  
+  <text x="500" y="355" font-size="11" fill="#1e293b">✓ First focusable element</text>
+  <text x="500" y="375" font-size="11" fill="#1e293b">✓ Visible on focus</text>
+  <text x="500" y="395" font-size="11" fill="#1e293b">✓ Links to #main</text>
+  
+  <!-- Testing checklist -->
+  <rect x="30" y="410" width="840" height="120" fill="#f1f5f9" stroke="#64748b" stroke-width="1" rx="6"/>
+  <text x="450" y="430" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">Keyboard Testing Checklist</text>
+  <line x1="50" y1="440" x2="850" y2="440" stroke="#64748b" stroke-width="1"/>
+  
+  <text x="80" y="465" font-size="11" fill="#475569">□ Can navigate entire site with Tab only</text>
+  <text x="450" y="465" font-size="11" fill="#475569">□ Focus is always visible</text>
+  <text x="80" y="490" font-size="11" fill="#475569">□ No keyboard traps (except modals)</text>
+  <text x="450" y="490" font-size="11" fill="#475569">□ Custom components have keyboard support</text>
+  <text x="80" y="515" font-size="11" fill="#475569">□ Skip links work</text>
+  <text x="450" y="515" font-size="11" fill="#475569">□ Modal focus is trapped correctly</text>
+  
+</svg>

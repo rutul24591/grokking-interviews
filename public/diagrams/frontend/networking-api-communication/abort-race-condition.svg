@@ -1,0 +1,86 @@
+<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="400" fill="white"/>
+  <text x="400" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e293b">Race Condition: Without vs With AbortController</text>
+
+  <!-- WITHOUT CANCELLATION -->
+  <rect x="20" y="50" width="370" height="320" rx="10" fill="#FEF2F2" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="205" y="75" text-anchor="middle" font-size="14" font-weight="bold" fill="#EF4444">Without Cancellation</text>
+
+  <!-- Timeline -->
+  <line x1="50" y1="100" x2="50" y2="340" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="47" y="95" text-anchor="end" font-size="9" fill="#64748B">Time</text>
+
+  <!-- User types "ab" -->
+  <rect x="70" y="105" width="140" height="28" rx="6" fill="#EEF2FF" stroke="#6366F1" stroke-width="1"/>
+  <text x="140" y="123" text-anchor="middle" font-size="10" fill="#6366F1">User types "ab"</text>
+
+  <!-- Request 1 bar (slow) -->
+  <rect x="220" y="105" width="150" height="28" rx="6" fill="#DBEAFE" stroke="#3B82F6" stroke-width="1"/>
+  <text x="295" y="123" text-anchor="middle" font-size="9" fill="#3B82F6">Request 1: /search?q=ab</text>
+  <line x1="220" y1="133" x2="220" y2="260" stroke="#3B82F6" stroke-width="2" stroke-dasharray="4"/>
+
+  <!-- User types "abc" -->
+  <rect x="70" y="155" width="140" height="28" rx="6" fill="#EEF2FF" stroke="#6366F1" stroke-width="1"/>
+  <text x="140" y="173" text-anchor="middle" font-size="10" fill="#6366F1">User types "abc"</text>
+
+  <!-- Request 2 bar (fast) -->
+  <rect x="220" y="155" width="110" height="28" rx="6" fill="#ECFDF5" stroke="#10B981" stroke-width="1"/>
+  <text x="275" y="173" text-anchor="middle" font-size="9" fill="#10B981">Request 2: /search?q=abc</text>
+  <line x1="220" y1="183" x2="220" y2="210" stroke="#10B981" stroke-width="2" stroke-dasharray="4"/>
+
+  <!-- Response 2 arrives first -->
+  <rect x="70" y="210" width="180" height="28" rx="6" fill="#ECFDF5" stroke="#10B981" stroke-width="1"/>
+  <text x="160" y="228" text-anchor="middle" font-size="9" fill="#10B981">Response 2 arrives: "abc" results</text>
+
+  <!-- Response 1 arrives later (overwrites!) -->
+  <rect x="70" y="260" width="200" height="28" rx="6" fill="#FEE2E2" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="170" y="278" text-anchor="middle" font-size="9" fill="#EF4444">Response 1 OVERWRITES: "ab" results</text>
+
+  <!-- Bug indicator -->
+  <rect x="90" y="300" width="230" height="30" rx="6" fill="#EF4444"/>
+  <text x="205" y="320" text-anchor="middle" font-size="11" font-weight="bold" fill="white">BUG: User sees stale "ab" results</text>
+
+  <!-- WITH CANCELLATION -->
+  <rect x="410" y="50" width="370" height="320" rx="10" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+  <text x="595" y="75" text-anchor="middle" font-size="14" font-weight="bold" fill="#10B981">With AbortController</text>
+
+  <!-- Timeline -->
+  <line x1="440" y1="100" x2="440" y2="340" stroke="#CBD5E1" stroke-width="1"/>
+
+  <!-- User types "ab" -->
+  <rect x="460" y="105" width="140" height="28" rx="6" fill="#EEF2FF" stroke="#6366F1" stroke-width="1"/>
+  <text x="530" y="123" text-anchor="middle" font-size="10" fill="#6366F1">User types "ab"</text>
+
+  <!-- Request 1 starts -->
+  <rect x="610" y="105" width="150" height="28" rx="6" fill="#DBEAFE" stroke="#3B82F6" stroke-width="1"/>
+  <text x="685" y="123" text-anchor="middle" font-size="9" fill="#3B82F6">Request 1: /search?q=ab</text>
+
+  <!-- User types "abc" -->
+  <rect x="460" y="155" width="140" height="28" rx="6" fill="#EEF2FF" stroke="#6366F1" stroke-width="1"/>
+  <text x="530" y="173" text-anchor="middle" font-size="10" fill="#6366F1">User types "abc"</text>
+
+  <!-- Abort Request 1 -->
+  <rect x="610" y="150" width="150" height="20" rx="4" fill="#FEE2E2" stroke="#EF4444" stroke-width="1"/>
+  <text x="685" y="163" text-anchor="middle" font-size="9" font-weight="600" fill="#EF4444">controller1.abort()</text>
+
+  <!-- Request 1 cancelled line -->
+  <line x1="685" y1="133" x2="685" y2="150" stroke="#EF4444" stroke-width="2"/>
+  <line x1="670" y1="142" x2="700" y2="142" stroke="#EF4444" stroke-width="2"/>
+
+  <!-- Request 2 starts -->
+  <rect x="610" y="180" width="150" height="28" rx="6" fill="#ECFDF5" stroke="#10B981" stroke-width="1"/>
+  <text x="685" y="198" text-anchor="middle" font-size="9" fill="#10B981">Request 2: /search?q=abc</text>
+  <line x1="610" y1="208" x2="610" y2="240" stroke="#10B981" stroke-width="2" stroke-dasharray="4"/>
+
+  <!-- Response 2 arrives -->
+  <rect x="460" y="240" width="200" height="28" rx="6" fill="#ECFDF5" stroke="#10B981" stroke-width="1"/>
+  <text x="560" y="258" text-anchor="middle" font-size="9" fill="#10B981">Response 2 arrives: "abc" results</text>
+
+  <!-- No stale response -->
+  <rect x="460" y="280" width="200" height="28" rx="6" fill="#F0FDF4" stroke="#10B981" stroke-width="1" stroke-dasharray="4"/>
+  <text x="560" y="298" text-anchor="middle" font-size="9" fill="#64748B">Response 1 never arrives (aborted)</text>
+
+  <!-- Success indicator -->
+  <rect x="480" y="320" width="230" height="30" rx="6" fill="#10B981"/>
+  <text x="595" y="340" text-anchor="middle" font-size="11" font-weight="bold" fill="white">CORRECT: User sees "abc" results</text>
+</svg>

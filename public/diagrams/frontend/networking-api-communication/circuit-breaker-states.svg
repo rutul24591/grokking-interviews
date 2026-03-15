@@ -1,0 +1,77 @@
+<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg" font-family="Inter, system-ui, sans-serif">
+  <rect width="800" height="450" fill="#ffffff"/>
+  <text x="400" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e293b">Circuit Breaker State Machine</text>
+
+  <defs>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10B981"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#EF4444"/>
+    </marker>
+    <marker id="arrowAmber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#F59E0B"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3B82F6"/>
+    </marker>
+  </defs>
+
+  <!-- CLOSED State (Green) -->
+  <rect x="70" y="160" width="200" height="130" rx="16" fill="#f0fdf4" stroke="#10B981" stroke-width="3"/>
+  <circle cx="170" cy="200" r="24" fill="#10B981"/>
+  <text x="170" y="205" text-anchor="middle" font-size="14" fill="#ffffff" font-weight="bold">ON</text>
+  <text x="170" y="242" text-anchor="middle" font-size="16" font-weight="700" fill="#065f46">CLOSED</text>
+  <text x="170" y="260" text-anchor="middle" font-size="11" fill="#64748b">Requests pass through</text>
+  <text x="170" y="276" text-anchor="middle" font-size="11" fill="#64748b">Monitoring failures</text>
+
+  <!-- OPEN State (Red) -->
+  <rect x="530" y="160" width="200" height="130" rx="16" fill="#fef2f2" stroke="#EF4444" stroke-width="3"/>
+  <circle cx="630" cy="200" r="24" fill="#EF4444"/>
+  <text x="630" y="205" text-anchor="middle" font-size="14" fill="#ffffff" font-weight="bold">OFF</text>
+  <text x="630" y="242" text-anchor="middle" font-size="16" font-weight="700" fill="#991b1b">OPEN</text>
+  <text x="630" y="260" text-anchor="middle" font-size="11" fill="#64748b">Requests fail immediately</text>
+  <text x="630" y="276" text-anchor="middle" font-size="11" fill="#64748b">Return fallback</text>
+
+  <!-- HALF-OPEN State (Amber) -->
+  <rect x="300" y="330" width="200" height="100" rx="16" fill="#fffbeb" stroke="#F59E0B" stroke-width="3"/>
+  <circle cx="400" cy="362" r="20" fill="#F59E0B"/>
+  <text x="400" y="367" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="bold">?</text>
+  <text x="400" y="398" text-anchor="middle" font-size="16" font-weight="700" fill="#92400e">HALF-OPEN</text>
+  <text x="400" y="416" text-anchor="middle" font-size="11" fill="#64748b">Probe request sent</text>
+
+  <!-- Transition: Closed -> Open (failures exceed threshold) -->
+  <path d="M 270 200 C 350 200, 400 180, 530 200" stroke="#EF4444" stroke-width="2.5" fill="none" marker-end="url(#arrowRed)"/>
+  <rect x="320" y="155" width="160" height="36" rx="6" fill="#fef2f2" stroke="#fecaca" stroke-width="1"/>
+  <text x="400" y="170" text-anchor="middle" font-size="10" font-weight="600" fill="#991b1b">Failures exceed threshold</text>
+  <text x="400" y="183" text-anchor="middle" font-size="9" fill="#64748b">e.g., 5 failures in 30s</text>
+
+  <!-- Transition: Open -> Half-Open (timeout expires) -->
+  <path d="M 590 290 C 570 340, 530 360, 500 360" stroke="#F59E0B" stroke-width="2.5" fill="none" marker-end="url(#arrowAmber)"/>
+  <rect x="520" y="300" width="140" height="30" rx="6" fill="#fffbeb" stroke="#fde68a" stroke-width="1"/>
+  <text x="590" y="320" text-anchor="middle" font-size="10" font-weight="600" fill="#92400e">Timeout expires</text>
+
+  <!-- Transition: Half-Open -> Closed (probe succeeds) -->
+  <path d="M 300 380 C 230 380, 180 340, 170 290" stroke="#10B981" stroke-width="2.5" fill="none" marker-end="url(#arrowGreen)"/>
+  <rect x="155" y="320" width="130" height="30" rx="6" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="220" y="340" text-anchor="middle" font-size="10" font-weight="600" fill="#065f46">Probe succeeds</text>
+
+  <!-- Transition: Half-Open -> Open (probe fails) -->
+  <path d="M 500 365 C 560 365, 620 340, 640 290" stroke="#EF4444" stroke-width="2.5" fill="none" marker-end="url(#arrowRed)"/>
+  <rect x="560" y="340" width="110" height="24" rx="6" fill="#fef2f2" stroke="#fecaca" stroke-width="1"/>
+  <text x="615" y="356" text-anchor="middle" font-size="10" font-weight="600" fill="#991b1b">Probe fails</text>
+
+  <!-- Initial state indicator -->
+  <circle cx="70" cy="140" r="6" fill="#3B82F6"/>
+  <line x1="70" y1="146" x2="120" y2="160" stroke="#3B82F6" stroke-width="2" marker-end="url(#arrowBlue)"/>
+  <text x="70" y="132" text-anchor="middle" font-size="10" font-weight="600" fill="#3B82F6">Initial State</text>
+
+  <!-- Legend -->
+  <rect x="30" y="60" width="740" height="60" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <circle cx="80" cy="90" r="8" fill="#10B981"/>
+  <text x="95" y="94" font-size="11" fill="#1e293b">Closed = Normal operation</text>
+  <circle cx="300" cy="90" r="8" fill="#EF4444"/>
+  <text x="315" y="94" font-size="11" fill="#1e293b">Open = Fail fast (fallback)</text>
+  <circle cx="540" cy="90" r="8" fill="#F59E0B"/>
+  <text x="555" y="94" font-size="11" fill="#1e293b">Half-Open = Testing recovery</text>
+</svg>

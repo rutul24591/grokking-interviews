@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550">
+  <rect width="900" height="550" fill="#f8fafc"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">PWA Features Overview</text>
+  
+  <!-- Manifest -->
+  <rect x="30" y="70" width="270" height="140" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="8"/>
+  <text x="165" y="95" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e40af">Web App Manifest</text>
+  <line x1="50" y1="110" x2="280" y2="110" stroke="#3b82f6" stroke-width="1"/>
+  <text x="50" y="135" font-size="11" fill="#1e3a8a">■ name / short_name</text>
+  <text x="50" y="155" font-size="11" fill="#1e3a8a">■ start_url</text>
+  <text x="50" y="175" font-size="11" fill="#1e3a8a">■ display: standalone</text>
+  <text x="50" y="195" font-size="11" fill="#1e3a8a">■ icons (multiple sizes)</text>
+  <text x="50" y="215" font-size="11" fill="#1e3a8a">■ theme_color</text>
+  
+  <!-- Service Worker -->
+  <rect x="315" y="70" width="270" height="140" fill="#d1fae5" stroke="#10b981" stroke-width="2" rx="8"/>
+  <text x="450" y="95" text-anchor="middle" font-size="13" font-weight="bold" fill="#065f46">Service Worker</text>
+  <line x1="335" y1="110" x2="565" y2="110" stroke="#10b981" stroke-width="1"/>
+  <text x="335" y="135" font-size="11" fill="#064e3b">■ Offline support</text>
+  <text x="335" y="155" font-size="11" fill="#064e3b">■ Background sync</text>
+  <text x="335" y="175" font-size="11" fill="#064e3b">■ Push notifications</text>
+  <text x="335" y="195" font-size="11" fill="#064e3b">■ Request interception</text>
+  <text x="335" y="215" font-size="11" fill="#064e3b">■ Cache management</text>
+  
+  <!-- Installability -->
+  <rect x="600" y="70" width="270" height="140" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="8"/>
+  <text x="735" y="95" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">Installability</text>
+  <line x1="620" y1="110" x2="850" y2="110" stroke="#f59e0b" stroke-width="1"/>
+  <text x="620" y="135" font-size="11" fill="#78350f">✓ Valid manifest</text>
+  <text x="620" y="155" font-size="11" fill="#78350f">✓ Service worker</text>
+  <text x="620" y="175" font-size="11" fill="#78350f">✓ HTTPS</text>
+  <text x="620" y="195" font-size="11" fill="#78350f">✓ User engagement</text>
+  <text x="620" y="215" font-size="11" fill="#78350f">→ Add to home screen</text>
+  
+  <!-- Push Notifications -->
+  <rect x="30" y="240" width="410" height="120" fill="#ede9fe" stroke="#8b5cf6" stroke-width="2" rx="8"/>
+  <text x="235" y="265" text-anchor="middle" font-size="13" font-weight="bold" fill="#5b21b6">Push Notifications</text>
+  <line x1="50" y1="280" x2="420" y2="280" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="70" y="305" font-size="11" fill="#4c1d95">1. Request permission</text>
+  <text x="70" y="325" font-size="11" fill="#4c1d95">2. Subscribe to push service</text>
+  <text x="70" y="345" font-size="11" fill="#4c1d95">3. Send subscription to server</text>
+  <text x="70" y="365" font-size="11" fill="#4c1d95">4. Server sends via VAPID</text>
+  
+  <!-- Background Sync -->
+  <rect x="460" y="240" width="410" height="120" fill="#ccfbf1" stroke="#14b8a6" stroke-width="2" rx="8"/>
+  <text x="665" y="265" text-anchor="middle" font-size="13" font-weight="bold" fill="#115e59">Background Sync</text>
+  <line x1="480" y1="280" x2="850" y2="280" stroke="#14b8a6" stroke-width="1"/>
+  <text x="500" y="305" font-size="11" fill="#134e4a">■ One-time sync: send when online</text>
+  <text x="500" y="325" font-size="11" fill="#134e4a">■ Periodic sync: fetch updates</text>
+  <text x="500" y="345" font-size="11" fill="#134e4a">■ Works even when app closed</text>
+  <text x="500" y="365" font-size="11" fill="#134e4a">■ Requires user permission</text>
+  
+  <!-- Benefits -->
+  <rect x="30" y="390" width="840" height="140" fill="white" stroke="#6366f1" stroke-width="2" rx="8"/>
+  <text x="450" y="415" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">PWA Benefits</text>
+  <line x1="50" y1="430" x2="850" y2="430" stroke="#6366f1" stroke-width="1"/>
+  
+  <text x="80" y="460" font-size="12" fill="#1e293b">📱 Installable</text>
+  <text x="200" y="460" font-size="11" fill="#475569">Add to home screen, no app store</text>
+  
+  <text x="80" y="485" font-size="12" fill="#1e293b">📶 Offline</text>
+  <text x="200" y="485" font-size="11" fill="#475569">Works without connectivity</text>
+  
+  <text x="80" y="510" font-size="12" fill="#1e293b">🔔 Engaging</text>
+  <text x="200" y="510" font-size="11" fill="#475569">Push notifications for re-engagement</text>
+  
+  <text x="480" y="460" font-size="12" fill="#1e293b">⚡ Fast</text>
+  <text x="600" y="460" font-size="11" fill="#475569">Cached assets, instant load</text>
+  
+  <text x="480" y="485" font-size="12" fill="#1e293b">🔄 Always Fresh</text>
+  <text x="600" y="485" font-size="11" fill="#475569">Auto-updates via service worker</text>
+  
+  <text x="480" y="510" font-size="12" fill="#1e293b">🔒 Secure</text>
+  <text x="600" y="510" font-size="11" fill="#475569">HTTPS required</text>
+  
+</svg>

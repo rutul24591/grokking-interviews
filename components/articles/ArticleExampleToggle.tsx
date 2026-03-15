@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 import { classNames } from "@/lib/classNames";
 
 export type ArticleViewMode = "article" | "example";
@@ -11,16 +11,51 @@ type ArticleExampleToggleProps = {
 };
 
 const STORAGE_KEY = "ips-article-view";
+const EVENT_NAME = "ips-article-view-change";
 
-export function ArticleExampleToggle({ value, onChange }: ArticleExampleToggleProps) {
-  useEffect(() => {
+function readStoredView(): ArticleViewMode {
+  if (typeof window === "undefined") return "article";
+  try {
+    const stored = sessionStorage.getItem(STORAGE_KEY);
+    if (stored === "example" || stored === "article") return stored;
+  } catch {
+    // ignore
+  }
+  return "article";
+}
+
+function subscribe(callback: () => void) {
+  if (typeof window === "undefined") return () => {};
+  const handler = () => callback();
+  window.addEventListener(EVENT_NAME, handler);
+  // Useful if another tab/window changes a shared storage strategy.
+  window.addEventListener("storage", handler);
+  return () => {
+    window.removeEventListener(EVENT_NAME, handler);
+    window.removeEventListener("storage", handler);
+  };
+}
+
+export function useArticleViewMode(): [ArticleViewMode, (mode: ArticleViewMode) => void] {
+  const value = useSyncExternalStore<ArticleViewMode>(
+    subscribe,
+    readStoredView,
+    () => "article"
+  );
+  const setValue = useCallback((mode: ArticleViewMode) => {
+    if (typeof window === "undefined") return;
     try {
-      sessionStorage.setItem(STORAGE_KEY, value);
+      sessionStorage.setItem(STORAGE_KEY, mode);
+      window.dispatchEvent(new Event(EVENT_NAME));
     } catch {
       // ignore
     }
-  }, [value]);
+  }, []);
 
+  return [value, setValue];
+}
+
+export function ArticleExampleToggle({ value, onChange }: ArticleExampleToggleProps) {
   return (
     <div className="inline-flex items-center rounded-full border border-theme bg-panel p-1 shadow-soft-theme">
       <button
@@ -45,21 +80,4 @@ export function ArticleExampleToggle({ value, onChange }: ArticleExampleTogglePr
       </button>
     </div>
   );
-}
-
-export function useInitialArticleView(): ArticleViewMode {
-  const [value, setValue] = useState<ArticleViewMode>("article");
-
-  useEffect(() => {
-    try {
-      const stored = sessionStorage.getItem(STORAGE_KEY);
-      if (stored === "example" || stored === "article") {
-        setValue(stored);
-      }
-    } catch {
-      // ignore
-    }
-  }, []);
-
-  return value;
 }

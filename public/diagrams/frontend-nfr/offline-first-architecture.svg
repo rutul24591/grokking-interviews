@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+  <rect width="900" height="600" fill="#f8fafc"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Offline-First Architecture</text>
+  
+  <!-- UI Layer -->
+  <rect x="50" y="70" width="800" height="80" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="8"/>
+  <text x="450" y="95" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e40af">UI Layer (React/Vue/etc.)</text>
+  <line x1="70" y1="110" x2="830" y2="110" stroke="#3b82f6" stroke-width="1"/>
+  <text x="100" y="135" font-size="11" fill="#1e3a8a">■ Always reads from local database</text>
+  <text x="400" y="135" font-size="11" fill="#1e3a8a">■ Optimistic updates</text>
+  <text x="650" y="135" font-size="11" fill="#1e3a8a">■ Shows sync status</text>
+  
+  <!-- Arrow down -->
+  <line x1="450" y1="150" x2="450" y2="180" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Local Database -->
+  <rect x="50" y="180" width="800" height="120" fill="#d1fae5" stroke="#10b981" stroke-width="2" rx="8"/>
+  <text x="450" y="205" text-anchor="middle" font-size="14" font-weight="bold" fill="#065f46">Local Database (IndexedDB)</text>
+  <line x1="70" y1="220" x2="830" y2="220" stroke="#10b981" stroke-width="1"/>
+  <text x="100" y="245" font-size="11" fill="#064e3b">■ Source of truth</text>
+  <text x="300" y="245" font-size="11" fill="#064e3b">■ All data stored locally first</text>
+  <text x="550" y="245" font-size="11" fill="#064e3b">■ Works offline</text>
+  <text x="100" y="270" font-size="11" fill="#064e3b">■ Fast reads (no network)</text>
+  <text x="300" y="270" font-size="11" fill="#064e3b">■ Transaction support</text>
+  <text x="550" y="270" font-size="11" fill="#064e3b">■ Query capabilities</text>
+  
+  <!-- Arrows to sync -->
+  <line x1="450" y1="300" x2="450" y2="330" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="450" y1="480" x2="450" y2="510" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Sync Queue -->
+  <rect x="50" y="330" width="380" height="150" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="8"/>
+  <text x="240" y="355" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">Mutation Sync Queue</text>
+  <line x1="70" y1="370" x2="410" y2="370" stroke="#f59e0b" stroke-width="1"/>
+  <text x="90" y="395" font-size="11" fill="#78350f">1. User action → Local DB write</text>
+  <text x="90" y="420" font-size="11" fill="#78350f">2. Mutation queued</text>
+  <text x="90" y="445" font-size="11" fill="#78350f">3. UI shows &quot;pending&quot; status</text>
+  <text x="90" y="470" font-size="11" fill="#78350f">4. Background sync when online</text>
+  
+  <!-- Pull Sync -->
+  <rect x="470" y="330" width="380" height="150" fill="#ede9fe" stroke="#8b5cf6" stroke-width="2" rx="8"/>
+  <text x="660" y="355" text-anchor="middle" font-size="14" font-weight="bold" fill="#5b21b6">Pull Sync (Server Changes)</text>
+  <line x1="490" y1="370" x2="830" y2="370" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="510" y="395" font-size="11" fill="#4c1d95">1. Periodic polling</text>
+  <text x="510" y="420" font-size="11" fill="#4c1d95">2. Fetch changes since last sync</text>
+  <text x="510" y="445" font-size="11" fill="#4c1d95">3. Merge with local DB</text>
+  <text x="510" y="470" font-size="11" fill="#4c1d95">4. UI updates automatically</text>
+  
+  <!-- Server -->
+  <rect x="50" y="510" width="800" height="70" fill="#f1f5f9" stroke="#64748b" stroke-width="2" rx="8"/>
+  <text x="450" y="535" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Backend Server / API</text>
+  <line x1="70" y1="550" x2="830" y2="550" stroke="#64748b" stroke-width="1"/>
+  <text x="150" y="570" font-size="11" fill="#475569">Receives queued mutations</text>
+  <text x="400" y="570" font-size="11" fill="#475569">Sends server changes</text>
+  <text x="600" y="570" font-size="11" fill="#475569">Conflict resolution</text>
+  
+  <!-- Status indicators -->
+  <circle cx="820" cy="110" r="10" fill="#10b981"/>
+  <text x="840" y="115" font-size="10" fill="#065f46">Online</text>
+  
+  <circle cx="820" cy="135" r="10" fill="#f59e0b"/>
+  <text x="840" y="140" font-size="10" fill="#78350f">Syncing</text>
+  
+  <circle cx="820" cy="160" r="10" fill="#ef4444"/>
+  <text x="840" y="165" font-size="10" fill="#7f1d1d">Offline</text>
+  
+</svg>

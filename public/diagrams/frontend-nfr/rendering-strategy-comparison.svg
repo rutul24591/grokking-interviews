@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550">
+  <rect width="900" height="550" fill="#f8fafc"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Rendering Strategy Comparison</text>
+  
+  <!-- Table headers -->
+  <rect x="50" y="70" width="800" height="40" fill="#6366f1" rx="4"/>
+  <text x="150" y="95" font-size="12" font-weight="bold" fill="white">Strategy</text>
+  <text x="280" y="95" font-size="12" font-weight="bold" fill="white">FCP</text>
+  <text x="380" y="95" font-size="12" font-weight="bold" fill="white">TTI</text>
+  <text x="480" y="95" font-size="12" font-weight="bold" fill="white">SEO</text>
+  <text x="580" y="95" font-size="12" font-weight="bold" fill="white">Server</text>
+  <text x="720" y="95" font-size="12" font-weight="bold" fill="white">Best For</text>
+  
+  <!-- CSR row -->
+  <rect x="50" y="110" width="800" height="50" fill="#ede9fe" rx="4"/>
+  <text x="150" y="140" font-size="13" font-weight="bold" fill="#5b21b6">CSR</text>
+  <text x="280" y="140" font-size="12" fill="#4c1d95">Slow</text>
+  <text x="380" y="140" font-size="12" fill="#4c1d95">Slow</text>
+  <text x="480" y="140" font-size="12" fill="#ef4444">Poor</text>
+  <text x="580" y="140" font-size="12" fill="#10b981">None</text>
+  <text x="720" y="140" font-size="11" fill="#1e293b">Dashboards, Apps</text>
+  
+  <!-- SSR row -->
+  <rect x="50" y="170" width="800" height="50" fill="#dbeafe" rx="4"/>
+  <text x="150" y="200" font-size="13" font-weight="bold" fill="#1e40af">SSR</text>
+  <text x="280" y="200" font-size="12" fill="#1e3a8a">Fast</text>
+  <text x="380" y="200" font-size="12" fill="#f59e0b">Medium</text>
+  <text x="480" y="200" font-size="12" fill="#10b981">Excellent</text>
+  <text x="580" y="200" font-size="12" fill="#ef4444">High</text>
+  <text x="720" y="200" font-size="11" fill="#1e293b">Content sites, E-commerce</text>
+  
+  <!-- SSG row -->
+  <rect x="50" y="230" width="800" height="50" fill="#d1fae5" rx="4"/>
+  <text x="150" y="260" font-size="13" font-weight="bold" fill="#065f46">SSG</text>
+  <text x="280" y="260" font-size="12" fill="#064e3b">Fastest</text>
+  <text x="380" y="260" font-size="12" fill="#064e3b">Fast</text>
+  <text x="480" y="260" font-size="12" fill="#10b981">Excellent</text>
+  <text x="580" y="260" font-size="12" fill="#10b981">None</text>
+  <text x="720" y="260" font-size="11" fill="#1e293b">Static content, Docs</text>
+  
+  <!-- ISR row -->
+  <rect x="50" y="290" width="800" height="50" fill="#ccfbf1" rx="4"/>
+  <text x="150" y="320" font-size="13" font-weight="bold" fill="#115e59">ISR</text>
+  <text x="280" y="320" font-size="12" fill="#134e4a">Fast</text>
+  <text x="380" y="320" font-size="12" fill="#134e4a">Fast</text>
+  <text x="480" y="320" font-size="12" fill="#10b981">Excellent</text>
+  <text x="580" y="320" font-size="12" fill="#f59e0b">Low</text>
+  <text x="720" y="320" font-size="11" fill="#1e293b">Dynamic at scale</text>
+  
+  <!-- Performance bars -->
+  <text x="50" y="380" font-size="14" font-weight="bold" fill="#1e293b">Performance Comparison</text>
+  
+  <!-- FCP bars -->
+  <text x="80" y="410" font-size="11" fill="#1e293b">FCP:</text>
+  <rect x="130" y="395" width="80" height="20" fill="#ef4444" rx="3"/>
+  <text x="140" y="410" font-size="10" fill="white">CSR</text>
+  <rect x="220" y="395" width="120" height="20" fill="#f59e0b" rx="3"/>
+  <text x="250" y="410" font-size="10" fill="white">SSR</text>
+  <rect x="350" y="395" width="160" height="20" fill="#10b981" rx="3"/>
+  <text x="410" y="410" font-size="10" fill="white">SSG/ISR</text>
+  
+  <!-- TTI bars -->
+  <text x="80" y="440" font-size="11" fill="#1e293b">TTI:</text>
+  <rect x="130" y="425" width="70" height="20" fill="#ef4444" rx="3"/>
+  <text x="140" y="440" font-size="10" fill="white">CSR</text>
+  <rect x="220" y="425" width="110" height="20" fill="#f59e0b" rx="3"/>
+  <text x="250" y="440" font-size="10" fill="white">SSR</text>
+  <rect x="350" y="425" width="140" height="20" fill="#10b981" rx="3"/>
+  <text x="390" y="440" font-size="10" fill="white">SSG/ISR</text>
+  
+  <!-- SEO bars -->
+  <text x="80" y="470" font-size="11" fill="#1e293b">SEO:</text>
+  <rect x="130" y="455" width="40" height="20" fill="#ef4444" rx="3"/>
+  <text x="135" y="470" font-size="10" fill="white">CSR</text>
+  <rect x="220" y="455" width="160" height="20" fill="#10b981" rx="3"/>
+  <text x="280" y="470" font-size="10" fill="white">SSR/SSG/ISR</text>
+  
+  <!-- Legend -->
+  <rect x="550" y="380" width="300" height="100" fill="white" stroke="#6366f1" stroke-width="2" rx="6"/>
+  <text x="700" y="405" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e40af">Legend</text>
+  <line x1="570" y1="415" x2="830" y2="415" stroke="#6366f1" stroke-width="1"/>
+  <rect x="580" y="430" width="30" height="15" fill="#ef4444" rx="2"/>
+  <text x="620" y="442" font-size="10" fill="#1e293b">Slow/Poor</text>
+  <rect x="580" y="455" width="30" height="15" fill="#f59e0b" rx="2"/>
+  <text x="620" y="467" font-size="10" fill="#1e293b">Medium</text>
+  <rect x="580" y="480" width="30" height="15" fill="#10b981" rx="2"/>
+  <text x="620" y="492" font-size="10" fill="#1e293b">Fast/Excellent</text>
+  
+</svg>

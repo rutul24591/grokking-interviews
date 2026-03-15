@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <rect width="900" height="500" fill="#f8fafc"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Conflict Resolution Strategies</text>
+  
+  <!-- Last-Write-Wins -->
+  <rect x="30" y="70" width="270" height="140" fill="#fee2e2" stroke="#ef4444" stroke-width="2" rx="8"/>
+  <text x="165" y="95" text-anchor="middle" font-size="13" font-weight="bold" fill="#991b1b">Last-Write-Wins</text>
+  <line x1="50" y1="110" x2="280" y2="110" stroke="#ef4444" stroke-width="1"/>
+  <text x="50" y="135" font-size="11" fill="#7f1d1d">■ Most recent timestamp wins</text>
+  <text x="50" y="160" font-size="11" fill="#7f1d1d">■ Simple to implement</text>
+  <text x="50" y="185" font-size="11" fill="#ef4444">✗ Can lose user data</text>
+  <text x="50" y="210" font-size="11" fill="#7f1d1d">Best for: Non-critical data</text>
+  
+  <!-- Field-Level Merging -->
+  <rect x="315" y="70" width="270" height="140" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="8"/>
+  <text x="450" y="95" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">Field-Level Merging</text>
+  <line x1="335" y1="110" x2="565" y2="110" stroke="#f59e0b" stroke-width="1"/>
+  <text x="335" y="135" font-size="11" fill="#78350f">■ Merge changes per field</text>
+  <text x="335" y="160" font-size="11" fill="#78350f">■ Both changes preserved</text>
+  <text x="335" y="185" font-size="11" fill="#f59e0b">~ Requires field tracking</text>
+  <text x="335" y="210" font-size="11" fill="#78350f">Best for: Documents, forms</text>
+  
+  <!-- Operational Transformation -->
+  <rect x="600" y="70" width="270" height="140" fill="#ede9fe" stroke="#8b5cf6" stroke-width="2" rx="8"/>
+  <text x="735" y="95" text-anchor="middle" font-size="13" font-weight="bold" fill="#5b21b6">Operational Transformation</text>
+  <line x1="620" y1="110" x2="850" y2="110" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="620" y="135" font-size="11" fill="#4c1d95">■ Transform operations</text>
+  <text x="620" y="160" font-size="11" fill="#4c1d95">■ Maintain consistency</text>
+  <text x="620" y="185" font-size="11" fill="#ef4444">✗ Very complex</text>
+  <text x="620" y="210" font-size="11" fill="#4c1d95">Best for: Google Docs-style</text>
+  
+  <!-- CRDTs -->
+  <rect x="30" y="240" width="270" height="140" fill="#d1fae5" stroke="#10b981" stroke-width="2" rx="8"/>
+  <text x="165" y="265" text-anchor="middle" font-size="13" font-weight="bold" fill="#065f46">CRDTs</text>
+  <line x1="50" y1="280" x2="280" y2="280" stroke="#10b981" stroke-width="1"/>
+  <text x="50" y="305" font-size="11" fill="#064e3b">■ Conflict-Free Data Types</text>
+  <text x="50" y="330" font-size="11" fill="#064e3b">■ Auto-converge to same state</text>
+  <text x="50" y="355" font-size="11" fill="#064e3b">■ Mathematically proven</text>
+  <text x="50" y="380" font-size="11" fill="#064e3b">Best for: Collaborative apps</text>
+  
+  <!-- Visual comparison -->
+  <rect x="315" y="240" width="555" height="140" fill="white" stroke="#6366f1" stroke-width="2" rx="8"/>
+  <text x="592" y="265" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e40af">Example: Two users edit document</text>
+  <line x1="335" y1="280" x2="850" y2="280" stroke="#6366f1" stroke-width="1"/>
+  
+  <text x="350" y="305" font-size="10" fill="#1e293b">User A: Title=&quot;Hello&quot;</text>
+  <text x="350" y="325" font-size="10" fill="#1e293b">User B: Content=&quot;World&quot;</text>
+  
+  <text x="500" y="315" font-size="11" fill="#4f46e5">→</text>
+  
+  <text x="550" y="305" font-size="10" fill="#10b981">Field Merge:</text>
+  <text x="550" y="325" font-size="10" fill="#10b981">Title=&quot;Hello&quot;, Content=&quot;World&quot;</text>
+  <text x="550" y="345" font-size="10" fill="#10b981">✓ Both preserved</text>
+  
+  <text x="700" y="315" font-size="11" fill="#ef4444">Last-Write-Wins:</text>
+  <text x="700" y="335" font-size="10" fill="#ef4444">Only one field saved</text>
+  <text x="700" y="355" font-size="10" fill="#ef4444">✗ One change lost</text>
+  
+  <!-- Complexity vs Data Safety -->
+  <rect x="30" y="410" width="840" height="70" fill="#f1f5f9" stroke="#64748b" stroke-width="1" rx="6"/>
+  <text x="450" y="430" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">Strategy Selection Guide</text>
+  <line x1="50" y1="440" x2="850" y2="440" stroke="#64748b" stroke-width="1"/>
+  <text x="80" y="460" font-size="10" fill="#475569">Low complexity ←</text>
+  <text x="200" y="460" font-size="10" fill="#475569">Last-Write-Wins → Field Merge → OT → CRDTs</text>
+  <text x="700" y="460" font-size="10" fill="#475569">→ High data safety</text>
+  
+</svg>
