@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Networking - Load Balancing</title>
+  <desc id="desc">Load balancing showing distribution algorithms and health checking</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Networking - Load Balancing</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Traffic distribution and health checking</text>
+  
+  <!-- Load Balancer Types -->
+  <rect x="30" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="230" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">Load Balancer Types</text>
+  
+  <!-- Layer 4 LB -->
+  <rect x="50" y="125" width="360" height="80" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="230" y="150" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #3b82f6">Layer 4 (Transport)</text>
+  <text x="230" y="170" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">TCP/UDP level</text>
+  <text x="230" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Fast, low overhead</text>
+  <text x="230" y="200" text-anchor="middle" font-size="8" fill="#64748b">Examples: NLB, HAProxy TCP</text>
+  
+  <!-- Layer 7 LB -->
+  <rect x="50" y="215" width="360" height="80" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="230" y="240" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #3b82f6">Layer 7 (Application)</text>
+  <text x="230" y="260" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">HTTP/HTTPS level</text>
+  <text x="230" y="275" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Content-aware routing</text>
+  <text x="230" y="290" text-anchor="middle" font-size="8" fill="#64748b">Examples: ALB, NGINX</text>
+  
+  <!-- Health Check -->
+  <rect x="50" y="305" width="360" height="50" rx="4" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="230" y="335" text-anchor="middle" font-size="9" fill="var(--text-theme, #b45309">Health checks remove unhealthy backends</text>
+  
+  <!-- Traffic Distribution -->
+  <rect x="470" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="670" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Traffic Distribution</text>
+  
+  <!-- Clients -->
+  <rect x="490" y="125" width="100" height="50" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="540" y="155" text-anchor="middle" font-size="9" fill="white">Clients</text>
+  
+  <!-- LB -->
+  <rect x="620" y="125" width="100" height="80" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="670" y="160" text-anchor="middle" font-size="9" fill="white">Load</text>
+  <text x="670" y="175" text-anchor="middle" font-size="9" fill="white">Balancer</text>
+  <text x="670" y="195" text-anchor="middle" font-size="8" fill="#c4b5fd">Distributes</text>
+  
+  <!-- Backends -->
+  <rect x="750" y="125" width="45" height="40" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <text x="772" y="148" text-anchor="middle" font-size="7" fill="white">S1</text>
+  
+  <rect x="750" y="175" width="45" height="40" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <text x="772" y="198" text-anchor="middle" font-size="7" fill="white">S2</text>
+  
+  <rect x="750" y="225" width="45" height="40" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <text x="772" y="248" text-anchor="middle" font-size="7" fill="white">S3</text>
+  
+  <!-- Arrows -->
+  <line x1="595" y1="150" x2="615" y2="150" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <line x1="725" y1="145" x2="745" y2="145" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <line x1="725" y1="165" x2="745" y2="165" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <line x1="725" y1="185" x2="745" y2="185" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrow-green)"/>
+  
+  <!-- Health Check Flow -->
+  <rect x="490" y="230" width="360" height="125" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="670" y="255" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #10b981">Health Check Flow</text>
+  
+  <rect x="500" y="270" width="80" height="35" rx="3" fill="var(--bg-theme, #8b5cf6)"/>
+  <text x="540" y="293" text-anchor="middle" font-size="8" fill="white">LB</text>
+  
+  <line x1="585" y1="288" x2="625" y2="288" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="605" y="278" text-anchor="middle" font-size="7" fill="var(--text-theme, #10b981">Check</text>
+  
+  <rect x="635" y="270" width="80" height="35" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="675" y="293" text-anchor="middle" font-size="8" fill="white">Backend</text>
+  
+  <line x1="675" y1="305" x2="675" y2="330" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrow-down)"/>
+  <text x="695" y="320" text-anchor="start" font-size="7" fill="var(--text-theme, #10b981">200 OK</text>
+  
+  <rect x="635" y="335" width="80" height="35" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="675" y="358" text-anchor="middle" font-size="8" fill="white">Healthy</text>
+  
+  <!-- Sticky Sessions -->
+  <rect x="30" y="380" width="400" height="150" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="230" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Sticky Sessions</text>
+  
+  <rect x="50" y="420" width="360" height="100" rx="6" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  
+  <text x="70" y="445" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Route same user to same server</text>
+  <text x="70" y="465" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Based on cookie or IP</text>
+  <text x="70" y="485" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• ✓ Session state preserved</text>
+  <text x="70" y="505" text-anchor="start" font-size="10" fill="var(--text-theme, #f59e0b">⚠ Uneven load distribution</text>
+  
+  <!-- Global Load Balancing -->
+  <rect x="470" y="380" width="400" height="150" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="670" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Global Load Balancing</text>
+  
+  <rect x="490" y="420" width="360" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  
+  <text x="510" y="445" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• DNS-based routing</text>
+  <text x="510" y="465" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Route to nearest region</text>
+  <text x="510" y="485" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• ✓ Low latency</text>
+  <text x="510" y="505" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• ✓ Regional failover</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #10b981)"/>
+    </marker>
+    <marker id="arrow-down" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 0, 5 7" fill="var(--text-theme, #10b981)"/>
+    </marker>
+  </defs>
+</svg>

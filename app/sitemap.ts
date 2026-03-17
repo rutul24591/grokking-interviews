@@ -1,4 +1,4 @@
-import { getAllArticlePaths } from "@/lib/article-loader";
+import { getAllArticlePaths } from "@/lib/loadArticle";
 import type { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -9,7 +9,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Create entries for article pages
   const articleEntries = articles.map((article) => ({
-    url: `${baseUrl}/${article.category}/${article.subcategory}/${article.topic}`,
+    url: `${baseUrl}/articles/${article.domain}/${article.category}/${article.subcategory}/${article.topic}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
     priority: 0.8,

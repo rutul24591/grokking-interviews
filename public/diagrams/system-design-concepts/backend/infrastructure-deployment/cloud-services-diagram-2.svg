@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Cloud Service Control Points</title>
+  <desc id="desc">Cloud service control points: quotas, autoscaling, backups, observability, and budgets</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Cloud Services: Control Points</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Key operational controls for cloud reliability and cost management</text>
+  
+  <!-- Quotas & Limits -->
+  <rect x="30" y="85" width="270" height="200" rx="8" fill="white" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <text x="165" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #ef4444">1. Quotas &amp; Limits</text>
+  
+  <rect x="50" y="125" width="200" height="70" rx="4" fill="var(--bg-panel-soft, #fef2f2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="150" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Service Quotas:</text>
+  <text x="150" y="170" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• EC2 instances per region</text>
+  <text x="150" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• RDS storage limits</text>
+  
+  <rect x="50" y="205" width="200" height="35" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
+  <text x="150" y="228" text-anchor="middle" font-size="9" fill="white">⚠ Default limits often too low!</text>
+  
+  <rect x="50" y="250" width="200" height="25" rx="2" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="150" y="268" text-anchor="middle" font-size="8" fill="var(--text-theme, #b45309">✓ Request quota increases proactively</text>
+  
+  <!-- Auto-Scaling -->
+  <rect x="315" y="85" width="270" height="200" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">2. Auto-Scaling</text>
+  
+  <rect x="335" y="125" width="230" height="70" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="450" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Scale based on:</text>
+  <text x="450" y="170" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• CPU/Memory utilization</text>
+  <text x="450" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Request count/latency</text>
+  
+  <rect x="335" y="205" width="230" height="35" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="450" y="228" text-anchor="middle" font-size="9" fill="white">✓ Set min/max bounds</text>
+  
+  <rect x="335" y="250" width="230" height="25" rx="2" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="450" y="268" text-anchor="middle" font-size="8" fill="var(--text-theme, #b45309">⚠ Watch for thrashing</text>
+  
+  <!-- Backups & DR -->
+  <rect x="600" y="85" width="270" height="200" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="735" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">3. Backups &amp; DR</text>
+  
+  <rect x="620" y="125" width="230" height="70" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="735" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Backup Types:</text>
+  <text x="735" y="170" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Automated snapshots</text>
+  <text x="735" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Point-in-time recovery</text>
+  
+  <rect x="620" y="205" width="230" height="35" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="735" y="228" text-anchor="middle" font-size="9" fill="white">✓ Test restore procedures</text>
+  
+  <rect x="620" y="250" width="230" height="25" rx="2" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="735" y="268" text-anchor="middle" font-size="8" fill="var(--text-theme, #b45309">⚠ Backup ≠ Disaster Recovery</text>
+  
+  <!-- Observability -->
+  <rect x="30" y="300" width="410" height="230" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="235" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">4. Observability Stack</text>
+  
+  <rect x="50" y="340" width="370" height="180" rx="6" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  
+  <text x="70" y="365" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="365" font-size="10" fill="var(--text-theme, #1e293b">CloudWatch/Datadog for metrics</text>
+  
+  <text x="70" y="385" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="385" font-size="10" fill="var(--text-theme, #1e293b">Centralized logging (ELK/Splunk)</text>
+  
+  <text x="70" y="405" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="405" font-size="10" fill="var(--text-theme, #1e293b">Distributed tracing (X-Ray/Jaeger)</text>
+  
+  <text x="70" y="430" text-anchor="start" font-size="10" fill="var(--text-theme, #f59e0b">⚠</text>
+  <text x="85" y="430" font-size="10" fill="var(--text-theme, #1e293b">Set meaningful alerts (not noise)</text>
+  
+  <text x="70" y="450" text-anchor="start" font-size="10" fill="var(--text-theme, #f59e0b">⚠</text>
+  <text x="85" y="450" font-size="10" fill="var(--text-theme, #1e293b">Watch cloud watch costs!</text>
+  
+  <text x="70" y="475" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">•</text>
+  <text x="85" y="475" font-size="10" fill="var(--text-theme, #1e293b">Define SLOs before alerting</text>
+  
+  <text x="70" y="495" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">•</text>
+  <text x="85" y="495" font-size="10" fill="var(--text-theme, #1e293b">Use log sampling for high-volume services</text>
+  
+  <!-- Cost Controls -->
+  <rect x="460" y="300" width="410" height="230" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="665" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">5. Cost Controls &amp; Budgets</text>
+  
+  <rect x="480" y="340" width="370" height="180" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  
+  <text x="500" y="365" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="515" y="365" font-size="10" fill="var(--text-theme, #1e293b">Set budget alerts at 50%, 80%, 100%</text>
+  
+  <text x="500" y="385" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="515" y="385" font-size="10" fill="var(--text-theme, #1e293b">Tag all resources for cost allocation</text>
+  
+  <text x="500" y="405" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="515" y="405" font-size="10" fill="var(--text-theme, #1e293b">Use reserved instances for steady workloads</text>
+  
+  <text x="500" y="425" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="515" y="425" font-size="10" fill="var(--text-theme, #1e293b">Enable cost anomaly detection</text>
+  
+  <text x="500" y="450" text-anchor="start" font-size="10" fill="var(--text-theme, #ef4444">✗</text>
+  <text x="515" y="450" font-size="10" fill="var(--text-theme, #1e293b">Don't forget data transfer costs!</text>
+  
+  <text x="500" y="470" text-anchor="start" font-size="10" fill="var(--text-theme, #ef4444">✗</text>
+  <text x="515" y="470" font-size="10" fill="var(--text-theme, #1e293b">Watch for orphaned resources</text>
+  
+  <text x="500" y="495" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">•</text>
+  <text x="515" y="495" font-size="10" fill="var(--text-theme, #1e293b">Review costs weekly, optimize monthly</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

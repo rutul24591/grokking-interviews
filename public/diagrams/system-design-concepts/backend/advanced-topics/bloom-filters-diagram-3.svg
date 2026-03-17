@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+  <title id="title">Bloom Filter Failure Modes</title>
+  <desc id="desc">Bloom filter failure modes: saturation, high false positive rate, and rebuilding strategies</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="600" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Bloom Filter Failure Modes</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">How filters lose effectiveness and how to recover</text>
+  
+  <!-- Left: Saturation -->
+  <rect x="30" y="85" width="270" height="240" rx="8" fill="white" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <text x="165" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #ef4444)">1. Saturation</text>
+  <text x="165" y="130" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b)">Filter becomes mostly 1s</text>
+  
+  <!-- Saturated bit array - almost all filled -->
+  <rect x="50" y="145" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="75" y="145" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="100" y="145" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="125" y="145" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="150" y="145" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="175" y="145" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="200" y="145" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="225" y="145" width="20" height="20" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  
+  <rect x="50" y="175" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="75" y="175" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="100" y="175" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="125" y="175" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="150" y="175" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="175" y="175" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="200" y="175" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="225" y="175" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  
+  <rect x="50" y="205" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="75" y="205" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="100" y="205" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="125" y="205" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="150" y="205" width="20" height="20" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="175" y="205" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="200" y="205" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="225" y="205" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  
+  <text x="165" y="250" text-anchor="middle" font-size="11" fill="var(--text-theme, #ef4444)">~95% bits set to 1</text>
+  <text x="165" y="270" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b)">False positive rate → 100%</text>
+  <text x="165" y="295" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b)">Effect: Filter says "maybe" for everything</text>
+  <text x="165" y="315" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b)">No savings on expensive lookups</text>
+  
+  <!-- Middle: High False Positives -->
+  <rect x="315" y="85" width="270" height="240" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #f59e0b)">2. High False Positive Rate</text>
+  <text x="450" y="130" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b)">Too many "maybe" results</text>
+  
+  <!-- Query flow diagram -->
+  <rect x="335" y="145" width="100" height="50" rx="6" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="385" y="168" text-anchor="middle" font-size="11" fill="white">Query:</text>
+  <text x="385" y="183" text-anchor="middle" font-size="11" fill="white">"charlie"</text>
+  
+  <line x1="435" y1="170" x2="465" y2="170" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="470" y="145" width="100" height="50" rx="6" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="520" y="168" text-anchor="middle" font-size="11" fill="white">Bloom Filter</text>
+  <text x="520" y="183" text-anchor="middle" font-size="11" fill="white">says "MAYBE"</text>
+  
+  <line x1="570" y1="170" x2="600" y2="170" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="605" y="145" width="70" height="50" rx="6" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
+  <text x="640" y="168" text-anchor="middle" font-size="10" fill="white">Expensive</text>
+  <text x="640" y="183" text-anchor="middle" font-size="10" fill="white">Lookup</text>
+  
+  <line x1="640" y1="195" x2="640" y2="220" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-down)"/>
+  
+  <rect x="590" y="225" width="100" height="40" rx="6" fill="var(--bg-panel-soft, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="640" y="245" text-anchor="middle" font-size="10" fill="var(--text-theme, #b91c1c)">NOT FOUND!</text>
+  <text x="640" y="258" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b)">False positive</text>
+  
+  <text x="450" y="290" text-anchor="middle" font-size="11" fill="var(--text-theme, #f59e0b)">40% of "maybes" are wrong</text>
+  <text x="450" y="310" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b)">Effect: Wasted CPU on lookups</text>
+  <text x="450" y="325" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b)">Tail latency increases</text>
+  
+  <!-- Right: Recovery -->
+  <rect x="600" y="85" width="270" height="240" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="735" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981)">3. Recovery Strategies</text>
+  <text x="735" y="130" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b)">How to restore effectiveness</text>
+  
+  <!-- Rebuild option -->
+  <rect x="620" y="145" width="230" height="55" rx="6" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="735" y="170" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #10b981)">Option A: Rebuild Filter</text>
+  <text x="735" y="190" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b)">Clear and re-insert all keys</text>
+  
+  <!-- Resize option -->
+  <rect x="620" y="210" width="230" height="55" rx="6" fill="var(--bg-panel-hover, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="735" y="235" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #3b82f6)">Option B: Resize Larger</text>
+  <text x="735" y="255" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b)">Allocate bigger filter, migrate</text>
+  
+  <!-- Monitoring option -->
+  <rect x="620" y="275" width="230" height="45" rx="6" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="735" y="300" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #b45309)">Prevent: Monitor fill ratio</text>
+  
+  <!-- Bottom: Prevention and Monitoring -->
+  <rect x="30" y="345" width="840" height="130" rx="8" fill="var(--bg-panel-soft, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="450" y="370" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">Prevention and Monitoring</text>
+  
+  <!-- Monitoring metrics -->
+  <rect x="50" y="385" width="240" height="75" rx="6" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="170" y="408" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #3b82f6)">Monitor These Signals</text>
+  <text x="170" y="428" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b)">• Bit fill ratio (alert at &gt;70%)</text>
+  <text x="170" y="445" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b)">• False positive rate (sampled)</text>
+  <text x="170" y="460" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b)">• Expensive lookup rate</text>
+  
+  <!-- Design guidelines -->
+  <rect x="310" y="385" width="280" height="75" rx="6" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="450" y="408" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #10b981)">Design Guidelines</text>
+  <text x="450" y="428" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b)">• Size for 2x expected cardinality</text>
+  <text x="450" y="445" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b)">• Target 1-5% false positive rate</text>
+  <text x="450" y="460" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b)">• Plan rebuild strategy upfront</text>
+  
+  <!-- Use cases -->
+  <rect x="610" y="385" width="240" height="75" rx="6" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="730" y="408" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #8b5cf6)">Good Use Cases</text>
+  <text x="730" y="428" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b)">• Cache miss reduction</text>
+  <text x="730" y="445" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b)">• LSM tree read optimization</text>
+  <text x="730" y="460" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b)">• Network request filtering</text>
+  
+  <!-- Key takeaway -->
+  <rect x="30" y="495" width="840" height="85" rx="8" fill="var(--bg-panel-hover, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="450" y="520" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309)">Key Takeaway</text>
+  <text x="450" y="545" text-anchor="middle" font-size="12" fill="var(--text-theme, #1e293b)">Bloom filters fail by losing effectiveness, not by returning wrong negatives.</text>
+  <text x="450" y="565" text-anchor="middle" font-size="12" fill="var(--text-theme, #64748b)">Monitor fill ratio, plan for rebuilds, and size conservatively for production workloads.</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-down" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 0, 5 7" fill="var(--text-theme, #ef4444)"/>
+    </marker>
+  </defs>
+</svg>

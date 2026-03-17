@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">HyperLogLog Error Trade-off</title>
+  <desc id="desc">HyperLogLog error trade-off diagram showing memory vs error</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">HyperLogLog: Memory vs Error Trade-off</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">More registers = better accuracy but higher memory cost</text>
+  
+  <!-- Main comparison visualization -->
+  <rect x="30" y="85" width="840" height="280" rx="8" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  
+  <!-- X-axis: Number of registers -->
+  <line x1="80" y1="320" x2="820" y2="320" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  <text x="830" y="325" font-size="11" fill="var(--text-theme, #64748b">Registers (m) →</text>
+  
+  <!-- Y-axis: Error rate -->
+  <line x1="80" y1="320" x2="80" y2="100" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  <text x="70" y="110" font-size="11" fill="var(--text-theme, #64748b" transform="rotate(-90, 70, 110)">Error %</text>
+  
+  <!-- Error curve -->
+  <path d="M 100 150 Q 200 200 350 240 T 750 300" fill="none" stroke="var(--text-theme, #ef4444)" stroke-width="3"/>
+  
+  <!-- Data points -->
+  <!-- 64 registers -->
+  <circle cx="120" cy="180" r="8" fill="var(--bg-theme, #ef4444)"/>
+  <text x="120" y="165" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">64</text>
+  <text x="120" y="205" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">13%</text>
+  
+  <!-- 128 registers -->
+  <circle cx="220" cy="210" r="8" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="220" y="195" text-anchor="middle" font-size="10" fill="var(--text-theme, #f59e0b">128</text>
+  <text x="220" y="230" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">9.2%</text>
+  
+  <!-- 256 registers -->
+  <circle cx="350" cy="245" r="8" fill="var(--bg-theme, #10b981)"/>
+  <text x="350" y="230" text-anchor="middle" font-size="10" fill="var(--text-theme, #10b981">256</text>
+  <text x="350" y="265" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">6.5%</text>
+  
+  <!-- 512 registers -->
+  <circle cx="500" cy="275" r="8" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="500" y="260" text-anchor="middle" font-size="10" fill="var(--text-theme, #3b82f6">512</text>
+  <text x="500" y="295" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">4.6%</text>
+  
+  <!-- 1024 registers -->
+  <circle cx="650" cy="295" r="8" fill="var(--bg-theme, #8b5cf6)"/>
+  <text x="650" y="280" text-anchor="middle" font-size="10" fill="var(--text-theme, #8b5cf6">1024</text>
+  <text x="650" y="310" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">3.3%</text>
+  
+  <!-- 2048 registers -->
+  <circle cx="780" cy="308" r="8" fill="var(--bg-theme, #a78bfa)"/>
+  <text x="780" y="293" text-anchor="middle" font-size="10" fill="var(--text-theme, #a78bfa">2048</text>
+  <text x="780" y="328" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">2.3%</text>
+  
+  <!-- Memory labels -->
+  <text x="120" y="345" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">256B</text>
+  <text x="220" y="345" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">512B</text>
+  <text x="350" y="345" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">1KB</text>
+  <text x="500" y="345" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">2KB</text>
+  <text x="650" y="345" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">4KB</text>
+  <text x="780" y="345" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">8KB</text>
+  
+  <!-- Sweet spot indicator -->
+  <rect x="310" y="220" width="80" height="50" rx="4" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="350" y="245" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309">Sweet Spot</text>
+  <text x="350" y="260" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">256 registers</text>
+  
+  <!-- Right side: Register configurations -->
+  <rect x="30" y="380" width="400" height="150" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="230" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">Common Configurations</text>
+  
+  <!-- Small -->
+  <rect x="50" y="420" width="100" height="50" rx="4" fill="var(--bg-panel-soft, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="100" y="440" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #ef4444">Small (64)</text>
+  <text x="100" y="455" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">256B, 13% error</text>
+  <text x="100" y="467" text-anchor="middle" font-size="7" fill="var(--text-theme, #64748b">Quick estimates</text>
+  
+  <!-- Medium -->
+  <rect x="160" y="420" width="100" height="50" rx="4" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="210" y="440" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309">Medium (256)</text>
+  <text x="210" y="455" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">1KB, 6.5% error</text>
+  <text x="210" y="467" text-anchor="middle" font-size="7" fill="var(--text-theme, #64748b">Default choice</text>
+  
+  <!-- Large -->
+  <rect x="270" y="420" width="100" height="50" rx="4" fill="var(--bg-panel-soft, #dbeafe)" stroke="var(--border-theme, #93c5fd)" stroke-width="1"/>
+  <text x="320" y="440" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #3b82f6">Large (2048)</text>
+  <text x="320" y="455" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">8KB, 2.3% error</text>
+  <text x="320" y="467" text-anchor="middle" font-size="7" fill="var(--text-theme, #64748b">High accuracy</text>
+  
+  <!-- Use cases -->
+  <rect x="450" y="380" width="420" height="150" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="660" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">When to Use HLL</text>
+  
+  <text x="470" y="430" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">✓</text>
+  <text x="485" y="430" font-size="10" fill="var(--text-theme, #1e293b">Unique visitors, DAU/MAU</text>
+  
+  <text x="470" y="450" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">✓</text>
+  <text x="485" y="450" font-size="10" fill="var(--text-theme, #1e293b">Query cardinality estimation</text>
+  
+  <text x="470" y="470" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">✓</text>
+  <text x="485" y="470" font-size="10" fill="var(--text-theme, #1e293b">Network flow analysis</text>
+  
+  <text x="470" y="495" text-anchor="start" font-size="10" fill="var(--text-theme, #ef4444">✗</text>
+  <text x="485" y="495" font-size="10" fill="var(--text-theme, #64748b">When exact counts required (billing)</text>
+  
+  <text x="470" y="515" text-anchor="start" font-size="10" fill="var(--text-theme, #ef4444">✗</text>
+  <text x="485" y="515" font-size="10" fill="var(--text-theme, #64748b">Very small cardinalities (&lt;100)</text>
+</svg>

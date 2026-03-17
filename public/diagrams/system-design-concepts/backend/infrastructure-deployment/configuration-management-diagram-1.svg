@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Configuration Management</title>
+  <desc id="desc">Configuration management showing desired state, drift detection, and idempotent execution</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Configuration Management</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Desired state, drift detection, and idempotent execution</text>
+  
+  <!-- Desired State -->
+  <rect x="30" y="85" width="270" height="280" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="165" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">Desired State (Code)</text>
+  
+  <!-- Config file -->
+  <rect x="50" y="125" width="200" height="120" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="150" y="150" text-anchor="middle" font-size="9" font-family="monospace" fill="var(--text-theme, #64748b">---
+</text>
+  <text x="150" y="165" text-anchor="middle" font-size="9" font-family="monospace" fill="var(--text-theme, #64748b">package: nginx
+</text>
+  <text x="150" y="180" text-anchor="middle" font-size="9" font-family="monospace" fill="var(--text-theme, #64748b">state: present
+</text>
+  <text x="150" y="195" text-anchor="middle" font-size="9" font-family="monospace" fill="var(--text-theme, #64748b">service: nginx
+</text>
+  <text x="150" y="210" text-anchor="middle" font-size="9" font-family="monospace" fill="var(--text-theme, #64748b">state: running
+</text>
+  <text x="150" y="225" text-anchor="middle" font-size="9" font-family="monospace" fill="var(--text-theme, #64748b">port: 80</text>
+  
+  <text x="165" y="265" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Declarative Configuration</text>
+  <text x="165" y="285" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">What, not how</text>
+  <text x="165" y="305" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Version controlled</text>
+  <text x="165" y="325" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Repeatable</text>
+  <text x="165" y="345" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Peer reviewed</text>
+  
+  <!-- Drift Detection -->
+  <rect x="315" y="85" width="270" height="280" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Drift Detection</text>
+  
+  <!-- Current state -->
+  <rect x="335" y="140" width="230" height="70" rx="4" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="450" y="165" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Current State</text>
+  <text x="450" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• nginx: installed ✓</text>
+  <text x="450" y="200" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• service: stopped ✗</text>
+  <text x="450" y="215" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• port: 8080 ✗</text>
+  
+  <line x1="450" y1="215" x2="450" y2="245" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="470" y="235" text-anchor="start" font-size="8" fill="var(--text-theme, #ef4444">Drift detected!</text>
+  
+  <!-- Drift report -->
+  <rect x="335" y="250" width="230" height="60" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
+  <text x="450" y="275" text-anchor="middle" font-size="10" fill="white">Configuration Drift</text>
+  <text x="450" y="290" text-anchor="middle" font-size="9" fill="#fca5a5">Service should be running</text>
+  <text x="450" y="305" text-anchor="middle" font-size="9" fill="#fca5a5">Port should be 80</text>
+  
+  <!-- Idempotent Execution -->
+  <rect x="600" y="85" width="270" height="280" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="735" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Idempotent Execution</text>
+  
+  <!-- First run -->
+  <rect x="620" y="140" width="230" height="70" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="735" y="165" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">First Run</text>
+  <text x="735" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Start nginx ✓ Changed</text>
+  <text x="735" y="200" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Set port 80 ✓ Changed</text>
+  
+  <line x1="735" y1="215" x2="735" y2="245" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Second run -->
+  <rect x="620" y="250" width="230" height="70" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="735" y="275" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Second Run</text>
+  <text x="735" y="295" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Start nginx ✓ OK</text>
+  <text x="735" y="310" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Set port 80 ✓ OK</text>
+  
+  <text x="735" y="340" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Same result, no side effects</text>
+  
+  <!-- CM Tools -->
+  <rect x="30" y="380" width="400" height="150" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="230" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Configuration Management Tools</text>
+  
+  <rect x="50" y="420" width="360" height="100" rx="6" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  
+  <text x="70" y="445" text-anchor="start" font-size="11" font-weight="bold" fill="var(--text-theme, #f59e0b">Ansible</text>
+  <text x="70" y="465" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Agentless, SSH-based</text>
+  <text x="70" y="485" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• YAML playbooks</text>
+  <text x="70" y="505" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Push model</text>
+  
+  <text x="220" y="445" text-anchor="start" font-size="11" font-weight="bold" fill="var(--text-theme, #3b82f6">Puppet</text>
+  <text x="220" y="465" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Agent-based</text>
+  <text x="220" y="485" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• DSL language</text>
+  <text x="220" y="505" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Pull model</text>
+  
+  <text x="320" y="445" text-anchor="start" font-size="11" font-weight="bold" fill="var(--text-theme, #10b981">Chef</text>
+  <text x="320" y="465" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Ruby-based</text>
+  <text x="320" y="485" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Recipes &amp; cookbooks</text>
+  <text x="320" y="505" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Flexible</text>
+  
+  <!-- Benefits -->
+  <rect x="450" y="380" width="420" height="150" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="660" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Configuration Management Benefits</text>
+  
+  <rect x="470" y="420" width="380" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  
+  <text x="490" y="445" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="505" y="445" font-size="10" fill="var(--text-theme, #1e293b">Consistent configurations</text>
+  
+  <text x="490" y="465" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="505" y="465" font-size="10" fill="var(--text-theme, #1e293b">Automated provisioning</text>
+  
+  <text x="490" y="485" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="505" y="485" font-size="10" fill="var(--text-theme, #1e293b">Drift detection &amp; correction</text>
+  
+  <text x="490" y="505" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="505" y="505" font-size="10" fill="var(--text-theme, #1e293b">Documentation as code</text>
+  
+  <text x="680" y="445" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="695" y="445" font-size="10" fill="var(--text-theme, #1e293b">Scalable management</text>
+  
+  <text x="680" y="465" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="695" y="465" font-size="10" fill="var(--text-theme, #1e293b">Compliance auditing</text>
+  
+  <text x="680" y="485" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="695" y="485" font-size="10" fill="var(--text-theme, #1e293b">Disaster recovery</text>
+  
+  <text x="680" y="505" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="695" y="505" font-size="10" fill="var(--text-theme, #1e293b">Reduced human error</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #ef4444)"/>
+    </marker>
+  </defs>
+</svg>

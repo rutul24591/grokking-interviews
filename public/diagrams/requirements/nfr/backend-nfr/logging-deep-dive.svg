@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
+  <defs>
+    <marker id="loggingArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--border-accent, #3b82f6)"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="550" fill="var(--bg-primary, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--text-primary, #0f172a)">Centralized Logging Deep Dive</text>
+  
+  <!-- Log Levels -->
+  <rect x="50" y="60" width="450" height="180" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">Log Levels &amp; Usage</text>
+  
+  <!-- DEBUG -->
+  <rect x="70" y="110" width="80" height="40" rx="3" fill="var(--bg-blue, #3b82f6)"/>
+  <text x="110" y="135" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff">DEBUG</text>
+  <text x="170" y="135" text-anchor="start" font-size="8" fill="var(--text-secondary, #47556ird">Verbose, dev only</text>
+  
+  <!-- INFO -->
+  <rect x="70" y="155" width="80" height="40" rx="3" fill="var(--bg-green, #22c55e)"/>
+  <text x="110" y="180" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff">INFO</text>
+  <text x="170" y="180" text-anchor="start" font-size="8" fill="var(--text-secondary, #47556ird">Normal operations</text>
+  
+  <!-- WARN -->
+  <rect x="70" y="200" width="80" height="40" rx="3" fill="var(--bg-orange, #f97316)"/>
+  <text x="110" y="225" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff">WARN</text>
+  <text x="170" y="225" text-anchor="start" font-size="8" fill="var(--text-secondary, #47556ird">Potential issues</text>
+  
+  <!-- ERROR -->
+  <rect x="70" y="245" width="80" height="40" rx="3" fill="var(--bg-red, #ef4444)"/>
+  <text x="110" y="270" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff">ERROR</text>
+  <text x="170" y="270" text-anchor="start" font-size="8" fill="var(--text-secondary, #47556ird">Errors, exceptions</text>
+  
+  <!-- Log Structure -->
+  <rect x="250" y="110" width="230" height="175" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="365" y="135" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-primary, #0f172a">Structured Log Fields</text>
+  
+  <text x="270" y="160" font-size="8" fill="var(--text-secondary, #47556ird">• timestamp (ISO 8601)</text>
+  <text x="270" y="178" font-size="8" fill="var(--text-secondary, #47556ird">• level (DEBUG/INFO/WARN/ERROR)</text>
+  <text x="270" y="196" font-size="8" fill="var(--text-secondary, #47556ird">• service/name</text>
+  <text x="270" y="214" font-size="8" fill="var(--text-secondary, #47556ird">• trace_id/span_id</text>
+  <text x="270" y="232" font-size="8" fill="var(--text-secondary, #47556ird">• user_id/session_id</text>
+  <text x="270" y="250" font-size="8" fill="var(--text-secondary, #47556ird">• message</text>
+  <text x="270" y="268" font-size="8" fill="var(--text-secondary, #47556ird">• context/metadata</text>
+  
+  <!-- Log Aggregation Patterns -->
+  <rect x="520" y="60" width="430" height="140" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">Log Aggregation Patterns</text>
+  
+  <rect x="540" y="110" width="190" height="70" rx="3" fill="var(--bg-blue, #3b82f6)" opacity="0.2" stroke="var(--border-blue, #3b82f6)" stroke-width="1"/>
+  <text x="635" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-blue, #3b82f6">Sidecar Pattern</text>
+  <text x="635" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Log collector per pod</text>
+  <text x="635" y="172" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Kubernetes native</text>
+  
+  <rect x="540" y="190" width="190" height="70" rx="3" fill="var(--bg-purple, #8b5cf6)" opacity="0.2" stroke="var(--border-purple, #8b5cf6)" stroke-width="1"/>
+  <text x="635" y="215" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-purple, #8b5cf6">DaemonSet Pattern</text>
+  <text x="635" y="235" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">One collector per node</text>
+  <text x="635" y="252" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Resource efficient</text>
+  
+  <rect x="750" y="110" width="180" height="70" rx="3" fill="var(--bg-orange, #f97316)" opacity="0.2" stroke="var(--border-orange, #f97316)" stroke-width="1"/>
+  <text x="840" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-orange, #f97316">Direct Shipping</text>
+  <text x="840" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">App sends to aggregator</text>
+  <text x="840" y="172" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Simple, coupling risk</text>
+  
+  <rect x="750" y="190" width="180" height="70" rx="3" fill="var(--bg-green, #22c55e)" opacity="0.2" stroke="var(--border-green, #22c55e)" stroke-width="1"/>
+  <text x="840" y="215" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-green, #22c55e">Log Forwarding</text>
+  <text x="840" y="235" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Local buffer → remote</text>
+  <text x="840" y="252" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Resilient to network</text>
+  
+  <!-- Log Retention Strategy -->
+  <rect x="520" y="220" width="430" height="140" rx="8" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="735" y="245" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a">Log Retention Strategy</text>
+  
+  <rect x="540" y="265" width="190" height="40" rx="3" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="635" y="285" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">Hot Storage (30 days)</text>
+  <text x="635" y="302" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Fast search, expensive</text>
+  
+  <rect x="540" y="315" width="190" height="40" rx="3" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="635" y="335" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">Warm Storage (90 days)</text>
+  <text x="635" y="352" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Slower, cheaper</text>
+  
+  <rect x="750" y="265" width="180" height="40" rx="3" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="840" y="285" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">Cold Storage (1 year)</text>
+  <text x="840" y="302" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Archive, very cheap</text>
+  
+  <rect x="750" y="315" width="180" height="40" rx="3" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="840" y="335" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">Compliance-Based</text>
+  <text x="840" y="352" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">7 years for SOX/HIPAA</text>
+  
+  <text x="500" y="390" text-anchor="middle" font-size="9" fill="var(--text-muted, #64748b">Key: Use structured logging. Aggregate centrally. Tier storage by age. Include correlation IDs.</text>
+</svg>

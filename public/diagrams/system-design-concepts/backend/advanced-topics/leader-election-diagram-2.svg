@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Leader Election Control Points</title>
+  <desc id="desc">Leader election control points: leases, heartbeats, timeouts, and promotion</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Leader Election: Control Points</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Key parameters that determine failover speed and stability</text>
+  
+  <!-- Main timeline visualization -->
+  <rect x="30" y="85" width="840" height="200" rx="8" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  
+  <!-- Time axis -->
+  <line x1="60" y1="150" x2="840" y2="150" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  <text x="850" y="155" font-size="10" fill="var(--text-theme, #64748b">Time →</text>
+  
+  <!-- Leader 1 tenure -->
+  <rect x="60" y="120" width="300" height="60" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="210" y="145" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Leader 1</text>
+  <text x="210" y="165" text-anchor="middle" font-size="10" fill="#6ee7b7">Active tenure</text>
+  
+  <!-- Heartbeats during Leader 1 -->
+  <circle cx="110" cy="110" r="5" fill="var(--bg-theme, #10b981)"/>
+  <circle cx="160" cy="110" r="5" fill="var(--bg-theme, #10b981)"/>
+  <circle cx="210" cy="110" r="5" fill="var(--bg-theme, #10b981)"/>
+  <circle cx="260" cy="110" r="5" fill="var(--bg-theme, #10b981)"/>
+  <circle cx="310" cy="110" r="5" fill="var(--bg-theme, #10b981)"/>
+  <text x="210" y="100" text-anchor="middle" font-size="8" fill="var(--text-theme, #10b981">Heartbeats</text>
+  
+  <!-- Leader failure point -->
+  <line x1="360" y1="110" x2="360" y2="190" stroke="var(--text-theme, #ef4444)" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="380" y="130" text-anchor="start" font-size="10" fill="var(--text-theme, #ef4444">Leader fails!</text>
+  
+  <!-- Detection timeout -->
+  <rect x="360" y="120" width="120" height="60" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="2"/>
+  <text x="420" y="145" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Detection</text>
+  <text x="420" y="165" text-anchor="middle" font-size="9" fill="#fcd34d">Timeout period</text>
+  
+  <!-- Election period -->
+  <rect x="490" y="120" width="100" height="60" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="540" y="145" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Election</text>
+  <text x="540" y="165" text-anchor="middle" font-size="9" fill="#c4b5fd">Vote/claim</text>
+  
+  <!-- Leader 2 tenure -->
+  <rect x="600" y="120" width="220" height="60" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="710" y="145" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Leader 2</text>
+  <text x="710" y="165" text-anchor="middle" font-size="10" fill="#6ee7b7">New leader</text>
+  
+  <!-- Heartbeats during Leader 2 -->
+  <circle cx="640" cy="110" r="5" fill="var(--bg-theme, #10b981)"/>
+  <circle cx="670" cy="110" r="5" fill="var(--text-theme, #64748b)"/>
+  <circle cx="700" cy="110" r="5" fill="var(--text-theme, #64748b)"/>
+  <circle cx="730" cy="110" r="5" fill="var(--text-theme, #64748b)"/>
+  <circle cx="760" cy="110" r="5" fill="var(--text-theme, #64748b)"/>
+  
+  <!-- Time markers -->
+  <line x1="360" y1="185" x2="360" y2="195" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  <text x="360" y="210" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">T0: Failure</text>
+  
+  <line x1="480" y1="185" x2="480" y2="195" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  <text x="480" y="210" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">T1: Detected</text>
+  
+  <line x1="590" y1="185" x2="590" y2="195" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  <text x="590" y="210" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">T2: Elected</text>
+  
+  <text x="420" y="240" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Failover Time = Detection + Election</text>
+  
+  <!-- Control Parameters Section -->
+  <rect x="30" y="300" width="400" height="230" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="230" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">Control Parameters</text>
+  
+  <!-- Heartbeat interval -->
+  <rect x="50" y="340" width="360" height="50" rx="6" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="230" y="363" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #3b82f6">Heartbeat Interval</text>
+  <text x="230" y="380" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">How often leader sends heartbeat</text>
+  <text x="230" y="395" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Typical: 100ms - 1s</text>
+  
+  <!-- Detection timeout -->
+  <rect x="50" y="400" width="360" height="50" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="230" y="423" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #f59e0b">Detection Timeout</text>
+  <text x="230" y="440" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Missed heartbeats before failover</text>
+  <text x="230" y="455" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Typical: 3-5x heartbeat interval</text>
+  
+  <!-- Lease duration -->
+  <rect x="50" y="460" width="360" height="50" rx="6" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="230" y="483" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #8b5cf6">Lease Duration</text>
+  <text x="230" y="500" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">How long leadership is valid</text>
+  <text x="230" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Typical: 10-30 seconds</text>
+  
+  <!-- Trade-offs Section -->
+  <rect x="450" y="300" width="420" height="230" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="660" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">Timeout Trade-offs</text>
+  
+  <!-- Aggressive timeouts -->
+  <rect x="470" y="340" width="180" height="85" rx="6" fill="var(--bg-panel-soft, #fef2f2)" stroke="var(--border-theme, #ef4444)" stroke-width="1"/>
+  <text x="560" y="363" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #ef4444">Aggressive (Low)</text>
+  <text x="560" y="385" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Fast failover</text>
+  <text x="560" y="400" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Quick recovery</text>
+  <text x="560" y="415" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">✗ False positives (GC, jitter)</text>
+  <text x="560" y="430" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">✗ Leader flapping</text>
+  
+  <!-- Conservative timeouts -->
+  <rect x="670" y="340" width="180" height="85" rx="6" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="760" y="363" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #10b981">Conservative (High)</text>
+  <text x="760" y="385" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Stable leadership</text>
+  <text x="760" y="400" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ No false positives</text>
+  <text x="760" y="415" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">✗ Slow failover</text>
+  <text x="760" y="430" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">✗ Longer outage window</text>
+  
+  <!-- Recommendation -->
+  <rect x="470" y="440" width="380" height="80" rx="6" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="660" y="463" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #b45309">Recommended Approach</text>
+  <text x="660" y="485" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Base timeout on p99 heartbeat latency</text>
+  <text x="660" y="500" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Add jitter to renewal to avoid thundering herd</text>
+  <text x="660" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Monitor false positive rate and adjust</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-down" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 0, 5 7" fill="var(--text-theme, #ef4444)"/>
+    </marker>
+  </defs>
+</svg>

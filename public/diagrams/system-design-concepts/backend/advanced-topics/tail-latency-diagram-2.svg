@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Tail Latency Sources</title>
+  <desc id="desc">Sources of tail latency: queueing, GC pauses, cache misses, and lock contention</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Sources of Tail Latency</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b">Common causes and their signatures</text>
+  
+  <!-- Queueing & Contention -->
+  <rect x="30" y="85" width="270" height="220" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="165" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">Queueing &amp; Contention</text>
+  
+  <rect x="50" y="125" width="200" height="80" rx="6" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="150" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">High utilization → queues form</text>
+  <text x="150" y="170" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Little's Law: Latency = Work / (1 - Utilization)</text>
+  <text x="150" y="195" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">At 90% util, latency 10x!</text>
+  
+  <rect x="50" y="220" width="200" height="70" rx="6" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="150" y="245" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309">Signature:</text>
+  <text x="150" y="265" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Queue depth correlates with latency</text>
+  <text x="150" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Gradual tail growth with load</text>
+  
+  <!-- GC Pauses -->
+  <rect x="315" y="85" width="270" height="220" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #8b5cf6">GC Pauses (Managed Runtimes)</text>
+  
+  <rect x="335" y="125" width="230" height="80" rx="6" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="450" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Stop-the-world GC events</text>
+  <text x="450" y="170" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Typical: 10-500ms pauses</text>
+  <text x="450" y="195" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">Affects all requests during pause</text>
+  
+  <rect x="335" y="220" width="230" height="70" rx="6" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="450" y="245" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309">Signature:</text>
+  <text x="450" y="265" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Latency spikes at regular intervals</text>
+  <text x="450" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Correlates with GC logs</text>
+  
+  <!-- Cache Misses -->
+  <rect x="600" y="85" width="270" height="220" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="735" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Cache Misses</text>
+  
+  <rect x="620" y="125" width="230" height="80" rx="6" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="735" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Cold cache = disk/network access</text>
+  <text x="735" y="170" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Cache hit: 1ms, Miss: 100ms</text>
+  <text x="735" y="195" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">100x latency difference!</text>
+  
+  <rect x="620" y="220" width="230" height="70" rx="6" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="735" y="245" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309">Signature:</text>
+  <text x="735" y="265" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Bimodal latency distribution</text>
+  <text x="735" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Miss rate correlates with tail</text>
+  
+  <!-- Lock Contention -->
+  <rect x="30" y="320" width="270" height="210" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="165" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Lock Contention</text>
+  
+  <rect x="50" y="360" width="200" height="70" rx="6" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="150" y="385" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Threads wait for locks</text>
+  <text x="150" y="405" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Hot locks create bottlenecks</text>
+  <text x="150" y="425" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">Wait time = tail latency</text>
+  
+  <rect x="50" y="445" width="200" height="70" rx="6" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="150" y="470" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309">Signature:</text>
+  <text x="150" y="490" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">High lock wait time</text>
+  <text x="150" y="505" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Thread contention metrics</text>
+  
+  <!-- Cold Starts -->
+  <rect x="315" y="320" width="270" height="210" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="450" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">Cold Starts</text>
+  
+  <rect x="335" y="360" width="230" height="70" rx="6" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="450" y="385" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">First request after idle</text>
+  <text x="450" y="405" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">JIT compilation, connection setup</text>
+  <text x="450" y="425" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">10-100x slower than warm</text>
+  
+  <rect x="335" y="445" width="230" height="70" rx="6" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="450" y="470" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309">Signature:</text>
+  <text x="450" y="490" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Slow requests after idle periods</text>
+  <text x="450" y="505" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">First request much slower</text>
+  
+  <!-- Disk I/O -->
+  <rect x="600" y="320" width="270" height="210" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="735" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #8b5cf6">Disk I/O Variability</text>
+  
+  <rect x="620" y="360" width="230" height="70" rx="6" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="735" y="385" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">SSD wear leveling, GC</text>
+  <text x="735" y="405" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">HDD seek time variability</text>
+  <text x="735" y="425" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">I/O latency can spike 100x</text>
+  
+  <rect x="620" y="445" width="230" height="70" rx="6" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="735" y="470" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309">Signature:</text>
+  <text x="735" y="490" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">I/O wait time spikes</text>
+  <text x="735" y="505" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Correlates with disk metrics</text>
+</svg>

@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Load Balancer Configuration</title>
+  <desc id="desc">Load balancer configuration showing algorithms, health checks, and SSL termination</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Load Balancer Configuration</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Load balancing algorithms, health checks, and SSL termination</text>
+  
+  <!-- Load Balancing Algorithms -->
+  <rect x="30" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="230" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">Load Balancing Algorithms</text>
+  
+  <!-- Round Robin -->
+  <rect x="50" y="125" width="160" height="60" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="130" y="150" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #3b82f6">Round Robin</text>
+  <text x="130" y="170" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Sequential distribution</text>
+  <text x="130" y="183" text-anchor="middle" font-size="8" fill="#64748b">✓ Simple, ✗ Ignores load</text>
+  
+  <!-- Least Connections -->
+  <rect x="220" y="125" width="160" height="60" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="300" y="150" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #10b981">Least Connections</text>
+  <text x="300" y="170" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Route to least busy</text>
+  <text x="300" y="183" text-anchor="middle" font-size="8" fill="#64748b">✓ Balanced, ~ Stateful</text>
+  
+  <!-- IP Hash -->
+  <rect x="50" y="195" width="160" height="60" rx="4" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="130" y="220" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #b45309">IP Hash</text>
+  <text x="130" y="240" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Sticky sessions</text>
+  <text x="130" y="253" text-anchor="middle" font-size="8" fill="#64748b">✓ Session affinity</text>
+  
+  <!-- Weighted -->
+  <rect x="220" y="195" width="160" height="60" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="300" y="220" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #8b5cf6">Weighted</text>
+  <text x="300" y="240" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">By server capacity</text>
+  <text x="300" y="253" text-anchor="middle" font-size="8" fill="#64748b">✓ Heterogeneous</text>
+  
+  <!-- Visual example -->
+  <rect x="50" y="265" width="330" height="90" rx="4" fill="var(--bg-panel-soft, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="215" y="285" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Traffic Distribution Example</text>
+  
+  <!-- Servers -->
+  <rect x="70" y="300" width="50" height="40" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="95" y="323" text-anchor="middle" font-size="8" fill="white">S1</text>
+  <text x="95" y="335" text-anchor="middle" font-size="7" fill="#6ee7b7">25%</text>
+  
+  <rect x="140" y="300" width="50" height="40" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="165" y="323" text-anchor="middle" font-size="8" fill="white">S2</text>
+  <text x="165" y="335" text-anchor="middle" font-size="7" fill="#6ee7b7">25%</text>
+  
+  <rect x="210" y="300" width="50" height="40" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="235" y="323" text-anchor="middle" font-size="8" fill="white">S3</text>
+  <text x="235" y="335" text-anchor="middle" font-size="7" fill="#6ee7b7">25%</text>
+  
+  <rect x="280" y="300" width="50" height="40" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="305" y="323" text-anchor="middle" font-size="8" fill="white">S4</text>
+  <text x="305" y="335" text-anchor="middle" font-size="7" fill="#6ee7b7">25%</text>
+  
+  <!-- Health Checks -->
+  <rect x="470" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="670" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Health Checks</text>
+  
+  <!-- Health check types -->
+  <rect x="490" y="125" width="170" height="80" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="575" y="150" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #10b981">Active Checks</text>
+  <text x="575" y="170" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Periodic probes</text>
+  <text x="575" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">HTTP/TCP/ping</text>
+  <text x="575" y="200" text-anchor="middle" font-size="8" fill="#64748b">~ Adds overhead</text>
+  
+  <rect x="680" y="125" width="170" height="80" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="765" y="150" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #10b981">Passive Checks</text>
+  <text x="765" y="170" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Monitor real traffic</text>
+  <text x="765" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Error rate, timeouts</text>
+  <text x="765" y="200" text-anchor="middle" font-size="8" fill="#64748b">✓ No overhead</text>
+  
+  <!-- Health check flow -->
+  <rect x="490" y="220" width="360" height="135" rx="4" fill="var(--bg-panel-soft, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="670" y="240" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Health Check Flow</text>
+  
+  <!-- LB -->
+  <rect x="510" y="255" width="70" height="40" rx="3" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="545" y="278" text-anchor="middle" font-size="8" fill="white">LB</text>
+  
+  <!-- Health check arrows -->
+  <line x1="580" y1="275" x2="620" y2="275" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="600" y="265" text-anchor="middle" font-size="7" fill="var(--text-theme, #10b981">Check</text>
+  
+  <!-- Server 1 healthy -->
+  <rect x="630" y="255" width="60" height="40" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="660" y="278" text-anchor="middle" font-size="8" fill="white">S1</text>
+  <text x="660" y="290" text-anchor="middle" font-size="7" fill="#6ee7b7">✓ Healthy</text>
+  
+  <line x1="580" y1="295" x2="620" y2="295" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="600" y="285" text-anchor="middle" font-size="7" fill="var(--text-theme, #ef4444">Check</text>
+  
+  <!-- Server 2 unhealthy -->
+  <rect x="630" y="275" width="60" height="40" rx="3" fill="var(--bg-theme, #ef4444)"/>
+  <text x="660" y="298" text-anchor="middle" font-size="8" fill="white">S2</text>
+  <text x="660" y="310" text-anchor="middle" font-size="7" fill="#fca5a5">✗ Unhealthy</text>
+  
+  <text x="670" y="340" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Unhealthy servers removed from pool</text>
+  
+  <!-- SSL Termination -->
+  <rect x="30" y="380" width="840" height="150" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="450" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">SSL/TLS Termination</text>
+  
+  <rect x="50" y="420" width="380" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="240" y="445" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">SSL Termination at LB</text>
+  
+  <!-- Client -->
+  <rect x="70" y="455" width="60" height="40" rx="3" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="100" y="478" text-anchor="middle" font-size="8" fill="white">Client</text>
+  
+  <!-- HTTPS -->
+  <line x1="130" y1="475" x2="180" y2="475" stroke="var(--text-theme, #10b981)" stroke-width="2"/>
+  <text x="155" y="465" text-anchor="middle" font-size="7" fill="var(--text-theme, #10b981">HTTPS</text>
+  
+  <!-- LB -->
+  <rect x="180" y="455" width="80" height="40" rx="3" fill="var(--bg-theme, #8b5cf6)"/>
+  <text x="220" y="478" text-anchor="middle" font-size="8" fill="white">Load Balancer</text>
+  <text x="220" y="490" text-anchor="middle" font-size="7" fill="#c4b5fd">Decrypts SSL</text>
+  
+  <!-- HTTP -->
+  <line x1="260" y1="475" x2="310" y2="475" stroke="var(--text-theme, #f59e0b)" stroke-width="2" stroke-dasharray="3,2"/>
+  <text x="285" y="465" text-anchor="middle" font-size="7" fill="var(--text-theme, #f59e0b">HTTP</text>
+  
+  <!-- Backend -->
+  <rect x="310" y="455" width="100" height="40" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="360" y="478" text-anchor="middle" font-size="8" fill="white">Backend Servers</text>
+  
+  <text x="240" y="510" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">✓ Offloads CPU-intensive SSL from backends</text>
+  
+  <rect x="450" y="420" width="400" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="650" y="445" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">SSL Passthrough</text>
+  
+  <text x="650" y="470" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Encrypted traffic passes through LB</text>
+  <text x="650" y="490" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">✓ End-to-end encryption</text>
+  <text x="650" y="510" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">~ Backend handles SSL overhead</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #10b981)"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #ef4444)"/>
+    </marker>
+  </defs>
+</svg>

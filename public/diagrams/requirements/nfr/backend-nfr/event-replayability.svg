@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
+  <defs>
+    <marker id="eventArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--border-accent, #3b82f6)"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="550" fill="var(--bg-primary, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--text-primary, #0f172a)">Event Sourcing & Replay</text>
+  
+  <!-- Event Store -->
+  <rect x="50" y="60" width="450" height="200" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">Event Store</text>
+  
+  <!-- Event stream -->
+  <rect x="70" y="110" width="410" height="35" rx="4" fill="var(--bg-blue, #3b82f6)" opacity="0.2" stroke="var(--border-blue, #3b82f6)" stroke-width="2"/>
+  <text x="275" y="132" text-anchor="middle" font-size="10" fill="var(--text-secondary, #47556ird">Event Stream (Append-Only Log)</text>
+  
+  <!-- Individual events -->
+  <rect x="80" y="155" width="70" height="40" rx="3" fill="var(--bg-blue, #3b82f6)"/>
+  <text x="115" y="175" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">Event 1</text>
+  <text x="115" y="188" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff)">v1, t=100</text>
+  
+  <rect x="160" y="155" width="70" height="40" rx="3" fill="var(--bg-blue, #3b82f6)"/>
+  <text x="195" y="175" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">Event 2</text>
+  <text x="195" y="188" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff)">v1, t=200</text>
+  
+  <rect x="240" y="155" width="70" height="40" rx="3" fill="var(--bg-blue, #3b82f6)"/>
+  <text x="275" y="175" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">Event 3</text>
+  <text x="275" y="188" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff)">v1, t=300</text>
+  
+  <rect x="320" y="155" width="70" height="40" rx="3" fill="var(--bg-blue, #3b82f6)"/>
+  <text x="355" y="175" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">Event 4</text>
+  <text x="355" y="188" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff)">v1, t=400</text>
+  
+  <rect x="400" y="155" width="70" height="40" rx="3" fill="var(--bg-blue, #3b82f6)"/>
+  <text x="435" y="175" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">Event 5</text>
+  <text x="435" y="188" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff)">v1, t=500</text>
+  
+  <text x="275" y="230" text-anchor="middle" font-size="10" fill="var(--text-secondary, #47556ird">✓ Immutable, ordered, replayable</text>
+  
+  <!-- State Reconstruction -->
+  <rect x="520" y="60" width="430" height="200" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">State Reconstruction</text>
+  
+  <!-- Replay process -->
+  <rect x="540" y="110" width="100" height="50" rx="4" fill="var(--bg-purple, #8b5cf6)"/>
+  <text x="590" y="135" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">Event Stream</text>
+  
+  <line x1="645" y1="135" x2="675" y2="135" stroke="var(--border-accent, #3b82f6)" stroke-width="2" marker-end="url(#eventArrow)"/>
+  <text x="660" y="125" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Replay</text>
+  
+  <rect x="680" y="110" width="100" height="50" rx="4" fill="var(--bg-green, #22c55e)"/>
+  <text x="730" y="135" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">Apply Events</text>
+  <text x="730" y="152" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">Sequentially</text>
+  
+  <line x1="785" y1="135" x2="815" y2="135" stroke="var(--border-accent, #3b82f6)" stroke-width="2" marker-end="url(#eventArrow)"/>
+  
+  <rect x="820" y="110" width="110" height="50" rx="4" fill="var(--bg-orange, #f97316)"/>
+  <text x="875" y="135" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">Current State</text>
+  <text x="875" y="152" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">Reconstructed</text>
+  
+  <!-- Snapshots -->
+  <rect x="540" y="180" width="390" height="70" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="735" y="205" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-primary, #0f172a">Snapshots (Optimization)</text>
+  <text x="735" y="225" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">Periodic state snapshots reduce replay time</text>
+  <text x="735" y="243" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">Replay from snapshot + events after snapshot</text>
+  
+  <!-- Use Cases -->
+  <rect x="50" y="280" width="450" height="160" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="275" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a">Event Replay Use Cases</text>
+  
+  <text x="70" y="335" font-size="10" fill="var(--text-secondary, #47556ird">• Debugging: Replay events to reproduce bugs</text>
+  <text x="70" y="355" font-size="10" fill="var(--text-secondary, #47556ird">• Auditing: Complete history of all changes</text>
+  <text x="70" y="375" font-size="10" fill="var(--text-secondary, #47556ird">• New projections: Build new read models from history</text>
+  <text x="70" y="395" font-size="10" fill="var(--text-secondary, #47556ird">• Testing: Replay production events in test environment</text>
+  <text x="70" y="415" font-size="10" fill="var(--text-secondary, #47556ird">• Recovery: Rebuild state after corruption</text>
+  <text x="70" y="435" font-size="10" fill="var(--text-secondary, #47556ird">• Analytics: Historical analysis of state changes</text>
+  
+  <!-- Challenges -->
+  <rect x="520" y="280" width="430" height="160" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="735" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a">Event Replay Challenges</text>
+  
+  <text x="540" y="335" font-size="10" fill="var(--text-secondary, #47556ird">• Schema evolution: Old events may have different schema</text>
+  <text x="540" y="355" font-size="10" fill="var(--text-secondary, #47556ird">• Event versioning: Need upcasters for old event versions</text>
+  <text x="540" y="375" font-size="10" fill="var(--text-secondary, #47556ird">• Replay time: Large event stores take time to replay</text>
+  <text x="540" y="395" font-size="10" fill="var(--text-secondary, #47556ird">• Side effects: Replay must be idempotent, no side effects</text>
+  <text x="540" y="415" font-size="10" fill="var(--text-secondary, #47556ird">• Storage growth: Event stores grow indefinitely</text>
+  
+  <text x="735" y="465" text-anchor="middle" font-size="9" fill="var(--text-muted, #64748b">Key: Events are immutable facts. Design event schemas for evolution from the start.</text>
+</svg>

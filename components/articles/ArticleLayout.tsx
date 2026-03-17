@@ -1,7 +1,6 @@
 "use client";
 
 import { type ReactNode, useContext, useMemo, useState } from "react";
-import { Breadcrumbs } from "../Breadcrumbs";
 import type { ArticleMetadata } from "@/types/article";
 import { ExampleContext } from "@/components/articles/ExampleContext";
 import { ExampleViewer } from "@/components/articles/ExampleViewer";
@@ -42,11 +41,6 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
   return (
     <div className="min-h-screen bg-theme">
       <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
-        {/* Breadcrumbs */}
-        <div className="mb-6">
-          <Breadcrumbs />
-        </div>
-
         {/* Article Header */}
         <header className="mb-8 border-b border-theme pb-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">

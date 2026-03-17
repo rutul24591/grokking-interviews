@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Merkle Tree Structure</title>
+  <desc id="desc">Merkle tree showing leaf hashes and internal node hashes culminating in a root hash</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Merkle Tree Structure</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Hash tree for efficient integrity verification and synchronization</text>
+  
+  <!-- Main Merkle Tree -->
+  <rect x="30" y="85" width="550" height="320" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="305" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #8b5cf6)">Merkle Tree (8 leaves)</text>
+  
+  <!-- Root -->
+  <rect x="260" y="125" width="160" height="45" rx="6" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="340" y="148" text-anchor="middle" font-size="10" fill="white">Root Hash</text>
+  <text x="340" y="163" text-anchor="middle" font-size="8" fill="#c4b5fd">H(H0-3 + H4-7)</text>
+  
+  <!-- Level 1 -->
+  <rect x="180" y="195" width="140" height="40" rx="5" fill="var(--bg-theme, #a78bfa)" stroke="var(--border-theme, #7c3aed)" stroke-width="1"/>
+  <text x="250" y="215" text-anchor="middle" font-size="9" fill="white">H0-3</text>
+  <text x="250" y="228" text-anchor="middle" font-size="8" fill="#ddd6fe">H(H0-1+H2-3)</text>
+  
+  <rect x="360" y="195" width="140" height="40" rx="5" fill="var(--bg-theme, #a78bfa)" stroke="var(--border-theme, #7c3aed)" stroke-width="1"/>
+  <text x="430" y="215" text-anchor="middle" font-size="9" fill="white">H4-7</text>
+  <text x="430" y="228" text-anchor="middle" font-size="8" fill="#ddd6fe">H(H4-5+H6-7)</text>
+  
+  <!-- Level 2 -->
+  <rect x="120" y="260" width="110" height="35" rx="4" fill="var(--bg-theme, #c4b5fd)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="175" y="278" text-anchor="middle" font-size="8" fill="white">H0-1</text>
+  <text x="175" y="290" text-anchor="middle" font-size="7" fill="#a78bfa">H(h0+h1)</text>
+  
+  <rect x="250" y="260" width="110" height="35" rx="4" fill="var(--bg-theme, #c4b5fd)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="305" y="278" text-anchor="middle" font-size="8" fill="white">H2-3</text>
+  <text x="305" y="290" text-anchor="middle" font-size="7" fill="#a78bfa">H(h2+h3)</text>
+  
+  <rect x="380" y="260" width="110" height="35" rx="4" fill="var(--bg-theme, #c4b5fd)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="435" y="278" text-anchor="middle" font-size="8" fill="white">H4-5</text>
+  <text x="435" y="290" text-anchor="middle" font-size="7" fill="#a78bfa">H(h4+h5)</text>
+  
+  <rect x="510" y="260" width="110" height="35" rx="4" fill="var(--bg-theme, #c4b5fd)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="565" y="278" text-anchor="middle" font-size="8" fill="white">H6-7</text>
+  <text x="565" y="290" text-anchor="middle" font-size="7" fill="#a78bfa">H(h6+h7)</text>
+  
+  <!-- Leaf Level -->
+  <rect x="70" y="325" width="55" height="30" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="97" y="340" text-anchor="middle" font-size="7" fill="white">h0</text>
+  <text x="97" y="350" text-anchor="middle" font-size="6" fill="#6ee7b7">H(data0)</text>
+  
+  <rect x="135" y="325" width="55" height="30" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="162" y="340" text-anchor="middle" font-size="7" fill="white">h1</text>
+  <text x="162" y="350" text-anchor="middle" font-size="6" fill="#6ee7b7">H(data1)</text>
+  
+  <rect x="200" y="325" width="55" height="30" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="227" y="340" text-anchor="middle" font-size="7" fill="white">h2</text>
+  <text x="227" y="350" text-anchor="middle" font-size="6" fill="#6ee7b7">H(data2)</text>
+  
+  <rect x="265" y="325" width="55" height="30" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="292" y="340" text-anchor="middle" font-size="7" fill="white">h3</text>
+  <text x="292" y="350" text-anchor="middle" font-size="6" fill="#6ee7b7">H(data3)</text>
+  
+  <rect x="330" y="325" width="55" height="30" rx="3" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="357" y="340" text-anchor="middle" font-size="7" fill="white">h4</text>
+  <text x="357" y="350" text-anchor="middle" font-size="6" fill="#fcd34d">H(data4)</text>
+  
+  <rect x="395" y="325" width="55" height="30" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="422" y="340" text-anchor="middle" font-size="7" fill="white">h5</text>
+  <text x="422" y="350" text-anchor="middle" font-size="6" fill="#6ee7b7">H(data5)</text>
+  
+  <rect x="460" y="325" width="55" height="30" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="487" y="340" text-anchor="middle" font-size="7" fill="white">h6</text>
+  <text x="487" y="350" text-anchor="middle" font-size="6" fill="#6ee7b7">H(data6)</text>
+  
+  <rect x="525" y="325" width="55" height="30" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="552" y="340" text-anchor="middle" font-size="7" fill="white">h7</text>
+  <text x="552" y="350" text-anchor="middle" font-size="6" fill="#6ee7b7">H(data7)</text>
+  
+  <!-- Tree connections -->
+  <line x1="340" y1="170" x2="250" y2="195" stroke="var(--text-theme, #64748b)" stroke-width="1.5"/>
+  <line x1="340" y1="170" x2="430" y2="195" stroke="var(--text-theme, #64748b)" stroke-width="1.5"/>
+  
+  <line x1="250" y1="235" x2="175" y2="260" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  <line x1="250" y1="235" x2="305" y2="260" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  <line x1="430" y1="235" x2="435" y2="260" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  <line x1="430" y1="235" x2="565" y2="260" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  
+  <line x1="175" y1="295" x2="97" y2="325" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  <line x1="175" y1="295" x2="162" y2="325" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  <line x1="305" y1="295" x2="227" y2="325" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  <line x1="305" y1="295" x2="292" y2="325" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  <line x1="435" y1="295" x2="357" y2="325" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  <line x1="435" y1="295" x2="422" y2="325" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  <line x1="565" y1="295" x2="487" y2="325" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  <line x1="565" y1="295" x2="552" y2="325" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  
+  <!-- Right side: Use Cases -->
+  <rect x="600" y="85" width="270" height="200" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="735" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6)">Common Use Cases</text>
+  
+  <rect x="620" y="125" width="230" height="45" rx="6" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="735" y="148" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #3b82f6)">Anti-Entropy / Repair</text>
+  <text x="735" y="163" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Find divergent data between replicas</text>
+  
+  <rect x="620" y="180" width="230" height="45" rx="6" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="735" y="203" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #b45309">Integrity Proofs</text>
+  <text x="735" y="218" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Verify data without full download</text>
+  
+  <rect x="620" y="235" width="230" height="45" rx="6" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="735" y="258" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #10b981">Content-Addressed Storage</text>
+  <text x="735" y="273" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Git, IPFS, deduplication</text>
+  
+  <!-- Bottom: Key Properties -->
+  <rect x="30" y="420" width="840" height="110" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="450" y="445" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">Key Properties</text>
+  
+  <rect x="50" y="460" width="240" height="60" rx="6" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="170" y="483" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #10b981">Efficient Comparison</text>
+  <text x="170" y="500" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Compare root hashes first</text>
+  <text x="170" y="513" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Drill down only on mismatch</text>
+  
+  <rect x="310" y="460" width="240" height="60" rx="6" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="430" y="483" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #8b5cf6">Logarithmic Verification</text>
+  <text x="430" y="500" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Proof size: O(log n)</text>
+  <text x="430" y="513" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Verify membership efficiently</text>
+  
+  <rect x="570" y="460" width="280" height="60" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="710" y="483" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #f59e0b">Bandwidth Efficient</text>
+  <text x="710" y="500" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Only transfer differing blocks</text>
+  <text x="710" y="513" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Not entire dataset for sync</text>
+</svg>

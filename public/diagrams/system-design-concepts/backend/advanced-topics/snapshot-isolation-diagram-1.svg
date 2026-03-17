@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Snapshot Isolation and MVCC</title>
+  <desc id="desc">Snapshot isolation showing transactions reading consistent snapshots with MVCC versions</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Snapshot Isolation with MVCC</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Each transaction sees a consistent snapshot of the database</text>
+  
+  <!-- Timeline with transactions -->
+  <rect x="30" y="85" width="840" height="180" rx="8" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  
+  <!-- Time axis -->
+  <line x1="60" y1="150" x2="840" y2="150" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  <text x="850" y="155" font-size="10" fill="var(--text-theme, #64748b">Time →</text>
+  
+  <!-- Transaction T1 -->
+  <rect x="80" y="100" width="200" height="40" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="180" y="125" text-anchor="middle" font-size="10" fill="white">Transaction T1</text>
+  <text x="180" y="140" text-anchor="middle" font-size="8" fill="#bfdbfe">Snapshot at T=0</text>
+  
+  <!-- Transaction T2 -->
+  <rect x="200" y="160" width="250" height="40" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="325" y="185" text-anchor="middle" font-size="10" fill="white">Transaction T2</text>
+  <text x="325" y="200" text-anchor="middle" font-size="8" fill="#6ee7b7">Snapshot at T=50</text>
+  
+  <!-- Transaction T3 -->
+  <rect x="400" y="100" width="200" height="40" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="500" y="125" text-anchor="middle" font-size="10" fill="white">Transaction T3</text>
+  <text x="500" y="140" text-anchor="middle" font-size="8" fill="#c4b5fd">Snapshot at T=100</text>
+  
+  <!-- Write events -->
+  <circle cx="300" cy="150" r="8" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="300" y="175" text-anchor="middle" font-size="8" fill="var(--text-theme, #b45309">Write X=100</text>
+  
+  <circle cx="500" cy="150" r="8" fill="var(--bg-theme, #ef4444)"/>
+  <text x="500" y="175" text-anchor="middle" font-size="8" fill="var(--text-theme, #ef4444">Write X=200</text>
+  
+  <circle cx="700" cy="150" r="8" fill="var(--bg-theme, #06b6d4)"/>
+  <text x="700" y="175" text-anchor="middle" font-size="8" fill="var(--text-theme, #0891b2">Write X=300</text>
+  
+  <!-- What each transaction sees -->
+  <rect x="30" y="280" width="270" height="120" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="165" y="305" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #3b82f6">T1 Sees (Snapshot T=0)</text>
+  <rect x="50" y="320" width="230" height="35" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="165" y="343" text-anchor="middle" font-size="10" fill="white">X = (original value)</text>
+  <text x="165" y="360" text-anchor="middle" font-size="9" fill="#bfdbfe">No writes visible yet</text>
+  <text x="165" y="385" text-anchor="middle" font-size="9" fill="#bfdbfe">Consistent: ✓</text>
+  
+  <rect x="315" y="280" width="270" height="120" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="450" y="305" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #10b981">T2 Sees (Snapshot T=50)</text>
+  <rect x="335" y="320" width="230" height="35" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="450" y="343" text-anchor="middle" font-size="10" fill="white">X = 100 (from T1 write)</text>
+  <text x="450" y="360" text-anchor="middle" font-size="9" fill="#6ee7b7">T1 committed before T=50</text>
+  <text x="450" y="385" text-anchor="middle" font-size="9" fill="#6ee7b7">Consistent: ✓</text>
+  
+  <rect x="600" y="280" width="270" height="120" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="735" y="305" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #8b5cf6">T3 Sees (Snapshot T=100)</text>
+  <rect x="620" y="320" width="230" height="35" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="735" y="343" text-anchor="middle" font-size="10" fill="white">X = 200 (from T2 write)</text>
+  <text x="735" y="360" text-anchor="middle" font-size="9" fill="#c4b5fd">T2 committed before T=100</text>
+  <text x="735" y="385" text-anchor="middle" font-size="9" fill="#c4b5fd">Consistent: ✓</text>
+  
+  <!-- Bottom: MVCC Version Chain -->
+  <rect x="30" y="415" width="840" height="125" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="450" y="440" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">MVCC Version Chain for Row X</text>
+  
+  <!-- Version chain -->
+  <rect x="60" y="455" width="100" height="50" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="110" y="480" text-anchor="middle" font-size="9" fill="white">V1: X=50</text>
+  <text x="110" y="497" text-anchor="middle" font-size="7" fill="#bfdbfe">T=0, committed</text>
+  
+  <line x1="160" y1="480" x2="180" y2="480" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="190" y="455" width="100" height="50" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="240" y="480" text-anchor="middle" font-size="9" fill="white">V2: X=100</text>
+  <text x="240" y="497" text-anchor="middle" font-size="7" fill="#fcd34d">T=30, committed</text>
+  
+  <line x1="290" y1="480" x2="310" y2="480" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="320" y="455" width="100" height="50" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="370" y="480" text-anchor="middle" font-size="9" fill="white">V3: X=200</text>
+  <text x="370" y="497" text-anchor="middle" font-size="7" fill="#6ee7b7">T=80, committed</text>
+  
+  <line x1="420" y1="480" x2="440" y2="480" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="450" y="455" width="100" height="50" rx="4" fill="var(--bg-theme, #06b6d4)" stroke="var(--border-theme, #0891b2)" stroke-width="1"/>
+  <text x="500" y="480" text-anchor="middle" font-size="9" fill="white">V4: X=300</text>
+  <text x="500" y="497" text-anchor="middle" font-size="7" fill="#67e8f9">T=150, committed</text>
+  
+  <text x="650" y="475" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">Transaction reads version</text>
+  <text x="650" y="495" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">that was committed before</text>
+  <text x="650" y="515" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">its snapshot timestamp</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

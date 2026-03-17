@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">OT Architecture</title>
+  <desc id="desc">OT architecture showing client optimistic edits, server ordering, and client-side transforms</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">OT System Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b">Client optimism + server ordering + transform functions</text>
+  
+  <!-- Client A -->
+  <rect x="30" y="85" width="250" height="280" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="155" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Client A</text>
+  
+  <!-- Document state A -->
+  <rect x="50" y="125" width="210" height="50" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="155" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">"Hello World"</text>
+  <text x="155" y="168" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">v5 (synced)</text>
+  
+  <!-- Pending buffer A -->
+  <rect x="50" y="190" width="210" height="50" rx="4" fill="var(--bg-theme, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="155" y="215" text-anchor="middle" font-size="10" fill="var(--text-theme, #b45309">Pending Ops</text>
+  <text x="155" y="233" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">[Op_A1, Op_A2]</text>
+  
+  <!-- Local edit A -->
+  <rect x="50" y="255" width="210" height="40" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="155" y="275" text-anchor="middle" font-size="9" fill="white">Local Edit → Apply immediately</text>
+  <text x="155" y="290" text-anchor="middle" font-size="8" fill="#6ee7b7">Optimistic update</text>
+  
+  <!-- Client B -->
+  <rect x="620" y="85" width="250" height="280" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="745" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #8b5cf6">Client B</text>
+  
+  <!-- Document state B -->
+  <rect x="640" y="125" width="210" height="50" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="745" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">"Hello World"</text>
+  <text x="745" y="168" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">v5 (synced)</text>
+  
+  <!-- Pending buffer B -->
+  <rect x="640" y="190" width="210" height="50" rx="4" fill="var(--bg-theme, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="745" y="215" text-anchor="middle" font-size="10" fill="var(--text-theme, #b45309">Pending Ops</text>
+  <text x="745" y="233" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">[Op_B1]</text>
+  
+  <!-- Local edit B -->
+  <rect x="640" y="255" width="210" height="40" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="745" y="275" text-anchor="middle" font-size="9" fill="white">Local Edit → Apply immediately</text>
+  <text x="745" y="290" text-anchor="middle" font-size="8" fill="#c4b5fd">Optimistic update</text>
+  
+  <!-- OT Server -->
+  <rect x="320" y="165" width="260" height="220" rx="8" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="2"/>
+  <text x="450" y="190" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">OT Server</text>
+  
+  <!-- Operation queue -->
+  <rect x="340" y="205" width="220" height="60" rx="4" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="450" y="230" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #64748b">Operation Queue</text>
+  <text x="450" y="248" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Op_A1 (v5→v6)</text>
+  <text x="450" y="262" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Op_B1 (v5→v6)</text>
+  
+  <!-- Transform function -->
+  <rect x="340" y="280" width="220" height="50" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="450" y="305" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Transform Function</text>
+  <text x="450" y="322" text-anchor="middle" font-size="8" fill="#fcd34d">TF(Op_A, Op_B) → Op_A', Op_B'</text>
+  
+  <!-- Arrows -->
+  <line x1="280" y1="200" x2="320" y2="200" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="300" y="190" text-anchor="middle" font-size="8" fill="var(--text-theme, #10b981">Send Op</text>
+  
+  <line x1="620" y1="200" x2="580" y2="200" stroke="var(--text-theme, #8b5cf6)" stroke-width="2" marker-end="url(#arrow-purple)"/>
+  <text x="600" y="190" text-anchor="middle" font-size="8" fill="var(--text-theme, #8b5cf6">Send Op</text>
+  
+  <line x1="320" y1="260" x2="280" y2="260" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="300" y="250" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Broadcast</text>
+  
+  <line x1="580" y1="260" x2="620" y2="260" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="600" y="250" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Broadcast</text>
+  
+  <!-- Bottom: Key Concepts -->
+  <rect x="30" y="380" width="400" height="150" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="230" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Key OT Concepts</text>
+  
+  <rect x="50" y="420" width="360" height="100" rx="6" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="70" y="445" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">•</text>
+  <text x="85" y="445" font-size="10" fill="var(--text-theme, #1e293b">Optimistic editing: Apply local changes immediately</text>
+  <text x="70" y="465" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">•</text>
+  <text x="85" y="465" font-size="10" fill="var(--text-theme, #1e293b">Server orders operations globally</text>
+  <text x="70" y="485" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">•</text>
+  <text x="85" y="485" font-size="10" fill="var(--text-theme, #1e293b">Transform function adjusts concurrent ops</text>
+  <text x="70" y="505" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">•</text>
+  <text x="85" y="505" font-size="10" fill="var(--text-theme, #1e293b">Pending buffer holds unacknowledged ops</text>
+  
+  <!-- Bottom: Challenges -->
+  <rect x="470" y="380" width="400" height="150" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="670" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Implementation Challenges</text>
+  
+  <rect x="490" y="420" width="360" height="100" rx="6" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="510" y="445" text-anchor="start" font-size="10" fill="var(--text-theme, #ef4444">✗</text>
+  <text x="525" y="445" font-size="10" fill="var(--text-theme, #1e293b">Transform function complexity</text>
+  <text x="510" y="465" text-anchor="start" font-size="10" fill="var(--text-theme, #ef4444">✗</text>
+  <text x="525" y="465" font-size="10" fill="var(--text-theme, #1e293b">Operation ordering edge cases</text>
+  <text x="510" y="485" text-anchor="start" font-size="10" fill="var(--text-theme, #ef4444">✗</text>
+  <text x="525" y="485" font-size="10" fill="var(--text-theme, #1e293b">Reconnect with pending operations</text>
+  <text x="510" y="505" text-anchor="start" font-size="10" fill="var(--text-theme, #ef4444">✗</text>
+  <text x="525" y="505" font-size="10" fill="var(--text-theme, #1e293b">History truncation / snapshotting</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #10b981)"/>
+    </marker>
+    <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #8b5cf6)"/>
+    </marker>
+  </defs>
+</svg>

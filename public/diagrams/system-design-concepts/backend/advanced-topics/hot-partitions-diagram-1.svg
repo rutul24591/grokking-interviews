@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Hot Partitions Problem</title>
+  <desc id="desc">Hot partition diagram showing skewed traffic distribution across shards</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">The Hot Partition Problem</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">When one shard receives disproportionate traffic</text>
+  
+  <!-- Normal Distribution (Left) -->
+  <rect x="30" y="85" width="400" height="220" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="230" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Ideal: Balanced Distribution</text>
+  
+  <!-- Balanced shards -->
+  <rect x="50" y="130" width="60" height="80" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="80" y="165" text-anchor="middle" font-size="9" fill="white">Shard 1</text>
+  <text x="80" y="180" text-anchor="middle" font-size="8" fill="#6ee7b7">25% traffic</text>
+  <text x="80" y="195" text-anchor="middle" font-size="7" fill="#6ee7b7">CPU: 40%</text>
+  
+  <rect x="120" y="130" width="60" height="80" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="150" y="165" text-anchor="middle" font-size="9" fill="white">Shard 2</text>
+  <text x="150" y="180" text-anchor="middle" font-size="8" fill="#6ee7b7">25% traffic</text>
+  <text x="150" y="195" text-anchor="middle" font-size="7" fill="#6ee7b7">CPU: 42%</text>
+  
+  <rect x="190" y="130" width="60" height="80" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="220" y="165" text-anchor="middle" font-size="9" fill="white">Shard 3</text>
+  <text x="220" y="180" text-anchor="middle" font-size="8" fill="#6ee7b7">25% traffic</text>
+  <text x="220" y="195" text-anchor="middle" font-size="7" fill="#6ee7b7">CPU: 38%</text>
+  
+  <rect x="260" y="130" width="60" height="80" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="290" y="165" text-anchor="middle" font-size="9" fill="white">Shard 4</text>
+  <text x="290" y="180" text-anchor="middle" font-size="8" fill="#6ee7b7">25% traffic</text>
+  <text x="290" y="195" text-anchor="middle" font-size="7" fill="#6ee7b7">CPU: 41%</text>
+  
+  <text x="230" y="240" text-anchor="middle" font-size="10" fill="var(--text-theme, #10b981">✓ All shards healthy, predictable latency</text>
+  
+  <!-- Hot Partition (Right) -->
+  <rect x="470" y="85" width="400" height="220" rx="8" fill="white" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <text x="670" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #ef4444">Reality: Hot Partition</text>
+  
+  <!-- Unbalanced shards -->
+  <rect x="490" y="130" width="60" height="80" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="520" y="165" text-anchor="middle" font-size="9" fill="white">Shard 1</text>
+  <text x="520" y="180" text-anchor="middle" font-size="8" fill="#6ee7b7">10% traffic</text>
+  <text x="520" y="195" text-anchor="middle" font-size="7" fill="#6ee7b7">CPU: 20%</text>
+  
+  <rect x="560" y="130" width="60" height="80" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="590" y="160" text-anchor="middle" font-size="9" font-weight="bold" fill="white">HOT</text>
+  <text x="590" y="175" text-anchor="middle" font-size="9" fill="white">Shard 2</text>
+  <text x="590" y="190" text-anchor="middle" font-size="8" fill="#fca5a5">70% traffic!</text>
+  <text x="590" y="205" text-anchor="middle" font-size="7" fill="#fca5a5">CPU: 98%</text>
+  
+  <rect x="630" y="130" width="60" height="80" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="660" y="165" text-anchor="middle" font-size="9" fill="white">Shard 3</text>
+  <text x="660" y="180" text-anchor="middle" font-size="8" fill="#6ee7b7">10% traffic</text>
+  <text x="660" y="195" text-anchor="middle" font-size="7" fill="#6ee7b7">CPU: 22%</text>
+  
+  <rect x="700" y="130" width="60" height="80" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="730" y="165" text-anchor="middle" font-size="9" fill="white">Shard 4</text>
+  <text x="730" y="180" text-anchor="middle" font-size="8" fill="#6ee7b7">10% traffic</text>
+  <text x="730" y="195" text-anchor="middle" font-size="7" fill="#6ee7b7">CPU: 19%</text>
+  
+  <text x="670" y="240" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">✗ One shard saturated, p99 latency spikes!</text>
+  
+  <!-- Bottom: Common Causes -->
+  <rect x="30" y="320" width="840" height="210" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="450" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Common Causes of Hot Partitions</text>
+  
+  <!-- Cause 1: Sequential IDs -->
+  <rect x="50" y="360" width="250" height="160" rx="6" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="175" y="385" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #3b82f6">Sequential/Timestamp IDs</text>
+  
+  <rect x="60" y="400" width="230" height="50" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="175" y="420" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">user_id: 1001, 1002, 1003...</text>
+  <text x="175" y="435" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">All go to same shard!</text>
+  
+  <text x="175" y="465" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Hash IDs, use UUIDs, salt keys</text>
+  <text x="175" y="485" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Time-bucket sharding</text>
+  
+  <!-- Cause 2: Viral Content -->
+  <rect x="320" y="360" width="250" height="160" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="445" y="385" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">Viral Content / Celebrity</text>
+  
+  <rect x="330" y="400" width="230" height="50" rx="4" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="445" y="420" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">One post gets 100x normal traffic</text>
+  <text x="445" y="435" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">All requests hit same partition</text>
+  
+  <text x="445" y="465" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Cache hot items, shard by popularity</text>
+  <text x="445" y="485" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Read replicas for hot keys</text>
+  
+  <!-- Cause 3: Tenant Imbalance -->
+  <rect x="590" y="360" width="250" height="160" rx="6" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="715" y="385" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #8b5cf6">Tenant Size Imbalance</text>
+  
+  <rect x="600" y="400" width="230" height="50" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="715" y="420" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Enterprise tenant = 100x SMB</text>
+  <text x="715" y="435" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">One shard handles most load</text>
+  
+  <text x="715" y="465" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Tenant-aware sharding</text>
+  <text x="715" y="485" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Dedicated shards for large tenants</text>
+</svg>

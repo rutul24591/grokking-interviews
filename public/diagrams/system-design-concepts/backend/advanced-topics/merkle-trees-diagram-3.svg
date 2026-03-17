@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+  <title id="title">Merkle Tree Failure Modes</title>
+  <desc id="desc">Merkle tree failure modes: high churn, expensive rebuilds, nondeterministic ordering, and repair storms</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="600" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Merkle Tree Failure Modes</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Operational risks and how to mitigate them</text>
+  
+  <!-- Top Left: High Churn -->
+  <rect x="30" y="85" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <text x="235" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #ef4444)">1. High Churn &amp; Rebuild Cost</text>
+  
+  <!-- Churn visualization -->
+  <rect x="50" y="125" width="370" height="130" rx="6" fill="var(--bg-panel-soft, #fef2f2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  
+  <!-- Time sequence -->
+  <text x="235" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Frequent updates cause constant rebuilds:</text>
+  
+  <!-- T0 -->
+  <rect x="60" y="165" width="70" height="35" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="95" y="188" text-anchor="middle" font-size="9" fill="white">T0: Build</text>
+  
+  <line x1="130" y1="183" x2="150" y2="183" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- T1 -->
+  <rect x="155" y="165" width="70" height="35" rx="3" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="190" y="183" text-anchor="middle" font-size="8" fill="white">T1: Update</text>
+  <text x="190" y="195" text-anchor="middle" font-size="7" fill="var(--text-theme, #64748b">Rebuild!</text>
+  
+  <line x1="225" y1="183" x2="245" y2="183" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- T2 -->
+  <rect x="250" y="165" width="70" height="35" rx="3" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="285" y="183" text-anchor="middle" font-size="8" fill="white">T2: Update</text>
+  <text x="285" y="195" text-anchor="middle" font-size="7" fill="var(--text-theme, #64748b">Rebuild!</text>
+  
+  <line x1="320" y1="183" x2="340" y2="183" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  
+  <!-- T3 -->
+  <rect x="345" y="165" width="70" height="35" rx="3" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
+  <text x="380" y="183" text-anchor="middle" font-size="8" fill="white">T3: Update</text>
+  <text x="380" y="195" text-anchor="middle" font-size="7" fill="#fca5a5">Rebuild!</text>
+  
+  <text x="235" y="225" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Problem: CPU spent on rebuilds, not repairs</text>
+  
+  <text x="235" y="250" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Mitigation:</text>
+  <text x="70" y="270" font-size="8" fill="var(--text-theme, #10b981">• Align chunks with update boundaries</text>
+  <text x="70" y="285" font-size="8" fill="var(--text-theme, #10b981">• Schedule rebuilds, don't rebuild on every change</text>
+  <text x="70" y="300" font-size="8" fill="var(--text-theme, #10b981">• Use larger chunks for high-churn data</text>
+  
+  <!-- Top Right: Nondeterministic Ordering -->
+  <rect x="460" y="85" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="665" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #f59e0b">2. Nondeterministic Ordering</text>
+  
+  <!-- Two replicas with different order -->
+  <rect x="480" y="125" width="180" height="140" rx="6" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="570" y="148" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #b45309">Replica A</text>
+  
+  <rect x="490" y="160" width="60" height="25" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <text x="520" y="177" text-anchor="middle" font-size="8" fill="white">Key: A</text>
+  
+  <rect x="490" y="190" width="60" height="25" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <text x="520" y="207" text-anchor="middle" font-size="8" fill="white">Key: B</text>
+  
+  <rect x="490" y="220" width="60" height="25" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <text x="520" y="237" text-anchor="middle" font-size="8" fill="white">Key: C</text>
+  
+  <rect x="570" y="240" width="80" height="20" rx="3" fill="var(--bg-theme, #8b5cf6)"/>
+  <text x="610" y="254" text-anchor="middle" font-size="7" fill="white">Root: ABC</text>
+  
+  <line x1="660" y1="195" x2="680" y2="195" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="670" y="185" text-anchor="middle" font-size="8" fill="var(--text-theme, #ef4444">Different!</text>
+  
+  <rect x="690" y="125" width="180" height="140" rx="6" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="780" y="148" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #b45309">Replica B</text>
+  
+  <rect x="700" y="160" width="60" height="25" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <text x="730" y="177" text-anchor="middle" font-size="8" fill="white">Key: C</text>
+  
+  <rect x="700" y="190" width="60" height="25" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <text x="730" y="207" text-anchor="middle" font-size="8" fill="white">Key: A</text>
+  
+  <rect x="700" y="220" width="60" height="25" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <text x="730" y="237" text-anchor="middle" font-size="8" fill="white">Key: B</text>
+  
+  <rect x="770" y="240" width="80" height="20" rx="3" fill="var(--bg-theme, #ef4444)"/>
+  <text x="810" y="254" text-anchor="middle" font-size="7" fill="white">Root: CAB</text>
+  
+  <text x="665" y="285" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Same data, different root hashes!</text>
+  <text x="665" y="305" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Cause: Hash set iteration, insertion order</text>
+  <text x="665" y="320" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Always sort keys before hashing</text>
+  
+  <!-- Bottom Left: Repair Storms -->
+  <rect x="30" y="340" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="235" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #8b5cf6">3. Repair Storms</text>
+  
+  <!-- Storm visualization -->
+  <rect x="50" y="380" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  
+  <!-- Nodes -->
+  <circle cx="100" cy="430" r="25" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="100" y="435" text-anchor="middle" font-size="10" fill="white">Node 1</text>
+  
+  <circle cx="200" cy="430" r="25" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="200" y="435" text-anchor="middle" font-size="10" fill="white">Node 2</text>
+  
+  <circle cx="300" cy="430" r="25" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="300" y="435" text-anchor="middle" font-size="10" fill="white">Node 3</text>
+  
+  <circle cx="400" cy="430" r="25" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="400" y="435" text-anchor="middle" font-size="10" fill="white">Node 4</text>
+  
+  <!-- Repair arrows everywhere -->
+  <line x1="125" y1="430" x2="175" y2="430" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <line x1="175" y1="430" x2="125" y2="430" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  
+  <line x1="225" y1="430" x2="275" y2="430" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <line x1="275" y1="430" x2="225" y2="430" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  
+  <line x1="325" y1="430" x2="375" y2="430" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <line x1="375" y1="430" x2="325" y2="430" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  
+  <path d="M 100 405 Q 200 380 300 405" fill="none" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <path d="M 400 405 Q 300 380 200 405" fill="none" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  
+  <text x="235" y="485" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">All nodes repairing simultaneously!</text>
+  <text x="235" y="505" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Network saturated, disk I/O spiked</text>
+  
+  <text x="235" y="530" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Mitigation: Rate-limit repair, stagger schedules</text>
+  
+  <!-- Bottom Right: Hash Algorithm Changes -->
+  <rect x="460" y="340" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="665" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">4. Hash Algorithm Changes</text>
+  
+  <!-- Version mismatch -->
+  <rect x="480" y="380" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  
+  <rect x="490" y="395" width="160" height="50" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="570" y="418" text-anchor="middle" font-size="10" fill="white">Old Version</text>
+  <text x="570" y="435" text-anchor="middle" font-size="9" fill="#6ee7b7">SHA-256</text>
+  
+  <line x1="650" y1="420" x2="680" y2="420" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="665" y="410" text-anchor="middle" font-size="8" fill="var(--text-theme, #ef4444">Deploy</text>
+  
+  <rect x="690" y="395" width="160" height="50" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="770" y="418" text-anchor="middle" font-size="10" fill="white">New Version</text>
+  <text x="770" y="435" text-anchor="middle" font-size="9" fill="#bfdbfe">SHA-3</text>
+  
+  <text x="665" y="475" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">All hashes invalid after upgrade!</text>
+  <text x="665" y="495" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Requires full rebuild or dual-hashing</text>
+  
+  <text x="665" y="525" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Mitigation: Version hash scheme, overlap window</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #ef4444)"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">GitOps Tools and Practices</title>
+  <desc id="desc">GitOps tools comparison and best practices for implementation</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">GitOps Tools &amp; Best Practices</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Tool comparison and implementation guidelines</text>
+  
+  <!-- GitOps Tools -->
+  <rect x="30" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="230" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">GitOps Tools</text>
+  
+  <!-- ArgoCD -->
+  <rect x="50" y="125" width="360" height="70" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="230" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #3b82f6">ArgoCD</text>
+  <text x="230" y="170" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">CNCF project, Kubernetes-native</text>
+  <text x="230" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">✓ UI dashboard, ✓ Multi-cluster</text>
+  
+  <!-- Flux -->
+  <rect x="50" y="205" width="360" height="70" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="230" y="230" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #10b981">Flux</text>
+  <text x="230" y="250" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">CNCF project, lightweight</text>
+  <text x="230" y="265" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">✓ GitOps Toolkit, ✓ Simple</text>
+  
+  <!-- Jenkins X -->
+  <rect x="50" y="285" width="360" height="70" rx="4" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="230" y="310" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">Jenkins X</text>
+  <text x="230" y="330" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">CI/CD + GitOps combined</text>
+  <text x="230" y="345" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">✓ Pipeline automation, ~ Complex</text>
+  
+  <!-- Best Practices -->
+  <rect x="470" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="670" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">GitOps Best Practices</text>
+  
+  <rect x="490" y="125" width="360" height="230" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  
+  <text x="510" y="150" text-anchor="start" font-size="11" font-weight="bold" fill="var(--text-theme, #10b981">1. Directory Structure</text>
+  <text x="510" y="170" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• apps/ - Application manifests</text>
+  <text x="510" y="185" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• infrastructure/ - Cluster resources</text>
+  <text x="510" y="200" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• environments/ - Env-specific config</text>
+  
+  <text x="510" y="225" text-anchor="start" font-size="11" font-weight="bold" fill="var(--text-theme, #10b981">2. Branch Strategy</text>
+  <text x="510" y="245" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• main - Production state</text>
+  <text x="510" y="260" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Feature branches for changes</text>
+  <text x="510" y="275" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• PR reviews required</text>
+  
+  <text x="510" y="300" text-anchor="start" font-size="11" font-weight="bold" fill="var(--text-theme, #10b981">3. Security</text>
+  <text x="510" y="320" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• No secrets in git (use SealedSecrets)</text>
+  <text x="510" y="335" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• RBAC for deployment access</text>
+  <text x="510" y="350" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Audit all changes</text>
+  
+  <!-- Implementation Flow -->
+  <rect x="30" y="380" width="840" height="150" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="450" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">GitOps Implementation Flow</text>
+  
+  <rect x="50" y="420" width="800" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  
+  <!-- Step 1 -->
+  <rect x="70" y="435" width="140" height="70" rx="4" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="140" y="460" text-anchor="middle" font-size="9" fill="white">1. Code Change</text>
+  <text x="140" y="480" text-anchor="middle" font-size="8" fill="#fcd34d">Developer pushes</text>
+  <text x="140" y="495" text-anchor="middle" font-size="8" fill="#fcd34d">Infrastructure code</text>
+  
+  <line x1="215" y1="470" x2="245" y2="470" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Step 2 -->
+  <rect x="250" y="435" width="140" height="70" rx="4" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="320" y="460" text-anchor="middle" font-size="9" fill="white">2. CI Pipeline</text>
+  <text x="320" y="480" text-anchor="middle" font-size="8" fill="#bfdbfe">Validate &amp; test</text>
+  <text x="320" y="495" text-anchor="middle" font-size="8" fill="#bfdbfe">Create PR</text>
+  
+  <line x1="395" y1="470" x2="425" y2="470" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Step 3 -->
+  <rect x="430" y="435" width="140" height="70" rx="4" fill="var(--bg-theme, #10b981)"/>
+  <text x="500" y="460" text-anchor="middle" font-size="9" fill="white">3. Code Review</text>
+  <text x="500" y="480" text-anchor="middle" font-size="8" fill="#6ee7b7">Team reviews</text>
+  <text x="500" y="495" text-anchor="middle" font-size="8" fill="#6ee7b7">Approves PR</text>
+  
+  <line x1="575" y1="470" x2="605" y2="470" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Step 4 -->
+  <rect x="610" y="435" width="140" height="70" rx="4" fill="var(--bg-theme, #8b5cf6)"/>
+  <text x="680" y="460" text-anchor="middle" font-size="9" fill="white">4. Merge to Main</text>
+  <text x="680" y="480" text-anchor="middle" font-size="8" fill="#c4b5fd">Git history updated</text>
+  <text x="680" y="495" text-anchor="middle" font-size="8" fill="#c4b5fd">Source of truth</text>
+  
+  <line x1="755" y1="470" x2="785" y2="470" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Step 5 -->
+  <rect x="790" y="435" width="50" height="70" rx="4" fill="var(--bg-theme, #06b6d4)"/>
+  <text x="815" y="465" text-anchor="middle" font-size="8" fill="white">5. Sync</text>
+  <text x="815" y="485" text-anchor="middle" font-size="7" fill="#67e8f9">Auto-deploy</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

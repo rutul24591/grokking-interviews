@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+  <title id="title">Containerization Failure Modes</title>
+  <desc id="desc">Containerization failure modes: image bloat, security vulnerabilities, and orchestration complexity</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="600" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Containerization: Failure Modes</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b">Common container pitfalls and how to avoid them</text>
+  
+  <!-- Image Bloat -->
+  <rect x="30" y="85" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <text x="235" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #ef4444">1. Image Bloat</text>
+  
+  <!-- Bloat scenario -->
+  <rect x="50" y="135" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #fef2f2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  
+  <!-- Small image -->
+  <rect x="60" y="150" width="100" height="60" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="110" y="180" text-anchor="middle" font-size="9" fill="white">Optimal</text>
+  <text x="110" y="195" text-anchor="middle" font-size="8" fill="#6ee7b7">~50 MB</text>
+  <text x="110" y="207" text-anchor="middle" font-size="7" fill="#6ee7b7">Fast pull</text>
+  
+  <line x1="165" y1="180" x2="195" y2="180" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="180" y="170" text-anchor="middle" font-size="7" fill="var(--text-theme, #ef4444">Bloated!</text>
+  
+  <!-- Bloated image -->
+  <rect x="205" y="150" width="200" height="60" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="305" y="175" text-anchor="middle" font-size="9" fill="white">Bloated Image</text>
+  <text x="305" y="190" text-anchor="middle" font-size="8" fill="#fca5a5">~2 GB</text>
+  <text x="305" y="203" text-anchor="middle" font-size="7" fill="#fca5a5">Dev tools, caches, logs</text>
+  
+  <text x="235" y="240" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Slow deployments, wasted storage!</text>
+  <text x="235" y="260" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Cause: Including unnecessary files, no multi-stage</text>
+  <text x="235" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Multi-stage builds, .dockerignore, minimal base</text>
+  
+  <!-- Security Vulnerabilities -->
+  <rect x="460" y="85" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="665" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">2. Security Vulnerabilities</text>
+  
+  <!-- Vulnerable layers -->
+  <rect x="480" y="135" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  
+  <!-- Base image vuln -->
+  <rect x="490" y="150" width="160" height="50" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="570" y="175" text-anchor="middle" font-size="9" fill="white">Base Image</text>
+  <text x="570" y="190" text-anchor="middle" font-size="8" fill="#fcd34d">Outdated packages</text>
+  
+  <line x1="655" y1="175" x2="685" y2="175" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="670" y="165" text-anchor="middle" font-size="7" fill="var(--text-theme, #ef4444">CVE found!</text>
+  
+  <!-- App layer vuln -->
+  <rect x="695" y="150" width="145" height="50" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
+  <text x="767" y="175" text-anchor="middle" font-size="9" fill="white">App Dependencies</text>
+  <text x="767" y="190" text-anchor="middle" font-size="8" fill="#fca5a5">Vulnerable libs</text>
+  
+  <text x="665" y="240" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Vulnerabilities propagate to production!</text>
+  <text x="665" y="260" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Cause: No scanning, outdated base images</text>
+  <text x="665" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Image scanning, regular updates, minimal base</text>
+  
+  <!-- Resource Exhaustion -->
+  <rect x="30" y="340" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="235" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #8b5cf6">3. Resource Exhaustion</text>
+  
+  <!-- No limits scenario -->
+  <rect x="50" y="380" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  
+  <!-- Container without limits -->
+  <rect x="60" y="395" width="120" height="60" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="120" y="425" text-anchor="middle" font-size="9" fill="white">Container</text>
+  <text x="120" y="440" text-anchor="middle" font-size="8" fill="#c4b5fd">No limits set</text>
+  
+  <line x1="185" y1="425" x2="215" y2="425" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="200" y="415" text-anchor="middle" font-size="7" fill="var(--text-theme, #ef4444">Consumes all!</text>
+  
+  <!-- Host exhausted -->
+  <rect x="225" y="395" width="180" height="60" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="315" y="425" text-anchor="middle" font-size="9" fill="white">Host System</text>
+  <text x="315" y="440" text-anchor="middle" font-size="8" fill="#fca5a5">Memory exhausted</text>
+  <text x="315" y="453" text-anchor="middle" font-size="7" fill="#fca5a5">Other containers affected</text>
+  
+  <text x="235" y="495" text-anchor="middle" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Noisy neighbor problem!</text>
+  <text x="235" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Set CPU/memory limits, use quotas</text>
+  
+  <!-- Orchestration Complexity -->
+  <rect x="460" y="340" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="665" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">4. Orchestration Complexity</text>
+  
+  <!-- Complex scenario -->
+  <rect x="480" y="380" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  
+  <!-- Many containers -->
+  <circle cx="530" cy="420" r="20" fill="var(--bg-theme, #10b981)"/>
+  <text x="530" y="425" text-anchor="middle" font-size="8" fill="white">1</text>
+  
+  <circle cx="580" cy="410" r="20" fill="var(--bg-theme, #10b981)"/>
+  <text x="580" y="415" text-anchor="middle" font-size="8" fill="white">2</text>
+  
+  <circle cx="630" cy="430" r="20" fill="var(--bg-theme, #10b981)"/>
+  <text x="630" y="435" text-anchor="middle" font-size="8" fill="white">3</text>
+  
+  <circle cx="680" cy="410" r="20" fill="var(--bg-theme, #10b981)"/>
+  <text x="680" y="415" text-anchor="middle" font-size="8" fill="white">4</text>
+  
+  <circle cx="730" cy="430" r="20" fill="var(--bg-theme, #10b981)"/>
+  <text x="730" y="435" text-anchor="middle" font-size="8" fill="white">5</text>
+  
+  <circle cx="780" cy="410" r="20" fill="var(--bg-theme, #ef4444)"/>
+  <text x="780" y="415" text-anchor="middle" font-size="8" fill="white">!</text>
+  
+  <line x1="805" y1="420" x2="830" y2="420" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  
+  <rect x="840" y="400" width="40" height="40" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="860" y="425" text-anchor="middle" font-size="12" fill="white">!</text>
+  
+  <text x="665" y="495" text-anchor="middle" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">One failure cascades through system!</text>
+  <text x="665" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Cause: Complex dependencies, no circuit breakers</text>
+  <text x="665" y="535" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Service mesh, health checks, graceful degradation</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #ef4444)"/>
+    </marker>
+  </defs>
+</svg>

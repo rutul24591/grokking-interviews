@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+  <title id="title">Time-Series Failure Modes</title>
+  <desc id="desc">Time-series failure modes showing cardinality explosion, retention failure, ingest backlog, and expensive queries</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="600" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Time-Series Failure Modes</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Cardinality explosion, retention failure, ingest backlog, and expensive queries</text>
+  
+  <!-- Cardinality Explosion -->
+  <rect x="30" y="85" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <text x="235" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #ef4444">1. Cardinality Explosion</text>
+  
+  <!-- Before explosion -->
+  <rect x="50" y="135" width="170" height="100" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="135" y="160" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Before (Normal)</text>
+  
+  <rect x="60" y="170" width="150" height="55" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="135" y="195" text-anchor="middle" font-size="9" fill="white">10,000 series</text>
+  <text x="135" y="210" text-anchor="middle" font-size="8" fill="#6ee7b7">service, host, env</text>
+  
+  <line x1="225" y1="185" x2="255" y2="185" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="240" y="175" text-anchor="middle" font-size="7" fill="var(--text-theme, #ef4444">New label!</text>
+  
+  <!-- After explosion -->
+  <rect x="265" y="135" width="170" height="100" rx="4" fill="var(--bg-panel-soft, #fef2f2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="350" y="160" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">After (Explosion)</text>
+  
+  <rect x="275" y="170" width="150" height="55" rx="3" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="350" y="195" text-anchor="middle" font-size="9" fill="white">10M series</text>
+  <text x="350" y="210" text-anchor="middle" font-size="8" fill="#fca5a5">+request_id label</text>
+  
+  <text x="235" y="255" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Index exceeds memory, queries fail!</text>
+  <text x="235" y="275" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Cause: High-cardinality labels (user_id, request_id)</text>
+  <text x="235" y="295" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Enforce cardinality budgets, drop high-card labels</text>
+  
+  <!-- Retention Failure -->
+  <rect x="460" y="85" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="665" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">2. Retention Failure</text>
+  
+  <!-- Storage growth -->
+  <rect x="480" y="135" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  
+  <!-- Expected storage -->
+  <rect x="490" y="150" width="160" height="60" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="570" y="180" text-anchor="middle" font-size="9" fill="white">Expected Storage</text>
+  <text x="570" y="195" text-anchor="middle" font-size="8" fill="#6ee7b7">100 GB (stable)</text>
+  <text x="570" y="208" text-anchor="middle" font-size="7" fill="#6ee7b7">Retention working</text>
+  
+  <line x1="655" y1="180" x2="685" y2="180" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="670" y="170" text-anchor="middle" font-size="7" fill="var(--text-theme, #ef4444">Retention fails</text>
+  
+  <!-- Actual storage -->
+  <rect x="695" y="150" width="145" height="60" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="767" y="180" text-anchor="middle" font-size="9" fill="white">Actual Storage</text>
+  <text x="767" y="195" text-anchor="middle" font-size="8" fill="#fca5a5">500 GB (growing)</text>
+  <text x="767" y="208" text-anchor="middle" font-size="7" fill="#fca5a5">Old data not deleted</text>
+  
+  <text x="665" y="240" text-anchor="middle" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Disk fills, system becomes unstable!</text>
+  <text x="665" y="260" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Cause: Retention job failures, partition issues</text>
+  <text x="665" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Monitor retention, alert on storage growth</text>
+  
+  <!-- Ingest Backlog -->
+  <rect x="30" y="340" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="235" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #8b5cf6">3. Ingest Backlog</text>
+  
+  <!-- Queue visualization -->
+  <rect x="50" y="380" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  
+  <!-- Normal queue -->
+  <rect x="60" y="395" width="150" height="50" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="135" y="420" text-anchor="middle" font-size="9" fill="white">Normal Queue</text>
+  <text x="135" y="435" text-anchor="middle" font-size="8" fill="#c4b5fd">1000 msgs</text>
+  
+  <line x1="215" y1="420" x2="245" y2="420" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="230" y="410" text-anchor="middle" font-size="7" fill="var(--text-theme, #ef4444">Ingest slow</text>
+  
+  <!-- Backlogged queue -->
+  <rect x="255" y="395" width="150" height="50" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="330" y="420" text-anchor="middle" font-size="9" fill="white">Backlogged</text>
+  <text x="330" y="435" text-anchor="middle" font-size="8" fill="#fca5a5">1M msgs</text>
+  
+  <text x="235" y="495" text-anchor="middle" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Data loss risk, stale dashboards!</text>
+  <text x="235" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Cause: Write amplification, slow storage</text>
+  <text x="235" y="535" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Scale ingest, add backpressure</text>
+  
+  <!-- Expensive Queries -->
+  <rect x="460" y="340" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="665" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">4. Expensive Queries</text>
+  
+  <!-- Query patterns -->
+  <rect x="480" y="380" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  
+  <!-- Good query -->
+  <rect x="490" y="395" width="150" height="60" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="565" y="420" text-anchor="middle" font-size="9" fill="white">Good Query</text>
+  <text x="565" y="435" text-anchor="middle" font-size="8" fill="#6ee7b7">Time-bounded</text>
+  <text x="565" y="448" text-anchor="middle" font-size="7" fill="#6ee7b7">1 chunk scanned</text>
+  
+  <line x1="645" y1="425" x2="675" y2="425" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="660" y="415" text-anchor="middle" font-size="7" fill="var(--text-theme, #ef4444">Bad pattern</text>
+  
+  <!-- Bad query -->
+  <rect x="685" y="395" width="150" height="60" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="760" y="420" text-anchor="middle" font-size="9" fill="white">Bad Query</text>
+  <text x="760" y="435" text-anchor="middle" font-size="8" fill="#fca5a5">Unbounded time</text>
+  <text x="760" y="448" text-anchor="middle" font-size="7" fill="#fca5a5">All chunks scanned</text>
+  
+  <text x="665" y="495" text-anchor="middle" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Query saturates storage, blocks others!</text>
+  <text x="665" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Cause: Missing time filters, high cardinality joins</text>
+  <text x="665" y="535" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Query budgets, timeouts, caching</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #ef4444)"/>
+    </marker>
+  </defs>
+</svg>

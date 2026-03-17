@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+  <title id="title">Leader Election Failure Modes</title>
+  <desc id="desc">Leader election failure modes: split brain, leader flapping, and slow failover</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="600" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Leader Election Failure Modes</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Critical failures and how to prevent them</text>
+  
+  <!-- Top Left: Split Brain -->
+  <rect x="30" y="85" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <text x="235" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #ef4444)">1. Split Brain</text>
+  <text x="235" y="128" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b">Multiple leaders simultaneously</text>
+  
+  <!-- Split brain visualization -->
+  <rect x="50" y="145" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #fef2f2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  
+  <!-- Network partition -->
+  <line x1="235" y1="160" x2="235" y2="270" stroke="var(--text-theme, #ef4444)" stroke-width="3" stroke-dasharray="8,4"/>
+  <text x="235" y="285" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">Network Partition</text>
+  
+  <!-- Left side leader -->
+  <rect x="70" y="175" width="140" height="80" rx="6" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="140" y="205" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Leader A</text>
+  <text x="140" y="225" text-anchor="middle" font-size="9" fill="#6ee7b7">Partition 1</text>
+  <text x="140" y="240" text-anchor="middle" font-size="8" fill="#6ee7b7">Thinks it's leader</text>
+  
+  <!-- Right side leader -->
+  <rect x="260" y="175" width="140" height="80" rx="6" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="330" y="205" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Leader B</text>
+  <text x="330" y="225" text-anchor="middle" font-size="9" fill="#6ee7b7">Partition 2</text>
+  <text x="330" y="240" text-anchor="middle" font-size="8" fill="#6ee7b7">Also thinks it's leader</text>
+  
+  <!-- Conflicting writes -->
+  <rect x="50" y="300" width="370" height="20" rx="2" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
+  <text x="235" y="314" text-anchor="middle" font-size="8" fill="white">Leader A writes: X = 100</text>
+  
+  <rect x="50" y="325" width="370" height="20" rx="2" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="235" y="339" text-anchor="middle" font-size="8" fill="white">Leader B writes: X = 200 (CONFLICT!)</text>
+  
+  <text x="235" y="360" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">Result: Data corruption, conflicting state</text>
+  
+  <text x="235" y="385" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Prevention: Fencing tokens, quorum writes</text>
+  
+  <!-- Top Right: Leader Flapping -->
+  <rect x="460" y="85" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="665" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #f59e0b">2. Leader Flapping</text>
+  <text x="665" y="128" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b">Rapid leader changes</text>
+  
+  <!-- Flapping timeline -->
+  <rect x="480" y="145" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  
+  <!-- Time axis -->
+  <line x1="500" y1="200" x2="830" y2="200" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  
+  <!-- Leader changes -->
+  <rect x="500" y="175" width="50" height="50" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="525" y="205" text-anchor="middle" font-size="8" fill="white">A</text>
+  
+  <rect x="555" y="175" width="40" height="50" rx="3" fill="var(--bg-theme, #8b5cf6)"/>
+  <text x="575" y="205" text-anchor="middle" font-size="8" fill="white">B</text>
+  
+  <rect x="600" y="175" width="35" height="50" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="617" y="205" text-anchor="middle" font-size="8" fill="white">A</text>
+  
+  <rect x="640" y="175" width="40" height="50" rx="3" fill="var(--bg-theme, #a78bfa)"/>
+  <text x="660" y="205" text-anchor="middle" font-size="8" fill="white">C</text>
+  
+  <rect x="685" y="175" width="35" height="50" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="702" y="205" text-anchor="middle" font-size="8" fill="white">A</text>
+  
+  <rect x="725" y="175" width="40" height="50" rx="3" fill="var(--bg-theme, #8b5cf6)"/>
+  <text x="745" y="205" text-anchor="middle" font-size="8" fill="white">B</text>
+  
+  <rect x="770" y="175" width="40" height="50" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="790" y="205" text-anchor="middle" font-size="8" fill="white">A</text>
+  
+  <text x="665" y="245" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">7 leader changes in short time!</text>
+  
+  <text x="665" y="275" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Causes:</text>
+  <text x="490" y="295" font-size="8" fill="var(--text-theme, #64748b">• Timeout too aggressive</text>
+  <text x="490" y="310" font-size="8" fill="var(--text-theme, #64748b">• Network jitter</text>
+  <text x="490" y="325" font-size="8" fill="var(--text-theme, #64748b">• GC pauses</text>
+  
+  <text x="665" y="345" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">Impact: Work churn, coordination overhead</text>
+  
+  <!-- Bottom Left: Slow Failover -->
+  <rect x="30" y="340" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="235" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #8b5cf6">3. Slow Failover</text>
+  
+  <!-- Slow failover timeline -->
+  <rect x="50" y="380" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  
+  <!-- Time axis -->
+  <line x1="70" y1="440" x2="400" y2="440" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  
+  <!-- Leader failure -->
+  <line x1="100" y1="400" x2="100" y2="480" stroke="var(--text-theme, #ef4444)" stroke-width="2"/>
+  <text x="100" y="395" text-anchor="middle" font-size="8" fill="var(--text-theme, #ef4444">Failure</text>
+  
+  <!-- Long detection period -->
+  <rect x="100" y="415" width="150" height="50" rx="3" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="175" y="445" text-anchor="middle" font-size="9" fill="white">Detection: 30s</text>
+  
+  <!-- Election period -->
+  <rect x="255" y="415" width="80" height="50" rx="3" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="295" y="445" text-anchor="middle" font-size="9" fill="white">Election: 10s</text>
+  
+  <!-- New leader -->
+  <rect x="340" y="415" width="50" height="50" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="365" y="445" text-anchor="middle" font-size="9" fill="white">New</text>
+  
+  <text x="235" y="485" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">40 seconds without a leader!</text>
+  
+  <text x="235" y="510" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Impact:</text>
+  <text x="70" y="530" font-size="8" fill="var(--text-theme, #64748b">• Backlog grows during outage</text>
+  <text x="70" y="545" font-size="8" fill="var(--text-theme, #64748b">• Requests timeout/fail</text>
+  <text x="70" y="560" font-size="8" fill="var(--text-theme, #64748b">• SLA violations</text>
+  
+  <!-- Bottom Right: Mitigation Summary -->
+  <rect x="460" y="340" width="410" height="240" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="665" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">Mitigation Strategies</text>
+  
+  <!-- Fencing -->
+  <rect x="480" y="380" width="180" height="75" rx="6" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="570" y="403" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #10b981">Fencing Tokens</text>
+  <text x="570" y="425" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Monotonic epoch numbers</text>
+  <text x="570" y="440" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Reject stale leader writes</text>
+  
+  <!-- Quorum -->
+  <rect x="680" y="380" width="180" height="75" rx="6" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="770" y="403" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #3b82f6">Quorum Reads/Writes</text>
+  <text x="770" y="425" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Require majority agreement</text>
+  <text x="770" y="440" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Prevents split-brain writes</text>
+  
+  <!-- Timeout tuning -->
+  <rect x="480" y="470" width="180" height="75" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="570" y="493" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #f59e0b">Timeout Tuning</text>
+  <text x="570" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Base on p99 latency</text>
+  <text x="570" y="530" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Add jitter to renewals</text>
+  
+  <!-- Monitoring -->
+  <rect x="680" y="470" width="180" height="75" rx="6" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="770" y="493" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #8b5cf6">Monitoring</text>
+  <text x="770" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Track leader change rate</text>
+  <text x="770" y="530" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Alert on flapping</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

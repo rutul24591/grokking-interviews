@@ -1,20 +1,17 @@
-# QWEN.md - Project Context Guide
+# QWEN.md - Interview Prep Studio
 
 ## Project Overview
 
-**Interview Prep Studio** is a comprehensive interview preparation knowledge platform built for system design and software engineering interviews. The application provides hierarchical, in-depth content organized by frontend and backend concepts, targeting staff/principal engineer level preparation.
+**Interview Prep Studio** is a Next.js 16-based knowledge platform for system design interview preparation. It features a hierarchical content organization system covering frontend and backend concepts, with dark/light theme support, sidebar navigation, and a unique article/example toggle view for code comprehension.
 
-### Tech Stack
+**Tech Stack:**
 
-| Category | Technology |
-|----------|------------|
-| **Framework** | Next.js 16 (App Router) |
-| **Language** | TypeScript 5 (strict mode) |
-| **Styling** | Tailwind CSS 4 + CSS Variables |
-| **State** | Zustand (with persist middleware) |
-| **Animations** | Framer Motion |
-| **Package Manager** | pnpm |
-| **React** | 19.2.3 |
+- **Framework:** Next.js 16 (App Router)
+- **Language:** TypeScript (strict mode)
+- **Styling:** Tailwind CSS 4 with custom theme tokens
+- **State Management:** Zustand with localStorage persistence
+- **Animations:** Framer Motion
+- **Package Manager:** pnpm
 
 ## Development Commands
 
@@ -34,195 +31,196 @@ pnpm start
 # Run linter
 pnpm lint
 
-# Scan code snippets for validation
-pnpm scan:code-snippets
-pnpm scan:code-snippets:fix  # Auto-fix issues
+# E2E Tests
+pnpm test:e2e              # Run Playwright tests
+pnpm test:e2e:ui           # Run with UI
+pnpm test:e2e:debug        # Debug mode
+pnpm test:e2e:report       # Show test report
+
+# Code Snippet Scanning
+pnpm scan:code-snippets        # Scan for code snippets
+pnpm scan:code-snippets:fix    # Auto-fix issues
 ```
 
-## Architecture Overview
+## Architecture
 
 ### Directory Structure
 
-```
-system-design-prep/
-├── app/                      # Next.js App Router (Server Components)
-│   ├── [category]/           # Dynamic category pages
-│   ├── globals.css           # Global styles + Tailwind
-│   ├── layout.tsx            # Root layout with font + data loading
-│   ├── page.tsx              # Home page
-│   └── sitemap.ts            # Sitemap generation
-├── components/               # Shared UI components
-│   ├── articles/             # Article layout components
-│   ├── AppLayout.tsx         # Main app layout wrapper
-│   ├── Breadcrumbs.tsx       # Navigation breadcrumbs
-│   ├── CategoryPage*.tsx     # Category page components
-│   ├── ContentArea.tsx       # Content rendering area
-│   ├── SubCategory*.tsx      # Subcategory components
-│   └── TopBar.tsx            # Top navigation bar
-├── concepts/                 # Source text files defining content hierarchy
-│   ├── frontend-concepts.txt # 30 frontend topic categories
-│   ├── backend-concepts.txt  # 13 backend topic categories
-│   └── *.md                  # Additional concept documentation
-├── content/                  # Article content organized by hierarchy
-│   ├── articles/             # TSX article files (concise/extensive)
-│   │   ├── backend/
-│   │   └── frontend/
-│   ├── system-design-concepts/ # MDX content by category
-│   ├── metadata/             # Article metadata files
-│   └── registry.ts           # Article registry with loaders
-├── features/                 # Feature modules (co-located state + logic)
-│   ├── articles/             # Article-related features
-│   ├── network-status/       # Network connectivity indicator
-│   ├── sidebar/              # Navigation sidebar with Zustand store
-│   └── theme/                # Dark/light theme management
-├── lib/                      # Utility functions
-│   ├── parse*.ts             # Concept file parsers
-│   ├── *-data-context.tsx    # Data context providers
-│   ├── article-loader.ts     # Dynamic article loading
-│   └── constants.ts          # Shared constants
-├── types/                    # TypeScript type definitions
-│   └── article.ts            # Article metadata + registry types
-├── styles/                   # Global CSS + theme definitions
-│   ├── theme.css             # CSS variables for theming
-│   └── animations.css        # Animation definitions
-└── scripts/                  # Utility scripts
-    ├── generate-article-stub.ts
-    └── scan-code-snippets.ts
-```
+| Directory     | Purpose                                                             |
+| ------------- | ------------------------------------------------------------------- |
+| `app/`        | Next.js App Router pages and layouts (Server Components by default) |
+| `features/`   | Feature modules with co-located state, components, and logic        |
+| `components/` | Shared UI components (presentation layer)                           |
+| `lib/`        | Utility functions and constants                                     |
+| `types/`      | TypeScript type definitions                                         |
+| `concepts/`   | Source text files defining content hierarchy (parsed at build time) |
+| `content/`    | Markdown/MDX articles organized by category hierarchy               |
+| `styles/`     | Global CSS and Tailwind configuration                               |
+| `public/`     | Static assets (fonts, images, diagrams)                             |
+| `scripts/`    | Utility scripts (article stub generator, code scanner)              |
+
+### Feature Modules
+
+- **`features/theme/`** - Dark/light/system theme management with localStorage persistence
+- **`features/network-status/`** - Network connectivity indicator component
 
 ### Content Hierarchy
 
-The platform organizes content in a 5-level hierarchy:
+Content follows a 5-level hierarchy:
 
-1. **Category** - Top-level: "System Design Concepts" (frontend/backend)
-2. **SubCategory** - Major topic groups (e.g., "Rendering Strategies", "Caching")
-3. **SubCategoryItem** - Specific concept areas (e.g., "Client-Side Rendering")
-4. **Topic** - Individual topics within concept areas
-5. **Article** - Actual content files with in-depth information
-
-**Content Source Files** (`concepts/`):
-- `frontend-concepts.txt` - 30 categories covering rendering, performance, caching, state management, security, etc.
-- `backend-concepts.txt` - 13 categories covering databases, caching, networking, distributed systems, reliability, security, etc.
-
-**Content Format**:
 ```
-1. Section Name
-• Topic One
-• Topic Two
+Category (e.g., "System Design Concepts")
+  └── SubCategory (e.g., "Frontend Concepts", "Backend Concepts")
+      └── SubCategoryItem (e.g., "Rendering Strategies")
+          └── Topic (e.g., "Client-Side Rendering")
+              └── Article (content files in content/)
 ```
 
-Parsed by `lib/parseFrontendConcepts.ts` and `lib/parseBackendConcepts.ts` which generate unique IDs via slugification.
+**Content Definition:**
 
-### State Management
+- `concepts/hierarchy-data.txt` - Defines the hierarchy structure using numbered sections and bullet points
+- Content files live in `content/system-design-concepts/{category}/{subcategory}/{slug}.tsx`
+- Each article has both "extensive" and "concise" versions
 
-**Zustand stores** with `persist` middleware for localStorage persistence:
+### State Management (Zustand)
 
-#### Sidebar Store (`features/sidebar/sidebar.store.ts`)
+Stores use `persist` middleware with SSR-safe patterns:
+
 ```typescript
-type SidebarState = {
-  expandedIds: string[];        // Expanded navigation items
-  mobileOpen: boolean;          // Mobile sidebar state
-  selectedSubCategoryId: string | null;
-  selectedSubCategoryItemId: string | null;
-  selectedTopicId: string | null;
-  // Actions: toggleExpanded, setNavigationState, etc.
-}
+// Theme store (features/theme/theme.store.ts)
+export type ThemePreference = "light" | "dark" | "system";
+
+// Key pattern: skipHydration: true + conditional storage access
 ```
-
-**SSR Handling**: Uses `skipHydration: true` and conditional storage access (`typeof window` check).
-
-#### Theme Store (`features/theme/theme.store.ts`)
-- Manages light/dark/system theme preferences
-- Persists to localStorage with SSR-safe patterns
 
 ### Server vs Client Components
 
-| Server Components (default) | Client Components ("use client") |
-|-----------------------------|----------------------------------|
-| `app/page.tsx`              | Feature stores (Zustand)         |
-| `app/layout.tsx`            | Interactive components           |
-| Data fetching               | Components with state/effects    |
-| Static content generation   | Browser API usage                |
+| Server Components (default)    | Client Components (`"use client"`)         |
+| ------------------------------ | ------------------------------------------ |
+| `app/page.tsx`                 | Feature modules (sidebar, theme)           |
+| `app/layout.tsx`               | Interactive components (AppLayout, TopBar) |
+| Data fetching with async/await | Zustand stores                             |
+|                                | Components with state/effects/browser APIs |
 
-## Key Patterns & Conventions
+**Path Alias:** `@/*` maps to root directory (configured in `tsconfig.json`)
 
-### Article Registry Pattern
+## Styling System
 
-Articles are registered in `content/registry.ts` with metadata and dynamic loaders:
+**Tailwind CSS 4** with custom theme tokens:
 
-```typescript
-export const articleRegistry: ArticleRegistry = {
-  "backend/caching-performance/cache-invalidation": {
-    metadata: {
-      id: "article-backend-cache-invalidation-extensive",
-      title: "Cache Invalidation",
-      description: "Deep guide to cache invalidation techniques...",
-      category: "backend",
-      subcategory: "caching-performance",
-      slug: "cache-invalidation",
-      wordCount: 8928,
-      readingTime: 45,
-      lastUpdated: "2026-03-10",
-      tags: ["backend", "caching", "performance", "redis"],
-      relatedTopics: ["caching-strategies", "cache-eviction-policies"],
-    },
-    loader: () => import("./articles/backend/caching-performance/cache-invalidation-concise"),
-  },
-};
-```
+- CSS variables for theming (defined in global CSS)
+- Custom utility classes: `bg-theme`, `text-theme`, `border-theme`, `bg-panel`, `shadow-soft-theme`, `shadow-strong-theme`
+- Responsive design with mobile-first approach (`lg:` breakpoint for desktop sidebar)
+- Framer Motion for animations (page transitions, sidebar overlay)
 
-### Path Alias
+## Article System
 
-`@/*` maps to the root directory (configured in `tsconfig.json`).
+### Article Structure
 
-### Styling System
+Each article uses the `ArticleLayout` component with:
 
-**Tailwind CSS 4** with custom CSS variable theming:
+- Breadcrumbs navigation
+- Article/Example toggle (default: Article view)
+- Metadata display (reading time, tags)
+- Related topics section
 
-```css
-/* Custom utility classes */
-.bg-theme, .text-theme, .border-theme
-.bg-panel, .bg-panel-soft, .bg-panel-hover
-.shadow-soft-theme, .shadow-strong-theme
-```
+### Article/Example Toggle
 
-**Responsive Design**: Mobile-first approach with `lg:` breakpoint for desktop sidebar.
+Articles have two views:
+
+1. **Article** - Main content with in-depth explanations
+2. **Example** - Code examples with multiple files:
+   - Example 1: Full-fledged application
+   - Example 2+: Smaller focused code snippets
 
 ### Content Authoring Requirements
 
-Per `AGENTS.md`, each extensive article must include:
+- In-depth information suitable for staff/principal engineer interview prep
+- Comprehension-focused code examples tied to the concept
+- 2-3 images per article (use SVG from public sources, **not Mermaid**)
+- Clear structure with sections: hi
 
-1. **In-depth information** suitable for staff/principal engineer interview prep
-2. **Comprehension-focused code examples** tied to the concept (not generic)
-3. **2-3 images** related to the concept (use SVG from publicly available sources, NOT Mermaid)
+### Adding New Content
 
-## Adding New Content
+1. **Update hierarchy definition** in `concepts/hierarchy-data.txt`:
 
-### Step 1: Update Concept Definition
+   ```
+   1. New Subcategory Name
+   • Topic One
+   • Topic Two
+   ```
 
-Add to `concepts/frontend-concepts.txt` or `concepts/backend-concepts.txt`:
+2. **Generate article stubs** using the script:
 
+   ```bash
+   pnpm tsx scripts/generate-article-stub.ts \
+     --category frontend \
+     --subcategory "rendering-strategies" \
+     --topic "client-side-rendering" \
+     --title "Client-Side Rendering (CSR)"
+   ```
+
+3. **Create content file** in `content/system-design-concepts/{category}/{subcategory}/{slug}.tsx`
+
+4. **Update registry** in `content/registry.ts` if needed
+
+## Key Conventions
+
+- **TypeScript:** Strict mode enabled (`strict: true`)
+- **Component Design:** Prefer composition over inheritance
+- **File Organization:** Co-locate related files in feature directories
+- **Accessibility:** Use semantic HTML and accessible patterns
+- **SSR Safety:** Check `typeof window` before accessing browser APIs
+- **State Persistence:** Store UI state in Zustand, persist preferences to localStorage
+- **Code Style:** ESLint with Next.js config (see `eslint.config.mjs`)
+
+## Type Definitions
+
+### Article Types (`types/article.ts`)
+
+```typescript
+export type ArticleMetadata = {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  subcategory: string;
+  slug: string;
+  version?: "concise" | "extensive";
+  wordCount: number;
+  readingTime: number;
+  lastUpdated: string;
+  tags: string[];
+  relatedTopics?: string[];
+};
 ```
-1. New Subcategory Name
-• Topic One
-• Topic Two
+
+### Content Types (`types/content.ts`)
+
+```typescript
+export type Category = {
+  id: string;
+  name: string;
+  subCategories: SubCategory[];
+};
+// ... SubCategory, SubCategoryItem, Topic, Article
 ```
 
-### Step 2: Create Content File
+### Example Types (`types/examples.ts`)
 
-Create article in appropriate directory:
+```typescript
+export type ExampleFile = {
+  name: string;
+  path: string;
+  content: string;
+};
+
+export type ExampleGroup = {
+  id: string;
+  label: string;
+  files: ExampleFile[];
+};
 ```
-content/articles/{category}/{subcategory}/{slug}-concise.tsx
-content/articles/{category}/{subcategory}/{slug}-extensive.tsx
-```
-
-### Step 3: Update Registry
-
-Add entry to `content/registry.ts` with metadata and loader.
-
-### Step 4: Update Mock Data (if needed)
-
-For development, update `features/sidebar/sidebar.mock.ts`.
 
 ## Image Handling
 
@@ -238,31 +236,23 @@ images: {
 }
 ```
 
-Use the `ArticleImage` component from `components/articles/ArticleImage.tsx`.
+Use the `ArticleImage` component for consistent image rendering with proper alt text and captions.
 
-## Key Files Reference
+## Testing
 
-| File | Purpose |
-|------|---------|
-| `app/layout.tsx` | Root layout, font loading, concept parsing |
-| `content/registry.ts` | Article registry with metadata + loaders |
-| `features/sidebar/sidebar.store.ts` | Sidebar state management |
-| `lib/parseFrontendConcepts.ts` | Frontend concept file parser |
-| `lib/parseBackendConcepts.ts` | Backend concept file parser |
-| `types/article.ts` | Article metadata and registry types |
-| `styles/theme.css` | CSS variables for theming |
-| `AGENTS.md` | Development guidelines |
+**Playwright** for E2E testing:
 
-## Testing & Quality
+- Tests located in `tests/` directory (create as needed)
+- Configuration in `playwright.config.ts`
+- Use `--ui` flag for interactive test development
+- Use `--debug` for step-through debugging
 
-- **TypeScript**: Strict mode enabled (`strict: true`)
-- **ESLint**: Next.js recommended config with TypeScript
-- **Code Snippet Scanning**: Custom script validates code examples
+## Scripts
 
-## Deployment
+### `generate-article-stub.ts`
 
-The project supports both:
-- **Standard Next.js deployment** (default)
-- **Static export** (uncomment `output: "export"` in `next.config.ts`)
+Generates article stub files with template content for both extensive and concise versions. Updates registry and metadata automatically.
 
-Recommended deployment: **Vercel Platform** (creators of Next.js).
+### `scan-code-snippets.ts`
+
+Scans code snippets for issues (implementation details in script).

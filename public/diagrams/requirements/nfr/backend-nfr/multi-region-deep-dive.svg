@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
+  <defs>
+    <marker id="multiRegArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--border-accent, #3b82f6)"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="550" fill="var(--bg-primary, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--text-primary, #0f172a">Multi-Region Architecture Patterns</text>
+  
+  <!-- Global Distribution -->
+  <rect x="50" y="60" width="450" height="250" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">Global Distribution Patterns</text>
+  
+  <!-- US Region -->
+  <rect x="70" y="110" width="100" height="80" rx="4" fill="var(--bg-blue, #3b82f6)" opacity="0.2" stroke="var(--border-blue, #3b82f6)" stroke-width="2"/>
+  <text x="120" y="140" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-blue, #3b82f6">US-East</text>
+  <text x="120" y="160" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Primary</text>
+  <text x="120" y="175" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Read/Write</text>
+  
+  <!-- EU Region -->
+  <rect x="200" y="110" width="100" height="80" rx="4" fill="var(--bg-purple, #8b5cf6)" opacity="0.2" stroke="var(--border-purple, #8b5cf6)" stroke-width="2"/>
+  <text x="250" y="140" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-purple, #8b5cf6">EU-West</text>
+  <text x="250" y="160" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Secondary</text>
+  <text x="250" y="175" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Read Replica</text>
+  
+  <!-- APAC Region -->
+  <rect x="330" y="110" width="100" height="80" rx="4" fill="var(--bg-orange, #f97316)" opacity="0.2" stroke="var(--border-orange, #f97316)" stroke-width="2"/>
+  <text x="380" y="140" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-orange, #f97316">APAC</text>
+  <text x="380" y="160" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Secondary</text>
+  <text x="380" y="175" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Read Replica</text>
+  
+  <!-- Replication arrows -->
+  <line x1="170" y1="150" x2="195" y2="150" stroke="var(--border-accent, #3b82f6)" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#multiRegArrow)"/>
+  <line x1="300" y1="150" x2="325" y2="150" stroke="var(--border-accent, #3b82f6)" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#multiRegArrow)"/>
+  
+  <text x="182" y="140" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">Async</text>
+  <text x="312" y="140" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">Async</text>
+  
+  <!-- Latency zones -->
+  <circle cx="120" cy="230" r="40" fill="var(--bg-green, #22c55e)" opacity="0.1" stroke="var(--border-green, #22c55e)" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="120" y="235" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">&lt;50ms</text>
+  
+  <circle cx="120" cy="230" r="70" fill="var(--bg-orange, #f97316)" opacity="0.1" stroke="var(--border-orange, #f97316)" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="180" y="210" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">100-200ms</text>
+  
+  <circle cx="120" cy="230" r="100" fill="var(--bg-red, #ef4444)" opacity="0.1" stroke="var(--border-red, #ef4444)" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="200" y="260" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">&gt;200ms</text>
+  
+  <text x="275" y="290" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">Place compute close to users for low latency</text>
+  
+  <!-- Data Residency -->
+  <rect x="520" y="60" width="430" height="140" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">Data Residency &amp; Compliance</text>
+  
+  <rect x="540" y="110" width="190" height="70" rx="3" fill="var(--bg-blue, #3b82f6)" opacity="0.2" stroke="var(--border-blue, #3b82f6)" stroke-width="1"/>
+  <text x="635" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-blue, #3b82f6">GDPR (EU)</text>
+  <text x="635" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">EU data stays in EU</text>
+  <text x="635" y="172" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">EU-West region only</text>
+  
+  <rect x="750" y="110" width="180" height="70" rx="3" fill="var(--bg-purple, #8b5cf6)" opacity="0.2" stroke="var(--border-purple, #8b5cf6)" stroke-width="1"/>
+  <text x="840" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-purple, #8b5cf6">Data Sovereignty</text>
+  <text x="840" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Country-specific laws</text>
+  <text x="840" y="172" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Local region required</text>
+  
+  <!-- Conflict Resolution -->
+  <rect x="520" y="220" width="430" height="140" rx="8" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="735" y="245" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a">Cross-Region Conflict Resolution</text>
+  
+  <rect x="540" y="265" width="190" height="40" rx="3" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="635" y="285" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">Last Write Wins</text>
+  <text x="635" y="302" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Simple, data loss risk</text>
+  
+  <rect x="540" y="315" width="190" height="40" rx="3" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="635" y="335" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">Application Merge</text>
+  <text x="635" y="352" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Domain-specific logic</text>
+  
+  <rect x="750" y="265" width="180" height="40" rx="3" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="840" y="285" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">CRDTs</text>
+  <text x="840" y="302" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Mathematical guarantee</text>
+  
+  <rect x="750" y="315" width="180" height="40" rx="3" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="840" y="335" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">Primary Region</text>
+  <text x="840" y="352" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Single writer</text>
+  
+  <text x="500" y="390" text-anchor="middle" font-size="9" fill="var(--text-muted, #64748b">Key: Balance latency, compliance, and consistency. Choose conflict resolution strategy early.</text>
+</svg>

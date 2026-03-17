@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">B-tree and B+ Tree Structure</title>
+  <desc id="desc">B-tree and B+ tree showing page-oriented nodes, shallow height, and key distribution</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">B-tree Family: Page-Oriented Balanced Trees</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">High fanout keeps tree shallow for efficient disk access</text>
+  
+  <!-- Left: B-tree Structure -->
+  <rect x="30" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="230" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6)">B-tree Structure</text>
+  <text x="230" y="128" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b)">Keys in internal nodes + leaves</text>
+  
+  <!-- B-tree Root -->
+  <rect x="150" y="140" width="160" height="50" rx="6" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="230" y="162" text-anchor="middle" font-size="11" fill="white">[50 | 100]</text>
+  <text x="230" y="178" text-anchor="middle" font-size="9" fill="#bfdbfe">Root (Page 1)</text>
+  
+  <!-- B-tree Level 1 -->
+  <rect x="70" y="220" width="120" height="50" rx="6" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="130" y="242" text-anchor="middle" font-size="10" fill="white">[20 | 35]</text>
+  <text x="130" y="258" text-anchor="middle" font-size="8" fill="#6ee7b7">Page 2</text>
+  
+  <rect x="210" y="220" width="120" height="50" rx="6" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="270" y="242" text-anchor="middle" font-size="10" fill="white">[70 | 85]</text>
+  <text x="270" y="258" text-anchor="middle" font-size="8" fill="#6ee7b7">Page 3</text>
+  
+  <rect x="350" y="220" width="120" height="50" rx="6" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="410" y="242" text-anchor="middle" font-size="10" fill="white">[120 | 150]</text>
+  <text x="410" y="258" text-anchor="middle" font-size="8" fill="#6ee7b7">Page 4</text>
+  
+  <!-- B-tree Leaves (Level 2) -->
+  <rect x="50" y="300" width="70" height="40" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="85" y="318" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b)">Keys:</text>
+  <text x="85" y="330" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b)">5,15,25</text>
+  
+  <rect x="130" y="300" width="70" height="40" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="165" y="318" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b)">Keys:</text>
+  <text x="165" y="330" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b)">40,45</text>
+  
+  <rect x="210" y="300" width="70" height="40" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="245" y="318" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b)">Keys:</text>
+  <text x="245" y="330" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b)">60,75</text>
+  
+  <rect x="290" y="300" width="70" height="40" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="325" y="318" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b)">Keys:</text>
+  <text x="325" y="330" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b)">90,95</text>
+  
+  <rect x="370" y="300" width="70" height="40" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="405" y="318" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b)">Keys:</text>
+  <text x="405" y="330" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b)">130,160</text>
+  
+  <!-- B-tree connections -->
+  <line x1="230" y1="190" x2="130" y2="220" stroke="var(--text-theme, #64748b)" stroke-width="1.5"/>
+  <line x1="230" y1="190" x2="270" y2="220" stroke="var(--text-theme, #64748b)" stroke-width="1.5"/>
+  <line x1="230" y1="190" x2="410" y2="220" stroke="var(--text-theme, #64748b)" stroke-width="1.5"/>
+  
+  <line x1="130" y1="270" x2="85" y2="300" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  <line x1="130" y1="270" x2="165" y2="300" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  <line x1="270" y1="270" x2="245" y2="300" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  <line x1="270" y1="270" x2="325" y2="300" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  <line x1="410" y1="270" x2="405" y2="300" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  
+  <!-- Right: B+ Tree Structure -->
+  <rect x="470" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="670" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #8b5cf6)">B+ Tree Structure</text>
+  <text x="670" y="128" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b)">Data only in leaves, leaves linked</text>
+  
+  <!-- B+ tree Root (internal nodes have no data) -->
+  <rect x="590" y="140" width="160" height="50" rx="6" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="670" y="162" text-anchor="middle" font-size="11" fill="white">[50 | 100]</text>
+  <text x="670" y="178" text-anchor="middle" font-size="9" fill="#c4b5fd">Index Only</text>
+  
+  <!-- B+ tree Level 1 (internal) -->
+  <rect x="510" y="220" width="120" height="50" rx="6" fill="var(--bg-theme, #a78bfa)" stroke="var(--border-theme, #7c3aed)" stroke-width="1"/>
+  <text x="570" y="242" text-anchor="middle" font-size="10" fill="white">[20 | 35]</text>
+  <text x="570" y="258" text-anchor="middle" font-size="8" fill="#ddd6fe">Index</text>
+  
+  <rect x="650" y="220" width="120" height="50" rx="6" fill="var(--bg-theme, #a78bfa)" stroke="var(--border-theme, #7c3aed)" stroke-width="1"/>
+  <text x="710" y="242" text-anchor="middle" font-size="10" fill="white">[70 | 85]</text>
+  <text x="710" y="258" text-anchor="middle" font-size="8" fill="#ddd6fe">Index</text>
+  
+  <rect x="790" y="220" width="120" height="50" rx="6" fill="var(--bg-theme, #a78bfa)" stroke="var(--border-theme, #7c3aed)" stroke-width="1"/>
+  <text x="850" y="242" text-anchor="middle" font-size="10" fill="white">[120 | 150]</text>
+  <text x="850" y="258" text-anchor="middle" font-size="8" fill="#ddd6fe">Index</text>
+  
+  <!-- B+ tree Leaves (with data pointers) -->
+  <rect x="490" y="300" width="75" height="45" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="527" y="317" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b)">Data:</text>
+  <text x="527" y="328" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">5,15,25</text>
+  <text x="527" y="340" text-anchor="middle" font-size="7" fill="var(--text-theme, #8b5cf6">→ Records</text>
+  
+  <rect x="575" y="300" width="75" height="45" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="612" y="317" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Data:</text>
+  <text x="612" y="328" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">40,45</text>
+  <text x="612" y="340" text-anchor="middle" font-size="7" fill="var(--text-theme, #8b5cf6">→ Records</text>
+  
+  <rect x="660" y="300" width="75" height="45" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="697" y="317" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Data:</text>
+  <text x="697" y="328" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">60,75</text>
+  <text x="697" y="340" text-anchor="middle" font-size="7" fill="var(--text-theme, #8b5cf6">→ Records</text>
+  
+  <rect x="745" y="300" width="75" height="45" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="782" y="317" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Data:</text>
+  <text x="782" y="328" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">90,95</text>
+  <text x="782" y="340" text-anchor="middle" font-size="7" fill="var(--text-theme, #8b5cf6">→ Records</text>
+  
+  <rect x="830" y="300" width="75" height="45" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="867" y="317" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Data:</text>
+  <text x="867" y="328" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">130,160</text>
+  <text x="867" y="340" text-anchor="middle" font-size="7" fill="var(--text-theme, #8b5cf6">→ Records</text>
+  
+  <!-- B+ tree leaf links (chain) -->
+  <line x1="565" y1="322" x2="575" y2="322" stroke="var(--text-theme, #8b5cf6)" stroke-width="2" marker-end="url(#arrow-right)"/>
+  <line x1="650" y1="322" x2="660" y2="322" stroke="var(--text-theme, #8b5cf6)" stroke-width="2" marker-end="url(#arrow-right)"/>
+  <line x1="735" y1="322" x2="745" y2="322" stroke="var(--text-theme, #8b5cf6)" stroke-width="2" marker-end="url(#arrow-right)"/>
+  <line x1="820" y1="322" x2="830" y2="322" stroke="var(--text-theme, #8b5cf6)" stroke-width="2" marker-end="url(#arrow-right)"/>
+  
+  <!-- B+ tree connections -->
+  <line x1="670" y1="190" x2="570" y2="220" stroke="var(--text-theme, #64748b)" stroke-width="1.5"/>
+  <line x1="670" y1="190" x2="710" y2="220" stroke="var(--text-theme, #64748b)" stroke-width="1.5"/>
+  <line x1="670" y1="190" x2="850" y2="220" stroke="var(--text-theme, #64748b)" stroke-width="1.5"/>
+  
+  <line x1="570" y1="270" x2="527" y2="300" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  <line x1="570" y1="270" x2="612" y2="300" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  <line x1="710" y1="270" x2="697" y2="300" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  <line x1="710" y1="270" x2="782" y2="300" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  <line x1="850" y1="270" x2="867" y2="300" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-right" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #8b5cf6)"/>
+    </marker>
+  </defs>
+  
+  <!-- Bottom comparison -->
+  <rect x="30" y="385" width="840" height="145" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="450" y="410" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">Key Differences</text>
+  
+  <!-- B-tree characteristics -->
+  <rect x="50" y="425" width="380" height="95" rx="6" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="240" y="448" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #3b82f6)">B-tree</text>
+  <text x="70" y="470" font-size="11" fill="var(--text-theme, #64748b">• Keys stored in internal nodes AND leaves</text>
+  <text x="70" y="490" font-size="11" fill="var(--text-theme, #64748b">• Range scans require tree traversal</text>
+  <text x="70" y="510" font-size="11" fill="var(--text-theme, #64748b">• Better for random access patterns</text>
+  
+  <!-- B+ tree characteristics -->
+  <rect x="470" y="425" width="380" height="95" rx="6" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="660" y="448" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #8b5cf6)">B+ Tree</text>
+  <text x="490" y="470" font-size="11" fill="var(--text-theme, #64748b">• Keys only in internal nodes, data in leaves</text>
+  <text x="490" y="490" font-size="11" fill="var(--text-theme, #64748b">• Leaves linked for efficient range scans</text>
+  <text x="490" y="510" font-size="11" fill="var(--text-theme, #64748b">• Preferred for database indexes</text>
+</svg>

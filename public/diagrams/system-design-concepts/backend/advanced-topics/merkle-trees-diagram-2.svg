@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Merkle Tree Design Trade-offs</title>
+  <desc id="desc">Merkle tree design trade-offs: chunk size, key ordering, and synchronization cost</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Merkle Tree Design Trade-offs</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Chunking and ordering decisions affect rebuild cost and repair precision</text>
+  
+  <!-- Left: Chunk Size Trade-off -->
+  <rect x="30" y="85" width="270" height="280" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="165" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6)">Chunk Size Trade-off</text>
+  
+  <!-- Small chunks -->
+  <rect x="50" y="125" width="230" height="90" rx="6" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="165" y="148" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #3b82f6)">Small Chunks</text>
+  
+  <!-- Visual: many small boxes -->
+  <rect x="60" y="160" width="20" height="20" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="85" y="160" width="20" height="20" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="110" y="160" width="20" height="20" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="135" y="160" width="20" height="20" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="160" y="160" width="20" height="20" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="185" y="160" width="20" height="20" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="210" y="160" width="20" height="20" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="235" y="160" width="20" height="20" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  
+  <rect x="60" y="185" width="20" height="20" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="85" y="185" width="20" height="20" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="110" y="185" width="20" height="20" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="135" y="185" width="20" height="20" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="160" y="185" width="20" height="20" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="185" y="185" width="20" height="20" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="210" y="185" width="20" height="20" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="235" y="185" width="20" height="20" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  
+  <text x="165" y="225" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981)">✓ Precise diff localization</text>
+  <text x="165" y="240" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444)">✗ High rebuild cost</text>
+  <text x="165" y="255" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444)">✗ Large tree overhead</text>
+  <text x="165" y="270" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b)">Best for: Infrequent updates</text>
+  
+  <!-- Large chunks -->
+  <rect x="50" y="285" width="230" height="70" rx="6" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="165" y="308" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309)">Large Chunks</text>
+  
+  <rect x="60" y="320" width="65" height="25" rx="2" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="92" y="337" text-anchor="middle" font-size="7" fill="white">Chunk 1</text>
+  
+  <rect x="130" y="320" width="65" height="25" rx="2" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="162" y="337" text-anchor="middle" font-size="7" fill="white">Chunk 2</text>
+  
+  <rect x="200" y="320" width="65" height="25" rx="2" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="232" y="337" text-anchor="middle" font-size="7" fill="white">Chunk 3</text>
+  
+  <text x="165" y="360" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981)">✓ Low rebuild cost</text>
+  <text x="165" y="375" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981)">✓ Small tree</text>
+  <text x="165" y="390" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444)">✗ Coarse diff (transfer more)</text>
+  <text x="165" y="405" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b)">Best for: Frequent updates</text>
+  
+  <!-- Middle: Key Ordering -->
+  <rect x="315" y="85" width="270" height="280" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #8b5cf6)">Key Ordering Matters</text>
+  
+  <!-- Good ordering -->
+  <rect x="335" y="125" width="230" height="100" rx="6" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="450" y="148" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #8b5cf6)">Stable Ordering ✓</text>
+  
+  <rect x="345" y="160" width="210" height="55" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="450" y="185" text-anchor="middle" font-size="10" fill="white">Sorted by key: A→B→C→D</text>
+  <text x="450" y="200" text-anchor="middle" font-size="9" fill="#6ee7b7">Deterministic across replicas</text>
+  
+  <text x="450" y="225" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Same data → Same root hash</text>
+  
+  <!-- Bad ordering -->
+  <rect x="335" y="245" width="230" height="100" rx="6" fill="var(--bg-panel-soft, #fef2f2)" stroke="var(--border-theme, #ef4444)" stroke-width="1"/>
+  <text x="450" y="268" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #ef4444)">Unstable Ordering ✗</text>
+  
+  <rect x="345" y="280" width="210" height="55" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
+  <text x="450" y="305" text-anchor="middle" font-size="10" fill="white">Insertion order / Hash order</text>
+  <text x="450" y="320" text-anchor="middle" font-size="9" fill="#fca5a5">Differs across replicas</text>
+  
+  <text x="450" y="345" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">Same data → Different root hash!</text>
+  
+  <text x="450" y="380" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Always use deterministic key ordering</text>
+  
+  <!-- Right: Synchronization Cost -->
+  <rect x="600" y="85" width="270" height="280" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="735" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Synchronization Cost</text>
+  
+  <!-- Efficient sync -->
+  <rect x="620" y="125" width="230" height="110" rx="6" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="735" y="148" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #10b981">Efficient Sync ✓</text>
+  
+  <!-- Tree comparison visualization -->
+  <line x1="640" y1="165" x2="700" y2="165" stroke="var(--text-theme, #10b981)" stroke-width="2"/>
+  <text x="670" y="160" text-anchor="middle" font-size="8" fill="var(--text-theme, #10b981">Root match</text>
+  <text x="670" y="180" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">No sync needed!</text>
+  
+  <line x1="640" y1="200" x2="700" y2="200" stroke="var(--text-theme, #ef4444)" stroke-width="2"/>
+  <text x="670" y="195" text-anchor="middle" font-size="8" fill="var(--text-theme, #ef4444">Root mismatch</text>
+  
+  <!-- Drill down -->
+  <rect x="720" y="185" width="40" height="30" rx="2" fill="var(--bg-theme, #8b5cf6)"/>
+  <text x="740" y="205" text-anchor="middle" font-size="6" fill="white">Drill</text>
+  
+  <line x1="760" y1="200" x2="780" y2="200" stroke="var(--text-theme, #64748b)" stroke-width="1"/>
+  
+  <rect x="790" y="190" width="50" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <text x="815" y="205" text-anchor="middle" font-size="6" fill="white">Diff found</text>
+  
+  <text x="735" y="230" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Only transfer differing chunks</text>
+  
+  <!-- Inefficient sync -->
+  <rect x="620" y="255" width="230" height="100" rx="6" fill="var(--bg-panel-soft, #fef2f2)" stroke="var(--border-theme, #ef4444)" stroke-width="1"/>
+  <text x="735" y="278" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #ef4444">Inefficient Sync ✗</text>
+  
+  <text x="735" y="300" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Causes:</text>
+  <text x="630" y="320" text-anchor="start" font-size="8" fill="var(--text-theme, #64748b">• Too many chunks → high overhead</text>
+  <text x="630" y="335" text-anchor="start" font-size="8" fill="var(--text-theme, #64748b">• Wrong ordering → false mismatches</text>
+  <text x="630" y="350" text-anchor="start" font-size="8" fill="var(--text-theme, #64748b">• High churn → constant rebuilds</text>
+  
+  <!-- Bottom: Recommendations -->
+  <rect x="30" y="380" width="840" height="150" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="450" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">Design Recommendations</text>
+  
+  <rect x="50" y="420" width="260" height="100" rx="6" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="180" y="443" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #3b82f6">Chunk Size</text>
+  <text x="180" y="465" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Match update locality</text>
+  <text x="180" y="485" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Append-heavy: larger chunks</text>
+  <text x="180" y="505" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Random updates: smaller chunks</text>
+  
+  <rect x="320" y="420" width="260" height="100" rx="6" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="450" y="443" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #8b5cf6">Key Ordering</text>
+  <text x="450" y="465" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Use sorted key order</text>
+  <text x="450" y="485" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Never use insertion order</text>
+  <text x="450" y="505" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Version your hash scheme</text>
+  
+  <rect x="590" y="420" width="260" height="100" rx="6" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="720" y="443" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #10b981">Rebuild Strategy</text>
+  <text x="720" y="465" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Schedule during low load</text>
+  <text x="720" y="485" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Incremental rebuilds when possible</text>
+  <text x="720" y="505" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Monitor rebuild time &amp; frequency</text>
+</svg>

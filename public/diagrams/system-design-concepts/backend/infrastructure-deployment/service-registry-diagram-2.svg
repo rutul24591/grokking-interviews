@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Service Registry - Comparison</title>
+  <desc id="desc">Service registry showing Eureka, Consul, and etcd comparison</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Service Registry - Tool Comparison</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b">Eureka, Consul, and etcd comparison</text>
+  
+  <!-- Eureka -->
+  <rect x="30" y="85" width="270" height="280" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="165" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Eureka (Netflix)</text>
+  
+  <rect x="50" y="125" width="200" height="100" rx="4" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="150" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Architecture</text>
+  <text x="150" y="170" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">AP System (Available)</text>
+  <text x="150" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Self-registration</text>
+  <text x="150" y="200" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Client-side LB</text>
+  
+  <rect x="50" y="235" width="200" height="60" rx="4" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="150" y="260" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Best For</text>
+  <text x="150" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Microservices</text>
+  <text x="150" y="295" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Spring Cloud</text>
+  
+  <text x="165" y="335" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Simple</text>
+  <text x="165" y="350" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Battle-tested</text>
+  <text x="165" y="365" text-anchor="middle" font-size="9" fill="var(--text-theme, #f59e0b">⚠ Java-centric</text>
+  
+  <!-- Consul -->
+  <rect x="315" y="85" width="270" height="280" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Consul (HashiCorp)</text>
+  
+  <rect x="335" y="125" width="230" height="100" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="450" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Architecture</text>
+  <text x="450" y="170" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">CP System (Consistent)</text>
+  <text x="450" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Health checking</text>
+  <text x="450" y="200" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Multi-DC support</text>
+  
+  <rect x="335" y="235" width="230" height="60" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="450" y="260" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Best For</text>
+  <text x="450" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Multi-datacenter</text>
+  <text x="450" y="295" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Service mesh</text>
+  
+  <text x="450" y="335" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Feature-rich</text>
+  <text x="450" y="350" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Built-in health</text>
+  <text x="450" y="365" text-anchor="middle" font-size="9" fill="var(--text-theme, #f59e0b">⚠ More complex</text>
+  
+  <!-- etcd -->
+  <rect x="600" y="85" width="270" height="280" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="735" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">etcd (CoreOS)</text>
+  
+  <rect x="620" y="125" width="230" height="100" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="735" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Architecture</text>
+  <text x="735" y="170" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">CP System (Consistent)</text>
+  <text x="735" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Key-value store</text>
+  <text x="735" y="200" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Kubernetes backend</text>
+  
+  <rect x="620" y="235" width="230" height="60" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="735" y="260" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Best For</text>
+  <text x="735" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Kubernetes</text>
+  <text x="735" y="295" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Distributed config</text>
+  
+  <text x="735" y="335" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Strong consistency</text>
+  <text x="735" y="350" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Kubernetes native</text>
+  <text x="735" y="365" text-anchor="middle" font-size="9" fill="var(--text-theme, #f59e0b">⚠ Lower-level API</text>
+  
+  <!-- Feature Comparison -->
+  <rect x="30" y="380" width="840" height="150" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="450" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Feature Comparison</text>
+  
+  <rect x="50" y="420" width="800" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  
+  <!-- Header -->
+  <rect x="60" y="430" width="180" height="30" rx="2" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="150" y="450" text-anchor="middle" font-size="9" fill="white">Feature</text>
+  
+  <rect x="250" y="430" width="180" height="30" rx="2" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="340" y="450" text-anchor="middle" font-size="9" fill="white">Eureka</text>
+  
+  <rect x="440" y="430" width="180" height="30" rx="2" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="530" y="450" text-anchor="middle" font-size="9" fill="white">Consul</text>
+  
+  <rect x="630" y="430" width="180" height="30" rx="2" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="720" y="450" text-anchor="middle" font-size="9" fill="white">etcd</text>
+  
+  <!-- Row 1 -->
+  <rect x="60" y="465" width="180" height="25" rx="2" fill="var(--bg-panel-soft, #fffbeb)"/>
+  <text x="150" y="483" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Consistency</text>
+  
+  <rect x="250" y="465" width="180" height="25" rx="2" fill="var(--bg-panel-soft, #fffbeb)"/>
+  <text x="340" y="483" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">AP (Available)</text>
+  
+  <rect x="440" y="465" width="180" height="25" rx="2" fill="var(--bg-panel-soft, #fffbeb)"/>
+  <text x="530" y="483" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">CP (Consistent)</text>
+  
+  <rect x="630" y="465" width="180" height="25" rx="2" fill="var(--bg-panel-soft, #fffbeb)"/>
+  <text x="720" y="483" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">CP (Consistent)</text>
+  
+  <!-- Row 2 -->
+  <rect x="60" y="495" width="180" height="25" rx="2" fill="var(--bg-panel-soft, #fffbeb)"/>
+  <text x="150" y="513" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Health Checks</text>
+  
+  <rect x="250" y="495" width="180" height="25" rx="2" fill="var(--bg-panel-soft, #fffbeb)"/>
+  <text x="340" y="513" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Basic</text>
+  
+  <rect x="440" y="495" width="180" height="25" rx="2" fill="var(--bg-panel-soft, #fffbeb)"/>
+  <text x="530" y="513" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Advanced</text>
+  
+  <rect x="630" y="495" width="180" height="25" rx="2" fill="var(--bg-panel-soft, #fffbeb)"/>
+  <text x="720" y="513" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Via TTL</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

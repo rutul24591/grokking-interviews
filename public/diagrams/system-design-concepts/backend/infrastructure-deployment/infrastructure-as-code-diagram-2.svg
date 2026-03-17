@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Infrastructure as Code Patterns</title>
+  <desc id="desc">IaC patterns showing modular design, state management, and deployment strategies</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Infrastructure as Code Patterns</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Modular design, state management, and deployment strategies</text>
+  
+  <!-- Modular IaC -->
+  <rect x="30" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="230" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">Modular IaC Design</text>
+  
+  <!-- Modules -->
+  <rect x="50" y="125" width="360" height="100" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  
+  <rect x="60" y="140" width="100" height="40" rx="3" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="110" y="165" text-anchor="middle" font-size="9" fill="white">VPC Module</text>
+  
+  <rect x="170" y="140" width="100" height="40" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="220" y="165" text-anchor="middle" font-size="9" fill="white">Compute Module</text>
+  
+  <rect x="280" y="140" width="100" height="40" rx="3" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="330" y="165" text-anchor="middle" font-size="9" fill="white">Database Module</text>
+  
+  <rect x="60" y="190" width="100" height="30" rx="2" fill="var(--bg-theme, #8b5cf6)"/>
+  <text x="110" y="210" text-anchor="middle" font-size="8" fill="white">Security Module</text>
+  
+  <rect x="170" y="190" width="100" height="30" rx="2" fill="var(--bg-theme, #06b6d4)"/>
+  <text x="220" y="210" text-anchor="middle" font-size="8" fill="white">Monitoring Module</text>
+  
+  <rect x="280" y="190" width="100" height="30" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <text x="330" y="210" text-anchor="middle" font-size="8" fill="white">Networking Module</text>
+  
+  <!-- Composition -->
+  <rect x="50" y="235" width="360" height="120" rx="4" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="230" y="260" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #b45309">Environment Composition</text>
+  
+  <rect x="60" y="270" width="100" height="35" rx="3" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="110" y="293" text-anchor="middle" font-size="8" fill="white">Dev Env</text>
+  <text x="110" y="305" text-anchor="middle" font-size="7" fill="#fcd34d">Small modules</text>
+  
+  <rect x="170" y="270" width="100" height="35" rx="3" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="220" y="293" text-anchor="middle" font-size="8" fill="white">Staging Env</text>
+  <text x="220" y="305" text-anchor="middle" font-size="7" fill="#fcd34d">Medium modules</text>
+  
+  <rect x="280" y="270" width="100" height="35" rx="3" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="330" y="293" text-anchor="middle" font-size="8" fill="white">Prod Env</text>
+  <text x="330" y="305" text-anchor="middle" font-size="7" fill="#fcd34d">Large modules</text>
+  
+  <text x="230" y="340" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Reusable modules</text>
+  <text x="230" y="355" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Consistent environments</text>
+  
+  <!-- State Management -->
+  <rect x="470" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="670" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">State Management</text>
+  
+  <!-- Local state -->
+  <rect x="490" y="125" width="170" height="90" rx="4" fill="var(--bg-panel-soft, #fef2f2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="575" y="150" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #ef4444">Local State</text>
+  <text x="575" y="175" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">terraform.tfstate</text>
+  <text x="575" y="190" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">On developer machine</text>
+  <text x="575" y="205" text-anchor="middle" font-size="8" fill="#ef4444">✗ Not shared, risky</text>
+  
+  <!-- Remote state -->
+  <rect x="680" y="125" width="170" height="90" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="765" y="150" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #10b981">Remote State</text>
+  <text x="765" y="175" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">S3 + DynamoDB</text>
+  <text x="765" y="190" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Shared across team</text>
+  <text x="765" y="205" text-anchor="middle" font-size="8" fill="#10b981">✓ State locking</text>
+  
+  <!-- State isolation -->
+  <rect x="490" y="230" width="360" height="125" rx="4" fill="var(--bg-panel-soft, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="670" y="255" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #1e293b">State Isolation Strategy</text>
+  
+  <rect x="500" y="270" width="100" height="40" rx="3" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="550" y="295" text-anchor="middle" font-size="8" fill="white">Dev State</text>
+  
+  <rect x="620" y="270" width="100" height="40" rx="3" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="670" y="295" text-anchor="middle" font-size="8" fill="white">Staging State</text>
+  
+  <rect x="740" y="270" width="100" height="40" rx="3" fill="var(--bg-theme, #ef4444)"/>
+  <text x="790" y="295" text-anchor="middle" font-size="8" fill="white">Prod State</text>
+  
+  <text x="670" y="340" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Separate state files per environment</text>
+  
+  <!-- Deployment Strategies -->
+  <rect x="30" y="380" width="840" height="150" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="450" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">IaC Deployment Strategies</text>
+  
+  <rect x="50" y="420" width="250" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="175" y="445" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">Direct Apply</text>
+  <text x="175" y="470" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">terraform apply</text>
+  <text x="175" y="490" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Immediate changes</text>
+  <text x="175" y="510" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Risk: Human error</text>
+  
+  <rect x="315" y="420" width="250" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="440" y="445" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">CI/CD Pipeline</text>
+  <text x="440" y="470" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Automated apply</text>
+  <text x="440" y="490" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">PR-based workflow</text>
+  <text x="440" y="510" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Audit trail</text>
+  
+  <rect x="580" y="420" width="250" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="705" y="445" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">Plan &amp; Apply</text>
+  <text x="705" y="470" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Review plan first</text>
+  <text x="705" y="490" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Manual approval</text>
+  <text x="705" y="510" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Safe for production</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

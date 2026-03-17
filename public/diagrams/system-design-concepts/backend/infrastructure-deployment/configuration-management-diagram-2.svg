@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Configuration Management Tools</title>
+  <desc id="desc">Configuration management showing Ansible, Puppet, and Chef comparison</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Configuration Management Tools</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Ansible, Puppet, and Chef comparison</text>
+  
+  <!-- Ansible -->
+  <rect x="30" y="85" width="270" height="280" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="165" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Ansible</text>
+  
+  <rect x="50" y="125" width="200" height="100" rx="4" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="150" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Architecture</text>
+  <text x="150" y="170" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Agentless (SSH)</text>
+  <text x="150" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Push model</text>
+  <text x="150" y="200" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">YAML playbooks</text>
+  
+  <rect x="50" y="235" width="200" height="60" rx="4" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="150" y="260" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Best For</text>
+  <text x="150" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Quick adoption</text>
+  <text x="150" y="295" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Simple setups</text>
+  
+  <text x="165" y="335" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Easy to learn</text>
+  <text x="165" y="350" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ No agents</text>
+  <text x="165" y="365" text-anchor="middle" font-size="9" fill="var(--text-theme, #f59e0b">⚠ Slower at scale</text>
+  
+  <!-- Puppet -->
+  <rect x="315" y="85" width="270" height="280" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Puppet</text>
+  
+  <rect x="335" y="125" width="230" height="100" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="450" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Architecture</text>
+  <text x="450" y="170" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Agent-based</text>
+  <text x="450" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Pull model</text>
+  <text x="450" y="200" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">DSL language</text>
+  
+  <rect x="335" y="235" width="230" height="60" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="450" y="260" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Best For</text>
+  <text x="450" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Large enterprises</text>
+  <text x="450" y="295" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Compliance needs</text>
+  
+  <text x="450" y="335" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Scalable</text>
+  <text x="450" y="350" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Mature ecosystem</text>
+  <text x="450" y="365" text-anchor="middle" font-size="9" fill="var(--text-theme, #f59e0b">⚠ Steep learning curve</text>
+  
+  <!-- Chef -->
+  <rect x="600" y="85" width="270" height="280" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="735" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">Chef</text>
+  
+  <rect x="620" y="125" width="230" height="100" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="735" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Architecture</text>
+  <text x="735" y="170" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Agent-based</text>
+  <text x="735" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Pull model</text>
+  <text x="735" y="200" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Ruby-based</text>
+  
+  <rect x="620" y="235" width="230" height="60" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="735" y="260" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Best For</text>
+  <text x="735" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• DevOps teams</text>
+  <text x="735" y="295" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Ruby shops</text>
+  
+  <text x="735" y="335" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Flexible</text>
+  <text x="735" y="350" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Programmable</text>
+  <text x="735" y="365" text-anchor="middle" font-size="9" fill="var(--text-theme, #f59e0b">⚠ Ruby knowledge needed</text>
+  
+  <!-- CM Workflow -->
+  <rect x="30" y="380" width="840" height="150" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="450" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Configuration Management Workflow</text>
+  
+  <rect x="50" y="420" width="800" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  
+  <!-- Code -->
+  <rect x="70" y="435" width="120" height="70" rx="4" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="130" y="465" text-anchor="middle" font-size="9" fill="white">Infrastructure</text>
+  <text x="130" y="485" text-anchor="middle" font-size="9" fill="white">Code</text>
+  
+  <line x1="195" y1="470" x2="225" y2="470" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Version Control -->
+  <rect x="230" y="435" width="120" height="70" rx="4" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="290" y="465" text-anchor="middle" font-size="9" fill="white">Git</text>
+  <text x="290" y="485" text-anchor="middle" font-size="9" fill="white">Repository</text>
+  
+  <line x1="355" y1="470" x2="385" y2="470" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- CM Server -->
+  <rect x="390" y="435" width="120" height="70" rx="4" fill="var(--bg-theme, #10b981)"/>
+  <text x="450" y="465" text-anchor="middle" font-size="9" fill="white">CM Server</text>
+  <text x="450" y="485" text-anchor="middle" font-size="9" fill="white">(Master)</text>
+  
+  <line x1="515" y1="470" x2="545" y2="470" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Nodes -->
+  <rect x="550" y="435" width="100" height="70" rx="4" fill="var(--bg-theme, #8b5cf6)"/>
+  <text x="600" y="465" text-anchor="middle" font-size="9" fill="white">Node 1</text>
+  
+  <rect x="660" y="435" width="100" height="70" rx="4" fill="var(--bg-theme, #8b5cf6)"/>
+  <text x="710" y="465" text-anchor="middle" font-size="9" fill="white">Node 2</text>
+  
+  <rect x="770" y="435" width="60" height="70" rx="4" fill="var(--bg-theme, #8b5cf6)"/>
+  <text x="800" y="465" text-anchor="middle" font-size="9" fill="white">...</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
+  <defs>
+    <marker id="authInfraArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--border-accent, #3b82f6)"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="550" fill="var(--bg-primary, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--text-primary, #0f172a">Authentication Infrastructure Deep Dive</text>
+  
+  <!-- OAuth 2.0 Flows -->
+  <rect x="50" y="60" width="450" height="250" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">OAuth 2.0 &amp; OIDC Flows</text>
+  
+  <!-- Authorization Code Flow -->
+  <rect x="70" y="110" width="180" height="80" rx="4" fill="var(--bg-blue, #3b82f6)" opacity="0.2" stroke="var(--border-blue, #3b82f6)" stroke-width="2"/>
+  <text x="160" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-blue, #3b82f6">Authorization Code</text>
+  <text x="160" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Server-side apps</text>
+  <text x="160" y="172" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Most secure flow</text>
+  <text x="160" y="187" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">Code → Token exchange</text>
+  
+  <!-- PKCE -->
+  <rect x="270" y="110" width="180" height="80" rx="4" fill="var(--bg-purple, #8b5cf6)" opacity="0.2" stroke="var(--border-purple, #8b5cf6)" stroke-width="2"/>
+  <text x="360" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-purple, #8b5cf6">PKCE Flow</text>
+  <text x="360" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Mobile/SPA apps</text>
+  <text x="360" y="172" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Code verifier/challenge</text>
+  <text x="360" y="187" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">Prevents code interception</text>
+  
+  <!-- Client Credentials -->
+  <rect x="70" y="210" width="180" height="80" rx="4" fill="var(--bg-orange, #f97316)" opacity="0.2" stroke="var(--border-orange, #f97316)" stroke-width="2"/>
+  <text x="160" y="235" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-orange, #f97316">Client Credentials</text>
+  <text x="160" y="255" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Machine-to-machine</text>
+  <text x="160" y="272" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">No user context</text>
+  <text x="160" y="287" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">Service accounts</text>
+  
+  <!-- Device Code -->
+  <rect x="270" y="210" width="180" height="80" rx="4" fill="var(--bg-green, #22c55e)" opacity="0.2" stroke="var(--border-green, #22c55e)" stroke-width="2"/>
+  <text x="360" y="235" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-green, #22c55e">Device Code</text>
+  <text x="360" y="255" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">TVs, IoT devices</text>
+  <text x="360" y="272" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">User code + URL</text>
+  <text x="360" y="287" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">Polling for auth</text>
+  
+  <!-- MFA Methods -->
+  <rect x="520" y="60" width="430" height="140" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">MFA Methods Comparison</text>
+  
+  <rect x="540" y="110" width="120" height="70" rx="3" fill="var(--bg-green, #22c55e)" opacity="0.2" stroke="var(--border-green, #22c55e)" stroke-width="1"/>
+  <text x="600" y="135" text-anchor="middle" font-size="8" font-weight="bold" fill="var(--border-green, #22c55e">TOTP Apps</text>
+  <text x="600" y="155" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">Google Authenticator</text>
+  <text x="600" y="172" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">✓ Secure, offline</text>
+  
+  <rect x="680" y="110" width="120" height="70" rx="3" fill="var(--bg-blue, #3b82f6)" opacity="0.2" stroke="var(--border-blue, #3b82f6)" stroke-width="1"/>
+  <text x="740" y="135" text-anchor="middle" font-size="8" font-weight="bold" fill="var(--border-blue, #3b82f6">Push Notifications</text>
+  <text x="740" y="155" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">One-tap approval</text>
+  <text x="740" y="172" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">✓ Best UX</text>
+  
+  <rect x="820" y="110" width="120" height="70" rx="3" fill="var(--bg-orange, #f97316)" opacity="0.2" stroke="var(--border-orange, #f97316)" stroke-width="1"/>
+  <text x="880" y="135" text-anchor="middle" font-size="8" font-weight="bold" fill="var(--border-orange, #f97316">SMS</text>
+  <text x="880" y="155" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">Text message code</text>
+  <text x="880" y="172" text-anchor="middle" font-size="7" fill="#ef4444">✗ SIM swapping risk</text>
+  
+  <rect x="540" y="190" width="120" height="70" rx="3" fill="var(--bg-purple, #8b5cf6)" opacity="0.2" stroke="var(--border-purple, #8b5cf6)" stroke-width="1"/>
+  <text x="600" y="215" text-anchor="middle" font-size="8" font-weight="bold" fill="var(--border-purple, #8b5cf6">Hardware Keys</text>
+  <text x="600" y="235" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">YubiKey, FIDO2</text>
+  <text x="600" y="252" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">✓ Most secure</text>
+  
+  <rect x="680" y="190" width="120" height="70" rx="3" fill="var(--bg-red, #ef4444)" opacity="0.2" stroke="var(--border-red, #ef4444)" stroke-width="1"/>
+  <text x="740" y="215" text-anchor="middle" font-size="8" font-weight="bold" fill="var(--border-red, #ef4444">Email Codes</text>
+  <text x="740" y="235" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">Email verification</text>
+  <text x="740" y="252" text-anchor="middle" font-size="7" fill="#ef4444">✗ Weakest MFA</text>
+  
+  <rect x="820" y="190" width="120" height="70" rx="3" fill="var(--bg-green, #22c55e)" opacity="0.2" stroke="var(--border-green, #22c55e)" stroke-width="1"/>
+  <text x="880" y="215" text-anchor="middle" font-size="8" font-weight="bold" fill="var(--border-green, #22c55e">Biometrics</text>
+  <text x="880" y="235" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">Fingerprint, Face ID</text>
+  <text x="880" y="252" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">✓ Convenient</text>
+  
+  <!-- Session Management -->
+  <rect x="520" y="220" width="430" height="140" rx="8" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="735" y="245" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a">Session Management Strategies</text>
+  
+  <rect x="540" y="265" width="190" height="40" rx="3" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="635" y="285" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">Server-Side Sessions</text>
+  <text x="635" y="302" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Store in Redis/DB</text>
+  
+  <rect x="540" y="315" width="190" height="40" rx="3" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="635" y="335" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">JWT Tokens</text>
+  <text x="635" y="352" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Stateless, self-contained</text>
+  
+  <rect x="750" y="265" width="180" height="40" rx="3" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="840" y="285" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">Refresh Tokens</text>
+  <text x="840" y="302" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Long-lived, rotate on use</text>
+  
+  <rect x="750" y="315" width="180" height="40" rx="3" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="840" y="335" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">Session Invalidation</text>
+  <text x="840" y="352" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Logout, password change</text>
+  
+  <text x="500" y="390" text-anchor="middle" font-size="9" fill="var(--text-muted, #64748b">Key: Use OAuth 2.0 + OIDC. Implement MFA. Choose session strategy based on requirements.</text>
+</svg>

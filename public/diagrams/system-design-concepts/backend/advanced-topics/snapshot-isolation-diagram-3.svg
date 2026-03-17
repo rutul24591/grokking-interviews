@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+  <title id="title">Snapshot Isolation Decision Guide</title>
+  <desc id="desc">When to use snapshot isolation vs stronger isolation levels</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="600" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Choosing Isolation Levels</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Snapshot isolation trade-offs and when to use stronger guarantees</text>
+  
+  <!-- Isolation Level Spectrum -->
+  <rect x="30" y="85" width="840" height="120" rx="8" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Isolation Level Spectrum</text>
+  
+  <!-- Read Uncommitted -->
+  <rect x="50" y="125" width="100" height="60" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
+  <text x="100" y="150" text-anchor="middle" font-size="9" fill="white">Read</text>
+  <text x="100" y="165" text-anchor="middle" font-size="9" fill="white">Uncommitted</text>
+  <text x="100" y="180" text-anchor="middle" font-size="7" fill="#fca5a5">Dirty reads</text>
+  
+  <line x1="150" y1="155" x2="170" y2="155" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Read Committed -->
+  <rect x="175" y="125" width="100" height="60" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="225" y="150" text-anchor="middle" font-size="9" fill="white">Read</text>
+  <text x="225" y="165" text-anchor="middle" font-size="9" fill="white">Committed</text>
+  <text x="225" y="180" text-anchor="middle" font-size="7" fill="#fcd34d">Non-repeatable</text>
+  
+  <line x1="275" y1="155" x2="295" y2="155" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Snapshot Isolation -->
+  <rect x="300" y="125" width="140" height="60" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="370" y="150" text-anchor="middle" font-size="9" font-weight="bold" fill="white">Snapshot</text>
+  <text x="370" y="165" text-anchor="middle" font-size="9" font-weight="bold" fill="white">Isolation</text>
+  <text x="370" y="180" text-anchor="middle" font-size="7" fill="#6ee7b7">✓ Sweet spot</text>
+  
+  <line x1="440" y1="155" x2="460" y2="155" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Repeatable Read -->
+  <rect x="465" y="125" width="100" height="60" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="515" y="150" text-anchor="middle" font-size="9" fill="white">Repeatable</text>
+  <text x="515" y="165" text-anchor="middle" font-size="9" fill="white">Read</text>
+  <text x="515" y="180" text-anchor="middle" font-size="7" fill="#bfdbfe">Phantom reads</text>
+  
+  <line x1="565" y1="155" x2="585" y2="155" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Serializable -->
+  <rect x="590" y="125" width="100" height="60" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="640" y="150" text-anchor="middle" font-size="9" fill="white">Serializable</text>
+  <text x="640" y="165" text-anchor="middle" font-size="9" fill="white">Strongest</text>
+  <text x="640" y="180" text-anchor="middle" font-size="7" fill="#c4b5fd">No anomalies</text>
+  
+  <line x1="690" y1="155" x2="710" y2="155" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Performance -->
+  <text x="750" y="145" text-anchor="middle" font-size="8" fill="var(--text-theme, #10b981">High</text>
+  <text x="750" y="160" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Performance →</text>
+  <text x="750" y="180" text-anchor="middle" font-size="8" fill="var(--text-theme, #ef4444">Low</text>
+  
+  <!-- When to Use Snapshot -->
+  <rect x="30" y="220" width="400" height="180" rx="8" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="230" y="245" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Use Snapshot Isolation When:</text>
+  
+  <rect x="50" y="260" width="360" height="130" rx="6" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="70" y="285" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="285" font-size="10" fill="var(--text-theme, #1e293b">Read-heavy workloads</text>
+  <text x="70" y="305" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="305" font-size="10" fill="var(--text-theme, #1e293b">No cross-row invariants</text>
+  <text x="70" y="325" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="325" font-size="10" fill="var(--text-theme, #1e293b">Single-row atomicity sufficient</text>
+  <text x="70" y="345" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="345" font-size="10" fill="var(--text-theme, #1e293b">High concurrency needed</text>
+  <text x="70" y="365" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="365" font-size="10" fill="var(--text-theme, #1e293b">Examples: Content feeds, user profiles</text>
+  
+  <!-- When to Use Serializable -->
+  <rect x="470" y="220" width="400" height="180" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="670" y="245" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Use Serializable When:</text>
+  
+  <rect x="490" y="260" width="360" height="130" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="510" y="285" text-anchor="start" font-size="10" fill="var(--text-theme, #ef4444">✗</text>
+  <text x="525" y="285" font-size="10" fill="var(--text-theme, #1e293b">Cross-row invariants exist</text>
+  <text x="510" y="305" text-anchor="start" font-size="10" fill="var(--text-theme, #ef4444">✗</text>
+  <text x="525" y="305" font-size="10" fill="var(--text-theme, #1e293b">Financial transactions</text>
+  <text x="510" y="325" text-anchor="start" font-size="10" fill="var(--text-theme, #ef4444">✗</text>
+  <text x="525" y="325" font-size="10" fill="var(--text-theme, #1e293b">Inventory/stock management</text>
+  <text x="510" y="345" text-anchor="start" font-size="10" fill="var(--text-theme, #ef4444">✗</text>
+  <text x="525" y="345" font-size="10" fill="var(--text-theme, #1e293b">Booking/reservation systems</text>
+  <text x="510" y="365" text-anchor="start" font-size="10" fill="var(--text-theme, #ef4444">✗</text>
+  <text x="525" y="365" font-size="10" fill="var(--text-theme, #1e293b">Examples: Banking, inventory, tickets</text>
+  
+  <!-- Bottom: Common Patterns -->
+  <rect x="30" y="415" width="840" height="165" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="450" y="440" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Common Patterns</text>
+  
+  <!-- Pattern 1: Mixed Isolation -->
+  <rect x="50" y="455" width="260" height="115" rx="6" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="180" y="480" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #3b82f6">Mixed Isolation Levels</text>
+  <text x="180" y="505" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Use snapshot for reads</text>
+  <text x="180" y="525" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Upgrade to serializable for critical writes</text>
+  <text x="180" y="545" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Best of both worlds</text>
+  <text x="180" y="560" text-anchor="middle" font-size="8" fill="#10b981">✓ Common in ORMs</text>
+  
+  <!-- Pattern 2: Pessimistic Locking -->
+  <rect x="325" y="455" width="260" height="115" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="455" y="480" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">Pessimistic Locking</text>
+  <text x="455" y="505" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">SELECT FOR UPDATE</text>
+  <text x="455" y="525" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Lock rows before modification</text>
+  <text x="455" y="545" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Prevents write skew</text>
+  <text x="455" y="560" text-anchor="middle" font-size="8" fill="#f59e0b">~ Reduces concurrency</text>
+  
+  <!-- Pattern 3: Optimistic Concurrency -->
+  <rect x="600" y="455" width="260" height="115" rx="6" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="730" y="480" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #10b981">Optimistic Concurrency</text>
+  <text x="730" y="505" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Version/timestamp columns</text>
+  <text x="730" y="525" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Check version on update</text>
+  <text x="730" y="545" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Retry on conflict</text>
+  <text x="730" y="560" text-anchor="middle" font-size="8" fill="#10b981">✓ Good for low-conflict</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

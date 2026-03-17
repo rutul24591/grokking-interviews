@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+  <title id="title">CRDT Failure Modes</title>
+  <desc id="desc">CRDT failure modes: metadata growth, semantic mismatch, and delayed convergence</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="600" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">CRDT Failure Modes</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Operational risks and mitigation strategies</text>
+  
+  <!-- Top Left: Metadata Growth -->
+  <rect x="30" y="85" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <text x="235" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #ef4444)">1. Unbounded Metadata Growth</text>
+  
+  <!-- Tombstone accumulation -->
+  <rect x="50" y="135" width="370" height="130" rx="6" fill="var(--bg-panel-soft, #fef2f2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  
+  <!-- Initial state -->
+  <rect x="60" y="150" width="100" height="40" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="110" y="175" text-anchor="middle" font-size="9" fill="white">Live Data</text>
+  <text x="110" y="160" text-anchor="middle" font-size="8" fill="white">100 items</text>
+  
+  <line x1="165" y1="170" x2="190" y2="170" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="177" y="160" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Deletes</text>
+  
+  <!-- After deletes -->
+  <rect x="200" y="150" width="210" height="40" rx="4" fill="var(--bg-panel-soft, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  
+  <rect x="210" y="155" width="40" height="30" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <text x="230" y="175" text-anchor="middle" font-size="7" fill="white">Live</text>
+  
+  <rect x="255" y="155" width="150" height="30" rx="2" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-dasharray="3,2"/>
+  <text x="330" y="175" text-anchor="middle" font-size="7" fill="white">Tombstones (deleted but kept)</text>
+  
+  <text x="235" y="210" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Tombstones accumulate forever!</text>
+  
+  <!-- Version vector growth -->
+  <rect x="60" y="225" width="350" height="35" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="235" y="248" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Version Vector: {A:5, B:8, C:3, D:12, E:7, ...} grows with replicas</text>
+  
+  <text x="235" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Mitigation: Garbage collection, bounded replica sets, compaction</text>
+  
+  <!-- Top Right: Semantic Mismatch -->
+  <rect x="460" y="85" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="665" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #f59e0b">2. Semantic Mismatch</text>
+  <text x="665" y="128" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b">Converged state violates business logic</text>
+  
+  <!-- Example: Shopping cart -->
+  <rect x="480" y="145" width="370" height="130" rx="6" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  
+  <text x="665" y="170" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Example: Shopping Cart with quantity limit</text>
+  
+  <!-- Replica A -->
+  <rect x="490" y="185" width="150" height="50" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="565" y="208" text-anchor="middle" font-size="9" fill="white">Replica A: Qty = 8</text>
+  <text x="565" y="225" text-anchor="middle" font-size="8" fill="#6ee7b7">(User added 3)</text>
+  
+  <!-- Replica B -->
+  <rect x="660" y="185" width="150" height="50" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="735" y="208" text-anchor="middle" font-size="9" fill="white">Replica B: Qty = 7</text>
+  <text x="735" y="225" text-anchor="middle" font-size="8" fill="#c4b5fd">(User added 2)</text>
+  
+  <!-- Merge result -->
+  <line x1="640" y1="210" x2="655" y2="210" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="647" y="200" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Merge</text>
+  
+  <rect x="670" y="245" width="170" height="40" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="2"/>
+  <text x="755" y="268" text-anchor="middle" font-size="9" fill="white">Merged: Qty = max(8,7) = 8</text>
+  
+  <text x="665" y="305" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Problem: Expected Qty = 10 (5+3+2)!</text>
+  <text x="665" y="325" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">CRDT semantics don't match business intent</text>
+  
+  <text x="665" y="350" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Choose CRDT type matching semantics (e.g., counter not LWW)</text>
+  
+  <!-- Bottom Left: Delayed Convergence -->
+  <rect x="30" y="340" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="235" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #8b5cf6">3. Delayed Convergence</text>
+  <text x="235" y="383" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b">Users see inconsistent state across devices</text>
+  
+  <!-- Timeline of divergence -->
+  <rect x="50" y="400" width="370" height="120" rx="6" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  
+  <!-- Time axis -->
+  <line x1="70" y1="450" x2="400" y2="450" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  <text x="410" y="455" font-size="9" fill="var(--text-theme, #64748b">Time →</text>
+  
+  <!-- Divergence period -->
+  <rect x="100" y="420" width="200" height="60" rx="3" fill="var(--bg-theme, #fde68a)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="200" y="445" text-anchor="middle" font-size="9" fill="var(--text-theme, #b45309">Divergence Window</text>
+  <text x="200" y="460" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Devices show different state</text>
+  
+  <!-- Merge events -->
+  <circle cx="100" cy="450" r="5" fill="var(--bg-theme, #8b5cf6)"/>
+  <text x="100" y="475" text-anchor="middle" font-size="7" fill="var(--text-theme, #64748b">Edit starts</text>
+  
+  <circle cx="300" cy="450" r="5" fill="var(--bg-theme, #10b981)"/>
+  <text x="300" y="475" text-anchor="middle" font-size="7" fill="var(--text-theme, #10b98b">Converged</text>
+  
+  <text x="235" y="500" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Causes: Infrequent sync, network partitions, offline mode</text>
+  <text x="235" y="520" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Increase merge frequency, delta-state CRDTs, define staleness budgets</text>
+  
+  <!-- Bottom Right: Mitigation Summary -->
+  <rect x="460" y="340" width="410" height="240" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="665" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Mitigation Strategies</text>
+  
+  <!-- GC strategy -->
+  <rect x="480" y="380" width="180" height="75" rx="6" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="570" y="403" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #10b981">Garbage Collection</text>
+  <text x="570" y="425" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Periodic tombstone cleanup</text>
+  <text x="570" y="440" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Coordinate with all replicas</text>
+  
+  <!-- Type selection -->
+  <rect x="680" y="380" width="180" height="75" rx="6" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="770" y="403" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #3b82f6">Type Selection</text>
+  <text x="770" y="425" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Match CRDT to semantics</text>
+  <text x="770" y="440" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Test conflict scenarios</text>
+  
+  <!-- Convergence SLO -->
+  <rect x="480" y="470" width="180" height="75" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="570" y="493" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #f59e0b">Convergence SLO</text>
+  <text x="570" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Define max divergence time</text>
+  <text x="570" y="530" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Monitor and alert</text>
+  
+  <!-- Testing -->
+  <rect x="680" y="470" width="180" height="75" rx="6" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="770" y="493" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #8b5cf6">Concurrency Tests</text>
+  <text x="770" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Test all interleavings</text>
+  <text x="770" y="530" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Property-based testing</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

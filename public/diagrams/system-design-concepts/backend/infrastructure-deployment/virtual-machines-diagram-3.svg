@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Virtual Machines - Resource Management</title>
+  <desc id="desc">Virtual machines showing resource allocation, overcommitment, and performance isolation</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Virtual Machines - Resource Management</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Resource allocation, overcommitment, and performance</text>
+  
+  <!-- Resource Allocation -->
+  <rect x="30" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="230" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">Resource Allocation</text>
+  
+  <!-- Physical Resources -->
+  <rect x="50" y="125" width="360" height="60" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="230" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Physical Host Resources</text>
+  
+  <rect x="60" y="160" width="100" height="20" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <text x="110" y="175" text-anchor="middle" font-size="8" fill="white">64 CPU</text>
+  
+  <rect x="170" y="160" width="100" height="20" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="220" y="175" text-anchor="middle" font-size="8" fill="white">256 GB RAM</text>
+  
+  <rect x="280" y="160" width="120" height="20" rx="2" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="340" y="175" text-anchor="middle" font-size="8" fill="white">2 TB Storage</text>
+  
+  <!-- VMs -->
+  <rect x="50" y="195" width="360" height="120" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  
+  <rect x="60" y="205" width="100" height="100" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="110" y="235" text-anchor="middle" font-size="8" fill="white">VM 1</text>
+  <text x="110" y="250" text-anchor="middle" font-size="7" fill="#6ee7b7">16 vCPU</text>
+  <text x="110" y="265" text-anchor="middle" font-size="7" fill="#6ee7b7">64 GB RAM</text>
+  <text x="110" y="280" text-anchor="middle" font-size="7" fill="#6ee7b7">500 GB</text>
+  
+  <rect x="170" y="205" width="100" height="100" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="220" y="235" text-anchor="middle" font-size="8" fill="white">VM 2</text>
+  <text x="220" y="250" text-anchor="middle" font-size="7" fill="#6ee7b7">16 vCPU</text>
+  <text x="220" y="265" text-anchor="middle" font-size="7" fill="#6ee7b7">64 GB RAM</text>
+  <text x="220" y="280" text-anchor="middle" font-size="7" fill="#6ee7b7">500 GB</text>
+  
+  <rect x="280" y="205" width="100" height="100" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="330" y="235" text-anchor="middle" font-size="8" fill="white">VM 3</text>
+  <text x="330" y="250" text-anchor="middle" font-size="7" fill="#6ee7b7">16 vCPU</text>
+  <text x="330" y="265" text-anchor="middle" font-size="7" fill="#6ee7b7">64 GB RAM</text>
+  <text x="330" y="280" text-anchor="middle" font-size="7" fill="#6ee7b7">500 GB</text>
+  
+  <text x="230" y="335" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Remaining: 16 CPU, 64 GB RAM, 500 GB</text>
+  
+  <!-- Overcommitment -->
+  <rect x="470" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="670" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Resource Overcommitment</text>
+  
+  <rect x="490" y="125" width="360" height="100" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="670" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Allocate more than physical</text>
+  
+  <rect x="500" y="160" width="150" height="55" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="575" y="185" text-anchor="middle" font-size="9" fill="white">Physical</text>
+  <text x="575" y="200" text-anchor="middle" font-size="8" fill="#6ee7b7">64 CPU</text>
+  <text x="575" y="213" text-anchor="middle" font-size="8" fill="#6ee7b7">256 GB RAM</text>
+  
+  <line x1="655" y1="188" x2="685" y2="188" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="695" y="160" width="145" height="55" rx="3" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="767" y="185" text-anchor="middle" font-size="9" fill="white">Allocated</text>
+  <text x="767" y="200" text-anchor="middle" font-size="8" fill="#bfdbfe">128 vCPU (2:1)</text>
+  <text x="767" y="213" text-anchor="middle" font-size="8" fill="#bfdbfe">512 GB RAM (2:1)</text>
+  
+  <text x="670" y="245" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Better utilization</text>
+  <text x="670" y="260" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Cost savings</text>
+  <text x="670" y="275" text-anchor="middle" font-size="9" fill="var(--text-theme, #f59e0b">⚠ Contention risk</text>
+  <text x="670" y="290" text-anchor="middle" font-size="9" fill="var(--text-theme, #f59e0b">⚠ Performance variance</text>
+  
+  <text x="670" y="320" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Typical ratios:</text>
+  <text x="670" y="335" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">CPU: 4:1 to 10:1</text>
+  <text x="670" y="350" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">RAM: 1.5:1 to 3:1</text>
+  
+  <!-- Performance Isolation -->
+  <rect x="30" y="380" width="400" height="150" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="230" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Performance Isolation</text>
+  
+  <rect x="50" y="420" width="360" height="100" rx="6" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  
+  <text x="70" y="445" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="445" font-size="10" fill="var(--text-theme, #1e293b">Resource limits per VM</text>
+  
+  <text x="70" y="465" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="465" font-size="10" fill="var(--text-theme, #1e293b">CPU reservations</text>
+  
+  <text x="70" y="485" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="485" font-size="10" fill="var(--text-theme, #1e293b">Memory ballooning</text>
+  
+  <text x="70" y="505" text-anchor="start" font-size="10" fill="var(--text-theme, #f59e0b">⚠</text>
+  <text x="85" y="505" font-size="10" fill="var(--text-theme, #1e293b">Noisy neighbor problem</text>
+  
+  <!-- Resource Scheduling -->
+  <rect x="470" y="380" width="400" height="150" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="670" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Resource Scheduling</text>
+  
+  <rect x="490" y="420" width="360" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  
+  <text x="510" y="445" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Time-slicing CPU</text>
+  <text x="510" y="465" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Memory compression</text>
+  <text x="510" y="485" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Storage I/O queues</text>
+  <text x="510" y="505" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Network bandwidth limits</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+  <title id="title">Tail Latency Mitigation</title>
+  <desc id="desc">Tail latency mitigation: retries, hedging, queue collapse, and cascading timeouts</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="600" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Tail Latency: Mitigation &amp; Pitfalls</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b">Strategies that help and strategies that backfire</text>
+  
+  <!-- Hedged Requests -->
+  <rect x="30" y="85" width="270" height="220" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="165" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Hedged Requests (Use Carefully)</text>
+  
+  <rect x="50" y="125" width="200" height="90" rx="6" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="150" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Send duplicate after timeout</text>
+  <text x="150" y="170" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Use first response, cancel other</text>
+  <text x="150" y="190" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Effective for stragglers</text>
+  <text x="150" y="210" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">⚠ Doubles load if overused!</text>
+  
+  <rect x="50" y="230" width="200" height="65" rx="6" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="150" y="255" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309">Guardrails:</text>
+  <text x="150" y="275" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Budget: &lt;5% of requests</text>
+  <text x="150" y="290" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Only when tail &gt; 2x median</text>
+  
+  <!-- Retry Storms -->
+  <rect x="315" y="85" width="270" height="220" rx="8" fill="white" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #ef4444">Retry Storms (Avoid!)</text>
+  
+  <rect x="335" y="125" width="230" height="100" rx="6" fill="var(--bg-panel-soft, #fef2f2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="450" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Request times out → retry</text>
+  <text x="450" y="170" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">All clients retry at same time</text>
+  <text x="450" y="190" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Server gets 10x load</text>
+  <text x="450" y="210" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Server collapses further!</text>
+  <text x="450" y="230" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">Feedback loop → outage</text>
+  
+  <rect x="335" y="240" width="230" height="55" rx="6" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="450" y="265" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309">Fix: Add jitter</text>
+  <text x="450" y="285" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Randomize retry delay</text>
+  
+  <!-- Queue Collapse -->
+  <rect x="600" y="85" width="270" height="220" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="735" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Queue Collapse</text>
+  
+  <rect x="620" y="125" width="230" height="90" rx="6" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <text x="735" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Unbounded queues = disaster</text>
+  <text x="735" y="170" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Fast requests stuck behind slow</text>
+  <text x="735" y="190" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Memory exhaustion</text>
+  <text x="735" y="210" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">All requests slow down</text>
+  
+  <rect x="620" y="230" width="230" height="65" rx="6" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="735" y="255" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309">Fix: Bound queues</text>
+  <text x="735" y="275" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Reject early, fail fast</text>
+  <text x="735" y="290" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Load shed before collapse</text>
+  
+  <!-- Cascading Timeouts -->
+  <rect x="30" y="320" width="410" height="260" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="235" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #8b5cf6">Cascading Timeouts</text>
+  
+  <rect x="50" y="360" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  
+  <!-- Service chain -->
+  <rect x="70" y="375" width="70" height="50" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="105" y="400" text-anchor="middle" font-size="9" fill="white">Service A</text>
+  <text x="105" y="415" text-anchor="middle" font-size="8" fill="#bfdbfe">Timeout: 1s</text>
+  
+  <line x1="140" y1="400" x2="160" y2="400" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="170" y="375" width="70" height="50" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="205" y="400" text-anchor="middle" font-size="9" fill="white">Service B</text>
+  <text x="205" y="415" text-anchor="middle" font-size="8" fill="#6ee7b7">Timeout: 500ms</text>
+  
+  <line x1="240" y1="400" x2="260" y2="400" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="270" y="375" width="70" height="50" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="305" y="400" text-anchor="middle" font-size="9" fill="white">Service C</text>
+  <text x="305" y="415" text-anchor="middle" font-size="8" fill="#fcd34d">Timeout: 200ms</text>
+  
+  <text x="235" y="455" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">C times out → B times out → A times out</text>
+  <text x="235" y="475" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Each retry amplifies the problem</text>
+  
+  <rect x="50" y="510" width="370" height="60" rx="6" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="235" y="535" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #b45309">Fix: Budget timeouts</text>
+  <text x="235" y="555" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Each hop gets fraction of total budget</text>
+  
+  <!-- Mitigation Summary -->
+  <rect x="460" y="320" width="410" height="260" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="665" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Effective Mitigations</text>
+  
+  <rect x="480" y="360" width="180" height="90" rx="6" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="570" y="385" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #10b981">Reduce Load</text>
+  <text x="570" y="410" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Keep utilization &lt;70%</text>
+  <text x="570" y="428" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Cache hot paths</text>
+  <text x="570" y="445" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Batch operations</text>
+  
+  <rect x="680" y="360" width="180" height="90" rx="6" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="770" y="385" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #3b82f6">Set Budgets</text>
+  <text x="770" y="410" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Per-hop timeout budgets</text>
+  <text x="770" y="428" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Enforce with deadlines</text>
+  <text x="770" y="445" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Fail fast on budget exceeded</text>
+  
+  <rect x="480" y="465" width="180" height="90" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="570" y="490" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #b45309">Add Headroom</text>
+  <text x="570" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Overprovision for peaks</text>
+  <text x="570" y="533" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Auto-scale before saturation</text>
+  <text x="570" y="550" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Queue limits + load shed</text>
+  
+  <rect x="680" y="465" width="180" height="90" rx="6" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="770" y="490" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #8b5cf6">Monitor &amp; Alert</text>
+  <text x="770" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Track p99, p99.9 latency</text>
+  <text x="770" y="533" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Alert on tail growth</text>
+  <text x="770" y="550" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Correlate with saturation</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

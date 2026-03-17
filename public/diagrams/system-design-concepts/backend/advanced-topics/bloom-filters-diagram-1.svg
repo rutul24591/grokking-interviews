@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" role="img" aria-labelledby="title desc">
+  <title id="title">Bloom Filter Structure</title>
+  <desc id="desc">Bloom filter showing bit array and multiple hash functions mapping keys to bit positions</desc>
+  
+  <!-- Background - uses CSS variables for theme support -->
+  <rect width="900" height="500" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Bloom Filter Structure</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Multiple hash functions map each key to bit positions</text>
+  
+  <!-- Input Keys Section -->
+  <rect x="30" y="85" width="180" height="140" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="120" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">Input Keys</text>
+  
+  <!-- Key 1 -->
+  <rect x="50" y="125" width="140" height="35" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="120" y="148" text-anchor="middle" font-size="12" fill="white">"alice"</text>
+  
+  <!-- Key 2 -->
+  <rect x="50" y="170" width="140" height="35" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="120" y="193" text-anchor="middle" font-size="12" fill="white">"bob"</text>
+  
+  <!-- Hash Functions Section -->
+  <rect x="240" y="85" width="200" height="140" rx="8" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="2"/>
+  <text x="340" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">Hash Functions</text>
+  
+  <!-- Hash Function Boxes -->
+  <rect x="260" y="125" width="160" height="28" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="340" y="145" text-anchor="middle" font-size="11" fill="white">h₁(key) → position</text>
+  
+  <rect x="260" y="160" width="160" height="28" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="340" y="180" text-anchor="middle" font-size="11" fill="white">h₂(key) → position</text>
+  
+  <rect x="260" y="195" width="160" height="28" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
+  <text x="340" y="215" text-anchor="middle" font-size="11" fill="white">h₃(key) → position</text>
+  
+  <!-- Bit Array Section -->
+  <rect x="470" y="85" width="400" height="140" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="670" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">Bit Array (m bits)</text>
+  
+  <!-- Bit Array Cells -->
+  <!-- Row 1 -->
+  <rect x="490" y="125" width="30" height="30" rx="3" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="505" y="146" text-anchor="middle" font-size="12" fill="white">0</text>
+  
+  <rect x="525" y="125" width="30" height="30" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="540" y="146" text-anchor="middle" font-size="12" fill="white">1</text>
+  
+  <rect x="560" y="125" width="30" height="30" rx="3" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="575" y="146" text-anchor="middle" font-size="12" fill="var(--text-theme, #64748b)">0</text>
+  
+  <rect x="595" y="125" width="30" height="30" rx="3" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="610" y="146" text-anchor="middle" font-size="12" fill="white">1</text>
+  
+  <rect x="630" y="125" width="30" height="30" rx="3" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="645" y="146" text-anchor="middle" font-size="12" fill="var(--text-theme, #64748b)">0</text>
+  
+  <rect x="665" y="125" width="30" height="30" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="680" y="146" text-anchor="middle" font-size="12" fill="white">1</text>
+  
+  <rect x="700" y="125" width="30" height="30" rx="3" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="715" y="146" text-anchor="middle" font-size="12" fill="var(--text-theme, #64748b)">0</text>
+  
+  <rect x="735" y="125" width="30" height="30" rx="3" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="750" y="146" text-anchor="middle" font-size="12" fill="white">1</text>
+  
+  <rect x="770" y="125" width="30" height="30" rx="3" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="785" y="146" text-anchor="middle" font-size="12" fill="var(--text-theme, #64748b)">0</text>
+  
+  <rect x="805" y="125" width="30" height="30" rx="3" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="820" y="146" text-anchor="middle" font-size="12" fill="var(--text-theme, #64748b)">0</text>
+  
+  <rect x="840" y="125" width="30" height="30" rx="3" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
+  <text x="855" y="146" text-anchor="middle" font-size="12" fill="white">1</text>
+  
+  <!-- Hash Lines from alice -->
+  <line x1="190" y1="143" x2="235" y2="143" stroke="var(--text-theme, #3b82f6)" stroke-width="2" stroke-dasharray="4"/>
+  <line x1="440" y1="143" x2="503" y2="143" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  
+  <line x1="190" y1="148" x2="235" y2="165" stroke="var(--text-theme, #f59e0b)" stroke-width="2" stroke-dasharray="4"/>
+  <line x1="440" y1="165" x2="748" y2="143" stroke="var(--text-theme, #f59e0b)" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  
+  <line x1="190" y1="153" x2="235" y2="185" stroke="var(--text-theme, #ef4444)" stroke-width="2" stroke-dasharray="4"/>
+  <line x1="440" y1="185" x2="853" y2="143" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  
+  <!-- Hash Lines from bob -->
+  <line x1="190" y1="188" x2="235" y2="148" stroke="var(--text-theme, #10b981)" stroke-width="2" stroke-dasharray="4"/>
+  <line x1="440" y1="148" x2="538" y2="143" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrow-green)"/>
+  
+  <line x1="190" y1="193" x2="235" y2="170" stroke="var(--text-theme, #8b5cf6)" stroke-width="2" stroke-dasharray="4"/>
+  <line x1="440" y1="170" x2="608" y2="143" stroke="var(--text-theme, #8b5cf6)" stroke-width="2" marker-end="url(#arrow-purple)"/>
+  
+  <line x1="190" y1="198" x2="235" y2="195" stroke="var(--text-theme, #6366f1)" stroke-width="2" stroke-dasharray="4"/>
+  <line x1="440" y1="195" x2="678" y2="143" stroke="var(--text-theme, #6366f1)" stroke-width="2" marker-end="url(#arrow-indigo)"/>
+  
+  <!-- Arrow Markers -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #3b82f6)"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #10b981)"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #f59e0b)"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #ef4444)"/>
+    </marker>
+    <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #8b5cf6)"/>
+    </marker>
+    <marker id="arrow-indigo" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #6366f1)"/>
+    </marker>
+  </defs>
+  
+  <!-- Legend -->
+  <rect x="30" y="250" width="840" height="80" rx="8" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="450" y="275" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309)">Key Properties</text>
+  
+  <text x="70" y="305" font-size="12" fill="var(--text-theme, #64748b)">•</text>
+  <text x="85" y="305" font-size="12" fill="var(--text-theme, #1e293b)">Green/Blue/Orange bits = set by "alice"</text>
+  
+  <text x="300" y="305" font-size="12" fill="var(--text-theme, #64748b)">•</text>
+  <text x="315" y="305" font-size="12" fill="var(--text-theme, #1e293b)">Purple/Indigo bits = set by "bob"</text>
+  
+  <text x="550" y="305" font-size="12" fill="var(--text-theme, #64748b)">•</text>
+  <text x="565" y="305" font-size="12" fill="var(--text-theme, #1e293b)">Gray bits = still 0 (not set)</text>
+  
+  <text x="70" y="325" font-size="12" fill="var(--text-theme, #64748b)">•</text>
+  <text x="85" y="325" font-size="12" fill="var(--text-theme, #1e293b)">To check membership: hash key and check ALL positions are 1</text>
+</svg>

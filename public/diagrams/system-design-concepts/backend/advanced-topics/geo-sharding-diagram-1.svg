@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Geo-Sharding Architecture</title>
+  <desc id="desc">Geo-sharding diagram showing data partitions per region and traffic routed to the nearest region</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Geo-Sharding Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Partition data by geography for latency and compliance</text>
+  
+  <!-- World Map Background (simplified) -->
+  <rect x="30" y="85" width="840" height="280" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  
+  <!-- Region: US East -->
+  <rect x="100" y="120" width="180" height="100" rx="6" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2" opacity="0.2"/>
+  <text x="190" y="145" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #3b82f6">US-East</text>
+  
+  <!-- US-East Data Center -->
+  <rect x="150" y="155" width="80" height="50" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="190" y="175" text-anchor="middle" font-size="9" fill="white">Shard A</text>
+  <text x="190" y="190" text-anchor="middle" font-size="8" fill="#bfdbfe">US Users</text>
+  <text x="190" y="202" text-anchor="middle" font-size="7" fill="#93c5fd">Latency: 20ms</text>
+  
+  <!-- Region: EU West -->
+  <rect x="380" y="120" width="180" height="100" rx="6" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2" opacity="0.2"/>
+  <text x="470" y="145" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #10b981">EU-West</text>
+  
+  <!-- EU-West Data Center -->
+  <rect x="430" y="155" width="80" height="50" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="470" y="175" text-anchor="middle" font-size="9" fill="white">Shard B</text>
+  <text x="470" y="190" text-anchor="middle" font-size="8" fill="#6ee7b7">EU Users</text>
+  <text x="470" y="202" text-anchor="middle" font-size="7" fill="#6ee7b7">Latency: 15ms</text>
+  
+  <!-- Region: Asia Pacific -->
+  <rect x="660" y="120" width="180" height="100" rx="6" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="2" opacity="0.2"/>
+  <text x="750" y="145" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">Asia-Pacific</text>
+  
+  <!-- Asia-Pacific Data Center -->
+  <rect x="710" y="155" width="80" height="50" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="750" y="175" text-anchor="middle" font-size="9" fill="white">Shard C</text>
+  <text x="750" y="190" text-anchor="middle" font-size="8" fill="#fcd34d">APAC Users</text>
+  <text x="750" y="202" text-anchor="middle" font-size="7" fill="#fbbf24">Latency: 25ms</text>
+  
+  <!-- Users -->
+  <!-- US Users -->
+  <circle cx="80" cy="280" r="15" fill="var(--bg-theme, #3b82f6)" opacity="0.6"/>
+  <text x="80" y="284" text-anchor="middle" font-size="8" fill="var(--text-theme, #3b82f6">US</text>
+  
+  <circle cx="120" cy="300" r="15" fill="var(--bg-theme, #3b82f6)" opacity="0.6"/>
+  <text x="120" y="304" text-anchor="middle" font-size="8" fill="var(--text-theme, #3b82f6">US</text>
+  
+  <!-- EU Users -->
+  <circle cx="360" cy="280" r="15" fill="var(--bg-theme, #10b981)" opacity="0.6"/>
+  <text x="360" y="284" text-anchor="middle" font-size="8" fill="var(--text-theme, #10b981">EU</text>
+  
+  <circle cx="400" cy="300" r="15" fill="var(--bg-theme, #10b981)" opacity="0.6"/>
+  <text x="400" y="304" text-anchor="middle" font-size="8" fill="var(--text-theme, #10b981">EU</text>
+  
+  <!-- APAC Users -->
+  <circle cx="640" cy="280" r="15" fill="var(--bg-theme, #f59e0b)" opacity="0.6"/>
+  <text x="640" y="284" text-anchor="middle" font-size="8" fill="var(--text-theme, #f59e0b">AP</text>
+  
+  <circle cx="680" cy="300" r="15" fill="var(--bg-theme, #f59e0b)" opacity="0.6"/>
+  <text x="680" y="304" text-anchor="middle" font-size="8" fill="var(--text-theme, #f59e0b">AP</text>
+  
+  <!-- Routing arrows -->
+  <line x1="85" y1="265" x2="160" y2="215" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <line x1="125" y1="285" x2="180" y2="215" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  
+  <line x1="365" y1="265" x2="440" y2="215" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <line x1="405" y1="285" x2="480" y2="215" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrow-green)"/>
+  
+  <line x1="645" y1="265" x2="720" y2="215" stroke="var(--text-theme, #f59e0b)" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <line x1="685" y1="285" x2="760" y2="215" stroke="var(--text-theme, #f59e0b)" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  
+  <!-- Global Router -->
+  <rect x="30" y="380" width="400" height="150" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="230" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #8b5cf6">Global Traffic Router</text>
+  
+  <rect x="50" y="420" width="360" height="100" rx="6" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  
+  <text x="70" y="445" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">Routing Logic:</text>
+  <text x="85" y="465" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">1. Check user's home region from directory</text>
+  <text x="85" y="480" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">2. Route to nearest healthy shard</text>
+  <text x="85" y="495" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">3. Fall back to backup region if needed</text>
+  <text x="85" y="510" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">4. Enforce data residency rules</text>
+  
+  <!-- Benefits -->
+  <rect x="450" y="380" width="420" height="150" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="660" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Benefits &amp; Trade-offs</text>
+  
+  <rect x="470" y="420" width="185" height="100" rx="6" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="562" y="445" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #10b981">Benefits ✓</text>
+  <text x="562" y="465" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Lower latency</text>
+  <text x="562" y="480" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Data residency compliance</text>
+  <text x="562" y="495" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Regional isolation</text>
+  <text x="562" y="510" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Blast radius reduction</text>
+  
+  <rect x="675" y="420" width="185" height="100" rx="6" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="767" y="445" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #b45309">Trade-offs ~</text>
+  <text x="767" y="465" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Cross-region queries</text>
+  <text x="767" y="480" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• User mobility complexity</text>
+  <text x="767" y="495" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Directory dependency</text>
+  <text x="767" y="510" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Rebalancing complexity</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #3b82f6)"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #10b981)"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #f59e0b)"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Time-Series Architecture</title>
+  <desc id="desc">Time-series system architecture showing ingest, partitioning, storage tiers, and query paths</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Time-Series System Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Ingest pipeline, time partitioning, storage tiers, and query paths</text>
+  
+  <!-- Data Sources -->
+  <rect x="30" y="85" width="180" height="150" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="120" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">Data Sources</text>
+  
+  <rect x="50" y="125" width="140" height="35" rx="3" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="120" y="148" text-anchor="middle" font-size="9" fill="white">Metrics</text>
+  
+  <rect x="50" y="165" width="140" height="35" rx="3" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="120" y="188" text-anchor="middle" font-size="9" fill="white">Logs/Events</text>
+  
+  <rect x="50" y="205" width="140" height="35" rx="3" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="120" y="228" text-anchor="middle" font-size="9" fill="white">IoT Sensors</text>
+  
+  <!-- Ingest Pipeline -->
+  <line x1="215" y1="160" x2="265" y2="160" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="240" y="150" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Stream</text>
+  
+  <rect x="265" y="85" width="200" height="150" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="365" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Ingest Pipeline</text>
+  
+  <rect x="285" y="125" width="160" height="35" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="365" y="148" text-anchor="middle" font-size="9" fill="white">Buffering/Queue</text>
+  
+  <rect x="285" y="165" width="160" height="35" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="365" y="188" text-anchor="middle" font-size="9" fill="white">Validation</text>
+  
+  <rect x="285" y="205" width="160" height="35" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="365" y="228" text-anchor="middle" font-size="9" fill="white">Timestamp Normalization</text>
+  
+  <!-- Partitioning -->
+  <line x1="470" y1="160" x2="520" y2="160" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="495" y="150" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Partition</text>
+  
+  <rect x="520" y="85" width="350" height="150" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="695" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Time Partitioning</text>
+  
+  <!-- Time buckets -->
+  <rect x="540" y="125" width="100" height="45" rx="3" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="590" y="150" text-anchor="middle" font-size="9" fill="white">T-24h</text>
+  <text x="590" y="165" text-anchor="middle" font-size="8" fill="#fcd34d">Hot</text>
+  
+  <rect x="650" y="125" width="100" height="45" rx="3" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="700" y="150" text-anchor="middle" font-size="9" fill="white">T-7d</text>
+  <text x="700" y="165" text-anchor="middle" font-size="8" fill="#fcd34d">Warm</text>
+  
+  <rect x="760" y="125" width="100" height="45" rx="3" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="810" y="150" text-anchor="middle" font-size="9" fill="white">T-30d</text>
+  <text x="810" y="165" text-anchor="middle" font-size="8" fill="#fcd34d">Cold</text>
+  
+  <rect x="540" y="180" width="320" height="45" rx="3" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="700" y="205" text-anchor="middle" font-size="9" fill="white">Retention Policy: Drop old partitions</text>
+  
+  <!-- Storage Tiers -->
+  <line x1="695" y1="235" x2="695" y2="285" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow-down)"/>
+  
+  <rect x="520" y="285" width="350" height="120" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="695" y="310" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Storage Tiers</text>
+  
+  <rect x="540" y="325" width="100" height="70" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="590" y="350" text-anchor="middle" font-size="9" fill="white">Hot Tier</text>
+  <text x="590" y="365" text-anchor="middle" font-size="8" fill="#6ee7b7">SSD/NVMe</text>
+  <text x="590" y="380" text-anchor="middle" font-size="7" fill="#6ee7b7">Raw data</text>
+  
+  <rect x="650" y="325" width="100" height="70" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="700" y="350" text-anchor="middle" font-size="9" fill="white">Warm Tier</text>
+  <text x="700" y="365" text-anchor="middle" font-size="8" fill="#bfdbfe">HDD/S3</text>
+  <text x="700" y="380" text-anchor="middle" font-size="7" fill="#bfdbfe">Downsampled</text>
+  
+  <rect x="760" y="325" width="100" height="70" rx="4" fill="var(--bg-theme, #64748b)" stroke="var(--border-theme, #475569)" stroke-width="1"/>
+  <text x="810" y="350" text-anchor="middle" font-size="9" fill="white">Cold Tier</text>
+  <text x="810" y="365" text-anchor="middle" font-size="8" fill="#94a3b8">Glacier</text>
+  <text x="810" y="380" text-anchor="middle" font-size="7" fill="#94a3b8">Rollups</text>
+  
+  <!-- Query Path -->
+  <rect x="30" y="250" width="180" height="120" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="120" y="275" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #8b5cf6">Query Engine</text>
+  
+  <rect x="50" y="290" width="140" height="35" rx="3" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="120" y="313" text-anchor="middle" font-size="9" fill="white">Time Range Filter</text>
+  
+  <rect x="50" y="330" width="140" height="35" rx="3" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="120" y="353" text-anchor="middle" font-size="9" fill="white">Aggregation Pushdown</text>
+  
+  <!-- Query arrows to storage -->
+  <line x1="215" y1="310" x2="515" y2="310" stroke="var(--text-theme, #8b5cf6)" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow-purple)"/>
+  <text x="365" y="300" text-anchor="middle" font-size="8" fill="var(--text-theme, #8b5cf6">Query</text>
+  
+  <!-- Response -->
+  <line x1="515" y1="350" x2="215" y2="350" stroke="var(--text-theme, #10b981)" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow-green)"/>
+  <text x="365" y="370" text-anchor="middle" font-size="8" fill="var(--text-theme, #10b981">Results</text>
+  
+  <!-- Key Benefits -->
+  <rect x="30" y="420" width="840" height="110" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="450" y="445" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Key Benefits</text>
+  
+  <text x="50" y="470" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="65" y="470" font-size="10" fill="var(--text-theme, #1e293b">High ingest via buffering and batching</text>
+  
+  <text x="450" y="470" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="465" y="470" font-size="10" fill="var(--text-theme, #1e293b">Fast queries via time partitioning</text>
+  
+  <text x="50" y="495" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="65" y="495" font-size="10" fill="var(--text-theme, #1e293b">Cost control via tiering</text>
+  
+  <text x="450" y="495" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="465" y="495" font-size="10" fill="var(--text-theme, #1e293b">Simple retention (drop partitions)</text>
+  
+  <text x="50" y="520" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="65" y="520" font-size="10" fill="var(--text-theme, #1e293b">Compression reduces storage 10-20x</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-down" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 0, 5 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #8b5cf6)"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #10b981)"/>
+    </marker>
+  </defs>
+</svg>

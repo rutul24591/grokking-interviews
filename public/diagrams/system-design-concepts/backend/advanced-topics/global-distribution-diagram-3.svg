@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+  <title id="title">Global Distribution Failure Modes</title>
+  <desc id="desc">Global distribution failure modes: replication lag, unsafe failover, split brain writes, and recovery backlog</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="600" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Global Distribution Failure Modes</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Replication lag, unsafe failover, and split brain scenarios</text>
+  
+  <!-- Top Left: Replication Lag -->
+  <rect x="30" y="85" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <text x="235" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #ef4444)">1. Replication Lag Breaches</text>
+  
+  <!-- Lag visualization -->
+  <rect x="50" y="135" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #fef2f2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  
+  <!-- Primary writes -->
+  <rect x="60" y="150" width="140" height="55" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="130" y="175" text-anchor="middle" font-size="9" fill="white">Primary (US)</text>
+  <text x="130" y="190" text-anchor="middle" font-size="8" fill="#bfdbfe">T0: Write X=100</text>
+  <text x="130" y="203" text-anchor="middle" font-size="7" fill="#93c5fd">T+1s: Write X=200</text>
+  
+  <!-- Replication delay -->
+  <line x1="200" y1="180" x2="280" y2="180" stroke="var(--text-theme, #f59e0b)" stroke-width="3" stroke-dasharray="5,3" marker-end="url(#arrow-orange)"/>
+  <text x="240" y="170" text-anchor="middle" font-size="8" fill="var(--text-theme, #b45309">+5s lag</text>
+  
+  <!-- Replica stale -->
+  <rect x="285" y="150" width="120" height="55" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="345" y="175" text-anchor="middle" font-size="9" fill="white">Replica (EU)</text>
+  <text x="345" y="190" text-anchor="middle" font-size="8" fill="#fcd34d">T+5s: X=100</text>
+  <text x="345" y="203" text-anchor="middle" font-size="7" fill="#fbbf24">Stale!</text>
+  
+  <text x="235" y="250" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">User reads stale data from replica!</text>
+  <text x="235" y="270" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Impact: Inconsistent UX, trust issues</text>
+  <text x="235" y="290" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Read-your-writes routing, lag monitoring</text>
+  
+  <!-- Top Right: Unsafe Failover -->
+  <rect x="460" y="85" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="665" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #f59e0b">2. Unsafe Failover</text>
+  
+  <!-- Failover scenario -->
+  <rect x="480" y="135" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  
+  <!-- Step 1: Primary fails -->
+  <rect x="490" y="150" width="100" height="50" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
+  <text x="540" y="175" text-anchor="middle" font-size="9" fill="white">Primary FAILS</text>
+  <text x="540" y="190" text-anchor="middle" font-size="7" fill="#fca5a5">Last write: X=300</text>
+  
+  <line x1="590" y1="175" x2="620" y2="175" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="605" y="165" text-anchor="middle" font-size="7" fill="var(--text-theme, #64748b">Failover!</text>
+  
+  <!-- Step 2: Replica promoted -->
+  <rect x="625" y="150" width="100" height="50" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="675" y="175" text-anchor="middle" font-size="9" fill="white">Replica → New Primary</text>
+  <text x="675" y="190" text-anchor="middle" font-size="7" fill="#b45309">Has X=100 (stale!)</text>
+  
+  <line x1="725" y1="175" x2="755" y2="175" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  
+  <!-- Step 3: Data loss -->
+  <rect x="760" y="150" width="80" height="50" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="800" y="175" text-anchor="middle" font-size="9" fill="white">DATA LOSS</text>
+  <text x="800" y="190" text-anchor="middle" font-size="7" fill="#fca5a5">X=300 lost!</text>
+  
+  <text x="665" y="250" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Failover before replication complete!</text>
+  <text x="665" y="270" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Impact: Permanent data loss</text>
+  <text x="665" y="290" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: RPO checks before failover, sync replication for critical data</text>
+  
+  <!-- Bottom Left: Split Brain -->
+  <rect x="30" y="340" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="235" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #8b5cf6">3. Split Brain Writes</text>
+  
+  <!-- Network partition -->
+  <rect x="50" y="380" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  
+  <!-- Network partition line -->
+  <line x1="235" y1="395" x2="235" y2="505" stroke="var(--text-theme, #ef4444)" stroke-width="3" stroke-dasharray="8,4"/>
+  <text x="235" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">Network Partition</text>
+  
+  <!-- Left region -->
+  <rect x="70" y="410" width="140" height="50" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="140" y="435" text-anchor="middle" font-size="9" fill="white">US-East (Thinks it's primary)</text>
+  <text x="140" y="450" text-anchor="middle" font-size="8" fill="#bfdbfe">Write: X=500</text>
+  
+  <!-- Right region -->
+  <rect x="260" y="410" width="140" height="50" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="330" y="435" text-anchor="middle" font-size="9" fill="white">EU-West (Also primary!)</text>
+  <text x="330" y="450" text-anchor="middle" font-size="8" fill="#6ee7b7">Write: X=600</text>
+  
+  <text x="235" y="535" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Two primaries = conflicting writes!</text>
+  <text x="235" y="555" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Impact: Data corruption, conflicts on heal</text>
+  <text x="235" y="575" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Quorum writes, fencing tokens</text>
+  
+  <!-- Bottom Right: Recovery Backlog -->
+  <rect x="460" y="340" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="665" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">4. Recovery Backlog</text>
+  
+  <!-- Backlog buildup -->
+  <rect x="480" y="380" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  
+  <!-- Primary writing -->
+  <rect x="490" y="395" width="100" height="50" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="540" y="420" text-anchor="middle" font-size="9" fill="white">Primary</text>
+  <text x="540" y="435" text-anchor="middle" font-size="8" fill="#6ee7b7">1000 writes/sec</text>
+  
+  <!-- Replication queue -->
+  <rect x="610" y="395" width="120" height="50" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="670" y="420" text-anchor="middle" font-size="9" fill="white">Replication Queue</text>
+  <text x="670" y="435" text-anchor="middle" font-size="8" fill="#b45309">50,000 pending!</text>
+  
+  <!-- Replica catching up -->
+  <rect x="750" y="395" width="90" height="50" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="795" y="420" text-anchor="middle" font-size="9" fill="white">Replica</text>
+  <text x="795" y="435" text-anchor="middle" font-size="8" fill="#bfdbfe">100 writes/sec</text>
+  
+  <text x="665" y="475" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Replica can't keep up with primary!</text>
+  <text x="665" y="495" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Impact: Growing lag, eventual failover risk</text>
+  <text x="665" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Rate limit primary, scale replica, parallel replay</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #ef4444)"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #f59e0b)"/>
+    </marker>
+  </defs>
+</svg>

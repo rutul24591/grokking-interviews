@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+  <title id="title">Rolling Deployment Failure Modes</title>
+  <desc id="desc">Rolling deployment failure modes: partial failures, cascading failures, and rollback failures</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="600" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Rolling Deployment: Failure Modes</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b">What can go wrong during rolling deployments</text>
+  
+  <!-- Partial Deployment Failure -->
+  <rect x="30" y="85" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <text x="235" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #ef4444">1. Partial Deployment Failure</text>
+  
+  <!-- Stuck deployment -->
+  <rect x="50" y="135" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #fef2f2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  
+  <!-- Successful batches -->
+  <rect x="60" y="150" width="70" height="50" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="95" y="175" text-anchor="middle" font-size="9" fill="white">v2.0</text>
+  <text x="95" y="190" text-anchor="middle" font-size="8" fill="#6ee7b7">OK</text>
+  
+  <rect x="140" y="150" width="70" height="50" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="175" y="175" text-anchor="middle" font-size="9" fill="white">v2.0</text>
+  <text x="175" y="190" text-anchor="middle" font-size="8" fill="#6ee7b7">OK</text>
+  
+  <line x1="215" y1="175" x2="245" y2="175" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="230" y="165" text-anchor="middle" font-size="7" fill="var(--text-theme, #ef4444">Fails here!</text>
+  
+  <!-- Failed batch -->
+  <rect x="255" y="150" width="70" height="50" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="290" y="175" text-anchor="middle" font-size="9" fill="white">v2.0</text>
+  <text x="290" y="190" text-anchor="middle" font-size="8" fill="#fca5a5">FAIL</text>
+  
+  <!-- Remaining old -->
+  <rect x="335" y="150" width="70" height="50" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="370" y="175" text-anchor="middle" font-size="9" fill="white">v1.0</text>
+  <text x="370" y="190" text-anchor="middle" font-size="8" fill="#bfdbfe">Pending</text>
+  
+  <text x="235" y="240" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Mixed versions running!</text>
+  <text x="235" y="260" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Impact: Inconsistent behavior, session issues</text>
+  <text x="235" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Automatic rollback, version compatibility</text>
+  
+  <!-- Cascading Failures -->
+  <rect x="460" y="85" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="665" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">2. Cascading Failures</text>
+  
+  <!-- Cascade scenario -->
+  <rect x="480" y="135" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  
+  <!-- Instance 1 terminates -->
+  <rect x="490" y="150" width="80" height="50" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
+  <text x="530" y="175" text-anchor="middle" font-size="9" fill="white">Instance 1</text>
+  <text x="530" y="190" text-anchor="middle" font-size="8" fill="#fca5a5">Terminated</text>
+  
+  <line x1="575" y1="175" x2="605" y2="175" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="590" y="165" text-anchor="middle" font-size="7" fill="var(--text-theme, #ef4444">Load shift</text>
+  
+  <!-- Instance 2 overloaded -->
+  <rect x="615" y="150" width="80" height="50" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="655" y="175" text-anchor="middle" font-size="9" fill="white">Instance 2</text>
+  <text x="655" y="190" text-anchor="middle" font-size="8" fill="#fcd34d">Overloaded</text>
+  
+  <line x1="700" y1="175" x2="730" y2="175" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="715" y="165" text-anchor="middle" font-size="7" fill="var(--text-theme, #ef4444">More load</text>
+  
+  <!-- Instance 3 fails -->
+  <rect x="740" y="150" width="80" height="50" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="780" y="175" text-anchor="middle" font-size="9" fill="white">Instance 3</text>
+  <text x="780" y="190" text-anchor="middle" font-size="8" fill="#fca5a5">Crashed!</text>
+  
+  <text x="665" y="240" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">One termination triggers cascade!</text>
+  <text x="665" y="260" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Impact: Service outage, not just degraded</text>
+  <text x="665" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Rate limit terminations, ensure capacity</text>
+  
+  <!-- Rollback Failure -->
+  <rect x="30" y="340" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="235" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #8b5cf6">3. Rollback Failure</text>
+  
+  <!-- Rollback scenario -->
+  <rect x="50" y="380" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  
+  <!-- v2 deployed -->
+  <rect x="60" y="395" width="100" height="55" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="110" y="420" text-anchor="middle" font-size="9" fill="white">v2.0 Live</text>
+  <text x="110" y="435" text-anchor="middle" font-size="8" fill="#bfdbfe">Problems found</text>
+  
+  <line x1="165" y1="423" x2="195" y2="423" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="180" y="413" text-anchor="middle" font-size="7" fill="var(--text-theme, #64748b">Rollback</text>
+  
+  <!-- v1 terminated -->
+  <rect x="205" y="395" width="100" height="55" rx="4" fill="var(--bg-theme, #94a3b8)" stroke="var(--border-theme, #475569)" stroke-width="1"/>
+  <text x="255" y="420" text-anchor="middle" font-size="9" fill="white">v1.0 Gone</text>
+  <text x="255" y="435" text-anchor="middle" font-size="8" fill="#94a3b8">Already terminated</text>
+  
+  <line x1="310" y1="423" x2="340" y2="423" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="325" y="413" text-anchor="middle" font-size="7" fill="var(--text-theme, #ef4444">Can't rollback!</text>
+  
+  <!-- Stuck with v2 -->
+  <rect x="350" y="395" width="60" height="55" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="380" y="425" text-anchor="middle" font-size="12" fill="white">!</text>
+  
+  <text x="235" y="495" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">No rollback path available!</text>
+  <text x="235" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Impact: Stuck with broken version</text>
+  <text x="235" y="535" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Keep old version until new is healthy</text>
+  
+  <!-- Database Migration Issues -->
+  <rect x="460" y="340" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="665" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">4. Database Migration Issues</text>
+  
+  <!-- Migration scenario -->
+  <rect x="480" y="380" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  
+  <!-- v2 with new schema -->
+  <rect x="490" y="395" width="110" height="55" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="545" y="420" text-anchor="middle" font-size="9" fill="white">v2.0 + Migration</text>
+  <text x="545" y="435" text-anchor="middle" font-size="8" fill="#6ee7b7">New schema</text>
+  
+  <line x1="605" y1="423" x2="635" y2="423" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="620" y="413" text-anchor="middle" font-size="7" fill="var(--text-theme, #ef4444">Incompatible</text>
+  
+  <!-- v1 can't read new schema -->
+  <rect x="645" y="395" width="110" height="55" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
+  <text x="700" y="420" text-anchor="middle" font-size="9" fill="white">v1.0</text>
+  <text x="700" y="435" text-anchor="middle" font-size="8" fill="#fca5a5">Can't read new</text>
+  
+  <text x="665" y="465" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Rollback blocked by schema change!</text>
+  <text x="665" y="485" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Impact: Can't rollback without data loss</text>
+  <text x="665" y="505" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Backward-compatible migrations, expand-contract</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #ef4444)"/>
+    </marker>
+  </defs>
+</svg>

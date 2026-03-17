@@ -1,71 +1,114 @@
 "use client";
 
 import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
+import { persist } from "zustand/middleware";
 import { STORAGE_KEYS } from "@/lib/constants";
 
-const noopStorage: Storage = {
-  getItem: () => null,
-  setItem: () => {},
-  removeItem: () => {},
-  clear: () => {},
-  key: () => null,
-  length: 0,
+export type SidebarItem = {
+  id: string;
+  name: string;
+  slug?: string;
+  children?: SidebarItem[];
+};
+
+export type Domain = {
+  id: string;
+  name: string;
+  slug: string;
+  categories: Category[];
+};
+
+export type Category = {
+  id: string;
+  name: string;
+  slug: string;
+  subcategories: Subcategory[];
+};
+
+export type Subcategory = {
+  id: string;
+  name: string;
+  slug: string;
+  topics: Topic[];
+};
+
+export type Topic = {
+  id: string;
+  name: string;
+  slug: string;
 };
 
 type SidebarState = {
-  expandedIds: string[];
-  mobileOpen: boolean;
-  selectedSubCategoryId: string | null;
-  selectedSubCategoryItemId: string | null;
-  selectedTopicId: string | null;
-  toggleExpanded: (id: string) => void;
-  setExpanded: (ids: string[]) => void;
-  setMobileOpen: (open: boolean) => void;
-  setSelectedSubCategoryId: (id: string | null) => void;
-  setSelectedSubCategoryItemId: (id: string | null) => void;
-  setSelectedTopicId: (id: string | null) => void;
-  setNavigationState: (
-    subCategoryId: string | null,
-    subCategoryItemId: string | null,
-    topicId: string | null
-  ) => void;
-  isExpanded: (id: string) => boolean;
+  // Expanded state for each level
+  expandedDomains: string[];
+  expandedCategories: string[];
+  expandedSubcategories: string[];
+
+  // Selected item (currently viewing)
+  selectedTopic: string | null;
+
+  // Mobile open state
+  isMobileOpen: boolean;
+
+  // Actions
+  toggleDomain: (domainId: string) => void;
+  toggleCategory: (categoryId: string) => void;
+  toggleSubcategory: (subcategoryId: string) => void;
+  selectTopic: (topicSlug: string | null) => void;
+  setMobileOpen: (isOpen: boolean) => void;
+  collapseAll: () => void;
 };
 
 export const useSidebarStore = create<SidebarState>()(
   persist(
-    (set, get) => ({
-      expandedIds: ["cat-system-design"],
-      mobileOpen: false,
-      selectedSubCategoryId: null,
-      selectedSubCategoryItemId: null,
-      selectedTopicId: null,
-      toggleExpanded: (id) => {
-        const current = get().expandedIds;
+    (set) => ({
+      expandedDomains: [],
+      expandedCategories: [],
+      expandedSubcategories: [],
+      selectedTopic: null,
+      isMobileOpen: false,
+
+      toggleDomain: (domainId) =>
+        set((state) => ({
+          expandedDomains: state.expandedDomains.includes(domainId)
+            ? state.expandedDomains.filter((id) => id !== domainId)
+            : [...state.expandedDomains, domainId],
+        })),
+
+      toggleCategory: (categoryId) =>
+        set((state) => ({
+          expandedCategories: state.expandedCategories.includes(categoryId)
+            ? state.expandedCategories.filter((id) => id !== categoryId)
+            : [...state.expandedCategories, categoryId],
+        })),
+
+      toggleSubcategory: (subcategoryId) =>
+        set((state) => ({
+          expandedSubcategories: state.expandedSubcategories.includes(
+            subcategoryId
+          )
+            ? state.expandedSubcategories.filter((id) => id !== subcategoryId)
+            : [...state.expandedSubcategories, subcategoryId],
+        })),
+
+      selectTopic: (topicSlug) => set({ selectedTopic: topicSlug }),
+
+      setMobileOpen: (isMobileOpen) => set({ isMobileOpen }),
+
+      collapseAll: () =>
         set({
-          expandedIds: current.includes(id)
-            ? current.filter((item) => item !== id)
-            : [...current, id],
-        });
-      },
-      setExpanded: (ids) => set({ expandedIds: ids }),
-      setMobileOpen: (open) => set({ mobileOpen: open }),
-      setSelectedSubCategoryId: (id) =>
-        set({ selectedSubCategoryId: id, selectedSubCategoryItemId: null, selectedTopicId: null }),
-      setSelectedSubCategoryItemId: (id) => set({ selectedSubCategoryItemId: id, selectedTopicId: null }),
-      setSelectedTopicId: (id) => set({ selectedTopicId: id }),
-      setNavigationState: (subCategoryId, subCategoryItemId, topicId) =>
-        set({ selectedSubCategoryId: subCategoryId, selectedSubCategoryItemId: subCategoryItemId, selectedTopicId: topicId }),
-      isExpanded: (id) => get().expandedIds.includes(id),
+          expandedDomains: [],
+          expandedCategories: [],
+          expandedSubcategories: [],
+        }),
     }),
     {
       name: STORAGE_KEYS.sidebar,
-      storage: createJSONStorage(() =>
-        typeof window === "undefined" ? noopStorage : localStorage
-      ),
-      partialize: (state) => ({ expandedIds: state.expandedIds }),
-      skipHydration: true,
+      partialize: (state) => ({
+        expandedDomains: state.expandedDomains,
+        expandedCategories: state.expandedCategories,
+        expandedSubcategories: state.expandedSubcategories,
+      }),
     }
   )
 );

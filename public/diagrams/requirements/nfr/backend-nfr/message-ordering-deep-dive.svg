@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
+  <defs>
+    <marker id="messageOrderArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--border-accent, #3b82f6)"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="550" fill="var(--bg-primary, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--text-primary, #0f172a">Message Ordering Guarantees Deep Dive</text>
+  
+  <!-- Ordering Levels -->
+  <rect x="50" y="60" width="450" height="250" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">Message Ordering Levels</text>
+  
+  <!-- No ordering -->
+  <rect x="70" y="110" width="180" height="55" rx="4" fill="var(--bg-red, #ef4444)" opacity="0.2" stroke="var(--border-red, #ef4444)" stroke-width="2"/>
+  <text x="160" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-red, #ef4444">No Ordering</text>
+  <text x="160" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Messages arrive randomly</text>
+  <text x="160" y="172" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Fastest, least guarantees</text>
+  
+  <!-- Partition ordering -->
+  <rect x="270" y="110" width="180" height="55" rx="4" fill="var(--bg-orange, #f97316)" opacity="0.2" stroke="var(--border-orange, #f97316)" stroke-width="2"/>
+  <text x="360" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-orange, #f97316">Partition Ordering</text>
+  <text x="360" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Ordered within partition</text>
+  <text x="360" y="172" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Most common (Kafka)</text>
+  
+  <!-- Causal ordering -->
+  <rect x="70" y="180" width="180" height="55" rx="4" fill="var(--bg-blue, #3b82f6)" opacity="0.2" stroke="var(--border-blue, #3b82f6)" stroke-width="2"/>
+  <text x="160" y="205" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-blue, #3b82f6">Causal Ordering</text>
+  <text x="160" y="225" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Cause before effect</text>
+  <text x="160" y="242" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Vector clocks</text>
+  
+  <!-- Global ordering -->
+  <rect x="270" y="180" width="180" height="55" rx="4" fill="var(--bg-purple, #8b5cf6)" opacity="0.2" stroke="var(--border-purple, #8b5cf6)" stroke-width="2"/>
+  <text x="360" y="205" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-purple, #8b5cf6">Global Ordering</text>
+  <text x="360" y="225" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Total order across all</text>
+  <text x="360" y="242" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Slowest, strongest</text>
+  
+  <!-- Partition key visualization -->
+  <rect x="70" y="250" width="380" height="50" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="260" y="275" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">Partition Key Determines Ordering</text>
+  <text x="260" y="295" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Same key → Same partition → Ordered | Different keys → Unordered</text>
+  
+  <!-- Partition Key Design -->
+  <rect x="520" y="60" width="430" height="140" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">Partition Key Design Patterns</text>
+  
+  <rect x="540" y="110" width="190" height="70" rx="3" fill="var(--bg-blue, #3b82f6)" opacity="0.2" stroke="var(--border-blue, #3b82f6)" stroke-width="1"/>
+  <text x="635" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-blue, #3b82f6">User ID</text>
+  <text x="635" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">All user events ordered</text>
+  <text x="635" y="172" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Good for user timelines</text>
+  
+  <rect x="540" y="190" width="190" height="70" rx="3" fill="var(--bg-purple, #8b5cf6)" opacity="0.2" stroke="var(--border-purple, #8b5cf6)" stroke-width="1"/>
+  <text x="635" y="215" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-purple, #8b5cf6">Order/Transaction ID</text>
+  <text x="635" y="235" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Order events ordered</text>
+  <text x="635" y="252" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Good for order processing</text>
+  
+  <rect x="750" y="110" width="180" height="70" rx="3" fill="var(--bg-orange, #f97316)" opacity="0.2" stroke="var(--border-orange, #f97316)" stroke-width="1"/>
+  <text x="840" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-orange, #f97316">Random/Hash</text>
+  <text x="840" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Even distribution</text>
+  <text x="840" y="172" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">No ordering guarantees</text>
+  
+  <rect x="750" y="190" width="180" height="70" rx="3" fill="var(--bg-green, #22c55e)" opacity="0.2" stroke="var(--border-green, #22c55e)" stroke-width="1"/>
+  <text x="840" y="215" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-green, #22c55e">Composite Key</text>
+  <text x="840" y="235" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">user_id:order_id</text>
+  <text x="840" y="252" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Hierarchical ordering</text>
+  
+  <!-- Reordering at Consumer -->
+  <rect x="520" y="220" width="430" height="140" rx="8" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="735" y="245" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a">Consumer-Side Reordering</text>
+  
+  <rect x="540" y="265" width="190" height="40" rx="3" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="635" y="285" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">Buffer &amp; Reorder</text>
+  <text x="635" y="302" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Wait for missing messages</text>
+  
+  <rect x="540" y="315" width="190" height="40" rx="3" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="635" y="335" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">Timeout Strategy</text>
+  <text x="635" y="352" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Process after timeout</text>
+  
+  <rect x="750" y="265" width="180" height="40" rx="3" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="840" y="285" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">Watermark Tracking</text>
+  <text x="840" y="302" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Track progress per partition</text>
+  
+  <rect x="750" y="315" width="180" height="40" rx="3" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="840" y="335" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">Trade-off</text>
+  <text x="840" y="352" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Latency vs Ordering</text>
+  
+  <text x="500" y="390" text-anchor="middle" font-size="9" fill="var(--text-muted, #64748b">Key: Choose partition key based on ordering needs. Buffer at consumer if strict ordering required.</text>
+</svg>

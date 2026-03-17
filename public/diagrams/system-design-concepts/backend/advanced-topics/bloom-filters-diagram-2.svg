@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Bloom Filter Sizing and False Positive Trade-off</title>
+  <desc id="desc">Bloom filter showing how size and hash count affect false positive rate</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Bloom Filter Sizing Trade-offs</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Memory vs False Positive Rate vs Hash Count</text>
+  
+  <!-- Left: Small Filter (High FP) -->
+  <rect x="30" y="85" width="270" height="220" rx="8" fill="white" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <text x="165" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #ef4444)">Undersized Filter</text>
+  <text x="165" y="130" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b)">High False Positive Rate</text>
+  
+  <!-- Small bit array - mostly filled -->
+  <rect x="50" y="145" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="75" y="145" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="100" y="145" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="125" y="145" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="150" y="145" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="175" y="145" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="200" y="145" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="225" y="145" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  
+  <rect x="50" y="175" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="75" y="175" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="100" y="175" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="125" y="175" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="150" y="175" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="175" y="175" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="200" y="175" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="225" y="175" width="20" height="20" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  
+  <text x="165" y="220" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b)">m = 16 bits</text>
+  <text x="165" y="240" text-anchor="middle" font-size="11" fill="var(--text-theme, #ef4444)">~40% false positives</text>
+  <text x="165" y="260" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b)">Saturates quickly</text>
+  <text x="165" y="280" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b)">Low memory, high error</text>
+  
+  <!-- Middle: Optimal Filter -->
+  <rect x="315" y="85" width="270" height="220" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981)">Well-Sized Filter</text>
+  <text x="450" y="130" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b)">Balanced False Positive Rate</text>
+  
+  <!-- Medium bit array - partially filled -->
+  <rect x="335" y="145" width="18" height="18" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="358" y="145" width="18" height="18" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="381" y="145" width="18" height="18" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="404" y="145" width="18" height="18" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="427" y="145" width="18" height="18" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="450" y="145" width="18" height="18" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="473" y="145" width="18" height="18" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="496" y="145" width="18" height="18" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="519" y="145" width="18" height="18" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="542" y="145" width="18" height="18" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="565" y="145" width="18" height="18" rx="2" fill="var(--bg-theme, #10b981)"/>
+  
+  <rect x="335" y="170" width="18" height="18" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="358" y="170" width="18" height="18" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="381" y="170" width="18" height="18" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="404" y="170" width="18" height="18" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="427" y="170" width="18" height="18" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="450" y="170" width="18" height="18" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="473" y="170" width="18" height="18" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="496" y="170" width="18" height="18" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="519" y="170" width="18" height="18" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="542" y="170" width="18" height="18" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="565" y="170" width="18" height="18" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  
+  <rect x="335" y="195" width="18" height="18" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="358" y="195" width="18" height="18" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="381" y="195" width="18" height="18" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="404" y="195" width="18" height="18" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="427" y="195" width="18" height="18" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="450" y="195" width="18" height="18" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="473" y="195" width="18" height="18" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="496" y="195" width="18" height="18" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="519" y="195" width="18" height="18" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="542" y="195" width="18" height="18" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="565" y="195" width="18" height="18" rx="2" fill="var(--bg-theme, #10b981)"/>
+  
+  <text x="450" y="220" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b)">m = 33 bits</text>
+  <text x="450" y="240" text-anchor="middle" font-size="11" fill="var(--text-theme, #10b981)">~5% false positives</text>
+  <text x="450" y="260" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b)">Good balance</text>
+  <text x="450" y="280" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b)">Recommended starting point</text>
+  
+  <!-- Right: Large Filter (Low FP) -->
+  <rect x="600" y="85" width="270" height="220" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="735" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6)">Oversized Filter</text>
+  <text x="735" y="130" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b)">Low False Positive Rate</text>
+  
+  <!-- Large bit array - sparsely filled -->
+  <rect x="620" y="145" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="638" y="145" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="656" y="145" width="14" height="14" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="674" y="145" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="692" y="145" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="710" y="145" width="14" height="14" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="728" y="145" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="746" y="145" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="764" y="145" width="14" height="14" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="782" y="145" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="800" y="145" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="818" y="145" width="14" height="14" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="836" y="145" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="854" y="145" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  
+  <rect x="620" y="165" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="638" y="165" width="14" height="14" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="656" y="165" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="674" y="165" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="692" y="165" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="710" y="165" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="728" y="165" width="14" height="14" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="746" y="165" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="764" y="165" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="782" y="165" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="800" y="165" width="14" height="14" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="818" y="165" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="836" y="165" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="854" y="165" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  
+  <rect x="620" y="185" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="638" y="185" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="656" y="185" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="674" y="185" width="14" height="14" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="692" y="185" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="710" y="185" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="728" y="185" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="746" y="185" width="14" height="14" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="764" y="185" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="782" y="185" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="800" y="185" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="818" y="185" width="14" height="14" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <rect x="836" y="185" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  <rect x="854" y="185" width="14" height="14" rx="2" fill="var(--bg-panel-soft, #e2e8f0)"/>
+  
+  <text x="735" y="220" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b)">m = 42 bits</text>
+  <text x="735" y="240" text-anchor="middle" font-size="11" fill="var(--text-theme, #3b82f6)">~1% false positives</text>
+  <text x="735" y="260" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b)">More memory</text>
+  <text x="735" y="280" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b)">Use when FP cost is high</text>
+  
+  <!-- Formula Section -->
+  <rect x="30" y="330" width="840" height="110" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="450" y="355" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">Sizing Formula</text>
+  
+  <text x="100" y="385" font-size="13" fill="var(--text-theme, #1e293b)">Optimal hash count:</text>
+  <text x="250" y="385" font-size="13" font-family="monospace" fill="var(--text-theme, #3b82f6)">k = (m/n) × ln(2)</text>
+  
+  <text x="500" y="385" font-size="13" fill="var(--text-theme, #1e293b)">False positive rate:</text>
+  <text x="680" y="385" font-size="13" font-family="monospace" fill="var(--text-theme, #ef4444)">p ≈ (1 - e^(-kn/m))^k</text>
+  
+  <text x="100" y="415" font-size="12" fill="var(--text-theme, #64748b)">m = bits, n = elements, k = hash functions</text>
+  
+  <text x="500" y="415" font-size="12" fill="var(--text-theme, #64748b)">Example: 1% FP for 1M items → ~9.6M bits</text>
+  
+  <!-- Hash Count Impact -->
+  <rect x="30" y="460" width="840" height="70" rx="8" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="450" y="485" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309)">Hash Count (k) Trade-off</text>
+  
+  <text x="100" y="510" font-size="12" fill="var(--text-theme, #64748b)">Too few hashes:</text>
+  <text x="220" y="510" font-size="12" fill="var(--text-theme, #ef4444)">Higher false positives</text>
+  
+  <text x="400" y="510" font-size="12" fill="var(--text-theme, #64748b)">Optimal:</text>
+  <text x="480" y="510" font-size="12" fill="var(--text-theme, #10b981)">Best FP rate for given m</text>
+  
+  <text x="650" y="510" font-size="12" fill="var(--text-theme, #64748b)">Too many hashes:</text>
+  <text x="790" y="510" font-size="12" fill="var(--text-theme, #f59e0b)">More CPU, faster saturation</text>
+</svg>

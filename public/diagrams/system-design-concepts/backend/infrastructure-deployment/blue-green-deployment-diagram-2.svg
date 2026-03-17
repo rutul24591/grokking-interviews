@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Blue-Green Cutover Mechanisms</title>
+  <desc id="desc">Blue-green cutover mechanisms: load balancer switch, DNS switch, and warmup or shadow traffic</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Blue-Green Cutover Mechanisms</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Different switching strategies with different trade-offs</text>
+  
+  <!-- LB Cutover (Fast) -->
+  <rect x="30" y="85" width="270" height="220" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="165" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Load Balancer Switch</text>
+  <text x="165" y="128" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Fastest, Most Common</text>
+  
+  <!-- LB diagram -->
+  <rect x="50" y="145" width="200" height="100" rx="6" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  
+  <rect x="70" y="160" width="60" height="40" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="100" y="183" text-anchor="middle" font-size="8" fill="white">BLUE</text>
+  <text x="100" y="195" text-anchor="middle" font-size="7" fill="#bfdbfe">Active</text>
+  
+  <line x1="130" y1="180" x2="150" y2="180" stroke="var(--text-theme, #3b82f6)" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="140" y="170" text-anchor="middle" font-size="7" fill="var(--text-theme, #3b82f6">100%</text>
+  
+  <rect x="160" y="160" width="60" height="40" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="190" y="183" text-anchor="middle" font-size="8" fill="white">GREEN</text>
+  <text x="190" y="195" text-anchor="middle" font-size="7" fill="#c4b5fd">Standby</text>
+  
+  <line x1="130" y1="200" x2="150" y2="200" stroke="var(--text-theme, #64748b)" stroke-width="2" stroke-dasharray="3,2"/>
+  <text x="140" y="215" text-anchor="middle" font-size="7" fill="var(--text-theme, #64748b">0%</text>
+  
+  <rect x="70" y="210" width="160" height="30" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="150" y="230" text-anchor="middle" font-size="8" fill="white">After Switch: GREEN gets 100%</text>
+  
+  <text x="165" y="260" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Seconds to switch</text>
+  <text x="165" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Instant rollback</text>
+  <text x="165" y="300" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">~ Requires LB control</text>
+  
+  <!-- DNS Cutover (Slow) -->
+  <rect x="315" y="85" width="270" height="220" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">DNS Switch</text>
+  <text x="450" y="128" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Slower, TTL Dependent</text>
+  
+  <!-- DNS diagram -->
+  <rect x="335" y="145" width="230" height="100" rx="6" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  
+  <rect x="355" y="160" width="70" height="40" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="390" y="183" text-anchor="middle" font-size="8" fill="white">DNS</text>
+  <text x="390" y="195" text-anchor="middle" font-size="7" fill="#fcd34d">TTL: 300s</text>
+  
+  <line x1="425" y1="180" x2="455" y2="180" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="440" y="170" text-anchor="middle" font-size="7" fill="var(--text-theme, #64748b">Points to</text>
+  
+  <rect x="465" y="160" width="80" height="40" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="505" y="183" text-anchor="middle" font-size="8" fill="white">BLUE LB</text>
+  <text x="505" y="195" text-anchor="middle" font-size="7" fill="#bfdbfe">Current</text>
+  
+  <rect x="465" y="210" width="80" height="30" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2" stroke-dasharray="3,2"/>
+  <text x="505" y="230" text-anchor="middle" font-size="7" fill="white">GREEN LB (after TTL)</text>
+  
+  <text x="450" y="260" text-anchor="middle" font-size="9" fill="var(--text-theme, #f59e0b">~ Minutes to propagate</text>
+  <text x="450" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #f59e0b">~ Cached DNS delays switch</text>
+  <text x="450" y="300" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ No LB access needed</text>
+  
+  <!-- Warmup/Shadow -->
+  <rect x="600" y="85" width="270" height="220" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="735" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">Warmup &amp; Shadow Traffic</text>
+  <text x="735" y="128" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Pre-Switch Validation</text>
+  
+  <!-- Warmup diagram -->
+  <rect x="620" y="145" width="230" height="100" rx="6" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  
+  <rect x="640" y="160" width="70" height="40" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="675" y="183" text-anchor="middle" font-size="8" fill="white">GREEN</text>
+  <text x="675" y="195" text-anchor="middle" font-size="7" fill="#c4b5fd">Cold</text>
+  
+  <line x1="710" y1="180" x2="740" y2="180" stroke="var(--text-theme, #f59e0b)" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <text x="725" y="170" text-anchor="middle" font-size="7" fill="var(--text-theme, #b45309">Warmup</text>
+  
+  <rect x="750" y="160" width="80" height="40" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="790" y="183" text-anchor="middle" font-size="8" fill="white">Warmup</text>
+  <text x="790" y="195" text-anchor="middle" font-size="7" fill="#fcd34d">Low traffic</text>
+  
+  <line x1="710" y1="200" x2="740" y2="200" stroke="var(--text-theme, #3b82f6)" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <text x="725" y="215" text-anchor="middle" font-size="7" fill="var(--text-theme, #3b82f6">Shadow</text>
+  
+  <rect x="750" y="190" width="80" height="25" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="790" y="208" text-anchor="middle" font-size="7" fill="white">Shadow requests</text>
+  
+  <text x="735" y="260" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Prevents cold start issues</text>
+  <text x="735" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Validates under real load</text>
+  <text x="735" y="300" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">~ Adds deployment time</text>
+  
+  <!-- Bottom: Cutover Checklist -->
+  <rect x="30" y="320" width="840" height="210" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="450" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Cutover Checklist</text>
+  
+  <rect x="50" y="360" width="250" height="160" rx="6" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="175" y="385" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #10b981">Pre-Switch</text>
+  <text x="175" y="410" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">✓ GREEN health checks pass</text>
+  <text x="175" y="430" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">✓ GREEN warmup complete</text>
+  <text x="175" y="450" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">✓ Database migrations applied</text>
+  <text x="175" y="470" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">✓ Monitoring dashboards ready</text>
+  <text x="175" y="490" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">✓ Rollback plan confirmed</text>
+  
+  <rect x="315" y="360" width="250" height="160" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="440" y="385" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">During Switch</text>
+  <text x="440" y="410" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">✓ Drain BLUE connections</text>
+  <text x="440" y="430" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">✓ Switch traffic gradually</text>
+  <text x="440" y="450" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">✓ Monitor error rates closely</text>
+  <text x="440" y="470" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">✓ Watch latency percentiles</text>
+  <text x="440" y="490" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">✓ Keep BLUE running (rollback)</text>
+  
+  <rect x="580" y="360" width="250" height="160" rx="6" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="705" y="385" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #3b82f6">Post-Switch</text>
+  <text x="705" y="410" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">✓ Verify GREEN metrics normal</text>
+  <text x="705" y="430" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">✓ Check business metrics</text>
+  <text x="705" y="450" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">✓ Wait stabilization period</text>
+  <text x="705" y="470" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">✓ Decommission BLUE (later)</text>
+  <text x="705" y="490" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">✓ Document deployment results</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #3b82f6)"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #f59e0b)"/>
+    </marker>
+  </defs>
+</svg>

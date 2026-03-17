@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Virtual Machines - Hypervisor Types</title>
+  <desc id="desc">Virtual machines showing Type 1 and Type 2 hypervisors with use cases</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Virtual Machines - Hypervisor Types</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Type 1 vs Type 2 hypervisors and use cases</text>
+  
+  <!-- Type 1 Hypervisor Detail -->
+  <rect x="30" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="230" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">Type 1: Bare-Metal Hypervisor</text>
+  
+  <!-- VMs -->
+  <rect x="50" y="125" width="360" height="80" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  
+  <rect x="60" y="135" width="100" height="60" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="110" y="165" text-anchor="middle" font-size="8" fill="white">VM 1</text>
+  <text x="110" y="180" text-anchor="middle" font-size="7" fill="#6ee7b7">Guest OS</text>
+  
+  <rect x="170" y="135" width="100" height="60" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="220" y="165" text-anchor="middle" font-size="8" fill="white">VM 2</text>
+  <text x="220" y="180" text-anchor="middle" font-size="7" fill="#6ee7b7">Guest OS</text>
+  
+  <rect x="280" y="135" width="100" height="60" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="330" y="165" text-anchor="middle" font-size="8" fill="white">VM 3</text>
+  <text x="330" y="180" text-anchor="middle" font-size="7" fill="#6ee7b7">Guest OS</text>
+  
+  <!-- Hypervisor -->
+  <rect x="50" y="215" width="360" height="45" rx="3" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="230" y="243" text-anchor="middle" font-size="10" fill="white">Hypervisor (ESXi, Hyper-V, KVM)</text>
+  
+  <!-- Hardware -->
+  <rect x="50" y="265" width="360" height="35" rx="2" fill="var(--bg-theme, #64748b)"/>
+  <text x="230" y="288" text-anchor="middle" font-size="9" fill="white">Physical Hardware</text>
+  
+  <text x="230" y="325" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Direct hardware access</text>
+  <text x="230" y="340" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Better performance</text>
+  <text x="230" y="355" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Production workloads</text>
+  <text x="230" y="370" text-anchor="middle" font-size="9" fill="var(--text-theme, #f59e0b">⚠ Requires dedicated hardware</text>
+  
+  <!-- Type 2 Hypervisor Detail -->
+  <rect x="470" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="670" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Type 2: Hosted Hypervisor</text>
+  
+  <!-- VMs -->
+  <rect x="490" y="125" width="360" height="60" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  
+  <rect x="500" y="135" width="100" height="40" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="550" y="158" text-anchor="middle" font-size="8" fill="white">VM 1</text>
+  
+  <rect x="620" y="135" width="100" height="40" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="670" y="158" text-anchor="middle" font-size="8" fill="white">VM 2</text>
+  
+  <rect x="740" y="135" width="100" height="40" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="790" y="158" text-anchor="middle" font-size="8" fill="white">VM 3</text>
+  
+  <!-- Hypervisor -->
+  <rect x="490" y="195" width="360" height="45" rx="3" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="670" y="223" text-anchor="middle" font-size="10" fill="white">Hypervisor (VirtualBox, VMware)</text>
+  
+  <!-- Host OS -->
+  <rect x="490" y="245" width="360" height="45" rx="3" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="670" y="273" text-anchor="middle" font-size="10" fill="white">Host OS (Windows, Linux, macOS)</text>
+  
+  <!-- Hardware -->
+  <rect x="490" y="295" width="360" height="35" rx="2" fill="var(--bg-theme, #64748b)"/>
+  <text x="670" y="318" text-anchor="middle" font-size="9" fill="white">Physical Hardware</text>
+  
+  <text x="670" y="345" text-anchor="middle" font-size="9" fill="var(--text-theme, #f59e0b">⚠ Extra layer (host OS)</text>
+  <text x="670" y="360" text-anchor="middle" font-size="9" fill="var(--text-theme, #f59e0b">⚠ More overhead</text>
+  <text x="670" y="375" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Easy to use</text>
+  <text x="670" y="390" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Development/testing</text>
+  
+  <!-- Use Cases -->
+  <rect x="30" y="380" width="840" height="150" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="450" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Virtualization Use Cases</text>
+  
+  <rect x="50" y="420" width="250" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="175" y="445" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">Server Consolidation</text>
+  <text x="175" y="470" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Multiple VMs on one server</text>
+  <text x="175" y="490" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Better resource utilization</text>
+  <text x="175" y="510" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Reduced hardware costs</text>
+  
+  <rect x="315" y="420" width="250" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="440" y="445" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">Development &amp; Testing</text>
+  <text x="440" y="470" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Isolated environments</text>
+  <text x="440" y="490" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Snapshot &amp; rollback</text>
+  <text x="440" y="510" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Multiple OS testing</text>
+  
+  <rect x="580" y="420" width="250" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="705" y="445" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">Cloud Infrastructure</text>
+  <text x="705" y="470" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">AWS, Azure, GCP</text>
+  <text x="705" y="490" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Multi-tenant isolation</text>
+  <text x="705" y="510" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Elastic scaling</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

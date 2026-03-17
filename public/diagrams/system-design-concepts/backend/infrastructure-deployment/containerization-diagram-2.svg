@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Container Build and Registry Flow</title>
+  <desc id="desc">Container build process and registry workflow from Dockerfile to deployment</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Container Build &amp; Registry Flow</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">From Dockerfile to deployment via container registry</text>
+  
+  <!-- Dockerfile -->
+  <rect x="30" y="85" width="150" height="120" rx="8" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="105" y="115" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Dockerfile</text>
+  <text x="105" y="140" text-anchor="middle" font-size="9" fill="#bfdbfe">FROM node:18</text>
+  <text x="105" y="155" text-anchor="middle" font-size="9" fill="#bfdbfe">WORKDIR /app</text>
+  <text x="105" y="170" text-anchor="middle" font-size="9" fill="#bfdbfe">COPY . .</text>
+  <text x="105" y="185" text-anchor="middle" font-size="9" fill="#bfdbfe">CMD ["node"]</text>
+  
+  <!-- Build arrow -->
+  <line x1="180" y1="145" x2="230" y2="145" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="205" y="135" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">docker build</text>
+  
+  <!-- Build Process -->
+  <rect x="230" y="85" width="200" height="120" rx="8" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="330" y="115" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Build Process</text>
+  
+  <rect x="250" y="130" width="160" height="25" rx="3" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="330" y="148" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">1. Pull base image</text>
+  
+  <rect x="250" y="160" width="160" height="25" rx="3" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="330" y="178" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">2. Execute instructions</text>
+  
+  <rect x="250" y="190" width="160" height="25" rx="3" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="330" y="208" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">3. Create layers</text>
+  
+  <!-- Push arrow -->
+  <line x1="430" y1="145" x2="480" y2="145" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="455" y="135" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">docker push</text>
+  
+  <!-- Container Registry -->
+  <rect x="480" y="85" width="200" height="120" rx="8" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="580" y="115" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Container Registry</text>
+  <text x="580" y="140" text-anchor="middle" font-size="9" fill="#c4b5fd">Docker Hub</text>
+  <text x="580" y="155" text-anchor="middle" font-size="9" fill="#c4b5fd">ECR, GCR, ACR</text>
+  <text x="580" y="170" text-anchor="middle" font-size="9" fill="#c4b5fd">Private registries</text>
+  <text x="580" y="190" text-anchor="middle" font-size="8" fill="#a78bfa">myapp:v1.0, latest</text>
+  
+  <!-- Pull arrow -->
+  <line x1="680" y1="145" x2="730" y2="145" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="705" y="135" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">docker pull</text>
+  
+  <!-- Deployment -->
+  <rect x="730" y="85" width="140" height="120" rx="8" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="2"/>
+  <text x="800" y="115" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Deployment</text>
+  <text x="800" y="140" text-anchor="middle" font-size="9" fill="#fcd34d">Kubernetes</text>
+  <text x="800" y="155" text-anchor="middle" font-size="9" fill="#fcd34d">ECS, Nomad</text>
+  <text x="800" y="170" text-anchor="middle" font-size="9" fill="#fcd34d">VM, Bare metal</text>
+  
+  <!-- Layer caching detail -->
+  <rect x="30" y="220" width="400" height="180" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="230" y="245" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Layer Caching (Build Optimization)</text>
+  
+  <rect x="50" y="260" width="360" height="130" rx="6" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  
+  <text x="70" y="285" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="285" font-size="10" fill="var(--text-theme, #1e293b">Unchanged layers are cached</text>
+  
+  <text x="70" y="305" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="305" font-size="10" fill="var(--text-theme, #1e293b">Layer order affects cache hit rate</text>
+  
+  <text x="70" y="325" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="325" font-size="10" fill="var(--text-theme, #1e293b">Put frequently changing layers last</text>
+  
+  <text x="70" y="350" text-anchor="start" font-size="10" fill="var(--text-theme, #f59e0b">⚠</text>
+  <text x="85" y="350" font-size="10" fill="var(--text-theme, #1e293b">COPY . . invalidates cache</text>
+  
+  <text x="70" y="370" text-anchor="start" font-size="10" fill="var(--text-theme, #f59e0b">⚠</text>
+  <text x="85" y="370" font-size="10" fill="var(--text-theme, #1e293b">Use .dockerignore to exclude files</text>
+  
+  <!-- Multi-stage builds -->
+  <rect x="470" y="220" width="400" height="180" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="670" y="245" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Multi-Stage Builds</text>
+  
+  <rect x="490" y="260" width="360" height="130" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  
+  <!-- Stage 1 -->
+  <rect x="510" y="275" width="140" height="50" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="580" y="300" text-anchor="middle" font-size="9" fill="white">Stage 1: Build</text>
+  <text x="580" y="315" text-anchor="middle" font-size="8" fill="#fcd34d">Compiler, tools</text>
+  
+  <line x1="655" y1="300" x2="685" y2="300" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="670" y="290" text-anchor="middle" font-size="7" fill="var(--text-theme, #64748b">Copy artifact</text>
+  
+  <!-- Stage 2 -->
+  <rect x="695" y="275" width="140" height="50" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="765" y="300" text-anchor="middle" font-size="9" fill="white">Stage 2: Runtime</text>
+  <text x="765" y="315" text-anchor="middle" font-size="8" fill="#6ee7b7">Minimal base</text>
+  
+  <text x="670" y="350" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Benefits:</text>
+  <text x="510" y="370" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Smaller final image</text>
+  <text x="510" y="385" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• No build tools in production</text>
+  <text x="510" y="400" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">• Better security posture</text>
+  
+  <!-- Security best practices -->
+  <rect x="30" y="415" width="840" height="115" rx="8" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="450" y="440" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Container Security Best Practices</text>
+  
+  <text x="50" y="465" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="65" y="465" font-size="10" fill="var(--text-theme, #1e293b">Use minimal base images (Alpine, distroless)</text>
+  
+  <text x="450" y="465" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="465" y="465" font-size="10" fill="var(--text-theme, #1e293b">Run as non-root user</text>
+  
+  <text x="50" y="485" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="65" y="485" font-size="10" fill="var(--text-theme, #1e293b">Scan images for vulnerabilities</text>
+  
+  <text x="450" y="485" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="465" y="485" font-size="10" fill="var(--text-theme, #1e293b">Sign and verify images</text>
+  
+  <text x="50" y="505" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="65" y="505" font-size="10" fill="var(--text-theme, #1e293b">Don't store secrets in images</text>
+  
+  <text x="450" y="505" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="465" y="505" font-size="10" fill="var(--text-theme, #1e293b">Use read-only filesystem where possible</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

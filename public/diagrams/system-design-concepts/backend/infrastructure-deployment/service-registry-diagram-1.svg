@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Service Registry Architecture</title>
+  <desc id="desc">Service registry showing registration, discovery, and health monitoring patterns</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Service Registry Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Registration, discovery, and health monitoring patterns</text>
+  
+  <!-- Service Registration Flow -->
+  <rect x="30" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="230" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">Service Registration Flow</text>
+  
+  <!-- Service instance -->
+  <rect x="50" y="125" width="120" height="60" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="110" y="155" text-anchor="middle" font-size="9" fill="white">Service Instance</text>
+  <text x="110" y="170" text-anchor="middle" font-size="8" fill="#6ee7b7">10.0.1.5:8080</text>
+  
+  <!-- Register -->
+  <line x1="170" y1="155" x2="220" y2="155" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="195" y="145" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Register</text>
+  
+  <!-- Registry -->
+  <rect x="220" y="125" width="180" height="90" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="310" y="155" text-anchor="middle" font-size="10" fill="white">Service Registry</text>
+  <text x="310" y="175" text-anchor="middle" font-size="9" fill="#bfdbfe">Service Directory</text>
+  <text x="310" y="195" text-anchor="middle" font-size="8" fill="#bfdbfe">• service-a: [ip1, ip2]</text>
+  <text x="310" y="208" text-anchor="middle" font-size="8" fill="#bfdbfe">• service-b: [ip3]</text>
+  
+  <!-- Heartbeat -->
+  <path d="M 110 185 C 110 220, 310 220, 310 215" fill="none" stroke="var(--text-theme, #10b981)" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow-green)"/>
+  <text x="230" y="235" text-anchor="middle" font-size="8" fill="var(--text-theme, #10b981">Heartbeat (every 30s)</text>
+  
+  <!-- Deregister -->
+  <line x1="310" y1="215" x2="110" y2="215" stroke="var(--text-theme, #ef4444)" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow-red)"/>
+  <text x="230" y="255" text-anchor="middle" font-size="8" fill="var(--text-theme, #ef4444">Deregister on shutdown</text>
+  
+  <!-- Registry implementations -->
+  <rect x="50" y="270" width="360" height="85" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="230" y="295" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Registry Implementations:</text>
+  <text x="230" y="315" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Eureka (Netflix) - AP system</text>
+  <text x="230" y="330" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Consul (HashiCorp) - CP system</text>
+  <text x="230" y="345" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• etcd (CoreOS) - CP system</text>
+  
+  <!-- Service Discovery Patterns -->
+  <rect x="470" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="670" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Service Discovery Patterns</text>
+  
+  <!-- Client-side -->
+  <rect x="490" y="125" width="170" height="100" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="575" y="150" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #10b981">Client-Side Discovery</text>
+  
+  <rect x="500" y="160" width="70" height="50" rx="3" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="535" y="185" text-anchor="middle" font-size="8" fill="white">Client</text>
+  
+  <line x1="575" y1="185" x2="625" y2="185" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="600" y="175" text-anchor="middle" font-size="7" fill="var(--text-theme, #64748b">1. Query</text>
+  
+  <rect x="635" y="160" width="70" height="50" rx="3" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="670" y="185" text-anchor="middle" font-size="8" fill="white">Registry</text>
+  
+  <line x1="670" y1="210" x2="670" y2="240" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow-down)"/>
+  <text x="690" y="225" text-anchor="start" font-size="7" fill="var(--text-theme, #64748b">2. Return IPs</text>
+  
+  <line x1="535" y1="210" x2="535" y2="240" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="555" y="225" text-anchor="start" font-size="7" fill="var(--text-theme, #10b981">3. Direct call</text>
+  
+  <text x="575" y="265" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">✓ No LB needed</text>
+  <text x="575" y="278" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">~ Client complexity</text>
+  
+  <!-- Server-side -->
+  <rect x="680" y="125" width="170" height="100" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="765" y="150" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #10b981">Server-Side Discovery</text>
+  
+  <rect x="690" y="160" width="60" height="50" rx="3" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="720" y="185" text-anchor="middle" font-size="8" fill="white">Client</text>
+  
+  <line x1="755" y1="185" x2="785" y2="185" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="795" y="160" width="70" height="50" rx="3" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="830" y="185" text-anchor="middle" font-size="8" fill="white">LB</text>
+  
+  <line x1="830" y1="210" x2="830" y2="240" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow-down)"/>
+  <text x="850" y="225" text-anchor="start" font-size="7" fill="var(--text-theme, #64748b">Query registry</text>
+  
+  <line x1="720" y1="210" x2="720" y2="240" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="740" y="225" text-anchor="start" font-size="7" fill="var(--text-theme, #10b981">Route to service</text>
+  
+  <text x="765" y="265" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">✓ Client unaware</text>
+  <text x="765" y="278" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">~ LB required</text>
+  
+  <!-- Health Check Patterns -->
+  <rect x="30" y="380" width="840" height="150" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="450" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Health Check Patterns</text>
+  
+  <rect x="50" y="420" width="250" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="175" y="445" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">Active Health Checks</text>
+  <text x="175" y="470" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Registry polls services</text>
+  <text x="175" y="490" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">HTTP/TCP ping</text>
+  <text x="175" y="510" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Configurable interval</text>
+  
+  <rect x="315" y="420" width="250" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="440" y="445" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">Passive Health Checks</text>
+  <text x="440" y="470" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Monitor real requests</text>
+  <text x="440" y="490" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Error rate tracking</text>
+  <text x="440" y="510" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">No extra traffic</text>
+  
+  <rect x="580" y="420" width="250" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="705" y="445" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">Self-Reporting</text>
+  <text x="705" y="470" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Services report status</text>
+  <text x="705" y="490" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Lease-based renewal</text>
+  <text x="705" y="510" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Eureka pattern</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #10b981)"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #ef4444)"/>
+    </marker>
+    <marker id="arrow-down" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 0, 5 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

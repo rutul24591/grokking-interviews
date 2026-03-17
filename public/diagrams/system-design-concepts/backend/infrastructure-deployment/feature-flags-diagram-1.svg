@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Feature Flags Architecture</title>
+  <desc id="desc">Feature flags showing flag evaluation, targeting, and rollout control</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Feature Flags Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Dynamic feature control without redeployment</text>
+  
+  <!-- Application with Feature Flag -->
+  <rect x="30" y="85" width="280" height="200" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="170" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">Application</text>
+  
+  <!-- Code with flag check -->
+  <rect x="50" y="125" width="240" height="80" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="70" y="145" text-anchor="start" font-size="8" font-family="monospace" fill="var(--text-theme, #64748b">if (featureFlag.isEnabled(</text>
+  <text x="70" y="160" text-anchor="start" font-size="8" font-family="monospace" fill="var(--text-theme, #64748b">  "new-checkout")) {</text>
+  <text x="70" y="175" text-anchor="start" font-size="8" font-family="monospace" fill="var(--text-theme, #64748b">  newCheckout();</text>
+  <text x="70" y="190" text-anchor="start" font-size="8" font-family="monospace" fill="var(--text-theme, #64748b">} else {</text>
+  <text x="70" y="205" text-anchor="start" font-size="8" font-family="monospace" fill="var(--text-theme, #64748b">  oldCheckout();</text>
+  <text x="70" y="220" text-anchor="start" font-size="8" font-family="monospace" fill="var(--text-theme, #64748b">}</text>
+  
+  <!-- Flag evaluation -->
+  <rect x="50" y="235" width="240" height="40" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="170" y="260" text-anchor="middle" font-size="10" fill="white">Flag Evaluation SDK</text>
+  
+  <!-- Arrow to Flag Service -->
+  <line x1="310" y1="185" x2="360" y2="185" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="335" y="175" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Evaluate</text>
+  
+  <!-- Feature Flag Service -->
+  <rect x="360" y="85" width="280" height="200" rx="8" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="500" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Feature Flag Service</text>
+  
+  <!-- Flag definitions -->
+  <rect x="380" y="125" width="240" height="60" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="500" y="145" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Flag: new-checkout</text>
+  <text x="500" y="160" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Status: 50% rollout</text>
+  <text x="500" y="175" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Targeting: user_id % 2 == 0</text>
+  
+  <!-- Targeting rules -->
+  <rect x="380" y="195" width="240" height="50" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="500" y="215" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Targeting Rules:</text>
+  <text x="500" y="230" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Internal users: 100%</text>
+  <text x="500" y="243" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Beta users: 100%</text>
+  
+  <!-- Arrow to Dashboard -->
+  <line x1="500" y1="285" x2="500" y2="330" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow-down)"/>
+  
+  <!-- Management Dashboard -->
+  <rect x="360" y="330" width="280" height="140" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="500" y="355" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Management Dashboard</text>
+  
+  <!-- Controls -->
+  <rect x="380" y="370" width="240" height="40" rx="4" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="500" y="395" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Rollout: [====50%====]</text>
+  
+  <rect x="380" y="420" width="240" height="40" rx="4" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="500" y="445" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Kill Switch: [OFF]</text>
+  
+  <!-- Analytics arrow -->
+  <line x1="640" y1="185" x2="690" y2="185" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="665" y="175" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Events</text>
+  
+  <!-- Analytics -->
+  <rect x="690" y="85" width="180" height="200" rx="8" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="780" y="110" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Analytics</text>
+  <text x="780" y="140" text-anchor="middle" font-size="9" fill="#6ee7b7">Flag evaluations</text>
+  <text x="780" y="160" text-anchor="middle" font-size="9" fill="#6ee7b7">Conversion rates</text>
+  <text x="780" y="180" text-anchor="middle" font-size="9" fill="#6ee7b7">Error rates by flag</text>
+  <text x="780" y="200" text-anchor="middle" font-size="9" fill="#6ee7b7">Performance impact</text>
+  
+  <!-- Use Cases -->
+  <rect x="30" y="300" width="300" height="230" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="180" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Feature Flag Use Cases</text>
+  
+  <rect x="50" y="340" width="260" height="180" rx="6" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  
+  <text x="70" y="365" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="365" font-size="10" fill="var(--text-theme, #1e293b">Canary releases (gradual rollout)</text>
+  
+  <text x="70" y="385" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="385" font-size="10" fill="var(--text-theme, #1e293b">A/B testing (user segmentation)</text>
+  
+  <text x="70" y="405" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="405" font-size="10" fill="var(--text-theme, #1e293b">Kill switch (emergency disable)</text>
+  
+  <text x="70" y="425" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="425" font-size="10" fill="var(--text-theme, #1e293b">Ops flags (disable heavy features)</text>
+  
+  <text x="70" y="445" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="445" font-size="10" fill="var(--text-theme, #1e293b">Permission flags (entitlements)</text>
+  
+  <text x="70" y="470" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="470" font-size="10" fill="var(--text-theme, #1e293b">Experimentation (multivariate tests)</text>
+  
+  <!-- Best Practices -->
+  <rect x="350" y="485" width="520" height="95" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="610" y="510" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Feature Flag Best Practices</text>
+  
+  <text x="370" y="535" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Keep flags temporary (technical debt)</text>
+  <text x="370" y="555" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Default to safe/off state</text>
+  <text x="370" y="575" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Audit flag changes</text>
+  
+  <text x="630" y="535" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Monitor flag evaluation latency</text>
+  <text x="630" y="555" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Clean up old flags regularly</text>
+  <text x="630" y="575" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Use flag naming conventions</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-down" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 0, 5 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

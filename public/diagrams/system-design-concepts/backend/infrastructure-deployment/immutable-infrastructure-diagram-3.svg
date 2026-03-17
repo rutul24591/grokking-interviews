@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Immutable Infrastructure Benefits</title>
+  <desc id="desc">Immutable infrastructure showing consistency, reliability, and recovery benefits</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Immutable Infrastructure Benefits</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Consistency, reliability, and recovery advantages</text>
+  
+  <!-- Mutable Problems -->
+  <rect x="30" y="85" width="400" height="220" rx="8" fill="white" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <text x="230" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #ef4444">Mutable Infrastructure Problems</text>
+  
+  <rect x="50" y="125" width="360" height="170" rx="4" fill="var(--bg-panel-soft, #fef2f2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  
+  <text x="70" y="150" text-anchor="start" font-size="10" fill="var(--text-theme, #ef4444">✗</text>
+  <text x="85" y="150" text-anchor="start" font-size="10" fill="var(--text-theme, #1e293b">Configuration drift over time</text>
+  
+  <text x="70" y="170" text-anchor="start" font-size="10" fill="var(--text-theme, #ef4444">✗</text>
+  <text x="85" y="170" text-anchor="start" font-size="10" fill="var(--text-theme, #1e293b">"Works on dev, breaks on prod"</text>
+  
+  <text x="70" y="190" text-anchor="start" font-size="10" fill="var(--text-theme, #ef4444">✗</text>
+  <text x="85" y="190" text-anchor="start" font-size="10" fill="var(--text-theme, #1e293b">Manual SSH changes (snowflakes)</text>
+  
+  <text x="70" y="210" text-anchor="start" font-size="10" fill="var(--text-theme, #ef4444">✗</text>
+  <text x="85" y="210" text-anchor="start" font-size="10" fill="var(--text-theme, #1e293b">Hard to reproduce issues</text>
+  
+  <text x="70" y="230" text-anchor="start" font-size="10" fill="var(--text-theme, #ef4444">✗</text>
+  <text x="85" y="230" text-anchor="start" font-size="10" fill="var(--text-theme, #1e293b">Slow recovery (rebuild from scratch)</text>
+  
+  <text x="70" y="260" text-anchor="start" font-size="10" fill="var(--text-theme, #ef4444">✗</text>
+  <text x="85" y="260" text-anchor="start" font-size="10" fill="var(--text-theme, #1e293b">Security patches inconsistent</text>
+  
+  <text x="70" y="280" text-anchor="start" font-size="10" fill="var(--text-theme, #ef4444">✗</text>
+  <text x="85" y="280" text-anchor="start" font-size="10" fill="var(--text-theme, #1e293b">No audit trail of changes</text>
+  
+  <!-- Immutable Benefits -->
+  <rect x="470" y="85" width="400" height="220" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="670" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Immutable Infrastructure Benefits</text>
+  
+  <rect x="490" y="125" width="360" height="170" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  
+  <text x="510" y="150" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="525" y="150" text-anchor="start" font-size="10" fill="var(--text-theme, #1e293b">Identical environments always</text>
+  
+  <text x="510" y="170" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="525" y="170" text-anchor="start" font-size="10" fill="var(--text-theme, #1e293b">Reproducible builds &amp; deploys</text>
+  
+  <text x="510" y="190" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="525" y="190" text-anchor="start" font-size="10" fill="var(--text-theme, #1e293b">No manual changes (cattle not pets)</text>
+  
+  <text x="510" y="210" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="525" y="210" text-anchor="start" font-size="10" fill="var(--text-theme, #1e293b">Easy to reproduce &amp; debug</text>
+  
+  <text x="510" y="230" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="525" y="230" text-anchor="start" font-size="10" fill="var(--text-theme, #1e293b">Fast recovery (replace, not repair)</text>
+  
+  <text x="510" y="260" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="525" y="260" text-anchor="start" font-size="10" fill="var(--text-theme, #1e293b">Consistent security patches</text>
+  
+  <text x="510" y="280" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="525" y="280" text-anchor="start" font-size="10" fill="var(--text-theme, #1e293b">Full audit trail via git</text>
+  
+  <!-- Recovery Comparison -->
+  <rect x="30" y="320" width="840" height="210" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="450" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Recovery: Mutable vs Immutable</text>
+  
+  <!-- Mutable Recovery -->
+  <rect x="50" y="360" width="390" height="160" rx="6" fill="white" stroke="var(--border-theme, #ef4444)" stroke-width="1"/>
+  <text x="245" y="385" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #ef4444">Mutable Recovery (Slow)</text>
+  
+  <rect x="70" y="400" width="350" height="35" rx="3" fill="var(--bg-theme, #ef4444)"/>
+  <text x="245" y="423" text-anchor="middle" font-size="9" fill="white">1. SSH into server</text>
+  
+  <rect x="70" y="440" width="350" height="35" rx="3" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="245" y="463" text-anchor="middle" font-size="9" fill="white">2. Diagnose issue manually</text>
+  
+  <rect x="70" y="480" width="350" height="35" rx="3" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="245" y="503" text-anchor="middle" font-size="9" fill="white">3. Apply fix (may not be documented)</text>
+  
+  <text x="245" y="540" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444">⏱ 30+ minutes, error-prone</text>
+  
+  <!-- Immutable Recovery -->
+  <rect x="460" y="360" width="390" height="160" rx="6" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="655" y="385" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #10b981">Immutable Recovery (Fast)</text>
+  
+  <rect x="480" y="400" width="350" height="35" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="655" y="423" text-anchor="middle" font-size="9" fill="white">1. Terminate unhealthy instance</text>
+  
+  <rect x="480" y="440" width="350" height="35" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="655" y="463" text-anchor="middle" font-size="9" fill="white">2. Auto-scaling launches new instance</text>
+  
+  <rect x="480" y="480" width="350" height="35" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="655" y="503" text-anchor="middle" font-size="9" fill="white">3. New instance from golden image</text>
+  
+  <text x="655" y="540" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">⏱ 2-5 minutes, consistent</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Service Registry - Health and Availability</title>
+  <desc id="desc">Service registry showing health checking, deregistration, and high availability</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Service Registry - Health &amp; Availability</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Health checking, deregistration, and high availability</text>
+  
+  <!-- Health Checking -->
+  <rect x="30" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="230" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">Health Checking</text>
+  
+  <!-- Registry -->
+  <rect x="50" y="125" width="120" height="60" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="110" y="155" text-anchor="middle" font-size="9" fill="white">Registry</text>
+  <text x="110" y="173" text-anchor="middle" font-size="8" fill="#c4b5fd">Health checks</text>
+  
+  <!-- Health check arrows -->
+  <line x1="175" y1="145" x2="225" y2="145" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="200" y="135" text-anchor="middle" font-size="7" fill="var(--text-theme, #10b981">Check</text>
+  
+  <line x1="175" y1="165" x2="225" y2="165" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="200" y="155" text-anchor="middle" font-size="7" fill="var(--text-theme, #10b981">Check</text>
+  
+  <line x1="175" y1="185" x2="225" y2="185" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="200" y="175" text-anchor="middle" font-size="7" fill="var(--text-theme, #ef4444">Check</text>
+  
+  <!-- Healthy instances -->
+  <rect x="235" y="125" width="80" height="50" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="275" y="153" text-anchor="middle" font-size="8" fill="white">Instance 1</text>
+  <text x="275" y="168" text-anchor="middle" font-size="7" fill="#6ee7b7">✓ Healthy</text>
+  
+  <rect x="235" y="185" width="80" height="50" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="275" y="213" text-anchor="middle" font-size="8" fill="white">Instance 2</text>
+  <text x="275" y="228" text-anchor="middle" font-size="7" fill="#6ee7b7">✓ Healthy</text>
+  
+  <!-- Unhealthy instance -->
+  <rect x="235" y="165" width="80" height="50" rx="3" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="275" y="193" text-anchor="middle" font-size="8" fill="white">Instance 3</text>
+  <text x="275" y="208" text-anchor="middle" font-size="7" fill="#fca5a5">✗ Unhealthy</text>
+  
+  <line x1="275" y1="235" x2="275" y2="270" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-down)"/>
+  <text x="295" y="255" text-anchor="start" font-size="8" fill="var(--text-theme, #ef4444">Deregister</text>
+  
+  <!-- Deregistered -->
+  <rect x="235" y="275" width="80" height="50" rx="3" fill="var(--bg-theme, #94a3b8)" stroke="var(--border-theme, #475569)" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="275" y="303" text-anchor="middle" font-size="8" fill="white">Instance 3</text>
+  <text x="275" y="318" text-anchor="middle" font-size="7" fill="#94a3b8">Removed</text>
+  
+  <text x="230" y="345" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Health check interval: 10-30s</text>
+  <text x="230" y="360" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Deregister after: 3 failures</text>
+  
+  <!-- High Availability -->
+  <rect x="470" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="670" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Registry High Availability</text>
+  
+  <!-- Registry cluster -->
+  <rect x="490" y="125" width="360" height="100" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="670" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Registry Cluster (3+ nodes)</text>
+  
+  <rect x="500" y="160" width="90" height="55" rx="3" fill="var(--bg-theme, #8b5cf6)"/>
+  <text x="545" y="190" text-anchor="middle" font-size="8" fill="white">Node 1</text>
+  <text x="545" y="205" text-anchor="middle" font-size="7" fill="#c4b5fd">Leader</text>
+  
+  <rect x="610" y="160" width="90" height="55" rx="3" fill="var(--bg-theme, #8b5cf6)"/>
+  <text x="655" y="190" text-anchor="middle" font-size="8" fill="white">Node 2</text>
+  <text x="655" y="205" text-anchor="middle" font-size="7" fill="#c4b5fd">Follower</text>
+  
+  <rect x="720" y="160" width="90" height="55" rx="3" fill="var(--bg-theme, #8b5cf6)"/>
+  <text x="765" y="190" text-anchor="middle" font-size="8" fill="white">Node 3</text>
+  <text x="765" y="205" text-anchor="middle" font-size="7" fill="#c4b5fd">Follower</text>
+  
+  <text x="670" y="245" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Fault tolerant</text>
+  <text x="670" y="260" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Leader election</text>
+  <text x="670" y="275" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Data replication</text>
+  
+  <!-- Lease/Renewal -->
+  <rect x="490" y="280" width="360" height="75" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="670" y="305" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Lease-Based Registration</text>
+  <text x="670" y="325" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Services renew lease every 30s</text>
+  <text x="670" y="340" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Deregister if lease expires (90s)</text>
+  
+  <!-- Service Registration Flow -->
+  <rect x="30" y="380" width="840" height="150" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="450" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Service Registration Flow</text>
+  
+  <rect x="50" y="420" width="800" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  
+  <!-- Start -->
+  <rect x="70" y="435" width="100" height="70" rx="4" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="120" y="465" text-anchor="middle" font-size="9" fill="white">Service</text>
+  <text x="120" y="485" text-anchor="middle" font-size="9" fill="white">Starts</text>
+  
+  <line x1="175" y1="470" x2="205" y2="470" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Register -->
+  <rect x="210" y="435" width="120" height="70" rx="4" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="270" y="465" text-anchor="middle" font-size="9" fill="white">Register with</text>
+  <text x="270" y="485" text-anchor="middle" font-size="9" fill="white">Registry</text>
+  
+  <line x1="335" y1="470" x2="365" y2="470" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Health Check -->
+  <rect x="370" y="435" width="120" height="70" rx="4" fill="var(--bg-theme, #10b981)"/>
+  <text x="430" y="465" text-anchor="middle" font-size="9" fill="white">Periodic</text>
+  <text x="430" y="485" text-anchor="middle" font-size="9" fill="white">Health Checks</text>
+  
+  <line x1="495" y1="470" x2="525" y2="470" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Discovery -->
+  <rect x="530" y="435" width="120" height="70" rx="4" fill="var(--bg-theme, #8b5cf6)"/>
+  <text x="590" y="465" text-anchor="middle" font-size="9" fill="white">Clients</text>
+  <text x="590" y="485" text-anchor="middle" font-size="9" fill="white">Discover</text>
+  
+  <line x1="655" y1="470" x2="685" y2="470" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Deregister -->
+  <rect x="690" y="435" width="120" height="70" rx="4" fill="var(--bg-theme, #ef4444)"/>
+  <text x="750" y="465" text-anchor="middle" font-size="9" fill="white">Shutdown:</text>
+  <text x="750" y="485" text-anchor="middle" font-size="9" fill="white">Deregister</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #10b981)"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #ef4444)"/>
+    </marker>
+    <marker id="arrow-down" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 0, 5 7" fill="var(--text-theme, #ef4444)"/>
+    </marker>
+  </defs>
+</svg>

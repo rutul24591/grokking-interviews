@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Count-Min Sketch Structure</title>
+  <desc id="desc">Count-Min Sketch structure showing multiple hash rows and counters</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Count-Min Sketch Structure</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Multiple counter arrays for frequency estimation</text>
+  
+  <!-- Input Stream -->
+  <rect x="30" y="85" width="180" height="200" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="120" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6)">Input Stream</text>
+  
+  <!-- Stream items -->
+  <rect x="50" y="125" width="140" height="30" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="120" y="145" text-anchor="middle" font-size="10" fill="white">"api_key_1"</text>
+  
+  <rect x="50" y="160" width="140" height="30" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="120" y="180" text-anchor="middle" font-size="10" fill="white">"api_key_2"</text>
+  
+  <rect x="50" y="195" width="140" height="30" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="120" y="215" text-anchor="middle" font-size="10" fill="white">"api_key_1"</text>
+  
+  <rect x="50" y="230" width="140" height="30" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="120" y="250" text-anchor="middle" font-size="10" fill="white">"api_key_3"</text>
+  
+  <rect x="50" y="265" width="140" height="30" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="120" y="285" text-anchor="middle" font-size="10" fill="white">"api_key_1"</text>
+  
+  <!-- Hash Functions -->
+  <line x1="210" y1="185" x2="270" y2="185" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="270" y="85" width="200" height="200" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="370" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #8b5cf6)">Hash Functions</text>
+  
+  <!-- Hash function boxes -->
+  <rect x="290" y="125" width="160" height="35" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="370" y="148" text-anchor="middle" font-size="10" fill="white">h₁(key) → column</text>
+  
+  <rect x="290" y="170" width="160" height="35" rx="4" fill="var(--bg-theme, #a78bfa)" stroke="var(--border-theme, #7c3aed)" stroke-width="1"/>
+  <text x="370" y="193" text-anchor="middle" font-size="10" fill="white">h₂(key) → column</text>
+  
+  <rect x="290" y="215" width="160" height="35" rx="4" fill="var(--bg-theme, #c4b5fd)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="370" y="238" text-anchor="middle" font-size="10" fill="white">h₃(key) → column</text>
+  
+  <rect x="290" y="260" width="160" height="35" rx="4" fill="var(--bg-theme, #ddd6fe)" stroke="var(--border-theme, #a78bfa)" stroke-width="1"/>
+  <text x="370" y="283" text-anchor="middle" font-size="10" fill="white">h₄(key) → column</text>
+  
+  <text x="370" y="310" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Each hash maps to different column</text>
+  
+  <!-- Counter Array -->
+  <line x1="470" y1="185" x2="530" y2="185" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="530" y="85" width="340" height="200" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="700" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Counter Array</text>
+  
+  <!-- Counter rows -->
+  <!-- Row 1 -->
+  <rect x="550" y="125" width="300" height="35" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="565" y="148" text-anchor="start" font-size="9" fill="var(--text-theme, #10b981">Row 1:</text>
+  
+  <!-- Counters in row 1 -->
+  <rect x="600" y="130" width="45" height="25" rx="2" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="622" y="148" text-anchor="middle" font-size="10" fill="white">3</text>
+  
+  <rect x="650" y="130" width="45" height="25" rx="2" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="672" y="148" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">1</text>
+  
+  <rect x="700" y="130" width="45" height="25" rx="2" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="722" y="148" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">0</text>
+  
+  <rect x="750" y="130" width="45" height="25" rx="2" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="772" y="148" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">2</text>
+  
+  <text x="810" y="148" text-anchor="start" font-size="8" fill="var(--text-theme, #64748b">...</text>
+  
+  <!-- Row 2 -->
+  <rect x="550" y="165" width="300" height="35" rx="4" fill="var(--bg-panel-soft, #f0fdf4)" stroke="var(--border-theme, #86efac)" stroke-width="1"/>
+  <text x="565" y="188" text-anchor="start" font-size="9" fill="var(--text-theme, #10b981">Row 2:</text>
+  
+  <rect x="600" y="170" width="45" height="25" rx="2" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="622" y="188" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">1</text>
+  
+  <rect x="650" y="170" width="45" height="25" rx="2" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="672" y="188" text-anchor="middle" font-size="10" fill="white">3</text>
+  
+  <rect x="700" y="170" width="45" height="25" rx="2" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="722" y="188" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">0</text>
+  
+  <rect x="750" y="170" width="45" height="25" rx="2" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="772" y="188" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">2</text>
+  
+  <text x="810" y="188" text-anchor="start" font-size="8" fill="var(--text-theme, #64748b">...</text>
+  
+  <!-- Row 3 -->
+  <rect x="550" y="205" width="300" height="35" rx="4" fill="var(--bg-panel-soft, #f0fdf4)" stroke="var(--border-theme, #86efac)" stroke-width="1"/>
+  <text x="565" y="228" text-anchor="start" font-size="9" fill="var(--text-theme, #10b981">Row 3:</text>
+  
+  <rect x="600" y="210" width="45" height="25" rx="2" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="622" y="228" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">1</text>
+  
+  <rect x="650" y="210" width="45" height="25" rx="2" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="672" y="228" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">0</text>
+  
+  <rect x="700" y="210" width="45" height="25" rx="2" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="722" y="228" text-anchor="middle" font-size="10" fill="white">3</text>
+  
+  <rect x="750" y="210" width="45" height="25" rx="2" fill="var(--bg-panel-soft, #d1fae5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="772" y="228" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">2</text>
+  
+  <text x="810" y="228" text-anchor="start" font-size="8" fill="var(--text-theme, #64748b">...</text>
+  
+  <!-- Query explanation -->
+  <rect x="30" y="300" width="840" height="110" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="450" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b)">Query: Estimate Count for "api_key_1"</text>
+  
+  <!-- Query flow -->
+  <text x="50" y="350" text-anchor="start" font-size="11" fill="var(--text-theme, #64748b">1. Hash key with each hash function: h₁, h₂, h₃, h₄</text>
+  <text x="50" y="375" text-anchor="start" font-size="11" fill="var(--text-theme, #64748b">2. Read counter at each row's column: [3, 3, 3, ...]</text>
+  <text x="50" y="400" text-anchor="start" font-size="11" fill="var(--text-theme, #10b981">3. Return MINIMUM: min(3, 3, 3, ...) = 3</text>
+  
+  <text x="450" y="435" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Taking minimum reduces collision overestimation</text>
+  
+  <!-- Bottom: Key Properties -->
+  <rect x="30" y="425" width="400" height="105" rx="6" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="230" y="450" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #3b82f6">Key Properties</text>
+  <text x="230" y="475" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">• Always overestimates (never underestimates)</text>
+  <text x="230" y="495" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">• Space: O(w × d) where w=width, d=depth</text>
+  <text x="230" y="515" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">• Update: O(d) time for d hash functions</text>
+  
+  <rect x="450" y="425" width="420" height="105" rx="6" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="660" y="450" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">Tuning Parameters</text>
+  <text x="660" y="475" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">• Width (w): Controls collision probability</text>
+  <text x="660" y="495" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">• Depth (d): Controls failure probability</text>
+  <text x="660" y="515" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">• Typical: w=1000-10000, d=3-7</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

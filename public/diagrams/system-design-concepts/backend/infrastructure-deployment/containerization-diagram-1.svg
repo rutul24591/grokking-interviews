@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Containerization Architecture</title>
+  <desc id="desc">Containerization showing container structure, layers, and runtime isolation</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Containerization Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Container structure, layers, and runtime isolation</text>
+  
+  <!-- Traditional VMs vs Containers -->
+  <rect x="30" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="230" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">VMs vs Containers</text>
+  
+  <!-- VMs -->
+  <rect x="50" y="125" width="170" height="150" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="135" y="145" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #3b82f6">Virtual Machines</text>
+  
+  <!-- VM 1 -->
+  <rect x="60" y="155" width="60" height="110" rx="2" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="90" y="175" text-anchor="middle" font-size="7" fill="white">App A</text>
+  <text x="90" y="190" text-anchor="middle" font-size="7" fill="white">Bin/Libs</text>
+  <text x="90" y="205" text-anchor="middle" font-size="7" fill="white">Guest OS</text>
+  <text x="90" y="220" text-anchor="middle" font-size="7" fill="white">Hypervisor</text>
+  <text x="90" y="245" text-anchor="middle" font-size="7" fill="#bfdbfe">Heavy (~GB)</text>
+  
+  <!-- VM 2 -->
+  <rect x="130" y="155" width="60" height="110" rx="2" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="160" y="175" text-anchor="middle" font-size="7" fill="white">App B</text>
+  <text x="160" y="190" text-anchor="middle" font-size="7" fill="white">Bin/Libs</text>
+  <text x="160" y="205" text-anchor="middle" font-size="7" fill="white">Guest OS</text>
+  <text x="160" y="220" text-anchor="middle" font-size="7" fill="white">Hypervisor</text>
+  <text x="160" y="245" text-anchor="middle" font-size="7" fill="#bfdbfe">Heavy (~GB)</text>
+  
+  <!-- Containers -->
+  <rect x="230" y="125" width="170" height="150" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="315" y="145" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #10b981">Containers</text>
+  
+  <!-- Container 1 -->
+  <rect x="240" y="155" width="50" height="110" rx="2" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="265" y="175" text-anchor="middle" font-size="7" fill="white">App A</text>
+  <text x="265" y="190" text-anchor="middle" font-size="7" fill="white">Bin/Libs</text>
+  <text x="265" y="210" text-anchor="middle" font-size="7" fill="white">Container</text>
+  <text x="265" y="225" text-anchor="middle" font-size="7" fill="white">Engine</text>
+  <text x="265" y="250" text-anchor="middle" font-size="7" fill="#6ee7b7">Light (~MB)</text>
+  
+  <!-- Container 2 -->
+  <rect x="295" y="155" width="50" height="110" rx="2" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="320" y="175" text-anchor="middle" font-size="7" fill="white">App B</text>
+  <text x="320" y="190" text-anchor="middle" font-size="7" fill="white">Bin/Libs</text>
+  <text x="320" y="210" text-anchor="middle" font-size="7" fill="white">Container</text>
+  <text x="320" y="225" text-anchor="middle" font-size="7" fill="white">Engine</text>
+  <text x="320" y="250" text-anchor="middle" font-size="7" fill="#6ee7b7">Light (~MB)</text>
+  
+  <!-- Shared kernel -->
+  <rect x="240" y="270" width="160" height="25" rx="2" fill="var(--bg-theme, #64748b)" stroke="var(--border-theme, #475569)" stroke-width="1"/>
+  <text x="320" y="287" text-anchor="middle" font-size="8" fill="white">Host OS Kernel (Shared)</text>
+  
+  <!-- Container Layers -->
+  <rect x="470" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="670" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #8b5cf6">Container Image Layers</text>
+  
+  <!-- Layer stack -->
+  <rect x="520" y="125" width="300" height="40" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="670" y="150" text-anchor="middle" font-size="10" fill="white">Container Layer (writable)</text>
+  <text x="670" y="163" text-anchor="middle" font-size="8" fill="#c4b5fd">App code, config</text>
+  
+  <rect x="520" y="170" width="300" height="40" rx="4" fill="var(--bg-theme, #a78bfa)" stroke="var(--border-theme, #7c3aed)" stroke-width="1"/>
+  <text x="670" y="195" text-anchor="middle" font-size="10" fill="white">Application Layer</text>
+  <text x="670" y="208" text-anchor="middle" font-size="8" fill="#ddd6fe">Dependencies, runtime</text>
+  
+  <rect x="520" y="215" width="300" height="40" rx="4" fill="var(--bg-theme, #c4b5fd)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="670" y="240" text-anchor="middle" font-size="10" fill="white">OS Layer</text>
+  <text x="670" y="253" text-anchor="middle" font-size="8" fill="#e9d5ff">Base OS (Alpine, Ubuntu)</text>
+  
+  <rect x="520" y="260" width="300" height="40" rx="4" fill="var(--bg-theme, #ddd6fe)" stroke="var(--border-theme, #a78bfa)" stroke-width="1"/>
+  <text x="670" y="285" text-anchor="middle" font-size="10" fill="white">Base Layer (read-only)</text>
+  <text x="670" y="298" text-anchor="middle" font-size="8" fill="#e9d5ff">Bootfs, rootfs</text>
+  
+  <text x="670" y="335" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Layers are cached and shared across images</text>
+  
+  <!-- Container Runtime -->
+  <rect x="30" y="380" width="840" height="150" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="450" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Container Runtime Components</text>
+  
+  <rect x="50" y="420" width="250" height="100" rx="6" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="175" y="445" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #3b82f6">Container Engine</text>
+  <text x="175" y="470" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Docker, containerd</text>
+  <text x="175" y="490" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Manages container lifecycle</text>
+  <text x="175" y="510" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Image build, pull, run</text>
+  
+  <rect x="325" y="420" width="250" height="100" rx="6" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="450" y="445" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #10b981">OCI Runtime</text>
+  <text x="450" y="470" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">runc, crun</text>
+  <text x="450" y="490" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Low-level container execution</text>
+  <text x="450" y="510" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Namespace, cgroup setup</text>
+  
+  <rect x="600" y="420" width="250" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="725" y="445" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">Kernel Features</text>
+  <text x="725" y="470" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Namespaces (isolation)</text>
+  <text x="725" y="490" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">cgroups (resource limits)</text>
+  <text x="725" y="510" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Union filesystem (layers)</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
+</svg>

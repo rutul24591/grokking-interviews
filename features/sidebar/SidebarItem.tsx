@@ -1,96 +1,219 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { useRef, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { classNames } from "@/lib/classNames";
 import { useSidebarStore } from "@/features/sidebar/sidebar.store";
-
-const collapsibleVariants = {
-  collapsed: { height: 0, opacity: 0 },
-  open: { height: "auto", opacity: 1 },
-};
+import { useSidebarContext } from "@/features/sidebar/SidebarContext";
+import type { Category, Subcategory } from "@/features/sidebar/sidebar.store";
 
 type SidebarItemProps = {
   id: string;
-  label: string;
-  level: number;
+  name: string;
+  slug: string;
+  level: "domain" | "category" | "subcategory";
   children?: React.ReactNode;
-  isLeaf?: boolean;
-  isActive?: boolean;
-  onSelect?: (id: string) => void;
+  hasChildren?: boolean;
 };
 
 export function SidebarItem({
   id,
-  label,
+  name,
+  slug,
   level,
   children,
-  isLeaf,
-  isActive,
-  onSelect,
+  hasChildren = false,
 }: SidebarItemProps) {
-  const isExpanded = useSidebarStore((state) => state.isExpanded(id));
-  const toggleExpanded = useSidebarStore((state) => state.toggleExpanded);
+  const pathname = usePathname();
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const { focusedItemId, setFocusedItemId } = useSidebarContext();
 
-  const paddingLeft = 16 + level * 12;
+  const {
+    expandedDomains,
+    expandedCategories,
+    expandedSubcategories,
+    toggleDomain,
+    toggleCategory,
+    toggleSubcategory,
+  } = useSidebarStore();
 
+  const isExpanded =
+    level === "domain"
+      ? expandedDomains.includes(id)
+      : level === "category"
+        ? expandedCategories.includes(id)
+        : level === "subcategory"
+          ? expandedSubcategories.includes(id)
+          : false;
+
+  const handleClick = useCallback(() => {
+    if (hasChildren) {
+      if (level === "domain") toggleDomain(id);
+      else if (level === "category") toggleCategory(id);
+      else if (level === "subcategory") toggleSubcategory(id);
+    }
+    setFocusedItemId(id);
+  }, [
+    hasChildren,
+    id,
+    level,
+    toggleDomain,
+    toggleCategory,
+    toggleSubcategory,
+    setFocusedItemId,
+  ]);
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        handleClick();
+      }
+    },
+    [handleClick],
+  );
+
+  useEffect(() => {
+    if (focusedItemId === id && buttonRef.current) {
+      buttonRef.current.focus();
+    }
+  }, [focusedItemId, id]);
+
+  const indentStyles = {
+    domain: "pl-2",
+    category: "pl-4",
+    subcategory: "pl-6",
+  };
+
+  const sizeStyles = {
+    domain: "text-sm font-semibold",
+    category: "text-sm font-medium",
+    subcategory: "text-sm",
+  };
+
+  // Subcategory level - render as Link to subcategory page
+  if (level === "subcategory") {
+    const isActive = pathname?.includes(slug);
+    return (
+      <Link
+        href={`/articles/${slug}`}
+        ref={buttonRef as React.Ref<HTMLAnchorElement>}
+        className={classNames(
+          "block cursor-pointer rounded-lg px-3 py-2 transition",
+          indentStyles[level],
+          sizeStyles[level],
+          isActive
+            ? "bg-accent text-white font-semibold"
+            : "text-muted hover:text-accent hover:bg-accent-light",
+        )}
+        onFocus={() => setFocusedItemId(id)}
+        role="treeitem"
+        aria-current={isActive ? "page" : undefined}
+      >
+        {name}
+      </Link>
+    );
+  }
+
+  // Domain and Category levels - expandable buttons
   return (
     <div className="select-none">
       <button
+        ref={buttonRef}
         type="button"
-        onClick={() => {
-          if (isLeaf) {
-            onSelect?.(id);
-            return;
-          }
-          const wasExpanded = isExpanded;
-          toggleExpanded(id);
-          // Navigate when expanding (not collapsing)
-          if (!wasExpanded) {
-            onSelect?.(id);
-          }
-        }}
+        onClick={handleClick}
+        onKeyDown={handleKeyDown}
         className={classNames(
-          "flex w-full cursor-pointer items-center justify-between rounded-md px-3 py-2 text-left text-sm transition",
-          "hover:bg-panel-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
-          isLeaf ? "text-theme" : "text-heading",
-          isActive ? "bg-panel-hover text-heading" : ""
+          "flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left transition",
+          indentStyles[level],
+          sizeStyles[level],
+          "text-muted hover:text-accent hover:bg-accent-light",
         )}
-        style={{ paddingLeft }}
+        onFocus={() => setFocusedItemId(id)}
         role="treeitem"
-        aria-expanded={isLeaf ? undefined : isExpanded}
-        aria-level={level}
-        aria-selected={Boolean(isActive)}
+        aria-expanded={hasChildren ? isExpanded : undefined}
+        aria-label={name}
       >
-        <span className="truncate">{label}</span>
-        {!isLeaf && (
-          <span
-            className={classNames(
-              "ml-3 text-xs uppercase tracking-[0.2em] text-muted transition",
-              isExpanded ? "rotate-90" : "rotate-0"
-            )}
-            aria-hidden
+        {hasChildren && (
+          <motion.span
+            initial={false}
+            animate={{ rotate: isExpanded ? 90 : 0 }}
+            transition={{ duration: 0.15 }}
+            className="inline-block h-5 w-3 text-accent"
+            aria-hidden="true"
           >
-            ›
-          </span>
+            ▶
+          </motion.span>
         )}
+        {!hasChildren && <span className="h-3 w-3" aria-hidden="true" />}
+        <span className="flex-1">{name}</span>
       </button>
-      {!isLeaf && (
-        <AnimatePresence initial={false}>
-          {isExpanded && (
-            <motion.div
-              key="content"
-              initial="collapsed"
-              animate="open"
-              exit="collapsed"
-              variants={collapsibleVariants}
-              transition={{ duration: 0.18, ease: "easeInOut" }}
-              className="overflow-hidden"
-            >
-              <div className="mt-1 space-y-1">{children}</div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      )}
+
+      <AnimatePresence initial={false}>
+        {hasChildren && isExpanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className="overflow-hidden pl-6"
+            role="group"
+          >
+            {children}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
+  );
+}
+
+type CategoryItemProps = {
+  category: Category;
+  domainSlug: string;
+};
+
+export function CategoryItem({ category, domainSlug }: CategoryItemProps) {
+  const slug = `${domainSlug}/${category.slug}`;
+
+  return (
+    <SidebarItem
+      id={category.id}
+      name={category.name}
+      slug={slug}
+      level="category"
+      hasChildren={category.subcategories.length > 0}
+    >
+      {category.subcategories.map((subcategory) => (
+        <SubcategoryItem
+          key={subcategory.id}
+          subcategory={subcategory}
+          categorySlug={slug}
+        />
+      ))}
+    </SidebarItem>
+  );
+}
+
+type SubcategoryItemProps = {
+  subcategory: Subcategory;
+  categorySlug: string;
+};
+
+export function SubcategoryItem({
+  subcategory,
+  categorySlug,
+}: SubcategoryItemProps) {
+  const slug = `${categorySlug}/${subcategory.slug}`;
+
+  return (
+    <SidebarItem
+      id={subcategory.id}
+      name={subcategory.name}
+      slug={slug}
+      level="subcategory"
+      hasChildren={false}
+    />
   );
 }

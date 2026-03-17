@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+  <title id="title">Skip List Failure Modes</title>
+  <desc id="desc">Skip list failure modes: memory overhead, pointer chasing, and concurrency errors</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="600" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Skip List Failure Modes</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Memory overhead, cache behavior, and concurrency concerns</text>
+  
+  <!-- Top Left: Memory Overhead -->
+  <rect x="30" y="85" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <text x="235" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #ef4444)">1. Memory Overhead</text>
+  
+  <!-- Node structure comparison -->
+  <rect x="50" y="135" width="370" height="130" rx="6" fill="var(--bg-panel-soft, #fef2f2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  
+  <!-- Array node -->
+  <rect x="60" y="150" width="150" height="50" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="135" y="175" text-anchor="middle" font-size="10" fill="white">Array Node</text>
+  <text x="135" y="190" text-anchor="middle" font-size="8" fill="#bfdbfe">8 bytes per element</text>
+  
+  <line x1="210" y1="175" x2="235" y2="175" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="222" y="165" text-anchor="middle" font-size="7" fill="var(--text-theme, #64748b">vs</text>
+  
+  <!-- Skip list node -->
+  <rect x="245" y="150" width="165" height="50" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
+  <text x="327" y="170" text-anchor="middle" font-size="9" fill="white">Skip List Node</text>
+  <text x="327" y="185" text-anchor="middle" font-size="7" fill="#fca5a5">Key + Value + Forward[]</text>
+  <text x="327" y="195" text-anchor="middle" font-size="7" fill="#fca5a5">~32-64 bytes per element</text>
+  
+  <text x="235" y="235" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">4-8x more memory than arrays!</text>
+  
+  <!-- Level distribution -->
+  <rect x="60" y="250" width="350" height="60" rx="4" fill="var(--bg-panel-soft, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="235" y="270" text-anchor="middle" font-size="9" fill="var(--text-theme, #b45309">Pointer distribution (avg for 1000 elements):</text>
+  
+  <rect x="70" y="280" width="140" height="20" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <text x="140" y="294" text-anchor="middle" font-size="7" fill="white">500 nodes @ L1</text>
+  
+  <rect x="70" y="305" width="70" height="15" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="105" y="316" text-anchor="middle" font-size="6" fill="white">250 @ L2</text>
+  
+  <rect x="70" y="325" width="35" height="12" rx="2" fill="var(--bg-theme, #8b5cf6)"/>
+  <text x="87" y="334" text-anchor="middle" font-size="5" fill="white">125 @ L3</text>
+  
+  <text x="235" y="350" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Mitigation: Tune max level, use compact nodes</text>
+  
+  <!-- Top Right: Cache-Unfriendly -->
+  <rect x="460" y="85" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="665" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #f59e0b">2. Cache-Unfriendly Pointer Chasing</text>
+  
+  <!-- Memory layout comparison -->
+  <rect x="480" y="135" width="370" height="130" rx="6" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  
+  <!-- Array (contiguous) -->
+  <rect x="490" y="150" width="160" height="50" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="570" y="175" text-anchor="middle" font-size="10" fill="white">Array: Contiguous</text>
+  <text x="570" y="190" text-anchor="middle" font-size="8" fill="#6ee7b7">✓ Cache-friendly</text>
+  
+  <!-- Visual: contiguous blocks -->
+  <rect x="500" y="200" width="25" height="20" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="525" y="200" width="25" height="20" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="550" y="200" width="25" height="20" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="575" y="200" width="25" height="20" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="600" y="200" width="25" height="20" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="625" y="200" width="25" height="20" rx="2" fill="var(--bg-theme, #10b981)"/>
+  
+  <line x1="650" y1="175" x2="675" y2="175" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  
+  <!-- Skip list (scattered) -->
+  <rect x="685" y="150" width="155" height="50" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="762" y="175" text-anchor="middle" font-size="10" fill="white">Skip List: Scattered</text>
+  <text x="762" y="190" text-anchor="middle" font-size="8" fill="#b45309">✗ Pointer chasing</text>
+  
+  <!-- Visual: scattered nodes -->
+  <rect x="695" y="200" width="20" height="20" rx="2" fill="var(--bg-theme, #f59e0b)"/>
+  <rect x="730" y="200" width="20" height="20" rx="2" fill="var(--bg-theme, #f59e0b)"/>
+  <rect x="775" y="200" width="20" height="20" rx="2" fill="var(--bg-theme, #f59e0b)"/>
+  <rect x="810" y="200" width="20" height="20" rx="2" fill="var(--bg-theme, #f59e0b)"/>
+  
+  <!-- Arrows showing pointer jumps -->
+  <line x1="715" y1="210" x2="730" y2="210" stroke="var(--text-theme, #64748b)" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arrow)"/>
+  <line x1="750" y1="210" x2="775" y2="210" stroke="var(--text-theme, #64748b)" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arrow)"/>
+  <line x1="795" y1="210" x2="810" y2="210" stroke="var(--text-theme, #64748b)" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arrow)"/>
+  
+  <text x="665" y="260" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Each pointer = potential cache miss!</text>
+  <text x="665" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Impact: CPU stalls, higher tail latency</text>
+  <text x="665" y="300" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Mitigation: Keep hot data small, use node pools</text>
+  
+  <!-- Bottom Left: Parameter Mismatch -->
+  <rect x="30" y="340" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="235" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #8b5cf6">3. Parameter Mismatch</text>
+  
+  <!-- Wrong probability -->
+  <rect x="50" y="380" width="370" height="100" rx="6" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  
+  <text x="235" y="405" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Probability (p) affects level distribution:</text>
+  
+  <!-- p=0.5 (good) -->
+  <rect x="60" y="415" width="140" height="55" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="130" y="435" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #10b981">p = 0.5 ✓</text>
+  <text x="130" y="450" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Balanced levels</text>
+  <text x="130" y="465" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Good performance</text>
+  
+  <!-- p=0.25 (bad) -->
+  <rect x="210" y="415" width="140" height="55" rx="4" fill="var(--bg-panel-soft, #fef2f2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="280" y="435" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #ef4444">p = 0.25 ✗</text>
+  <text x="280" y="450" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Too few high levels</text>
+  <text x="280" y="465" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Degrades to linked list</text>
+  
+  <text x="235" y="500" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Use p=0.5 or p=0.25 with max_level adjustment</text>
+  
+  <!-- Bottom Right: Concurrency Bugs -->
+  <rect x="460" y="340" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="665" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">4. Concurrency Bugs</text>
+  
+  <!-- Race condition -->
+  <rect x="480" y="380" width="370" height="100" rx="6" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  
+  <text x="665" y="405" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Lock-free skip lists are complex:</text>
+  
+  <text x="490" y="430" text-anchor="start" font-size="9" fill="var(--text-theme, #ef4444">•</text>
+  <text x="505" y="430" font-size="9" fill="var(--text-theme, #64748b">Node deletion while others traversing</text>
+  
+  <text x="490" y="450" text-anchor="start" font-size="9" fill="var(--text-theme, #ef4444">•</text>
+  <text x="505" y="450" font-size="9" fill="var(--text-theme, #64748b">Marked pointers for logical deletion</text>
+  
+  <text x="490" y="470" text-anchor="start" font-size="9" fill="var(--text-theme, #ef4444">•</text>
+  <text x="505" y="470" font-size="9" fill="var(--text-theme, #64748b">Memory reclamation (hazard pointers)</text>
+  
+  <text x="665" y="500" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Use well-tested libraries (Java ConcurrentSkipList)</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #ef4444)"/>
+    </marker>
+  </defs>
+</svg>

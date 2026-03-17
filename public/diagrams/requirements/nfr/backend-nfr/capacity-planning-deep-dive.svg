@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
+  <defs>
+    <marker id="capPlanArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--border-accent, #3b82f6)"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="550" fill="var(--bg-primary, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--text-primary, #0f172a)">Capacity Planning Deep Dive</text>
+  
+  <!-- Demand Forecasting -->
+  <rect x="50" y="60" width="450" height="200" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">Demand Forecasting Methods</text>
+  
+  <!-- Historical -->
+  <rect x="70" y="110" width="120" height="60" rx="4" fill="var(--bg-blue, #3b82f6)" opacity="0.2" stroke="var(--border-blue, #3b82f6)" stroke-width="2"/>
+  <text x="130" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-blue, #3b82f6">Historical</text>
+  <text x="130" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Extrapolate trends</text>
+  <text x="130" y="168" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">10%/month growth</text>
+  
+  <!-- Business -->
+  <rect x="210" y="110" width="120" height="60" rx="4" fill="var(--bg-purple, #8b5cf6)" opacity="0.2" stroke="var(--border-purple, #8b5cf6)" stroke-width="2"/>
+  <text x="270" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-purple, #8b5cf6">Business</text>
+  <text x="270" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Marketing campaigns</text>
+  <text x="270" y="168" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Product launches</text>
+  
+  <!-- Seasonal -->
+  <rect x="350" y="110" width="120" height="60" rx="4" fill="var(--bg-orange, #f97316)" opacity="0.2" stroke="var(--border-orange, #f97316)" stroke-width="2"/>
+  <text x="410" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-orange, #f97316">Seasonal</text>
+  <text x="410" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Holiday peaks</text>
+  <text x="410" y="168" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Day/week patterns</text>
+  
+  <!-- Growth curve -->
+  <line x1="100" y1="230" x2="400" y2="230" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <line x1="100" y1="180" x2="100" y2="230" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  
+  <path d="M 100 220 Q 250 210 400 190" fill="none" stroke="var(--border-accent, #3b82f6)" stroke-width="2" marker-end="url(#capPlanArrow)"/>
+  <text x="250" y="205" text-anchor="middle" font-size="8" fill="var(--border-accent, #3b82f6" font-weight="bold">Growth Curve</text>
+  
+  <text x="250" y="255" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">Combine all methods for accurate forecast</text>
+  
+  <!-- Scaling Approaches -->
+  <rect x="520" y="60" width="430" height="140" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">Scaling Approaches</text>
+  
+  <rect x="540" y="110" width="120" height="70" rx="3" fill="var(--bg-blue, #3b82f6)" opacity="0.2" stroke="var(--border-blue, #3b82f6)" stroke-width="1"/>
+  <text x="600" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-blue, #3b82f6">Static</text>
+  <text x="600" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Fixed capacity</text>
+  <text x="600" y="172" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Predictable workloads</text>
+  
+  <rect x="680" y="110" width="120" height="70" rx="3" fill="var(--bg-purple, #8b5cf6)" opacity="0.2" stroke="var(--border-purple, #8b5cf6)" stroke-width="1"/>
+  <text x="740" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-purple, #8b5cf6">Auto-Scaling</text>
+  <text x="740" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Dynamic capacity</text>
+  <text x="740" y="172" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Variable workloads</text>
+  
+  <rect x="820" y="110" width="120" height="70" rx="3" fill="var(--bg-orange, #f97316)" opacity="0.2" stroke="var(--border-orange, #f97316)" stroke-width="1"/>
+  <text x="880" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-orange, #f97316">Hybrid</text>
+  <text x="880" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Baseline + burst</text>
+  <text x="880" y="172" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Best of both</text>
+  
+  <!-- Alerting Thresholds -->
+  <rect x="520" y="220" width="430" height="140" rx="8" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="735" y="245" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a">Capacity Alerting Strategy</text>
+  
+  <rect x="540" y="265" width="80" height="55" rx="3" fill="var(--bg-green, #22c55e)"/>
+  <text x="580" y="290" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">&lt;70%</text>
+  <text x="580" y="310" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Normal</text>
+  
+  <rect x="640" y="265" width="80" height="55" rx="3" fill="var(--bg-orange, #f97316)"/>
+  <text x="680" y="290" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">70-80%</text>
+  <text x="680" y="310" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Warning</text>
+  
+  <rect x="740" y="265" width="80" height="55" rx="3" fill="var(--bg-red, #ef4444)"/>
+  <text x="780" y="290" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">80-90%</text>
+  <text x="780" y="310" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Critical</text>
+  
+  <rect x="840" y="265" width="80" height="55" rx="3" fill="var(--bg-purple, #8b5cf6)"/>
+  <text x="880" y="290" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">&gt;90%</text>
+  <text x="880" y="310" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Emergency</text>
+  
+  <text x="735" y="345" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">Add capacity at 70%, not 90%</text>
+  
+  <!-- Capacity Planning Checklist -->
+  <rect x="50" y="280" width="900" height="160" rx="8" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="500" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a">Capacity Planning Best Practices</text>
+  
+  <text x="70" y="335" font-size="9" fill="var(--border-green, #22c55e" font-weight="bold">✓</text>
+  <text x="85" y="335" font-size="8" fill="var(--text-secondary, #47556ird">Plan for 2-3× current capacity</text>
+  
+  <text x="70" y="355" font-size="9" fill="var(--border-green, #22c55e" font-weight="bold">✓</text>
+  <text x="85" y="355" font-size="8" fill="var(--text-secondary, #47556ird">Add capacity at 70% utilization</text>
+  
+  <text x="70" y="375" font-size="9" fill="var(--border-green, #22c55e" font-weight="bold">✓</text>
+  <text x="85" y="375" font-size="8" fill="var(--text-secondary, #47556ird">Include 30% buffer for spikes</text>
+  
+  <text x="70" y="395" font-size="9" fill="var(--border-green, #22c55e" font-weight="bold">✓</text>
+  <text x="85" y="395" font-size="8" fill="var(--text-secondary, #47556ird">Monitor leading indicators (queue depth, latency)</text>
+  
+  <text x="470" y="335" font-size="9" fill="var(--border-green, #22c55e" font-weight="bold">✓</text>
+  <text x="485" y="335" font-size="8" fill="var(--text-secondary, #47556ird">Test scaling procedures regularly</text>
+  
+  <text x="470" y="355" font-size="9" fill="var(--border-green, #22c55e" font-weight="bold">✓</text>
+  <text x="485" y="355" font-size="8" fill="var(--text-secondary, #47556ird">Document runbooks for capacity emergencies</text>
+  
+  <text x="470" y="375" font-size="9" fill="var(--border-green, #22c55e" font-weight="bold">✓</text>
+  <text x="485" y="375" font-size="8" fill="var(--text-secondary, #47556ird">Review capacity quarterly</text>
+  
+  <text x="470" y="395" font-size="9" fill="var(--border-green, #22c55e" font-weight="bold">✓</text>
+  <text x="485" y="395" font-size="8" fill="var(--text-secondary, #47556ird">Automate scaling where possible</text>
+  
+  <text x="500" y="430" text-anchor="middle" font-size="9" fill="var(--text-muted, #64748b">Key: Capacity planning is continuous, not one-time. Monitor, forecast, and act proactively.</text>
+</svg>

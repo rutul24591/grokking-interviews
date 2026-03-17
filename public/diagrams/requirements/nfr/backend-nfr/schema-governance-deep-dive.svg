@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
+  <defs>
+    <marker id="schemaGovArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--border-accent, #3b82f6)"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="550" fill="var(--bg-primary, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--text-primary, #0f172a">Schema Governance &amp; Evolution</text>
+  
+  <!-- Schema Registry Flow -->
+  <rect x="50" y="60" width="450" height="220" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">Schema Registry Workflow</text>
+  
+  <!-- Producer -->
+  <rect x="70" y="110" width="90" height="50" rx="4" fill="var(--bg-blue, #3b82f6)"/>
+  <text x="115" y="140" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff">Producer</text>
+  
+  <line x1="160" y1="135" x2="190" y2="135" stroke="var(--border-accent, #3b82f6)" stroke-width="2" marker-end="url(#schemaGovArrow)"/>
+  <text x="175" y="125" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">Register schema</text>
+  
+  <!-- Schema Registry -->
+  <rect x="190" y="110" width="120" height="80" rx="4" fill="var(--bg-purple, #8b5cf6)"/>
+  <text x="250" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-inverse, #ffffff">Schema</text>
+  <text x="250" y="152" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-inverse, #ffffff">Registry</text>
+  <text x="250" y="172" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Validate compatibility</text>
+  <text x="250" y="185" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Store version</text>
+  
+  <line x1="310" y1="150" x2="340" y2="150" stroke="var(--border-accent, #3b82f6)" stroke-width="2" marker-end="url(#schemaGovArrow)"/>
+  <text x="325" y="140" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">Schema ID</text>
+  
+  <!-- Consumer -->
+  <rect x="340" y="110" width="90" height="50" rx="4" fill="var(--bg-green, #22c55e)"/>
+  <text x="385" y="140" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff">Consumer</text>
+  
+  <line x1="385" y1="160" x2="385" y2="190" stroke="var(--border-accent, #3b82f6)" stroke-width="2" marker-end="url(#schemaGovArrow)"/>
+  <text x="395" y="180" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">Fetch schema</text>
+  
+  <!-- Message Queue -->
+  <rect x="340" y="190" width="90" height="50" rx="4" fill="var(--bg-orange, #f97316)"/>
+  <text x="385" y="215" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff">Message</text>
+  <text x="385" y="232" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Queue</text>
+  
+  <text x="275" y="265" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">Producers register, consumers fetch, all validate</text>
+  
+  <!-- Compatibility Matrix -->
+  <rect x="520" y="60" width="430" height="140" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">Compatibility Matrix</text>
+  
+  <rect x="540" y="110" width="80" height="70" rx="3" fill="var(--bg-green, #22c55e)" opacity="0.2" stroke="var(--border-green, #22c55e)" stroke-width="1"/>
+  <text x="580" y="135" text-anchor="middle" font-size="8" font-weight="bold" fill="var(--border-green, #22c55e">BACKWARD</text>
+  <text x="580" y="155" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">New reads old</text>
+  <text x="580" y="172" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">✓ Most common</text>
+  
+  <rect x="640" y="110" width="80" height="70" rx="3" fill="var(--bg-blue, #3b82f6)" opacity="0.2" stroke="var(--border-blue, #3b82f6)" stroke-width="1"/>
+  <text x="680" y="135" text-anchor="middle" font-size="8" font-weight="bold" fill="var(--border-blue, #3b82f6">FORWARD</text>
+  <text x="680" y="155" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">Old reads new</text>
+  <text x="680" y="172" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">⚠ Rare</text>
+  
+  <rect x="700" y="110" width="80" height="70" rx="3" fill="var(--bg-purple, #8b5cf6)" opacity="0.2" stroke="var(--border-purple, #8b5cf6)" stroke-width="1"/>
+  <text x="740" y="135" text-anchor="middle" font-size="8" font-weight="bold" fill="var(--border-purple, #8b5cf6">FULL</text>
+  <text x="740" y="155" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">Both directions</text>
+  <text x="740" y="172" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">✓ Safest</text>
+  
+  <rect x="760" y="110" width="80" height="70" rx="3" fill="var(--bg-red, #ef4444)" opacity="0.2" stroke="var(--border-red, #ef4444)" stroke-width="1"/>
+  <text x="800" y="135" text-anchor="middle" font-size="8" font-weight="bold" fill="var(--border-red, #ef4444">NONE</text>
+  <text x="800" y="155" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">No checking</text>
+  <text x="800" y="172" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">✗ Dangerous</text>
+  
+  <!-- Schema Evolution Rules -->
+  <rect x="520" y="220" width="430" height="140" rx="8" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="735" y="245" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a">Safe Schema Evolution Rules</text>
+  
+  <text x="540" y="275" font-size="9" fill="var(--border-green, #22c55e" font-weight="bold">✓</text>
+  <text x="555" y="275" font-size="8" fill="var(--text-secondary, #47556ird">Add optional fields with defaults</text>
+  
+  <text x="540" y="295" font-size="9" fill="var(--border-green, #22c55e" font-weight="bold">✓</text>
+  <text x="555" y="295" font-size="8" fill="var(--text-secondary, #47556ird">Add new message/event types</text>
+  
+  <text x="540" y="315" font-size="9" fill="var(--border-green, #22c55e" font-weight="bold">✓</text>
+  <text x="555" y="315" font-size="8" fill="var(--text-secondary, #47556ird">Deprecate fields (don't remove)</text>
+  
+  <text x="540" y="335" font-size="9" fill="#ef4444" font-weight="bold">✗</text>
+  <text x="555" y="335" font-size="8" fill="var(--text-secondary, #47556ird">Remove required fields</text>
+  
+  <text x="540" y="355" font-size="9" fill="#ef4444" font-weight="bold">✗</text>
+  <text x="555" y="355" font-size="8" fill="var(--text-secondary, #47556ird">Change field types</text>
+  
+  <text x="735" y="380" text-anchor="middle" font-size="9" fill="var(--text-muted, #64748b">Key: Use schema registry. Enforce compatibility. Evolve schemas safely.</text>
+</svg>

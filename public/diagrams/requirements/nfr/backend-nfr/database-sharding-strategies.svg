@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
+  <defs>
+    <marker id="dbArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--border-accent, #3b82f6)"/>
+    </marker>
+    <linearGradient id="shardGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:var(--bg-accent, #3b82f6);stop-opacity:0.2"/>
+      <stop offset="100%" style="stop-color:var(--bg-accent, #3b82f6);stop-opacity:0.05"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="550" fill="var(--bg-primary, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--text-primary, #0f172a)">Database Sharding Strategies</text>
+  
+  <!-- Shard Key Selection Flow -->
+  <rect x="50" y="60" width="450" height="230" rx="8" fill="url(#shardGrad)" stroke="var(--border-accent, #3b82f6)" stroke-width="2"/>
+  <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a)">Shard Key Selection</text>
+  
+  <!-- Application -->
+  <rect x="180" y="110" width="190" height="50" rx="6" fill="var(--bg-accent, #3b82f6)" stroke="var(--border-accent, #3b82f6)" stroke-width="2"/>
+  <text x="275" y="135" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-inverse, #ffffff)">Application Layer</text>
+  <text x="275" y="150" text-anchor="middle" font-size="10" fill="var(--text-inverse, #ffffff)">Routes requests to shards</text>
+  
+  <!-- Arrow down -->
+  <line x1="275" y1="160" x2="275" y2="185" stroke="var(--border-accent, #3b82f6)" stroke-width="2" marker-end="url(#dbArrow)"/>
+  
+  <!-- Shard key box -->
+  <rect x="150" y="185" width="250" height="40" rx="4" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-accent, #3b82f6)" stroke-width="2"/>
+  <text x="275" y="205" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-primary, #0f172a)">Shard Key Options:</text>
+  <text x="275" y="220" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">user_id, region, hash(customer_id)</text>
+  
+  <!-- Arrow down -->
+  <line x1="275" y1="225" x2="275" y2="250" stroke="var(--border-accent, #3b82f6)" stroke-width="2" marker-end="url(#dbArrow)"/>
+  
+  <!-- Shards -->
+  <rect x="80" y="250" width="110" height="35" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-accent, #3b82f6)" stroke-width="2"/>
+  <text x="135" y="268" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-primary, #0f172a)">Shard 1</text>
+  <text x="135" y="282" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">user_id: 1-1000</text>
+  
+  <rect x="220" y="250" width="110" height="35" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-accent, #3b82f6)" stroke-width="2"/>
+  <text x="275" y="268" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-primary, #0f172a)">Shard 2</text>
+  <text x="275" y="282" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">user_id: 1001-2000</text>
+  
+  <rect x="360" y="250" width="110" height="35" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-accent, #3b82f6)" stroke-width="2"/>
+  <text x="415" y="268" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-primary, #0f172a)">Shard 3</text>
+  <text x="415" y="282" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">user_id: 2001-3000</text>
+  
+  <!-- Good vs Bad Shard Key -->
+  <rect x="50" y="300" width="450" height="85" rx="6" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="275" y="322" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-primary, #0f172a)">Shard Key Best Practices</text>
+  <text x="80" y="345" font-size="10" fill="var(--text-secondary, #475569)">✓ High cardinality (many unique values)</text>
+  <text x="80" y="363" font-size="10" fill="var(--text-secondary, #475569)">✓ Even distribution (avoid hotspots)</text>
+  <text x="80" y="381" font-size="10" fill="var(--text-secondary, #475569)">✓ Query patterns align with shard key</text>
+  <text x="300" y="345" font-size="10" fill="#ef4444">✗ Low cardinality (e.g., status)</text>
+  <text x="300" y="363" font-size="10" fill="#ef4444">✗ Sequential values (causes imbalance)</text>
+  <text x="300" y="381" font-size="10" fill="#ef4444">✗ Frequently updated fields</text>
+  
+  <!-- Sharding Strategies -->
+  <rect x="520" y="60" width="430" height="230" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a)">Sharding Strategies</text>
+  
+  <!-- Hash-based -->
+  <rect x="540" y="110" width="390" height="50" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="560" y="130" font-size="11" font-weight="bold" fill="var(--text-primary, #0f172a)">Hash-Based Sharding</text>
+  <text x="560" y="148" font-size="9" fill="var(--text-secondary, #475569)">shard = hash(key) % num_shards</text>
+  <text x="780" y="130" font-size="9" fill="var(--text-secondary, #475569)">✓ Even distribution</text>
+  <text x="780" y="148" font-size="9" fill="var(--text-secondary, #475569)">✗ Range queries difficult</text>
+  
+  <!-- Range-based -->
+  <rect x="540" y="170" width="390" height="50" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="560" y="190" font-size="11" font-weight="bold" fill="var(--text-primary, #0f172a)">Range-Based Sharding</text>
+  <text x="560" y="208" font-size="9" fill="var(--text-secondary, #475569)">Shard 1: A-M, Shard 2: N-Z</text>
+  <text x="780" y="190" font-size="9" fill="var(--text-secondary, #475569)">✓ Range queries efficient</text>
+  <text x="780" y="208" font-size="9" fill="var(--text-secondary, #475569)">✗ Potential data skew</text>
+  
+  <!-- Directory-based -->
+  <rect x="540" y="230" width="390" height="50" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="560" y="250" font-size="11" font-weight="bold" fill="var(--text-primary, #0f172a)">Directory-Based Sharding</text>
+  <text x="560" y="268" font-size="9" fill="var(--text-secondary, #475569)">Lookup service maps keys to shards</text>
+  <text x="780" y="250" font-size="9" fill="var(--text-secondary, #475569)">✓ Flexible mapping</text>
+  <text x="780" y="268" font-size="9" fill="var(--text-secondary, #475569)">✗ Single point of failure</text>
+  
+  <!-- Challenges -->
+  <rect x="520" y="300" width="430" height="110" rx="8" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="735" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a)">Sharding Challenges</text>
+  
+  <rect x="540" y="340" width="190" height="60" rx="4" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="635" y="360" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-primary, #0f172a)">Cross-Shard Joins</text>
+  <text x="635" y="380" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">Avoid or use denormalization</text>
+  
+  <rect x="750" y="340" width="180" height="60" rx="4" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="840" y="360" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-primary, #0f172a)">Rebalancing</text>
+  <text x="840" y="380" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">Consistent hashing helps</text>
+  
+  <!-- Rebalancing visualization -->
+  <rect x="50" y="395" width="900" height="145" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="500" y="420" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a)">Rebalancing: Before and After Adding Shard</text>
+  
+  <!-- Before -->
+  <text x="200" y="445" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-secondary, #475569)">Before (3 shards)</text>
+  
+  <rect x="100" y="455" width="70" height="35" rx="4" fill="var(--bg-accent, #3b82f6)" opacity="0.7"/>
+  <text x="135" y="477" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">33%</text>
+  
+  <rect x="175" y="455" width="70" height="35" rx="4" fill="var(--bg-accent, #3b82f6)" opacity="0.7"/>
+  <text x="210" y="477" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">33%</text>
+  
+  <rect x="250" y="455" width="70" height="35" rx="4" fill="var(--bg-accent, #3b82f6)" opacity="0.7"/>
+  <text x="285" y="477" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">33%</text>
+  
+  <!-- Arrow -->
+  <line x1="340" y1="472" x2="380" y2="472" stroke="var(--border-accent, #3b82f6)" stroke-width="2" marker-end="url(#dbArrow)"/>
+  <text x="360" y="465" text-anchor="middle" font-size="9" fill="var(--border-accent, #3b82f6)" font-weight="bold">ADD SHARD</text>
+  
+  <!-- After -->
+  <text x="700" y="445" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-secondary, #475569)">After (4 shards)</text>
+  
+  <rect x="450" y="455" width="60" height="35" rx="4" fill="var(--bg-accent, #3b82f6)" opacity="0.5"/>
+  <text x="480" y="477" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">25%</text>
+  
+  <rect x="515" y="455" width="60" height="35" rx="4" fill="var(--bg-accent, #3b82f6)" opacity="0.5"/>
+  <text x="545" y="477" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">25%</text>
+  
+  <rect x="580" y="455" width="60" height="35" rx="4" fill="var(--bg-accent, #3b82f6)" opacity="0.5"/>
+  <text x="610" y="477" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">25%</text>
+  
+  <rect x="645" y="455" width="60" height="35" rx="4" fill="var(--bg-accent, #3b82f6)" opacity="1"/>
+  <text x="675" y="477" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">25%</text>
+  <text x="675" y="505" text-anchor="middle" font-size="9" fill="var(--border-accent, #3b82f6)" font-weight="bold">New</text>
+  
+  <!-- Consistent hashing note -->
+  <rect x="750" y="455" width="180" height="60" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="840" y="475" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-primary, #0f172a)">Consistent Hashing</text>
+  <text x="840" y="495" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">Minimizes data movement</text>
+  <text x="840" y="510" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">Only K/N keys move</text>
+</svg>

@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+  <title id="title">CI/CD Pipeline Failure Modes</title>
+  <desc id="desc">CI/CD failure modes: flaky tests, slow pipelines, environment drift, and security gaps</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="600" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">CI/CD Pipeline: Failure Modes</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Common pipeline problems and their impact</text>
+  
+  <!-- Flaky Tests -->
+  <rect x="30" y="85" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <text x="235" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #ef4444">1. Flaky Tests</text>
+  
+  <!-- Flaky test cycle -->
+  <rect x="50" y="135" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #fef2f2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  
+  <!-- Test run 1 -->
+  <rect x="60" y="150" width="100" height="50" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="110" y="175" text-anchor="middle" font-size="9" fill="white">Run 1</text>
+  <text x="110" y="190" text-anchor="middle" font-size="8" fill="#6ee7b7">PASS</text>
+  
+  <line x1="160" y1="175" x2="190" y2="175" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Test run 2 -->
+  <rect x="200" y="150" width="100" height="50" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
+  <text x="250" y="175" text-anchor="middle" font-size="9" fill="white">Run 2</text>
+  <text x="250" y="190" text-anchor="middle" font-size="8" fill="#fca5a5">FAIL</text>
+  
+  <line x1="300" y1="175" x2="330" y2="175" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Test run 3 -->
+  <rect x="340" y="150" width="70" height="50" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="375" y="175" text-anchor="middle" font-size="9" fill="white">Run 3</text>
+  <text x="375" y="190" text-anchor="middle" font-size="8" fill="#6ee7b7">PASS</text>
+  
+  <text x="235" y="240" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Same code, different results!</text>
+  <text x="235" y="260" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Impact: Lost trust, wasted time, retries</text>
+  <text x="235" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Quarantine flaky tests, fix root cause</text>
+  
+  <!-- Slow Pipelines -->
+  <rect x="460" y="85" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="665" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">2. Slow Pipelines</text>
+  
+  <!-- Pipeline timeline -->
+  <rect x="480" y="135" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  
+  <!-- Timeline -->
+  <line x1="500" y1="200" x2="830" y2="200" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  <text x="840" y="205" font-size="9" fill="var(--text-theme, #64748b">Time →</text>
+  
+  <!-- Build -->
+  <rect x="510" y="180" width="60" height="40" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="540" y="203" text-anchor="middle" font-size="8" fill="white">Build</text>
+  <text x="540" y="215" text-anchor="middle" font-size="7" fill="#6ee7b7">10 min</text>
+  
+  <!-- Test -->
+  <rect x="580" y="180" width="100" height="40" rx="3" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="630" y="203" text-anchor="middle" font-size="8" fill="white">Test</text>
+  <text x="630" y="215" text-anchor="middle" font-size="7" fill="#c4b5fd">45 min</text>
+  
+  <!-- Security Scan -->
+  <rect x="690" y="180" width="70" height="40" rx="3" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="725" y="203" text-anchor="middle" font-size="8" fill="white">Scan</text>
+  <text x="725" y="215" text-anchor="middle" font-size="7" fill="#fcd34d">15 min</text>
+  
+  <!-- Deploy -->
+  <rect x="770" y="180" width="50" height="40" rx="3" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
+  <text x="795" y="203" text-anchor="middle" font-size="8" fill="white">Deploy</text>
+  <text x="795" y="215" text-anchor="middle" font-size="7" fill="#fca5a5">20 min</text>
+  
+  <text x="665" y="245" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">90 minutes total = developer frustration!</text>
+  <text x="665" y="265" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Impact: Developers bypass CI, merge less often</text>
+  <text x="665" y="285" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Parallelize tests, cache aggressively</text>
+  
+  <!-- Environment Drift -->
+  <rect x="30" y="340" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="235" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #8b5cf6">3. Environment Drift</text>
+  
+  <!-- Environment comparison -->
+  <rect x="50" y="380" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  
+  <!-- Staging -->
+  <rect x="60" y="395" width="140" height="60" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="130" y="420" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Staging</text>
+  <text x="130" y="435" text-anchor="middle" font-size="8" fill="#6ee7b7">Node v18.0</text>
+  <text x="130" y="448" text-anchor="middle" font-size="8" fill="#6ee7b7">Ubuntu 22.04</text>
+  
+  <line x1="205" y1="425" x2="235" y2="425" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="220" y="415" text-anchor="middle" font-size="7" fill="var(--text-theme, #ef4444">Different!</text>
+  
+  <!-- Production -->
+  <rect x="245" y="395" width="140" height="60" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
+  <text x="315" y="420" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Production</text>
+  <text x="315" y="435" text-anchor="middle" font-size="8" fill="#fca5a5">Node v16.0</text>
+  <text x="315" y="448" text-anchor="middle" font-size="8" fill="#fca5a5">Ubuntu 20.04</text>
+  
+  <text x="235" y="495" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">"Works on staging" but fails in prod!</text>
+  <text x="235" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Immutable infrastructure, same base images</text>
+  
+  <!-- Security Gaps -->
+  <rect x="460" y="340" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="665" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">4. Security Gaps</text>
+  
+  <!-- Vulnerable dependency -->
+  <rect x="480" y="380" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  
+  <!-- Dependency tree -->
+  <rect x="490" y="395" width="120" height="50" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="550" y="420" text-anchor="middle" font-size="9" fill="white">Your Code</text>
+  <text x="550" y="435" text-anchor="middle" font-size="8" fill="#bfdbfe">Direct deps OK</text>
+  
+  <line x1="610" y1="420" x2="640" y2="420" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="650" y="395" width="120" height="50" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="710" y="420" text-anchor="middle" font-size="9" fill="white">Transitive Dep</text>
+  <text x="710" y="435" text-anchor="middle" font-size="8" fill="#fcd34d">lodash@4.17.15</text>
+  
+  <line x1="770" y1="420" x2="800" y2="420" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  
+  <rect x="810" y="395" width="30" height="50" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="825" y="425" text-anchor="middle" font-size="12" fill="white">!</text>
+  
+  <text x="665" y="470" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Vulnerability in transitive dependency!</text>
+  <text x="665" y="490" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Impact: Security breach, compliance failure</text>
+  <text x="665" y="510" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Automated dependency scanning, SBOM</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #ef4444)"/>
+    </marker>
+  </defs>
+</svg>

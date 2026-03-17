@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+  <title id="title">Count-Min Sketch Failure Modes</title>
+  <desc id="desc">Count-Min Sketch failure modes: collision overestimation, adversarial keys, and stale windows</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="600" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Count-Min Sketch Failure Modes</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Collision errors, adversarial inputs, and windowing issues</text>
+  
+  <!-- Top Left: Collision Overestimation -->
+  <rect x="30" y="85" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <text x="235" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #ef4444)">1. Collision-Driven Overestimation</text>
+  
+  <!-- Collision visualization -->
+  <rect x="50" y="135" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #fef2f2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  
+  <!-- Two different keys -->
+  <rect x="60" y="150" width="140" height="40" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="130" y="170" text-anchor="middle" font-size="9" fill="white">Key A: "user_1"</text>
+  <text x="130" y="185" text-anchor="middle" font-size="8" fill="#bfdbfe">True count: 10</text>
+  
+  <rect x="270" y="150" width="140" height="40" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="340" y="170" text-anchor="middle" font-size="9" fill="white">Key B: "user_999"</text>
+  <text x="340" y="185" text-anchor="middle" font-size="8" fill="#c4b5fd">True count: 100</text>
+  
+  <!-- Hash collision -->
+  <line x1="130" y1="195" x2="130" y2="220" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="340" y1="195" x2="340" y2="220" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Same counter -->
+  <rect x="180" y="225" width="100" height="40" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="230" y="245" text-anchor="middle" font-size="9" fill="white">Counter[42]</text>
+  <text x="230" y="260" text-anchor="middle" font-size="10" font-weight="bold" fill="white">110</text>
+  
+  <text x="235" y="290" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Both keys hash to same column!</text>
+  <text x="235" y="310" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Query A returns 110 instead of 10</text>
+  
+  <text x="235" y="335" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Mitigation: Increase width, use more hash functions</text>
+  
+  <!-- Top Right: Adversarial Keys -->
+  <rect x="460" y="85" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="665" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #f59e0b">2. Adversarial or Skewed Inputs</text>
+  
+  <!-- Attack visualization -->
+  <rect x="480" y="135" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  
+  <!-- Normal distribution -->
+  <rect x="490" y="150" width="160" height="55" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="570" y="175" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #10b981">Normal Traffic</text>
+  <text x="570" y="195" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Even distribution</text>
+  
+  <!-- Counters normal -->
+  <rect x="500" y="210" width="20" height="25" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="525" y="210" width="20" height="25" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="550" y="210" width="20" height="25" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="575" y="210" width="20" height="25" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="600" y="210" width="20" height="25" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <rect x="625" y="210" width="20" height="25" rx="2" fill="var(--bg-theme, #10b981)"/>
+  
+  <line x1="650" y1="180" x2="670" y2="180" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  
+  <!-- Attack distribution -->
+  <rect x="680" y="150" width="160" height="55" rx="4" fill="var(--bg-panel-soft, #fee2e2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <text x="760" y="175" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #ef4444">Adversarial Attack</text>
+  <text x="760" y="195" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Targeted collisions</text>
+  
+  <!-- Counters attacked -->
+  <rect x="690" y="210" width="20" height="25" rx="2" fill="var(--bg-panel-soft, #fca5a5)"/>
+  <rect x="715" y="210" width="20" height="25" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="740" y="210" width="20" height="25" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="765" y="210" width="20" height="25" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <rect x="790" y="210" width="20" height="25" rx="2" fill="var(--bg-panel-soft, #fca5a5)"/>
+  <rect x="815" y="210" width="20" height="25" rx="2" fill="var(--bg-panel-soft, #fca5a5)"/>
+  
+  <text x="665" y="260" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Attacker floods keys that collide!</text>
+  <text x="665" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Causes: Predictable hash functions</text>
+  <text x="665" y="300" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Use strong hashes, add salt</text>
+  
+  <!-- Bottom Left: Stale Windows -->
+  <rect x="30" y="340" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="235" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #8b5cf6">3. Stale Windows</text>
+  <text x="235" y="383" text-anchor="middle" font-size="11" fill="var(--text-theme, #64748b">Long-lived sketch hides trends</text>
+  
+  <!-- Timeline with stale data -->
+  <rect x="50" y="400" width="370" height="120" rx="6" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  
+  <!-- Time axis -->
+  <line x1="70" y1="480" x2="400" y2="480" stroke="var(--text-theme, #64748b)" stroke-width="2"/>
+  <text x="410" y="485" font-size="9" fill="var(--text-theme, #64748b">Time →</text>
+  
+  <!-- Old heavy hitter -->
+  <rect x="80" y="440" width="60" height="40" rx="3" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
+  <text x="110" y="460" text-anchor="middle" font-size="8" fill="white">Old Hot</text>
+  <text x="110" y="475" text-anchor="middle" font-size="7" fill="white">Key A</text>
+  
+  <!-- Decay but still in sketch -->
+  <rect x="160" y="450" width="60" height="30" rx="3" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="190" y="468" text-anchor="middle" font-size="7" fill="white">Cooling</text>
+  
+  <!-- New heavy hitter (not visible) -->
+  <rect x="280" y="460" width="60" height="20" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="310" y="473" text-anchor="middle" font-size="7" fill="white">New Hot</text>
+  <text x="310" y="485" text-anchor="middle" font-size="7" fill="white">Key B</text>
+  
+  <text x="235" y="510" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Old data dominates, new trends hidden!</text>
+  
+  <text x="235" y="535" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Rotate sketches per time window, use decay</text>
+  
+  <!-- Bottom Right: Mitigation Summary -->
+  <rect x="460" y="340" width="410" height="240" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="665" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Best Practices</text>
+  
+  <!-- Sizing -->
+  <rect x="480" y="380" width="180" height="75" rx="6" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="570" y="403" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #3b82f6">Proper Sizing</text>
+  <text x="570" y="425" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Width based on cardinality</text>
+  <text x="570" y="440" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Depth ≥ 5 for reliability</text>
+  
+  <!-- Hash functions -->
+  <rect x="680" y="380" width="180" height="75" rx="6" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="770" y="403" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #10b981">Strong Hashing</text>
+  <text x="770" y="425" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Use MurmurHash/SHA</text>
+  <text x="770" y="440" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Add per-deployment salt</text>
+  
+  <!-- Windowing -->
+  <rect x="480" y="470" width="180" height="75" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="570" y="493" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #f59e0b">Time Windows</text>
+  <text x="570" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Rotate per hour/day</text>
+  <text x="570" y="530" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Clear old sketches</text>
+  
+  <!-- Validation -->
+  <rect x="680" y="470" width="180" height="75" rx="6" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="770" y="493" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #8b5cf6">Validate Outputs</text>
+  <text x="770" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Sample exact counts</text>
+  <text x="770" y="530" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Compare with CMS estimates</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #ef4444)"/>
+    </marker>
+  </defs>
+</svg>

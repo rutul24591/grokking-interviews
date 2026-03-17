@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500">
+  <defs>
+    <marker id="capArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--border-accent, #3b82f6)"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="500" fill="var(--bg-primary, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--text-primary, #0f172a)">CAP Theorem Trade-offs</text>
+  
+  <!-- CAP Triangle with scenarios -->
+  <polygon points="500,80 200,400 800,400" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-accent, #3b82f6)" stroke-width="3"/>
+  
+  <!-- Vertices -->
+  <circle cx="500" cy="80" r="35" fill="var(--bg-green, #22c55e)"/>
+  <text x="500" y="85" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-inverse, #ffffff)">Consistency</text>
+  
+  <circle cx="200" cy="400" r="35" fill="var(--bg-blue, #3b82f6)"/>
+  <text x="200" y="405" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-inverse, #ffffff)">Availability</text>
+  
+  <circle cx="800" cy="400" r="35" fill="var(--bg-orange, #f97316)"/>
+  <text x="800" y="405" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-inverse, #ffffff)">Partition Tolerance</text>
+  
+  <!-- Center text -->
+  <text x="500" y="250" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a)">During Network Partition</text>
+  <text x="500" y="275" text-anchor="middle" font-size="12" fill="var(--text-secondary, #475569)">You can only have 2 of 3</text>
+  
+  <!-- CP Zone -->
+  <rect x="380" y="120" width="240" height="100" rx="6" fill="var(--bg-green, #22c55e)" opacity="0.1" stroke="var(--border-green, #22c55e)" stroke-width="2"/>
+  <text x="500" y="145" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--border-green, #22c55e)">CP System</text>
+  <text x="500" y="170" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">Choose Consistency + Partition Tolerance</text>
+  <text x="500" y="190" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">✗ Sacrifice Availability</text>
+  <text x="500" y="210" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">Examples: MongoDB, HBase, Redis</text>
+  
+  <!-- AP Zone -->
+  <rect x="280" y="320" width="240" height="100" rx="6" fill="var(--bg-blue, #3b82f6)" opacity="0.1" stroke="var(--border-blue, #3b82f6)" stroke-width="2"/>
+  <text x="400" y="345" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--border-blue, #3b82f6)">AP System</text>
+  <text x="400" y="370" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">Choose Availability + Partition Tolerance</text>
+  <text x="400" y="390" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">✗ Sacrifice Consistency</text>
+  <text x="400" y="410" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">Examples: Cassandra, DynamoDB, Riak</text>
+  
+  <!-- CA Zone (theoretical) -->
+  <rect x="580" y="320" width="240" height="100" rx="6" fill="var(--bg-purple, #8b5cf6)" opacity="0.1" stroke="var(--border-purple, #8b5cf6)" stroke-width="2"/>
+  <text x="700" y="345" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--border-purple, #8b5cf6)">CA System</text>
+  <text x="700" y="370" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">Choose Consistency + Availability</text>
+  <text x="700" y="390" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">✗ Cannot tolerate partitions</text>
+  <text x="700" y="410" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">Examples: Traditional RDBMS (single node)</text>
+  
+  <!-- Partition scenario -->
+  <rect x="50" y="430" width="900" height="60" rx="6" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="500" y="450" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-primary, #0f172a)">Network Partition Scenario</text>
+  
+  <!-- Before partition -->
+  <rect x="70" y="460" width="200" height="25" rx="3" fill="var(--bg-green, #22c55e)" opacity="0.3"/>
+  <text x="170" y="477" text-anchor="middle" font-size="9" fill="var(--text-primary, #0f172a)">Before Partition: All nodes synced</text>
+  
+  <!-- During partition -->
+  <rect x="290" y="460" width="200" height="25" rx="3" fill="var(--bg-red, #ef4444)" opacity="0.3"/>
+  <text x="390" y="477" text-anchor="middle" font-size="9" fill="var(--text-primary, #0f172a)">During Partition: Network split</text>
+  
+  <!-- CP response -->
+  <rect x="510" y="460" width="200" height="25" rx="3" fill="var(--bg-green, #22c55e)" opacity="0.3"/>
+  <text x="610" y="477" text-anchor="middle" font-size="9" fill="var(--text-primary, #0f172a)">CP: Reject writes (maintain consistency)</text>
+  
+  <!-- AP response -->
+  <rect x="730" y="460" width="200" height="25" rx="3" fill="var(--bg-blue, #3b82f6)" opacity="0.3"/>
+  <text x="830" y="477" text-anchor="middle" font-size="9" fill="var(--text-primary, #0f172a)">AP: Accept writes (may diverge)</text>
+</svg>

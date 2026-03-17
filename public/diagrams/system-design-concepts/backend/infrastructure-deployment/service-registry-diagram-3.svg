@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Service Registry - Patterns</title>
+  <desc id="desc">Service registry showing registration patterns and service mesh integration</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Service Registry - Patterns</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Registration patterns and service mesh integration</text>
+  
+  <!-- Self-Registration Pattern -->
+  <rect x="30" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="230" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">Self-Registration Pattern</text>
+  
+  <!-- Service -->
+  <rect x="50" y="125" width="120" height="60" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="110" y="155" text-anchor="middle" font-size="9" fill="white">Service</text>
+  <text x="110" y="173" text-anchor="middle" font-size="8" fill="#6ee7b7">On startup</text>
+  
+  <!-- Register -->
+  <line x1="175" y1="155" x2="225" y2="155" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="200" y="145" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Register</text>
+  
+  <!-- Registry -->
+  <rect x="230" y="125" width="120" height="90" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="290" y="155" text-anchor="middle" font-size="9" fill="white">Service</text>
+  <text x="290" y="170" text-anchor="middle" font-size="9" fill="white">Registry</text>
+  <text x="290" y="190" text-anchor="middle" font-size="8" fill="#c4b5fd">Stores location</text>
+  <text x="290" y="205" text-anchor="middle" font-size="8" fill="#c4b5fd">Health status</text>
+  
+  <!-- Heartbeat -->
+  <path d="M 110 185 C 110 220, 290 220, 290 215" fill="none" stroke="var(--text-theme, #10b981)" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow-green)"/>
+  <text x="220" y="235" text-anchor="middle" font-size="8" fill="var(--text-theme, #10b981">Heartbeat</text>
+  
+  <!-- Deregister -->
+  <line x1="230" y1="245" x2="175" y2="245" stroke="var(--text-theme, #ef4444)" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow-red)"/>
+  <text x="200" y="260" text-anchor="middle" font-size="8" fill="var(--text-theme, #ef4444">Deregister</text>
+  
+  <text x="230" y="295" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Simple</text>
+  <text x="230" y="310" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Direct control</text>
+  <text x="230" y="325" text-anchor="middle" font-size="9" fill="var(--text-theme, #f59e0b">⚠ Code coupling</text>
+  <text x="230" y="340" text-anchor="middle" font-size="9" fill="var(--text-theme, #f59e0b">⚠ Language-specific</text>
+  
+  <!-- Third-Party Registration -->
+  <rect x="470" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="670" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Third-Party Registration</text>
+  
+  <!-- Service -->
+  <rect x="490" y="125" width="100" height="60" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="540" y="155" text-anchor="middle" font-size="9" fill="white">Service</text>
+  <text x="540" y="173" text-anchor="middle" font-size="8" fill="#6ee7b7">Unaware</text>
+  
+  <!-- Service Registrar -->
+  <rect x="620" y="125" width="100" height="90" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="670" y="155" text-anchor="middle" font-size="9" fill="white">Service</text>
+  <text x="670" y="170" text-anchor="middle" font-size="9" fill="white">Registrar</text>
+  <text x="670" y="190" text-anchor="middle" font-size="8" fill="#fcd34d">Discovers</text>
+  <text x="670" y="205" text-anchor="middle" font-size="8" fill="#fcd34d">Registers</text>
+  
+  <!-- Registry -->
+  <rect x="750" y="140" width="100" height="60" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="800" y="173" text-anchor="middle" font-size="9" fill="white">Registry</text>
+  
+  <!-- Arrows -->
+  <line x1="595" y1="155" x2="615" y2="155" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="725" y1="170" x2="745" y2="170" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <text x="670" y="255" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Decoupled</text>
+  <text x="670" y="270" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Works with legacy</text>
+  <text x="670" y="285" text-anchor="middle" font-size="9" fill="var(--text-theme, #f59e0b">⚠ Extra component</text>
+  <text x="670" y="300" text-anchor="middle" font-size="9" fill="var(--text-theme, #f59e0b">⚠ More complex</text>
+  
+  <!-- Service Mesh Integration -->
+  <rect x="30" y="380" width="840" height="150" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="450" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Service Mesh Integration</text>
+  
+  <rect x="50" y="420" width="800" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  
+  <!-- App -->
+  <rect x="70" y="435" width="120" height="70" rx="4" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="130" y="465" text-anchor="middle" font-size="9" fill="white">Application</text>
+  
+  <!-- Sidecar -->
+  <rect x="210" y="435" width="120" height="70" rx="4" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="270" y="465" text-anchor="middle" font-size="9" fill="white">Sidecar Proxy</text>
+  <text x="270" y="485" text-anchor="middle" font-size="8" fill="#fcd34d">(Envoy)</text>
+  
+  <line x1="335" y1="470" x2="365" y2="470" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Service Registry -->
+  <rect x="370" y="435" width="140" height="70" rx="4" fill="var(--bg-theme, #8b5cf6)"/>
+  <text x="440" y="465" text-anchor="middle" font-size="9" fill="white">Service Registry</text>
+  <text x="440" y="485" text-anchor="middle" font-size="8" fill="#c4b5fd">(Consul)</text>
+  
+  <line x1="515" y1="470" x2="545" y2="470" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Control Plane -->
+  <rect x="550" y="435" width="140" height="70" rx="4" fill="var(--bg-theme, #10b981)"/>
+  <text x="620" y="465" text-anchor="middle" font-size="9" fill="white">Control Plane</text>
+  <text x="620" y="485" text-anchor="middle" font-size="8" fill="#6ee7b7">(Istio)</text>
+  
+  <line x1="695" y1="470" x2="725" y2="470" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Other Services -->
+  <rect x="730" y="435" width="100" height="70" rx="4" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="780" y="465" text-anchor="middle" font-size="9" fill="white">Other</text>
+  <text x="780" y="485" text-anchor="middle" font-size="9" fill="white">Services</text>
+  
+  <text x="450" y="540" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Sidecar handles service discovery automatically</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #10b981)"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #ef4444)"/>
+    </marker>
+  </defs>
+</svg>

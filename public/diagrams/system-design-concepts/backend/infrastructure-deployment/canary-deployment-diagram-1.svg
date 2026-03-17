@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Canary Deployment</title>
+  <desc id="desc">Canary deployment splitting traffic between stable and canary versions with metrics gating</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Canary Deployment</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Gradual rollout with metrics-based promotion</text>
+  
+  <!-- Users -->
+  <rect x="30" y="85" width="120" height="60" rx="8" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="90" y="115" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Users</text>
+  <text x="90" y="135" text-anchor="middle" font-size="9" fill="#bfdbfe">All traffic</text>
+  
+  <!-- Traffic arrow to Load Balancer -->
+  <line x1="150" y1="115" x2="200" y2="115" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow)"/>
+  
+  <!-- Load Balancer / Traffic Split -->
+  <rect x="200" y="85" width="160" height="100" rx="8" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="280" y="115" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Traffic Router</text>
+  <text x="280" y="135" text-anchor="middle" font-size="9" fill="#c4b5fd">Canary: 10%</text>
+  <text x="280" y="155" text-anchor="middle" font-size="9" fill="#c4b5fd">Stable: 90%</text>
+  <text x="280" y="175" text-anchor="middle" font-size="8" fill="#a78bfa">Metrics-based routing</text>
+  
+  <!-- Traffic split to Stable -->
+  <line x1="360" y1="125" x2="420" y2="140" stroke="var(--text-theme, #10b981)" stroke-width="6" marker-end="url(#arrow-green)"/>
+  <text x="390" y="135" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #10b981">90%</text>
+  
+  <!-- Traffic split to Canary -->
+  <line x1="360" y1="155" x2="420" y2="220" stroke="var(--text-theme, #f59e0b)" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <text x="390" y="185" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #f59e0b">10%</text>
+  
+  <!-- Stable Environment -->
+  <rect x="430" y="85" width="220" height="140" rx="8" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="540" y="110" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #10b981">Stable (v1.0)</text>
+  <text x="540" y="130" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Production</text>
+  
+  <!-- Stable instances -->
+  <rect x="450" y="145" width="55" height="50" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="477" y="170" text-anchor="middle" font-size="8" fill="white">v1.0</text>
+  <text x="477" y="185" text-anchor="middle" font-size="7" fill="#6ee7b7">Healthy</text>
+  
+  <rect x="515" y="145" width="55" height="50" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="542" y="170" text-anchor="middle" font-size="8" fill="white">v1.0</text>
+  <text x="542" y="185" text-anchor="middle" font-size="7" fill="#6ee7b7">Healthy</text>
+  
+  <rect x="580" y="145" width="55" height="50" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="607" y="170" text-anchor="middle" font-size="8" fill="white">v1.0</text>
+  <text x="607" y="185" text-anchor="middle" font-size="7" fill="#6ee7b7">Healthy</text>
+  
+  <!-- Canary Environment -->
+  <rect x="430" y="245" width="220" height="140" rx="8" fill="var(--bg-panel-hover, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="540" y="270" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--text-theme, #b45309">Canary (v2.0)</text>
+  <text x="540" y="290" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Testing</text>
+  
+  <!-- Canary instances -->
+  <rect x="450" y="305" width="55" height="50" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="477" y="330" text-anchor="middle" font-size="8" fill="white">v2.0</text>
+  <text x="477" y="345" text-anchor="middle" font-size="7" fill="#fcd34d">Monitoring</text>
+  
+  <rect x="515" y="305" width="55" height="50" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="542" y="330" text-anchor="middle" font-size="8" fill="white">v2.0</text>
+  <text x="542" y="345" text-anchor="middle" font-size="7" fill="#fcd34d">Monitoring</text>
+  
+  <rect x="580" y="305" width="55" height="50" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="607" y="330" text-anchor="middle" font-size="8" fill="white">v2.0</text>
+  <text x="607" y="345" text-anchor="middle" font-size="7" fill="#fcd34d">Monitoring</text>
+  
+  <!-- Metrics Collection -->
+  <line x1="540" y1="385" x2="540" y2="420" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow-down)"/>
+  <text x="560" y="405" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">Metrics</text>
+  
+  <!-- Metrics Dashboard -->
+  <rect x="430" y="420" width="220" height="80" rx="6" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="540" y="445" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Metrics Dashboard</text>
+  <text x="540" y="465" text-anchor="middle" font-size="8" fill="#bfdbfe">Error Rate: 0.1% ✓</text>
+  <text x="540" y="480" text-anchor="middle" font-size="8" fill="#bfdbfe">Latency p95: 120ms ✓</text>
+  <text x="540" y="495" text-anchor="middle" font-size="8" fill="#bfdbfe">Success Rate: 99.9% ✓</text>
+  
+  <!-- Decision Box -->
+  <rect x="680" y="420" width="120" height="80" rx="6" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="740" y="445" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Decision</text>
+  <text x="740" y="465" text-anchor="middle" font-size="8" fill="#6ee7b7">Metrics OK</text>
+  <text x="740" y="480" text-anchor="middle" font-size="8" fill="#6ee7b7">Expand to 25%</text>
+  
+  <!-- Rollback arrow -->
+  <path d="M 680 460 L 650 460 L 650 300 L 430 300" fill="none" stroke="var(--text-theme, #ef4444)" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow-red)"/>
+  <text x="550" y="290" text-anchor="middle" font-size="8" fill="var(--text-theme, #ef4444">On failure: Rollback</text>
+  
+  <!-- Progress indicator -->
+  <rect x="680" y="85" width="190" height="310" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="775" y="110" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #1e293b">Rollout Progress</text>
+  
+  <!-- Progress steps -->
+  <rect x="700" y="130" width="150" height="35" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="775" y="153" text-anchor="middle" font-size="9" fill="white">Stage 1: 10%</text>
+  <text x="775" y="165" text-anchor="middle" font-size="7" fill="#6ee7b7">Current</text>
+  
+  <rect x="700" y="175" width="150" height="35" rx="4" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="775" y="198" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Stage 2: 25%</text>
+  
+  <rect x="700" y="220" width="150" height="35" rx="4" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="775" y="243" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Stage 3: 50%</text>
+  
+  <rect x="700" y="265" width="150" height="35" rx="4" fill="var(--bg-panel-soft, #e2e8f0)" stroke="var(--border-theme, #94a3b8)" stroke-width="1"/>
+  <text x="775" y="288" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Stage 4: 100%</text>
+  
+  <text x="775" y="320" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Each stage: 5-15 min</text>
+  <text x="775" y="335" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Monitor before expanding</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-down" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 0, 5 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #10b981)"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #f59e0b)"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #ef4444)"/>
+    </marker>
+  </defs>
+</svg>

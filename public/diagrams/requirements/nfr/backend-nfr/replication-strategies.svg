@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
+  <defs>
+    <marker id="repArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--border-accent, #3b82f6)"/>
+    </marker>
+    <linearGradient id="syncGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:var(--bg-green, #22c55e);stop-opacity:0.3"/>
+      <stop offset="100%" style="stop-color:var(--bg-green, #22c55e);stop-opacity:0.05"/>
+    </linearGradient>
+    <linearGradient id="asyncGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:var(--bg-blue, #3b82f6);stop-opacity:0.2"/>
+      <stop offset="100%" style="stop-color:var(--bg-blue, #3b82f6);stop-opacity:0.05"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="550" fill="var(--bg-primary, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--text-primary, #0f172a)">Replication Strategies</text>
+  
+  <!-- Synchronous Replication -->
+  <rect x="50" y="60" width="450" height="220" rx="8" fill="url(#syncGrad)" stroke="var(--border-green, #22c55e)" stroke-width="2"/>
+  <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a)">Synchronous Replication</text>
+  
+  <!-- Client -->
+  <rect x="180" y="110" width="190" height="45" rx="6" fill="var(--bg-accent, #3b82f6)" stroke="var(--border-accent, #3b82f6)" stroke-width="2"/>
+  <text x="275" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-inverse, #ffffff)">CLIENT / WRITER</text>
+  
+  <!-- Primary -->
+  <rect x="100" y="180" width="150" height="70" rx="6" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="175" y="210" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-primary, #0f172a)">PRIMARY</text>
+  <text x="175" y="230" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">Node A</text>
+  
+  <!-- Replica -->
+  <rect x="350" y="180" width="150" height="70" rx="6" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="425" y="210" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-primary, #0f172a)">REPLICA</text>
+  <text x="425" y="230" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">Node B</text>
+  
+  <!-- Sync arrows (bidirectional) -->
+  <line x1="250" y1="215" x2="345" y2="215" stroke="var(--border-green, #22c55e)" stroke-width="3" marker-end="url(#repArrow)"/>
+  <line x1="345" y1="235" x2="250" y2="235" stroke="var(--border-green, #22c55e)" stroke-width="3" marker-end="url(#repArrow)"/>
+  <text x="297" y="210" text-anchor="middle" font-size="9" fill="var(--border-green, #22c55e)" font-weight="bold">SYNC</text>
+  
+  <!-- Arrow from client to primary -->
+  <line x1="275" y1="155" x2="175" y2="175" stroke="var(--border-accent, #3b82f6)" stroke-width="2" marker-end="url(#repArrow)"/>
+  
+  <!-- Characteristics -->
+  <rect x="70" y="270" width="410" height="50" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="90" y="290" font-size="10" fill="var(--text-secondary, #475569)">✓ Strong consistency (no data loss)</text>
+  <text x="90" y="308" font-size="10" fill="var(--text-secondary, #475569)">✓ Automatic failover safe</text>
+  <text x="280" y="290" font-size="10" fill="#ef4444">✗ Higher write latency (wait for ACK)</text>
+  <text x="280" y="308" font-size="10" fill="#ef4444">✗ Fails if replica unavailable</text>
+  
+  <!-- Asynchronous Replication -->
+  <rect x="520" y="60" width="430" height="220" rx="8" fill="url(#asyncGrad)" stroke="var(--border-blue, #3b82f6)" stroke-width="2"/>
+  <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a)">Asynchronous Replication</text>
+  
+  <!-- Client -->
+  <rect x="645" y="110" width="190" height="45" rx="6" fill="var(--bg-accent, #3b82f6)" stroke="var(--border-accent, #3b82f6)" stroke-width="2"/>
+  <text x="740" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-inverse, #ffffff)">CLIENT / WRITER</text>
+  
+  <!-- Primary -->
+  <rect x="570" y="180" width="150" height="70" rx="6" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="645" y="210" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-primary, #0f172a)">PRIMARY</text>
+  <text x="645" y="230" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">Node A</text>
+  
+  <!-- Replica -->
+  <rect x="820" y="180" width="150" height="70" rx="6" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="895" y="210" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-primary, #0f172a)">REPLICA</text>
+  <text x="895" y="230" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">Node B</text>
+  
+  <!-- Async arrow (one way) -->
+  <line x1="720" y1="215" x2="815" y2="215" stroke="var(--border-blue, #3b82f6)" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#repArrow)"/>
+  <text x="767" y="205" text-anchor="middle" font-size="9" fill="var(--border-blue, #3b82f6)" font-weight="bold">ASYNC</text>
+  
+  <!-- Arrow from client to primary -->
+  <line x1="740" y1="155" x2="645" y2="175" stroke="var(--border-accent, #3b82f6)" stroke-width="2" marker-end="url(#repArrow)"/>
+  
+  <!-- Lag indicator -->
+  <rect x="820" y="165" width="150" height="15" rx="3" fill="var(--bg-orange, #f97316)" opacity="0.3"/>
+  <rect x="820" y="165" width="90" height="15" rx="3" fill="var(--bg-orange, #f97316)"/>
+  <text x="895" y="177" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">Replication Lag</text>
+  
+  <!-- Characteristics -->
+  <rect x="540" y="270" width="390" height="50" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="560" y="290" font-size="10" fill="var(--text-secondary, #475569)">✓ Low write latency (no wait)</text>
+  <text x="560" y="308" font-size="10" fill="var(--text-secondary, #475569)">✓ Tolerates replica failures</text>
+  <text x="750" y="290" font-size="10" fill="#ef4444">✗ Eventual consistency (lag)</text>
+  <text x="750" y="308" font-size="10" fill="#ef4444">✗ Potential data loss on failover</text>
+  
+  <!-- Multi-Region Replication -->
+  <rect x="50" y="300" width="900" height="240" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="500" y="325" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a)">Multi-Region Replication Patterns</text>
+  
+  <!-- Single Leader Multi-Region -->
+  <rect x="70" y="345" width="270" height="180" rx="6" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="205" y="370" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-primary, #0f172a)">Single Leader</text>
+  
+  <!-- Region boxes -->
+  <rect x="90" y="385" width="90" height="60" rx="4" fill="var(--bg-accent, #3b82f6)" stroke="var(--border-accent, #3b82f6)" stroke-width="2"/>
+  <text x="135" y="415" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-inverse, #ffffff)">US-East</text>
+  <text x="135" y="432" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">Leader</text>
+  
+  <rect x="220" y="400" width="90" height="45" rx="4" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="265" y="422" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">EU-West</text>
+  <text x="265" y="437" text-anchor="middle" font-size="8" fill="var(--text-secondary, #475569)">Follower</text>
+  
+  <line x1="180" y1="415" x2="215" y2="422" stroke="var(--border-accent, #3b82f6)" stroke-width="2" marker-end="url(#repArrow)"/>
+  <text x="197" y="410" text-anchor="middle" font-size="8" fill="var(--border-accent, #3b82f6)">Async</text>
+  
+  <text x="205" y="480" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">✓ Simple, no conflicts</text>
+  <text x="205" y="495" text-anchor="middle" font-size="9" fill="#ef4444">✗ Single region bottleneck</text>
+  <text x="205" y="510" text-anchor="middle" font-size="9" fill="#ef4444">✗ Cross-region write latency</text>
+  
+  <!-- Multi-Leader -->
+  <rect x="365" y="345" width="270" height="180" rx="6" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="500" y="370" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-primary, #0f172a)">Multi-Leader</text>
+  
+  <rect x="385" y="385" width="90" height="60" rx="4" fill="var(--bg-accent, #3b82f6)" stroke="var(--border-accent, #3b82f6)" stroke-width="2"/>
+  <text x="430" y="415" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-inverse, #ffffff)">US-East</text>
+  <text x="430" y="432" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">Leader</text>
+  
+  <rect x="515" y="385" width="90" height="60" rx="4" fill="var(--bg-accent, #3b82f6)" stroke="var(--border-accent, #3b82f6)" stroke-width="2"/>
+  <text x="560" y="415" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-inverse, #ffffff)">EU-West</text>
+  <text x="560" y="432" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">Leader</text>
+  
+  <!-- Bidirectional sync -->
+  <line x1="475" y1="405" x2="510" y2="405" stroke="var(--border-purple, #8b5cf6)" stroke-width="2" marker-end="url(#repArrow)"/>
+  <line x1="510" y1="425" x2="475" y2="425" stroke="var(--border-purple, #8b5cf6)" stroke-width="2" marker-end="url(#repArrow)"/>
+  
+  <text x="500" y="480" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">✓ Local writes (low latency)</text>
+  <text x="500" y="495" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">✓ Regional fault tolerance</text>
+  <text x="500" y="510" text-anchor="middle" font-size="9" fill="#ef4444">✗ Write conflicts possible</text>
+  
+  <!-- Leaderless (Dynamo-style) -->
+  <rect x="660" y="345" width="270" height="180" rx="6" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <text x="795" y="370" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-primary, #0f172a)">Leaderless (Dynamo)</text>
+  
+  <rect x="680" y="385" width="70" height="50" rx="4" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="715" y="407" text-anchor="middle" font-size="8" fill="var(--text-secondary, #475569)">Node 1</text>
+  
+  <rect x="760" y="385" width="70" height="50" rx="4" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="795" y="407" text-anchor="middle" font-size="8" fill="var(--text-secondary, #475569)">Node 2</text>
+  
+  <rect x="840" y="385" width="70" height="50" rx="4" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <text x="875" y="407" text-anchor="middle" font-size="8" fill="var(--text-secondary, #475569)">Node 3</text>
+  
+  <!-- Client writes to all -->
+  <rect x="760" y="450" width="70" height="35" rx="4" fill="var(--bg-accent, #3b82f6)" stroke="var(--border-accent, #3b82f6)" stroke-width="2"/>
+  <text x="795" y="470" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">Client</text>
+  
+  <line x1="780" y1="450" x2="715" y2="435" stroke="var(--border-accent, #3b82f6)" stroke-width="2" marker-end="url(#repArrow)"/>
+  <line x1="795" y1="450" x2="795" y2="435" stroke="var(--border-accent, #3b82f6)" stroke-width="2" marker-end="url(#repArrow)"/>
+  <line x1="810" y1="450" x2="875" y2="435" stroke="var(--border-accent, #3b82f6)" stroke-width="2" marker-end="url(#repArrow)"/>
+  
+  <text x="795" y="505" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">✓ High availability</text>
+  <text x="795" y="520" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">✓ Fault tolerant</text>
+  <text x="795" y="510" text-anchor="middle" font-size="9" fill="#f59e0b">✗ Conflict resolution needed</text>
+</svg>
