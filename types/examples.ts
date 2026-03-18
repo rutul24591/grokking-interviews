@@ -1,6 +1,6 @@
 export type ExampleFile = {
   name: string;
-  path: string;
+  path?: string;
   content: string;
 };
 

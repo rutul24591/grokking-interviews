@@ -1,14 +1,14 @@
 "use client";
 
-import { type ReactNode, useContext, useMemo, useState } from "react";
+import { type ReactNode, useMemo, useState, useEffect } from "react";
 import type { ArticleMetadata } from "@/types/article";
-import { ExampleContext } from "@/components/articles/ExampleContext";
 import { ExampleViewer } from "@/components/articles/ExampleViewer";
 import {
   ArticleExampleToggle,
   useArticleViewMode,
 } from "@/components/articles/ArticleExampleToggle";
 import { classNames } from "@/lib/classNames";
+import type { ExampleGroup } from "@/types/examples";
 
 type ArticleLayoutProps = {
   metadata: ArticleMetadata;
@@ -16,14 +16,35 @@ type ArticleLayoutProps = {
 };
 
 export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
+  const [examples, setExamples] = useState<ExampleGroup[]>([]);
   const formattedDate = new Date(metadata.lastUpdated).toLocaleDateString(
     "en-US",
     { year: "numeric", month: "long", day: "numeric" },
   );
-  const { examples } = useContext(ExampleContext);
   const [view, setView] = useArticleViewMode();
   const hasExamples = useMemo(() => examples.length > 0, [examples]);
   const [activeExampleId, setActiveExampleId] = useState(examples[0]?.id ?? "");
+
+  // Load examples for this article
+  useEffect(() => {
+    async function loadExamplesForArticle() {
+      try {
+        // Build the manifest key from metadata
+        const manifestCategory = metadata.category.replace("-concepts", "");
+        const manifestKey = `${manifestCategory}/${metadata.subcategory}/${metadata.slug}`;
+        
+        // Import manifest dynamically
+        const manifest = await import("@/content/examples-manifest.json");
+        const articleExamples = (manifest.default as Record<string, ExampleGroup[]>)[manifestKey] || [];
+        setExamples(articleExamples);
+      } catch (error) {
+        console.warn("Failed to load examples:", error);
+        setExamples([]);
+      }
+    }
+
+    loadExamplesForArticle();
+  }, [metadata.category, metadata.subcategory, metadata.slug]);
 
   const resolvedActiveExampleId = useMemo(() => {
     if (!examples.length) return "";

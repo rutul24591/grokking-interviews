@@ -348,8 +348,6 @@
         • Compression - Gzip, Brotli, LZ4, Snappy, compression algorithms and trade-offs
 
         2. Data Storage & Databases
-        Understanding different storage systems and when to use them.
-        2.1 SQL Databases
         • Relational Database Design - Normalization (1NF, 2NF, 3NF, BCNF), denormalization
         • ACID Properties - Atomicity, Consistency, Isolation, Durability, implementation details
         • SQL Queries & Optimization - Query execution plans, indexes, query rewriting
@@ -367,7 +365,6 @@
         • Views & Materialized Views - Query simplification, performance optimization
         • Database Constraints - Foreign keys, check constraints, unique constraints
         • ORMs - Object-relational mapping, N+1 problem, lazy vs eager loading
-        2.2 NoSQL Databases
         • CAP Theorem - Consistency, Availability, Partition tolerance, trade-offs
         • BASE Properties - Basically Available, Soft state, Eventually consistent
         • Document Databases - MongoDB, CouchDB, document modeling, schema design
@@ -382,7 +379,6 @@
         • Replication in NoSQL - Single leader, multi-leader, leaderless replication
         • Conflict Resolution - Last write wins, vector clocks, CRDTs
         • Query Patterns - Access patterns, data modeling based on queries
-        2.3 Specialized Storage
         • Object Storage - S3, blob storage, use cases, metadata
         • File Systems - NFS, GlusterFS, HDFS, distributed file systems
         • Block Storage - EBS, SAN, iSCSI, performance characteristics
@@ -393,7 +389,6 @@
         • In-Memory Databases - Redis, Memcached, VoltDB, use cases
 
         3. Caching & Performance
-        Strategies to improve system performance and reduce latency.
         • Caching Strategies - Cache-aside, read-through, write-through, write-back, refresh-ahead
         • Cache Eviction Policies - LRU, LFU, FIFO, TTL-based eviction, adaptive policies
         • Cache Invalidation - TTL, manual invalidation, event-driven invalidation
@@ -417,7 +412,6 @@
 
 
         4. Network & Communication
-        Protocols and patterns for inter-service communication.
         • API Gateway Pattern - Request routing, composition, protocol translation
         • Load Balancers - Layer 4 vs Layer 7, algorithms (round-robin, least connections, IP hash)
         • Reverse Proxy - Nginx, HAProxy, SSL termination, request routing
@@ -443,7 +437,6 @@
         • Content Delivery Networks - Edge locations, cache invalidation, DDoS protection
 
         5. Scalability & Distributed Systems
-        Concepts for building systems that scale to millions of users.
         • Consistent Hashing - Ring topology, virtual nodes, rebalancing
         • Database Sharding - Shard key selection, cross-shard queries, rebalancing
         • Partitioning Strategies - Range, hash, list, composite partitioning
@@ -468,7 +461,6 @@
         • Asynchronous Processing - Background jobs, task queues, worker pools
 
         6. Reliability & Fault Tolerance
-        Building resilient systems that handle failures gracefully.
         • High Availability - Redundancy, failover, SLA/SLO/SLI definitions
         • Disaster Recovery - RTO, RPO, backup strategies, failover procedures
         • Backup & Restore - Full, incremental, differential backups, point-in-time recovery
@@ -488,7 +480,6 @@
         • Rollback Strategies - Blue-green deployment, canary releases, feature flags
 
         7. Security & Authentication
-        Protecting systems and data from unauthorized access and attacks.
         • Authentication vs Authorization - Identity verification vs access control
         • OAuth 2.0 - Authorization flows, tokens, scopes, grant types
         • JWT (JSON Web Tokens) - Structure, claims, signature verification, storage
@@ -515,7 +506,6 @@
         • Web Application Firewall - Request filtering, attack signatures, bot detection
 
         8. Monitoring & Operations
-        Observability and operational practices for production systems.
         • Logging - Structured logging, log levels, log aggregation, log rotation
         • Metrics - System metrics, application metrics, business metrics, histograms
         • Tracing - Distributed tracing, span propagation, trace sampling
@@ -536,7 +526,6 @@
         • Anomaly Detection - Baseline establishment, deviation alerts, ML-based detection
 
         9. Data Processing & Analytics
-        Processing large volumes of data efficiently.
         • Batch Processing - MapReduce, Hadoop, Spark, batch job scheduling
         • Stream Processing - Kafka Streams, Flink, Storm, real-time analytics
         • ETL/ELT Pipelines - Extract, Transform, Load, data transformation, orchestration
@@ -557,7 +546,6 @@
         • Data Deduplication - Identifying duplicates, merge strategies
 
         10. Design Patterns & Architectures
-        Common patterns and architectural styles for system design.
         • Monolithic Architecture - Single deployable unit, pros and cons
         • Microservices Architecture - Service independence, inter-service communication
         • Serverless Architecture - FaaS, BaaS, cold starts, event-driven
@@ -591,7 +579,6 @@
         • Unit of Work Pattern - Transaction management, change tracking
 
         11. Infrastructure & Deployment
-        Infrastructure management and deployment strategies.
         • Containerization - Docker, container images, Docker Compose, isolation
         • Container Orchestration - Kubernetes, pods, services, deployments, scaling
         • Virtual Machines - Hypervisors, VM vs containers, resource allocation
@@ -613,7 +600,6 @@
         • DNS Management - Route 53, DNS failover, geolocation routing
 
         12. System Components & Services
-        Common services and components in large-scale systems.
         • Authentication Service - User authentication, token generation, validation
         • Authorization Service - Permission checks, policy evaluation, RBAC
         • User Service - User profiles, registration, account management
@@ -636,7 +622,6 @@
         • Content Moderation Service - Text/image moderation, ML-based filtering
 
         13. Advanced Topics
-        Advanced concepts for senior-level interviews.
         • Global Distribution - Multi-region deployment, data locality, latency optimization
         • Conflict-Free Replicated Data Types - CRDTs, eventual consistency, merge functions
         • Operational Transformation - Real-time collaboration, Google Docs-style editing
@@ -671,318 +656,310 @@
 2.  Requirements
     a.  Functional Requirements
         1.  Identity & Access
-
-        -   Signup interface
-        -   Login interface
-        -   Logout
-        -   Password reset
-        -   Email verification
-        -   Phone verification
-        -   Multi-factor authentication setup
-        -   Social login options
-        -   Session persistence
-        -   Device/session management UI
-        -   Profile settings UI
-        -   Account settings UI
-        -   Account recovery UI
-        -   Security settings UI
-        -   User registration service
-        -   Authentication service
-        -   Token generation (JWT/OAuth)
-        -   Session management
-        -   Device session tracking
-        -   Password hashing and validation
-        -   Role-based access control (RBAC)
-        -   Permission validation
-        -   Account verification
-        -   Login attempt tracking
-        -   Account lockout
-        -   Session revocation
-        -   Credential rotation
-        -   Security audit logging
-        -   OAuth providers
-        -   SSO integrations
-        -   Identity providers
-        -   Access control policies
-        -   Authentication audit logs
+        •   Signup interface
+        •   Login interface
+        •   Logout
+        •   Password reset
+        •   Email verification
+        •   Phone verification
+        •   Multi-factor authentication setup
+        •   Social login options
+        •   Session persistence
+        •   Device/session management UI
+        •   Profile settings UI
+        •   Account settings UI
+        •   Account recovery UI
+        •   Security settings UI
+        •   User registration service
+        •   Authentication service
+        •   Token generation (JWT/OAuth)
+        •   Session management
+        •   Device session tracking
+        •   Password hashing and validation
+        •   Role-based access control (RBAC)
+        •   Permission validation
+        •   Account verification
+        •   Login attempt tracking
+        •   Account lockout
+        •   Session revocation
+        •   Credential rotation
+        •   Security audit logging
+        •   OAuth providers
+        •   SSO integrations
+        •   Identity providers
+        •   Access control policies
+        •   Authentication audit logs
 
         2.  Content / Core Resource Management
-
-        -   Create content UI
-        -   Edit content UI
-        -   Delete content UI
-        -   View content pages
-        -   Content preview
-        -   Media upload
-        -   File attachments
-        -   Rich text editor
-        -   Draft saving
-        -   Content sharing interface
-        -   Content scheduling UI
-        -   Content tagging UI
-        -   Content categorization UI
-        -   CRUD APIs
-        -   Content storage
-        -   Metadata storage
-        -   Content validation
-        -   Content versioning
-        -   Soft delete
-        -   Content lifecycle management
-        -   Publishing workflow
-        -   Media processing
-        -   File upload APIs
-        -   Tagging and categorization management
-        -   Object storage
-        -   CDN delivery
-        -   Media processing pipelines
-        -   Image optimization
-        -   Video transcoding
+        •   Create content UI
+        •   Edit content UI
+        •   Delete content UI
+        •   View content pages
+        •   Content preview
+        •   Media upload
+        •   File attachments
+        •   Rich text editor
+        •   Draft saving
+        •   Content sharing interface
+        •   Content scheduling UI
+        •   Content tagging UI
+        •   Content categorization UI
+        •   CRUD APIs
+        •   Content storage
+        •   Metadata storage
+        •   Content validation
+        •   Content versioning
+        •   Soft delete
+        •   Content lifecycle management
+        •   Publishing workflow
+        •   Media processing
+        •   File upload APIs
+        •   Tagging and categorization management
+        •   Object storage
+        •   CDN delivery
+        •   Media processing pipelines
+        •   Image optimization
+        •   Video transcoding
 
         3.  Discovery (Search / Feed / Browsing)
-
-        -   Search bar
-        -   Search results UI
-        -   Autocomplete suggestions
-        -   Filters
-        -   Sorting
-        -   Category navigation
-        -   Trending sections
-        -   Recommendation sections
-        -   Infinite scrolling
-        -   Related content suggestions
-        -   Search indexing
-        -   Query processing
-        -   Full-text search
-        -   Feed generation
-        -   Recommendation algorithms
-        -   Ranking algorithms
-        -   Trending computation
-        -   Personalization engine
-        -   Search engines (Elasticsearch/OpenSearch)
-        -   Feed caching
-        -   ML recommendation pipelines
-        -   Indexing pipelines
+        •   Search bar
+        •   Search results UI
+        •   Autocomplete suggestions
+        •   Filters
+        •   Sorting
+        •   Category navigation
+        •   Trending sections
+        •   Recommendation sections
+        •   Infinite scrolling
+        •   Related content suggestions
+        •   Search indexing
+        •   Query processing
+        •   Full-text search
+        •   Feed generation
+        •   Recommendation algorithms
+        •   Ranking algorithms
+        •   Trending computation
+        •   Personalization engine
+        •   Search engines (Elasticsearch/OpenSearch)
+        •   Feed caching
+        •   ML recommendation pipelines
+        •   Indexing pipelines
 
         4.  Interaction & Engagement
-
-        -   Like / reaction UI
-        -   Comment UI
-        -   Reply UI
-        -   Share UI
-        -   Bookmark / save UI
-        -   Follow / subscribe UI
-        -   Rating / review UI
-        -   Upvote/downvote UI
-        -   Reaction counters
-        -   Interaction APIs
-        -   Relationship graphs
-        -   Reaction storage
-        -   Comment threads
-        -   Aggregation counters
-        -   Engagement tracking
-        -   Share tracking
-        -   Activity feeds
-        -   Event streams
-        -   Analytics pipelines
-        -   Engagement metrics collection
+        •   Like / reaction UI
+        •   Comment UI
+        •   Reply UI
+        •   Share UI
+        •   Bookmark / save UI
+        •   Follow / subscribe UI
+        •   Rating / review UI
+        •   Upvote/downvote UI
+        •   Reaction counters
+        •   Interaction APIs
+        •   Relationship graphs
+        •   Reaction storage
+        •   Comment threads
+        •   Aggregation counters
+        •   Engagement tracking
+        •   Share tracking
+        •   Activity feeds
+        •   Event streams
+        •   Analytics pipelines
+        •   Engagement metrics collection
 
         5.  Communication
-
-        -   Chat interface
-        -   Messaging UI
-        -   Notification center
-        -   Real-time activity indicators
-        -   Typing indicators
-        -   Message status indicators
-        -   Notification preferences UI
-        -   Messaging services
-        -   Notification generation
-        -   Notification delivery
-        -   Message persistence
-        -   Delivery tracking
-        -   Presence tracking
-        -   Real-time broadcasting
-        -   WebSocket infrastructure
-        -   Pub/Sub messaging
-        -   Push notifications
-        -   Email delivery services
-        -   SMS gateways
-        -   Message queues
+        •   Chat interface
+        •   Messaging UI
+        •   Notification center
+        •   Real-time activity indicators
+        •   Typing indicators
+        •   Message status indicators
+        •   Notification preferences UI
+        •   Messaging services
+        •   Notification generation
+        •   Notification delivery
+        •   Message persistence
+        •   Delivery tracking
+        •   Presence tracking
+        •   Real-time broadcasting
+        •   WebSocket infrastructure
+        •   Pub/Sub messaging
+        •   Push notifications
+        •   Email delivery services
+        •   SMS gateways
+        •   Message queues
 
         6.  Transactions / State Changes
-
-        -   Checkout flows
-        -   Booking workflows
-        -   Payment UI
-        -   Confirmation screens
-        -   Order history UI
-        -   Transaction history UI
-        -   Subscription management UI
-        -   Payment processing APIs
-        -   Order management services
-        -   State machines
-        -   Transaction tracking
-        -   Refund processing
-        -   Subscription lifecycle management
-        -   Billing services
-        -   Idempotent operations
-        -   Payment gateways
-        -   Billing platforms
-        -   Financial logs
-        -   Event sourcing systems
+        •   Checkout flows
+        •   Booking workflows
+        •   Payment UI
+        •   Confirmation screens
+        •   Order history UI
+        •   Transaction history UI
+        •   Subscription management UI
+        •   Payment processing APIs
+        •   Order management services
+        •   State machines
+        •   Transaction tracking
+        •   Refund processing
+        •   Subscription lifecycle management
+        •   Billing services
+        •   Idempotent operations
+        •   Payment gateways
+        •   Billing platforms
+        •   Financial logs
+        •   Event sourcing systems
 
         7.  Administration & Moderation
-
-        -   Admin dashboards
-        -   Moderation tools
-        -   User management UI
-        -   Content moderation UI
-        -   Analytics dashboards
-        -   Reporting tools
-        -   Feature configuration UI
-        -   Admin APIs
-        -   User management services
-        -   Moderation services
-        -   Abuse detection
-        -   Feature flag management
-        -   Configuration services
-        -   Monitoring tools
-        -   Alerting systems
-        -   Audit logs
-        -   Compliance tools
+        •   Admin dashboards
+        •   Moderation tools
+        •   User management UI
+        •   Content moderation UI
+        •   Analytics dashboards
+        •   Reporting tools
+        •   Feature configuration UI
+        •   Admin APIs
+        •   User management services
+        •   Moderation services
+        •   Abuse detection
+        •   Feature flag management
+        •   Configuration services
+        •   Monitoring tools
+        •   Alerting systems
+        •   Audit logs
+        •   Compliance tools
 
         8.  Other (Cross-cutting Functional Requirements)
-
-        -   Abuse reporting
-        -   Content reporting
-        -   User blocking
-        -   User muting
-        -   Spam detection
-        -   Content flagging
-        -   Privacy settings
-        -   Profile visibility
-        -   Data sharing preferences
-        -   Access history logs
-        -   Permission management
-        -   Draft saving
-        -   Content scheduling
-        -   Content archiving
-        -   Content version history
-        -   Content recovery
-        -   Notification preferences
-        -   Notification muting
-        -   Email digest preferences
-        -   Notification frequency controls
-        -   Saved preferences
-        -   Theme settings
-        -   Language settings
-        -   Personalized recommendations
-        -   Recently viewed content
-        -   Export user data
-        -   Import user data
-        -   Data download requests
-        -   GDPR data requests
-        -   Data deletion requests
-        -   Consent management
-        -   Terms acceptance tracking
-        -   Retry mechanisms
-        -   Duplicate request handling
-        -   Conflict resolution
-        -   Idempotent requests 
+        •   Abuse reporting
+        •   Content reporting
+        •   User blocking
+        •   User muting
+        •   Spam detection
+        •   Content flagging
+        •   Privacy settings
+        •   Profile visibility
+        •   Data sharing preferences
+        •   Access history logs
+        •   Permission management
+        •   Draft saving
+        •   Content scheduling
+        •   Content archiving
+        •   Content version history
+        •   Content recovery
+        •   Notification preferences
+        •   Notification muting
+        •   Email digest preferences
+        •   Notification frequency controls
+        •   Saved preferences
+        •   Theme settings
+        •   Language settings
+        •   Personalized recommendations
+        •   Recently viewed content
+        •   Export user data
+        •   Import user data
+        •   Data download requests
+        •   GDPR data requests
+        •   Data deletion requests
+        •   Consent management
+        •   Terms acceptance tracking
+        •   Retry mechanisms
+        •   Duplicate request handling
+        •   Conflict resolution
+        •   Idempotent requests 
 
     b.  Non-Functional Requirements
         1.  Frontend NFR
-        -   Page Load Performance
-        -   Perceived Performance
-        -   Rendering Strategy
-        -   Virtualization / Windowing
-        -   Media Optimization
-        -   Offline Support / PWA
-        -   Client & Edge Caching
-        -   Network Efficiency
-        -   Accessibility (a11y)
-        -   Cross-Browser Compatibility
-        -   Device Responsiveness
-        -   Internationalization & Localization
-        -   SEO & Discoverability
-        -   Error UX & Recovery
-        -   XSS & Injection Protection
-        -   Secure Client Storage
-        -   Authentication UX Flows
-        -   Third-Party Script Safety
-        -   State Management Strategy
-        -   Client Persistence Strategy
-        -   Multi-Tab Synchronization
-        -   Conflict Resolution UX
-        -   Real-Time UI Handling
-        -   Frontend Testing Strategy
-        -   Frontend Observability (RUM)
-        -   Developer Experience (DX)
-        -   Build Optimization
-        -   Frontend Deployment Strategy
-        -   Privacy & Consent UX
-        -   Feature Flagging & Rollouts
+        •   Page Load Performance
+        •   Perceived Performance
+        •   Rendering Strategy
+        •   Virtualization / Windowing
+        •   Media Optimization
+        •   Offline Support / PWA
+        •   Client & Edge Caching
+        •   Network Efficiency
+        •   Accessibility (a11y)
+        •   Cross-Browser Compatibility
+        •   Device Responsiveness
+        •   Internationalization & Localization
+        •   SEO & Discoverability
+        •   Error UX & Recovery
+        •   XSS & Injection Protection
+        •   Secure Client Storage
+        •   Authentication UX Flows
+        •   Third-Party Script Safety
+        •   State Management Strategy
+        •   Client Persistence Strategy
+        •   Multi-Tab Synchronization
+        •   Conflict Resolution UX
+        •   Real-Time UI Handling
+        •   Frontend Testing Strategy
+        •   Frontend Observability (RUM)
+        •   Developer Experience (DX)
+        •   Build Optimization
+        •   Frontend Deployment Strategy
+        •   Privacy & Consent UX
+        •   Feature Flagging & Rollouts
 
-        2. Backend NFR
-        -   Scalability Strategy
-        -   High Availability
-        -   Fault Tolerance & Resilience
-        -   Throughput Capacity
-        -   Latency SLAs
-        -   Consistency Model
-        -   Durability Guarantees
-        -   Database Selection Strategy
-        -   Server-Side Caching Strategy
-        -   Data Retention & Archival
-        -   Data Migration Strategy
-        -   Authentication Infrastructure
-        -   Authorization Model
-        -   Rate Limiting & Abuse Protection
-        -   Secrets Management
-        -   Compliance & Auditing
-        -   Centralized Logging
-        -   Metrics & Distributed Tracing
-        -   Disaster Recovery Strategy
-        -   CI/CD Pipelines
-        -   Cost Optimization
-        -   API Versioning
-        -   Backpressure Handling
-        -   Idempotency Guarantees
-        -   Event Replayability
-        -   Multi-Region Replication
-        -   Message Ordering Guarantees
-        -   Schema Governance
-        -   Traffic Management / Load Shedding
-        -   Capacity Planning
+        2.  Backend NFR
+        •   Scalability Strategy
+        •   High Availability
+        •   Fault Tolerance & Resilience
+        •   Throughput Capacity
+        •   Latency SLAs
+        •   Consistency Model
+        •   Durability Guarantees
+        •   Database Selection Strategy
+        •   Server-Side Caching Strategy
+        •   Data Retention & Archival
+        •   Data Migration Strategy
+        •   Authentication Infrastructure
+        •   Authorization Model
+        •   Rate Limiting & Abuse Protection
+        •   Secrets Management
+        •   Compliance & Auditing
+        •   Centralized Logging
+        •   Metrics & Distributed Tracing
+        •   Disaster Recovery Strategy
+        •   CI/CD Pipelines
+        •   Cost Optimization
+        •   API Versioning
+        •   Backpressure Handling
+        •   Idempotency Guarantees
+        •   Event Replayability
+        •   Multi-Region Replication
+        •   Message Ordering Guarantees
+        •   Schema Governance
+        •   Traffic Management / Load Shedding
+        •   Capacity Planning
 
-        3. Shared/Cross-cutting NFR
-        -   End-to-End Performance Budgets
-        -   End-to-End Security Posture
-        -   End-to-End Observability
-        -   Error Handling & Recovery Strategy
-        -   Versioning & Backward Compatibility
-        -   Feature Rollout Strategy
-        -   Privacy & Data Governance
-        -   Availability SLAs
-        -   Caching Consistency Strategy
-        -   Data Consistency Guarantees
-        -   Incident Response & On-call Readiness
-        -   Documentation Quality
-        -   Change Management
-        -   Dependency Management
-        -   Vendor Lock-in Strategy
+        3.  Shared/Cross-cutting NFR
+        •   End-to-End Performance Budgets
+        •   End-to-End Security Posture
+        •   End-to-End Observability
+        •   Error Handling & Recovery Strategy
+        •   Versioning & Backward Compatibility
+        •   Feature Rollout Strategy
+        •   Privacy & Data Governance
+        •   Availability SLAs
+        •   Caching Consistency Strategy
+        •   Data Consistency Guarantees
+        •   Incident Response & On-call Readiness
+        •   Documentation Quality
+        •   Change Management
+        •   Dependency Management
+        •   Vendor Lock-in Strategy
         
-        4. Advanced/Bonus
-        -   Memory Management (Frontend leaks)
-        -   Battery & CPU Efficiency (Mobile)
-        -   Micro-Frontend Compatibility
-        -   Progressive Enhancement
-        -   Accessibility Automation
-        -   Canary Experimentation Framework
-        -   Multi-Tenant Isolation
-        -   Chaos Testing
-        -   SLO / Error Budget Management
-        -   Data Lineage & Auditability
+        4.  Advanced/Bonus
+        •   Memory Management (Frontend leaks)
+        •   Battery & CPU Efficiency (Mobile)
+        •   Micro-Frontend Compatibility
+        •   Progressive Enhancement
+        •   Accessibility Automation
+        •   Canary Experimentation Framework
+        •   Multi-Tenant Isolation
+        •   Chaos Testing
+        •   SLO / Error Budget Management
+        •   Data Lineage & Auditability
 
 
 3. Languages (Coming soon)
