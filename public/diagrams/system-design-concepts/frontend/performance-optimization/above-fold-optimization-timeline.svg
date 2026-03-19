@@ -96,7 +96,7 @@
   <text x="670" y="263" font-size="10" fill="#1a1822">• Bundle size</text>
   <text x="670" y="281" font-size="10" fill="#1a1822">• Hydration cost</text>
   <text x="670" y="299" font-size="10" fill="#1a1822">• Third-party scripts</text>
-  <text x="670" y="317" font-size="10" fill="#1a1822">• Long tasks (&gt; 50ms)</text>
+  <text x="670" y="317" font-size="10" fill="#1a1822">• Long tasks (&amp;gt; 50ms)</text>
   <text x="670" y="335" font-size="10" fill="#1a1822">• Event handler setup</text>
   <text x="670" y="358" font-size="10" fill="#6d5bd0" font-weight="600">Fix: Code split, defer, lazy</text>
 

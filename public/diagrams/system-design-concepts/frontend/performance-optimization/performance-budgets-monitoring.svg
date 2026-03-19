@@ -80,7 +80,7 @@
   <rect x="620" y="270" width="260" height="85" rx="8" fill="white" stroke="#2f9d74" stroke-width="2"/>
   <text x="750" y="295" text-anchor="middle" font-size="13" font-weight="bold" fill="#2f9d74">Lighthouse</text>
   <text x="750" y="320" text-anchor="middle" font-size="28" font-weight="bold" fill="#2f9d74">94</text>
-  <text x="750" y="345" text-anchor="middle" font-size="11" fill="#2f9d74">Above budget (&ge;90)</text>
+  <text x="750" y="345" text-anchor="middle" font-size="11" fill="#2f9d74">Above budget (&amp;ge;90)</text>
 
   <!-- Alert history -->
   <rect x="620" y="370" width="260" height="100" rx="8" fill="white" stroke="#d97843" stroke-width="1"/>

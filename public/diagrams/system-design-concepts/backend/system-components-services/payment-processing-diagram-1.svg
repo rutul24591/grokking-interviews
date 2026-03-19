@@ -1,10 +1,108 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Payment Processing Diagram 1</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage A</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage B</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage C</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Payment Processing Architecture</title>
+  <desc id="desc">Payment processing architecture showing checkout, payment service, provider, webhooks, and ledger</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Payment Processing Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Checkout, payment service, provider, webhooks, and ledger</text>
+  
+  <!-- Checkout -->
+  <rect x="30" y="85" width="150" height="180" rx="8" fill="#3b82f6" stroke="#1e40af" stroke-width="2"/>
+  <text x="105" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Checkout</text>
+  
+  <rect x="50" y="125" width="110" height="35" rx="3" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="105" y="148" text-anchor="middle" font-size="9" fill="#64748b">Shopping Cart</text>
+  
+  <rect x="50" y="165" width="110" height="35" rx="3" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="105" y="188" text-anchor="middle" font-size="9" fill="#64748b">Order Total</text>
+  
+  <rect x="50" y="205" width="110" height="35" rx="3" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="105" y="228" text-anchor="middle" font-size="9" fill="#64748b">Payment Method</text>
+  
+  <!-- Payment Request -->
+  <line x1="185" y1="175" x2="235" y2="175" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="210" y="165" text-anchor="middle" font-size="9" fill="#64748b">Pay Request</text>
+  
+  <!-- Payment Service -->
+  <rect x="235" y="85" width="280" height="180" rx="8" fill="#8b5cf6" stroke="#6d28d9" stroke-width="2"/>
+  <text x="375" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Payment Service</text>
+  
+  <rect x="255" y="125" width="240" height="40" rx="4" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="375" y="150" text-anchor="middle" font-size="9" fill="#64748b">Payment Intent (State Machine)</text>
+  
+  <rect x="255" y="175" width="110" height="40" rx="4" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="310" y="200" text-anchor="middle" font-size="9" fill="#64748b">Idempotency</text>
+  
+  <rect x="375" y="175" width="120" height="40" rx="4" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="435" y="200" text-anchor="middle" font-size="9" fill="#64748b">Fraud Check</text>
+  
+  <!-- Provider Integration -->
+  <line x1="520" y1="175" x2="570" y2="175" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="545" y="165" text-anchor="middle" font-size="9" fill="#64748b">Charge</text>
+  
+  <rect x="570" y="85" width="300" height="180" rx="8" fill="#06b6d4" stroke="#0891b2" stroke-width="2"/>
+  <text x="720" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Payment Providers</text>
+  
+  <rect x="590" y="125" width="260" height="40" rx="4" fill="#ecfdf5" stroke="#06b6d4" stroke-width="1"/>
+  <text x="720" y="150" text-anchor="middle" font-size="9" fill="#64748b">Stripe / PayPal / Square</text>
+  
+  <rect x="590" y="175" width="260" height="40" rx="4" fill="#ecfdf5" stroke="#06b6d4" stroke-width="1"/>
+  <text x="720" y="200" text-anchor="middle" font-size="9" fill="#64748b">Card Networks (Visa/MC)</text>
+  
+  <rect x="590" y="225" width="260" height="30" rx="4" fill="#ecfdf5" stroke="#06b6d4" stroke-width="1"/>
+  <text x="720" y="245" text-anchor="middle" font-size="9" fill="#64748b">Bank Transfer / ACH</text>
+  
+  <!-- Webhook Callback -->
+  <line x1="720" y1="265" x2="720" y2="315" stroke="#64748b" stroke-width="3" marker-end="url(#arrow-down)"/>
+  <text x="740" y="290" text-anchor="start" font-size="8" fill="#64748b">Webhook</text>
+  
+  <rect x="570" y="320" width="300" height="100" rx="8" fill="#10b981" stroke="#059669" stroke-width="2"/>
+  <text x="720" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Webhook Handler</text>
+  
+  <rect x="590" y="355" width="260" height="55" rx="4" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
+  <text x="720" y="380" text-anchor="middle" font-size="9" fill="#64748b">Update Payment State</text>
+  <text x="720" y="395" text-anchor="middle" font-size="8" fill="#6ee7b7">Success/Failed/Refunded</text>
+  
+  <!-- Ledger -->
+  <rect x="30" y="280" width="280" height="160" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="170" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">Payment Ledger</text>
+  
+  <rect x="50" y="320" width="240" height="110" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="170" y="345" text-anchor="middle" font-size="9" fill="#64748b">Immutable Transaction Log</text>
+  <text x="170" y="360" text-anchor="middle" font-size="9" fill="#64748b">Payment ID, Amount</text>
+  <text x="170" y="375" text-anchor="middle" font-size="9" fill="#64748b">Timestamp, Status</text>
+  <text x="170" y="390" text-anchor="middle" font-size="9" fill="#64748b">Provider Reference</text>
+  <text x="170" y="405" text-anchor="middle" font-size="9" fill="#64748b">Audit Trail</text>
+  
+  <!-- Reconciliation -->
+  <rect x="330" y="280" width="280" height="160" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="470" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Reconciliation</text>
+  
+  <rect x="350" y="320" width="240" height="110" rx="4" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="470" y="345" text-anchor="middle" font-size="9" fill="#64748b">Daily Provider Reports</text>
+  <text x="470" y="360" text-anchor="middle" font-size="9" fill="#64748b">Match Internal Records</text>
+  <text x="470" y="375" text-anchor="middle" font-size="9" fill="#64748b">Flag Discrepancies</text>
+  <text x="470" y="390" text-anchor="middle" font-size="9" fill="#64748b">Auto-Resolve</text>
+  <text x="470" y="405" text-anchor="middle" font-size="9" fill="#64748b">Manual Review Queue</text>
+  
+  <!-- Refunds -->
+  <rect x="630" y="435" width="240" height="95" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="750" y="460" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">Refunds</text>
+  
+  <rect x="650" y="470" width="200" height="50" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="750" y="495" text-anchor="middle" font-size="9" fill="#64748b">Full/Partial Refunds</text>
+  <text x="750" y="510" text-anchor="middle" font-size="8" fill="#fcd34d">State Machine</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-down" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 0, 5 7" fill="#64748b"/>
+    </marker>
+  </defs>
 </svg>

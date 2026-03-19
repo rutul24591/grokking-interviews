@@ -63,7 +63,7 @@
   
   <text x="400" y="295" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">IF</text>
   <text x="400" y="310" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">subject.department == resource.owner</text>
-  <text x="400" y="325" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">AND subject.clearance &gt;= 3</text>
+  <text x="400" y="325" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">AND subject.clearance &amp;gt;= 3</text>
   <text x="400" y="340" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b">AND environment.time in business_hours</text>
   <text x="400" y="360" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981" font-weight="bold">THEN ALLOW</text>
   

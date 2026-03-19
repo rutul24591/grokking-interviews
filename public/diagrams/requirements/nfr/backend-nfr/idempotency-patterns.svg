@@ -1,82 +1,82 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
   <defs>
     <marker id="idemArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="var(--border-accent, #3b82f6)"/>
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
     </marker>
   </defs>
   
   <!-- Background -->
-  <rect width="1000" height="550" fill="var(--bg-primary, #ffffff)"/>
+  <rect width="1000" height="550" fill="#ffffff"/>
   
   <!-- Title -->
-  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--text-primary, #0f172a)">Idempotency Implementation Patterns</text>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">Idempotency Implementation Patterns</text>
   
   <!-- Idempotency Key Flow -->
-  <rect x="50" y="60" width="450" height="220" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
-  <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a)">Idempotency Key Pattern</text>
+  <rect x="50" y="60" width="450" height="220" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">Idempotency Key Pattern</text>
   
   <!-- Client -->
-  <rect x="70" y="110" width="90" height="50" rx="4" fill="var(--bg-blue, #3b82f6)"/>
-  <text x="115" y="140" text-anchor="middle" font-size="10" fill="var(--text-inverse, #ffffff)">Client</text>
+  <rect x="70" y="110" width="90" height="50" rx="4" fill="#3b82f6"/>
+  <text x="115" y="140" text-anchor="middle" font-size="10" fill="#ffffff">Client</text>
   
-  <line x1="160" y1="135" x2="190" y2="135" stroke="var(--border-accent, #3b82f6)" stroke-width="2" marker-end="url(#idemArrow)"/>
+  <line x1="160" y1="135" x2="190" y2="135" stroke="#3b82f6" stroke-width="2" marker-end="url(#idemArrow)"/>
   <text x="175" y="125" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">POST + Idempotency-Key</text>
   
   <!-- API Gateway -->
-  <rect x="190" y="110" width="100" height="50" rx="4" fill="var(--bg-purple, #8b5cf6)"/>
+  <rect x="190" y="110" width="100" height="50" rx="4" fill="#8b5cf6"/>
   <text x="240" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-inverse, #ffffff">API Gateway</text>
   <text x="240" y="152" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Check cache</text>
   
-  <line x1="290" y1="135" x2="320" y2="135" stroke="var(--border-accent, #3b82f6)" stroke-width="2" marker-end="url(#idemArrow)"/>
+  <line x1="290" y1="135" x2="320" y2="135" stroke="#3b82f6" stroke-width="2" marker-end="url(#idemArrow)"/>
   <text x="305" y="125" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Key exists?</text>
   
   <!-- Cache Check -->
-  <rect x="320" y="110" width="80" height="80" rx="4" fill="var(--bg-green, #22c55e)" opacity="0.2" stroke="var(--border-green, #22c55e)" stroke-width="2"/>
+  <rect x="320" y="110" width="80" height="80" rx="4" fill="#22c55e" opacity="0.2" stroke="#22c55e" stroke-width="2"/>
   <text x="360" y="140" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-green, #22c55e">Cache</text>
   <text x="360" y="160" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">Key → Result</text>
   <text x="360" y="175" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">TTL: 24h</text>
   
-  <line x1="360" y1="190" x2="360" y2="220" stroke="var(--border-accent, #3b82f6)" stroke-width="2"/>
+  <line x1="360" y1="190" x2="360" y2="220" stroke="#3b82f6" stroke-width="2"/>
   <text x="370" y="210" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">If miss</text>
   
   <!-- Database -->
-  <rect x="310" y="220" width="100" height="50" rx="4" fill="var(--bg-orange, #f97316)"/>
+  <rect x="310" y="220" width="100" height="50" rx="4" fill="#f97316"/>
   <text x="360" y="245" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-inverse, #ffffff">Database</text>
   <text x="360" y="262" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff">Process &amp; Store</text>
   
   <!-- Response path -->
-  <path d="M 360 270 L 360 290 L 240 290 L 240 165" stroke="var(--border-accent, #3b82f6)" stroke-width="2" stroke-dasharray="4,2"/>
+  <path d="M 360 270 L 360 290 L 240 290 L 240 165" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4,2"/>
   <text x="300" y="285" text-anchor="middle" font-size="7" fill="var(--text-secondary, #47556ird">Return cached/result</text>
   
   <text x="275" y="310" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">✓ Same key = Same result (no re-execution)</text>
   
   <!-- Deduplication Table -->
-  <rect x="520" y="60" width="430" height="220" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <rect x="520" y="60" width="430" height="220" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
   <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">Deduplication Table</text>
   
   <!-- Table structure -->
-  <rect x="540" y="110" width="390" height="150" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <rect x="540" y="110" width="390" height="150" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
   
   <!-- Header -->
-  <rect x="540" y="110" width="390" height="30" rx="4" fill="var(--bg-blue, #3b82f6)" opacity="0.2"/>
+  <rect x="540" y="110" width="390" height="30" rx="4" fill="#3b82f6" opacity="0.2"/>
   <text x="580" y="130" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">operation_id (PK)</text>
   <text x="680" y="130" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">result</text>
   <text x="880" y="130" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-primary, #0f172a">created_at</text>
   
   <!-- Row 1 -->
-  <rect x="540" y="140" width="390" height="30" rx="2" fill="var(--bg-panel, #f1f5f9)"/>
+  <rect x="540" y="140" width="390" height="30" rx="2" fill="#f1f5f9"/>
   <text x="580" y="160" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">order-12345</text>
   <text x="680" y="160" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">{"status":"success"}</text>
   <text x="880" y="160" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">2024-01-15 10:30</text>
   
   <!-- Row 2 -->
-  <rect x="540" y="170" width="390" height="30" rx="2" fill="var(--bg-panel, #f1f5f9)"/>
+  <rect x="540" y="170" width="390" height="30" rx="2" fill="#f1f5f9"/>
   <text x="580" y="190" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">payment-67890</text>
   <text x="680" y="190" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">{"tx_id":"abc"}</text>
   <text x="880" y="190" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">2024-01-15 10:31</text>
   
   <!-- Row 3 -->
-  <rect x="540" y="200" width="390" height="30" rx="2" fill="var(--bg-panel, #f1f5f9)"/>
+  <rect x="540" y="200" width="390" height="30" rx="2" fill="#f1f5f9"/>
   <text x="580" y="220" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">transfer-11111</text>
   <text x="680" y="220" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">{"status":"pending"}</text>
   <text x="880" y="220" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">2024-01-15 10:32</text>
@@ -87,33 +87,33 @@
   <text x="735" y="289" text-anchor="middle" font-size="9" fill="var(--text-secondary, #47556ird">3. If not exists → Process &amp; insert</text>
   
   <!-- HTTP Methods Idempotency -->
-  <rect x="50" y="300" width="450" height="140" rx="8" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <rect x="50" y="300" width="450" height="140" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
   <text x="275" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a">HTTP Method Idempotency</text>
   
-  <rect x="70" y="345" width="90" height="35" rx="3" fill="var(--bg-green, #22c55e)" opacity="0.2" stroke="var(--border-green, #22c55e)" stroke-width="1"/>
+  <rect x="70" y="345" width="90" height="35" rx="3" fill="#22c55e" opacity="0.2" stroke="#22c55e" stroke-width="1"/>
   <text x="115" y="367" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-green, #22c55e">GET</text>
   <text x="115" y="385" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">✓ Idempotent</text>
   
-  <rect x="180" y="345" width="90" height="35" rx="3" fill="var(--bg-green, #22c55e)" opacity="0.2" stroke="var(--border-green, #22c55e)" stroke-width="1"/>
+  <rect x="180" y="345" width="90" height="35" rx="3" fill="#22c55e" opacity="0.2" stroke="#22c55e" stroke-width="1"/>
   <text x="225" y="367" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-green, #22c55e">PUT</text>
   <text x="225" y="385" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">✓ Idempotent</text>
   
-  <rect x="290" y="345" width="90" height="35" rx="3" fill="var(--bg-green, #22c55e)" opacity="0.2" stroke="var(--border-green, #22c55e)" stroke-width="1"/>
+  <rect x="290" y="345" width="90" height="35" rx="3" fill="#22c55e" opacity="0.2" stroke="#22c55e" stroke-width="1"/>
   <text x="335" y="367" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-green, #22c55e">DELETE</text>
   <text x="335" y="385" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">✓ Idempotent</text>
   
-  <rect x="70" y="395" width="90" height="35" rx="3" fill="var(--bg-orange, #f97316)" opacity="0.2" stroke="var(--border-orange, #f97316)" stroke-width="1"/>
+  <rect x="70" y="395" width="90" height="35" rx="3" fill="#f97316" opacity="0.2" stroke="#f97316" stroke-width="1"/>
   <text x="115" y="417" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-orange, #f97316">PATCH</text>
   <text x="115" y="435" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">⚠ Conditional</text>
   
-  <rect x="180" y="395" width="90" height="35" rx="3" fill="var(--bg-red, #ef4444)" opacity="0.2" stroke="var(--border-red, #ef4444)" stroke-width="1"/>
+  <rect x="180" y="395" width="90" height="35" rx="3" fill="#ef4444" opacity="0.2" stroke="#ef4444" stroke-width="1"/>
   <text x="225" y="417" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-red, #ef4444">POST</text>
   <text x="225" y="435" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">✗ Not idempotent</text>
   
   <text x="350" y="410" font-size="8" fill="var(--text-muted, #64748b">Use idempotency key to make POST idempotent</text>
   
   <!-- Retry Scenarios -->
-  <rect x="520" y="300" width="430" height="140" rx="8" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <rect x="520" y="300" width="430" height="140" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
   <text x="735" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a">Retry Without Idempotency</text>
   
   <text x="540" y="355" font-size="9" fill="#ef4444" font-weight="bold">✗ Double Charge:</text>

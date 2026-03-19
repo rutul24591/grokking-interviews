@@ -1,59 +1,59 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
   <defs>
     <marker id="trafficArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="var(--border-accent, #3b82f6)"/>
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
     </marker>
   </defs>
   
   <!-- Background -->
-  <rect width="1000" height="550" fill="var(--bg-primary, #ffffff)"/>
+  <rect width="1000" height="550" fill="#ffffff"/>
   
   <!-- Title -->
-  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--text-primary, #0f172a">Traffic Management & Load Shedding</text>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--text-primary, #0f172a">Traffic Management &amp; Load Shedding</text>
   
   <!-- Load Shedding Pattern -->
-  <rect x="50" y="60" width="450" height="220" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <rect x="50" y="60" width="450" height="220" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
   <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">Load Shedding Pattern</text>
   
   <!-- Normal state -->
-  <rect x="70" y="110" width="180" height="60" rx="4" fill="var(--bg-green, #22c55e)" opacity="0.3" stroke="var(--border-green, #22c55e)" stroke-width="2"/>
-  <text x="160" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--border-green, #22c55e)">Normal Load</text>
+  <rect x="70" y="110" width="180" height="60" rx="4" fill="#22c55e" opacity="0.3" stroke="#22c55e" stroke-width="2"/>
+  <text x="160" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="#22c55e">Normal Load</text>
   <text x="160" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">All requests accepted</text>
   
   <!-- Arrow -->
-  <line x1="255" y1="140" x2="285" y2="140" stroke="var(--border-accent, #3b82f6)" stroke-width="2" marker-end="url(#trafficArrow)"/>
+  <line x1="255" y1="140" x2="285" y2="140" stroke="#3b82f6" stroke-width="2" marker-end="url(#trafficArrow)"/>
   <text x="270" y="130" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Overload</text>
   
   <!-- Shedding state -->
-  <rect x="290" y="110" width="200" height="60" rx="4" fill="var(--bg-red, #ef4444)" opacity="0.3" stroke="var(--border-red, #ef4444)" stroke-width="2"/>
-  <text x="390" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--border-red, #ef4444)">Overloaded</text>
+  <rect x="290" y="110" width="200" height="60" rx="4" fill="#ef4444" opacity="0.3" stroke="#ef4444" stroke-width="2"/>
+  <text x="390" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="#ef4444">Overloaded</text>
   <text x="390" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Shed low-priority requests</text>
   
   <!-- Priority levels -->
-  <rect x="70" y="190" width="410" height="80" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <rect x="70" y="190" width="410" height="80" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
   <text x="275" y="215" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-primary, #0f172a">Request Priority Levels</text>
   
-  <rect x="80" y="225" width="90" height="35" rx="3" fill="var(--bg-green, #22c55e)"/>
-  <text x="125" y="247" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">Critical</text>
-  <text x="125" y="262" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff)">Never shed</text>
+  <rect x="80" y="225" width="90" height="35" rx="3" fill="#22c55e"/>
+  <text x="125" y="247" text-anchor="middle" font-size="8" fill="#ffffff">Critical</text>
+  <text x="125" y="262" text-anchor="middle" font-size="7" fill="#ffffff">Never shed</text>
   
-  <rect x="180" y="225" width="90" height="35" rx="3" fill="var(--bg-blue, #3b82f6)"/>
-  <text x="225" y="247" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">High</text>
-  <text x="225" y="262" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff)">Shed at 95%</text>
+  <rect x="180" y="225" width="90" height="35" rx="3" fill="#3b82f6"/>
+  <text x="225" y="247" text-anchor="middle" font-size="8" fill="#ffffff">High</text>
+  <text x="225" y="262" text-anchor="middle" font-size="7" fill="#ffffff">Shed at 95%</text>
   
-  <rect x="280" y="225" width="90" height="35" rx="3" fill="var(--bg-orange, #f97316)"/>
-  <text x="325" y="247" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">Medium</text>
-  <text x="325" y="262" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff)">Shed at 85%</text>
+  <rect x="280" y="225" width="90" height="35" rx="3" fill="#f97316"/>
+  <text x="325" y="247" text-anchor="middle" font-size="8" fill="#ffffff">Medium</text>
+  <text x="325" y="262" text-anchor="middle" font-size="7" fill="#ffffff">Shed at 85%</text>
   
-  <rect x="380" y="225" width="90" height="35" rx="3" fill="var(--bg-red, #ef4444)"/>
-  <text x="425" y="247" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">Low</text>
-  <text x="425" y="262" text-anchor="middle" font-size="7" fill="var(--text-inverse, #ffffff)">Shed at 75%</text>
+  <rect x="380" y="225" width="90" height="35" rx="3" fill="#ef4444"/>
+  <text x="425" y="247" text-anchor="middle" font-size="8" fill="#ffffff">Low</text>
+  <text x="425" y="262" text-anchor="middle" font-size="7" fill="#ffffff">Shed at 75%</text>
   
   <!-- Rate Limiting vs Load Shedding -->
-  <rect x="520" y="60" width="430" height="220" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <rect x="520" y="60" width="430" height="220" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
   <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a">Rate Limiting vs Load Shedding</text>
   
-  <rect x="540" y="110" width="190" height="150" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <rect x="540" y="110" width="190" height="150" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
   <text x="635" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-primary, #0f172a">Rate Limiting</text>
   <text x="560" y="160" font-size="9" fill="var(--text-secondary, #47556ird">• Per-client limits</text>
   <text x="560" y="180" font-size="9" fill="var(--text-secondary, #47556ird">• Prevents abuse</text>
@@ -61,7 +61,7 @@
   <text x="560" y="220" font-size="9" fill="var(--text-secondary, #47556ird">• Always enforced</text>
   <text x="560" y="240" font-size="9" fill="var(--text-secondary, #47556ird">• 429 Too Many Requests</text>
   
-  <rect x="750" y="110" width="180" height="150" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <rect x="750" y="110" width="180" height="150" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
   <text x="840" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-primary, #0f172a">Load Shedding</text>
   <text x="770" y="160" font-size="9" fill="var(--text-secondary, #47556ird">• System-wide protection</text>
   <text x="770" y="180" font-size="9" fill="var(--text-secondary, #47556ird">• Prevents overload</text>
@@ -70,7 +70,7 @@
   <text x="770" y="240" font-size="9" fill="var(--text-secondary, #47556ird">• 503 Service Unavailable</text>
   
   <!-- Overload Protection Strategies -->
-  <rect x="50" y="300" width="900" height="140" rx="8" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <rect x="50" y="300" width="900" height="140" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
   <text x="500" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a">Overload Protection Strategies</text>
   
   <text x="150" y="355" text-anchor="middle" font-size="10" fill="var(--text-secondary, #47556ird">Queue Limits</text>

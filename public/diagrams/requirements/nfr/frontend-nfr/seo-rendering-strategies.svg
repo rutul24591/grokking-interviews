@@ -14,7 +14,7 @@
     </marker>
   </defs>
   
-  <text x="425" y="35" text-anchor="middle" class="title">SEO & Rendering Strategies</text>
+  <text x="425" y="35" text-anchor="middle" class="title">SEO &amp; Rendering Strategies</text>
   <text x="425" y="55" text-anchor="middle" class="small-label">How rendering strategies affect SEO — SSR/SSG provide immediate content, CSR requires JavaScript execution</text>
   
   <!-- SSG -->

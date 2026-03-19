@@ -128,7 +128,7 @@
   
   <!-- Rate Limit Tiers -->
   <rect x="30" y="580" width="570" height="150" rx="8" fill="var(--bg-panel-hover, #f0fdf4)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
-  <text x="315" y="605" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #059669">Rate Limit Tiers & Strategies</text>
+  <text x="315" y="605" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-theme, #059669">Rate Limit Tiers &amp; Strategies</text>
   
   <!-- Tiers -->
   <rect x="50" y="625" width="160" height="95" rx="4" fill="white" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>

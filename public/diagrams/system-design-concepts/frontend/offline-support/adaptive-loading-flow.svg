@@ -40,7 +40,7 @@
   <text x="665" y="215" text-anchor="middle" font-size="12" font-weight="bold" fill="#065F46">Full Experience</text>
   <text x="665" y="232" text-anchor="middle" font-size="10" fill="#374151">HD images, prefetch links</text>
   <text x="665" y="248" text-anchor="middle" font-size="10" fill="#374151">Animations, video autoplay</text>
-  <text x="665" y="258" text-anchor="middle" font-size="9" fill="#6b7280">downlink > 10 Mbps, rtt &lt; 50ms</text>
+  <text x="665" y="258" text-anchor="middle" font-size="9" fill="#6b7280">downlink > 10 Mbps, rtt &amp;lt; 50ms</text>
 
   <!-- 3g branch -->
   <line x1="400" y1="225" x2="400" y2="275" stroke="#6b7280" stroke-width="1.5" marker-end="url(#af)"/>

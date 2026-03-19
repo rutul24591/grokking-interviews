@@ -9,7 +9,7 @@
     </style>
   </defs>
   
-  <text x="425" y="35" text-anchor="middle" class="title">Structured Data & Rich Results</text>
+  <text x="425" y="35" text-anchor="middle" class="title">Structured Data &amp; Rich Results</text>
   <text x="425" y="55" text-anchor="middle" class="small-label">Examples of rich results enabled by Schema.org structured data</text>
   
   <!-- Product Rich Result -->
@@ -107,9 +107,9 @@
   <text x="425" y="445" text-anchor="middle" class="label" font-weight="bold">JSON-LD Format (Google Recommended)</text>
   <line x1="50" y1="455" x2="800" y2="455" stroke="#999" stroke-width="1"/>
   
-  <text x="70" y="475" text-anchor="start" class="small-label">&lt;script type="application/ld+json"&gt;</text>
+  <text x="70" y="475" text-anchor="start" class="small-label">&amp;lt;script type="application/ld+json"&amp;gt;</text>
   <text x="70" y="487" text-anchor="start" class="small-label">{"@context": "https://schema.org", "@type": "Product", "name": "...", "image": "...", "offers": {...}}</text>
-  <text x="70" y="499" text-anchor="start" class="small-label">&lt;/script&gt;</text>
+  <text x="70" y="499" text-anchor="start" class="small-label">&amp;lt;/script&amp;gt;</text>
   
   <text x="600" y="475" text-anchor="start" class="small-label" fill="#4caf50" font-weight="bold">Benefits:</text>
   <text x="680" y="475" text-anchor="start" class="small-label">Higher CTR</text>

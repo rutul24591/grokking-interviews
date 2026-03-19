@@ -75,8 +75,8 @@
   
   <rect x="65" y="475" width="245" height="105" rx="4" fill="var(--bg-panel-hover, #f0fdf4)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
   <text x="187" y="495" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-theme, #1e293b)">Character Escaping:</text>
-  <text x="187" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b)" font-family="monospace">&lt; → &amp;lt;</text>
-  <text x="187" y="530" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b)" font-family="monospace">&gt; → &amp;gt;</text>
+  <text x="187" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b)" font-family="monospace">&amp;lt; → &amp;lt;</text>
+  <text x="187" y="530" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b)" font-family="monospace">&amp;gt; → &amp;gt;</text>
   <text x="187" y="545" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b)" font-family="monospace">&amp; → &amp;amp;</text>
   <text x="187" y="560" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b)" font-family="monospace">" → &amp;quot;</text>
   <text x="187" y="575" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b)" font-family="monospace">' → &amp;#x27;</text>

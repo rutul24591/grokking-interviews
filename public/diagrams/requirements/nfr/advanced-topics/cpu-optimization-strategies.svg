@@ -1,0 +1,179 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad7" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow7" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="500" fill="url(#bgGrad7)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#e0e0e0">CPU Optimization Strategies</text>
+  
+  <!-- Strategy 1: Main Thread Work -->
+  <g transform="translate(30, 60)">
+    <rect x="0" y="0" width="270" height="150" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow7)"/>
+    <text x="135" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#67b26f">1. Minimize Main Thread Work</text>
+    
+    <!-- Long task vs chunked -->
+    <g transform="translate(15, 45)">
+      <text x="0" y="0" font-family="system-ui" font-size="10" fill="#d9534f">Long Task (200ms):</text>
+      <rect x="0" y="10" width="200" height="20" rx="2" fill="#d9534f" opacity="0.6"/>
+      <text x="100" y="24" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">Blocks UI, causes jank</text>
+      
+      <text x="0" y="50" font-family="system-ui" font-size="10" fill="#67b26f">Chunked Tasks (4 × 50ms):</text>
+      <rect x="0" y="60" width="45" height="20" rx="2" fill="#67b26f" opacity="0.6"/>
+      <rect x="50" y="60" width="45" height="20" rx="2" fill="#67b26f" opacity="0.6"/>
+      <rect x="100" y="60" width="45" height="20" rx="2" fill="#67b26f" opacity="0.6"/>
+      <rect x="150" y="60" width="45" height="20" rx="2" fill="#67b26f" opacity="0.6"/>
+      <text x="100" y="95" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Allows browser to process input</text>
+    </g>
+  </g>
+  
+  <!-- Strategy 2: GPU-Accelerated Animations -->
+  <g transform="translate(320, 60)">
+    <rect x="0" y="0" width="270" height="150" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow7)"/>
+    <text x="135" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#67b26f">2. GPU-Accelerated Animations</text>
+    
+    <!-- Bad vs Good -->
+    <g transform="translate(15, 45)">
+      <text x="0" y="0" font-family="system-ui" font-size="10" fill="#d9534f">Avoid (triggers layout):</text>
+      <rect x="0" y="10" width="110" height="25" rx="2" fill="#d9534f" opacity="0.4"/>
+      <text x="55" y="27" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">width, height</text>
+      <rect x="120" y="10" width="110" height="25" rx="2" fill="#d9534f" opacity="0.4"/>
+      <text x="175" y="27" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">top, left, margin</text>
+      
+      <text x="0" y="55" font-family="system-ui" font-size="10" fill="#67b26f">Use (GPU composited):</text>
+      <rect x="0" y="65" width="110" height="25" rx="2" fill="#67b26f" opacity="0.6"/>
+      <text x="55" y="82" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">transform</text>
+      <rect x="120" y="65" width="110" height="25" rx="2" fill="#67b26f" opacity="0.6"/>
+      <text x="175" y="82" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">opacity</text>
+    </g>
+    
+    <text x="135" y="130" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">GPU handles compositing, CPU idle</text>
+  </g>
+  
+  <!-- Strategy 3: Debounce vs Throttle -->
+  <g transform="translate(610, 60)">
+    <rect x="0" y="0" width="270" height="150" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow7)"/>
+    <text x="135" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#67b26f">3. Debounce vs Throttle</text>
+    
+    <!-- Input events -->
+    <g transform="translate(15, 45)">
+      <text x="0" y="0" font-family="system-ui" font-size="9" fill="#e0e0e0">Input events:</text>
+      <circle cx="10" cy="10" r="3" fill="#d9534f"/>
+      <circle cx="25" cy="10" r="3" fill="#d9534f"/>
+      <circle cx="40" cy="10" r="3" fill="#d9534f"/>
+      <circle cx="55" cy="10" r="3" fill="#d9534f"/>
+      <circle cx="70" cy="10" r="3" fill="#d9534f"/>
+      <circle cx="85" cy="10" r="3" fill="#d9534f"/>
+      <circle cx="100" cy="10" r="3" fill="#d9534f"/>
+      <circle cx="115" cy="10" r="3" fill="#d9534f"/>
+      
+      <!-- Debounce -->
+      <text x="0" y="35" font-family="system-ui" font-size="9" fill="#67b26f">Debounce (wait for pause):</text>
+      <circle cx="10" cy="45" r="3" fill="#67b26f" opacity="0.3"/>
+      <circle cx="25" cy="45" r="3" fill="#67b26f" opacity="0.3"/>
+      <circle cx="40" cy="45" r="3" fill="#67b26f" opacity="0.3"/>
+      <circle cx="115" cy="45" r="5" fill="#67b26f"/>
+      <text x="140" y="48" font-family="system-ui" font-size="8" fill="#e0e0e0">fires once after pause</text>
+      
+      <!-- Throttle -->
+      <text x="0" y="65" font-family="system-ui" font-size="9" fill="#4a90d9">Throttle (max once per interval):</text>
+      <circle cx="10" cy="75" r="5" fill="#4a90d9"/>
+      <circle cx="40" cy="75" r="3" fill="#4a90d9" opacity="0.3"/>
+      <circle cx="55" cy="75" r="3" fill="#4a90d9" opacity="0.3"/>
+      <circle cx="70" cy="75" r="5" fill="#4a90d9"/>
+      <circle cx="85" cy="75" r="3" fill="#4a90d9" opacity="0.3"/>
+      <circle cx="100" cy="75" r="3" fill="#4a90d9" opacity="0.3"/>
+      <circle cx="115" cy="75" r="5" fill="#4a90d9"/>
+    </g>
+  </g>
+  
+  <!-- Strategy 4: Polling Alternatives -->
+  <g transform="translate(30, 230)">
+    <rect x="0" y="0" width="410" height="150" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow7)"/>
+    <text x="205" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#67b26f">4. Replace Polling with Event-Driven APIs</text>
+    
+    <!-- Polling (bad) -->
+    <g transform="translate(15, 45)">
+      <text x="0" y="0" font-family="system-ui" font-size="10" fill="#d9534f">Polling (wakes CPU repeatedly):</text>
+      
+      <!-- Polling timeline -->
+      <line x1="0" y1="15" x2="350" y2="15" stroke="#666" stroke-width="1"/>
+      <circle cx="20" cy="15" r="5" fill="#d9534f"/>
+      <circle cx="70" cy="15" r="5" fill="#d9534f"/>
+      <circle cx="120" cy="15" r="5" fill="#d9534f"/>
+      <circle cx="170" cy="15" r="5" fill="#d9534f"/>
+      <circle cx="220" cy="15" r="5" fill="#d9534f"/>
+      <circle cx="270" cy="15" r="5" fill="#d9534f"/>
+      <circle cx="320" cy="15" r="5" fill="#d9534f"/>
+      <text x="175" y="35" text-anchor="middle" font-family="system-ui" font-size="9" fill="#d9534f">Constant CPU wakeups</text>
+    </g>
+    
+    <!-- Event-driven (good) -->
+    <g transform="translate(15, 90)">
+      <text x="0" y="0" font-family="system-ui" font-size="10" fill="#67b26f">Event-Driven (CPU sleeps until event):</text>
+      
+      <!-- Event timeline -->
+      <line x1="0" y1="15" x2="350" y2="15" stroke="#666" stroke-width="1"/>
+      <circle cx="50" cy="15" r="6" fill="#67b26f"/>
+      <circle cx="200" cy="15" r="6" fill="#67b26f"/>
+      <circle cx="320" cy="15" r="6" fill="#67b26f"/>
+      <text x="175" y="35" text-anchor="middle" font-family="system-ui" font-size="9" fill="#67b26f">CPU sleeps between events</text>
+      
+      <!-- Labels -->
+      <text x="50" y="50" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">IntersectionObserver</text>
+      <text x="200" y="50" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">MutationObserver</text>
+      <text x="320" y="50" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">WebSocket</text>
+    </g>
+  </g>
+  
+  <!-- Strategy 5: Web Workers -->
+  <g transform="translate(460, 230)">
+    <rect x="0" y="0" width="420" height="150" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow7)"/>
+    <text x="210" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#67b26f">5. Offload to Web Workers</text>
+    
+    <!-- Main thread -->
+    <g transform="translate(15, 45)">
+      <rect x="0" y="0" width="180" height="90" rx="6" fill="#4a90d9" opacity="0.3" stroke="#4a90d9"/>
+      <text x="90" y="20" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#4a90d9">Main Thread</text>
+      
+      <rect x="10" y="30" width="70" height="25" rx="3" fill="#4a90d9" opacity="0.6"/>
+      <text x="45" y="47" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">UI Render</text>
+      
+      <rect x="90" y="30" width="70" height="25" rx="3" fill="#4a90d9" opacity="0.6"/>
+      <text x="125" y="47" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">Input Handle</text>
+      
+      <rect x="10" y="60" width="150" height="25" rx="3" fill="#67b26f" opacity="0.6"/>
+      <text x="85" y="77" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">Light computation</text>
+    </g>
+    
+    <!-- Web Worker -->
+    <g transform="translate(220, 45)">
+      <rect x="0" y="0" width="180" height="90" rx="6" fill="#67b26f" opacity="0.3" stroke="#67b26f"/>
+      <text x="90" y="20" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">Web Worker</text>
+      
+      <rect x="10" y="30" width="150" height="25" rx="3" fill="#d9534f" opacity="0.6"/>
+      <text x="85" y="47" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">Heavy computation</text>
+      <text x="85" y="65" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">(image processing, parsing)</text>
+    </g>
+    
+    <!-- Message passing -->
+    <line x1="205" y1="90" x2="215" y2="90" stroke="#f0ad4e" stroke-width="2" stroke-dasharray="4,2"/>
+    <text x="210" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#f0ad4e">postMessage</text>
+  </g>
+  
+  <!-- Key Takeaway -->
+  <g transform="translate(30, 400)">
+    <rect x="0" y="0" width="850" height="80" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2"/>
+    <text x="425" y="25" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#67b26f">Key Takeaway</text>
+    <text x="425" y="48" text-anchor="middle" font-family="system-ui" font-size="11" fill="#e0e0e0">Keep the main thread free for UI work. Offload heavy computation, use GPU for animations, and replace polling with event-driven APIs.</text>
+    <text x="425" y="68" text-anchor="middle" font-family="system-ui" font-size="11" fill="#e0e0e0">Every CPU cycle saved extends battery life and improves user experience.</text>
+  </g>
+</svg>

@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad21" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow21" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="500" fill="url(#bgGrad21)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#e0e0e0">WCAG Rules - Automation Coverage</text>
+  
+  <!-- Automatable Rules -->
+  <g transform="translate(30, 60)">
+    <rect x="0" y="0" width="410" height="280" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow21)"/>
+    <text x="205" y="30" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Automatable Rules (~50% of WCAG)</text>
+    
+    <!-- Images -->
+    <g transform="translate(20, 50)">
+      <rect x="0" y="0" width="175" height="45" rx="4" fill="#67b26f" opacity="0.3" stroke="#67b26f"/>
+      <text x="10" y="20" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">Images (90% automatable)</text>
+      <text x="10" y="38" font-family="system-ui" font-size="9" fill="#e0e0e0">Missing alt, empty alt, alt length</text>
+    </g>
+    
+    <!-- Color -->
+    <g transform="translate(205, 50)">
+      <rect x="0" y="0" width="175" height="45" rx="4" fill="#67b26f" opacity="0.3" stroke="#67b26f"/>
+      <text x="10" y="20" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">Color (95% automatable)</text>
+      <text x="10" y="38" font-family="system-ui" font-size="9" fill="#e0e0e0">Text/background contrast</text>
+    </g>
+    
+    <!-- Forms -->
+    <g transform="translate(20, 105)">
+      <rect x="0" y="0" width="175" height="45" rx="4" fill="#f0ad4e" opacity="0.3" stroke="#f0ad4e"/>
+      <text x="10" y="20" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">Forms (80% automatable)</text>
+      <text x="10" y="38" font-family="system-ui" font-size="9" fill="#e0e0e0">Missing labels, fieldsets</text>
+    </g>
+    
+    <!-- Links -->
+    <g transform="translate(205, 105)">
+      <rect x="0" y="0" width="175" height="45" rx="4" fill="#67b26f" opacity="0.3" stroke="#67b26f"/>
+      <text x="10" y="20" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">Links (85% automatable)</text>
+      <text x="10" y="38" font-family="system-ui" font-size="9" fill="#e0e0e0">Empty links, duplicate text</text>
+    </g>
+    
+    <!-- Structure -->
+    <g transform="translate(20, 160)">
+      <rect x="0" y="0" width="175" height="45" rx="4" fill="#67b26f" opacity="0.3" stroke="#67b26f"/>
+      <text x="10" y="20" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">Structure (90% automatable)</text>
+      <text x="10" y="38" font-family="system-ui" font-size="9" fill="#e0e0e0">Missing headings, lang attribute</text>
+    </g>
+    
+    <!-- ARIA -->
+    <g transform="translate(205, 160)">
+      <rect x="0" y="0" width="175" height="45" rx="4" fill="#f0ad4e" opacity="0.3" stroke="#f0ad4e"/>
+      <text x="10" y="20" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">ARIA (75% automatable)</text>
+      <text x="10" y="38" font-family="system-ui" font-size="9" fill="#e0e0e0">Invalid roles, missing required</text>
+    </g>
+    
+    <!-- Media -->
+    <g transform="translate(20, 215)">
+      <rect x="0" y="0" width="175" height="45" rx="4" fill="#f0ad4e" opacity="0.3" stroke="#f0ad4e"/>
+      <text x="10" y="20" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">Media (60% automatable)</text>
+      <text x="10" y="38" font-family="system-ui" font-size="9" fill="#e0e0e0">Missing captions (track element)</text>
+    </g>
+    
+    <!-- Keyboard -->
+    <g transform="translate(205, 215)">
+      <rect x="0" y="0" width="175" height="45" rx="4" fill="#d9534f" opacity="0.3" stroke="#d9534f"/>
+      <text x="10" y="20" font-family="system-ui" font-size="11" font-weight="bold" fill="#d9534f">Keyboard (50% automatable)</text>
+      <text x="10" y="38" font-family="system-ui" font-size="9" fill="#e0e0e0">Skip links, tabindex {'>'} 0</text>
+    </g>
+  </g>
+  
+  <!-- Non-Automatable Rules -->
+  <g transform="translate(460, 60)">
+    <rect x="0" y="0" width="420" height="280" rx="8" fill="#2a2a4a" stroke="#d9534f" stroke-width="2" filter="url(#shadow21)"/>
+    <text x="210" y="30" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#d9534f">Non-Automatable (~50% of WCAG)</text>
+    
+    <!-- Alt Quality -->
+    <g transform="translate(20, 50)">
+      <rect x="0" y="0" width="380" height="45" rx="4" fill="#d9534f" opacity="0.3" stroke="#d9534f"/>
+      <text x="10" y="20" font-family="system-ui" font-size="11" font-weight="bold" fill="#d9534f">Alt Text Quality</text>
+      <text x="10" y="38" font-family="system-ui" font-size="9" fill="#e0e0e0">Is alt text meaningful and descriptive? Requires human judgment.</text>
+    </g>
+    
+    <!-- Focus Order -->
+    <g transform="translate(20, 105)">
+      <rect x="0" y="0" width="380" height="45" rx="4" fill="#d9534f" opacity="0.3" stroke="#d9534f"/>
+      <text x="10" y="20" font-family="system-ui" font-size="11" font-weight="bold" fill="#d9534f">Focus Order</text>
+      <text x="10" y="38" font-family="system-ui" font-size="9" fill="#e0e0e0">Is tab order logical and intuitive? Requires manual testing.</text>
+    </g>
+    
+    <!-- Link Purpose -->
+    <g transform="translate(20, 160)">
+      <rect x="0" y="0" width="380" height="45" rx="4" fill="#d9534f" opacity="0.3" stroke="#d9534f"/>
+      <text x="10" y="20" font-family="system-ui" font-size="11" font-weight="bold" fill="#d9534f">Link Purpose</text>
+      <text x="10" y="38" font-family="system-ui" font-size="9" fill="#e0e0e0">Does link text clearly describe destination? Context-dependent.</text>
+    </g>
+    
+    <!-- Content Clarity -->
+    <g transform="translate(20, 215)">
+      <rect x="0" y="0" width="380" height="45" rx="4" fill="#d9534f" opacity="0.3" stroke="#d9534f"/>
+      <text x="10" y="20" font-family="system-ui" font-size="11" font-weight="bold" fill="#d9534f">Content Clarity</text>
+      <text x="10" y="38" font-family="system-ui" font-size="9" fill="#e0e0e0">Reading level, instructions, error messages. Requires human review.</text>
+    </g>
+  </g>
+  
+  <!-- Severity Levels -->
+  <g transform="translate(30, 360)">
+    <rect x="0" y="0" width="410" height="120" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2"/>
+    <text x="205" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#4a90d9">Rule Severity Configuration</text>
+    
+    <!-- Critical -->
+    <g transform="translate(20, 45)">
+      <rect x="0" y="0" width="175" height="60" rx="4" fill="#d9534f" opacity="0.4"/>
+      <text x="87" y="25" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#d9534f">Critical</text>
+      <text x="87" y="45" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Blocks task completion</text>
+      <text x="87" y="58" text-anchor="middle" font-family="system-ui" font-size="9" fill="#67b26f">BLOCK DEPLOY</text>
+    </g>
+    
+    <!-- Serious -->
+    <g transform="translate(210, 45)">
+      <rect x="0" y="0" width="175" height="60" rx="4" fill="#f0ad4e" opacity="0.4"/>
+      <text x="87" y="25" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">Serious</text>
+      <text x="87" y="45" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Significantly impedes access</text>
+      <text x="87" y="58" text-anchor="middle" font-family="system-ui" font-size="9" fill="#f0ad4e">WARN + TRACK</text>
+    </g>
+  </g>
+  
+  <!-- Manual Testing Required -->
+  <g transform="translate(460, 360)">
+    <rect x="0" y="0" width="420" height="120" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2"/>
+    <text x="210" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#67b26f">Manual Testing Checklist</text>
+    
+    <text x="20" y="55" font-family="system-ui" font-size="10" fill="#e0e0e0">✓ Keyboard navigation (Tab, Enter, Escape)</text>
+    <text x="20" y="75" font-family="system-ui" font-size="10" fill="#e0e0e0">✓ Screen reader testing (NVDA/JAWS/VoiceOver)</text>
+    <text x="20" y="95" font-family="system-ui" font-size="10" fill="#e0e0e0">✓ Focus visibility and order</text>
+    <text x="230" y="55" font-family="system-ui" font-size="10" fill="#e0e0e0">✓ Custom widget accessibility</text>
+    <text x="230" y="75" font-family="system-ui" font-size="10" fill="#e0e0e0">✓ Alt text quality review</text>
+    <text x="230" y="95" font-family="system-ui" font-size="10" fill="#e0e0e0">✓ User testing with disabilities</text>
+  </g>
+</svg>

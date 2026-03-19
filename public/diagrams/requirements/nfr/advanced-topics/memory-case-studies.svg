@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad5" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow5" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="500" fill="url(#bgGrad5)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#e0e0e0">Memory Leak Case Studies</text>
+  
+  <!-- Case Study 1: Social Media Feed -->
+  <g transform="translate(30, 60)">
+    <rect x="0" y="0" width="410" height="200" rx="8" fill="#2a2a4a" stroke="#d9534f" stroke-width="2" filter="url(#shadow5)"/>
+    <text x="205" y="30" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#d9534f">Case Study 1: Social Media Feed</text>
+    
+    <!-- Problem -->
+    <g transform="translate(15, 50)">
+      <text x="0" y="0" font-family="system-ui" font-size="11" font-weight="bold" fill="#e0e0e0">Problem:</text>
+      <text x="0" y="20" font-family="system-ui" font-size="10" fill="#e0e0e0">Tab crashes after scrolling ~500 posts</text>
+      
+      <text x="0" y="45" font-family="system-ui" font-size="11" font-weight="bold" fill="#d9534f">Investigation (Heap Snapshot):</text>
+      <text x="15" y="63" font-family="system-ui" font-size="10" fill="#e0e0e0">• Detached DOM trees from scrolled posts</text>
+      <text x="15" y="80" font-family="system-ui" font-size="10" fill="#e0e0e0">• Image cache unbounded (all images retained)</text>
+      <text x="15" y="97" font-family="system-ui" font-size="10" fill="#e0e0e0">• IntersectionObserver not cleaned up</text>
+    </g>
+    
+    <!-- Solution -->
+    <g transform="translate(15, 155)">
+      <text x="0" y="0" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">Solution:</text>
+      <text x="15" y="18" font-family="system-ui" font-size="10" fill="#e0e0e0">✓ Virtualization (react-window)</text>
+      <text x="15" y="35" font-family="system-ui" font-size="10" fill="#e0e0e0">✓ Image unloading for offscreen posts</text>
+      <text x="15" y="52" font-family="system-ui" font-size="10" fill="#e0e0e0">✓ Disconnect IntersectionObserver on unmount</text>
+    </g>
+  </g>
+  
+  <!-- Before/After Graph 1 -->
+  <g transform="translate(460, 60)">
+    <rect x="0" y="0" width="420" height="200" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow5)"/>
+    <text x="210" y="25" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#67b26f">Before → After</text>
+    
+    <!-- Before graph -->
+    <g transform="translate(30, 45)">
+      <text x="0" y="0" font-family="system-ui" font-size="10" fill="#d9534f">Before: 800 MB</text>
+      
+      <!-- Memory growth line -->
+      <line x1="0" y1="80" x2="150" y2="20" stroke="#d9534f" stroke-width="3"/>
+      
+      <!-- Y axis -->
+      <line x1="0" y1="0" x2="0" y2="80" stroke="#666" stroke-width="1"/>
+      <text x="-5" y="10" font-family="system-ui" font-size="9" fill="#e0e0e0">800MB</text>
+      <text x="-5" y="80" font-family="system-ui" font-size="9" fill="#e0e0e0">0</text>
+      
+      <!-- X axis -->
+      <line x1="0" y1="80" x2="150" y2="80" stroke="#666" stroke-width="1"/>
+      <text x="75" y="95" font-family="system-ui" font-size="9" fill="#e0e0e0">Scroll →</text>
+    </g>
+    
+    <!-- After graph -->
+    <g transform="translate(240, 45)">
+      <text x="0" y="0" font-family="system-ui" font-size="10" fill="#67b26f">After: 80 MB</text>
+      
+      <!-- Stable memory line -->
+      <line x1="0" y1="60" x2="150" y2="60" stroke="#67b26f" stroke-width="3"/>
+      
+      <!-- Y axis -->
+      <line x1="0" y1="0" x2="0" y2="80" stroke="#666" stroke-width="1"/>
+      <text x="-5" y="10" font-family="system-ui" font-size="9" fill="#e0e0e0">100MB</text>
+      <text x="-5" y="80" font-family="system-ui" font-size="9" fill="#e0e0e0">0</text>
+      
+      <!-- X axis -->
+      <line x1="0" y1="80" x2="150" y2="80" stroke="#666" stroke-width="1"/>
+      <text x="75" y="95" font-family="system-ui" font-size="9" fill="#e0e0e0">Scroll →</text>
+    </g>
+    
+    <text x="210" y="175" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#67b26f">90% memory reduction</text>
+  </g>
+  
+  <!-- Case Study 2: Dashboard Application -->
+  <g transform="translate(30, 280)">
+    <rect x="0" y="0" width="410" height="200" rx="8" fill="#2a2a4a" stroke="#d9534f" stroke-width="2" filter="url(#shadow5)"/>
+    <text x="205" y="30" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#d9534f">Case Study 2: Analytics Dashboard</text>
+    
+    <!-- Problem -->
+    <g transform="translate(15, 50)">
+      <text x="0" y="0" font-family="system-ui" font-size="11" font-weight="bold" fill="#e0e0e0">Problem:</text>
+      <text x="0" y="20" font-family="system-ui" font-size="10" fill="#e0e0e0">Sluggish after 2-3 hours of use</text>
+      
+      <text x="0" y="45" font-family="system-ui" font-size="11" font-weight="bold" fill="#d9534f">Investigation (Allocation Timeline):</text>
+      <text x="15" y="63" font-family="system-ui" font-size="10" fill="#e0e0e0">• Chart instances accumulating (no destroy)</text>
+      <text x="15" y="80" font-family="system-ui" font-size="10" fill="#e0e0e0">• WebSocket handlers duplicated on reconnect</text>
+      <text x="15" y="97" font-family="system-ui" font-size="10" fill="#e0e0e0">• setInterval never cleared</text>
+    </g>
+    
+    <!-- Solution -->
+    <g transform="translate(15, 155)">
+      <text x="0" y="0" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">Solution:</text>
+      <text x="15" y="18" font-family="system-ui" font-size="10" fill="#e0e0e0">✓ Call chart.destroy() before unmount</text>
+      <text x="15" y="35" font-family="system-ui" font-size="10" fill="#e0e0e0">✓ Single WebSocket handler with cleanup</text>
+      <text x="15" y="52" font-family="system-ui" font-size="10" fill="#e0e0e0">✓ Clear interval in cleanup function</text>
+    </g>
+  </g>
+  
+  <!-- Before/After Graph 2 -->
+  <g transform="translate(460, 280)">
+    <rect x="0" y="0" width="420" height="200" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow5)"/>
+    <text x="210" y="25" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#67b26f">Before → After</text>
+    
+    <!-- Before graph -->
+    <g transform="translate(30, 45)">
+      <text x="0" y="0" font-family="system-ui" font-size="10" fill="#d9534f">Before: Growing over time</text>
+      
+      <!-- Memory growth over time -->
+      <polyline points="0,70 30,65 60,55 90,45 120,35 150,20" fill="none" stroke="#d9534f" stroke-width="3"/>
+      
+      <!-- Y axis -->
+      <line x1="0" y1="0" x2="0" y2="80" stroke="#666" stroke-width="1"/>
+      <text x="-5" y="10" font-family="system-ui" font-size="9" fill="#e0e0e0">High</text>
+      <text x="-5" y="80" font-family="system-ui" font-size="9" fill="#e0e0e0">Low</text>
+      
+      <!-- X axis -->
+      <line x1="0" y1="80" x2="150" y2="80" stroke="#666" stroke-width="1"/>
+      <text x="75" y="95" font-family="system-ui" font-size="9" fill="#e0e0e0">Time →</text>
+    </g>
+    
+    <!-- After graph -->
+    <g transform="translate(240, 45)">
+      <text x="0" y="0" font-family="system-ui" font-size="10" fill="#67b26f">After: Stable at 120 MB</text>
+      
+      <!-- Stable memory over time -->
+      <polyline points="0,50 30,52 60,48 90,51 120,49 150,50" fill="none" stroke="#67b26f" stroke-width="3"/>
+      
+      <!-- Y axis -->
+      <line x1="0" y1="0" x2="0" y2="80" stroke="#666" stroke-width="1"/>
+      <text x="-5" y="10" font-family="system-ui" font-size="9" fill="#e0e0e0">200MB</text>
+      <text x="-5" y="80" font-family="system-ui" font-size="9" fill="#e0e0e0">0</text>
+      
+      <!-- X axis -->
+      <line x1="0" y1="80" x2="150" y2="80" stroke="#666" stroke-width="1"/>
+      <text x="75" y="95" font-family="system-ui" font-size="9" fill="#e0e0e0">Time →</text>
+    </g>
+    
+    <text x="210" y="175" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#67b26f">Stable at ~120 MB over 8 hours</text>
+  </g>
+  
+  <!-- Key Lessons -->
+  <g transform="translate(30, 495)">
+    <text x="425" y="0" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">Key Lessons:</text>
+    <text x="425" y="15" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">1) Always call destroy() on third-party library instances</text>
+    <text x="425" y="30" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">2) Virtualize long lists to limit DOM nodes</text>
+    <text x="425" y="45" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">3) Use heap snapshots to identify leak sources</text>
+  </g>
+</svg>

@@ -115,7 +115,7 @@
   <text x="475" y="465" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #059669">XSS Rules</text>
   
   <rect x="355" y="480" width="240" height="60" rx="4" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
-  <text x="475" y="500" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">MATCH: &lt;script&gt;</text>
+  <text x="475" y="500" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">MATCH: &amp;lt;script&amp;gt;</text>
   <text x="475" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">MATCH: onerror=</text>
   <text x="475" y="530" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">MATCH: javascript:</text>
   

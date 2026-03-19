@@ -1,10 +1,128 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Search Service Diagram 3</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage A</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage B</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage C</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+  <title id="title">Search Service Failure Modes</title>
+  <desc id="desc">Search service failure modes: index drift, slow queries, permission leaks, and reindexing failures</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="600" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Search Service Failure Modes</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Index drift, slow queries, permission leaks, and reindexing failures</text>
+  
+  <!-- Index Drift -->
+  <rect x="30" y="85" width="410" height="240" rx="8" fill="white" stroke="#ef4444" stroke-width="2"/>
+  <text x="235" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#ef4444">1. Index Drift (Staleness)</text>
+  
+  <!-- Drift scenario -->
+  <rect x="50" y="135" width="370" height="140" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+  
+  <!-- DB update -->
+  <rect x="60" y="150" width="140" height="60" rx="4" fill="#3b82f6" stroke="#1e40af" stroke-width="1"/>
+  <text x="130" y="175" text-anchor="middle" font-size="9" fill="white">DB Updated</text>
+  <text x="130" y="190" text-anchor="middle" font-size="8" fill="#bfdbfe">Price: $100</text>
+  
+  <line x1="205" y1="180" x2="235" y2="180" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="220" y="170" text-anchor="middle" font-size="7" fill="#ef4444">Indexer lag</text>
+  
+  <!-- Index stale -->
+  <rect x="245" y="150" width="140" height="60" rx="4" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="315" y="175" text-anchor="middle" font-size="9" fill="white">Search Index</text>
+  <text x="315" y="190" text-anchor="middle" font-size="8" fill="#fca5a5">Price: $50 (old)</text>
+  
+  <text x="235" y="290" text-anchor="middle" font-size="10" fill="#ef4444">User sees wrong price, orders fail!</text>
+  <text x="235" y="310" text-anchor="middle" font-size="9" fill="#64748b">Cause: Indexing pipeline delayed/failed</text>
+  <text x="235" y="330" text-anchor="middle" font-size="9" fill="#10b981">Fix: Monitor lag, alert on drift, fallback to DB</text>
+  
+  <!-- Slow Queries -->
+  <rect x="460" y="85" width="410" height="240" rx="8" fill="white" stroke="#f59e0b" stroke-width="2"/>
+  <text x="665" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">2. Slow Queries (Tail Latency)</text>
+  
+  <!-- Slow query scenario -->
+  <rect x="480" y="135" width="370" height="140" rx="6" fill="#fffbeb" stroke="#fcd34d" stroke-width="1"/>
+  
+  <!-- Normal query -->
+  <rect x="490" y="150" width="140" height="60" rx="4" fill="#10b981" stroke="#059669" stroke-width="1"/>
+  <text x="560" y="175" text-anchor="middle" font-size="9" fill="white">Normal Query</text>
+  <text x="560" y="190" text-anchor="middle" font-size="8" fill="#6ee7b7">~50ms</text>
+  
+  <line x1="635" y1="180" x2="665" y2="180" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="650" y="170" text-anchor="middle" font-size="7" fill="#ef4444">Bad query</text>
+  
+  <!-- Expensive query -->
+  <rect x="675" y="150" width="140" height="60" rx="4" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>
+  <text x="745" y="175" text-anchor="middle" font-size="9" fill="white">Expensive Query</text>
+  <text x="745" y="190" text-anchor="middle" font-size="8" fill="#fcd34d">Fuzzy + facets</text>
+  
+  <line x1="820" y1="180" x2="850" y2="180" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="835" y="170" text-anchor="middle" font-size="7" fill="#ef4444">Timeout</text>
+  
+  <!-- Cluster overloaded -->
+  <rect x="860" y="150" width="20" height="60" rx="2" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="870" y="180" text-anchor="middle" font-size="10" fill="white">!</text>
+  
+  <text x="665" y="290" text-anchor="middle" font-size="10" fill="#ef4444">Query timeout, cluster overloaded!</text>
+  <text x="665" y="310" text-anchor="middle" font-size="9" fill="#64748b">Cause: Unbounded query complexity</text>
+  <text x="665" y="330" text-anchor="middle" font-size="9" fill="#10b981">Fix: Query budgets, timeout limits, cache</text>
+  
+  <!-- Permission Leaks -->
+  <rect x="30" y="340" width="410" height="240" rx="8" fill="white" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="235" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="#8b5cf6">3. Permission Leaks</text>
+  
+  <!-- Leak scenario -->
+  <rect x="50" y="380" width="370" height="140" rx="6" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1"/>
+  
+  <!-- User query -->
+  <rect x="60" y="395" width="140" height="60" rx="4" fill="#8b5cf6" stroke="#6d28d9" stroke-width="1"/>
+  <text x="130" y="420" text-anchor="middle" font-size="9" fill="white">User Query</text>
+  <text x="130" y="435" text-anchor="middle" font-size="8" fill="#c4b5fd">Tenant A</text>
+  
+  <line x1="205" y1="425" x2="235" y2="425" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="220" y="415" text-anchor="middle" font-size="7" fill="#ef4444">No filter</text>
+  
+  <!-- Results include -->
+  <rect x="245" y="395" width="140" height="60" rx="4" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="315" y="420" text-anchor="middle" font-size="9" fill="white">Results Include</text>
+  <text x="315" y="435" text-anchor="middle" font-size="8" fill="#fca5a5">Tenant B docs!</text>
+  
+  <text x="235" y="495" text-anchor="middle" font-size="10" fill="#ef4444">Data leak across tenants!</text>
+  <text x="235" y="515" text-anchor="middle" font-size="9" fill="#64748b">Cause: Filter applied after search</text>
+  <text x="235" y="535" text-anchor="middle" font-size="9" fill="#10b981">Fix: Filter at index time, query-time ACL</text>
+  
+  <!-- Reindexing Failures -->
+  <rect x="460" y="340" width="410" height="240" rx="8" fill="white" stroke="#10b981" stroke-width="2"/>
+  <text x="665" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="#10b981">4. Reindexing Failures</text>
+  
+  <!-- Reindex scenario -->
+  <rect x="480" y="380" width="370" height="140" rx="6" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1"/>
+  
+  <!-- Schema change -->
+  <rect x="490" y="395" width="140" height="60" rx="4" fill="#10b981" stroke="#059669" stroke-width="1"/>
+  <text x="560" y="420" text-anchor="middle" font-size="9" fill="white">Schema Change</text>
+  <text x="560" y="435" text-anchor="middle" font-size="8" fill="#6ee7b7">New field</text>
+  
+  <line x1="635" y1="425" x2="665" y2="425" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="650" y="415" text-anchor="middle" font-size="7" fill="#ef4444">Reindex</text>
+  
+  <!-- Reindex fails -->
+  <rect x="675" y="395" width="140" height="60" rx="4" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="745" y="420" text-anchor="middle" font-size="9" fill="white">Reindex Fails</text>
+  <text x="745" y="435" text-anchor="middle" font-size="8" fill="#fca5a5">50% complete</text>
+  
+  <line x1="820" y1="425" x2="850" y2="425" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="835" y="415" text-anchor="middle" font-size="7" fill="#ef4444">Rollback</text>
+  
+  <!-- Old index -->
+  <rect x="860" y="395" width="20" height="60" rx="2" fill="#f59e0b" stroke="#b45309" stroke-width="1"/>
+  <text x="870" y="425" text-anchor="middle" font-size="9" fill="white">Old</text>
+  
+  <text x="665" y="495" text-anchor="middle" font-size="10" fill="#ef4444">Index stuck in broken state!</text>
+  <text x="665" y="515" text-anchor="middle" font-size="9" fill="#64748b">Cause: No blue-green, partial reindex</text>
+  <text x="665" y="535" text-anchor="middle" font-size="9" fill="#10b981">Fix: Blue-green index, atomic swap, validation</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
 </svg>

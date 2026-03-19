@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad2)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Dependency Management Best Practices</text>
+  
+  <!-- Dependency Tree -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="400" height="200" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#4a90d9">Dependency Tree</text>
+    
+    <!-- Your App -->
+    <rect x="140" y="50" width="120" height="35" rx="4" fill="#4a90d9"/>
+    <text x="200" y="73" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Your Application</text>
+    
+    <!-- Direct Dependencies -->
+    <line x1="170" y1="85" x2="100" y2="110" stroke="#666" stroke-width="2"/>
+    <line x1="200" y1="85" x2="200" y2="110" stroke="#666" stroke-width="2"/>
+    <line x1="230" y1="85" x2="300" y2="110" stroke="#666" stroke-width="2"/>
+    
+    <rect x="60" y="110" width="80" height="30" rx="3" fill="#67b26f" opacity="0.6"/>
+    <text x="100" y="130" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">React</text>
+    
+    <rect x="160" y="110" width="80" height="30" rx="3" fill="#67b26f" opacity="0.6"/>
+    <text x="200" y="130" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">Express</text>
+    
+    <rect x="260" y="110" width="80" height="30" rx="3" fill="#67b26f" opacity="0.6"/>
+    <text x="300" y="130" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">lodash</text>
+    
+    <!-- Transitive Dependencies -->
+    <line x1="80" y1="140" x2="50" y2="165" stroke="#666" stroke-width="2" stroke-dasharray="4,2"/>
+    <line x1="120" y1="140" x2="150" y2="165" stroke="#666" stroke-width="2" stroke-dasharray="4,2"/>
+    
+    <rect x="20" y="165" width="60" height="25" rx="2" fill="#f0ad4e" opacity="0.4"/>
+    <text x="50" y="182" text-anchor="middle" font-family="system-ui" font-size="7" fill="white">prop-types</text>
+    
+    <rect x="120" y="165" width="60" height="25" rx="2" fill="#f0ad4e" opacity="0.4"/>
+    <text x="150" y="182" text-anchor="middle" font-family="system-ui" font-size="7" fill="white">accepts</text>
+    
+    <text x="200" y="195" text-anchor="middle" font-family="system-ui" font-size="8" fill="#999">Direct: 3 | Transitive: 50+</text>
+  </g>
+  
+  <!-- Best Practices -->
+  <g transform="translate(470, 80)">
+    <rect x="0" y="0" width="380" height="200" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Best Practices</text>
+    
+    <g transform="translate(20, 55)">
+      <circle cx="8" cy="8" r="4" fill="#67b26f"/>
+      <text x="20" y="13" font-family="system-ui" font-size="10" fill="#e0e0e0">Pin exact versions (no ^ or ~)</text>
+      
+      <circle cx="8" cy="28" r="4" fill="#67b26f"/>
+      <text x="20" y="33" font-family="system-ui" font-size="10" fill="#e0e0e0">Commit lock files (package-lock.json)</text>
+      
+      <circle cx="8" cy="48" r="4" fill="#67b26f"/>
+      <text x="20" y="53" font-family="system-ui" font-size="10" fill="#e0e0e0">Regular updates (weekly review)</text>
+      
+      <circle cx="8" cy="68" r="4" fill="#67b26f"/>
+      <text x="20" y="73" font-family="system-ui" font-size="10" fill="#e0e0e0">Automated vulnerability scanning</text>
+      
+      <circle cx="8" cy="88" r="4" fill="#f0ad4e"/>
+      <text x="20" y="93" font-family="system-ui" font-size="10" fill="#e0e0e0">Minimize dependencies (evaluate each)</text>
+      
+      <circle cx="8" cy="108" r="4" fill="#67b26f"/>
+      <text x="20" y="113" font-family="system-ui" font-size="10" fill="#e0e0e0">Audit quarterly (remove unused)</text>
+      
+      <circle cx="8" cy="128" r="4" fill="#67b26f"/>
+      <text x="20" y="133" font-family="system-ui" font-size="10" fill="#e0e0e0">Check package health before adding</text>
+    </g>
+  </g>
+  
+  <!-- Version Pinning -->
+  <g transform="translate(50, 310)">
+    <rect x="0" y="0" width="800" height="140" rx="8" fill="#1a2a1a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">Version Pinning Strategies</text>
+    
+    <rect x="20" y="50" width="760" height="70" rx="4" fill="#2a2a4a"/>
+    
+    <!-- Exact -->
+    <rect x="35" y="65" width="170" height="40" rx="3" fill="#67b26f" opacity="0.4"/>
+    <text x="120" y="85" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#67b26f">Exact (1.2.3)</text>
+    <text x="120" y="100" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Recommended for production</text>
+    
+    <!-- Caret -->
+    <rect x="220" y="65" width="170" height="40" rx="3" fill="#f0ad4e" opacity="0.4"/>
+    <text x="305" y="85" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#f0ad4e">Caret (^1.2.3)</text>
+    <text x="305" y="100" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Allows minor/patch updates</text>
+    
+    <!-- Tilde -->
+    <rect x="405" y="65" width="170" height="40" rx="3" fill="#4a90d9" opacity="0.4"/>
+    <text x="490" y="85" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#4a90d9">Tilde (~1.2.3)</text>
+    <text x="490" y="100" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Allows patch updates only</text>
+    
+    <!-- Latest -->
+    <rect x="590" y="65" width="170" height="40" rx="3" fill="#d9534f" opacity="0.4"/>
+    <text x="675" y="85" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#d9534f">Latest (*)</text>
+    <text x="675" y="100" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Never use in production</text>
+  </g>
+</svg>

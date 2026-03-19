@@ -50,7 +50,7 @@
   <text x="105" y="275" text-anchor="middle" class="label" font-weight="bold">Unit Tests</text>
   <line x1="50" y1="285" x2="160" y2="285" stroke="#999" stroke-width="1"/>
   
-  <text x="60" y="310" text-anchor="start" class="small-label">Speed: Fast (&lt;100ms)</text>
+  <text x="60" y="310" text-anchor="start" class="small-label">Speed: Fast (&amp;lt;100ms)</text>
   <text x="60" y="327" text-anchor="start" class="small-label">Count: Many (100s)</text>
   <text x="60" y="344" text-anchor="start" class="small-label">Isolation: High</text>
   <text x="60" y="361" text-anchor="start" class="small-label">Tools: Jest, RTL</text>

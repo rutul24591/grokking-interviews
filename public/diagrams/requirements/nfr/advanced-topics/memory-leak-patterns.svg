@@ -1,0 +1,177 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="500" fill="url(#bgGradient2)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#e0e0e0">Common Memory Leak Patterns</text>
+  
+  <!-- Pattern 1: Event Listener Leak -->
+  <g transform="translate(30, 70)">
+    <rect x="0" y="0" width="270" height="130" rx="8" fill="#2a2a4a" stroke="#d9534f" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="135" y="25" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#d9534f">1. Event Listener Leak</text>
+    
+    <!-- Component box -->
+    <rect x="20" y="40" width="80" height="50" rx="4" fill="#4a90d9" opacity="0.8"/>
+    <text x="60" y="68" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Component</text>
+    
+    <!-- Window object -->
+    <rect x="170" y="40" width="80" height="50" rx="4" fill="#67b26f" opacity="0.8"/>
+    <text x="210" y="68" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">window</text>
+    
+    <!-- Arrow: addEventListener -->
+    <line x1="100" y1="65" x2="170" y2="65" stroke="#d9534f" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="135" y="58" text-anchor="middle" font-family="system-ui" font-size="9" fill="#d9534f">addEventListener</text>
+    
+    <!-- Leak indicator -->
+    <text x="135" y="105" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">✗ No cleanup on unmount</text>
+    <text x="135" y="120" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">→ Listener persists</text>
+  </g>
+  
+  <!-- Pattern 2: Detached DOM Tree -->
+  <g transform="translate(320, 70)">
+    <rect x="0" y="0" width="270" height="130" rx="8" fill="#2a2a4a" stroke="#d9534f" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="135" y="25" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#d9534f">2. Detached DOM Tree</text>
+    
+    <!-- Variable reference -->
+    <rect x="20" y="40" width="60" height="35" rx="4" fill="#4a90d9" opacity="0.8"/>
+    <text x="50" y="62" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">ref var</text>
+    
+    <!-- Detached DOM node -->
+    <rect x="130" y="40" width="70" height="35" rx="4" fill="#d9534f" opacity="0.6" stroke="#d9534f" stroke-width="2" stroke-dasharray="4,2"/>
+    <text x="165" y="62" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">div (detached)</text>
+    
+    <!-- Arrow -->
+    <line x1="80" y1="57" x2="130" y2="57" stroke="#4a90d9" stroke-width="2"/>
+    
+    <!-- Children -->
+    <rect x="140" y="85" width="50" height="25" rx="3" fill="#d9534f" opacity="0.4"/>
+    <text x="165" y="101" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">children</text>
+    
+    <text x="135" y="120" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">✗ Ref prevents GC</text>
+  </g>
+  
+  <!-- Pattern 3: Closure Leak -->
+  <g transform="translate(610, 70)">
+    <rect x="0" y="0" width="270" height="130" rx="8" fill="#2a2a4a" stroke="#d9534f" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="135" y="25" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#d9534f">3. Closure Leak</text>
+    
+    <!-- Large object -->
+    <rect x="20" y="40" width="70" height="45" rx="4" fill="#d9a036" opacity="0.8"/>
+    <text x="55" y="60" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">Large</text>
+    <text x="55" y="75" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">Object</text>
+    
+    <!-- Closure -->
+    <rect x="140" y="40" width="80" height="45" rx="4" fill="#67b26f" opacity="0.8"/>
+    <text x="180" y="60" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">async</text>
+    <text x="180" y="75" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">callback</text>
+    
+    <!-- Arrow: captures -->
+    <line x1="90" y1="62" x2="140" y2="62" stroke="#d9a036" stroke-width="2"/>
+    <text x="115" y="55" text-anchor="middle" font-family="system-ui" font-size="8" fill="#d9a036">captures</text>
+    
+    <text x="135" y="105" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">✗ Callback outlives</text>
+    <text x="135" y="120" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">component lifecycle</text>
+  </g>
+  
+  <!-- Pattern 4: Unbounded Cache -->
+  <g transform="translate(30, 220)">
+    <rect x="0" y="0" width="270" height="130" rx="8" fill="#2a2a4a" stroke="#d9534f" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="135" y="25" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#d9534f">4. Unbounded Cache</text>
+    
+    <!-- Cache object -->
+    <rect x="40" y="40" width="190" height="70" rx="4" fill="#4a90d9" opacity="0.8"/>
+    <text x="135" y="60" text-anchor="middle" font-family="system-ui" font-size="11" fill="white">Global Cache</text>
+    
+    <!-- Cache entries growing -->
+    <rect x="50" y="70" width="30" height="25" rx="2" fill="#1a1a2e"/>
+    <text x="65" y="86" text-anchor="middle" font-family="system-ui" font-size="8" fill="#fff">1</text>
+    
+    <rect x="85" y="70" width="30" height="25" rx="2" fill="#1a1a2e"/>
+    <text x="100" y="86" text-anchor="middle" font-family="system-ui" font-size="8" fill="#fff">2</text>
+    
+    <rect x="120" y="70" width="30" height="25" rx="2" fill="#1a1a2e"/>
+    <text x="135" y="86" text-anchor="middle" font-family="system-ui" font-size="8" fill="#fff">3</text>
+    
+    <rect x="155" y="70" width="30" height="25" rx="2" fill="#1a1a2e"/>
+    <text x="170" y="86" text-anchor="middle" font-family="system-ui" font-size="8" fill="#fff">...</text>
+    
+    <rect x="190" y="70" width="30" height="25" rx="2" fill="#1a1a2e"/>
+    <text x="205" y="86" text-anchor="middle" font-family="system-ui" font-size="8" fill="#fff">N</text>
+    
+    <text x="135" y="115" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">✗ No eviction policy</text>
+  </g>
+  
+  <!-- Pattern 5: Subscription Leak -->
+  <g transform="translate(320, 220)">
+    <rect x="0" y="0" width="270" height="130" rx="8" fill="#2a2a4a" stroke="#d9534f" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="135" y="25" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#d9534f">5. Subscription Leak</text>
+    
+    <!-- Component -->
+    <rect x="20" y="40" width="70" height="50" rx="4" fill="#4a90d9" opacity="0.8"/>
+    <text x="55" y="68" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Component</text>
+    
+    <!-- Observable/EventEmitter -->
+    <rect x="160" y="40" width="80" height="50" rx="4" fill="#67b26f" opacity="0.8"/>
+    <text x="200" y="63" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Observable</text>
+    <text x="200" y="78" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">/ EventEmitter</text>
+    
+    <!-- Arrow: subscribe -->
+    <line x1="90" y1="65" x2="160" y2="65" stroke="#d9534f" stroke-width="2"/>
+    <text x="125" y="58" text-anchor="middle" font-family="system-ui" font-size="9" fill="#d9534f">subscribe()</text>
+    
+    <text x="135" y="105" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">✗ No unsubscribe()</text>
+    <text x="135" y="120" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">→ Handler persists</text>
+  </g>
+  
+  <!-- Pattern 6: Timer Leak -->
+  <g transform="translate(610, 220)">
+    <rect x="0" y="0" width="270" height="130" rx="8" fill="#2a2a4a" stroke="#d9534f" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="135" y="25" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#d9534f">6. Timer Leak</text>
+    
+    <!-- Component -->
+    <rect x="20" y="40" width="70" height="50" rx="4" fill="#4a90d9" opacity="0.8"/>
+    <text x="55" y="68" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Component</text>
+    
+    <!-- Timer -->
+    <rect x="150" y="40" width="80" height="50" rx="4" fill="#f0ad4e" opacity="0.8"/>
+    <text x="190" y="63" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">setInterval</text>
+    <text x="190" y="78" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">(1000ms)</text>
+    
+    <!-- Arrow -->
+    <line x1="90" y1="65" x2="150" y2="65" stroke="#f0ad4e" stroke-width="2"/>
+    
+    <!-- Callback -->
+    <rect x="160" y="100" width="60" height="20" rx="3" fill="#1a1a2e" stroke="#f0ad4e"/>
+    <text x="190" y="114" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">callback</text>
+    
+    <text x="135" y="115" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">✗ Not cleared on unmount</text>
+  </g>
+  
+  <!-- Prevention Summary -->
+  <g transform="translate(30, 370)">
+    <rect x="0" y="0" width="840" height="110" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2"/>
+    <text x="420" y="25" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Prevention Summary</text>
+    
+    <text x="40" y="50" font-family="system-ui" font-size="11" fill="#e0e0e0">✓ Remove event listeners in cleanup</text>
+    <text x="40" y="70" font-family="system-ui" font-size="11" fill="#e0e0e0">✓ Nullify DOM references</text>
+    <text x="40" y="90" font-family="system-ui" font-size="11" fill="#e0e0e0">✓ Cancel async operations with AbortController</text>
+    
+    <text x="280" y="50" font-family="system-ui" font-size="11" fill="#e0e0e0">✓ Unsubscribe from observables</text>
+    <text x="280" y="70" font-family="system-ui" font-size="11" fill="#e0e0e0">✓ Clear timers (setTimeout/setInterval)</text>
+    <text x="280" y="90" font-family="system-ui" font-size="11" fill="#e0e0e0">✓ Use bounded caches with LRU/TTL eviction</text>
+    
+    <text x="540" y="50" font-family="system-ui" font-size="11" fill="#e0e0e0">✓ Use WeakMap/WeakSet for metadata</text>
+    <text x="540" y="70" font-family="system-ui" font-size="11" fill="#e0e0e0">✓ Virtualize long lists</text>
+    <text x="540" y="90" font-family="system-ui" font-size="11" fill="#e0e0e0">✓ Unload offscreen images</text>
+  </g>
+</svg>

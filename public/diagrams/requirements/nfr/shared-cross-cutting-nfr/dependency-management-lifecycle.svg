@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad2)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Dependency Management Lifecycle</text>
+  
+  <!-- Dependency Lifecycle -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="140" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4a90d9">Dependency Lifecycle</text>
+    
+    <!-- Select -->
+    <circle cx="80" cy="90" r="35" fill="#4a90d9"/>
+    <text x="80" y="95" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="white">Select</text>
+    <text x="80" y="115" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Evaluate package</text>
+    
+    <line x1="115" y1="90" x2="145" y2="90" stroke="#666" stroke-width="2"/>
+    <polygon points="145,90 135,85 135,95" fill="#666"/>
+    
+    <!-- Pin -->
+    <circle cx="190" cy="90" r="35" fill="#67b26f"/>
+    <text x="190" y="95" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="white">Pin</text>
+    <text x="190" y="115" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Exact version</text>
+    
+    <line x1="225" y1="90" x2="255" y2="90" stroke="#666" stroke-width="2"/>
+    <polygon points="255,90 245,85 245,95" fill="#666"/>
+    
+    <!-- Monitor -->
+    <circle cx="300" cy="90" r="35" fill="#f0ad4e"/>
+    <text x="300" y="95" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="white">Monitor</text>
+    <text x="300" y="115" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Vulnerabilities</text>
+    
+    <line x1="335" y1="90" x2="365" y2="90" stroke="#666" stroke-width="2"/>
+    <polygon points="365,90 355,85 355,95" fill="#666"/>
+    
+    <!-- Update -->
+    <circle cx="410" cy="90" r="35" fill="#4a90d9"/>
+    <text x="410" y="95" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="white">Update</text>
+    <text x="410" y="115" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Regular updates</text>
+    
+    <line x1="445" y1="90" x2="475" y2="90" stroke="#666" stroke-width="2"/>
+    <polygon points="475,90 465,85 465,95" fill="#666"/>
+    
+    <!-- Remove -->
+    <circle cx="520" cy="90" r="35" fill="#d9534f"/>
+    <text x="520" y="95" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="white">Remove</text>
+    <text x="520" y="115" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Unused deps</text>
+    
+    <line x1="555" y1="90" x2="585" y2="90" stroke="#666" stroke-width="2"/>
+    <polygon points="585,90 575,85 575,95" fill="#666"/>
+    
+    <!-- Audit -->
+    <circle cx="630" cy="90" r="35" fill="#6f42c1"/>
+    <text x="630" y="95" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="white">Audit</text>
+    <text x="630" y="115" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Quarterly review</text>
+    
+    <line x1="665" y1="90" x2="695" y2="90" stroke="#666" stroke-width="2" stroke-dasharray="4,2"/>
+    <polygon points="695,90 685,85 685,95" fill="#666"/>
+    
+    <!-- Loop back -->
+    <text x="750" y="95" text-anchor="middle" font-family="system-ui" font-size="10" fill="#67b26f">↻ Repeat</text>
+  </g>
+  
+  <!-- Supply Chain Security -->
+  <g transform="translate(50, 250)">
+    <rect x="0" y="0" width="400" height="200" rx="8" fill="#1a2a1a" stroke="#d9534f" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#d9534f">Supply Chain Threats</text>
+    
+    <rect x="20" y="50" width="360" height="130" rx="4" fill="#2a2a4a"/>
+    
+    <text x="35" y="75" font-family="system-ui" font-size="10" fill="#d9534f">⚠ Typosquatting</text>
+    <text x="35" y="92" font-family="system-ui" font-size="9" fill="#e0e0e0">Malicious packages with similar names</text>
+    
+    <text x="35" y="115" font-family="system-ui" font-size="10" fill="#d9534f">⚠ Dependency Confusion</text>
+    <text x="35" y="132" font-family="system-ui" font-size="9" fill="#e0e0e0">Public package overrides private</text>
+    
+    <text x="35" y="155" font-family="system-ui" font-size="10" fill="#d9534f">⚠ Compromised Maintainer</text>
+    <text x="35" y="172" font-family="system-ui" font-size="9" fill="#e0e0e0">Account takeover, insider threats</text>
+  </g>
+  
+  <!-- Mitigation Strategies -->
+  <g transform="translate(470, 250)">
+    <rect x="0" y="0" width="380" height="200" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Mitigation Strategies</text>
+    
+    <g transform="translate(20, 55)">
+      <circle cx="8" cy="8" r="4" fill="#67b26f"/>
+      <text x="20" y="13" font-family="system-ui" font-size="10" fill="#e0e0e0">Package signatures (sigstore, cosign)</text>
+      
+      <circle cx="8" cy="28" r="4" fill="#67b26f"/>
+      <text x="20" y="33" font-family="system-ui" font-size="10" fill="#e0e0e0">Private registry mirrors (Verdaccio)</text>
+      
+      <circle cx="8" cy="48" r="4" fill="#67b26f"/>
+      <text x="20" y="53" font-family="system-ui" font-size="10" fill="#e0e0e0">Allowlists for approved packages</text>
+      
+      <circle cx="8" cy="68" r="4" fill="#67b26f"/>
+      <text x="20" y="73" font-family="system-ui" font-size="10" fill="#e0e0e0">SBOM (Software Bill of Materials)</text>
+      
+      <circle cx="8" cy="88" r="4" fill="#f0ad4e"/>
+      <text x="20" y="93" font-family="system-ui" font-size="10" fill="#e0e0e0">Vendor critical dependencies</text>
+      
+      <circle cx="8" cy="108" r="4" fill="#67b26f"/>
+      <text x="20" y="113" font-family="system-ui" font-size="10" fill="#e0e0e0">Automated vulnerability scanning</text>
+    </g>
+  </g>
+</svg>

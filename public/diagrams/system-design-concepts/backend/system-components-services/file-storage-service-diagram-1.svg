@@ -1,10 +1,115 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">File Storage Service Diagram 1</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage A</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage B</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage C</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">File Storage Service Architecture</title>
+  <desc id="desc">File storage architecture showing upload API, object storage, metadata store, scanning, and CDN delivery</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">File Storage Service Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Upload API, object storage, metadata store, scanning, and CDN delivery</text>
+  
+  <!-- Client Upload -->
+  <rect x="30" y="85" width="150" height="180" rx="8" fill="#3b82f6" stroke="#1e40af" stroke-width="2"/>
+  <text x="105" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Client</text>
+  
+  <rect x="50" y="125" width="110" height="35" rx="3" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="105" y="148" text-anchor="middle" font-size="9" fill="#64748b">Web/Mobile App</text>
+  
+  <rect x="50" y="165" width="110" height="35" rx="3" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="105" y="188" text-anchor="middle" font-size="9" fill="#64748b">Backend Service</text>
+  
+  <rect x="50" y="205" width="110" height="35" rx="3" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="105" y="228" text-anchor="middle" font-size="9" fill="#64748b">Admin Portal</text>
+  
+  <!-- Upload Request -->
+  <line x1="185" y1="175" x2="235" y2="175" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="210" y="165" text-anchor="middle" font-size="9" fill="#64748b">Upload Request</text>
+  
+  <!-- Storage Service -->
+  <rect x="235" y="85" width="300" height="180" rx="8" fill="#8b5cf6" stroke="#6d28d9" stroke-width="2"/>
+  <text x="385" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Storage Service</text>
+  
+  <rect x="255" y="125" width="260" height="40" rx="4" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="385" y="150" text-anchor="middle" font-size="9" fill="#64748b">Upload API + Auth</text>
+  
+  <rect x="255" y="175" width="120" height="40" rx="4" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="315" y="200" text-anchor="middle" font-size="9" fill="#64748b">Metadata Store</text>
+  
+  <rect x="385" y="175" width="130" height="40" rx="4" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="450" y="200" text-anchor="middle" font-size="9" fill="#64748b">Access Control</text>
+  
+  <!-- Object Storage -->
+  <line x1="540" y1="175" x2="590" y2="175" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="565" y="165" text-anchor="middle" font-size="9" fill="#64748b">Store File</text>
+  
+  <rect x="590" y="85" width="280" height="180" rx="8" fill="#06b6d4" stroke="#0891b2" stroke-width="2"/>
+  <text x="730" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Object Storage</text>
+  
+  <rect x="610" y="125" width="240" height="40" rx="4" fill="#ecfdf5" stroke="#06b6d4" stroke-width="1"/>
+  <text x="730" y="150" text-anchor="middle" font-size="9" fill="#64748b">S3 / GCS / Azure Blob</text>
+  
+  <rect x="610" y="175" width="240" height="40" rx="4" fill="#ecfdf5" stroke="#06b6d4" stroke-width="1"/>
+  <text x="730" y="200" text-anchor="middle" font-size="9" fill="#64748b">Durable Blob Storage</text>
+  
+  <rect x="610" y="225" width="240" height="30" rx="4" fill="#ecfdf5" stroke="#06b6d4" stroke-width="1"/>
+  <text x="730" y="245" text-anchor="middle" font-size="9" fill="#64748b">Versioning Enabled</text>
+  
+  <!-- Security Scanning -->
+  <line x1="730" y1="265" x2="730" y2="315" stroke="#64748b" stroke-width="3" marker-end="url(#arrow-down)"/>
+  <text x="750" y="290" text-anchor="start" font-size="8" fill="#64748b">Scan</text>
+  
+  <rect x="590" y="320" width="280" height="100" rx="8" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>
+  <text x="730" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Security Scanning</text>
+  
+  <rect x="610" y="355" width="240" height="55" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="730" y="380" text-anchor="middle" font-size="9" fill="#64748b">Virus/Malware Detection</text>
+  <text x="730" y="395" text-anchor="middle" font-size="8" fill="#fcd34d">Content Validation</text>
+  <text x="730" y="408" text-anchor="middle" font-size="7" fill="#fcd34d">Quarantine if infected</text>
+  
+  <!-- CDN Delivery -->
+  <line x1="585" y1="175" x2="635" y2="370" stroke="#06b6d4" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow-cyan)"/>
+  <text x="610" y="280" text-anchor="start" font-size="8" fill="#06b6d4">CDN Pull</text>
+  
+  <rect x="30" y="280" width="280" height="160" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="170" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">CDN Delivery</text>
+  
+  <rect x="50" y="320" width="240" height="110" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="170" y="345" text-anchor="middle" font-size="9" fill="#64748b">CloudFront/Cloudflare</text>
+  <text x="170" y="360" text-anchor="middle" font-size="9" fill="#64748b">Edge Caching</text>
+  <text x="170" y="375" text-anchor="middle" font-size="9" fill="#64748b">Signed URLs</text>
+  <text x="170" y="390" text-anchor="middle" font-size="9" fill="#64748b">Cache Control Headers</text>
+  <text x="170" y="405" text-anchor="middle" font-size="9" fill="#64748b">Low Latency Delivery</text>
+  
+  <!-- Upload Methods -->
+  <rect x="330" y="280" width="280" height="160" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="470" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Upload Methods</text>
+  
+  <rect x="350" y="320" width="240" height="110" rx="4" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="470" y="345" text-anchor="middle" font-size="9" fill="#64748b">Direct-to-Storage (presigned URL)</text>
+  <text x="470" y="360" text-anchor="middle" font-size="9" fill="#64748b">Service-Proxied Upload</text>
+  <text x="470" y="375" text-anchor="middle" font-size="9" fill="#64748b">Multipart Upload</text>
+  <text x="470" y="390" text-anchor="middle" font-size="9" fill="#64748b">Resumable Uploads</text>
+  <text x="470" y="405" text-anchor="middle" font-size="9" fill="#64748b">Chunked Transfer</text>
+  
+  <!-- Lifecycle -->
+  <rect x="630" y="435" width="240" height="95" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="750" y="460" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">Lifecycle Management</text>
+  
+  <rect x="650" y="470" width="200" height="50" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="750" y="495" text-anchor="middle" font-size="9" fill="#64748b">Retention Policies</text>
+  <text x="750" y="510" text-anchor="middle" font-size="8" fill="#fcd34d">Auto-expiry</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-down" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 0, 5 7" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-cyan" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#06b6d4"/>
+    </marker>
+  </defs>
 </svg>

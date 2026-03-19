@@ -37,7 +37,7 @@
   <text x="375" y="175" text-anchor="middle" font-size="6" fill="#6ee7b7">Normal</text>
   
   <line x1="410" y1="158" x2="440" y2="158" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
-  <text x="425" y="148" text-anchor="middle" font-size="6" fill="var(--text-theme, #64748b">Errors &gt; threshold</text>
+  <text x="425" y="148" text-anchor="middle" font-size="6" fill="var(--text-theme, #64748b">Errors &amp;gt; threshold</text>
   
   <!-- Open -->
   <rect x="445" y="140" width="60" height="35" rx="3" fill="var(--bg-theme, #ef4444)"/>

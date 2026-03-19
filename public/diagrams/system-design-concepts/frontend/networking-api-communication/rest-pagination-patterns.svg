@@ -49,7 +49,7 @@
   <rect x="362" y="153" width="36" height="6" rx="2" fill="#6EE7B7"/>
   <rect x="402" y="153" width="36" height="6" rx="2" fill="#10B981"/>
   <text x="420" y="164" font-size="7" fill="#10B981" font-weight="bold">← cursor</text>
-  <text x="400" y="176" text-anchor="middle" font-size="9" fill="#10B981" font-weight="bold">WHERE id &gt; cursor → 20</text>
+  <text x="400" y="176" text-anchor="middle" font-size="9" fill="#10B981" font-weight="bold">WHERE id &amp;gt; cursor → 20</text>
 
   <!-- Pros -->
   <text x="296" y="210" font-size="10" fill="#10B981" font-weight="bold">Pros</text>
@@ -82,7 +82,7 @@
   <text x="637" y="162" font-size="8" fill="#64748b">id=99</text>
   <text x="677" y="162" font-size="8" fill="#6366F1" font-weight="bold">id=100</text>
   <text x="717" y="162" font-size="8" fill="#64748b">id=101</text>
-  <text x="660" y="176" text-anchor="middle" font-size="9" fill="#6366F1" font-weight="bold">WHERE id &gt; 100 LIMIT 20</text>
+  <text x="660" y="176" text-anchor="middle" font-size="9" fill="#6366F1" font-weight="bold">WHERE id &amp;gt; 100 LIMIT 20</text>
 
   <!-- Pros -->
   <text x="556" y="210" font-size="10" fill="#10B981" font-weight="bold">Pros</text>

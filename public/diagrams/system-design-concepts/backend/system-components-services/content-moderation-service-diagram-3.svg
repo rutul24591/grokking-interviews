@@ -1,10 +1,130 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Content Moderation Service Diagram 3</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage A</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage B</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage C</text>
+<svg xmlns="http://www.w3.org/2000/svg" " viewBox="0 0 900 600" role="img aria-labelledby="title desc">
+  <title id="title>Content Moderation Failure Modes</title>
+  <desc" id="desc">Content moderation failure modes: false positives, adversarial attacks, reviewer burnout, and policy inconsistency</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="600" fill="var(--bg-panel, #f8fafc)/>
+  
+  <!-- Title -->
+  <text" x="450" y="35 text-anchor="middle" font-size="18 font-weight="bold" fill="var(--text-theme, #1e293b)>Content Moderation Failure Modes</text>
+  <text" x="450" y="58 text-anchor="middle" font-size="13 fill="var(--text-theme, #64748b)">False positives, adversarial attacks, reviewer burnout, and policy inconsistency</text>
+  
+  <!-- False Positives -->
+  <rect x="30 y="85" width="410" height="240" rx="8 fill="white" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <text x="235 y="110" text-anchor="middle font-size="14" font-weight="bold fill="var(--text-theme, #ef4444">1. False Positives (Over-moderation)</text>
+  
+  <!-- FP scenario -->
+  <rect x="50 y="135" width="370" height="140" rx="6 fill="var(--bg-panel-soft, #fef2f2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  
+  <!-- Legitimate content -->
+  <rect x="60 y="150" width="140" height="60" rx="4 fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="130 y="175" text-anchor="middle font-size="9" fill="white>Legitimate Content</text>
+  <text" x="130" y="190 text-anchor="middle" font-size="8 fill="#6ee7b7">Educational</text>
+  <text x="130 y="203" text-anchor="middle font-size="7" fill="#6ee7b7>Medical context</text>
+  
+  <line x1="205" y1="180 x2="235" y2="180 stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="220 y="170" text-anchor="middle font-size="7" fill="var(--text-theme, #ef4444>ML flags</text>
+  
+  <!-- Blocked -->
+  <rect" x="245" y="150 width="140" height="60" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2/>
+  <text" x="315" y="175 text-anchor="middle" font-size="9 fill="white">BLOCKED</text>
+  <text x="315 y="190" text-anchor="middle font-size="8" fill="#fca5a5>NSFW detected</text>
+  <text" x="315" y="203 text-anchor="middle" font-size="7 fill="#fca5a5">No context</text>
+  
+  <text x="235 y="290" text-anchor="middle font-size="10" fill="var(--text-theme, #ef4444>Legitimate content removed, user frustrated!</text>
+  <text" x="235" y="310 text-anchor="middle" font-size="9 fill="var(--text-theme, #64748b">Cause: ML lacks context, threshold too sensitive</text>
+  <text x="235 y="330" text-anchor="middle font-size="9" fill="var(--text-theme, #10b981>Fix: Human review for borderline, appeals process</text>
+  
+  <!-- Adversarial Attacks -->
+  <rect" x="460" y="85 width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2/>
+  <text" x="665" y="110 text-anchor="middle" font-size="14 font-weight="bold" fill="var(--text-theme, #b45309>2. Adversarial Attacks</text>
+  
+  <!-- Attack scenario -->
+  <rect" x="480" y="135 width="370" height="140" rx="6" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1/>
+  
+  <!-- Attacker -->
+  <rect" x="490" y="150 width="120" height="60" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2/>
+  <text" x="550" y="175 text-anchor="middle" font-size="9 fill="white">Attacker</text>
+  <text x="550 y="190" text-anchor="middle font-size="8" fill="#fca5a5>Adapts content</text>
+  <text" x="550" y="203 text-anchor="middle" font-size="7 fill="#fca5a5">Evades detection</text>
+  
+  <line x1="615 y1="180" x2="645 y2="180" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)/>
+  <text x="630" y="170 text-anchor="middle" font-size="7 fill="var(--text-theme, #ef4444">Bypasses</text>
+  
+  <!-- Evasion techniques -->
+  <rect x="655 y="150" width="185" height="60" rx="4 fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="747 y="175" text-anchor="middle font-size="9" fill="white>Evasion Techniques</text>
+  <text" x="747" y="190 text-anchor="middle" font-size="8 fill="#fcd34d">Homoglyphs, spacing</text>
+  <text x="747 y="203" text-anchor="middle font-size="7" fill="#fcd34d>Image perturbations</text>
+  
+  <text" x="665" y="290 text-anchor="middle" font-size="10 fill="var(--text-theme, #ef4444">Harmful content slips through!</text>
+  <text x="665 y="310" text-anchor="middle font-size="9" fill="var(--text-theme, #64748b>Cause: Attackers adapt faster than models</text>
+  <text" x="665" y="330 text-anchor="middle" font-size="9 fill="var(--text-theme, #10b981">Fix: Adversarial training, user reports, ensemble</text>
+  
+  <!-- Reviewer Burnout -->
+  <rect x="30 y="340" width="410" height="240" rx="8 fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
+  <text x="235 y="365" text-anchor="middle font-size="14" font-weight="bold fill="var(--text-theme, #8b5cf6">3. Reviewer Burnout</text>
+  
+  <!-- Burnout scenario -->
+  <rect x="50 y="380" width="370" height="140" rx="6 fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  
+  <!-- Review queue -->
+  <rect x="60 y="395" width="140" height="60" rx="4 fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="130 y="420" text-anchor="middle font-size="9" fill="white>Review Queue</text>
+  <text" x="130" y="435 text-anchor="middle" font-size="8 fill="#c4b5fd">5000 pending</text>
+  <text x="130 y="448" text-anchor="middle font-size="7" fill="#c4b5fd>Growing</text>
+  
+  <line x1="205" y1="425 x2="235" y2="425 stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="220 y="415" text-anchor="middle font-size="7" fill="var(--text-theme, #ef4444>Overwhelms</text>
+  
+  <!-- Reviewer -->
+  <rect" x="245" y="395 width="140" height="60" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2/>
+  <text" x="315" y="420 text-anchor="middle" font-size="9 fill="white">Reviewer</text>
+  <text x="315 y="435" text-anchor="middle font-size="8" fill="#fca5a5>Burnout</text>
+  <text" x="315" y="448 text-anchor="middle" font-size="7 fill="#fca5a5">PTSD risk</text>
+  
+  <text x="235 y="495" text-anchor="middle font-size="10" fill="var(--text-theme, #ef4444>Quality drops, errors increase!</text>
+  <text" x="235" y="515 text-anchor="middle" font-size="9 fill="var(--text-theme, #64748b">Cause: High volume, disturbing content</text>
+  <text x="235 y="535" text-anchor="middle font-size="9" fill="var(--text-theme, #10b981>Fix: Rotation, limits, mental health support, more automation</text>
+  
+  <!-- Policy Inconsistency -->
+  <rect" x="460" y="340 width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2/>
+  <text" x="665" y="365 text-anchor="middle" font-size="14 font-weight="bold" fill="var(--text-theme, #10b981>4. Policy Inconsistency</text>
+  
+  <!-- Inconsistency scenario -->
+  <rect" x="480" y="380 width="370" height="140" rx="6" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1/>
+  
+  <!-- Same content -->
+  <rect" x="490" y="395 width="100" height="60" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1/>
+  <text" x="540" y="420 text-anchor="middle" font-size="9 fill="white">Same Content</text>
+  <text x="540 y="435" text-anchor="middle font-size="8" fill="#6ee7b7>Submitted</text>
+  
+  <line x1="595" y1="425 x2="625" y2="425 stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="610 y="415" text-anchor="middle font-size="7" fill="var(--text-theme, #64748b>Reviewer A</text>
+  
+  <!-- Different outcomes -->
+  <rect" x="635" y="395 width="100" height="60" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1/>
+  <text" x="685" y="420 text-anchor="middle" font-size="9 fill="white">Allowed</text>
+  <text x="685 y="435" text-anchor="middle font-size="8" fill="#6ee7b7>Reviewer A</text>
+  
+  <line x1="595" y1="445 x2="625" y2="445 stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="610 y="455" text-anchor="middle font-size="7" fill="var(--text-theme, #ef4444>Reviewer B</text>
+  
+  <rect" x="635" y="435 width="100" height="60" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2/>
+  <text" x="685" y="460 text-anchor="middle" font-size="9 fill="white">Removed</text>
+  <text x="685 y="475" text-anchor="middle font-size="8" fill="#fca5a5>Reviewer B</text>
+  
+  <text" x="665" y="495 text-anchor="middle" font-size="10 fill="var(--text-theme, #ef4444">Inconsistent enforcement erodes trust!</text>
+  <text x="665 y="515" text-anchor="middle font-size="9" fill="var(--text-theme, #64748b>Cause: Unclear policy, subjective judgment</text>
+  <text" x="665" y="535 text-anchor="middle" font-size="9 fill="var(--text-theme, #10b981">Fix: Clear guidelines, calibration, QA reviews</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5 orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7 fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5 orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7 fill="var(--text-theme, #ef4444)"/>
+    </marker>
+  </defs>
 </svg>

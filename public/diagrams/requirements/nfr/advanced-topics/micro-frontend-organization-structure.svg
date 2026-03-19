@@ -1,0 +1,195 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad14" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow14" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="500" fill="url(#bgGrad14)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#e0e0e0">Micro-Frontend Organization Structure</text>
+  
+  <!-- Product-Aligned Teams -->
+  <g transform="translate(30, 60)">
+    <rect x="0" y="0" width="380" height="200" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow14)"/>
+    <text x="190" y="30" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#4a90d9">Product-Aligned Teams</text>
+    
+    <!-- Team 1: Checkout -->
+    <g transform="translate(15, 50)">
+      <rect x="0" y="0" width="170" height="65" rx="6" fill="#67b26f" opacity="0.3" stroke="#67b26f"/>
+      <text x="85" y="22" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">Checkout Team</text>
+      
+      <!-- Full stack ownership -->
+      <rect x="10" y="32" width="50" height="25" rx="3" fill="#67b26f" opacity="0.6"/>
+      <text x="35" y="48" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">Frontend</text>
+      
+      <rect x="65" y="32" width="50" height="25" rx="3" fill="#4a90d9" opacity="0.6"/>
+      <text x="90" y="48" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">Backend</text>
+      
+      <rect x="120" y="32" width="40" height="25" rx="3" fill="#f0ad4e" opacity="0.6"/>
+      <text x="140" y="48" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">QA</text>
+      
+      <text x="85" y="72" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Owns: Cart, Payment, Order MFs</text>
+    </g>
+    
+    <!-- Team 2: Product -->
+    <g transform="translate(195, 50)">
+      <rect x="0" y="0" width="170" height="65" rx="6" fill="#f0ad4e" opacity="0.3" stroke="#f0ad4e"/>
+      <text x="85" y="22" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">Product Team</text>
+      
+      <!-- Full stack ownership -->
+      <rect x="10" y="32" width="50" height="25" rx="3" fill="#67b26f" opacity="0.6"/>
+      <text x="35" y="48" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">Frontend</text>
+      
+      <rect x="65" y="32" width="50" height="25" rx="3" fill="#4a90d9" opacity="0.6"/>
+      <text x="90" y="48" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">Backend</text>
+      
+      <rect x="120" y="32" width="40" height="25" rx="3" fill="#d9534f" opacity="0.6"/>
+      <text x="140" y="48" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">UX</text>
+      
+      <text x="85" y="72" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Owns: Catalog, Search, Detail MFs</text>
+    </g>
+    
+    <!-- Team 3: User -->
+    <g transform="translate(15, 130)">
+      <rect x="0" y="0" width="170" height="65" rx="6" fill="#d9534f" opacity="0.3" stroke="#d9534f"/>
+      <text x="85" y="22" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#d9534f">User Platform Team</text>
+      
+      <!-- Full stack ownership -->
+      <rect x="10" y="32" width="50" height="25" rx="3" fill="#67b26f" opacity="0.6"/>
+      <text x="35" y="48" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">Frontend</text>
+      
+      <rect x="65" y="32" width="50" height="25" rx="3" fill="#4a90d9" opacity="0.6"/>
+      <text x="90" y="48" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">Backend</text>
+      
+      <rect x="120" y="32" width="40" height="25" rx="3" fill="#67b26f" opacity="0.6"/>
+      <text x="140" y="48" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">DevOps</text>
+      
+      <text x="85" y="72" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Owns: Auth, Profile, Settings MFs</text>
+    </g>
+    
+    <!-- Team 4: Marketing -->
+    <g transform="translate(195, 130)">
+      <rect x="0" y="0" width="170" height="65" rx="6" fill="#4a90d9" opacity="0.3" stroke="#4a90d9"/>
+      <text x="85" y="22" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#4a90d9">Marketing Team</text>
+      
+      <!-- Full stack ownership -->
+      <rect x="10" y="32" width="50" height="25" rx="3" fill="#67b26f" opacity="0.6"/>
+      <text x="35" y="48" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">Frontend</text>
+      
+      <rect x="65" y="32" width="50" height="25" rx="3" fill="#4a90d9" opacity="0.6"/>
+      <text x="90" y="48" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">Backend</text>
+      
+      <rect x="120" y="32" width="40" height="25" rx="3" fill="#f0ad4e" opacity="0.6"/>
+      <text x="140" y="48" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">Content</text>
+      
+      <text x="85" y="72" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Owns: Landing, Promo, Blog MFs</text>
+    </g>
+  </g>
+  
+  <!-- Platform Team -->
+  <g transform="translate(440, 60)">
+    <rect x="0" y="0" width="440" height="200" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow14)"/>
+    <text x="220" y="30" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Platform Team (Enablers)</text>
+    
+    <!-- Infrastructure -->
+    <g transform="translate(15, 50)">
+      <rect x="0" y="0" width="130" height="65" rx="6" fill="#4a90d9" opacity="0.3" stroke="#4a90d9"/>
+      <text x="65" y="22" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#4a90d9">Infrastructure</text>
+      <text x="65" y="40" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• CI/CD pipelines</text>
+      <text x="65" y="52" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Hosting &amp; CDN</text>
+      <text x="65" y="64" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Module Fed config</text>
+    </g>
+    
+    <!-- Tooling -->
+    <g transform="translate(155, 50)">
+      <rect x="0" y="0" width="130" height="65" rx="6" fill="#67b26f" opacity="0.3" stroke="#67b26f"/>
+      <text x="65" y="22" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">Tooling</text>
+      <text x="65" y="40" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Scaffolding</text>
+      <text x="65" y="52" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Dev tools</text>
+      <text x="65" y="64" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Templates</text>
+    </g>
+    
+    <!-- Design System -->
+    <g transform="translate(295, 50)">
+      <rect x="0" y="0" width="130" height="65" rx="6" fill="#f0ad4e" opacity="0.3" stroke="#f0ad4e"/>
+      <text x="65" y="22" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">Design System</text>
+      <text x="65" y="40" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Component lib</text>
+      <text x="65" y="52" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Design tokens</text>
+      <text x="65" y="64" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Documentation</text>
+    </g>
+    
+    <!-- Support -->
+    <g transform="translate(85, 125)">
+      <rect x="0" y="0" width="270" height="60" rx="6" fill="#d9534f" opacity="0.3" stroke="#d9534f"/>
+      <text x="135" y="22" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#d9534f">Support &amp; Governance</text>
+      <text x="40" y="40" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Onboarding</text>
+      <text x="135" y="40" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Best practices</text>
+      <text x="230" y="40" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Tech support</text>
+      <text x="135" y="54" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Architecture reviews</text>
+    </g>
+  </g>
+  
+  <!-- Governance Model -->
+  <g transform="translate(30, 280)">
+    <rect x="0" y="0" width="850" height="190" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow14)"/>
+    <text x="425" y="30" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Governance Model</text>
+    
+    <!-- Technical Standards -->
+    <g transform="translate(30, 55)">
+      <rect x="0" y="0" width="180" height="110" rx="6" fill="#2a2a4a" stroke="#4a90d9"/>
+      <text x="90" y="25" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#4a90d9">Technical Standards</text>
+      <text x="90" y="45" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Accessibility (WCAG 2.1)</text>
+      <text x="90" y="60" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Performance budgets</text>
+      <text x="90" y="75" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Security requirements</text>
+      <text x="90" y="90" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Testing coverage</text>
+      <text x="90" y="105" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Code quality (linting)</text>
+    </g>
+    
+    <!-- API Contracts -->
+    <g transform="translate(230, 55)">
+      <rect x="0" y="0" width="180" height="110" rx="6" fill="#2a2a4a" stroke="#67b26f"/>
+      <text x="90" y="25" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">API Contracts</text>
+      <text x="90" y="45" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Event schemas</text>
+      <text x="90" y="60" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Shared state types</text>
+      <text x="90" y="75" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Module interfaces</text>
+      <text x="90" y="90" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Version policies</text>
+      <text x="90" y="105" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Deprecation process</text>
+    </g>
+    
+    <!-- Version Policies -->
+    <g transform="translate(430, 55)">
+      <rect x="0" y="0" width="180" height="110" rx="6" fill="#2a2a4a" stroke="#f0ad4e"/>
+      <text x="90" y="25" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">Version Policies</text>
+      <text x="90" y="45" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Semantic versioning</text>
+      <text x="90" y="60" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Shared dep strategy</text>
+      <text x="90" y="75" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Breaking change process</text>
+      <text x="90" y="90" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Migration guides</text>
+      <text x="90" y="105" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Compatibility matrix</text>
+    </g>
+    
+    <!-- Review Process -->
+    <g transform="translate(630, 55)">
+      <rect x="0" y="0" width="180" height="110" rx="6" fill="#2a2a4a" stroke="#d9534f"/>
+      <text x="90" y="25" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#d9534f">Review Process</text>
+      <text x="90" y="45" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Architecture RFCs</text>
+      <text x="90" y="60" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Cross-team reviews</text>
+      <text x="90" y="75" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Security review</text>
+      <text x="90" y="90" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Performance audit</text>
+      <text x="90" y="105" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Post-mortems</text>
+    </g>
+  </g>
+  
+  <!-- Key Principles -->
+  <g transform="translate(30, 480)">
+    <text x="425" y="0" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#e0e0e0">
+      Key Principles: Team Autonomy • Full-Stack Ownership • Platform Enables • Governance Guides (not controls) • Measure &amp; Iterate
+    </text>
+  </g>
+</svg>

@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Feature Flag Management</text>
+  
+  <!-- Flag Types -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="380" height="200" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#4a90d9">Feature Flag Types</text>
+    
+    <rect x="20" y="50" width="340" height="130" rx="4" fill="#1a1a2e"/>
+    
+    <!-- Release Flag -->
+    <rect x="30" y="60" width="320" height="25" rx="3" fill="#4a90d9" opacity="0.4"/>
+    <text x="45" y="77" font-family="system-ui" font-size="10" font-weight="bold" fill="#4a90d9">Release Flags</text>
+    <text x="200" y="77" font-family="system-ui" font-size="9" fill="#e0e0e0">Short-lived, remove after rollout</text>
+    
+    <!-- Experiment Flag -->
+    <rect x="30" y="90" width="320" height="25" rx="3" fill="#67b26f" opacity="0.4"/>
+    <text x="45" y="107" font-family="system-ui" font-size="10" font-weight="bold" fill="#67b26f">Experiment Flags</text>
+    <text x="200" y="107" font-family="system-ui" font-size="9" fill="#e0e0e0">A/B testing, measure impact</text>
+    
+    <!-- Ops Flag -->
+    <rect x="30" y="120" width="320" height="25" rx="3" fill="#d9534f" opacity="0.4"/>
+    <text x="45" y="137" font-family="system-ui" font-size="10" font-weight="bold" fill="#d9534f">Ops Flags (Kill Switch)</text>
+    <text x="200" y="137" font-family="system-ui" font-size="9" fill="#e0e0e0">Emergency disable, long-lived</text>
+    
+    <!-- Permission Flag -->
+    <rect x="30" y="150" width="320" height="25" rx="3" fill="#f0ad4e" opacity="0.4"/>
+    <text x="45" y="167" font-family="system-ui" font-size="10" font-weight="bold" fill="#f0ad4e">Permission Flags</text>
+    <text x="200" y="167" font-family="system-ui" font-size="9" fill="#e0e0e0">Feature access by tier/role</text>
+  </g>
+  
+  <!-- Flag Evaluation -->
+  <g transform="translate(450, 80)">
+    <rect x="0" y="0" width="400" height="200" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Flag Evaluation Flow</text>
+    
+    <!-- User Request -->
+    <rect x="20" y="55" width="100" height="40" rx="4" fill="#4a90d9" opacity="0.6"/>
+    <text x="70" y="80" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">User Request</text>
+    
+    <line x1="120" y1="75" x2="150" y2="75" stroke="#666" stroke-width="2"/>
+    <polygon points="150,75 140,70 140,80" fill="#666"/>
+    
+    <!-- Flag Service -->
+    <rect x="150" y="55" width="120" height="40" rx="4" fill="#67b26f" opacity="0.6"/>
+    <text x="210" y="75" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">Flag Service</text>
+    <text x="210" y="90" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Evaluate rules</text>
+    
+    <line x1="270" y1="75" x2="300" y2="75" stroke="#666" stroke-width="2"/>
+    <polygon points="300,75 290,70 290,80" fill="#666"/>
+    
+    <!-- Targeting -->
+    <rect x="300" y="55" width="80" height="40" rx="4" fill="#f0ad4e" opacity="0.6"/>
+    <text x="340" y="75" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">Targeting</text>
+    <text x="340" y="90" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Rules</text>
+    
+    <!-- Targeting Rules -->
+    <rect x="20" y="110" width="360" height="70" rx="4" fill="#1a1a2e"/>
+    <text x="35" y="130" font-family="system-ui" font-size="9" fill="#e0e0e0">Evaluate in order:</text>
+    <text x="50" y="148" font-family="monospace" font-size="8" fill="#67b26f">1. User segment match?</text>
+    <text x="50" y="163" font-family="monospace" font-size="8" fill="#67b26f">2. Percentage rollout?</text>
+    <text x="50" y="178" font-family="monospace" font-size="8" fill="#67b26f">3. Default value</text>
+  </g>
+  
+  <!-- Flag Lifecycle -->
+  <g transform="translate(50, 310)">
+    <rect x="0" y="0" width="800" height="140" rx="8" fill="#1a2a1a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">Feature Flag Lifecycle</text>
+    
+    <!-- Proposed -->
+    <circle cx="80" cy="85" r="30" fill="#4a90d9"/>
+    <text x="80" y="90" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="white">Proposed</text>
+    
+    <line x1="110" y1="85" x2="140" y2="85" stroke="#666" stroke-width="2"/>
+    <polygon points="140,85 130,80 130,90" fill="#666"/>
+    
+    <!-- Active -->
+    <circle cx="190" cy="85" r="30" fill="#67b26f"/>
+    <text x="190" y="90" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="white">Active</text>
+    
+    <line x1="220" y1="85" x2="250" y2="85" stroke="#666" stroke-width="2"/>
+    <polygon points="250,85 240,80 240,90" fill="#666"/>
+    
+    <!-- Rollout -->
+    <circle cx="300" cy="85" r="30" fill="#f0ad4e"/>
+    <text x="300" y="90" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="white">Rollout</text>
+    
+    <line x1="330" y1="85" x2="360" y2="85" stroke="#666" stroke-width="2"/>
+    <polygon points="360,85 350,80 350,90" fill="#666"/>
+    
+    <!-- 100% -->
+    <circle cx="410" cy="85" r="30" fill="#67b26f"/>
+    <text x="410" y="90" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="white">100%</text>
+    
+    <line x1="440" y1="85" x2="470" y2="85" stroke="#666" stroke-width="2" stroke-dasharray="4,2"/>
+    <polygon points="470,85 460,80 460,90" fill="#666"/>
+    
+    <!-- Remove -->
+    <circle cx="520" cy="85" r="30" fill="#d9534f" opacity="0.6"/>
+    <text x="520" y="90" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="white">Remove</text>
+    
+    <text x="600" y="75" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Best Practice:</text>
+    <text x="600" y="95" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Set expiration date</text>
+    <text x="600" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Track flag debt</text>
+    <text x="600" y="125" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Remove after full rollout</text>
+  </g>
+</svg>

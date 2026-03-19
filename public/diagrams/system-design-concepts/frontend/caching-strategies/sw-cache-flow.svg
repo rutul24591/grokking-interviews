@@ -66,9 +66,9 @@
   <!-- Arrow: Network Response -> Clone -->
   <line x1="830" y1="270" x2="830" y2="318" stroke="#6d5bd0" stroke-width="2" marker-end="url(#af-purple)"/>
 
-  <!-- Clone & Cache -->
+  <!-- Clone &amp; Cache -->
   <rect x="750" y="320" width="130" height="60" rx="8" fill="#6d5bd0"/>
-  <text x="815" y="345" text-anchor="middle" font-size="12" font-weight="600" fill="#fff">Clone & Cache</text>
+  <text x="815" y="345" text-anchor="middle" font-size="12" font-weight="600" fill="#fff">Clone &amp; Cache</text>
   <text x="815" y="362" text-anchor="middle" font-size="10" fill="#e0dcf0">response.clone()</text>
   <text x="815" y="375" text-anchor="middle" font-size="10" fill="#e0dcf0">cache.put(req, clone)</text>
 

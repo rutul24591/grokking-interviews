@@ -12,13 +12,13 @@
 
   <line x1="70" y1="180" x2="260" y2="180" stroke="#e0dce8" stroke-width="1"/>
   <text x="165" y="210" text-anchor="middle" font-size="12" fill="#1a1822">Total JS (compressed)</text>
-  <text x="165" y="230" text-anchor="middle" font-size="16" font-weight="bold" fill="#6d5bd0">&le; 200 KB</text>
+  <text x="165" y="230" text-anchor="middle" font-size="16" font-weight="bold" fill="#6d5bd0">&amp;le; 200 KB</text>
   <text x="165" y="265" text-anchor="middle" font-size="12" fill="#1a1822">Total CSS (compressed)</text>
-  <text x="165" y="285" text-anchor="middle" font-size="16" font-weight="bold" fill="#6d5bd0">&le; 50 KB</text>
+  <text x="165" y="285" text-anchor="middle" font-size="16" font-weight="bold" fill="#6d5bd0">&amp;le; 50 KB</text>
   <text x="165" y="320" text-anchor="middle" font-size="12" fill="#1a1822">Total page weight</text>
-  <text x="165" y="340" text-anchor="middle" font-size="16" font-weight="bold" fill="#6d5bd0">&le; 1 MB</text>
+  <text x="165" y="340" text-anchor="middle" font-size="16" font-weight="bold" fill="#6d5bd0">&amp;le; 1 MB</text>
   <text x="165" y="375" text-anchor="middle" font-size="12" fill="#1a1822">Image weight</text>
-  <text x="165" y="395" text-anchor="middle" font-size="16" font-weight="bold" fill="#6d5bd0">&le; 500 KB</text>
+  <text x="165" y="395" text-anchor="middle" font-size="16" font-weight="bold" fill="#6d5bd0">&amp;le; 500 KB</text>
 
   <text x="165" y="440" text-anchor="middle" font-size="11" fill="#666" font-style="italic">Measured at build time</text>
 
@@ -31,13 +31,13 @@
 
   <line x1="355" y1="180" x2="545" y2="180" stroke="#e0dce8" stroke-width="1"/>
   <text x="450" y="210" text-anchor="middle" font-size="12" fill="#1a1822">Largest Contentful Paint</text>
-  <text x="450" y="230" text-anchor="middle" font-size="16" font-weight="bold" fill="#d97843">&le; 2.5 s</text>
+  <text x="450" y="230" text-anchor="middle" font-size="16" font-weight="bold" fill="#d97843">&amp;le; 2.5 s</text>
   <text x="450" y="265" text-anchor="middle" font-size="12" fill="#1a1822">First Contentful Paint</text>
-  <text x="450" y="285" text-anchor="middle" font-size="16" font-weight="bold" fill="#d97843">&le; 1.8 s</text>
+  <text x="450" y="285" text-anchor="middle" font-size="16" font-weight="bold" fill="#d97843">&amp;le; 1.8 s</text>
   <text x="450" y="320" text-anchor="middle" font-size="12" fill="#1a1822">Total Blocking Time</text>
-  <text x="450" y="340" text-anchor="middle" font-size="16" font-weight="bold" fill="#d97843">&le; 200 ms</text>
+  <text x="450" y="340" text-anchor="middle" font-size="16" font-weight="bold" fill="#d97843">&amp;le; 200 ms</text>
   <text x="450" y="375" text-anchor="middle" font-size="12" fill="#1a1822">Time to Interactive</text>
-  <text x="450" y="395" text-anchor="middle" font-size="16" font-weight="bold" fill="#d97843">&le; 3.8 s</text>
+  <text x="450" y="395" text-anchor="middle" font-size="16" font-weight="bold" fill="#d97843">&amp;le; 3.8 s</text>
 
   <text x="450" y="440" text-anchor="middle" font-size="11" fill="#666" font-style="italic">Measured via page load</text>
 
@@ -50,13 +50,13 @@
 
   <line x1="640" y1="180" x2="830" y2="180" stroke="#e0dce8" stroke-width="1"/>
   <text x="735" y="210" text-anchor="middle" font-size="12" fill="#1a1822">HTTP requests</text>
-  <text x="735" y="230" text-anchor="middle" font-size="16" font-weight="bold" fill="#2f9d74">&le; 50</text>
+  <text x="735" y="230" text-anchor="middle" font-size="16" font-weight="bold" fill="#2f9d74">&amp;le; 50</text>
   <text x="735" y="265" text-anchor="middle" font-size="12" fill="#1a1822">Third-party scripts</text>
-  <text x="735" y="285" text-anchor="middle" font-size="16" font-weight="bold" fill="#2f9d74">&le; 5</text>
+  <text x="735" y="285" text-anchor="middle" font-size="16" font-weight="bold" fill="#2f9d74">&amp;le; 5</text>
   <text x="735" y="320" text-anchor="middle" font-size="12" fill="#1a1822">Web font files</text>
-  <text x="735" y="340" text-anchor="middle" font-size="16" font-weight="bold" fill="#2f9d74">&le; 4</text>
+  <text x="735" y="340" text-anchor="middle" font-size="16" font-weight="bold" fill="#2f9d74">&amp;le; 4</text>
   <text x="735" y="375" text-anchor="middle" font-size="12" fill="#1a1822">Lighthouse score</text>
-  <text x="735" y="395" text-anchor="middle" font-size="16" font-weight="bold" fill="#2f9d74">&ge; 90</text>
+  <text x="735" y="395" text-anchor="middle" font-size="16" font-weight="bold" fill="#2f9d74">&amp;ge; 90</text>
 
   <text x="735" y="440" text-anchor="middle" font-size="11" fill="#666" font-style="italic">Measured via audit tools</text>
 </svg>

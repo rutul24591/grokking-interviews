@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Vendor Lock-in Strategy</text>
+  
+  <!-- Lock-in Spectrum -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="140" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4a90d9">Lock-in Spectrum: Make vs Buy</text>
+    
+    <!-- Make -->
+    <rect x="30" y="55" width="150" height="60" rx="4" fill="#4a90d9" opacity="0.4"/>
+    <text x="105" y="85" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#4a90d9">MAKE</text>
+    <text x="105" y="105" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Build in-house</text>
+    
+    <text x="200" y="75" font-family="system-ui" font-size="9" fill="#e0e0e0">When:</text>
+    <text x="200" y="90" font-family="system-ui" font-size="9" fill="#e0e0e0">• Core differentiator</text>
+    <text x="200" y="105" font-family="system-ui" font-size="9" fill="#e0e0e0">• High switching costs</text>
+    
+    <!-- Balance -->
+    <circle cx="400" cy="85" r="40" fill="#f0ad4e" opacity="0.6"/>
+    <text x="400" y="90" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="white">Balance</text>
+    
+    <text x="460" y="75" font-family="system-ui" font-size="9" fill="#e0e0e0">When:</text>
+    <text x="460" y="90" font-family="system-ui" font-size="9" fill="#e0e0e0">• Commodity service</text>
+    <text x="460" y="105" font-family="system-ui" font-size="9" fill="#e0e0e0">• Speed critical</text>
+    
+    <!-- Buy -->
+    <rect x="620" y="55" width="150" height="60" rx="4" fill="#67b26f" opacity="0.4"/>
+    <text x="695" y="85" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">BUY</text>
+    <text x="695" y="105" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Vendor service</text>
+  </g>
+  
+  <!-- Multi-Cloud Strategies -->
+  <g transform="translate(50, 250)">
+    <rect x="0" y="0" width="400" height="200" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Multi-Cloud Approaches</text>
+    
+    <rect x="20" y="50" width="360" height="130" rx="4" fill="#2a2a4a"/>
+    
+    <!-- Active-Active -->
+    <rect x="30" y="65" width="340" height="25" rx="3" fill="#4a90d9" opacity="0.4"/>
+    <text x="45" y="82" font-family="system-ui" font-size="10" font-weight="bold" fill="#4a90d9">Active-Active</text>
+    <text x="200" y="82" font-family="system-ui" font-size="9" fill="#e0e0e0">Running in multiple clouds simultaneously</text>
+    
+    <!-- Active-Passive -->
+    <rect x="30" y="95" width="340" height="25" rx="3" fill="#67b26f" opacity="0.4"/>
+    <text x="45" y="112" font-family="system-ui" font-size="10" font-weight="bold" fill="#67b26f">Active-Passive</text>
+    <text x="200" y="112" font-family="system-ui" font-size="9" fill="#e0e0e0">Primary cloud, secondary for DR</text>
+    
+    <!-- Best-of-Breed -->
+    <rect x="30" y="125" width="340" height="25" rx="3" fill="#f0ad4e" opacity="0.4"/>
+    <text x="45" y="142" font-family="system-ui" font-size="10" font-weight="bold" fill="#f0ad4e">Best-of-Breed</text>
+    <text x="200" y="142" font-family="system-ui" font-size="9" fill="#e0e0e0">Different services from different clouds</text>
+    
+    <text x="200" y="170" text-anchor="middle" font-family="system-ui" font-size="9" fill="#999">Trade-off: Complexity vs. vendor leverage</text>
+  </g>
+  
+  <!-- Exit Strategy -->
+  <g transform="translate(470, 250)">
+    <rect x="0" y="0" width="380" height="200" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">Exit Strategy Checklist</text>
+    
+    <g transform="translate(20, 55)">
+      <circle cx="8" cy="8" r="4" fill="#67b26f"/>
+      <text x="20" y="13" font-family="system-ui" font-size="10" fill="#e0e0e0">Regular data exports (standard formats)</text>
+      
+      <circle cx="8" cy="28" r="4" fill="#67b26f"/>
+      <text x="20" y="33" font-family="system-ui" font-size="10" fill="#e0e0e0">Contract exit clauses documented</text>
+      
+      <circle cx="8" cy="48" r="4" fill="#67b26f"/>
+      <text x="20" y="53" font-family="system-ui" font-size="10" fill="#e0e0e0">Migration runbook maintained</text>
+      
+      <circle cx="8" cy="68" r="4" fill="#67b26f"/>
+      <text x="20" y="73" font-family="system-ui" font-size="10" fill="#e0e0e0">Alternative vendors evaluated</text>
+      
+      <circle cx="8" cy="88" r="4" fill="#f0ad4e"/>
+      <text x="20" y="93" font-family="system-ui" font-size="10" fill="#e0e0e0">Abstraction layers where critical</text>
+      
+      <circle cx="8" cy="108" r="4" fill="#67b26f"/>
+      <text x="20" y="113" font-family="system-ui" font-size="10" fill="#e0e0e0">Periodic exit drill testing</text>
+    </g>
+  </g>
+</svg>

@@ -21,12 +21,12 @@
   <line x1="50" y1="115" x2="270" y2="115" stroke="#2196f3" stroke-width="1"/>
   
   <text x="60" y="140" text-anchor="start" class="small-label" font-weight="bold">Same image, different sizes:</text>
-  <text x="60" y="165" text-anchor="start" class="small-label">&lt;img srcset="</text>
+  <text x="60" y="165" text-anchor="start" class="small-label">&amp;lt;img srcset="</text>
   <text x="80" y="182" text-anchor="start" class="small-label">small.jpg 400w,</text>
   <text x="80" y="199" text-anchor="start" class="small-label">medium.jpg 800w,</text>
   <text x="80" y="216" text-anchor="start" class="small-label">large.jpg 1200w"</text>
   <text x="60" y="238" text-anchor="start" class="small-label">sizes="(max-width: 600px) 400px, 800px"</text>
-  <text x="60" y="255" text-anchor="start" class="small-label">src="medium.jpg"&gt;</text>
+  <text x="60" y="255" text-anchor="start" class="small-label">src="medium.jpg"&amp;gt;</text>
   
   <!-- Browser chooses based on viewport + DPR -->
   
@@ -36,12 +36,12 @@
   <line x1="330" y1="115" x2="550" y2="115" stroke="#4caf50" stroke-width="1"/>
   
   <text x="340" y="140" text-anchor="start" class="small-label" font-weight="bold">Different images for breakpoints:</text>
-  <text x="340" y="165" text-anchor="start" class="small-label">&lt;picture&gt;</text>
-  <text x="360" y="182" text-anchor="start" class="small-label">&lt;source media="(min-width: 800px)"</text>
-  <text x="380" y="199" text-anchor="start" class="small-label">srcset="wide.jpg"&gt;</text>
-  <text x="360" y="216" text-anchor="start" class="small-label">&lt;source srcset="tall.jpg"&gt;</text>
-  <text x="360" y="233" text-anchor="start" class="small-label">&lt;img src="tall.jpg"&gt;</text>
-  <text x="340" y="255" text-anchor="start" class="small-label">&lt;/picture&gt;</text>
+  <text x="340" y="165" text-anchor="start" class="small-label">&amp;lt;picture&amp;gt;</text>
+  <text x="360" y="182" text-anchor="start" class="small-label">&amp;lt;source media="(min-width: 800px)"</text>
+  <text x="380" y="199" text-anchor="start" class="small-label">srcset="wide.jpg"&amp;gt;</text>
+  <text x="360" y="216" text-anchor="start" class="small-label">&amp;lt;source srcset="tall.jpg"&amp;gt;</text>
+  <text x="360" y="233" text-anchor="start" class="small-label">&amp;lt;img src="tall.jpg"&amp;gt;</text>
+  <text x="340" y="255" text-anchor="start" class="small-label">&amp;lt;/picture&amp;gt;</text>
   
   <!-- Format Switching -->
   <rect x="590" y="80" width="240" height="180" fill="#fff3e0" stroke="#ff9800" rx="6"/>
@@ -49,13 +49,13 @@
   <line x1="610" y1="115" x2="810" y2="115" stroke="#ff9800" stroke-width="1"/>
   
   <text x="620" y="140" text-anchor="start" class="small-label" font-weight="bold">Modern formats with fallback:</text>
-  <text x="620" y="165" text-anchor="start" class="small-label">&lt;picture&gt;</text>
-  <text x="640" y="182" text-anchor="start" class="small-label">&lt;source type="image/avif"</text>
-  <text x="660" y="199" text-anchor="start" class="small-label">srcset="image.avif"&gt;</text>
-  <text x="640" y="216" text-anchor="start" class="small-label">&lt;source type="image/webp"</text>
-  <text x="660" y="233" text-anchor="start" class="small-label">srcset="image.webp"&gt;</text>
-  <text x="640" y="250" text-anchor="start" class="small-label">&lt;img src="image.jpg"&gt;</text>
-  <text x="620" y="255" text-anchor="start" class="small-label">&lt;/picture&gt;</text>
+  <text x="620" y="165" text-anchor="start" class="small-label">&amp;lt;picture&amp;gt;</text>
+  <text x="640" y="182" text-anchor="start" class="small-label">&amp;lt;source type="image/avif"</text>
+  <text x="660" y="199" text-anchor="start" class="small-label">srcset="image.avif"&amp;gt;</text>
+  <text x="640" y="216" text-anchor="start" class="small-label">&amp;lt;source type="image/webp"</text>
+  <text x="660" y="233" text-anchor="start" class="small-label">srcset="image.webp"&amp;gt;</text>
+  <text x="640" y="250" text-anchor="start" class="small-label">&amp;lt;img src="image.jpg"&amp;gt;</text>
+  <text x="620" y="255" text-anchor="start" class="small-label">&amp;lt;/picture&amp;gt;</text>
   
   <!-- Lazy Loading -->
   <rect x="30" y="280" width="260" height="100" fill="#f5f5f5" stroke="#666" rx="6"/>
@@ -63,7 +63,7 @@
   <line x1="50" y1="315" x2="270" y2="315" stroke="#999" stroke-width="1"/>
   
   <text x="60" y="340" text-anchor="start" class="small-label" font-weight="bold">Native (85%+ support):</text>
-  <text x="60" y="360" text-anchor="start" class="small-label">&lt;img src="image.jpg" loading="lazy"&gt;</text>
+  <text x="60" y="360" text-anchor="start" class="small-label">&amp;lt;img src="image.jpg" loading="lazy"&amp;gt;</text>
   
   <text x="60" y="385" text-anchor="start" class="small-label" fill="#4caf50">✓ No JS needed</text>
   <text x="180" y="385" text-anchor="start" class="small-label" fill="#ff9800">⚠ Limited control</text>

@@ -1,10 +1,126 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Search Service Diagram 2</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage A</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage B</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage C</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Search Control Points</title>
+  <desc id="desc">Search control points showing query parsing, ranking, caching, filtering, and faceting</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Search Control Points</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Query parsing, ranking, caching, filtering, and faceting</text>
+  
+  <!-- Query Parsing -->
+  <rect x="30" y="85" width="270" height="220" rx="8" fill="white" stroke="#3b82f6" stroke-width="2"/>
+  <text x="165" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#3b82f6">Query Parsing</text>
+  
+  <rect x="50" y="125" width="200" height="100" rx="4" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  
+  <text x="150" y="150" text-anchor="middle" font-size="10" fill="#64748b">Tokenization</text>
+  
+  <rect x="60" y="160" width="180" height="30" rx="2" fill="#3b82f6"/>
+  <text x="150" y="180" text-anchor="middle" font-size="8" fill="white">Lowercase, stem</text>
+  
+  <rect x="60" y="195" width="180" height="30" rx="2" fill="#10b981"/>
+  <text x="150" y="215" text-anchor="middle" font-size="8" fill="white">Remove stopwords</text>
+  
+  <rect x="50" y="235" width="200" height="100" rx="4" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  
+  <text x="150" y="260" text-anchor="middle" font-size="10" fill="#64748b">Query Expansion</text>
+  
+  <text x="70" y="285" text-anchor="start" font-size="9" fill="#64748b">- Synonyms</text>
+  <text x="70" y="300" text-anchor="start" font-size="9" fill="#64748b">- Spelling correction</text>
+  
+  <!-- Ranking -->
+  <rect x="315" y="85" width="270" height="220" rx="8" fill="white" stroke="#10b981" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#10b981">Ranking</text>
+  
+  <rect x="335" y="125" width="230" height="100" rx="4" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
+  
+  <text x="450" y="150" text-anchor="middle" font-size="10" fill="#64748b">Scoring Factors</text>
+  
+  <rect x="345" y="160" width="210" height="30" rx="2" fill="#10b981"/>
+  <text x="450" y="180" text-anchor="middle" font-size="8" fill="white">TF-IDF / BM25</text>
+  
+  <rect x="345" y="195" width="210" height="30" rx="2" fill="#3b82f6"/>
+  <text x="450" y="215" text-anchor="middle" font-size="8" fill="white">Field Boosts</text>
+  
+  <rect x="335" y="235" width="230" height="100" rx="4" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
+  <text x="450" y="260" text-anchor="middle" font-size="10" fill="#64748b">Personalization</text>
+  
+  <text x="355" y="285" text-anchor="start" font-size="9" fill="#64748b">- User history boost</text>
+  <text x="355" y="300" text-anchor="start" font-size="9" fill="#64748b">- Location relevance</text>
+  <text x="355" y="315" text-anchor="start" font-size="9" fill="#64748b">- Popularity signals</text>
+  
+  <!-- Filtering -->
+  <rect x="600" y="85" width="270" height="220" rx="8" fill="white" stroke="#f59e0b" stroke-width="2"/>
+  <text x="735" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">Filtering</text>
+  
+  <rect x="620" y="125" width="230" height="100" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  
+  <text x="735" y="150" text-anchor="middle" font-size="10" fill="#64748b">Filter Types</text>
+  
+  <rect x="630" y="160" width="210" height="30" rx="2" fill="#f59e0b"/>
+  <text x="735" y="180" text-anchor="middle" font-size="8" fill="white">Price Range</text>
+  
+  <rect x="630" y="195" width="210" height="30" rx="2" fill="#3b82f6"/>
+  <text x="735" y="215" text-anchor="middle" font-size="8" fill="white">Category</text>
+  
+  <rect x="620" y="235" width="230" height="100" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="735" y="260" text-anchor="middle" font-size="10" fill="#64748b">Permissions</text>
+  
+  <text x="640" y="285" text-anchor="start" font-size="9" fill="#64748b">- Access control</text>
+  <text x="640" y="300" text-anchor="start" font-size="9" fill="#64748b">- Tenant isolation</text>
+  <text x="640" y="315" text-anchor="start" font-size="9" fill="#64748b">- Geo restrictions</text>
+  
+  <!-- Faceting -->
+  <rect x="30" y="320" width="400" height="210" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="230" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Faceting</text>
+  
+  <rect x="50" y="360" width="360" height="160" rx="6" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+  
+  <rect x="70" y="380" width="150" height="50" rx="4" fill="#3b82f6"/>
+  <text x="145" y="405" text-anchor="middle" font-size="9" fill="white">Category Counts</text>
+  <text x="145" y="420" text-anchor="middle" font-size="8" fill="#bfdbfe">Electronics (100)</text>
+  
+  <rect x="240" y="380" width="150" height="50" rx="4" fill="#f59e0b"/>
+  <text x="315" y="405" text-anchor="middle" font-size="9" fill="white">Price Ranges</text>
+  <text x="315" y="420" text-anchor="middle" font-size="8" fill="#fcd34d">$0-50 (50)</text>
+  
+  <text x="230" y="460" text-anchor="middle" font-size="9" fill="#64748b">Pre-compute for performance</text>
+  
+  <text x="70" y="490" text-anchor="start" font-size="9" fill="#64748b">- Aggregations at query time</text>
+  <text x="70" y="505" text-anchor="start" font-size="9" fill="#64748b">- Cache common facets</text>
+  <text x="230" y="490" text-anchor="start" font-size="9" fill="#64748b">- Limit facet cardinality</text>
+  <text x="230" y="505" text-anchor="start" font-size="9" fill="#64748b">- Hierarchical facets</text>
+  
+  <!-- Caching -->
+  <rect x="470" y="320" width="400" height="210" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="670" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">Caching Strategy</text>
+  
+  <rect x="490" y="360" width="360" height="160" rx="6" fill="white" stroke="#f59e0b" stroke-width="1"/>
+  
+  <rect x="500" y="380" width="150" height="50" rx="4" fill="#f59e0b"/>
+  <text x="575" y="405" text-anchor="middle" font-size="9" fill="white">Query Cache</text>
+  <text x="575" y="420" text-anchor="middle" font-size="8" fill="#fcd34d">Exact match</text>
+  
+  <rect x="670" y="380" width="160" height="50" rx="4" fill="#3b82f6"/>
+  <text x="750" y="405" text-anchor="middle" font-size="9" fill="white">Filter Cache</text>
+  <text x="750" y="420" text-anchor="middle" font-size="8" fill="#bfdbfe">Bitsets</text>
+  
+  <line x1="670" y1="435" x2="670" y2="465" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-down)"/>
+  
+  <rect x="585" y="470" width="160" height="40" rx="4" fill="#10b981"/>
+  <text x="665" y="493" text-anchor="middle" font-size="8" fill="white">Cache Hit: &amp;lt;10ms</text>
+  
+  <text x="575" y="530" text-anchor="middle" font-size="9" fill="#64748b">TTL-based invalidation</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-down" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 0, 5 7" fill="#64748b"/>
+    </marker>
+  </defs>
 </svg>

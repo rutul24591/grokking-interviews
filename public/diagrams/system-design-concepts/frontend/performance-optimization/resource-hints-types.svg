@@ -25,7 +25,7 @@
   <rect x="40" y="148" width="400" height="12" fill="#6d5bd0"/>
   <text x="240" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#fff">dns-prefetch</text>
   <text x="55" y="180" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Resolves DNS only. Saves 20-120ms. Cheapest hint.</text>
-  <text x="55" y="196" font-family="system-ui, sans-serif" font-size="11" fill="#666">&lt;link rel="dns-prefetch" href="//cdn.example.com"&gt;</text>
+  <text x="55" y="196" font-family="system-ui, sans-serif" font-size="11" fill="#666">&amp;lt;link rel="dns-prefetch" href="//cdn.example.com"&amp;gt;</text>
   <!-- Coverage bar -->
   <rect x="100" y="122" width="150" height="4" rx="2" fill="#6d5bd0"/>
 
@@ -35,7 +35,7 @@
   <rect x="460" y="148" width="400" height="12" fill="#d97843"/>
   <text x="660" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#fff">preconnect</text>
   <text x="475" y="180" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">DNS + TCP + TLS. Saves 100-300ms. Use for critical origins.</text>
-  <text x="475" y="196" font-family="system-ui, sans-serif" font-size="11" fill="#666">&lt;link rel="preconnect" href="https://fonts.gstatic.com"&gt;</text>
+  <text x="475" y="196" font-family="system-ui, sans-serif" font-size="11" fill="#666">&amp;lt;link rel="preconnect" href="https://fonts.gstatic.com"&amp;gt;</text>
   <!-- Coverage bar -->
   <rect x="520" y="122" width="310" height="4" rx="2" fill="#d97843"/>
 
@@ -46,7 +46,7 @@
   <text x="240" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#fff">prefetch</text>
   <text x="55" y="280" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Full download at LOW priority. For future navigations.</text>
   <text x="55" y="296" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Stored in HTTP cache. Browser may ignore under pressure.</text>
-  <text x="55" y="316" font-family="system-ui, sans-serif" font-size="11" fill="#666">&lt;link rel="prefetch" href="/next-page-bundle.js"&gt;</text>
+  <text x="55" y="316" font-family="system-ui, sans-serif" font-size="11" fill="#666">&amp;lt;link rel="prefetch" href="/next-page-bundle.js"&amp;gt;</text>
   <!-- Coverage bar (full) -->
   <rect x="100" y="222" width="700" height="4" rx="2" fill="#2f9d74" opacity="0.4"/>
 
@@ -57,7 +57,7 @@
   <text x="660" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#fff">preload</text>
   <text x="475" y="280" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Full download at HIGH priority. For current page resources.</text>
   <text x="475" y="296" font-family="system-ui, sans-serif" font-size="12" fill="#1a1822">Mandatory fetch. Warns if unused within 3s.</text>
-  <text x="475" y="316" font-family="system-ui, sans-serif" font-size="11" fill="#666">&lt;link rel="preload" href="/font.woff2" as="font"&gt;</text>
+  <text x="475" y="316" font-family="system-ui, sans-serif" font-size="11" fill="#666">&amp;lt;link rel="preload" href="/font.woff2" as="font"&amp;gt;</text>
   <!-- Coverage bar (full) -->
   <rect x="520" y="222" width="280" height="4" rx="2" fill="#c44569"/>
 

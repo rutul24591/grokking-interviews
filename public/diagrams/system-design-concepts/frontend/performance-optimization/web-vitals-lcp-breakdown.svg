@@ -67,7 +67,7 @@
 
   <!-- TTFB optimization -->
   <rect x="40" y="315" width="200" height="90" rx="8" fill="white" stroke="#6d5bd0" stroke-width="1.5"/>
-  <text x="140" y="338" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d5bd0">TTFB &lt; 800ms</text>
+  <text x="140" y="338" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d5bd0">TTFB &amp;lt; 800ms</text>
   <line x1="55" y1="348" x2="225" y2="348" stroke="#ede9f7" stroke-width="1"/>
   <text x="60" y="366" font-size="11" fill="#1a1822">CDN for edge delivery</text>
   <text x="60" y="382" font-size="11" fill="#1a1822">Server-side caching</text>
@@ -77,7 +77,7 @@
   <rect x="260" y="315" width="200" height="90" rx="8" fill="white" stroke="#d97843" stroke-width="1.5"/>
   <text x="360" y="338" text-anchor="middle" font-size="13" font-weight="bold" fill="#d97843">Preload LCP Resource</text>
   <line x1="275" y1="348" x2="445" y2="348" stroke="#fef0e5" stroke-width="1"/>
-  <text x="275" y="366" font-size="11" fill="#1a1822">rel="preload" in &lt;head&gt;</text>
+  <text x="275" y="366" font-size="11" fill="#1a1822">rel="preload" in &amp;lt;head&amp;gt;</text>
   <text x="275" y="382" font-size="11" fill="#1a1822">fetchpriority="high"</text>
   <text x="275" y="398" font-size="11" fill="#1a1822">Avoid lazy-loading LCP</text>
 

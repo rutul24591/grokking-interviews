@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad10" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow10" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="500" fill="url(#bgGrad10)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#e0e0e0">Power Profiling Tools</text>
+  
+  <!-- Chrome DevTools Performance -->
+  <g transform="translate(30, 60)">
+    <rect x="0" y="0" width="270" height="200" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow10)"/>
+    <text x="135" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#4a90d9">Chrome DevTools Performance</text>
+    
+    <!-- Screenshot mockup -->
+    <rect x="15" y="40" width="240" height="120" rx="4" fill="#1a1a2e" stroke="#4a90d9" stroke-width="1"/>
+    
+    <!-- Timeline tracks -->
+    <rect x="25" y="50" width="220" height="15" rx="2" fill="#d9534f" opacity="0.6"/>
+    <text x="35" y="61" font-family="system-ui" font-size="8" fill="white">Main Thread</text>
+    
+    <rect x="25" y="70" width="180" height="12" rx="2" fill="#67b26f" opacity="0.5"/>
+    <text x="35" y="79" font-family="system-ui" font-size="7" fill="white">Rendering</text>
+    
+    <rect x="25" y="87" width="200" height="12" rx="2" fill="#f0ad4e" opacity="0.5"/>
+    <text x="35" y="96" font-family="system-ui" font-size="7" fill="white">Scripting</text>
+    
+    <rect x="25" y="104" width="160" height="12" rx="2" fill="#4a90d9" opacity="0.5"/>
+    <text x="35" y="113" font-family="system-ui" font-size="7" fill="white">Paint</text>
+    
+    <!-- Frame markers -->
+    <line x1="50" y1="50" x2="50" y2="116" stroke="#67b26f" stroke-width="1" stroke-dasharray="2,2"/>
+    <line x1="100" y1="50" x2="100" y2="116" stroke="#67b26f" stroke-width="1" stroke-dasharray="2,2"/>
+    <line x1="150" y1="50" x2="150" y2="116" stroke="#67b26f" stroke-width="1" stroke-dasharray="2,2"/>
+    
+    <text x="135" y="175" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Main thread waterfall</text>
+    <text x="135" y="190" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Frame analysis (dropped frames)</text>
+  </g>
+  
+  <!-- Android Battery Historian -->
+  <g transform="translate(320, 60)">
+    <rect x="0" y="0" width="270" height="200" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow10)"/>
+    <text x="135" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#67b26f">Android Battery Historian</text>
+    
+    <!-- Screenshot mockup -->
+    <rect x="15" y="40" width="240" height="120" rx="4" fill="#1a1a2e" stroke="#67b26f" stroke-width="1"/>
+    
+    <!-- Battery level -->
+    <rect x="25" y="50" width="220" height="15" rx="2" fill="#67b26f" opacity="0.6"/>
+    <text x="35" y="61" font-family="system-ui" font-size="8" fill="white">Battery Level</text>
+    
+    <!-- Network -->
+    <rect x="25" y="70" width="80" height="10" rx="2" fill="#4a90d9" opacity="0.5"/>
+    <rect x="110" y="70" width="60" height="10" rx="2" fill="#4a90d9" opacity="0.5"/>
+    <rect x="175" y="70" width="70" height="10" rx="2" fill="#4a90d9" opacity="0.5"/>
+    <text x="35" y="79" font-family="system-ui" font-size="7" fill="white">Network</text>
+    
+    <!-- Wake locks -->
+    <rect x="25" y="85" width="40" height="10" rx="2" fill="#d9534f" opacity="0.6"/>
+    <rect x="90" y="85" width="50" height="10" rx="2" fill="#d9534f" opacity="0.6"/>
+    <text x="35" y="94" font-family="system-ui" font-size="7" fill="white">Wake Locks</text>
+    
+    <!-- Jobs -->
+    <rect x="25" y="100" width="60" height="10" rx="2" fill="#f0ad4e" opacity="0.5"/>
+    <rect x="100" y="100" width="40" height="10" rx="2" fill="#f0ad4e" opacity="0.5"/>
+    <text x="35" y="109" font-family="system-ui" font-size="7" fill="white">Jobs</text>
+    
+    <text x="135" y="175" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Wake lock duration</text>
+    <text x="135" y="190" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Cellular radio active time</text>
+  </g>
+  
+  <!-- Xcode Instruments Energy Log -->
+  <g transform="translate(610, 60)">
+    <rect x="0" y="0" width="270" height="200" rx="8" fill="#2a2a4a" stroke="#d9534f" stroke-width="2" filter="url(#shadow10)"/>
+    <text x="135" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#d9534f">Xcode Instruments (iOS)</text>
+    
+    <!-- Screenshot mockup -->
+    <rect x="15" y="40" width="240" height="120" rx="4" fill="#1a1a2e" stroke="#d9534f" stroke-width="1"/>
+    
+    <!-- Energy Impact graph -->
+    <text x="25" y="55" font-family="system-ui" font-size="8" fill="#e0e0e0">Energy Impact:</text>
+    
+    <!-- Energy graph line -->
+    <polyline points="25,65 45,60 65,70 85,55 105,65 125,75 145,50 165,60 185,70 205,55 225,65 245,60" 
+              fill="none" stroke="#d9534f" stroke-width="2"/>
+    
+    <!-- Power report sections -->
+    <rect x="25" y="85" width="100" height="12" rx="2" fill="#4a90d9" opacity="0.5"/>
+    <text x="35" y="94" font-family="system-ui" font-size="7" fill="white">CPU Usage</text>
+    
+    <rect x="135" y="85" width="100" height="12" rx="2" fill="#67b26f" opacity="0.5"/>
+    <text x="145" y="94" font-family="system-ui" font-size="7" fill="white">GPU Usage</text>
+    
+    <rect x="25" y="102" width="100" height="12" rx="2" fill="#f0ad4e" opacity="0.5"/>
+    <text x="35" y="111" font-family="system-ui" font-size="7" fill="white">Network</text>
+    
+    <rect x="135" y="102" width="100" height="12" rx="2" fill="#d9a036" opacity="0.5"/>
+    <text x="145" y="111" font-family="system-ui" font-size="7" fill="white">Location</text>
+    
+    <rect x="25" y="119" width="210" height="12" rx="2" fill="#67b26f" opacity="0.4"/>
+    <text x="35" y="128" font-family="system-ui" font-size="7" fill="white">App Nap / Idle Display Sleep</text>
+    
+    <text x="135" y="175" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Real-time energy impact graph</text>
+    <text x="135" y="190" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Power report by subsystem</text>
+  </g>
+  
+  <!-- Key Metrics Comparison -->
+  <g transform="translate(30, 280)">
+    <rect x="0" y="0" width="850" height="190" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow10)"/>
+    <text x="425" y="28" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Key Metrics to Monitor</text>
+    
+    <!-- Chrome metrics -->
+    <g transform="translate(20, 50)">
+      <text x="0" y="0" font-family="system-ui" font-size="12" font-weight="bold" fill="#4a90d9">Web (Chrome DevTools):</text>
+      <text x="15" y="20" font-family="system-ui" font-size="10" fill="#e0e0e0">• Long tasks ({'>'}50ms)</text>
+      <text x="15" y="38" font-family="system-ui" font-size="10" fill="#e0e0e0">• Dropped frames</text>
+      <text x="15" y="56" font-family="system-ui" font-size="10" fill="#e0e0e0">• Total Blocking Time (TBT)</text>
+      <text x="15" y="74" font-family="system-ui" font-size="10" fill="#e0e0e0">• JS heap size growth</text>
+    </g>
+    
+    <!-- Android metrics -->
+    <g transform="translate(300, 50)">
+      <text x="0" y="0" font-family="system-ui" font-size="12" font-weight="bold" fill="#67b26f">Android (Battery Historian):</text>
+      <text x="15" y="20" font-family="system-ui" font-size="10" fill="#e0e0e0">• Wake lock duration</text>
+      <text x="15" y="38" font-family="system-ui" font-size="10" fill="#e0e0e0">• Cellular radio active time</text>
+      <text x="15" y="56" font-family="system-ui" font-size="10" fill="#e0e0e0">• Background job execution</text>
+      <text x="15" y="74" font-family="system-ui" font-size="10" fill="#e0e0e0">• Alarm triggers</text>
+      <text x="15" y="92" font-family="system-ui" font-size="10" fill="#e0e0e0">• Doze mode entries</text>
+    </g>
+    
+    <!-- iOS metrics -->
+    <g transform="translate(580, 50)">
+      <text x="0" y="0" font-family="system-ui" font-size="12" font-weight="bold" fill="#d9534f">iOS (Xcode Instruments):</text>
+      <text x="15" y="20" font-family="system-ui" font-size="10" fill="#e0e0e0">• Energy Impact score</text>
+      <text x="15" y="38" font-family="system-ui" font-size="10" fill="#e0e0e0">• CPU/GPU utilization</text>
+      <text x="15" y="56" font-family="system-ui" font-size="10" fill="#e0e0e0">• App Nap events</text>
+      <text x="15" y="74" font-family="system-ui" font-size="10" fill="#e0e0e0">• Idle display sleep</text>
+      <text x="15" y="92" font-family="system-ui" font-size="10" fill="#e0e0e0">• Network activity</text>
+    </g>
+    
+    <!-- Profiling workflow -->
+    <g transform="translate(20, 155)">
+      <rect x="0" y="0" width="810" height="25" rx="4" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="1"/>
+      <text x="405" y="17" text-anchor="middle" font-family="system-ui" font-size="10" fill="#f0ad4e">
+        Profiling Workflow: Baseline → Exercise scenario → Identify hotspots → Optimize → Verify improvement
+      </text>
+    </g>
+  </g>
+</svg>

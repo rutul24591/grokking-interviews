@@ -68,7 +68,7 @@
   <!-- Step 4: API Request -->
   <line x1="250" y1="340" x2="550" y2="340" stroke="var(--text-theme, #10b981)" stroke-width="2" marker-end="url(#arrowApi)"/>
   <text x="400" y="335" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #1e293b">4. API Request</text>
-  <text x="400" y="350" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Authorization: Bearer &lt;jwt&gt;</text>
+  <text x="400" y="350" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b">Authorization: Bearer &amp;lt;jwt&amp;gt;</text>
   
   <!-- Step 5: Verify JWT -->
   <rect x="550" y="200" width="140" height="100" rx="6" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #94a3b8)" stroke-width="2"/>

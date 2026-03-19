@@ -182,7 +182,7 @@
   <text x="735" y="666" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">- iframe sources</text>
   
   <text x="635" y="684" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">base-uri</text>
-  <text x="735" y="684" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">- &lt;base&gt; URLs</text>
+  <text x="735" y="684" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">- &amp;lt;base&amp;gt; URLs</text>
   
   <text x="635" y="702" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">form-action</text>
   <text x="735" y="702" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">- Form submission</text>

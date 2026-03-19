@@ -62,11 +62,11 @@
   <rect x="30" y="390" width="400" height="90" fill="#f1f5f9" stroke="#64748b" stroke-width="1" rx="6"/>
   <text x="230" y="410" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">Browser Targets (.browserslistrc)</text>
   <line x1="50" y1="420" x2="410" y2="420" stroke="#64748b" stroke-width="1"/>
-  <text x="70" y="445" font-size="11" fill="#475569">&gt; 1%</text>
+  <text x="70" y="445" font-size="11" fill="#475569">&amp;gt; 1%</text>
   <text x="150" y="445" font-size="11" fill="#475569">last 2 versions</text>
   <text x="280" y="445" font-size="11" fill="#475569">not dead</text>
   <text x="70" y="465" font-size="11" fill="#475569">not IE 11</text>
-  <text x="150" y="465" font-size="11" fill="#475569">iOS &gt;= 12</text>
+  <text x="150" y="465" font-size="11" fill="#475569">iOS &amp;gt;= 12</text>
   
   <!-- Impact -->
   <rect x="450" y="390" width="420" height="90" fill="#fef3c7" stroke="#f59e0b" stroke-width="1" rx="6"/>

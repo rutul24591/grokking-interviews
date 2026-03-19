@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+<svg xmlns="http://www.w3.org/2000/svg" " viewBox="0 0 900 500">
   <rect width="900" height="500" fill="#f8fafc"/>
   <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Responsive Image Delivery</text>
   
@@ -50,13 +50,13 @@
   <text x="450" y="345" text-anchor="middle" font-size="12" font-weight="bold" fill="#e2e8f0">HTML Implementation</text>
   <line x1="50" y1="360" x2="850" y2="360" stroke="#475569" stroke-width="1"/>
   
-  <text x="60" y="385" font-size="10" fill="#22d3ee" font-family="monospace">{`<picture>`}</text>
-  <text x="80" y="405" font-size="10" fill="#a78bfa" font-family="monospace">{`<source type="image/avif"`}</text>
+  <text x="60" y="385" font-size="10" fill="#22d3ee" font-family="monospace">&amp;lt;picture&amp;gt;</text>
+  <text x="80" y="405" font-size="10" fill="#a78bfa" font-family="monospace">&amp;lt;source type="image/avif"</text>
   <text x="80" y="425" font-size="10" fill="#fbbf24" font-family="monospace">{`  srcset="image-400.avif 400w,"}</text>
   <text x="80" y="445" font-size="10" fill="#fbbf24" font-family="monospace">{`           image-800.avif 800w,"}</text>
-  <text x="80" y="465" font-size="10" fill="#fbbf24" font-family="monospace">{`           image-1200.avif 1200w" />`}</text>
-  <text x="60" y="485" font-size="10" fill="#22d3ee" font-family="monospace">{`  <img src="image-800.jpg" alt="..." />`}</text>
-  <text x="60" y="505" font-size="10" fill="#22d3ee" font-family="monospace">{`</picture>`}</text>
+  <text x="80" y="465" font-size="10" fill="#fbbf24" font-family="monospace">           image-1200.avif 1200w" /&amp;gt;</text>
+  <text x="60" y="485" font-size="10" fill="#22d3ee" font-family="monospace">  &amp;lt;img src="image-800.jpg" alt="..." /&amp;gt;</text>
+  <text x="60" y="505" font-size="10" fill="#22d3ee" font-family="monospace">&amp;lt;/picture&amp;gt;</text>
   
   <!-- Key benefits -->
   <rect x="600" y="380" width="260" height="90" fill="#f1f5f9" stroke="#64748b" stroke-width="1" rx="6"/>

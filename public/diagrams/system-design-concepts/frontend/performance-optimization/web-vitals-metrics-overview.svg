@@ -14,7 +14,7 @@
   <!-- LCP Thresholds -->
   <rect x="60" y="185" width="220" height="50" rx="6" fill="#e6f5ec"/>
   <text x="80" y="205" font-size="13" font-weight="bold" fill="#2f9d74">Good</text>
-  <text x="240" y="205" text-anchor="end" font-size="13" fill="#2f9d74">&lt;= 2.5s</text>
+  <text x="240" y="205" text-anchor="end" font-size="13" fill="#2f9d74">&amp;lt;= 2.5s</text>
   <rect x="60" y="208" width="220" height="2" fill="#c8e6d0"/>
   <text x="170" y="228" text-anchor="middle" font-size="11" fill="#2f9d74">Fast perceived load</text>
 
@@ -26,7 +26,7 @@
 
   <rect x="60" y="305" width="220" height="50" rx="6" fill="#fde8e8"/>
   <text x="80" y="325" font-size="13" font-weight="bold" fill="#d32f2f">Poor</text>
-  <text x="240" y="325" text-anchor="end" font-size="13" fill="#d32f2f">&gt; 4.0s</text>
+  <text x="240" y="325" text-anchor="end" font-size="13" fill="#d32f2f">&amp;gt; 4.0s</text>
   <rect x="60" y="328" width="220" height="2" fill="#f5c6c6"/>
   <text x="170" y="348" text-anchor="middle" font-size="11" fill="#d32f2f">Users may abandon</text>
 
@@ -45,7 +45,7 @@
   <!-- INP Thresholds -->
   <rect x="340" y="185" width="220" height="50" rx="6" fill="#e6f5ec"/>
   <text x="360" y="205" font-size="13" font-weight="bold" fill="#2f9d74">Good</text>
-  <text x="520" y="205" text-anchor="end" font-size="13" fill="#2f9d74">&lt;= 200ms</text>
+  <text x="520" y="205" text-anchor="end" font-size="13" fill="#2f9d74">&amp;lt;= 200ms</text>
   <rect x="340" y="208" width="220" height="2" fill="#c8e6d0"/>
   <text x="450" y="228" text-anchor="middle" font-size="11" fill="#2f9d74">Feels instant</text>
 
@@ -57,7 +57,7 @@
 
   <rect x="340" y="305" width="220" height="50" rx="6" fill="#fde8e8"/>
   <text x="360" y="325" font-size="13" font-weight="bold" fill="#d32f2f">Poor</text>
-  <text x="520" y="325" text-anchor="end" font-size="13" fill="#d32f2f">&gt; 500ms</text>
+  <text x="520" y="325" text-anchor="end" font-size="13" fill="#d32f2f">&amp;gt; 500ms</text>
   <rect x="340" y="328" width="220" height="2" fill="#f5c6c6"/>
   <text x="450" y="348" text-anchor="middle" font-size="11" fill="#d32f2f">Frustrating delay</text>
 
@@ -76,7 +76,7 @@
   <!-- CLS Thresholds -->
   <rect x="620" y="185" width="220" height="50" rx="6" fill="#e6f5ec"/>
   <text x="640" y="205" font-size="13" font-weight="bold" fill="#2f9d74">Good</text>
-  <text x="800" y="205" text-anchor="end" font-size="13" fill="#2f9d74">&lt;= 0.1</text>
+  <text x="800" y="205" text-anchor="end" font-size="13" fill="#2f9d74">&amp;lt;= 0.1</text>
   <rect x="620" y="208" width="220" height="2" fill="#c8e6d0"/>
   <text x="730" y="228" text-anchor="middle" font-size="11" fill="#2f9d74">Stable layout</text>
 
@@ -88,7 +88,7 @@
 
   <rect x="620" y="305" width="220" height="50" rx="6" fill="#fde8e8"/>
   <text x="640" y="325" font-size="13" font-weight="bold" fill="#d32f2f">Poor</text>
-  <text x="800" y="325" text-anchor="end" font-size="13" fill="#d32f2f">&gt; 0.25</text>
+  <text x="800" y="325" text-anchor="end" font-size="13" fill="#d32f2f">&amp;gt; 0.25</text>
   <rect x="620" y="328" width="220" height="2" fill="#f5c6c6"/>
   <text x="730" y="348" text-anchor="middle" font-size="11" fill="#d32f2f">Jarring experience</text>
 

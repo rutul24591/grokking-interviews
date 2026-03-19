@@ -24,7 +24,7 @@
   <rect x="300" y="60" width="250" height="130" fill="#d1fae5" stroke="#10b981" stroke-width="2" rx="8"/>
   <text x="425" y="85" text-anchor="middle" font-size="14" font-weight="bold" fill="#065f46">Server Layer</text>
   <line x1="320" y1="95" x2="530" y2="95" stroke="#10b981" stroke-width="1"/>
-  <text x="325" y="115" font-size="11" fill="#064e3b">• Minimize TTFB (&lt;600ms)</text>
+  <text x="325" y="115" font-size="11" fill="#064e3b">• Minimize TTFB (&amp;lt;600ms)</text>
   <text x="325" y="135" font-size="11" fill="#064e3b">• SSR for content pages</text>
   <text x="325" y="155" font-size="11" fill="#064e3b">• SSG for static content</text>
   <text x="325" y="175" font-size="11" fill="#064e3b">• Edge computing (Lambda@Edge)</text>
@@ -45,7 +45,7 @@
   <text x="55" y="275" font-size="11" fill="#4c1d95">• Code splitting by route</text>
   <text x="55" y="295" font-size="11" fill="#4c1d95">• Tree shaking (remove dead code)</text>
   <text x="55" y="315" font-size="11" fill="#4c1d95">• Lazy load non-critical</text>
-  <text x="55" y="335" font-size="11" fill="#4c1d95">• Target &lt;200KB initial bundle</text>
+  <text x="55" y="335" font-size="11" fill="#4c1d95">• Target &amp;lt;200KB initial bundle</text>
   
   <!-- Image Layer -->
   <rect x="300" y="220" width="250" height="130" fill="#fce7f3" stroke="#ec4899" stroke-width="2" rx="8"/>
@@ -106,14 +106,14 @@
   <rect x="30" y="540" width="380" height="100" fill="#f1f5f9" stroke="#475569" stroke-width="2" rx="8"/>
   <text x="220" y="565" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">Performance Budget Targets</text>
   <line x1="50" y1="575" x2="390" y2="575" stroke="#475569" stroke-width="1"/>
-  <text x="55" y="595" font-size="11" fill="#1e293b">LCP: &lt; 2.5s</text>
-  <text x="150" y="595" font-size="11" fill="#1e293b">INP: &lt; 200ms</text>
-  <text x="250" y="595" font-size="11" fill="#1e293b">CLS: &lt; 0.1</text>
-  <text x="330" y="595" font-size="11" fill="#1e293b">Bundle: &lt; 200KB</text>
-  <text x="55" y="615" font-size="11" fill="#1e293b">TTFB: &lt; 600ms</text>
-  <text x="150" y="615" font-size="11" fill="#1e293b">FCP: &lt; 1.8s</text>
-  <text x="250" y="615" font-size="11" fill="#1e293b">TTI: &lt; 3.8s</text>
-  <text x="330" y="615" font-size="11" fill="#1e293b">Requests: &lt; 50</text>
+  <text x="55" y="595" font-size="11" fill="#1e293b">LCP: &amp;lt; 2.5s</text>
+  <text x="150" y="595" font-size="11" fill="#1e293b">INP: &amp;lt; 200ms</text>
+  <text x="250" y="595" font-size="11" fill="#1e293b">CLS: &amp;lt; 0.1</text>
+  <text x="330" y="595" font-size="11" fill="#1e293b">Bundle: &amp;lt; 200KB</text>
+  <text x="55" y="615" font-size="11" fill="#1e293b">TTFB: &amp;lt; 600ms</text>
+  <text x="150" y="615" font-size="11" fill="#1e293b">FCP: &amp;lt; 1.8s</text>
+  <text x="250" y="615" font-size="11" fill="#1e293b">TTI: &amp;lt; 3.8s</text>
+  <text x="330" y="615" font-size="11" fill="#1e293b">Requests: &amp;lt; 50</text>
   
   <!-- Impact Box -->
   <rect x="430" y="540" width="390" height="100" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" rx="8"/>

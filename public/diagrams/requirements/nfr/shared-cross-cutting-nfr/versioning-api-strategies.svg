@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">API Versioning Strategies</text>
+  
+  <!-- URL Versioning -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="260" height="120" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow)"/>
+    <text x="130" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#4a90d9">URL Versioning</text>
+    
+    <rect x="20" y="50" width="220" height="55" rx="4" fill="#1a1a2e"/>
+    <text x="30" y="70" font-family="monospace" font-size="11" fill="#67b26f">GET /api/v1/users</text>
+    <text x="30" y="90" font-family="monospace" font-size="11" fill="#e0e0e0">GET /api/v2/users</text>
+    
+    <text x="130" y="125" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">✓ Clear, cacheable</text>
+    <text x="130" y="140" text-anchor="middle" font-family="system-ui" font-size="10" fill="#d9534f">✗ URL pollution</text>
+  </g>
+  
+  <!-- Header Versioning -->
+  <g transform="translate(320, 80)">
+    <rect x="0" y="0" width="260" height="120" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="130" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Header Versioning</text>
+    
+    <rect x="20" y="50" width="220" height="55" rx="4" fill="#1a1a2e"/>
+    <text x="30" y="70" font-family="monospace" font-size="10" fill="#67b26f">Accept: application/vnd.api.v1+json</text>
+    <text x="30" y="90" font-family="monospace" font-size="10" fill="#e0e0e0">Accept: application/vnd.api.v2+json</text>
+    
+    <text x="130" y="125" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">✓ Clean URLs, RESTful</text>
+    <text x="130" y="140" text-anchor="middle" font-family="system-ui" font-size="10" fill="#d9534f">✗ Less visible</text>
+  </g>
+  
+  <!-- Query Parameter -->
+  <g transform="translate(590, 80)">
+    <rect x="0" y="0" width="260" height="120" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow)"/>
+    <text x="130" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">Query Parameter</text>
+    
+    <rect x="20" y="50" width="220" height="55" rx="4" fill="#1a1a2e"/>
+    <text x="30" y="70" font-family="monospace" font-size="11" fill="#f0ad4e">GET /api/users?version=1</text>
+    <text x="30" y="90" font-family="monospace" font-size="11" fill="#e0e0e0">GET /api/users?version=2</text>
+    
+    <text x="130" y="125" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">✓ Easy to test</text>
+    <text x="130" y="140" text-anchor="middle" font-family="system-ui" font-size="10" fill="#d9534f">✗ Cache issues</text>
+  </g>
+  
+  <!-- Versioning Timeline -->
+  <g transform="translate(50, 240)">
+    <rect x="0" y="0" width="800" height="200" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#67b26f">API Version Lifecycle</text>
+    
+    <!-- Timeline -->
+    <line x1="50" y1="80" x2="750" y2="80" stroke="#666" stroke-width="3"/>
+    
+    <!-- v1 -->
+    <circle cx="100" cy="80" r="25" fill="#4a90d9"/>
+    <text x="100" y="85" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="white">v1</text>
+    <text x="100" y="120" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">Current</text>
+    
+    <!-- v2 -->
+    <circle cx="250" cy="80" r="25" fill="#67b26f"/>
+    <text x="250" y="85" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="white">v2</text>
+    <text x="250" y="120" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">Latest</text>
+    
+    <!-- v3 -->
+    <circle cx="400" cy="80" r="25" fill="#f0ad4e"/>
+    <text x="400" y="85" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="white">v3</text>
+    <text x="400" y="120" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">Beta</text>
+    
+    <!-- Deprecated -->
+    <circle cx="550" cy="80" r="25" fill="#666" opacity="0.5"/>
+    <text x="550" y="85" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#999">v0</text>
+    <text x="550" y="120" text-anchor="middle" font-family="system-ui" font-size="10" fill="#999">Deprecated</text>
+    
+    <!-- Sunset -->
+    <circle cx="700" cy="80" r="25" fill="#d9534f" opacity="0.3"/>
+    <text x="700" y="85" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#d9534f" opacity="0.5">v0</text>
+    <text x="700" y="120" text-anchor="middle" font-family="system-ui" font-size="10" fill="#d9534f">Sunset</text>
+    
+    <!-- Arrows -->
+    <line x1="125" y1="80" x2="225" y2="80" stroke="#666" stroke-width="2"/>
+    <polygon points="225,80 215,75 215,85" fill="#666"/>
+    
+    <line x1="275" y1="80" x2="375" y2="80" stroke="#666" stroke-width="2"/>
+    <polygon points="375,80 365,75 365,85" fill="#666"/>
+    
+    <line x1="425" y1="80" x2="525" y2="80" stroke="#666" stroke-width="2" stroke-dasharray="5,3"/>
+    <polygon points="525,80 515,75 515,85" fill="#666"/>
+    
+    <line x1="575" y1="80" x2="675" y2="80" stroke="#d9534f" stroke-width="2" stroke-dasharray="5,3"/>
+    <polygon points="675,80 665,75 665,85" fill="#d9534f"/>
+    
+    <!-- Deprecation notice -->
+    <text x="400" y="170" text-anchor="middle" font-family="system-ui" font-size="11" fill="#f0ad4e">Deprecation Timeline: Announce → 6-12 months notice → Sunset</text>
+  </g>
+</svg>

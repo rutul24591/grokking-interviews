@@ -35,12 +35,12 @@
   
   <!-- Layer 5: Rate Limiting -->
   <rect x="50" y="385" width="530" height="55" rx="6" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
-  <text x="315" y="410" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Layer 5: Rate Limiting & Throttling</text>
+  <text x="315" y="410" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Layer 5: Rate Limiting &amp; Throttling</text>
   <text x="315" y="428" text-anchor="middle" font-size="10" fill="#fca5a5">Request Quotas, Burst Control, Cost Limits</text>
   
   <!-- Layer 6: Monitoring -->
   <rect x="50" y="450" width="530" height="55" rx="6" fill="var(--bg-theme, #06b6d4)" stroke="var(--border-theme, #0891b2)" stroke-width="2"/>
-  <text x="315" y="475" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Layer 6: Monitoring & Audit</text>
+  <text x="315" y="475" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Layer 6: Monitoring &amp; Audit</text>
   <text x="315" y="493" text-anchor="middle" font-size="10" fill="#67e8f9">Logging, Anomaly Detection, Alerting, Audit Trails</text>
   
   <!-- Authentication Methods Comparison -->
@@ -161,7 +161,7 @@
   <text x="730" y="640" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">X-Frame-Options: DENY</text>
   <text x="730" y="655" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">Strict-Transport-Security</text>
   <text x="730" y="670" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">Content-Security-Policy</text>
-  <text x="730" y="685" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">X-Request-ID: &lt;uuid&gt;</text>
+  <text x="730" y="685" text-anchor="start" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">X-Request-ID: &amp;lt;uuid&amp;gt;</text>
   
   <!-- Arrow markers -->
   <defs>

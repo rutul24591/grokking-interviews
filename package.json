@@ -4,9 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "generate-hierarchy-json": "tsx scripts/generate-hierarchy-json.ts",
-    "generate-examples-manifest": "tsx scripts/generate-examples-manifest.ts",
-    "build": "pnpm generate-hierarchy-json && pnpm generate-examples-manifest && next build",
+    "generate-article-routes": "tsx scripts/generate-article-routes.ts",
+    "build": "pnpm generate-article-routes && next build",
     "start": "next start",
     "lint": "eslint",
     "scan:code-snippets": "tsx scripts/scan-code-snippets.ts",

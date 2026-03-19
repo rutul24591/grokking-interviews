@@ -71,13 +71,13 @@
 
   <!-- Blocking CSS -->
   <rect x="60" y="225" width="175" height="75" rx="8" fill="#fff" stroke="#d97843" stroke-width="1.5"/>
-  <text x="147" y="250" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="600">&lt;link rel="stylesheet"&gt;</text>
+  <text x="147" y="250" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="600">&amp;lt;link rel="stylesheet"&amp;gt;</text>
   <text x="147" y="270" text-anchor="middle" font-size="10" fill="#666">Blocks CSSOM construction</text>
   <text x="147" y="288" text-anchor="middle" font-size="10" fill="#d97843" font-weight="600">Must download + parse fully</text>
 
   <!-- Blocking JS -->
   <rect x="265" y="225" width="175" height="75" rx="8" fill="#fff" stroke="#d97843" stroke-width="1.5"/>
-  <text x="352" y="250" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="600">&lt;script src="..."&gt;</text>
+  <text x="352" y="250" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="600">&amp;lt;script src="..."&amp;gt;</text>
   <text x="352" y="270" text-anchor="middle" font-size="10" fill="#666">Blocks HTML parsing</text>
   <text x="352" y="288" text-anchor="middle" font-size="10" fill="#d97843" font-weight="600">Parser stops until executed</text>
 
@@ -99,7 +99,7 @@
 
   <rect x="60" y="385" width="175" height="75" rx="8" fill="#fff" stroke="#2f9d74" stroke-width="1.5"/>
   <text x="147" y="408" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="600">Inline Critical CSS</text>
-  <text x="147" y="426" text-anchor="middle" font-size="10" fill="#666">Embed in &lt;style&gt; tag</text>
+  <text x="147" y="426" text-anchor="middle" font-size="10" fill="#666">Embed in &amp;lt;style&amp;gt; tag</text>
   <text x="147" y="444" text-anchor="middle" font-size="10" fill="#2f9d74" font-weight="600">No network request needed</text>
 
   <rect x="265" y="385" width="175" height="75" rx="8" fill="#fff" stroke="#2f9d74" stroke-width="1.5"/>

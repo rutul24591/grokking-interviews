@@ -1,10 +1,122 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Media Processing Service Diagram 2</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage A</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage B</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage C</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Media Processing Control Points</title>
+  <desc id="desc">Media processing control points showing queues by job type, resource limits, retries, and output publishing</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Media Processing Control Points</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Queues by job type, resource limits, retries, and output publishing</text>
+  
+  <!-- Priority Queues -->
+  <rect x="30" y="85" width="270" height="220" rx="8" fill="white" stroke="#3b82f6" stroke-width="2"/>
+  <text x="165" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#3b82f6">Priority Queues</text>
+  
+  <rect x="50" y="125" width="200" height="100" rx="4" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  
+  <rect x="60" y="140" width="180" height="35" rx="3" fill="#ef4444"/>
+  <text x="150" y="163" text-anchor="middle" font-size="9" fill="white">High Priority</text>
+  
+  <rect x="60" y="180" width="180" height="35" rx="3" fill="#f59e0b"/>
+  <text x="150" y="203" text-anchor="middle" font-size="9" fill="white">Normal Priority</text>
+  
+  <rect x="50" y="235" width="200" height="100" rx="4" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  
+  <text x="150" y="260" text-anchor="middle" font-size="10" fill="#64748b">Use Cases</text>
+  
+  <text x="70" y="285" text-anchor="start" font-size="9" fill="#64748b">- High: Premium users</text>
+  <text x="70" y="300" text-anchor="start" font-size="9" fill="#64748b">- Normal: Standard users</text>
+  <text x="70" y="315" text-anchor="start" font-size="9" fill="#64748b">- Low: Batch processing</text>
+  
+  <!-- Resource Limits -->
+  <rect x="315" y="85" width="270" height="220" rx="8" fill="white" stroke="#10b981" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#10b981">Resource Limits</text>
+  
+  <rect x="335" y="125" width="230" height="100" rx="4" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
+  
+  <text x="450" y="150" text-anchor="middle" font-size="10" fill="#64748b">Concurrency Limits</text>
+  
+  <rect x="345" y="160" width="210" height="30" rx="2" fill="#10b981"/>
+  <text x="450" y="180" text-anchor="middle" font-size="8" fill="white">Max 4 Video Transcodes</text>
+  
+  <rect x="345" y="195" width="210" height="30" rx="2" fill="#3b82f6"/>
+  <text x="450" y="215" text-anchor="middle" font-size="8" fill="white">Max 8 Image Processing</text>
+  
+  <rect x="335" y="235" width="230" height="100" rx="4" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
+  <text x="450" y="260" text-anchor="middle" font-size="10" fill="#64748b">Resource Budgets</text>
+  
+  <text x="355" y="285" text-anchor="start" font-size="9" fill="#64748b">- CPU: 80% max</text>
+  <text x="355" y="300" text-anchor="start" font-size="9" fill="#64748b">- Memory: 75% max</text>
+  <text x="355" y="315" text-anchor="start" font-size="9" fill="#64748b">- Disk I/O: throttled</text>
+  
+  <!-- Retry Handling -->
+  <rect x="600" y="85" width="270" height="220" rx="8" fill="white" stroke="#f59e0b" stroke-width="2"/>
+  <text x="735" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">Retry Handling</text>
+  
+  <rect x="620" y="125" width="230" height="100" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  
+  <text x="735" y="150" text-anchor="middle" font-size="10" fill="#64748b">Retry Policies</text>
+  
+  <rect x="630" y="160" width="210" height="30" rx="2" fill="#f59e0b"/>
+  <text x="735" y="180" text-anchor="middle" font-size="8" fill="white">Transient: Retry 3x</text>
+  
+  <rect x="630" y="195" width="210" height="30" rx="2" fill="#ef4444"/>
+  <text x="735" y="215" text-anchor="middle" font-size="8" fill="white">Permanent: Fail immediately</text>
+  
+  <rect x="620" y="235" width="230" height="100" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="735" y="260" text-anchor="middle" font-size="10" fill="#64748b">Dead Letter Queue</text>
+  
+  <text x="640" y="285" text-anchor="start" font-size="9" fill="#64748b">- Failed after max retries</text>
+  <text x="640" y="300" text-anchor="start" font-size="9" fill="#64748b">- Manual review</text>
+  <text x="640" y="315" text-anchor="start" font-size="9" fill="#64748b">- Alert on DLQ growth</text>
+  
+  <!-- Output Publishing -->
+  <rect x="30" y="320" width="400" height="210" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="230" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Output Publishing</text>
+  
+  <rect x="50" y="360" width="360" height="160" rx="6" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+  
+  <rect x="70" y="380" width="150" height="50" rx="4" fill="#3b82f6"/>
+  <text x="145" y="405" text-anchor="middle" font-size="9" fill="white">Atomic Publish</text>
+  <text x="145" y="420" text-anchor="middle" font-size="8" fill="#bfdbfe">All or nothing</text>
+  
+  <rect x="240" y="380" width="150" height="50" rx="4" fill="#10b981"/>
+  <text x="315" y="405" text-anchor="middle" font-size="9" fill="white">Metadata Update</text>
+  <text x="315" y="420" text-anchor="middle" font-size="8" fill="#6ee7b7">DB transaction</text>
+  
+  <text x="230" y="460" text-anchor="middle" font-size="9" fill="#64748b">Prevents partial output visibility</text>
+  
+  <text x="70" y="490" text-anchor="start" font-size="9" fill="#64748b">- Store to temp location</text>
+  <text x="70" y="505" text-anchor="start" font-size="9" fill="#64748b">- Atomic rename on complete</text>
+  <text x="230" y="490" text-anchor="start" font-size="9" fill="#64748b">- Update CDN cache</text>
+  <text x="230" y="505" text-anchor="start" font-size="9" fill="#64748b">- Notify subscribers</text>
+  
+  <!-- Cost Control -->
+  <rect x="470" y="320" width="400" height="210" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="670" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">Cost Control</text>
+  
+  <rect x="490" y="360" width="360" height="160" rx="6" fill="white" stroke="#f59e0b" stroke-width="1"/>
+  
+  <rect x="500" y="380" width="150" height="50" rx="4" fill="#f59e0b"/>
+  <text x="575" y="405" text-anchor="middle" font-size="9" fill="white">Per-User Quotas</text>
+  <text x="575" y="420" text-anchor="middle" font-size="8" fill="#fcd34d">GB/month limit</text>
+  
+  <rect x="670" y="380" width="160" height="50" rx="4" fill="#8b5cf6"/>
+  <text x="750" y="405" text-anchor="middle" font-size="9" fill="white">Resolution Caps</text>
+  <text x="750" y="420" text-anchor="middle" font-size="8" fill="#c4b5fd">Max 4K for premium</text>
+  
+  <text x="670" y="460" text-anchor="middle" font-size="9" fill="#64748b">Prevents runaway costs</text>
+  
+  <text x="510" y="490" text-anchor="start" font-size="9" fill="#64748b">- Free tier: 720p max</text>
+  <text x="510" y="505" text-anchor="start" font-size="9" fill="#64748b">- Paid tiers: higher limits</text>
+  <text x="670" y="490" text-anchor="start" font-size="9" fill="#64748b">- Queue time limits</text>
+  <text x="670" y="505" text-anchor="start" font-size="9" fill="#64748b">- Auto-abort long jobs</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
 </svg>

@@ -1,77 +1,77 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
   <defs>
     <marker id="durArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="var(--border-accent, #3b82f6)"/>
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
     </marker>
   </defs>
   
   <!-- Background -->
-  <rect width="1000" height="550" fill="var(--bg-primary, #ffffff)"/>
+  <rect width="1000" height="550" fill="#ffffff"/>
   
   <!-- Title -->
-  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--text-primary, #0f172a)">Durability Guarantees</text>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">Durability Guarantees</text>
   
   <!-- Write Path -->
-  <rect x="50" y="60" width="450" height="200" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
-  <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a)">Write Durability Path</text>
+  <rect x="50" y="60" width="450" height="200" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">Write Durability Path</text>
   
   <!-- Client -->
-  <rect x="70" y="110" width="80" height="50" rx="4" fill="var(--bg-blue, #3b82f6)"/>
-  <text x="110" y="140" text-anchor="middle" font-size="10" fill="var(--text-inverse, #ffffff)">Client</text>
+  <rect x="70" y="110" width="80" height="50" rx="4" fill="#3b82f6"/>
+  <text x="110" y="140" text-anchor="middle" font-size="10" fill="#ffffff">Client</text>
   
-  <line x1="150" y1="135" x2="180" y2="135" stroke="var(--border-accent, #3b82f6)" stroke-width="2" marker-end="url(#durArrow)"/>
+  <line x1="150" y1="135" x2="180" y2="135" stroke="#3b82f6" stroke-width="2" marker-end="url(#durArrow)"/>
   <text x="165" y="125" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Write</text>
   
   <!-- WAL -->
-  <rect x="180" y="110" width="100" height="50" rx="4" fill="var(--bg-purple, #8b5cf6)"/>
-  <text x="230" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-inverse, #ffffff)">Write-Ahead Log</text>
-  <text x="230" y="152" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">Sequential write</text>
+  <rect x="180" y="110" width="100" height="50" rx="4" fill="#8b5cf6"/>
+  <text x="230" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="#ffffff">Write-Ahead Log</text>
+  <text x="230" y="152" text-anchor="middle" font-size="8" fill="#ffffff">Sequential write</text>
   
-  <line x1="280" y1="135" x2="310" y2="135" stroke="var(--border-accent, #3b82f6)" stroke-width="2" marker-end="url(#durArrow)"/>
+  <line x1="280" y1="135" x2="310" y2="135" stroke="#3b82f6" stroke-width="2" marker-end="url(#durArrow)"/>
   <text x="295" y="125" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">fsync</text>
   
   <!-- Disk -->
-  <rect x="310" y="110" width="80" height="50" rx="4" fill="var(--bg-green, #22c55e)"/>
-  <text x="350" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--text-inverse, #ffffff)">Stable Storage</text>
-  <text x="350" y="152" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">Durable</text>
+  <rect x="310" y="110" width="80" height="50" rx="4" fill="#22c55e"/>
+  <text x="350" y="135" text-anchor="middle" font-size="9" font-weight="bold" fill="#ffffff">Stable Storage</text>
+  <text x="350" y="152" text-anchor="middle" font-size="8" fill="#ffffff">Durable</text>
   
-  <line x1="350" y1="160" x2="350" y2="190" stroke="var(--border-accent, #3b82f6)" stroke-width="2" marker-end="url(#durArrow)"/>
+  <line x1="350" y1="160" x2="350" y2="190" stroke="#3b82f6" stroke-width="2" marker-end="url(#durArrow)"/>
   <text x="360" y="180" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Ack</text>
   
   <!-- Ack back to client -->
-  <path d="M 350 190 L 350 210 L 110 210 L 110 165" fill="none" stroke="var(--border-accent, #3b82f6)" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#durArrow)"/>
+  <path d="M 350 190 L 350 210 L 110 210 L 110 165" fill="none" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#durArrow)"/>
   
   <text x="275" y="240" text-anchor="middle" font-size="10" fill="var(--text-secondary, #47556ird">✓ Data survives power failure after fsync</text>
   
   <!-- Replication Strategies -->
-  <rect x="520" y="60" width="430" height="200" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
-  <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a)">Replication for Durability</text>
+  <rect x="520" y="60" width="430" height="200" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">Replication for Durability</text>
   
   <!-- Single -->
-  <rect x="540" y="110" width="120" height="75" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <rect x="540" y="110" width="120" height="75" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
   <text x="600" y="135" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-primary, #0f172a">Single Node</text>
   <text x="600" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">RPO: ~0 (with WAL)</text>
   <text x="600" y="172" text-anchor="middle" font-size="8" fill="#ef4444">✗ Single point of failure</text>
   
   <!-- Sync Replica -->
-  <rect x="680" y="110" width="120" height="75" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <rect x="680" y="110" width="120" height="75" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
   <text x="740" y="135" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-primary, #0f172a">Sync Replica</text>
   <text x="740" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">RPO: 0</text>
   <text x="740" y="172" text-anchor="middle" font-size="8" fill="#f59e0b">⚠ Higher write latency</text>
   
   <!-- Async Replica -->
-  <rect x="820" y="110" width="120" height="75" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <rect x="820" y="110" width="120" height="75" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
   <text x="880" y="135" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-primary, #0f172a">Async Replica</text>
-  <text x="880" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">RPO: &gt;0 (lag)</text>
+  <text x="880" y="155" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">RPO: &amp;gt;0 (lag)</text>
   <text x="880" y="172" text-anchor="middle" font-size="8" fill="#22c55e">✓ Low write latency</text>
   
   <!-- Quorum -->
-  <rect x="680" y="195" width="120" height="55" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <rect x="680" y="195" width="120" height="55" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
   <text x="740" y="220" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-primary, #0f172a">Quorum (W of N)</text>
   <text x="740" y="240" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Balance durability/latency</text>
   
   <!-- Backup Strategies -->
-  <rect x="50" y="280" width="450" height="160" rx="8" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <rect x="50" y="280" width="450" height="160" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
   <text x="275" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a">Backup Strategies</text>
   
   <text x="70" y="335" font-size="10" fill="var(--text-secondary, #47556ird">• Full Backup: Complete copy (slow, large)</text>
@@ -81,23 +81,23 @@
   <text x="70" y="415" font-size="10" fill="var(--text-secondary, #47556ird">• 3-2-1 Rule: 3 copies, 2 media types, 1 offsite</text>
   
   <!-- Durability Levels -->
-  <rect x="520" y="280" width="430" height="160" rx="8" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
-  <text x="735" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a)">Durability Levels</text>
+  <rect x="520" y="280" width="430" height="160" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="735" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Durability Levels</text>
   
-  <rect x="540" y="325" width="190" height="45" rx="3" fill="var(--bg-red, #ef4444)" opacity="0.2" stroke="var(--border-red, #ef4444)" stroke-width="1"/>
-  <text x="635" y="345" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-red, #ef4444)">Memory Only</text>
+  <rect x="540" y="325" width="190" height="45" rx="3" fill="#ef4444" opacity="0.2" stroke="#ef4444" stroke-width="1"/>
+  <text x="635" y="345" text-anchor="middle" font-size="9" font-weight="bold" fill="#ef4444">Memory Only</text>
   <text x="635" y="362" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">All data lost on crash</text>
   
-  <rect x="540" y="375" width="190" height="45" rx="3" fill="var(--bg-orange, #f97316)" opacity="0.2" stroke="var(--border-orange, #f97316)" stroke-width="1"/>
-  <text x="635" y="395" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-orange, #f97316)">Local Disk (WAL)</text>
+  <rect x="540" y="375" width="190" height="45" rx="3" fill="#f97316" opacity="0.2" stroke="#f97316" stroke-width="1"/>
+  <text x="635" y="395" text-anchor="middle" font-size="9" font-weight="bold" fill="#f97316">Local Disk (WAL)</text>
   <text x="635" y="412" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Survives crash, not disk failure</text>
   
-  <rect x="540" y="425" width="190" height="45" rx="3" fill="var(--bg-blue, #3b82f6)" opacity="0.2" stroke="var(--border-blue, #3b82f6)" stroke-width="1"/>
-  <text x="635" y="445" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-blue, #3b82f6)">Replicated (2+ nodes)</text>
+  <rect x="540" y="425" width="190" height="45" rx="3" fill="#3b82f6" opacity="0.2" stroke="#3b82f6" stroke-width="1"/>
+  <text x="635" y="445" text-anchor="middle" font-size="9" font-weight="bold" fill="#3b82f6">Replicated (2+ nodes)</text>
   <text x="635" y="462" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Survives single node failure</text>
   
-  <rect x="750" y="325" width="180" height="45" rx="3" fill="var(--bg-green, #22c55e)" opacity="0.2" stroke="var(--border-green, #22c55e)" stroke-width="1"/>
-  <text x="840" y="345" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--border-green, #22c55e)">Geo-Replicated</text>
+  <rect x="750" y="325" width="180" height="45" rx="3" fill="#22c55e" opacity="0.2" stroke="#22c55e" stroke-width="1"/>
+  <text x="840" y="345" text-anchor="middle" font-size="9" font-weight="bold" fill="#22c55e">Geo-Replicated</text>
   <text x="840" y="362" text-anchor="middle" font-size="8" fill="var(--text-secondary, #47556ird">Survives region failure</text>
   
   <text x="500" y="470" text-anchor="middle" font-size="9" fill="var(--text-muted, #64748b">Key: Durability requires writing to stable storage AND replication for availability.</text>

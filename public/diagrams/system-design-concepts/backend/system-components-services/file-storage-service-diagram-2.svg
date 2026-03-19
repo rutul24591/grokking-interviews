@@ -1,10 +1,135 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">File Storage Service Diagram 2</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage A</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage B</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage C</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">File Storage Control Points</title>
+  <desc id="desc">File storage control points showing metadata, ACLs, signed URLs, integrity checks, and retention rules</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">File Storage Control Points</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Metadata, ACLs, signed URLs, integrity checks, and retention rules</text>
+  
+  <!-- Metadata Store -->
+  <rect x="30" y="85" width="270" height="220" rx="8" fill="white" stroke="#3b82f6" stroke-width="2"/>
+  <text x="165" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#3b82f6">Metadata Store</text>
+  
+  <rect x="50" y="125" width="200" height="100" rx="4" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  
+  <text x="150" y="150" text-anchor="middle" font-size="10" fill="#64748b">File Metadata</text>
+  
+  <text x="70" y="175" text-anchor="start" font-size="9" fill="#64748b">- File ID (UUID)</text>
+  <text x="70" y="190" text-anchor="start" font-size="9" fill="#64748b">- Owner ID</text>
+  <text x="70" y="205" text-anchor="start" font-size="9" fill="#64748b">- Content Type</text>
+  <text x="70" y="220" text-anchor="start" font-size="9" fill="#64748b">- File Size</text>
+  
+  <rect x="50" y="235" width="200" height="100" rx="4" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  
+  <text x="150" y="260" text-anchor="middle" font-size="10" fill="#64748b">Integrity &amp; Tracking</text>
+  
+  <text x="70" y="285" text-anchor="start" font-size="9" fill="#64748b">- SHA256 Hash</text>
+  <text x="70" y="300" text-anchor="start" font-size="9" fill="#64748b">- Created/Modified</text>
+  <text x="70" y="315" text-anchor="start" font-size="9" fill="#64748b">- Storage Location</text>
+  <text x="70" y="330" text-anchor="start" font-size="9" fill="#64748b">- Version Number</text>
+  
+  <!-- Access Control Lists -->
+  <rect x="315" y="85" width="270" height="220" rx="8" fill="white" stroke="#10b981" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#10b981">Access Control (ACLs)</text>
+  
+  <rect x="335" y="125" width="230" height="100" rx="4" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
+  
+  <text x="450" y="150" text-anchor="middle" font-size="10" fill="#64748b">Permission Levels</text>
+  
+  <rect x="345" y="160" width="100" height="25" rx="2" fill="#10b981"/>
+  <text x="395" y="178" text-anchor="middle" font-size="8" fill="white">Private</text>
+  
+  <rect x="455" y="160" width="100" height="25" rx="2" fill="#3b82f6"/>
+  <text x="505" y="178" text-anchor="middle" font-size="8" fill="white">Shared</text>
+  
+  <rect x="345" y="195" width="100" height="25" rx="2" fill="#f59e0b"/>
+  <text x="395" y="213" text-anchor="middle" font-size="8" fill="white">Organization</text>
+  
+  <rect x="455" y="195" width="100" height="25" rx="2" fill="#8b5cf6"/>
+  <text x="505" y="213" text-anchor="middle" font-size="8" fill="white">Public</text>
+  
+  <rect x="335" y="235" width="230" height="100" rx="4" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
+  <text x="450" y="260" text-anchor="middle" font-size="10" fill="#64748b">ACL Entries</text>
+  
+  <text x="355" y="285" text-anchor="start" font-size="9" fill="#64748b">- User/Group ID</text>
+  <text x="355" y="300" text-anchor="start" font-size="9" fill="#64748b">- Permission (R/W/D)</text>
+  <text x="355" y="315" text-anchor="start" font-size="9" fill="#64748b">- Expiry (optional)</text>
+  <text x="355" y="330" text-anchor="start" font-size="9" fill="#64748b">- Inherited permissions</text>
+  
+  <!-- Signed URLs -->
+  <rect x="600" y="85" width="270" height="220" rx="8" fill="white" stroke="#f59e0b" stroke-width="2"/>
+  <text x="735" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">Signed URLs</text>
+  
+  <rect x="620" y="125" width="230" height="100" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  
+  <text x="735" y="150" text-anchor="middle" font-size="10" fill="#64748b">Temporary Access Tokens</text>
+  
+  <rect x="630" y="160" width="210" height="30" rx="2" fill="#f59e0b"/>
+  <text x="735" y="180" text-anchor="middle" font-size="8" fill="white">Short-lived (minutes-hours)</text>
+  
+  <text x="735" y="210" text-anchor="middle" font-size="9" fill="#64748b">Use Cases</text>
+  
+  <text x="640" y="230" text-anchor="start" font-size="9" fill="#64748b">- Private file download</text>
+  <text x="640" y="245" text-anchor="start" font-size="9" fill="#64748b">- Upload authorization</text>
+  <text x="640" y="260" text-anchor="start" font-size="9" fill="#64748b">- CDN access control</text>
+  <text x="640" y="275" text-anchor="start" font-size="9" fill="#64748b">- Time-limited sharing</text>
+  
+  <rect x="620" y="285" width="230" height="50" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="735" y="310" text-anchor="middle" font-size="9" fill="#64748b">HMAC signature</text>
+  <text x="735" y="325" text-anchor="middle" font-size="8" fill="#fcd34d">Tamper-proof URLs</text>
+  
+  <!-- Integrity Checks -->
+  <rect x="30" y="320" width="400" height="210" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="230" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Integrity Checks</text>
+  
+  <rect x="50" y="360" width="360" height="160" rx="6" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+  
+  <rect x="70" y="380" width="150" height="50" rx="4" fill="#3b82f6"/>
+  <text x="145" y="405" text-anchor="middle" font-size="9" fill="white">Upload Checksum</text>
+  <text x="145" y="420" text-anchor="middle" font-size="8" fill="#bfdbfe">Client sends hash</text>
+  
+  <rect x="240" y="380" width="150" height="50" rx="4" fill="#10b981"/>
+  <text x="315" y="405" text-anchor="middle" font-size="9" fill="white">Server Verify</text>
+  <text x="315" y="420" text-anchor="middle" font-size="8" fill="#6ee7b7">Compare hashes</text>
+  
+  <text x="230" y="460" text-anchor="middle" font-size="9" fill="#64748b">Detect corruption during transfer</text>
+  
+  <text x="70" y="490" text-anchor="start" font-size="9" fill="#64748b">- MD5/SHA256 on upload</text>
+  <text x="70" y="505" text-anchor="start" font-size="9" fill="#64748b">- Periodic integrity scans</text>
+  <text x="230" y="490" text-anchor="start" font-size="9" fill="#64748b">- Replicate on mismatch</text>
+  <text x="230" y="505" text-anchor="start" font-size="9" fill="#64748b">- Alert on corruption</text>
+  
+  <!-- Retention Rules -->
+  <rect x="470" y="320" width="400" height="210" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="670" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">Retention Rules</text>
+  
+  <rect x="490" y="360" width="360" height="160" rx="6" fill="white" stroke="#f59e0b" stroke-width="1"/>
+  
+  <text x="510" y="385" text-anchor="start" font-size="10" fill="#64748b">Retention Classes</text>
+  
+  <rect x="510" y="400" width="100" height="30" rx="2" fill="#10b981"/>
+  <text x="560" y="420" text-anchor="middle" font-size="8" fill="white">Temporary</text>
+  
+  <rect x="620" y="400" width="100" height="30" rx="2" fill="#3b82f6"/>
+  <text x="670" y="420" text-anchor="middle" font-size="8" fill="white">Standard</text>
+  
+  <rect x="730" y="400" width="100" height="30" rx="2" fill="#8b5cf6"/>
+  <text x="780" y="420" text-anchor="middle" font-size="8" fill="white">Permanent</text>
+  
+  <text x="510" y="450" text-anchor="start" font-size="9" fill="#64748b">- Auto-delete after expiry</text>
+  <text x="510" y="465" text-anchor="start" font-size="9" fill="#64748b">- Legal hold support</text>
+  <text x="510" y="480" text-anchor="start" font-size="9" fill="#64748b">- Compliance archives</text>
+  <text x="510" y="495" text-anchor="start" font-size="9" fill="#64748b">- GDPR deletion requests</text>
+  
+  <text x="670" y="515" text-anchor="middle" font-size="9" fill="#64748b">Lifecycle policies automate cleanup</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
 </svg>

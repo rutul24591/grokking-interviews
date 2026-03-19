@@ -1,86 +1,86 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
   <defs>
     <marker id="throughputArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="var(--border-accent, #3b82f6)"/>
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
     </marker>
   </defs>
   
   <!-- Background -->
-  <rect width="1000" height="550" fill="var(--bg-primary, #ffffff)"/>
+  <rect width="1000" height="550" fill="#ffffff"/>
   
   <!-- Title -->
-  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--text-primary, #0f172a)">Throughput vs Latency</text>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">Throughput vs Latency</text>
   
   <!-- Throughput illustration -->
-  <rect x="50" y="60" width="450" height="220" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
-  <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a)">Throughput: Requests per Second</text>
+  <rect x="50" y="60" width="450" height="220" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">Throughput: Requests per Second</text>
   
   <!-- Pipeline visualization -->
-  <rect x="80" y="120" width="40" height="60" rx="4" fill="var(--bg-blue, #3b82f6)" opacity="0.7"/>
-  <text x="100" y="155" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">Req 1</text>
+  <rect x="80" y="120" width="40" height="60" rx="4" fill="#3b82f6" opacity="0.7"/>
+  <text x="100" y="155" text-anchor="middle" font-size="9" fill="#ffffff">Req 1</text>
   
-  <rect x="130" y="120" width="40" height="60" rx="4" fill="var(--bg-blue, #3b82f6)" opacity="0.7"/>
-  <text x="150" y="155" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">Req 2</text>
+  <rect x="130" y="120" width="40" height="60" rx="4" fill="#3b82f6" opacity="0.7"/>
+  <text x="150" y="155" text-anchor="middle" font-size="9" fill="#ffffff">Req 2</text>
   
-  <rect x="180" y="120" width="40" height="60" rx="4" fill="var(--bg-blue, #3b82f6)" opacity="0.7"/>
-  <text x="200" y="155" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">Req 3</text>
+  <rect x="180" y="120" width="40" height="60" rx="4" fill="#3b82f6" opacity="0.7"/>
+  <text x="200" y="155" text-anchor="middle" font-size="9" fill="#ffffff">Req 3</text>
   
-  <rect x="230" y="120" width="40" height="60" rx="4" fill="var(--bg-blue, #3b82f6)" opacity="0.7"/>
-  <text x="250" y="155" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">Req 4</text>
+  <rect x="230" y="120" width="40" height="60" rx="4" fill="#3b82f6" opacity="0.7"/>
+  <text x="250" y="155" text-anchor="middle" font-size="9" fill="#ffffff">Req 4</text>
   
-  <rect x="280" y="120" width="40" height="60" rx="4" fill="var(--bg-blue, #3b82f6)" opacity="0.7"/>
-  <text x="300" y="155" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">Req 5</text>
+  <rect x="280" y="120" width="40" height="60" rx="4" fill="#3b82f6" opacity="0.7"/>
+  <text x="300" y="155" text-anchor="middle" font-size="9" fill="#ffffff">Req 5</text>
   
-  <rect x="330" y="120" width="40" height="60" rx="4" fill="var(--bg-blue, #3b82f6)" opacity="0.7"/>
-  <text x="350" y="155" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">Req 6</text>
+  <rect x="330" y="120" width="40" height="60" rx="4" fill="#3b82f6" opacity="0.7"/>
+  <text x="350" y="155" text-anchor="middle" font-size="9" fill="#ffffff">Req 6</text>
   
-  <line x1="80" y1="210" x2="370" y2="210" stroke="var(--border-accent, #3b82f6)" stroke-width="2" marker-end="url(#throughputArrow)"/>
-  <text x="225" y="235" text-anchor="middle" font-size="11" fill="var(--text-secondary, #475569)">Time →</text>
+  <line x1="80" y1="210" x2="370" y2="210" stroke="#3b82f6" stroke-width="2" marker-end="url(#throughputArrow)"/>
+  <text x="225" y="235" text-anchor="middle" font-size="11" fill="#475569">Time →</text>
   
-  <text x="275" y="265" text-anchor="middle" font-size="12" fill="var(--text-primary, #0f172a)" font-weight="bold">Throughput = 6 requests / time_window</text>
+  <text x="275" y="265" text-anchor="middle" font-size="12" fill="#0f172a" font-weight="bold">Throughput = 6 requests / time_window</text>
   
   <!-- Latency illustration -->
-  <rect x="520" y="60" width="430" height="220" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
-  <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a)">Latency: Time per Request</text>
+  <rect x="520" y="60" width="430" height="220" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">Latency: Time per Request</text>
   
   <!-- Single request timeline -->
-  <rect x="550" y="120" width="350" height="60" rx="4" fill="var(--bg-purple, #8b5cf6)" opacity="0.7"/>
-  <text x="725" y="155" text-anchor="middle" font-size="11" fill="var(--text-inverse, #ffffff)">Single Request Processing Time</text>
+  <rect x="550" y="120" width="350" height="60" rx="4" fill="#8b5cf6" opacity="0.7"/>
+  <text x="725" y="155" text-anchor="middle" font-size="11" fill="#ffffff">Single Request Processing Time</text>
   
-  <line x1="550" y1="115" x2="550" y2="185" stroke="var(--border-purple, #8b5cf6)" stroke-width="2"/>
-  <line x1="900" y1="115" x2="900" y2="185" stroke="var(--border-purple, #8b5cf6)" stroke-width="2"/>
+  <line x1="550" y1="115" x2="550" y2="185" stroke="#8b5cf6" stroke-width="2"/>
+  <line x1="900" y1="115" x2="900" y2="185" stroke="#8b5cf6" stroke-width="2"/>
   
-  <text x="550" y="210" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">Start</text>
-  <text x="900" y="210" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">Complete</text>
+  <text x="550" y="210" text-anchor="middle" font-size="10" fill="#475569">Start</text>
+  <text x="900" y="210" text-anchor="middle" font-size="10" fill="#475569">Complete</text>
   
-  <text x="725" y="240" text-anchor="middle" font-size="12" fill="var(--text-primary, #0f172a)" font-weight="bold">Latency = 350ms per request</text>
+  <text x="725" y="240" text-anchor="middle" font-size="12" fill="#0f172a" font-weight="bold">Latency = 350ms per request</text>
   
   <!-- Key difference -->
-  <rect x="50" y="300" width="900" height="80" rx="6" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
-  <text x="500" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a)">Key Difference</text>
-  <text x="200" y="355" text-anchor="middle" font-size="11" fill="var(--text-secondary, #475569)">Throughput: How MANY requests per second</text>
-  <text x="800" y="355" text-anchor="middle" font-size="11" fill="var(--text-secondary, #475569)">Latency: How LONG per request</text>
+  <rect x="50" y="300" width="900" height="80" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="500" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Key Difference</text>
+  <text x="200" y="355" text-anchor="middle" font-size="11" fill="#475569">Throughput: How MANY requests per second</text>
+  <text x="800" y="355" text-anchor="middle" font-size="11" fill="#475569">Latency: How LONG per request</text>
   <text x="500" y="375" text-anchor="middle" font-size="10" fill="var(--text-muted, #64748b)">You can have high throughput with high latency (batch processing), or low throughput with low latency (single-threaded fast operations)</text>
   
   <!-- Capacity planning -->
-  <rect x="50" y="395" width="450" height="145" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
-  <text x="275" y="420" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a)">Capacity Planning Formula</text>
+  <rect x="50" y="395" width="450" height="145" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="275" y="420" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Capacity Planning Formula</text>
   
-  <text x="275" y="450" text-anchor="middle" font-size="13" fill="var(--text-primary, #0f172a)" font-weight="bold">Required Instances = Peak RPS / (RPS per Instance × Target Utilization)</text>
+  <text x="275" y="450" text-anchor="middle" font-size="13" fill="#0f172a" font-weight="bold">Required Instances = Peak RPS / (RPS per Instance × Target Utilization)</text>
   
-  <text x="275" y="485" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">Example: 10,000 RPS peak, 500 RPS per instance, 70% target utilization</text>
-  <text x="275" y="505" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">Instances = 10,000 / (500 × 0.7) = 10,000 / 350 = 28.6 → 29 instances</text>
+  <text x="275" y="485" text-anchor="middle" font-size="10" fill="#475569">Example: 10,000 RPS peak, 500 RPS per instance, 70% target utilization</text>
+  <text x="275" y="505" text-anchor="middle" font-size="10" fill="#475569">Instances = 10,000 / (500 × 0.7) = 10,000 / 350 = 28.6 → 29 instances</text>
   
-  <text x="275" y="530" text-anchor="middle" font-size="9" fill="var(--border-accent, #3b82f6)" font-weight="bold">Always add 20-30% buffer for spikes and failures</text>
+  <text x="275" y="530" text-anchor="middle" font-size="9" fill="#3b82f6" font-weight="bold">Always add 20-30% buffer for spikes and failures</text>
   
   <!-- Little's Law -->
-  <rect x="520" y="395" width="430" height="145" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
-  <text x="735" y="420" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a)">Little's Law</text>
+  <rect x="520" y="395" width="430" height="145" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="735" y="420" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Little's Law</text>
   
-  <text x="735" y="455" text-anchor="middle" font-size="16" fill="var(--border-purple, #8b5cf6)" font-weight="bold">L = λ × W</text>
+  <text x="735" y="455" text-anchor="middle" font-size="16" fill="#8b5cf6" font-weight="bold">L = λ × W</text>
   
-  <text x="735" y="485" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">Where:</text>
-  <text x="735" y="505" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">L = Average number of items in system</text>
-  <text x="735" y="522" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">λ (lambda) = Arrival rate (throughput)</text>
-  <text x="735" y="539" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">W = Average time in system (latency)</text>
+  <text x="735" y="485" text-anchor="middle" font-size="10" fill="#475569">Where:</text>
+  <text x="735" y="505" text-anchor="middle" font-size="10" fill="#475569">L = Average number of items in system</text>
+  <text x="735" y="522" text-anchor="middle" font-size="10" fill="#475569">λ (lambda) = Arrival rate (throughput)</text>
+  <text x="735" y="539" text-anchor="middle" font-size="10" fill="#475569">W = Average time in system (latency)</text>
 </svg>

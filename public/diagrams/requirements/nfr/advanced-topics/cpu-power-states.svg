@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad6" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow6" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="500" fill="url(#bgGrad6)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#e0e0e0">CPU Power States and DVFS</text>
+  
+  <!-- C-States (Idle States) -->
+  <g transform="translate(30, 60)">
+    <rect x="0" y="0" width="270" height="200" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow6)"/>
+    <text x="135" y="28" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#4a90d9">Idle States (C-States)</text>
+    
+    <!-- C0 - Active -->
+    <rect x="20" y="45" width="210" height="30" rx="4" fill="#d9534f" opacity="0.8"/>
+    <text x="125" y="65" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="white">C0 - Active</text>
+    <text x="240" y="65" font-family="system-ui" font-size="10" fill="#e0e0e0">100%</text>
+    
+    <!-- C1 - Halt -->
+    <rect x="20" y="80" width="210" height="25" rx="4" fill="#f0ad4e" opacity="0.7"/>
+    <text x="125" y="97" text-anchor="middle" font-family="system-ui" font-size="11" fill="white">C1 - Halt (Stop clock)</text>
+    <text x="240" y="97" font-family="system-ui" font-size="10" fill="#e0e0e0">70%</text>
+    
+    <!-- C2 - Stop Clock -->
+    <rect x="20" y="110" width="210" height="25" rx="4" fill="#67b26f" opacity="0.6"/>
+    <text x="125" y="127" text-anchor="middle" font-family="system-ui" font-size="11" fill="white">C2 - Stop Clock</text>
+    <text x="240" y="127" font-family="system-ui" font-size="10" fill="#e0e0e0">40%</text>
+    
+    <!-- C3 - Deep Sleep -->
+    <rect x="20" y="140" width="210" height="25" rx="4" fill="#4a90d9" opacity="0.5"/>
+    <text x="125" y="157" text-anchor="middle" font-family="system-ui" font-size="11" fill="white">C3 - Deep Sleep</text>
+    <text x="240" y="157" font-family="system-ui" font-size="10" fill="#e0e0e0">20%</text>
+    
+    <!-- C6 - Power Gating -->
+    <rect x="20" y="170" width="210" height="25" rx="4" fill="#2a4a6a" opacity="0.4"/>
+    <text x="125" y="187" text-anchor="middle" font-family="system-ui" font-size="11" fill="white">C6 - Power Gating</text>
+    <text x="240" y="187" font-family="system-ui" font-size="10" fill="#e0e0e0">5%</text>
+    
+    <text x="135" y="215" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">Deeper sleep = more power saved, longer wake latency</text>
+  </g>
+  
+  <!-- P-States (Active Performance States) -->
+  <g transform="translate(320, 60)">
+    <rect x="0" y="0" width="270" height="200" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow6)"/>
+    <text x="135" y="28" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Active States (P-States)</text>
+    
+    <!-- P0 - Highest Performance -->
+    <rect x="20" y="45" width="210" height="25" rx="4" fill="#d9534f" opacity="0.8"/>
+    <text x="125" y="62" text-anchor="middle" font-family="system-ui" font-size="11" fill="white">P0 - Max Frequency (3.5 GHz)</text>
+    <text x="240" y="62" font-family="system-ui" font-size="10" fill="#e0e0e0">100%</text>
+    
+    <!-- P1 -->
+    <rect x="20" y="75" width="210" height="25" rx="4" fill="#f0ad4e" opacity="0.7"/>
+    <text x="125" y="92" text-anchor="middle" font-family="system-ui" font-size="11" fill="white">P1 - High (2.8 GHz)</text>
+    <text x="240" y="92" font-family="system-ui" font-size="10" fill="#e0e0e0">75%</text>
+    
+    <!-- P2 -->
+    <rect x="20" y="105" width="210" height="25" rx="4" fill="#67b26f" opacity="0.6"/>
+    <text x="125" y="122" text-anchor="middle" font-family="system-ui" font-size="11" fill="white">P2 - Medium (2.0 GHz)</text>
+    <text x="240" y="122" font-family="system-ui" font-size="10" fill="#e0e0e0">50%</text>
+    
+    <!-- P3 -->
+    <rect x="20" y="135" width="210" height="25" rx="4" fill="#4a90d9" opacity="0.5"/>
+    <text x="125" y="152" text-anchor="middle" font-family="system-ui" font-size="11" fill="white">P3 - Low (1.2 GHz)</text>
+    <text x="240" y="152" font-family="system-ui" font-size="10" fill="#e0e0e0">25%</text>
+    
+    <!-- Pn - Lowest Power -->
+    <rect x="20" y="165" width="210" height="25" rx="4" fill="#2a4a6a" opacity="0.4"/>
+    <text x="125" y="182" text-anchor="middle" font-family="system-ui" font-size="11" fill="white">Pn - Min Frequency (400 MHz)</text>
+    <text x="240" y="182" font-family="system-ui" font-size="10" fill="#e0e0e0">10%</text>
+    
+    <text x="135" y="215" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">P ∝ V²f (Power scales with voltage squared × frequency)</text>
+  </g>
+  
+  <!-- Big.LITTLE Architecture -->
+  <g transform="translate(610, 60)">
+    <rect x="0" y="0" width="270" height="200" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow6)"/>
+    <text x="135" y="28" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">Big.LITTLE Architecture</text>
+    
+    <!-- Performance Cores -->
+    <g transform="translate(20, 45)">
+      <rect x="0" y="0" width="100" height="70" rx="6" fill="#d9534f" opacity="0.7"/>
+      <text x="50" y="25" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="white">Big Cores</text>
+      <text x="50" y="42" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">High Performance</text>
+      <text x="50" y="56" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">High Power</text>
+      <text x="50" y="65" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">(Gaming, ML)</text>
+    </g>
+    
+    <!-- Efficiency Cores -->
+    <g transform="translate(150, 45)">
+      <rect x="0" y="0" width="100" height="70" rx="6" fill="#67b26f" opacity="0.7"/>
+      <text x="50" y="25" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="white">LITTLE Cores</text>
+      <text x="50" y="42" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Low Power</text>
+      <text x="50" y="56" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Efficient</text>
+      <text x="50" y="65" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">(Background)</text>
+    </g>
+    
+    <!-- Task Scheduler -->
+    <g transform="translate(20, 130)">
+      <rect x="0" y="0" width="230" height="55" rx="6" fill="#4a90d9" opacity="0.5"/>
+      <text x="115" y="22" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="white">Intelligent Task Scheduler</text>
+      <text x="115" y="40" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Routes tasks based on priority</text>
+      <text x="115" y="52" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Light tasks → LITTLE | Heavy tasks → Big</text>
+    </g>
+  </g>
+  
+  <!-- DVFS Transition Diagram -->
+  <g transform="translate(30, 280)">
+    <rect x="0" y="0" width="850" height="190" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow6)"/>
+    <text x="425" y="28" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Dynamic Voltage and Frequency Scaling (DVFS)</text>
+    
+    <!-- Workload graph -->
+    <g transform="translate(40, 50)">
+      <text x="0" y="0" font-family="system-ui" font-size="11" fill="#e0e0e0">Workload:</text>
+      
+      <!-- Workload line -->
+      <polyline points="0,20 30,20 60,60 90,60 120,20 150,20 180,80 210,80 240,40 270,40 300,80 330,80 360,20 390,20" 
+                fill="none" stroke="#d9534f" stroke-width="2"/>
+      
+      <text x="200" y="100" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">Time →</text>
+    </g>
+    
+    <!-- Frequency response -->
+    <g transform="translate(40, 100)">
+      <text x="0" y="0" font-family="system-ui" font-size="11" fill="#e0e0e0">Frequency:</text>
+      
+      <!-- Frequency line (follows workload with lag) -->
+      <polyline points="0,30 30,30 60,35 90,55 120,40 150,35 180,60 210,65 240,45 270,40 300,65 330,68 360,35 390,32" 
+                fill="none" stroke="#67b26f" stroke-width="2"/>
+      
+      <text x="200" y="100" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">Time →</text>
+    </g>
+    
+    <!-- Power consumption -->
+    <g transform="translate(480, 50)">
+      <text x="0" y="0" font-family="system-ui" font-size="11" fill="#e0e0e0">Power Draw:</text>
+      
+      <!-- Power bars -->
+      <rect x="0" y="10" width="20" height="60" fill="#d9534f" opacity="0.8"/>
+      <rect x="25" y="10" width="20" height="60" fill="#d9534f" opacity="0.8"/>
+      <rect x="50" y="40" width="20" height="30" fill="#67b26f" opacity="0.6"/>
+      <rect x="75" y="40" width="20" height="30" fill="#67b26f" opacity="0.6"/>
+      <rect x="100" y="10" width="20" height="60" fill="#d9534f" opacity="0.8"/>
+      <rect x="125" y="10" width="20" height="60" fill="#d9534f" opacity="0.8"/>
+      <rect x="150" y="55" width="20" height="15" fill="#4a90d9" opacity="0.4"/>
+      <rect x="175" y="55" width="20" height="15" fill="#4a90d9" opacity="0.4"/>
+      
+      <text x="100" y="85" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">High workload → High power</text>
+      <text x="100" y="100" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">Low workload → Low power</text>
+    </g>
+    
+    <!-- Key insight -->
+    <g transform="translate(480, 120)">
+      <rect x="0" y="0" width="350" height="50" rx="6" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="1.5"/>
+      <text x="175" y="20" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">Key Insight</text>
+      <text x="175" y="38" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">DVFS matches CPU frequency to workload, reducing power during light tasks</text>
+    </g>
+  </g>
+</svg>

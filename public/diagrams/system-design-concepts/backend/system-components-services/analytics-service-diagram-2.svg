@@ -1,10 +1,143 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Analytics Service Diagram 2</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage A</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage B</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage C</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Analytics Ingestion Control Points</title>
+  <desc id="desc">Analytics ingestion showing validation, deduplication, buffering, backpressure, and replay</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Analytics Ingestion Control Points</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Validation, deduplication, buffering, backpressure, and replay</text>
+  
+  <!-- Event Flow -->
+  <rect x="30" y="85" width="840" height="150" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">Event Processing Pipeline</text>
+  
+  <!-- Collect -->
+  <rect x="50" y="125" width="100" height="55" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="100" y="155" text-anchor="middle" font-size="9" fill="white">Collect</text>
+  <text x="100" y="170" text-anchor="middle" font-size="8" fill="#bfdbfe">Batch events</text>
+  
+  <line x1="155" y1="153" x2="185" y2="153" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow)"/>
+  
+  <!-- Validate -->
+  <rect x="190" y="125" width="100" height="55" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="240" y="155" text-anchor="middle" font-size="9" fill="white">Validate</text>
+  <text x="240" y="170" text-anchor="middle" font-size="8" fill="#6ee7b7">Schema check</text>
+  
+  <line x1="295" y1="153" x2="325" y2="153" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow)"/>
+  
+  <!-- Dedupe -->
+  <rect x="330" y="125" width="100" height="55" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="380" y="155" text-anchor="middle" font-size="9" fill="white">Dedupe</text>
+  <text x="380" y="170" text-anchor="middle" font-size="8" fill="#fcd34d">Idempotency</text>
+  
+  <line x1="435" y1="153" x2="465" y2="153" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow)"/>
+  
+  <!-- Buffer -->
+  <rect x="470" y="125" width="100" height="55" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="520" y="155" text-anchor="middle" font-size="9" fill="white">Buffer</text>
+  <text x="520" y="170" text-anchor="middle" font-size="8" fill="#c4b5fd">Queue</text>
+  
+  <line x1="575" y1="153" x2="605" y2="153" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow)"/>
+  
+  <!-- Persist -->
+  <rect x="610" y="125" width="100" height="55" rx="4" fill="var(--bg-theme, #06b6d4)" stroke="var(--border-theme, #0891b2)" stroke-width="1"/>
+  <text x="660" y="155" text-anchor="middle" font-size="9" fill="white">Persist</text>
+  <text x="660" y="170" text-anchor="middle" font-size="8" fill="#67e8f9">Storage</text>
+  
+  <line x1="715" y1="153" x2="745" y2="153" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow)"/>
+  
+  <!-- Process -->
+  <rect x="750" y="125" width="100" height="55" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="800" y="155" text-anchor="middle" font-size="9" fill="white">Process</text>
+  <text x="800" y="170" text-anchor="middle" font-size="8" fill="#6ee7b7">Aggregate</text>
+  
+  <!-- Validation Detail -->
+  <rect x="30" y="250" width="270" height="180" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="165" y="275" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Validation Rules</text>
+  
+  <rect x="50" y="290" width="230" height="130" rx="4" fill="var(--bg-panel-soft, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  
+  <text x="70" y="315" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="315" font-size="10" fill="var(--text-theme, #1e293b">Required fields present</text>
+  
+  <text x="70" y="335" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="335" font-size="10" fill="var(--text-theme, #1e293b">Schema type matches</text>
+  
+  <text x="70" y="355" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="355" font-size="10" fill="var(--text-theme, #1e293b">Timestamp valid</text>
+  
+  <text x="70" y="375" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="85" y="375" font-size="10" fill="var(--text-theme, #1e293b">Identity format OK</text>
+  
+  <text x="70" y="395" text-anchor="start" font-size="10" fill="var(--text-theme, #f59e0b">⚠</text>
+  <text x="85" y="395" font-size="10" fill="var(--text-theme, #1e293b">Invalid → Dead letter queue</text>
+  
+  <!-- Deduplication Detail -->
+  <rect x="315" y="250" width="270" height="180" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="450" y="275" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Deduplication Strategy</text>
+  
+  <rect x="335" y="290" width="230" height="130" rx="4" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  
+  <text x="355" y="315" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="370" y="315" font-size="10" fill="var(--text-theme, #1e293b">Idempotency key per event</text>
+  
+  <text x="355" y="335" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="370" y="335" font-size="10" fill="var(--text-theme, #1e293b">Key = user_id + timestamp + type</text>
+  
+  <text x="355" y="355" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="370" y="355" font-size="10" fill="var(--text-theme, #1e293b">Store keys with TTL</text>
+  
+  <text x="355" y="375" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="370" y="375" font-size="10" fill="var(--text-theme, #1e293b">Window: 24-72 hours</text>
+  
+  <text x="355" y="395" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">Trade-off: Longer window = more state</text>
+  
+  <!-- Backpressure -->
+  <rect x="600" y="250" width="270" height="180" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="735" y="275" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Backpressure Handling</text>
+  
+  <rect x="620" y="290" width="230" height="130" rx="4" fill="var(--bg-panel-soft, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  
+  <text x="640" y="315" text-anchor="start" font-size="10" fill="var(--text-theme, #ef4444">✗</text>
+  <text x="655" y="315" font-size="10" fill="var(--text-theme, #1e293b">Queue full → Reject new</text>
+  
+  <text x="640" y="335" text-anchor="start" font-size="10" fill="var(--text-theme, #f59e0b">⚠</text>
+  <text x="655" y="335" font-size="10" fill="var(--text-theme, #1e293b">High lag → Scale up</text>
+  
+  <text x="640" y="355" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="655" y="355" font-size="10" fill="var(--text-theme, #1e293b">Batching reduces load</text>
+  
+  <text x="640" y="375" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="655" y="375" font-size="10" fill="var(--text-theme, #1e293b">Client-side retry with backoff</text>
+  
+  <text x="640" y="395" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">Monitor: Queue depth, lag, drop rate</text>
+  
+  <!-- Replay Mechanism -->
+  <rect x="30" y="445" width="400" height="85" rx="8" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="230" y="470" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Replay Mechanism</text>
+  
+  <rect x="50" y="485" width="360" height="35" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="230" y="508" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Raw events stored immutably for replay</text>
+  
+  <rect x="50" y="525" width="360" height="35" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="230" y="548" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Reprocess with versioned transformations</text>
+  
+  <!-- Delivery Semantics -->
+  <rect x="450" y="445" width="420" height="85" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="660" y="470" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Delivery Semantics</text>
+  
+  <rect x="470" y="485" width="380" height="35" rx="4" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="660" y="508" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">At-least-once: Duplicates possible, no intentional drops</text>
+  
+  <rect x="470" y="525" width="380" height="35" rx="4" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="660" y="548" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Exactly-once: Rarely achievable end-to-end</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
 </svg>

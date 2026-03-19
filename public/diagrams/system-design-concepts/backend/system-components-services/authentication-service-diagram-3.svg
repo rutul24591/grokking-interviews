@@ -1,10 +1,143 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Authentication Service Diagram 3</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage A</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage B</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage C</text>
+<svg xmlns="http://www.w3.org/2000/svg" " viewBox="0 0 900 600" role="img aria-labelledby="title desc">
+  <title id="title>Authentication Service Failure Modes</title>
+  <desc" id="desc">Authentication failure modes: credential stuffing, token theft, session fixation, and MFA bypass</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="600" fill="var(--bg-panel, #f8fafc)/>
+  
+  <!-- Title -->
+  <text" x="450" y="35 text-anchor="middle" font-size="18 font-weight="bold" fill="var(--text-theme, #1e293b)>Authentication Service Failure Modes</text>
+  <text" x="450" y="58 text-anchor="middle" font-size="13 fill="var(--text-theme, #64748b)">Credential stuffing, token theft, session fixation, and MFA bypass</text>
+  
+  <!-- Credential Stuffing -->
+  <rect x="30 y="85" width="410" height="240" rx="8 fill="white" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <text x="235 y="110" text-anchor="middle font-size="14" font-weight="bold fill="var(--text-theme, #ef4444">1. Credential Stuffing</text>
+  
+  <!-- Attack scenario -->
+  <rect x="50 y="135" width="370" height="140" rx="6 fill="var(--bg-panel-soft, #fef2f2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  
+  <!-- Attacker -->
+  <rect x="60 y="150" width="100" height="60" rx="4 fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="110 y="175" text-anchor="middle font-size="9" fill="white>Attacker</text>
+  <text" x="110" y="190 text-anchor="middle" font-size="8 fill="#fca5a5">Botnet</text>
+  <text x="110 y="203" text-anchor="middle font-size="7" fill="#fca5a5>10K req/s</text>
+  
+  <line x1="165" y1="180 x2="195" y2="180 stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="180 y="170" text-anchor="middle font-size="7" fill="var(--text-theme, #ef4444>Stolen creds</text>
+  
+  <!-- Auth Service -->
+  <rect" x="205" y="150 width="120" height="60" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1/>
+  <text" x="265" y="175 text-anchor="middle" font-size="9 fill="white">Auth Service</text>
+  <text x="265 y="190" text-anchor="middle font-size="8" fill="#c4b5fd>Overloaded</text>
+  <text" x="265" y="203 text-anchor="middle" font-size="7 fill="#c4b5fd">No rate limit</text>
+  
+  <line x1="330 y1="180" x2="360 y2="180" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)/>
+  <text x="345" y="170 text-anchor="middle" font-size="7 fill="var(--text-theme, #ef4444">Accounts compromised</text>
+  
+  <!-- Victims -->
+  <rect x="370 y="150" width="40" height="60" rx="2 fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="390 y="180" text-anchor="middle font-size="10" fill="white>!</text>
+  
+  <text" x="235" y="290 text-anchor="middle" font-size="10 fill="var(--text-theme, #ef4444">User accounts compromised at scale!</text>
+  <text x="235 y="310" text-anchor="middle font-size="9" fill="var(--text-theme, #64748b>Cause: No rate limiting, no bot detection</text>
+  <text" x="235" y="330 text-anchor="middle" font-size="9 fill="var(--text-theme, #10b981">Fix: Rate limits, CAPTCHA, breach DB checks</text>
+  
+  <!-- Token Theft -->
+  <rect x="460 y="85" width="410" height="240" rx="8 fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="665 y="110" text-anchor="middle font-size="14" font-weight="bold fill="var(--text-theme, #b45309">2. Token Theft / XSS</text>
+  
+  <!-- Theft scenario -->
+  <rect x="480 y="135" width="370" height="140" rx="6 fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  
+  <!-- Legitimate user -->
+  <rect x="490 y="150" width="100" height="60" rx="4 fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="540 y="175" text-anchor="middle font-size="9" fill="white>User</text>
+  <text" x="540" y="190 text-anchor="middle" font-size="8 fill="#6ee7b7">Has token</text>
+  
+  <line x1="595 y1="180" x2="625 y2="180" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)/>
+  <text x="610" y="170 text-anchor="middle" font-size="7 fill="var(--text-theme, #ef4444">XSS steals</text>
+  
+  <!-- Attacker with token -->
+  <rect x="635 y="150" width="100" height="60" rx="4 fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="685 y="175" text-anchor="middle font-size="9" fill="white>Attacker</text>
+  <text" x="685" y="190 text-anchor="middle" font-size="8 fill="#fca5a5">Stolen JWT</text>
+  
+  <line x1="740 y1="180" x2="770 y2="180" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)/>
+  <text x="755" y="170 text-anchor="middle" font-size="7 fill="var(--text-theme, #ef4444">Impersonates</text>
+  
+  <!-- API -->
+  <rect x="780 y="150" width="60" height="60" rx="4 fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="810 y="180" text-anchor="middle font-size="9" fill="white>API</text>
+  <text" x="810" y="195 text-anchor="middle" font-size="7 fill="#bfdbfe">Valid token</text>
+  
+  <text x="665 y="290" text-anchor="middle font-size="10" fill="var(--text-theme, #ef4444>Attacker impersonates user!</text>
+  <text" x="665" y="310 text-anchor="middle" font-size="9 fill="var(--text-theme, #64748b">Cause: Token in localStorage, no XSS protection</text>
+  <text x="665 y="330" text-anchor="middle font-size="9" fill="var(--text-theme, #10b981>Fix: httpOnly cookies, CSP, short token TTL</text>
+  
+  <!-- Session Fixation -->
+  <rect" x="30" y="340 width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2/>
+  <text" x="235" y="365 text-anchor="middle" font-size="14 font-weight="bold" fill="var(--text-theme, #8b5cf6>3. Session Fixation</text>
+  
+  <!-- Fixation scenario -->
+  <rect" x="50" y="380 width="370" height="140" rx="6" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1/>
+  
+  <!-- Before login -->
+  <rect" x="60" y="395 width="140" height="60" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1/>
+  <text" x="130" y="420 text-anchor="middle" font-size="9 fill="white">Before Login</text>
+  <text x="130 y="435" text-anchor="middle font-size="8" fill="#c4b5fd>session_id: ABC</text>
+  <text" x="130" y="448 text-anchor="middle" font-size="7 fill="#c4b5fd">Attacker knows</text>
+  
+  <line x1="205 y1="425" x2="235 y2="425" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)/>
+  <text x="220" y="415 text-anchor="middle" font-size="7 fill="var(--text-theme, #64748b">User logs in</text>
+  
+  <!-- After login -->
+  <rect x="245 y="395" width="140" height="60" rx="4 fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="315 y="420" text-anchor="middle font-size="9" fill="white>After Login</text>
+  <text" x="315" y="435 text-anchor="middle" font-size="8 fill="#fca5a5">session_id: ABC</text>
+  <text x="315 y="448" text-anchor="middle font-size="7" fill="#fca5a5>NOT regenerated!</text>
+  
+  <text" x="235" y="495 text-anchor="middle" font-size="10 fill="var(--text-theme, #ef4444">Attacker hijacks authenticated session!</text>
+  <text x="235 y="515" text-anchor="middle font-size="9" fill="var(--text-theme, #64748b>Cause: Session ID not regenerated after login</text>
+  <text" x="235" y="535 text-anchor="middle" font-size="9 fill="var(--text-theme, #10b981">Fix: Regenerate session on auth state change</text>
+  
+  <!-- MFA Bypass -->
+  <rect x="460 y="340" width="410" height="240" rx="8 fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="665 y="365" text-anchor="middle font-size="14" font-weight="bold fill="var(--text-theme, #10b981">4. MFA Bypass</text>
+  
+  <!-- Bypass scenario -->
+  <rect x="480 y="380" width="370" height="140" rx="6 fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  
+  <!-- MFA required -->
+  <rect x="490 y="395" width="120" height="60" rx="4 fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="550 y="420" text-anchor="middle font-size="9" fill="white>MFA Required</text>
+  <text" x="550" y="435 text-anchor="middle" font-size="8 fill="#6ee7b7">TOTP/SMS</text>
+  
+  <line x1="615 y1="425" x2="645 y2="425" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)/>
+  <text x="630" y="415 text-anchor="middle" font-size="7 fill="var(--text-theme, #ef4444">Fallback</text>
+  
+  <!-- Weak fallback -->
+  <rect x="655 y="395" width="120" height="60" rx="4 fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="715 y="420" text-anchor="middle font-size="9" fill="white>Email Fallback</text>
+  <text" x="715" y="435 text-anchor="middle" font-size="8 fill="#fca5a5">Weak verification</text>
+  
+  <line x1="780 y1="425" x2="810 y2="425" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)/>
+  <text x="795" y="415 text-anchor="middle" font-size="7 fill="var(--text-theme, #ef4444">Bypassed!</text>
+  
+  <!-- Account compromised -->
+  <rect x="820 y="395" width="20" height="60" rx="2 fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="830 y="425" text-anchor="middle font-size="10" fill="white>!</text>
+  
+  <text" x="665" y="495 text-anchor="middle" font-size="10 fill="var(--text-theme, #ef4444">MFA bypassed via weak fallback!</text>
+  <text x="665 y="515" text-anchor="middle font-size="9" fill="var(--text-theme, #64748b>Cause: Email/SMS fallback, MFA fatigue</text>
+  <text" x="665" y="535 text-anchor="middle" font-size="9 fill="var(--text-theme, #10b981">Fix: Strong fallbacks, MFA fatigue detection</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5 orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7 fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5 orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7 fill="var(--text-theme, #ef4444)"/>
+    </marker>
+  </defs>
 </svg>

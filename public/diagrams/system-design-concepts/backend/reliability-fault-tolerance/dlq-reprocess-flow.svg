@@ -12,5 +12,5 @@
       <path d="M0,0 L0,6 L9,3 Z" fill="#1f4e79"/>
     </marker>
   </defs>
-  <text x="480" y="360" font-family="Arial" font-size="18" text-anchor="middle" fill="#1f4e79">Retry backlog & monitoring</text>
+  <text x="480" y="360" font-family="Arial" font-size="18" text-anchor="middle" fill="#1f4e79">Retry backlog &amp; monitoring</text>
 </svg>

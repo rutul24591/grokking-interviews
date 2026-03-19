@@ -35,14 +35,14 @@
   <text x="330" y="160" text-anchor="start" class="small-label">• Parse time</text>
   <text x="330" y="180" text-anchor="start" class="small-label">• Compile time</text>
   <text x="330" y="200" text-anchor="start" class="small-label">• Execution time</text>
-  <text x="330" y="220" text-anchor="start" class="small-label">• Long tasks (&gt;50ms)</text>
+  <text x="330" y="220" text-anchor="start" class="small-label">• Long tasks (&amp;gt;50ms)</text>
   
   <!-- Render Blocking -->
   <rect x="570" y="80" width="250" height="140" fill="#fff3e0" stroke="#ff9800" rx="6"/>
   <text x="695" y="105" text-anchor="middle" class="label" font-weight="bold">Render Blocking</text>
   <line x1="590" y1="115" x2="800" y2="115" stroke="#ff9800" stroke-width="1"/>
   
-  <text x="580" y="140" text-anchor="start" class="small-label" font-weight="bold">Scripts in &lt;head&gt;:</text>
+  <text x="580" y="140" text-anchor="start" class="small-label" font-weight="bold">Scripts in &amp;lt;head&amp;gt;:</text>
   <text x="580" y="160" text-anchor="start" class="small-label">• Block HTML parsing</text>
   <text x="580" y="180" text-anchor="start" class="small-label">• Delay first paint</text>
   <text x="580" y="200" text-anchor="start" class="small-label">• Impact LCP</text>

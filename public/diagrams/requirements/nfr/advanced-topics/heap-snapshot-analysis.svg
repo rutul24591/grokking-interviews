@@ -1,0 +1,182 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow3" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="500" fill="url(#bgGrad3)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#e0e0e0">Heap Snapshot Analysis Workflow</text>
+  
+  <!-- Step 1: Baseline -->
+  <g transform="translate(50, 70)">
+    <rect x="0" y="0" width="160" height="100" rx="8" fill="#4a90d9" filter="url(#shadow3)"/>
+    <text x="80" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="white">1. Baseline</text>
+    <text x="80" y="60" text-anchor="middle" font-family="system-ui" font-size="11" fill="#f0f0f0">Take heap snapshot</text>
+    <text x="80" y="78" text-anchor="middle" font-family="system-ui" font-size="11" fill="#f0f0f0">before leak scenario</text>
+    
+    <!-- Snapshot icon -->
+    <rect x="60" y="85" width="40" height="8" rx="2" fill="#1a1a2e" opacity="0.5"/>
+  </g>
+  
+  <!-- Arrow -->
+  <line x1="220" y1="120" x2="260" y2="120" stroke="#67b26f" stroke-width="3"/>
+  <polygon points="260,120 250,115 250,125" fill="#67b26f"/>
+  
+  <!-- Step 2: Exercise -->
+  <g transform="translate(270, 70)">
+    <rect x="0" y="0" width="160" height="100" rx="8" fill="#67b26f" filter="url(#shadow3)"/>
+    <text x="80" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="white">2. Exercise</text>
+    <text x="80" y="60" text-anchor="middle" font-family="system-ui" font-size="11" fill="#f0f0f0">Perform suspected</text>
+    <text x="80" y="78" text-anchor="middle" font-family="system-ui" font-size="11" fill="#f0f0f0">leak action 10x</text>
+    
+    <!-- Repeat icon -->
+    <text x="80" y="95" text-anchor="middle" font-family="system-ui" font-size="16" fill="#1a1a2e" opacity="0.5">↻</text>
+  </g>
+  
+  <!-- Arrow -->
+  <line x1="440" y1="120" x2="480" y2="120" stroke="#67b26f" stroke-width="3"/>
+  <polygon points="480,120 470,115 470,125" fill="#67b26f"/>
+  
+  <!-- Step 3: Force GC -->
+  <g transform="translate(490, 70)">
+    <rect x="0" y="0" width="160" height="100" rx="8" fill="#f0ad4e" filter="url(#shadow3)"/>
+    <text x="80" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="white">3. Force GC</text>
+    <text x="80" y="60" text-anchor="middle" font-family="system-ui" font-size="11" fill="#f0f0f0">Click garbage can</text>
+    <text x="80" y="78" text-anchor="middle" font-family="system-ui" font-size="11" fill="#f0f0f0">in DevTools</text>
+    
+    <!-- GC icon -->
+    <text x="80" y="95" text-anchor="middle" font-family="system-ui" font-size="16" fill="#1a1a2e" opacity="0.5">🗑</text>
+  </g>
+  
+  <!-- Arrow -->
+  <line x1="660" y1="120" x2="700" y2="120" stroke="#67b26f" stroke-width="3"/>
+  <polygon points="700,120 690,115 690,125" fill="#67b26f"/>
+  
+  <!-- Step 4: Compare -->
+  <g transform="translate(710, 70)">
+    <rect x="0" y="0" width="160" height="100" rx="8" fill="#d9534f" filter="url(#shadow3)"/>
+    <text x="80" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="white">4. Compare</text>
+    <text x="80" y="60" text-anchor="middle" font-family="system-ui" font-size="11" fill="#f0f0f0">Comparison view</text>
+    <text x="80" y="78" text-anchor="middle" font-family="system-ui" font-size="11" fill="#f0f0f0">Snapshot 1 vs 2</text>
+    
+    <!-- Compare icon -->
+    <text x="80" y="95" text-anchor="middle" font-family="system-ui" font-size="16" fill="#1a1a2e" opacity="0.5">⚖</text>
+  </g>
+  
+  <!-- Step 5: Identify -->
+  <g transform="translate(380, 200)">
+    <rect x="0" y="0" width="160" height="100" rx="8" fill="#6f42c1" filter="url(#shadow3)"/>
+    <text x="80" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="white">5. Identify</text>
+    <text x="80" y="60" text-anchor="middle" font-family="system-ui" font-size="11" fill="#f0f0f0">Find objects with</text>
+    <text x="80" y="78" text-anchor="middle" font-family="system-ui" font-size="11" fill="#f0f0f0">increased count/size</text>
+    
+    <!-- Magnifying glass -->
+    <text x="80" y="95" text-anchor="middle" font-family="system-ui" font-size="16" fill="#1a1a2e" opacity="0.5">🔍</text>
+  </g>
+  
+  <!-- Arrows down to Identify -->
+  <line x1="460" y1="170" x2="460" y2="195" stroke="#6f42c1" stroke-width="3"/>
+  <polygon points="460,195 455,185 465,185" fill="#6f42c1"/>
+  
+  <!-- What to Look For Section -->
+  <g transform="translate(50, 230)">
+    <rect x="0" y="0" width="260" height="140" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2"/>
+    <text x="130" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#4a90d9">What to Look For</text>
+    
+    <g transform="translate(15, 50)">
+      <circle cx="8" cy="5" r="4" fill="#d9534f"/>
+      <text x="20" y="10" font-family="system-ui" font-size="11" fill="#e0e0e0">Increasing object counts</text>
+      
+      <circle cx="8" cy="30" r="4" fill="#d9534f"/>
+      <text x="20" y="35" font-family="system-ui" font-size="11" fill="#e0e0e0">Component instances</text>
+      
+      <circle cx="8" cy="55" r="4" fill="#d9534f"/>
+      <text x="20" y="60" font-family="system-ui" font-size="11" fill="#e0e0e0">Event listeners</text>
+      
+      <circle cx="8" cy="80" r="4" fill="#d9534f"/>
+      <text x="20" y="85" font-family="system-ui" font-size="11" fill="#e0e0e0">Closures</text>
+    </g>
+  </g>
+  
+  <!-- Detached DOM Trees -->
+  <g transform="translate(330, 230)">
+    <rect x="0" y="0" width="260" height="140" rx="8" fill="#2a2a4a" stroke="#d9534f" stroke-width="2"/>
+    <text x="130" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#d9534f">Detached DOM Trees</text>
+    
+    <g transform="translate(15, 50)">
+      <text x="0" y="0" font-family="system-ui" font-size="11" fill="#e0e0e0">Filter by "Detached" to find:</text>
+      
+      <rect x="10" y="15" width="80" height="20" rx="3" fill="#d9534f" opacity="0.6"/>
+      <text x="50" y="29" text-anchor="middle" font-family="system-ui" font-size="9" fill="#fff">div.detached</text>
+      
+      <rect x="10" y="45" width="80" height="20" rx="3" fill="#d9534f" opacity="0.6"/>
+      <text x="50" y="59" text-anchor="middle" font-family="system-ui" font-size="9" fill="#fff">span.detached</text>
+      
+      <text x="110" y="30" font-family="system-ui" font-size="10" fill="#e0e0e0">→ Orphaned nodes</text>
+      <text x="110" y="50" font-family="system-ui" font-size="10" fill="#e0e0e0">→ Still referenced</text>
+      <text x="110" y="70" font-family="system-ui" font-size="10" fill="#e0e0e0">→ Prevents GC</text>
+    </g>
+  </g>
+  
+  <!-- Retained Size -->
+  <g transform="translate(610, 230)">
+    <rect x="0" y="0" width="260" height="140" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2"/>
+    <text x="130" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#f0ad4e">Retained Size</text>
+    
+    <g transform="translate(15, 50)">
+      <text x="0" y="0" font-family="system-ui" font-size="11" fill="#e0e0e0">High retained size =</text>
+      <text x="0" y="20" font-family="system-ui" font-size="11" fill="#e0e0e0">keeping other objects alive</text>
+      
+      <!-- Retention chain visualization -->
+      <rect x="10" y="35" width="50" height="25" rx="3" fill="#4a90d9"/>
+      <text x="35" y="51" text-anchor="middle" font-family="system-ui" font-size="8" fill="#fff">Object A</text>
+      <text x="35" y="68" text-anchor="middle" font-family="system-ui" font-size="8" fill="#f0ad4e">10 KB</text>
+      
+      <line x1="60" y1="48" x2="80" y2="48" stroke="#67b26f" stroke-width="2"/>
+      
+      <rect x="80" y="35" width="50" height="25" rx="3" fill="#67b26f"/>
+      <text x="105" y="51" text-anchor="middle" font-family="system-ui" font-size="8" fill="#fff">Object B</text>
+      <text x="105" y="68" text-anchor="middle" font-family="system-ui" font-size="8" fill="#f0ad4e">50 KB</text>
+      
+      <line x1="130" y1="48" x2="150" y2="48" stroke="#67b26f" stroke-width="2"/>
+      
+      <rect x="150" y="35" width="50" height="25" rx="3" fill="#d9a036"/>
+      <text x="175" y="51" text-anchor="middle" font-family="system-ui" font-size="8" fill="#fff">Object C</text>
+      <text x="175" y="68" text-anchor="middle" font-family="system-ui" font-size="8" fill="#f0ad4e">200 KB</text>
+      
+      <text x="120" y="95" font-family="system-ui" font-size="10" fill="#f0ad4e">Total retained: 260 KB</text>
+    </g>
+  </g>
+  
+  <!-- Memory Profile Graph -->
+  <g transform="translate(50, 390)">
+    <rect x="0" y="0" width="820" height="90" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2"/>
+    <text x="410" y="22" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#67b26f">Memory Profile Pattern</text>
+    
+    <!-- Graph axes -->
+    <line x1="40" y1="40" x2="780" y2="40" stroke="#666" stroke-width="1"/>
+    <line x1="40" y1="40" x2="40" y2="75" stroke="#666" stroke-width="1"/>
+    
+    <!-- Sawtooth pattern (normal) -->
+    <polyline points="40,70 80,65 120,60 160,55 200,50 200,70 240,65 280,60 320,55 360,50 360,70 400,65 440,60 480,55 520,50 520,70 560,65 600,60 640,55 680,50 720,45 760,40" 
+              fill="none" stroke="#67b26f" stroke-width="2"/>
+    
+    <!-- Leak pattern (monotonic increase) -->
+    <polyline points="40,75 100,73 160,71 220,69 280,67 340,65 400,63 460,61 520,59 580,57 640,55 700,53 760,51" 
+              fill="none" stroke="#d9534f" stroke-width="2" stroke-dasharray="5,3"/>
+    
+    <!-- Labels -->
+    <text x="50" y="88" font-family="system-ui" font-size="10" fill="#67b26f">Normal (sawtooth)</text>
+    <text x="200" y="88" font-family="system-ui" font-size="10" fill="#d9534f">Leak (monotonic)</text>
+    
+    <text x="410" y="88" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">Time →</text>
+  </g>
+</svg>

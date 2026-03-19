@@ -34,8 +34,8 @@
 
   <!-- Step 4a: Inline Critical -->
   <rect x="705" y="55" width="170" height="55" rx="8" fill="#6d5bd0" stroke="#5a4ab5" stroke-width="2"/>
-  <text x="790" y="77" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">Inline in &lt;head&gt;</text>
-  <text x="790" y="97" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#e0daf5">&lt;style&gt;...critical...&lt;/style&gt;</text>
+  <text x="790" y="77" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fff">Inline in &amp;lt;head&amp;gt;</text>
+  <text x="790" y="97" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#e0daf5">&amp;lt;style&amp;gt;...critical...&amp;lt;/style&amp;gt;</text>
 
   <!-- Step 4b: Async Load -->
   <rect x="705" y="130" width="170" height="55" rx="8" fill="#d97843" stroke="#c06935" stroke-width="2"/>

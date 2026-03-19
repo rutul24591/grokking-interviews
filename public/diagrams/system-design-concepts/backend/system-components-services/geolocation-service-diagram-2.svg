@@ -1,10 +1,118 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Geolocation Service Diagram 2</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage A</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage B</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage C</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Geolocation Control Points</title>
+  <desc id="desc">Geolocation control points showing caching, accuracy tiers, policy enforcement, and auditability</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Geolocation Control Points</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Caching, accuracy tiers, policy enforcement, and auditability</text>
+  
+  <!-- Caching Strategy -->
+  <rect x="30" y="85" width="270" height="220" rx="8" fill="white" stroke="#3b82f6" stroke-width="2"/>
+  <text x="165" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#3b82f6">Caching Strategy</text>
+  
+  <rect x="50" y="125" width="200" height="100" rx="4" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  
+  <text x="150" y="150" text-anchor="middle" font-size="10" fill="#64748b">Cache TTL by Signal Type</text>
+  
+  <rect x="60" y="160" width="180" height="25" rx="2" fill="#10b981"/>
+  <text x="150" y="178" text-anchor="middle" font-size="8" fill="white">GPS: 5-30 minutes</text>
+  
+  <rect x="60" y="190" width="180" height="25" rx="2" fill="#f59e0b"/>
+  <text x="150" y="208" text-anchor="middle" font-size="8" fill="white">IP Lookup: 1-24 hours</text>
+  
+  <rect x="50" y="235" width="200" height="100" rx="4" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="150" y="260" text-anchor="middle" font-size="10" fill="#64748b">Cache Invalidation</text>
+  
+  <text x="70" y="285" text-anchor="start" font-size="9" fill="#64748b">- User location change</text>
+  <text x="70" y="300" text-anchor="start" font-size="9" fill="#64748b">- IP address change</text>
+  <text x="70" y="315" text-anchor="start" font-size="9" fill="#64748b">- DB updates</text>
+  
+  <!-- Accuracy Tiers -->
+  <rect x="315" y="85" width="270" height="220" rx="8" fill="white" stroke="#10b981" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#10b981">Accuracy Tiers</text>
+  
+  <rect x="335" y="125" width="230" height="100" rx="4" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
+  
+  <rect x="345" y="140" width="210" height="35" rx="3" fill="#10b981"/>
+  <text x="450" y="163" text-anchor="middle" font-size="9" fill="white">Tier 1: High (&amp;lt;100m)</text>
+  
+  <text x="450" y="195" text-anchor="middle" font-size="8" fill="#64748b">GPS, WiFi triangulation</text>
+  <text x="450" y="210" text-anchor="middle" font-size="8" fill="#64748b">Use: Geofencing, delivery</text>
+  
+  <rect x="345" y="230" width="210" height="35" rx="3" fill="#f59e0b"/>
+  <text x="450" y="253" text-anchor="middle" font-size="9" fill="white">Tier 2: Medium (&amp;lt;10km)</text>
+  
+  <text x="450" y="285" text-anchor="middle" font-size="8" fill="#64748b">Cell tower, IP+WiFi</text>
+  <text x="450" y="300" text-anchor="middle" font-size="8" fill="#64748b">Use: Regional content</text>
+  
+  <rect x="335" y="315" width="230" height="35" rx="3" fill="#ef4444"/>
+  <text x="450" y="338" text-anchor="middle" font-size="9" fill="white">Tier 3: Low (Region/Country)</text>
+  
+  <text x="450" y="365" text-anchor="middle" font-size="8" fill="#64748b">IP-only lookup</text>
+  <text x="450" y="380" text-anchor="middle" font-size="8" fill="#64748b">Use: Fraud signals, analytics</text>
+  
+  <!-- Policy Enforcement -->
+  <rect x="600" y="85" width="270" height="220" rx="8" fill="white" stroke="#f59e0b" stroke-width="2"/>
+  <text x="735" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">Policy Enforcement</text>
+  
+  <rect x="620" y="125" width="230" height="100" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  
+  <text x="735" y="150" text-anchor="middle" font-size="10" fill="#64748b">Geofencing Rules</text>
+  
+  <rect x="630" y="160" width="210" height="30" rx="2" fill="#f59e0b"/>
+  <text x="735" y="180" text-anchor="middle" font-size="8" fill="white">Allowed Regions</text>
+  
+  <rect x="630" y="195" width="210" height="30" rx="2" fill="#ef4444"/>
+  <text x="735" y="215" text-anchor="middle" font-size="8" fill="white">Blocked Regions</text>
+  
+  <rect x="620" y="235" width="230" height="100" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="735" y="260" text-anchor="middle" font-size="10" fill="#64748b">Decision Output</text>
+  
+  <text x="640" y="285" text-anchor="start" font-size="9" fill="#64748b">- Allow/Deny</text>
+  <text x="640" y="300" text-anchor="start" font-size="9" fill="#64748b">- Confidence Score</text>
+  <text x="640" y="315" text-anchor="start" font-size="9" fill="#64748b">- Reason Code</text>
+  <text x="640" y="330" text-anchor="start" font-size="9" fill="#64748b">- Accuracy Tier</text>
+  
+  <!-- Audit Trail -->
+  <rect x="30" y="320" width="400" height="210" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="230" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Audit Trail</text>
+  
+  <rect x="50" y="360" width="360" height="160" rx="6" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+  
+  <text x="70" y="385" text-anchor="start" font-size="10" fill="#64748b">Every location lookup logged:</text>
+  
+  <text x="70" y="410" text-anchor="start" font-size="9" fill="#64748b">- Request ID + Timestamp</text>
+  <text x="70" y="425" text-anchor="start" font-size="9" fill="#64748b">- Signal source used</text>
+  <text x="70" y="440" text-anchor="start" font-size="9" fill="#64748b">- Accuracy tier returned</text>
+  <text x="70" y="455" text-anchor="start" font-size="9" fill="#64748b">- Policy decision made</text>
+  <text x="70" y="470" text-anchor="start" font-size="9" fill="#64748b">- User consent status</text>
+  <text x="70" y="485" text-anchor="start" font-size="9" fill="#64748b">- Retention: 30-90 days</text>
+  
+  <!-- VPN/Proxy Detection -->
+  <rect x="470" y="320" width="400" height="210" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="670" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">VPN/Proxy Detection</text>
+  
+  <rect x="490" y="360" width="360" height="160" rx="6" fill="white" stroke="#f59e0b" stroke-width="1"/>
+  
+  <rect x="500" y="380" width="150" height="50" rx="4" fill="#ef4444"/>
+  <text x="575" y="405" text-anchor="middle" font-size="9" fill="white">Known VPN IPs</text>
+  <text x="575" y="420" text-anchor="middle" font-size="8" fill="#fca5a5">Blocklist DB</text>
+  
+  <rect x="670" y="380" width="160" height="50" rx="4" fill="#f59e0b"/>
+  <text x="750" y="405" text-anchor="middle" font-size="9" fill="white">Proxy Detection</text>
+  <text x="750" y="420" text-anchor="middle" font-size="8" fill="#fcd34d">Behavioral Analysis</text>
+  
+  <text x="670" y="460" text-anchor="middle" font-size="9" fill="#64748b">Flag suspicious locations</text>
+  <text x="670" y="480" text-anchor="middle" font-size="9" fill="#64748b">Reduce accuracy confidence</text>
+  <text x="670" y="500" text-anchor="middle" font-size="9" fill="#64748b">Alert fraud systems</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
 </svg>

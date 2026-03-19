@@ -92,7 +92,7 @@
   <text x="735" y="295" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Single service p99: 100ms</text>
   <text x="735" y="315" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Page needs 10 services</text>
   <text x="735" y="335" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Page p99: ~400ms!</text>
-  <text x="735" y="350" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">P(all 10 &lt; 100ms) = 0.99^10 ≈ 90%</text>
+  <text x="735" y="350" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">P(all 10 &amp;lt; 100ms) = 0.99^10 ≈ 90%</text>
   
   <!-- Bottom: Key Takeaways -->
   <rect x="30" y="380" width="840" height="150" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>

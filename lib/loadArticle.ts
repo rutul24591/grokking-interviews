@@ -1,12 +1,36 @@
-import { articleRegistry } from "@/content/registry";
 import type { ArticleMetadata } from "@/types/article";
 
 /**
+ * Get the import path for an article
+ * This is a helper to construct the correct import path
+ */
+export function getArticleImportPath(params: {
+  domain: string;
+  category: string;
+  subcategory: string;
+  topic: string;
+}): string {
+  const { domain, category, subcategory, topic } = params;
+
+  // Map domain to articles directory
+  const articlesBase = domain === "system-design-concepts" ? "system-design" : domain;
+
+  // Map category slugs to filesystem directories
+  const CATEGORY_DIR_MAP: Record<string, string> = {
+    "frontend-concepts": "frontend",
+    "backend-concepts": "backend",
+    "functional-requirements": "functional-requirements",
+    "non-functional-requirements": "non-functional-requirements",
+  };
+  const fsCategory = CATEGORY_DIR_MAP[category] || category;
+
+  return `@/content/articles/${articlesBase}/${fsCategory}/${subcategory}/${topic}`;
+}
+
+/**
  * Load an article by its path components
- * @param domain - The domain (e.g., "system-design-concepts")
- * @param category - The category (e.g., "frontend-concepts")
- * @param subcategory - The subcategory (e.g., "rendering-strategies")
- * @param topic - The topic slug (e.g., "client-side-rendering")
+ * 
+ * Note: This uses dynamic import which requires the component to be wrapped in Suspense
  */
 export async function loadArticle(params: {
   domain: string;
@@ -14,52 +38,39 @@ export async function loadArticle(params: {
   subcategory: string;
   topic: string;
 }) {
-  const { domain, category, subcategory, topic } = params;
+  const importPath = getArticleImportPath(params);
 
-  // Map category slug from URL to registry format
-  // URL uses "backend-concepts", "frontend-concepts" but registry uses "backend", "frontend"
-  const registryCategory = category.replace("-concepts", "");
+  try {
+    const module = await import(importPath);
 
-  // Build the registry key from the path
-  // The registry uses format: "{category}/{subcategory}/{topic}"
-  // where category is like "backend", "frontend", etc.
-  const registryKey = `${registryCategory}/${subcategory}/${topic}`;
+    if (!module.default) {
+      return null;
+    }
 
-  // Check if article exists in registry
-  const article = articleRegistry[registryKey];
-
-  if (!article) {
+    return {
+      metadata: module.metadata as ArticleMetadata,
+      component: module.default,
+    };
+  } catch (error) {
+    console.warn(`Failed to load article: ${importPath}`, error);
     return null;
   }
-
-  // Load the article module
-  const module = await article.loader();
-
-  return {
-    metadata: article.metadata,
-    component: module.default,
-  };
 }
 
 /**
  * Get all available article paths for static generation
+ * Note: This is a build-time function that scans the filesystem
  */
 export function getAllArticlePaths() {
-  return Object.keys(articleRegistry).map((key) => {
-    const parts = key.split("/");
-    return {
-      domain: "system-design-concepts", // Default domain for now
-      category: parts[0],
-      subcategory: parts[1],
-      topic: parts[2],
-    };
-  });
+  // This needs to be run at build time, not runtime
+  // For now, return empty array - static params will be generated differently
+  return [];
 }
 
 /**
  * Get article metadata without loading the component
  */
-export function getArticleMetadata(registryKey: string): ArticleMetadata | null {
-  const article = articleRegistry[registryKey];
-  return article?.metadata ?? null;
+export function getArticleMetadata(_registryKey: string): ArticleMetadata | null {
+  // Metadata is loaded with the component
+  return null;
 }

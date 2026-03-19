@@ -15,7 +15,7 @@
   <!-- CSP Attack Blocked -->
   <rect x="70" y="120" width="300" height="70" rx="6" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #dc2626)" stroke-width="2"/>
   <text x="220" y="145" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #dc2626">XSS Attack Blocked</text>
-  <text x="220" y="165" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">&lt;script src="evil.com"&gt; → BLOCKED</text>
+  <text x="220" y="165" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">&amp;lt;script src="evil.com"&amp;gt; → BLOCKED</text>
   <text x="220" y="180" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Not in script-src allowlist</text>
   
   <!-- CSP Policy -->

@@ -31,7 +31,7 @@
   <rect x="25" y="144" width="150" height="12" fill="#d97843"/>
   <text x="100" y="149" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">Critical CSS</text>
   <text x="38" y="174" font-size="9" fill="#1a1822">• Extract above-fold CSS</text>
-  <text x="38" y="188" font-size="9" fill="#1a1822">• Inline in &lt;head&gt;</text>
+  <text x="38" y="188" font-size="9" fill="#1a1822">• Inline in &amp;lt;head&amp;gt;</text>
   <text x="38" y="202" font-size="9" fill="#1a1822">• Async load remainder</text>
   <text x="38" y="216" font-size="9" fill="#1a1822">• Target ≤ 14KB total</text>
   <text x="100" y="234" text-anchor="middle" font-size="8" fill="#d97843" font-weight="600">Impacts: FCP</text>

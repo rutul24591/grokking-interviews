@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Security Threat Model (STRIDE)</text>
+  
+  <!-- STRIDE Categories -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="180" rx="8" fill="#2a2a4a" stroke="#d9534f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#d9534f">STRIDE Threat Categories</text>
+    
+    <!-- Spoofing -->
+    <rect x="30" y="55" width="115" height="100" rx="4" fill="#4a90d9" opacity="0.3"/>
+    <text x="87" y="80" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#4a90d9">S</text>
+    <text x="87" y="100" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#e0e0e0">Spoofing</text>
+    <text x="87" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Impersonation</text>
+    <text x="87" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#67b26f">→ Auth, MFA</text>
+    <text x="87" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#67b26f">→ Certificates</text>
+    
+    <!-- Tampering -->
+    <rect x="155" y="55" width="115" height="100" rx="4" fill="#f0ad4e" opacity="0.3"/>
+    <text x="212" y="80" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#f0ad4e">T</text>
+    <text x="212" y="100" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#e0e0e0">Tampering</text>
+    <text x="212" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Data modification</text>
+    <text x="212" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#67b26f">→ Integrity checks</text>
+    <text x="212" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#67b26f">→ Signatures</text>
+    
+    <!-- Repudiation -->
+    <rect x="280" y="55" width="115" height="100" rx="4" fill="#67b26f" opacity="0.3"/>
+    <text x="337" y="80" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#67b26f">R</text>
+    <text x="337" y="100" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#e0e0e0">Repudiation</text>
+    <text x="337" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Denying actions</text>
+    <text x="337" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#67b26f">→ Audit logs</text>
+    <text x="337" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#67b26f">→ Non-repudiation</text>
+    
+    <!-- Information Disclosure -->
+    <rect x="405" y="55" width="115" height="100" rx="4" fill="#4a90d9" opacity="0.3"/>
+    <text x="462" y="80" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#4a90d9">I</text>
+    <text x="462" y="100" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#e0e0e0">Info Disclosure</text>
+    <text x="462" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Data exposure</text>
+    <text x="462" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#67b26f">→ Encryption</text>
+    <text x="462" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#67b26f">→ Access control</text>
+    
+    <!-- Denial of Service -->
+    <rect x="530" y="55" width="115" height="100" rx="4" fill="#6f42c1" opacity="0.3"/>
+    <text x="587" y="80" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#6f42c1">D</text>
+    <text x="587" y="100" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#e0e0e0">DoS</text>
+    <text x="587" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Unavailable service</text>
+    <text x="587" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#67b26f">→ Rate limiting</text>
+    <text x="587" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#67b26f">→ Redundancy</text>
+    
+    <!-- Elevation of Privilege -->
+    <rect x="655" y="55" width="115" height="100" rx="4" fill="#d9534f" opacity="0.3"/>
+    <text x="712" y="80" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#d9534f">E</text>
+    <text x="712" y="100" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#e0e0e0">Elevation</text>
+    <text x="712" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Unauthorized access</text>
+    <text x="712" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#67b26f">→ Authorization</text>
+    <text x="712" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#67b26f">→ Least privilege</text>
+  </g>
+  
+  <!-- Threat Modeling Process -->
+  <g transform="translate(50, 290)">
+    <rect x="0" y="0" width="400" height="160" rx="8" fill="#1a2a1a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#4a90d9">Threat Modeling Process</text>
+    
+    <rect x="20" y="50" width="360" height="90" rx="4" fill="#2a2a4a"/>
+    
+    <!-- Step 1 -->
+    <circle cx="50" cy="80" r="20" fill="#4a90d9"/>
+    <text x="50" y="85" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="white">1</text>
+    <text x="85" y="75" font-family="system-ui" font-size="9" fill="#e0e0e0">Diagram system</text>
+    <text x="85" y="90" font-family="system-ui" font-size="8" fill="#999">Data flows, trust boundaries</text>
+    
+    <!-- Step 2 -->
+    <circle cx="50" cy="115" r="20" fill="#67b26f"/>
+    <text x="50" y="120" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="white">2</text>
+    <text x="85" y="110" font-family="system-ui" font-size="9" fill="#e0e0e0">Identify threats</text>
+    <text x="85" y="125" font-family="system-ui" font-size="8" fill="#999">Apply STRIDE</text>
+    
+    <!-- Step 3 -->
+    <circle cx="200" cy="80" r="20" fill="#f0ad4e"/>
+    <text x="200" y="85" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="white">3</text>
+    <text x="235" y="75" font-family="system-ui" font-size="9" fill="#e0e0e0">Rate threats</text>
+    <text x="235" y="90" font-family="system-ui" font-size="8" fill="#999">DREAD or risk matrix</text>
+    
+    <!-- Step 4 -->
+    <circle cx="200" cy="115" r="20" fill="#d9534f"/>
+    <text x="200" y="120" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="white">4</text>
+    <text x="235" y="110" font-family="system-ui" font-size="9" fill="#e0e0e0">Define mitigations</text>
+    <text x="235" y="125" font-family="system-ui" font-size="8" fill="#999">Implement controls</text>
+  </g>
+  
+  <!-- Security Controls -->
+  <g transform="translate(470, 290)">
+    <rect x="0" y="0" width="380" height="160" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Defense in Depth</text>
+    
+    <g transform="translate(20, 55)">
+      <rect x="0" y="0" width="150" height="35" rx="3" fill="#4a90d9" opacity="0.4"/>
+      <text x="75" y="22" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#4a90d9">Network Layer</text>
+      <text x="75" y="33" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Firewall, WAF, DDoS</text>
+      
+      <rect x="170" y="0" width="150" height="35" rx="3" fill="#67b26f" opacity="0.4"/>
+      <text x="245" y="22" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#67b26f">Application Layer</text>
+      <text x="245" y="33" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Auth, Input validation</text>
+      
+      <rect x="0" y="45" width="150" height="35" rx="3" fill="#f0ad4e" opacity="0.4"/>
+      <text x="75" y="67" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#f0ad4e">Data Layer</text>
+      <text x="75" y="78" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Encryption, Access control</text>
+      
+      <rect x="170" y="45" width="150" height="35" rx="3" fill="#d9534f" opacity="0.4"/>
+      <text x="245" y="67" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#d9534f">Physical Layer</text>
+      <text x="245" y="78" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Datacenter security</text>
+      
+      <text x="170" y="95" text-anchor="middle" font-family="system-ui" font-size="8" fill="#999">Multiple independent layers</text>
+    </g>
+  </g>
+</svg>

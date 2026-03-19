@@ -1,10 +1,124 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Job Scheduler Diagram 2</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage A</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage B</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage C</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Job Scheduling Control Points</title>
+  <desc id="desc">Job scheduling control points showing leases, concurrency, retries, dead-letter queues, and backpressure</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Job Scheduling Control Points</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Leases, concurrency, retries, dead-letter queues, and backpressure</text>
+  
+  <!-- Leases / Visibility Timeout -->
+  <rect x="30" y="85" width="270" height="220" rx="8" fill="white" stroke="#3b82f6" stroke-width="2"/>
+  <text x="165" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#3b82f6">Leases / Visibility Timeout</text>
+  
+  <rect x="50" y="125" width="200" height="100" rx="4" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  
+  <text x="150" y="150" text-anchor="middle" font-size="10" fill="#64748b">How It Works</text>
+  
+  <rect x="60" y="160" width="180" height="30" rx="2" fill="#3b82f6"/>
+  <text x="150" y="180" text-anchor="middle" font-size="8" fill="white">Worker claims job (lease)</text>
+  
+  <rect x="60" y="195" width="180" height="30" rx="2" fill="#10b981"/>
+  <text x="150" y="215" text-anchor="middle" font-size="8" fill="white">Job hidden from others</text>
+  
+  <rect x="50" y="235" width="200" height="100" rx="4" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  
+  <text x="150" y="260" text-anchor="middle" font-size="10" fill="#64748b">Timeout Scenarios</text>
+  
+  <text x="70" y="285" text-anchor="start" font-size="9" fill="#64748b">- Success: Delete job</text>
+  <text x="70" y="300" text-anchor="start" font-size="9" fill="#64748b">- Timeout: Return to queue</text>
+  <text x="70" y="315" text-anchor="start" font-size="9" fill="#64748b">- Crash: Auto-retry</text>
+  
+  <!-- Concurrency Control -->
+  <rect x="315" y="85" width="270" height="220" rx="8" fill="white" stroke="#10b981" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#10b981">Concurrency Control</text>
+  
+  <rect x="335" y="125" width="230" height="100" rx="4" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
+  
+  <text x="450" y="150" text-anchor="middle" font-size="10" fill="#64748b">Concurrency Limits</text>
+  
+  <rect x="345" y="160" width="210" height="30" rx="2" fill="#10b981"/>
+  <text x="450" y="180" text-anchor="middle" font-size="8" fill="white">Per-Job-Type Limits</text>
+  
+  <rect x="345" y="195" width="210" height="30" rx="2" fill="#3b82f6"/>
+  <text x="450" y="215" text-anchor="middle" font-size="8" fill="white">Per-Tenant Limits</text>
+  
+  <rect x="335" y="235" width="230" height="100" rx="4" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
+  <text x="450" y="260" text-anchor="middle" font-size="10" fill="#64748b">Mutual Exclusion</text>
+  
+  <text x="355" y="285" text-anchor="start" font-size="9" fill="#64748b">- Same user: sequential</text>
+  <text x="355" y="300" text-anchor="start" font-size="9" fill="#64748b">- Same resource: lock</text>
+  <text x="355" y="315" text-anchor="start" font-size="9" fill="#64748b">- Distributed locks</text>
+  
+  <!-- Retry Policies -->
+  <rect x="600" y="85" width="270" height="220" rx="8" fill="white" stroke="#f59e0b" stroke-width="2"/>
+  <text x="735" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">Retry Policies</text>
+  
+  <rect x="620" y="125" width="230" height="100" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  
+  <text x="735" y="150" text-anchor="middle" font-size="10" fill="#64748b">Exponential Backoff</text>
+  
+  <rect x="630" y="160" width="210" height="30" rx="2" fill="#f59e0b"/>
+  <text x="735" y="180" text-anchor="middle" font-size="8" fill="white">1s, 2s, 4s, 8s, 16s...</text>
+  
+  <rect x="630" y="195" width="210" height="30" rx="2" fill="#3b82f6"/>
+  <text x="735" y="215" text-anchor="middle" font-size="8" fill="white">Max: 1 hour</text>
+  
+  <rect x="620" y="235" width="230" height="100" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="735" y="260" text-anchor="middle" font-size="10" fill="#64748b">Retry Classification</text>
+  
+  <text x="640" y="285" text-anchor="start" font-size="9" fill="#64748b">- Retryable: Network, timeout</text>
+  <text x="640" y="300" text-anchor="start" font-size="9" fill="#64748b">- Terminal: Invalid input</text>
+  <text x="640" y="315" text-anchor="start" font-size="9" fill="#64748b">- Max attempts: 3-5</text>
+  
+  <!-- Dead Letter Queue -->
+  <rect x="30" y="320" width="400" height="210" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="230" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Dead Letter Queue (DLQ)</text>
+  
+  <rect x="50" y="360" width="360" height="160" rx="6" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+  
+  <rect x="70" y="380" width="150" height="50" rx="4" fill="#ef4444"/>
+  <text x="145" y="405" text-anchor="middle" font-size="9" fill="white">Failed Jobs</text>
+  <text x="145" y="420" text-anchor="middle" font-size="8" fill="#fca5a5">Max retries exceeded</text>
+  
+  <rect x="240" y="380" width="150" height="50" rx="4" fill="#f59e0b"/>
+  <text x="315" y="405" text-anchor="middle" font-size="9" fill="white">DLQ Storage</text>
+  <text x="315" y="420" text-anchor="middle" font-size="8" fill="#fcd34d">Manual review</text>
+  
+  <text x="230" y="460" text-anchor="middle" font-size="9" fill="#64748b">Prevents poison pill infinite loops</text>
+  
+  <text x="70" y="490" text-anchor="start" font-size="9" fill="#64748b">- Alert on DLQ growth</text>
+  <text x="70" y="505" text-anchor="start" font-size="9" fill="#64748b">- Manual replay capability</text>
+  <text x="230" y="490" text-anchor="start" font-size="9" fill="#64748b">- Root cause analysis</text>
+  <text x="230" y="505" text-anchor="start" font-size="9" fill="#64748b">- Auto-archive after 30 days</text>
+  
+  <!-- Backpressure -->
+  <rect x="470" y="320" width="400" height="210" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="670" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">Backpressure Handling</text>
+  
+  <rect x="490" y="360" width="360" height="160" rx="6" fill="white" stroke="#f59e0b" stroke-width="1"/>
+  
+  <rect x="500" y="380" width="150" height="50" rx="4" fill="#f59e0b"/>
+  <text x="575" y="405" text-anchor="middle" font-size="9" fill="white">Queue Full</text>
+  <text x="575" y="420" text-anchor="middle" font-size="8" fill="#fcd34d">Threshold: 10K</text>
+  
+  <rect x="670" y="380" width="160" height="50" rx="4" fill="#3b82f6"/>
+  <text x="750" y="405" text-anchor="middle" font-size="9" fill="white">Actions</text>
+  <text x="750" y="420" text-anchor="middle" font-size="8" fill="#bfdbfe">Scale workers</text>
+  
+  <text x="670" y="460" text-anchor="middle" font-size="9" fill="#64748b">Prevents system overload</text>
+  
+  <text x="510" y="490" text-anchor="start" font-size="9" fill="#64748b">- Reject new jobs (circuit breaker)</text>
+  <text x="510" y="505" text-anchor="start" font-size="9" fill="#64748b">- Slow down producers</text>
+  <text x="670" y="490" text-anchor="start" font-size="9" fill="#64748b">- Auto-scale workers</text>
+  <text x="670" y="505" text-anchor="start" font-size="9" fill="#64748b">- Drop low-priority jobs</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
 </svg>

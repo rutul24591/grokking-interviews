@@ -9,7 +9,7 @@
   <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Cloud Services: Control Points</text>
   <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Key operational controls for cloud reliability and cost management</text>
   
-  <!-- Quotas & Limits -->
+  <!-- Quotas &amp; Limits -->
   <rect x="30" y="85" width="270" height="200" rx="8" fill="white" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
   <text x="165" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #ef4444">1. Quotas &amp; Limits</text>
   
@@ -39,7 +39,7 @@
   <rect x="335" y="250" width="230" height="25" rx="2" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
   <text x="450" y="268" text-anchor="middle" font-size="8" fill="var(--text-theme, #b45309">⚠ Watch for thrashing</text>
   
-  <!-- Backups & DR -->
+  <!-- Backups &amp; DR -->
   <rect x="600" y="85" width="270" height="200" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
   <text x="735" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">3. Backups &amp; DR</text>
   

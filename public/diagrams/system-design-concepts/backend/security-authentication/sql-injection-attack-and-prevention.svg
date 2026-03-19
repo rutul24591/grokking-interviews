@@ -129,7 +129,7 @@
   <text x="477" y="672" text-anchor="middle" font-size="10" font-weight="bold" fill="white">⚠ Validate on server-side</text>
   <text x="477" y="689" text-anchor="middle" font-size="10" font-weight="bold" fill="white">⚠ Defense in depth</text>
   
-  <!-- Prevention 3: ORM & Stored Procedures -->
+  <!-- Prevention 3: ORM &amp; Stored Procedures -->
   <rect x="630" y="435" width="275" height="280" rx="6" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
   <rect x="630" y="435" width="275" height="35" rx="6" fill="var(--bg-theme, #8b5cf6)"/>
   <text x="767" y="460" text-anchor="middle" font-size="14" font-weight="bold" fill="white">3. ORM / Stored Procs</text>

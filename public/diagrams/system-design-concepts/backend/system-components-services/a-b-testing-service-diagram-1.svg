@@ -1,10 +1,107 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">A/B Testing Service Diagram 1</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage A</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage B</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage C</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">A/B Testing Service Architecture</title>
+  <desc id="desc">A/B testing architecture showing assignment, exposure logging, metrics pipeline, and guardrails</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">A/B Testing Service Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Assignment, exposure logging, metrics pipeline, and guardrails</text>
+  
+  <!-- User Traffic -->
+  <rect x="30" y="85" width="150" height="120" rx="8" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="105" y="115" text-anchor="middle" font-size="14" font-weight="bold" fill="white">User Traffic</text>
+  <text x="105" y="145" text-anchor="middle" font-size="10" fill="#bfdbfe">Web/Mobile Apps</text>
+  <text x="105" y="165" text-anchor="middle" font-size="10" fill="#bfdbfe">user_id, session_id</text>
+  <text x="105" y="185" text-anchor="middle" font-size="10" fill="#bfdbfe">experiment_context</text>
+  
+  <!-- Assignment Service -->
+  <line x1="185" y1="145" x2="235" y2="145" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="210" y="135" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Assign</text>
+  
+  <rect x="235" y="85" width="200" height="120" rx="8" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="335" y="115" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Assignment Service</text>
+  
+  <rect x="255" y="125" width="160" height="35" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="335" y="148" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Hash(user_id + exp_key)</text>
+  <text x="335" y="163" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">→ Bucket (0-99)</text>
+  
+  <rect x="255" y="170" width="160" height="30" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="335" y="190" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Sticky assignment</text>
+  
+  <!-- Experiment Config -->
+  <line x1="335" y1="205" x2="335" y2="245" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow-down)"/>
+  
+  <rect x="235" y="250" width="200" height="80" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="335" y="275" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Experiment Config</text>
+  <text x="335" y="295" text-anchor="middle" font-size="9" fill="#fcd34d">Control: 50%</text>
+  <text x="335" y="310" text-anchor="middle" font-size="9" fill="#fcd34d">Treatment: 50%</text>
+  <text x="335" y="325" text-anchor="middle" font-size="9" fill="#fcd34d">Status: Running</text>
+  
+  <!-- Variant Response -->
+  <line x1="440" y1="145" x2="490" y2="145" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="465" y="135" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">variant=A/B</text>
+  
+  <!-- Application -->
+  <rect x="490" y="85" width="180" height="120" rx="8" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="580" y="115" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Application</text>
+  <text x="580" y="145" text-anchor="middle" font-size="10" fill="#6ee7b7">Renders variant</text>
+  <text x="580" y="165" text-anchor="middle" font-size="10" fill="#6ee7b7">Logs exposure</text>
+  <text x="580" y="185" text-anchor="middle" font-size="10" fill="#6ee7b7">Tracks events</text>
+  
+  <!-- Exposure Logging -->
+  <line x1="675" y1="145" x2="725" y2="145" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="700" y="135" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Log</text>
+  
+  <rect x="725" y="85" width="145" height="120" rx="8" fill="var(--bg-theme, #06b6d4)" stroke="var(--border-theme, #0891b2)" stroke-width="2"/>
+  <text x="797" y="115" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Exposure Log</text>
+  <text x="797" y="145" text-anchor="middle" font-size="10" fill="#67e8f9">user_id, variant</text>
+  <text x="797" y="165" text-anchor="middle" font-size="10" fill="#67e8f9">experiment_id</text>
+  <text x="797" y="185" text-anchor="middle" font-size="10" fill="#67e8f9">timestamp</text>
+  
+  <!-- Metrics Pipeline -->
+  <line x1="797" y1="205" x2="797" y2="255" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow-down)"/>
+  
+  <rect x="650" y="260" width="294" height="100" rx="8" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="797" y="285" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Metrics Pipeline</text>
+  <text x="797" y="310" text-anchor="middle" font-size="10" fill="#bfdbfe">Aggregate by variant</text>
+  <text x="797" y="330" text-anchor="middle" font-size="10" fill="#bfdbfe">Compute metrics</text>
+  <text x="797" y="350" text-anchor="middle" font-size="10" fill="#bfdbfe">Statistical analysis</text>
+  
+  <!-- Results -->
+  <line x1="797" y1="360" x2="797" y2="400" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow-down)"/>
+  
+  <rect x="650" y="405" width="294" height="80" rx="8" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="797" y="430" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Results Dashboard</text>
+  <text x="797" y="455" text-anchor="middle" font-size="10" fill="#6ee7b7">Metric comparison</text>
+  <text x="797" y="475" text-anchor="middle" font-size="10" fill="#6ee7b7">Statistical significance</text>
+  
+  <!-- Guardrails -->
+  <rect x="30" y="380" width="600" height="150" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="330" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Guardrails &amp; Safety</text>
+  
+  <rect x="50" y="420" width="180" height="50" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
+  <text x="140" y="445" text-anchor="middle" font-size="10" fill="white">Error Rate Guard</text>
+  <text x="140" y="463" text-anchor="middle" font-size="9" fill="#fca5a5">Auto-rollback</text>
+  
+  <rect x="240" y="420" width="180" height="50" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="330" y="445" text-anchor="middle" font-size="10" fill="white">Latency Guard</text>
+  <text x="330" y="463" text-anchor="middle" font-size="9" fill="#fcd34d">Alert on regression</text>
+  
+  <rect x="430" y="420" width="180" height="50" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="520" y="445" text-anchor="middle" font-size="10" fill="white">Sample Ratio Mismatch</text>
+  <text x="520" y="463" text-anchor="middle" font-size="9" fill="#c4b5fd">Detect bias</text>
+  
+  <text x="330" y="510" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Guardrails prevent harmful experiments from reaching all users</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-down" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 0, 5 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
 </svg>

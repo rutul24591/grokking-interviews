@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Security Controls by Layer</text>
+  
+  <!-- Defense in Depth Pyramid -->
+  <g transform="translate(100, 80)">
+    <!-- Network Layer -->
+    <polygon points="50,200 350,200 300,160 100,160" fill="#4a90d9" opacity="0.6"/>
+    <text x="200" y="185" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="white">Network</text>
+    <text x="200" y="170" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Firewall, WAF, DDoS</text>
+    
+    <!-- Application Layer -->
+    <polygon points="100,160 300,160 260,120 140,120" fill="#67b26f" opacity="0.6"/>
+    <text x="200" y="145" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="white">Application</text>
+    <text x="200" y="130" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Auth, Input Validation</text>
+    
+    <!-- Data Layer -->
+    <polygon points="140,120 260,120 230,80 170,80" fill="#f0ad4e" opacity="0.6"/>
+    <text x="200" y="105" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="white">Data</text>
+    <text x="200" y="90" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Encryption, Access Control</text>
+    
+    <!-- Infrastructure Layer -->
+    <polygon points="170,80 230,80 200,40 200,40" fill="#d9534f" opacity="0.6"/>
+    <text x="200" y="65" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="white">Infra</text>
+    <text x="200" y="50" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Hardening, Patching</text>
+  </g>
+  
+  <!-- STRIDE Threat Model -->
+  <g transform="translate(450, 80)">
+    <rect x="0" y="0" width="400" height="200" rx="8" fill="#2a2a4a" stroke="#d9534f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#d9534f">STRIDE Threat Categories</text>
+    
+    <rect x="20" y="50" width="360" height="130" rx="4" fill="#1a1a2e"/>
+    
+    <text x="35" y="75" font-family="system-ui" font-size="10" fill="#d9534f">S - Spoofing</text>
+    <text x="150" y="75" font-family="system-ui" font-size="10" fill="#e0e0e0">Impersonation → Auth, MFA</text>
+    
+    <text x="35" y="95" font-family="system-ui" font-size="10" fill="#f0ad4e">T - Tampering</text>
+    <text x="150" y="95" font-family="system-ui" font-size="10" fill="#e0e0e0">Data modification → Integrity checks</text>
+    
+    <text x="35" y="115" font-family="system-ui" font-size="10" fill="#67b26f">R - Repudiation</text>
+    <text x="150" y="115" font-family="system-ui" font-size="10" fill="#e0e0e0">Denying actions → Audit logs</text>
+    
+    <text x="35" y="135" font-family="system-ui" font-size="10" fill="#4a90d9">I - Information Disclosure</text>
+    <text x="150" y="135" font-family="system-ui" font-size="10" fill="#e0e0e0">Data exposure → Encryption</text>
+    
+    <text x="35" y="155" font-family="system-ui" font-size="10" fill="#6f42c1">D - Denial of Service</text>
+    <text x="150" y="155" font-family="system-ui" font-size="10" fill="#e0e0e0">Unavailable service → Rate limiting</text>
+    
+    <text x="35" y="175" font-family="system-ui" font-size="10" fill="#f0ad4e">E - Elevation of Privilege</text>
+    <text x="150" y="175" font-family="system-ui" font-size="10" fill="#e0e0e0">Unauthorized access → Authorization</text>
+  </g>
+  
+  <!-- Security Monitoring -->
+  <g transform="translate(50, 310)">
+    <rect x="0" y="0" width="800" height="140" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Security Monitoring &amp; Detection</text>
+    
+    <g transform="translate(30, 55)">
+      <rect x="0" y="0" width="170" height="60" rx="4" fill="#4a90d9" opacity="0.4"/>
+      <text x="85" y="25" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#4a90d9">SIEM</text>
+      <text x="85" y="45" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Centralized log analysis</text>
+      <text x="85" y="58" text-anchor="middle" font-family="system-ui" font-size="8" fill="#999">Splunk, ELK</text>
+      
+      <rect x="190" y="0" width="170" height="60" rx="4" fill="#67b26f" opacity="0.4"/>
+      <text x="275" y="25" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">IDS/IPS</text>
+      <text x="275" y="45" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Intrusion detection</text>
+      <text x="275" y="58" text-anchor="middle" font-family="system-ui" font-size="8" fill="#999">Network monitoring</text>
+      
+      <rect x="380" y="0" width="170" height="60" rx="4" fill="#f0ad4e" opacity="0.4"/>
+      <text x="465" y="25" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">Anomaly Detection</text>
+      <text x="465" y="45" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">ML-based detection</text>
+      <text x="465" y="58" text-anchor="middle" font-family="system-ui" font-size="8" fill="#999">Unusual patterns</text>
+      
+      <rect x="570" y="0" width="170" height="60" rx="4" fill="#d9534f" opacity="0.4"/>
+      <text x="655" y="25" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#d9534f">File Integrity</text>
+      <text x="655" y="45" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Detect unauthorized changes</text>
+      <text x="655" y="58" text-anchor="middle" font-family="system-ui" font-size="8" fill="#999">FIM tools</text>
+    </g>
+  </g>
+</svg>

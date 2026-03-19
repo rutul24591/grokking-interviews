@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Distributed Transaction Patterns</text>
+  
+  <!-- Two-Phase Commit -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="260" height="200" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow)"/>
+    <text x="130" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#4a90d9">Two-Phase Commit (2PC)</text>
+    
+    <!-- Coordinator -->
+    <rect x="20" y="50" width="100" height="40" rx="4" fill="#4a90d9" opacity="0.6"/>
+    <text x="70" y="75" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Coordinator</text>
+    
+    <!-- Participants -->
+    <rect x="160" y="50" width="80" height="30" rx="3" fill="#67b26f" opacity="0.6"/>
+    <text x="200" y="70" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">DB 1</text>
+    
+    <rect x="160" y="90" width="80" height="30" rx="3" fill="#67b26f" opacity="0.6"/>
+    <text x="200" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">DB 2</text>
+    
+    <!-- Phase 1 -->
+    <text x="130" y="140" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#f0ad4e">Phase 1: Prepare</text>
+    <text x="130" y="158" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Ask all to prepare</text>
+    
+    <!-- Phase 2 -->
+    <text x="130" y="180" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#67b26f">Phase 2: Commit</text>
+    <text x="130" y="195" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">All agree → commit</text>
+    
+    <text x="130" y="220" text-anchor="middle" font-family="system-ui" font-size="8" fill="#d9534f">✗ Blocking, single point of failure</text>
+  </g>
+  
+  <!-- Saga Pattern -->
+  <g transform="translate(320, 80)">
+    <rect x="0" y="0" width="260" height="200" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="130" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Saga Pattern</text>
+    
+    <!-- Steps -->
+    <rect x="20" y="55" width="200" height="25" rx="3" fill="#67b26f" opacity="0.6"/>
+    <text x="120" y="72" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">1. Create Order</text>
+    
+    <line x1="120" y1="80" x2="120" y2="95" stroke="#666" stroke-width="2"/>
+    <polygon points="120,95 115,85 125,85" fill="#666"/>
+    
+    <rect x="20" y="95" width="200" height="25" rx="3" fill="#67b26f" opacity="0.6"/>
+    <text x="120" y="112" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">2. Reserve Inventory</text>
+    <text x="210" y="112" font-family="system-ui" font-size="7" fill="#d9534f">→ Release if fail</text>
+    
+    <line x1="120" y1="120" x2="120" y2="135" stroke="#666" stroke-width="2"/>
+    <polygon points="120,135 115,125 125,125" fill="#666"/>
+    
+    <rect x="20" y="135" width="200" height="25" rx="3" fill="#67b26f" opacity="0.6"/>
+    <text x="120" y="152" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">3. Process Payment</text>
+    <text x="210" y="152" font-family="system-ui" font-size="7" fill="#d9534f">→ Refund if fail</text>
+    
+    <line x1="120" y1="160" x2="120" y2="175" stroke="#666" stroke-width="2"/>
+    <polygon points="120,175 115,165 125,165" fill="#666"/>
+    
+    <rect x="20" y="175" width="200" height="25" rx="3" fill="#67b26f" opacity="0.6"/>
+    <text x="120" y="192" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">4. Ship Order</text>
+    
+    <text x="130" y="220" text-anchor="middle" font-family="system-ui" font-size="8" fill="#67b26f">✓ Non-blocking, compensating transactions</text>
+  </g>
+  
+  <!-- Eventual Consistency -->
+  <g transform="translate(590, 80)">
+    <rect x="0" y="0" width="260" height="200" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow)"/>
+    <text x="130" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">Eventual Consistency</text>
+    
+    <!-- Write -->
+    <circle cx="60" cy="70" r="25" fill="#4a90d9"/>
+    <text x="60" y="75" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="white">Write</text>
+    
+    <!-- Replicas -->
+    <circle cx="150" cy="60" r="20" fill="#67b26f" opacity="0.6"/>
+    <text x="150" y="65" text-anchor="middle" font-family="system-ui" font-size="7" fill="white">R1</text>
+    
+    <circle cx="180" cy="80" r="20" fill="#67b26f" opacity="0.6"/>
+    <text x="180" y="85" text-anchor="middle" font-family="system-ui" font-size="7" fill="white">R2</text>
+    
+    <circle cx="140" cy="100" r="20" fill="#67b26f" opacity="0.6"/>
+    <text x="140" y="105" text-anchor="middle" font-family="system-ui" font-size="7" fill="white">R3</text>
+    
+    <!-- Async replication -->
+    <line x1="85" y1="70" x2="130" y2="65" stroke="#f0ad4e" stroke-width="2" stroke-dasharray="4,2"/>
+    <line x1="85" y1="70" x2="155" y2="75" stroke="#f0ad4e" stroke-width="2" stroke-dasharray="4,2"/>
+    <line x1="85" y1="70" x2="125" y2="90" stroke="#f0ad4e" stroke-width="2" stroke-dasharray="4,2"/>
+    
+    <text x="130" y="140" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Asynchronous replication</text>
+    <text x="130" y="158" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Temporary inconsistency OK</text>
+    <text x="130" y="176" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Converges eventually</text>
+    
+    <text x="130" y="195" text-anchor="middle" font-family="system-ui" font-size="8" fill="#67b26f">✓ High availability, low latency</text>
+  </g>
+  
+  <!-- Consistency Trade-offs -->
+  <g transform="translate(50, 310)">
+    <rect x="0" y="0" width="800" height="140" rx="8" fill="#1a2a1a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#4a90d9">Consistency vs Availability Trade-off</text>
+    
+    <!-- Strong Consistency -->
+    <rect x="30" y="55" width="220" height="70" rx="4" fill="#d9534f" opacity="0.3"/>
+    <text x="140" y="80" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#d9534f">Strong Consistency</text>
+    <text x="140" y="100" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">✓ Always read latest</text>
+    <text x="140" y="115" text-anchor="middle" font-family="system-ui" font-size="9" fill="#d9534f">✗ Higher latency, lower availability</text>
+    
+    <!-- Eventual Consistency -->
+    <rect x="280" y="55" width="220" height="70" rx="4" fill="#67b26f" opacity="0.3"/>
+    <text x="390" y="80" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#67b26f">Eventual Consistency</text>
+    <text x="390" y="100" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">✓ Low latency, high availability</text>
+    <text x="390" y="115" text-anchor="middle" font-family="system-ui" font-size="9" fill="#67b26f">✗ May read stale data</text>
+    
+    <!-- Choose Based On -->
+    <rect x="530" y="55" width="240" height="70" rx="4" fill="#4a90d9" opacity="0.3"/>
+    <text x="650" y="75" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#4a90d9">Choose Based On:</text>
+    <text x="650" y="95" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Business requirements</text>
+    <text x="650" y="110" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• User experience needs</text>
+    <text x="650" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">• Data criticality</text>
+  </g>
+</svg>

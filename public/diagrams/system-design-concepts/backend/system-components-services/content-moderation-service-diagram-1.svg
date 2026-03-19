@@ -1,10 +1,113 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Content Moderation Service Diagram 1</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage A</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage B</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage C</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Content Moderation Service Architecture</title>
+  <desc id="desc">Content moderation architecture showing ingestion, automated classifiers, human review, and enforcement</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Content Moderation Service Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Ingestion, automated classifiers, human review, and enforcement</text>
+  
+  <!-- Content Sources -->
+  <rect x="30" y="85" width="150" height="180" rx="8" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="105" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Content Sources</text>
+  
+  <rect x="50" y="125" width="110" height="35" rx="3" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="105" y="148" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">User Posts</text>
+  
+  <rect x="50" y="165" width="110" height="35" rx="3" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="105" y="188" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Comments</text>
+  
+  <rect x="50" y="205" width="110" height="35" rx="3" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="105" y="228" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Images/Video</text>
+  
+  <!-- Content Flow -->
+  <line x1="185" y1="175" x2="235" y2="175" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="210" y="165" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Submit</text>
+  
+  <!-- Moderation Service -->
+  <rect x="235" y="85" width="350" height="180" rx="8" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="410" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Moderation Service</text>
+  
+  <rect x="255" y="125" width="310" height="40" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="410" y="150" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Content Analysis Pipeline</text>
+  
+  <rect x="255" y="175" width="145" height="40" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="327" y="200" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Auto-Classifiers</text>
+  
+  <rect x="410" y="175" width="155" height="40" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="487" y="200" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Human Review Queue</text>
+  
+  <!-- Policy Engine -->
+  <line x1="410" y1="265" x2="410" y2="315" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow-down)"/>
+  
+  <rect x="235" y="320" width="350" height="100" rx="8" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="2"/>
+  <text x="410" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Policy Engine</text>
+  
+  <rect x="255" y="355" width="150" height="55" rx="4" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="330" y="380" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Policy Rules</text>
+  <text x="330" y="395" text-anchor="middle" font-size="8" fill="#fcd34d">Violation classes</text>
+  <text x="330" y="408" text-anchor="middle" font-size="7" fill="#fcd34d">Severity levels</text>
+  
+  <rect x="415" y="355" width="150" height="55" rx="4" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="490" y="380" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Action Outcomes</text>
+  <text x="490" y="395" text-anchor="middle" font-size="8" fill="#fcd34d">Allow/Block/Review</text>
+  <text x="490" y="408" text-anchor="middle" font-size="7" fill="#fcd34d">Shadow-ban</text>
+  
+  <!-- Decision Response -->
+  <line x1="590" y1="175" x2="640" y2="175" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="615" y="165" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Decision</text>
+  
+  <!-- Enforcement -->
+  <rect x="640" y="85" width="230" height="180" rx="8" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="755" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Enforcement</text>
+  
+  <rect x="660" y="125" width="190" height="40" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="755" y="150" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Publish Content</text>
+  
+  <rect x="660" y="175" width="190" height="40" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="755" y="200" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Quarantine/Block</text>
+  
+  <rect x="660" y="225" width="190" height="30" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="755" y="245" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Account Actions</text>
+  
+  <!-- ML Models -->
+  <rect x="30" y="280" width="180" height="160" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="120" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">ML Models</text>
+  
+  <rect x="50" y="320" width="140" height="110" rx="4" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="120" y="345" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Image classification</text>
+  <text x="120" y="360" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Text toxicity</text>
+  <text x="120" y="375" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Spam detection</text>
+  <text x="120" y="390" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Similarity/hash</text>
+  <text x="120" y="405" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">NSFW detection</text>
+  
+  <!-- Human Review -->
+  <rect x="235" y="435" width="350" height="95" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="410" y="460" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Human Review Workflow</text>
+  
+  <rect x="255" y="475" width="310" height="45" rx="4" fill="var(--bg-panel-soft, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="410" y="500" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Queue management, SLA tracking, reviewer training, quality assurance</text>
+  
+  <!-- Appeals -->
+  <rect x="640" y="280" width="230" height="160" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="755" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Appeals Process</text>
+  
+  <rect x="660" y="320" width="190" height="110" rx="4" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="755" y="345" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">User submits appeal</text>
+  <text x="755" y="360" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Senior reviewer</text>
+  <text x="755" y="375" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Decision logged</text>
+  <text x="755" y="390" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Feedback to models</text>
+  <text x="755" y="405" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Policy refinement</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-down" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 0, 5 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
 </svg>

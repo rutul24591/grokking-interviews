@@ -23,7 +23,7 @@
   <!-- Mobile -->
   <rect x="80" y="125" width="100" height="60" fill="#e3f2fd" stroke="#2196f3" rx="3"/>
   <text x="130" y="150" text-anchor="middle" class="small-label" font-weight="bold">Mobile</text>
-  <text x="130" y="167" text-anchor="middle" class="small-label">&lt;768px</text>
+  <text x="130" y="167" text-anchor="middle" class="small-label">&amp;lt;768px</text>
   <text x="130" y="180" text-anchor="middle" class="small-label">1 column</text>
   
   <line x1="180" y1="155" x2="220" y2="155" class="arrow"/>

@@ -905,7 +905,7 @@
          style="font-size:12px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"><tspan
            x="109.30865"
            y="423.00766"
-           id="tspan3494">&quot;delegated subzone&quot;</tspan></text>
+           id="tspan3494">&amp;quot;delegated subzone&amp;quot;</tspan></text>
       <text
          x="-294.9339"
          y="286.57416"
@@ -915,7 +915,7 @@
          style="font-size:11.99998665px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"><tspan
            x="-294.9339"
            y="286.57416"
-           id="tspan3498">&quot;zone delegation&quot;</tspan></text>
+           id="tspan3498">&amp;quot;zone delegation&amp;quot;</tspan></text>
       <g
          transform="matrix(0.555556,0,0,0.555556,24.37905,233.4243)"
          id="g3506">
@@ -992,7 +992,7 @@
            y="338.49643"
            id="tspan4540"><tspan
    id="tspan4548"
-   style="font-weight:bold">NS RR</tspan> (&quot;resource record&quot;)</tspan><tspan
+   style="font-weight:bold">NS RR</tspan> (&amp;quot;resource record&amp;quot;)</tspan><tspan
            x="173.82043"
            y="349.47009"
            id="tspan4542">names the nameserver</tspan><tspan

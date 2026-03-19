@@ -106,5 +106,5 @@
   <text x="485" y="495" font-size="10" fill="var(--text-theme, #64748b">When exact counts required (billing)</text>
   
   <text x="470" y="515" text-anchor="start" font-size="10" fill="var(--text-theme, #ef4444">✗</text>
-  <text x="485" y="515" font-size="10" fill="var(--text-theme, #64748b">Very small cardinalities (&lt;100)</text>
+  <text x="485" y="515" font-size="10" fill="var(--text-theme, #64748b">Very small cardinalities (&amp;lt;100)</text>
 </svg>

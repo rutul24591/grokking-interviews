@@ -1,10 +1,107 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Audit Logging Service Diagram 2</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage A</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage B</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage C</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Audit Log Schema and Control Points</title>
+  <desc id="desc">Audit log schema showing identity, action, resource, decision, provenance, and retention</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Audit Log Schema and Control Points</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Identity, action, resource, decision, provenance, and retention</text>
+  
+  <!-- Core Schema Fields -->
+  <rect x="30" y="85" width="400" height="280" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="230" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">Core Schema Fields</text>
+  
+  <rect x="50" y="125" width="360" height="230" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  
+  <!-- Actor -->
+  <rect x="60" y="140" width="340" height="40" rx="3" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="80" y="165" text-anchor="start" font-size="10" font-weight="bold" fill="white">Actor (Who)</text>
+  <text x="380" y="165" text-anchor="end" font-size="9" fill="#bfdbfe">user_id, service_id, auth_method</text>
+  
+  <!-- Action -->
+  <rect x="60" y="185" width="340" height="40" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="80" y="210" text-anchor="start" font-size="10" font-weight="bold" fill="white">Action (What)</text>
+  <text x="380" y="210" text-anchor="end" font-size="9" fill="#6ee7b7">create, read, update, delete, export</text>
+  
+  <!-- Resource -->
+  <rect x="60" y="230" width="340" height="40" rx="3" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="80" y="255" text-anchor="start" font-size="10" font-weight="bold" fill="white">Resource (Which)</text>
+  <text x="380" y="255" text-anchor="end" font-size="9" fill="#fcd34d">resource_type, resource_id, tenant_id</text>
+  
+  <!-- Outcome -->
+  <rect x="60" y="275" width="340" height="40" rx="3" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
+  <text x="80" y="300" text-anchor="start" font-size="10" font-weight="bold" fill="white">Outcome (Result)</text>
+  <text x="380" y="300" text-anchor="end" font-size="9" fill="#c4b5fd">success, failure, reason_code</text>
+  
+  <!-- Provenance -->
+  <rect x="60" y="320" width="340" height="40" rx="3" fill="var(--bg-theme, #06b6d4)" stroke="var(--border-theme, #0891b2)" stroke-width="1"/>
+  <text x="80" y="345" text-anchor="start" font-size="10" font-weight="bold" fill="white">Provenance (Context)</text>
+  <text x="380" y="345" text-anchor="end" font-size="9" fill="#67e8f9">timestamp, ip_address, user_agent, request_id</text>
+  
+  <!-- Tamper Resistance -->
+  <rect x="470" y="85" width="400" height="150" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="670" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Tamper Resistance</text>
+  
+  <rect x="490" y="125" width="360" height="100" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  
+  <text x="510" y="150" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="525" y="150" font-size="10" fill="var(--text-theme, #1e293b">Write-once storage</text>
+  
+  <text x="510" y="170" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="525" y="170" font-size="10" fill="var(--text-theme, #1e293b">Cryptographic hash chain</text>
+  
+  <text x="510" y="190" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="525" y="190" font-size="10" fill="var(--text-theme, #1e293b">Digital signatures on entries</text>
+  
+  <text x="510" y="210" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="525" y="210" font-size="10" fill="var(--text-theme, #1e293b">Separate audit admin access</text>
+  
+  <!-- Access Control -->
+  <rect x="470" y="250" width="400" height="150" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="670" y="275" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Access Control</text>
+  
+  <rect x="490" y="290" width="360" height="100" rx="4" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  
+  <text x="510" y="315" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="525" y="315" font-size="10" fill="var(--text-theme, #1e293b">RBAC for audit access</text>
+  
+  <text x="510" y="335" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="525" y="335" font-size="10" fill="var(--text-theme, #1e293b">Query logging (who queried what)</text>
+  
+  <text x="510" y="355" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="525" y="355" font-size="10" fill="var(--text-theme, #1e293b">Export restrictions</text>
+  
+  <text x="510" y="375" text-anchor="start" font-size="10" fill="var(--text-theme, #f59e0b">⚠</text>
+  <text x="525" y="375" font-size="10" fill="var(--text-theme, #1e293b">Audit admins are highly privileged</text>
+  
+  <!-- Retention Tiers -->
+  <rect x="30" y="380" width="840" height="150" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="450" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Retention Tiers</text>
+  
+  <rect x="50" y="420" width="250" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="175" y="445" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">Hot Storage</text>
+  <text x="175" y="470" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">0-90 days</text>
+  <text x="175" y="490" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Fast queries</text>
+  <text x="175" y="510" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">SSD/Elasticsearch</text>
+  
+  <rect x="315" y="420" width="250" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="440" y="445" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">Warm Storage</text>
+  <text x="440" y="470" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">90 days - 1 year</text>
+  <text x="440" y="490" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Slower queries</text>
+  <text x="440" y="510" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">S3/GCS</text>
+  
+  <rect x="580" y="420" width="250" height="100" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="705" y="445" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #b45309">Cold/Archive</text>
+  <text x="705" y="470" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">1-7+ years</text>
+  <text x="705" y="490" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Compliance</text>
+  <text x="705" y="510" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Glacier/Archive</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
 </svg>

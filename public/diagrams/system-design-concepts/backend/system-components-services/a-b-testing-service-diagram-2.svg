@@ -1,10 +1,134 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">A/B Testing Service Diagram 2</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage A</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage B</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage C</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">A/B Testing Assignment Strategies</title>
+  <desc id="desc">A/B testing showing bucketing algorithms, sticky assignment, and experiment ramp-up</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">A/B Testing Assignment Strategies</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Bucketing algorithms, sticky assignment, and experiment ramp-up</text>
+  
+  <!-- Hash-Based Bucketing -->
+  <rect x="30" y="85" width="400" height="240" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
+  <text x="230" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">Hash-Based Bucketing</text>
+  
+  <!-- Hash function -->
+  <rect x="50" y="125" width="360" height="80" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="230" y="150" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #3b82f6">Deterministic Hash</text>
+  
+  <rect x="60" y="160" width="340" height="35" rx="3" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
+  <text x="230" y="183" text-anchor="middle" font-size="9" font-family="monospace" fill="white">bucket = hash(user_id + experiment_key) % 100</text>
+  
+  <!-- Bucket distribution -->
+  <rect x="50" y="215" width="360" height="100" rx="4" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="230" y="240" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Bucket Distribution (0-99)</text>
+  
+  <!-- Control bucket -->
+  <rect x="60" y="250" width="170" height="55" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="145" y="275" text-anchor="middle" font-size="10" fill="white">Control (0-49)</text>
+  <text x="145" y="295" text-anchor="middle" font-size="9" fill="#6ee7b7">50% of users</text>
+  
+  <!-- Treatment bucket -->
+  <rect x="240" y="250" width="170" height="55" rx="3" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="325" y="275" text-anchor="middle" font-size="10" fill="white">Treatment (50-99)</text>
+  <text x="325" y="295" text-anchor="middle" font-size="9" fill="#fcd34d">50% of users</text>
+  
+  <!-- Sticky Assignment -->
+  <rect x="470" y="85" width="400" height="240" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="670" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">Sticky Assignment</text>
+  
+  <!-- Sticky concept -->
+  <rect x="490" y="125" width="360" height="100" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  
+  <text x="670" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Same user always gets same variant</text>
+  
+  <!-- User visits -->
+  <rect x="500" y="160" width="100" height="55" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="550" y="185" text-anchor="middle" font-size="9" fill="white">Visit 1</text>
+  <text x="550" y="200" text-anchor="middle" font-size="8" fill="#6ee7b7">→ Variant A</text>
+  
+  <line x1="605" y1="188" x2="635" y2="188" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="645" y="160" width="100" height="55" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="695" y="185" text-anchor="middle" font-size="9" fill="white">Visit 2</text>
+  <text x="695" y="200" text-anchor="middle" font-size="8" fill="#6ee7b7">→ Variant A</text>
+  
+  <line x1="750" y1="188" x2="780" y2="188" stroke="var(--text-theme, #64748b)" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="790" y="160" width="50" height="55" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="815" y="185" text-anchor="middle" font-size="9" fill="white">...</text>
+  <text x="815" y="200" text-anchor="middle" font-size="8" fill="#6ee7b7">→ A</text>
+  
+  <text x="670" y="245" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Consistent user experience</text>
+  <text x="670" y="260" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">✓ Valid metric comparison</text>
+  
+  <!-- Experiment Ramp-Up -->
+  <rect x="490" y="235" width="360" height="80" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="670" y="260" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-theme, #10b981">Gradual Ramp-Up</text>
+  
+  <rect x="500" y="270" width="60" height="35" rx="2" fill="var(--bg-theme, #ef4444)"/>
+  <text x="530" y="293" text-anchor="middle" font-size="8" fill="white">1%</text>
+  
+  <rect x="565" y="270" width="60" height="35" rx="2" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="595" y="293" text-anchor="middle" font-size="8" fill="white">10%</text>
+  
+  <rect x="630" y="270" width="60" height="35" rx="2" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="660" y="293" text-anchor="middle" font-size="8" fill="white">25%</text>
+  
+  <rect x="695" y="270" width="60" height="35" rx="2" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="725" y="293" text-anchor="middle" font-size="8" fill="white">50%</text>
+  
+  <rect x="760" y="270" width="60" height="35" rx="2" fill="var(--bg-theme, #10b981)"/>
+  <text x="790" y="293" text-anchor="middle" font-size="8" fill="white">100%</text>
+  
+  <text x="670" y="330" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Monitor metrics at each stage</text>
+  
+  <!-- Experiment Layers -->
+  <rect x="30" y="340" width="400" height="190" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="230" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Experiment Layers</text>
+  
+  <rect x="50" y="380" width="360" height="140" rx="6" fill="white" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  
+  <!-- Layer 1 -->
+  <rect x="60" y="395" width="340" height="35" rx="3" fill="var(--bg-theme, #3b82f6)"/>
+  <text x="230" y="418" text-anchor="middle" font-size="9" fill="white">Layer 1: UI Experiments (mutually exclusive)</text>
+  
+  <!-- Layer 2 -->
+  <rect x="60" y="435" width="340" height="35" rx="3" fill="var(--bg-theme, #10b981)"/>
+  <text x="230" y="458" text-anchor="middle" font-size="9" fill="white">Layer 2: Ranking Experiments (orthogonal)</text>
+  
+  <!-- Layer 3 -->
+  <rect x="60" y="475" width="340" height="35" rx="3" fill="var(--bg-theme, #f59e0b)"/>
+  <text x="230" y="498" text-anchor="middle" font-size="9" fill="white">Layer 3: Algorithm Experiments (orthogonal)</text>
+  
+  <text x="230" y="540" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Users can be in multiple experiments across layers</text>
+  
+  <!-- Assignment Cache -->
+  <rect x="470" y="340" width="400" height="190" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="670" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Assignment Cache</text>
+  
+  <rect x="490" y="380" width="360" height="140" rx="6" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  
+  <text x="510" y="405" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="525" y="405" font-size="10" fill="var(--text-theme, #1e293b">Cache assignments per user</text>
+  
+  <text x="510" y="425" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="525" y="425" font-size="10" fill="var(--text-theme, #1e293b">Reduce hash computation</text>
+  
+  <text x="510" y="445" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="525" y="445" font-size="10" fill="var(--text-theme, #1e293b">TTL-based invalidation</text>
+  
+  <text x="510" y="465" text-anchor="start" font-size="10" fill="var(--text-theme, #10b981">✓</text>
+  <text x="525" y="465" font-size="10" fill="var(--text-theme, #1e293b">Consistent across services</text>
+  
+  <text x="510" y="490" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">Cache key: user_id + experiment_id</text>
+  <text x="510" y="510" text-anchor="start" font-size="9" fill="var(--text-theme, #64748b">Cache value: variant assignment</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
 </svg>

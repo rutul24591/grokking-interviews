@@ -58,7 +58,7 @@
   <text x="767" y="195" text-anchor="middle" font-size="8" fill="#fca5a5">500 GB (growing)</text>
   <text x="767" y="208" text-anchor="middle" font-size="7" fill="#fca5a5">Old data not deleted</text>
   
-  <text x="665" y="240" text-anchor="middle" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Disk fills, system becomes unstable!</text>
+  <text x="665" y="240" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Disk fills, system becomes unstable!</text>
   <text x="665" y="260" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Cause: Retention job failures, partition issues</text>
   <text x="665" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Monitor retention, alert on storage growth</text>
   
@@ -82,7 +82,7 @@
   <text x="330" y="420" text-anchor="middle" font-size="9" fill="white">Backlogged</text>
   <text x="330" y="435" text-anchor="middle" font-size="8" fill="#fca5a5">1M msgs</text>
   
-  <text x="235" y="495" text-anchor="middle" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Data loss risk, stale dashboards!</text>
+  <text x="235" y="495" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Data loss risk, stale dashboards!</text>
   <text x="235" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Cause: Write amplification, slow storage</text>
   <text x="235" y="535" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Scale ingest, add backpressure</text>
   
@@ -108,7 +108,7 @@
   <text x="760" y="435" text-anchor="middle" font-size="8" fill="#fca5a5">Unbounded time</text>
   <text x="760" y="448" text-anchor="middle" font-size="7" fill="#fca5a5">All chunks scanned</text>
   
-  <text x="665" y="495" text-anchor="middle" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Query saturates storage, blocks others!</text>
+  <text x="665" y="495" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Query saturates storage, blocks others!</text>
   <text x="665" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Cause: Missing time filters, high cardinality joins</text>
   <text x="665" y="535" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Query budgets, timeouts, caching</text>
   

@@ -106,9 +106,9 @@
   <text x="425" y="325" text-anchor="middle" class="label" font-weight="bold">Target Pipeline Timing</text>
   <line x1="50" y1="335" x2="810" y2="335" stroke="#4caf50" stroke-width="1"/>
   
-  <text x="100" y="360" text-anchor="start" class="small-label">Lint: &lt;30s</text>
-  <text x="220" y="360" text-anchor="start" class="small-label">Unit: &lt;2min</text>
-  <text x="350" y="360" text-anchor="start" class="small-label">Integration: &lt;3min</text>
-  <text x="500" y="360" text-anchor="start" class="small-label">E2E: &lt;5min (parallel)</text>
-  <text x="680" y="360" text-anchor="start" class="small-label">Total: &lt;10min</text>
+  <text x="100" y="360" text-anchor="start" class="small-label">Lint: &amp;lt;30s</text>
+  <text x="220" y="360" text-anchor="start" class="small-label">Unit: &amp;lt;2min</text>
+  <text x="350" y="360" text-anchor="start" class="small-label">Integration: &amp;lt;3min</text>
+  <text x="500" y="360" text-anchor="start" class="small-label">E2E: &amp;lt;5min (parallel)</text>
+  <text x="680" y="360" text-anchor="start" class="small-label">Total: &amp;lt;10min</text>
 </svg>

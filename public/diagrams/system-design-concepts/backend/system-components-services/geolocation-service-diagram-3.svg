@@ -1,10 +1,136 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Geolocation Service Diagram 3</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage A</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage B</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage C</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+  <title id="title">Geolocation Failure Modes</title>
+  <desc id="desc">Geolocation failure modes: IP inaccuracy, VPN spoofing, privacy violations, and stale cache issues</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="600" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Geolocation Failure Modes</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">IP inaccuracy, VPN spoofing, privacy violations, and stale cache issues</text>
+  
+  <!-- IP Inaccuracy -->
+  <rect x="30" y="85" width="410" height="240" rx="8" fill="white" stroke="#ef4444" stroke-width="2"/>
+  <text x="235" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#ef4444">1. IP Geolocation Inaccuracy</text>
+  
+  <!-- Inaccuracy scenario -->
+  <rect x="50" y="135" width="370" height="140" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+  
+  <!-- User location -->
+  <rect x="60" y="150" width="140" height="60" rx="4" fill="#10b981" stroke="#059669" stroke-width="1"/>
+  <text x="130" y="175" text-anchor="middle" font-size="9" fill="white">User Location</text>
+  <text x="130" y="190" text-anchor="middle" font-size="8" fill="#6ee7b7">New York, USA</text>
+  
+  <line x1="205" y1="180" x2="235" y2="180" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="220" y="170" text-anchor="middle" font-size="7" fill="#ef4444">IP says:</text>
+  
+  <!-- IP location -->
+  <rect x="245" y="150" width="140" height="60" rx="4" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="315" y="175" text-anchor="middle" font-size="9" fill="white">IP Location</text>
+  <text x="315" y="190" text-anchor="middle" font-size="8" fill="#fca5a5">Chicago, USA</text>
+  <text x="315" y="203" text-anchor="middle" font-size="7" fill="#fca5a5">~1000km error!</text>
+  
+  <text x="235" y="290" text-anchor="middle" font-size="10" fill="#ef4444">Wrong region, wrong content served!</text>
+  <text x="235" y="310" text-anchor="middle" font-size="9" fill="#64748b">Cause: Mobile carriers, corporate NAT, outdated DB</text>
+  <text x="235" y="330" text-anchor="middle" font-size="9" fill="#10b981">Fix: Use multiple signals, show accuracy tier</text>
+  
+  <!-- VPN/Proxy Spoofing -->
+  <rect x="460" y="85" width="410" height="240" rx="8" fill="white" stroke="#f59e0b" stroke-width="2"/>
+  <text x="665" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">2. VPN/Proxy Spoofing</text>
+  
+  <!-- Spoofing scenario -->
+  <rect x="480" y="135" width="370" height="140" rx="6" fill="#fffbeb" stroke="#fcd34d" stroke-width="1"/>
+  
+  <!-- Attacker -->
+  <rect x="490" y="150" width="120" height="60" rx="4" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="550" y="175" text-anchor="middle" font-size="9" fill="white">Attacker</text>
+  <text x="550" y="190" text-anchor="middle" font-size="8" fill="#fca5a5">Restricted Country</text>
+  
+  <line x1="615" y1="180" x2="645" y2="180" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <text x="630" y="170" text-anchor="middle" font-size="7" fill="#3b82f6">VPN to</text>
+  
+  <!-- VPN Server -->
+  <rect x="655" y="150" width="100" height="60" rx="4" fill="#3b82f6" stroke="#1e40af" stroke-width="1"/>
+  <text x="705" y="175" text-anchor="middle" font-size="9" fill="white">VPN Server</text>
+  <text x="705" y="190" text-anchor="middle" font-size="8" fill="#bfdbfe">Allowed Country</text>
+  
+  <line x1="760" y1="180" x2="790" y2="180" stroke="#10b981" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="775" y="170" text-anchor="middle" font-size="7" fill="#10b981">Access granted</text>
+  
+  <!-- Service -->
+  <rect x="800" y="150" width="40" height="60" rx="2" fill="#10b981" stroke="#059669" stroke-width="1"/>
+  <text x="820" y="180" text-anchor="middle" font-size="9" fill="white">OK</text>
+  
+  <text x="665" y="290" text-anchor="middle" font-size="10" fill="#ef4444">Geoblock bypassed!</text>
+  <text x="665" y="310" text-anchor="middle" font-size="9" fill="#64748b">Cause: VPN masks real location</text>
+  <text x="665" y="330" text-anchor="middle" font-size="9" fill="#10b981">Fix: VPN detection, device fingerprinting</text>
+  
+  <!-- Privacy Violations -->
+  <rect x="30" y="340" width="410" height="240" rx="8" fill="white" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="235" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="#8b5cf6">3. Privacy Violations</text>
+  
+  <!-- Privacy scenario -->
+  <rect x="50" y="380" width="370" height="140" rx="6" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1"/>
+  
+  <!-- App collects -->
+  <rect x="60" y="395" width="140" height="60" rx="4" fill="#8b5cf6" stroke="#6d28d9" stroke-width="1"/>
+  <text x="130" y="420" text-anchor="middle" font-size="9" fill="white">App Collects</text>
+  <text x="130" y="435" text-anchor="middle" font-size="8" fill="#c4b5fd">Precise GPS</text>
+  <text x="130" y="448" text-anchor="middle" font-size="7" fill="#c4b5fd">No consent!</text>
+  
+  <line x1="205" y1="425" x2="235" y2="425" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="220" y="415" text-anchor="middle" font-size="7" fill="#ef4444">Stores</text>
+  
+  <!-- Database -->
+  <rect x="245" y="395" width="140" height="60" rx="4" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="315" y="420" text-anchor="middle" font-size="9" fill="white">Database</text>
+  <text x="315" y="435" text-anchor="middle" font-size="8" fill="#fca5a5">Indefinitely</text>
+  
+  <text x="235" y="495" text-anchor="middle" font-size="10" fill="#ef4444">GDPR/CCPA violation, fines!</text>
+  <text x="235" y="515" text-anchor="middle" font-size="9" fill="#64748b">Cause: No consent, excessive retention</text>
+  <text x="235" y="535" text-anchor="middle" font-size="9" fill="#10b981">Fix: Explicit consent, minimization, auto-delete</text>
+  
+  <!-- Stale Cache -->
+  <rect x="460" y="340" width="410" height="240" rx="8" fill="white" stroke="#10b981" stroke-width="2"/>
+  <text x="665" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="#10b981">4. Stale Cache Issues</text>
+  
+  <!-- Stale scenario -->
+  <rect x="480" y="380" width="370" height="140" rx="6" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1"/>
+  
+  <!-- User travels -->
+  <rect x="490" y="395" width="120" height="60" rx="4" fill="#3b82f6" stroke="#1e40af" stroke-width="1"/>
+  <text x="550" y="420" text-anchor="middle" font-size="9" fill="white">User Travels</text>
+  <text x="550" y="435" text-anchor="middle" font-size="8" fill="#bfdbfe">USA to EU</text>
+  
+  <line x1="615" y1="425" x2="645" y2="425" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="630" y="415" text-anchor="middle" font-size="7" fill="#ef4444">Cache says:</text>
+  
+  <!-- Cached location -->
+  <rect x="655" y="395" width="120" height="60" rx="4" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="715" y="420" text-anchor="middle" font-size="9" fill="white">Cached: USA</text>
+  <text x="715" y="435" text-anchor="middle" font-size="8" fill="#fca5a5">24h old</text>
+  
+  <line x1="780" y1="425" x2="810" y2="425" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="795" y="415" text-anchor="middle" font-size="7" fill="#ef4444">Wrong rules</text>
+  
+  <!-- Applied -->
+  <rect x="820" y="395" width="20" height="60" rx="2" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="830" y="425" text-anchor="middle" font-size="10" fill="white">!</text>
+  
+  <text x="665" y="495" text-anchor="middle" font-size="10" fill="#ef4444">Wrong region rules applied!</text>
+  <text x="665" y="515" text-anchor="middle" font-size="9" fill="#64748b">Cause: Cache TTL too long for travel</text>
+  <text x="665" y="535" text-anchor="middle" font-size="9" fill="#10b981">Fix: Shorter TTL, detect location changes</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+  </defs>
 </svg>

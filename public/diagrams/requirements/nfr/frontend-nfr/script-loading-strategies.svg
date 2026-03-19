@@ -17,7 +17,7 @@
   
   <!-- Async -->
   <rect x="30" y="80" width="160" height="120" fill="#e3f2fd" stroke="#2196f3" rx="6"/>
-  <text x="110" y="105" text-anchor="middle" class="label" font-weight="bold">&lt;script async&gt;</text>
+  <text x="110" y="105" text-anchor="middle" class="label" font-weight="bold">&amp;lt;script async&amp;gt;</text>
   <line x1="50" y1="115" x2="170" y2="115" stroke="#2196f3" stroke-width="1"/>
   
   <text x="60" y="140" text-anchor="start" class="small-label">• Download in parallel</text>
@@ -27,7 +27,7 @@
   
   <!-- Defer -->
   <rect x="210" y="80" width="160" height="120" fill="#e8f5e9" stroke="#4caf50" rx="6"/>
-  <text x="290" y="105" text-anchor="middle" class="label" font-weight="bold">&lt;script defer&gt;</text>
+  <text x="290" y="105" text-anchor="middle" class="label" font-weight="bold">&amp;lt;script defer&amp;gt;</text>
   <line x1="230" y1="115" x2="350" y2="115" stroke="#4caf50" stroke-width="1"/>
   
   <text x="220" y="140" text-anchor="start" class="small-label">• Download in parallel</text>

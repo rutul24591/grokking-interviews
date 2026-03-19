@@ -1,10 +1,127 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Media Processing Service Diagram 1</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage A</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage B</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage C</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Media Processing Service Architecture</title>
+  <desc id="desc">Media processing architecture showing ingestion, job queue, workers, storage, and delivery outputs</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Media Processing Service Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Ingestion, job queue, workers, storage, and delivery outputs</text>
+  
+  <!-- Media Upload -->
+  <rect x="30" y="85" width="150" height="180" rx="8" fill="#3b82f6" stroke="#1e40af" stroke-width="2"/>
+  <text x="105" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Media Upload</text>
+  
+  <rect x="50" y="125" width="110" height="35" rx="3" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="105" y="148" text-anchor="middle" font-size="9" fill="#64748b">Video Files</text>
+  
+  <rect x="50" y="165" width="110" height="35" rx="3" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="105" y="188" text-anchor="middle" font-size="9" fill="#64748b">Images</text>
+  
+  <rect x="50" y="205" width="110" height="35" rx="3" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="105" y="228" text-anchor="middle" font-size="9" fill="#64748b">Audio Files</text>
+  
+  <!-- Upload Flow -->
+  <line x1="185" y1="175" x2="235" y2="175" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="210" y="165" text-anchor="middle" font-size="9" fill="#64748b">Upload</text>
+  
+  <!-- Ingestion -->
+  <rect x="235" y="85" width="200" height="180" rx="8" fill="#8b5cf6" stroke="#6d28d9" stroke-width="2"/>
+  <text x="335" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Ingestion</text>
+  
+  <rect x="255" y="125" width="160" height="40" rx="4" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="335" y="150" text-anchor="middle" font-size="9" fill="#64748b">Validate Format</text>
+  
+  <rect x="255" y="175" width="160" height="40" rx="4" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="335" y="200" text-anchor="middle" font-size="9" fill="#64748b">Extract Metadata</text>
+  
+  <rect x="255" y="225" width="160" height="30" rx="4" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="335" y="245" text-anchor="middle" font-size="9" fill="#64748b">Generate Job</text>
+  
+  <!-- Job Queue -->
+  <line x1="440" y1="175" x2="490" y2="175" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="465" y="165" text-anchor="middle" font-size="9" fill="#64748b">Enqueue</text>
+  
+  <rect x="490" y="85" width="180" height="180" rx="8" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>
+  <text x="580" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Job Queue</text>
+  
+  <rect x="510" y="125" width="140" height="40" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="580" y="150" text-anchor="middle" font-size="9" fill="#64748b">Video Jobs</text>
+  
+  <rect x="510" y="175" width="140" height="40" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="580" y="200" text-anchor="middle" font-size="9" fill="#64748b">Image Jobs</text>
+  
+  <rect x="510" y="225" width="140" height="30" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="580" y="245" text-anchor="middle" font-size="9" fill="#64748b">Priority Queue</text>
+  
+  <!-- Worker Pool -->
+  <line x1="675" y1="175" x2="725" y2="175" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="700" y="165" text-anchor="middle" font-size="9" fill="#64748b">Process</text>
+  
+  <rect x="725" y="85" width="145" height="180" rx="8" fill="#06b6d4" stroke="#0891b2" stroke-width="2"/>
+  <text x="797" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Workers</text>
+  
+  <rect x="745" y="125" width="105" height="35" rx="3" fill="#ecfdf5" stroke="#06b6d4" stroke-width="1"/>
+  <text x="797" y="148" text-anchor="middle" font-size="8" fill="#64748b">Transcoder</text>
+  
+  <rect x="745" y="165" width="105" height="35" rx="3" fill="#ecfdf5" stroke="#06b6d4" stroke-width="1"/>
+  <text x="797" y="188" text-anchor="middle" font-size="8" fill="#64748b">Thumbnail</text>
+  
+  <rect x="745" y="205" width="105" height="35" rx="3" fill="#ecfdf5" stroke="#06b6d4" stroke-width="1"/>
+  <text x="797" y="228" text-anchor="middle" font-size="8" fill="#64748b">Analyzer</text>
+  
+  <!-- Output Storage -->
+  <line x1="797" y1="265" x2="797" y2="315" stroke="#64748b" stroke-width="3" marker-end="url(#arrow-down)"/>
+  
+  <rect x="640" y="320" width="314" height="100" rx="8" fill="#10b981" stroke="#059669" stroke-width="2"/>
+  <text x="797" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Output Storage</text>
+  
+  <rect x="660" y="355" width="130" height="55" rx="4" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
+  <text x="725" y="380" text-anchor="middle" font-size="8" fill="#64748b">Original</text>
+  <text x="725" y="395" text-anchor="middle" font-size="8" fill="#64748b">Transcoded</text>
+  
+  <rect x="805" y="355" width="130" height="55" rx="4" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
+  <text x="870" y="380" text-anchor="middle" font-size="8" fill="#64748b">Thumbnails</text>
+  <text x="870" y="395" text-anchor="middle" font-size="8" fill="#64748b">Derivatives</text>
+  
+  <!-- Processing Stages -->
+  <rect x="30" y="280" width="280" height="160" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="170" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">Processing Stages</text>
+  
+  <rect x="50" y="320" width="240" height="110" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="170" y="345" text-anchor="middle" font-size="9" fill="#64748b">1. Validate Input</text>
+  <text x="170" y="360" text-anchor="middle" font-size="9" fill="#64748b">2. Transcode/Convert</text>
+  <text x="170" y="375" text-anchor="middle" font-size="9" fill="#64748b">3. Generate Thumbnails</text>
+  <text x="170" y="390" text-anchor="middle" font-size="9" fill="#64748b">4. Content Analysis</text>
+  <text x="170" y="405" text-anchor="middle" font-size="9" fill="#64748b">5. Publish Outputs</text>
+  
+  <!-- Output Formats -->
+  <rect x="330" y="280" width="280" height="160" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="470" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Output Formats</text>
+  
+  <rect x="350" y="320" width="240" height="110" rx="4" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="470" y="345" text-anchor="middle" font-size="9" fill="#64748b">Video: HLS, DASH, MP4</text>
+  <text x="470" y="360" text-anchor="middle" font-size="9" fill="#64748b">Image: WebP, JPEG, AVIF</text>
+  <text x="470" y="375" text-anchor="middle" font-size="9" fill="#64748b">Multiple Resolutions</text>
+  <text x="470" y="390" text-anchor="middle" font-size="9" fill="#64748b">Adaptive Bitrates</text>
+  <text x="470" y="405" text-anchor="middle" font-size="9" fill="#64748b">Sprite Sheets (video)</text>
+  
+  <!-- CDN Delivery -->
+  <rect x="630" y="435" width="240" height="95" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="750" y="460" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">CDN Delivery</text>
+  
+  <rect x="650" y="470" width="200" height="50" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="750" y="495" text-anchor="middle" font-size="9" fill="#64748b">Edge Caching</text>
+  <text x="750" y="510" text-anchor="middle" font-size="8" fill="#fcd34d">Low Latency</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-down" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 0, 5 7" fill="#64748b"/>
+    </marker>
+  </defs>
 </svg>

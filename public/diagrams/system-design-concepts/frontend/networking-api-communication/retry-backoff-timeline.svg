@@ -60,7 +60,7 @@
   <!-- Attempt 4: Success at 7s -->
   <rect x="520" y="80" width="40" height="230" rx="4" fill="#10B981" opacity="0.15"/>
   <circle cx="540" cy="160" r="20" fill="#10B981"/>
-  <text x="540" y="166" text-anchor="middle" font-size="16" fill="#ffffff" font-weight="bold">&#10003;</text>
+  <text x="540" y="166" text-anchor="middle" font-size="16" fill="#ffffff" font-weight="bold">&amp;#10003;</text>
   <text x="540" y="72" text-anchor="middle" font-size="12" font-weight="600" fill="#1e293b">Attempt 4</text>
 
   <!-- Delay growth visualization -->

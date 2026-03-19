@@ -73,13 +73,13 @@
   <line x1="50" y1="275" x2="390" y2="275" stroke="#999" stroke-width="1"/>
   
   <text x="60" y="300" text-anchor="start" class="small-label" font-weight="bold">Build Times:</text>
-  <text x="150" y="300" text-anchor="start" class="small-label">&lt;5s dev start, &lt;1s HMR</text>
+  <text x="150" y="300" text-anchor="start" class="small-label">&amp;lt;5s dev start, &amp;lt;1s HMR</text>
   
   <text x="60" y="320" text-anchor="start" class="small-label" font-weight="bold">Test Duration:</text>
-  <text x="160" y="320" text-anchor="start" class="small-label">&lt;100ms/unit test</text>
+  <text x="160" y="320" text-anchor="start" class="small-label">&amp;lt;100ms/unit test</text>
   
   <text x="60" y="340" text-anchor="start" class="small-label" font-weight="bold">CI Pipeline:</text>
-  <text x="150" y="340" text-anchor="start" class="small-label">&lt;10 minutes total</text>
+  <text x="150" y="340" text-anchor="start" class="small-label">&amp;lt;10 minutes total</text>
   
   <text x="60" y="365" text-anchor="start" class="small-label" font-weight="bold">Deployment:</text>
   <text x="140" y="365" text-anchor="start" class="small-label">Frequency, lead time</text>

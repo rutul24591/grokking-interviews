@@ -1,10 +1,130 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Media Processing Service Diagram 3</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage A</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage B</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage C</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+  <title id="title">Media Processing Failure Modes</title>
+  <desc id="desc">Media processing failure modes: resource exhaustion, poison pills, partial outputs, and cost overruns</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="600" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Media Processing Failure Modes</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Resource exhaustion, poison pills, partial outputs, and cost overruns</text>
+  
+  <!-- Resource Exhaustion -->
+  <rect x="30" y="85" width="410" height="240" rx="8" fill="white" stroke="#ef4444" stroke-width="2"/>
+  <text x="235" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#ef4444">1. Resource Exhaustion</text>
+  
+  <!-- Exhaustion scenario -->
+  <rect x="50" y="135" width="370" height="140" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+  
+  <!-- Normal load -->
+  <rect x="60" y="150" width="140" height="60" rx="4" fill="#10b981" stroke="#059669" stroke-width="1"/>
+  <text x="130" y="175" text-anchor="middle" font-size="9" fill="white">Normal Load</text>
+  <text x="130" y="190" text-anchor="middle" font-size="8" fill="#6ee7b7">CPU: 50%</text>
+  <text x="130" y="203" text-anchor="middle" font-size="7" fill="#6ee7b7">Queue: 10 jobs</text>
+  
+  <line x1="205" y1="180" x2="235" y2="180" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="220" y="170" text-anchor="middle" font-size="7" fill="#ef4444">Viral spike</text>
+  
+  <!-- Overload -->
+  <rect x="245" y="150" width="140" height="60" rx="4" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="315" y="175" text-anchor="middle" font-size="9" fill="white">Overload</text>
+  <text x="315" y="190" text-anchor="middle" font-size="8" fill="#fca5a5">CPU: 100%</text>
+  <text x="315" y="203" text-anchor="middle" font-size="7" fill="#fca5a5">Queue: 10K jobs</text>
+  
+  <text x="235" y="290" text-anchor="middle" font-size="10" fill="#ef4444">All jobs stalled, system unresponsive!</text>
+  <text x="235" y="310" text-anchor="middle" font-size="9" fill="#64748b">Cause: No concurrency limits, viral content</text>
+  <text x="235" y="330" text-anchor="middle" font-size="9" fill="#10b981">Fix: Concurrency caps, auto-scaling, shed load</text>
+  
+  <!-- Poison Pills -->
+  <rect x="460" y="85" width="410" height="240" rx="8" fill="white" stroke="#f59e0b" stroke-width="2"/>
+  <text x="665" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">2. Poison Pill Files</text>
+  
+  <!-- Poison scenario -->
+  <rect x="480" y="135" width="370" height="140" rx="6" fill="#fffbeb" stroke="#fcd34d" stroke-width="1"/>
+  
+  <!-- Corrupt file -->
+  <rect x="490" y="150" width="120" height="60" rx="4" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="550" y="175" text-anchor="middle" font-size="9" fill="white">Corrupt File</text>
+  <text x="550" y="190" text-anchor="middle" font-size="8" fill="#fca5a5">Malformed header</text>
+  
+  <line x1="615" y1="180" x2="645" y2="180" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="630" y="170" text-anchor="middle" font-size="7" fill="#ef4444">Crashes</text>
+  
+  <!-- Worker crashes -->
+  <rect x="655" y="150" width="100" height="60" rx="4" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="705" y="175" text-anchor="middle" font-size="9" fill="white">Worker</text>
+  <text x="705" y="190" text-anchor="middle" font-size="8" fill="#fca5a5">Crashes</text>
+  
+  <line x1="760" y1="180" x2="790" y2="180" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="775" y="170" text-anchor="middle" font-size="7" fill="#ef4444">Requeues</text>
+  
+  <!-- Infinite loop -->
+  <rect x="800" y="150" width="40" height="60" rx="2" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="820" y="180" text-anchor="middle" font-size="10" fill="white">∞</text>
+  
+  <text x="665" y="290" text-anchor="middle" font-size="10" fill="#ef4444">Infinite retry loop!</text>
+  <text x="665" y="310" text-anchor="middle" font-size="9" fill="#64748b">Cause: No validation, no DLQ</text>
+  <text x="665" y="330" text-anchor="middle" font-size="9" fill="#10b981">Fix: Validate upfront, DLQ after 3 failures</text>
+  
+  <!-- Partial Outputs -->
+  <rect x="30" y="340" width="410" height="240" rx="8" fill="white" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="235" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="#8b5cf6">3. Partial Outputs</text>
+  
+  <!-- Partial scenario -->
+  <rect x="50" y="380" width="370" height="140" rx="6" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1"/>
+  
+  <!-- Processing -->
+  <rect x="60" y="395" width="140" height="60" rx="4" fill="#8b5cf6" stroke="#6d28d9" stroke-width="1"/>
+  <text x="130" y="420" text-anchor="middle" font-size="9" fill="white">Processing</text>
+  <text x="130" y="435" text-anchor="middle" font-size="8" fill="#c4b5fd">50% complete</text>
+  
+  <line x1="205" y1="425" x2="235" y2="425" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="220" y="415" text-anchor="middle" font-size="7" fill="#ef4444">Crash!</text>
+  
+  <!-- Partial -->
+  <rect x="245" y="395" width="140" height="60" rx="4" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="315" y="420" text-anchor="middle" font-size="9" fill="white">Partial Output</text>
+  <text x="315" y="435" text-anchor="middle" font-size="8" fill="#fca5a5">Visible to user</text>
+  
+  <text x="235" y="495" text-anchor="middle" font-size="10" fill="#ef4444">User sees broken/incomplete media!</text>
+  <text x="235" y="515" text-anchor="middle" font-size="9" fill="#64748b">Cause: No atomic publish, crash mid-process</text>
+  <text x="235" y="535" text-anchor="middle" font-size="9" fill="#10b981">Fix: Temp storage, atomic rename, rollback</text>
+  
+  <!-- Cost Overruns -->
+  <rect x="460" y="340" width="410" height="240" rx="8" fill="white" stroke="#10b981" stroke-width="2"/>
+  <text x="665" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="#10b981">4. Cost Overruns</text>
+  
+  <!-- Cost scenario -->
+  <rect x="480" y="380" width="370" height="140" rx="6" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1"/>
+  
+  <!-- User uploads -->
+  <rect x="490" y="395" width="120" height="60" rx="4" fill="#3b82f6" stroke="#1e40af" stroke-width="1"/>
+  <text x="550" y="420" text-anchor="middle" font-size="9" fill="white">Free User</text>
+  <text x="550" y="435" text-anchor="middle" font-size="8" fill="#bfdbfe">Uploads 100GB</text>
+  
+  <line x1="615" y1="425" x2="645" y2="425" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="630" y="415" text-anchor="middle" font-size="7" fill="#ef4444">No limits</text>
+  
+  <!-- Processing -->
+  <rect x="655" y="395" width="120" height="60" rx="4" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>
+  <text x="715" y="420" text-anchor="middle" font-size="9" fill="white">Processing</text>
+  <text x="715" y="435" text-anchor="middle" font-size="8" fill="#fcd34d">$500 cost</text>
+  
+  <line x1="780" y1="425" x2="810" y2="425" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="795" y="415" text-anchor="middle" font-size="7" fill="#ef4444">Bill shock</text>
+  
+  <!-- Budget exceeded -->
+  <rect x="820" y="395" width="20" height="60" rx="2" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="830" y="425" text-anchor="middle" font-size="10" fill="white">!</text>
+  
+  <text x="665" y="495" text-anchor="middle" font-size="10" fill="#ef4444">Processing cost exceeds revenue!</text>
+  <text x="665" y="515" text-anchor="middle" font-size="9" fill="#64748b">Cause: No quotas, unlimited processing</text>
+  <text x="665" y="535" text-anchor="middle" font-size="9" fill="#10b981">Fix: Per-user quotas, resolution caps, timeouts</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
 </svg>

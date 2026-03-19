@@ -9,7 +9,7 @@
   <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Sources of Tail Latency</text>
   <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b">Common causes and their signatures</text>
   
-  <!-- Queueing & Contention -->
+  <!-- Queueing &amp; Contention -->
   <rect x="30" y="85" width="270" height="220" rx="8" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="2"/>
   <text x="165" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #3b82f6">Queueing &amp; Contention</text>
   

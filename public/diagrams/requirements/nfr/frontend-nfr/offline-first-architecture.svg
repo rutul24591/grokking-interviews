@@ -34,7 +34,7 @@
   <line x1="70" y1="370" x2="410" y2="370" stroke="#f59e0b" stroke-width="1"/>
   <text x="90" y="395" font-size="11" fill="#78350f">1. User action → Local DB write</text>
   <text x="90" y="420" font-size="11" fill="#78350f">2. Mutation queued</text>
-  <text x="90" y="445" font-size="11" fill="#78350f">3. UI shows &quot;pending&quot; status</text>
+  <text x="90" y="445" font-size="11" fill="#78350f">3. UI shows &amp;quot;pending&amp;quot; status</text>
   <text x="90" y="470" font-size="11" fill="#78350f">4. Background sync when online</text>
   
   <!-- Pull Sync -->

@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad2)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Change Management - Risk Assessment</text>
+  
+  <!-- Risk Matrix -->
+  <g transform="translate(100, 80)">
+    <rect x="0" y="0" width="500" height="300" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="250" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#f0ad4e">Change Risk Matrix</text>
+    
+    <!-- Y axis label -->
+    <text x="30" y="160" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0" transform="rotate(-90, 30, 160)">Impact →</text>
+    
+    <!-- X axis label -->
+    <text x="250" y="295" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">Likelihood →</text>
+    
+    <!-- Grid -->
+    <!-- Low/Low -->
+    <rect x="60" y="200" width="120" height="80" rx="3" fill="#67b26f" opacity="0.4"/>
+    <text x="120" y="235" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#67b26f">LOW</text>
+    <text x="120" y="255" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Standard approval</text>
+    <text x="120" y="270" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Pre-approved changes</text>
+    
+    <!-- Medium/Low -->
+    <rect x="180" y="200" width="120" height="80" rx="3" fill="#f0ad4e" opacity="0.4"/>
+    <text x="240" y="235" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#f0ad4e">MEDIUM</text>
+    <text x="240" y="255" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Peer review</text>
+    <text x="240" y="270" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Team lead approval</text>
+    
+    <!-- High/Low -->
+    <rect x="300" y="200" width="120" height="80" rx="3" fill="#d9534f" opacity="0.4"/>
+    <text x="360" y="235" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#d9534f">HIGH</text>
+    <text x="360" y="255" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">CAB review</text>
+    <text x="360" y="270" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Director approval</text>
+    
+    <!-- Low/Medium -->
+    <rect x="60" y="120" width="120" height="80" rx="3" fill="#f0ad4e" opacity="0.4"/>
+    <text x="120" y="155" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#f0ad4e">MEDIUM</text>
+    <text x="120" y="175" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Peer review</text>
+    <text x="120" y="190" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Test in staging</text>
+    
+    <!-- Medium/Medium -->
+    <rect x="180" y="120" width="120" height="80" rx="3" fill="#d9534f" opacity="0.4"/>
+    <text x="240" y="155" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#d9534f">HIGH</text>
+    <text x="240" y="175" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">CAB required</text>
+    <text x="240" y="190" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Rollback plan</text>
+    
+    <!-- High/Medium -->
+    <rect x="300" y="120" width="120" height="80" rx="3" fill="#d9534f" opacity="0.6"/>
+    <text x="360" y="155" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#d9534f">CRITICAL</text>
+    <text x="360" y="175" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Executive approval</text>
+    <text x="360" y="190" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Full testing required</text>
+    
+    <!-- Low/High -->
+    <rect x="60" y="60" width="120" height="60" rx="3" fill="#d9534f" opacity="0.4"/>
+    <text x="120" y="90" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#d9534f">HIGH</text>
+    <text x="120" y="108" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Low likelihood</text>
+    <text x="120" y="118" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">high impact</text>
+    
+    <!-- Medium/High -->
+    <rect x="180" y="60" width="120" height="60" rx="3" fill="#d9534f" opacity="0.6"/>
+    <text x="240" y="90" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#d9534f">CRITICAL</text>
+    <text x="240" y="108" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Avoid if possible</text>
+    
+    <!-- High/High -->
+    <rect x="300" y="60" width="120" height="60" rx="3" fill="#d9534f" opacity="0.8"/>
+    <text x="360" y="90" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="white">CRITICAL</text>
+    <text x="360" y="108" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Do not proceed</text>
+  </g>
+  
+  <!-- Risk Factors -->
+  <g transform="translate(620, 80)">
+    <rect x="0" y="0" width="230" height="300" rx="8" fill="#1a2a1a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="115" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#4a90d9">Risk Factors</text>
+    
+    <rect x="15" y="50" width="200" height="230" rx="4" fill="#2a2a4a"/>
+    
+    <text x="25" y="75" font-family="system-ui" font-size="9" fill="#e0e0e0">Impact Factors:</text>
+    <text x="35" y="92" font-family="system-ui" font-size="8" fill="#f0ad4e">• Users affected</text>
+    <text x="35" y="107" font-family="system-ui" font-size="8" fill="#f0ad4e">• Revenue impact</text>
+    <text x="35" y="122" font-family="system-ui" font-size="8" fill="#f0ad4e">• Data at risk</text>
+    <text x="35" y="137" font-family="system-ui" font-size="8" fill="#f0ad4e">• Compliance impact</text>
+    
+    <text x="25" y="160" font-family="system-ui" font-size="9" fill="#e0e0e0">Likelihood Factors:</text>
+    <text x="35" y="177" font-family="system-ui" font-size="8" fill="#67b26f">• Change complexity</text>
+    <text x="35" y="192" font-family="system-ui" font-size="8" fill="#67b26f">• Testing coverage</text>
+    <text x="35" y="207" font-family="system-ui" font-size="8" fill="#67b26f">• Team experience</text>
+    <text x="35" y="222" font-family="system-ui" font-size="8" fill="#67b26f">• Previous success rate</text>
+    
+    <text x="35" y="250" font-family="system-ui" font-size="8" fill="#999">Score each 1-5, multiply</text>
+    <text x="35" y="265" font-family="system-ui" font-size="8" fill="#999">for risk score</text>
+  </g>
+</svg>

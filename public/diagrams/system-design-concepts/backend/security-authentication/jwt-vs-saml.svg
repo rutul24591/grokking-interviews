@@ -43,12 +43,12 @@
   <!-- SAML Structure -->
   <rect x="430" y="145" width="300" height="120" rx="6" fill="var(--bg-panel, #f8fafc)" stroke="var(--border-theme, #94a3b8)" stroke-width="2"/>
   <text x="580" y="168" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #1e293b">Token Structure (XML)</text>
-  <text x="580" y="190" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b" font-family="monospace">&lt;Assertion ID="_123"&gt;</text>
-  <text x="580" y="205" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b" font-family="monospace">  &lt;Subject&gt;user@corp.com&lt;/Subject&gt;</text>
-  <text x="580" y="220" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b" font-family="monospace">  &lt;Conditions&gt;...&lt;/Conditions&gt;</text>
-  <text x="580" y="235" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b" font-family="monospace">  &lt;AttributeStatement&gt;...&lt;/Attribute&gt;</text>
-  <text x="580" y="250" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b" font-family="monospace">  &lt;Signature&gt;...&lt;/Signature&gt;</text>
-  <text x="580" y="265" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b" font-family="monospace">&lt;/Assertion&gt;</text>
+  <text x="580" y="190" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b" font-family="monospace">&amp;lt;Assertion ID="_123"&amp;gt;</text>
+  <text x="580" y="205" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b" font-family="monospace">  &amp;lt;Subject&amp;gt;user@corp.com&amp;lt;/Subject&amp;gt;</text>
+  <text x="580" y="220" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b" font-family="monospace">  &amp;lt;Conditions&amp;gt;...&amp;lt;/Conditions&amp;gt;</text>
+  <text x="580" y="235" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b" font-family="monospace">  &amp;lt;AttributeStatement&amp;gt;...&amp;lt;/Attribute&amp;gt;</text>
+  <text x="580" y="250" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b" font-family="monospace">  &amp;lt;Signature&amp;gt;...&amp;lt;/Signature&amp;gt;</text>
+  <text x="580" y="265" text-anchor="middle" font-size="8" fill="var(--text-theme, #64748b" font-family="monospace">&amp;lt;/Assertion&amp;gt;</text>
   
   <!-- SAML Characteristics -->
   <rect x="430" y="280" width="300" height="85" rx="6" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>

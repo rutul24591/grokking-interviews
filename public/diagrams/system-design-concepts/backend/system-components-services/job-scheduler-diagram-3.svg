@@ -1,10 +1,137 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Job Scheduler Diagram 3</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage A</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage B</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage C</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+  <title id="title">Job Scheduler Failure Modes</title>
+  <desc id="desc">Job scheduler failure modes: duplicate execution, job backlog, lost jobs, and thundering herd</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="600" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Job Scheduler Failure Modes</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Duplicate execution, job backlog, lost jobs, and thundering herd</text>
+  
+  <!-- Duplicate Execution -->
+  <rect x="30" y="85" width="410" height="240" rx="8" fill="white" stroke="#ef4444" stroke-width="2"/>
+  <text x="235" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#ef4444">1. Duplicate Execution</text>
+  
+  <!-- Duplicate scenario -->
+  <rect x="50" y="135" width="370" height="140" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+  
+  <!-- Job in queue -->
+  <rect x="60" y="150" width="120" height="60" rx="4" fill="#8b5cf6" stroke="#6d28d9" stroke-width="1"/>
+  <text x="120" y="175" text-anchor="middle" font-size="9" fill="white">Job: Send Email</text>
+  <text x="120" y="190" text-anchor="middle" font-size="8" fill="#c4b5fd">User ID: 12345</text>
+  
+  <line x1="185" y1="180" x2="215" y2="180" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="200" y="170" text-anchor="middle" font-size="7" fill="#ef4444">Worker 1</text>
+  
+  <line x1="185" y1="190" x2="215" y2="190" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="200" y="205" text-anchor="middle" font-size="7" fill="#ef4444">Worker 2</text>
+  
+  <!-- Both execute -->
+  <rect x="225" y="150" width="80" height="40" rx="3" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="265" y="173" text-anchor="middle" font-size="8" fill="white">Execute</text>
+  
+  <rect x="225" y="200" width="80" height="40" rx="3" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="265" y="223" text-anchor="middle" font-size="8" fill="white">Execute</text>
+  
+  <!-- User receives 2 emails -->
+  <rect x="320" y="175" width="90" height="40" rx="3" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="365" y="198" text-anchor="middle" font-size="8" fill="white">2 Emails!</text>
+  
+  <text x="235" y="290" text-anchor="middle" font-size="10" fill="#ef4444">User receives duplicate notification!</text>
+  <text x="235" y="310" text-anchor="middle" font-size="9" fill="#64748b">Cause: No lease, race condition</text>
+  <text x="235" y="330" text-anchor="middle" font-size="9" fill="#10b981">Fix: Visibility timeout, idempotency keys</text>
+  
+  <!-- Job Backlog -->
+  <rect x="460" y="85" width="410" height="240" rx="8" fill="white" stroke="#f59e0b" stroke-width="2"/>
+  <text x="665" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">2. Job Backlog (Lag)</text>
+  
+  <!-- Backlog scenario -->
+  <rect x="480" y="135" width="370" height="140" rx="6" fill="#fffbeb" stroke="#fcd34d" stroke-width="1"/>
+  
+  <!-- Normal queue -->
+  <rect x="490" y="150" width="140" height="60" rx="4" fill="#10b981" stroke="#059669" stroke-width="1"/>
+  <text x="560" y="175" text-anchor="middle" font-size="9" fill="white">Normal Queue</text>
+  <text x="560" y="190" text-anchor="middle" font-size="8" fill="#6ee7b7">100 jobs</text>
+  <text x="560" y="203" text-anchor="middle" font-size="7" fill="#6ee7b7">Processing: 50/s</text>
+  
+  <line x1="635" y1="180" x2="665" y2="180" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="650" y="170" text-anchor="middle" font-size="7" fill="#ef4444">Spike!</text>
+  
+  <!-- Backlog queue -->
+  <rect x="675" y="150" width="140" height="60" rx="4" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>
+  <text x="745" y="175" text-anchor="middle" font-size="9" fill="white">Backlog</text>
+  <text x="745" y="190" text-anchor="middle" font-size="8" fill="#fcd34d">100K jobs</text>
+  <text x="745" y="203" text-anchor="middle" font-size="7" fill="#fcd34d">Processing: 50/s</text>
+  
+  <text x="665" y="290" text-anchor="middle" font-size="10" fill="#ef4444">Jobs delayed by hours!</text>
+  <text x="665" y="310" text-anchor="middle" font-size="9" fill="#64748b">Cause: Sudden spike, insufficient workers</text>
+  <text x="665" y="330" text-anchor="middle" font-size="9" fill="#10b981">Fix: Auto-scaling, priority queues, shed load</text>
+  
+  <!-- Lost Jobs -->
+  <rect x="30" y="340" width="410" height="240" rx="8" fill="white" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="235" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="#8b5cf6">3. Lost Jobs (Worker Crash)</text>
+  
+  <!-- Lost scenario -->
+  <rect x="50" y="380" width="370" height="140" rx="6" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1"/>
+  
+  <!-- Worker processing -->
+  <rect x="60" y="395" width="140" height="60" rx="4" fill="#8b5cf6" stroke="#6d28d9" stroke-width="1"/>
+  <text x="130" y="420" text-anchor="middle" font-size="9" fill="white">Worker Processing</text>
+  <text x="130" y="435" text-anchor="middle" font-size="8" fill="#c4b5fd">Job: Charge Card</text>
+  
+  <line x1="205" y1="425" x2="235" y2="425" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="220" y="415" text-anchor="middle" font-size="7" fill="#ef4444">CRASH!</text>
+  
+  <!-- Job lost -->
+  <rect x="245" y="395" width="140" height="60" rx="4" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="315" y="420" text-anchor="middle" font-size="9" fill="white">Job Lost</text>
+  <text x="315" y="435" text-anchor="middle" font-size="8" fill="#fca5a5">Never completed</text>
+  
+  <text x="235" y="495" text-anchor="middle" font-size="10" fill="#ef4444">Payment never processed!</text>
+  <text x="235" y="515" text-anchor="middle" font-size="9" fill="#64748b">Cause: No visibility timeout, no ack</text>
+  <text x="235" y="535" text-anchor="middle" font-size="9" fill="#10b981">Fix: Lease timeout, explicit ack/nack</text>
+  
+  <!-- Thundering Herd -->
+  <rect x="460" y="340" width="410" height="240" rx="8" fill="white" stroke="#10b981" stroke-width="2"/>
+  <text x="665" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="#10b981">4. Thundering Herd</text>
+  
+  <!-- Herd scenario -->
+  <rect x="480" y="380" width="370" height="140" rx="6" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1"/>
+  
+  <!-- Cron job -->
+  <rect x="490" y="395" width="120" height="60" rx="4" fill="#10b981" stroke="#059669" stroke-width="1"/>
+  <text x="550" y="420" text-anchor="middle" font-size="9" fill="white">Cron: 9:00 AM</text>
+  <text x="550" y="435" text-anchor="middle" font-size="8" fill="#6ee7b7">Daily Report</text>
+  
+  <line x1="615" y1="425" x2="645" y2="425" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="630" y="415" text-anchor="middle" font-size="7" fill="#ef4444">All workers</text>
+  
+  <!-- All workers grab -->
+  <rect x="655" y="395" width="80" height="25" rx="2" fill="#ef4444" stroke="#b91c1c" stroke-width="1"/>
+  <text x="695" y="413" text-anchor="middle" font-size="7" fill="white">Worker 1</text>
+  
+  <rect x="655" y="425" width="80" height="25" rx="2" fill="#ef4444" stroke="#b91c1c" stroke-width="1"/>
+  <text x="695" y="443" text-anchor="middle" font-size="7" fill="white">Worker 2</text>
+  
+  <rect x="655" y="455" width="80" height="25" rx="2" fill="#ef4444" stroke="#b91c1c" stroke-width="1"/>
+  <text x="695" y="473" text-anchor="middle" font-size="7" fill="white">Worker N</text>
+  
+  <line x1="740" y1="425" x2="770" y2="425" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="755" y="415" text-anchor="middle" font-size="7" fill="#ef4444">Overload</text>
+  
+  <!-- System overload -->
+  <rect x="780" y="415" width="60" height="40" rx="3" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="810" y="440" text-anchor="middle" font-size="9" fill="white">!</text>
+  
+  <text x="665" y="495" text-anchor="middle" font-size="10" fill="#ef4444">All workers overwhelmed at once!</text>
+  <text x="665" y="515" text-anchor="middle" font-size="9" fill="#64748b">Cause: Scheduled jobs all fire together</text>
+  <text x="665" y="535" text-anchor="middle" font-size="9" fill="#10b981">Fix: Jitter, stagger schedules, rate limit</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
 </svg>

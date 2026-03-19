@@ -1,143 +1,143 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
-  <title id="title">Feature Flags Failure Modes</title>
-  <desc id="desc">Feature flags failure modes: flag debt, evaluation latency, and configuration drift</desc>
+<svg xmlns="http://www.w3.org/2000/svg" " viewBox="0 0 900 600" role="img aria-labelledby="title desc">
+  <title id="title>Feature Flags Failure Modes</title>
+  <desc" id="desc">Feature flags failure modes: flag debt, evaluation latency, and configuration drift</desc>
   
   <!-- Background -->
-  <rect width="900" height="600" fill="var(--bg-panel, #f8fafc)"/>
+  <rect width="900" height="600" fill="var(--bg-panel, #f8fafc)/>
   
   <!-- Title -->
-  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Feature Flags: Failure Modes</text>
-  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b">Common pitfalls with feature flag implementations</text>
+  <text" x="450" y="35 text-anchor="middle" font-size="18 font-weight="bold" fill="var(--text-theme, #1e293b)>Feature Flags: Failure Modes</text>
+  <text" x="450" y="58 text-anchor="middle" font-size="13 fill="var(--text-theme, #64748b">Common pitfalls with feature flag implementations</text>
   
   <!-- Flag Debt -->
-  <rect x="30" y="85" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
-  <text x="235" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #ef4444">1. Flag Debt (Technical Debt)</text>
+  <rect x="30 y="85" width="410" height="240" rx="8 fill="white" stroke="var(--border-theme, #ef4444)" stroke-width="2"/>
+  <text x="235 y="110" text-anchor="middle font-size="14" font-weight="bold fill="var(--text-theme, #ef4444">1. Flag Debt (Technical Debt)</text>
   
   <!-- Accumulated flags -->
-  <rect x="50" y="135" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #fef2f2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
+  <rect x="50 y="135" width="370" height="140" rx="6 fill="var(--bg-panel-soft, #fef2f2)" stroke="var(--border-theme, #fca5a5)" stroke-width="1"/>
   
   <!-- Old flags -->
-  <rect x="60" y="150" width="100" height="40" rx="3" fill="var(--bg-theme, #94a3b8)" stroke="var(--border-theme, #475569)" stroke-width="1"/>
-  <text x="110" y="173" text-anchor="middle" font-size="8" fill="white">old-checkout</text>
-  <text x="110" y="185" text-anchor="middle" font-size="7" fill="#94a3b8">6 months old</text>
+  <rect x="60 y="150" width="100" height="40" rx="3 fill="var(--bg-theme, #94a3b8)" stroke="var(--border-theme, #475569)" stroke-width="1"/>
+  <text x="110 y="173" text-anchor="middle font-size="8" fill="white>old-checkout</text>
+  <text" x="110" y="185 text-anchor="middle" font-size="7 fill="#94a3b8">6 months old</text>
   
-  <rect x="170" y="150" width="100" height="40" rx="3" fill="var(--bg-theme, #94a3b8)" stroke="var(--border-theme, #475569)" stroke-width="1"/>
-  <text x="220" y="173" text-anchor="middle" font-size="8" fill="white">beta-feature</text>
-  <text x="220" y="185" text-anchor="middle" font-size="7" fill="#94a3b8">1 year old</text>
+  <rect x="170 y="150" width="100" height="40" rx="3 fill="var(--bg-theme, #94a3b8)" stroke="var(--border-theme, #475569)" stroke-width="1"/>
+  <text x="220 y="173" text-anchor="middle font-size="8" fill="white>beta-feature</text>
+  <text" x="220" y="185 text-anchor="middle" font-size="7 fill="#94a3b8">1 year old</text>
   
-  <rect x="280" y="150" width="100" height="40" rx="3" fill="var(--bg-theme, #94a3b8)" stroke="var(--border-theme, #475569)" stroke-width="1"/>
-  <text x="330" y="173" text-anchor="middle" font-size="8" fill="white">experiment-a</text>
-  <text x="330" y="185" text-anchor="middle" font-size="7" fill="#94a3b8">2 years old</text>
+  <rect x="280 y="150" width="100" height="40" rx="3 fill="var(--bg-theme, #94a3b8)" stroke="var(--border-theme, #475569)" stroke-width="1"/>
+  <text x="330 y="173" text-anchor="middle font-size="8" fill="white>experiment-a</text>
+  <text" x="330" y="185 text-anchor="middle" font-size="7 fill="#94a3b8">2 years old</text>
   
   <!-- New flags -->
-  <rect x="60" y="200" width="100" height="40" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
-  <text x="110" y="223" text-anchor="middle" font-size="8" fill="white">new-feature</text>
-  <text x="110" y="235" text-anchor="middle" font-size="7" fill="#6ee7b7">Active</text>
+  <rect x="60 y="200" width="100" height="40" rx="3 fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="110 y="223" text-anchor="middle font-size="8" fill="white>new-feature</text>
+  <text" x="110" y="235 text-anchor="middle" font-size="7 fill="#6ee7b7">Active</text>
   
-  <rect x="170" y="200" width="100" height="40" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
-  <text x="220" y="223" text-anchor="middle" font-size="8" fill="white">ab-test-1</text>
-  <text x="220" y="235" text-anchor="middle" font-size="7" fill="#6ee7b7">Active</text>
+  <rect x="170 y="200" width="100" height="40" rx="3 fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="220 y="223" text-anchor="middle font-size="8" fill="white>ab-test-1</text>
+  <text" x="220" y="235 text-anchor="middle" font-size="7 fill="#6ee7b7">Active</text>
   
-  <rect x="280" y="200" width="100" height="40" rx="3" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
-  <text x="330" y="223" text-anchor="middle" font-size="8" fill="white">ab-test-2</text>
-  <text x="330" y="235" text-anchor="middle" font-size="7" fill="#6ee7b7">Active</text>
+  <rect x="280 y="200" width="100" height="40" rx="3 fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
+  <text x="330 y="223" text-anchor="middle font-size="8" fill="white>ab-test-2</text>
+  <text" x="330" y="235 text-anchor="middle" font-size="7 fill="#6ee7b7">Active</text>
   
-  <text x="235" y="290" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Code complexity grows over time!</text>
-  <text x="235" y="310" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Impact: Dead code, confusion, bugs</text>
-  <text x="235" y="330" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Flag expiry, cleanup process, ownership</text>
+  <text x="235 y="290" text-anchor="middle font-size="10" fill="var(--text-theme, #ef4444>Code complexity grows over time!</text>
+  <text" x="235" y="310 text-anchor="middle" font-size="9 fill="var(--text-theme, #64748b">Impact: Dead code, confusion, bugs</text>
+  <text x="235 y="330" text-anchor="middle font-size="9" fill="var(--text-theme, #10b981>Fix: Flag expiry, cleanup process, ownership</text>
   
   <!-- Evaluation Latency -->
-  <rect x="460" y="85" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
-  <text x="665" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">2. Evaluation Latency</text>
+  <rect" x="460" y="85 width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #f59e0b)" stroke-width="2/>
+  <text" x="665" y="110 text-anchor="middle" font-size="14 font-weight="bold" fill="var(--text-theme, #b45309>2. Evaluation Latency</text>
   
   <!-- Slow evaluation -->
-  <rect x="480" y="135" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1"/>
+  <rect" x="480" y="135 width="370" height="140" rx="6" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #fcd34d)" stroke-width="1/>
   
   <!-- App request -->
-  <rect x="490" y="150" width="80" height="50" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1"/>
-  <text x="530" y="175" text-anchor="middle" font-size="9" fill="white">App</text>
-  <text x="530" y="190" text-anchor="middle" font-size="8" fill="#bfdbfe">Request</text>
+  <rect" x="490" y="150 width="80" height="50" rx="4" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="1/>
+  <text" x="530" y="175 text-anchor="middle" font-size="9 fill="white">App</text>
+  <text x="530 y="190" text-anchor="middle font-size="8" fill="#bfdbfe>Request</text>
   
-  <line x1="575" y1="175" x2="625" y2="175" stroke="var(--text-theme, #f59e0b)" stroke-width="3" stroke-dasharray="5,3"/>
-  <text x="600" y="165" text-anchor="middle" font-size="7" fill="var(--text-theme, #b45309">Network call</text>
+  <line x1="575" y1="175 x2="625" y2="175 stroke="var(--text-theme, #f59e0b)" stroke-width="3" stroke-dasharray="5,3"/>
+  <text x="600 y="165" text-anchor="middle font-size="7" fill="var(--text-theme, #b45309>Network call</text>
   
   <!-- Flag service -->
-  <rect x="635" y="150" width="100" height="50" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
-  <text x="685" y="175" text-anchor="middle" font-size="9" fill="white">Flag Service</text>
-  <text x="685" y="190" text-anchor="middle" font-size="8" fill="#fcd34d">Remote API</text>
+  <rect" x="635" y="150 width="100" height="50" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1/>
+  <text" x="685" y="175 text-anchor="middle" font-size="9 fill="white">Flag Service</text>
+  <text x="685 y="190" text-anchor="middle font-size="8" fill="#fcd34d>Remote API</text>
   
-  <line x1="740" y1="175" x2="790" y2="175" stroke="var(--text-theme, #f59e0b)" stroke-width="3" stroke-dasharray="5,3"/>
-  <text x="765" y="165" text-anchor="middle" font-size="7" fill="var(--text-theme, #b45309">+50-200ms</text>
+  <line x1="740" y1="175 x2="790" y2="175 stroke="var(--text-theme, #f59e0b)" stroke-width="3" stroke-dasharray="5,3"/>
+  <text x="765 y="165" text-anchor="middle font-size="7" fill="var(--text-theme, #b45309>+50-200ms</text>
   
   <!-- Response -->
-  <rect x="800" y="150" width="40" height="50" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1"/>
-  <text x="820" y="180" text-anchor="middle" font-size="10" fill="white">OK</text>
+  <rect" x="800" y="150 width="40" height="50" rx="4" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="1/>
+  <text" x="820" y="180 text-anchor="middle" font-size="10 fill="white">OK</text>
   
-  <text x="665" y="240" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Every request blocked on flag evaluation!</text>
-  <text x="665" y="260" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Impact: Added latency, cascading delays</text>
-  <text x="665" y="280" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Local caching, SDK evaluation, fallbacks</text>
+  <text x="665 y="240" text-anchor="middle font-size="10" fill="var(--text-theme, #ef4444>Every request blocked on flag evaluation!</text>
+  <text" x="665" y="260 text-anchor="middle" font-size="9 fill="var(--text-theme, #64748b">Impact: Added latency, cascading delays</text>
+  <text x="665 y="280" text-anchor="middle font-size="9" fill="var(--text-theme, #10b981>Fix: Local caching, SDK evaluation, fallbacks</text>
   
   <!-- Configuration Drift -->
-  <rect x="30" y="340" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2"/>
-  <text x="235" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #8b5cf6">3. Configuration Drift</text>
+  <rect" x="30" y="340 width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #8b5cf6)" stroke-width="2/>
+  <text" x="235" y="365 text-anchor="middle" font-size="14 font-weight="bold" fill="var(--text-theme, #8b5cf6>3. Configuration Drift</text>
   
   <!-- Drift scenario -->
-  <rect x="50" y="380" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1"/>
+  <rect" x="50" y="380 width="370" height="140" rx="6" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #c4b5fd)" stroke-width="1/>
   
   <!-- Prod config -->
-  <rect x="60" y="395" width="140" height="60" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1"/>
-  <text x="130" y="420" text-anchor="middle" font-size="9" fill="white">Production</text>
-  <text x="130" y="435" text-anchor="middle" font-size="8" fill="#c4b5fd">new-checkout: 50%</text>
-  <text x="130" y="448" text-anchor="middle" font-size="7" fill="#c4b5fd">Last update: 2 days ago</text>
+  <rect" x="60" y="395 width="140" height="60" rx="4" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="1/>
+  <text" x="130" y="420 text-anchor="middle" font-size="9 fill="white">Production</text>
+  <text x="130 y="435" text-anchor="middle font-size="8" fill="#c4b5fd>new-checkout: 50%</text>
+  <text" x="130" y="448 text-anchor="middle" font-size="7 fill="#c4b5fd">Last update: 2 days ago</text>
   
-  <line x1="205" y1="425" x2="235" y2="425" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
-  <text x="220" y="415" text-anchor="middle" font-size="7" fill="var(--text-theme, #ef4444">Different!</text>
+  <line x1="205 y1="425" x2="235 y2="425" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)/>
+  <text x="220" y="415 text-anchor="middle" font-size="7 fill="var(--text-theme, #ef4444">Different!</text>
   
   <!-- Staging config -->
-  <rect x="245" y="395" width="140" height="60" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
-  <text x="315" y="420" text-anchor="middle" font-size="9" fill="white">Staging</text>
-  <text x="315" y="435" text-anchor="middle" font-size="8" fill="#fcd34d">new-checkout: 100%</text>
-  <text x="315" y="448" text-anchor="middle" font-size="7" fill="#fcd34d">Last update: 1 week ago</text>
+  <rect x="245 y="395" width="140" height="60" rx="4 fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="1"/>
+  <text x="315 y="420" text-anchor="middle font-size="9" fill="white>Staging</text>
+  <text" x="315" y="435 text-anchor="middle" font-size="8 fill="#fcd34d">new-checkout: 100%</text>
+  <text x="315 y="448" text-anchor="middle font-size="7" fill="#fcd34d>Last update: 1 week ago</text>
   
-  <text x="235" y="495" text-anchor="middle" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Environments have different flag states!</text>
-  <text x="235" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Impact: Works in staging, fails in prod</text>
-  <text x="235" y="535" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Sync configs, audit changes, promotion workflow</text>
+  <text" x="235" y="495 text-anchor="middle" font-size="10 fill="var(--text-theme, #ef4444">Environments have different flag states!</text>
+  <text x="235 y="515" text-anchor="middle font-size="9" fill="var(--text-theme, #64748b>Impact: Works in staging, fails in prod</text>
+  <text" x="235" y="535 text-anchor="middle" font-size="9 fill="var(--text-theme, #10b981">Fix: Sync configs, audit changes, promotion workflow</text>
   
   <!-- Kill Switch Failure -->
-  <rect x="460" y="340" width="410" height="240" rx="8" fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
-  <text x="665" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #10b981">4. Kill Switch Failure</text>
+  <rect x="460 y="340" width="410" height="240" rx="8 fill="white" stroke="var(--border-theme, #10b981)" stroke-width="2"/>
+  <text x="665 y="365" text-anchor="middle font-size="14" font-weight="bold fill="var(--text-theme, #10b981">4. Kill Switch Failure</text>
   
   <!-- Kill switch scenario -->
-  <rect x="480" y="380" width="370" height="140" rx="6" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
+  <rect x="480 y="380" width="370" height="140" rx="6 fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #6ee7b7)" stroke-width="1"/>
   
   <!-- Problem detected -->
-  <rect x="490" y="395" width="100" height="50" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
-  <text x="540" y="420" text-anchor="middle" font-size="9" fill="white">Problem!</text>
-  <text x="540" y="435" text-anchor="middle" font-size="8" fill="#fca5a5">Error spike</text>
+  <rect x="490 y="395" width="100" height="50" rx="4 fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="1"/>
+  <text x="540 y="420" text-anchor="middle font-size="9" fill="white>Problem!</text>
+  <text" x="540" y="435 text-anchor="middle" font-size="8 fill="#fca5a5">Error spike</text>
   
-  <line x1="595" y1="420" x2="625" y2="420" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
-  <text x="610" y="410" text-anchor="middle" font-size="7" fill="var(--text-theme, #ef4444">Disable!</text>
+  <line x1="595 y1="420" x2="625 y2="420" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)/>
+  <text x="610" y="410 text-anchor="middle" font-size="7 fill="var(--text-theme, #ef4444">Disable!</text>
   
   <!-- Kill switch -->
-  <rect x="635" y="395" width="100" height="50" rx="4" fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="2"/>
-  <text x="685" y="420" text-anchor="middle" font-size="9" fill="white">Kill Switch</text>
-  <text x="685" y="435" text-anchor="middle" font-size="8" fill="#fcd34d">Service DOWN</text>
+  <rect x="635 y="395" width="100" height="50" rx="4 fill="var(--bg-theme, #f59e0b)" stroke="var(--border-theme, #b45309)" stroke-width="2"/>
+  <text x="685 y="420" text-anchor="middle font-size="9" fill="white>Kill Switch</text>
+  <text" x="685" y="435 text-anchor="middle" font-size="8 fill="#fcd34d">Service DOWN</text>
   
-  <line x1="740" y1="420" x2="770" y2="420" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)"/>
-  <text x="755" y="410" text-anchor="middle" font-size="7" fill="var(--text-theme, #ef4444">Cascades!</text>
+  <line x1="740 y1="420" x2="770 y2="420" stroke="var(--text-theme, #ef4444)" stroke-width="2" marker-end="url(#arrow-red)/>
+  <text x="755" y="410 text-anchor="middle" font-size="7 fill="var(--text-theme, #ef4444">Cascades!</text>
   
   <!-- Cascading failure -->
-  <rect x="780" y="395" width="60" height="50" rx="4" fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
-  <text x="810" y="425" text-anchor="middle" font-size="10" fill="white">!</text>
+  <rect x="780 y="395" width="60" height="50" rx="4 fill="var(--bg-theme, #ef4444)" stroke="var(--border-theme, #b91c1c)" stroke-width="2"/>
+  <text x="810 y="425" text-anchor="middle font-size="10" fill="white>!</text>
   
-  <text x="665" y="465" text-anchor="middle" text-anchor="middle" font-size="10" fill="var(--text-theme, #ef4444">Kill switch causes bigger outage!</text>
-  <text x="665" y="485" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Impact: Feature disable takes down service</text>
-  <text x="665" y="505" text-anchor="middle" font-size="9" fill="var(--text-theme, #10b981">Fix: Graceful fallbacks, not hard failures</text>
+  <text" x="665" y="465 text-anchor="middle" font-size="10 fill="var(--text-theme, #ef4444">Kill switch causes bigger outage!</text>
+  <text x="665 y="485" text-anchor="middle font-size="9" fill="var(--text-theme, #64748b>Impact: Feature disable takes down service</text>
+  <text" x="665" y="505 text-anchor="middle" font-size="9 fill="var(--text-theme, #10b981">Fix: Graceful fallbacks, not hard failures</text>
   
   <!-- Arrow markers -->
   <defs>
-    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #ef4444)"/>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5 orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7 fill="var(--text-theme, #ef4444)"/>
     </marker>
   </defs>
 </svg>

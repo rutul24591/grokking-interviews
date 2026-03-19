@@ -1,122 +1,122 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
   <defs>
     <marker id="retryArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="var(--border-accent, #3b82f6)"/>
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
     </marker>
     <linearGradient id="retryGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:var(--bg-blue, #3b82f6);stop-opacity:0.2"/>
-      <stop offset="100%" style="stop-color:var(--bg-blue, #3b82f6);stop-opacity:0.05"/>
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.2"/>
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.05"/>
     </linearGradient>
   </defs>
   
   <!-- Background -->
-  <rect width="1000" height="550" fill="var(--bg-primary, #ffffff)"/>
+  <rect width="1000" height="550" fill="#ffffff"/>
   
   <!-- Title -->
-  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--text-primary, #0f172a)">Retry Patterns & Backoff Strategies</text>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">Retry Patterns &amp; Backoff Strategies</text>
   
   <!-- Retry without backoff -->
-  <rect x="50" y="60" width="300" height="220" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
-  <text x="200" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a)">Immediate Retry (Anti-Pattern)</text>
+  <rect x="50" y="60" width="300" height="220" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="200" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Immediate Retry (Anti-Pattern)</text>
   
   <!-- Timeline -->
-  <line x1="80" y1="140" x2="320" y2="140" stroke="var(--border-accent, #3b82f6)" stroke-width="2"/>
+  <line x1="80" y1="140" x2="320" y2="140" stroke="#3b82f6" stroke-width="2"/>
   
-  <rect x="80" y="125" width="40" height="30" rx="3" fill="var(--bg-red, #ef4444)"/>
-  <text x="100" y="145" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">FAIL</text>
+  <rect x="80" y="125" width="40" height="30" rx="3" fill="#ef4444"/>
+  <text x="100" y="145" text-anchor="middle" font-size="9" fill="#ffffff">FAIL</text>
   
-  <rect x="130" y="125" width="40" height="30" rx="3" fill="var(--bg-red, #ef4444)"/>
-  <text x="150" y="145" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">FAIL</text>
+  <rect x="130" y="125" width="40" height="30" rx="3" fill="#ef4444"/>
+  <text x="150" y="145" text-anchor="middle" font-size="9" fill="#ffffff">FAIL</text>
   
-  <rect x="180" y="125" width="40" height="30" rx="3" fill="var(--bg-red, #ef4444)"/>
-  <text x="200" y="145" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">FAIL</text>
+  <rect x="180" y="125" width="40" height="30" rx="3" fill="#ef4444"/>
+  <text x="200" y="145" text-anchor="middle" font-size="9" fill="#ffffff">FAIL</text>
   
-  <rect x="230" y="125" width="40" height="30" rx="3" fill="var(--bg-red, #ef4444)"/>
-  <text x="250" y="145" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">FAIL</text>
+  <rect x="230" y="125" width="40" height="30" rx="3" fill="#ef4444"/>
+  <text x="250" y="145" text-anchor="middle" font-size="9" fill="#ffffff">FAIL</text>
   
   <text x="200" y="190" text-anchor="middle" font-size="10" fill="#ef4444" font-weight="bold">✗ Overwhelms failing service</text>
   <text x="200" y="210" text-anchor="middle" font-size="10" fill="#ef4444" font-weight="bold">✗ Wastes resources</text>
   <text x="200" y="230" text-anchor="middle" font-size="10" fill="#ef4444" font-weight="bold">✗ Rarely succeeds</text>
   
   <!-- Fixed Delay Retry -->
-  <rect x="370" y="60" width="300" height="220" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
-  <text x="520" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a)">Fixed Delay Retry</text>
+  <rect x="370" y="60" width="300" height="220" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="520" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Fixed Delay Retry</text>
   
-  <line x1="400" y1="140" x2="640" y2="140" stroke="var(--border-accent, #3b82f6)" stroke-width="2"/>
+  <line x1="400" y1="140" x2="640" y2="140" stroke="#3b82f6" stroke-width="2"/>
   
-  <rect x="400" y="125" width="40" height="30" rx="3" fill="var(--bg-red, #ef4444)"/>
-  <text x="420" y="145" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">FAIL</text>
+  <rect x="400" y="125" width="40" height="30" rx="3" fill="#ef4444"/>
+  <text x="420" y="145" text-anchor="middle" font-size="9" fill="#ffffff">FAIL</text>
   
-  <rect x="470" y="125" width="40" height="30" rx="3" fill="var(--bg-red, #ef4444)"/>
-  <text x="490" y="145" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">FAIL</text>
+  <rect x="470" y="125" width="40" height="30" rx="3" fill="#ef4444"/>
+  <text x="490" y="145" text-anchor="middle" font-size="9" fill="#ffffff">FAIL</text>
   
-  <rect x="540" y="125" width="40" height="30" rx="3" fill="var(--bg-green, #22c55e)"/>
-  <text x="560" y="145" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">OK</text>
+  <rect x="540" y="125" width="40" height="30" rx="3" fill="#22c55e"/>
+  <text x="560" y="145" text-anchor="middle" font-size="9" fill="#ffffff">OK</text>
   
   <!-- Delay markers -->
-  <text x="445" y="180" text-anchor="middle" font-size="9" fill="var(--border-accent, #3b82f6)" font-weight="bold">5s delay</text>
-  <text x="515" y="180" text-anchor="middle" font-size="9" fill="var(--border-accent, #3b82f6)" font-weight="bold">5s delay</text>
+  <text x="445" y="180" text-anchor="middle" font-size="9" fill="#3b82f6" font-weight="bold">5s delay</text>
+  <text x="515" y="180" text-anchor="middle" font-size="9" fill="#3b82f6" font-weight="bold">5s delay</text>
   
-  <text x="520" y="210" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">✓ Simple to implement</text>
+  <text x="520" y="210" text-anchor="middle" font-size="10" fill="#475569">✓ Simple to implement</text>
   <text x="520" y="230" text-anchor="middle" font-size="10" fill="#f59e0b">⚠ May retry too aggressively</text>
-  <text x="520" y="250" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">Use case: Known transient errors</text>
+  <text x="520" y="250" text-anchor="middle" font-size="10" fill="#475569">Use case: Known transient errors</text>
   
   <!-- Exponential Backoff -->
-  <rect x="690" y="60" width="260" height="220" rx="8" fill="url(#retryGrad)" stroke="var(--border-blue, #3b82f6)" stroke-width="2"/>
-  <text x="820" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a)">Exponential Backoff</text>
+  <rect x="690" y="60" width="260" height="220" rx="8" fill="url(#retryGrad)" stroke="#3b82f6" stroke-width="2"/>
+  <text x="820" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Exponential Backoff</text>
   
-  <line x1="710" y1="140" x2="930" y2="140" stroke="var(--border-accent, #3b82f6)" stroke-width="2"/>
+  <line x1="710" y1="140" x2="930" y2="140" stroke="#3b82f6" stroke-width="2"/>
   
-  <rect x="710" y="125" width="35" height="30" rx="3" fill="var(--bg-red, #ef4444)"/>
-  <text x="727" y="145" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">FAIL</text>
+  <rect x="710" y="125" width="35" height="30" rx="3" fill="#ef4444"/>
+  <text x="727" y="145" text-anchor="middle" font-size="8" fill="#ffffff">FAIL</text>
   
-  <rect x="760" y="125" width="35" height="30" rx="3" fill="var(--bg-red, #ef4444)"/>
-  <text x="777" y="145" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">FAIL</text>
+  <rect x="760" y="125" width="35" height="30" rx="3" fill="#ef4444"/>
+  <text x="777" y="145" text-anchor="middle" font-size="8" fill="#ffffff">FAIL</text>
   
-  <rect x="820" y="125" width="35" height="30" rx="3" fill="var(--bg-green, #22c55e)"/>
-  <text x="837" y="145" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">OK</text>
+  <rect x="820" y="125" width="35" height="30" rx="3" fill="#22c55e"/>
+  <text x="837" y="145" text-anchor="middle" font-size="8" fill="#ffffff">OK</text>
   
   <!-- Increasing delays -->
-  <text x="745" y="180" text-anchor="middle" font-size="8" fill="var(--border-blue, #3b82f6)" font-weight="bold">1s</text>
-  <text x="795" y="180" text-anchor="middle" font-size="8" fill="var(--border-blue, #3b82f6)" font-weight="bold">2s</text>
-  <text x="850" y="180" text-anchor="middle" font-size="8" fill="var(--border-blue, #3b82f6)" font-weight="bold">4s → 8s → 16s</text>
+  <text x="745" y="180" text-anchor="middle" font-size="8" fill="#3b82f6" font-weight="bold">1s</text>
+  <text x="795" y="180" text-anchor="middle" font-size="8" fill="#3b82f6" font-weight="bold">2s</text>
+  <text x="850" y="180" text-anchor="middle" font-size="8" fill="#3b82f6" font-weight="bold">4s → 8s → 16s</text>
   
-  <text x="820" y="210" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">✓ Gives service time to recover</text>
-  <text x="820" y="230" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">✓ Reduces load during failures</text>
-  <text x="820" y="250" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">Formula: delay = base × 2^attempt</text>
+  <text x="820" y="210" text-anchor="middle" font-size="10" fill="#475569">✓ Gives service time to recover</text>
+  <text x="820" y="230" text-anchor="middle" font-size="10" fill="#475569">✓ Reduces load during failures</text>
+  <text x="820" y="250" text-anchor="middle" font-size="10" fill="#475569">Formula: delay = base × 2^attempt</text>
   
   <!-- Backoff Comparison -->
-  <rect x="50" y="300" width="900" height="240" rx="8" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
-  <text x="500" y="325" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a)">Backoff Strategy Comparison</text>
+  <rect x="50" y="300" width="900" height="240" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="500" y="325" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">Backoff Strategy Comparison</text>
   
   <!-- Graph area -->
-  <rect x="70" y="345" width="860" height="180" rx="4" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
+  <rect x="70" y="345" width="860" height="180" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
   
   <!-- Axes -->
-  <line x1="100" y1="500" x2="900" y2="500" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
-  <line x1="100" y1="360" x2="100" y2="500" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
+  <line x1="100" y1="500" x2="900" y2="500" stroke="#e2e8f0" stroke-width="2"/>
+  <line x1="100" y1="360" x2="100" y2="500" stroke="#e2e8f0" stroke-width="2"/>
   
-  <text x="500" y="520" text-anchor="middle" font-size="11" fill="var(--text-secondary, #475569)">Retry Attempt Number →</text>
-  <text x="60" y="430" text-anchor="middle" font-size="11" fill="var(--text-secondary, #475569)" transform="rotate(-90, 60, 430)">Delay Time →</text>
+  <text x="500" y="520" text-anchor="middle" font-size="11" fill="#475569">Retry Attempt Number →</text>
+  <text x="60" y="430" text-anchor="middle" font-size="11" fill="#475569" transform="rotate(-90, 60, 430)">Delay Time →</text>
   
   <!-- Fixed delay line -->
-  <line x1="100" y1="450" x2="900" y2="450" stroke="var(--border-purple, #8b5cf6)" stroke-width="3" stroke-dasharray="8,4"/>
-  <text x="850" y="440" text-anchor="middle" font-size="10" fill="var(--border-purple, #8b5cf6)" font-weight="bold">Fixed (5s)</text>
+  <line x1="100" y1="450" x2="900" y2="450" stroke="#8b5cf6" stroke-width="3" stroke-dasharray="8,4"/>
+  <text x="850" y="440" text-anchor="middle" font-size="10" fill="#8b5cf6" font-weight="bold">Fixed (5s)</text>
   
   <!-- Exponential backoff curve -->
-  <path d="M 100 450 L 200 440 L 300 420 L 400 390 L 500 360 L 600 360 L 700 360 L 800 360" fill="none" stroke="var(--border-blue, #3b82f6)" stroke-width="3"/>
-  <text x="750" y="375" text-anchor="middle" font-size="10" fill="var(--border-blue, #3b82f6)" font-weight="bold">Exponential</text>
+  <path d="M 100 450 L 200 440 L 300 420 L 400 390 L 500 360 L 600 360 L 700 360 L 800 360" fill="none" stroke="#3b82f6" stroke-width="3"/>
+  <text x="750" y="375" text-anchor="middle" font-size="10" fill="#3b82f6" font-weight="bold">Exponential</text>
   
   <!-- Exponential with jitter -->
-  <circle cx="200" cy="430" r="5" fill="var(--bg-green, #22c55e)"/>
-  <circle cx="300" cy="410" r="5" fill="var(--bg-green, #22c55e)"/>
-  <circle cx="400" cy="385" r="5" fill="var(--bg-green, #22c55e)"/>
-  <circle cx="500" cy="370" r="5" fill="var(--bg-green, #22c55e)"/>
-  <circle cx="600" cy="365" r="5" fill="var(--bg-green, #22c55e)"/>
-  <text x="750" y="395" text-anchor="middle" font-size="10" fill="var(--border-green, #22c55e)" font-weight="bold">+ Jitter</text>
+  <circle cx="200" cy="430" r="5" fill="#22c55e"/>
+  <circle cx="300" cy="410" r="5" fill="#22c55e"/>
+  <circle cx="400" cy="385" r="5" fill="#22c55e"/>
+  <circle cx="500" cy="370" r="5" fill="#22c55e"/>
+  <circle cx="600" cy="365" r="5" fill="#22c55e"/>
+  <text x="750" y="395" text-anchor="middle" font-size="10" fill="#22c55e" font-weight="bold">+ Jitter</text>
   
   <!-- Legend -->
-  <rect x="70" y="535" width="860" height="40" rx="4" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
-  <text x="100" y="558" font-size="10" fill="var(--text-secondary, #475569)">Best Practice: Exponential backoff with jitter prevents thundering herd</text>
-  <text x="500" y="558" font-size="10" fill="var(--text-secondary, #475569)">Formula: delay = min(maxDelay, base × 2^attempt ± random_jitter)</text>
+  <rect x="70" y="535" width="860" height="40" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="100" y="558" font-size="10" fill="#475569">Best Practice: Exponential backoff with jitter prevents thundering herd</text>
+  <text x="500" y="558" font-size="10" fill="#475569">Formula: delay = min(maxDelay, base × 2^attempt ± random_jitter)</text>
 </svg>

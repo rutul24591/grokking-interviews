@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad2)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Schema Evolution - Compatible Changes</text>
+  
+  <!-- Compatible Changes -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="380" height="180" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">✓ Compatible (Safe)</text>
+    
+    <text x="20" y="60" font-family="system-ui" font-size="11" fill="#e0e0e0">Add Optional Field:</text>
+    <rect x="20" y="70" width="340" height="35" rx="4" fill="#1a1a2e"/>
+    <text x="30" y="85" font-family="monospace" font-size="9" fill="#67b26f">// v1</text>
+    <text x="30" y="100" font-family="monospace" font-size="9" fill="#e0e0e0">{"{"} "name": "John" {"}"}</text>
+    
+    <text x="20" y="115" font-family="system-ui" font-size="11" fill="#e0e0e0">Add Enum Value:</text>
+    <rect x="20" y="125" width="340" height="35" rx="4" fill="#1a1a2e"/>
+    <text x="30" y="140" font-family="monospace" font-size="9" fill="#e0e0e0">enum Status { Active, Inactive, /* +Pending */ }</text>
+    
+    <text x="20" y="170" font-family="system-ui" font-size="11" fill="#e0e0e0">Deprecate Field (don't remove):</text>
+    <text x="30" y="185" font-family="monospace" font-size="9" fill="#f0ad4e">@deprecated("Use 'fullName' instead")</text>
+  </g>
+  
+  <!-- Breaking Changes -->
+  <g transform="translate(470, 80)">
+    <rect x="0" y="0" width="380" height="180" rx="8" fill="#2a2a4a" stroke="#d9534f" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#d9534f">✗ Breaking (Unsafe)</text>
+    
+    <text x="20" y="60" font-family="system-ui" font-size="11" fill="#e0e0e0">Remove Field:</text>
+    <rect x="20" y="70" width="340" height="35" rx="4" fill="#1a1a2e"/>
+    <text x="30" y="85" font-family="monospace" font-size="9" fill="#d9534f">- "email": removed</text>
+    <text x="30" y="100" font-family="monospace" font-size="9" fill="#e0e0e0">Clients reading 'email' will fail</text>
+    
+    <text x="20" y="115" font-family="system-ui" font-size="11" fill="#e0e0e0">Rename Field:</text>
+    <rect x="20" y="125" width="340" height="35" rx="4" fill="#1a1a2e"/>
+    <text x="30" y="140" font-family="monospace" font-size="9" fill="#d9534f">"userName" → "username"</text>
+    <text x="30" y="155" font-family="monospace" font-size="9" fill="#e0e0e0">All clients break</text>
+    
+    <text x="20" y="170" font-family="system-ui" font-size="11" fill="#e0e0e0">Change Type:</text>
+    <text x="30" y="185" font-family="monospace" font-size="9" fill="#d9534f">"age": int → string</text>
+  </g>
+  
+  <!-- Expansion-Contract Pattern -->
+  <g transform="translate(50, 290)">
+    <rect x="0" y="0" width="800" height="160" rx="8" fill="#1a2a1a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4a90d9">Expansion-Contract Pattern (Safe Migration)</text>
+    
+    <!-- Phase 1 -->
+    <g transform="translate(30, 50)">
+      <text x="0" y="0" font-family="system-ui" font-size="12" font-weight="bold" fill="#67b26f">Phase 1: Expand</text>
+      <rect x="0" y="10" width="220" height="35" rx="4" fill="#2a2a4a"/>
+      <text x="10" y="25" font-family="monospace" font-size="9" fill="#e0e0e0">Add new field alongside old</text>
+      <text x="10" y="40" font-family="monospace" font-size="9" fill="#67b26f">{"{"} "email": "...", "contactEmail": "..." {"}"}</text>
+    </g>
+    
+    <!-- Arrow -->
+    <line x1="260" y1="85" x2="280" y2="85" stroke="#666" stroke-width="2"/>
+    <polygon points="280,85 270,80 270,90" fill="#666"/>
+    
+    <!-- Phase 2 -->
+    <g transform="translate(290, 50)">
+      <text x="0" y="0" font-family="system-ui" font-size="12" font-weight="bold" fill="#f0ad4e">Phase 2: Migrate</text>
+      <rect x="0" y="10" width="220" height="35" rx="4" fill="#2a2a4a"/>
+      <text x="10" y="25" font-family="monospace" font-size="9" fill="#e0e0e0">Update all clients to use new</text>
+      <text x="10" y="40" font-family="monospace" font-size="9" fill="#f0ad4e">Deploy client changes first</text>
+    </g>
+    
+    <!-- Arrow -->
+    <line x1="520" y1="85" x2="540" y2="85" stroke="#666" stroke-width="2"/>
+    <polygon points="540,85 530,80 530,90" fill="#666"/>
+    
+    <!-- Phase 3 -->
+    <g transform="translate(550, 50)">
+      <text x="0" y="0" font-family="system-ui" font-size="12" font-weight="bold" fill="#4a90d9">Phase 3: Contract</text>
+      <rect x="0" y="10" width="220" height="35" rx="4" fill="#2a2a4a"/>
+      <text x="10" y="25" font-family="monospace" font-size="9" fill="#e0e0e0">Remove old field</text>
+      <text x="10" y="40" font-family="monospace" font-size="9" fill="#4a90d9">{"{"} "contactEmail": "..." {"}"}</text>
+    </g>
+    
+    <text x="400" y="145" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">Requires 2 deployments, zero downtime migration</text>
+  </g>
+</svg>

@@ -64,15 +64,15 @@
   
   <text x="80" y="260" text-anchor="start" class="small-label" font-weight="bold">LCP:</text>
   <text x="80" y="277" text-anchor="start" class="small-label">Largest Contentful Paint</text>
-  <text x="80" y="297" text-anchor="start" class="small-label">Target: &lt;2.5s</text>
+  <text x="80" y="297" text-anchor="start" class="small-label">Target: &amp;lt;2.5s</text>
   
   <text x="180" y="260" text-anchor="start" class="small-label" font-weight="bold">INP:</text>
   <text x="180" y="277" text-anchor="start" class="small-label">Interaction to Next Paint</text>
-  <text x="180" y="297" text-anchor="start" class="small-label">Target: &lt;200ms</text>
+  <text x="180" y="297" text-anchor="start" class="small-label">Target: &amp;lt;200ms</text>
   
   <text x="80" y="317" text-anchor="start" class="small-label" font-weight="bold">CLS:</text>
   <text x="80" y="334" text-anchor="start" class="small-label">Cumulative Layout Shift</text>
-  <text x="80" y="354" text-anchor="start" class="small-label">Target: &lt;0.1</text>
+  <text x="80" y="354" text-anchor="start" class="small-label">Target: &amp;lt;0.1</text>
   
   <!-- Percentiles -->
   <rect x="320" y="200" width="250" height="120" fill="#f5f5f5" stroke="#666" rx="6"/>

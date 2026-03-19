@@ -1,10 +1,110 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Job Scheduler Diagram 1</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage A</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage B</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage C</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Job Scheduler Architecture</title>
+  <desc id="desc">Job scheduler architecture showing producers, queue, workers, state store, and retry handling</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Job Scheduler Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Producers, queue, workers, state store, and retry handling</text>
+  
+  <!-- Job Producers -->
+  <rect x="30" y="85" width="180" height="180" rx="8" fill="#3b82f6" stroke="#1e40af" stroke-width="2"/>
+  <text x="120" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Job Producers</text>
+  
+  <rect x="50" y="125" width="140" height="35" rx="3" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="120" y="148" text-anchor="middle" font-size="9" fill="#64748b">User Actions</text>
+  
+  <rect x="50" y="165" width="140" height="35" rx="3" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="120" y="188" text-anchor="middle" font-size="9" fill="#64748b">System Events</text>
+  
+  <rect x="50" y="205" width="140" height="35" rx="3" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="120" y="228" text-anchor="middle" font-size="9" fill="#64748b">Cron Schedules</text>
+  
+  <!-- Job Submission -->
+  <line x1="215" y1="175" x2="265" y2="175" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="240" y="165" text-anchor="middle" font-size="9" fill="#64748b">Enqueue</text>
+  
+  <!-- Job Queue -->
+  <rect x="265" y="85" width="280" height="180" rx="8" fill="#8b5cf6" stroke="#6d28d9" stroke-width="2"/>
+  <text x="405" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Job Queue</text>
+  
+  <rect x="285" y="125" width="240" height="40" rx="4" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="405" y="150" text-anchor="middle" font-size="9" fill="#64748b">Priority Queue (Redis/SQS)</text>
+  
+  <rect x="285" y="175" width="110" height="40" rx="4" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="340" y="200" text-anchor="middle" font-size="9" fill="#64748b">Pending Jobs</text>
+  
+  <rect x="405" y="175" width="120" height="40" rx="4" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="465" y="200" text-anchor="middle" font-size="9" fill="#64748b">In-Progress</text>
+  
+  <!-- Worker Pool -->
+  <line x1="550" y1="175" x2="600" y2="175" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="575" y="165" text-anchor="middle" font-size="9" fill="#64748b">Dequeue</text>
+  
+  <rect x="600" y="85" width="270" height="180" rx="8" fill="#06b6d4" stroke="#0891b2" stroke-width="2"/>
+  <text x="735" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Worker Pool</text>
+  
+  <rect x="620" y="125" width="230" height="40" rx="4" fill="#ecfdf5" stroke="#06b6d4" stroke-width="1"/>
+  <text x="735" y="150" text-anchor="middle" font-size="9" fill="#64748b">Auto-Scaling Workers</text>
+  
+  <rect x="620" y="175" width="70" height="40" rx="4" fill="#ecfdf5" stroke="#06b6d4" stroke-width="1"/>
+  <text x="655" y="200" text-anchor="middle" font-size="8" fill="#64748b">Worker 1</text>
+  
+  <rect x="700" y="175" width="70" height="40" rx="4" fill="#ecfdf5" stroke="#06b6d4" stroke-width="1"/>
+  <text x="735" y="200" text-anchor="middle" font-size="8" fill="#64748b">Worker 2</text>
+  
+  <rect x="780" y="175" width="60" height="40" rx="4" fill="#ecfdf5" stroke="#06b6d4" stroke-width="1"/>
+  <text x="810" y="200" text-anchor="middle" font-size="8" fill="#64748b">Worker N</text>
+  
+  <!-- State Store -->
+  <line x1="735" y1="265" x2="735" y2="315" stroke="#64748b" stroke-width="3" marker-end="url(#arrow-down)"/>
+  
+  <rect x="600" y="320" width="270" height="100" rx="8" fill="#10b981" stroke="#059669" stroke-width="2"/>
+  <text x="735" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="white">State Store</text>
+  
+  <rect x="620" y="355" width="230" height="55" rx="4" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
+  <text x="735" y="380" text-anchor="middle" font-size="9" fill="#64748b">Job Status Tracking</text>
+  <text x="735" y="395" text-anchor="middle" font-size="8" fill="#6ee7b7">Pending/Running/Done/Failed</text>
+  
+  <!-- Retry Handling -->
+  <rect x="30" y="280" width="280" height="160" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="170" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">Retry Handling</text>
+  
+  <rect x="50" y="320" width="240" height="110" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="170" y="345" text-anchor="middle" font-size="9" fill="#64748b">Exponential Backoff</text>
+  <text x="170" y="360" text-anchor="middle" font-size="9" fill="#64748b">Max Retry Attempts</text>
+  <text x="170" y="375" text-anchor="middle" font-size="9" fill="#64748b">Dead Letter Queue</text>
+  <text x="170" y="390" text-anchor="middle" font-size="9" fill="#64748b">Retryable vs Terminal</text>
+  <text x="170" y="405" text-anchor="middle" font-size="9" fill="#64748b">Idempotency Keys</text>
+  
+  <!-- Job Types -->
+  <rect x="330" y="280" width="280" height="160" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="470" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Job Types</text>
+  
+  <rect x="350" y="320" width="240" height="110" rx="4" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="470" y="345" text-anchor="middle" font-size="9" fill="#64748b">One-Time Jobs (immediate)</text>
+  <text x="470" y="360" text-anchor="middle" font-size="9" fill="#64748b">Delayed Jobs (scheduled)</text>
+  <text x="470" y="375" text-anchor="middle" font-size="9" fill="#64748b">Recurring Jobs (cron)</text>
+  <text x="470" y="390" text-anchor="middle" font-size="9" fill="#64748b">Batch Jobs (fan-out)</text>
+  <text x="470" y="405" text-anchor="middle" font-size="9" fill="#64748b">Chain Jobs (workflow)</text>
+  
+  <!-- Monitoring -->
+  <rect x="630" y="435" width="240" height="95" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="750" y="460" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">Monitoring</text>
+  
+  <rect x="650" y="470" width="200" height="50" rx="4" fill="#fffbeb" stroke="#f59e0b" stroke-width="1"/>
+  <text x="750" y="495" text-anchor="middle" font-size="9" fill="#64748b">Queue Depth</text>
+  <text x="750" y="510" text-anchor="middle" font-size="8" fill="#fcd34d">Job Latency</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-down" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 0, 5 7" fill="#64748b"/>
+    </marker>
+  </defs>
 </svg>

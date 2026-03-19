@@ -71,7 +71,7 @@
   
   <!-- Token Flow -->
   <rect x="430" y="280" width="390" height="140" fill="#f5f5f5" stroke="#666" rx="6"/>
-  <text x="625" y="305" text-anchor="middle" class="label" font-weight="bold">Token Storage & Refresh</text>
+  <text x="625" y="305" text-anchor="middle" class="label" font-weight="bold">Token Storage &amp; Refresh</text>
   <line x1="450" y1="315" x2="800" y2="315" stroke="#999" stroke-width="1"/>
   
   <rect x="460" y="330" width="80" height="35" fill="#bbdefb" stroke="#2196f3" rx="3"/>

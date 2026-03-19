@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad2)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Documentation Types &amp; Structure</text>
+  
+  <!-- Documentation Pyramid -->
+  <g transform="translate(100, 80)">
+    <!-- Base: API Docs -->
+    <polygon points="50,200 350,200 300,150 100,150" fill="#4a90d9" opacity="0.6"/>
+    <text x="200" y="180" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="white">API Documentation</text>
+    <text x="200" y="195" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Endpoints, schemas, examples</text>
+    
+    <!-- Middle: Architecture -->
+    <polygon points="100,150 300,150 250,100 150,100" fill="#67b26f" opacity="0.6"/>
+    <text x="200" y="130" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="white">Architecture Docs</text>
+    <text x="200" y="145" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">ADRs, diagrams, decisions</text>
+    
+    <!-- Upper: Operational -->
+    <polygon points="150,100 250,100 220,50 180,50" fill="#f0ad4e" opacity="0.6"/>
+    <text x="200" y="80" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="white">Operational</text>
+    <text x="200" y="95" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Runbooks, guides</text>
+    
+    <!-- Top: User Docs -->
+    <polygon points="180,50 220,50 200,20 200,20" fill="#d9534f" opacity="0.6"/>
+    <text x="200" y="40" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="white">User</text>
+  </g>
+  
+  <!-- Docs-as-Code Workflow -->
+  <g transform="translate(450, 80)">
+    <rect x="0" y="0" width="400" height="200" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Docs-as-Code Workflow</text>
+    
+    <!-- Write -->
+    <rect x="20" y="55" width="80" height="50" rx="4" fill="#4a90d9" opacity="0.6"/>
+    <text x="60" y="85" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Write</text>
+    <text x="60" y="100" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Markdown</text>
+    
+    <line x1="100" y1="80" x2="130" y2="80" stroke="#666" stroke-width="2"/>
+    <polygon points="130,80 120,75 120,85" fill="#666"/>
+    
+    <!-- Review -->
+    <rect x="130" y="55" width="80" height="50" rx="4" fill="#f0ad4e" opacity="0.6"/>
+    <text x="170" y="85" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Review</text>
+    <text x="170" y="100" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Pull Request</text>
+    
+    <line x1="210" y1="80" x2="240" y2="80" stroke="#666" stroke-width="2"/>
+    <polygon points="240,80 230,75 230,85" fill="#666"/>
+    
+    <!-- Build -->
+    <rect x="240" y="55" width="80" height="50" rx="4" fill="#67b26f" opacity="0.6"/>
+    <text x="280" y="85" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Build</text>
+    <text x="280" y="100" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">CI/CD</text>
+    
+    <line x1="320" y1="80" x2="350" y2="80" stroke="#666" stroke-width="2"/>
+    <polygon points="350,80 340,75 340,85" fill="#666"/>
+    
+    <!-- Deploy -->
+    <rect x="350" y="55" width="30" height="50" rx="2" fill="#d9534f" opacity="0.6"/>
+    <text x="365" y="85" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">Deploy</text>
+    
+    <text x="200" y="140" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">Version control • Code review • Automated build • Testing</text>
+  </g>
+  
+  <!-- Documentation Quality Checklist -->
+  <g transform="translate(50, 310)">
+    <rect x="0" y="0" width="800" height="140" rx="8" fill="#1a2a1a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#4a90d9">Documentation Quality Checklist</text>
+    
+    <g transform="translate(30, 55)">
+      <circle cx="8" cy="8" r="4" fill="#67b26f"/>
+      <text x="20" y="13" font-family="system-ui" font-size="10" fill="#e0e0e0">Accurate and up-to-date</text>
+      
+      <circle cx="8" cy="28" r="4" fill="#67b26f"/>
+      <text x="20" y="33" font-family="system-ui" font-size="10" fill="#e0e0e0">Clear examples with code snippets</text>
+      
+      <circle cx="8" cy="48" r="4" fill="#67b26f"/>
+      <text x="20" y="53" font-family="system-ui" font-size="10" fill="#e0e0e0">Searchable and well-organized</text>
+      
+      <circle cx="250" cy="8" r="4" fill="#67b26f"/>
+      <text x="262" y="13" font-family="system-ui" font-size="10" fill="#e0e0e0">Includes troubleshooting section</text>
+      
+      <circle cx="250" cy="28" r="4" fill="#67b26f"/>
+      <text x="262" y="33" font-family="system-ui" font-size="10" fill="#e0e0e0">Has owner and review date</text>
+      
+      <circle cx="250" cy="48" r="4" fill="#f0ad4e"/>
+      <text x="262" y="53" font-family="system-ui" font-size="10" fill="#e0e0e0">Tested (examples work)</text>
+      
+      <circle cx="8" cy="68" r="4" fill="#67b26f"/>
+      <text x="20" y="73" font-family="system-ui" font-size="10" fill="#e0e0e0">Accessible (proper headings, alt text)</text>
+      
+      <circle cx="250" cy="68" r="4" fill="#67b26f"/>
+      <text x="262" y="73" font-family="system-ui" font-size="10" fill="#e0e0e0">Feedback mechanism available</text>
+    </g>
+  </g>
+</svg>

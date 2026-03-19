@@ -31,7 +31,7 @@
   <rect x="335" y="125" width="230" height="70" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
   <text x="450" y="150" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Before Next Batch:</text>
   <text x="450" y="170" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• HTTP 200 OK</text>
-  <text x="450" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Error rate &lt; 1%</text>
+  <text x="450" y="185" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">• Error rate &amp;lt; 1%</text>
   
   <rect x="335" y="205" width="230" height="70" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
   <text x="450" y="230" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b">Wait Period:</text>

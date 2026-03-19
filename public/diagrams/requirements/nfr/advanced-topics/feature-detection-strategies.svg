@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad16" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow16" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="500" fill="url(#bgGrad16)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#e0e0e0">Feature Detection Strategies</text>
+  
+  <!-- Native Detection -->
+  <g transform="translate(30, 60)">
+    <rect x="0" y="0" width="270" height="130" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow16)"/>
+    <text x="135" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#4a90d9">1. Native Detection</text>
+    
+    <g transform="translate(20, 45)">
+      <rect x="0" y="0" width="230" height="70" rx="4" fill="#1a1a2e" stroke="#4a90d9"/>
+      <text x="10" y="22" font-family="monospace" font-size="9" fill="#67b26f">// Check for API</text>
+      <text x="10" y="40" font-family="monospace" font-size="9" fill="#e0e0e0">if ('fetch' in window) {'{'}</text>
+      <text x="25" y="55" font-family="monospace" font-size="9" fill="#e0e0e0">// Use fetch</text>
+      <text x="10" y="70" font-family="monospace" font-size="9" fill="#e0e0e0">{'}'}</text>
+    </g>
+    
+    <text x="135" y="120" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">✓ Simple, no deps ✗ Manual for each feature</text>
+  </g>
+  
+  <!-- Modernizr -->
+  <g transform="translate(320, 60)">
+    <rect x="0" y="0" width="270" height="130" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow16)"/>
+    <text x="135" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#67b26f">2. Modernizr Library</text>
+    
+    <g transform="translate(20, 45)">
+      <!-- HTML element with classes -->
+      <rect x="0" y="0" width="230" height="35" rx="4" fill="#1a1a2e" stroke="#67b26f"/>
+      <text x="10" y="22" font-family="monospace" font-size="9" fill="#e0e0e0">&amp;lt;html class="css-grid webp">'}</text>
+      
+      <!-- CSS usage -->
+      <rect x="0" y="45" width="230" height="40" rx="4" fill="#1a1a2e" stroke="#67b26f"/>
+      <text x="10" y="62" font-family="monospace" font-size="9" fill="#67b26f">.css-grid .gallery {'{'}</text>
+      <text x="10" y="77" font-family="monospace" font-size="9" fill="#e0e0e0">display: grid; {'}'}</text>
+    </g>
+    
+    <text x="135" y="120" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">✓ Auto-detects many ✗ Bundle size (+7-30KB)</text>
+  </g>
+  
+  <!-- CSS @supports -->
+  <g transform="translate(610, 60)">
+    <rect x="0" y="0" width="270" height="130" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow16)"/>
+    <text x="135" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#f0ad4e">3. CSS @supports</text>
+    
+    <g transform="translate(20, 45)">
+      <rect x="0" y="0" width="230" height="70" rx="4" fill="#1a1a2e" stroke="#f0ad4e"/>
+      <text x="10" y="20" font-family="monospace" font-size="9" fill="#f0ad4e">@supports (display: grid) {'{'}</text>
+      <text x="25" y="35" font-family="monospace" font-size="9" fill="#e0e0e0">.container {'{'}</text>
+      <text x="40" y="50" font-family="monospace" font-size="9" fill="#e0e0e0">display: grid;</text>
+      <text x="25" y="65" font-family="monospace" font-size="9" fill="#e0e0e0">{'}'}</text>
+      <text x="10" y="80" font-family="monospace" font-size="9" fill="#f0ad4e">{'}'}</text>
+    </g>
+    
+    <text x="135" y="120" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">✓ No JS, clean ✗ CSS features only</text>
+  </g>
+  
+  <!-- Polyfill Loading -->
+  <g transform="translate(30, 210)">
+    <rect x="0" y="0" width="410" height="150" rx="8" fill="#2a2a4a" stroke="#d9534f" stroke-width="2" filter="url(#shadow16)"/>
+    <text x="205" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#d9534f">4. Conditional Polyfill Loading</text>
+    
+    <g transform="translate(20, 45)">
+      <rect x="0" y="0" width="370" height="90" rx="4" fill="#1a1a2e" stroke="#d9534f"/>
+      <text x="10" y="22" font-family="monospace" font-size="9" fill="#67b26f">// Load polyfill only if needed</text>
+      <text x="10" y="40" font-family="monospace" font-size="9" fill="#e0e0e0">if (!('IntersectionObserver' in window)) {'{'}</text>
+      <text x="25" y="55" font-family="monospace" font-size="9" fill="#e0e0e0">await import('./intersection-observer-polyfill.js');</text>
+      <text x="10" y="75" font-family="monospace" font-size="9" fill="#e0e0e0">{'}'}</text>
+      <text x="10" y="90" font-family="monospace" font-size="9" fill="#e0e0e0">// Now use IntersectionObserver safely</text>
+    </g>
+    
+    <text x="205" y="145" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">✓ Minimal bundle ✗ Additional HTTP request</text>
+  </g>
+  
+  <!-- Decision Flow -->
+  <g transform="translate(460, 210)">
+    <rect x="0" y="0" width="420" height="150" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow16)"/>
+    <text x="210" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#67b26f">Detection Strategy Decision</text>
+    
+    <!-- Flow -->
+    <g transform="translate(20, 45)">
+      <text x="0" y="0" font-family="system-ui" font-size="10" fill="#e0e0e0">Need to detect CSS feature?</text>
+      <line x1="180" y1="-5" x2="210" y2="-5" stroke="#666" stroke-width="1.5"/>
+      <polygon points="210,-5 200,-10 200,0" fill="#666"/>
+      <text x="220" y="0" font-family="system-ui" font-size="10" fill="#f0ad4e">Yes → @supports</text>
+      
+      <text x="0" y="25" font-family="system-ui" font-size="10" fill="#e0e0e0">Many features to detect?</text>
+      <line x1="180" y1="20" x2="210" y2="20" stroke="#666" stroke-width="1.5"/>
+      <polygon points="210,20 200,15 200,25" fill="#666"/>
+      <text x="220" y="25" font-family="system-ui" font-size="10" fill="#67b26f">Yes → Modernizr</text>
+      
+      <text x="0" y="50" font-family="system-ui" font-size="10" fill="#e0e0e0">Feature critical?</text>
+      <line x1="180" y1="45" x2="210" y2="45" stroke="#666" stroke-width="1.5"/>
+      <polygon points="210,45 200,40 200,50" fill="#666"/>
+      <text x="220" y="50" font-family="system-ui" font-size="10" fill="#d9534f">Yes → Polyfill</text>
+      
+      <text x="0" y="75" font-family="system-ui" font-size="10" fill="#e0e0e0">Simple check?</text>
+      <line x1="180" y1="70" x2="210" y2="70" stroke="#666" stroke-width="1.5"/>
+      <polygon points="210,70 200,65 200,75" fill="#666"/>
+      <text x="220" y="75" font-family="system-ui" font-size="10" fill="#4a90d9">Yes → Native detection</text>
+      
+      <text x="100" y="100" font-family="system-ui" font-size="9" fill="#e0e0e0">Default: Start with native, add tools as needed</text>
+    </g>
+  </g>
+  
+  <!-- Best Practices -->
+  <g transform="translate(30, 380)">
+    <rect x="0" y="0" width="850" height="100" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2"/>
+    <text x="425" y="28" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#4a90d9">Feature Detection Best Practices</text>
+    
+    <g transform="translate(30, 45)">
+      <circle cx="8" cy="8" r="4" fill="#67b26f"/>
+      <text x="20" y="13" font-family="system-ui" font-size="10" fill="#e0e0e0">Detect at point of use, not globally</text>
+      
+      <circle cx="8" cy="28" r="4" fill="#67b26f"/>
+      <text x="20" y="33" font-family="system-ui" font-size="10" fill="#e0e0e0">Cache detection results</text>
+      
+      <circle cx="8" cy="48" r="4" fill="#67b26f"/>
+      <text x="20" y="53" font-family="system-ui" font-size="10" fill="#e0e0e0">Provide meaningful fallbacks</text>
+      
+      <circle cx="230" cy="8" r="4" fill="#67b26f"/>
+      <text x="242" y="13" font-family="system-ui" font-size="10" fill="#e0e0e0">Never use browser sniffing</text>
+      
+      <circle cx="230" cy="28" r="4" fill="#67b26f"/>
+      <text x="242" y="33" font-family="system-ui" font-size="10" fill="#e0e0e0">Test without features enabled</text>
+      
+      <circle cx="230" cy="48" r="4" fill="#67b26f"/>
+      <text x="242" y="53" font-family="system-ui" font-size="10" fill="#e0e0e0">Document required features</text>
+      
+      <circle cx="450" cy="8" r="4" fill="#67b26f"/>
+      <text x="462" y="13" font-family="system-ui" font-size="10" fill="#e0e0e0">Use try/catch for risky APIs</text>
+      
+      <circle cx="450" cy="28" r="4" fill="#67b26f"/>
+      <text x="462" y="33" font-family="system-ui" font-size="10" fill="#e0e0e0">Load polyfills conditionally</text>
+      
+      <circle cx="450" cy="48" r="4" fill="#67b26f"/>
+      <text x="462" y="53" font-family="system-ui" font-size="10" fill="#e0e0e0">Monitor feature adoption</text>
+    </g>
+  </g>
+</svg>

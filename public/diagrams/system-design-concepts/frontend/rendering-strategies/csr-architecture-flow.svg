@@ -89,7 +89,7 @@
   <!-- Note -->
   <rect x="30" y="100" width="840" height="70" rx="8" fill="#fff" stroke="#d7d1e6"/>
   <text x="50" y="122" font-size="12" fill="#6d5bd0" font-weight="bold">Key Characteristics:</text>
-  <text x="50" y="142" font-size="11" fill="#1a1822">• Initial HTML is nearly empty (just a &lt;div id="root"&gt;) — no content visible until JS loads and executes</text>
+  <text x="50" y="142" font-size="11" fill="#1a1822">• Initial HTML is nearly empty (just a &amp;lt;div id="root"&amp;gt;) — no content visible until JS loads and executes</text>
   <text x="50" y="158" font-size="11" fill="#1a1822">• All rendering happens client-side in the browser — server only serves static assets</text>
   <text x="50" y="173" font-size="11" fill="#1a1822">• Slow FCP &amp; TTI (JS must load, parse, execute, and fetch data before user sees anything meaningful)</text>
 </svg>

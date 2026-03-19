@@ -85,10 +85,10 @@
   <!-- Arrow 6->7 (down) -->
   <line x1="704" y1="228" x2="704" y2="265" stroke="#10B981" stroke-width="1.5" marker-end="url(#qf-arrow-green)"/>
 
-  <!-- Step 7: Normalize & Cache -->
+  <!-- Step 7: Normalize &amp; Cache -->
   <rect x="614" y="268" width="180" height="56" rx="8" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
   <text x="704" y="291" text-anchor="middle" font-size="10" fill="#059669" font-weight="bold">Normalize Response</text>
-  <text x="704" y="305" text-anchor="middle" font-size="10" fill="#059669" font-weight="bold">& Update Cache</text>
+  <text x="704" y="305" text-anchor="middle" font-size="10" fill="#059669" font-weight="bold">&amp; Update Cache</text>
   <text x="800" y="295" font-size="9" fill="#10B981" font-weight="600">7</text>
 
   <!-- Normalize detail -->

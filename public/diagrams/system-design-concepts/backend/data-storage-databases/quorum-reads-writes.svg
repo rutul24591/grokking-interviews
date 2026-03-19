@@ -12,5 +12,5 @@
   <rect x="610" y="140" width="220" height="120" rx="14" fill="#e2e8f0" stroke="#cbd5f5"/>
   <text x="640" y="210" font-family="Inter, Arial, sans-serif" font-size="14" fill="#334155">Replica 3</text>
 
-  <text x="90" y="300" font-family="Inter, Arial, sans-serif" font-size="12" fill="#334155">R + W &gt; N ensures overlap</text>
+  <text x="90" y="300" font-family="Inter, Arial, sans-serif" font-size="12" fill="#334155">R + W &amp;gt; N ensures overlap</text>
 </svg>

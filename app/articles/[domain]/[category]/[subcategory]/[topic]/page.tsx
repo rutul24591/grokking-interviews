@@ -1,5 +1,6 @@
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import { loadArticle } from "@/lib/loadArticle";
+import { articleRoutes, loadArticle } from "@/lib/article-routes";
 
 type ArticlePageProps = {
   params: Promise<{
@@ -11,55 +12,52 @@ type ArticlePageProps = {
 };
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
-  const resolvedParams = await params;
-  
-  const article = await loadArticle(resolvedParams);
+  const { domain, category, subcategory, topic } = await params;
+
+  const article = await loadArticle(domain, category, subcategory, topic);
 
   if (!article) {
     notFound();
   }
 
   const ArticleComponent = article.component;
-
-  return <ArticleComponent />;
+  return (
+    <Suspense fallback={<div className="p-8 text-center text-muted">Loading article...</div>}>
+      <ArticleComponent />
+    </Suspense>
+  );
 }
 
 /**
- * Generate static params for all articles in the registry
+ * Generate static params from article routes manifest
  */
-export async function generateStaticParams() {
-  const paths = await import("@/lib/loadArticle").then((m) => m.getAllArticlePaths());
-  
-  return paths.map((path) => ({
-    domain: path.domain,
-    category: path.category,
-    subcategory: path.subcategory,
-    topic: path.topic,
-  }));
+export function generateStaticParams() {
+  return Object.keys(articleRoutes).map((key) => {
+    const parts = key.split("/");
+    return {
+      domain: parts[0],
+      category: parts[1],
+      subcategory: parts[2],
+      topic: parts[3],
+    };
+  });
 }
 
 /**
  * Generate metadata for the article
  */
 export async function generateMetadata({ params }: ArticlePageProps) {
-  const resolvedParams = await params;
-  
-  // Map category slug from URL to registry format
-  const registryCategory = resolvedParams.category.replace("-concepts", "");
-  const registryKey = `${registryCategory}/${resolvedParams.subcategory}/${resolvedParams.topic}`;
+  const { domain, category, subcategory, topic } = await params;
 
-  const { getArticleMetadata } = await import("@/lib/loadArticle");
-  const metadata = getArticleMetadata(registryKey);
+  const article = await loadArticle(domain, category, subcategory, topic);
 
-  if (!metadata) {
-    return {
-      title: "Article Not Found",
-    };
+  if (!article?.metadata) {
+    return { title: "Article Not Found" };
   }
 
   return {
-    title: `${metadata.title} | Interview Prep Studio`,
-    description: metadata.description,
-    keywords: metadata.tags.join(", "),
+    title: `${article.metadata.title} | Interview Prep Studio`,
+    description: article.metadata.description,
+    keywords: article.metadata.tags?.join(", "),
   };
 }

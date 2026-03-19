@@ -1,10 +1,139 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Rate Limiting Service Diagram 3</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage A</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage B</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage C</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+  <title id="title">Rate Limiting Failure Modes</title>
+  <desc id="desc">Rate limiting failure modes: counter store outage, clock skew, bypass via distribution, and over-limiting</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="600" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Rate Limiting Failure Modes</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Counter store outage, clock skew, bypass via distribution, and over-limiting</text>
+  
+  <!-- Counter Store Outage -->
+  <rect x="30" y="85" width="410" height="240" rx="8" fill="white" stroke="#ef4444" stroke-width="2"/>
+  <text x="235" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#ef4444">1. Counter Store Outage</text>
+  
+  <!-- Outage scenario -->
+  <rect x="50" y="135" width="370" height="140" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+  
+  <!-- Requests coming -->
+  <rect x="60" y="150" width="140" height="60" rx="4" fill="#3b82f6" stroke="#1e40af" stroke-width="1"/>
+  <text x="130" y="175" text-anchor="middle" font-size="9" fill="white">Requests</text>
+  <text x="130" y="190" text-anchor="middle" font-size="8" fill="#bfdbfe">10K/sec</text>
+  
+  <line x1="205" y1="180" x2="235" y2="180" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="220" y="170" text-anchor="middle" font-size="7" fill="#ef4444">Check limit</text>
+  
+  <!-- Redis down -->
+  <rect x="245" y="150" width="140" height="60" rx="4" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="315" y="175" text-anchor="middle" font-size="9" fill="white">Redis DOWN</text>
+  <text x="315" y="190" text-anchor="middle" font-size="8" fill="#fca5a5">Timeout!</text>
+  
+  <text x="235" y="290" text-anchor="middle" font-size="10" fill="#ef4444">All requests blocked or unlimited!</text>
+  <text x="235" y="310" text-anchor="middle" font-size="9" fill="#64748b">Cause: Single point of failure</text>
+  <text x="235" y="330" text-anchor="middle" font-size="9" fill="#10b981">Fix: Fail-open/closed policy, local fallback</text>
+  
+  <!-- Clock Skew -->
+  <rect x="460" y="85" width="410" height="240" rx="8" fill="white" stroke="#f59e0b" stroke-width="2"/>
+  <text x="665" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">2. Clock Skew Issues</text>
+  
+  <!-- Clock skew scenario -->
+  <rect x="480" y="135" width="370" height="140" rx="6" fill="#fffbeb" stroke="#fcd34d" stroke-width="1"/>
+  
+  <!-- Node A -->
+  <rect x="490" y="150" width="120" height="60" rx="4" fill="#10b981" stroke="#059669" stroke-width="1"/>
+  <text x="550" y="175" text-anchor="middle" font-size="9" fill="white">Node A</text>
+  <text x="550" y="190" text-anchor="middle" font-size="8" fill="#6ee7b7">T=1000ms</text>
+  
+  <line x1="615" y1="180" x2="645" y2="180" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="630" y="170" text-anchor="middle" font-size="7" fill="#ef4444">Skew!</text>
+  
+  <!-- Node B -->
+  <rect x="655" y="150" width="120" height="60" rx="4" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>
+  <text x="715" y="175" text-anchor="middle" font-size="9" fill="white">Node B</text>
+  <text x="715" y="190" text-anchor="middle" font-size="8" fill="#fcd34d">T=1500ms</text>
+  
+  <line x1="780" y1="180" x2="810" y2="180" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="795" y="170" text-anchor="middle" font-size="7" fill="#ef4444">Wrong window</text>
+  
+  <!-- User gets extra requests -->
+  <rect x="820" y="150" width="20" height="60" rx="2" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="830" y="180" text-anchor="middle" font-size="10" fill="white">2x</text>
+  
+  <text x="665" y="290" text-anchor="middle" font-size="10" fill="#ef4444">User gets 2x requests due to skew!</text>
+  <text x="665" y="310" text-anchor="middle" font-size="9" fill="#64748b">Cause: Server clock desync</text>
+  <text x="665" y="330" text-anchor="middle" font-size="9" fill="#10b981">Fix: NTP sync, use server time not local</text>
+  
+  <!-- Distributed Bypass -->
+  <rect x="30" y="340" width="410" height="240" rx="8" fill="white" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="235" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="#8b5cf6">3. Distributed Bypass</text>
+  
+  <!-- Bypass scenario -->
+  <rect x="50" y="380" width="370" height="140" rx="6" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1"/>
+  
+  <!-- User -->
+  <rect x="60" y="395" width="100" height="60" rx="4" fill="#3b82f6" stroke="#1e40af" stroke-width="1"/>
+  <text x="110" y="420" text-anchor="middle" font-size="9" fill="white">User</text>
+  <text x="110" y="435" text-anchor="middle" font-size="8" fill="#bfdbfe">Limit: 100/min</text>
+  
+  <line x1="165" y1="415" x2="195" y2="400" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="180" y="405" text-anchor="middle" font-size="7" fill="#ef4444">Node 1</text>
+  
+  <line x1="165" y1="435" x2="195" y2="435" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="180" y="445" text-anchor="middle" font-size="7" fill="#ef4444">Node 2</text>
+  
+  <line x1="165" y1="455" x2="195" y2="470" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="180" y="465" text-anchor="middle" font-size="7" fill="#ef4444">Node N</text>
+  
+  <!-- Each node has local limit -->
+  <rect x="205" y="395" width="80" height="40" rx="3" fill="#ef4444" stroke="#b91c1c" stroke-width="1"/>
+  <text x="245" y="418" text-anchor="middle" font-size="8" fill="white">100 req</text>
+  
+  <rect x="205" y="440" width="80" height="40" rx="3" fill="#ef4444" stroke="#b91c1c" stroke-width="1"/>
+  <text x="245" y="463" text-anchor="middle" font-size="8" fill="white">100 req</text>
+  
+  <rect x="205" y="485" width="80" height="40" rx="3" fill="#ef4444" stroke="#b91c1c" stroke-width="1"/>
+  <text x="245" y="508" text-anchor="middle" font-size="8" fill="white">100 req</text>
+  
+  <text x="235" y="495" text-anchor="middle" font-size="10" fill="#ef4444">User gets N x limit!</text>
+  <text x="235" y="515" text-anchor="middle" font-size="9" fill="#64748b">Cause: Local-only limiting, no coordination</text>
+  <text x="235" y="535" text-anchor="middle" font-size="9" fill="#10b981">Fix: Centralized counter, sticky sessions</text>
+  
+  <!-- Over-Limiting -->
+  <rect x="460" y="340" width="410" height="240" rx="8" fill="white" stroke="#10b981" stroke-width="2"/>
+  <text x="665" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="#10b981">4. Over-Limiting (False Positives)</text>
+  
+  <!-- Over-limiting scenario -->
+  <rect x="480" y="380" width="370" height="140" rx="6" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1"/>
+  
+  <!-- Legitimate user -->
+  <rect x="490" y="395" width="120" height="60" rx="4" fill="#10b981" stroke="#059669" stroke-width="1"/>
+  <text x="550" y="420" text-anchor="middle" font-size="9" fill="white">Legit User</text>
+  <text x="550" y="435" text-anchor="middle" font-size="8" fill="#6ee7b7">Normal usage</text>
+  
+  <line x1="615" y1="425" x2="645" y2="425" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="630" y="415" text-anchor="middle" font-size="7" fill="#ef4444">Shared IP</text>
+  
+  <!-- NAT/Proxy -->
+  <rect x="655" y="395" width="120" height="60" rx="4" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>
+  <text x="715" y="420" text-anchor="middle" font-size="9" fill="white">NAT/Proxy</text>
+  <text x="715" y="435" text-anchor="middle" font-size="8" fill="#fcd34d">1000 users</text>
+  
+  <line x1="780" y1="425" x2="810" y2="425" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="795" y="415" text-anchor="middle" font-size="7" fill="#ef4444">Rate limited</text>
+  
+  <!-- All blocked -->
+  <rect x="820" y="395" width="20" height="60" rx="2" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+  <text x="830" y="425" text-anchor="middle" font-size="10" fill="white">!</text>
+  
+  <text x="665" y="495" text-anchor="middle" font-size="10" fill="#ef4444">Legitimate users blocked!</text>
+  <text x="665" y="515" text-anchor="middle" font-size="9" fill="#64748b">Cause: IP-based limiting behind NAT</text>
+  <text x="665" y="535" text-anchor="middle" font-size="9" fill="#10b981">Fix: User-based limits, whitelist proxies</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
 </svg>

@@ -114,5 +114,5 @@
   <text x="715" y="470" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Retry rate per shard</text>
   <text x="715" y="490" text-anchor="start" font-size="10" fill="var(--text-theme, #64748b">• Latency skew (max/avg)</text>
   
-  <text x="450" y="550" text-anchor="middle" font-size="10" fill="var(--text-theme, #10b981">Alert on: Any shard &gt;2x average traffic or &gt;90% saturation</text>
+  <text x="450" y="550" text-anchor="middle" font-size="10" fill="var(--text-theme, #10b981">Alert on: Any shard &amp;gt;2x average traffic or &amp;gt;90% saturation</text>
 </svg>

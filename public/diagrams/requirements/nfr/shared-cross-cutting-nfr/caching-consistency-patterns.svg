@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Cache Consistency Patterns</text>
+  
+  <!-- Cache-Aside -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="260" height="140" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow)"/>
+    <text x="130" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#4a90d9">Cache-Aside (Lazy Loading)</text>
+    
+    <rect x="20" y="50" width="100" height="40" rx="4" fill="#4a90d9" opacity="0.6"/>
+    <text x="70" y="75" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">App</text>
+    
+    <line x1="120" y1="70" x2="150" y2="70" stroke="#666" stroke-width="2"/>
+    
+    <rect x="150" y="50" width="100" height="40" rx="4" fill="#67b26f" opacity="0.6"/>
+    <text x="200" y="75" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Cache</text>
+    
+    <text x="130" y="110" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">1. Check cache → miss</text>
+    <text x="130" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">2. Load from DB, populate cache</text>
+  </g>
+  
+  <!-- Write-Through -->
+  <g transform="translate(320, 80)">
+    <rect x="0" y="0" width="260" height="140" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="130" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Write-Through</text>
+    
+    <rect x="20" y="50" width="80" height="40" rx="4" fill="#4a90d9" opacity="0.6"/>
+    <text x="60" y="75" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">App</text>
+    
+    <line x1="100" y1="70" x2="130" y2="70" stroke="#67b26f" stroke-width="2"/>
+    
+    <rect x="130" y="50" width="80" height="40" rx="4" fill="#67b26f" opacity="0.6"/>
+    <text x="170" y="75" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Cache</text>
+    
+    <line x1="210" y1="70" x2="240" y2="70" stroke="#67b26f" stroke-width="2"/>
+    
+    <rect x="240" y="50" width="15" height="40" rx="2" fill="#f0ad4e" opacity="0.6"/>
+    
+    <text x="130" y="110" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Write to cache AND DB</text>
+    <text x="130" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Synchronous - always consistent</text>
+  </g>
+  
+  <!-- Write-Behind -->
+  <g transform="translate(590, 80)">
+    <rect x="0" y="0" width="260" height="140" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow)"/>
+    <text x="130" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">Write-Behind (Async)</text>
+    
+    <rect x="20" y="50" width="80" height="40" rx="4" fill="#4a90d9" opacity="0.6"/>
+    <text x="60" y="75" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">App</text>
+    
+    <line x1="100" y1="70" x2="130" y2="70" stroke="#f0ad4e" stroke-width="2"/>
+    
+    <rect x="130" y="50" width="80" height="40" rx="4" fill="#67b26f" opacity="0.6"/>
+    <text x="170" y="75" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Cache</text>
+    
+    <line x1="210" y1="80" x2="240" y2="80" stroke="#f0ad4e" stroke-width="2" stroke-dasharray="4,2"/>
+    <text x="225" y="72" font-family="system-ui" font-size="8" fill="#f0ad4e">async</text>
+    
+    <rect x="240" y="50" width="15" height="40" rx="2" fill="#f0ad4e" opacity="0.6"/>
+    
+    <text x="130" y="110" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Write to cache immediately</text>
+    <text x="130" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Async write to DB (queue)</text>
+  </g>
+  
+  <!-- Invalidation Strategies -->
+  <g transform="translate(50, 250)">
+    <rect x="0" y="0" width="800" height="200" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#67b26f">Cache Invalidation Strategies</text>
+    
+    <!-- TTL -->
+    <g transform="translate(30, 55)">
+      <rect x="0" y="0" width="220" height="120" rx="6" fill="#2a2a4a" stroke="#4a90d9"/>
+      <text x="110" y="30" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#4a90d9">Time-Based (TTL)</text>
+      
+      <rect x="20" y="45" width="180" height="20" rx="3" fill="#1a1a2e"/>
+      <text x="110" y="60" text-anchor="middle" font-family="monospace" font-size="9" fill="#e0e0e0">cache.set(key, value, ttl=300)</text>
+      
+      <text x="20" y="85" font-family="system-ui" font-size="9" fill="#e0e0e0">• Simple to implement</text>
+      <text x="20" y="102" font-family="system-ui" font-size="9" fill="#e0e0e0">• May serve stale data</text>
+      <text x="20" y="119" font-family="system-ui" font-size="9" fill="#e0e0e0">• Cache miss storms possible</text>
+    </g>
+    
+    <!-- Event-Based -->
+    <g transform="translate(270, 55)">
+      <rect x="0" y="0" width="220" height="120" rx="6" fill="#2a2a4a" stroke="#67b26f"/>
+      <text x="110" y="30" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#67b26f">Event-Based</text>
+      
+      <rect x="20" y="45" width="180" height="20" rx="3" fill="#1a1a2e"/>
+      <text x="110" y="60" text-anchor="middle" font-family="monospace" font-size="9" fill="#e0e0e0">onUpdate → invalidate(key)</text>
+      
+      <text x="20" y="85" font-family="system-ui" font-size="9" fill="#e0e0e0">• Fresh data on updates</text>
+      <text x="20" y="102" font-family="system-ui" font-size="9" fill="#e0e0e0">• Complex to implement</text>
+      <text x="20" y="119" font-family="system-ui" font-size="9" fill="#e0e0e0">• Event ordering challenges</text>
+    </g>
+    
+    <!-- Version-Based -->
+    <g transform="translate(510, 55)">
+      <rect x="0" y="0" width="260" height="120" rx="6" fill="#2a2a4a" stroke="#f0ad4e"/>
+      <text x="130" y="30" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#f0ad4e">Version-Based</text>
+      
+      <rect x="20" y="45" width="220" height="20" rx="3" fill="#1a1a2e"/>
+      <text x="130" y="60" text-anchor="middle" font-family="monospace" font-size="9" fill="#e0e0e0">key = "user:{id}:v{version}"</text>
+      
+      <text x="20" y="85" font-family="system-ui" font-size="9" fill="#e0e0e0">• Increment version on write</text>
+      <text x="20" y="102" font-family="system-ui" font-size="9" fill="#e0e0e0">• Old entries naturally expire</text>
+      <text x="20" y="119" font-family="system-ui" font-size="9" fill="#e0e0e0">• No explicit invalidation needed</text>
+    </g>
+  </g>
+</svg>

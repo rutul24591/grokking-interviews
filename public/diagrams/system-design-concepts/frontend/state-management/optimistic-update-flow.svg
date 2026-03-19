@@ -58,7 +58,7 @@
 
   <!-- Reconcile -->
   <rect x="710" y="265" width="150" height="45" rx="8" fill="#edeaf5" stroke="#2f9d74" stroke-width="1.5"/>
-  <text x="785" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#2f9d74">Reconcile & Done</text>
+  <text x="785" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#2f9d74">Reconcile &amp; Done</text>
   <text x="785" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Replace with server data</text>
 
   <!-- Arrow confirm→reconcile -->

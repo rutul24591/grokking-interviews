@@ -74,15 +74,15 @@
   <!-- Green metrics (pass) -->
   <rect x="70" y="360" width="150" height="45" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
   <text x="145" y="385" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #10b981">Error Rate</text>
-  <text x="145" y="400" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">&lt; 1% threshold</text>
+  <text x="145" y="400" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">&amp;lt; 1% threshold</text>
   
   <rect x="240" y="360" width="150" height="45" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
   <text x="315" y="385" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #10b981">Latency p95</text>
-  <text x="315" y="400" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">&lt; 200ms threshold</text>
+  <text x="315" y="400" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">&amp;lt; 200ms threshold</text>
   
   <rect x="70" y="420" width="150" height="45" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
   <text x="145" y="445" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #10b981">Success Rate</text>
-  <text x="145" y="460" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">&gt; 99% threshold</text>
+  <text x="145" y="460" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">&amp;gt; 99% threshold</text>
   
   <rect x="240" y="420" width="150" height="45" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
   <text x="315" y="445" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-theme, #10b981">Business Metrics</text>

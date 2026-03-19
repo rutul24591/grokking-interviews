@@ -1,0 +1,187 @@
+<svg xmlns="http://www.w3.org/2000/svg" " viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad11" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow11" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="500" fill="url(#bgGrad11)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#e0e0e0">Micro-Frontend Integration Patterns</text>
+  
+  <!-- Pattern 1: Build-Time Integration -->
+  <g transform="translate(30, 60)">
+    <rect x="0" y="0" width="270" height="140" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow11)"/>
+    <text x="135" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#4a90d9">1. Build-Time (NPM)</text>
+    
+    <!-- Diagram -->
+    <g transform="translate(20, 45)">
+      <!-- MF packages -->
+      <rect x="0" y="0" width="60" height="40" rx="4" fill="#4a90d9" opacity="0.6"/>
+      <text x="30" y="24" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">MF 1</text>
+      <text x="30" y="36" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">npm pkg</text>
+      
+      <rect x="70" y="0" width="60" height="40" rx="4" fill="#67b26f" opacity="0.6"/>
+      <text x="100" y="24" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">MF 2</text>
+      <text x="100" y="36" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">npm pkg</text>
+      
+      <rect x="140" y="0" width="60" height="40" rx="4" fill="#f0ad4e" opacity="0.6"/>
+      <text x="170" y="24" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">MF 3</text>
+      <text x="170" y="36" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">npm pkg</text>
+      
+      <!-- Arrows to bundle -->
+      <line x1="30" y1="45" x2="115" y2="70" stroke="#666" stroke-width="1.5"/>
+      <line x1="100" y1="45" x2="115" y2="65" stroke="#666" stroke-width="1.5"/>
+      <line x1="170" y1="45" x2="115" y2="60" stroke="#666" stroke-width="1.5"/>
+      
+      <!-- Final bundle -->
+      <rect x="75" y="70" width="80" height="35" rx="4" fill="#d9534f"/>
+      <text x="115" y="92" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Single Bundle</text>
+    </g>
+    
+    <text x="135" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">✓ Simple ✗ Full rebuild needed</text>
+  </g>
+  
+  <!-- Pattern 2: iframe -->
+  <g transform="translate(320, 60)">
+    <rect x="0" y="0" width="270" height="140" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow11)"/>
+    <text x="135" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#67b26f">2. Run-Time (iframe)</text>
+    
+    <!-- Diagram -->
+    <g transform="translate(20, 45)">
+      <!-- Host -->
+      <rect x="0" y="0" width="230" height="80" rx="4" fill="#4a90d9" opacity="0.3" stroke="#4a90d9"/>
+      
+      <!-- iframes -->
+      <rect x="15" y="15" width="60" height="50" rx="2" fill="#67b26f" opacity="0.6"/>
+      <text x="45" y="42" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">MF 1</text>
+      <text x="45" y="55" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">iframe</text>
+      
+      <rect x="85" y="15" width="60" height="50" rx="2" fill="#f0ad4e" opacity="0.6"/>
+      <text x="115" y="42" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">MF 2</text>
+      <text x="115" y="55" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">iframe</text>
+      
+      <rect x="155" y="15" width="60" height="50" rx="2" fill="#d9534f" opacity="0.6"/>
+      <text x="185" y="42" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">MF 3</text>
+      <text x="185" y="55" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">iframe</text>
+      
+      <!-- postMessage -->
+      <text x="115" y="95" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">postMessage API</text>
+    </g>
+    
+    <text x="135" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">✓ Isolated ✗ UX limitations</text>
+  </g>
+  
+  <!-- Pattern 3: Web Components -->
+  <g transform="translate(610, 60)">
+    <rect x="0" y="0" width="270" height="140" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow11)"/>
+    <text x="135" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#f0ad4e">3. Web Components</text>
+    
+    <!-- Diagram -->
+    <g transform="translate(20, 45)">
+      <!-- Host app -->
+      <rect x="0" y="0" width="230" height="80" rx="4" fill="#4a90d9" opacity="0.3" stroke="#4a90d9"/>
+      
+      <!-- Custom elements -->
+      <rect x="15" y="15" width="60" height="50" rx="4" fill="#f0ad4e" opacity="0.7"/>
+      <text x="45" y="35" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">&amp;lt;mf-nav&amp;gt;</text>
+      <text x="45" y="55" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Shadow DOM</text>
+      
+      <rect x="85" y="15" width="60" height="50" rx="4" fill="#67b26f" opacity="0.7"/>
+      <text x="115" y="35" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">&amp;lt;mf-list&amp;gt;</text>
+      <text x="115" y="55" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Shadow DOM</text>
+      
+      <rect x="155" y="15" width="60" height="50" rx="4" fill="#d9534f" opacity="0.7"/>
+      <text x="185" y="35" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">&amp;lt;mf-detail&amp;gt;</text>
+      <text x="185" y="55" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Shadow DOM</text>
+    </g>
+    
+    <text x="135" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">✓ Framework agnostic ✗ Integration overhead</text>
+  </g>
+  
+  <!-- Pattern 4: Module Federation -->
+  <g transform="translate(30, 220)">
+    <rect x="0" y="0" width="850" height="250" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow11)"/>
+    <text x="425" y="30" text-anchor="middle" font-family="system-ui" font-size="15" font-weight="bold" fill="#67b26f">4. Module Federation (Recommended)</text>
+    
+    <!-- Host Application -->
+    <g transform="translate(30, 55)">
+      <rect x="0" y="0" width="250" height="180" rx="6" fill="#4a90d9" opacity="0.3" stroke="#4a90d9" stroke-width="2"/>
+      <text x="125" y="25" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#4a90d9">Host Application</text>
+      
+      <!-- Shell -->
+      <rect x="15" y="35" width="220" height="40" rx="4" fill="#4a90d9" opacity="0.6"/>
+      <text x="125" y="60" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Shell / Container</text>
+      
+      <!-- Remote containers -->
+      <rect x="15" y="85" width="100" height="35" rx="4" fill="#67b26f" opacity="0.7"/>
+      <text x="65" y="107" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">Remote: MF1</text>
+      
+      <rect x="125" y="85" width="110" height="35" rx="4" fill="#f0ad4e" opacity="0.7"/>
+      <text x="180" y="107" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">Remote: MF2</text>
+      
+      <!-- Shared deps -->
+      <rect x="15" y="130" width="220" height="40" rx="4" fill="#d9534f" opacity="0.5"/>
+      <text x="125" y="150" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Shared Dependencies</text>
+      <text x="125" y="165" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">React, lodash (loaded once)</text>
+    </g>
+    
+    <!-- Remote 1 -->
+    <g transform="translate(310, 55)">
+      <rect x="0" y="0" width="180" height="180" rx="6" fill="#67b26f" opacity="0.3" stroke="#67b26f" stroke-width="2"/>
+      <text x="90" y="25" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#67b26f">Remote 1</text>
+      
+      <!-- Exposed modules -->
+      <rect x="15" y="40" width="150" height="35" rx="4" fill="#67b26f" opacity="0.7"/>
+      <text x="90" y="62" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Navigation Module</text>
+      
+      <rect x="15" y="85" width="150" height="35" rx="4" fill="#67b26f" opacity="0.5"/>
+      <text x="90" y="107" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Utils Module</text>
+      
+      <!-- Remote entry -->
+      <rect x="15" y="130" width="150" height="40" rx="4" fill="#1a1a2e" stroke="#67b26f"/>
+      <text x="90" y="150" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">remoteEntry.js</text>
+      <text x="90" y="165" text-anchor="middle" font-family="system-ui" font-size="8" fill="#67b26f">Entry point</text>
+    </g>
+    
+    <!-- Remote 2 -->
+    <g transform="translate(520, 55)">
+      <rect x="0" y="0" width="180" height="180" rx="6" fill="#f0ad4e" opacity="0.3" stroke="#f0ad4e" stroke-width="2"/>
+      <text x="90" y="25" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#f0ad4e">Remote 2</text>
+      
+      <!-- Exposed modules -->
+      <rect x="15" y="40" width="150" height="35" rx="4" fill="#f0ad4e" opacity="0.7"/>
+      <text x="90" y="62" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Product List</text>
+      
+      <rect x="15" y="85" width="150" height="35" rx="4" fill="#f0ad4e" opacity="0.5"/>
+      <text x="90" y="107" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Product Detail</text>
+      
+      <!-- Remote entry -->
+      <rect x="15" y="130" width="150" height="40" rx="4" fill="#1a1a2e" stroke="#f0ad4e"/>
+      <text x="90" y="150" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">remoteEntry.js</text>
+      <text x="90" y="165" text-anchor="middle" font-family="system-ui" font-size="8" fill="#f0ad4e">Entry point</text>
+    </g>
+    
+    <!-- Dynamic loading arrows -->
+    <line x1="280" y1="100" x2="305" y2="100" stroke="#67b26f" stroke-width="2" stroke-dasharray="4,2"/>
+    <polygon points="305,100 295,95 295,105" fill="#67b26f"/>
+    
+    <line x1="280" y1="140" x2="515" y2="140" stroke="#f0ad4e" stroke-width="2" stroke-dasharray="4,2"/>
+    <polygon points="515,140 505,135 505,145" fill="#f0ad4e"/>
+    
+    <text x="425" y="255" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">✓ Independent deployment ✓ Shared deps ✗ Runtime coupling ✗ Config complexity</text>
+  </g>
+  
+  <!-- Comparison Table -->
+  <g transform="translate(30, 480)">
+    <text x="425" y="0" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#e0e0e0">
+      Pattern Selection Guide: Build-Time → Simple projects | iframe → Third-party/legacy | Web Components → Framework diversity | Module Federation → Modern apps
+    </text>
+  </g>
+</svg>

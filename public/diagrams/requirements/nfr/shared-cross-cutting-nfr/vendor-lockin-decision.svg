@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Vendor Lock-in Decision Framework</text>
+  
+  <!-- Make vs Buy Decision Tree -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="200" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4a90d9">Make vs Buy Decision Tree</text>
+    
+    <!-- Root Question -->
+    <rect x="320" y="55" width="160" height="50" rx="6" fill="#4a90d9"/>
+    <text x="400" y="85" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Is this a core</text>
+    <text x="400" y="100" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">differentiator?</text>
+    
+    <!-- Yes branch -->
+    <line x1="340" y1="105" x2="200" y2="140" stroke="#666" stroke-width="2"/>
+    <text x="250" y="125" font-family="system-ui" font-size="9" fill="#67b26f">Yes</text>
+    
+    <!-- No branch -->
+    <line x1="460" y1="105" x2="600" y2="140" stroke="#666" stroke-width="2"/>
+    <text x="550" y="125" font-family="system-ui" font-size="9" fill="#d9534f">No</text>
+    
+    <!-- Make -->
+    <rect x="120" y="140" width="160" height="50" rx="6" fill="#67b26f"/>
+    <text x="200" y="165" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="white">MAKE</text>
+    <text x="200" y="182" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Build in-house</text>
+    
+    <!-- Second Question -->
+    <rect x="520" y="140" width="160" height="50" rx="6" fill="#f0ad4e"/>
+    <text x="600" y="160" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">High switching</text>
+    <text x="600" y="175" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">costs?</text>
+    
+    <!-- Yes branch -->
+    <line x1="540" y1="165" x2="450" y2="190" stroke="#666" stroke-width="2"/>
+    <text x="480" y="180" font-family="system-ui" font-size="8" fill="#67b26f">Yes</text>
+    
+    <!-- No branch -->
+    <line x1="660" y1="165" x2="720" y2="190" stroke="#666" stroke-width="2"/>
+    <text x="700" y="180" font-family="system-ui" font-size="8" fill="#d9534f">No</text>
+    
+    <!-- Consider Make -->
+    <rect x="370" y="190" width="160" height="40" rx="4" fill="#67b26f" opacity="0.6"/>
+    <text x="450" y="215" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Consider Make</text>
+    
+    <!-- Buy -->
+    <rect x="640" y="190" width="160" height="40" rx="4" fill="#4a90d9" opacity="0.6"/>
+    <text x="720" y="215" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">BUY (Vendor)</text>
+  </g>
+  
+  <!-- Abstraction Layers -->
+  <g transform="translate(50, 310)">
+    <rect x="0" y="0" width="400" height="140" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Abstraction Layers</text>
+    
+    <rect x="20" y="50" width="360" height="70" rx="4" fill="#2a2a4a"/>
+    
+    <text x="35" y="75" font-family="system-ui" font-size="10" fill="#e0e0e0">Infrastructure:</text>
+    <text x="150" y="75" font-family="system-ui" font-size="9" fill="#67b26f">Terraform, Pulumi</text>
+    
+    <text x="35" y="95" font-family="system-ui" font-size="10" fill="#e0e0e0">Compute:</text>
+    <text x="150" y="95" font-family="system-ui" font-size="9" fill="#67b26f">Kubernetes</text>
+    
+    <text x="35" y="115" font-family="system-ui" font-size="10" fill="#e0e0e0">Storage:</text>
+    <text x="150" y="115" font-family="system-ui" font-size="9" fill="#67b26f">S3-compatible APIs</text>
+    
+    <text x="250" y="95" font-family="system-ui" font-size="8" fill="#999">Trade-off: Flexibility vs native features</text>
+  </g>
+  
+  <!-- Exit Strategy -->
+  <g transform="translate(470, 310)">
+    <rect x="0" y="0" width="380" height="140" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">Exit Strategy Checklist</text>
+    
+    <g transform="translate(20, 55)">
+      <circle cx="8" cy="8" r="4" fill="#67b26f"/>
+      <text x="20" y="13" font-family="system-ui" font-size="9" fill="#e0e0e0">Regular data exports</text>
+      
+      <circle cx="8" cy="28" r="4" fill="#67b26f"/>
+      <text x="20" y="33" font-family="system-ui" font-size="9" fill="#e0e0e0">Contract exit clauses</text>
+      
+      <circle cx="8" cy="48" r="4" fill="#67b26f"/>
+      <text x="20" y="53" font-family="system-ui" font-size="9" fill="#e0e0e0">Migration runbook</text>
+      
+      <circle cx="8" cy="68" r="4" fill="#f0ad4e"/>
+      <text x="20" y="73" font-family="system-ui" font-size="9" fill="#e0e0e0">Test exit annually</text>
+      
+      <circle cx="180" cy="8" r="4" fill="#67b26f"/>
+      <text x="192" y="13" font-family="system-ui" font-size="9" fill="#e0e0e0">Alternative vendors</text>
+      
+      <circle cx="180" cy="28" r="4" fill="#67b26f"/>
+      <text x="192" y="33" font-family="system-ui" font-size="9" fill="#e0e0e0">Data portability</text>
+      
+      <circle cx="180" cy="48" r="4" fill="#67b26f"/>
+      <text x="192" y="53" font-family="system-ui" font-size="9" fill="#e0e0e0">Standard formats</text>
+      
+      <circle cx="180" cy="68" r="4" fill="#67b26f"/>
+      <text x="192" y="73" font-family="system-ui" font-size="9" fill="#e0e0e0">Document dependencies</text>
+    </g>
+  </g>
+</svg>

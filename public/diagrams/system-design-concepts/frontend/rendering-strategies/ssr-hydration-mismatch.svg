@@ -69,7 +69,7 @@
   <text x="44" y="358" font-size="10" fill="#6d5bd0">For intentional differences</text>
   <text x="34" y="378" font-size="11" fill="#1a1822" font-weight="bold">• useEffect for client-only code</text>
   <text x="44" y="394" font-size="10" fill="#6d5bd0">Run after hydration completes</text>
-  <text x="34" y="414" font-size="11" fill="#1a1822" font-weight="bold">• dynamic(() =&gt; ..., {ssr: false})</text>
+  <text x="34" y="414" font-size="11" fill="#1a1822" font-weight="bold">• dynamic(() =&amp;gt; ..., {ssr: false})</text>
   <text x="44" y="430" font-size="10" fill="#6d5bd0">Skip SSR for client components</text>
   <text x="34" y="460" font-size="11" fill="#1a1822" font-weight="bold">• Stable IDs / seeds</text>
   <text x="44" y="476" font-size="10" fill="#6d5bd0">Use consistent random seeds</text>

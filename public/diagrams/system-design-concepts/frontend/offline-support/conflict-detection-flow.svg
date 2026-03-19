@@ -2,7 +2,7 @@
   <rect width="800" height="550" fill="#ffffff"/>
 
   <!-- Title -->
-  <text x="400" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#1E293B">Conflict Detection & Resolution Flow</text>
+  <text x="400" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#1E293B">Conflict Detection &amp; Resolution Flow</text>
 
   <!-- Participant labels -->
   <rect x="80" y="50" width="120" height="36" rx="6" fill="#3B82F6" opacity="0.15" stroke="#3B82F6" stroke-width="1.5"/>

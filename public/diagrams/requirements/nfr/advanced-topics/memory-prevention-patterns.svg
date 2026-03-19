@@ -1,0 +1,209 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow4" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="500" fill="url(#bgGrad4)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#e0e0e0">Memory Prevention Patterns</text>
+  
+  <!-- Pattern 1: Lifecycle Cleanup -->
+  <g transform="translate(30, 60)">
+    <rect x="0" y="0" width="270" height="150" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow4)"/>
+    <text x="135" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#67b26f">1. Lifecycle Cleanup</text>
+    
+    <!-- Component mount -->
+    <rect x="20" y="45" width="80" height="40" rx="4" fill="#4a90d9" opacity="0.8"/>
+    <text x="60" y="65" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Mount</text>
+    <text x="60" y="80" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">setup listeners</text>
+    
+    <!-- Arrow -->
+    <line x1="100" y1="65" x2="130" y2="65" stroke="#67b26f" stroke-width="2"/>
+    <polygon points="130,65 120,60 120,70" fill="#67b26f"/>
+    
+    <!-- Component unmount -->
+    <rect x="140" y="45" width="80" height="40" rx="4" fill="#d9534f" opacity="0.8"/>
+    <text x="180" y="65" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Unmount</text>
+    <text x="180" y="80" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">cleanup()</text>
+    
+    <!-- Cleanup list -->
+    <g transform="translate(20, 100)">
+      <text x="0" y="0" font-family="system-ui" font-size="9" fill="#e0e0e0">✓ removeEventListener</text>
+      <text x="0" y="15" font-family="system-ui" font-size="9" fill="#e0e0e0">✓ unsubscribe()</text>
+      <text x="0" y="30" font-family="system-ui" font-size="9" fill="#e0e0e0">✓ clearTimeout</text>
+      <text x="140" y="0" font-family="system-ui" font-size="9" fill="#e0e0e0">✓ clearInterval</text>
+      <text x="140" y="15" font-family="system-ui" font-size="9" fill="#e0e0e0">✓ abortController.abort()</text>
+      <text x="140" y="30" font-family="system-ui" font-size="9" fill="#e0e0e0">✓ nullify refs</text>
+    </g>
+  </g>
+  
+  <!-- Pattern 2: Bounded Cache -->
+  <g transform="translate(320, 60)">
+    <rect x="0" y="0" width="270" height="150" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow4)"/>
+    <text x="135" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#67b26f">2. Bounded Cache (LRU)</text>
+    
+    <!-- Cache before -->
+    <rect x="20" y="45" width="230" height="50" rx="4" fill="#4a90d9" opacity="0.6"/>
+    <text x="135" y="65" text-anchor="middle" font-family="system-ui" font-size="11" fill="white">Cache at capacity (5 items)</text>
+    
+    <rect x="30" y="75" width="35" height="15" rx="2" fill="#1a1a2e"/>
+    <text x="48" y="86" text-anchor="middle" font-family="system-ui" font-size="8" fill="#fff">A</text>
+    <rect x="70" y="75" width="35" height="15" rx="2" fill="#1a1a2e"/>
+    <text x="88" y="86" text-anchor="middle" font-family="system-ui" font-size="8" fill="#fff">B</text>
+    <rect x="110" y="75" width="35" height="15" rx="2" fill="#1a1a2e"/>
+    <text x="128" y="86" text-anchor="middle" font-family="system-ui" font-size="8" fill="#fff">C</text>
+    <rect x="150" y="75" width="35" height="15" rx="2" fill="#1a1a2e"/>
+    <text x="168" y="86" text-anchor="middle" font-family="system-ui" font-size="8" fill="#fff">D</text>
+    <rect x="190" y="75" width="35" height="15" rx="2" fill="#1a1a2e"/>
+    <text x="208" y="86" text-anchor="middle" font-family="system-ui" font-size="8" fill="#fff">E</text>
+    
+    <!-- Arrow -->
+    <line x1="135" y1="100" x2="135" y2="120" stroke="#67b26f" stroke-width="2"/>
+    <polygon points="135,120 130,110 140,110" fill="#67b26f"/>
+    
+    <!-- Cache after (new item F, A evicted) -->
+    <rect x="30" y="125" width="35" height="15" rx="2" fill="#67b26f" opacity="0.4"/>
+    <text x="48" y="136" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">B</text>
+    <rect x="70" y="125" width="35" height="15" rx="2" fill="#67b26f" opacity="0.4"/>
+    <text x="88" y="136" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">C</text>
+    <rect x="110" y="125" width="35" height="15" rx="2" fill="#67b26f" opacity="0.4"/>
+    <text x="128" y="136" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">D</text>
+    <rect x="150" y="125" width="35" height="15" rx="2" fill="#67b26f" opacity="0.4"/>
+    <text x="168" y="136" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">E</text>
+    <rect x="190" y="125" width="35" height="15" rx="2" fill="#67b26f"/>
+    <text x="208" y="136" text-anchor="middle" font-family="system-ui" font-size="8" fill="#fff">F</text>
+    <text x="135" y="145" text-anchor="middle" font-family="system-ui" font-size="9" fill="#67b26f">A evicted (LRU)</text>
+  </g>
+  
+  <!-- Pattern 3: WeakMap -->
+  <g transform="translate(610, 60)">
+    <rect x="0" y="0" width="270" height="150" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow4)"/>
+    <text x="135" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#67b26f">3. WeakMap for Metadata</text>
+    
+    <!-- DOM Element -->
+    <rect x="30" y="45" width="70" height="45" rx="4" fill="#4a90d9" opacity="0.8"/>
+    <text x="65" y="65" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">DOM</text>
+    <text x="65" y="80" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">Element</text>
+    
+    <!-- WeakMap -->
+    <rect x="150" y="45" width="80" height="45" rx="4" fill="#67b26f" opacity="0.8"/>
+    <text x="190" y="65" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">WeakMap</text>
+    <text x="190" y="80" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">metadata</text>
+    
+    <!-- Weak reference arrow -->
+    <line x1="100" y1="67" x2="150" y2="67" stroke="#67b26f" stroke-width="2" stroke-dasharray="4,2"/>
+    <text x="125" y="60" text-anchor="middle" font-family="system-ui" font-size="8" fill="#67b26f">weak ref</text>
+    
+    <!-- GC indicator -->
+    <g transform="translate(30, 105)">
+      <text x="0" y="0" font-family="system-ui" font-size="10" fill="#e0e0e0">When DOM removed:</text>
+      <text x="0" y="20" font-family="system-ui" font-size="10" fill="#67b26f">✓ DOM garbage collected</text>
+      <text x="0" y="35" font-family="system-ui" font-size="10" fill="#67b26f">✓ WeakMap entry auto-removed</text>
+    </g>
+  </g>
+  
+  <!-- Pattern 4: Virtualization -->
+  <g transform="translate(30, 230)">
+    <rect x="0" y="0" width="410" height="150" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow4)"/>
+    <text x="205" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#67b26f">4. Virtualization (Windowing)</text>
+    
+    <!-- Without virtualization -->
+    <g transform="translate(20, 45)">
+      <text x="0" y="0" font-family="system-ui" font-size="11" fill="#d9534f">Without Virtualization:</text>
+      <rect x="0" y="10" width="170" height="60" rx="4" fill="#d9534f" opacity="0.3" stroke="#d9534f"/>
+      
+      <!-- Many rows -->
+      <rect x="10" y="18" width="150" height="8" rx="2" fill="#d9534f" opacity="0.6"/>
+      <rect x="10" y="30" width="150" height="8" rx="2" fill="#d9534f" opacity="0.6"/>
+      <rect x="10" y="42" width="150" height="8" rx="2" fill="#d9534f" opacity="0.6"/>
+      <rect x="10" y="54" width="150" height="8" rx="2" fill="#d9534f" opacity="0.6"/>
+      <text x="85" y="80" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">10,000 DOM nodes</text>
+      <text x="85" y="95" text-anchor="middle" font-family="system-ui" font-size="10" fill="#d9534f">~800 MB memory</text>
+    </g>
+    
+    <!-- With virtualization -->
+    <g transform="translate(220, 45)">
+      <text x="0" y="0" font-family="system-ui" font-size="11" fill="#67b26f">With Virtualization:</text>
+      <rect x="0" y="10" width="170" height="60" rx="4" fill="#67b26f" opacity="0.3" stroke="#67b26f"/>
+      
+      <!-- Viewport window -->
+      <rect x="10" y="18" width="150" height="12" rx="2" fill="#67b26f" opacity="0.8"/>
+      <rect x="10" y="34" width="150" height="12" rx="2" fill="#67b26f" opacity="0.8"/>
+      <rect x="10" y="50" width="150" height="12" rx="2" fill="#67b26f" opacity="0.8"/>
+      
+      <!-- Visible window indicator -->
+      <rect x="0" y="15" width="180" height="50" rx="4" fill="none" stroke="#67b26f" stroke-width="2" stroke-dasharray="4,2"/>
+      <text x="85" y="80" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">~30 DOM nodes</text>
+      <text x="85" y="95" text-anchor="middle" font-family="system-ui" font-size="10" fill="#67b26f">~8 MB memory</text>
+    </g>
+    
+    <text x="205" y="135" text-anchor="middle" font-family="system-ui" font-size="11" fill="#67b26f">99%+ memory reduction</text>
+  </g>
+  
+  <!-- Pattern 5: Image Management -->
+  <g transform="translate(460, 230)">
+    <rect x="0" y="0" width="420" height="150" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow4)"/>
+    <text x="210" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#67b26f">5. Image Memory Management</text>
+    
+    <!-- Lazy loading -->
+    <g transform="translate(20, 45)">
+      <text x="0" y="0" font-family="system-ui" font-size="11" fill="#67b26f">Lazy Loading:</text>
+      <rect x="0" y="10" width="180" height="50" rx="4" fill="#4a90d9" opacity="0.3"/>
+      
+      <!-- Placeholder -->
+      <rect x="10" y="18" width="40" height="35" rx="2" fill="#666"/>
+      <text x="30" y="40" text-anchor="middle" font-family="system-ui" font-size="8" fill="#fff">blur</text>
+      
+      <!-- Loading -->
+      <rect x="60" y="18" width="40" height="35" rx="2" fill="#4a90d9" opacity="0.6"/>
+      <text x="80" y="40" text-anchor="middle" font-family="system-ui" font-size="8" fill="#fff">loading</text>
+      
+      <!-- Loaded -->
+      <rect x="110" y="18" width="40" height="35" rx="2" fill="#67b26f"/>
+      <text x="130" y="40" text-anchor="middle" font-family="system-ui" font-size="8" fill="#fff">loaded</text>
+      
+      <text x="90" y="75" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Load only in viewport</text>
+    </g>
+    
+    <!-- Unload offscreen -->
+    <g transform="translate(220, 45)">
+      <text x="0" y="0" font-family="system-ui" font-size="11" fill="#67b26f">Unload Offscreen:</text>
+      <rect x="0" y="10" width="180" height="50" rx="4" fill="#67b26f" opacity="0.3"/>
+      
+      <!-- Visible image -->
+      <rect x="10" y="18" width="40" height="35" rx="2" fill="#67b26f"/>
+      <text x="30" y="40" text-anchor="middle" font-family="system-ui" font-size="8" fill="#fff">keep</text>
+      
+      <!-- Offscreen image -->
+      <rect x="60" y="18" width="40" height="35" rx="2" fill="#666" opacity="0.3"/>
+      <text x="80" y="40" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">src=""</text>
+      
+      <!-- Offscreen image -->
+      <rect x="110" y="18" width="40" height="35" rx="2" fill="#666" opacity="0.3"/>
+      <text x="130" y="40" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">src=""</text>
+      
+      <text x="90" y="75" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Clear src for scrolled items</text>
+    </g>
+    
+    <!-- Modern formats -->
+    <g transform="translate(120, 110)">
+      <text x="0" y="0" font-family="system-ui" font-size="10" fill="#e0e0e0">Use WebP/AVIF: 50-80% smaller than JPEG</text>
+    </g>
+  </g>
+  
+  <!-- Key Takeaway -->
+  <g transform="translate(30, 400)">
+    <rect x="0" y="0" width="850" height="80" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2"/>
+    <text x="425" y="25" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#67b26f">Key Takeaway</text>
+    <text x="425" y="48" text-anchor="middle" font-family="system-ui" font-size="11" fill="#e0e0e0">Memory management is about breaking reference chains proactively.</text>
+    <text x="425" y="68" text-anchor="middle" font-family="system-ui" font-size="11" fill="#e0e0e0">Every setup operation needs a corresponding cleanup. Every cache needs eviction. Every subscription needs unsubscription.</text>
+  </g>
+</svg>

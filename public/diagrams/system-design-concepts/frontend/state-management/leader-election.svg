@@ -93,7 +93,7 @@
   <line x1="720" y1="252" x2="758" y2="252" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#a1)"/>
 
   <!-- Phase 3: Failover -->
-  <text x="450" y="345" text-anchor="middle" font-size="13" fill="#d97843" font-weight="bold">Phase 3: Leader Tab Closes &mdash; Automatic Failover</text>
+  <text x="450" y="345" text-anchor="middle" font-size="13" fill="#d97843" font-weight="bold">Phase 3: Leader Tab Closes &amp;mdash; Automatic Failover</text>
 
   <!-- Closed Tab A -->
   <rect x="80" y="365" width="160" height="60" rx="8" fill="#edeaf5" stroke="#d7d1e6" stroke-width="1.5" stroke-dasharray="4,2" opacity="0.5"/>

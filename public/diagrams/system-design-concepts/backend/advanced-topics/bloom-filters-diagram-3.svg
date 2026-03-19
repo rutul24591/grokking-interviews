@@ -105,7 +105,7 @@
   <!-- Monitoring metrics -->
   <rect x="50" y="385" width="240" height="75" rx="6" fill="white" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
   <text x="170" y="408" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-theme, #3b82f6)">Monitor These Signals</text>
-  <text x="170" y="428" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b)">• Bit fill ratio (alert at &gt;70%)</text>
+  <text x="170" y="428" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b)">• Bit fill ratio (alert at &amp;gt;70%)</text>
   <text x="170" y="445" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b)">• False positive rate (sampled)</text>
   <text x="170" y="460" text-anchor="middle" font-size="10" fill="var(--text-theme, #64748b)">• Expensive lookup rate</text>
   

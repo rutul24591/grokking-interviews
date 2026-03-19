@@ -9,7 +9,7 @@
     </style>
   </defs>
   
-  <text x="425" y="35" text-anchor="middle" class="title">Meta Tags & Social Preview</text>
+  <text x="425" y="35" text-anchor="middle" class="title">Meta Tags &amp; Social Preview</text>
   <text x="425" y="55" text-anchor="middle" class="small-label">How meta tags appear in search results and social media previews</text>
   
   <!-- Search Result Preview -->
@@ -57,9 +57,9 @@
   <line x1="460" y1="280" x2="800" y2="280" stroke="#999" stroke-width="1"/>
   
   <text x="480" y="305" text-anchor="start" class="small-label" font-weight="bold">SEO:</text>
-  <text x="480" y="322" text-anchor="start" class="small-label">&lt;title&gt;Page | Site&lt;/title&gt;</text>
-  <text x="480" y="339" text-anchor="start" class="small-label">&lt;meta name="description"&gt;</text>
-  <text x="480" y="356" text-anchor="start" class="small-label">&lt;link rel="canonical"&gt;</text>
+  <text x="480" y="322" text-anchor="start" class="small-label">&amp;lt;title&amp;gt;Page | Site&amp;lt;/title&amp;gt;</text>
+  <text x="480" y="339" text-anchor="start" class="small-label">&amp;lt;meta name="description"&amp;gt;</text>
+  <text x="480" y="356" text-anchor="start" class="small-label">&amp;lt;link rel="canonical"&amp;gt;</text>
   
   <text x="650" y="305" text-anchor="start" class="small-label" font-weight="bold">Open Graph:</text>
   <text x="650" y="322" text-anchor="start" class="small-label">og:title, og:description</text>

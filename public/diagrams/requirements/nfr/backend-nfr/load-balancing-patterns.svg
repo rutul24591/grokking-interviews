@@ -1,153 +1,153 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600">
   <defs>
     <marker id="flowArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="var(--border-accent, #3b82f6)"/>
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
     </marker>
     <linearGradient id="lbGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:var(--bg-accent, #3b82f6);stop-opacity:0.3"/>
-      <stop offset="100%" style="stop-color:var(--bg-accent, #3b82f6);stop-opacity:0.05"/>
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.3"/>
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.05"/>
     </linearGradient>
   </defs>
   
   <!-- Background -->
-  <rect width="1000" height="600" fill="var(--bg-primary, #ffffff)"/>
+  <rect width="1000" height="600" fill="#ffffff"/>
   
   <!-- Title -->
-  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--text-primary, #0f172a)">Load Balancing Patterns</text>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">Load Balancing Patterns</text>
   
   <!-- Layer 4 vs Layer 7 -->
-  <rect x="50" y="60" width="450" height="200" rx="8" fill="url(#lbGrad)" stroke="var(--border-accent, #3b82f6)" stroke-width="2"/>
-  <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a)">Layer 4 vs Layer 7 Load Balancing</text>
+  <rect x="50" y="60" width="450" height="200" rx="8" fill="url(#lbGrad)" stroke="#3b82f6" stroke-width="2"/>
+  <text x="275" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">Layer 4 vs Layer 7 Load Balancing</text>
   
   <!-- Layer 4 -->
-  <rect x="70" y="110" width="180" height="130" rx="6" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
-  <text x="160" y="135" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--border-accent, #3b82f6)">Layer 4 (Transport)</text>
-  <text x="160" y="160" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">Routes based on:</text>
-  <text x="160" y="180" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">• IP address</text>
-  <text x="160" y="195" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">• TCP/UDP port</text>
-  <text x="160" y="215" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">• Fast, low overhead</text>
-  <text x="160" y="230" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">• No content awareness</text>
+  <rect x="70" y="110" width="180" height="130" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="160" y="135" text-anchor="middle" font-size="13" font-weight="bold" fill="#3b82f6">Layer 4 (Transport)</text>
+  <text x="160" y="160" text-anchor="middle" font-size="10" fill="#475569">Routes based on:</text>
+  <text x="160" y="180" text-anchor="middle" font-size="9" fill="#475569">• IP address</text>
+  <text x="160" y="195" text-anchor="middle" font-size="9" fill="#475569">• TCP/UDP port</text>
+  <text x="160" y="215" text-anchor="middle" font-size="9" fill="#475569">• Fast, low overhead</text>
+  <text x="160" y="230" text-anchor="middle" font-size="9" fill="#475569">• No content awareness</text>
   
   <!-- Layer 7 -->
-  <rect x="280" y="110" width="200" height="130" rx="6" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
-  <text x="380" y="135" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--border-purple, #8b5cf6)">Layer 7 (Application)</text>
-  <text x="380" y="160" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">Routes based on:</text>
-  <text x="380" y="180" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">• HTTP headers</text>
-  <text x="380" y="195" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">• URL path, cookies</text>
-  <text x="380" y="215" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">• Content-aware routing</text>
-  <text x="380" y="230" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">• SSL termination possible</text>
+  <rect x="280" y="110" width="200" height="130" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="380" y="135" text-anchor="middle" font-size="13" font-weight="bold" fill="#8b5cf6">Layer 7 (Application)</text>
+  <text x="380" y="160" text-anchor="middle" font-size="10" fill="#475569">Routes based on:</text>
+  <text x="380" y="180" text-anchor="middle" font-size="9" fill="#475569">• HTTP headers</text>
+  <text x="380" y="195" text-anchor="middle" font-size="9" fill="#475569">• URL path, cookies</text>
+  <text x="380" y="215" text-anchor="middle" font-size="9" fill="#475569">• Content-aware routing</text>
+  <text x="380" y="230" text-anchor="middle" font-size="9" fill="#475569">• SSL termination possible</text>
   
   <!-- Comparison -->
-  <rect x="70" y="250" width="410" height="50" rx="4" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
-  <text x="275" y="270" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-primary, #0f172a)">Use Case:</text>
-  <text x="120" y="290" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">L4: High throughput, simple routing</text>
-  <text x="350" y="290" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">L7: Complex routing, microservices</text>
+  <rect x="70" y="250" width="410" height="50" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="275" y="270" text-anchor="middle" font-size="10" font-weight="bold" fill="#0f172a">Use Case:</text>
+  <text x="120" y="290" text-anchor="middle" font-size="9" fill="#475569">L4: High throughput, simple routing</text>
+  <text x="350" y="290" text-anchor="middle" font-size="9" fill="#475569">L7: Complex routing, microservices</text>
   
   <!-- Load Balancing Algorithms -->
-  <rect x="520" y="60" width="430" height="200" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
-  <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a)">Load Balancing Algorithms</text>
+  <rect x="520" y="60" width="430" height="200" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="735" y="90" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">Load Balancing Algorithms</text>
   
   <!-- Round Robin -->
-  <rect x="540" y="110" width="190" height="65" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
-  <text x="635" y="130" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-primary, #0f172a)">Round Robin</text>
-  <text x="635" y="150" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">Sequential distribution</text>
-  <text x="635" y="165" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">✓ Simple, fair</text>
+  <rect x="540" y="110" width="190" height="65" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="635" y="130" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">Round Robin</text>
+  <text x="635" y="150" text-anchor="middle" font-size="9" fill="#475569">Sequential distribution</text>
+  <text x="635" y="165" text-anchor="middle" font-size="9" fill="#475569">✓ Simple, fair</text>
   <text x="635" y="178" text-anchor="middle" font-size="9" fill="#ef4444">✗ Ignores server load</text>
   
   <!-- Least Connections -->
-  <rect x="750" y="110" width="180" height="65" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
-  <text x="840" y="130" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-primary, #0f172a)">Least Connections</text>
-  <text x="840" y="150" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">Route to least busy server</text>
-  <text x="840" y="165" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">✓ Handles varying loads</text>
-  <text x="840" y="178" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">✗ Tracking overhead</text>
+  <rect x="750" y="110" width="180" height="65" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="840" y="130" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">Least Connections</text>
+  <text x="840" y="150" text-anchor="middle" font-size="9" fill="#475569">Route to least busy server</text>
+  <text x="840" y="165" text-anchor="middle" font-size="9" fill="#475569">✓ Handles varying loads</text>
+  <text x="840" y="178" text-anchor="middle" font-size="9" fill="#475569">✗ Tracking overhead</text>
   
   <!-- IP Hash -->
-  <rect x="540" y="185" width="190" height="65" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
-  <text x="635" y="205" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-primary, #0f172a)">IP Hash</text>
-  <text x="635" y="225" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">hash(client_ip) → server</text>
-  <text x="635" y="240" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">✓ Session persistence</text>
+  <rect x="540" y="185" width="190" height="65" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="635" y="205" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">IP Hash</text>
+  <text x="635" y="225" text-anchor="middle" font-size="9" fill="#475569">hash(client_ip) → server</text>
+  <text x="635" y="240" text-anchor="middle" font-size="9" fill="#475569">✓ Session persistence</text>
   <text x="635" y="253" text-anchor="middle" font-size="9" fill="#f59e0b">✗ Potential imbalance</text>
   
   <!-- Weighted -->
-  <rect x="750" y="185" width="180" height="65" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
-  <text x="840" y="205" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-primary, #0f172a)">Weighted Algorithms</text>
-  <text x="840" y="225" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">Assign weights to servers</text>
-  <text x="840" y="240" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">✓ Heterogeneous clusters</text>
-  <text x="840" y="253" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">✗ Weight management</text>
+  <rect x="750" y="185" width="180" height="65" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="840" y="205" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">Weighted Algorithms</text>
+  <text x="840" y="225" text-anchor="middle" font-size="9" fill="#475569">Assign weights to servers</text>
+  <text x="840" y="240" text-anchor="middle" font-size="9" fill="#475569">✓ Heterogeneous clusters</text>
+  <text x="840" y="253" text-anchor="middle" font-size="9" fill="#475569">✗ Weight management</text>
   
   <!-- Health Checks -->
-  <rect x="50" y="275" width="900" height="140" rx="8" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
-  <text x="500" y="300" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a)">Health Checks & Failover</text>
+  <rect x="50" y="275" width="900" height="140" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="500" y="300" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Health Checks &amp; Failover</text>
   
   <!-- Active health check -->
-  <rect x="70" y="320" width="200" height="80" rx="4" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
-  <text x="170" y="345" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-primary, #0f172a)">Active Health Checks</text>
-  <text x="170" y="365" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">Periodic probes (HTTP/TCP)</text>
-  <text x="170" y="380" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">✓ Fast failure detection</text>
+  <rect x="70" y="320" width="200" height="80" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="170" y="345" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">Active Health Checks</text>
+  <text x="170" y="365" text-anchor="middle" font-size="9" fill="#475569">Periodic probes (HTTP/TCP)</text>
+  <text x="170" y="380" text-anchor="middle" font-size="9" fill="#475569">✓ Fast failure detection</text>
   <text x="170" y="395" text-anchor="middle" font-size="9" fill="#f59e0b">✗ Adds overhead</text>
   
   <!-- Passive health check -->
-  <rect x="290" y="320" width="200" height="80" rx="4" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
-  <text x="390" y="345" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-primary, #0f172a)">Passive Health Checks</text>
-  <text x="390" y="365" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">Monitor request failures</text>
-  <text x="390" y="380" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">✓ No extra traffic</text>
+  <rect x="290" y="320" width="200" height="80" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="390" y="345" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">Passive Health Checks</text>
+  <text x="390" y="365" text-anchor="middle" font-size="9" fill="#475569">Monitor request failures</text>
+  <text x="390" y="380" text-anchor="middle" font-size="9" fill="#475569">✓ No extra traffic</text>
   <text x="390" y="395" text-anchor="middle" font-size="9" fill="#ef4444">✗ Slower detection</text>
   
   <!-- Circuit breaker -->
-  <rect x="510" y="320" width="200" height="80" rx="4" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
-  <text x="610" y="345" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-primary, #0f172a)">Circuit Breaker</text>
-  <text x="610" y="365" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">Open circuit on failures</text>
-  <text x="610" y="380" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">✓ Prevents cascading failures</text>
-  <text x="610" y="395" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">✓ Auto-recovery</text>
+  <rect x="510" y="320" width="200" height="80" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="610" y="345" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">Circuit Breaker</text>
+  <text x="610" y="365" text-anchor="middle" font-size="9" fill="#475569">Open circuit on failures</text>
+  <text x="610" y="380" text-anchor="middle" font-size="9" fill="#475569">✓ Prevents cascading failures</text>
+  <text x="610" y="395" text-anchor="middle" font-size="9" fill="#475569">✓ Auto-recovery</text>
   
   <!-- Failover -->
-  <rect x="730" y="320" width="200" height="80" rx="4" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
-  <text x="830" y="345" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--text-primary, #0f172a)">Automatic Failover</text>
-  <text x="830" y="365" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">Redirect to healthy servers</text>
-  <text x="830" y="380" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">✓ High availability</text>
-  <text x="830" y="395" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">✓ Graceful degradation</text>
+  <rect x="730" y="320" width="200" height="80" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="830" y="345" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">Automatic Failover</text>
+  <text x="830" y="365" text-anchor="middle" font-size="9" fill="#475569">Redirect to healthy servers</text>
+  <text x="830" y="380" text-anchor="middle" font-size="9" fill="#475569">✓ High availability</text>
+  <text x="830" y="395" text-anchor="middle" font-size="9" fill="#475569">✓ Graceful degradation</text>
   
   <!-- Session Affinity -->
-  <rect x="50" y="430" width="450" height="160" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
-  <text x="275" y="455" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a)">Session Affinity (Sticky Sessions)</text>
+  <rect x="50" y="430" width="450" height="160" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="275" y="455" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Session Affinity (Sticky Sessions)</text>
   
   <!-- Cookie-based -->
-  <rect x="70" y="475" width="190" height="55" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
-  <text x="165" y="495" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-primary, #0f172a)">Cookie-Based Affinity</text>
-  <text x="165" y="515" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">LB sets cookie with server ID</text>
-  <text x="165" y="530" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">✓ Simple, widely supported</text>
+  <rect x="70" y="475" width="190" height="55" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="165" y="495" text-anchor="middle" font-size="10" font-weight="bold" fill="#0f172a">Cookie-Based Affinity</text>
+  <text x="165" y="515" text-anchor="middle" font-size="9" fill="#475569">LB sets cookie with server ID</text>
+  <text x="165" y="530" text-anchor="middle" font-size="9" fill="#475569">✓ Simple, widely supported</text>
   
   <!-- IP-based -->
-  <rect x="280" y="475" width="190" height="55" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
-  <text x="375" y="495" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-primary, #0f172a)">IP-Based Affinity</text>
-  <text x="375" y="515" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">Same IP → same server</text>
+  <rect x="280" y="475" width="190" height="55" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="375" y="495" text-anchor="middle" font-size="10" font-weight="bold" fill="#0f172a">IP-Based Affinity</text>
+  <text x="375" y="515" text-anchor="middle" font-size="9" fill="#475569">Same IP → same server</text>
   <text x="375" y="530" text-anchor="middle" font-size="9" fill="#f59e0b">✗ NAT/proxy issues</text>
   
   <!-- Trade-offs -->
-  <rect x="70" y="545" width="410" height="35" rx="4" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
-  <text x="275" y="567" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">⚠️ Trade-off: Affinity reduces load balancer flexibility and can cause imbalance</text>
+  <rect x="70" y="545" width="410" height="35" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="275" y="567" text-anchor="middle" font-size="10" fill="#475569">⚠️ Trade-off: Affinity reduces load balancer flexibility and can cause imbalance</text>
   
   <!-- Modern LB Solutions -->
-  <rect x="520" y="430" width="430" height="160" rx="8" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
-  <text x="735" y="455" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a)">Modern Load Balancer Solutions</text>
+  <rect x="520" y="430" width="430" height="160" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="735" y="455" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Modern Load Balancer Solutions</text>
   
   <!-- DNS-based -->
-  <rect x="540" y="475" width="190" height="50" rx="4" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
-  <text x="635" y="500" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-primary, #0f172a)">DNS Load Balancing</text>
-  <text x="635" y="518" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">Round-robin DNS, GeoDNS</text>
+  <rect x="540" y="475" width="190" height="50" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="635" y="500" text-anchor="middle" font-size="10" font-weight="bold" fill="#0f172a">DNS Load Balancing</text>
+  <text x="635" y="518" text-anchor="middle" font-size="9" fill="#475569">Round-robin DNS, GeoDNS</text>
   
   <!-- Software LB -->
-  <rect x="750" y="475" width="180" height="50" rx="4" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
-  <text x="840" y="500" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-primary, #0f172a)">Software LBs</text>
-  <text x="840" y="518" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">nginx, HAProxy, Envoy</text>
+  <rect x="750" y="475" width="180" height="50" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="840" y="500" text-anchor="middle" font-size="10" font-weight="bold" fill="#0f172a">Software LBs</text>
+  <text x="840" y="518" text-anchor="middle" font-size="9" fill="#475569">nginx, HAProxy, Envoy</text>
   
   <!-- Cloud LB -->
-  <rect x="540" y="535" width="190" height="50" rx="4" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
-  <text x="635" y="560" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-primary, #0f172a)">Cloud Load Balancers</text>
-  <text x="635" y="578" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">AWS ALB/NLB, GCP LB, Azure LB</text>
+  <rect x="540" y="535" width="190" height="50" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="635" y="560" text-anchor="middle" font-size="10" font-weight="bold" fill="#0f172a">Cloud Load Balancers</text>
+  <text x="635" y="578" text-anchor="middle" font-size="9" fill="#475569">AWS ALB/NLB, GCP LB, Azure LB</text>
   
   <!-- Service Mesh -->
-  <rect x="750" y="535" width="180" height="50" rx="4" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
-  <text x="840" y="560" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-primary, #0f172a)">Service Mesh</text>
-  <text x="840" y="578" text-anchor="middle" font-size="9" fill="var(--text-secondary, #475569)">Istio, Linkerd (sidecar proxy)</text>
+  <rect x="750" y="535" width="180" height="50" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="840" y="560" text-anchor="middle" font-size="10" font-weight="bold" fill="#0f172a">Service Mesh</text>
+  <text x="840" y="578" text-anchor="middle" font-size="9" fill="#475569">Istio, Linkerd (sidecar proxy)</text>
 </svg>

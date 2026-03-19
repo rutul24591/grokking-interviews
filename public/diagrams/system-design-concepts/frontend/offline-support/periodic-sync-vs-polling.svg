@@ -62,28 +62,28 @@
     <!-- App can be closed -->
     <rect x="0" y="0" width="300" height="36" rx="6" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
     <circle cx="18" cy="18" r="8" fill="#10B981"/>
-    <text x="14" y="22" font-size="12" fill="white" font-weight="700">&#10003;</text>
+    <text x="14" y="22" font-size="12" fill="white" font-weight="700">&amp;#10003;</text>
     <text x="35" y="15" font-size="11" font-weight="600" fill="#064E3B">App can be closed</text>
     <text x="35" y="28" font-size="9" fill="#065F46">Service worker wakes independently</text>
 
     <!-- Browser-optimized -->
     <rect x="0" y="44" width="300" height="36" rx="6" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
     <circle cx="18" cy="18" r="8" fill="#10B981" transform="translate(0, 44)"/>
-    <text x="14" y="66" font-size="12" fill="white" font-weight="700">&#10003;</text>
+    <text x="14" y="66" font-size="12" fill="white" font-weight="700">&amp;#10003;</text>
     <text x="35" y="59" font-size="11" font-weight="600" fill="#064E3B">Browser-optimized scheduling</text>
     <text x="35" y="72" font-size="9" fill="#065F46">Adapts to battery, network, engagement</text>
 
     <!-- Batched syncs -->
     <rect x="0" y="88" width="300" height="36" rx="6" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
     <circle cx="18" cy="18" r="8" fill="#10B981" transform="translate(0, 88)"/>
-    <text x="14" y="110" font-size="12" fill="white" font-weight="700">&#10003;</text>
+    <text x="14" y="110" font-size="12" fill="white" font-weight="700">&amp;#10003;</text>
     <text x="35" y="103" font-size="11" font-weight="600" fill="#064E3B">Batched with other syncs</text>
     <text x="35" y="116" font-size="9" fill="#065F46">Minimizes device wake-ups</text>
 
     <!-- Battery friendly -->
     <rect x="0" y="132" width="300" height="36" rx="6" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
     <circle cx="18" cy="18" r="8" fill="#10B981" transform="translate(0, 132)"/>
-    <text x="14" y="154" font-size="12" fill="white" font-weight="700">&#10003;</text>
+    <text x="14" y="154" font-size="12" fill="white" font-weight="700">&amp;#10003;</text>
     <text x="35" y="147" font-size="11" font-weight="600" fill="#064E3B">Battery-friendly</text>
     <text x="35" y="160" font-size="9" fill="#065F46">Defers when battery is low</text>
   </g>

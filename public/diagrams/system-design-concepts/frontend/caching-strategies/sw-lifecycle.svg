@@ -65,9 +65,9 @@
   <!-- Detail section: Install Event -->
   <rect x="30" y="280" width="260" height="190" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
   <text x="160" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="#6d5bd0">Install Event</text>
-  <text x="45" y="330" font-size="11" fill="#1a1822">self.addEventListener('install', e =&gt; {</text>
+  <text x="45" y="330" font-size="11" fill="#1a1822">self.addEventListener('install', e =&amp;gt; {</text>
   <text x="55" y="348" font-size="11" fill="#1a1822">  e.waitUntil(</text>
-  <text x="55" y="366" font-size="11" fill="#1a1822">    caches.open('v1').then(cache =&gt;</text>
+  <text x="55" y="366" font-size="11" fill="#1a1822">    caches.open('v1').then(cache =&amp;gt;</text>
   <text x="55" y="384" font-size="11" fill="#1a1822">      cache.addAll([</text>
   <text x="55" y="402" font-size="11" fill="#6d5bd0">        '/', '/app.js', '/style.css'</text>
   <text x="55" y="420" font-size="11" fill="#1a1822">      ])</text>
@@ -78,12 +78,12 @@
   <!-- Detail section: Activate Event -->
   <rect x="320" y="280" width="260" height="190" rx="8" fill="#edeaf5" stroke="#2f9d74" stroke-width="1.5"/>
   <text x="450" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="#2f9d74">Activate Event</text>
-  <text x="335" y="330" font-size="11" fill="#1a1822">self.addEventListener('activate', e =&gt; {</text>
+  <text x="335" y="330" font-size="11" fill="#1a1822">self.addEventListener('activate', e =&amp;gt; {</text>
   <text x="345" y="348" font-size="11" fill="#1a1822">  e.waitUntil(</text>
-  <text x="345" y="366" font-size="11" fill="#1a1822">    caches.keys().then(names =&gt;</text>
+  <text x="345" y="366" font-size="11" fill="#1a1822">    caches.keys().then(names =&amp;gt;</text>
   <text x="345" y="384" font-size="11" fill="#1a1822">      Promise.all(</text>
-  <text x="345" y="402" font-size="11" fill="#2f9d74">        names.filter(n =&gt; n !== 'v1')</text>
-  <text x="345" y="420" font-size="11" fill="#2f9d74">          .map(n =&gt; caches.delete(n))</text>
+  <text x="345" y="402" font-size="11" fill="#2f9d74">        names.filter(n =&amp;gt; n !== 'v1')</text>
+  <text x="345" y="420" font-size="11" fill="#2f9d74">          .map(n =&amp;gt; caches.delete(n))</text>
   <text x="345" y="438" font-size="11" fill="#1a1822">      )</text>
   <text x="345" y="456" font-size="11" fill="#1a1822">    )</text>
   <text x="335" y="468" font-size="11" fill="#1a1822">  );</text>
@@ -91,10 +91,10 @@
   <!-- Detail section: Fetch Event -->
   <rect x="610" y="280" width="260" height="190" rx="8" fill="#edeaf5" stroke="#d97843" stroke-width="1.5"/>
   <text x="740" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="#d97843">Fetch Event</text>
-  <text x="625" y="330" font-size="11" fill="#1a1822">self.addEventListener('fetch', e =&gt; {</text>
+  <text x="625" y="330" font-size="11" fill="#1a1822">self.addEventListener('fetch', e =&amp;gt; {</text>
   <text x="635" y="348" font-size="11" fill="#1a1822">  e.respondWith(</text>
   <text x="635" y="366" font-size="11" fill="#d97843">    caches.match(e.request)</text>
-  <text x="635" y="384" font-size="11" fill="#1a1822">      .then(cached =&gt;</text>
+  <text x="635" y="384" font-size="11" fill="#1a1822">      .then(cached =&amp;gt;</text>
   <text x="635" y="402" font-size="11" fill="#d97843">        cached || fetch(e.request)</text>
   <text x="635" y="420" font-size="11" fill="#1a1822">      )</text>
   <text x="625" y="438" font-size="11" fill="#1a1822">  );</text>

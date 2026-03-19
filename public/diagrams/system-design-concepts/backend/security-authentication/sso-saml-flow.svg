@@ -82,9 +82,9 @@
   <text x="525" y="495" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">SAML Response Structure</text>
   
   <rect x="395" y="505" width="260" height="45" rx="4" fill="var(--bg-panel-soft, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
-  <text x="525" y="525" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">&lt;Response&gt;</text>
-  <text x="525" y="540" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">  &lt;Assertion&gt;...&lt;/Assertion&gt;</text>
-  <text x="525" y="555" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">&lt;/Response&gt;</text>
+  <text x="525" y="525" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">&amp;lt;Response&amp;gt;</text>
+  <text x="525" y="540" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">  &amp;lt;Assertion&amp;gt;...&amp;lt;/Assertion&amp;gt;</text>
+  <text x="525" y="555" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">&amp;lt;/Response&amp;gt;</text>
   
   <!-- Trust Relationship -->
   <rect x="690" y="470" width="210" height="90" rx="6" fill="var(--bg-panel-hover, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>

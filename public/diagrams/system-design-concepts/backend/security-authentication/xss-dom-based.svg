@@ -63,7 +63,7 @@
   <text x="315" y="300" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">// Vulnerable code:</text>
   <text x="315" y="318" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444" font-family="monospace">document.getElementById('output').innerHTML = location.hash.substring(1);</text>
   <text x="315" y="338" text-anchor="middle" font-size="9" fill="var(--text-theme, #1e293b" font-family="monospace">// Malicious URL:</text>
-  <text x="315" y="356" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444" font-family="monospace">https://site.com#&lt;img src=x onerror=alert('XSS')&gt;</text>
+  <text x="315" y="356" text-anchor="middle" font-size="9" fill="var(--text-theme, #ef4444" font-family="monospace">https://site.com#&amp;lt;img src=x onerror=alert('XSS')&amp;gt;</text>
   
   <!-- Prevention Techniques -->
   <rect x="615" y="80" width="305" height="300" rx="8" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="2"/>

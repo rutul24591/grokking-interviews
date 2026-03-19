@@ -1,0 +1,226 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad13" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow13" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="500" fill="url(#bgGrad13)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#e0e0e0">Micro-Frontend Communication Patterns</text>
+  
+  <!-- Pattern 1: Custom Events -->
+  <g transform="translate(30, 60)">
+    <rect x="0" y="0" width="270" height="130" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow13)"/>
+    <text x="135" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#4a90d9">1. Custom Events</text>
+    
+    <!-- Diagram -->
+    <g transform="translate(20, 45)">
+      <!-- MF1 dispatches -->
+      <rect x="0" y="0" width="80" height="40" rx="4" fill="#67b26f" opacity="0.7"/>
+      <text x="40" y="24" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">MF 1</text>
+      <text x="40" y="36" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">dispatchEvent</text>
+      
+      <!-- Event arrow -->
+      <line x1="85" y1="20" x2="145" y2="20" stroke="#f0ad4e" stroke-width="2"/>
+      <polygon points="145,20 135,15 135,25" fill="#f0ad4e"/>
+      <text x="115" y="14" font-family="monospace" font-size="7" fill="#f0ad4e">user-logged-in</text>
+      
+      <!-- MF2 listens -->
+      <rect x="150" y="0" width="80" height="40" rx="4" fill="#d9534f" opacity="0.7"/>
+      <text x="190" y="24" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">MF 2</text>
+      <text x="190" y="36" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">addEventListener</text>
+      
+      <!-- Code example -->
+      <rect x="0" y="55" width="230" height="60" rx="4" fill="#1a1a2e"/>
+      <text x="10" y="72" font-family="monospace" font-size="8" fill="#67b26f">// Dispatch</text>
+      <text x="10" y="87" font-family="monospace" font-size="8" fill="#e0e0e0">dispatchEvent(new</text>
+      <text x="10" y="100" font-family="monospace" font-size="8" fill="#e0e0e0">  CustomEvent('user-logged-in'))</text>
+    </g>
+    
+    <text x="135" y="120" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">✓ Loose coupling ✗ No type safety</text>
+  </g>
+  
+  <!-- Pattern 2: Shared State Store -->
+  <g transform="translate(320, 60)">
+    <rect x="0" y="0" width="270" height="130" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow13)"/>
+    <text x="135" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#67b26f">2. Shared State Store</text>
+    
+    <!-- Diagram -->
+    <g transform="translate(20, 45)">
+      <!-- Central store -->
+      <rect x="75" y="0" width="100" height="50" rx="4" fill="#d9534f" opacity="0.8"/>
+      <text x="125" y="25" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="white">Shared Store</text>
+      <text x="125" y="42" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">(Redux/Zustand)</text>
+      
+      <!-- MF connections -->
+      <line x1="30" y1="50" x2="75" y2="30" stroke="#4a90d9" stroke-width="2"/>
+      <line x1="220" y1="50" x2="175" y2="30" stroke="#67b26f" stroke-width="2"/>
+      
+      <!-- MFs -->
+      <rect x="0" y="55" width="60" height="35" rx="4" fill="#4a90d9" opacity="0.7"/>
+      <text x="30" y="77" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">MF 1</text>
+      
+      <rect x="190" y="55" width="60" height="35" rx="4" fill="#67b26f" opacity="0.7"/>
+      <text x="220" y="77" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">MF 2</text>
+      
+      <!-- Arrows -->
+      <line x1="30" y1="55" x2="30" y2="95" stroke="#666" stroke-width="1.5"/>
+      <polygon points="30,95 25,85 35,85" fill="#666"/>
+      <text x="30" y="110" text-anchor="middle" font-family="monospace" font-size="7" fill="#e0e0e0">dispatch</text>
+      
+      <line x1="220" y1="90" x2="220" y2="55" stroke="#666" stroke-width="1.5"/>
+      <polygon points="220,55 215,65 225,65" fill="#666"/>
+      <text x="220" y="110" text-anchor="middle" font-family="monospace" font-size="7" fill="#e0e0e0">subscribe</text>
+    </g>
+    
+    <text x="135" y="120" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">✓ Centralized ✗ Tight coupling</text>
+  </g>
+  
+  <!-- Pattern 3: URL Parameters -->
+  <g transform="translate(610, 60)">
+    <rect x="0" y="0" width="270" height="130" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow13)"/>
+    <text x="135" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#f0ad4e">3. URL Parameters</text>
+    
+    <!-- Diagram -->
+    <g transform="translate(20, 45)">
+      <!-- URL bar -->
+      <rect x="0" y="0" width="230" height="35" rx="4" fill="#1a1a2e" stroke="#f0ad4e"/>
+      <text x="10" y="22" font-family="monospace" font-size="9" fill="#e0e0e0">/products?category=</text>
+      <text x="150" y="22" font-family="monospace" font-size="9" fill="#f0ad4e">electronics</text>
+      
+      <!-- MFs read URL -->
+      <rect x="0" y="50" width="70" height="35" rx="4" fill="#67b26f" opacity="0.7"/>
+      <text x="35" y="72" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">MF 1</text>
+      <text x="35" y="84" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">reads URL</text>
+      
+      <rect x="80" y="50" width="70" height="35" rx="4" fill="#d9534f" opacity="0.7"/>
+      <text x="115" y="72" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">MF 2</text>
+      <text x="115" y="84" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">reads URL</text>
+      
+      <rect x="160" y="50" width="70" height="35" rx="4" fill="#4a90d9" opacity="0.7"/>
+      <text x="195" y="72" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">Host</text>
+      <text x="195" y="84" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">updates URL</text>
+    </g>
+    
+    <text x="135" y="120" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">✓ Bookmarkable ✗ Limited capacity</text>
+  </g>
+  
+  <!-- Pattern 4: Window/LocalStorage -->
+  <g transform="translate(30, 210)">
+    <rect x="0" y="0" width="270" height="130" rx="8" fill="#2a2a4a" stroke="#d9534f" stroke-width="2" filter="url(#shadow13)"/>
+    <text x="135" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#d9534f">4. Window Storage</text>
+    
+    <!-- Diagram -->
+    <g transform="translate(20, 45)">
+      <!-- Window object -->
+      <rect x="50" y="0" width="150" height="50" rx="4" fill="#4a90d9" opacity="0.6"/>
+      <text x="125" y="25" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">window.sharedState</text>
+      <text x="125" y="42" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">{ user, cart, prefs }</text>
+      
+      <!-- MFs access -->
+      <rect x="0" y="60" width="70" height="35" rx="4" fill="#67b26f" opacity="0.7"/>
+      <text x="35" y="82" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">MF 1</text>
+      <line x1="35" y1="60" x2="70" y2="30" stroke="#666" stroke-width="1.5"/>
+      
+      <rect x="90" y="60" width="70" height="35" rx="4" fill="#f0ad4e" opacity="0.7"/>
+      <text x="125" y="82" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">MF 2</text>
+      <line x1="125" y1="60" x2="125" y2="50" stroke="#666" stroke-width="1.5"/>
+      
+      <rect x="180" y="60" width="70" height="35" rx="4" fill="#d9534f" opacity="0.7"/>
+      <text x="215" y="82" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">MF 3</text>
+      <line x1="215" y1="60" x2="180" y2="30" stroke="#666" stroke-width="1.5"/>
+    </g>
+    
+    <text x="135" y="120" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">✓ Simple ✗ Global namespace pollution</text>
+  </g>
+  
+  <!-- Pattern 5: Event Bus -->
+  <g transform="translate(320, 210)">
+    <rect x="0" y="0" width="270" height="130" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow13)"/>
+    <text x="135" y="28" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#67b26f">5. Event Bus / Broker</text>
+    
+    <!-- Diagram -->
+    <g transform="translate(20, 45)">
+      <!-- Event Bus -->
+      <rect x="60" y="0" width="130" height="50" rx="4" fill="#f0ad4e" opacity="0.8"/>
+      <text x="125" y="25" text-anchor="middle" font-family="system-ui" font-size="10" fill="white">Event Bus</text>
+      <text x="125" y="42" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">(Mitt, RxJS)</text>
+      
+      <!-- Publishers -->
+      <rect x="0" y="60" width="60" height="35" rx="4" fill="#67b26f" opacity="0.7"/>
+      <text x="30" y="82" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">MF 1</text>
+      <line x1="30" y1="60" x2="70" y2="35" stroke="#67b26f" stroke-width="2"/>
+      <polygon points="70,35 60,40 62,30" fill="#67b26f"/>
+      <text x="50" y="55" font-family="monospace" font-size="7" fill="#67b26f">publish</text>
+      
+      <!-- Subscribers -->
+      <rect x="190" y="60" width="60" height="35" rx="4" fill="#d9534f" opacity="0.7"/>
+      <text x="220" y="82" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">MF 2</text>
+      <line x1="180" y1="35" x2="220" y2="60" stroke="#d9534f" stroke-width="2"/>
+      <polygon points="180,35 190,30 188,40" fill="#d9534f"/>
+      <text x="195" y="55" font-family="monospace" font-size="7" fill="#d9534f">subscribe</text>
+    </g>
+    
+    <text x="135" y="120" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">✓ Decoupled ✗ Memory leak risk</text>
+  </g>
+  
+  <!-- Pattern Comparison Matrix -->
+  <g transform="translate(610, 210)">
+    <rect x="0" y="0" width="270" height="130" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2"/>
+    <text x="135" y="25" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#67b26f">Pattern Selection</text>
+    
+    <text x="10" y="45" font-family="system-ui" font-size="9" fill="#e0e0e0">Use Case → Pattern:</text>
+    
+    <text x="10" y="62" font-family="system-ui" font-size="8" fill="#e0e0e0">• Simple notifications → Events</text>
+    <text x="10" y="77" font-family="system-ui" font-size="8" fill="#e0e0e0">• Shared user state → Store</text>
+    <text x="10" y="92" font-family="system-ui" font-size="8" fill="#e0e0e0">• Filter/sort state → URL</text>
+    
+    <text x="140" y="62" font-family="system-ui" font-size="8" fill="#e0e0e0">• Cross-tab sync → Storage</text>
+    <text x="140" y="77" font-family="system-ui" font-size="8" fill="#e0e0e0">• Complex events → Event Bus</text>
+    <text x="140" y="92" font-family="system-ui" font-size="8" fill="#e0e0e0">• Default → Start simple</text>
+    
+    <text x="135" y="115" text-anchor="middle" font-family="system-ui" font-size="9" fill="#f0ad4e">Combine patterns as needed</text>
+  </g>
+  
+  <!-- Best Practices -->
+  <g transform="translate(30, 360)">
+    <rect x="0" y="0" width="850" height="120" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow13)"/>
+    <text x="425" y="28" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#4a90d9">Communication Best Practices</text>
+    
+    <g transform="translate(30, 45)">
+      <circle cx="8" cy="8" r="4" fill="#67b26f"/>
+      <text x="20" y="13" font-family="system-ui" font-size="10" fill="#e0e0e0">Define clear contracts for events/state</text>
+      
+      <circle cx="8" cy="30" r="4" fill="#67b26f"/>
+      <text x="20" y="35" font-family="system-ui" font-size="10" fill="#e0e0e0">Clean up subscriptions on unmount</text>
+      
+      <circle cx="8" cy="52" r="4" fill="#67b26f"/>
+      <text x="20" y="57" font-family="system-ui" font-size="10" fill="#e0e0e0">Use TypeScript for type safety</text>
+      
+      <circle cx="230" cy="8" r="4" fill="#67b26f"/>
+      <text x="242" y="13" font-family="system-ui" font-size="10" fill="#e0e0e0">Avoid circular dependencies</text>
+      
+      <circle cx="230" cy="30" r="4" fill="#67b26f"/>
+      <text x="242" y="35" font-family="system-ui" font-size="10" fill="#e0e0e0">Document communication patterns</text>
+      
+      <circle cx="230" cy="52" r="4" fill="#67b26f"/>
+      <text x="242" y="57" font-family="system-ui" font-size="10" fill="#e0e0e0">Log events for debugging</text>
+      
+      <circle cx="450" cy="8" r="4" fill="#67b26f"/>
+      <text x="462" y="13" font-family="system-ui" font-size="10" fill="#e0e0e0">Use event namespacing (mf-name:event)</text>
+      
+      <circle cx="450" cy="30" r="4" fill="#67b26f"/>
+      <text x="462" y="35" font-family="system-ui" font-size="10" fill="#e0e0e0">Implement error boundaries</text>
+      
+      <circle cx="450" cy="52" r="4" fill="#67b26f"/>
+      <text x="462" y="57" font-family="system-ui" font-size="10" fill="#e0e0e0">Monitor communication overhead</text>
+    </g>
+  </g>
+</svg>

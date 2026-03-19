@@ -1,10 +1,112 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Authorization Service Diagram 1</text>
-  <rect x="80" y="130" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage A</text>
-  <rect x="360" y="130" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage B</text>
-  <rect x="640" y="130" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="170" font-family="Arial" font-size="14" fill="#0f172a">Stage C</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Authorization Service Architecture</title>
+  <desc id="desc">Authorization service architecture with policy engine, entitlement sources, caches, and decision logging</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="var(--bg-panel, #f8fafc)"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="var(--text-theme, #1e293b)">Authorization Service Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="var(--text-theme, #64748b)">Policy engine, entitlement sources, caches, and decision logging</text>
+  
+  <!-- Request Sources -->
+  <rect x="30" y="85" width="150" height="180" rx="8" fill="var(--bg-theme, #3b82f6)" stroke="var(--border-theme, #1e40af)" stroke-width="2"/>
+  <text x="105" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Request Sources</text>
+  
+  <rect x="50" y="125" width="110" height="35" rx="3" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="105" y="148" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">API Gateway</text>
+  
+  <rect x="50" y="165" width="110" height="35" rx="3" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="105" y="188" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Backend Services</text>
+  
+  <rect x="50" y="205" width="110" height="35" rx="3" fill="var(--bg-panel-soft, #eff6ff)" stroke="var(--border-theme, #3b82f6)" stroke-width="1"/>
+  <text x="105" y="228" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Admin Console</text>
+  
+  <!-- AuthZ Request -->
+  <line x1="185" y1="175" x2="235" y2="175" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="210" y="165" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Can X do Y?</text>
+  
+  <!-- Authorization Service -->
+  <rect x="235" y="85" width="300" height="180" rx="8" fill="var(--bg-theme, #8b5cf6)" stroke="var(--border-theme, #6d28d9)" stroke-width="2"/>
+  <text x="385" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Authorization Service</text>
+  
+  <rect x="255" y="125" width="260" height="40" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="385" y="150" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Policy Evaluation Engine</text>
+  
+  <rect x="255" y="175" width="120" height="40" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="315" y="200" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">RBAC/ABAC</text>
+  
+  <rect x="385" y="175" width="130" height="40" rx="4" fill="var(--bg-panel-soft, #f5f3ff)" stroke="var(--border-theme, #8b5cf6)" stroke-width="1"/>
+  <text x="450" y="200" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Relationship-based</text>
+  
+  <!-- Policy Store -->
+  <line x1="385" y1="265" x2="385" y2="315" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow-down)"/>
+  
+  <rect x="235" y="320" width="300" height="100" rx="8" fill="var(--bg-theme, #10b981)" stroke="var(--border-theme, #059669)" stroke-width="2"/>
+  <text x="385" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Policy &amp; Entitlement Store</text>
+  
+  <rect x="255" y="355" width="130" height="55" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="320" y="380" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Policy Definitions</text>
+  <text x="320" y="395" text-anchor="middle" font-size="8" fill="#6ee7b7">Rego/OPA, Cedar</text>
+  
+  <rect x="395" y="355" width="120" height="55" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #10b981)" stroke-width="1"/>
+  <text x="455" y="380" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Entitlements</text>
+  <text x="455" y="395" text-anchor="middle" font-size="8" fill="#6ee7b7">Roles, Groups</text>
+  
+  <!-- Decision Response -->
+  <line x1="540" y1="175" x2="590" y2="175" stroke="var(--text-theme, #64748b)" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="565" y="165" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Allow/Deny</text>
+  
+  <!-- Enforcement Points -->
+  <rect x="590" y="85" width="280" height="180" rx="8" fill="var(--bg-theme, #06b6d4)" stroke="var(--border-theme, #0891b2)" stroke-width="2"/>
+  <text x="730" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Enforcement Points</text>
+  
+  <rect x="610" y="125" width="240" height="40" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #06b6d4)" stroke-width="1"/>
+  <text x="730" y="150" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">API Gateway (coarse-grained)</text>
+  
+  <rect x="610" y="175" width="240" height="40" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #06b6d4)" stroke-width="1"/>
+  <text x="730" y="200" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Service Layer (fine-grained)</text>
+  
+  <rect x="610" y="225" width="240" height="30" rx="4" fill="var(--bg-panel-soft, #ecfdf5)" stroke="var(--border-theme, #06b6d4)" stroke-width="1"/>
+  <text x="730" y="245" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Resource-level checks</text>
+  
+  <!-- Decision Cache -->
+  <rect x="30" y="280" width="180" height="160" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="120" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Decision Cache</text>
+  
+  <rect x="50" y="320" width="140" height="110" rx="4" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="120" y="345" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Cache allow/deny</text>
+  <text x="120" y="360" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">TTL-based expiry</text>
+  <text x="120" y="375" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Invalidation on change</text>
+  <text x="120" y="390" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Redis/Memcached</text>
+  <text x="120" y="405" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Reduces latency</text>
+  
+  <!-- Audit Log -->
+  <rect x="235" y="435" width="300" height="95" rx="8" fill="var(--bg-panel-hover, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="2"/>
+  <text x="385" y="460" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #1e293b">Decision Audit Log</text>
+  
+  <rect x="255" y="475" width="260" height="45" rx="4" fill="var(--bg-panel-soft, #f1f5f9)" stroke="var(--border-theme, #cbd5e1)" stroke-width="1"/>
+  <text x="385" y="500" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Log all decisions for compliance</text>
+  <text x="385" y="515" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Who, what, when, decision, reason</text>
+  
+  <!-- Policy Administration -->
+  <rect x="590" y="280" width="280" height="160" rx="8" fill="var(--bg-panel-hover, #fef3c7)" stroke="var(--border-theme, #f59e0b)" stroke-width="2"/>
+  <text x="730" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-theme, #b45309">Policy Administration</text>
+  
+  <rect x="610" y="320" width="240" height="110" rx="4" fill="var(--bg-panel-soft, #fffbeb)" stroke="var(--border-theme, #f59e0b)" stroke-width="1"/>
+  <text x="730" y="345" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Policy Editor UI</text>
+  <text x="730" y="360" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Version control integration</text>
+  <text x="730" y="375" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Policy testing/simulation</text>
+  <text x="730" y="390" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Rollback capability</text>
+  <text x="730" y="405" text-anchor="middle" font-size="9" fill="var(--text-theme, #64748b">Audit trail for changes</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+    <marker id="arrow-down" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 0, 5 7" fill="var(--text-theme, #64748b)"/>
+    </marker>
+  </defs>
 </svg>

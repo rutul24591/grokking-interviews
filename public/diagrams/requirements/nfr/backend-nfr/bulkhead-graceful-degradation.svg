@@ -1,111 +1,111 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
   <defs>
     <marker id="bulkArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="var(--border-accent, #3b82f6)"/>
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
     </marker>
   </defs>
   
   <!-- Background -->
-  <rect width="1000" height="550" fill="var(--bg-primary, #ffffff)"/>
+  <rect width="1000" height="550" fill="#ffffff"/>
   
   <!-- Title -->
-  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--text-primary, #0f172a)">Bulkhead Pattern & Graceful Degradation</text>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">Bulkhead Pattern &amp; Graceful Degradation</text>
   
   <!-- Without Bulkhead -->
-  <rect x="50" y="60" width="450" height="220" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
-  <text x="275" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a)">Without Bulkhead (Single Pool)</text>
+  <rect x="50" y="60" width="450" height="220" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="275" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">Without Bulkhead (Single Pool)</text>
   
   <!-- Resource pool -->
-  <rect x="100" y="110" width="350" height="80" rx="6" fill="var(--bg-blue, #3b82f6)" opacity="0.2" stroke="var(--border-blue, #3b82f6)" stroke-width="2"/>
-  <text x="275" y="145" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-primary, #0f172a)">Shared Thread/Connection Pool</text>
-  <text x="275" y="165" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">100 threads total</text>
+  <rect x="100" y="110" width="350" height="80" rx="6" fill="#3b82f6" opacity="0.2" stroke="#3b82f6" stroke-width="2"/>
+  <text x="275" y="145" text-anchor="middle" font-size="12" font-weight="bold" fill="#0f172a">Shared Thread/Connection Pool</text>
+  <text x="275" y="165" text-anchor="middle" font-size="10" fill="#475569">100 threads total</text>
   
   <!-- Services consuming -->
-  <rect x="120" y="200" width="80" height="50" rx="4" fill="var(--bg-red, #ef4444)" opacity="0.7"/>
-  <text x="160" y="225" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">Service A</text>
-  <text x="160" y="242" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">Slow/Failed</text>
-  <text x="160" y="258" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">90 threads</text>
+  <rect x="120" y="200" width="80" height="50" rx="4" fill="#ef4444" opacity="0.7"/>
+  <text x="160" y="225" text-anchor="middle" font-size="9" fill="#ffffff">Service A</text>
+  <text x="160" y="242" text-anchor="middle" font-size="8" fill="#ffffff">Slow/Failed</text>
+  <text x="160" y="258" text-anchor="middle" font-size="8" fill="#ffffff">90 threads</text>
   
-  <rect x="235" y="200" width="80" height="50" rx="4" fill="var(--bg-green, #22c55e)" opacity="0.5"/>
-  <text x="275" y="225" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">Service B</text>
-  <text x="275" y="242" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">Healthy</text>
-  <text x="275" y="258" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">5 threads</text>
+  <rect x="235" y="200" width="80" height="50" rx="4" fill="#22c55e" opacity="0.5"/>
+  <text x="275" y="225" text-anchor="middle" font-size="9" fill="#ffffff">Service B</text>
+  <text x="275" y="242" text-anchor="middle" font-size="8" fill="#ffffff">Healthy</text>
+  <text x="275" y="258" text-anchor="middle" font-size="8" fill="#ffffff">5 threads</text>
   
-  <rect x="350" y="200" width="80" height="50" rx="4" fill="var(--bg-green, #22c55e)" opacity="0.5"/>
-  <text x="390" y="225" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">Service C</text>
-  <text x="390" y="242" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">Healthy</text>
-  <text x="390" y="258" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">5 threads</text>
+  <rect x="350" y="200" width="80" height="50" rx="4" fill="#22c55e" opacity="0.5"/>
+  <text x="390" y="225" text-anchor="middle" font-size="9" fill="#ffffff">Service C</text>
+  <text x="390" y="242" text-anchor="middle" font-size="8" fill="#ffffff">Healthy</text>
+  <text x="390" y="258" text-anchor="middle" font-size="8" fill="#ffffff">5 threads</text>
   
   <text x="275" y="290" text-anchor="middle" font-size="10" fill="#ef4444" font-weight="bold">✗ One failing service starves others</text>
   
   <!-- With Bulkhead -->
-  <rect x="520" y="60" width="430" height="220" rx="8" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
-  <text x="735" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--text-primary, #0f172a)">With Bulkhead (Isolated Pools)</text>
+  <rect x="520" y="60" width="430" height="220" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="735" y="90" text-anchor="middle" font-size="14" font-weight="bold" fill="#0f172a">With Bulkhead (Isolated Pools)</text>
   
   <!-- Separate pools -->
-  <rect x="540" y="110" width="120" height="60" rx="4" fill="var(--bg-red, #ef4444)" opacity="0.7" stroke="var(--border-red, #ef4444)" stroke-width="2"/>
-  <text x="600" y="135" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-inverse, #ffffff)">Pool A</text>
-  <text x="600" y="155" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">30 threads</text>
-  <text x="600" y="170" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">Service A only</text>
+  <rect x="540" y="110" width="120" height="60" rx="4" fill="#ef4444" opacity="0.7" stroke="#ef4444" stroke-width="2"/>
+  <text x="600" y="135" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">Pool A</text>
+  <text x="600" y="155" text-anchor="middle" font-size="9" fill="#ffffff">30 threads</text>
+  <text x="600" y="170" text-anchor="middle" font-size="8" fill="#ffffff">Service A only</text>
   
-  <rect x="680" y="110" width="120" height="60" rx="4" fill="var(--bg-green, #22c55e)" opacity="0.7" stroke="var(--border-green, #22c55e)" stroke-width="2"/>
-  <text x="740" y="135" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-inverse, #ffffff)">Pool B</text>
-  <text x="740" y="155" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">35 threads</text>
-  <text x="740" y="170" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">Service B only</text>
+  <rect x="680" y="110" width="120" height="60" rx="4" fill="#22c55e" opacity="0.7" stroke="#22c55e" stroke-width="2"/>
+  <text x="740" y="135" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">Pool B</text>
+  <text x="740" y="155" text-anchor="middle" font-size="9" fill="#ffffff">35 threads</text>
+  <text x="740" y="170" text-anchor="middle" font-size="8" fill="#ffffff">Service B only</text>
   
-  <rect x="820" y="110" width="120" height="60" rx="4" fill="var(--bg-green, #22c55e)" opacity="0.7" stroke="var(--border-green, #22c55e)" stroke-width="2"/>
-  <text x="880" y="135" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--text-inverse, #ffffff)">Pool C</text>
-  <text x="880" y="155" text-anchor="middle" font-size="9" fill="var(--text-inverse, #ffffff)">35 threads</text>
-  <text x="880" y="170" text-anchor="middle" font-size="8" fill="var(--text-inverse, #ffffff)">Service C only</text>
+  <rect x="820" y="110" width="120" height="60" rx="4" fill="#22c55e" opacity="0.7" stroke="#22c55e" stroke-width="2"/>
+  <text x="880" y="135" text-anchor="middle" font-size="10" font-weight="bold" fill="#ffffff">Pool C</text>
+  <text x="880" y="155" text-anchor="middle" font-size="9" fill="#ffffff">35 threads</text>
+  <text x="880" y="170" text-anchor="middle" font-size="8" fill="#ffffff">Service C only</text>
   
-  <text x="735" y="210" text-anchor="middle" font-size="10" fill="var(--border-green, #22c55e)" font-weight="bold">✓ Failure isolated to one pool</text>
-  <text x="735" y="230" text-anchor="middle" font-size="10" fill="var(--border-green, #22c55e)" font-weight="bold">✓ Other services unaffected</text>
-  <text x="735" y="250" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">Named after ship bulkheads that prevent flooding spread</text>
+  <text x="735" y="210" text-anchor="middle" font-size="10" fill="#22c55e" font-weight="bold">✓ Failure isolated to one pool</text>
+  <text x="735" y="230" text-anchor="middle" font-size="10" fill="#22c55e" font-weight="bold">✓ Other services unaffected</text>
+  <text x="735" y="250" text-anchor="middle" font-size="10" fill="#475569">Named after ship bulkheads that prevent flooding spread</text>
   
   <!-- Graceful Degradation -->
-  <rect x="50" y="300" width="900" height="240" rx="8" fill="var(--bg-secondary, #f8fafc)" stroke="var(--border-primary, #e2e8f0)" stroke-width="2"/>
-  <text x="500" y="325" text-anchor="middle" font-size="16" font-weight="bold" fill="var(--text-primary, #0f172a)">Graceful Degradation Strategies</text>
+  <rect x="50" y="300" width="900" height="240" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="500" y="325" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">Graceful Degradation Strategies</text>
   
   <!-- Full functionality -->
-  <rect x="70" y="345" width="260" height="180" rx="6" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
-  <text x="200" y="370" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-primary, #0f172a)">Normal Operation</text>
+  <rect x="70" y="345" width="260" height="180" rx="6" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="200" y="370" text-anchor="middle" font-size="12" font-weight="bold" fill="#0f172a">Normal Operation</text>
   
-  <rect x="90" y="385" width="220" height="30" rx="3" fill="var(--bg-green, #22c55e)"/>
-  <text x="200" y="405" text-anchor="middle" font-size="10" fill="var(--text-inverse, #ffffff)">✓ Full feature set</text>
+  <rect x="90" y="385" width="220" height="30" rx="3" fill="#22c55e"/>
+  <text x="200" y="405" text-anchor="middle" font-size="10" fill="#ffffff">✓ Full feature set</text>
   
-  <rect x="90" y="425" width="220" height="30" rx="3" fill="var(--bg-green, #22c55e)"/>
-  <text x="200" y="445" text-anchor="middle" font-size="10" fill="var(--text-inverse, #ffffff)">✓ Real-time data</text>
+  <rect x="90" y="425" width="220" height="30" rx="3" fill="#22c55e"/>
+  <text x="200" y="445" text-anchor="middle" font-size="10" fill="#ffffff">✓ Real-time data</text>
   
-  <rect x="90" y="465" width="220" height="30" rx="3" fill="var(--bg-green, #22c55e)"/>
-  <text x="200" y="485" text-anchor="middle" font-size="10" fill="var(--text-inverse, #ffffff)">✓ Personalized recommendations</text>
+  <rect x="90" y="465" width="220" height="30" rx="3" fill="#22c55e"/>
+  <text x="200" y="485" text-anchor="middle" font-size="10" fill="#ffffff">✓ Personalized recommendations</text>
   
   <!-- Degraded mode -->
-  <rect x="350" y="345" width="260" height="180" rx="6" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
-  <text x="480" y="370" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-primary, #0f172a)">Degraded Mode</text>
+  <rect x="350" y="345" width="260" height="180" rx="6" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="480" y="370" text-anchor="middle" font-size="12" font-weight="bold" fill="#0f172a">Degraded Mode</text>
   
-  <rect x="370" y="385" width="220" height="30" rx="3" fill="var(--bg-green, #22c55e)"/>
-  <text x="480" y="405" text-anchor="middle" font-size="10" fill="var(--text-inverse, #ffffff)">✓ Core functionality</text>
+  <rect x="370" y="385" width="220" height="30" rx="3" fill="#22c55e"/>
+  <text x="480" y="405" text-anchor="middle" font-size="10" fill="#ffffff">✓ Core functionality</text>
   
-  <rect x="370" y="425" width="220" height="30" rx="3" fill="var(--bg-orange, #f97316)"/>
-  <text x="480" y="445" text-anchor="middle" font-size="10" fill="var(--text-inverse, #ffffff)">⚠ Cached/stale data</text>
+  <rect x="370" y="425" width="220" height="30" rx="3" fill="#f97316"/>
+  <text x="480" y="445" text-anchor="middle" font-size="10" fill="#ffffff">⚠ Cached/stale data</text>
   
-  <rect x="370" y="465" width="220" height="30" rx="3" fill="var(--bg-red, #ef4444)"/>
-  <text x="480" y="485" text-anchor="middle" font-size="10" fill="var(--text-inverse, #ffffff)">✗ Recommendations disabled</text>
+  <rect x="370" y="465" width="220" height="30" rx="3" fill="#ef4444"/>
+  <text x="480" y="485" text-anchor="middle" font-size="10" fill="#ffffff">✗ Recommendations disabled</text>
   
   <!-- Fallback mode -->
-  <rect x="630" y="345" width="300" height="180" rx="6" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
-  <text x="780" y="370" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--text-primary, #0f172a)">Fallback Mode</text>
+  <rect x="630" y="345" width="300" height="180" rx="6" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="780" y="370" text-anchor="middle" font-size="12" font-weight="bold" fill="#0f172a">Fallback Mode</text>
   
-  <rect x="650" y="385" width="260" height="30" rx="3" fill="var(--bg-green, #22c55e)"/>
-  <text x="780" y="405" text-anchor="middle" font-size="10" fill="var(--text-inverse, #ffffff)">✓ Basic read-only operations</text>
+  <rect x="650" y="385" width="260" height="30" rx="3" fill="#22c55e"/>
+  <text x="780" y="405" text-anchor="middle" font-size="10" fill="#ffffff">✓ Basic read-only operations</text>
   
-  <rect x="650" y="425" width="260" height="30" rx="3" fill="var(--bg-red, #ef4444)"/>
-  <text x="780" y="445" text-anchor="middle" font-size="10" fill="var(--text-inverse, #ffffff)">✗ No writes/updates</text>
+  <rect x="650" y="425" width="260" height="30" rx="3" fill="#ef4444"/>
+  <text x="780" y="445" text-anchor="middle" font-size="10" fill="#ffffff">✗ No writes/updates</text>
   
-  <rect x="650" y="465" width="260" height="30" rx="3" fill="var(--bg-red, #ef4444)"/>
-  <text x="780" y="485" text-anchor="middle" font-size="10" fill="var(--text-inverse, #ffffff)">✗ Static/default responses</text>
+  <rect x="650" y="465" width="260" height="30" rx="3" fill="#ef4444"/>
+  <text x="780" y="485" text-anchor="middle" font-size="10" fill="#ffffff">✗ Static/default responses</text>
   
   <!-- Degradation triggers -->
-  <rect x="70" y="535" width="860" height="40" rx="4" fill="var(--bg-panel, #f1f5f9)" stroke="var(--border-primary, #e2e8f0)" stroke-width="1"/>
-  <text x="500" y="558" text-anchor="middle" font-size="10" fill="var(--text-secondary, #475569)">Triggers: High error rates, timeout spikes, resource exhaustion, circuit breaker open, dependency failures</text>
+  <rect x="70" y="535" width="860" height="40" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="558" text-anchor="middle" font-size="10" fill="#475569">Triggers: High error rates, timeout spikes, resource exhaustion, circuit breaker open, dependency failures</text>
 </svg>

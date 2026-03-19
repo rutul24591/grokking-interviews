@@ -71,7 +71,7 @@
   <line x1="800" y1="307" x2="820" y2="307" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arrRightG)"/>
 
   <!-- Speed indicators -->
-  <text x="830" y="138" text-anchor="middle" font-size="9" fill="#666">&lt; 1ms</text>
+  <text x="830" y="138" text-anchor="middle" font-size="9" fill="#666">&amp;lt; 1ms</text>
   <text x="830" y="238" text-anchor="middle" font-size="9" fill="#666">~1ms</text>
   <text x="830" y="338" text-anchor="middle" font-size="9" fill="#666">~0ms (disk)</text>
 

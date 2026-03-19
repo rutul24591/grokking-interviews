@@ -84,12 +84,12 @@
   <rect x="40" y="326" width="380" height="12" fill="#2f9d74"/>
   <text x="230" y="330" text-anchor="middle" font-size="12" fill="#fff" font-weight="700">During Session</text>
 
-  <text x="60" y="360" font-size="10" fill="#2f9d74" font-weight="600">&#x2713; Permission persists for tab lifetime</text>
-  <text x="60" y="380" font-size="10" fill="#2f9d74" font-weight="600">&#x2713; Multiple reads/writes without re-prompting</text>
-  <text x="60" y="400" font-size="10" fill="#2f9d74" font-weight="600">&#x2713; Handle can be stored in IndexedDB</text>
-  <text x="60" y="420" font-size="10" fill="#555">&#x2022; queryPermission() to check state</text>
-  <text x="60" y="440" font-size="10" fill="#555">&#x2022; Returns: "granted" | "denied" | "prompt"</text>
-  <text x="60" y="460" font-size="10" fill="#555">&#x2022; No prompt if already granted this session</text>
+  <text x="60" y="360" font-size="10" fill="#2f9d74" font-weight="600">&amp;#x2713; Permission persists for tab lifetime</text>
+  <text x="60" y="380" font-size="10" fill="#2f9d74" font-weight="600">&amp;#x2713; Multiple reads/writes without re-prompting</text>
+  <text x="60" y="400" font-size="10" fill="#2f9d74" font-weight="600">&amp;#x2713; Handle can be stored in IndexedDB</text>
+  <text x="60" y="420" font-size="10" fill="#555">&amp;#x2022; queryPermission() to check state</text>
+  <text x="60" y="440" font-size="10" fill="#555">&amp;#x2022; Returns: "granted" | "denied" | "prompt"</text>
+  <text x="60" y="460" font-size="10" fill="#555">&amp;#x2022; No prompt if already granted this session</text>
 
   <!-- Reset box -->
   <rect x="480" y="310" width="380" height="170" rx="8" fill="#fff" stroke="#d97843" stroke-width="1.5"/>
@@ -97,12 +97,12 @@
   <rect x="480" y="326" width="380" height="12" fill="#d97843"/>
   <text x="670" y="330" text-anchor="middle" font-size="12" fill="#fff" font-weight="700">After Page Reload / New Session</text>
 
-  <text x="500" y="360" font-size="10" fill="#d97843" font-weight="600">&#x2717; Permission resets to "prompt"</text>
-  <text x="500" y="380" font-size="10" fill="#d97843" font-weight="600">&#x2717; Must re-request on user gesture</text>
-  <text x="500" y="400" font-size="10" fill="#d97843" font-weight="600">&#x2717; Handle is valid but permission is not</text>
-  <text x="500" y="420" font-size="10" fill="#555">&#x2022; Stored handle in IndexedDB survives reload</text>
-  <text x="500" y="440" font-size="10" fill="#555">&#x2022; Call requestPermission() to re-grant</text>
-  <text x="500" y="460" font-size="10" fill="#555">&#x2022; Persistent permissions API (Chrome 122+)</text>
+  <text x="500" y="360" font-size="10" fill="#d97843" font-weight="600">&amp;#x2717; Permission resets to "prompt"</text>
+  <text x="500" y="380" font-size="10" fill="#d97843" font-weight="600">&amp;#x2717; Must re-request on user gesture</text>
+  <text x="500" y="400" font-size="10" fill="#d97843" font-weight="600">&amp;#x2717; Handle is valid but permission is not</text>
+  <text x="500" y="420" font-size="10" fill="#555">&amp;#x2022; Stored handle in IndexedDB survives reload</text>
+  <text x="500" y="440" font-size="10" fill="#555">&amp;#x2022; Call requestPermission() to re-grant</text>
+  <text x="500" y="460" font-size="10" fill="#555">&amp;#x2022; Persistent permissions API (Chrome 122+)</text>
 
   <!-- Arrow marker -->
   <defs>

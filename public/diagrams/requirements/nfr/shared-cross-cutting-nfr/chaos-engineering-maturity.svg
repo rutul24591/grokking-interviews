@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Chaos Engineering Maturity</text>
+  
+  <!-- Maturity Levels -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="200" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#67b26f">Chaos Engineering Maturity Model</text>
+    
+    <!-- Level 1 -->
+    <rect x="30" y="55" width="140" height="120" rx="4" fill="#d9534f" opacity="0.3"/>
+    <text x="100" y="80" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#d9534f">Level 1</text>
+    <text x="100" y="100" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">Ad Hoc</text>
+    <text x="100" y="125" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Manual testing</text>
+    <text x="100" y="140" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• No automation</text>
+    <text x="100" y="155" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Reactive</text>
+    
+    <!-- Level 2 -->
+    <rect x="185" y="55" width="140" height="120" rx="4" fill="#f0ad4e" opacity="0.3"/>
+    <text x="255" y="80" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#f0ad4e">Level 2</text>
+    <text x="255" y="100" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">Defined</text>
+    <text x="255" y="125" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Scheduled tests</text>
+    <text x="255" y="140" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Basic automation</text>
+    <text x="255" y="155" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Game days</text>
+    
+    <!-- Level 3 -->
+    <rect x="340" y="55" width="140" height="120" rx="4" fill="#67b26f" opacity="0.3"/>
+    <text x="410" y="80" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#67b26f">Level 3</text>
+    <text x="410" y="100" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">Managed</text>
+    <text x="410" y="125" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Automated tests</text>
+    <text x="410" y="140" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• CI/CD integration</text>
+    <text x="410" y="155" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Metrics tracked</text>
+    
+    <!-- Level 4 -->
+    <rect x="495" y="55" width="140" height="120" rx="4" fill="#4a90d9" opacity="0.3"/>
+    <text x="565" y="80" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#4a90d9">Level 4</text>
+    <text x="565" y="100" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">Optimized</text>
+    <text x="565" y="125" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Continuous chaos</text>
+    <text x="565" y="140" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Production tests</text>
+    <text x="565" y="155" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Auto-remediation</text>
+    
+    <!-- Level 5 -->
+    <rect x="650" y="55" width="140" height="120" rx="4" fill="#6f42c1" opacity="0.3"/>
+    <text x="720" y="80" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#6f42c1">Level 5</text>
+    <text x="720" y="100" text-anchor="middle" font-family="system-ui" font-size="10" fill="#e0e0e0">Antifragile</text>
+    <text x="720" y="125" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• System improves</text>
+    <text x="720" y="140" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Chaos-driven</text>
+    <text x="720" y="155" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Self-healing</text>
+  </g>
+  
+  <!-- Experiment Types -->
+  <g transform="translate(50, 310)">
+    <rect x="0" y="0" width="400" height="140" rx="8" fill="#1a2a1a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">Chaos Experiment Types</text>
+    
+    <g transform="translate(20, 55)">
+      <rect x="0" y="0" width="160" height="30" rx="3" fill="#d9534f" opacity="0.4"/>
+      <text x="80" y="20" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Instance Termination</text>
+      
+      <rect x="180" y="0" width="160" height="30" rx="3" fill="#f0ad4e" opacity="0.4"/>
+      <text x="260" y="20" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Network Latency</text>
+      
+      <rect x="0" y="40" width="160" height="30" rx="3" fill="#67b26f" opacity="0.4"/>
+      <text x="80" y="60" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">CPU/Memory Stress</text>
+      
+      <rect x="180" y="40" width="160" height="30" rx="3" fill="#4a90d9" opacity="0.4"/>
+      <text x="260" y="60" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Dependency Failure</text>
+      
+      <rect x="0" y="80" width="340" height="30" rx="3" fill="#6f42c1" opacity="0.4"/>
+      <text x="170" y="100" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Database Failover</text>
+    </g>
+  </g>
+  
+  <!-- Safety Controls -->
+  <g transform="translate(470, 310)">
+    <rect x="0" y="0" width="380" height="140" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Safety Controls</text>
+    
+    <g transform="translate(20, 55)">
+      <circle cx="8" cy="8" r="4" fill="#67b26f"/>
+      <text x="20" y="13" font-family="system-ui" font-size="9" fill="#e0e0e0">Blast radius limits</text>
+      
+      <circle cx="8" cy="28" r="4" fill="#67b26f"/>
+      <text x="20" y="33" font-family="system-ui" font-size="9" fill="#e0e0e0">Automatic abort conditions</text>
+      
+      <circle cx="8" cy="48" r="4" fill="#67b26f"/>
+      <text x="20" y="53" font-family="system-ui" font-size="9" fill="#e0e0e0">Business hours only (initially)</text>
+      
+      <circle cx="8" cy="68" r="4" fill="#f0ad4e"/>
+      <text x="20" y="73" font-family="system-ui" font-size="9" fill="#e0e0e0">Stakeholder notification</text>
+      
+      <circle cx="180" cy="8" r="4" fill="#67b26f"/>
+      <text x="192" y="13" font-family="system-ui" font-size="9" fill="#e0e0e0">Monitoring active</text>
+      
+      <circle cx="180" cy="28" r="4" fill="#67b26f"/>
+      <text x="192" y="33" font-family="system-ui" font-size="9" fill="#e0e0e0">Kill switch ready</text>
+      
+      <circle cx="180" cy="48" r="4" fill="#67b26f"/>
+      <text x="192" y="53" font-family="system-ui" font-size="9" fill="#e0e0e0">Hypothesis defined</text>
+      
+      <circle cx="180" cy="68" r="4" fill="#67b26f"/>
+      <text x="192" y="73" font-family="system-ui" font-size="9" fill="#e0e0e0">Rollback procedure</text>
+    </g>
+  </g>
+</svg>

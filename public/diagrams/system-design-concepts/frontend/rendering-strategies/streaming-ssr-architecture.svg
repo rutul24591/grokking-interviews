@@ -24,25 +24,25 @@
   <!-- Shell HTML (immediate) -->
   <rect x="165" y="130" width="350" height="50" rx="8" fill="#2f9d74"/>
   <text x="340" y="151" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">HTML Shell Sent Immediately</text>
-  <text x="340" y="168" text-anchor="middle" font-size="11" fill="#e8f5f0">&lt;html&gt;&lt;head&gt;...&lt;/head&gt;&lt;body&gt;&lt;div id="root"&gt;</text>
+  <text x="340" y="168" text-anchor="middle" font-size="11" fill="#e8f5f0">&amp;lt;html&amp;gt;&amp;lt;head&amp;gt;...&amp;lt;/head&amp;gt;&amp;lt;body&amp;gt;&amp;lt;div id="root"&amp;gt;</text>
 
   <!-- Suspense Boundary 1 -->
   <rect x="165" y="195" width="350" height="80" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="6,3"/>
   <text x="340" y="218" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="bold">Suspense Boundary 1</text>
-  <text x="340" y="238" text-anchor="middle" font-size="11" fill="#1a1822">fallback: &lt;NavSkeleton /&gt;</text>
-  <text x="340" y="255" text-anchor="middle" font-size="10" fill="#6d5bd0">→ Streams &lt;Nav&gt; when ready (~200ms)</text>
+  <text x="340" y="238" text-anchor="middle" font-size="11" fill="#1a1822">fallback: &amp;lt;NavSkeleton /&amp;gt;</text>
+  <text x="340" y="255" text-anchor="middle" font-size="10" fill="#6d5bd0">→ Streams &amp;lt;Nav&amp;gt; when ready (~200ms)</text>
   <text x="340" y="270" text-anchor="middle" font-size="10" fill="#6d5bd0">→ Injects via script tag out-of-order</text>
 
   <!-- Suspense Boundary 2 -->
   <rect x="165" y="288" width="350" height="80" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="6,3"/>
   <text x="340" y="312" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="bold">Suspense Boundary 2</text>
-  <text x="340" y="332" text-anchor="middle" font-size="11" fill="#1a1822">fallback: &lt;ArticleSkeleton /&gt;</text>
-  <text x="340" y="349" text-anchor="middle" font-size="10" fill="#6d5bd0">→ Streams &lt;Article&gt; when DB returns (~500ms)</text>
+  <text x="340" y="332" text-anchor="middle" font-size="11" fill="#1a1822">fallback: &amp;lt;ArticleSkeleton /&amp;gt;</text>
+  <text x="340" y="349" text-anchor="middle" font-size="10" fill="#6d5bd0">→ Streams &amp;lt;Article&amp;gt; when DB returns (~500ms)</text>
   <text x="340" y="365" text-anchor="middle" font-size="10" fill="#6d5bd0">→ Replaces skeleton in-place</text>
 
   <!-- Closing HTML -->
   <rect x="165" y="380" width="350" height="40" rx="8" fill="#2f9d74" opacity="0.7"/>
-  <text x="340" y="395" text-anchor="middle" font-size="11" fill="#fff">Closing: &lt;/body&gt;&lt;/html&gt;</text>
+  <text x="340" y="395" text-anchor="middle" font-size="11" fill="#fff">Closing: &amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;</text>
   <text x="340" y="410" text-anchor="middle" font-size="10" fill="#fff">Stream ends — JS hydration begins</text>
 
   <!-- Arrow from server to browser -->
