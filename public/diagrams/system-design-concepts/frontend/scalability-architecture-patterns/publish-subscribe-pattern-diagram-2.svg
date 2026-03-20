@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" rx="12" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="2"/>
+
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Observer Pattern vs. Publish-Subscribe Pattern</text>
+
+  <!-- Divider -->
+  <line x1="450" y1="55" x2="450" y2="470" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="8,4"/>
+
+  <!-- LEFT: Observer Pattern -->
+  <text x="225" y="75" text-anchor="middle" font-size="15" font-weight="700" fill="#6d5bd0">Observer Pattern</text>
+  <text x="225" y="95" text-anchor="middle" font-size="11" fill="#1a1822">Direct coupling between subject &amp; observers</text>
+
+  <!-- Subject -->
+  <rect x="120" y="120" width="210" height="70" rx="10" fill="#6d5bd0" stroke="#5a49b5" stroke-width="1.5"/>
+  <text x="225" y="147" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Subject (Observable)</text>
+  <text x="225" y="167" text-anchor="middle" font-size="10" fill="#ffffff">subscribe(), unsubscribe(), notify()</text>
+  <text x="225" y="181" text-anchor="middle" font-size="10" fill="#ffffff">Maintains observer list directly</text>
+
+  <!-- Observer A -->
+  <rect x="40" y="250" width="130" height="50" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="105" y="272" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Observer A</text>
+  <text x="105" y="288" text-anchor="middle" font-size="10" fill="#6d5bd0">update()</text>
+
+  <!-- Observer B -->
+  <rect x="195" y="250" width="130" height="50" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="260" y="272" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Observer B</text>
+  <text x="260" y="288" text-anchor="middle" font-size="10" fill="#6d5bd0">update()</text>
+
+  <!-- Direct arrows from Subject to Observers -->
+  <line x1="180" y1="190" x2="105" y2="250" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  <line x1="270" y1="190" x2="260" y2="250" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowPurple)"/>
+
+  <!-- Coupling indicator -->
+  <rect x="60" y="320" width="290" height="60" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="205" y="340" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Characteristics</text>
+  <text x="205" y="356" text-anchor="middle" font-size="10" fill="#1a1822">Subject knows its observers directly</text>
+  <text x="205" y="370" text-anchor="middle" font-size="10" fill="#1a1822">Synchronous notification by default</text>
+
+  <!-- Coupling label -->
+  <rect x="120" y="400" width="210" height="34" rx="6" fill="#ff9800" stroke="none"/>
+  <text x="225" y="422" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Tightly Coupled</text>
+
+  <!-- RIGHT: Pub-Sub Pattern -->
+  <text x="675" y="75" text-anchor="middle" font-size="15" font-weight="700" fill="#6d5bd0">Publish-Subscribe Pattern</text>
+  <text x="675" y="95" text-anchor="middle" font-size="11" fill="#1a1822">Decoupled via intermediate broker</text>
+
+  <!-- Publisher -->
+  <rect x="490" y="120" width="130" height="50" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="555" y="142" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Publisher</text>
+  <text x="555" y="158" text-anchor="middle" font-size="10" fill="#6d5bd0">emit(topic, data)</text>
+
+  <!-- Event Bus / Broker -->
+  <rect x="620" y="195" width="110" height="60" rx="10" fill="#6d5bd0" stroke="#5a49b5" stroke-width="1.5"/>
+  <text x="675" y="220" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Event Bus</text>
+  <text x="675" y="240" text-anchor="middle" font-size="10" fill="#ffffff">(Broker)</text>
+
+  <!-- Subscriber X -->
+  <rect x="490" y="310" width="130" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="555" y="332" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Subscriber X</text>
+  <text x="555" y="348" text-anchor="middle" font-size="10" fill="#1a1822">on(topic, handler)</text>
+
+  <!-- Subscriber Y -->
+  <rect x="740" y="310" width="130" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="805" y="332" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Subscriber Y</text>
+  <text x="805" y="348" text-anchor="middle" font-size="10" fill="#1a1822">on(topic, handler)</text>
+
+  <!-- Publisher to Broker -->
+  <line x1="555" y1="170" x2="640" y2="195" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowPurple)"/>
+
+  <!-- Publisher second -->
+  <rect x="740" y="120" width="130" height="50" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="805" y="142" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Publisher 2</text>
+  <text x="805" y="158" text-anchor="middle" font-size="10" fill="#6d5bd0">emit(topic, data)</text>
+
+  <line x1="805" y1="170" x2="710" y2="195" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowPurple)"/>
+
+  <!-- Broker to Subscribers -->
+  <line x1="640" y1="255" x2="555" y2="310" stroke="#d7d1e6" stroke-width="2" marker-end="url(#arrowGray)"/>
+  <line x1="710" y1="255" x2="805" y2="310" stroke="#d7d1e6" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+  <!-- No-knowledge indicators -->
+  <rect x="510" y="380" width="290" height="60" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="655" y="400" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Characteristics</text>
+  <text x="655" y="416" text-anchor="middle" font-size="10" fill="#1a1822">Publishers and subscribers are unaware of each other</text>
+  <text x="655" y="430" text-anchor="middle" font-size="10" fill="#1a1822">Asynchronous, topic-based routing</text>
+
+  <!-- Decoupled label -->
+  <rect x="570" y="455" width="210" height="34" rx="6" fill="#4caf50" stroke="none"/>
+  <text x="675" y="477" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Fully Decoupled</text>
+
+  <!-- Bottom comparison callout -->
+  <rect x="60" y="450" width="320" height="34" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="220" y="472" text-anchor="middle" font-size="10" fill="#1a1822">e.g., React setState callbacks, EventTarget listeners</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowPurple" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#d7d1e6"/>
+    </marker>
+  </defs>
+</svg>

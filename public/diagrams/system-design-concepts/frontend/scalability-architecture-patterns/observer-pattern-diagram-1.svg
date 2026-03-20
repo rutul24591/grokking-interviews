@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="38" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Subject-Observer Notification Flow</text>
+
+  <!-- Subject Box -->
+  <rect x="60" y="70" width="260" height="380" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <rect x="60" y="70" width="260" height="44" rx="10" fill="#6d5bd0"/>
+  <rect x="60" y="100" width="260" height="14" fill="#6d5bd0"/>
+  <text x="190" y="98" text-anchor="middle" font-size="15" font-weight="bold" fill="#ffffff">Subject (Observable)</text>
+
+  <!-- Subject state -->
+  <rect x="80" y="130" width="220" height="50" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="190" y="150" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Internal State</text>
+  <text x="190" y="168" text-anchor="middle" font-size="11" fill="#1a1822">{ count: 0, status: "idle" }</text>
+
+  <!-- Observer list -->
+  <rect x="80" y="195" width="220" height="110" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="190" y="215" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Observer List (Set)</text>
+  <text x="100" y="238" font-size="11" fill="#1a1822">0: Observer A (callback)</text>
+  <text x="100" y="258" font-size="11" fill="#1a1822">1: Observer B (callback)</text>
+  <text x="100" y="278" font-size="11" fill="#1a1822">2: Observer C (callback)</text>
+  <text x="100" y="295" font-size="10" fill="#6d5bd0">this.observers = new Set()</text>
+
+  <!-- Subject methods -->
+  <rect x="80" y="320" width="220" height="115" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="190" y="340" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Methods</text>
+  <text x="100" y="360" font-size="11" fill="#1a1822">subscribe(observer)</text>
+  <text x="100" y="378" font-size="11" fill="#1a1822">unsubscribe(observer)</text>
+  <text x="100" y="396" font-size="11" fill="#1a1822">notify()</text>
+  <text x="100" y="414" font-size="10" fill="#6d5bd0">setState(newState)</text>
+  <text x="100" y="428" font-size="9" fill="#1a1822">  -&gt; updates state, calls notify()</text>
+
+  <!-- State Change Trigger -->
+  <rect x="110" y="460" width="160" height="28" rx="14" fill="#6d5bd0"/>
+  <text x="190" y="479" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">setState({ count: 1 })</text>
+
+  <!-- Arrow from setState up to notify -->
+  <line x1="190" y1="460" x2="190" y2="440" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Notification arrows -->
+  <!-- Arrow to Observer A -->
+  <line x1="320" y1="238" x2="520" y2="120" stroke="#6d5bd0" stroke-width="2"/>
+  <polygon points="520,120 510,125 512,115" fill="#6d5bd0"/>
+  <text x="410" y="165" text-anchor="middle" font-size="10" fill="#6d5bd0" transform="rotate(-18,410,165)">notify(state)</text>
+
+  <!-- Arrow to Observer B -->
+  <line x1="320" y1="260" x2="520" y2="265" stroke="#6d5bd0" stroke-width="2"/>
+  <polygon points="520,265 510,260 510,270" fill="#6d5bd0"/>
+  <text x="420" y="252" text-anchor="middle" font-size="10" fill="#6d5bd0">notify(state)</text>
+
+  <!-- Arrow to Observer C -->
+  <line x1="320" y1="278" x2="520" y2="405" stroke="#6d5bd0" stroke-width="2"/>
+  <polygon points="520,405 510,400 512,410" fill="#6d5bd0"/>
+  <text x="410" y="360" text-anchor="middle" font-size="10" fill="#6d5bd0" transform="rotate(18,410,360)">notify(state)</text>
+
+  <!-- Observer A -->
+  <rect x="530" y="80" width="200" height="90" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <rect x="530" y="80" width="200" height="32" rx="8" fill="#6d5bd0"/>
+  <rect x="530" y="100" width="200" height="12" fill="#6d5bd0"/>
+  <text x="630" y="102" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">Observer A</text>
+  <text x="550" y="132" font-size="11" fill="#1a1822">update(state) {</text>
+  <text x="560" y="148" font-size="10" fill="#6d5bd0">renderDashboard(state)</text>
+  <text x="550" y="162" font-size="11" fill="#1a1822">}</text>
+
+  <!-- Observer B -->
+  <rect x="530" y="225" width="200" height="90" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <rect x="530" y="225" width="200" height="32" rx="8" fill="#6d5bd0"/>
+  <rect x="530" y="245" width="200" height="12" fill="#6d5bd0"/>
+  <text x="630" y="247" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">Observer B</text>
+  <text x="550" y="277" font-size="11" fill="#1a1822">update(state) {</text>
+  <text x="560" y="293" font-size="10" fill="#6d5bd0">logAnalytics(state)</text>
+  <text x="550" y="307" font-size="11" fill="#1a1822">}</text>
+
+  <!-- Observer C -->
+  <rect x="530" y="365" width="200" height="90" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <rect x="530" y="365" width="200" height="32" rx="8" fill="#6d5bd0"/>
+  <rect x="530" y="385" width="200" height="12" fill="#6d5bd0"/>
+  <text x="630" y="387" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">Observer C</text>
+  <text x="550" y="417" font-size="11" fill="#1a1822">update(state) {</text>
+  <text x="560" y="433" font-size="10" fill="#6d5bd0">syncToServer(state)</text>
+  <text x="550" y="447" font-size="11" fill="#1a1822">}</text>
+
+  <!-- Reaction labels on right -->
+  <rect x="755" y="100" width="120" height="50" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="815" y="120" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Side Effect</text>
+  <text x="815" y="138" text-anchor="middle" font-size="10" fill="#1a1822">UI Re-render</text>
+
+  <rect x="755" y="245" width="120" height="50" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="815" y="265" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Side Effect</text>
+  <text x="815" y="283" text-anchor="middle" font-size="10" fill="#1a1822">Analytics Event</text>
+
+  <rect x="755" y="385" width="120" height="50" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="815" y="405" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Side Effect</text>
+  <text x="815" y="423" text-anchor="middle" font-size="10" fill="#1a1822">Network Request</text>
+
+  <!-- Connecting arrows to side effects -->
+  <line x1="730" y1="125" x2="755" y2="125" stroke="#d7d1e6" stroke-width="1.5"/>
+  <polygon points="755,125 748,121 748,129" fill="#d7d1e6"/>
+  <line x1="730" y1="270" x2="755" y2="270" stroke="#d7d1e6" stroke-width="1.5"/>
+  <polygon points="755,270 748,266 748,274" fill="#d7d1e6"/>
+  <line x1="730" y1="410" x2="755" y2="410" stroke="#d7d1e6" stroke-width="1.5"/>
+  <polygon points="755,410 748,406 748,414" fill="#d7d1e6"/>
+</svg>

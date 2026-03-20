@@ -26,9 +26,20 @@ export default function CredentialRotationArticle() {
         <p>
           <strong>Credential Rotation</strong> is the practice of periodically changing 
           authentication credentials (passwords, tokens, keys) to limit the impact of 
-          compromised credentials. It is a fundamental security practice for protecting 
+          compromised credentials. It is a fundamental security practice for protecting
           user accounts and system access.
         </p>
+        <p>
+          For staff and principal engineers, implementing credential rotation requires
+          understanding password policies, token rotation, key rotation, and security
+          best practices. The implementation must balance security with usability.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/credential-rotation-flow.svg"
+          alt="Credential Rotation Flow"
+          caption="Credential Rotation — showing password, token, and key rotation patterns"
+        />
       </section>
 
       <section>
@@ -43,6 +54,13 @@ export default function CredentialRotationArticle() {
 
       <section>
         <h2>Token Rotation</h2>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/token-rotation.svg"
+          alt="Token Rotation"
+          caption="Token Rotation — showing refresh token rotation, reuse detection, and family revocation"
+        />
+
         <ul className="space-y-3">
           <li><strong>Refresh Tokens:</strong> New token on each use.</li>
           <li><strong>Reuse Detection:</strong> If old token used, revoke all.</li>
@@ -60,7 +78,30 @@ export default function CredentialRotationArticle() {
       </section>
 
       <section>
+        <h2>References</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://pages.nist.gov/800-63-3/sp800-63b.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              NIST SP 800-63B - Digital Identity Guidelines
+            </a>
+          </li>
+          <li>
+            <a href="https://www.rfc-editor.org/rfc/rfc6749" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              RFC 6749 - OAuth 2.0 Authorization Framework
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section>
         <h2>Common Interview Questions</h2>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/credential-rotation-security.svg"
+          alt="Credential Rotation Security"
+          caption="Security — showing rotation policies, expiry handling, and compromise detection"
+        />
+
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: Should passwords expire?</p>

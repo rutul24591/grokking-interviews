@@ -44,6 +44,12 @@ export default function AuthenticationServiceArticle() {
           architecture must support gradual rollout of new methods, A/B testing, and graceful 
           degradation during incidents.
         </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/authentication-service-architecture.svg"
+          alt="Authentication Service Architecture"
+          caption="Auth Service — showing credential validation, token issuance, session management, and scaling"
+        />
       </section>
 
       <section>
@@ -137,6 +143,13 @@ export default function AuthenticationServiceArticle() {
 
       <section>
         <h2>Token Management</h2>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/token-management.svg"
+          alt="Token Management"
+          caption="Token Management — showing JWT structure, refresh tokens, and token rotation"
+        />
+
         <p>
           Proper token handling is critical for security and user experience.
         </p>
@@ -232,7 +245,35 @@ export default function AuthenticationServiceArticle() {
       </section>
 
       <section>
+        <h2>References</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://pages.nist.gov/800-63-3/sp800-63b.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              NIST SP 800-63B - Digital Identity Guidelines
+            </a>
+          </li>
+          <li>
+            <a href="https://www.rfc-editor.org/rfc/rfc6749" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              RFC 6749 - OAuth 2.0 Authorization Framework
+            </a>
+          </li>
+          <li>
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OWASP Authentication Cheat Sheet
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section>
         <h2>Common Interview Questions</h2>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/auth-scalability.svg"
+          alt="Authentication Service Scalability"
+          caption="Scalability — showing horizontal scaling, Redis Cluster, and multi-region deployment"
+        />
+
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you design an authentication service for 100M users?</p>

@@ -1,0 +1,90 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <rect width="900" height="520" rx="8" fill="#f3f1f8"/>
+
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="bold" fill="#1a1822">IIFE vs ES Module Scope Boundaries</text>
+
+  <!-- IIFE Side -->
+  <text x="225" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" fill="#6d5bd0">IIFE Module Pattern</text>
+
+  <!-- Global Scope Box -->
+  <rect x="30" y="80" width="390" height="420" rx="10" fill="none" stroke="#c44d4d" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="50" y="100" font-family="system-ui, sans-serif" font-size="12" fill="#c44d4d" font-weight="bold">Global Scope (window)</text>
+
+  <!-- IIFE Closure -->
+  <rect x="50" y="110" width="350" height="280" rx="8" fill="#6d5bd0" fill-opacity="0.1" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="70" y="132" font-family="system-ui, sans-serif" font-size="13" fill="#6d5bd0" font-weight="bold">(function() { ... })()</text>
+
+  <!-- Private variables -->
+  <rect x="70" y="145" width="310" height="100" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="85" y="167" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#1a1822">Private (Closure Scope)</text>
+  <text x="85" y="188" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">let _count = 0;</text>
+  <text x="85" y="206" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">const _cache = new Map();</text>
+  <text x="85" y="224" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">function _validate(v) { ... }</text>
+
+  <!-- Lock icon for private -->
+  <rect x="330" y="152" width="38" height="24" rx="4" fill="#c44d4d"/>
+  <text x="349" y="169" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#ffffff" font-weight="bold">LOCK</text>
+
+  <!-- Returned public API -->
+  <rect x="70" y="260" width="310" height="110" rx="6" fill="#ffffff" stroke="#2f9d74" stroke-width="2"/>
+  <text x="85" y="282" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#2f9d74">Public API (returned object)</text>
+  <text x="85" y="303" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">return {</text>
+  <text x="100" y="321" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">increment: function() { _count++; },</text>
+  <text x="100" y="339" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">getCount: function() { return _count; },</text>
+  <text x="85" y="357" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">};</text>
+
+  <!-- Arrow showing return -->
+  <line x1="225" y1="395" x2="225" y2="440" stroke="#2f9d74" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <rect x="120" y="445" width="210" height="35" rx="6" fill="#2f9d74" stroke="#248a64" stroke-width="1.5"/>
+  <text x="225" y="467" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#ffffff">window.MyModule = {...}</text>
+
+  <!-- ES Module Side -->
+  <text x="675" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" fill="#6d5bd0">ES Module (ESM)</text>
+
+  <!-- Module Scope Box -->
+  <rect x="480" y="80" width="390" height="420" rx="10" fill="none" stroke="#2f9d74" stroke-width="2"/>
+  <text x="500" y="100" font-family="system-ui, sans-serif" font-size="12" fill="#2f9d74" font-weight="bold">Module Scope (file-level isolation)</text>
+
+  <!-- Module-private variables -->
+  <rect x="500" y="110" width="350" height="100" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="515" y="132" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#1a1822">Module-Private (not exported)</text>
+  <text x="515" y="153" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">let _count = 0;</text>
+  <text x="515" y="171" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">const _cache = new Map();</text>
+  <text x="515" y="189" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">function _validate(v) { ... }</text>
+
+  <!-- Lock icon for module-private -->
+  <rect x="800" y="117" width="38" height="24" rx="4" fill="#c44d4d"/>
+  <text x="819" y="134" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#ffffff" font-weight="bold">LOCK</text>
+
+  <!-- Named exports -->
+  <rect x="500" y="225" width="350" height="90" rx="6" fill="#ffffff" stroke="#2f9d74" stroke-width="2"/>
+  <text x="515" y="247" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#2f9d74">Named Exports</text>
+  <text x="515" y="268" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">export function increment() { _count++; }</text>
+  <text x="515" y="286" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">export function getCount() { return _count; }</text>
+  <text x="515" y="304" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">export const MAX = 100;</text>
+
+  <!-- Import side -->
+  <rect x="500" y="335" width="350" height="70" rx="6" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="515" y="357" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#6d5bd0">Consumer (another module)</text>
+  <text x="515" y="378" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">import { increment, getCount } from './counter.js';</text>
+  <text x="515" y="393" font-family="system-ui, sans-serif" font-size="11" fill="#888888">// _count, _cache, _validate are inaccessible</text>
+
+  <!-- Arrow from exports to consumer -->
+  <line x1="675" y1="315" x2="675" y2="335" stroke="#2f9d74" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+  <!-- Key takeaway -->
+  <rect x="500" y="420" width="350" height="65" rx="6" fill="#6d5bd0" fill-opacity="0.08" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="515" y="442" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#6d5bd0">Key Difference</text>
+  <text x="515" y="458" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">ESM: scope isolation by language spec, static analysis,</text>
+  <text x="515" y="473" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">tree-shakeable. IIFE: scope via closure, runtime only.</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

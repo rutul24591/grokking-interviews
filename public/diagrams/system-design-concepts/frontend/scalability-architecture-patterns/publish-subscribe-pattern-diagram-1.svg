@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" rx="12" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="2"/>
+
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Publish-Subscribe with Central Event Bus</text>
+
+  <!-- Publishers -->
+  <text x="95" y="75" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">Publishers</text>
+
+  <rect x="30" y="90" width="130" height="50" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="95" y="112" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Auth Module</text>
+  <text x="95" y="128" text-anchor="middle" font-size="10" fill="#6d5bd0">user:login</text>
+
+  <rect x="30" y="165" width="130" height="50" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="95" y="187" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Cart Module</text>
+  <text x="95" y="203" text-anchor="middle" font-size="10" fill="#6d5bd0">cart:updated</text>
+
+  <rect x="30" y="240" width="130" height="50" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="95" y="262" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Search Module</text>
+  <text x="95" y="278" text-anchor="middle" font-size="10" fill="#6d5bd0">search:query</text>
+
+  <rect x="30" y="315" width="130" height="50" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="95" y="337" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Settings Module</text>
+  <text x="95" y="353" text-anchor="middle" font-size="10" fill="#6d5bd0">theme:changed</text>
+
+  <!-- Event Bus -->
+  <rect x="310" y="80" width="280" height="320" rx="12" fill="#6d5bd0" stroke="#5a49b5" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff">Event Bus</text>
+  <line x1="330" y1="120" x2="570" y2="120" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1"/>
+
+  <!-- Topic queues inside event bus -->
+  <rect x="330" y="135" width="240" height="36" rx="6" fill="#ffffff" fill-opacity="0.15" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1"/>
+  <text x="450" y="158" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Topic: user:*</text>
+
+  <rect x="330" y="185" width="240" height="36" rx="6" fill="#ffffff" fill-opacity="0.15" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1"/>
+  <text x="450" y="208" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Topic: cart:*</text>
+
+  <rect x="330" y="235" width="240" height="36" rx="6" fill="#ffffff" fill-opacity="0.15" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1"/>
+  <text x="450" y="258" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Topic: search:*</text>
+
+  <rect x="330" y="285" width="240" height="36" rx="6" fill="#ffffff" fill-opacity="0.15" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1"/>
+  <text x="450" y="308" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Topic: theme:*</text>
+
+  <rect x="340" y="340" width="220" height="44" rx="6" fill="#ffffff" fill-opacity="0.1" stroke="#ffffff" stroke-opacity="0.2" stroke-width="1"/>
+  <text x="450" y="358" text-anchor="middle" font-size="10" fill="#ffffff">Handles subscription registry,</text>
+  <text x="450" y="373" text-anchor="middle" font-size="10" fill="#ffffff">topic matching &amp; message routing</text>
+
+  <!-- Subscribers -->
+  <text x="780" y="75" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">Subscribers</text>
+
+  <rect x="700" y="90" width="170" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="785" y="112" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Navbar Component</text>
+  <text x="785" y="128" text-anchor="middle" font-size="10" fill="#1a1822">listens: user:*, cart:*</text>
+
+  <rect x="700" y="165" width="170" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="785" y="187" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Analytics Service</text>
+  <text x="785" y="203" text-anchor="middle" font-size="10" fill="#1a1822">listens: user:*, search:*</text>
+
+  <rect x="700" y="240" width="170" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="785" y="262" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Theme Provider</text>
+  <text x="785" y="278" text-anchor="middle" font-size="10" fill="#1a1822">listens: theme:*</text>
+
+  <rect x="700" y="315" width="170" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="785" y="337" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Recommendations</text>
+  <text x="785" y="353" text-anchor="middle" font-size="10" fill="#1a1822">listens: cart:*, search:*</text>
+
+  <!-- Arrows: Publishers to Event Bus -->
+  <line x1="160" y1="115" x2="310" y2="153" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+  <line x1="160" y1="190" x2="310" y2="203" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+  <line x1="160" y1="265" x2="310" y2="253" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+  <line x1="160" y1="340" x2="310" y2="303" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+
+  <!-- Arrows: Event Bus to Subscribers -->
+  <line x1="590" y1="153" x2="700" y2="115" stroke="#d7d1e6" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <line x1="590" y1="203" x2="700" y2="115" stroke="#d7d1e6" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowGray)"/>
+  <line x1="590" y1="153" x2="700" y2="190" stroke="#d7d1e6" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowGray)"/>
+  <line x1="590" y1="253" x2="700" y2="190" stroke="#d7d1e6" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <line x1="590" y1="303" x2="700" y2="265" stroke="#d7d1e6" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <line x1="590" y1="203" x2="700" y2="340" stroke="#d7d1e6" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <line x1="590" y1="253" x2="700" y2="340" stroke="#d7d1e6" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowGray)"/>
+
+  <!-- Legend -->
+  <rect x="30" y="420" width="840" height="60" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="50" y="445" font-size="11" font-weight="600" fill="#1a1822">Key:</text>
+  <line x1="90" y1="442" x2="130" y2="442" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  <text x="140" y="446" font-size="11" fill="#1a1822">publish(topic, data)</text>
+  <line x1="310" y1="442" x2="350" y2="442" stroke="#d7d1e6" stroke-width="2" marker-end="url(#arrowGray)"/>
+  <text x="360" y="446" font-size="11" fill="#1a1822">route to subscriber</text>
+  <line x1="530" y1="442" x2="570" y2="442" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrowGray)"/>
+  <text x="580" y="446" font-size="11" fill="#1a1822">wildcard topic match</text>
+  <text x="50" y="468" font-size="10" fill="#6d5bd0">Publishers have no knowledge of subscribers. The event bus handles all routing based on topic subscriptions.</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowPurple" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#d7d1e6"/>
+    </marker>
+  </defs>
+</svg>

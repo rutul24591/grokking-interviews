@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" rx="12" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="2"/>
+
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Lazy Initialization Access Flow</text>
+
+  <!-- Caller A -->
+  <rect x="30" y="70" width="130" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="95" y="100" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">Caller A</text>
+
+  <!-- Caller B -->
+  <rect x="30" y="200" width="130" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="95" y="230" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">Caller B</text>
+
+  <!-- Caller C -->
+  <rect x="30" y="330" width="130" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="95" y="360" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">Caller C</text>
+
+  <!-- getInstance() box -->
+  <rect x="240" y="140" width="180" height="120" rx="10" fill="#6d5bd0" stroke="#5a49b5" stroke-width="1.5"/>
+  <text x="330" y="175" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">getInstance()</text>
+  <line x1="260" y1="190" x2="400" y2="190" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1"/>
+  <text x="330" y="215" text-anchor="middle" font-size="11" fill="#ffffff">if (instance === null)</text>
+  <text x="330" y="235" text-anchor="middle" font-size="11" fill="#ffffff">  instance = new Singleton()</text>
+  <text x="330" y="250" text-anchor="middle" font-size="11" fill="#ffffff">return instance</text>
+
+  <!-- Arrows from callers to getInstance -->
+  <line x1="160" y1="95" x2="240" y2="175" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+  <line x1="160" y1="225" x2="240" y2="200" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+  <line x1="160" y1="355" x2="240" y2="245" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+
+  <!-- Decision diamond area - First call -->
+  <rect x="500" y="60" width="370" height="170" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="685" y="85" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">First Access (Caller A)</text>
+
+  <rect x="520" y="100" width="160" height="40" rx="6" fill="#6d5bd0" stroke="none"/>
+  <text x="600" y="125" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">instance === null?</text>
+  <text x="695" y="118" font-size="11" font-weight="700" fill="#1a1822">YES</text>
+
+  <rect x="520" y="155" width="160" height="40" rx="6" fill="#4caf50" stroke="none"/>
+  <text x="600" y="178" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Create new instance</text>
+
+  <line x1="600" y1="140" x2="600" y2="155" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrowDark)"/>
+
+  <rect x="710" y="155" width="140" height="40" rx="6" fill="#6d5bd0" stroke="none"/>
+  <text x="780" y="173" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Store in private</text>
+  <text x="780" y="187" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">static field</text>
+
+  <line x1="680" y1="175" x2="710" y2="175" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrowDark)"/>
+
+  <!-- Arrow from getInstance to first call -->
+  <line x1="420" y1="180" x2="500" y2="140" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+
+  <!-- Subsequent calls -->
+  <rect x="500" y="260" width="370" height="120" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="685" y="285" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Subsequent Access (Caller B, C)</text>
+
+  <rect x="520" y="300" width="160" height="40" rx="6" fill="#6d5bd0" stroke="none"/>
+  <text x="600" y="325" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">instance === null?</text>
+  <text x="695" y="318" font-size="11" font-weight="700" fill="#1a1822">NO</text>
+
+  <rect x="710" y="300" width="140" height="40" rx="6" fill="#ff9800" stroke="none"/>
+  <text x="780" y="318" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Return existing</text>
+  <text x="780" y="332" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">instance</text>
+
+  <line x1="680" y1="320" x2="710" y2="320" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrowDark)"/>
+
+  <!-- Arrow from getInstance to subsequent -->
+  <line x1="420" y1="220" x2="500" y2="300" stroke="#d7d1e6" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+
+  <!-- Same reference note -->
+  <rect x="520" y="400" width="340" height="50" rx="8" fill="#e8f5e9" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="690" y="422" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">All callers receive the exact same object reference</text>
+  <text x="690" y="440" text-anchor="middle" font-size="11" fill="#1a1822">callerA.ref === callerB.ref === callerC.ref</text>
+
+  <!-- Key -->
+  <rect x="30" y="430" width="12" height="12" rx="2" fill="#4caf50"/>
+  <text x="48" y="441" font-size="11" fill="#1a1822">Created once</text>
+  <rect x="140" y="430" width="12" height="12" rx="2" fill="#ff9800"/>
+  <text x="158" y="441" font-size="11" fill="#1a1822">Reused on subsequent calls</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowPurple" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowDark" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#1a1822"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#d7d1e6"/>
+    </marker>
+  </defs>
+</svg>

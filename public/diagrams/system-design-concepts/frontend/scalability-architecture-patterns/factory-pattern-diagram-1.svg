@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500" role="img" aria-label="Abstract Factory: Creator-Product Hierarchy">
+  <rect width="900" height="500" rx="16" fill="#f3f1f8" />
+
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="20" font-weight="700">Abstract Factory: Creator-Product Hierarchy</text>
+
+  <!-- Abstract Factory box -->
+  <rect x="325" y="56" width="250" height="54" rx="10" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="2" />
+  <text x="450" y="78" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="600">&lt;&lt;Abstract Factory&gt;&gt;</text>
+  <text x="450" y="98" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="14" font-weight="700">UIComponentFactory</text>
+
+  <!-- Dashed lines from abstract factory down to concrete factories -->
+  <line x1="370" y1="110" x2="155" y2="150" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="6,4" />
+  <line x1="450" y1="110" x2="450" y2="150" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="6,4" />
+  <line x1="530" y1="110" x2="745" y2="150" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="6,4" />
+
+  <!-- Concrete Factory: Light Theme -->
+  <rect x="40" y="150" width="230" height="50" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
+  <text x="155" y="172" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">LightThemeFactory</text>
+  <text x="155" y="190" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="11">createButton() | createInput() | createCard()</text>
+
+  <!-- Concrete Factory: Dark Theme -->
+  <rect x="335" y="150" width="230" height="50" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
+  <text x="450" y="172" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">DarkThemeFactory</text>
+  <text x="450" y="190" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="11">createButton() | createInput() | createCard()</text>
+
+  <!-- Concrete Factory: High Contrast -->
+  <rect x="630" y="150" width="230" height="50" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
+  <text x="745" y="172" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">HighContrastFactory</text>
+  <text x="745" y="190" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="11">createButton() | createInput() | createCard()</text>
+
+  <!-- Arrows from factories to product rows -->
+  <line x1="155" y1="200" x2="155" y2="240" stroke="#d7d1e6" stroke-width="1.5" marker-end="url(#arrowGray)" />
+  <line x1="450" y1="200" x2="450" y2="240" stroke="#d7d1e6" stroke-width="1.5" marker-end="url(#arrowGray)" />
+  <line x1="745" y1="200" x2="745" y2="240" stroke="#d7d1e6" stroke-width="1.5" marker-end="url(#arrowGray)" />
+
+  <!-- Column headers -->
+  <text x="155" y="234" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Light Products</text>
+  <text x="450" y="234" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Dark Products</text>
+  <text x="745" y="234" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">High Contrast Products</text>
+
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrowGray" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#d7d1e6" />
+    </marker>
+    <marker id="arrowPurple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#6d5bd0" />
+    </marker>
+  </defs>
+
+  <!-- Light Theme Products -->
+  <rect x="55" y="250" width="200" height="44" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="95" y="268" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="18">&#9744;</text>
+  <text x="115" y="268" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="600">LightButton</text>
+  <text x="155" y="286" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10">bg: #fff, border: #d7d1e6</text>
+
+  <rect x="55" y="304" width="200" height="44" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="115" y="322" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="600">LightInput</text>
+  <text x="155" y="340" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10">bg: #f3f1f8, text: #1a1822</text>
+
+  <rect x="55" y="358" width="200" height="44" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="115" y="376" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="600">LightCard</text>
+  <text x="155" y="394" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10">shadow: soft, radius: 12</text>
+
+  <!-- Dark Theme Products -->
+  <rect x="350" y="250" width="200" height="44" rx="8" fill="#1a1822" stroke="#6d5bd0" stroke-width="1.5" />
+  <text x="410" y="268" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="600">DarkButton</text>
+  <text x="450" y="286" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="10">bg: #6d5bd0, text: #fff</text>
+
+  <rect x="350" y="304" width="200" height="44" rx="8" fill="#1a1822" stroke="#6d5bd0" stroke-width="1.5" />
+  <text x="410" y="322" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="600">DarkInput</text>
+  <text x="450" y="340" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="10">bg: #2a2730, text: #f3f1f8</text>
+
+  <rect x="350" y="358" width="200" height="44" rx="8" fill="#1a1822" stroke="#6d5bd0" stroke-width="1.5" />
+  <text x="410" y="376" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="600">DarkCard</text>
+  <text x="450" y="394" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="10">shadow: none, radius: 12</text>
+
+  <!-- High Contrast Products -->
+  <rect x="645" y="250" width="200" height="44" rx="8" fill="#000000" stroke="#ffffff" stroke-width="2" />
+  <text x="705" y="268" fill="#ffff00" font-family="system-ui, sans-serif" font-size="13" font-weight="600">HCButton</text>
+  <text x="745" y="286" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="10">bg: #000, border: 3px #fff</text>
+
+  <rect x="645" y="304" width="200" height="44" rx="8" fill="#000000" stroke="#ffffff" stroke-width="2" />
+  <text x="705" y="322" fill="#ffff00" font-family="system-ui, sans-serif" font-size="13" font-weight="600">HCInput</text>
+  <text x="745" y="340" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="10">bg: #000, text: #ffff00</text>
+
+  <rect x="645" y="358" width="200" height="44" rx="8" fill="#000000" stroke="#ffffff" stroke-width="2" />
+  <text x="705" y="376" fill="#ffff00" font-family="system-ui, sans-serif" font-size="13" font-weight="600">HCCard</text>
+  <text x="745" y="394" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="10">shadow: none, border: 3px</text>
+
+  <!-- Product interface labels on left -->
+  <text x="32" y="276" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="11" font-weight="600" transform="rotate(-90, 32, 276)">Button</text>
+  <text x="32" y="330" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="11" font-weight="600" transform="rotate(-90, 32, 330)">Input</text>
+  <text x="32" y="384" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="11" font-weight="600" transform="rotate(-90, 32, 384)">Card</text>
+
+  <!-- Legend -->
+  <rect x="250" y="430" width="400" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1" />
+  <rect x="270" y="446" width="14" height="14" rx="3" fill="#6d5bd0" />
+  <text x="290" y="457" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Abstract Creator</text>
+  <rect x="400" y="446" width="14" height="14" rx="3" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5" />
+  <text x="420" y="457" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Concrete Factory</text>
+  <line x1="530" y1="453" x2="560" y2="453" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="6,4" />
+  <text x="566" y="457" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Implements</text>
+</svg>

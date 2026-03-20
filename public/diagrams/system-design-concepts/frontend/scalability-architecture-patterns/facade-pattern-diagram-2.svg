@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500" role="img" aria-label="Unified API facade abstracting REST, GraphQL, and WebSocket protocols">
+  <rect width="900" height="500" rx="18" fill="#f3f1f8" />
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#1a1822">API Facade: Unified Protocol Abstraction</text>
+
+  <!-- UI Components Row -->
+  <rect x="80" y="65" width="120" height="50" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="140" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1a1822">Dashboard</text>
+  <rect x="230" y="65" width="120" height="50" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="290" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1a1822">Profile Page</text>
+  <rect x="380" y="65" width="120" height="50" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="440" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1a1822">Chat Widget</text>
+  <rect x="530" y="65" width="120" height="50" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="590" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1a1822">Analytics</text>
+  <rect x="680" y="65" width="120" height="50" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="740" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1a1822">Settings</text>
+
+  <text x="450" y="58" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#6d5bd0">UI Components</text>
+
+  <!-- Arrows down to facade -->
+  <line x1="140" y1="115" x2="140" y2="160" stroke="#d7d1e6" stroke-width="1.5" />
+  <line x1="290" y1="115" x2="290" y2="160" stroke="#d7d1e6" stroke-width="1.5" />
+  <line x1="440" y1="115" x2="440" y2="160" stroke="#d7d1e6" stroke-width="1.5" />
+  <line x1="590" y1="115" x2="590" y2="160" stroke="#d7d1e6" stroke-width="1.5" />
+  <line x1="740" y1="115" x2="740" y2="160" stroke="#d7d1e6" stroke-width="1.5" />
+
+  <!-- API Facade Band -->
+  <rect x="50" y="160" width="800" height="100" rx="14" fill="#6d5bd0" />
+  <text x="450" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="17" font-weight="700" fill="#ffffff">API Facade Layer</text>
+  <rect x="80" y="202" width="150" height="32" rx="6" fill="#ffffff" opacity="0.2" />
+  <text x="155" y="223" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#ffffff" font-weight="600">Request Normalization</text>
+  <rect x="250" y="202" width="120" height="32" rx="6" fill="#ffffff" opacity="0.2" />
+  <text x="310" y="223" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#ffffff" font-weight="600">Error Mapping</text>
+  <rect x="390" y="202" width="120" height="32" rx="6" fill="#ffffff" opacity="0.2" />
+  <text x="450" y="223" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#ffffff" font-weight="600">Auth Injection</text>
+  <rect x="530" y="202" width="140" height="32" rx="6" fill="#ffffff" opacity="0.2" />
+  <text x="600" y="223" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#ffffff" font-weight="600">Response Caching</text>
+  <rect x="690" y="202" width="130" height="32" rx="6" fill="#ffffff" opacity="0.2" />
+  <text x="755" y="223" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#ffffff" font-weight="600">Type Conversion</text>
+
+  <!-- Arrows down to protocols -->
+  <line x1="200" y1="260" x2="200" y2="310" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr2)" />
+  <line x1="450" y1="260" x2="450" y2="310" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr2)" />
+  <line x1="700" y1="260" x2="700" y2="310" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr2)" />
+
+  <text x="200" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1a1822" font-weight="600">HTTP</text>
+  <text x="450" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1a1822" font-weight="600">POST /graphql</text>
+  <text x="700" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1a1822" font-weight="600">ws://</text>
+
+  <!-- Protocol Boxes -->
+  <rect x="100" y="310" width="200" height="90" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="200" y="338" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1a1822">REST APIs</text>
+  <text x="200" y="358" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6d5bd0">GET /api/users/:id</text>
+  <text x="200" y="374" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6d5bd0">POST /api/settings</text>
+  <text x="200" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6d5bd0">PATCH /api/profile</text>
+
+  <rect x="350" y="310" width="200" height="90" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="450" y="338" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1a1822">GraphQL</text>
+  <text x="450" y="358" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6d5bd0">query { dashboard }</text>
+  <text x="450" y="374" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6d5bd0">mutation { update }</text>
+  <text x="450" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6d5bd0">subscription { feed }</text>
+
+  <rect x="600" y="310" width="200" height="90" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="700" y="338" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1a1822">WebSocket</text>
+  <text x="700" y="358" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6d5bd0">Real-time messages</text>
+  <text x="700" y="374" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6d5bd0">Heartbeat &amp; reconnect</text>
+  <text x="700" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6d5bd0">Binary frames</text>
+
+  <!-- Backend Services -->
+  <line x1="200" y1="400" x2="200" y2="430" stroke="#d7d1e6" stroke-width="1.5" />
+  <line x1="450" y1="400" x2="450" y2="430" stroke="#d7d1e6" stroke-width="1.5" />
+  <line x1="700" y1="400" x2="700" y2="430" stroke="#d7d1e6" stroke-width="1.5" />
+
+  <rect x="60" y="430" width="780" height="50" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="450" y="460" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1a1822">Backend Microservices (Users, Auth, Chat, Analytics, Config)</text>
+
+  <defs>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0" />
+    </marker>
+  </defs>
+</svg>

@@ -1,3 +1,5 @@
+In the context of Versioning Backward Compatibility (versioning, backward, compatibility), this example provides a focused implementation of the concept below.
+
 This example demonstrates an advanced practice: **contract tests** using “golden” JSON payloads.
 
 In production:

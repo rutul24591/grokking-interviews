@@ -1,3 +1,5 @@
+In the context of Caching Consistency Strategy (caching, consistency, strategy), this example provides a focused implementation of the concept below.
+
 This example covers an advanced cache scaling issue: **stampedes**.
 
 Many concurrent requests missing the cache can overload the DB.

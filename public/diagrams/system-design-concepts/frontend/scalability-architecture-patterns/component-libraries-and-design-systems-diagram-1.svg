@@ -1,0 +1,101 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <rect width="900" height="550" rx="8" fill="#f3f1f8"/>
+
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="bold" fill="#1a1822">Design System Layered Architecture</text>
+  <text x="450" y="55" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#6d5bd0">Tokens &#x2192; Primitives &#x2192; Components &#x2192; Patterns</text>
+
+  <!-- Layer 4: Patterns (top) -->
+  <rect x="60" y="80" width="780" height="95" rx="10" fill="#6d5bd0" fill-opacity="0.15" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="80" y="102" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#6d5bd0">Layer 4: Patterns &amp; Templates</text>
+  <text x="80" y="120" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Compositions of multiple components solving common UX problems</text>
+
+  <rect x="80" y="132" width="150" height="32" rx="6" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="155" y="153" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">SearchableTable</text>
+
+  <rect x="250" y="132" width="150" height="32" rx="6" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="325" y="153" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">FormWizard</text>
+
+  <rect x="420" y="132" width="150" height="32" rx="6" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="495" y="153" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">DataDashboard</text>
+
+  <rect x="590" y="132" width="150" height="32" rx="6" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="665" y="153" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">AuthLayout</text>
+
+  <!-- Arrow down -->
+  <line x1="450" y1="175" x2="450" y2="195" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="4,3"/>
+  <text x="470" y="190" font-family="system-ui, sans-serif" font-size="10" fill="#6d5bd0">composes</text>
+
+  <!-- Layer 3: Components -->
+  <rect x="60" y="200" width="780" height="95" rx="10" fill="#2f9d74" fill-opacity="0.12" stroke="#2f9d74" stroke-width="2"/>
+  <text x="80" y="222" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#2f9d74">Layer 3: Components</text>
+  <text x="80" y="240" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Reusable UI elements with defined APIs, accessibility, and interaction</text>
+
+  <rect x="80" y="252" width="110" height="32" rx="6" fill="#2f9d74" stroke="#2f9d74" stroke-width="1"/>
+  <text x="135" y="273" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Button</text>
+
+  <rect x="205" y="252" width="110" height="32" rx="6" fill="#2f9d74" stroke="#2f9d74" stroke-width="1"/>
+  <text x="260" y="273" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Modal</text>
+
+  <rect x="330" y="252" width="110" height="32" rx="6" fill="#2f9d74" stroke="#2f9d74" stroke-width="1"/>
+  <text x="385" y="273" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">DataTable</text>
+
+  <rect x="455" y="252" width="110" height="32" rx="6" fill="#2f9d74" stroke="#2f9d74" stroke-width="1"/>
+  <text x="510" y="273" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Select</text>
+
+  <rect x="580" y="252" width="110" height="32" rx="6" fill="#2f9d74" stroke="#2f9d74" stroke-width="1"/>
+  <text x="635" y="273" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Tooltip</text>
+
+  <rect x="705" y="252" width="110" height="32" rx="6" fill="#2f9d74" stroke="#2f9d74" stroke-width="1"/>
+  <text x="760" y="273" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Tabs</text>
+
+  <!-- Arrow down -->
+  <line x1="450" y1="295" x2="450" y2="315" stroke="#2f9d74" stroke-width="2" stroke-dasharray="4,3"/>
+  <text x="470" y="310" font-family="system-ui, sans-serif" font-size="10" fill="#2f9d74">uses</text>
+
+  <!-- Layer 2: Primitives -->
+  <rect x="60" y="320" width="780" height="95" rx="10" fill="#d4880f" fill-opacity="0.12" stroke="#d4880f" stroke-width="2"/>
+  <text x="80" y="342" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#d4880f">Layer 2: Primitives</text>
+  <text x="80" y="360" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Low-level building blocks: unstyled atoms with layout and spacing</text>
+
+  <rect x="80" y="372" width="100" height="32" rx="6" fill="#d4880f" stroke="#d4880f" stroke-width="1"/>
+  <text x="130" y="393" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Box</text>
+
+  <rect x="200" y="372" width="100" height="32" rx="6" fill="#d4880f" stroke="#d4880f" stroke-width="1"/>
+  <text x="250" y="393" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Stack</text>
+
+  <rect x="320" y="372" width="100" height="32" rx="6" fill="#d4880f" stroke="#d4880f" stroke-width="1"/>
+  <text x="370" y="393" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Text</text>
+
+  <rect x="440" y="372" width="100" height="32" rx="6" fill="#d4880f" stroke="#d4880f" stroke-width="1"/>
+  <text x="490" y="393" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Icon</text>
+
+  <rect x="560" y="372" width="100" height="32" rx="6" fill="#d4880f" stroke="#d4880f" stroke-width="1"/>
+  <text x="610" y="393" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Grid</text>
+
+  <rect x="680" y="372" width="100" height="32" rx="6" fill="#d4880f" stroke="#d4880f" stroke-width="1"/>
+  <text x="730" y="393" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Inline</text>
+
+  <!-- Arrow down -->
+  <line x1="450" y1="415" x2="450" y2="435" stroke="#d4880f" stroke-width="2" stroke-dasharray="4,3"/>
+  <text x="470" y="430" font-family="system-ui, sans-serif" font-size="10" fill="#d4880f">references</text>
+
+  <!-- Layer 1: Design Tokens -->
+  <rect x="60" y="440" width="780" height="95" rx="10" fill="#c44d4d" fill-opacity="0.12" stroke="#c44d4d" stroke-width="2"/>
+  <text x="80" y="462" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#c44d4d">Layer 1: Design Tokens</text>
+  <text x="80" y="480" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Platform-agnostic key-value pairs defining visual language</text>
+
+  <rect x="80" y="490" width="120" height="32" rx="6" fill="#c44d4d" stroke="#c44d4d" stroke-width="1"/>
+  <text x="140" y="511" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">color.primary</text>
+
+  <rect x="220" y="490" width="120" height="32" rx="6" fill="#c44d4d" stroke="#c44d4d" stroke-width="1"/>
+  <text x="280" y="511" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">spacing.md</text>
+
+  <rect x="360" y="490" width="120" height="32" rx="6" fill="#c44d4d" stroke="#c44d4d" stroke-width="1"/>
+  <text x="420" y="511" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">font.body</text>
+
+  <rect x="500" y="490" width="120" height="32" rx="6" fill="#c44d4d" stroke="#c44d4d" stroke-width="1"/>
+  <text x="560" y="511" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">radius.lg</text>
+
+  <rect x="640" y="490" width="120" height="32" rx="6" fill="#c44d4d" stroke="#c44d4d" stroke-width="1"/>
+  <text x="700" y="511" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">shadow.elevated</text>
+</svg>

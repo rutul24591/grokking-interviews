@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500" role="img" aria-label="Before and after complexity reduction with facade pattern">
+  <rect width="900" height="500" rx="18" fill="#f3f1f8" />
+  <text x="450" y="34" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#1a1822">Complexity Reduction: Before &amp; After Facade</text>
+
+  <!-- Divider -->
+  <line x1="450" y1="50" x2="450" y2="480" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="6,4" />
+
+  <!-- LEFT SIDE: Without Facade -->
+  <rect x="30" y="48" width="110" height="28" rx="6" fill="#c94444" />
+  <text x="85" y="67" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#ffffff">WITHOUT</text>
+
+  <!-- Client Components (Left) -->
+  <rect x="40" y="90" width="90" height="36" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="85" y="113" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1a1822">LoginForm</text>
+  <rect x="40" y="140" width="90" height="36" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="85" y="163" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1a1822">Dashboard</text>
+  <rect x="40" y="190" width="90" height="36" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="85" y="213" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1a1822">Settings</text>
+
+  <!-- Subsystems (Left) -->
+  <rect x="250" y="80" width="100" height="32" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="300" y="101" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1a1822">OAuth API</text>
+  <rect x="250" y="125" width="100" height="32" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="300" y="146" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1a1822">Token Store</text>
+  <rect x="250" y="170" width="100" height="32" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="300" y="191" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1a1822">REST Client</text>
+  <rect x="250" y="215" width="100" height="32" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="300" y="236" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1a1822">IndexedDB</text>
+  <rect x="250" y="260" width="100" height="32" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="300" y="281" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1a1822">LocalStorage</text>
+  <rect x="250" y="305" width="100" height="32" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="300" y="326" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1a1822">Event Bus</text>
+
+  <!-- Spaghetti lines (Left) - many connections showing complexity -->
+  <line x1="130" y1="100" x2="250" y2="96" stroke="#c94444" stroke-width="1.2" opacity="0.6" />
+  <line x1="130" y1="105" x2="250" y2="141" stroke="#c94444" stroke-width="1.2" opacity="0.6" />
+  <line x1="130" y1="110" x2="250" y2="186" stroke="#c94444" stroke-width="1.2" opacity="0.6" />
+  <line x1="130" y1="155" x2="250" y2="96" stroke="#c94444" stroke-width="1.2" opacity="0.6" />
+  <line x1="130" y1="155" x2="250" y2="141" stroke="#c94444" stroke-width="1.2" opacity="0.6" />
+  <line x1="130" y1="155" x2="250" y2="186" stroke="#c94444" stroke-width="1.2" opacity="0.6" />
+  <line x1="130" y1="160" x2="250" y2="231" stroke="#c94444" stroke-width="1.2" opacity="0.6" />
+  <line x1="130" y1="160" x2="250" y2="276" stroke="#c94444" stroke-width="1.2" opacity="0.6" />
+  <line x1="130" y1="160" x2="250" y2="321" stroke="#c94444" stroke-width="1.2" opacity="0.6" />
+  <line x1="130" y1="205" x2="250" y2="141" stroke="#c94444" stroke-width="1.2" opacity="0.6" />
+  <line x1="130" y1="205" x2="250" y2="186" stroke="#c94444" stroke-width="1.2" opacity="0.6" />
+  <line x1="130" y1="210" x2="250" y2="231" stroke="#c94444" stroke-width="1.2" opacity="0.6" />
+  <line x1="130" y1="210" x2="250" y2="276" stroke="#c94444" stroke-width="1.2" opacity="0.6" />
+  <line x1="130" y1="108" x2="250" y2="231" stroke="#c94444" stroke-width="1.2" opacity="0.4" />
+  <line x1="130" y1="108" x2="250" y2="321" stroke="#c94444" stroke-width="1.2" opacity="0.4" />
+
+  <!-- Metrics Left -->
+  <rect x="60" y="360" width="300" height="110" rx="10" fill="#ffffff" stroke="#c94444" stroke-width="1.5" />
+  <text x="210" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#c94444">Problem Metrics</text>
+  <text x="80" y="408" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Dependencies per component: <tspan font-weight="700" fill="#c94444">4-6</tspan></text>
+  <text x="80" y="428" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Total coupling lines: <tspan font-weight="700" fill="#c94444">15+</tspan></text>
+  <text x="80" y="448" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Change propagation: <tspan font-weight="700" fill="#c94444">High</tspan></text>
+  <text x="80" y="468" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Testing difficulty: <tspan font-weight="700" fill="#c94444">Hard (many mocks)</tspan></text>
+
+  <!-- RIGHT SIDE: With Facade -->
+  <rect x="470" y="48" width="110" height="28" rx="6" fill="#2e8b57" />
+  <text x="525" y="67" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#ffffff">WITH</text>
+
+  <!-- Client Components (Right) -->
+  <rect x="480" y="110" width="90" height="36" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="525" y="133" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1a1822">LoginForm</text>
+  <rect x="480" y="160" width="90" height="36" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="525" y="183" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1a1822">Dashboard</text>
+  <rect x="480" y="210" width="90" height="36" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="525" y="233" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1a1822">Settings</text>
+
+  <!-- Clean arrows to facade -->
+  <line x1="570" y1="128" x2="640" y2="178" stroke="#2e8b57" stroke-width="1.8" />
+  <line x1="570" y1="178" x2="640" y2="178" stroke="#2e8b57" stroke-width="1.8" />
+  <line x1="570" y1="228" x2="640" y2="178" stroke="#2e8b57" stroke-width="1.8" />
+
+  <!-- Facade Box (Right) -->
+  <rect x="640" y="130" width="100" height="100" rx="12" fill="#6d5bd0" />
+  <text x="690" y="172" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#ffffff">FACADE</text>
+  <text x="690" y="192" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#ffffff" opacity="0.8">Unified API</text>
+
+  <!-- Clean arrows to subsystems -->
+  <line x1="740" y1="155" x2="790" y2="115" stroke="#d7d1e6" stroke-width="1.5" />
+  <line x1="740" y1="165" x2="790" y2="155" stroke="#d7d1e6" stroke-width="1.5" />
+  <line x1="740" y1="175" x2="790" y2="195" stroke="#d7d1e6" stroke-width="1.5" />
+  <line x1="740" y1="185" x2="790" y2="235" stroke="#d7d1e6" stroke-width="1.5" />
+  <line x1="740" y1="195" x2="790" y2="275" stroke="#d7d1e6" stroke-width="1.5" />
+  <line x1="740" y1="205" x2="790" y2="315" stroke="#d7d1e6" stroke-width="1.5" />
+
+  <!-- Subsystems (Right) -->
+  <rect x="790" y="100" width="80" height="28" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1" />
+  <text x="830" y="119" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#1a1822">OAuth</text>
+  <rect x="790" y="140" width="80" height="28" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1" />
+  <text x="830" y="159" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#1a1822">Tokens</text>
+  <rect x="790" y="180" width="80" height="28" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1" />
+  <text x="830" y="199" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#1a1822">REST</text>
+  <rect x="790" y="220" width="80" height="28" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1" />
+  <text x="830" y="239" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#1a1822">IndexedDB</text>
+  <rect x="790" y="260" width="80" height="28" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1" />
+  <text x="830" y="279" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#1a1822">Storage</text>
+  <rect x="790" y="300" width="80" height="28" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1" />
+  <text x="830" y="319" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#1a1822">Events</text>
+
+  <!-- Metrics Right -->
+  <rect x="500" y="360" width="300" height="110" rx="10" fill="#ffffff" stroke="#2e8b57" stroke-width="1.5" />
+  <text x="650" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#2e8b57">Improved Metrics</text>
+  <text x="520" y="408" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Dependencies per component: <tspan font-weight="700" fill="#2e8b57">1</tspan></text>
+  <text x="520" y="428" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Total coupling lines: <tspan font-weight="700" fill="#2e8b57">3 + 6 internal</tspan></text>
+  <text x="520" y="448" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Change propagation: <tspan font-weight="700" fill="#2e8b57">Low (facade absorbs)</tspan></text>
+  <text x="520" y="468" font-family="system-ui, sans-serif" font-size="11" fill="#1a1822">Testing difficulty: <tspan font-weight="700" fill="#2e8b57">Easy (mock facade)</tspan></text>
+</svg>

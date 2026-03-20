@@ -1,0 +1,118 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <rect width="900" height="500" rx="8" fill="#f3f1f8"/>
+
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="bold" fill="#1a1822">Frontend Event Flow: User Interaction to Re-render</text>
+
+  <!-- Step 1: User Interaction -->
+  <rect x="30" y="70" width="160" height="80" rx="10" fill="#6d5bd0" stroke="#5a4cb0" stroke-width="1.5"/>
+  <text x="110" y="100" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#ffffff">User Interaction</text>
+  <text x="110" y="118" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#e0d8f0">click / input / scroll</text>
+  <text x="110" y="132" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#e0d8f0">keydown / submit</text>
+
+  <!-- Arrow 1 -->
+  <line x1="190" y1="110" x2="230" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowP)"/>
+
+  <!-- Step 2: DOM Event (Capture Phase) -->
+  <rect x="230" y="60" width="140" height="100" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="230" y="60" width="140" height="28" rx="10" fill="#6d5bd0"/>
+  <text x="300" y="79" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">DOM Event</text>
+  <text x="300" y="100" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Capture phase</text>
+  <text x="300" y="114" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">document &gt; html</text>
+  <text x="300" y="128" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">&gt; body &gt; target</text>
+  <text x="300" y="142" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#888888">(top-down)</text>
+
+  <!-- Arrow 2 -->
+  <line x1="370" y1="110" x2="410" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowP)"/>
+
+  <!-- Step 3: Target + Bubble Phase -->
+  <rect x="410" y="60" width="140" height="100" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="410" y="60" width="140" height="28" rx="10" fill="#6d5bd0"/>
+  <text x="480" y="79" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Target &amp; Bubble</text>
+  <text x="480" y="100" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Target phase fires</text>
+  <text x="480" y="114" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Bubble phase:</text>
+  <text x="480" y="128" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">target &gt; body &gt;</text>
+  <text x="480" y="142" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">html &gt; document</text>
+
+  <!-- Arrow 3 -->
+  <line x1="550" y1="110" x2="590" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowP)"/>
+
+  <!-- Step 4: Event Handler -->
+  <rect x="590" y="70" width="140" height="80" rx="10" fill="#ffffff" stroke="#2f9d74" stroke-width="2"/>
+  <rect x="590" y="70" width="140" height="28" rx="10" fill="#2f9d74"/>
+  <text x="660" y="89" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Event Handler</text>
+  <text x="660" y="112" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">React: SyntheticEvent</text>
+  <text x="660" y="126" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">e.preventDefault()</text>
+  <text x="660" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">dispatch action</text>
+
+  <!-- Arrow 4 -->
+  <line x1="730" y1="110" x2="770" y2="110" stroke="#2f9d74" stroke-width="2" marker-end="url(#arrowG)"/>
+
+  <!-- Step 5: State Update -->
+  <rect x="770" y="70" width="110" height="80" rx="10" fill="#2f9d74" stroke="#248a64" stroke-width="1.5"/>
+  <text x="825" y="100" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#ffffff">State</text>
+  <text x="825" y="118" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#e0f5ec">Update</text>
+  <text x="825" y="132" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#e0f5ec">setState()</text>
+
+  <!-- Re-render arrow (going down and left) -->
+  <line x1="825" y1="150" x2="825" y2="210" stroke="#c44d4d" stroke-width="2"/>
+  <line x1="825" y1="210" x2="110" y2="210" stroke="#c44d4d" stroke-width="2"/>
+  <line x1="110" y1="210" x2="110" y2="250" stroke="#c44d4d" stroke-width="2" marker-end="url(#arrowR)"/>
+
+  <!-- Step 6: Re-render -->
+  <rect x="30" y="250" width="850" height="100" rx="10" fill="#ffffff" stroke="#c44d4d" stroke-width="2"/>
+  <rect x="30" y="250" width="850" height="30" rx="10" fill="#c44d4d"/>
+  <text x="455" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#ffffff">Re-render Cycle (Virtual DOM Reconciliation)</text>
+
+  <!-- Re-render substeps -->
+  <rect x="50" y="295" width="150" height="40" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="125" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">1. Create new VDOM tree</text>
+
+  <line x1="200" y1="315" x2="230" y2="315" stroke="#c44d4d" stroke-width="1.5" marker-end="url(#arrowR)"/>
+
+  <rect x="230" y="295" width="150" height="40" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="305" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">2. Diff with previous</text>
+
+  <line x1="380" y1="315" x2="410" y2="315" stroke="#c44d4d" stroke-width="1.5" marker-end="url(#arrowR)"/>
+
+  <rect x="410" y="295" width="150" height="40" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="485" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">3. Compute minimal patches</text>
+
+  <line x1="560" y1="315" x2="590" y2="315" stroke="#c44d4d" stroke-width="1.5" marker-end="url(#arrowR)"/>
+
+  <rect x="590" y="295" width="140" height="40" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="660" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">4. Commit to real DOM</text>
+
+  <line x1="730" y1="315" x2="760" y2="315" stroke="#c44d4d" stroke-width="1.5" marker-end="url(#arrowR)"/>
+
+  <rect x="760" y="295" width="100" height="40" rx="6" fill="#c44d4d" stroke="#a83e3e" stroke-width="1"/>
+  <text x="810" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="bold" fill="#ffffff">5. Paint</text>
+
+  <!-- React SyntheticEvent detail -->
+  <rect x="30" y="380" width="420" height="105" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="50" y="402" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#6d5bd0">React SyntheticEvent System</text>
+  <text x="50" y="420" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">- Single listener on root (event delegation)</text>
+  <text x="50" y="436" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">- Cross-browser normalization of native events</text>
+  <text x="50" y="452" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">- Event pooling removed in React 17+</text>
+  <text x="50" y="468" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">- Attaches to root container, not document (React 17+)</text>
+
+  <!-- Event Delegation detail -->
+  <rect x="470" y="380" width="410" height="105" rx="8" fill="#ffffff" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="490" y="402" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#2f9d74">Event Delegation Benefits</text>
+  <text x="490" y="420" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">- O(1) listener count regardless of child elements</text>
+  <text x="490" y="436" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">- Dynamically added elements inherit handlers</text>
+  <text x="490" y="452" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">- Reduced memory footprint in large lists</text>
+  <text x="490" y="468" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">- Enables efficient virtualized list event handling</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowP" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowG" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2f9d74"/>
+    </marker>
+    <marker id="arrowR" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#c44d4d"/>
+    </marker>
+  </defs>
+</svg>

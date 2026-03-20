@@ -1,0 +1,121 @@
+<svg viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <rect width="900" height="560" rx="8" fill="#f3f1f8"/>
+
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="bold" fill="#1a1822">IIFE vs CommonJS vs ES Modules</text>
+  <text x="450" y="55" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#888888">Side-by-side comparison of three JavaScript module systems</text>
+
+  <!-- Column headers -->
+  <rect x="20" y="70" width="275" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="157" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#ffffff">IIFE Pattern</text>
+
+  <rect x="312" y="70" width="275" height="40" rx="8" fill="#d4a843"/>
+  <text x="450" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#ffffff">CommonJS (CJS)</text>
+
+  <rect x="604" y="70" width="275" height="40" rx="8" fill="#2f9d74"/>
+  <text x="742" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#ffffff">ES Modules (ESM)</text>
+
+  <!-- Row 1: Definition Syntax -->
+  <text x="20" y="140" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#1a1822">Export / Define</text>
+
+  <rect x="20" y="148" width="275" height="72" rx="6" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="35" y="167" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">var MyModule = (function() {</text>
+  <text x="35" y="182" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">  var _private = 42;</text>
+  <text x="35" y="197" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">  return { get: () =&gt; _private };</text>
+  <text x="35" y="212" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">})();</text>
+
+  <rect x="312" y="148" width="275" height="72" rx="6" fill="#ffffff" stroke="#d4a843" stroke-width="1.5"/>
+  <text x="327" y="167" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">// counter.js</text>
+  <text x="327" y="182" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">let count = 0;</text>
+  <text x="327" y="197" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">module.exports = {</text>
+  <text x="327" y="212" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">  inc: () =&gt; ++count };</text>
+
+  <rect x="604" y="148" width="275" height="72" rx="6" fill="#ffffff" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="619" y="167" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">// counter.js</text>
+  <text x="619" y="182" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">let count = 0;</text>
+  <text x="619" y="197" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">export const inc = () =&gt; ++count;</text>
+  <text x="619" y="212" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">export default createCounter;</text>
+
+  <!-- Row 2: Import Syntax -->
+  <text x="20" y="246" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#1a1822">Import / Consume</text>
+
+  <rect x="20" y="254" width="275" height="55" rx="6" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="35" y="273" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">// via global variable</text>
+  <text x="35" y="288" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">MyModule.get();</text>
+  <text x="35" y="303" font-family="system-ui, sans-serif" font-size="10" fill="#888888">// or &lt;script&gt; tag ordering</text>
+
+  <rect x="312" y="254" width="275" height="55" rx="6" fill="#ffffff" stroke="#d4a843" stroke-width="1.5"/>
+  <text x="327" y="273" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">const counter =</text>
+  <text x="327" y="288" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">  require('./counter');</text>
+  <text x="327" y="303" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">counter.inc();</text>
+
+  <rect x="604" y="254" width="275" height="55" rx="6" fill="#ffffff" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="619" y="273" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">import { inc } from './counter.js';</text>
+  <text x="619" y="288" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">import createCounter</text>
+  <text x="619" y="303" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">  from './counter.js';</text>
+
+  <!-- Row 3: Characteristics table -->
+  <text x="20" y="340" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#1a1822">Characteristics</text>
+
+  <!-- IIFE characteristics -->
+  <rect x="20" y="348" width="275" height="135" rx="6" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="35" y="368" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Loading:   Synchronous (&lt;script&gt;)</text>
+  <text x="35" y="385" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Analysis:  Runtime only</text>
+  <text x="35" y="402" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Scope:     Closure-based</text>
+  <text x="35" y="419" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Tree Shake: Not possible</text>
+  <text x="35" y="436" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Env:       Browser (legacy)</text>
+  <text x="35" y="453" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Dynamic:   No standard mechanism</text>
+  <text x="35" y="470" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Binding:   Value copy (snapshot)</text>
+
+  <!-- CJS characteristics -->
+  <rect x="312" y="348" width="275" height="135" rx="6" fill="#ffffff" stroke="#d4a843" stroke-width="1.5"/>
+  <text x="327" y="368" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Loading:   Synchronous (require)</text>
+  <text x="327" y="385" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Analysis:  Runtime (dynamic)</text>
+  <text x="327" y="402" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Scope:     Function wrapper</text>
+  <text x="327" y="419" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Tree Shake: Limited / difficult</text>
+  <text x="327" y="436" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Env:       Node.js (primary)</text>
+  <text x="327" y="453" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Dynamic:   require() anywhere</text>
+  <text x="327" y="470" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Binding:   Value copy (cached)</text>
+
+  <!-- ESM characteristics -->
+  <rect x="604" y="348" width="275" height="135" rx="6" fill="#ffffff" stroke="#2f9d74" stroke-width="1.5"/>
+  <text x="619" y="368" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Loading:   Async (browser native)</text>
+  <text x="619" y="385" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Analysis:  Static (compile-time)</text>
+  <text x="619" y="402" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Scope:     Module scope (spec)</text>
+  <text x="619" y="419" font-family="system-ui, sans-serif" font-size="10" fill="#2f9d74" font-weight="bold">Tree Shake: Fully supported</text>
+  <text x="619" y="436" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Env:       Browser + Node.js</text>
+  <text x="619" y="453" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Dynamic:   import() expression</text>
+  <text x="619" y="470" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Binding:   Live bindings (ref)</text>
+
+  <!-- Timeline arrow -->
+  <text x="20" y="510" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" fill="#1a1822">Evolution Timeline</text>
+
+  <line x1="60" y1="530" x2="840" y2="530" stroke="#d7d1e6" stroke-width="2"/>
+
+  <!-- IIFE marker -->
+  <circle cx="130" cy="530" r="6" fill="#6d5bd0"/>
+  <text x="130" y="548" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6d5bd0" font-weight="bold">~2003</text>
+  <text x="130" y="522" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1a1822">IIFE</text>
+
+  <!-- CJS marker -->
+  <circle cx="310" cy="530" r="6" fill="#d4a843"/>
+  <text x="310" y="548" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#d4a843" font-weight="bold">2009</text>
+  <text x="310" y="522" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1a1822">CJS (Node.js)</text>
+
+  <!-- AMD marker -->
+  <circle cx="450" cy="530" r="6" fill="#888888"/>
+  <text x="450" y="548" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#888888" font-weight="bold">2011</text>
+  <text x="450" y="522" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1a1822">AMD/UMD</text>
+
+  <!-- ESM spec marker -->
+  <circle cx="590" cy="530" r="6" fill="#2f9d74"/>
+  <text x="590" y="548" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#2f9d74" font-weight="bold">2015</text>
+  <text x="590" y="522" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1a1822">ESM (ES2015)</text>
+
+  <!-- ESM native marker -->
+  <circle cx="760" cy="530" r="6" fill="#2f9d74"/>
+  <text x="760" y="548" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#2f9d74" font-weight="bold">2018+</text>
+  <text x="760" y="522" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1a1822">Native ESM</text>
+
+  <!-- Arrow tip -->
+  <polygon points="840,530 832,525 832,535" fill="#d7d1e6"/>
+</svg>

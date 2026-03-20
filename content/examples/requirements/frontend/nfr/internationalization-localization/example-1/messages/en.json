@@ -1,0 +1,14 @@
+{
+  "title": "Internationalization (i18n) & Localization (l10n)",
+  "subtitle": "Locale routing + negotiation + formatting + plural rules.",
+  "locale_label": "Active locale:",
+  "cart_label": "Cart:",
+  "total_label": "Total:",
+  "updated_label": "Updated:",
+  "switcher_title": "Switch locale",
+  "cart_items": {
+    "one": "{count} item",
+    "other": "{count} items"
+  }
+}
+

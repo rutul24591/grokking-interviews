@@ -25,10 +25,21 @@ export default function DeviceSessionTrackingArticle() {
         <h2>Definition &amp; Context</h2>
         <p>
           <strong>Device Session Tracking</strong> is the practice of recording and monitoring 
-          device information for each user session. It enables security features like recognizing 
-          trusted devices, detecting suspicious logins, and providing users visibility into their 
+          device information for each user session. It enables security features like recognizing
+          trusted devices, detecting suspicious logins, and providing users visibility into their
           active sessions.
         </p>
+        <p>
+          For staff and principal engineers, implementing device session tracking requires
+          understanding device fingerprinting, session metadata, and security use cases.
+          The implementation must balance security with privacy.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/device-session-tracking.svg"
+          alt="Device Session Tracking"
+          caption="Device Tracking — showing fingerprinting, metadata collection, and session management"
+        />
       </section>
 
       <section>
@@ -43,6 +54,13 @@ export default function DeviceSessionTrackingArticle() {
 
       <section>
         <h2>Session Metadata</h2>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/session-metadata.svg"
+          alt="Session Metadata"
+          caption="Session Metadata — showing device info, location, network, and timing data"
+        />
+
         <ul className="space-y-3">
           <li><strong>Device Info:</strong> Type (mobile/desktop), OS, browser, browser version.</li>
           <li><strong>Location:</strong> Country, city from IP (approximate).</li>
@@ -62,7 +80,25 @@ export default function DeviceSessionTrackingArticle() {
       </section>
 
       <section>
+        <h2>References</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OWASP Session Management Cheat Sheet
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section>
         <h2>Common Interview Questions</h2>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/device-tracking-security.svg"
+          alt="Device Tracking Security"
+          caption="Security — showing trusted devices, anomaly detection, and session revocation"
+        />
+
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you generate device fingerprint?</p>

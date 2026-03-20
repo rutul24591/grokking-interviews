@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" font-family="system-ui, sans-serif">
+  <rect width="900" height="540" rx="12" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="2"/>
+
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Global Singleton Coupling vs. Dependency Injection</text>
+
+  <!-- LEFT SIDE: Singleton / Tight Coupling -->
+  <rect x="20" y="55" width="415" height="460" rx="10" fill="#ffffff" stroke="#e53935" stroke-width="2"/>
+  <rect x="20" y="55" width="415" height="36" rx="10" fill="#e53935"/>
+  <rect x="20" y="79" width="415" height="12" fill="#e53935"/>
+  <text x="227" y="78" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Tight Coupling (Global Singleton)</text>
+
+  <!-- Global singleton in center -->
+  <rect x="140" y="110" width="180" height="50" rx="8" fill="#6d5bd0" stroke="none"/>
+  <text x="230" y="133" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">GlobalLogger.getInstance()</text>
+  <text x="230" y="150" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.8">Static access, no interface</text>
+
+  <!-- Modules directly importing singleton -->
+  <rect x="40" y="200" width="140" height="44" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="110" y="220" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Component A</text>
+  <text x="110" y="236" text-anchor="middle" font-size="9" fill="#e53935">import GlobalLogger</text>
+
+  <rect x="280" y="200" width="140" height="44" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="350" y="220" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Component B</text>
+  <text x="350" y="236" text-anchor="middle" font-size="9" fill="#e53935">import GlobalLogger</text>
+
+  <rect x="160" y="275" width="140" height="44" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="230" y="295" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Component C</text>
+  <text x="230" y="311" text-anchor="middle" font-size="9" fill="#e53935">import GlobalLogger</text>
+
+  <!-- Arrows from modules to singleton (tight coupling) -->
+  <line x1="110" y1="200" x2="190" y2="160" stroke="#e53935" stroke-width="1.5" marker-end="url(#arrRed)"/>
+  <line x1="350" y1="200" x2="270" y2="160" stroke="#e53935" stroke-width="1.5" marker-end="url(#arrRed)"/>
+  <line x1="230" y1="275" x2="230" y2="160" stroke="#e53935" stroke-width="1.5" marker-end="url(#arrRed)"/>
+
+  <!-- Problems list -->
+  <rect x="40" y="340" width="375" height="155" rx="8" fill="#ffebee" stroke="#e53935" stroke-width="1"/>
+  <text x="55" y="365" font-size="12" font-weight="700" fill="#e53935">Problems</text>
+  <text x="55" y="387" font-size="11" fill="#1a1822">&#x2022; Hard dependency on concrete implementation</text>
+  <text x="55" y="407" font-size="11" fill="#1a1822">&#x2022; Cannot swap logger in tests (no mock injection)</text>
+  <text x="55" y="427" font-size="11" fill="#1a1822">&#x2022; Hidden dependencies (not in constructor/props)</text>
+  <text x="55" y="447" font-size="11" fill="#1a1822">&#x2022; Shared mutable state across unrelated modules</text>
+  <text x="55" y="467" font-size="11" fill="#1a1822">&#x2022; Breaks micro-frontend isolation boundaries</text>
+  <text x="55" y="487" font-size="11" fill="#1a1822">&#x2022; Order-dependent initialization risks</text>
+
+  <!-- RIGHT SIDE: Dependency Injection / Loose Coupling -->
+  <rect x="465" y="55" width="415" height="460" rx="10" fill="#ffffff" stroke="#4caf50" stroke-width="2"/>
+  <rect x="465" y="55" width="415" height="36" rx="10" fill="#4caf50"/>
+  <rect x="465" y="79" width="415" height="12" fill="#4caf50"/>
+  <text x="672" y="78" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Loose Coupling (Dependency Injection)</text>
+
+  <!-- Interface at top -->
+  <rect x="585" y="110" width="180" height="50" rx="8" fill="#6d5bd0" stroke="none"/>
+  <text x="675" y="130" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">ILogger (interface)</text>
+  <text x="675" y="150" text-anchor="middle" font-size="10" fill="#ffffff" fill-opacity="0.8">Injected via props / context</text>
+
+  <!-- Modules receiving via injection -->
+  <rect x="485" y="200" width="140" height="44" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="555" y="220" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Component A</text>
+  <text x="555" y="236" text-anchor="middle" font-size="9" fill="#4caf50">props.logger: ILogger</text>
+
+  <rect x="725" y="200" width="140" height="44" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="795" y="220" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Component B</text>
+  <text x="795" y="236" text-anchor="middle" font-size="9" fill="#4caf50">props.logger: ILogger</text>
+
+  <rect x="605" y="275" width="140" height="44" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="675" y="295" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Component C</text>
+  <text x="675" y="311" text-anchor="middle" font-size="9" fill="#4caf50">useContext(LoggerCtx)</text>
+
+  <!-- Arrows from interface down to modules (injection) -->
+  <line x1="635" y1="160" x2="555" y2="200" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrGreen)"/>
+  <line x1="715" y1="160" x2="795" y2="200" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrGreen)"/>
+  <line x1="675" y1="160" x2="675" y2="275" stroke="#4caf50" stroke-width="1.5" marker-end="url(#arrGreen)"/>
+
+  <!-- Benefits list -->
+  <rect x="485" y="340" width="375" height="155" rx="8" fill="#e8f5e9" stroke="#4caf50" stroke-width="1"/>
+  <text x="500" y="365" font-size="12" font-weight="700" fill="#4caf50">Benefits</text>
+  <text x="500" y="387" font-size="11" fill="#1a1822">&#x2022; Depends on abstraction, not concrete class</text>
+  <text x="500" y="407" font-size="11" fill="#1a1822">&#x2022; Easy to inject mocks/spies in unit tests</text>
+  <text x="500" y="427" font-size="11" fill="#1a1822">&#x2022; Explicit dependencies (visible in props/context)</text>
+  <text x="500" y="447" font-size="11" fill="#1a1822">&#x2022; Each module can receive isolated state</text>
+  <text x="500" y="467" font-size="11" fill="#1a1822">&#x2022; Micro-frontends get their own logger instance</text>
+  <text x="500" y="487" font-size="11" fill="#1a1822">&#x2022; Framework-controlled lifecycle &amp; initialization</text>
+
+  <defs>
+    <marker id="arrRed" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#e53935"/>
+    </marker>
+    <marker id="arrGreen" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#4caf50"/>
+    </marker>
+  </defs>
+</svg>

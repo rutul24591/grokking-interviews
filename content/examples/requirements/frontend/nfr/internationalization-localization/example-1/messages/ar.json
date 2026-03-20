@@ -1,0 +1,14 @@
+{
+  "title": "التدويل (i18n) والتوطين (l10n)",
+  "subtitle": "توجيه حسب اللغة + تفاوض + تنسيق + جمع.",
+  "locale_label": "اللغة الحالية:",
+  "cart_label": "سلة:",
+  "total_label": "الإجمالي:",
+  "updated_label": "آخر تحديث:",
+  "switcher_title": "تغيير اللغة",
+  "cart_items": {
+    "one": "{count} عنصر",
+    "other": "{count} عناصر"
+  }
+}
+

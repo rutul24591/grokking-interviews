@@ -25,9 +25,20 @@ export default function AccountVerificationArticle() {
         <h2>Definition &amp; Context</h2>
         <p>
           <strong>Account Verification</strong> is the process of confirming user identity through 
-          email, phone, or manual review. It prevents fake accounts, enables account recovery, 
+          email, phone, or manual review. It prevents fake accounts, enables account recovery,
           and ensures reliable communication channels.
         </p>
+        <p>
+          For staff and principal engineers, implementing account verification requires
+          understanding verification methods, token generation, and security patterns.
+          The implementation must balance security with user experience.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/account-verification-flow.svg"
+          alt="Account Verification Flow"
+          caption="Account Verification — showing email, phone, document, and manual verification"
+        />
       </section>
 
       <section>
@@ -42,6 +53,13 @@ export default function AccountVerificationArticle() {
 
       <section>
         <h2>Verification Flow</h2>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/verification-token-flow.svg"
+          alt="Verification Token Flow"
+          caption="Verification Flow — showing token generation, delivery, validation, and confirmation"
+        />
+
         <ul className="space-y-3">
           <li><strong>Generate Token:</strong> Random token with expiry.</li>
           <li><strong>Send:</strong> Email/SMS with verification link/code.</li>
@@ -51,7 +69,30 @@ export default function AccountVerificationArticle() {
       </section>
 
       <section>
+        <h2>References</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://pages.nist.gov/800-63-3/sp800-63b.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              NIST SP 800-63B - Digital Identity Guidelines
+            </a>
+          </li>
+          <li>
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OWASP Authentication Cheat Sheet
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section>
         <h2>Common Interview Questions</h2>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/account-verification-security.svg"
+          alt="Account Verification Security"
+          caption="Security — showing token expiry, rate limiting, and fraud prevention"
+        />
+
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How long should verification tokens be valid?</p>

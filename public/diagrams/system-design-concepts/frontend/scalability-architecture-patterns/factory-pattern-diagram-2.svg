@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500" role="img" aria-label="Theme-Aware Component Factory Flow">
+  <rect width="900" height="500" rx="16" fill="#f3f1f8" />
+
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="20" font-weight="700">Theme-Aware Component Factory</text>
+
+  <defs>
+    <marker id="arr2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#6d5bd0" />
+    </marker>
+    <marker id="arr2g" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#d7d1e6" />
+    </marker>
+  </defs>
+
+  <!-- Config Input (left side) -->
+  <rect x="30" y="80" width="180" height="130" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="120" y="104" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Configuration</text>
+  <line x1="50" y1="114" x2="190" y2="114" stroke="#d7d1e6" stroke-width="1" />
+  <text x="55" y="134" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">theme: "dark"</text>
+  <text x="55" y="152" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">variant: "primary"</text>
+  <text x="55" y="170" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">size: "lg"</text>
+  <text x="55" y="188" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">platform: "mobile"</text>
+
+  <!-- Arrow config to factory -->
+  <line x1="210" y1="145" x2="290" y2="145" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr2)" />
+  <text x="250" y="138" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10" font-weight="600">input</text>
+
+  <!-- Factory (center) -->
+  <rect x="292" y="70" width="260" height="150" rx="14" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="2" />
+  <text x="422" y="100" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="15" font-weight="700">ComponentFactory</text>
+  <line x1="310" y1="112" x2="534" y2="112" stroke="#ffffff" stroke-width="1" opacity="0.3" />
+  <text x="422" y="134" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" opacity="0.9">1. Resolve theme tokens</text>
+  <text x="422" y="154" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" opacity="0.9">2. Select component variant</text>
+  <text x="422" y="174" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" opacity="0.9">3. Apply platform overrides</text>
+  <text x="422" y="194" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" opacity="0.9">4. Return configured component</text>
+
+  <!-- Registry (right side) -->
+  <rect x="620" y="80" width="250" height="130" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="745" y="104" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Component Registry</text>
+  <line x1="640" y1="114" x2="850" y2="114" stroke="#d7d1e6" stroke-width="1" />
+  <text x="645" y="134" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">"button" &#8594; ButtonComponent</text>
+  <text x="645" y="152" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">"input" &#8594; InputComponent</text>
+  <text x="645" y="170" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">"card" &#8594; CardComponent</text>
+  <text x="645" y="188" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">"modal" &#8594; ModalComponent</text>
+
+  <!-- Arrow factory to registry -->
+  <line x1="552" y1="130" x2="618" y2="130" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arr2)" />
+  <text x="585" y="122" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10" font-weight="600">lookup</text>
+
+  <!-- Output arrow down from factory -->
+  <line x1="422" y1="220" x2="422" y2="270" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr2)" />
+  <text x="445" y="252" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="11" font-weight="600">produces</text>
+
+  <!-- Output Components Row -->
+  <rect x="50" y="280" width="800" height="190" rx="14" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="450" y="306" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Produced Components (Dark Theme, Primary, Large, Mobile)</text>
+
+  <!-- Produced Button -->
+  <rect x="80" y="325" width="170" height="120" rx="10" fill="#1a1822" stroke="#6d5bd0" stroke-width="1.5" />
+  <text x="165" y="350" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="600">DarkPrimaryButton</text>
+  <rect x="105" y="365" width="120" height="34" rx="8" fill="#6d5bd0" />
+  <text x="165" y="387" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Submit</text>
+  <text x="165" y="430" text-anchor="middle" fill="#d7d1e6" font-family="system-ui, sans-serif" font-size="9">size: 48px | touch: 44px min</text>
+
+  <!-- Produced Input -->
+  <rect x="275" y="325" width="170" height="120" rx="10" fill="#1a1822" stroke="#6d5bd0" stroke-width="1.5" />
+  <text x="360" y="350" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="600">DarkPrimaryInput</text>
+  <rect x="295" y="365" width="130" height="34" rx="8" fill="#2a2730" stroke="#6d5bd0" stroke-width="1" />
+  <text x="360" y="387" text-anchor="middle" fill="#d7d1e6" font-family="system-ui, sans-serif" font-size="11">Enter email...</text>
+  <text x="360" y="430" text-anchor="middle" fill="#d7d1e6" font-family="system-ui, sans-serif" font-size="9">font: 18px | padding: 16px</text>
+
+  <!-- Produced Card -->
+  <rect x="470" y="325" width="170" height="120" rx="10" fill="#1a1822" stroke="#6d5bd0" stroke-width="1.5" />
+  <text x="555" y="350" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="600">DarkPrimaryCard</text>
+  <rect x="490" y="362" width="130" height="50" rx="6" fill="#2a2730" />
+  <text x="555" y="392" text-anchor="middle" fill="#d7d1e6" font-family="system-ui, sans-serif" font-size="10">Card Content</text>
+  <text x="555" y="430" text-anchor="middle" fill="#d7d1e6" font-family="system-ui, sans-serif" font-size="9">radius: 16px | gap: 20px</text>
+
+  <!-- Produced Modal -->
+  <rect x="665" y="325" width="170" height="120" rx="10" fill="#1a1822" stroke="#6d5bd0" stroke-width="1.5" />
+  <text x="750" y="350" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="600">DarkPrimaryModal</text>
+  <rect x="685" y="362" width="130" height="50" rx="6" fill="#2a2730" stroke="#6d5bd0" stroke-width="1" />
+  <text x="750" y="380" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="10">Modal Title</text>
+  <line x1="695" y1="388" x2="805" y2="388" stroke="#6d5bd0" stroke-width="0.5" />
+  <text x="750" y="404" text-anchor="middle" fill="#d7d1e6" font-family="system-ui, sans-serif" font-size="9">Full-screen on mobile</text>
+  <text x="750" y="430" text-anchor="middle" fill="#d7d1e6" font-family="system-ui, sans-serif" font-size="9">overlay: rgba(0,0,0,0.8)</text>
+</svg>
