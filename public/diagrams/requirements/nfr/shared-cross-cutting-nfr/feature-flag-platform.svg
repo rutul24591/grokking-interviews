@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad2)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Feature Flag Management Platform</text>
+  
+  <!-- Platform Architecture -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="200" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4a90d9">Feature Flag Platform Architecture</text>
+    
+    <!-- Management UI -->
+    <rect x="30" y="60" width="150" height="120" rx="4" fill="#4a90d9" opacity="0.4"/>
+    <text x="105" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#4a90d9">Management UI</text>
+    <text x="105" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Create flags</text>
+    <text x="105" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Configure targeting</text>
+    <text x="105" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• View analytics</text>
+    <text x="105" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Audit logs</text>
+    <text x="105" y="165" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Access control</text>
+    
+    <line x1="180" y1="120" x2="220" y2="120" stroke="#666" stroke-width="3"/>
+    <polygon points="220,120 210,115 210,125" fill="#666"/>
+    
+    <!-- API Server -->
+    <rect x="220" y="60" width="150" height="120" rx="4" fill="#67b26f" opacity="0.4"/>
+    <text x="295" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">Flag API</text>
+    <text x="295" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• REST/GraphQL API</text>
+    <text x="295" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• SDK distribution</text>
+    <text x="295" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Real-time updates</text>
+    <text x="295" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Rate limiting</text>
+    <text x="295" y="165" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Authentication</text>
+    
+    <line x1="370" y1="120" x2="410" y2="120" stroke="#666" stroke-width="3"/>
+    <polygon points="410,120 400,115 400,125" fill="#666"/>
+    
+    <!-- Data Store -->
+    <rect x="410" y="60" width="150" height="120" rx="4" fill="#f0ad4e" opacity="0.4"/>
+    <text x="485" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">Data Store</text>
+    <text x="485" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Flag definitions</text>
+    <text x="485" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Targeting rules</text>
+    <text x="485" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• User segments</text>
+    <text x="485" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Evaluation logs</text>
+    <text x="485" y="165" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Audit trail</text>
+    
+    <line x1="560" y1="120" x2="600" y2="120" stroke="#666" stroke-width="3"/>
+    <polygon points="600,120 590,115 590,125" fill="#666"/>
+    
+    <!-- Client SDKs -->
+    <rect x="600" y="60" width="150" height="120" rx="4" fill="#d9534f" opacity="0.4"/>
+    <text x="675" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#d9534f">Client SDKs</text>
+    <text x="675" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Server-side SDKs</text>
+    <text x="675" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Client-side SDKs</text>
+    <text x="675" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Mobile SDKs</text>
+    <text x="675" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Local evaluation</text>
+    <text x="675" y="165" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Streaming updates</text>
+  </g>
+  
+  <!-- Build vs Buy -->
+  <g transform="translate(50, 310)">
+    <rect x="0" y="0" width="400" height="140" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Build vs Buy Decision</text>
+    
+    <g transform="translate(20, 55)">
+      <rect x="0" y="0" width="160" height="35" rx="3" fill="#4a90d9" opacity="0.4"/>
+      <text x="80" y="22" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#4a90d9">Build</text>
+      <text x="80" y="33" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Full control</text>
+      
+      <rect x="180" y="0" width="160" height="35" rx="3" fill="#67b26f" opacity="0.4"/>
+      <text x="260" y="22" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#67b26f">Buy</text>
+      <text x="260" y="33" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">LaunchDarkly, Flagsmith</text>
+      
+      <text x="0" y="55" font-family="system-ui" font-size="8" fill="#e0e0e0">Build when:</text>
+      <text x="80" y="55" font-family="system-ui" font-size="8" fill="#999">Complex requirements</text>
+      
+      <text x="0" y="75" font-family="system-ui" font-size="8" fill="#e0e0e0">Buy when:</text>
+      <text x="80" y="75" font-family="system-ui" font-size="8" fill="#999">Need fast time-to-market</text>
+      
+      <text x="180" y="55" font-family="system-ui" font-size="8" fill="#e0e0e0">Consider:</text>
+      <text x="240" y="55" font-family="system-ui" font-size="8" fill="#999">Maintenance cost</text>
+      
+      <text x="180" y="75" font-family="system-ui" font-size="8" fill="#e0e0e0">Consider:</text>
+      <text x="240" y="75" font-family="system-ui" font-size="8" fill="#999">Vendor lock-in</text>
+      
+      <text x="100" y="110" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Hybrid: Start with vendor, build if needed</text>
+    </g>
+  </g>
+  
+  <!-- Key Features -->
+  <g transform="translate(470, 310)">
+    <rect x="0" y="0" width="380" height="140" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">Essential Features</text>
+    
+    <g transform="translate(20, 55)">
+      <circle cx="8" cy="8" r="4" fill="#67b26f"/>
+      <text x="20" y="13" font-family="system-ui" font-size="8" fill="#e0e0e0">Real-time flag evaluation</text>
+      
+      <circle cx="8" cy="28" r="4" fill="#67b26f"/>
+      <text x="20" y="33" font-family="system-ui" font-size="8" fill="#e0e0e0">Targeting rules &amp; segments</text>
+      
+      <circle cx="8" cy="48" r="4" fill="#67b26f"/>
+      <text x="20" y="53" font-family="system-ui" font-size="8" fill="#e0e0e0">Percentage rollouts</text>
+      
+      <circle cx="8" cy="68" r="4" fill="#67b26f"/>
+      <text x="20" y="73" font-family="system-ui" font-size="8" fill="#e0e0e0">A/B testing support</text>
+      
+      <circle cx="180" cy="8" r="4" fill="#67b26f"/>
+      <text x="192" y="13" font-family="system-ui" font-size="8" fill="#e0e0e0">Audit logging</text>
+      
+      <circle cx="180" cy="28" r="4" fill="#67b26f"/>
+      <text x="192" y="33" font-family="system-ui" font-size="8" fill="#e0e0e0">Access control (RBAC)</text>
+      
+      <circle cx="180" cy="48" r="4" fill="#67b26f"/>
+      <text x="192" y="53" font-family="system-ui" font-size="8" fill="#e0e0e0">Analytics &amp; metrics</text>
+      
+      <circle cx="180" cy="68" r="4" fill="#f0ad4e"/>
+      <text x="192" y="73" font-family="system-ui" font-size="8" fill="#e0e0e0">Flag expiration reminders</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,19 @@
+{
+  "posts": [
+    {
+      "slug": "hello-world",
+      "title": "Hello World (SSG)",
+      "updatedAt": "2026-03-19T00:00:00.000Z",
+      "excerpt": "A tiny post compiled at build time.",
+      "body": "This post comes from `content-src/posts/hello-world.md` and was compiled into JSON during the build step.\n\nIn SSG, this content snapshot is what gets deployed. No runtime CMS is required.\n"
+    },
+    {
+      "slug": "ssg-build-pipeline",
+      "title": "Build Pipelines Are Your Runtime",
+      "updatedAt": "2026-03-19T00:00:00.000Z",
+      "excerpt": "SSG shifts complexity to the build phase.",
+      "body": "SSG turns builds into first-class production systems.\n\nYou need determinism, observability, and correctness in your content compilation pipeline.\n\nA flaky build is a production incident.\n"
+    }
+  ]
+}
+

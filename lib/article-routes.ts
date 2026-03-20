@@ -79,6 +79,8 @@ export const articleRoutes: Record<string, () => Promise<any>> = {
   "system-design-concepts/frontend-concepts/rendering-strategies/server-side-rendering": () => import("@/content/articles/system-design/frontend/rendering-strategies/server-side-rendering"),
   "system-design-concepts/frontend-concepts/rendering-strategies/static-site-generation": () => import("@/content/articles/system-design/frontend/rendering-strategies/static-site-generation"),
   "system-design-concepts/frontend-concepts/rendering-strategies/streaming-ssr": () => import("@/content/articles/system-design/frontend/rendering-strategies/streaming-ssr"),
+  "system-design-concepts/frontend-concepts/security/csrf-protection": () => import("@/content/articles/system-design/frontend/security/csrf-protection"),
+  "system-design-concepts/frontend-concepts/security/xss-prevention": () => import("@/content/articles/system-design/frontend/security/xss-prevention"),
   "system-design-concepts/frontend-concepts/state-management/derived-state": () => import("@/content/articles/system-design/frontend/state-management/derived-state"),
   "system-design-concepts/frontend-concepts/state-management/form-state-management": () => import("@/content/articles/system-design/frontend/state-management/form-state-management"),
   "system-design-concepts/frontend-concepts/state-management/global-state-management": () => import("@/content/articles/system-design/frontend/state-management/global-state-management"),

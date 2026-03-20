@@ -1,40 +1,16 @@
 {
-  "total": 1550,
+  "total": 1652,
   "fixed": 0,
   "cssVariablesReplaced": 0,
   "xmlEntitiesEscaped": 0,
-  "invalid": [
-    "public/diagrams/requirements/nfr/advanced-topics/micro-frontend-integration-patterns.svg",
-    "public/diagrams/requirements/nfr/frontend-nfr/media-lazy-loading.svg",
-    "public/diagrams/requirements/nfr/frontend-nfr/media-responsive-images.svg",
-    "public/diagrams/system-design-concepts/backend/data-storage-databases/cdn-dns-based.svg",
-    "public/diagrams/system-design-concepts/backend/fundamentals-building-blocks/domain-name-space.svg",
-    "public/diagrams/system-design-concepts/backend/fundamentals-building-blocks/ipv4-address.svg",
-    "public/diagrams/system-design-concepts/backend/fundamentals-building-blocks/ipv6-address.svg",
-    "public/diagrams/system-design-concepts/backend/infrastructure-deployment/cloud-services-diagram-3.svg",
-    "public/diagrams/system-design-concepts/backend/infrastructure-deployment/containerization-diagram-3.svg",
-    "public/diagrams/system-design-concepts/backend/infrastructure-deployment/feature-flags-diagram-3.svg",
-    "public/diagrams/system-design-concepts/backend/network-communication/cdn-content-aware-slb.svg",
-    "public/diagrams/system-design-concepts/backend/network-communication/http2-hpack.svg",
-    "public/diagrams/system-design-concepts/backend/network-communication/p2p-network.svg",
-    "public/diagrams/system-design-concepts/backend/network-communication/proxy-website-diagram.svg",
-    "public/diagrams/system-design-concepts/backend/network-communication/request-hedging-grpc-basic.svg",
-    "public/diagrams/system-design-concepts/backend/system-components-services/a-b-testing-service-diagram-3.svg",
-    "public/diagrams/system-design-concepts/backend/system-components-services/analytics-service-diagram-3.svg",
-    "public/diagrams/system-design-concepts/backend/system-components-services/audit-logging-service-diagram-3.svg",
-    "public/diagrams/system-design-concepts/backend/system-components-services/authentication-service-diagram-3.svg",
-    "public/diagrams/system-design-concepts/backend/system-components-services/authorization-service-diagram-3.svg",
-    "public/diagrams/system-design-concepts/backend/system-components-services/content-moderation-service-diagram-3.svg",
-    "public/diagrams/system-design-concepts/backend/system-components-services/email-service-diagram-3.svg",
-    "public/diagrams/system-design-concepts/backend/system-components-services/notification-service-diagram-2.svg"
-  ],
+  "invalid": [],
   "byDirectory": {
     "requirements": {
-      "total": 203,
+      "total": 276,
       "fixed": 0
     },
     "system-design-concepts": {
-      "total": 1347,
+      "total": 1376,
       "fixed": 0
     }
   }

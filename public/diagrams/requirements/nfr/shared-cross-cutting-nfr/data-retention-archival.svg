@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Data Retention &amp; Archival</text>
+  
+  <!-- Retention Tiers -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="180" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4a90d9">Data Retention Tiers</text>
+    
+    <!-- Hot -->
+    <rect x="30" y="60" width="170" height="100" rx="4" fill="#4a90d9" opacity="0.4"/>
+    <text x="115" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#4a90d9">Hot (0-30 days)</text>
+    <text x="115" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• SSD storage</text>
+    <text x="115" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Immediate access</text>
+    <text x="115" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Highest cost</text>
+    <text x="115" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Active queries</text>
+    <text x="115" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Example: S3 Standard</text>
+    
+    <!-- Warm -->
+    <rect x="215" y="60" width="170" height="100" rx="4" fill="#67b26f" opacity="0.4"/>
+    <text x="300" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">Warm (30-90 days)</text>
+    <text x="300" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• HDD storage</text>
+    <text x="300" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Minutes to access</text>
+    <text x="300" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Medium cost</text>
+    <text x="300" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Infrequent access</text>
+    <text x="300" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Example: S3 IA</text>
+    
+    <!-- Cold -->
+    <rect x="400" y="60" width="170" height="100" rx="4" fill="#f0ad4e" opacity="0.4"/>
+    <text x="485" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">Cold (90-365 days)</text>
+    <text x="485" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Tape/archive</text>
+    <text x="485" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Hours to access</text>
+    <text x="485" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Low cost</text>
+    <text x="485" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Compliance archive</text>
+    <text x="485" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Example: Glacier</text>
+    
+    <!-- Delete -->
+    <rect x="585" y="60" width="170" height="100" rx="4" fill="#d9534f" opacity="0.4"/>
+    <text x="670" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#d9534f">Delete ({'>'}365 days)</text>
+    <text x="670" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Automated deletion</text>
+    <text x="670" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Legal hold exceptions</text>
+    <text x="670" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Secure erasure</text>
+    <text x="670" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Certificate of deletion</text>
+    <text x="670" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Compliance requirement</text>
+  </g>
+  
+  <!-- Lifecycle Policy -->
+  <g transform="translate(50, 290)">
+    <rect x="0" y="0" width="400" height="160" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Lifecycle Policy Example</text>
+    
+    <g transform="translate(20, 55)">
+      <text x="0" y="0" font-family="monospace" font-size="8" fill="#e0e0e0">Day 0-30: Hot storage</text>
+      <text x="0" y="20" font-family="monospace" font-size="8" fill="#67b26f">→ Transition to Warm</text>
+      
+      <text x="0" y="45" font-family="monospace" font-size="8" fill="#e0e0e0">Day 31-90: Warm storage</text>
+      <text x="0" y="65" font-family="monospace" font-size="8" fill="#f0ad4e">→ Transition to Cold</text>
+      
+      <text x="0" y="90" font-family="monospace" font-size="8" fill="#e0e0e0">Day 91-365: Cold storage</text>
+      <text x="0" y="110" font-family="monospace" font-size="8" fill="#d9534f">→ Expire/Delete</text>
+      
+      <text x="220" y="30" font-family="system-ui" font-size="7" fill="#999">Automate with:</text>
+      <text x="220" y="45" font-family="system-ui" font-size="7" fill="#999">• S3 Lifecycle</text>
+      <text x="220" y="58" font-family="system-ui" font-size="7" fill="#999">• Azure Blob Lifecycle</text>
+      <text x="220" y="71" font-family="system-ui" font-size="7" fill="#999">• GCS Lifecycle</text>
+      <text x="220" y="84" font-family="system-ui" font-size="7" fill="#999">• Custom policies</text>
+    </g>
+  </g>
+  
+  <!-- Legal Hold -->
+  <g transform="translate(470, 290)">
+    <rect x="0" y="0" width="380" height="160" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">Legal Hold Process</text>
+    
+    <g transform="translate(20, 55)">
+      <rect x="0" y="0" width="160" height="30" rx="3" fill="#d9534f" opacity="0.4"/>
+      <text x="80" y="20" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Litigation Hold</text>
+      <text x="80" y="28" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Prevent deletion</text>
+      
+      <rect x="180" y="0" width="160" height="30" rx="3" fill="#4a90d9" opacity="0.4"/>
+      <text x="260" y="20" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Regulatory Hold</text>
+      <text x="260" y="28" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Compliance requirement</text>
+      
+      <rect x="0" y="40" width="340" height="30" rx="3" fill="#67b26f" opacity="0.4"/>
+      <text x="170" y="60" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Hold overrides lifecycle policies</text>
+      
+      <rect x="0" y="80" width="340" height="30" rx="3" fill="#f0ad4e" opacity="0.4"/>
+      <text x="170" y="100" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Track hold duration &amp; justification</text>
+      
+      <rect x="0" y="120" width="340" height="30" rx="3" fill="#6f42c1" opacity="0.4"/>
+      <text x="170" y="140" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Release hold → Resume normal lifecycle</text>
+    </g>
+  </g>
+</svg>

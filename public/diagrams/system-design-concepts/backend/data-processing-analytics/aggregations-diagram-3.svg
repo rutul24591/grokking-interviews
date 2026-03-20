@@ -1,10 +1,118 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Aggregations Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Aggregations</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Aggregation Failure Modes</title>
+  <desc id="desc">Aggregation failure modes: skew, stale results, and approximate vs exact trade-offs</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Aggregation Failure Modes</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Skew, stale results, and approximate vs exact trade-offs</text>
+  
+  <!-- Data Skew -->
+  <rect x="30" y="85" width="280" height="210" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="170" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#b91c1c">Data Skew in Aggregation</text>
+  
+  <rect x="50" y="125" width="240" height="150" rx="4" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="170" y="155" text-anchor="middle" font-size="10" fill="#64748b">Uneven key distribution causes</text>
+  <text x="170" y="175" text-anchor="middle" font-size="10" fill="#64748b">one reducer to handle most data,</text>
+  <text x="170" y="190" text-anchor="middle" font-size="10" fill="#64748b">becoming a bottleneck</text>
+  <text x="170" y="215" text-anchor="middle" font-size="10" fill="#b91c1c">Signal:</text>
+  <text x="210" y="215" text-anchor="middle" font-size="10" fill="#64748b">One task takes 10x longer,</text>
+  <text x="170" y="235" text-anchor="middle" font-size="10" fill="#64748b">job waits on single reducer</text>
+  <text x="170" y="255" text-anchor="middle" font-size="10" fill="#b91c1c">Mitigation:</text>
+  <text x="220" y="255" text-anchor="middle" font-size="10" fill="#64748b">Salting, two-phase aggregation,</text>
+  <text x="170" y="275" text-anchor="middle" font-size="10" fill="#64748b">combiner before shuffle</text>
+  
+  <!-- Stale Results -->
+  <rect x="325" y="85" width="280" height="210" rx="8" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text x="465" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">Stale Results</text>
+  
+  <rect x="345" y="125" width="240" height="150" rx="4" fill="#fffbeb" stroke="#fcd34d" stroke-width="1"/>
+  <text x="465" y="155" text-anchor="middle" font-size="10" fill="#64748b">Aggregation not updated due to</text>
+  <text x="465" y="175" text-anchor="middle" font-size="10" fill="#64748b">pipeline delays, failures, or</text>
+  <text x="465" y="190" text-anchor="middle" font-size="10" fill="#64748b">stale materialized views</text>
+  <text x="465" y="215" text-anchor="middle" font-size="10" fill="#b45309">Signal:</text>
+  <text x="505" y="215" text-anchor="middle" font-size="10" fill="#64748b">Metrics don't match reality,</text>
+  <text x="465" y="235" text-anchor="middle" font-size="10" fill="#64748b">last_update timestamp old</text>
+  <text x="465" y="255" text-anchor="middle" font-size="10" fill="#b45309">Mitigation:</text>
+  <text x="515" y="255" text-anchor="middle" font-size="10" fill="#64748b">Monitor freshness, alert on delays,</text>
+  <text x="465" y="275" text-anchor="middle" font-size="10" fill="#64748b">auto-retry failed updates</text>
+  
+  <!-- Approximation Errors -->
+  <rect x="620" y="85" width="250" height="210" rx="8" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="2"/>
+  <text x="745" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#4338ca">Approximation Errors</text>
+  
+  <rect x="640" y="125" width="210" height="150" rx="4" fill="#eef2ff" stroke="#a5b4fc" stroke-width="1"/>
+  <text x="745" y="155" text-anchor="middle" font-size="10" fill="#64748b">HLL, t-digest, sampling give</text>
+  <text x="745" y="175" text-anchor="middle" font-size="10" fill="#64748b">approximate results that may</text>
+  <text x="745" y="190" text-anchor="middle" font-size="10" fill="#64748b">drift from exact values</text>
+  <text x="745" y="215" text-anchor="middle" font-size="10" fill="#4338ca">Signal:</text>
+  <text x="785" y="215" text-anchor="middle" font-size="10" fill="#64748b">Counts don't match exact query,</text>
+  <text x="745" y="235" text-anchor="middle" font-size="10" fill="#64748b">error rate exceeds threshold</text>
+  <text x="745" y="255" text-anchor="middle" font-size="10" fill="#4338ca">Mitigation:</text>
+  <text x="795" y="255" text-anchor="middle" font-size="10" fill="#64748b">Tune accuracy params, periodic</text>
+  <text x="745" y="275" text-anchor="middle" font-size="10" fill="#64748b">reconciliation with exact</text>
+  
+  <!-- Double Counting -->
+  <rect x="30" y="310" width="280" height="210" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="170" y="335" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Double Counting</text>
+  
+  <rect x="50" y="350" width="240" height="150" rx="4" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="170" y="380" text-anchor="middle" font-size="10" fill="#64748b">Events counted multiple times</text>
+  <text x="170" y="395" text-anchor="middle" font-size="10" fill="#64748b">due to retries, reprocessing,</text>
+  <text x="170" y="410" text-anchor="middle" font-size="10" fill="#64748b">or overlapping windows</text>
+  <text x="170" y="435" text-anchor="middle" font-size="10" fill="#1e293b">Signal:</text>
+  <text x="210" y="435" text-anchor="middle" font-size="10" fill="#64748b">Totals exceed source count,</text>
+  <text x="170" y="450" text-anchor="middle" font-size="10" fill="#64748b">metrics grow faster than expected</text>
+  <text x="170" y="470" text-anchor="middle" font-size="10" fill="#1e293b">Mitigation:</text>
+  <text x="220" y="470" text-anchor="middle" font-size="10" fill="#64748b">Idempotent aggregation, dedup</text>
+  <text x="170" y="490" text-anchor="middle" font-size="10" fill="#64748b">before aggregate, exact windows</text>
+  
+  <!-- Memory Exhaustion -->
+  <rect x="325" y="310" width="280" height="210" rx="8" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="465" y="335" text-anchor="middle" font-size="14" font-weight="bold" fill="#047857">Memory Exhaustion</text>
+  
+  <rect x="345" y="350" width="240" height="150" rx="4" fill="#f0fdf4" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="465" y="380" text-anchor="middle" font-size="10" fill="#64748b">Unbounded state (distinct values,</text>
+  <text x="465" y="395" text-anchor="middle" font-size="10" fill="#64748b">large windows) causes OOM</text>
+  <text x="465" y="410" text-anchor="middle" font-size="10" fill="#64748b">during aggregation</text>
+  <text x="465" y="435" text-anchor="middle" font-size="10" fill="#047857">Signal:</text>
+  <text x="505" y="435" text-anchor="middle" font-size="10" fill="#64748b">OOM errors, GC pressure,</text>
+  <text x="465" y="450" text-anchor="middle" font-size="10" fill="#64748b">task failures on large datasets</text>
+  <text x="465" y="470" text-anchor="middle" font-size="10" fill="#047857">Mitigation:</text>
+  <text x="515" y="470" text-anchor="middle" font-size="10" fill="#64748b">Use approximate algorithms,</text>
+  <text x="465" y="490" text-anchor="middle" font-size="10" fill="#64748b">spill to disk, limit cardinality</text>
+  
+  <!-- Inconsistent Aggregates -->
+  <rect x="620" y="310" width="250" height="210" rx="8" fill="#ffedd5" stroke="#fdba74" stroke-width="2"/>
+  <text x="745" y="335" text-anchor="middle" font-size="14" font-weight="bold" fill="#c2410c">Inconsistent Aggregates</text>
+  
+  <rect x="640" y="350" width="210" height="150" rx="4" fill="#fff7ed" stroke="#fdba74" stroke-width="1"/>
+  <text x="745" y="380" text-anchor="middle" font-size="10" fill="#64748b">Different queries return different</text>
+  <text x="745" y="395" text-anchor="middle" font-size="10" fill="#64748b">aggregates due to timing,</text>
+  <text x="745" y="410" text-anchor="middle" font-size="10" fill="#64748b">partial updates, or race conditions</text>
+  <text x="745" y="435" text-anchor="middle" font-size="10" fill="#c2410c">Signal:</text>
+  <text x="785" y="435" text-anchor="middle" font-size="10" fill="#64748b">Dashboard mismatches, users</text>
+  <text x="745" y="450" text-anchor="middle" font-size="10" fill="#64748b">report conflicting numbers</text>
+  <text x="745" y="470" text-anchor="middle" font-size="10" fill="#c2410c">Mitigation:</text>
+  <text x="795" y="470" text-anchor="middle" font-size="10" fill="#64748b">Atomic updates, consistent</text>
+  <text x="745" y="490" text-anchor="middle" font-size="10" fill="#64748b">snapshots, single source of truth</text>
+  
+  <!-- Best Practices -->
+  <rect x="30" y="530" width="280" height="15" rx="2" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="170" y="542" text-anchor="middle" font-size="8" fill="#b45309">Monitor aggregation freshness and accuracy</text>
+  
+  <rect x="325" y="530" width="280" height="15" rx="2" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="1"/>
+  <text x="465" y="542" text-anchor="middle" font-size="8" fill="#4338ca">Use combiners to reduce shuffle</text>
+  
+  <rect x="620" y="530" width="250" height="15" rx="2" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="745" y="542" text-anchor="middle" font-size="8" fill="#047857">Reconcile approximate with exact periodically</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
 </svg>

@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad2)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Compliance Framework Mapping</text>
+  
+  <!-- Framework Comparison -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="180" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4a90d9">Compliance Framework Comparison</text>
+    
+    <!-- SOC 2 -->
+    <rect x="30" y="60" width="170" height="100" rx="4" fill="#4a90d9" opacity="0.4"/>
+    <text x="115" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#4a90d9">SOC 2</text>
+    <text x="115" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Security controls</text>
+    <text x="115" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Availability</text>
+    <text x="115" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Confidentiality</text>
+    <text x="115" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Privacy</text>
+    <text x="115" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">US | Annual audit</text>
+    
+    <!-- ISO 27001 -->
+    <rect x="215" y="60" width="170" height="100" rx="4" fill="#67b26f" opacity="0.4"/>
+    <text x="300" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">ISO 27001</text>
+    <text x="300" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• ISMS framework</text>
+    <text x="300" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Risk management</text>
+    <text x="300" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Continuous improvement</text>
+    <text x="300" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• 114 controls</text>
+    <text x="300" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">International | 3-year cert</text>
+    
+    <!-- GDPR -->
+    <rect x="400" y="60" width="170" height="100" rx="4" fill="#f0ad4e" opacity="0.4"/>
+    <text x="485" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">GDPR</text>
+    <text x="485" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Data privacy</text>
+    <text x="485" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• User rights</text>
+    <text x="485" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Data breach notification</text>
+    <text x="485" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• DPO requirement</text>
+    <text x="485" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">EU | Up to 4% revenue fine</text>
+    
+    <!-- HIPAA -->
+    <rect x="585" y="60" width="170" height="100" rx="4" fill="#d9534f" opacity="0.4"/>
+    <text x="670" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#d9534f">HIPAA</text>
+    <text x="670" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• PHI protection</text>
+    <text x="670" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Privacy Rule</text>
+    <text x="670" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Security Rule</text>
+    <text x="670" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Breach notification</text>
+    <text x="670" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">US Healthcare | Criminal penalties</text>
+  </g>
+  
+  <!-- Common Controls -->
+  <g transform="translate(50, 290)">
+    <rect x="0" y="0" width="400" height="160" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Common Control Requirements</text>
+    
+    <g transform="translate(20, 55)">
+      <rect x="0" y="0" width="160" height="25" rx="3" fill="#4a90d9" opacity="0.4"/>
+      <text x="80" y="17" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Access Control</text>
+      
+      <rect x="180" y="0" width="160" height="25" rx="3" fill="#67b26f" opacity="0.4"/>
+      <text x="260" y="17" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Encryption</text>
+      
+      <rect x="0" y="35" width="160" height="25" rx="3" fill="#f0ad4e" opacity="0.4"/>
+      <text x="80" y="52" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Audit Logging</text>
+      
+      <rect x="180" y="35" width="160" height="25" rx="3" fill="#d9534f" opacity="0.4"/>
+      <text x="260" y="52" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Incident Response</text>
+      
+      <rect x="0" y="70" width="160" height="25" rx="3" fill="#6f42c1" opacity="0.4"/>
+      <text x="80" y="87" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Risk Assessment</text>
+      
+      <rect x="180" y="70" width="160" height="25" rx="3" fill="#4a90d9" opacity="0.4"/>
+      <text x="260" y="87" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Business Continuity</text>
+      
+      <rect x="0" y="105" width="160" height="25" rx="3" fill="#67b26f" opacity="0.4"/>
+      <text x="80" y="122" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Vendor Management</text>
+      
+      <rect x="180" y="105" width="160" height="25" rx="3" fill="#f0ad4e" opacity="0.4"/>
+      <text x="260" y="122" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Employee Training</text>
+    </g>
+  </g>
+  
+  <!-- Compliance Roadmap -->
+  <g transform="translate(470, 290)">
+    <rect x="0" y="0" width="380" height="160" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">Compliance Roadmap</text>
+    
+    <g transform="translate(20, 55)">
+      <rect x="0" y="0" width="340" height="25" rx="3" fill="#4a90d9" opacity="0.4"/>
+      <text x="170" y="17" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">1. Gap Assessment</text>
+      
+      <rect x="0" y="35" width="340" height="25" rx="3" fill="#67b26f" opacity="0.4"/>
+      <text x="170" y="52" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">2. Remediation Plan</text>
+      
+      <rect x="0" y="70" width="340" height="25" rx="3" fill="#f0ad4e" opacity="0.4"/>
+      <text x="170" y="87" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">3. Implement Controls</text>
+      
+      <rect x="0" y="105" width="340" height="25" rx="3" fill="#d9534f" opacity="0.4"/>
+      <text x="170" y="122" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">4. Internal Audit</text>
+      
+      <rect x="0" y="140" width="340" height="25" rx="3" fill="#6f42c1" opacity="0.4"/>
+      <text x="170" y="157" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">5. External Audit/Certification</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad2)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Risk Management Framework</text>
+  
+  <!-- Risk Management Process -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="180" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4a90d9">NIST Risk Management Framework</text>
+    
+    <!-- Prepare -->
+    <circle cx="80" cy="90" r="40" fill="#4a90d9"/>
+    <text x="80" y="85" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="white">1. Prepare</text>
+    <text x="80" y="105" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Organization</text>
+    <text x="80" y="118" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Systems</text>
+    
+    <line x1="120" y1="90" x2="160" y2="90" stroke="#666" stroke-width="3"/>
+    <polygon points="160,90 150,85 150,95" fill="#666"/>
+    
+    <!-- Categorize -->
+    <circle cx="200" cy="90" r="40" fill="#67b26f"/>
+    <text x="200" y="85" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="white">2. Categorize</text>
+    <text x="200" y="105" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Information</text>
+    <text x="200" y="118" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Impact level</text>
+    
+    <line x1="240" y1="90" x2="280" y2="90" stroke="#666" stroke-width="3"/>
+    <polygon points="280,90 270,85 270,95" fill="#666"/>
+    
+    <!-- Select -->
+    <circle cx="320" cy="90" r="40" fill="#f0ad4e"/>
+    <text x="320" y="85" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="white">3. Select</text>
+    <text x="320" y="105" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Controls</text>
+    <text x="320" y="118" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Baseline + tailoring</text>
+    
+    <line x1="360" y1="90" x2="400" y2="90" stroke="#666" stroke-width="3"/>
+    <polygon points="400,90 390,85 390,95" fill="#666"/>
+    
+    <!-- Implement -->
+    <circle cx="440" cy="90" r="40" fill="#4a90d9"/>
+    <text x="440" y="85" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="white">4. Implement</text>
+    <text x="440" y="105" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Controls</text>
+    <text x="440" y="118" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Documentation</text>
+    
+    <line x1="480" y1="90" x2="520" y2="90" stroke="#666" stroke-width="3"/>
+    <polygon points="520,90 510,85 510,95" fill="#666"/>
+    
+    <!-- Assess -->
+    <circle cx="560" cy="90" r="40" fill="#67b26f"/>
+    <text x="560" y="85" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="white">5. Assess</text>
+    <text x="560" y="105" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Effectiveness</text>
+    <text x="560" y="118" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Testing</text>
+    
+    <line x1="600" y1="90" x2="640" y2="90" stroke="#666" stroke-width="3"/>
+    <polygon points="640,90 630,85 630,95" fill="#666"/>
+    
+    <!-- Authorize -->
+    <circle cx="680" cy="90" r="40" fill="#f0ad4e"/>
+    <text x="720" y="85" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="white">6. Authorize</text>
+    <text x="720" y="105" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">ATO decision</text>
+    <text x="720" y="118" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Risk acceptance</text>
+    
+    <line x1="720" y1="130" x2="720" y2="150" stroke="#666" stroke-width="3"/>
+    <polygon points="720,150 715,140 725,140" fill="#666"/>
+    
+    <!-- Monitor -->
+    <rect x="660" y="150" width="120" height="40" rx="4" fill="#4a90d9"/>
+    <text x="720" y="175" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="white">7. Monitor</text>
+    
+    <path d="M 640 90 Q 500 90 500 170 Q 500 200 80 200 Q 50 200 50 130" fill="none" stroke="#666" stroke-width="2" stroke-dasharray="5,3"/>
+    <polygon points="50,130 45,140 55,140" fill="#666"/>
+    <text x="300" y="220" text-anchor="middle" font-family="system-ui" font-size="8" fill="#999">Continuous monitoring feeds back to Prepare</text>
+  </g>
+  
+  <!-- Risk Treatment -->
+  <g transform="translate(50, 290)">
+    <rect x="0" y="0" width="400" height="160" rx="8" fill="#1a2a1a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">Risk Treatment Options</text>
+    
+    <g transform="translate(20, 55)">
+      <rect x="0" y="0" width="160" height="30" rx="3" fill="#67b26f" opacity="0.4"/>
+      <text x="80" y="20" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Accept</text>
+      <text x="80" y="28" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Risk within appetite</text>
+      
+      <rect x="180" y="0" width="160" height="30" rx="3" fill="#4a90d9" opacity="0.4"/>
+      <text x="260" y="20" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Mitigate</text>
+      <text x="260" y="28" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Implement controls</text>
+      
+      <rect x="0" y="40" width="160" height="30" rx="3" fill="#f0ad4e" opacity="0.4"/>
+      <text x="80" y="60" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Transfer</text>
+      <text x="80" y="68" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Insurance, outsourcing</text>
+      
+      <rect x="180" y="40" width="160" height="30" rx="3" fill="#d9534f" opacity="0.4"/>
+      <text x="260" y="60" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Avoid</text>
+      <text x="260" y="68" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Don't do it</text>
+      
+      <rect x="0" y="80" width="340" height="30" rx="3" fill="#6f42c1" opacity="0.4"/>
+      <text x="170" y="97" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Document all decisions | Review periodically</text>
+      
+      <text x="170" y="125" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Risk Register: Track all identified risks + treatment</text>
+    </g>
+  </g>
+  
+  <!-- Control Types -->
+  <g transform="translate(470, 290)">
+    <rect x="0" y="0" width="380" height="160" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Security Control Types</text>
+    
+    <g transform="translate(20, 55)">
+      <circle cx="8" cy="8" r="4" fill="#4a90d9"/>
+      <text x="20" y="13" font-family="system-ui" font-size="8" fill="#e0e0e0">Preventive (stop incidents)</text>
+      
+      <circle cx="8" cy="28" r="4" fill="#67b26f"/>
+      <text x="20" y="33" font-family="system-ui" font-size="8" fill="#e0e0e0">Detective (identify incidents)</text>
+      
+      <circle cx="8" cy="48" r="4" fill="#f0ad4e"/>
+      <text x="20" y="53" font-family="system-ui" font-size="8" fill="#e0e0e0">Corrective (restore after incidents)</text>
+      
+      <circle cx="8" cy="68" r="4" fill="#d9534f"/>
+      <text x="20" y="73" font-family="system-ui" font-size="8" fill="#e0e0e0">Deterrent (discourage attacks)</text>
+      
+      <circle cx="180" cy="8" r="4" fill="#4a90d9"/>
+      <text x="192" y="13" font-family="system-ui" font-size="8" fill="#e0e0e0">Administrative (policies)</text>
+      
+      <circle cx="180" cy="28" r="4" fill="#67b26f"/>
+      <text x="192" y="33" font-family="system-ui" font-size="8" fill="#e0e0e0">Technical (systems)</text>
+      
+      <circle cx="180" cy="48" r="4" fill="#f0ad4e"/>
+      <text x="192" y="53" font-family="system-ui" font-size="8" fill="#e0e0e0">Physical (locks, guards)</text>
+      
+      <circle cx="180" cy="68" r="4" fill="#67b26f"/>
+      <text x="192" y="73" font-family="system-ui" font-size="8" fill="#e0e0e0">Layer controls for defense in depth</text>
+    </g>
+  </g>
+</svg>

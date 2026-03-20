@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Observability Implementation</text>
+  
+  <!-- Implementation Stack -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="200" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4a90d9">Observability Implementation Stack</text>
+    
+    <!-- Instrumentation -->
+    <rect x="30" y="55" width="740" height="35" rx="4" fill="#4a90d9" opacity="0.4"/>
+    <text x="400" y="78" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#4a90d9">1. Instrumentation Layer</text>
+    <text x="100" y="78" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">OpenTelemetry SDK</text>
+    <text x="250" y="78" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Auto-instrumentation</text>
+    <text x="400" y="78" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Custom spans/metrics</text>
+    <text x="550" y="78" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Context propagation</text>
+    <text x="700" y="78" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Sampling config</text>
+    
+    <!-- Collection -->
+    <rect x="30" y="100" width="740" height="35" rx="4" fill="#67b26f" opacity="0.4"/>
+    <text x="400" y="123" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">2. Collection Layer</text>
+    <text x="100" y="123" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">OTel Collector</text>
+    <text x="250" y="123" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Log shippers</text>
+    <text x="400" y="123" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Metrics exporters</text>
+    <text x="550" y="123" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Batching</text>
+    <text x="700" y="123" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Buffering</text>
+    
+    <!-- Storage -->
+    <rect x="30" y="145" width="740" height="35" rx="4" fill="#f0ad4e" opacity="0.4"/>
+    <text x="400" y="168" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">3. Storage Layer</text>
+    <text x="100" y="168" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Prometheus</text>
+    <text x="250" y="168" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Elasticsearch</text>
+    <text x="400" y="168" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Jaeger/Tempo</text>
+    <text x="550" y="168" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Data retention</text>
+    <text x="700" y="168" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Indexing</text>
+    
+    <!-- Visualization -->
+    <rect x="30" y="190" width="740" height="35" rx="4" fill="#d9534f" opacity="0.4"/>
+    <text x="400" y="213" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#d9534f">4. Visualization &amp; Alerting</text>
+    <text x="100" y="213" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Grafana</text>
+    <text x="250" y="213" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Dashboards</text>
+    <text x="400" y="213" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Alert rules</text>
+    <text x="550" y="213" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">On-call integration</text>
+    <text x="700" y="213" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Runbooks</text>
+  </g>
+  
+  <!-- Key Metrics -->
+  <g transform="translate(50, 310)">
+    <rect x="0" y="0" width="400" height="140" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Golden Signals (RED Method)</text>
+    
+    <g transform="translate(20, 55)">
+      <rect x="0" y="0" width="160" height="30" rx="3" fill="#4a90d9" opacity="0.4"/>
+      <text x="80" y="20" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Rate (requests/sec)</text>
+      
+      <rect x="180" y="0" width="160" height="30" rx="3" fill="#67b26f" opacity="0.4"/>
+      <text x="260" y="20" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Errors (error rate %)</text>
+      
+      <rect x="0" y="40" width="160" height="30" rx="3" fill="#f0ad4e" opacity="0.4"/>
+      <text x="80" y="60" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Duration (latency)</text>
+      
+      <rect x="180" y="40" width="160" height="30" rx="3" fill="#d9534f" opacity="0.4"/>
+      <text x="260" y="60" text-anchor="middle" font-family="system-ui" font-size="9" fill="#e0e0e0">Saturation (utilization)</text>
+      
+      <text x="170" y="95" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Monitor P50, P90, P99 for latency</text>
+    </g>
+  </g>
+  
+  <!-- Distributed Tracing -->
+  <g transform="translate(470, 310)">
+    <rect x="0" y="0" width="380" height="140" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#4a90d9">Trace Context Propagation</text>
+    
+    <g transform="translate(20, 55)">
+      <text x="0" y="0" font-family="system-ui" font-size="8" fill="#e0e0e0">Headers to propagate:</text>
+      
+      <rect x="0" y="15" width="340" height="20" rx="2" fill="#4a90d9" opacity="0.3"/>
+      <text x="10" y="29" font-family="monospace" font-size="7" fill="#e0e0e0">traceparent: version-trace-id-parent-id-flags</text>
+      
+      <rect x="0" y="40" width="340" height="20" rx="2" fill="#67b26f" opacity="0.3"/>
+      <text x="10" y="54" font-family="monospace" font-size="7" fill="#e0e0e0">tracestate: vendor=value,vendor2=value2</text>
+      
+      <rect x="0" y="65" width="340" height="20" rx="2" fill="#f0ad4e" opacity="0.3"/>
+      <text x="10" y="79" font-family="monospace" font-size="7" fill="#e0e0e0">baggage: key1=value1,key2=value2</text>
+      
+      <text x="170" y="110" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">W3C Trace Context standard</text>
+    </g>
+  </g>
+</svg>

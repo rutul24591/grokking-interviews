@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad2)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Data Governance Framework</text>
+  
+  <!-- Governance Pillars -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="180" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4a90d9">Data Governance Pillars</text>
+    
+    <!-- Data Quality -->
+    <rect x="30" y="60" width="170" height="100" rx="4" fill="#4a90d9" opacity="0.4"/>
+    <text x="115" y="95" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#4a90d9">Data Quality</text>
+    <text x="115" y="115" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Accuracy</text>
+    <text x="115" y="130" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Completeness</text>
+    <text x="115" y="145" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Consistency</text>
+    <text x="115" y="160" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Timeliness</text>
+    
+    <!-- Data Security -->
+    <rect x="215" y="60" width="170" height="100" rx="4" fill="#67b26f" opacity="0.4"/>
+    <text x="300" y="95" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">Data Security</text>
+    <text x="300" y="115" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Access control</text>
+    <text x="300" y="130" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Encryption</text>
+    <text x="300" y="145" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Audit logging</text>
+    <text x="300" y="160" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Privacy compliance</text>
+    
+    <!-- Data Lifecycle -->
+    <rect x="400" y="60" width="170" height="100" rx="4" fill="#f0ad4e" opacity="0.4"/>
+    <text x="485" y="95" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">Data Lifecycle</text>
+    <text x="485" y="115" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Creation/Ingest</text>
+    <text x="485" y="130" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Storage/Use</text>
+    <text x="485" y="145" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Archive</text>
+    <text x="485" y="160" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Disposal</text>
+    
+    <!-- Compliance -->
+    <rect x="585" y="60" width="170" height="100" rx="4" fill="#d9534f" opacity="0.4"/>
+    <text x="670" y="95" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#d9534f">Compliance</text>
+    <text x="670" y="115" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• GDPR</text>
+    <text x="670" y="130" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• CCPA</text>
+    <text x="670" y="145" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• HIPAA</text>
+    <text x="670" y="160" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Industry regs</text>
+  </g>
+  
+  <!-- Data Ownership -->
+  <g transform="translate(50, 290)">
+    <rect x="0" y="0" width="400" height="160" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Data Ownership Model</text>
+    
+    <g transform="translate(20, 55)">
+      <rect x="0" y="0" width="160" height="35" rx="3" fill="#4a90d9" opacity="0.4"/>
+      <text x="80" y="22" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#4a90d9">Data Owner</text>
+      <text x="80" y="33" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Business accountability</text>
+      
+      <rect x="180" y="0" width="160" height="35" rx="3" fill="#67b26f" opacity="0.4"/>
+      <text x="260" y="22" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#67b26f">Data Steward</text>
+      <text x="260" y="33" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Quality &amp; standards</text>
+      
+      <rect x="0" y="45" width="160" height="35" rx="3" fill="#f0ad4e" opacity="0.4"/>
+      <text x="80" y="67" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#f0ad4e">Data Custodian</text>
+      <text x="80" y="78" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Technical management</text>
+      
+      <rect x="180" y="45" width="160" height="35" rx="3" fill="#d9534f" opacity="0.4"/>
+      <text x="260" y="67" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#d9534f">Data Consumer</text>
+      <text x="260" y="78" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">End users, analysts</text>
+      
+      <text x="170" y="110" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Clear RACI for all data assets</text>
+    </g>
+  </g>
+  
+  <!-- Policy Enforcement -->
+  <g transform="translate(470, 290)">
+    <rect x="0" y="0" width="380" height="160" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">Policy Enforcement</text>
+    
+    <g transform="translate(20, 55)">
+      <text x="0" y="0" font-family="system-ui" font-size="8" fill="#e0e0e0">Automated:</text>
+      <text x="70" y="0" font-family="system-ui" font-size="8" fill="#67b26f">Access control enforcement</text>
+      
+      <text x="0" y="20" font-family="system-ui" font-size="8" fill="#e0e0e0">Automated:</text>
+      <text x="70" y="20" font-family="system-ui" font-size="8" fill="#67b26f">Data classification</text>
+      
+      <text x="0" y="40" font-family="system-ui" font-size="8" fill="#e0e0e0">Automated:</text>
+      <text x="70" y="40" font-family="system-ui" font-size="8" fill="#67b26f">Retention policy enforcement</text>
+      
+      <text x="0" y="60" font-family="system-ui" font-size="8" fill="#e0e0e0">Manual:</text>
+      <text x="60" y="60" font-family="system-ui" font-size="8" fill="#f0ad4e">Data quality review</text>
+      
+      <text x="0" y="80" font-family="system-ui" font-size="8" fill="#e0e0e0">Audit:</text>
+      <text x="50" y="80" font-family="system-ui" font-size="8" fill="#67b26f">Quarterly compliance review</text>
+      
+      <text x="200" y="40" font-family="system-ui" font-size="7" fill="#999">Combine automated + manual</text>
+      <text x="200" y="55" font-family="system-ui" font-size="7" fill="#999">for comprehensive governance</text>
+    </g>
+  </g>
+</svg>

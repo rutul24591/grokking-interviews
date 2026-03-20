@@ -429,15 +429,10 @@ export default function EndToEndPerformanceBudgetsArticle() {
           </li>
         </ul>
         <p>
-          <strong>Example configuration (Lighthouse CI):</strong>
+          <strong>Example configuration (Lighthouse CI):</strong> Set assertions for FCP (max 1500ms),
+          LCP (max 2500ms), total-byte-weight (max 1.5MB). Use &quot;warn&quot; for advisory budgets,
+          &quot;error&quot; for blocking budgets.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-{`extends: lighthouse:recommended
-assertions:
-  first-contentful-paint: ["warn", { "maxNumericValue": 1500 }]
-  largest-contentful-paint: ["error", { "maxNumericValue": 2500 }]
-  total-byte-weight: ["warn", { "maxNumericValue": 1500000 }]`}
-        </pre>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Real User Monitoring (RUM)</h3>
         <p>

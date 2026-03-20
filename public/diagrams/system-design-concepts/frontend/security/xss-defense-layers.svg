@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 900" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1000" height="900" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="500" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="bold" fill="#0f172a">XSS Defense-in-Depth Strategy</text>
+  <text x="500" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="#475569">Multiple overlapping layers ensure comprehensive protection</text>
+  
+  <!-- Layer 1: Input Validation -->
+  <g transform="translate(100, 100)">
+    <rect x="0" y="0" width="800" height="100" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+    <text x="400" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#16a34a">Layer 1: Input Validation</text>
+    <text x="400" y="50" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#475569">Validate and sanitize at entry points (client + server)</text>
+    
+    <g transform="translate(50, 60)">
+      <rect x="0" y="0" width="160" height="30" rx="4" fill="#ffffff" stroke="#22c55e"/>
+      <text x="80" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">Allowlist validation</text>
+      
+      <rect x="170" y="0" width="160" height="30" rx="4" fill="#ffffff" stroke="#22c55e"/>
+      <text x="250" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">Type/length checks</text>
+      
+      <rect x="340" y="0" width="160" height="30" rx="4" fill="#ffffff" stroke="#22c55e"/>
+      <text x="420" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">Pattern matching</text>
+      
+      <rect x="510" y="0" width="160" height="30" rx="4" fill="#ffffff" stroke="#22c55e"/>
+      <text x="590" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">Reject obvious attacks</text>
+    </g>
+  </g>
+  
+  <!-- Arrow down -->
+  <line x1="500" y1="210" x2="500" y2="230" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Layer 2: Output Encoding -->
+  <g transform="translate(100, 240)">
+    <rect x="0" y="0" width="800" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="400" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#d97706">Layer 2: Output Encoding (Most Critical)</text>
+    <text x="400" y="50" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#475569">Transform data based on target context</text>
+    
+    <!-- Context boxes -->
+    <g transform="translate(40, 60)">
+      <rect x="0" y="0" width="140" height="70" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="70" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">HTML Body</text>
+      <text x="70" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">&amp;lt; → &amp;lt;</text>
+      <text x="70" y="55" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">&amp;gt; → &amp;gt;</text>
+      
+      <rect x="160" y="0" width="140" height="70" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="230" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">HTML Attribute</text>
+      <text x="230" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">&amp;quot; → &amp;quot;</text>
+      <text x="230" y="55" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">' → &amp;#39;</text>
+      
+      <rect x="320" y="0" width="140" height="70" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="390" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">JavaScript</text>
+      <text x="390" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">\uXXXX escape</text>
+      <text x="390" y="55" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Block &amp;lt;script&amp;gt;</text>
+      
+      <rect x="480" y="0" width="140" height="70" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="550" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">URL</text>
+      <text x="550" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">encodeURIComponent()</text>
+      <text x="550" y="55" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Block javascript:</text>
+      
+      <rect x="620" y="0" width="140" height="70" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="690" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">CSS</text>
+      <text x="690" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">CSS escaping</text>
+      <text x="690" y="55" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Block expression()</text>
+    </g>
+  </g>
+  
+  <!-- Arrow down -->
+  <line x1="500" y1="390" x2="500" y2="410" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Layer 3: CSP -->
+  <g transform="translate(100, 420)">
+    <rect x="0" y="0" width="800" height="110" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="400" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#2563eb">Layer 3: Content Security Policy (CSP)</text>
+    <text x="400" y="50" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#475569">HTTP header declaring trusted content sources</text>
+    
+    <g transform="translate(50, 60)">
+      <rect x="0" y="0" width="170" height="40" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+      <text x="85" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">script-src 'self'</text>
+      <text x="85" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Block inline scripts</text>
+      
+      <rect x="180" y="0" width="170" height="40" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+      <text x="265" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">default-src 'self'</text>
+      <text x="265" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Default restriction</text>
+      
+      <rect x="360" y="0" width="170" height="40" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+      <text x="445" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">frame-ancestors</text>
+      <text x="445" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Prevent clickjacking</text>
+      
+      <rect x="540" y="0" width="220" height="40" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+      <text x="650" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">report-uri / CSP reporting</text>
+      <text x="650" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Detect attack attempts</text>
+    </g>
+  </g>
+  
+  <!-- Arrow down -->
+  <line x1="500" y1="540" x2="500" y2="560" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Layer 4: Secure Frameworks -->
+  <g transform="translate(100, 570)">
+    <rect x="0" y="0" width="800" height="110" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+    <text x="400" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#4f46e5">Layer 4: Secure Framework Usage</text>
+    <text x="400" y="50" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#475569">Modern frameworks provide automatic escaping</text>
+    
+    <g transform="translate(80, 60)">
+      <rect x="0" y="0" width="180" height="40" rx="4" fill="#ffffff" stroke="#6366f1"/>
+      <text x="90" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">React JSX</text>
+      <text x="90" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Auto-escapes {'{ }'}</text>
+      
+      <rect x="200" y="0" width="180" height="40" rx="4" fill="#ffffff" stroke="#6366f1"/>
+      <text x="290" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Vue Interpolation</text>
+      <text x="290" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">{{ }} escapes content</text>
+      
+      <rect x="400" y="0" width="180" height="40" rx="4" fill="#ffffff" stroke="#6366f1"/>
+      <text x="490" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Angular Templates</text>
+      <text x="490" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Built-in sanitization</text>
+      
+      <rect x="600" y="0" width="160" height="40" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-dasharray="4,2"/>
+      <text x="680" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#dc2626">⚠️ Avoid escape hatches</text>
+      <text x="680" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">dangerouslySetInnerHTML</text>
+    </g>
+  </g>
+  
+  <!-- Arrow down -->
+  <line x1="500" y1="690" x2="500" y2="710" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Layer 5: Additional Defenses -->
+  <g transform="translate(100, 720)">
+    <rect x="0" y="0" width="800" height="100" rx="8" fill="#f3e8ff" stroke="#a855f7" stroke-width="2"/>
+    <text x="400" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#9333ea">Layer 5: Additional Defenses</text>
+    
+    <g transform="translate(50, 40)">
+      <rect x="0" y="0" width="140" height="50" rx="4" fill="#ffffff" stroke="#a855f7"/>
+      <text x="70" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Security Headers</text>
+      <text x="70" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">X-Content-Type-Options</text>
+      
+      <rect x="155" y="0" width="140" height="50" rx="4" fill="#ffffff" stroke="#a855f7"/>
+      <text x="225" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Cookie Security</text>
+      <text x="225" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">HttpOnly + Secure</text>
+      
+      <rect x="310" y="0" width="140" height="50" rx="4" fill="#ffffff" stroke="#a855f7"/>
+      <text x="380" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Sanitization Libraries</text>
+      <text x="380" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">DOMPurify</text>
+      
+      <rect x="465" y="0" width="140" height="50" rx="4" fill="#ffffff" stroke="#a855f7"/>
+      <text x="535" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Security Testing</text>
+      <text x="535" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">SAST, DAST, Pen testing</text>
+      
+      <rect x="620" y="0" width="140" height="50" rx="4" fill="#ffffff" stroke="#a855f7"/>
+      <text x="690" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Monitoring</text>
+      <text x="690" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">CSP violation reports</text>
+    </g>
+  </g>
+  
+  <!-- Key Insight Box -->
+  <g transform="translate(100, 840)">
+    <rect x="0" y="0" width="800" height="50" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="400" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#d97706">Key Insight:</text>
+    <text x="400" y="38" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">No single layer is sufficient. Each layer provides fallback protection if another fails.</text>
+  </g>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/>
+    </marker>
+  </defs>
+</svg>

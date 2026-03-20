@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad2)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Security Investment Justification</text>
+  
+  <!-- Investment Categories -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="180" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4a90d9">Security Investment Categories</text>
+    
+    <!-- People -->
+    <rect x="30" y="60" width="170" height="100" rx="4" fill="#4a90d9" opacity="0.4"/>
+    <text x="115" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#4a90d9">People (40-50%)</text>
+    <text x="115" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Salaries &amp; benefits</text>
+    <text x="115" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Training &amp; certs</text>
+    <text x="115" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Awareness programs</text>
+    <text x="115" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Hiring &amp; retention</text>
+    <text x="115" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Largest investment area</text>
+    
+    <!-- Technology -->
+    <rect x="215" y="60" width="170" height="100" rx="4" fill="#67b26f" opacity="0.4"/>
+    <text x="300" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">Technology (30-40%)</text>
+    <text x="300" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Security tools</text>
+    <text x="300" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Infrastructure</text>
+    <text x="300" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Licensing</text>
+    <text x="300" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Maintenance</text>
+    <text x="300" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Automation reduces long-term costs</text>
+    
+    <!-- Services -->
+    <rect x="400" y="60" width="170" height="100" rx="4" fill="#f0ad4e" opacity="0.4"/>
+    <text x="485" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">Services (15-25%)</text>
+    <text x="485" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Consulting</text>
+    <text x="485" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Penetration testing</text>
+    <text x="485" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Audits</text>
+    <text x="485" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Incident response</text>
+    <text x="485" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">External expertise</text>
+    
+    <!-- Contingency -->
+    <rect x="585" y="60" width="170" height="100" rx="4" fill="#d9534f" opacity="0.4"/>
+    <text x="670" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#d9534f">Contingency (5-10%)</text>
+    <text x="670" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Incident response</text>
+    <text x="670" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Emergency purchases</text>
+    <text x="670" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Unplanned projects</text>
+    <text x="670" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Risk mitigation</text>
+    <text x="670" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Reserve for unexpected</text>
+  </g>
+  
+  <!-- ROI Calculation -->
+  <g transform="translate(50, 290)">
+    <rect x="0" y="0" width="400" height="160" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">ROI Calculation Methods</text>
+    
+    <g transform="translate(20, 55)">
+      <rect x="0" y="0" width="360" height="25" rx="3" fill="#4a90d9" opacity="0.3"/>
+      <text x="180" y="17" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">ALE (Annual Loss Expectancy) = SLE × ARO</text>
+      
+      <rect x="0" y="35" width="360" height="25" rx="3" fill="#67b26f" opacity="0.3"/>
+      <text x="180" y="52" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">SLE (Single Loss Expectancy) = Asset Value × Exposure Factor</text>
+      
+      <rect x="0" y="70" width="360" height="25" rx="3" fill="#f0ad4e" opacity="0.3"/>
+      <text x="180" y="87" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">ROS (Return on Security Investment) = (Risk Reduction - Cost) / Cost</text>
+      
+      <rect x="0" y="105" width="360" height="25" rx="3" fill="#d9534f" opacity="0.3"/>
+      <text x="180" y="122" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Payback Period = Initial Investment / Annual Savings</text>
+      
+      <text x="180" y="145" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Also consider: Avoided costs, Compliance requirements, Reputation protection</text>
+    </g>
+  </g>
+  
+  <!-- Justification Strategies -->
+  <g transform="translate(470, 290)">
+    <rect x="0" y="0" width="380" height="160" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">Investment Justification Strategies</text>
+    
+    <g transform="translate(20, 55)">
+      <circle cx="8" cy="8" r="4" fill="#67b26f"/>
+      <text x="20" y="13" font-family="system-ui" font-size="8" fill="#e0e0e0">Tie to business objectives</text>
+      
+      <circle cx="8" cy="28" r="4" fill="#67b26f"/>
+      <text x="20" y="33" font-family="system-ui" font-size="8" fill="#e0e0e0">Quantify risk reduction</text>
+      
+      <circle cx="8" cy="48" r="4" fill="#67b26f"/>
+      <text x="20" y="53" font-family="system-ui" font-size="8" fill="#e0e0e0">Show industry benchmarks</text>
+      
+      <circle cx="8" cy="68" r="4" fill="#f0ad4e"/>
+      <text x="20" y="73" font-family="system-ui" font-size="8" fill="#e0e0e0">Highlight compliance requirements</text>
+      
+      <circle cx="180" cy="8" r="4" fill="#67b26f"/>
+      <text x="192" y="13" font-family="system-ui" font-size="8" fill="#e0e0e0">Present multiple options</text>
+      
+      <circle cx="180" cy="28" r="4" fill="#67b26f"/>
+      <text x="192" y="33" font-family="system-ui" font-size="8" fill="#e0e0e0">Show cost of inaction</text>
+      
+      <circle cx="180" cy="48" r="4" fill="#67b26f"/>
+      <text x="192" y="53" font-family="system-ui" font-size="8" fill="#e0e0e0">Phase investments</text>
+      
+      <circle cx="180" cy="68" r="4" fill="#67b26f"/>
+      <text x="192" y="73" font-family="system-ui" font-size="8" fill="#e0e0e0">Track &amp; report results</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Documentation Quality Metrics</text>
+  
+  <!-- Quality Dimensions -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="180" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4a90d9">Documentation Quality Dimensions</text>
+    
+    <!-- Accuracy -->
+    <rect x="30" y="60" width="170" height="100" rx="4" fill="#4a90d9" opacity="0.4"/>
+    <text x="115" y="95" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#4a90d9">Accuracy</text>
+    <text x="115" y="115" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Matches actual behavior</text>
+    <text x="115" y="130" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Examples work</text>
+    <text x="115" y="145" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Up-to-date</text>
+    
+    <!-- Completeness -->
+    <rect x="215" y="60" width="170" height="100" rx="4" fill="#67b26f" opacity="0.4"/>
+    <text x="300" y="95" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">Completeness</text>
+    <text x="300" y="115" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">All use cases covered</text>
+    <text x="300" y="130" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Error scenarios</text>
+    <text x="300" y="145" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Edge cases documented</text>
+    
+    <!-- Clarity -->
+    <rect x="400" y="60" width="170" height="100" rx="4" fill="#f0ad4e" opacity="0.4"/>
+    <text x="485" y="95" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">Clarity</text>
+    <text x="485" y="115" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Easy to understand</text>
+    <text x="485" y="130" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Good examples</text>
+    <text x="485" y="145" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Clear structure</text>
+    
+    <!-- Findability -->
+    <rect x="585" y="60" width="170" height="100" rx="4" fill="#d9534f" opacity="0.4"/>
+    <text x="670" y="95" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#d9534f">Findability</text>
+    <text x="670" y="115" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Searchable</text>
+    <text x="670" y="130" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Good navigation</text>
+    <text x="670" y="145" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Cross-referenced</text>
+  </g>
+  
+  <!-- Review Checklist -->
+  <g transform="translate(50, 290)">
+    <rect x="0" y="0" width="400" height="160" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Review Checklist</text>
+    
+    <g transform="translate(20, 55)">
+      <circle cx="8" cy="8" r="4" fill="#67b26f"/>
+      <text x="20" y="13" font-family="system-ui" font-size="9" fill="#e0e0e0">Code examples tested</text>
+      
+      <circle cx="8" cy="28" r="4" fill="#67b26f"/>
+      <text x="20" y="33" font-family="system-ui" font-size="9" fill="#e0e0e0">Links not broken</text>
+      
+      <circle cx="8" cy="48" r="4" fill="#67b26f"/>
+      <text x="20" y="53" font-family="system-ui" font-size="9" fill="#e0e0e0">Screenshots current</text>
+      
+      <circle cx="8" cy="68" r="4" fill="#67b26f"/>
+      <text x="20" y="73" font-family="system-ui" font-size="9" fill="#e0e0e0">API docs match code</text>
+      
+      <circle cx="8" cy="88" r="4" fill="#f0ad4e"/>
+      <text x="20" y="93" font-family="system-ui" font-size="9" fill="#e0e0e0">Last reviewed date</text>
+      
+      <circle cx="200" cy="8" r="4" fill="#67b26f"/>
+      <text x="212" y="13" font-family="system-ui" font-size="9" fill="#e0e0e0">Owner assigned</text>
+      
+      <circle cx="200" cy="28" r="4" fill="#67b26f"/>
+      <text x="212" y="33" font-family="system-ui" font-size="9" fill="#e0e0e0">Feedback mechanism</text>
+      
+      <circle cx="200" cy="48" r="4" fill="#67b26f"/>
+      <text x="212" y="53" font-family="system-ui" font-size="9" fill="#e0e0e0">Version noted</text>
+      
+      <circle cx="200" cy="68" r="4" fill="#67b26f"/>
+      <text x="212" y="73" font-family="system-ui" font-size="9" fill="#e0e0e0">Prerequisites listed</text>
+      
+      <circle cx="200" cy="88" r="4" fill="#67b26f"/>
+      <text x="212" y="93" font-family="system-ui" font-size="9" fill="#e0e0e0">Related docs linked</text>
+    </g>
+  </g>
+  
+  <!-- Maintenance Cycle -->
+  <g transform="translate(470, 290)">
+    <rect x="0" y="0" width="380" height="160" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">Maintenance Cycle</text>
+    
+    <g transform="translate(30, 60)">
+      <!-- Write -->
+      <circle cx="50" cy="40" r="30" fill="#4a90d9" opacity="0.6"/>
+      <text x="50" y="45" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">Write</text>
+      
+      <line x1="80" y1="40" x2="110" y2="40" stroke="#666" stroke-width="2"/>
+      <polygon points="110,40 100,35 100,45" fill="#666"/>
+      
+      <!-- Review -->
+      <circle cx="150" cy="40" r="30" fill="#67b26f" opacity="0.6"/>
+      <text x="150" y="45" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">Review</text>
+      
+      <line x1="180" y1="40" x2="210" y2="40" stroke="#666" stroke-width="2"/>
+      <polygon points="210,40 200,35 200,45" fill="#666"/>
+      
+      <!-- Publish -->
+      <circle cx="250" cy="40" r="30" fill="#f0ad4e" opacity="0.6"/>
+      <text x="250" y="45" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">Publish</text>
+      
+      <!-- Feedback loop -->
+      <path d="M 250 70 Q 250 90 150 90 Q 50 90 50 70" fill="none" stroke="#666" stroke-width="2" stroke-dasharray="4,2"/>
+      <polygon points="50,70 45,80 55,80" fill="#666"/>
+      <text x="150" y="105" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">User feedback → Updates</text>
+      
+      <text x="150" y="125" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Review quarterly or on major changes</text>
+    </g>
+  </g>
+</svg>

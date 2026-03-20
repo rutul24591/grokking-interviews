@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "generate-article-routes": "tsx scripts/generate-article-routes.ts",
-    "build": "pnpm generate-article-routes && next build",
+    "generate-examples-manifest:requirements": "node scripts/generate-examples-manifest-requirements.js",
+    "build": "pnpm generate-article-routes && pnpm generate-examples-manifest:requirements && next build",
     "start": "next start",
     "lint": "eslint",
     "scan:code-snippets": "tsx scripts/scan-code-snippets.ts",

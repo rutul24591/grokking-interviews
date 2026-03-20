@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad2)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Encryption Strategy</text>
+  
+  <!-- Encryption Layers -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="180" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4a90d9">Defense in Depth: Encryption Layers</text>
+    
+    <!-- Transit -->
+    <rect x="30" y="60" width="220" height="100" rx="4" fill="#4a90d9" opacity="0.4"/>
+    <text x="140" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#4a90d9">In Transit</text>
+    <text x="140" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• TLS 1.3</text>
+    <text x="140" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• mTLS for service-to-service</text>
+    <text x="140" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Certificate pinning</text>
+    <text x="140" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• HSTS</text>
+    <text x="140" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Protects from MITM attacks</text>
+    
+    <!-- At Rest -->
+    <rect x="270" y="60" width="220" height="100" rx="4" fill="#67b26f" opacity="0.4"/>
+    <text x="380" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">At Rest</text>
+    <text x="380" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Database encryption</text>
+    <text x="380" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Disk encryption (AES-256)</text>
+    <text x="380" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• S3 bucket encryption</text>
+    <text x="380" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Backup encryption</text>
+    <text x="380" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Protects from physical theft</text>
+    
+    <!-- Application -->
+    <rect x="510" y="60" width="220" height="100" rx="4" fill="#f0ad4e" opacity="0.4"/>
+    <text x="620" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">Application Level</text>
+    <text x="620" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Field-level encryption</text>
+    <text x="620" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Envelope encryption</text>
+    <text x="620" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Client-side encryption</text>
+    <text x="620" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Key per tenant</text>
+    <text x="620" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Protects from DB admin access</text>
+  </g>
+  
+  <!-- Key Management -->
+  <g transform="translate(50, 290)">
+    <rect x="0" y="0" width="400" height="160" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Key Management</text>
+    
+    <g transform="translate(20, 55)">
+      <rect x="0" y="0" width="160" height="30" rx="3" fill="#4a90d9" opacity="0.4"/>
+      <text x="80" y="20" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">HSM (Hardware Security Module)</text>
+      
+      <rect x="180" y="0" width="160" height="30" rx="3" fill="#67b26f" opacity="0.4"/>
+      <text x="260" y="20" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Cloud KMS (AWS/Azure/GCP)</text>
+      
+      <rect x="0" y="40" width="160" height="30" rx="3" fill="#f0ad4e" opacity="0.4"/>
+      <text x="80" y="60" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Key Rotation (annual minimum)</text>
+      
+      <rect x="180" y="40" width="160" height="30" rx="3" fill="#d9534f" opacity="0.4"/>
+      <text x="260" y="60" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Key Hierarchy (DEK/KEK)</text>
+      
+      <rect x="0" y="80" width="340" height="30" rx="3" fill="#6f42c1" opacity="0.4"/>
+      <text x="170" y="100" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Never store keys with encrypted data</text>
+      
+      <text x="170" y="130" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Use envelope encryption: KEK encrypts DEK, DEK encrypts data</text>
+    </g>
+  </g>
+  
+  <!-- Encryption Algorithms -->
+  <g transform="translate(470, 290)">
+    <rect x="0" y="0" width="380" height="160" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">Recommended Algorithms</text>
+    
+    <g transform="translate(20, 55)">
+      <text x="0" y="0" font-family="system-ui" font-size="8" font-weight="bold" fill="#67b26f">Symmetric:</text>
+      <text x="80" y="0" font-family="system-ui" font-size="8" fill="#e0e0e0">AES-256-GCM</text>
+      
+      <text x="0" y="20" font-family="system-ui" font-size="8" font-weight="bold" fill="#67b26f">Asymmetric:</text>
+      <text x="90" y="20" font-family="system-ui" font-size="8" fill="#e0e0e0">RSA-4096, ECDSA P-384</text>
+      
+      <text x="0" y="40" font-family="system-ui" font-size="8" font-weight="bold" fill="#67b26f">Hashing:</text>
+      <text x="70" y="40" font-family="system-ui" font-size="8" fill="#e0e0e0">SHA-256, SHA-3</text>
+      
+      <text x="0" y="60" font-family="system-ui" font-size="8" font-weight="bold" fill="#67b26f">Key Derivation:</text>
+      <text x="110" y="60" font-family="system-ui" font-size="8" fill="#e0e0e0">PBKDF2, Argon2</text>
+      
+      <text x="200" y="20" font-family="system-ui" font-size="7" fill="#d9534f">Avoid:</text>
+      <text x="200" y="35" font-family="system-ui" font-size="7" fill="#d9534f">MD5, SHA-1, DES, RC4</text>
+      
+      <text x="200" y="50" font-family="system-ui" font-size="7" fill="#999">Use authenticated encryption</text>
+      <text x="200" y="63" font-family="system-ui" font-size="7" fill="#999">Use constant-time comparison</text>
+    </g>
+  </g>
+</svg>

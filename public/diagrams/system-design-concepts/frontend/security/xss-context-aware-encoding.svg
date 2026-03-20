@@ -1,0 +1,205 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 750" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1100" height="750" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="550" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="bold" fill="#0f172a">Context-Aware Encoding for XSS Prevention</text>
+  <text x="550" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="#475569">Different contexts require different encoding strategies</text>
+  
+  <!-- HTML Body Context -->
+  <g transform="translate(50, 100)">
+    <rect x="0" y="0" width="480" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="240" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#d97706">1. HTML Body Content</text>
+    
+    <!-- Example -->
+    <rect x="15" y="35" width="450" height="35" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+    <text x="25" y="50" font-family="monospace" font-size="11" fill="#0f172a">&amp;lt;div&amp;gt;{userInput}&amp;lt;/div&amp;gt;</text>
+    
+    <!-- Encoding rules -->
+    <text x="15" y="80" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Encode:</text>
+    <text x="70" y="80" font-family="monospace" font-size="11" fill="#475569">&amp;lt; → &amp;lt;  &amp;gt; → &amp;gt;  &amp; → &amp;amp;  &amp;quot; → &amp;quot;  ' → &amp;#39;</text>
+    
+    <!-- Example transformation -->
+    <text x="15" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">Input:</text>
+    <text x="55" y="100" font-family="monospace" font-size="10" fill="#dc2626">&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;</text>
+    <text x="280" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">→ Output:</text>
+    <text x="335" y="100" font-family="monospace" font-size="10" fill="#16a34a">&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;</text>
+  </g>
+  
+  <!-- HTML Attribute Context -->
+  <g transform="translate(580, 100)">
+    <rect x="0" y="0" width="480" height="120" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="240" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#2563eb">2. HTML Attributes</text>
+    
+    <!-- Example -->
+    <rect x="15" y="35" width="450" height="35" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+    <text x="25" y="50" font-family="monospace" font-size="11" fill="#0f172a">&amp;lt;img src=&amp;quot;{userInput}&amp;quot; alt=&amp;quot;{altText}&amp;quot;&amp;gt;</text>
+    
+    <!-- Encoding rules -->
+    <text x="15" y="80" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Encode:</text>
+    <text x="70" y="80" font-family="monospace" font-size="11" fill="#475569">&amp;quot; → &amp;quot;  ' → &amp;#39;  &amp;lt; → &amp;lt;  &amp;gt; → &amp;gt;  &amp; → &amp;amp;</text>
+    
+    <!-- Example transformation -->
+    <text x="15" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">Input:</text>
+    <text x="55" y="100" font-family="monospace" font-size="10" fill="#dc2626">&amp;quot; onerror=&amp;quot;alert(1)</text>
+    <text x="280" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">→ Output:</text>
+    <text x="335" y="100" font-family="monospace" font-size="10" fill="#16a34a">&amp;quot; onerror=&amp;quot;alert(1)</text>
+  </g>
+  
+  <!-- JavaScript Context -->
+  <g transform="translate(50, 240)">
+    <rect x="0" y="0" width="480" height="120" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+    <text x="240" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#4f46e5">3. JavaScript Context</text>
+    
+    <!-- Example -->
+    <rect x="15" y="35" width="450" height="35" rx="4" fill="#ffffff" stroke="#6366f1"/>
+    <text x="25" y="50" font-family="monospace" font-size="11" fill="#0f172a">&amp;lt;script&amp;gt;var name = &amp;quot;{userInput}&amp;quot;;&amp;lt;/script&amp;gt;</text>
+    
+    <!-- Encoding rules -->
+    <text x="15" y="75" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Encode:</text>
+    <text x="70" y="75" font-family="monospace" font-size="10" fill="#475569">\uXXXX escape, block &amp;lt;/script&amp;gt;, escape quotes</text>
+    
+    <!-- Best practice -->
+    <rect x="15" y="85" width="450" height="30" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-dasharray="4,2"/>
+    <text x="240" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#d97706">⚠️ Best Practice: Avoid inserting data directly into JavaScript. Use data attributes or JSON.</text>
+    
+    <!-- Example transformation -->
+    <text x="15" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">Better:</text>
+    <text x="60" y="100" font-family="monospace" font-size="10" fill="#16a34a">&amp;lt;div id=&amp;quot;user&amp;quot; data-name=&amp;quot;{encoded}&amp;quot;&amp;gt;</text>
+  </g>
+  
+  <!-- URL Context -->
+  <g transform="translate(580, 240)">
+    <rect x="0" y="0" width="480" height="120" rx="8" fill="#f3e8ff" stroke="#a855f7" stroke-width="2"/>
+    <text x="240" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#9333ea">4. URL Context</text>
+    
+    <!-- Example -->
+    <rect x="15" y="35" width="450" height="35" rx="4" fill="#ffffff" stroke="#a855f7"/>
+    <text x="25" y="50" font-family="monospace" font-size="11" fill="#0f172a">&amp;lt;a href=&amp;quot;/search?q={query}&amp;quot;&amp;gt;Search&amp;lt;/a&amp;gt;</text>
+    
+    <!-- Encoding rules -->
+    <text x="15" y="75" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Encode:</text>
+    <text x="70" y="75" font-family="monospace" font-size="11" fill="#475569">encodeURIComponent() for parameter values</text>
+    
+    <!-- Validation -->
+    <rect x="15" y="85" width="450" height="30" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-dasharray="4,2"/>
+    <text x="240" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#d97706">⚠️ Validate: Block javascript:, data:, vbscript: protocols</text>
+    
+    <!-- Example transformation -->
+    <text x="15" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">Input:</text>
+    <text x="55" y="100" font-family="monospace" font-size="10" fill="#dc2626">javascript:alert(1)</text>
+    <text x="280" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">→ Block entirely</text>
+  </g>
+  
+  <!-- CSS Context -->
+  <g transform="translate(50, 380)">
+    <rect x="0" y="0" width="480" height="100" rx="8" fill="#fce7f3" stroke="#ec4899" stroke-width="2"/>
+    <text x="240" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#db2777">5. CSS Context</text>
+    
+    <!-- Example -->
+    <rect x="15" y="35" width="450" height="25" rx="4" fill="#ffffff" stroke="#ec4899"/>
+    <text x="25" y="50" font-family="monospace" font-size="11" fill="#0f172a">&amp;lt;div style=&amp;quot;background: url({userInput})&amp;quot;&amp;gt;</text>
+    
+    <!-- Encoding rules -->
+    <text x="15" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Encode:</text>
+    <text x="70" y="70" font-family="monospace" font-size="10" fill="#475569">CSS escaping, block expression(), url(), behavior</text>
+    
+    <!-- Best practice -->
+    <rect x="15" y="78" width="450" height="18" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-dasharray="4,2"/>
+    <text x="240" y="90" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#d97706">⚠️ Best Practice: Avoid allowing untrusted data in CSS entirely</text>
+  </g>
+  
+  <!-- Dangerous Sinks -->
+  <g transform="translate(580, 380)">
+    <rect x="0" y="0" width="480" height="100" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+    <text x="240" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#dc2626">Dangerous Sinks (DOM-based XSS)</text>
+    
+    <text x="15" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Avoid using these with untrusted data:</text>
+    
+    <g transform="translate(15, 55)">
+      <rect x="0" y="0" width="140" height="35" rx="4" fill="#ffffff" stroke="#ef4444"/>
+      <text x="70" y="15" text-anchor="middle" font-family="monospace" font-size="10" fill="#dc2626">innerHTML</text>
+      <text x="70" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Use textContent</text>
+      
+      <rect x="155" y="0" width="140" height="35" rx="4" fill="#ffffff" stroke="#ef4444"/>
+      <text x="225" y="15" text-anchor="middle" font-family="monospace" font-size="10" fill="#dc2626">document.write()</text>
+      <text x="225" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Use DOM APIs</text>
+      
+      <rect x="310" y="0" width="140" height="35" rx="4" fill="#ffffff" stroke="#ef4444"/>
+      <text x="380" y="15" text-anchor="middle" font-family="monospace" font-size="10" fill="#dc2626">eval()</text>
+      <text x="380" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Never use</text>
+    </g>
+  </g>
+  
+  <!-- Encoding Decision Flow -->
+  <g transform="translate(50, 500)">
+    <rect x="0" y="0" width="1000" height="230" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="500" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#0f172a">Encoding Decision Flow</text>
+    
+    <!-- Flow chart -->
+    <g transform="translate(50, 50)">
+      <!-- Start -->
+      <rect x="150" y="0" width="200" height="40" rx="20" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
+      <text x="250" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#0f172a">Where is data being inserted?</text>
+      
+      <!-- Arrow down -->
+      <line x1="250" y1="40" x2="250" y2="60" stroke="#0f172a" stroke-width="2" marker-end="url(#arrowhead)"/>
+      
+      <!-- Decision branches -->
+      <line x1="250" y1="60" x2="100" y2="90" stroke="#0f172a" stroke-width="2"/>
+      <line x1="250" y1="60" x2="250" y2="90" stroke="#0f172a" stroke-width="2"/>
+      <line x1="250" y1="60" x2="400" y2="90" stroke="#0f172a" stroke-width="2"/>
+      <line x1="250" y1="60" x2="550" y2="90" stroke="#0f172a" stroke-width="2"/>
+      
+      <!-- HTML Body -->
+      <rect x="30" y="90" width="140" height="35" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="100" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#d97706">HTML Body</text>
+      <text x="100" y="120" text-anchor="middle" font-family="monospace" font-size="10" fill="#475569">&amp;lt; &amp;gt; &amp;amp;</text>
+      
+      <!-- Attribute -->
+      <rect x="180" y="90" width="140" height="35" rx="4" fill="#dbeafe" stroke="#3b82f6"/>
+      <text x="250" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#2563eb">Attribute</text>
+      <text x="250" y="120" text-anchor="middle" font-family="monospace" font-size="10" fill="#475569">&amp;quot; &amp;#39;</text>
+      
+      <!-- JavaScript -->
+      <rect x="330" y="90" width="140" height="35" rx="4" fill="#e0e7ff" stroke="#6366f1"/>
+      <text x="400" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#4f46e5">JavaScript</text>
+      <text x="400" y="120" text-anchor="middle" font-family="monospace" font-size="10" fill="#475569">\uXXXX</text>
+      
+      <!-- URL -->
+      <rect x="480" y="90" width="140" height="35" rx="4" fill="#f3e8ff" stroke="#a855f7"/>
+      <text x="550" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#9333ea">URL</text>
+      <text x="550" y="120" text-anchor="middle" font-family="monospace" font-size="10" fill="#475569">encodeURI</text>
+      
+      <!-- Second level -->
+      <line x1="100" y1="125" x2="100" y2="150" stroke="#0f172a" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <line x1="250" y1="125" x2="250" y2="150" stroke="#0f172a" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <line x1="400" y1="125" x2="400" y2="150" stroke="#0f172a" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <line x1="550" y1="125" x2="550" y2="150" stroke="#0f172a" stroke-width="2" marker-end="url(#arrowhead)"/>
+      
+      <!-- Safe alternatives -->
+      <rect x="20" y="150" width="160" height="30" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="100" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#16a34a">✓ textContent / innerText</text>
+      
+      <rect x="170" y="150" width="160" height="30" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="250" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#16a34a">✓ Always quote attributes</text>
+      
+      <rect x="320" y="150" width="160" height="30" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-dasharray="4,2"/>
+      <text x="400" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#d97706">⚠️ Use data attributes instead</text>
+      
+      <rect x="470" y="150" width="160" height="30" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-dasharray="4,2"/>
+      <text x="550" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#d97706">⚠️ Validate protocol whitelist</text>
+    </g>
+    
+    <!-- Key insight -->
+    <rect x="50" y="195" width="900" height="25" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="500" y="212" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#d97706">Key Insight: Using the wrong encoding for the context leaves vulnerabilities. Always match encoding to target context.</text>
+  </g>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0f172a"/>
+    </marker>
+  </defs>
+</svg>

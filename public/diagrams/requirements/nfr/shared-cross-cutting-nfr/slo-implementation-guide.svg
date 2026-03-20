@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad2)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">SLO Implementation Guide</text>
+  
+  <!-- SLO Hierarchy -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="180" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4a90d9">Multi-Layer SLO Architecture</text>
+    
+    <!-- Infrastructure SLO -->
+    <rect x="30" y="60" width="220" height="100" rx="4" fill="#4a90d9" opacity="0.4"/>
+    <text x="140" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#4a90d9">Infrastructure SLO</text>
+    <text x="140" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Target: 99.99%</text>
+    <text x="140" y="125" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Node availability</text>
+    <text x="140" y="140" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Network latency</text>
+    <text x="140" y="155" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Strictest (provides buffer)</text>
+    
+    <!-- Service SLO -->
+    <rect x="270" y="60" width="220" height="100" rx="4" fill="#67b26f" opacity="0.4"/>
+    <text x="380" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">Service SLO</text>
+    <text x="380" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Target: 99.95%</text>
+    <text x="380" y="125" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• API latency</text>
+    <text x="380" y="140" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Error rate</text>
+    <text x="380" y="155" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Per-service targets</text>
+    
+    <!-- System SLO -->
+    <rect x="510" y="60" width="220" height="100" rx="4" fill="#f0ad4e" opacity="0.4"/>
+    <text x="620" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">System/End-to-End SLO</text>
+    <text x="620" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Target: 99.9%</text>
+    <text x="620" y="125" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• User-facing latency</text>
+    <text x="620" y="140" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Success rate</text>
+    <text x="620" y="155" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">What users experience</text>
+    
+    <line x1="250" y1="110" x2="265" y2="110" stroke="#666" stroke-width="2"/>
+    <polygon points="265,110 255,105 255,115" fill="#666"/>
+    
+    <line x1="490" y1="110" x2="505" y2="110" stroke="#666" stroke-width="2"/>
+    <polygon points="505,110 495,105 495,115" fill="#666"/>
+    
+    <text x="400" y="175" text-anchor="middle" font-family="system-ui" font-size="8" fill="#999">Each layer stricter than the one above to provide buffer</text>
+  </g>
+  
+  <!-- Choosing Metrics -->
+  <g transform="translate(50, 290)">
+    <rect x="0" y="0" width="400" height="160" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Choosing the Right Metrics</text>
+    
+    <g transform="translate(20, 55)">
+      <text x="0" y="0" font-family="system-ui" font-size="8" fill="#e0e0e0">Good SLO metrics are:</text>
+      
+      <rect x="0" y="15" width="160" height="25" rx="3" fill="#4a90d9" opacity="0.3"/>
+      <text x="80" y="32" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">User-centric</text>
+      
+      <rect x="180" y="15" width="160" height="25" rx="3" fill="#67b26f" opacity="0.3"/>
+      <text x="260" y="32" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Measurable</text>
+      
+      <rect x="0" y="50" width="160" height="25" rx="3" fill="#f0ad4e" opacity="0.3"/>
+      <text x="80" y="67" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Actionable</text>
+      
+      <rect x="180" y="50" width="160" height="25" rx="3" fill="#d9534f" opacity="0.3"/>
+      <text x="260" y="67" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Stable</text>
+      
+      <text x="0" y="95" font-family="system-ui" font-size="7" fill="#999">Examples:</text>
+      <text x="60" y="95" font-family="system-ui" font-size="7" fill="#e0e0e0">Latency, Error rate, Throughput</text>
+      
+      <text x="0" y="115" font-family="system-ui" font-size="7" fill="#d9534f">Avoid:</text>
+      <text x="50" y="115" font-family="system-ui" font-size="7" fill="#e0e0e0">CPU usage, Memory (not user-centric)</text>
+      
+      <text x="220" y="105" font-family="system-ui" font-size="7" fill="#999">Start with 1-3 SLOs per service</text>
+      <text x="220" y="120" font-family="system-ui" font-size="7" fill="#999">Expand as maturity grows</text>
+    </g>
+  </g>
+  
+  <!-- Implementation Steps -->
+  <g transform="translate(470, 290)">
+    <rect x="0" y="0" width="380" height="160" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">Implementation Steps</text>
+    
+    <g transform="translate(20, 55)">
+      <rect x="0" y="0" width="340" height="25" rx="3" fill="#4a90d9" opacity="0.3"/>
+      <text x="170" y="17" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">1. Identify critical user journeys</text>
+      
+      <rect x="0" y="35" width="340" height="25" rx="3" fill="#67b26f" opacity="0.3"/>
+      <text x="170" y="52" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">2. Define SLIs for each journey</text>
+      
+      <rect x="0" y="70" width="340" height="25" rx="3" fill="#f0ad4e" opacity="0.3"/>
+      <text x="170" y="87" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">3. Set initial SLO targets</text>
+      
+      <rect x="0" y="105" width="340" height="25" rx="3" fill="#d9534f" opacity="0.3"/>
+      <text x="170" y="122" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">4. Implement measurement &amp; alerting</text>
+      
+      <rect x="0" y="140" width="340" height="25" rx="3" fill="#6f42c1" opacity="0.3"/>
+      <text x="170" y="157" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">5. Review &amp; adjust quarterly</text>
+    </g>
+  </g>
+</svg>

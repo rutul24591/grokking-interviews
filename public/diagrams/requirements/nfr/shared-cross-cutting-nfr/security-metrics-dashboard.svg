@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Security Metrics Dashboard</text>
+  
+  <!-- Dashboard Layout -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="180" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4a90d9">Security Dashboard Components</text>
+    
+    <!-- Risk Score -->
+    <rect x="30" y="60" width="170" height="100" rx="4" fill="#4a90d9" opacity="0.4"/>
+    <text x="115" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#4a90d9">Overall Risk Score</text>
+    <text x="115" y="115" text-anchor="middle" font-family="system-ui" font-size="24" font-weight="bold" fill="#67b26f">72/100</text>
+    <text x="115" y="145" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">↓ 5 from last month</text>
+    <text x="115" y="160" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Trending: Improving</text>
+    
+    <!-- Open Vulnerabilities -->
+    <rect x="215" y="60" width="170" height="100" rx="4" fill="#67b26f" opacity="0.4"/>
+    <text x="300" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">Open Vulnerabilities</text>
+    <text x="260" y="115" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#d9534f">Critical: 3</text>
+    <text x="340" y="115" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#f0ad4e">High: 12</text>
+    <text x="300" y="145" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Medium: 45</text>
+    <text x="300" y="160" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Low: 128</text>
+    
+    <!-- Incident Metrics -->
+    <rect x="400" y="60" width="170" height="100" rx="4" fill="#f0ad4e" opacity="0.4"/>
+    <text x="485" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">Incident Response</text>
+    <text x="445" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">MTTD: 2.5 hrs</text>
+    <text x="525" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">MTTR: 8.2 hrs</text>
+    <text x="445" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Open: 5</text>
+    <text x="525" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Closed: 23</text>
+    <text x="485" y="160" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">This month</text>
+    
+    <!-- Compliance -->
+    <rect x="585" y="60" width="170" height="100" rx="4" fill="#d9534f" opacity="0.4"/>
+    <text x="670" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#d9534f">Compliance Status</text>
+    <text x="630" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">SOC 2: 95%</text>
+    <text x="710" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">ISO: 88%</text>
+    <text x="630" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">GDPR: 92%</text>
+    <text x="710" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">PCI: 100%</text>
+    <text x="670" y="160" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Overall: 94%</text>
+  </g>
+  
+  <!-- Key Metrics -->
+  <g transform="translate(50, 290)">
+    <rect x="0" y="0" width="400" height="160" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Key Security Metrics</text>
+    
+    <g transform="translate(20, 55)">
+      <rect x="0" y="0" width="160" height="25" rx="3" fill="#4a90d9" opacity="0.4"/>
+      <text x="80" y="17" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Vulnerability Metrics</text>
+      
+      <rect x="180" y="0" width="160" height="25" rx="3" fill="#67b26f" opacity="0.4"/>
+      <text x="260" y="17" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Incident Metrics</text>
+      
+      <rect x="0" y="35" width="160" height="25" rx="3" fill="#f0ad4e" opacity="0.4"/>
+      <text x="80" y="52" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Compliance Metrics</text>
+      
+      <rect x="180" y="35" width="160" height="25" rx="3" fill="#d9534f" opacity="0.4"/>
+      <text x="260" y="52" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Training Metrics</text>
+      
+      <rect x="0" y="70" width="160" height="25" rx="3" fill="#6f42c1" opacity="0.4"/>
+      <text x="80" y="87" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Access Metrics</text>
+      
+      <rect x="180" y="70" width="160" height="25" rx="3" fill="#4a90d9" opacity="0.4"/>
+      <text x="260" y="87" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Tool Coverage</text>
+      
+      <rect x="0" y="105" width="160" height="25" rx="3" fill="#67b26f" opacity="0.4"/>
+      <text x="80" y="122" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Patch Compliance</text>
+      
+      <rect x="180" y="105" width="160" height="25" rx="3" fill="#f0ad4e" opacity="0.4"/>
+      <text x="260" y="122" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Phishing Click Rate</text>
+    </g>
+  </g>
+  
+  <!-- Dashboard Best Practices -->
+  <g transform="translate(470, 290)">
+    <rect x="0" y="0" width="380" height="160" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">Dashboard Best Practices</text>
+    
+    <g transform="translate(20, 55)">
+      <circle cx="8" cy="8" r="4" fill="#67b26f"/>
+      <text x="20" y="13" font-family="system-ui" font-size="8" fill="#e0e0e0">Tailor to audience (exec vs technical)</text>
+      
+      <circle cx="8" cy="28" r="4" fill="#67b26f"/>
+      <text x="20" y="33" font-family="system-ui" font-size="8" fill="#e0e0e0">Show trends, not just point-in-time</text>
+      
+      <circle cx="8" cy="48" r="4" fill="#67b26f"/>
+      <text x="20" y="53" font-family="system-ui" font-size="8" fill="#e0e0e0">Use traffic lights (RAG status)</text>
+      
+      <circle cx="8" cy="68" r="4" fill="#f0ad4e"/>
+      <text x="20" y="73" font-family="system-ui" font-size="8" fill="#e0e0e0">Include targets/benchmarks</text>
+      
+      <circle cx="180" cy="8" r="4" fill="#67b26f"/>
+      <text x="192" y="13" font-family="system-ui" font-size="8" fill="#e0e0e0">Automate data collection</text>
+      
+      <circle cx="180" cy="28" r="4" fill="#67b26f"/>
+      <text x="192" y="33" font-family="system-ui" font-size="8" fill="#e0e0e0">Update frequency: Weekly/Monthly</text>
+      
+      <circle cx="180" cy="48" r="4" fill="#67b26f"/>
+      <text x="192" y="53" font-family="system-ui" font-size="8" fill="#e0e0e0">Drill-down capability</text>
+      
+      <circle cx="180" cy="68" r="4" fill="#67b26f"/>
+      <text x="192" y="73" font-family="system-ui" font-size="8" fill="#e0e0e0">Less is more: Focus on key metrics</text>
+    </g>
+  </g>
+</svg>

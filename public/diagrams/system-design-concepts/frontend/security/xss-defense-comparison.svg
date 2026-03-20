@@ -1,0 +1,317 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 700" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1100" height="700" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="550" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="bold" fill="#0f172a">XSS Defense Mechanisms Comparison</text>
+  
+  <!-- Main comparison matrix -->
+  <g transform="translate(50, 60)">
+    <!-- Header row -->
+    <rect x="0" y="0" width="1000" height="40" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <text x="180" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#0f172a">Defense Mechanism</text>
+    <text x="380" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#0f172a">Effectiveness</text>
+    <text x="580" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#0f172a">Complexity</text>
+    <text x="780" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#0f172a">Coverage</text>
+    <text x="930" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#0f172a">Performance</text>
+    
+    <!-- Row 1: Input Validation -->
+    <rect x="0" y="40" width="1000" height="50" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="180" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Input Validation</text>
+    <text x="180" y="78" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Catches obvious attacks</text>
+    
+    <!-- Effectiveness: Medium -->
+    <rect x="330" y="55" width="100" height="20" rx="10" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="380" y="69" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#d97706">Medium</text>
+    
+    <!-- Complexity: Low -->
+    <rect x="530" y="55" width="100" height="20" rx="10" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="580" y="69" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#16a34a">Low</text>
+    
+    <!-- Coverage: Partial -->
+    <rect x="730" y="55" width="100" height="20" rx="10" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="780" y="69" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#d97706">Partial</text>
+    
+    <!-- Performance: High -->
+    <rect x="880" y="55" width="100" height="20" rx="10" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="930" y="69" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#16a34a">High</text>
+    
+    <!-- Row 2: Output Encoding -->
+    <rect x="0" y="90" width="1000" height="50" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="180" y="110" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Output Encoding</text>
+    <text x="180" y="128" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Most critical defense</text>
+    
+    <!-- Effectiveness: Very High -->
+    <rect x="330" y="105" width="100" height="20" rx="10" fill="#dc2626" stroke="#b91c1c"/>
+    <text x="380" y="119" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#ffffff">Very High</text>
+    
+    <!-- Complexity: Medium -->
+    <rect x="530" y="105" width="100" height="20" rx="10" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="580" y="119" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#d97706">Medium</text>
+    
+    <!-- Coverage: Comprehensive -->
+    <rect x="730" y="105" width="100" height="20" rx="10" fill="#dc2626" stroke="#b91c1c"/>
+    <text x="780" y="119" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#ffffff">Comprehensive</text>
+    
+    <!-- Performance: High -->
+    <rect x="880" y="105" width="100" height="20" rx="10" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="930" y="119" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#16a34a">High</text>
+    
+    <!-- Row 3: CSP -->
+    <rect x="0" y="140" width="1000" height="50" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="180" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Content Security Policy</text>
+    <text x="180" y="178" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Blocks inline scripts</text>
+    
+    <!-- Effectiveness: High -->
+    <rect x="330" y="155" width="100" height="20" rx="10" fill="#f59e0b" stroke="#d97706"/>
+    <text x="380" y="169" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">High</text>
+    
+    <!-- Complexity: High -->
+    <rect x="530" y="155" width="100" height="20" rx="10" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="580" y="169" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#dc2626">High</text>
+    
+    <!-- Coverage: Strong for scripts -->
+    <rect x="730" y="155" width="100" height="20" rx="10" fill="#f59e0b" stroke="#d97706"/>
+    <text x="780" y="169" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">Strong (scripts)</text>
+    
+    <!-- Performance: High -->
+    <rect x="880" y="155" width="100" height="20" rx="10" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="930" y="169" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#16a34a">High</text>
+    
+    <!-- Row 4: Sanitization Libraries -->
+    <rect x="0" y="190" width="1000" height="50" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="180" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Sanitization Libraries</text>
+    <text x="180" y="228" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">DOMPurify, sanitize-html</text>
+    
+    <!-- Effectiveness: Very High -->
+    <rect x="330" y="205" width="100" height="20" rx="10" fill="#dc2626" stroke="#b91c1c"/>
+    <text x="380" y="219" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#ffffff">Very High</text>
+    
+    <!-- Complexity: Low-Medium -->
+    <rect x="530" y="205" width="100" height="20" rx="10" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="580" y="219" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#d97706">Low-Med</text>
+    
+    <!-- Coverage: HTML content -->
+    <rect x="730" y="205" width="100" height="20" rx="10" fill="#f59e0b" stroke="#d97706"/>
+    <text x="780" y="219" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">HTML only</text>
+    
+    <!-- Performance: Medium -->
+    <rect x="880" y="205" width="100" height="20" rx="10" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="930" y="219" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#d97706">Medium</text>
+    
+    <!-- Row 5: Secure Frameworks -->
+    <rect x="0" y="240" width="1000" height="50" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="180" y="260" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Secure Frameworks</text>
+    <text x="180" y="278" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">React, Vue, Angular</text>
+    
+    <!-- Effectiveness: High -->
+    <rect x="330" y="255" width="100" height="20" rx="10" fill="#f59e0b" stroke="#d97706"/>
+    <text x="380" y="269" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">High</text>
+    
+    <!-- Complexity: Low -->
+    <rect x="530" y="255" width="100" height="20" rx="10" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="580" y="269" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#16a34a">Low</text>
+    
+    <!-- Coverage: Template XSS -->
+    <rect x="730" y="255" width="100" height="20" rx="10" fill="#f59e0b" stroke="#d97706"/>
+    <text x="780" y="269" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">Templates</text>
+    
+    <!-- Performance: High -->
+    <rect x="880" y="255" width="100" height="20" rx="10" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="930" y="269" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#16a34a">High</text>
+    
+    <!-- Row 6: Security Headers -->
+    <rect x="0" y="290" width="1000" height="50" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="180" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Security Headers</text>
+    <text x="180" y="328" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">X-Content-Type-Options, etc.</text>
+    
+    <!-- Effectiveness: Medium -->
+    <rect x="330" y="305" width="100" height="20" rx="10" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="380" y="319" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#d97706">Medium</text>
+    
+    <!-- Complexity: Low -->
+    <rect x="530" y="305" width="100" height="20" rx="10" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="580" y="319" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#16a34a">Low</text>
+    
+    <!-- Coverage: Supplemental -->
+    <rect x="730" y="305" width="100" height="20" rx="10" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="780" y="319" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#d97706">Supplemental</text>
+    
+    <!-- Performance: High -->
+    <rect x="880" y="305" width="100" height="20" rx="10" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="930" y="319" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#16a34a">High</text>
+    
+    <!-- Row 7: Cookie Security -->
+    <rect x="0" y="340" width="1000" height="50" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="180" y="360" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Cookie Security</text>
+    <text x="180" y="378" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">HttpOnly, Secure, SameSite</text>
+    
+    <!-- Effectiveness: High (damage limitation) -->
+    <rect x="330" y="355" width="100" height="20" rx="10" fill="#f59e0b" stroke="#d97706"/>
+    <text x="380" y="369" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">High*</text>
+    
+    <!-- Complexity: Low -->
+    <rect x="530" y="355" width="100" height="20" rx="10" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="580" y="369" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#16a34a">Low</text>
+    
+    <!-- Coverage: Session protection -->
+    <rect x="730" y="355" width="100" height="20" rx="10" fill="#f59e0b" stroke="#d97706"/>
+    <text x="780" y="369" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">Sessions</text>
+    
+    <!-- Performance: High -->
+    <rect x="880" y="355" width="100" height="20" rx="10" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="930" y="369" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#16a34a">High</text>
+  </g>
+  
+  <!-- Attack Type Coverage Matrix -->
+  <g transform="translate(50, 420)">
+    <rect x="0" y="0" width="1000" height="260" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="500" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#0f172a">Defense Effectiveness by Attack Type</text>
+    
+    <!-- Header -->
+    <rect x="20" y="45" width="200" height="35" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <text x="120" y="67" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Defense → Attack ↓</text>
+    
+    <rect x="220" y="45" width="130" height="35" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="285" y="67" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#d97706">Input Validation</text>
+    
+    <rect x="350" y="45" width="130" height="35" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="415" y="67" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#d97706">Output Encoding</text>
+    
+    <rect x="480" y="45" width="130" height="35" fill="#dbeafe" stroke="#3b82f6"/>
+    <text x="545" y="67" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#2563eb">CSP</text>
+    
+    <rect x="610" y="45" width="130" height="35" fill="#e0e7ff" stroke="#6366f1"/>
+    <text x="675" y="67" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#4f46e5">Sanitization</text>
+    
+    <rect x="740" y="45" width="130" height="35" fill="#f3e8ff" stroke="#a855f7"/>
+    <text x="805" y="67" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#9333ea">Frameworks</text>
+    
+    <rect x="870" y="45" width="130" height="35" fill="#fce7f3" stroke="#ec4899"/>
+    <text x="935" y="67" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#db2777">Cookie Security</text>
+    
+    <!-- Row 1: Reflected XSS -->
+    <rect x="20" y="80" width="200" height="35" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="120" y="102" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">Reflected XSS</text>
+    
+    <rect x="220" y="80" width="130" height="35" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="285" y="102" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#d97706">Partial</text>
+    
+    <rect x="350" y="80" width="130" height="35" fill="#22c55e" stroke="#16a34a"/>
+    <text x="415" y="102" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#ffffff">✓ Excellent</text>
+    
+    <rect x="480" y="80" width="130" height="35" fill="#f59e0b" stroke="#d97706"/>
+    <text x="545" y="102" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#92400e">✓ Good</text>
+    
+    <rect x="610" y="80" width="130" height="35" fill="#22c55e" stroke="#16a34a"/>
+    <text x="675" y="102" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#ffffff">✓ Excellent</text>
+    
+    <rect x="740" y="80" width="130" height="35" fill="#22c55e" stroke="#16a34a"/>
+    <text x="805" y="102" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#ffffff">✓ Excellent</text>
+    
+    <rect x="870" y="80" width="130" height="35" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="935" y="102" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#d97706">Limits damage</text>
+    
+    <!-- Row 2: Stored XSS -->
+    <rect x="20" y="115" width="200" height="35" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="120" y="137" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">Stored XSS</text>
+    
+    <rect x="220" y="115" width="130" height="35" fill="#f59e0b" stroke="#d97706"/>
+    <text x="285" y="137" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#92400e">Good</text>
+    
+    <rect x="350" y="115" width="130" height="35" fill="#22c55e" stroke="#16a34a"/>
+    <text x="415" y="137" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#ffffff">✓ Excellent</text>
+    
+    <rect x="480" y="115" width="130" height="35" fill="#f59e0b" stroke="#d97706"/>
+    <text x="545" y="137" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#92400e">✓ Good</text>
+    
+    <rect x="610" y="115" width="130" height="35" fill="#22c55e" stroke="#16a34a"/>
+    <text x="675" y="137" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#ffffff">✓ Excellent</text>
+    
+    <rect x="740" y="115" width="130" height="35" fill="#22c55e" stroke="#16a34a"/>
+    <text x="805" y="137" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#ffffff">✓ Excellent</text>
+    
+    <rect x="870" y="115" width="130" height="35" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="935" y="137" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#d97706">Limits damage</text>
+    
+    <!-- Row 3: DOM-based XSS -->
+    <rect x="20" y="150" width="200" height="35" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="120" y="172" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">DOM-based XSS</text>
+    
+    <rect x="220" y="150" width="130" height="35" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="285" y="172" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#dc2626">✗ Ineffective</text>
+    
+    <rect x="350" y="150" width="130" height="35" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="415" y="172" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#dc2626">✗ Ineffective</text>
+    
+    <rect x="480" y="150" width="130" height="35" fill="#22c55e" stroke="#16a34a"/>
+    <text x="545" y="172" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#ffffff">✓ Excellent</text>
+    
+    <rect x="610" y="150" width="130" height="35" fill="#22c55e" stroke="#16a34a"/>
+    <text x="675" y="172" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#ffffff">✓ Excellent</text>
+    
+    <rect x="740" y="150" width="130" height="35" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="805" y="172" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#d97706">Partial*</text>
+    
+    <rect x="870" y="150" width="130" height="35" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="935" y="172" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#d97706">Limits damage</text>
+    
+    <!-- Row 4: Mutation XSS -->
+    <rect x="20" y="185" width="200" height="35" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="120" y="207" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">Mutation XSS (mXSS)</text>
+    
+    <rect x="220" y="185" width="130" height="35" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="285" y="207" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#dc2626">✗ Ineffective</text>
+    
+    <rect x="350" y="185" width="130" height="35" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="415" y="207" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#dc2626">✗ Ineffective</text>
+    
+    <rect x="480" y="185" width="130" height="35" fill="#f59e0b" stroke="#d97706"/>
+    <text x="545" y="207" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#92400e">Good</text>
+    
+    <rect x="610" y="185" width="130" height="35" fill="#22c55e" stroke="#16a34a"/>
+    <text x="675" y="207" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#ffffff">✓ Excellent</text>
+    
+    <rect x="740" y="185" width="130" height="35" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="805" y="207" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#d97706">Partial</text>
+    
+    <rect x="870" y="185" width="130" height="35" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="935" y="207" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#d97706">Limits damage</text>
+    
+    <!-- Row 5: Self-XSS -->
+    <rect x="20" y="220" width="200" height="35" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="120" y="242" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">Self-XSS / Social Eng.</text>
+    
+    <rect x="220" y="220" width="130" height="35" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="285" y="242" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#dc2626">✗ Ineffective</text>
+    
+    <rect x="350" y="220" width="130" height="35" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="415" y="242" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#dc2626">✗ Ineffective</text>
+    
+    <rect x="480" y="220" width="130" height="35" fill="#f59e0b" stroke="#d97706"/>
+    <text x="545" y="242" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#92400e">Partial</text>
+    
+    <rect x="610" y="220" width="130" height="35" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="675" y="242" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#d97706">Partial</text>
+    
+    <rect x="740" y="220" width="130" height="35" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="805" y="242" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#d97706">Partial</text>
+    
+    <rect x="870" y="220" width="130" height="35" fill="#22c55e" stroke="#16a34a"/>
+    <text x="935" y="242" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#ffffff">✓ Excellent</text>
+  </g>
+  
+  <!-- Legend -->
+  <g transform="translate(50, 690)">
+    <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Legend:</text>
+    <rect x="50" y="-8" width="15" height="15" rx="3" fill="#22c55e"/>
+    <text x="70" y="3" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#0f172a">✓ Excellent</text>
+    <rect x="140" y="-8" width="15" height="15" rx="3" fill="#f59e0b"/>
+    <text x="160" y="3" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#0f172a">✓ Good</text>
+    <rect x="230" y="-8" width="15" height="15" rx="3" fill="#fef3c7"/>
+    <text x="250" y="3" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#0f172a">Partial</text>
+    <rect x="320" y="-8" width="15" height="15" rx="3" fill="#fef2f2"/>
+    <text x="340" y="3" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#0f172a">✗ Ineffective</text>
+    <text x="430" y="3" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">* Frameworks protect only if escape hatches not misused</text>
+  </g>
+</svg>

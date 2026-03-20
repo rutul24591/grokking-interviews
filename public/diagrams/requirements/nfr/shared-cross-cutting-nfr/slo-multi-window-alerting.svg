@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">SLO Multi-Window Alerting</text>
+  
+  <!-- Multi-Window Burn Rate -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="200" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4a90d9">Multi-Window Burn Rate Alerting</text>
+    
+    <!-- Short Window -->
+    <rect x="30" y="60" width="220" height="120" rx="4" fill="#4a90d9" opacity="0.3"/>
+    <text x="140" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#4a90d9">Short Window (1 hour)</text>
+    <text x="140" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Detects sudden spikes</text>
+    <text x="140" y="125" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Fast burn detection</text>
+    <text x="140" y="145" text-anchor="middle" font-family="system-ui" font-size="8" fill="#d9534f">Alert threshold: 14.4x</text>
+    <text x="140" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Page if budget exhausted in 1h</text>
+    <text x="140" y="178" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Example: Major incident</text>
+    
+    <!-- Medium Window -->
+    <rect x="270" y="60" width="220" height="120" rx="4" fill="#67b26f" opacity="0.3"/>
+    <text x="380" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">Medium Window (6 hours)</text>
+    <text x="380" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Detects sustained issues</text>
+    <text x="380" y="125" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Moderate burn detection</text>
+    <text x="380" y="145" text-anchor="middle" font-family="system-ui" font-size="8" fill="#f0ad4e">Alert threshold: 6x</text>
+    <text x="380" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Page if budget exhausted in 6h</text>
+    <text x="380" y="178" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Example: Degraded performance</text>
+    
+    <!-- Long Window -->
+    <rect x="510" y="60" width="220" height="120" rx="4" fill="#f0ad4e" opacity="0.3"/>
+    <text x="620" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">Long Window (30 days)</text>
+    <text x="620" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Tracks overall trend</text>
+    <text x="620" y="125" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Slow burn detection</text>
+    <text x="620" y="145" text-anchor="middle" font-family="system-ui" font-size="8" fill="#4a90d9">Alert threshold: 3x</text>
+    <text x="620" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Ticket if budget exhausted in 2d</text>
+    <text x="620" y="178" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Example: Gradual degradation</text>
+  </g>
+  
+  <!-- Alert Logic -->
+  <g transform="translate(50, 310)">
+    <rect x="0" y="0" width="400" height="140" rx="8" fill="#1a2a1a" stroke="#d9534f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#d9534f">Alert Logic (Google SRE)</text>
+    
+    <g transform="translate(20, 55)">
+      <text x="0" y="0" font-family="system-ui" font-size="8" fill="#e0e0e0">Page if EITHER:</text>
+      
+      <rect x="0" y="15" width="360" height="25" rx="3" fill="#d9534f" opacity="0.3"/>
+      <text x="180" y="32" text-anchor="middle" font-family="monospace" font-size="8" fill="#e0e0e0">burn_rate(1h) {'>'} 14.4</text>
+      
+      <rect x="0" y="50" width="360" height="25" rx="3" fill="#f0ad4e" opacity="0.3"/>
+      <text x="180" y="67" text-anchor="middle" font-family="monospace" font-size="8" fill="#e0e0e0">burn_rate(6h) {'>'} 6</text>
+      
+      <text x="0" y="95" font-family="system-ui" font-size="8" fill="#e0e0e0">Ticket if:</text>
+      
+      <rect x="0" y="110" width="360" height="25" rx="3" fill="#4a90d9" opacity="0.3"/>
+      <text x="180" y="127" text-anchor="middle" font-family="monospace" font-size="8" fill="#e0e0e0">burn_rate(30d) {'>'} 3</text>
+    </g>
+  </g>
+  
+  <!-- Burn Rate Calculation -->
+  <g transform="translate(470, 310)">
+    <rect x="0" y="0" width="380" height="140" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Burn Rate Calculation</text>
+    
+    <g transform="translate(20, 55)">
+      <text x="0" y="0" font-family="system-ui" font-size="8" fill="#e0e0e0">Formula:</text>
+      
+      <rect x="0" y="15" width="340" height="30" rx="3" fill="#4a90d9" opacity="0.3"/>
+      <text x="170" y="35" text-anchor="middle" font-family="monospace" font-size="8" fill="#e0e0e0">burn_rate = (error_rate / error_budget_rate)</text>
+      
+      <text x="0" y="60" font-family="system-ui" font-size="8" fill="#e0e0e0">Example (99.9% SLO):</text>
+      <text x="0" y="80" font-family="system-ui" font-size="7" fill="#999">Error budget = 0.1% per month</text>
+      <text x="0" y="95" font-family="system-ui" font-size="7" fill="#999">If error_rate = 0.2% per hour</text>
+      <text x="0" y="110" font-family="system-ui" font-size="7" fill="#999">burn_rate = 0.2 / (0.1/720) = 1440x</text>
+      
+      <text x="200" y="80" font-family="system-ui" font-size="7" fill="#d9534f">→ PAGE IMMEDIATELY!</text>
+    </g>
+  </g>
+</svg>

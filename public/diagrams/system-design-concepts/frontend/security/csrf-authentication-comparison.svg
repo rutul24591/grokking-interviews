@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 650" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1100" height="650" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="550" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">CSRF Vulnerability by Authentication Method</text>
+  <text x="550" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#475569">Different authentication approaches have different CSRF risk profiles</text>
+  
+  <!-- Cookie-Based Authentication -->
+  <g transform="translate(50, 85)">
+    <rect x="0" y="0" width="1000" height="140" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+    <text x="500" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#dc2626">Cookie-Based Authentication (Session Cookies)</text>
+    
+    <!-- Flow -->
+    <g transform="translate(30, 40)">
+      <circle cx="40" cy="35" r="25" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+      <text x="40" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">User</text>
+      
+      <line x1="65" y1="35" x2="115" y2="35" stroke="#dc2626" stroke-width="2" marker-end="url(#arrowhead-red)"/>
+      <text x="90" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Login</text>
+      
+      <rect x="120" y="15" width="100" height="40" rx="4" fill="#ffffff" stroke="#dc2626"/>
+      <text x="170" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Server</text>
+      
+      <line x1="220" y1="35" x2="270" y2="35" stroke="#dc2626" stroke-width="2" marker-end="url(#arrowhead-red)"/>
+      <text x="245" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Set-Cookie</text>
+      
+      <rect x="275" y="25" width="70" height="20" rx="3" fill="#dc2626" stroke="#b91c1c"/>
+      <text x="310" y="39" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#ffffff">Session</text>
+      
+      <text x="360" y="40" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">→ Browser auto-includes with all requests</text>
+    </g>
+    
+    <!-- Vulnerability -->
+    <g transform="translate(30, 95)">
+      <rect x="0" y="0" width="450" height="35" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-dasharray="4,2"/>
+      <text x="225" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#dc2626">⚠️ HIGH CSRF RISK</text>
+      <text x="225" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Cookies auto-sent with cross-origin requests</text>
+      
+      <rect x="470" y="0" width="500" height="35" rx="4" fill="#ffffff" stroke="#22c55e"/>
+      <text x="720" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#16a34a">✓ DEFENSE: CSRF Tokens + SameSite Cookies + Origin Validation</text>
+    </g>
+  </g>
+  
+  <!-- Token-Based Authentication (JWT in localStorage) -->
+  <g transform="translate(50, 245)">
+    <rect x="0" y="0" width="1000" height="140" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+    <text x="500" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#16a34a">Token-Based Authentication (JWT in localStorage)</text>
+    
+    <!-- Flow -->
+    <g transform="translate(30, 40)">
+      <circle cx="40" cy="35" r="25" fill="#ffffff" stroke="#16a34e" stroke-width="2"/>
+      <text x="40" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">User</text>
+      
+      <line x1="65" y1="35" x2="115" y2="35" stroke="#16a34e" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+      <text x="90" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Login</text>
+      
+      <rect x="120" y="15" width="100" height="40" rx="4" fill="#ffffff" stroke="#16a34e"/>
+      <text x="170" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Server</text>
+      
+      <line x1="220" y1="35" x2="270" y2="35" stroke="#16a34e" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+      <text x="245" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Return JWT</text>
+      
+      <rect x="275" y="25" width="70" height="20" rx="3" fill="#16a34e" stroke="#15803d"/>
+      <text x="310" y="39" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#ffffff">Token</text>
+      
+      <text x="360" y="40" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">→ Stored in localStorage (NOT auto-sent)</text>
+    </g>
+    
+    <!-- Vulnerability -->
+    <g transform="translate(30, 95)">
+      <rect x="0" y="0" width="450" height="35" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="225" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#16a34a">✓ IMMUNE TO CSRF</text>
+      <text x="225" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Tokens not auto-sent; attacker can't forge requests</text>
+      
+      <rect x="470" y="0" width="500" height="35" rx="4" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="720" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#dc2626">⚠️ VULNERABLE TO XSS</text>
+      <text x="720" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">localStorage accessible to JavaScript</text>
+    </g>
+  </g>
+  
+  <!-- Hybrid Approach (JWT in HttpOnly Cookie) -->
+  <g transform="translate(50, 405)">
+    <rect x="0" y="0" width="1000" height="140" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="500" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#2563eb">Hybrid Approach (JWT in HttpOnly Cookie + CSRF Token)</text>
+    
+    <!-- Flow -->
+    <g transform="translate(30, 40)">
+      <circle cx="40" cy="35" r="25" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+      <text x="40" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">User</text>
+      
+      <line x1="65" y1="35" x2="115" y2="35" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead-blue)"/>
+      <text x="90" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Login</text>
+      
+      <rect x="120" y="15" width="100" height="40" rx="4" fill="#ffffff" stroke="#2563eb"/>
+      <text x="170" y="32" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Server</text>
+      <text x="170" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Sets JWT + CSRF</text>
+      
+      <line x1="220" y1="35" x2="320" y2="35" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead-blue)"/>
+      <text x="270" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">HttpOnly Cookie + CSRF Token</text>
+      
+      <rect x="325" y="25" width="70" height="20" rx="3" fill="#2563eb" stroke="#1d4ed8"/>
+      <text x="360" y="39" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#ffffff">JWT</text>
+      
+      <rect x="405" y="25" width="70" height="20" rx="3" fill="#f59e0b" stroke="#d97706"/>
+      <text x="440" y="39" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#ffffff">CSRF</text>
+      
+      <text x="490" y="40" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">→ Both required for requests</text>
+    </g>
+    
+    <!-- Protection -->
+    <g transform="translate(30, 95)">
+      <rect x="0" y="0" width="450" height="35" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="225" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#16a34a">✓ PROTECTED FROM CSRF</text>
+      <text x="225" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">CSRF token required, attacker can't read</text>
+      
+      <rect x="470" y="0" width="500" height="35" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="720" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#16a34a">✓ PROTECTED FROM XSS</text>
+      <text x="720" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">HttpOnly cookie not accessible to JavaScript</text>
+    </g>
+  </g>
+  
+  <!-- Comparison Summary -->
+  <g transform="translate(50, 565)">
+    <rect x="0" y="0" width="1000" height="70" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="500" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#0f172a">Security Comparison</text>
+    
+    <g transform="translate(30, 35)">
+      <rect x="0" y="0" width="300" height="25" rx="3" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="150" y="17" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#dc2626">Cookie-only: CSRF vulnerable, needs protection</text>
+      
+      <rect x="320" y="0" width="300" height="25" rx="3" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="470" y="17" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#dc2626">localStorage JWT: XSS vulnerable, token theft risk</text>
+      
+      <rect x="640" y="0" width="330" height="25" rx="3" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="805" y="17" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#16a34a">Hybrid (HttpOnly + CSRF): Best protection against both</text>
+    </g>
+  </g>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#16a34e"/>
+    </marker>
+    <marker id="arrowhead-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+    </marker>
+  </defs>
+</svg>

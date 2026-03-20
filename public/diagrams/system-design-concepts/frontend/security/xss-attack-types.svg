@@ -1,0 +1,202 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1200" height="800" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="600" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="bold" fill="#0f172a">XSS Attack Types Comparison</text>
+  
+  <!-- Reflected XSS Section -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="350" height="220" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+    <text x="175" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#dc2626">Reflected XSS</text>
+    
+    <!-- Flow -->
+    <circle cx="60" cy="70" r="25" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+    <text x="60" y="75" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Attacker</text>
+    
+    <line x1="85" y1="70" x2="135" y2="70" stroke="#dc2626" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="110" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Malicious URL</text>
+    
+    <rect x="140" y="45" width="80" height="50" rx="4" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+    <text x="180" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Server</text>
+    <text x="180" y="80" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Reflects payload</text>
+    
+    <line x1="220" y1="70" x2="270" y2="70" stroke="#dc2626" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="245" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Response</text>
+    
+    <circle cx="300" cy="70" r="25" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+    <text x="300" y="75" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Victim</text>
+    
+    <!-- Characteristics -->
+    <text x="20" y="110" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#0f172a">Characteristics:</text>
+    <text x="20" y="135" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">• Payload in request (URL, form)</text>
+    <text x="20" y="155" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">• Immediately reflected in response</text>
+    <text x="20" y="175" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">• Requires social engineering</text>
+    <text x="20" y="195" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">• Not stored on server</text>
+  </g>
+  
+  <!-- Stored XSS Section -->
+  <g transform="translate(425, 80)">
+    <rect x="0" y="0" width="350" height="220" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="175" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#d97706">Stored XSS (Persistent)</text>
+    
+    <!-- Flow -->
+    <circle cx="60" cy="70" r="25" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+    <text x="60" y="75" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Attacker</text>
+    
+    <line x1="85" y1="70" x2="135" y2="70" stroke="#d97706" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="110" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Submit payload</text>
+    
+    <rect x="140" y="45" width="80" height="50" rx="4" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+    <text x="180" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Database</text>
+    <text x="180" y="80" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Stores payload</text>
+    
+    <circle cx="300" cy="50" r="25" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+    <text x="300" y="55" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Victim 1</text>
+    
+    <circle cx="300" cy="110" r="25" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+    <text x="300" y="115" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Victim 2</text>
+    
+    <line x1="220" y1="70" x2="275" y2="50" stroke="#d97706" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="220" y1="80" x2="275" y2="110" stroke="#d97706" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <!-- Characteristics -->
+    <text x="20" y="150" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#0f172a">Characteristics:</text>
+    <text x="20" y="170" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">• Payload stored permanently</text>
+    <text x="20" y="190" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">• Affects all viewers (no trickery)</text>
+    <text x="20" y="210" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">• Most severe XSS variant</text>
+  </g>
+  
+  <!-- DOM-based XSS Section -->
+  <g transform="translate(800, 80)">
+    <rect x="0" y="0" width="350" height="220" rx="8" fill="#f3e8ff" stroke="#a855f7" stroke-width="2"/>
+    <text x="175" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#9333ea">DOM-based XSS</text>
+    
+    <!-- Flow -->
+    <circle cx="60" cy="70" r="25" fill="#ffffff" stroke="#9333ea" stroke-width="2"/>
+    <text x="60" y="75" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Attacker</text>
+    
+    <line x1="85" y1="70" x2="135" y2="70" stroke="#9333ea" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="110" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Crafted URL</text>
+    
+    <rect x="140" y="45" width="100" height="70" rx="4" fill="#ffffff" stroke="#9333ea" stroke-width="2"/>
+    <text x="190" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Browser (Client)</text>
+    <text x="190" y="85" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">JS reads location.hash</text>
+    <text x="190" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">writes to innerHTML</text>
+    
+    <line x1="240" y1="80" x2="280" y2="80" stroke="#9333ea" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <circle cx="310" cy="80" r="25" fill="#ffffff" stroke="#9333ea" stroke-width="2"/>
+    <text x="310" y="85" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Victim</text>
+    
+    <!-- Note -->
+    <rect x="10" y="125" width="330" height="40" rx="4" fill="#faf5ff" stroke="#a855f7" stroke-dasharray="4,2"/>
+    <text x="175" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Server never sees the payload!</text>
+    <text x="175" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Server-side defenses are ineffective</text>
+    
+    <!-- Characteristics -->
+    <text x="20" y="185" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#0f172a">Characteristics:</text>
+    <text x="20" y="205" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">• Client-side only attack</text>
+  </g>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0f172a"/>
+    </marker>
+  </defs>
+  
+  <!-- Common Vectors Section -->
+  <g transform="translate(50, 330)">
+    <rect x="0" y="0" width="1100" height="180" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="550" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#0f172a">Common Attack Vectors</text>
+    
+    <!-- Reflected Vectors -->
+    <g transform="translate(30, 50)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#dc2626">Reflected:</text>
+      <text x="0" y="25" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">• Search query parameters</text>
+      <text x="180" y="25" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">• Error messages</text>
+      <text x="0" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">• Form validation feedback</text>
+      <text x="200" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">• Redirect URLs</text>
+      <text x="0" y="65" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">• API error responses</text>
+    </g>
+    
+    <!-- Stored Vectors -->
+    <g transform="translate(380, 50)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#d97706">Stored:</text>
+      <text x="0" y="25" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">• Comment sections</text>
+      <text x="180" y="25" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">• Forum posts</text>
+      <text x="0" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">• User profiles/bios</text>
+      <text x="180" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">• Product reviews</text>
+      <text x="0" y="65" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">• Support tickets</text>
+      <text x="180" y="65" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">• Chat messages</text>
+    </g>
+    
+    <!-- DOM-based Sources/Sinks -->
+    <g transform="translate(730, 50)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#9333ea">DOM-based:</text>
+      <text x="0" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Sources:</text>
+      <text x="0" y="35" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">• location.hash/search</text>
+      <text x="140" y="35" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">• document.URL/referrer</text>
+      <text x="0" y="55" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Sinks:</text>
+      <text x="0" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">• innerHTML/outerHTML</text>
+      <text x="140" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">• document.write()</text>
+      <text x="0" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">• eval(), setTimeout(string)</text>
+      <text x="140" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">• setAttribute('onclick')</text>
+    </g>
+  </g>
+  
+  <!-- Impact Comparison -->
+  <g transform="translate(50, 540)">
+    <rect x="0" y="0" width="1100" height="240" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="550" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#0f172a">Impact &amp; Severity Comparison</text>
+    
+    <!-- Severity Scale -->
+    <g transform="translate(50, 50)">
+      <rect x="0" y="0" width="300" height="160" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+      <text x="150" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#0f172a">Severity Level</text>
+      
+      <rect x="20" y="40" width="260" height="30" rx="4" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="150" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#dc2626">Reflected: Medium-High</text>
+      
+      <rect x="20" y="80" width="260" height="30" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="150" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#d97706">Stored: Critical (Highest)</text>
+      
+      <rect x="20" y="120" width="260" height="30" rx="4" fill="#f3e8ff" stroke="#a855f7"/>
+      <text x="150" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#9333ea">DOM-based: High</text>
+    </g>
+    
+    <!-- Attack Complexity -->
+    <g transform="translate(400, 50)">
+      <rect x="0" y="0" width="300" height="160" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+      <text x="150" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#0f172a">Attack Complexity</text>
+      
+      <rect x="20" y="40" width="260" height="30" rx="4" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="150" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">Reflected: Requires social engineering</text>
+      
+      <rect x="20" y="80" width="260" height="30" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="150" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">Stored: One-time setup, automatic impact</text>
+      
+      <rect x="20" y="120" width="260" height="30" rx="4" fill="#f3e8ff" stroke="#a855f7"/>
+      <text x="150" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">DOM-based: Requires social engineering</text>
+    </g>
+    
+    <!-- Defense Effectiveness -->
+    <g transform="translate(750, 50)">
+      <rect x="0" y="0" width="300" height="160" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+      <text x="150" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#0f172a">Defense Strategy</text>
+      
+      <text x="20" y="50" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Reflected:</text>
+      <text x="20" y="65" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">• Output encoding</text>
+      <text x="150" y="65" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">• Input validation</text>
+      
+      <text x="20" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Stored:</text>
+      <text x="20" y="105" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">• Sanitization on input</text>
+      <text x="150" y="105" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">• Encoding on output</text>
+      
+      <text x="20" y="130" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">DOM-based:</text>
+      <text x="20" y="145" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">• Client-side sanitization</text>
+      <text x="150" y="145" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">• CSP, avoid dangerous sinks</text>
+    </g>
+  </g>
+</svg>

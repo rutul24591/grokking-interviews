@@ -1,0 +1,12 @@
+{
+  "posts": [
+    {
+      "slug": "hello-world",
+      "title": "Hello World (Published)",
+      "updatedAt": "2026-03-19T00:00:00.000Z",
+      "excerpt": "Published content snapshot.",
+      "body": "This is the published/static version.\n\nEnable draft mode to see draft content without rebuilding.\n"
+    }
+  ]
+}
+

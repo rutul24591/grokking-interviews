@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Secure SDLC Integration</text>
+  
+  <!-- SDLC Phases -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="180" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4a90d9">Security Activities by SDLC Phase</text>
+    
+    <!-- Requirements -->
+    <rect x="30" y="60" width="110" height="100" rx="4" fill="#4a90d9" opacity="0.4"/>
+    <text x="85" y="85" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#4a90d9">Requirements</text>
+    <text x="85" y="105" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Security requirements</text>
+    <text x="85" y="118" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Threat modeling</text>
+    <text x="85" y="131" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Compliance needs</text>
+    <text x="85" y="144" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Privacy review</text>
+    <text x="85" y="157" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Gate: Security sign-off</text>
+    
+    <!-- Design -->
+    <rect x="155" y="60" width="110" height="100" rx="4" fill="#67b26f" opacity="0.4"/>
+    <text x="210" y="85" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#67b26f">Design</text>
+    <text x="210" y="105" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Architecture review</text>
+    <text x="210" y="118" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Security design review</text>
+    <text x="210" y="131" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Data flow diagrams</text>
+    <text x="210" y="144" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Control selection</text>
+    <text x="210" y="157" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Gate: Design approval</text>
+    
+    <!-- Develop -->
+    <rect x="280" y="60" width="110" height="100" rx="4" fill="#f0ad4e" opacity="0.4"/>
+    <text x="335" y="85" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#f0ad4e">Develop</text>
+    <text x="335" y="105" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Secure coding training</text>
+    <text x="335" y="118" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• SAST scanning</text>
+    <text x="335" y="131" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Code review</text>
+    <text x="335" y="144" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Dependency scanning</text>
+    <text x="335" y="157" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Gate: No critical findings</text>
+    
+    <!-- Test -->
+    <rect x="405" y="60" width="110" height="100" rx="4" fill="#d9534f" opacity="0.4"/>
+    <text x="460" y="85" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#d9534f">Test</text>
+    <text x="460" y="105" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• DAST scanning</text>
+    <text x="460" y="118" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Penetration testing</text>
+    <text x="460" y="131" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Security test cases</text>
+    <text x="460" y="144" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Fuzz testing</text>
+    <text x="460" y="157" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Gate: Test pass</text>
+    
+    <!-- Deploy -->
+    <rect x="530" y="60" width="110" height="100" rx="4" fill="#6f42c1" opacity="0.4"/>
+    <text x="585" y="85" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#6f42c1">Deploy</text>
+    <text x="585" y="105" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Infrastructure scan</text>
+    <text x="585" y="118" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Config validation</text>
+    <text x="585" y="131" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Secrets management</text>
+    <text x="585" y="144" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Change approval</text>
+    <text x="585" y="157" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Gate: Security approval</text>
+    
+    <!-- Operate -->
+    <rect x="655" y="60" width="110" height="100" rx="4" fill="#4a90d9" opacity="0.4"/>
+    <text x="710" y="85" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#4a90d9">Operate</text>
+    <text x="710" y="105" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Monitoring</text>
+    <text x="710" y="118" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Incident response</text>
+    <text x="710" y="131" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Patch management</text>
+    <text x="710" y="144" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Continuous scanning</text>
+    <text x="710" y="157" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Feedback loop to Requirements</text>
+  </g>
+  
+  <!-- Security Gates -->
+  <g transform="translate(50, 290)">
+    <rect x="0" y="0" width="400" height="160" rx="8" fill="#1a2a1a" stroke="#d9534f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#d9534f">Security Gates</text>
+    
+    <g transform="translate(20, 55)">
+      <rect x="0" y="0" width="160" height="25" rx="3" fill="#4a90d9" opacity="0.4"/>
+      <text x="80" y="17" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Requirements Gate</text>
+      
+      <rect x="180" y="0" width="160" height="25" rx="3" fill="#67b26f" opacity="0.4"/>
+      <text x="260" y="17" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Design Gate</text>
+      
+      <rect x="0" y="35" width="160" height="25" rx="3" fill="#f0ad4e" opacity="0.4"/>
+      <text x="80" y="52" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Code Review Gate</text>
+      
+      <rect x="180" y="35" width="160" height="25" rx="3" fill="#d9534f" opacity="0.4"/>
+      <text x="260" y="52" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Testing Gate</text>
+      
+      <rect x="0" y="70" width="160" height="25" rx="3" fill="#6f42c1" opacity="0.4"/>
+      <text x="80" y="87" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Deployment Gate</text>
+      
+      <rect x="180" y="70" width="160" height="25" rx="3" fill="#4a90d9" opacity="0.4"/>
+      <text x="260" y="87" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Production Gate</text>
+      
+      <rect x="0" y="105" width="340" height="25" rx="3" fill="#d9534f" opacity="0.4"/>
+      <text x="170" y="122" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">No bypassing gates | Exceptions require CISO approval</text>
+    </g>
+  </g>
+  
+  <!-- Automation -->
+  <g transform="translate(470, 290)">
+    <rect x="0" y="0" width="380" height="160" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Security Automation</text>
+    
+    <g transform="translate(20, 55)">
+      <circle cx="8" cy="8" r="4" fill="#67b26f"/>
+      <text x="20" y="13" font-family="system-ui" font-size="8" fill="#e0e0e0">SAST in CI/CD pipeline</text>
+      
+      <circle cx="8" cy="28" r="4" fill="#67b26f"/>
+      <text x="20" y="33" font-family="system-ui" font-size="8" fill="#e0e0e0">DAST in staging</text>
+      
+      <circle cx="8" cy="48" r="4" fill="#67b26f"/>
+      <text x="20" y="53" font-family="system-ui" font-size="8" fill="#e0e0e0">Dependency scanning</text>
+      
+      <circle cx="8" cy="68" r="4" fill="#f0ad4e"/>
+      <text x="20" y="73" font-family="system-ui" font-size="8" fill="#e0e0e0">Container image scanning</text>
+      
+      <circle cx="180" cy="8" r="4" fill="#67b26f"/>
+      <text x="192" y="13" font-family="system-ui" font-size="8" fill="#e0e0e0">IaC scanning (Terraform)</text>
+      
+      <circle cx="180" cy="28" r="4" fill="#67b26f"/>
+      <text x="192" y="33" font-family="system-ui" font-size="8" fill="#e0e0e0">Secrets detection</text>
+      
+      <circle cx="180" cy="48" r="4" fill="#67b26f"/>
+      <text x="192" y="53" font-family="system-ui" font-size="8" fill="#e0e0e0">Compliance as code</text>
+      
+      <circle cx="180" cy="68" r="4" fill="#67b26f"/>
+      <text x="192" y="73" font-family="system-ui" font-size="8" fill="#e0e0e0">Automated remediation</text>
+    </g>
+  </g>
+</svg>

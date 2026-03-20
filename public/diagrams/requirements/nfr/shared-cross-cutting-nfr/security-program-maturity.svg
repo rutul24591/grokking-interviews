@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Security Program Maturity</text>
+  
+  <!-- Maturity Model -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="180" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4a90d9">Security Program Maturity Model</text>
+    
+    <!-- Level 1 -->
+    <rect x="30" y="60" width="140" height="100" rx="4" fill="#d9534f" opacity="0.4"/>
+    <text x="100" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#d9534f">Level 1: Initial</text>
+    <text x="100" y="105" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Ad-hoc processes</text>
+    <text x="100" y="118" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Reactive approach</text>
+    <text x="100" y="131" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Hero-based</text>
+    <text x="100" y="144" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• No metrics</text>
+    <text x="100" y="157" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Firefighting mode</text>
+    
+    <!-- Level 2 -->
+    <rect x="185" y="60" width="140" height="100" rx="4" fill="#f0ad4e" opacity="0.4"/>
+    <text x="255" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">Level 2: Managed</text>
+    <text x="255" y="105" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Basic processes</text>
+    <text x="255" y="118" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Repeatable</text>
+    <text x="255" y="131" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Some documentation</text>
+    <text x="255" y="144" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Basic tools</text>
+    <text x="255" y="157" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Project-based security</text>
+    
+    <!-- Level 3 -->
+    <rect x="340" y="60" width="140" height="100" rx="4" fill="#67b26f" opacity="0.4"/>
+    <text x="410" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">Level 3: Defined</text>
+    <text x="410" y="105" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Standardized processes</text>
+    <text x="410" y="118" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Organization-wide</text>
+    <text x="410" y="131" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Training program</text>
+    <text x="410" y="144" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Metrics defined</text>
+    <text x="410" y="157" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Security by design</text>
+    
+    <!-- Level 4 -->
+    <rect x="495" y="60" width="140" height="100" rx="4" fill="#4a90d9" opacity="0.4"/>
+    <text x="565" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#4a90d9">Level 4: Measured</text>
+    <text x="565" y="105" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Quantitative metrics</text>
+    <text x="565" y="118" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Data-driven decisions</text>
+    <text x="565" y="131" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Continuous monitoring</text>
+    <text x="565" y="144" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Predictive analysis</text>
+    <text x="565" y="157" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Security as enabler</text>
+    
+    <!-- Level 5 -->
+    <rect x="650" y="60" width="140" height="100" rx="4" fill="#6f42c1" opacity="0.4"/>
+    <text x="720" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#6f42c1">Level 5: Optimizing</text>
+    <text x="720" y="105" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Continuous improvement</text>
+    <text x="720" y="118" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Innovation focus</text>
+    <text x="720" y="131" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Industry leader</text>
+    <text x="720" y="144" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">• Automation everywhere</text>
+    <text x="720" y="157" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Security as competitive advantage</text>
+  </g>
+  
+  <!-- Key Metrics by Level -->
+  <g transform="translate(50, 290)">
+    <rect x="0" y="0" width="400" height="160" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Key Metrics by Maturity Level</text>
+    
+    <g transform="translate(20, 55)">
+      <text x="0" y="0" font-family="system-ui" font-size="8" font-weight="bold" fill="#d9534f">Level 1-2:</text>
+      <text x="70" y="0" font-family="system-ui" font-size="8" fill="#e0e0e0">Vulnerability count, Patch %</text>
+      
+      <text x="0" y="20" font-family="system-ui" font-size="8" font-weight="bold" fill="#67b26f">Level 3:</text>
+      <text x="60" y="20" font-family="system-ui" font-size="8" fill="#e0e0e0">MTTD, MTTR, Training completion</text>
+      
+      <text x="0" y="40" font-family="system-ui" font-size="8" font-weight="bold" fill="#4a90d9">Level 4:</text>
+      <text x="60" y="40" font-family="system-ui" font-size="8" fill="#e0e0e0">Risk reduction, Control effectiveness</text>
+      
+      <text x="0" y="60" font-family="system-ui" font-size="8" font-weight="bold" fill="#6f42c1">Level 5:</text>
+      <text x="60" y="60" font-family="system-ui" font-size="8" fill="#e0e0e0">Business enablement, Innovation metrics</text>
+      
+      <rect x="0" y="80" width="360" height="25" rx="3" fill="#67b26f" opacity="0.3"/>
+      <text x="180" y="97" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Target: Level 3 for most organizations | Level 4-5 for high-risk industries</text>
+      
+      <text x="180" y="125" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Assess annually | Focus on continuous improvement</text>
+    </g>
+  </g>
+  
+  <!-- Improvement Roadmap -->
+  <g transform="translate(470, 290)">
+    <rect x="0" y="0" width="380" height="160" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">Improvement Roadmap</text>
+    
+    <g transform="translate(20, 55)">
+      <rect x="0" y="0" width="340" height="25" rx="3" fill="#4a90d9" opacity="0.3"/>
+      <text x="170" y="17" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">1. Assess current state (gap analysis)</text>
+      
+      <rect x="0" y="35" width="340" height="25" rx="3" fill="#67b26f" opacity="0.3"/>
+      <text x="170" y="52" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">2. Define target state (realistic goals)</text>
+      
+      <rect x="0" y="70" width="340" height="25" rx="3" fill="#f0ad4e" opacity="0.3"/>
+      <text x="170" y="87" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">3. Create roadmap (prioritized initiatives)</text>
+      
+      <rect x="0" y="105" width="340" height="25" rx="3" fill="#d9534f" opacity="0.3"/>
+      <text x="170" y="122" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">4. Execute &amp; measure (quarterly reviews)</text>
+      
+      <text x="170" y="145" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Typical progression: 1-2 years per level | Focus on people + process before tools</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad2)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Security Automation Strategy</text>
+  
+  <!-- Automation Levels -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="180" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4a90d9">Security Automation Maturity</text>
+    
+    <!-- Manual -->
+    <rect x="30" y="60" width="170" height="100" rx="4" fill="#d9534f" opacity="0.4"/>
+    <text x="115" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#d9534f">Level 1: Manual</text>
+    <text x="115" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• All manual processes</text>
+    <text x="115" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• High analyst workload</text>
+    <text x="115" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Slow response</text>
+    <text x="115" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Error-prone</text>
+    <text x="115" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Alert fatigue, burnout</text>
+    
+    <!-- Assisted -->
+    <rect x="215" y="60" width="170" height="100" rx="4" fill="#f0ad4e" opacity="0.4"/>
+    <text x="300" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">Level 2: Assisted</text>
+    <text x="300" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Some automation</text>
+    <text x="300" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Playbook guidance</text>
+    <text x="300" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Human approval needed</text>
+    <text x="300" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Partial enrichment</text>
+    <text x="300" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Better consistency</text>
+    
+    <!-- Automated -->
+    <rect x="400" y="60" width="170" height="100" rx="4" fill="#67b26f" opacity="0.4"/>
+    <text x="485" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">Level 3: Automated</text>
+    <text x="485" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Automated workflows</text>
+    <text x="485" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Auto-triage</text>
+    <text x="485" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Auto-remediation</text>
+    <text x="485" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Human oversight</text>
+    <text x="485" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Focus on complex cases</text>
+    
+    <!-- Optimized -->
+    <rect x="585" y="60" width="170" height="100" rx="4" fill="#4a90d9" opacity="0.4"/>
+    <text x="670" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#4a90d9">Level 4: Optimized</text>
+    <text x="670" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• ML/AI integration</text>
+    <text x="670" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Predictive analysis</text>
+    <text x="670" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Self-learning</text>
+    <text x="670" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Continuous improvement</text>
+    <text x="670" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Proactive security</text>
+  </g>
+  
+  <!-- Automation Use Cases -->
+  <g transform="translate(50, 290)">
+    <rect x="0" y="0" width="400" height="160" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">High-Value Automation Use Cases</text>
+    
+    <g transform="translate(20, 55)">
+      <rect x="0" y="0" width="160" height="25" rx="3" fill="#4a90d9" opacity="0.4"/>
+      <text x="80" y="17" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Phishing Analysis</text>
+      
+      <rect x="180" y="0" width="160" height="25" rx="3" fill="#67b26f" opacity="0.4"/>
+      <text x="260" y="17" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">User Account Lockout</text>
+      
+      <rect x="0" y="35" width="160" height="25" rx="3" fill="#f0ad4e" opacity="0.4"/>
+      <text x="80" y="52" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Malware Containment</text>
+      
+      <rect x="180" y="35" width="160" height="25" rx="3" fill="#d9534f" opacity="0.4"/>
+      <text x="260" y="52" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Vulnerability Patching</text>
+      
+      <rect x="0" y="70" width="160" height="25" rx="3" fill="#6f42c1" opacity="0.4"/>
+      <text x="80" y="87" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Access Revocation</text>
+      
+      <rect x="180" y="70" width="160" height="25" rx="3" fill="#4a90d9" opacity="0.4"/>
+      <text x="260" y="87" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Threat Intel Enrichment</text>
+      
+      <rect x="0" y="105" width="160" height="25" rx="3" fill="#67b26f" opacity="0.4"/>
+      <text x="80" y="122" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Log Correlation</text>
+      
+      <rect x="180" y="105" width="160" height="25" rx="3" fill="#f0ad4e" opacity="0.4"/>
+      <text x="260" y="122" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Compliance Reporting</text>
+    </g>
+  </g>
+  
+  <!-- SOAR Capabilities -->
+  <g transform="translate(470, 290)">
+    <rect x="0" y="0" width="380" height="160" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">SOAR Capabilities</text>
+    
+    <g transform="translate(20, 55)">
+      <circle cx="8" cy="8" r="4" fill="#67b26f"/>
+      <text x="20" y="13" font-family="system-ui" font-size="8" fill="#e0e0e0">Orchestration (connect tools)</text>
+      
+      <circle cx="8" cy="28" r="4" fill="#67b26f"/>
+      <text x="20" y="33" font-family="system-ui" font-size="8" fill="#e0e0e0">Automation (execute playbooks)</text>
+      
+      <circle cx="8" cy="48" r="4" fill="#67b26f"/>
+      <text x="20" y="53" font-family="system-ui" font-size="8" fill="#e0e0e0">Case management</text>
+      
+      <circle cx="8" cy="68" r="4" fill="#f0ad4e"/>
+      <text x="20" y="73" font-family="system-ui" font-size="8" fill="#e0e0e0">Threat intelligence integration</text>
+      
+      <circle cx="180" cy="8" r="4" fill="#67b26f"/>
+      <text x="192" y="13" font-family="system-ui" font-size="8" fill="#e0e0e0">Incident response workflows</text>
+      
+      <circle cx="180" cy="28" r="4" fill="#67b26f"/>
+      <text x="192" y="33" font-family="system-ui" font-size="8" fill="#e0e0e0">Metrics &amp; reporting</text>
+      
+      <circle cx="180" cy="48" r="4" fill="#67b26f"/>
+      <text x="192" y="53" font-family="system-ui" font-size="8" fill="#e0e0e0">Collaboration features</text>
+      
+      <circle cx="180" cy="68" r="4" fill="#67b26f"/>
+      <text x="192" y="73" font-family="system-ui" font-size="8" fill="#e0e0e0">Start with 3-5 high-volume playbooks</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Billing &amp; Metering Architecture</text>
+  
+  <!-- Metering Flow -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="180" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4a90d9">Usage Metering Flow</text>
+    
+    <!-- Usage Events -->
+    <rect x="30" y="60" width="100" height="50" rx="4" fill="#4a90d9" opacity="0.6"/>
+    <text x="80" y="90" text-anchor="middle" font-family="system-ui" font-size="9" fill="white">Usage Events</text>
+    
+    <line x1="130" y1="85" x2="160" y2="85" stroke="#666" stroke-width="3"/>
+    <polygon points="160,85 150,80 150,90" fill="#666"/>
+    
+    <!-- Collection -->
+    <rect x="160" y="60" width="100" height="50" rx="4" fill="#67b26f" opacity="0.6"/>
+    <text x="210" y="85" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">Event Collector</text>
+    <text x="210" y="100" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Kafka/Kinesis</text>
+    
+    <line x1="260" y1="85" x2="290" y2="85" stroke="#666" stroke-width="3"/>
+    <polygon points="290,85 280,80 280,90" fill="#666"/>
+    
+    <!-- Aggregation -->
+    <rect x="290" y="60" width="100" height="50" rx="4" fill="#f0ad4e" opacity="0.6"/>
+    <text x="340" y="85" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">Aggregator</text>
+    <text x="340" y="100" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Rollup by tenant</text>
+    
+    <line x1="390" y1="85" x2="420" y2="85" stroke="#666" stroke-width="3"/>
+    <polygon points="420,85 410,80 410,90" fill="#666"/>
+    
+    <!-- Rating -->
+    <rect x="420" y="60" width="100" height="50" rx="4" fill="#d9534f" opacity="0.6"/>
+    <text x="470" y="85" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">Rating Engine</text>
+    <text x="470" y="100" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Apply pricing</text>
+    
+    <line x1="520" y1="85" x2="550" y2="85" stroke="#666" stroke-width="3"/>
+    <polygon points="550,85 540,80 540,90" fill="#666"/>
+    
+    <!-- Billing -->
+    <rect x="550" y="60" width="100" height="50" rx="4" fill="#6f42c1" opacity="0.6"/>
+    <text x="600" y="85" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">Billing System</text>
+    <text x="600" y="100" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Generate invoices</text>
+    
+    <line x1="650" y1="85" x2="680" y2="85" stroke="#666" stroke-width="3"/>
+    <polygon points="680,85 670,80 670,90" fill="#666"/>
+    
+    <!-- Invoice -->
+    <rect x="680" y="60" width="80" height="50" rx="4" fill="#4a90d9" opacity="0.6"/>
+    <text x="720" y="85" text-anchor="middle" font-family="system-ui" font-size="8" fill="white">Invoice</text>
+    <text x="720" y="100" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Send to tenant</text>
+  </g>
+  
+  <!-- Pricing Models -->
+  <g transform="translate(50, 290)">
+    <rect x="0" y="0" width="400" height="160" rx="8" fill="#1a2a1a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">Pricing Models</text>
+    
+    <g transform="translate(20, 55)">
+      <rect x="0" y="0" width="160" height="25" rx="3" fill="#4a90d9" opacity="0.4"/>
+      <text x="80" y="17" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Per-User (seat-based)</text>
+      
+      <rect x="180" y="0" width="160" height="25" rx="3" fill="#67b26f" opacity="0.4"/>
+      <text x="260" y="17" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Usage-Based (API calls)</text>
+      
+      <rect x="0" y="35" width="160" height="25" rx="3" fill="#f0ad4e" opacity="0.4"/>
+      <text x="80" y="52" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Tiered (Free/Pro/Ent)</text>
+      
+      <rect x="180" y="35" width="160" height="25" rx="3" fill="#d9534f" opacity="0.4"/>
+      <text x="260" y="52" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Flat-Rate (unlimited)</text>
+      
+      <rect x="0" y="70" width="160" height="25" rx="3" fill="#6f42c1" opacity="0.4"/>
+      <text x="80" y="87" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Hybrid (base + overage)</text>
+      
+      <rect x="180" y="70" width="160" height="25" rx="3" fill="#4a90d9" opacity="0.4"/>
+      <text x="260" y="87" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Resource-Based (GB/hr)</text>
+      
+      <text x="170" y="120" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Choose based on: Value metric, predictability, competitive landscape</text>
+    </g>
+  </g>
+  
+  <!-- Billing Considerations -->
+  <g transform="translate(470, 290)">
+    <rect x="0" y="0" width="380" height="160" rx="8" fill="#2a2a4a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Billing Best Practices</text>
+    
+    <g transform="translate(20, 55)">
+      <circle cx="8" cy="8" r="4" fill="#67b26f"/>
+      <text x="20" y="13" font-family="system-ui" font-size="8" fill="#e0e0e0">Accurate metering (audit trail)</text>
+      
+      <circle cx="8" cy="28" r="4" fill="#67b26f"/>
+      <text x="20" y="33" font-family="system-ui" font-size="8" fill="#e0e0e0">Real-time usage dashboard</text>
+      
+      <circle cx="8" cy="48" r="4" fill="#67b26f"/>
+      <text x="20" y="53" font-family="system-ui" font-size="8" fill="#e0e0e0">Usage alerts (approaching limits)</text>
+      
+      <circle cx="8" cy="68" r="4" fill="#f0ad4e"/>
+      <text x="20" y="73" font-family="system-ui" font-size="8" fill="#e0e0e0">Proration for mid-cycle changes</text>
+      
+      <circle cx="180" cy="8" r="4" fill="#67b26f"/>
+      <text x="192" y="13" font-family="system-ui" font-size="8" fill="#e0e0e0">Multiple payment methods</text>
+      
+      <circle cx="180" cy="28" r="4" fill="#67b26f"/>
+      <text x="192" y="33" font-family="system-ui" font-size="8" fill="#e0e0e0">Dunning process (failed payments)</text>
+      
+      <circle cx="180" cy="48" r="4" fill="#67b26f"/>
+      <text x="192" y="53" font-family="system-ui" font-size="8" fill="#e0e0e0">Tax calculation</text>
+      
+      <circle cx="180" cy="68" r="4" fill="#67b26f"/>
+      <text x="192" y="73" font-family="system-ui" font-size="8" fill="#e0e0e0">Compliance (PCI-DSS for payments)</text>
+    </g>
+  </g>
+</svg>

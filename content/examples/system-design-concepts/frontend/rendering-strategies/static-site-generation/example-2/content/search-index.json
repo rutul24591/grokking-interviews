@@ -1,0 +1,22 @@
+{
+  "tokens": {
+    "ssg": ["hello-world", "build-pipelines"],
+    "build": ["build-pipelines"],
+    "pipelines": ["build-pipelines"],
+    "static": ["hello-world"],
+    "generation": ["hello-world"]
+  },
+  "posts": {
+    "hello-world": {
+      "slug": "hello-world",
+      "title": "Hello World (SSG)",
+      "excerpt": "A tiny post for search indexing."
+    },
+    "build-pipelines": {
+      "slug": "build-pipelines",
+      "title": "Build Pipelines",
+      "excerpt": "SSG shifts complexity to builds."
+    }
+  }
+}
+

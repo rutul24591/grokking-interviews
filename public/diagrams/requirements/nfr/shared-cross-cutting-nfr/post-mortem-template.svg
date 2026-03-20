@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Post-Mortem Template</text>
+  
+  <!-- Post-Mortem Sections -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="280" rx="8" fill="#2a2a4a" stroke="#6f42c1" stroke-width="2" filter="url(#shadow)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#6f42c1">Blameless Post-Mortem Template</text>
+    
+    <!-- Summary -->
+    <rect x="30" y="55" width="740" height="40" rx="4" fill="#4a90d9" opacity="0.3"/>
+    <text x="45" y="75" font-family="system-ui" font-size="10" font-weight="bold" fill="#4a90d9">1. Executive Summary</text>
+    <text x="45" y="90" font-family="system-ui" font-size="8" fill="#e0e0e0">What happened, impact (users affected, duration, revenue), severity level</text>
+    
+    <!-- Timeline -->
+    <rect x="30" y="105" width="740" height="40" rx="4" fill="#67b26f" opacity="0.3"/>
+    <text x="45" y="125" font-family="system-ui" font-size="10" font-weight="bold" fill="#67b26f">2. Timeline (Minute by Minute)</text>
+    <text x="45" y="140" font-family="system-ui" font-size="8" fill="#e0e0e0">Detection → Triage → Response → Resolution (include timestamps)</text>
+    
+    <!-- Root Cause -->
+    <rect x="30" y="155" width="740" height="40" rx="4" fill="#f0ad4e" opacity="0.3"/>
+    <text x="45" y="175" font-family="system-ui" font-size="10" font-weight="bold" fill="#f0ad4e">3. Root Cause Analysis</text>
+    <text x="45" y="190" font-family="system-ui" font-size="8" fill="#e0e0e0">5 Whys analysis, contributing factors, systemic issues</text>
+    
+    <!-- What Went Well -->
+    <rect x="30" y="205" width="360" height="40" rx="4" fill="#67b26f" opacity="0.3"/>
+    <text x="45" y="225" font-family="system-ui" font-size="10" font-weight="bold" fill="#67b26f">4. What Went Well</text>
+    <text x="45" y="240" font-family="system-ui" font-size="8" fill="#e0e0e0">Detection, response, communication wins</text>
+    
+    <!-- What Went Poorly -->
+    <rect x="410" y="205" width="360" height="40" rx="4" fill="#d9534f" opacity="0.3"/>
+    <text x="425" y="225" font-family="system-ui" font-size="10" font-weight="bold" fill="#d9534f">5. What Went Poorly</text>
+    <text x="425" y="240" font-family="system-ui" font-size="8" fill="#e0e0e0">Gaps, delays, confusion, tooling issues</text>
+    
+    <!-- Action Items -->
+    <rect x="30" y="255" width="740" height="40" rx="4" fill="#6f42c1" opacity="0.3"/>
+    <text x="45" y="275" font-family="system-ui" font-size="10" font-weight="bold" fill="#6f42c1">6. Action Items (SMART)</text>
+    <text x="45" y="290" font-family="system-ui" font-size="8" fill="#e0e0e0">Specific, Measurable, Assigned, Realistic, Time-bound</text>
+  </g>
+  
+  <!-- Key Principles -->
+  <g transform="translate(50, 390)">
+    <rect x="0" y="0" width="400" height="80" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="25" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#67b26f">Blameless Principles</text>
+    
+    <g transform="translate(20, 40)">
+      <circle cx="8" cy="8" r="4" fill="#67b26f"/>
+      <text x="20" y="13" font-family="system-ui" font-size="8" fill="#e0e0e0">Focus on WHAT, not WHO</text>
+      
+      <circle cx="8" cy="28" r="4" fill="#67b26f"/>
+      <text x="20" y="33" font-family="system-ui" font-size="8" fill="#e0e0e0">Assume everyone did their best</text>
+      
+      <circle cx="200" cy="8" r="4" fill="#67b26f"/>
+      <text x="212" y="13" font-family="system-ui" font-size="8" fill="#e0e0e0">Systems cause failures, not people</text>
+      
+      <circle cx="200" cy="28" r="4" fill="#67b26f"/>
+      <text x="212" y="33" font-family="system-ui" font-size="8" fill="#e0e0e0">Learn and improve</text>
+    </g>
+  </g>
+  
+  <!-- Distribution -->
+  <g transform="translate(470, 390)">
+    <rect x="0" y="0" width="380" height="80" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="25" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#f0ad4e">Distribution &amp; Follow-up</text>
+    
+    <g transform="translate(20, 40)">
+      <text x="0" y="0" font-family="system-ui" font-size="7" fill="#e0e0e0">Share: Engineering org, leadership</text>
+      <text x="0" y="15" font-family="system-ui" font-size="7" fill="#e0e0e0">Store: Central post-mortem repo</text>
+      <text x="0" y="30" font-family="system-ui" font-size="7" fill="#e0e0e0">Review: Action item progress weekly</text>
+      <text x="200" y="0" font-family="system-ui" font-size="7" fill="#e0e0e0">Timeline: Within 5 business days</text>
+      <text x="200" y="15" font-family="system-ui" font-size="7" fill="#e0e0e0">Meeting: 1 hour max</text>
+      <text x="200" y="30" font-family="system-ui" font-size="7" fill="#e0e0e0">Close: All actions complete</text>
+    </g>
+  </g>
+</svg>

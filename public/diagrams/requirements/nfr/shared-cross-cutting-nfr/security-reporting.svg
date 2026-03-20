@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad2)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Security Reporting</text>
+  
+  <!-- Report Types -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="180" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow2)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4a90d9">Security Report Types</text>
+    
+    <!-- Executive -->
+    <rect x="30" y="60" width="170" height="100" rx="4" fill="#4a90d9" opacity="0.4"/>
+    <text x="115" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#4a90d9">Executive Report</text>
+    <text x="115" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Monthly/Quarterly</text>
+    <text x="115" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• High-level metrics</text>
+    <text x="115" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Risk trends</text>
+    <text x="115" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Business impact</text>
+    <text x="115" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Audience: C-suite, Board</text>
+    
+    <!-- Operational -->
+    <rect x="215" y="60" width="170" height="100" rx="4" fill="#67b26f" opacity="0.4"/>
+    <text x="300" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">Operational Report</text>
+    <text x="300" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Weekly</text>
+    <text x="300" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Detailed metrics</text>
+    <text x="300" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Incident summary</text>
+    <text x="300" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Vulnerability status</text>
+    <text x="300" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Audience: Security team, IT</text>
+    
+    <!-- Compliance -->
+    <rect x="400" y="60" width="170" height="100" rx="4" fill="#f0ad4e" opacity="0.4"/>
+    <text x="485" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">Compliance Report</text>
+    <text x="485" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Quarterly/Annual</text>
+    <text x="485" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Control status</text>
+    <text x="485" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Audit findings</text>
+    <text x="485" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Remediation progress</text>
+    <text x="485" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Audience: Auditors, Regulators</text>
+    
+    <!-- Incident -->
+    <rect x="585" y="60" width="170" height="100" rx="4" fill="#d9534f" opacity="0.4"/>
+    <text x="670" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#d9534f">Incident Report</text>
+    <text x="670" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Per incident</text>
+    <text x="670" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Timeline</text>
+    <text x="670" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Root cause</text>
+    <text x="670" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Lessons learned</text>
+    <text x="670" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Audience: Stakeholders</text>
+  </g>
+  
+  <!-- Executive Metrics -->
+  <g transform="translate(50, 290)">
+    <rect x="0" y="0" width="400" height="160" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Executive Dashboard Metrics</text>
+    
+    <g transform="translate(20, 55)">
+      <rect x="0" y="0" width="160" height="25" rx="3" fill="#4a90d9" opacity="0.4"/>
+      <text x="80" y="17" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Overall Risk Score</text>
+      
+      <rect x="180" y="0" width="160" height="25" rx="3" fill="#67b26f" opacity="0.4"/>
+      <text x="260" y="17" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Critical Vulnerabilities</text>
+      
+      <rect x="0" y="35" width="160" height="25" rx="3" fill="#f0ad4e" opacity="0.4"/>
+      <text x="80" y="52" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Security Incidents</text>
+      
+      <rect x="180" y="35" width="160" height="25" rx="3" fill="#d9534f" opacity="0.4"/>
+      <text x="260" y="52" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Compliance Status</text>
+      
+      <rect x="0" y="70" width="160" height="25" rx="3" fill="#6f42c1" opacity="0.4"/>
+      <text x="80" y="87" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Budget vs Actual</text>
+      
+      <rect x="180" y="70" width="160" height="25" rx="3" fill="#4a90d9" opacity="0.4"/>
+      <text x="260" y="87" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Key Initiatives Status</text>
+      
+      <rect x="0" y="105" width="160" height="25" rx="3" fill="#67b26f" opacity="0.4"/>
+      <text x="80" y="122" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Training Completion</text>
+      
+      <rect x="180" y="105" width="160" height="25" rx="3" fill="#f0ad4e" opacity="0.4"/>
+      <text x="260" y="122" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Third-Party Risk</text>
+    </g>
+  </g>
+  
+  <!-- Reporting Best Practices -->
+  <g transform="translate(470, 290)">
+    <rect x="0" y="0" width="380" height="160" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">Reporting Best Practices</text>
+    
+    <g transform="translate(20, 55)">
+      <circle cx="8" cy="8" r="4" fill="#67b26f"/>
+      <text x="20" y="13" font-family="system-ui" font-size="8" fill="#e0e0e0">Know your audience</text>
+      
+      <circle cx="8" cy="28" r="4" fill="#67b26f"/>
+      <text x="20" y="33" font-family="system-ui" font-size="8" fill="#e0e0e0">Use visuals (charts, graphs)</text>
+      
+      <circle cx="8" cy="48" r="4" fill="#67b26f"/>
+      <text x="20" y="53" font-family="system-ui" font-size="8" fill="#e0e0e0">Tell a story with data</text>
+      
+      <circle cx="8" cy="68" r="4" fill="#f0ad4e"/>
+      <text x="20" y="73" font-family="system-ui" font-size="8" fill="#e0e0e0">Include recommendations</text>
+      
+      <circle cx="180" cy="8" r="4" fill="#67b26f"/>
+      <text x="192" y="13" font-family="system-ui" font-size="8" fill="#e0e0e0">Be honest about gaps</text>
+      
+      <circle cx="180" cy="28" r="4" fill="#67b26f"/>
+      <text x="192" y="33" font-family="system-ui" font-size="8" fill="#e0e0e0">Show progress over time</text>
+      
+      <circle cx="180" cy="48" r="4" fill="#67b26f"/>
+      <text x="192" y="53" font-family="system-ui" font-size="8" fill="#e0e0e0">Keep it concise</text>
+      
+      <circle cx="180" cy="68" r="4" fill="#67b26f"/>
+      <text x="192" y="73" font-family="system-ui" font-size="8" fill="#e0e0e0">Automate where possible</text>
+    </g>
+  </g>
+</svg>

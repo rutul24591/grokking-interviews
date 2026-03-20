@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Security Metrics &amp; KPIs</text>
+  
+  <!-- Metric Categories -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="180" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4a90d9">Security Metrics Categories</text>
+    
+    <!-- Operational -->
+    <rect x="30" y="60" width="220" height="100" rx="4" fill="#4a90d9" opacity="0.4"/>
+    <text x="140" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#4a90d9">Operational Metrics</text>
+    <text x="140" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Patch compliance %</text>
+    <text x="140" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Vulnerability MTTR</text>
+    <text x="140" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Security tool coverage</text>
+    <text x="140" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Access review completion</text>
+    <text x="140" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Measure: Security operations efficiency</text>
+    
+    <!-- Risk -->
+    <rect x="270" y="60" width="220" height="100" rx="4" fill="#67b26f" opacity="0.4"/>
+    <text x="380" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#67b26f">Risk Metrics</text>
+    <text x="380" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Risk register status</text>
+    <text x="380" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• High-risk findings</text>
+    <text x="380" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Third-party risk score</text>
+    <text x="380" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Compliance gaps</text>
+    <text x="380" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Measure: Overall risk posture</text>
+    
+    <!-- Incident -->
+    <rect x="510" y="60" width="220" height="100" rx="4" fill="#f0ad4e" opacity="0.4"/>
+    <text x="620" y="85" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#f0ad4e">Incident Metrics</text>
+    <text x="620" y="105" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Mean time to detect (MTTD)</text>
+    <text x="620" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Mean time to respond (MTTR)</text>
+    <text x="620" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• Incident count by severity</text>
+    <text x="620" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">• False positive rate</text>
+    <text x="620" y="165" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Measure: Detection &amp; response capability</text>
+  </g>
+  
+  <!-- Leading vs Lagging -->
+  <g transform="translate(50, 290)">
+    <rect x="0" y="0" width="400" height="160" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Leading vs Lagging Indicators</text>
+    
+    <g transform="translate(20, 55)">
+      <text x="0" y="0" font-family="system-ui" font-size="9" font-weight="bold" fill="#67b26f">Leading (Predictive):</text>
+      
+      <rect x="0" y="15" width="160" height="20" rx="2" fill="#67b26f" opacity="0.3"/>
+      <text x="80" y="29" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Training completion rate</text>
+      
+      <rect x="0" y="40" width="160" height="20" rx="2" fill="#67b26f" opacity="0.3"/>
+      <text x="80" y="54" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Phishing simulation results</text>
+      
+      <rect x="0" y="65" width="160" height="20" rx="2" fill="#67b26f" opacity="0.3"/>
+      <text x="80" y="79" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Vulnerability scan coverage</text>
+      
+      <rect x="0" y="90" width="160" height="20" rx="2" fill="#67b26f" opacity="0.3"/>
+      <text x="80" y="104" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Security review backlog</text>
+      
+      <text x="200" y="25" font-family="system-ui" font-size="9" font-weight="bold" fill="#f0ad4e">Lagging (Historical):</text>
+      
+      <rect x="200" y="40" width="160" height="20" rx="2" fill="#f0ad4e" opacity="0.3"/>
+      <text x="280" y="54" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Number of breaches</text>
+      
+      <rect x="200" y="65" width="160" height="20" rx="2" fill="#f0ad4e" opacity="0.3"/>
+      <text x="280" y="79" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Incident count</text>
+      
+      <rect x="200" y="90" width="160" height="20" rx="2" fill="#f0ad4e" opacity="0.3"/>
+      <text x="280" y="104" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Data loss volume</text>
+      
+      <text x="200" y="125" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Use both for complete picture</text>
+    </g>
+  </g>
+  
+  <!-- Dashboard Example -->
+  <g transform="translate(470, 290)">
+    <rect x="0" y="0" width="380" height="160" rx="8" fill="#2a2a4a" stroke="#f0ad4e" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f0ad4e">Security Dashboard</text>
+    
+    <g transform="translate(20, 55)">
+      <rect x="0" y="0" width="100" height="40" rx="3" fill="#67b26f" opacity="0.4"/>
+      <text x="50" y="20" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Risk Score</text>
+      <text x="50" y="35" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#67b26f">85/100</text>
+      
+      <rect x="120" y="0" width="100" height="40" rx="3" fill="#f0ad4e" opacity="0.4"/>
+      <text x="170" y="20" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Open Vulns</text>
+      <text x="170" y="35" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#f0ad4e">23</text>
+      
+      <rect x="240" y="0" width="100" height="40" rx="3" fill="#4a90d9" opacity="0.4"/>
+      <text x="290" y="20" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">MTTD</text>
+      <text x="290" y="35" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#4a90d9">2.5h</text>
+      
+      <rect x="0" y="50" width="100" height="40" rx="3" fill="#67b26f" opacity="0.4"/>
+      <text x="50" y="70" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">MTTR</text>
+      <text x="50" y="85" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#67b26f">4.2h</text>
+      
+      <rect x="120" y="50" width="100" height="40" rx="3" fill="#f0ad4e" opacity="0.4"/>
+      <text x="170" y="70" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Training</text>
+      <text x="170" y="85" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#f0ad4e">94%</text>
+      
+      <rect x="240" y="50" width="100" height="40" rx="3" fill="#4a90d9" opacity="0.4"/>
+      <text x="290" y="70" text-anchor="middle" font-family="system-ui" font-size="8" fill="#e0e0e0">Patch %</text>
+      <text x="290" y="85" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#4a90d9">98%</text>
+      
+      <text x="170" y="120" text-anchor="middle" font-family="system-ui" font-size="7" fill="#999">Review weekly | Trend monthly | Report quarterly</text>
+    </g>
+  </g>
+</svg>

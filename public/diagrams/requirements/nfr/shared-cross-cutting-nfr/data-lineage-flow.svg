@@ -10,7 +10,7 @@
   </defs>
   
   <rect width="900" height="500" fill="url(#bgGrad)"/>
-  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Data Lineage & Flow</text>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Data Lineage &amp; Flow</text>
   
   <!-- Data Flow Diagram -->
   <g transform="translate(50, 80)">

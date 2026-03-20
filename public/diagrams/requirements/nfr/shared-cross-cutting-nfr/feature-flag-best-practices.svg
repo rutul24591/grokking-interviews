@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <rect width="900" height="500" fill="url(#bgGrad)"/>
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="bold" fill="#e0e0e0">Feature Flag Best Practices</text>
+  
+  <!-- Flag Lifecycle -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="800" height="180" rx="8" fill="#2a2a4a" stroke="#4a90d9" stroke-width="2" filter="url(#shadow)"/>
+    <text x="400" y="35" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4a90d9">Feature Flag Lifecycle Management</text>
+    
+    <!-- Create -->
+    <circle cx="80" cy="90" r="35" fill="#4a90d9"/>
+    <text x="80" y="95" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="white">1. Create</text>
+    <text x="80" y="115" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Define flag + metadata</text>
+    
+    <line x1="115" y1="90" x2="155" y2="90" stroke="#666" stroke-width="3"/>
+    <polygon points="155,90 145,85 145,95" fill="#666"/>
+    
+    <!-- Test -->
+    <circle cx="200" cy="90" r="35" fill="#67b26f"/>
+    <text x="200" y="95" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="white">2. Test</text>
+    <text x="200" y="115" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Internal testing</text>
+    
+    <line x1="235" y1="90" x2="275" y2="90" stroke="#666" stroke-width="3"/>
+    <polygon points="275,90 265,85 265,95" fill="#666"/>
+    
+    <!-- Rollout -->
+    <circle cx="320" cy="90" r="35" fill="#f0ad4e"/>
+    <text x="320" y="95" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="white">3. Rollout</text>
+    <text x="320" y="115" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Gradual % increase</text>
+    
+    <line x1="355" y1="90" x2="395" y2="90" stroke="#666" stroke-width="3"/>
+    <polygon points="395,90 385,85 385,95" fill="#666"/>
+    
+    <!-- Monitor -->
+    <circle cx="440" cy="90" r="35" fill="#4a90d9"/>
+    <text x="440" y="95" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="white">4. Monitor</text>
+    <text x="440" y="115" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Metrics &amp; alerts</text>
+    
+    <line x1="475" y1="90" x2="515" y2="90" stroke="#666" stroke-width="3"/>
+    <polygon points="515,90 505,85 505,95" fill="#666"/>
+    
+    <!-- Full -->
+    <circle cx="560" cy="90" r="35" fill="#67b26f"/>
+    <text x="560" y="95" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="white">5. 100%</text>
+    <text x="560" y="115" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Full rollout</text>
+    
+    <line x1="595" y1="90" x2="635" y2="90" stroke="#666" stroke-width="3" stroke-dasharray="4,2"/>
+    <polygon points="635,90 625,85 625,95" fill="#666"/>
+    
+    <!-- Cleanup -->
+    <rect x="635" y="55" width="120" height="70" rx="6" fill="#d9534f"/>
+    <text x="695" y="85" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="white">6. Cleanup</text>
+    <text x="695" y="105" text-anchor="middle" font-family="system-ui" font-size="7" fill="#e0e0e0">Remove flag + code</text>
+    
+    <text x="400" y="155" text-anchor="middle" font-family="system-ui" font-size="8" fill="#f0ad4e">⚠ Set expiration date at creation!</text>
+  </g>
+  
+  <!-- Naming Conventions -->
+  <g transform="translate(50, 290)">
+    <rect x="0" y="0" width="400" height="160" rx="8" fill="#1a2a1a" stroke="#67b26f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#67b26f">Flag Naming Conventions</text>
+    
+    <g transform="translate(20, 55)">
+      <text x="0" y="0" font-family="monospace" font-size="8" fill="#e0e0e0">team_feature_description</text>
+      
+      <rect x="0" y="15" width="360" height="25" rx="3" fill="#4a90d9" opacity="0.3"/>
+      <text x="10" y="32" font-family="monospace" font-size="7" fill="#e0e0e0">checkout_new-payment-flow</text>
+      
+      <rect x="0" y="45" width="360" height="25" rx="3" fill="#67b26f" opacity="0.3"/>
+      <text x="10" y="62" font-family="monospace" font-size="7" fill="#e0e0e0">search_ai-powered-results</text>
+      
+      <rect x="0" y="75" width="360" height="25" rx="3" fill="#f0ad4e" opacity="0.3"/>
+      <text x="10" y="92" font-family="monospace" font-size="7" fill="#e0e0e0">ops_kill-switch-checkout</text>
+      
+      <text x="0" y="115" font-family="system-ui" font-size="7" fill="#999">Include: team, feature, type (experiment/ops)</text>
+    </g>
+  </g>
+  
+  <!-- Anti-Patterns -->
+  <g transform="translate(470, 290)">
+    <rect x="0" y="0" width="380" height="160" rx="8" fill="#2a2a4a" stroke="#d9534f" stroke-width="2" filter="url(#shadow)"/>
+    <text x="190" y="35" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#d9534f">Flag Anti-Patterns to Avoid</text>
+    
+    <g transform="translate(20, 55)">
+      <circle cx="8" cy="8" r="4" fill="#d9534f"/>
+      <text x="20" y="13" font-family="system-ui" font-size="8" fill="#e0e0e0">Flags without expiration</text>
+      
+      <circle cx="8" cy="28" r="4" fill="#d9534f"/>
+      <text x="20" y="33" font-family="system-ui" font-size="8" fill="#e0e0e0">Too many flags (flag debt)</text>
+      
+      <circle cx="8" cy="48" r="4" fill="#d9534f"/>
+      <text x="20" y="53" font-family="system-ui" font-size="8" fill="#e0e0e0">Nested/dependent flags</text>
+      
+      <circle cx="8" cy="68" r="4" fill="#d9534f"/>
+      <text x="20" y="73" font-family="system-ui" font-size="8" fill="#e0e0e0">Flags in hot paths (latency)</text>
+      
+      <circle cx="180" cy="8" r="4" fill="#d9534f"/>
+      <text x="192" y="13" font-family="system-ui" font-size="8" fill="#e0e0e0">No monitoring on flags</text>
+      
+      <circle cx="180" cy="28" r="4" fill="#d9534f"/>
+      <text x="192" y="33" font-family="system-ui" font-size="8" fill="#e0e0e0">Changing flag semantics</text>
+      
+      <circle cx="180" cy="48" r="4" fill="#d9534f"/>
+      <text x="192" y="53" font-family="system-ui" font-size="8" fill="#e0e0e0">Flags as config (use config instead)</text>
+      
+      <circle cx="180" cy="68" r="4" fill="#d9534f"/>
+      <text x="192" y="73" font-family="system-ui" font-size="8" fill="#e0e0e0">No cleanup process</text>
+    </g>
+  </g>
+</svg>

@@ -1,10 +1,121 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Data Compression Diagram 1</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Data Compression</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">Data Compression Algorithms</title>
+  <desc id="desc">Data compression algorithms comparison: Gzip, Snappy, LZ4, Zstd with trade-offs</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">Data Compression Algorithms</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Gzip, Snappy, LZ4, Zstd with speed and ratio trade-offs</text>
+  
+  <!-- Compression Spectrum -->
+  <rect x="30" y="85" width="840" height="100" rx="8" fill="#3b82f6" stroke="#1e40af" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Compression Spectrum: Speed vs Ratio</text>
+  
+  <!-- Speed axis -->
+  <line x1="60" y1="150" x2="840" y2="150" stroke="#64748b" stroke-width="2"/>
+  <text x="60" y="140" text-anchor="middle" font-size="10" fill="#64748b">Fast</text>
+  <text x="840" y="140" text-anchor="middle" font-size="10" fill="#64748b">Slow</text>
+  
+  <!-- Ratio axis -->
+  <line x1="60" y1="150" x2="60" y2="60" stroke="#64748b" stroke-width="2"/>
+  <text x="50" y="60" text-anchor="end" font-size="10" fill="#64748b">High</text>
+  <text x="50" y="150" text-anchor="end" font-size="10" fill="#64748b">Low</text>
+  
+  <!-- Algorithm positions -->
+  <circle cx="150" cy="130" r="25" fill="#10b981" opacity="0.8"/>
+  <text x="150" y="135" text-anchor="middle" font-size="9" fill="white">LZ4</text>
+  
+  <circle cx="280" cy="110" r="25" fill="#f59e0b" opacity="0.8"/>
+  <text x="280" y="115" text-anchor="middle" font-size="9" fill="white">Snappy</text>
+  
+  <circle cx="450" cy="90" r="25" fill="#8b5cf6" opacity="0.8"/>
+  <text x="450" y="95" text-anchor="middle" font-size="9" fill="white">Zstd</text>
+  
+  <circle cx="650" cy="75" r="25" fill="#3b82f6" opacity="0.8"/>
+  <text x="650" y="80" text-anchor="middle" font-size="9" fill="white">Gzip</text>
+  
+  <circle cx="780" cy="65" r="25" fill="#ef4444" opacity="0.8"/>
+  <text x="780" y="70" text-anchor="middle" font-size="9" fill="white">Brotli</text>
+  
+  <!-- Algorithm Details -->
+  <rect x="30" y="200" width="200" height="160" rx="8" fill="#10b981" stroke="#059669" stroke-width="2"/>
+  <text x="130" y="225" text-anchor="middle" font-size="13" font-weight="bold" fill="white">LZ4</text>
+  
+  <rect x="50" y="240" width="160" height="110" rx="4" fill="#d1fae5" stroke="#10b981" stroke-width="1"/>
+  <text x="130" y="265" text-anchor="middle" font-size="10" fill="#047857">✓ Fastest compression</text>
+  <text x="130" y="285" text-anchor="middle" font-size="10" fill="#047857">✓ Fastest decompression</text>
+  <text x="130" y="305" text-anchor="middle" font-size="10" fill="#f59e0b">⚠ Lower ratio (~2:1)</text>
+  <text x="130" y="325" text-anchor="middle" font-size="10" fill="#047857">Use: Real-time, caching</text>
+  
+  <rect x="240" y="200" width="200" height="160" rx="8" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>
+  <text x="340" y="225" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Snappy</text>
+  
+  <rect x="260" y="240" width="160" height="110" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="340" y="265" text-anchor="middle" font-size="10" fill="#92400e">✓ Very fast</text>
+  <text x="340" y="285" text-anchor="middle" font-size="10" fill="#92400e">✓ Good ratio (~2.5:1)</text>
+  <text x="340" y="305" text-anchor="middle" font-size="10" fill="#92400e">✓ Google supported</text>
+  <text x="340" y="325" text-anchor="middle" font-size="10" fill="#92400e">Use: Bigtable, Kafka</text>
+  
+  <rect x="450" y="200" width="200" height="160" rx="8" fill="#8b5cf6" stroke="#6d28d9" stroke-width="2"/>
+  <text x="550" y="225" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Zstd</text>
+  
+  <rect x="470" y="240" width="160" height="110" rx="4" fill="#ede9fe" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="550" y="265" text-anchor="middle" font-size="10" fill="#5b21b6">✓ Best balance</text>
+  <text x="550" y="285" text-anchor="middle" font-size="10" fill="#5b21b6">✓ Tunable levels</text>
+  <text x="550" y="305" text-anchor="middle" font-size="10" fill="#5b21b6">✓ Great ratio (~3-4:1)</text>
+  <text x="550" y="325" text-anchor="middle" font-size="10" fill="#5b21b6">Use: General purpose</text>
+  
+  <rect x="660" y="200" width="210" height="160" rx="8" fill="#3b82f6" stroke="#1e40af" stroke-width="2"/>
+  <text x="765" y="225" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Gzip/Deflate</text>
+  
+  <rect x="680" y="240" width="170" height="110" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="765" y="265" text-anchor="middle" font-size="10" fill="#1e40af">✓ Universal support</text>
+  <text x="765" y="285" text-anchor="middle" font-size="10" fill="#1e40af">✓ Good ratio (~3:1)</text>
+  <text x="765" y="305" text-anchor="middle" font-size="10" fill="#ef4444">✗ Slower</text>
+  <text x="765" y="325" text-anchor="middle" font-size="10" fill="#1e40af">Use: HTTP, archives</text>
+  
+  <!-- Compression Ratio Comparison -->
+  <rect x="30" y="375" width="400" height="155" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="230" y="400" text-anchor="middle" font-size="14" font-weight="bold" fill="#b91c1c">Compression Ratio (Higher = Better)</text>
+  
+  <rect x="50" y="415" width="360" height="105" rx="4" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+  
+  <rect x="70" y="435" width="80" height="25" rx="2" fill="#10b981"/>
+  <text x="60" y="452" text-anchor="end" font-size="9" fill="#64748b">LZ4</text>
+  <text x="155" y="452" text-anchor="start" font-size="9" fill="#64748b">2.0x</text>
+  
+  <rect x="70" y="465" width="120" height="25" rx="2" fill="#f59e0b"/>
+  <text x="60" y="482" text-anchor="end" font-size="9" fill="#64748b">Snappy</text>
+  <text x="195" y="482" text-anchor="start" font-size="9" fill="#64748b">2.5x</text>
+  
+  <rect x="70" y="495" width="180" height="25" rx="2" fill="#8b5cf6"/>
+  <text x="60" y="512" text-anchor="end" font-size="9" fill="#64748b">Zstd</text>
+  <text x="255" y="512" text-anchor="start" font-size="9" fill="#64748b">3.5x</text>
+  
+  <!-- Speed Comparison -->
+  <rect x="450" y="375" width="420" height="155" rx="8" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="2"/>
+  <text x="660" y="400" text-anchor="middle" font-size="14" font-weight="bold" fill="#4338ca">Throughput (MB/s, Higher = Faster)</text>
+  
+  <rect x="470" y="415" width="380" height="105" rx="4" fill="#eef2ff" stroke="#a5b4fc" stroke-width="1"/>
+  
+  <rect x="490" y="435" width="340" height="25" rx="2" fill="#10b981"/>
+  <text x="480" y="452" text-anchor="end" font-size="9" fill="#64748b">LZ4</text>
+  <text x="835" y="452" text-anchor="end" font-size="9" fill="#64748b">500+</text>
+  
+  <rect x="490" y="465" width="280" height="25" rx="2" fill="#f59e0b"/>
+  <text x="480" y="482" text-anchor="end" font-size="9" fill="#64748b">Snappy</text>
+  <text x="775" y="482" text-anchor="end" font-size="9" fill="#64748b">400</text>
+  
+  <rect x="490" y="495" width="200" height="25" rx="2" fill="#8b5cf6"/>
+  <text x="480" y="512" text-anchor="end" font-size="9" fill="#64748b">Zstd</text>
+  <text x="695" y="512" text-anchor="end" font-size="9" fill="#64748b">300</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
 </svg>

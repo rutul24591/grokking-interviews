@@ -55,18 +55,18 @@ const COLOR_MAP: Record<string, string> = {
 
 function escapeXmlEntities(content: string): string {
   let result = content;
-  
+
   // Protect existing entities
-  const protected = result.replace(/&amp;|&lt;|&gt;|&quot;|&apos;/g, (match) => {
+  const protectedEntities = result.replace(/&amp;|&lt;|&gt;|&quot;|&apos;/g, (match) => {
     return match === '&amp;' ? '___AMP___' : match;
   });
-  
+
   // Escape remaining bare ampersands
-  result = protected.replace(/&/g, '&amp;');
-  
+  result = protectedEntities.replace(/&/g, '&amp;');
+
   // Restore protected entities
   result = result.replace(/___AMP___/g, '&amp;');
-  
+
   return result;
 }
 

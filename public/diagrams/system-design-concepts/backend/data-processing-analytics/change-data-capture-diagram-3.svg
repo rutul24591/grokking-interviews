@@ -1,10 +1,118 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420">
-  <rect width="960" height="420" fill="#f8fafc" />
-  <text x="40" y="50" font-family="Arial" font-size="20" fill="#0f172a">Change Data Capture Diagram 3</text>
-  <rect x="80" y="120" width="260" height="90" rx="12" fill="#dbeafe" stroke="#60a5fa" />
-  <text x="110" y="165" font-family="Arial" font-size="14" fill="#0f172a">Change Data Capture</text>
-  <rect x="360" y="120" width="260" height="90" rx="12" fill="#e0f2fe" stroke="#38bdf8" />
-  <text x="390" y="165" font-family="Arial" font-size="14" fill="#0f172a">Flow</text>
-  <rect x="640" y="120" width="220" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" />
-  <text x="675" y="165" font-family="Arial" font-size="14" fill="#0f172a">Outcome</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" role="img" aria-labelledby="title desc">
+  <title id="title">CDC Failure Modes</title>
+  <desc id="desc">CDC failure modes: log truncation, schema changes, ordering issues, and consumer lag</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="#f8fafc"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">CDC Failure Modes</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#64748b">Log truncation, schema changes, ordering issues, and consumer lag</text>
+  
+  <!-- Log Truncation -->
+  <rect x="30" y="85" width="280" height="210" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+  <text x="170" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#b91c1c">Log Truncation</text>
+  
+  <rect x="50" y="125" width="240" height="150" rx="4" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="170" y="155" text-anchor="middle" font-size="10" fill="#64748b">Transaction log truncated before</text>
+  <text x="170" y="175" text-anchor="middle" font-size="10" fill="#64748b">CDC consumer reads, causing</text>
+  <text x="170" y="190" text-anchor="middle" font-size="10" fill="#64748b">missed changes and gaps</text>
+  <text x="170" y="215" text-anchor="middle" font-size="10" fill="#b91c1c">Signal:</text>
+  <text x="210" y="215" text-anchor="middle" font-size="10" fill="#64748b">Log position not found, consumer</text>
+  <text x="170" y="235" text-anchor="middle" font-size="10" fill="#64748b">offset ahead of available log</text>
+  <text x="170" y="255" text-anchor="middle" font-size="10" fill="#b91c1c">Mitigation:</text>
+  <text x="220" y="255" text-anchor="middle" font-size="10" fill="#64748b">Increase retention, monitor lag,</text>
+  <text x="170" y="275" text-anchor="middle" font-size="10" fill="#64748b">alert on consumer lag threshold</text>
+  
+  <!-- Schema Changes -->
+  <rect x="325" y="85" width="280" height="210" rx="8" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text x="465" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">Schema Changes</text>
+  
+  <rect x="345" y="125" width="240" height="150" rx="4" fill="#fffbeb" stroke="#fcd34d" stroke-width="1"/>
+  <text x="465" y="155" text-anchor="middle" font-size="10" fill="#64748b">DDL changes break CDC parsing</text>
+  <text x="465" y="175" text-anchor="middle" font-size="10" fill="#64748b">or cause incompatible events</text>
+  <text x="465" y="190" text-anchor="middle" font-size="10" fill="#64748b">downstream</text>
+  <text x="465" y="215" text-anchor="middle" font-size="10" fill="#b45309">Signal:</text>
+  <text x="505" y="215" text-anchor="middle" font-size="10" fill="#64748b">Deserialization errors, schema</text>
+  <text x="465" y="235" text-anchor="middle" font-size="10" fill="#64748b">mismatch alerts, failed writes</text>
+  <text x="465" y="255" text-anchor="middle" font-size="10" fill="#b45309">Mitigation:</text>
+  <text x="515" y="255" text-anchor="middle" font-size="10" fill="#64748b">Schema registry, backward-compatible</text>
+  <text x="465" y="275" text-anchor="middle" font-size="10" fill="#64748b">changes, DDL event handling</text>
+  
+  <!-- Ordering Issues -->
+  <rect x="620" y="85" width="250" height="210" rx="8" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="2"/>
+  <text x="745" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#4338ca">Ordering Issues</text>
+  
+  <rect x="640" y="125" width="210" height="150" rx="4" fill="#eef2ff" stroke="#a5b4fc" stroke-width="1"/>
+  <text x="745" y="155" text-anchor="middle" font-size="10" fill="#64748b">Events processed out of order</text>
+  <text x="745" y="175" text-anchor="middle" font-size="10" fill="#64748b">due to parallel consumers or</text>
+  <text x="745" y="190" text-anchor="middle" font-size="10" fill="#64748b">partition rebalancing</text>
+  <text x="745" y="215" text-anchor="middle" font-size="10" fill="#4338ca">Signal:</text>
+  <text x="785" y="215" text-anchor="middle" font-size="10" fill="#64748b">UPDATE before INSERT, DELETE</text>
+  <text x="745" y="235" text-anchor="middle" font-size="10" fill="#64748b">before UPDATE in downstream</text>
+  <text x="745" y="255" text-anchor="middle" font-size="10" fill="#4338ca">Mitigation:</text>
+  <text x="795" y="255" text-anchor="middle" font-size="10" fill="#64748b">Single consumer per partition,</text>
+  <text x="745" y="275" text-anchor="middle" font-size="10" fill="#64748b">reordering buffer, idempotent ops</text>
+  
+  <!-- Consumer Lag -->
+  <rect x="30" y="310" width="280" height="210" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="170" y="335" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e293b">Consumer Lag</text>
+  
+  <rect x="50" y="350" width="240" height="150" rx="4" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="170" y="380" text-anchor="middle" font-size="10" fill="#64748b">CDC consumer falls behind,</text>
+  <text x="170" y="395" text-anchor="middle" font-size="10" fill="#64748b">causing stale downstream data</text>
+  <text x="170" y="410" text-anchor="middle" font-size="10" fill="#64748b">and potential log truncation</text>
+  <text x="170" y="435" text-anchor="middle" font-size="10" fill="#1e293b">Signal:</text>
+  <text x="210" y="435" text-anchor="middle" font-size="10" fill="#64748b">Lag metrics increasing, consumer</text>
+  <text x="170" y="450" text-anchor="middle" font-size="10" fill="#64748b">offset far behind producer</text>
+  <text x="170" y="470" text-anchor="middle" font-size="10" fill="#1e293b">Mitigation:</text>
+  <text x="220" y="470" text-anchor="middle" font-size="10" fill="#64748b">Scale consumers, optimize processing,</text>
+  <text x="170" y="490" text-anchor="middle" font-size="10" fill="#64748b">increase partitions</text>
+  
+  <!-- Duplicate Events -->
+  <rect x="325" y="310" width="280" height="210" rx="8" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="465" y="335" text-anchor="middle" font-size="14" font-weight="bold" fill="#047857">Duplicate Events</text>
+  
+  <rect x="345" y="350" width="240" height="150" rx="4" fill="#f0fdf4" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="465" y="380" text-anchor="middle" font-size="10" fill="#64748b">Same change captured multiple</text>
+  <text x="465" y="395" text-anchor="middle" font-size="10" fill="#64748b">times due to reconnection,</text>
+  <text x="465" y="410" text-anchor="middle" font-size="10" fill="#64748b">rebalancing, or retries</text>
+  <text x="465" y="435" text-anchor="middle" font-size="10" fill="#047857">Signal:</text>
+  <text x="505" y="435" text-anchor="middle" font-size="10" fill="#64748b">Duplicate key errors, count</text>
+  <text x="465" y="450" text-anchor="middle" font-size="10" fill="#64748b">mismatches in downstream</text>
+  <text x="465" y="470" text-anchor="middle" font-size="10" fill="#047857">Mitigation:</text>
+  <text x="515" y="470" text-anchor="middle" font-size="10" fill="#64748b">Idempotent sinks, deduplication</text>
+  <text x="465" y="490" text-anchor="middle" font-size="10" fill="#64748b">by LSN/SCN, exactly-once sinks</text>
+  
+  <!-- Data Type Mismatch -->
+  <rect x="620" y="310" width="250" height="210" rx="8" fill="#ffedd5" stroke="#fdba74" stroke-width="2"/>
+  <text x="745" y="335" text-anchor="middle" font-size="14" font-weight="bold" fill="#c2410c">Data Type Mismatch</text>
+  
+  <rect x="640" y="350" width="210" height="150" rx="4" fill="#fff7ed" stroke="#fdba74" stroke-width="1"/>
+  <text x="745" y="380" text-anchor="middle" font-size="10" fill="#64748b">CDC captures data in DB format</text>
+  <text x="745" y="395" text-anchor="middle" font-size="10" fill="#64748b">but downstream expects different</text>
+  <text x="745" y="410" text-anchor="middle" font-size="10" fill="#64748b">format (timezone, decimals)</text>
+  <text x="745" y="435" text-anchor="middle" font-size="10" fill="#c2410c">Signal:</text>
+  <text x="785" y="435" text-anchor="middle" font-size="10" fill="#64748b">Data corruption, precision loss,</text>
+  <text x="745" y="450" text-anchor="middle" font-size="10" fill="#64748b">timezone issues in timestamps</text>
+  <text x="745" y="470" text-anchor="middle" font-size="10" fill="#c2410c">Mitigation:</text>
+  <text x="795" y="470" text-anchor="middle" font-size="10" fill="#64748b">Explicit type conversion, UTC</text>
+  <text x="745" y="490" text-anchor="middle" font-size="10" fill="#64748b">timestamps, decimal handling</text>
+  
+  <!-- Best Practices -->
+  <rect x="30" y="530" width="280" height="15" rx="2" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="170" y="542" text-anchor="middle" font-size="8" fill="#b45309">Monitor lag: alert at 50% of retention</text>
+  
+  <rect x="325" y="530" width="280" height="15" rx="2" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="1"/>
+  <text x="465" y="542" text-anchor="middle" font-size="8" fill="#4338ca">Handle schema changes with registry</text>
+  
+  <rect x="620" y="530" width="250" height="15" rx="2" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="745" y="542" text-anchor="middle" font-size="8" fill="#047857">Use idempotent operations downstream</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
 </svg>
