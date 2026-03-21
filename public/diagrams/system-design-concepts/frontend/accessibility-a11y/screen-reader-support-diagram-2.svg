@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500" role="img" aria-label="Screen Reader Announcement Pipeline showing the flow from DOM change to audio output">
+  <rect width="900" height="500" rx="16" fill="#f3f1f8" />
+
+  <text x="450" y="38" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="20" font-weight="700">Screen Reader Announcement Pipeline</text>
+
+  <!-- Step 1: DOM Change -->
+  <rect x="40" y="80" width="160" height="90" rx="12" fill="#6d5bd0" />
+  <text x="120" y="112" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="14" font-weight="700">1. DOM Change</text>
+  <text x="120" y="134" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="11" opacity="0.9">User interaction or</text>
+  <text x="120" y="150" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="11" opacity="0.9">JS mutation</text>
+
+  <!-- Arrow 1 -->
+  <polygon points="210,125 230,115 230,135" fill="#6d5bd0" />
+  <line x1="200" y1="125" x2="230" y2="125" stroke="#6d5bd0" stroke-width="2" />
+
+  <!-- Step 2: Browser Processes -->
+  <rect x="240" y="70" width="170" height="110" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
+  <text x="325" y="95" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="13" font-weight="700">2. Browser Engine</text>
+  <text x="325" y="116" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Updates internal</text>
+  <text x="325" y="132" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">accessibility tree</text>
+  <text x="325" y="154" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">(role, name, state, value)</text>
+
+  <!-- Arrow 2 -->
+  <polygon points="420,125 440,115 440,135" fill="#6d5bd0" />
+  <line x1="410" y1="125" x2="440" y2="125" stroke="#6d5bd0" stroke-width="2" />
+
+  <!-- Step 3: Platform Accessibility API -->
+  <rect x="450" y="70" width="170" height="110" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
+  <text x="535" y="93" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="13" font-weight="700">3. Platform API</text>
+  <text x="535" y="114" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Fires accessibility</text>
+  <text x="535" y="130" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">events to OS</text>
+  <text x="535" y="154" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">(notifications/events)</text>
+
+  <!-- Arrow 3 -->
+  <polygon points="630,125 650,115 650,135" fill="#6d5bd0" />
+  <line x1="620" y1="125" x2="650" y2="125" stroke="#6d5bd0" stroke-width="2" />
+
+  <!-- Step 4: Screen Reader -->
+  <rect x="660" y="70" width="210" height="110" rx="12" fill="#6d5bd0" />
+  <text x="765" y="95" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="700">4. Screen Reader</text>
+  <text x="765" y="116" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="11" opacity="0.9">Receives events,</text>
+  <text x="765" y="132" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="11" opacity="0.9">builds announcement</text>
+  <text x="765" y="156" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="10" opacity="0.7">speech synthesis / braille</text>
+
+  <!-- Audio Output icon area -->
+  <rect x="740" y="190" width="50" height="30" rx="6" fill="#6d5bd0" opacity="0.2" />
+  <text x="765" y="210" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="18">🔊</text>
+
+  <!-- Platform API Details -->
+  <text x="450" y="240" fill="#1a1822" font-family="system-ui, sans-serif" font-size="16" font-weight="700">Platform Accessibility APIs</text>
+
+  <!-- Windows -->
+  <rect x="40" y="270" width="250" height="90" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <rect x="40" y="270" width="250" height="32" rx="10" fill="#3498db" />
+  <rect x="40" y="290" width="250" height="12" fill="#3498db" />
+  <text x="165" y="292" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="700">Windows</text>
+  <text x="165" y="322" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" font-weight="600">MSAA / UI Automation (UIA)</text>
+  <text x="165" y="342" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">Used by: NVDA, JAWS, Narrator</text>
+
+  <!-- macOS / iOS -->
+  <rect x="325" y="270" width="250" height="90" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <rect x="325" y="270" width="250" height="32" rx="10" fill="#1a1822" />
+  <rect x="325" y="290" width="250" height="12" fill="#1a1822" />
+  <text x="450" y="292" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="700">macOS / iOS</text>
+  <text x="450" y="322" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" font-weight="600">NSAccessibility / AXAccessibility</text>
+  <text x="450" y="342" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">Used by: VoiceOver</text>
+
+  <!-- Linux / Android -->
+  <rect x="610" y="270" width="250" height="90" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <rect x="610" y="270" width="250" height="32" rx="10" fill="#2ecc71" />
+  <rect x="610" y="290" width="250" height="12" fill="#2ecc71" />
+  <text x="735" y="292" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="700">Linux / Android</text>
+  <text x="735" y="322" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" font-weight="600">ATK/AT-SPI / Android A11y</text>
+  <text x="735" y="342" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">Used by: Orca, TalkBack</text>
+
+  <!-- Browser mappings -->
+  <text x="450" y="400" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Browser AX Tree Mapping</text>
+
+  <rect x="80" y="420" width="180" height="56" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1" />
+  <text x="170" y="442" text-anchor="middle" fill="#6d5bd0" font-family="monospace" font-size="11" font-weight="600">&lt;button&gt;Save&lt;/button&gt;</text>
+  <text x="170" y="462" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">DOM Element</text>
+
+  <polygon points="270,448 290,440 290,456" fill="#6d5bd0" />
+  <line x1="260" y1="448" x2="290" y2="448" stroke="#6d5bd0" stroke-width="2" />
+
+  <rect x="300" y="420" width="280" height="56" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1.5" />
+  <text x="440" y="440" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">role: <tspan font-weight="700">button</tspan> | name: <tspan font-weight="700">&quot;Save&quot;</tspan></text>
+  <text x="440" y="460" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">Accessibility Tree Node</text>
+
+  <polygon points="590,448 610,440 610,456" fill="#6d5bd0" />
+  <line x1="580" y1="448" x2="610" y2="448" stroke="#6d5bd0" stroke-width="2" />
+
+  <rect x="620" y="420" width="240" height="56" rx="8" fill="#6d5bd0" />
+  <text x="740" y="442" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="600">&quot;Save, button&quot;</text>
+  <text x="740" y="462" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="10" opacity="0.8">Screen Reader Output</text>
+</svg>

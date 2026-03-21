@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500" role="img" aria-label="ARIA Role Taxonomy showing four categories: Widget, Document Structure, Landmark, and Live Region roles with examples">
+  <rect width="900" height="500" rx="16" fill="#f3f1f8" />
+
+  <!-- Title -->
+  <text x="450" y="38" fill="#1a1822" font-family="system-ui, sans-serif" font-size="22" font-weight="700" text-anchor="middle">ARIA Role Taxonomy</text>
+  <text x="450" y="60" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="13" text-anchor="middle">Four categories of WAI-ARIA roles with representative examples</text>
+
+  <!-- Connector lines from title to boxes -->
+  <line x1="450" y1="68" x2="450" y2="82" stroke="#d7d1e6" stroke-width="2" />
+  <line x1="120" y1="82" x2="780" y2="82" stroke="#d7d1e6" stroke-width="2" />
+  <line x1="120" y1="82" x2="120" y2="100" stroke="#d7d1e6" stroke-width="2" />
+  <line x1="340" y1="82" x2="340" y2="100" stroke="#d7d1e6" stroke-width="2" />
+  <line x1="560" y1="82" x2="560" y2="100" stroke="#d7d1e6" stroke-width="2" />
+  <line x1="780" y1="82" x2="780" y2="100" stroke="#d7d1e6" stroke-width="2" />
+
+  <!-- Column 1: Widget Roles -->
+  <rect x="25" y="100" width="190" height="380" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
+  <rect x="25" y="100" width="190" height="44" rx="12" fill="#6d5bd0" />
+  <rect x="25" y="124" width="190" height="20" fill="#6d5bd0" />
+  <text x="120" y="128" fill="#ffffff" font-family="system-ui, sans-serif" font-size="14" font-weight="700" text-anchor="middle">Widget Roles</text>
+  <text x="120" y="165" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" text-anchor="middle" font-style="italic">Interactive UI controls</text>
+
+  <text x="42" y="195" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">button</text>
+  <text x="42" y="215" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Clickable action trigger</text>
+
+  <text x="42" y="242" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">checkbox</text>
+  <text x="42" y="262" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Tri-state toggle input</text>
+
+  <text x="42" y="289" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">slider</text>
+  <text x="42" y="309" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Range value selector</text>
+
+  <text x="42" y="336" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">tab / tabpanel</text>
+  <text x="42" y="356" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Tabbed interface pair</text>
+
+  <text x="42" y="383" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">combobox</text>
+  <text x="42" y="403" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Input + popup list</text>
+
+  <text x="42" y="430" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">dialog</text>
+  <text x="42" y="450" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Modal/non-modal overlay</text>
+
+  <!-- Column 2: Document Structure Roles -->
+  <rect x="245" y="100" width="190" height="380" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
+  <rect x="245" y="100" width="190" height="44" rx="12" fill="#6d5bd0" />
+  <rect x="245" y="124" width="190" height="20" fill="#6d5bd0" />
+  <text x="340" y="128" fill="#ffffff" font-family="system-ui, sans-serif" font-size="14" font-weight="700" text-anchor="middle">Document Structure</text>
+  <text x="340" y="165" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" text-anchor="middle" font-style="italic">Organize page content</text>
+
+  <text x="262" y="195" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">heading</text>
+  <text x="262" y="215" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Section heading (level)</text>
+
+  <text x="262" y="242" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">list / listitem</text>
+  <text x="262" y="262" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Ordered/unordered items</text>
+
+  <text x="262" y="289" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">table / row / cell</text>
+  <text x="262" y="309" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Data grid structure</text>
+
+  <text x="262" y="336" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">toolbar</text>
+  <text x="262" y="356" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Group of controls</text>
+
+  <text x="262" y="383" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">tooltip</text>
+  <text x="262" y="403" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Contextual popup text</text>
+
+  <text x="262" y="430" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">separator</text>
+  <text x="262" y="450" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Divides content sections</text>
+
+  <!-- Column 3: Landmark Roles -->
+  <rect x="465" y="100" width="190" height="380" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
+  <rect x="465" y="100" width="190" height="44" rx="12" fill="#6d5bd0" />
+  <rect x="465" y="124" width="190" height="20" fill="#6d5bd0" />
+  <text x="560" y="128" fill="#ffffff" font-family="system-ui, sans-serif" font-size="14" font-weight="700" text-anchor="middle">Landmark Roles</text>
+  <text x="560" y="165" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" text-anchor="middle" font-style="italic">Page-level navigation</text>
+
+  <text x="482" y="195" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">banner</text>
+  <text x="482" y="215" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Site header region</text>
+
+  <text x="482" y="242" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">navigation</text>
+  <text x="482" y="262" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Nav link collection</text>
+
+  <text x="482" y="289" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">main</text>
+  <text x="482" y="309" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Primary page content</text>
+
+  <text x="482" y="336" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">complementary</text>
+  <text x="482" y="356" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Supporting sidebar</text>
+
+  <text x="482" y="383" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">contentinfo</text>
+  <text x="482" y="403" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Footer / site info</text>
+
+  <text x="482" y="430" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">search</text>
+  <text x="482" y="450" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Search functionality</text>
+
+  <!-- Column 4: Live Region Roles -->
+  <rect x="685" y="100" width="190" height="380" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
+  <rect x="685" y="100" width="190" height="44" rx="12" fill="#6d5bd0" />
+  <rect x="685" y="124" width="190" height="20" fill="#6d5bd0" />
+  <text x="780" y="128" fill="#ffffff" font-family="system-ui, sans-serif" font-size="14" font-weight="700" text-anchor="middle">Live Region Roles</text>
+  <text x="780" y="165" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" text-anchor="middle" font-style="italic">Dynamic announcements</text>
+
+  <text x="702" y="195" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">alert</text>
+  <text x="702" y="215" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Urgent notification</text>
+
+  <text x="702" y="242" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">status</text>
+  <text x="702" y="262" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Advisory information</text>
+
+  <text x="702" y="289" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">log</text>
+  <text x="702" y="309" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Sequential info stream</text>
+
+  <text x="702" y="336" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">marquee</text>
+  <text x="702" y="356" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Non-essential scrolling</text>
+
+  <text x="702" y="383" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">timer</text>
+  <text x="702" y="403" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Time counter display</text>
+
+  <text x="702" y="430" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">progressbar</text>
+  <text x="702" y="450" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">Task completion meter</text>
+</svg>

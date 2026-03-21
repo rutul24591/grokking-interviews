@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" role="img" aria-label="CSS font-display descriptor values behavior diagram showing auto, block, swap, fallback, optional with timelines" font-family="system-ui, sans-serif">
+  <rect width="900" height="540" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="38" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">CSS font-display Values — Block &amp; Swap Periods</text>
+
+  <!-- Column headers -->
+  <text x="200" y="72" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Block Period</text>
+  <text x="460" y="72" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Swap Period</text>
+  <text x="730" y="72" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">After Swap</text>
+
+  <!-- Time labels -->
+  <text x="108" y="90" text-anchor="middle" font-size="9" fill="#888">0ms</text>
+  <text x="300" y="90" text-anchor="middle" font-size="9" fill="#888">~3s</text>
+  <text x="580" y="90" text-anchor="middle" font-size="9" fill="#888">~100ms-3s</text>
+  <text x="850" y="90" text-anchor="middle" font-size="9" fill="#888">indefinite</text>
+
+  <!-- auto -->
+  <text x="50" y="130" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">auto</text>
+  <rect x="108" y="108" width="192" height="40" rx="5" fill="#e8e4f0" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="204" y="132" text-anchor="middle" font-size="10" fill="#888">Browser decides (~3s block)</text>
+  <rect x="300" y="108" width="280" height="40" rx="5" fill="#fff3cd" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="440" y="132" text-anchor="middle" font-size="10" fill="#1a1822">Browser decides (swap or fail)</text>
+  <rect x="580" y="108" width="270" height="40" rx="5" fill="#e0e0e0" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="715" y="132" text-anchor="middle" font-size="10" fill="#888">Varies by browser</text>
+
+  <!-- block -->
+  <text x="50" y="190" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">block</text>
+  <rect x="108" y="168" width="192" height="40" rx="5" fill="#1a1822" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="204" y="190" text-anchor="middle" font-size="10" fill="#ffffff">Invisible (~3s)</text>
+  <rect x="300" y="168" width="550" height="40" rx="5" fill="#d0e8d0" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="575" y="190" text-anchor="middle" font-size="10" fill="#1a1822">Infinite swap — will always swap to custom font</text>
+
+  <!-- swap -->
+  <text x="50" y="250" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">swap</text>
+  <rect x="108" y="228" width="12" height="40" rx="3" fill="#1a1822"/>
+  <text x="115" y="243" font-size="8" fill="#ffffff">~0</text>
+  <rect x="120" y="228" width="730" height="40" rx="5" fill="#d0e8d0" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="485" y="252" text-anchor="middle" font-size="10" fill="#1a1822">Infinite swap — fallback shown immediately, swaps when ready</text>
+
+  <!-- fallback -->
+  <text x="50" y="310" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">fallback</text>
+  <rect x="108" y="288" width="52" height="40" rx="5" fill="#1a1822" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="134" y="312" text-anchor="middle" font-size="9" fill="#ffffff">~100ms</text>
+  <rect x="160" y="288" width="200" height="40" rx="5" fill="#fff3cd" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="260" y="312" text-anchor="middle" font-size="10" fill="#1a1822">Short swap (~3s)</text>
+  <rect x="360" y="288" width="490" height="40" rx="5" fill="#ffcccc" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="605" y="312" text-anchor="middle" font-size="10" fill="#1a1822">Fallback stays — no swap (uses cache for future visits)</text>
+
+  <!-- optional -->
+  <text x="50" y="370" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">optional</text>
+  <rect x="108" y="348" width="52" height="40" rx="5" fill="#1a1822" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="134" y="372" text-anchor="middle" font-size="9" fill="#ffffff">~100ms</text>
+  <rect x="160" y="348" width="690" height="40" rx="5" fill="#ffcccc" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="505" y="372" text-anchor="middle" font-size="10" fill="#1a1822">No swap period — fallback permanently (font cached for next navigation)</text>
+
+  <!-- Recommendation badges -->
+  <rect x="108" y="408" width="742" height="55" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="130" y="428" font-size="11" font-weight="700" fill="#6d5bd0">Recommendations:</text>
+  <text x="130" y="448" font-size="10" fill="#1a1822"><tspan font-weight="600">swap</tspan> = Best for branding fonts (always shows custom font, may cause CLS)</text>
+  <text x="490" y="428" font-size="10" fill="#1a1822"><tspan font-weight="600">fallback</tspan> = Good balance (limits CLS, usually swaps)</text>
+  <text x="490" y="448" font-size="10" fill="#1a1822"><tspan font-weight="600">optional</tspan> = Best for performance (zero CLS, may not show custom font on first visit)</text>
+
+  <!-- Legend -->
+  <rect x="108" y="478" width="16" height="12" rx="3" fill="#1a1822"/>
+  <text x="130" y="489" font-size="10" fill="#1a1822">Invisible (block)</text>
+  <rect x="240" y="478" width="16" height="12" rx="3" fill="#fff3cd" stroke="#d7d1e6"/>
+  <text x="262" y="489" font-size="10" fill="#1a1822">Fallback visible</text>
+  <rect x="370" y="478" width="16" height="12" rx="3" fill="#d0e8d0" stroke="#6d5bd0"/>
+  <text x="392" y="489" font-size="10" fill="#1a1822">Will swap to custom</text>
+  <rect x="520" y="478" width="16" height="12" rx="3" fill="#ffcccc" stroke="#d7d1e6"/>
+  <text x="542" y="489" font-size="10" fill="#1a1822">Stays on fallback</text>
+
+  <!-- Divider lines -->
+  <line x1="108" y1="95" x2="850" y2="95" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="4,3"/>
+</svg>

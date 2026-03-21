@@ -9,38 +9,38 @@
   <!-- Step 1: User logs into legitimate site -->
   <g transform="translate(50, 90)">
     <rect x="0" y="0" width="350" height="100" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
-    <text x="175" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#16a34a">Step 1: User Authenticates</text>
+    <text x="175" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="400" fill="#16a34a">Step 1: User Authenticates</text>
     
     <circle cx="60" cy="65" r="20" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
-    <text x="60" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">User</text>
+    <text x="60" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#0f172a">User</text>
     
     <line x1="80" y1="65" x2="140" y2="65" stroke="#16a34a" stroke-width="2" marker-end="url(#arrowhead-green)"/>
     <text x="110" y="55" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Login request</text>
     
     <rect x="145" y="45" width="90" height="40" rx="4" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
-    <text x="190" y="62" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Bank.com</text>
+    <text x="190" y="62" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#0f172a">Bank.com</text>
     <text x="190" y="75" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Server</text>
     
     <line x1="235" y1="65" x2="280" y2="65" stroke="#16a34a" stroke-width="2" marker-end="url(#arrowhead-green)"/>
     <text x="260" y="55" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Session cookie</text>
     
     <rect x="285" y="55" width="55" height="20" rx="3" fill="#dc2626" stroke="#b91c1c"/>
-    <text x="312" y="69" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#ffffff">Cookie</text>
+    <text x="312" y="69" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#ffffff">Cookie</text>
   </g>
   
   <!-- Step 2: User visits malicious site -->
   <g transform="translate(50, 210)">
     <rect x="0" y="0" width="350" height="100" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
-    <text x="175" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#dc2626">Step 2: User Visits Malicious Site</text>
+    <text x="175" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="400" fill="#dc2626">Step 2: User Visits Malicious Site</text>
     
     <circle cx="60" cy="65" r="20" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
-    <text x="60" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">User</text>
+    <text x="60" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#0f172a">User</text>
     
     <line x1="80" y1="65" x2="140" y2="65" stroke="#dc2626" stroke-width="2" marker-end="url(#arrowhead-red)"/>
     <text x="110" y="55" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Visits attacker.com</text>
     
     <rect x="145" y="45" width="100" height="40" rx="4" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
-    <text x="195" y="62" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Attacker.com</text>
+    <text x="195" y="62" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#0f172a">Attacker.com</text>
     <text x="195" y="75" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Malicious page</text>
     
     <rect x="260" y="55" width="130" height="20" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
@@ -50,11 +50,11 @@
   <!-- Step 3: Forged request sent -->
   <g transform="translate(50, 330)">
     <rect x="0" y="0" width="550" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
-    <text x="275" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#d97706">Step 3: Forged Request (Browser Auto-Includes Cookie)</text>
+    <text x="275" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="400" fill="#d97706">Step 3: Forged Request (Browser Auto-Includes Cookie)</text>
     
     <!-- Attacker site -->
     <rect x="30" y="45" width="100" height="50" rx="4" fill="#ffffff" stroke="#f59e0b"/>
-    <text x="80" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Attacker.com</text>
+    <text x="80" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#0f172a">Attacker.com</text>
     <text x="80" y="80" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Auto-submits form</text>
     
     <!-- Arrow to bank -->
@@ -63,11 +63,11 @@
     
     <!-- Cookie inclusion -->
     <rect x="140" y="75" width="80" height="18" rx="3" fill="#dc2626" stroke="#b91c1c"/>
-    <text x="180" y="88" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" font-weight="bold" fill="#ffffff">Session Cookie</text>
+    <text x="180" y="88" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" font-weight="400" fill="#ffffff">Session Cookie</text>
     
     <!-- Bank server -->
     <rect x="235" y="45" width="100" height="50" rx="4" fill="#ffffff" stroke="#f59e0b"/>
-    <text x="285" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Bank.com</text>
+    <text x="285" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#0f172a">Bank.com</text>
     <text x="285" y="80" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Receives request</text>
     
     <!-- Server processes -->
@@ -84,31 +84,31 @@
     <text x="465" y="75" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#16a34a">YES</text>
     
     <rect x="490" y="65" width="90" height="40" rx="4" fill="#fef2f2" stroke="#ef4444"/>
-    <text x="535" y="82" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#dc2626">Action</text>
+    <text x="535" y="82" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#dc2626">Action</text>
     <text x="535" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">EXECUTED!</text>
   </g>
   
   <!-- Step 4: Impact -->
   <g transform="translate(620, 90)">
     <rect x="0" y="0" width="530" height="360" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
-    <text x="265" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#dc2626">CSRF Attack Impact</text>
+    <text x="265" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="400" fill="#dc2626">CSRF Attack Impact</text>
     
     <!-- Attack examples -->
     <g transform="translate(20, 50)">
       <rect x="0" y="0" width="490" height="60" rx="6" fill="#ffffff" stroke="#ef4444" stroke-dasharray="4,2"/>
-      <text x="25" y="25" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#dc2626">Financial Theft</text>
+      <text x="25" y="25" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#dc2626">Financial Theft</text>
       <text x="25" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">• Unauthorized money transfers • Cryptocurrency withdrawals • Payment method changes</text>
       
       <rect x="0" y="70" width="490" height="60" rx="6" fill="#ffffff" stroke="#ef4444" stroke-dasharray="4,2"/>
-      <text x="25" y="95" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#dc2626">Account Takeover</text>
+      <text x="25" y="95" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#dc2626">Account Takeover</text>
       <text x="25" y="115" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">• Email/password changes • 2FA disablement • Recovery option updates</text>
       
       <rect x="0" y="140" width="490" height="60" rx="6" fill="#ffffff" stroke="#ef4444" stroke-dasharray="4,2"/>
-      <text x="25" y="165" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#dc2626">Data Manipulation</text>
+      <text x="25" y="165" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#dc2626">Data Manipulation</text>
       <text x="25" y="185" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">• Profile changes • Privacy setting updates • Content modification/deletion</text>
       
       <rect x="0" y="210" width="490" height="60" rx="6" fill="#ffffff" stroke="#ef4444" stroke-dasharray="4,2"/>
-      <text x="25" y="235" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#dc2626">Destructive Actions</text>
+      <text x="25" y="235" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#dc2626">Destructive Actions</text>
       <text x="25" y="255" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">• Account deletion • Data erasure • Service cancellation</text>
     </g>
   </g>
@@ -116,7 +116,7 @@
   <!-- Key insight box -->
   <g transform="translate(620, 470)">
     <rect x="0" y="0" width="530" height="80" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
-    <text x="265" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#d97706">Why This Works</text>
+    <text x="265" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#d97706">Why This Works</text>
     <text x="265" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">The browser automatically includes the session cookie with requests to bank.com,</text>
     <text x="265" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">regardless of which site initiated the request. The server sees a valid session</text>
     <text x="265" y="75" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">and processes the request as legitimate.</text>

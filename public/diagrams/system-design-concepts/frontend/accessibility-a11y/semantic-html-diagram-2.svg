@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="540" viewBox="0 0 900 540" role="img" aria-label="Document outline with landmark regions">
+  <rect width="900" height="540" rx="16" fill="#f3f1f8" />
+
+  <text x="450" y="36" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="20" font-weight="700">Document Outline &amp; Landmark Regions</text>
+
+  <!-- Page wireframe -->
+  <rect x="40" y="56" width="480" height="460" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+
+  <!-- Header -->
+  <rect x="56" y="72" width="448" height="56" rx="8" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="6 3" />
+  <text x="280" y="96" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="13" font-weight="700">&lt;header&gt;</text>
+  <text x="280" y="114" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="11">role=&quot;banner&quot;</text>
+
+  <!-- Nav -->
+  <rect x="56" y="136" width="448" height="44" rx="8" fill="#2ecc71" opacity="0.15" stroke="#2ecc71" stroke-width="1.5" stroke-dasharray="6 3" />
+  <text x="280" y="158" text-anchor="middle" fill="#1a8c4e" font-family="system-ui, sans-serif" font-size="13" font-weight="700">&lt;nav&gt;</text>
+  <text x="280" y="174" text-anchor="middle" fill="#1a8c4e" font-family="system-ui, sans-serif" font-size="11">role=&quot;navigation&quot;</text>
+
+  <!-- Main + Aside row -->
+  <rect x="56" y="188" width="304" height="264" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="1.5" stroke-dasharray="6 3" />
+  <text x="208" y="212" text-anchor="middle" fill="#2980b9" font-family="system-ui, sans-serif" font-size="13" font-weight="700">&lt;main&gt;</text>
+  <text x="208" y="230" text-anchor="middle" fill="#2980b9" font-family="system-ui, sans-serif" font-size="11">role=&quot;main&quot;</text>
+
+  <!-- Article inside main -->
+  <rect x="72" y="244" width="272" height="80" rx="6" fill="#3498db" opacity="0.1" stroke="#3498db" stroke-width="1" />
+  <text x="208" y="268" text-anchor="middle" fill="#2980b9" font-family="system-ui, sans-serif" font-size="12" font-weight="600">&lt;article&gt;</text>
+  <text x="208" y="286" text-anchor="middle" fill="#2980b9" font-family="system-ui, sans-serif" font-size="10">role=&quot;article&quot;</text>
+  <text x="208" y="304" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">&lt;h1&gt;, &lt;h2&gt;, &lt;p&gt;, &lt;figure&gt;</text>
+
+  <!-- Section inside main -->
+  <rect x="72" y="332" width="272" height="56" rx="6" fill="#3498db" opacity="0.08" stroke="#3498db" stroke-width="1" />
+  <text x="208" y="356" text-anchor="middle" fill="#2980b9" font-family="system-ui, sans-serif" font-size="12" font-weight="600">&lt;section&gt;</text>
+  <text x="208" y="374" text-anchor="middle" fill="#2980b9" font-family="system-ui, sans-serif" font-size="10">role=&quot;region&quot; (when labeled)</text>
+
+  <!-- Aside -->
+  <rect x="372" y="188" width="132" height="264" rx="8" fill="#e67e22" opacity="0.15" stroke="#e67e22" stroke-width="1.5" stroke-dasharray="6 3" />
+  <text x="438" y="270" text-anchor="middle" fill="#d35400" font-family="system-ui, sans-serif" font-size="13" font-weight="700">&lt;aside&gt;</text>
+  <text x="438" y="290" text-anchor="middle" fill="#d35400" font-family="system-ui, sans-serif" font-size="10">role=</text>
+  <text x="438" y="304" text-anchor="middle" fill="#d35400" font-family="system-ui, sans-serif" font-size="10">&quot;complementary&quot;</text>
+
+  <!-- Footer -->
+  <rect x="56" y="460" width="448" height="44" rx="8" fill="#9b59b6" opacity="0.15" stroke="#9b59b6" stroke-width="1.5" stroke-dasharray="6 3" />
+  <text x="280" y="482" text-anchor="middle" fill="#8e44ad" font-family="system-ui, sans-serif" font-size="13" font-weight="700">&lt;footer&gt;</text>
+  <text x="280" y="498" text-anchor="middle" fill="#8e44ad" font-family="system-ui, sans-serif" font-size="11">role=&quot;contentinfo&quot;</text>
+
+  <!-- Right panel: Landmark list -->
+  <rect x="550" y="56" width="320" height="460" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="710" y="84" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="15" font-weight="700">Screen Reader Landmarks</text>
+  <line x1="580" y1="96" x2="840" y2="96" stroke="#d7d1e6" stroke-width="1" />
+
+  <rect x="572" y="110" width="16" height="16" rx="3" fill="#6d5bd0" opacity="0.4" />
+  <text x="598" y="123" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="600">banner</text>
+  <text x="598" y="140" fill="#64748b" font-family="system-ui, sans-serif" font-size="11">Site-wide header content</text>
+
+  <rect x="572" y="158" width="16" height="16" rx="3" fill="#2ecc71" opacity="0.4" />
+  <text x="598" y="171" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="600">navigation</text>
+  <text x="598" y="188" fill="#64748b" font-family="system-ui, sans-serif" font-size="11">Primary + secondary nav links</text>
+
+  <rect x="572" y="206" width="16" height="16" rx="3" fill="#3498db" opacity="0.4" />
+  <text x="598" y="219" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="600">main</text>
+  <text x="598" y="236" fill="#64748b" font-family="system-ui, sans-serif" font-size="11">Primary page content (unique)</text>
+
+  <rect x="572" y="254" width="16" height="16" rx="3" fill="#3498db" opacity="0.3" />
+  <text x="598" y="267" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="600">region</text>
+  <text x="598" y="284" fill="#64748b" font-family="system-ui, sans-serif" font-size="11">Labeled sections within main</text>
+
+  <rect x="572" y="302" width="16" height="16" rx="3" fill="#e67e22" opacity="0.4" />
+  <text x="598" y="315" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="600">complementary</text>
+  <text x="598" y="332" fill="#64748b" font-family="system-ui, sans-serif" font-size="11">Supporting content (aside)</text>
+
+  <rect x="572" y="350" width="16" height="16" rx="3" fill="#9b59b6" opacity="0.4" />
+  <text x="598" y="363" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="600">contentinfo</text>
+  <text x="598" y="380" fill="#64748b" font-family="system-ui, sans-serif" font-size="11">Footer / copyright info</text>
+
+  <line x1="580" y1="398" x2="840" y2="398" stroke="#d7d1e6" stroke-width="1" />
+  <text x="710" y="420" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Keyboard shortcut: D key</text>
+  <text x="710" y="438" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="11">Jump between landmarks in</text>
+  <text x="710" y="454" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="11">NVDA, JAWS, VoiceOver</text>
+
+  <text x="710" y="484" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Only 1 &lt;main&gt; per page</text>
+  <text x="710" y="502" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="11">Multiple &lt;nav&gt; allowed (label each)</text>
+</svg>

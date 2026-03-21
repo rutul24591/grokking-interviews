@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" role="img" aria-label="CDN cache invalidation flow showing purge propagation, TTL expiry, and stale-while-revalidate" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">CDN Cache Invalidation Strategies</text>
+
+  <!-- Strategy 1: TTL-Based Expiry -->
+  <rect x="30" y="60" width="260" height="185" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="30" y="60" width="260" height="35" rx="10" fill="#6d5bd0"/>
+  <rect x="30" y="80" width="260" height="15" fill="#6d5bd0"/>
+  <text x="160" y="83" text-anchor="middle" font-size="13" fill="#ffffff" font-weight="700">1. TTL-Based Expiry</text>
+
+  <text x="50" y="118" font-size="11" fill="#1a1822" font-weight="600">Cache-Control: max-age=3600</text>
+  <rect x="50" y="128" width="220" height="18" rx="4" fill="#e8e5f0"/>
+  <rect x="50" y="128" width="165" height="18" rx="4" fill="#6d5bd0"/>
+  <text x="132" y="141" text-anchor="middle" font-size="9" fill="#ffffff">75% TTL elapsed</text>
+  <text x="245" y="141" font-size="9" fill="#1a1822">25%</text>
+
+  <text x="50" y="168" font-size="10" fill="#1a1822">t=0: Response cached</text>
+  <text x="50" y="183" font-size="10" fill="#1a1822">t=2700s: Still fresh (serving)</text>
+  <text x="50" y="198" font-size="10" fill="#f87171" font-weight="600">t=3600s: STALE - refetch origin</text>
+  <text x="50" y="218" font-size="10" fill="#1a1822">s-maxage overrides for CDN only</text>
+  <text x="50" y="233" font-size="10" fill="#6d5bd0">Surrogate-Control: max-age=86400</text>
+
+  <!-- Strategy 2: Purge / Instant Invalidation -->
+  <rect x="320" y="60" width="260" height="185" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="320" y="60" width="260" height="35" rx="10" fill="#6d5bd0"/>
+  <rect x="320" y="80" width="260" height="15" fill="#6d5bd0"/>
+  <text x="450" y="83" text-anchor="middle" font-size="13" fill="#ffffff" font-weight="700">2. Purge Propagation</text>
+
+  <rect x="345" y="108" width="80" height="32" rx="6" fill="#1a1822"/>
+  <text x="385" y="128" text-anchor="middle" font-size="10" fill="#ffffff">API Purge</text>
+  <line x1="425" y1="124" x2="460" y2="124" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowP)"/>
+
+  <rect x="460" y="108" width="95" height="32" rx="6" fill="#6d5bd0"/>
+  <text x="507" y="128" text-anchor="middle" font-size="10" fill="#ffffff">Control Plane</text>
+
+  <line x1="507" y1="140" x2="475" y2="165" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowP)"/>
+  <line x1="507" y1="140" x2="507" y2="165" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowP)"/>
+  <line x1="507" y1="140" x2="540" y2="165" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowP)"/>
+
+  <rect x="340" y="165" width="50" height="25" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="365" y="182" text-anchor="middle" font-size="9" fill="#1a1822">PoP 1</text>
+  <rect x="400" y="165" width="50" height="25" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="425" y="182" text-anchor="middle" font-size="9" fill="#1a1822">PoP 2</text>
+  <rect x="460" y="165" width="50" height="25" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="485" y="182" text-anchor="middle" font-size="9" fill="#1a1822">PoP 3</text>
+  <rect x="520" y="165" width="50" height="25" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="545" y="182" text-anchor="middle" font-size="9" fill="#1a1822">PoP N</text>
+
+  <text x="340" y="212" font-size="10" fill="#1a1822">Surrogate-Key: product-123</text>
+  <text x="340" y="227" font-size="10" fill="#6d5bd0">Purge by tag: ~150ms globally</text>
+
+  <!-- Strategy 3: Stale-While-Revalidate -->
+  <rect x="610" y="60" width="260" height="185" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="610" y="60" width="260" height="35" rx="10" fill="#6d5bd0"/>
+  <rect x="610" y="80" width="260" height="15" fill="#6d5bd0"/>
+  <text x="740" y="83" text-anchor="middle" font-size="13" fill="#ffffff" font-weight="700">3. Stale-While-Revalidate</text>
+
+  <text x="630" y="115" font-size="10" fill="#1a1822" font-weight="600">max-age=60, stale-while-revalidate=300</text>
+
+  <!-- Timeline visualization -->
+  <line x1="640" y1="140" x2="850" y2="140" stroke="#d7d1e6" stroke-width="2"/>
+  <rect x="640" y="132" width="60" height="16" rx="3" fill="#4ade80"/>
+  <text x="670" y="143" text-anchor="middle" font-size="8" fill="#1a1822">FRESH</text>
+  <rect x="700" y="132" width="90" height="16" rx="3" fill="#facc15"/>
+  <text x="745" y="143" text-anchor="middle" font-size="8" fill="#1a1822">STALE (serving)</text>
+  <rect x="790" y="132" width="60" height="16" rx="3" fill="#f87171"/>
+  <text x="820" y="143" text-anchor="middle" font-size="8" fill="#ffffff">EXPIRED</text>
+
+  <text x="640" y="155" font-size="8" fill="#1a1822">0s</text>
+  <text x="700" y="155" font-size="8" fill="#1a1822">60s</text>
+  <text x="790" y="155" font-size="8" fill="#1a1822">360s</text>
+
+  <text x="630" y="178" font-size="10" fill="#1a1822">During stale window:</text>
+  <text x="635" y="195" font-size="10" fill="#4ade80">- Serve stale to user (fast)</text>
+  <text x="635" y="210" font-size="10" fill="#6d5bd0">- Async revalidate with origin</text>
+  <text x="635" y="225" font-size="10" fill="#1a1822">- Next request gets fresh copy</text>
+
+  <!-- Versioned URLs section -->
+  <rect x="30" y="270" width="410" height="100" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="235" y="295" text-anchor="middle" font-size="13" fill="#6d5bd0" font-weight="700">4. Versioned / Fingerprinted URLs</text>
+
+  <text x="50" y="318" font-size="11" fill="#1a1822" font-weight="600">Immutable cache strategy (cache forever):</text>
+  <text x="50" y="338" font-size="10" fill="#1a1822">/assets/main.<tspan fill="#6d5bd0" font-weight="600">a1b2c3d4</tspan>.js  --&gt;  Cache-Control: max-age=31536000, immutable</text>
+  <text x="50" y="356" font-size="10" fill="#1a1822">New deploy --&gt; new hash --&gt; new URL --&gt; no purge needed</text>
+
+  <!-- Surrogate Keys section -->
+  <rect x="470" y="270" width="400" height="100" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="670" y="295" text-anchor="middle" font-size="13" fill="#6d5bd0" font-weight="700">5. Surrogate Keys (Cache Tags)</text>
+
+  <text x="490" y="318" font-size="10" fill="#1a1822" font-weight="600">Tag responses with logical identifiers:</text>
+  <text x="490" y="338" font-size="10" fill="#6d5bd0">Surrogate-Key: product-123 category-shoes homepage</text>
+  <text x="490" y="356" font-size="10" fill="#1a1822">Purge "category-shoes" --&gt; invalidates all tagged pages</text>
+
+  <!-- Comparison table -->
+  <rect x="30" y="390" width="840" height="95" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="415" text-anchor="middle" font-size="13" fill="#1a1822" font-weight="700">Strategy Comparison</text>
+
+  <line x1="30" y1="425" x2="870" y2="425" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="120" y="442" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="700">Strategy</text>
+  <text x="310" y="442" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="700">Latency</text>
+  <text x="480" y="442" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="700">Complexity</text>
+  <text x="670" y="442" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="700">Best For</text>
+
+  <line x1="30" y1="450" x2="870" y2="450" stroke="#d7d1e6" stroke-width="0.5"/>
+  <text x="120" y="467" text-anchor="middle" font-size="10" fill="#1a1822">TTL Expiry</text>
+  <text x="310" y="467" text-anchor="middle" font-size="10" fill="#1a1822">Wait for TTL</text>
+  <text x="480" y="467" text-anchor="middle" font-size="10" fill="#4ade80">Low</text>
+  <text x="670" y="467" text-anchor="middle" font-size="10" fill="#1a1822">Static assets, rarely changing</text>
+
+  <text x="120" y="480" text-anchor="middle" font-size="10" fill="#1a1822">Purge API</text>
+  <text x="310" y="480" text-anchor="middle" font-size="10" fill="#1a1822">~150ms global</text>
+  <text x="480" y="480" text-anchor="middle" font-size="10" fill="#facc15">Medium</text>
+  <text x="670" y="480" text-anchor="middle" font-size="10" fill="#1a1822">Dynamic content, CMS updates</text>
+
+  <defs>
+    <marker id="arrowP" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

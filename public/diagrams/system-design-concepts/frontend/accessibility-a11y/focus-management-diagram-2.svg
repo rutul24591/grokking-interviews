@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500" role="img" aria-label="Route change focus strategy diagram for single-page applications">
+  <rect width="900" height="500" rx="16" fill="#f3f1f8" />
+
+  <text x="450" y="38" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="20" font-weight="700">Route Change Focus Strategy (SPA)</text>
+
+  <!-- Defs -->
+  <defs>
+    <marker id="arrow2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0" />
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e74c3c" />
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#27ae60" />
+    </marker>
+  </defs>
+
+  <!-- Left: Before navigation (Page A) -->
+  <rect x="30" y="60" width="250" height="280" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <rect x="30" y="60" width="250" height="36" rx="12" fill="#6d5bd0" />
+  <rect x="30" y="84" width="250" height="12" fill="#6d5bd0" />
+  <text x="155" y="84" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Page A (Current)</text>
+
+  <!-- Skip link -->
+  <rect x="50" y="108" width="100" height="22" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1" />
+  <text x="100" y="123" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">Skip to content</text>
+
+  <!-- Nav -->
+  <rect x="50" y="140" width="210" height="30" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1" />
+  <text x="155" y="160" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Navigation Bar</text>
+
+  <!-- Nav link highlighted -->
+  <rect x="50" y="180" width="70" height="26" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1" />
+  <text x="85" y="197" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10">Home</text>
+
+  <rect x="130" y="180" width="70" height="26" rx="4" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="1.5" />
+  <text x="165" y="197" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="10">About</text>
+  <text x="165" y="220" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="9" font-weight="600">User clicks</text>
+
+  <rect x="210" y="180" width="70" height="26" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1" />
+  <text x="245" y="197" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10">Contact</text>
+
+  <!-- Content area -->
+  <rect x="50" y="250" width="210" height="70" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1" />
+  <text x="155" y="275" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="11">Main Content Area</text>
+  <text x="155" y="295" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">(Page A content)</text>
+
+  <!-- Arrow from Page A to strategies -->
+  <line x1="280" y1="200" x2="330" y2="200" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow2)" />
+  <text x="305" y="190" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10" font-weight="600">Route</text>
+  <text x="305" y="202" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10" font-weight="600">Change</text>
+
+  <!-- Center: Focus Strategy Options -->
+  <rect x="330" y="60" width="240" height="280" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
+  <text x="450" y="88" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Focus Target Strategy</text>
+
+  <!-- Option 1 -->
+  <rect x="350" y="108" width="200" height="50" rx="8" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="1.5" />
+  <text x="450" y="128" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="700">1. Page Heading (h1)</text>
+  <text x="450" y="146" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="10">Recommended approach</text>
+
+  <!-- Option 2 -->
+  <rect x="350" y="168" width="200" height="50" rx="8" fill="#f3f1f8" stroke="#6d5bd0" stroke-width="1.5" />
+  <text x="450" y="188" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="700">2. Skip Link Target</text>
+  <text x="450" y="206" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">Good for complex layouts</text>
+
+  <!-- Option 3 -->
+  <rect x="350" y="228" width="200" height="50" rx="8" fill="#f3f1f8" stroke="#6d5bd0" stroke-width="1.5" />
+  <text x="450" y="248" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="700">3. Main Content Region</text>
+  <text x="450" y="266" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">role=&quot;main&quot; or &lt;main&gt;</text>
+
+  <!-- Option 4 (Anti-pattern) -->
+  <rect x="350" y="288" width="200" height="40" rx="8" fill="#fff5f5" stroke="#e74c3c" stroke-width="1.5" />
+  <text x="450" y="306" text-anchor="middle" fill="#e74c3c" font-family="system-ui, sans-serif" font-size="12" font-weight="700">4. Top of Page (body)</text>
+  <text x="450" y="320" text-anchor="middle" fill="#e74c3c" font-family="system-ui, sans-serif" font-size="10">Anti-pattern: user re-tabs all</text>
+
+  <!-- Right: After navigation (Page B) -->
+  <rect x="620" y="60" width="250" height="280" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <rect x="620" y="60" width="250" height="36" rx="12" fill="#27ae60" />
+  <rect x="620" y="84" width="250" height="12" fill="#27ae60" />
+  <text x="745" y="84" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Page B (New Route)</text>
+
+  <!-- Skip link -->
+  <rect x="640" y="108" width="100" height="22" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1" />
+  <text x="690" y="123" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">Skip to content</text>
+
+  <!-- Nav -->
+  <rect x="640" y="140" width="210" height="30" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1" />
+  <text x="745" y="160" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Navigation Bar</text>
+
+  <!-- Heading with focus ring -->
+  <rect x="640" y="185" width="210" height="36" rx="4" fill="#f3f1f8" stroke="#6d5bd0" stroke-width="2.5" stroke-dasharray="0" />
+  <text x="745" y="208" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="700">&lt;h1&gt; About Us &lt;/h1&gt;</text>
+  <text x="745" y="237" text-anchor="middle" fill="#27ae60" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Focus lands here</text>
+
+  <!-- Content area -->
+  <rect x="640" y="255" width="210" height="65" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1" />
+  <text x="745" y="280" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="11">New page content</text>
+  <text x="745" y="298" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">with tabindex=&quot;-1&quot; on h1</text>
+
+  <!-- Arrow from strategy to Page B -->
+  <line x1="570" y1="133" x2="620" y2="200" stroke="#27ae60" stroke-width="2" marker-end="url(#arrowGreen)" />
+
+  <!-- Bottom: Implementation notes -->
+  <rect x="30" y="370" width="840" height="115" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="450" y="395" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Implementation Requirements</text>
+
+  <text x="60" y="420" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">1.</text>
+  <text x="80" y="420" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12">Announce route change to screen readers via aria-live region or document.title update</text>
+
+  <text x="60" y="442" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">2.</text>
+  <text x="80" y="442" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12">Add tabindex=&quot;-1&quot; to non-interactive focus targets (headings, containers)</text>
+
+  <text x="60" y="464" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">3.</text>
+  <text x="80" y="464" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12">Use useEffect or router event listeners to call .focus() after DOM update completes</text>
+</svg>

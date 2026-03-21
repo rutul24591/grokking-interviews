@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500" role="img" aria-label="Modal open and close focus restoration sequence showing five steps from trigger click through modal interaction to focus returning to the trigger button">
+  <rect width="900" height="500" rx="16" fill="#f3f1f8" />
+
+  <!-- Title -->
+  <text x="450" y="38" fill="#1a1822" font-family="system-ui, sans-serif" font-size="22" font-weight="700" text-anchor="middle">Modal Open/Close Focus Restoration Sequence</text>
+  <text x="450" y="60" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="13" text-anchor="middle">Focus must move into the modal on open and return to the trigger element on close</text>
+
+  <!-- Step 1: Trigger Button -->
+  <rect x="30" y="90" width="150" height="140" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
+  <rect x="30" y="90" width="150" height="32" rx="10" fill="#6d5bd0" />
+  <rect x="30" y="106" width="150" height="16" fill="#6d5bd0" />
+  <text x="105" y="112" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="700" text-anchor="middle">Step 1</text>
+  <text x="105" y="148" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">User clicks or</text>
+  <text x="105" y="163" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">presses Enter on</text>
+  <text x="105" y="183" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700" text-anchor="middle">Trigger Button</text>
+  <rect x="55" y="195" width="100" height="26" rx="6" fill="#6d5bd0" />
+  <text x="105" y="213" fill="#ffffff" font-family="system-ui, sans-serif" font-size="10" font-weight="600" text-anchor="middle">Open Modal</text>
+
+  <!-- Arrow 1->2 -->
+  <line x1="180" y1="160" x2="210" y2="160" stroke="#1a1822" stroke-width="2" marker-end="url(#seqArrow)" />
+
+  <!-- Step 2: Modal Opens -->
+  <rect x="212" y="90" width="150" height="140" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
+  <rect x="212" y="90" width="150" height="32" rx="10" fill="#6d5bd0" />
+  <rect x="212" y="106" width="150" height="16" fill="#6d5bd0" />
+  <text x="287" y="112" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="700" text-anchor="middle">Step 2</text>
+  <text x="287" y="148" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">Modal opens</text>
+  <text x="287" y="163" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">Focus moves to</text>
+  <text x="287" y="183" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700" text-anchor="middle">First Focusable</text>
+  <text x="287" y="198" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700" text-anchor="middle">Element</text>
+  <text x="287" y="218" fill="#1a1822" font-family="system-ui, sans-serif" font-size="9" text-anchor="middle" font-style="italic">Background gets inert</text>
+
+  <!-- Arrow 2->3 -->
+  <line x1="362" y1="160" x2="392" y2="160" stroke="#1a1822" stroke-width="2" marker-end="url(#seqArrow)" />
+
+  <!-- Step 3: User Interacts -->
+  <rect x="394" y="90" width="150" height="140" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
+  <rect x="394" y="90" width="150" height="32" rx="10" fill="#6d5bd0" />
+  <rect x="394" y="106" width="150" height="16" fill="#6d5bd0" />
+  <text x="469" y="112" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="700" text-anchor="middle">Step 3</text>
+  <text x="469" y="148" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">User interacts</text>
+  <text x="469" y="163" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">within modal</text>
+  <text x="469" y="183" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700" text-anchor="middle">Focus Trapped</text>
+  <text x="469" y="198" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700" text-anchor="middle">Inside</text>
+  <text x="469" y="218" fill="#1a1822" font-family="system-ui, sans-serif" font-size="9" text-anchor="middle" font-style="italic">Tab cycles within modal</text>
+
+  <!-- Arrow 3->4 -->
+  <line x1="544" y1="160" x2="574" y2="160" stroke="#1a1822" stroke-width="2" marker-end="url(#seqArrow)" />
+
+  <!-- Step 4: Close Action -->
+  <rect x="576" y="90" width="150" height="140" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
+  <rect x="576" y="90" width="150" height="32" rx="10" fill="#6d5bd0" />
+  <rect x="576" y="106" width="150" height="16" fill="#6d5bd0" />
+  <text x="651" y="112" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="700" text-anchor="middle">Step 4</text>
+  <text x="651" y="148" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">User closes modal</text>
+  <text x="651" y="163" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">(Esc, button, or</text>
+  <text x="651" y="178" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">backdrop click)</text>
+  <text x="651" y="198" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700" text-anchor="middle">Modal Unmounts</text>
+  <text x="651" y="218" fill="#1a1822" font-family="system-ui, sans-serif" font-size="9" text-anchor="middle" font-style="italic">inert removed from bg</text>
+
+  <!-- Arrow 4->5 -->
+  <line x1="726" y1="160" x2="756" y2="160" stroke="#1a1822" stroke-width="2" marker-end="url(#seqArrow)" />
+
+  <!-- Step 5: Focus Restored -->
+  <rect x="758" y="90" width="120" height="140" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2.5" />
+  <rect x="758" y="90" width="120" height="32" rx="10" fill="#6d5bd0" />
+  <rect x="758" y="106" width="120" height="16" fill="#6d5bd0" />
+  <text x="818" y="112" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="700" text-anchor="middle">Step 5</text>
+  <text x="818" y="148" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">Focus returns</text>
+  <text x="818" y="163" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">to original</text>
+  <text x="818" y="183" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700" text-anchor="middle">Trigger</text>
+  <text x="818" y="198" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700" text-anchor="middle">Button</text>
+
+  <!-- Return arrow from step 5 back to step 1 -->
+  <path d="M 818,230 L 818,260 C 818,280 780,280 450,280 C 120,280 105,260 105,250 L 105,232" fill="none" stroke="#6d5bd0" stroke-width="2.5" stroke-dasharray="8,4" marker-end="url(#returnArrow)" />
+  <text x="450" y="296" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700" text-anchor="middle">Focus restored to the element that triggered the modal</text>
+
+  <!-- Implementation details section -->
+  <rect x="60" y="330" width="780" height="150" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="450" y="355" fill="#1a1822" font-family="system-ui, sans-serif" font-size="14" font-weight="700" text-anchor="middle">Implementation Details</text>
+
+  <text x="100" y="385" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700">Open:</text>
+  <text x="142" y="385" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Save document.activeElement as triggerRef before opening</text>
+
+  <text x="100" y="410" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700">Focus:</text>
+  <text x="148" y="410" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Call firstFocusableElement.focus() after modal renders (useEffect)</text>
+
+  <text x="100" y="435" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700">Trap:</text>
+  <text x="140" y="435" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Intercept Tab/Shift+Tab keydown events to cycle focus within modal</text>
+
+  <text x="100" y="460" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700">Restore:</text>
+  <text x="158" y="460" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">On close, call triggerRef.current.focus() in cleanup/callback</text>
+
+  <defs>
+    <marker id="seqArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1a1822" />
+    </marker>
+    <marker id="returnArrow" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0" />
+    </marker>
+  </defs>
+</svg>

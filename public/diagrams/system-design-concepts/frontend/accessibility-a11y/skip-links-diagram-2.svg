@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500" role="img" aria-label="Complex page layout with multiple skip link targets">
+  <rect width="900" height="500" rx="16" fill="#f3f1f8" />
+
+  <text x="450" y="36" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="20" font-weight="700">Multiple Skip Link Targets</text>
+
+  <!-- Skip links panel (top left) -->
+  <rect x="30" y="56" width="240" height="170" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
+  <rect x="30" y="56" width="240" height="34" rx="12" fill="#6d5bd0" />
+  <rect x="30" y="76" width="240" height="14" fill="#6d5bd0" />
+  <text x="150" y="78" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="700">Skip Links Menu (on focus)</text>
+
+  <!-- Skip link items -->
+  <rect x="46" y="100" width="208" height="24" rx="6" fill="#6d5bd0" />
+  <text x="150" y="116" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="11" font-weight="600">1. Skip to main content</text>
+
+  <rect x="46" y="130" width="208" height="24" rx="6" fill="#8b7de0" />
+  <text x="150" y="146" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="11" font-weight="600">2. Skip to search</text>
+
+  <rect x="46" y="160" width="208" height="24" rx="6" fill="#a99de8" />
+  <text x="150" y="176" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="11" font-weight="600">3. Skip to navigation</text>
+
+  <rect x="46" y="190" width="208" height="24" rx="6" fill="#c7bef0" />
+  <text x="150" y="206" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="11" font-weight="600">4. Skip to footer</text>
+
+  <!-- Page layout -->
+  <rect x="300" y="56" width="580" height="430" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+
+  <!-- Header with search -->
+  <rect x="310" y="66" width="560" height="50" rx="8" fill="#e8e5f0" stroke="#d7d1e6" stroke-width="1" />
+  <text x="340" y="88" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="700">LOGO</text>
+
+  <!-- Search box - target 2 -->
+  <rect x="520" y="76" width="180" height="30" rx="6" fill="#ffffff" stroke="#8b7de0" stroke-width="2.5" />
+  <text x="530" y="96" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">Search...</text>
+  <circle cx="790" y="91" r="8" fill="#8b7de0" />
+  <text x="790" y="95" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="9" font-weight="700">2</text>
+
+  <!-- Navigation bar - target 3 -->
+  <rect x="310" y="124" width="560" height="34" rx="6" fill="#f0edf9" stroke="#a99de8" stroke-width="2.5" />
+  <text x="340" y="146" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Home</text>
+  <text x="400" y="146" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Products</text>
+  <text x="480" y="146" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Services</text>
+  <text x="560" y="146" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Blog</text>
+  <text x="610" y="146" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Docs</text>
+  <text x="660" y="146" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Support</text>
+  <text x="730" y="146" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Account</text>
+  <text x="800" y="146" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Cart</text>
+  <circle cx="852" cy="141" r="8" fill="#a99de8" />
+  <text x="852" y="145" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="9" font-weight="700">3</text>
+
+  <!-- Sidebar -->
+  <rect x="310" y="166" width="140" height="230" rx="6" fill="#f8f7fc" stroke="#d7d1e6" stroke-width="1" />
+  <text x="380" y="186" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Sidebar</text>
+  <rect x="322" y="196" width="116" height="10" rx="2" fill="#d7d1e6" />
+  <rect x="322" y="214" width="100" height="10" rx="2" fill="#d7d1e6" />
+  <rect x="322" y="232" width="110" height="10" rx="2" fill="#d7d1e6" />
+  <rect x="322" y="250" width="90" height="10" rx="2" fill="#d7d1e6" />
+  <rect x="322" y="268" width="116" height="10" rx="2" fill="#d7d1e6" />
+  <rect x="322" y="286" width="105" height="10" rx="2" fill="#d7d1e6" />
+  <rect x="322" y="304" width="80" height="10" rx="2" fill="#d7d1e6" />
+  <rect x="322" y="322" width="116" height="10" rx="2" fill="#d7d1e6" />
+  <rect x="322" y="340" width="95" height="10" rx="2" fill="#d7d1e6" />
+  <rect x="322" y="358" width="110" height="10" rx="2" fill="#d7d1e6" />
+  <rect x="322" y="376" width="100" height="10" rx="2" fill="#d7d1e6" />
+
+  <!-- Main content area - target 1 -->
+  <rect x="460" y="166" width="410" height="230" rx="6" fill="#f0edf9" stroke="#6d5bd0" stroke-width="2.5" />
+  <text x="665" y="190" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Main Content Area</text>
+  <text x="665" y="210" text-anchor="middle" fill="#6d5bd0" font-family="monospace" font-size="10">&lt;main id=&quot;main-content&quot; tabindex=&quot;-1&quot;&gt;</text>
+  <rect x="476" y="226" width="380" height="10" rx="2" fill="#b8aee6" />
+  <rect x="476" y="244" width="350" height="10" rx="2" fill="#b8aee6" />
+  <rect x="476" y="262" width="370" height="10" rx="2" fill="#b8aee6" />
+  <rect x="476" y="280" width="320" height="10" rx="2" fill="#b8aee6" />
+  <rect x="476" y="298" width="380" height="10" rx="2" fill="#b8aee6" />
+  <rect x="476" y="316" width="340" height="10" rx="2" fill="#b8aee6" />
+  <rect x="476" y="334" width="360" height="10" rx="2" fill="#b8aee6" />
+  <rect x="476" y="352" width="300" height="10" rx="2" fill="#b8aee6" />
+  <rect x="476" y="370" width="380" height="10" rx="2" fill="#b8aee6" />
+  <circle cx="852" cy="175" r="8" fill="#6d5bd0" />
+  <text x="852" y="179" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="9" font-weight="700">1</text>
+
+  <!-- Footer - target 4 -->
+  <rect x="310" y="404" width="560" height="70" rx="6" fill="#e8e5f0" stroke="#c7bef0" stroke-width="2.5" />
+  <text x="590" y="430" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Footer</text>
+  <text x="380" y="452" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">Privacy Policy</text>
+  <text x="470" y="452" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">Terms</text>
+  <text x="530" y="452" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">Sitemap</text>
+  <text x="600" y="452" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">Contact</text>
+  <text x="670" y="452" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">Accessibility</text>
+  <text x="760" y="452" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">Careers</text>
+  <circle cx="852" cy="413" r="8" fill="#c7bef0" />
+  <text x="852" y="417" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="9" font-weight="700">4</text>
+
+  <!-- Arrows from skip links to targets -->
+  <!-- Arrow 1: Skip to main content -->
+  <path d="M 270 112 C 290 112, 440 112, 440 170" stroke="#6d5bd0" stroke-width="2" fill="none" marker-end="url(#arrowhead1)" />
+  <!-- Arrow 2: Skip to search -->
+  <path d="M 270 142 C 310 142, 490 80, 518 80" stroke="#8b7de0" stroke-width="1.5" fill="none" stroke-dasharray="5 3" />
+  <!-- Arrow 3: Skip to nav -->
+  <path d="M 270 172 C 290 172, 290 140, 310 140" stroke="#a99de8" stroke-width="1.5" fill="none" stroke-dasharray="5 3" />
+  <!-- Arrow 4: Skip to footer -->
+  <path d="M 270 202 C 290 240, 290 420, 310 430" stroke="#c7bef0" stroke-width="1.5" fill="none" stroke-dasharray="5 3" />
+
+  <defs>
+    <marker id="arrowhead1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6d5bd0" />
+    </marker>
+  </defs>
+
+  <!-- Legend -->
+  <rect x="30" y="238" width="240" height="100" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1" />
+  <text x="150" y="258" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" font-weight="700">HTML Targets</text>
+  <text x="46" y="278" fill="#1a1822" font-family="monospace" font-size="9">1: &lt;main id=&quot;main-content&quot;&gt;</text>
+  <text x="46" y="294" fill="#1a1822" font-family="monospace" font-size="9">2: &lt;input id=&quot;search&quot;&gt;</text>
+  <text x="46" y="310" fill="#1a1822" font-family="monospace" font-size="9">3: &lt;nav id=&quot;navigation&quot;&gt;</text>
+  <text x="46" y="326" fill="#1a1822" font-family="monospace" font-size="9">4: &lt;footer id=&quot;footer&quot;&gt;</text>
+</svg>

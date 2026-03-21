@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" role="img" aria-label="Performance and capability comparison between SVG icons and icon fonts across bundle size, rendering, accessibility, styling flexibility, and browser support" font-family="system-ui, sans-serif">
+  <rect width="900" height="540" fill="#f3f1f8" rx="8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">SVG Icons vs Icon Fonts: Comparison</text>
+
+  <!-- Table Header -->
+  <rect x="30" y="60" width="250" height="40" rx="0" fill="#6d5bd0"/>
+  <text x="155" y="85" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">Criteria</text>
+  <rect x="280" y="60" width="290" height="40" rx="0" fill="#6d5bd0"/>
+  <text x="425" y="85" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">SVG Icons</text>
+  <rect x="570" y="60" width="300" height="40" rx="0" fill="#6d5bd0"/>
+  <text x="720" y="85" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">Icon Fonts</text>
+
+  <!-- Row 1: Bundle Size -->
+  <rect x="30" y="100" width="250" height="55" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="155" y="125" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a1822">Bundle Size</text>
+  <text x="155" y="142" text-anchor="middle" font-size="9" fill="#6d5bd0">&amp; Tree Shaking</text>
+  <rect x="280" y="100" width="290" height="55" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="425" y="120" text-anchor="middle" font-size="10" fill="#1a1822">Tree-shakeable per icon</text>
+  <text x="425" y="137" text-anchor="middle" font-size="10" fill="#1a1822">Only used icons in bundle</text>
+  <circle cx="295" cy="128" r="6" fill="#4ade80"/>
+  <rect x="570" y="100" width="300" height="55" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="720" y="120" text-anchor="middle" font-size="10" fill="#1a1822">Entire font file loaded</text>
+  <text x="720" y="137" text-anchor="middle" font-size="10" fill="#1a1822">All glyphs included, no tree shaking</text>
+  <circle cx="585" cy="128" r="6" fill="#f87171"/>
+
+  <!-- Row 2: Render Quality -->
+  <rect x="30" y="155" width="250" height="55" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="155" y="180" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a1822">Render Quality</text>
+  <text x="155" y="197" text-anchor="middle" font-size="9" fill="#6d5bd0">&amp; Sharpness</text>
+  <rect x="280" y="155" width="290" height="55" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="425" y="175" text-anchor="middle" font-size="10" fill="#1a1822">Pixel-perfect at any size</text>
+  <text x="425" y="192" text-anchor="middle" font-size="10" fill="#1a1822">No anti-aliasing artifacts</text>
+  <circle cx="295" cy="183" r="6" fill="#4ade80"/>
+  <rect x="570" y="155" width="300" height="55" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="720" y="175" text-anchor="middle" font-size="10" fill="#1a1822">Sub-pixel rendering varies</text>
+  <text x="720" y="192" text-anchor="middle" font-size="10" fill="#1a1822">Anti-aliasing can blur icons</text>
+  <circle cx="585" cy="183" r="6" fill="#fbbf24"/>
+
+  <!-- Row 3: Accessibility -->
+  <rect x="30" y="210" width="250" height="55" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="155" y="235" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a1822">Accessibility</text>
+  <text x="155" y="252" text-anchor="middle" font-size="9" fill="#6d5bd0">Screen Readers &amp; A11y</text>
+  <rect x="280" y="210" width="290" height="55" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="425" y="230" text-anchor="middle" font-size="10" fill="#1a1822">Native &lt;title&gt; and &lt;desc&gt;</text>
+  <text x="425" y="247" text-anchor="middle" font-size="10" fill="#1a1822">role="img" + aria-label support</text>
+  <circle cx="295" cy="238" r="6" fill="#4ade80"/>
+  <rect x="570" y="210" width="300" height="55" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="720" y="230" text-anchor="middle" font-size="10" fill="#1a1822">Requires aria-hidden + sr-only</text>
+  <text x="720" y="247" text-anchor="middle" font-size="10" fill="#1a1822">No semantic meaning in DOM</text>
+  <circle cx="585" cy="238" r="6" fill="#f87171"/>
+
+  <!-- Row 4: Styling -->
+  <rect x="30" y="265" width="250" height="55" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="155" y="290" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a1822">Styling Flexibility</text>
+  <text x="155" y="307" text-anchor="middle" font-size="9" fill="#6d5bd0">Colors &amp; Effects</text>
+  <rect x="280" y="265" width="290" height="55" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="425" y="285" text-anchor="middle" font-size="10" fill="#1a1822">Multi-color, gradients, filters</text>
+  <text x="425" y="302" text-anchor="middle" font-size="10" fill="#1a1822">fill, stroke, currentColor, CSS vars</text>
+  <circle cx="295" cy="293" r="6" fill="#4ade80"/>
+  <rect x="570" y="265" width="300" height="55" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="720" y="285" text-anchor="middle" font-size="10" fill="#1a1822">Single color via CSS color</text>
+  <text x="720" y="302" text-anchor="middle" font-size="10" fill="#1a1822">No multi-color or gradients</text>
+  <circle cx="585" cy="293" r="6" fill="#f87171"/>
+
+  <!-- Row 5: Performance -->
+  <rect x="30" y="320" width="250" height="55" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="155" y="345" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a1822">Load Performance</text>
+  <text x="155" y="362" text-anchor="middle" font-size="9" fill="#6d5bd0">HTTP &amp; Render Blocking</text>
+  <rect x="280" y="320" width="290" height="55" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="425" y="340" text-anchor="middle" font-size="10" fill="#1a1822">Inline = 0 requests, no FOIT</text>
+  <text x="425" y="357" text-anchor="middle" font-size="10" fill="#1a1822">External = 1 cacheable request</text>
+  <circle cx="295" cy="348" r="6" fill="#4ade80"/>
+  <rect x="570" y="320" width="300" height="55" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="720" y="340" text-anchor="middle" font-size="10" fill="#1a1822">Render-blocking font load</text>
+  <text x="720" y="357" text-anchor="middle" font-size="10" fill="#1a1822">FOIT/FOUT flash on first load</text>
+  <circle cx="585" cy="348" r="6" fill="#f87171"/>
+
+  <!-- Row 6: Animation -->
+  <rect x="30" y="375" width="250" height="55" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="155" y="400" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a1822">Animation</text>
+  <text x="155" y="417" text-anchor="middle" font-size="9" fill="#6d5bd0">&amp; Interactivity</text>
+  <rect x="280" y="375" width="290" height="55" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="425" y="395" text-anchor="middle" font-size="10" fill="#1a1822">SMIL, CSS, JS animations</text>
+  <text x="425" y="412" text-anchor="middle" font-size="10" fill="#1a1822">Animate individual paths/groups</text>
+  <circle cx="295" cy="403" r="6" fill="#4ade80"/>
+  <rect x="570" y="375" width="300" height="55" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="720" y="395" text-anchor="middle" font-size="10" fill="#1a1822">CSS transitions only</text>
+  <text x="720" y="412" text-anchor="middle" font-size="10" fill="#1a1822">Treat as single text character</text>
+  <circle cx="585" cy="403" r="6" fill="#fbbf24"/>
+
+  <!-- Legend -->
+  <rect x="250" y="460" width="400" height="60" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <circle cx="290" cy="490" r="8" fill="#4ade80"/>
+  <text x="305" y="494" font-size="11" fill="#1a1822">Clear advantage</text>
+  <circle cx="440" cy="490" r="8" fill="#fbbf24"/>
+  <text x="455" y="494" font-size="11" fill="#1a1822">Acceptable</text>
+  <circle cx="570" cy="490" r="8" fill="#f87171"/>
+  <text x="585" y="494" font-size="11" fill="#1a1822">Disadvantage</text>
+
+  <!-- Verdict -->
+  <text x="450" y="530" text-anchor="middle" font-size="11" font-weight="bold" fill="#6d5bd0">Modern recommendation: SVG icons for new projects, icon fonts for legacy compatibility</text>
+</svg>

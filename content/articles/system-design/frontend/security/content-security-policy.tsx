@@ -1,0 +1,925 @@
+"use client";
+
+import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { ArticleImage } from "@/components/articles/ArticleImage";
+import type { ArticleMetadata } from "@/types/article";
+
+export const metadata: ArticleMetadata = {
+  id: "article-frontend-security-csp-extensive",
+  title: "Content Security Policy (CSP)",
+  description: "Comprehensive guide to Content Security Policy (CSP), directive configuration, nonce-based security, violation reporting, and production deployment strategies for staff/principal engineer interviews.",
+  category: "frontend",
+  subcategory: "security",
+  slug: "content-security-policy",
+  version: "extensive",
+  wordCount: 8200,
+  readingTime: 33,
+  lastUpdated: "2026-03-19",
+  tags: ["security", "csp", "content-security-policy", "frontend", "web-security", "xss-prevention", "security-headers"],
+  relatedTopics: ["xss-prevention", "csrf-protection", "input-validation-sanitization"],
+};
+
+export default function ContentSecurityPolicyArticle() {
+  return (
+    <ArticleLayout metadata={metadata}>
+      <section>
+        <h2>Definition & Context</h2>
+        <p>
+          <strong>Content Security Policy (CSP)</strong> is an HTTP response header (or meta tag) that provides
+          an additional layer of defense against Cross-Site Scripting (XSS), clickjacking, and other code
+          injection attacks. CSP works by declaring which sources of content the browser should trust and
+          load for a given page—effectively creating a whitelist of approved origins for scripts, styles,
+          images, fonts, frames, and other resources.
+        </p>
+        <p>
+          Unlike traditional security measures that try to detect and block malicious content, CSP takes a
+          different approach: it assumes some content might be malicious and restricts what the browser can
+          execute. Even if an attacker successfully injects a script tag, CSP can prevent its execution by
+          blocking scripts from untrusted sources.
+        </p>
+        <p>
+          CSP was first introduced in Firefox 4 (2011) and is now supported by all modern browsers. It&apos;s
+          standardized by the W3C (CSP Level 1, 2, and 3) and continues to evolve with new directives and
+          capabilities. CSP Level 3 (the current standard) introduced significant improvements including
+          strict-dynamic, nonce-based security, and better reporting mechanisms.
+        </p>
+        <p>
+          <strong>Why CSP matters for staff/principal engineers:</strong> As a technical leader, you&apos;re
+          responsible for establishing security architecture and defense-in-depth strategies. CSP is a critical
+          component of modern web security posture—it&apos;s recommended by OWASP, required for certain
+          compliance frameworks, and increasingly expected by security auditors. Understanding CSP enables you
+          to design systems that can withstand XSS attacks even when other defenses fail.
+        </p>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">Key Insight: CSP Is Defense-in-Depth, Not a Silver Bullet</h3>
+          <p>
+            CSP doesn&apos;t replace output encoding, input validation, or other XSS defenses. It provides an
+            additional safety net that can block attacks that bypass primary defenses. Think of CSP as the last
+            line of defense, not the only line of defense.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>How CSP Works</h2>
+        <p>
+          CSP operates on a simple principle: the server tells the browser which sources are trusted, and the
+          browser enforces these restrictions by blocking resources from untrusted sources.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">CSP Enforcement Flow</h3>
+        <ol className="space-y-2">
+          <li>
+            <strong>Server sends CSP header:</strong> The HTTP response includes a
+            <code className="text-sm">Content-Security-Policy</code> header with directives
+          </li>
+          <li>
+            <strong>Browser parses directives:</strong> The browser reads and understands the policy
+          </li>
+          <li>
+            <strong>Browser encounters resource:</strong> When loading a script, style, image, etc., the browser
+            checks the CSP
+          </li>
+          <li>
+            <strong>Browser validates source:</strong> The resource&apos;s origin is compared against allowed
+            sources in the directive
+          </li>
+          <li>
+            <strong>Browser allows or blocks:</strong> If the source matches the policy, the resource loads;
+            otherwise, it&apos;s blocked
+          </li>
+        </ol>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/security/csp-enforcement-flow.svg"
+          alt="CSP Enforcement Flow showing server sending policy, browser parsing, and blocking untrusted resources"
+          caption="CSP Enforcement Flow: The server declares trusted sources, and the browser enforces these restrictions by blocking resources from untrusted origins."
+        />
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">CSP Header Format</h3>
+        <p>
+          CSP is sent as an HTTP response header with a policy string containing one or more directives.
+          The format consists of directive names followed by allowed sources, with multiple directives
+          separated by semicolons. For example, a basic policy might specify <code className="text-sm">directive1 source1 source2; directive2 source1 source2</code> where each directive controls a different resource type.
+        </p>
+        <p>
+          Example policy: A comprehensive CSP might set <code className="text-sm">default-src 'self'</code> to restrict all resources to same-origin by default,
+          then allow scripts from same-origin and a specific CDN with <code className="text-sm">script-src 'self' https://cdn.example.com</code>,
+          permit styles from same-origin and inline styles with <code className="text-sm">style-src 'self' 'unsafe-inline'</code>,
+          and allow images from same-origin, data URIs, and any HTTPS source with <code className="text-sm">img-src 'self' data: https:</code>.
+        </p>
+        <p>
+          Each directive controls a specific resource type. The policy above:
+        </p>
+        <ul className="space-y-2">
+          <li>
+            <code className="text-sm">default-src 'self'</code>: By default, only allow resources from the
+            same origin
+          </li>
+          <li>
+            <code className="text-sm">script-src 'self' https://cdn.example.com</code>: Scripts can load from
+            same origin or cdn.example.com
+          </li>
+          <li>
+            <code className="text-sm">style-src 'self' 'unsafe-inline'</code>: Styles from same origin or
+            inline styles
+          </li>
+          <li>
+            <code className="text-sm">img-src 'self' data: https:</code>: Images from same origin, data URIs,
+            or any HTTPS source
+          </li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">CSP Delivery Methods</h3>
+        <p>
+          CSP can be delivered via:
+        </p>
+        <ul className="space-y-2">
+          <li>
+            <strong>HTTP Header (recommended):</strong> <code className="text-sm">Content-Security-Policy: ...</code>
+            — Most reliable, works for all resources
+          </li>
+          <li>
+            <strong>Meta tag:</strong> <code className="text-sm">&lt;meta http-equiv="Content-Security-Policy" content="..."&gt;</code>
+            — Only works for HTML documents, can&apos;t use <code className="text-sm">frame-ancestors</code> or
+            <code className="text-sm">report-uri</code>
+          </li>
+        </ul>
+        <p>
+          <strong>Best practice:</strong> Always use HTTP headers when possible. Meta tags are a fallback for
+          environments where you can&apos;t configure headers.
+        </p>
+      </section>
+
+      <section>
+        <h2>CSP Directives Reference</h2>
+        <p>
+          CSP provides numerous directives to control different resource types. Understanding each directive
+          is essential for crafting effective policies.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Core Directives</h3>
+
+        <h4 className="mt-4 mb-2 font-semibold">default-src</h4>
+        <p>
+          The fallback directive for all resource types that don&apos;t have their own directive. If
+          <code className="text-sm">default-src</code> is missing, there&apos;s no default restriction (all
+          sources allowed).
+        </p>
+        <p>
+          <strong>Best practice:</strong> Always set <code className="text-sm">default-src</code> as a safety
+          net. Start restrictive and relax specific directives as needed. For example, restrict everything to same origin by default using <code className="text-sm">default-src 'self'</code>.
+        </p>
+
+        <h4 className="mt-4 mb-2 font-semibold">script-src</h4>
+        <p>
+          Controls JavaScript execution. This is the most critical directive for XSS prevention.
+          For example, allow scripts from same origin and a specific CDN using <code className="text-sm">script-src 'self' https://cdn.example.com</code> along with a nonce value like <code className="text-sm">'nonce-abc123'</code> for specific inline scripts.
+        </p>
+        <p>
+          <strong>Key sources:</strong>
+        </p>
+        <ul className="space-y-2">
+          <li>
+            <code className="text-sm">'self'</code>: Same origin only
+          </li>
+          <li>
+            <code className="text-sm">'unsafe-inline'</code>: Allow inline scripts (defeats CSP purpose)
+          </li>
+          <li>
+            <code className="text-sm">'unsafe-eval'</code>: Allow <code className="text-sm">eval()</code> and
+            similar (defeats CSP purpose)
+          </li>
+          <li>
+            <code className="text-sm">{'nonce-{value}'}</code>: Allow scripts with matching nonce attribute
+          </li>
+          <li>
+            <code className="text-sm">'strict-dynamic'</code>: Trust scripts loaded by trusted scripts
+            (CSP Level 3)
+          </li>
+          <li>
+            <code className="text-sm">'none'</code>: Block all scripts
+          </li>
+        </ul>
+
+        <h4 className="mt-4 mb-2 font-semibold">style-src</h4>
+        <p>
+          Controls stylesheet loading and inline styles. For example, allow styles from same origin and permit inline styles (often required for frameworks) using <code className="text-sm">style-src 'self' 'unsafe-inline'</code>.
+        </p>
+        <p>
+          <strong>Note:</strong> Many frameworks require <code className="text-sm">'unsafe-inline'</code> for
+          styles. This is generally acceptable since CSS injection is less critical than script injection, but
+          still poses risks (data exfiltration via CSS selectors).
+        </p>
+
+        <h4 className="mt-4 mb-2 font-semibold">img-src</h4>
+        <p>
+          Controls image sources. For example, allow images from same origin, data URIs, and any HTTPS source using <code className="text-sm">img-src 'self' data: https:</code>.
+        </p>
+
+        <h4 className="mt-4 mb-2 font-semibold">connect-src</h4>
+        <p>
+          Controls fetch, XMLHttpRequest, WebSocket, EventSource, and other programmatic connections.
+          For example, allow API calls to same origin and a specific backend using <code className="text-sm">connect-src 'self' https://api.example.com</code>.
+        </p>
+
+        <h4 className="mt-4 mb-2 font-semibold">frame-ancestors</h4>
+        <p>
+          Controls which origins can embed this page in frames (clickjacking protection). Replaces
+          <code className="text-sm">X-Frame-Options</code> header. Use <code className="text-sm">frame-ancestors 'none'</code> to prevent any framing, <code className="text-sm">frame-ancestors 'self'</code> to allow only same origin framing, or specify specific partner sites like <code className="text-sm">frame-ancestors 'self' https://partner1.com https://partner2.com</code>.
+        </p>
+
+        <h4 className="mt-4 mb-2 font-semibold">form-action</h4>
+        <p>
+          Controls where forms can submit data. Prevents attackers from changing form action to their server.
+          For example, only allow form submissions to same origin using <code className="text-sm">form-action 'self'</code>.
+        </p>
+
+        <h4 className="mt-4 mb-2 font-semibold">base-uri</h4>
+        <p>
+          Controls the <code className="text-sm">&lt;base&gt;</code> element, preventing attackers from
+          changing the base URL for relative links. Restrict base URI to same origin using <code className="text-sm">base-uri 'self'</code>.
+        </p>
+
+        <h4 className="mt-4 mb-2 font-semibold">object-src</h4>
+        <p>
+          Controls plugins like Flash, Silverlight, etc. Modern sites should block these entirely using <code className="text-sm">object-src 'none'</code>.
+        </p>
+
+        <h4 className="mt-4 mb-2 font-semibold">upgrade-insecure-requests</h4>
+        <p>
+          Automatically upgrades HTTP URLs to HTTPS, helping migrate from HTTP to HTTPS. Simply include <code className="text-sm">upgrade-insecure-requests</code> in your policy.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/security/csp-directives-matrix.svg"
+          alt="CSP Directives Matrix showing all major directives and their purposes"
+          caption="CSP Directives Matrix: Each directive controls a specific resource type. Understanding these is essential for crafting effective policies."
+        />
+      </section>
+
+      <section>
+        <h2>Source Values</h2>
+        <p>
+          CSP directives accept various source values that define what&apos;s allowed.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Keyword Sources</h3>
+        <ul className="space-y-2">
+          <li>
+            <code className="text-sm">'self'</code>: Only resources from the same origin (scheme, host, port)
+          </li>
+          <li>
+            <code className="text-sm">'unsafe-inline'</code>: Allow inline resources (scripts, styles)
+          </li>
+          <li>
+            <code className="text-sm">'unsafe-eval'</code>: Allow <code className="text-sm">eval()</code>,
+            <code className="text-sm">new Function()</code>, and similar
+          </li>
+          <li>
+            <code className="text-sm">'none'</code>: Block all sources
+          </li>
+          <li>
+            <code className="text-sm">'strict-dynamic'</code>: Trust scripts loaded by trusted scripts
+            (CSP Level 3)
+          </li>
+          <li>
+            <code className="text-sm">'unsafe-hashes'</code>: Allow inline resources matching specified
+            hashes (CSP Level 3)
+          </li>
+          <li>
+            <code className="text-sm">'wasm-unsafe-eval'</code>: Allow WebAssembly evaluation (CSP Level 3)
+          </li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Nonce Sources</h3>
+        <p>
+          Nonces (number used once) allow specific inline scripts while blocking others.
+          Include a nonce in your CSP header like <code className="text-sm">script-src 'self' 'nonce-abc123xyz'</code>, then add the same nonce attribute to script tags in your HTML. Scripts with the matching nonce attribute will execute, while scripts without a nonce will be blocked.
+        </p>
+        <p>
+          <strong>Nonce best practices:</strong>
+        </p>
+        <ul className="space-y-2">
+          <li>Generate a new cryptographically random nonce for each request</li>
+          <li>Never reuse nonces across requests</li>
+          <li>Use at least 128 bits of entropy (16+ random bytes, base64-encoded)</li>
+          <li>Store nonce in server-side template context, not in cookies or localStorage</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Hash Sources</h3>
+        <p>
+          Hashes allow specific inline scripts by their SHA-256, SHA-384, or SHA-512 hash.
+          Include the hash in your CSP header like <code className="text-sm">script-src 'self' 'sha256-abc123...'</code>, and only scripts whose content exactly matches that hash will execute.
+        </p>
+        <p>
+          <strong>Hash limitations:</strong>
+        </p>
+        <ul className="space-y-2">
+          <li>Any change to the script (even whitespace) breaks the hash</li>
+          <li>Impractical for dynamic content</li>
+          <li>Best for small, static inline scripts</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">URL Sources</h3>
+        <p>
+          Specify allowed origins by URL:
+        </p>
+        <ul className="space-y-2">
+          <li>
+            <code className="text-sm">https://cdn.example.com</code>: Specific origin (HTTPS only)
+          </li>
+          <li>
+            <code className="text-sm">https://*.example.com</code>: All subdomains of example.com
+          </li>
+          <li>
+            <code className="text-sm">https:</code>: Any HTTPS origin (scheme-only, use sparingly)
+          </li>
+          <li>
+            <code className="text-sm">data:</code>: Data URIs (security risk for scripts/images)
+          </li>
+          <li>
+            <code className="text-sm">blob:</code>: Blob URLs
+          </li>
+        </ul>
+        <p>
+          <strong>Warning:</strong> Wildcard sources (<code className="text-sm">https:</code> or
+          <code className="text-sm">https://*.cdn.com</code>) significantly weaken CSP. Use specific origins
+          whenever possible.
+        </p>
+      </section>
+
+      <section>
+        <h2>CSP Implementation Strategies</h2>
+        <p>
+          There are multiple approaches to implementing CSP, each with trade-offs between security and
+          compatibility.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Strategy 1: Strict CSP (Recommended)</h3>
+        <p>
+          Maximum security with no <code className="text-sm">unsafe-inline</code> or <code className="text-sm">unsafe-eval</code>. Uses nonces for necessary inline scripts.
+          A strict policy might set default-src to self, script-src to self with nonce, style-src to self, img-src to self and data, connect-src to self and API domain, frame-ancestors to none, base-uri to self, and form-action to self.
+        </p>
+        <p>
+          <strong>Pros:</strong> Maximum XSS protection, blocks all inline scripts.
+        </p>
+        <p>
+          <strong>Cons:</strong> Requires refactoring to remove inline scripts, nonce management overhead.
+        </p>
+        <p>
+          <strong>Best for:</strong> New applications, security-critical systems, organizations with mature
+          security practices.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Strategy 2: Moderate CSP</h3>
+        <p>
+          Balanced approach allowing <code className="text-sm">'unsafe-inline'</code> for styles but not
+          scripts. A moderate policy might set <code className="text-sm">default-src 'self'</code>, <code className="text-sm">script-src 'self' https://trusted-cdn.com</code>, <code className="text-sm">style-src 'self' 'unsafe-inline'</code>, <code className="text-sm">img-src 'self' https: data:</code>, <code className="text-sm">connect-src 'self'</code>, and <code className="text-sm">frame-ancestors 'self'</code>.
+        </p>
+        <p>
+          <strong>Pros:</strong> Easier to implement, compatible with most frameworks.
+        </p>
+        <p>
+          <strong>Cons:</strong> Weaker than strict CSP, inline styles can leak data via CSS selectors.
+        </p>
+        <p>
+          <strong>Best for:</strong> Existing applications, teams transitioning to stricter CSP.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Strategy 3: CSP with strict-dynamic</h3>
+        <p>
+          CSP Level 3 feature that simplifies nonce management for complex applications.
+          A policy with strict-dynamic might set default-src to self, script-src to self with nonce and strict-dynamic and https and http and unsafe-inline, and style-src to self and unsafe-inline.
+        </p>
+        <p>
+          <strong>How strict-dynamic works:</strong>
+        </p>
+        <ol className="space-y-2">
+          <li>Scripts with valid nonces are trusted</li>
+          <li>Trusted scripts can dynamically load other scripts</li>
+          <li>Dynamically loaded scripts inherit trust (don&apos;t need nonces)</li>
+          <li>Parser-inserted scripts (without nonces) are still blocked</li>
+        </ol>
+        <p>
+          <strong>Pros:</strong> Simplifies third-party script management, backward compatible.
+        </p>
+        <p>
+          <strong>Cons:</strong> Browser support varies (Chrome 62+, Firefox 67+, Safari 15+).
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Strategy 4: Monitoring-Only (Report-Only)</h3>
+        <p>
+          Use <code className="text-sm">Content-Security-Policy-Report-Only</code> header to test policies
+          without enforcement. A report-only policy might include <code className="text-sm">default-src 'self'</code>, <code className="text-sm">script-src 'self'</code>, <code className="text-sm">report-uri /csp-report</code>, and <code className="text-sm">report-to csp-endpoint</code>.
+        </p>
+        <p>
+          <strong>Use cases:</strong>
+        </p>
+        <ul className="space-y-2">
+          <li>Testing new policies before enforcement</li>
+          <li>Monitoring for violations without breaking functionality</li>
+          <li>Detecting attack attempts</li>
+        </ul>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/security/csp-implementation-strategies.svg"
+          alt="CSP Implementation Strategies comparison showing Strict, Moderate, strict-dynamic, and Report-Only approaches"
+          caption="CSP Implementation Strategies: Choose based on your security requirements, existing codebase, and browser support needs."
+        />
+      </section>
+
+      <section>
+        <h2>CSP Violation Reporting</h2>
+        <p>
+          CSP provides built-in reporting mechanisms to detect policy violations and potential attacks.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">report-uri (Legacy)</h3>
+        <p>
+          Deprecated but widely supported. Sends violation reports to specified endpoint.
+          For example, set <code className="text-sm">Content-Security-Policy: default-src 'self'; report-uri /csp-report</code> to send reports to the specified endpoint.
+        </p>
+        <p>
+          <strong>Report format (POST request):</strong> Reports include fields like <code className="text-sm">document-uri</code>, <code className="text-sm">referrer</code>, <code className="text-sm">violated-directive</code>, <code className="text-sm">effective-directive</code>, <code className="text-sm">original-policy</code>, <code className="text-sm">disposition</code>, <code className="text-sm">blocked-uri</code>, <code className="text-sm">line-number</code>, <code className="text-sm">column-number</code>, <code className="text-sm">source-file</code>, <code className="text-sm">status-code</code>, and <code className="text-sm">script-sample</code>.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">report-to (Modern)</h3>
+        <p>
+          CSP Level 3 reporting with more flexibility. Requires separate <code className="text-sm">Report-To</code>
+          header. Set the CSP header with <code className="text-sm">report-to csp-endpoint</code> and include a separate Report-To header with a JSON configuration specifying the endpoint URL and max age.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Handling Violation Reports</h3>
+        <p>
+          Server-side endpoint should:
+        </p>
+        <ul className="space-y-2">
+          <li>Parse and validate the JSON report</li>
+          <li>Log violations for analysis</li>
+          <li>Alert on suspicious patterns (repeated violations, known attack signatures)</li>
+          <li>Aggregate reports to identify policy issues</li>
+          <li>Rate-limit to prevent report flooding</li>
+        </ul>
+        <p>
+          For example, in Express.js, create a POST endpoint at <code className="text-sm">/csp-report</code> that accepts JSON with content type <code className="text-sm">application/csp-report</code>, extracts the <code className="text-sm">csp-report</code> object from the request body, logs key fields like <code className="text-sm">blocked-uri</code>, <code className="text-sm">violated-directive</code>, <code className="text-sm">document-uri</code>, and <code className="text-sm">timestamp</code>, and sends security alerts for suspicious blocked URIs like malicious.com. Return a 204 No Content response.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">What to Monitor</h3>
+        <ul className="space-y-2">
+          <li>
+            <strong>Blocked URIs:</strong> External domains attempting to load resources
+          </li>
+          <li>
+            <strong>Violated directives:</strong> Which CSP rules are being triggered
+          </li>
+          <li>
+            <strong>Document URIs:</strong> Which pages have violations
+          </li>
+          <li>
+            <strong>Referrers:</strong> Where violations originate from
+          </li>
+          <li>
+            <strong>Script samples:</strong> Actual malicious code (for analysis)
+          </li>
+        </ul>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">Key Insight: Violation Reports Are Security Telemetry</h3>
+          <p>
+            CSP violation reports provide real-time visibility into attack attempts and policy misconfigurations.
+            Set up dashboards and alerts to detect patterns: sudden spikes in violations, new blocked domains,
+            or repeated attempts from specific referrers.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Trade-offs & Considerations</h2>
+        <table className="w-full border-collapse">
+          <thead>
+            <tr className="border-b border-theme">
+              <th className="p-3 text-left">Approach</th>
+              <th className="p-3 text-left">Advantages</th>
+              <th className="p-3 text-left">Disadvantages</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-theme">
+            <tr>
+              <td className="p-3"><strong>Strict CSP (Nonces)</strong></td>
+              <td className="p-3">
+                • Maximum XSS protection<br/>
+                • Blocks all inline scripts<br/>
+                • Industry best practice
+              </td>
+              <td className="p-3">
+                • Requires code refactoring<br/>
+                • Nonce management overhead<br/>
+                • Third-party script challenges
+              </td>
+            </tr>
+            <tr>
+              <td className="p-3"><strong>Moderate CSP</strong></td>
+              <td className="p-3">
+                • Easier implementation<br/>
+                • Framework compatible<br/>
+                • Good baseline protection
+              </td>
+              <td className="p-3">
+                • Weaker than strict CSP<br/>
+                • Inline styles can leak data<br/>
+                • May not satisfy auditors
+              </td>
+            </tr>
+            <tr>
+              <td className="p-3"><strong>strict-dynamic</strong></td>
+              <td className="p-3">
+                • Simplifies third-party scripts<br/>
+                • Backward compatible<br/>
+                • Reduces nonce management
+              </td>
+              <td className="p-3">
+                • Limited browser support<br/>
+                • Still requires initial nonce<br/>
+                • Complex to explain to teams
+              </td>
+            </tr>
+            <tr>
+              <td className="p-3"><strong>Report-Only Mode</strong></td>
+              <td className="p-3">
+                • Zero risk testing<br/>
+                • Visibility into violations<br/>
+                • No user impact
+              </td>
+              <td className="p-3">
+                • No actual protection<br/>
+                • Report volume can be high<br/>
+                • Requires endpoint infrastructure
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>Best Practices</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Policy Design</h3>
+        <ul className="space-y-2">
+          <li>
+            <strong>Start with default-src:</strong> Always set a restrictive default, then relax specific
+            directives
+          </li>
+          <li>
+            <strong>Avoid unsafe keywords:</strong> Never use <code className="text-sm">'unsafe-inline'</code>
+            or <code className="text-sm">'unsafe-eval'</code> in production for scripts
+          </li>
+          <li>
+            <strong>Be specific with origins:</strong> Use exact origins, avoid wildcards
+            (<code className="text-sm">https:</code> or <code className="text-sm">*.example.com</code>)
+          </li>
+          <li>
+            <strong>Block plugins:</strong> Set <code className="text-sm">object-src 'none'</code> to block
+            Flash and other plugins
+          </li>
+          <li>
+            <strong>Prevent clickjacking:</strong> Use <code className="text-sm">frame-ancestors 'none'</code>
+            or <code className="text-sm">frame-ancestors 'self'</code>
+          </li>
+          <li>
+            <strong>Control form submissions:</strong> Use <code className="text-sm">form-action 'self'</code>
+            to prevent form hijacking
+          </li>
+          <li>
+            <strong>Restrict base URI:</strong> Use <code className="text-sm">base-uri 'self'</code> to
+            prevent base tag injection
+          </li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Implementation</h3>
+        <ul className="space-y-2">
+          <li>
+            <strong>Use Report-Only first:</strong> Test policies with
+            <code className="text-sm">Content-Security-Policy-Report-Only</code> before enforcement
+          </li>
+          <li>
+            <strong>Generate nonces securely:</strong> Use crypto-safe random generation (128+ bits of entropy)
+          </li>
+          <li>
+            <strong>Rotate nonces per request:</strong> Never reuse nonces across requests
+          </li>
+          <li>
+            <strong>Set up violation reporting:</strong> Monitor <code className="text-sm">report-uri</code> or
+            <code className="text-sm">report-to</code> endpoints
+          </li>
+          <li>
+            <strong>Use HTTPS:</strong> CSP is most effective with HTTPS; consider
+            <code className="text-sm">upgrade-insecure-requests</code>
+          </li>
+          <li>
+            <strong>Combine with other headers:</strong> Use CSP alongside
+            <code className="text-sm">X-Content-Type-Options</code>, <code className="text-sm">X-Frame-Options</code>,
+            <code className="text-sm">Strict-Transport-Security</code>
+          </li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Third-Party Scripts</h3>
+        <ul className="space-y-2">
+          <li>
+            <strong>Audit third-party scripts:</strong> Every external script is a potential attack vector
+          </li>
+          <li>
+            <strong>Use Subresource Integrity (SRI):</strong> Verify script integrity with
+            <code className="text-sm">integrity</code> attribute
+          </li>
+          <li>
+            <strong>Host critical scripts locally:</strong> Download and serve critical third-party scripts
+            from your own domain
+          </li>
+          <li>
+            <strong>Limit external origins:</strong> Minimize the number of allowed external domains
+          </li>
+          <li>
+            <strong>Monitor for changes:</strong> Third-party scripts can change; monitor for unexpected
+            behavior
+          </li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Maintenance</h3>
+        <ul className="space-y-2">
+          <li>
+            <strong>Review violation reports:</strong> Regularly analyze CSP violations for attacks and
+            misconfigurations
+          </li>
+          <li>
+            <strong>Update policies:</strong> Refine CSP as your application evolves
+          </li>
+          <li>
+            <strong>Test before deploying:</strong> Use staging environments to test CSP changes
+          </li>
+          <li>
+            <strong>Document your CSP:</strong> Maintain documentation explaining each directive and its purpose
+          </li>
+          <li>
+            <strong>Educate developers:</strong> Ensure team understands CSP constraints and best practices
+          </li>
+        </ul>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">Key Insight: CSP Is Iterative</h3>
+          <p>
+            Don&apos;t aim for perfect CSP on day one. Start with a monitoring-only policy, analyze violations,
+            fix issues, and gradually tighten restrictions. A gradually-improved CSP that&apos;s properly
+            enforced is better than a perfect CSP that breaks your app and gets disabled.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Common Pitfalls</h2>
+        <ul className="space-y-3">
+          <li>
+            <strong>Using 'unsafe-inline' for scripts:</strong> This defeats CSP&apos;s primary purpose. Use
+            nonces or hashes instead.
+          </li>
+          <li>
+            <strong>Wildcard origins:</strong> <code className="text-sm">https:</code> or
+            <code className="text-sm">https://*.cdn.com</code> allows any HTTPS source, severely weakening CSP.
+          </li>
+          <li>
+            <strong>Missing default-src:</strong> Without <code className="text-sm">default-src</code>, there&apos;s
+            no fallback restriction. Always set a restrictive default.
+          </li>
+          <li>
+            <strong>Not testing before enforcement:</strong> Deploying strict CSP without testing breaks
+            functionality. Always use Report-Only mode first.
+          </li>
+          <li>
+            <strong>Reusing nonces:</strong> Nonces must be unique per request. Reusing nonces allows attackers
+            to replay them.
+          </li>
+          <li>
+            <strong>Ignoring violation reports:</strong> CSP reports provide security telemetry. Not monitoring
+            them misses attack detection opportunities.
+          </li>
+          <li>
+            <strong>Forgetting frame-ancestors:</strong> CSP without <code className="text-sm">frame-ancestors</code>
+            leaves you vulnerable to clickjacking.
+          </li>
+          <li>
+            <strong>Meta tag limitations:</strong> CSP via meta tag can&apos;t use
+            <code className="text-sm">frame-ancestors</code> or <code className="text-sm">report-uri</code>.
+            Use HTTP headers.
+          </li>
+          <li>
+            <strong>Not updating for third-party changes:</strong> Third-party scripts change. Monitor and
+            update CSP when they add new domains.
+          </li>
+          <li>
+            <strong>Overlooking connect-src:</strong> Forgetting <code className="text-sm">connect-src</code>
+            can block legitimate API calls or allow data exfiltration.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Real-World Use Cases</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">E-Commerce Platform</h3>
+        <p>
+          <strong>Challenge:</strong> Multiple third-party scripts (analytics, ads, payment widgets) make CSP
+          implementation complex. Need to balance security with functionality.
+        </p>
+        <p>
+          <strong>Solution:</strong>
+        </p>
+        <ul className="space-y-2">
+          <li>Start with Report-Only mode to identify all required sources</li>
+          <li>Use strict-dynamic to simplify third-party script management</li>
+          <li>Host analytics scripts locally where possible</li>
+          <li>Use SRI for all third-party scripts</li>
+          <li>Implement <code className="text-sm">form-action 'self'</code> to prevent payment hijacking</li>
+          <li>Set <code className="text-sm">frame-ancestors 'none'</code> to prevent clickjacking on checkout</li>
+          <li>Monitor violation reports for attack detection</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">SaaS Dashboard Application</h3>
+        <p>
+          <strong>Challenge:</strong> SPA with heavy JavaScript usage, dynamic script loading, and multiple
+          widget integrations.
+        </p>
+        <p>
+          <strong>Solution:</strong>
+        </p>
+        <ul className="space-y-2">
+          <li>Implement nonce-based CSP for all inline scripts</li>
+          <li>Use <code className="text-sm">strict-dynamic</code> for widget script loading</li>
+          <li>Set <code className="text-sm">connect-src</code> to only allow API calls to known backends</li>
+          <li>Block <code className="text-sm">eval()</code> by omitting <code className="text-sm">'unsafe-eval'</code></li>
+          <li>Use <code className="text-sm">base-uri 'self'</code> to prevent base tag injection</li>
+          <li>Implement violation reporting with alerting on suspicious patterns</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Content Publishing Platform</h3>
+        <p>
+          <strong>Challenge:</strong> User-generated content with rich text editing, embedded media, and
+          third-party embeds (YouTube, Twitter, etc.).
+        </p>
+        <p>
+          <strong>Solution:</strong>
+        </p>
+        <ul className="space-y-2">
+          <li>Strict CSP for the application shell (nonces for scripts)</li>
+          <li>Sandboxed iframes for user-generated content</li>
+          <li>Whitelist specific embed domains in <code className="text-sm">frame-src</code></li>
+          <li>Use <code className="text-sm">img-src</code> with specific CDN origins, block data URIs in user content</li>
+          <li>Implement <code className="text-sm">style-src</code> without <code className="text-sm">'unsafe-inline'</code>
+            for user content</li>
+          <li>Monitor and block attempts to inject scripts via user content</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Financial Services Application</h3>
+        <p>
+          <strong>Challenge:</strong> High-security requirements, regulatory compliance, sensitive transactions.
+        </p>
+        <p>
+          <strong>Solution:</strong>
+        </p>
+        <ul className="space-y-2">
+          <li>Maximum strict CSP with nonces, no <code className="text-sm">'unsafe-*'</code> keywords</li>
+          <li>All scripts served from same origin (no third-party CDNs)</li>
+          <li><code className="text-sm">frame-ancestors 'none'</code> to prevent any framing</li>
+          <li><code className="text-sm">form-action</code> restricted to specific transaction endpoints</li>
+          <li><code className="text-sm">navigate-to</code> to control where users can be redirected</li>
+          <li>Real-time violation monitoring with immediate security team alerts</li>
+          <li>Regular CSP audits as part of security compliance</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN Web Docs: Content Security Policy
+            </a>
+          </li>
+          <li>
+            <a href="https://content-security-policy.com/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Content Security Policy Guide
+            </a>
+          </li>
+          <li>
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OWASP CSP Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a href="https://www.w3.org/TR/CSP3/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              W3C CSP Level 3 Specification
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/strict-csp/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              web.dev: Strict Content Security Policy
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/csp-evaluator/csp-evaluator" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              CSP Evaluator Tool (Google)
+            </a>
+          </li>
+          <li>
+            <a href="https://report-uri.com/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Report URI - CSP Reporting and Analysis
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.chrome.com/docs/extensions/mv3/manifest/content_security_policy/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Chrome Extensions CSP Documentation
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interview Questions & Answers</h2>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q1: What is Content Security Policy and how does it prevent XSS?</p>
+            <p className="mt-2 text-sm">
+              A: CSP is an HTTP header that declares which sources of content (scripts, styles, images, etc.)
+              the browser should trust. It prevents XSS by blocking scripts from untrusted sources—even if an
+              attacker successfully injects a <code className="text-sm">&lt;script&gt;</code> tag, CSP blocks
+              its execution if the source isn&apos;t whitelisted. CSP works as defense-in-depth: it doesn&apos;t
+              replace output encoding but provides a safety net when other defenses fail.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q2: What&apos;s the difference between 'unsafe-inline', nonces, and hashes in CSP?</p>
+            <p className="mt-2 text-sm">
+              A: <code className="text-sm">'unsafe-inline'</code> allows all inline scripts/styles—easy but
+              defeats CSP&apos;s purpose. <strong>Nonces</strong> are random values generated per request; only
+              scripts with matching <code className="text-sm">nonce</code> attributes execute.
+              <strong>Hashes</strong> are SHA-256/384/512 hashes of specific script content; only scripts
+              matching the hash execute. Nonces are better for dynamic content; hashes work for static scripts
+              but break if content changes.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q3: How would you implement CSP for a React SPA with third-party analytics?</p>
+            <p className="mt-2 text-sm">
+              A: Use nonce-based CSP: (1) Generate cryptographically random nonce per request on the server.
+              (2) Inject nonce into HTML for initial inline scripts. (3) Set CSP header:
+              <code className="text-sm">script-src 'self' 'nonce-{'{'}value{'}'}' https://analytics.com</code>.
+              (4) For React, use a library like <code className="text-sm">helmet</code> to set CSP headers.
+              (5) Use <code className="text-sm">strict-dynamic</code> if supported to simplify third-party
+              script loading. (6) Start with Report-Only mode to test before enforcement.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q4: What is strict-dynamic and when should you use it?</p>
+            <p className="mt-2 text-sm">
+              A: <code className="text-sm">strict-dynamic</code> is a CSP Level 3 feature that simplifies
+              third-party script management. When a script with a valid nonce loads, any scripts it dynamically
+              loads are also trusted (without needing nonces). This is useful for complex applications with
+              many third-party scripts. Use it when: you have multiple third-party scripts, they dynamically
+              load additional scripts, and you need backward compatibility (it falls back to nonce-based
+              security in older browsers).
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q5: How do you handle CSP violation reports and what do they tell you?</p>
+            <p className="mt-2 text-sm">
+              A: Set up a <code className="text-sm">report-uri</code> or <code className="text-sm">report-to</code>
+              endpoint to receive JSON violation reports. Reports include: <code className="text-sm">blocked-uri</code>
+              (what was blocked), <code className="text-sm">violated-directive</code> (which rule),
+              <code className="text-sm">document-uri</code> (which page), <code className="text-sm">referrer</code>
+              (where the request came from), and sometimes <code className="text-sm">script-sample</code>
+              (actual malicious code). Monitor these for: attack attempts (blocked external scripts),
+              misconfigurations (legitimate resources blocked), and new third-party domains needing whitelisting.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q6: What CSP directives are essential for clickjacking protection?</p>
+            <p className="mt-2 text-sm">
+              A: <code className="text-sm">frame-ancestors</code> is the primary directive for clickjacking
+              protection. Use <code className="text-sm">frame-ancestors 'none'</code> to prevent all framing,
+              or <code className="text-sm">frame-ancestors 'self'</code> to allow only same-origin framing.
+              This replaces the older <code className="text-sm">X-Frame-Options</code> header. Additionally,
+              use <code className="text-sm">frame-src</code> to control which sources your page can embed
+              (prevents embedding malicious content), and <code className="text-sm">form-action</code> to
+              prevent form hijacking.
+            </p>
+          </div>
+        </div>
+      </section>
+    </ArticleLayout>
+  );
+}

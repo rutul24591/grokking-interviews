@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="40" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822">WCAG Contrast Ratio Thresholds (AA &amp; AAA)</text>
+
+  <!-- Scale bar background -->
+  <rect x="60" y="70" width="780" height="40" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+
+  <!-- Scale gradient segments -->
+  <rect x="60" y="70" width="130" height="40" rx="8" fill="#ef4444" opacity="0.2"/>
+  <rect x="190" y="70" width="130" height="40" fill="#f59e0b" opacity="0.2"/>
+  <rect x="320" y="70" width="130" height="40" fill="#22c55e" opacity="0.2"/>
+  <rect x="450" y="70" width="130" height="40" fill="#22c55e" opacity="0.35"/>
+  <rect x="580" y="70" width="130" height="40" fill="#22c55e" opacity="0.5"/>
+  <rect x="710" y="70" width="130" height="40" rx="8" fill="#22c55e" opacity="0.65"/>
+
+  <!-- Scale labels -->
+  <text x="125" y="95" text-anchor="middle" font-size="13" font-weight="bold" fill="#ef4444">1:1 - 3:1</text>
+  <text x="255" y="95" text-anchor="middle" font-size="13" font-weight="bold" fill="#b45309">3:1</text>
+  <text x="385" y="95" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">4.5:1</text>
+  <text x="515" y="95" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">7:1</text>
+  <text x="645" y="95" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">10:1</text>
+  <text x="775" y="95" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">21:1</text>
+
+  <text x="125" y="128" text-anchor="middle" font-size="11" fill="#ef4444">FAIL</text>
+  <text x="255" y="128" text-anchor="middle" font-size="11" fill="#b45309">Large AA</text>
+  <text x="385" y="128" text-anchor="middle" font-size="11" fill="#15803d">Normal AA</text>
+  <text x="515" y="128" text-anchor="middle" font-size="11" fill="#15803d">Normal AAA</text>
+
+  <!-- Threshold markers -->
+  <line x1="190" y1="65" x2="190" y2="115" stroke="#b45309" stroke-width="2" stroke-dasharray="4,3"/>
+  <line x1="320" y1="65" x2="320" y2="115" stroke="#15803d" stroke-width="2" stroke-dasharray="4,3"/>
+  <line x1="450" y1="65" x2="450" y2="115" stroke="#15803d" stroke-width="2" stroke-dasharray="4,3"/>
+
+  <!-- Level AA Section -->
+  <rect x="60" y="165" width="380" height="280" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="60" y="165" width="380" height="42" rx="10" fill="#6d5bd0"/>
+  <rect x="60" y="190" width="380" height="17" fill="#6d5bd0"/>
+  <text x="250" y="193" text-anchor="middle" font-size="16" font-weight="bold" fill="#ffffff">Level AA (Minimum)</text>
+
+  <!-- AA Normal Text -->
+  <rect x="80" y="220" width="340" height="65" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="100" y="245" font-size="14" font-weight="bold" fill="#1a1822">Normal Text (&lt;18pt / &lt;14pt bold)</text>
+  <text x="100" y="268" font-size="28" font-weight="bold" fill="#6d5bd0">4.5 : 1</text>
+  <text x="250" y="268" font-size="13" fill="#1a1822">minimum ratio</text>
+
+  <!-- AA Large Text -->
+  <rect x="80" y="296" width="340" height="65" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="100" y="321" font-size="14" font-weight="bold" fill="#1a1822">Large Text (&gt;=18pt / &gt;=14pt bold)</text>
+  <text x="100" y="344" font-size="28" font-weight="bold" fill="#6d5bd0">3 : 1</text>
+  <text x="210" y="344" font-size="13" fill="#1a1822">minimum ratio</text>
+
+  <!-- AA Non-text -->
+  <rect x="80" y="372" width="340" height="60" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="100" y="397" font-size="14" font-weight="bold" fill="#1a1822">UI Components &amp; Graphics</text>
+  <text x="100" y="418" font-size="28" font-weight="bold" fill="#6d5bd0">3 : 1</text>
+  <text x="210" y="418" font-size="13" fill="#1a1822">minimum ratio (WCAG 1.4.11)</text>
+
+  <!-- Level AAA Section -->
+  <rect x="470" y="165" width="380" height="280" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="470" y="165" width="380" height="42" rx="10" fill="#1a1822"/>
+  <rect x="470" y="190" width="380" height="17" fill="#1a1822"/>
+  <text x="660" y="193" text-anchor="middle" font-size="16" font-weight="bold" fill="#ffffff">Level AAA (Enhanced)</text>
+
+  <!-- AAA Normal Text -->
+  <rect x="490" y="220" width="340" height="65" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="510" y="245" font-size="14" font-weight="bold" fill="#1a1822">Normal Text (&lt;18pt / &lt;14pt bold)</text>
+  <text x="510" y="268" font-size="28" font-weight="bold" fill="#1a1822">7 : 1</text>
+  <text x="630" y="268" font-size="13" fill="#1a1822">minimum ratio</text>
+
+  <!-- AAA Large Text -->
+  <rect x="490" y="296" width="340" height="65" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="510" y="321" font-size="14" font-weight="bold" fill="#1a1822">Large Text (&gt;=18pt / &gt;=14pt bold)</text>
+  <text x="510" y="344" font-size="28" font-weight="bold" fill="#1a1822">4.5 : 1</text>
+  <text x="650" y="344" font-size="13" fill="#1a1822">minimum ratio</text>
+
+  <!-- AAA Note -->
+  <rect x="490" y="372" width="340" height="60" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="510" y="397" font-size="14" font-weight="bold" fill="#1a1822">Note</text>
+  <text x="510" y="418" font-size="12" fill="#1a1822">AAA is aspirational; not required for conformance</text>
+
+  <!-- Footer -->
+  <text x="450" y="475" text-anchor="middle" font-size="12" fill="#6d5bd0">Maximum possible contrast ratio is 21:1 (pure black #000000 on pure white #FFFFFF)</text>
+  <text x="450" y="492" text-anchor="middle" font-size="11" fill="#1a1822">WCAG 2.2 Success Criteria: 1.4.3 (AA), 1.4.6 (AAA), 1.4.11 (Non-text AA)</text>
+</svg>

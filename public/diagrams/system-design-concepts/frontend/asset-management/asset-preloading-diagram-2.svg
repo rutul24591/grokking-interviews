@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" role="img" aria-label="Preload scanner and critical request chain showing browser parsing, speculative preload, and waterfall reduction" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#f3f1f8" rx="8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Preload Scanner &amp; Critical Request Chain</text>
+
+  <!-- Left: Without Preload Scanner -->
+  <rect x="20" y="55" width="420" height="450" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="230" y="80" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1822">Without Preload Scanner</text>
+  <text x="230" y="96" text-anchor="middle" font-size="11" fill="#6d5bd0">(Sequential Discovery)</text>
+
+  <!-- Timeline labels left -->
+  <text x="35" y="125" font-size="10" fill="#1a1822" font-weight="bold">0ms</text>
+  <text x="35" y="195" font-size="10" fill="#1a1822" font-weight="bold">200ms</text>
+  <text x="35" y="265" font-size="10" fill="#1a1822" font-weight="bold">400ms</text>
+  <text x="35" y="335" font-size="10" fill="#1a1822" font-weight="bold">600ms</text>
+  <text x="35" y="405" font-size="10" fill="#1a1822" font-weight="bold">800ms</text>
+  <text x="35" y="465" font-size="10" fill="#1a1822" font-weight="bold">1000ms</text>
+
+  <!-- Dotted timeline left -->
+  <line x1="75" y1="118" x2="75" y2="475" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- HTML bar -->
+  <rect x="85" y="115" width="160" height="24" rx="4" fill="#6d5bd0"/>
+  <text x="165" y="131" text-anchor="middle" font-size="10" fill="#ffffff">HTML Parse</text>
+
+  <!-- CSS bar (starts after HTML discovers it) -->
+  <rect x="85" y="149" width="120" height="24" rx="4" fill="#e8850c"/>
+  <text x="145" y="165" text-anchor="middle" font-size="10" fill="#ffffff">style.css (blocked)</text>
+
+  <!-- Parser blocked indicator -->
+  <rect x="85" y="183" width="120" height="20" rx="4" fill="#f3f1f8" stroke="#e8850c" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="145" y="197" text-anchor="middle" font-size="9" fill="#e8850c">Parser BLOCKED</text>
+
+  <!-- JS bar (starts after CSS) -->
+  <rect x="85" y="213" width="140" height="24" rx="4" fill="#d94f57"/>
+  <text x="155" y="229" text-anchor="middle" font-size="10" fill="#ffffff">app.js (render-blocking)</text>
+
+  <!-- Parser blocked again -->
+  <rect x="85" y="247" width="140" height="20" rx="4" fill="#f3f1f8" stroke="#d94f57" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="155" y="261" text-anchor="middle" font-size="9" fill="#d94f57">Parser BLOCKED</text>
+
+  <!-- Font bar (starts after JS discovers @font-face) -->
+  <rect x="85" y="277" width="100" height="24" rx="4" fill="#2e8b57"/>
+  <text x="135" y="293" text-anchor="middle" font-size="10" fill="#ffffff">font.woff2</text>
+
+  <!-- Image bar (starts even later) -->
+  <rect x="85" y="311" width="110" height="24" rx="4" fill="#4682b4"/>
+  <text x="140" y="327" text-anchor="middle" font-size="10" fill="#ffffff">hero.webp</text>
+
+  <!-- FCP marker left -->
+  <line x1="85" y1="380" x2="420" y2="380" stroke="#d94f57" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="250" y="400" text-anchor="middle" font-size="12" font-weight="bold" fill="#d94f57">FCP at ~800ms</text>
+
+  <!-- Waterfall arrows showing sequential discovery -->
+  <path d="M 245 139 L 245 149" stroke="#1a1822" stroke-width="1.5" fill="none" marker-end="url(#arrowDown)"/>
+  <path d="M 205 173 L 205 213" stroke="#1a1822" stroke-width="1.5" fill="none" marker-end="url(#arrowDown)"/>
+  <path d="M 225 237 L 225 277" stroke="#1a1822" stroke-width="1.5" fill="none" marker-end="url(#arrowDown)"/>
+
+  <!-- Right: With Preload Scanner -->
+  <rect x="460" y="55" width="420" height="450" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="670" y="80" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1822">With Preload Scanner</text>
+  <text x="670" y="96" text-anchor="middle" font-size="11" fill="#6d5bd0">(Speculative Discovery)</text>
+
+  <!-- Timeline labels right -->
+  <text x="475" y="125" font-size="10" fill="#1a1822" font-weight="bold">0ms</text>
+  <text x="475" y="195" font-size="10" fill="#1a1822" font-weight="bold">200ms</text>
+  <text x="475" y="265" font-size="10" fill="#1a1822" font-weight="bold">400ms</text>
+  <text x="475" y="335" font-size="10" fill="#1a1822" font-weight="bold">600ms</text>
+
+  <!-- Dotted timeline right -->
+  <line x1="515" y1="118" x2="515" y2="475" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- HTML bar right -->
+  <rect x="525" y="115" width="160" height="24" rx="4" fill="#6d5bd0"/>
+  <text x="605" y="131" text-anchor="middle" font-size="10" fill="#ffffff">HTML Parse</text>
+
+  <!-- Preload scanner label -->
+  <rect x="695" y="115" width="160" height="24" rx="4" fill="#6d5bd0" opacity="0.6"/>
+  <text x="775" y="131" text-anchor="middle" font-size="10" fill="#ffffff">Preload Scanner</text>
+
+  <!-- All resources start in parallel -->
+  <rect x="525" y="149" width="120" height="24" rx="4" fill="#e8850c"/>
+  <text x="585" y="165" text-anchor="middle" font-size="10" fill="#ffffff">style.css</text>
+
+  <rect x="525" y="183" width="140" height="24" rx="4" fill="#d94f57"/>
+  <text x="595" y="199" text-anchor="middle" font-size="10" fill="#ffffff">app.js</text>
+
+  <rect x="525" y="217" width="100" height="24" rx="4" fill="#2e8b57"/>
+  <text x="575" y="233" text-anchor="middle" font-size="10" fill="#ffffff">font.woff2</text>
+
+  <!-- Preload hints -->
+  <rect x="695" y="149" width="160" height="24" rx="4" fill="#f3f1f8" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="775" y="165" text-anchor="middle" font-size="9" fill="#6d5bd0">link rel="preload"</text>
+
+  <rect x="695" y="183" width="160" height="24" rx="4" fill="#f3f1f8" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="775" y="199" text-anchor="middle" font-size="9" fill="#6d5bd0">link rel="preload"</text>
+
+  <rect x="695" y="217" width="160" height="24" rx="4" fill="#f3f1f8" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="775" y="233" text-anchor="middle" font-size="9" fill="#6d5bd0">link rel="preload"</text>
+
+  <!-- Image also parallel -->
+  <rect x="525" y="251" width="110" height="24" rx="4" fill="#4682b4"/>
+  <text x="580" y="267" text-anchor="middle" font-size="10" fill="#ffffff">hero.webp</text>
+
+  <!-- FCP marker right - much earlier -->
+  <line x1="525" y1="310" x2="860" y2="310" stroke="#2e8b57" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="690" y="330" text-anchor="middle" font-size="12" font-weight="bold" fill="#2e8b57">FCP at ~450ms</text>
+
+  <!-- Improvement callout -->
+  <rect x="560" y="365" width="260" height="60" rx="8" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="690" y="388" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d5bd0">~44% faster FCP</text>
+  <text x="690" y="408" text-anchor="middle" font-size="11" fill="#1a1822">Parallel fetch eliminates waterfall</text>
+
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowDown" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M 1 1 L 4 7 L 7 1" fill="none" stroke="#1a1822" stroke-width="1.5"/>
+    </marker>
+  </defs>
+
+  <!-- Legend -->
+  <rect x="85" y="430" width="14" height="14" rx="2" fill="#6d5bd0"/>
+  <text x="104" y="442" font-size="10" fill="#1a1822">HTML</text>
+  <rect x="145" y="430" width="14" height="14" rx="2" fill="#e8850c"/>
+  <text x="164" y="442" font-size="10" fill="#1a1822">CSS</text>
+  <rect x="195" y="430" width="14" height="14" rx="2" fill="#d94f57"/>
+  <text x="214" y="442" font-size="10" fill="#1a1822">JS</text>
+  <rect x="245" y="430" width="14" height="14" rx="2" fill="#2e8b57"/>
+  <text x="264" y="442" font-size="10" fill="#1a1822">Font</text>
+  <rect x="305" y="430" width="14" height="14" rx="2" fill="#4682b4"/>
+  <text x="324" y="442" font-size="10" fill="#1a1822">Image</text>
+</svg>

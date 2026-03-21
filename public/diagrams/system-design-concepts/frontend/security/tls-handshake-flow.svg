@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1200" height="700" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="600" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">TLS 1.3 Handshake Flow</text>
+  <text x="600" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#475569">1-RTT handshake for new connections, 0-RTT for resumed connections</text>
+  
+  <!-- Client -->
+  <g transform="translate(50, 100)">
+    <rect x="0" y="0" width="200" height="500" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="100" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="400" fill="#2563eb">Client (Browser)</text>
+    
+    <!-- Client components -->
+    <circle cx="100" cy="80" r="30" fill="#ffffff" stroke="#3b82f6"/>
+    <text x="100" y="85" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#0f172a">TLS</text>
+    <text x="100" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#0f172a">Client</text>
+    
+    <rect x="40" y="140" width="120" height="40" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+    <text x="100" y="158" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Key Pair</text>
+    <text x="100" y="172" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">(Ephemeral)</text>
+    
+    <rect x="40" y="200" width="120" height="40" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+    <text x="100" y="218" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">CA Trust</text>
+    <text x="100" y="232" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Store</text>
+    
+    <rect x="40" y="260" width="120" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="100" y="278" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#92400e">Session</text>
+    <text x="100" y="292" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Tickets</text>
+    
+    <rect x="40" y="320" width="120" height="40" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="100" y="338" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#16a34a">Session</text>
+    <text x="100" y="352" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Keys</text>
+    
+    <rect x="40" y="400" width="120" height="60" rx="4" fill="#f8fafc" stroke="#64748b"/>
+    <text x="100" y="420" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#0f172a">HTTP</text>
+    <text x="100" y="435" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Application</text>
+    <text x="100" y="450" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Data</text>
+  </g>
+  
+  <!-- Server -->
+  <g transform="translate(950, 100)">
+    <rect x="0" y="0" width="200" height="500" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="100" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="400" fill="#d97706">Server</text>
+    
+    <!-- Server components -->
+    <circle cx="100" cy="80" r="30" fill="#ffffff" stroke="#f59e0b"/>
+    <text x="100" y="85" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#0f172a">TLS</text>
+    <text x="100" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#0f172a">Server</text>
+    
+    <rect x="40" y="140" width="120" height="40" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+    <text x="100" y="158" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Private</text>
+    <text x="100" y="172" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Key</text>
+    
+    <rect x="40" y="200" width="120" height="40" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+    <text x="100" y="218" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">TLS</text>
+    <text x="100" y="232" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Certificate</text>
+    
+    <rect x="40" y="260" width="120" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="100" y="278" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#92400e">Key Pair</text>
+    <text x="100" y="292" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">(Ephemeral)</text>
+    
+    <rect x="40" y="320" width="120" height="40" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="100" y="338" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#16a34a">Session</text>
+    <text x="100" y="352" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Keys</text>
+    
+    <rect x="40" y="400" width="120" height="60" rx="4" fill="#f8fafc" stroke="#64748b"/>
+    <text x="100" y="420" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#0f172a">HTTP</text>
+    <text x="100" y="435" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Application</text>
+    <text x="100" y="450" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Data</text>
+  </g>
+  
+  <!-- Handshake messages -->
+  <g transform="translate(280, 120)">
+    <!-- Client Hello -->
+    <line x1="0" y1="30" x2="670" y2="30" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead-blue)"/>
+    <rect x="50" y="5" width="180" height="50" rx="4" fill="#dbeafe" stroke="#3b82f6"/>
+    <text x="140" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#2563eb">1. Client Hello</text>
+    <text x="140" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">TLS versions, ciphers, key share</text>
+    
+    <!-- Server Hello -->
+    <line x1="670" y1="100" x2="0" y2="100" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead-orange)"/>
+    <rect x="440" y="75" width="180" height="50" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="530" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#d97706">2. Server Hello</text>
+    <text x="530" y="112" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Selected version, cipher, key share</text>
+    
+    <!-- Certificate -->
+    <line x1="670" y1="170" x2="0" y2="170" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead-orange)"/>
+    <rect x="440" y="145" width="180" height="50" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="530" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#d97706">3. Certificate</text>
+    <text x="530" y="182" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Server cert + chain</text>
+    
+    <!-- Server Finished -->
+    <line x1="670" y1="240" x2="0" y2="240" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead-orange)"/>
+    <rect x="440" y="215" width="180" height="50" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="530" y="235" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#16a34a">4. Server Finished</text>
+    <text x="530" y="252" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Encrypted, handshake complete</text>
+    
+    <!-- Client Finished -->
+    <line x1="0" y1="310" x2="670" y2="310" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead-blue)"/>
+    <rect x="50" y="285" width="180" height="50" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="140" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#16a34a">5. Client Finished</text>
+    <text x="140" y="322" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Encrypted, handshake complete</text>
+    
+    <!-- Application Data -->
+    <line x1="0" y1="380" x2="670" y2="380" stroke="#22c55e" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowhead-green)"/>
+    <line x1="670" y1="420" x2="0" y2="420" stroke="#22c55e" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowhead-green)"/>
+    <rect x="200" y="365" width="270" height="70" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="335" y="385" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#16a34a">6. Encrypted Application Data</text>
+    <text x="335" y="402" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">HTTP requests/responses encrypted with session keys</text>
+    <text x="335" y="422" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">AES-GCM or ChaCha20-Poly1305</text>
+  </g>
+  
+  <!-- Key derivation box -->
+  <g transform="translate(350, 480)">
+    <rect x="0" y="0" width="500" height="100" rx="8" fill="#e0e7ff" stroke="#6366f1"/>
+    <text x="250" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#4f46e5">Key Derivation (ECDHE)</text>
+    
+    <text x="30" y="50" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Client Key Share + Server Key Share</text>
+    <line x1="30" y1="60" x2="470" y2="60" stroke="#6366f1" stroke-width="2" marker-end="url(#arrowhead-purple)"/>
+    <rect x="180" y="65" width="140" height="30" rx="4" fill="#ffffff" stroke="#6366f1"/>
+    <text x="250" y="85" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#4f46e5">Shared Secret</text>
+    
+    <line x1="250" y1="95" x2="250" y2="115" stroke="#6366f1" stroke-width="2" marker-end="url(#arrowhead-purple)"/>
+    <text x="250" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">→ Session Keys (encryption, MAC)</text>
+  </g>
+  
+  <!-- 0-RTT note -->
+  <g transform="translate(350, 600)">
+    <rect x="0" y="0" width="500" height="60" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-dasharray="4,2"/>
+    <text x="250" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#92400e">0-RTT Resumption (TLS 1.3)</text>
+    <text x="250" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">For resumed connections: Client sends data in first flight</text>
+    <text x="250" y="56" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#dc2626">⚠️ No replay protection for 0-RTT data</text>
+  </g>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowhead-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrowhead-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+  </defs>
+</svg>

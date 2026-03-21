@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500" role="img" aria-label="Skip link CSS visibility states: hidden by default, visible on focus, hidden on blur">
+  <rect width="900" height="500" rx="16" fill="#f3f1f8" />
+
+  <text x="450" y="36" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="20" font-weight="700">Skip Link Visibility: CSS States</text>
+
+  <!-- State 1: Default (Hidden) -->
+  <rect x="30" y="60" width="270" height="420" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <rect x="30" y="60" width="270" height="36" rx="12" fill="#e74c3c" />
+  <rect x="30" y="82" width="270" height="14" fill="#e74c3c" />
+  <text x="165" y="82" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Default State (Hidden)</text>
+
+  <!-- Visual representation: page without skip link -->
+  <rect x="50" y="108" width="230" height="160" rx="6" fill="#f8f7fc" stroke="#d7d1e6" stroke-width="1" />
+
+  <!-- The skip link positioned off-screen -->
+  <rect x="-60" y="118" width="100" height="26" rx="4" fill="#6d5bd0" opacity="0.4" />
+  <text x="-10" y="136" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="8">Skip to main</text>
+
+  <!-- Arrow indicating off-screen position -->
+  <line x1="42" y1="131" x2="8" y2="131" stroke="#e74c3c" stroke-width="1.5" />
+  <polygon points="10,126 2,131 10,136" fill="#e74c3c" />
+  <text x="26" y="148" text-anchor="middle" fill="#e74c3c" font-family="system-ui, sans-serif" font-size="8">Off-screen</text>
+
+  <!-- Nav bar -->
+  <rect x="60" y="118" width="210" height="30" rx="4" fill="#e8e5f0" />
+  <text x="165" y="138" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10">Navigation Bar</text>
+
+  <!-- Content -->
+  <rect x="60" y="156" width="210" height="100" rx="4" fill="#f0edf9" />
+  <text x="165" y="180" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10">Page Content</text>
+  <rect x="74" y="192" width="182" height="6" rx="2" fill="#d7d1e6" />
+  <rect x="74" y="204" width="160" height="6" rx="2" fill="#d7d1e6" />
+  <rect x="74" y="216" width="170" height="6" rx="2" fill="#d7d1e6" />
+  <rect x="74" y="228" width="140" height="6" rx="2" fill="#d7d1e6" />
+  <rect x="74" y="240" width="182" height="6" rx="2" fill="#d7d1e6" />
+
+  <!-- CSS code block -->
+  <rect x="42" y="280" width="246" height="186" rx="6" fill="#1e1b2e" />
+  <text x="54" y="300" fill="#c792ea" font-family="monospace" font-size="10">.skip-link</text>
+  <text x="54" y="316" fill="#89ddff" font-family="monospace" font-size="10">{</text>
+  <text x="66" y="332" fill="#82aaff" font-family="monospace" font-size="10">position:</text>
+  <text x="144" y="332" fill="#c3e88d" font-family="monospace" font-size="10">absolute;</text>
+  <text x="66" y="348" fill="#82aaff" font-family="monospace" font-size="10">top:</text>
+  <text x="98" y="348" fill="#f78c6c" font-family="monospace" font-size="10">-9999px;</text>
+  <text x="66" y="364" fill="#82aaff" font-family="monospace" font-size="10">left:</text>
+  <text x="102" y="364" fill="#f78c6c" font-family="monospace" font-size="10">-9999px;</text>
+  <text x="66" y="380" fill="#82aaff" font-family="monospace" font-size="10">width:</text>
+  <text x="114" y="380" fill="#f78c6c" font-family="monospace" font-size="10">1px;</text>
+  <text x="66" y="396" fill="#82aaff" font-family="monospace" font-size="10">height:</text>
+  <text x="122" y="396" fill="#f78c6c" font-family="monospace" font-size="10">1px;</text>
+  <text x="66" y="412" fill="#82aaff" font-family="monospace" font-size="10">overflow:</text>
+  <text x="138" y="412" fill="#c3e88d" font-family="monospace" font-size="10">hidden;</text>
+  <text x="66" y="428" fill="#82aaff" font-family="monospace" font-size="10">clip:</text>
+  <text x="98" y="428" fill="#c3e88d" font-family="monospace" font-size="10">rect(0,0,0,0);</text>
+  <text x="66" y="444" fill="#82aaff" font-family="monospace" font-size="10">white-space:</text>
+  <text x="154" y="444" fill="#c3e88d" font-family="monospace" font-size="10">nowrap;</text>
+  <text x="54" y="460" fill="#89ddff" font-family="monospace" font-size="10">}</text>
+
+  <!-- Arrow to State 2 -->
+  <line x1="310" y1="260" x2="322" y2="260" stroke="#6d5bd0" stroke-width="2" />
+  <polygon points="322,254 334,260 322,266" fill="#6d5bd0" />
+  <text x="322" y="246" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10" font-weight="600">:focus</text>
+
+  <!-- State 2: Focused (Visible) -->
+  <rect x="340" y="60" width="270" height="420" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2.5" />
+  <rect x="340" y="60" width="270" height="36" rx="12" fill="#27ae60" />
+  <rect x="340" y="82" width="270" height="14" fill="#27ae60" />
+  <text x="475" y="82" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="700">:focus State (Visible)</text>
+
+  <!-- Visual representation: skip link visible -->
+  <rect x="360" y="108" width="230" height="160" rx="6" fill="#f8f7fc" stroke="#d7d1e6" stroke-width="1" />
+
+  <!-- Skip link visible at top -->
+  <rect x="370" y="112" width="210" height="30" rx="6" fill="#6d5bd0" stroke="#fbbf24" stroke-width="3" />
+  <text x="475" y="132" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="11" font-weight="700">Skip to main content</text>
+
+  <!-- Nav bar below -->
+  <rect x="370" y="150" width="210" height="26" rx="4" fill="#e8e5f0" />
+  <text x="475" y="168" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10">Navigation Bar</text>
+
+  <!-- Content -->
+  <rect x="370" y="184" width="210" height="72" rx="4" fill="#f0edf9" />
+  <text x="475" y="204" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10">Page Content</text>
+  <rect x="384" y="216" width="182" height="6" rx="2" fill="#d7d1e6" />
+  <rect x="384" y="228" width="160" height="6" rx="2" fill="#d7d1e6" />
+  <rect x="384" y="240" width="170" height="6" rx="2" fill="#d7d1e6" />
+
+  <!-- CSS code block -->
+  <rect x="352" y="280" width="246" height="186" rx="6" fill="#1e1b2e" />
+  <text x="364" y="300" fill="#c792ea" font-family="monospace" font-size="10">.skip-link:focus</text>
+  <text x="364" y="316" fill="#89ddff" font-family="monospace" font-size="10">{</text>
+  <text x="376" y="332" fill="#82aaff" font-family="monospace" font-size="10">position:</text>
+  <text x="454" y="332" fill="#c3e88d" font-family="monospace" font-size="10">fixed;</text>
+  <text x="376" y="348" fill="#82aaff" font-family="monospace" font-size="10">top:</text>
+  <text x="408" y="348" fill="#f78c6c" font-family="monospace" font-size="10">10px;</text>
+  <text x="376" y="364" fill="#82aaff" font-family="monospace" font-size="10">left:</text>
+  <text x="412" y="364" fill="#f78c6c" font-family="monospace" font-size="10">10px;</text>
+  <text x="376" y="380" fill="#82aaff" font-family="monospace" font-size="10">width:</text>
+  <text x="424" y="380" fill="#c3e88d" font-family="monospace" font-size="10">auto;</text>
+  <text x="376" y="396" fill="#82aaff" font-family="monospace" font-size="10">height:</text>
+  <text x="432" y="396" fill="#c3e88d" font-family="monospace" font-size="10">auto;</text>
+  <text x="376" y="412" fill="#82aaff" font-family="monospace" font-size="10">clip:</text>
+  <text x="408" y="412" fill="#c3e88d" font-family="monospace" font-size="10">auto;</text>
+  <text x="376" y="428" fill="#82aaff" font-family="monospace" font-size="10">z-index:</text>
+  <text x="436" y="428" fill="#f78c6c" font-family="monospace" font-size="10">9999;</text>
+  <text x="376" y="444" fill="#82aaff" font-family="monospace" font-size="10">padding:</text>
+  <text x="442" y="444" fill="#f78c6c" font-family="monospace" font-size="10">12px 24px;</text>
+  <text x="364" y="460" fill="#89ddff" font-family="monospace" font-size="10">}</text>
+
+  <!-- Arrow to State 3 -->
+  <line x1="620" y1="260" x2="632" y2="260" stroke="#6d5bd0" stroke-width="2" />
+  <polygon points="632,254 644,260 632,266" fill="#6d5bd0" />
+  <text x="632" y="246" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10" font-weight="600">blur</text>
+
+  <!-- State 3: Blurred (Hidden again) -->
+  <rect x="650" y="60" width="230" height="420" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <rect x="650" y="60" width="230" height="36" rx="12" fill="#e74c3c" />
+  <rect x="650" y="82" width="230" height="14" fill="#e74c3c" />
+  <text x="765" y="82" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Blur (Hidden Again)</text>
+
+  <!-- Visual representation: skip link hidden again -->
+  <rect x="668" y="108" width="194" height="160" rx="6" fill="#f8f7fc" stroke="#d7d1e6" stroke-width="1" />
+
+  <!-- Nav bar at top (no skip link) -->
+  <rect x="678" y="118" width="174" height="30" rx="4" fill="#e8e5f0" />
+  <text x="765" y="138" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10">Navigation Bar</text>
+
+  <!-- Focus is on first nav item -->
+  <rect x="688" y="156" width="50" height="20" rx="4" fill="#ffffff" stroke="#fbbf24" stroke-width="2" />
+  <text x="713" y="170" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="9">Home</text>
+
+  <!-- Content -->
+  <rect x="678" y="184" width="174" height="72" rx="4" fill="#f0edf9" />
+  <text x="765" y="204" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10">Page Content</text>
+  <rect x="690" y="216" width="150" height="6" rx="2" fill="#d7d1e6" />
+  <rect x="690" y="228" width="130" height="6" rx="2" fill="#d7d1e6" />
+  <rect x="690" y="240" width="140" height="6" rx="2" fill="#d7d1e6" />
+
+  <!-- Explanation box -->
+  <rect x="660" y="280" width="210" height="186" rx="6" fill="#1e1b2e" />
+  <text x="765" y="304" text-anchor="middle" fill="#fbbf24" font-family="system-ui, sans-serif" font-size="11" font-weight="700">CSS Transition Flow</text>
+
+  <text x="676" y="330" fill="#c3e88d" font-family="system-ui, sans-serif" font-size="10">1. Page loads</text>
+  <text x="690" y="348" fill="#82aaff" font-family="system-ui, sans-serif" font-size="10">Link is off-screen</text>
+
+  <text x="676" y="374" fill="#c3e88d" font-family="system-ui, sans-serif" font-size="10">2. User presses Tab</text>
+  <text x="690" y="392" fill="#82aaff" font-family="system-ui, sans-serif" font-size="10">:focus activates</text>
+  <text x="690" y="408" fill="#82aaff" font-family="system-ui, sans-serif" font-size="10">Link slides into view</text>
+
+  <text x="676" y="434" fill="#c3e88d" font-family="system-ui, sans-serif" font-size="10">3. Focus moves away</text>
+  <text x="690" y="452" fill="#82aaff" font-family="system-ui, sans-serif" font-size="10">Link returns to</text>
+  <text x="690" y="468" fill="#82aaff" font-family="system-ui, sans-serif" font-size="10">off-screen position</text>
+
+  <!-- Bottom status bar -->
+  <rect x="30" y="486" width="850" height="2" rx="1" fill="#d7d1e6" />
+  <circle cx="165" cy="486" r="5" fill="#e74c3c" />
+  <text x="165" y="498" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="9">Hidden</text>
+  <circle cx="475" cy="486" r="5" fill="#27ae60" />
+  <text x="475" y="498" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="9">Visible (on :focus)</text>
+  <circle cx="765" cy="486" r="5" fill="#e74c3c" />
+  <text x="765" y="498" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="9">Hidden (on blur)</text>
+</svg>

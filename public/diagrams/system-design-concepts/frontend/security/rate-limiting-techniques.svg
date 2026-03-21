@@ -1,0 +1,224 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 700" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1100" height="700" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="550" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Rate Limiting Techniques Comparison</text>
+  <text x="550" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">Debouncing vs Throttling vs Rate Limiting</text>
+  
+  <!-- Debouncing -->
+  <g transform="translate(50, 85)">
+    <rect x="0" y="0" width="320" height="280" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="160" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#2563eb">Debouncing</text>
+    <text x="160" y="48" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Execute after pause</text>
+    
+    <!-- Timeline diagram -->
+    <g transform="translate(20, 65)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">User input:</text>
+      
+      <!-- Input events -->
+      <circle cx="20" cy="15" r="5" fill="#3b82f6"/>
+      <circle cx="40" cy="15" r="5" fill="#3b82f6"/>
+      <circle cx="60" cy="15" r="5" fill="#3b82f6"/>
+      <circle cx="80" cy="15" r="5" fill="#3b82f6"/>
+      <text x="100" cy="18" font-family="monospace" font-size="9" fill="#475569">h e l l o</text>
+      
+      <!-- Wait period -->
+      <rect x="20" y="30" width="200" height="20" rx="3" fill="#fef3c7" stroke="#f59e0b" stroke-dasharray="4,2"/>
+      <text x="120" y="44" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#92400e">Wait 300ms (no input)</text>
+      
+      <!-- Execution -->
+      <rect x="20" y="60" width="80" height="25" rx="3" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="60" y="77" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">EXECUTE</text>
+      <text x="120" y="77" font-family="monospace" font-size="9" fill="#475569">search("hello")</text>
+    </g>
+    
+    <!-- Use cases -->
+    <g transform="translate(20, 180)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Use Cases:</text>
+      <text x="10" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Search autocomplete</text>
+      <text x="10" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Form validation</text>
+      <text x="10" y="48" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Window resize</text>
+      <text x="10" y="63" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Auto-save</text>
+    </g>
+    
+    <!-- Code snippet -->
+    <g transform="translate(20, 240)">
+      <rect x="0" y="0" width="280" height="35" rx="3" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="10" y="20" font-family="monospace" font-size="8" fill="#475569">debounce(search, 300)</text>
+    </g>
+  </g>
+  
+  <!-- Throttling -->
+  <g transform="translate(390, 85)">
+    <rect x="0" y="0" width="320" height="280" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="160" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#d97706">Throttling</text>
+    <text x="160" y="48" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Execute at most once per interval</text>
+    
+    <!-- Timeline diagram -->
+    <g transform="translate(20, 65)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Continuous events:</text>
+      
+      <!-- Continuous input -->
+      <line x1="20" y1="15" x2="280" y2="15" stroke="#f59e0b" stroke-width="2"/>
+      <text x="150" y="12" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">scroll scroll scroll scroll...</text>
+      
+      <!-- Execution windows -->
+      <rect x="20" y="30" width="40" height="20" rx="3" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="40" y="44" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#16a34a">RUN</text>
+      
+      <rect x="80" y="30" width="40" height="20" rx="3" fill="#fef2f2" stroke="#cbd5e1"/>
+      <text x="100" y="44" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#94a3b8">skip</text>
+      
+      <rect x="140" y="30" width="40" height="20" rx="3" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="160" y="44" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#16a34a">RUN</text>
+      
+      <rect x="200" y="30" width="40" height="20" rx="3" fill="#fef2f2" stroke="#cbd5e1"/>
+      <text x="220" y="44" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#94a3b8">skip</text>
+      
+      <rect x="260" y="30" width="40" height="20" rx="3" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="280" y="44" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#16a34a">RUN</text>
+      
+      <text x="150" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Max 1 execution per 100ms</text>
+    </g>
+    
+    <!-- Use cases -->
+    <g transform="translate(20, 180)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Use Cases:</text>
+      <text x="10" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Scroll handlers</text>
+      <text x="10" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Mouse move events</text>
+      <text x="10" y="48" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Animation frames</text>
+      <text x="10" y="63" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• API polling</text>
+    </g>
+    
+    <!-- Code snippet -->
+    <g transform="translate(20, 240)">
+      <rect x="0" y="0" width="280" height="35" rx="3" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="10" y="20" font-family="monospace" font-size="8" fill="#475569">throttle(updateScroll, 100)</text>
+    </g>
+  </g>
+  
+  <!-- Rate Limiting -->
+  <g transform="translate(730, 85)">
+    <rect x="0" y="0" width="320" height="280" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+    <text x="160" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#4f46e5">Rate Limiting (Token Bucket)</text>
+    <text x="160" y="48" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Enforce quota per time window</text>
+    
+    <!-- Token bucket diagram -->
+    <g transform="translate(20, 65)">
+      <!-- Bucket -->
+      <rect x="60" y="10" width="120" height="80" rx="4" fill="#ffffff" stroke="#6366f1"/>
+      <text x="120" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">Token Bucket</text>
+      
+      <!-- Tokens -->
+      <circle cx="80" cy="55" r="8" fill="#6366f1"/>
+      <circle cx="105" cy="55" r="8" fill="#6366f1"/>
+      <circle cx="130" cy="55" r="8" fill="#6366f1"/>
+      <circle cx="155" cy="55" r="8" fill="#6366f1"/>
+      <text x="120" y="80" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">4 tokens</text>
+      
+      <!-- Request consumes token -->
+      <line x1="180" y1="55" x2="220" y2="55" stroke="#6366f1" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <text x="200" y="48" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#475569">Request</text>
+      
+      <!-- Result -->
+      <rect x="225" y="40" width="70" height="30" rx="3" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="260" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#16a34a">ALLOWED</text>
+      
+      <!-- Refill -->
+      <path d="M 40 80 Q 40 50, 60 50" stroke="#6366f1" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arrowhead)"/>
+      <text x="30" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#475569">Refill</text>
+      <text x="30" y="82" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#475569">+1 token/hour</text>
+    </g>
+    
+    <!-- Use cases -->
+    <g transform="translate(20, 180)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Use Cases:</text>
+      <text x="10" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Form submissions</text>
+      <text x="10" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• API requests</text>
+      <text x="10" y="48" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Button clicks</text>
+      <text x="10" y="63" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Resource-intensive ops</text>
+    </g>
+    
+    <!-- Code snippet -->
+    <g transform="translate(20, 240)">
+      <rect x="0" y="0" width="280" height="35" rx="3" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="10" y="20" font-family="monospace" font-size="8" fill="#475569">new RateLimiter(3, 60000)</text>
+    </g>
+  </g>
+  
+  <!-- Comparison table -->
+  <g transform="translate(50, 390)">
+    <rect x="0" y="0" width="1000" height="200" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="500" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#0f172a">Technique Comparison</text>
+    
+    <!-- Header -->
+    <rect x="20" y="40" width="200" height="30" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <text x="120" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Aspect</text>
+    
+    <rect x="220" y="40" width="250" height="30" fill="#dbeafe" stroke="#3b82f6"/>
+    <text x="345" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#2563eb">Debouncing</text>
+    
+    <rect x="470" y="40" width="250" height="30" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="595" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#d97706">Throttling</text>
+    
+    <rect x="720" y="40" width="280" height="30" fill="#e0e7ff" stroke="#6366f1"/>
+    <text x="860" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#4f46e5">Rate Limiting</text>
+    
+    <!-- Row 1: Behavior -->
+    <rect x="20" y="70" width="200" height="35" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="120" y="92" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Behavior</text>
+    
+    <rect x="220" y="70" width="250" height="35" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="345" y="92" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Wait for pause, then execute</text>
+    
+    <rect x="470" y="70" width="250" height="35" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="595" y="92" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Execute at fixed intervals</text>
+    
+    <rect x="720" y="70" width="280" height="35" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="860" y="92" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Enforce quota per window</text>
+    
+    <!-- Row 2: Timing -->
+    <rect x="20" y="105" width="200" height="35" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="120" y="127" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Timing</text>
+    
+    <rect x="220" y="105" width="250" height="35" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="345" y="127" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">After N ms of silence</text>
+    
+    <rect x="470" y="105" width="250" height="35" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="595" y="127" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Every N ms (max)</text>
+    
+    <rect x="720" y="105" width="280" height="35" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="860" y="127" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Until quota exhausted</text>
+    
+    <!-- Row 3: Best For -->
+    <rect x="20" y="140" width="200" height="50" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="120" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Best For</text>
+    
+    <rect x="220" y="140" width="250" height="50" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="345" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Search, validation,</text>
+    <text x="345" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">auto-save</text>
+    
+    <rect x="470" y="140" width="250" height="50" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="595" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Scroll, mouse move,</text>
+    <text x="595" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">animations</text>
+    
+    <rect x="720" y="140" width="280" height="50" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="860" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Submissions, API calls,</text>
+    <text x="860" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">button clicks</text>
+  </g>
+  
+  <!-- Key insight -->
+  <g transform="translate(50, 610)">
+    <rect x="0" y="0" width="1000" height="50" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="500" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Key Insight</text>
+    <text x="500" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Debouncing = execute after pause | Throttling = execute at regular intervals | Rate Limiting = enforce quota</text>
+  </g>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+  </defs>
+</svg>

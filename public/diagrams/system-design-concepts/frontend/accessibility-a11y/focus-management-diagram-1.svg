@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500" role="img" aria-label="Focus trap in modal lifecycle diagram">
+  <rect width="900" height="500" rx="16" fill="#f3f1f8" />
+
+  <text x="450" y="38" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="20" font-weight="700">Focus Trap in Modal Lifecycle</text>
+
+  <!-- Step 1: Trigger Button -->
+  <rect x="30" y="70" width="160" height="80" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
+  <text x="110" y="100" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700">STEP 1</text>
+  <text x="110" y="118" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="600">User clicks</text>
+  <text x="110" y="134" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="600">&quot;Open Modal&quot;</text>
+
+  <!-- Arrow 1 -->
+  <line x1="190" y1="110" x2="230" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)" />
+
+  <!-- Step 2: Store activeElement -->
+  <rect x="230" y="70" width="160" height="80" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
+  <text x="310" y="100" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700">STEP 2</text>
+  <text x="310" y="118" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Store reference to</text>
+  <text x="310" y="134" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="600">activeElement</text>
+
+  <!-- Arrow 2 -->
+  <line x1="390" y1="110" x2="430" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)" />
+
+  <!-- Step 3: Open Modal -->
+  <rect x="430" y="70" width="160" height="80" rx="10" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="2" />
+  <text x="510" y="100" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="700">STEP 3</text>
+  <text x="510" y="118" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Modal opens</text>
+  <text x="510" y="134" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Focus first element</text>
+
+  <!-- Arrow 3 -->
+  <line x1="590" y1="110" x2="630" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)" />
+
+  <!-- Step 4: Trap focus -->
+  <rect x="630" y="70" width="240" height="80" rx="10" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="2" />
+  <text x="750" y="100" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="700">STEP 4</text>
+  <text x="750" y="118" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Trap focus inside modal</text>
+  <text x="750" y="134" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Set inert on background</text>
+
+  <!-- Focus Cycling Detail Box -->
+  <rect x="80" y="190" width="740" height="180" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="450" y="218" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="16" font-weight="700">Focus Cycling Inside Modal</text>
+
+  <!-- Focusable elements row -->
+  <rect x="120" y="240" width="120" height="50" rx="8" fill="#f3f1f8" stroke="#6d5bd0" stroke-width="1.5" />
+  <text x="180" y="260" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Close Button</text>
+  <text x="180" y="276" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">(first focusable)</text>
+
+  <line x1="240" y1="265" x2="290" y2="265" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowhead)" />
+
+  <rect x="290" y="240" width="120" height="50" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="350" y="260" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Input Field</text>
+  <text x="350" y="276" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">Tab &amp;rarr;</text>
+
+  <line x1="410" y1="265" x2="460" y2="265" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowhead)" />
+
+  <rect x="460" y="240" width="120" height="50" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="520" y="260" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Cancel Btn</text>
+  <text x="520" y="276" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">Tab &amp;rarr;</text>
+
+  <line x1="580" y1="265" x2="630" y2="265" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowhead)" />
+
+  <rect x="630" y="240" width="120" height="50" rx="8" fill="#f3f1f8" stroke="#6d5bd0" stroke-width="1.5" />
+  <text x="690" y="260" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Submit Btn</text>
+  <text x="690" y="276" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10">(last focusable)</text>
+
+  <!-- Wrap-around arrow -->
+  <path d="M 750 265 Q 790 265 790 320 Q 790 345 450 345 Q 110 345 110 320 Q 110 265 120 265" fill="none" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrowhead)" />
+  <text x="450" y="340" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Tab from last wraps to first (Shift+Tab reverses)</text>
+
+  <!-- Step 5: Close and restore -->
+  <rect x="180" y="400" width="220" height="80" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
+  <text x="290" y="430" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700">STEP 5</text>
+  <text x="290" y="448" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="600">User closes modal</text>
+  <text x="290" y="464" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="600">(Escape or action)</text>
+
+  <!-- Arrow 5 -->
+  <line x1="400" y1="440" x2="490" y2="440" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)" />
+
+  <!-- Step 6: Restore focus -->
+  <rect x="490" y="400" width="220" height="80" rx="10" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="2" />
+  <text x="600" y="430" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="700">STEP 6</text>
+  <text x="600" y="448" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Restore focus to</text>
+  <text x="600" y="464" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="600">original trigger element</text>
+
+  <!-- Arrowhead definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0" />
+    </marker>
+  </defs>
+</svg>

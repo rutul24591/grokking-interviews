@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" role="img" aria-label="Priority hints and fetch priority flow showing fetchpriority high low auto and resource prioritization by the browser" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Priority Hints &amp; Fetch Priority Flow</text>
+
+  <!-- Browser Resource Prioritizer -->
+  <rect x="300" y="55" width="300" height="50" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">Browser Resource Prioritizer</text>
+  <text x="450" y="96" text-anchor="middle" font-size="10" fill="#ffffff">Combines type + hint + context</text>
+
+  <!-- Three fetchpriority boxes -->
+  <rect x="30" y="130" width="260" height="90" rx="8" fill="#ffffff" stroke="#2e8b57" stroke-width="2"/>
+  <rect x="30" y="130" width="260" height="28" rx="8" fill="#2e8b57"/>
+  <text x="160" y="149" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">fetchpriority="high"</text>
+  <text x="160" y="173" text-anchor="middle" font-size="11" fill="#1a1822">Boosts resource above default.</text>
+  <text x="160" y="190" text-anchor="middle" font-size="11" fill="#1a1822">LCP image, critical script,</text>
+  <text x="160" y="207" text-anchor="middle" font-size="11" fill="#1a1822">above-fold hero content.</text>
+
+  <rect x="320" y="130" width="260" height="90" rx="8" fill="#ffffff" stroke="#e8850c" stroke-width="2"/>
+  <rect x="320" y="130" width="260" height="28" rx="8" fill="#e8850c"/>
+  <text x="450" y="149" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">fetchpriority="auto"</text>
+  <text x="450" y="173" text-anchor="middle" font-size="11" fill="#1a1822">Browser decides (default).</text>
+  <text x="450" y="190" text-anchor="middle" font-size="11" fill="#1a1822">Heuristics based on resource</text>
+  <text x="450" y="207" text-anchor="middle" font-size="11" fill="#1a1822">type and document position.</text>
+
+  <rect x="610" y="130" width="260" height="90" rx="8" fill="#ffffff" stroke="#d94f57" stroke-width="2"/>
+  <rect x="610" y="130" width="260" height="28" rx="8" fill="#d94f57"/>
+  <text x="740" y="149" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">fetchpriority="low"</text>
+  <text x="740" y="173" text-anchor="middle" font-size="11" fill="#1a1822">Deprioritizes resource.</text>
+  <text x="740" y="190" text-anchor="middle" font-size="11" fill="#1a1822">Below-fold images, non-</text>
+  <text x="740" y="207" text-anchor="middle" font-size="11" fill="#1a1822">critical prefetch, analytics.</text>
+
+  <!-- Arrows down to priority queue -->
+  <line x1="160" y1="220" x2="160" y2="260" stroke="#2e8b57" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <line x1="450" y1="220" x2="450" y2="260" stroke="#e8850c" stroke-width="2" marker-end="url(#arrowOrange)"/>
+  <line x1="740" y1="220" x2="740" y2="260" stroke="#d94f57" stroke-width="2" marker-end="url(#arrowRed)"/>
+
+  <!-- Priority Queue -->
+  <rect x="50" y="260" width="800" height="100" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="282" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a1822">Chrome Internal Priority Queue (Highest to Lowest)</text>
+
+  <!-- Priority levels -->
+  <rect x="65" y="295" width="120" height="52" rx="6" fill="#2e8b57" opacity="0.15" stroke="#2e8b57" stroke-width="1.5"/>
+  <text x="125" y="314" text-anchor="middle" font-size="10" font-weight="bold" fill="#2e8b57">Highest</text>
+  <text x="125" y="328" text-anchor="middle" font-size="9" fill="#1a1822">Main CSS</text>
+  <text x="125" y="340" text-anchor="middle" font-size="9" fill="#1a1822">Sync scripts (head)</text>
+
+  <rect x="200" y="295" width="120" height="52" rx="6" fill="#2e8b57" opacity="0.1" stroke="#2e8b57" stroke-width="1"/>
+  <text x="260" y="314" text-anchor="middle" font-size="10" font-weight="bold" fill="#2e8b57">High</text>
+  <text x="260" y="328" text-anchor="middle" font-size="9" fill="#1a1822">Preload (as=script)</text>
+  <text x="260" y="340" text-anchor="middle" font-size="9" fill="#1a1822">Fonts, LCP image</text>
+
+  <rect x="335" y="295" width="120" height="52" rx="6" fill="#e8850c" opacity="0.15" stroke="#e8850c" stroke-width="1"/>
+  <text x="395" y="314" text-anchor="middle" font-size="10" font-weight="bold" fill="#e8850c">Medium</text>
+  <text x="395" y="328" text-anchor="middle" font-size="9" fill="#1a1822">Non-preloaded scripts</text>
+  <text x="395" y="340" text-anchor="middle" font-size="9" fill="#1a1822">Manifest, XHR/fetch</text>
+
+  <rect x="470" y="295" width="120" height="52" rx="6" fill="#d94f57" opacity="0.1" stroke="#d94f57" stroke-width="1"/>
+  <text x="530" y="314" text-anchor="middle" font-size="10" font-weight="bold" fill="#d94f57">Low</text>
+  <text x="530" y="328" text-anchor="middle" font-size="9" fill="#1a1822">Async scripts</text>
+  <text x="530" y="340" text-anchor="middle" font-size="9" fill="#1a1822">Images (viewport)</text>
+
+  <rect x="605" y="295" width="120" height="52" rx="6" fill="#d94f57" opacity="0.15" stroke="#d94f57" stroke-width="1.5"/>
+  <text x="665" y="314" text-anchor="middle" font-size="10" font-weight="bold" fill="#d94f57">Lowest</text>
+  <text x="665" y="328" text-anchor="middle" font-size="9" fill="#1a1822">Prefetch</text>
+  <text x="665" y="340" text-anchor="middle" font-size="9" fill="#1a1822">Images (offscreen)</text>
+
+  <text x="785" y="320" text-anchor="middle" font-size="9" fill="#1a1822" font-style="italic">fetchpriority</text>
+  <text x="785" y="335" text-anchor="middle" font-size="9" fill="#1a1822" font-style="italic">can shift +/- 1</text>
+
+  <!-- Arrow pointing down to examples -->
+  <line x1="450" y1="360" x2="450" y2="385" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowPurple)"/>
+
+  <!-- Code examples -->
+  <rect x="50" y="385" width="390" height="100" rx="8" fill="#1a1822"/>
+  <text x="65" y="405" font-size="11" fill="#2e8b57">/* Boost LCP image priority */</text>
+  <text x="65" y="423" font-size="11" fill="#ffffff">&lt;img src="hero.webp"</text>
+  <text x="65" y="441" font-size="11" fill="#e8850c">     fetchpriority="high"</text>
+  <text x="65" y="459" font-size="11" fill="#ffffff">     alt="Hero" /&gt;</text>
+  <text x="65" y="477" font-size="11" fill="#2e8b57">/* Reduces LCP by 30-100ms */</text>
+
+  <rect x="460" y="385" width="390" height="100" rx="8" fill="#1a1822"/>
+  <text x="475" y="405" font-size="11" fill="#d94f57">/* Deprioritize offscreen images */</text>
+  <text x="475" y="423" font-size="11" fill="#ffffff">&lt;img src="footer-banner.webp"</text>
+  <text x="475" y="441" font-size="11" fill="#e8850c">     fetchpriority="low"</text>
+  <text x="475" y="459" font-size="11" fill="#ffffff">     loading="lazy" alt="Ad" /&gt;</text>
+  <text x="475" y="477" font-size="11" fill="#d94f57">/* Yields bandwidth to critical */</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M 1 1 L 4 7 L 7 1" fill="none" stroke="#2e8b57" stroke-width="1.5"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M 1 1 L 4 7 L 7 1" fill="none" stroke="#e8850c" stroke-width="1.5"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M 1 1 L 4 7 L 7 1" fill="none" stroke="#d94f57" stroke-width="1.5"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M 1 1 L 4 7 L 7 1" fill="none" stroke="#6d5bd0" stroke-width="1.5"/>
+    </marker>
+  </defs>
+</svg>

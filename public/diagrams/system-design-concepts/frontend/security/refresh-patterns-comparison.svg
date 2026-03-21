@@ -1,0 +1,249 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1200" height="700" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="600" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Token Refresh Patterns Comparison</text>
+  <text x="600" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">Silent Refresh vs Refresh on 401 vs Token Rotation vs Sliding Session</text>
+  
+  <!-- Silent Refresh -->
+  <g transform="translate(50, 85)">
+    <rect x="0" y="0" width="540" height="180" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="270" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#2563eb">Silent Refresh (Proactive)</text>
+    
+    <!-- Timeline -->
+    <g transform="translate(20, 45)">
+      <line x1="0" y1="20" x2="500" y2="20" stroke="#3b82f6" stroke-width="2"/>
+      <text x="250" y="15" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Token Lifetime</text>
+      
+      <!-- Access token valid -->
+      <rect x="0" y="30" width="350" height="20" rx="3" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="175" y="44" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#16a34a">Access Token Valid</text>
+      
+      <!-- Silent refresh point -->
+      <line x1="280" y1="20" x2="280" y2="80" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,2"/>
+      <text x="280" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#d97706">Refresh at 80%</text>
+      
+      <!-- New token -->
+      <rect x="280" y="30" width="200" height="20" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="380" y="44" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#92400e">New Access Token</text>
+      
+      <!-- User experience -->
+      <rect x="0" y="60" width="500" height="25" rx="3" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="250" y="77" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">User Experience: Seamless, no interrupted requests</text>
+    </g>
+    
+    <!-- Pros/Cons -->
+    <g transform="translate(20, 135)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#16a34a">✓ Pros:</text>
+      <text x="15" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• No failed requests</text>
+      <text x="15" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Proactive, smooth UX</text>
+      
+      <text x="270" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#dc2626">⚠ Cons:</text>
+      <text x="285" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Background activity when idle</text>
+      <text x="285" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Timer management complexity</text>
+    </g>
+  </g>
+  
+  <!-- Refresh on 401 -->
+  <g transform="translate(610, 85)">
+    <rect x="0" y="0" width="540" height="180" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="270" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#d97706">Refresh on 401 (Lazy)</text>
+    
+    <!-- Timeline -->
+    <g transform="translate(20, 45)">
+      <line x1="0" y1="20" x2="500" y2="20" stroke="#f59e0b" stroke-width="2"/>
+      <text x="250" y="15" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Token Lifetime</text>
+      
+      <!-- Access token valid -->
+      <rect x="0" y="30" width="480" height="20" rx="3" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="240" y="44" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#16a34a">Access Token Valid</text>
+      
+      <!-- Expiration point -->
+      <line x1="480" y1="20" x2="480" y2="80" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,2"/>
+      <text x="480" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#dc2626">401 Received</text>
+      
+      <!-- Refresh happens -->
+      <rect x="480" y="30" width="80" height="20" rx="3" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="520" y="44" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#dc2626">Refresh</text>
+      
+      <!-- New token -->
+      <rect x="560" y="30" width="100" height="20" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="610" y="44" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#92400e">New Token</text>
+      
+      <!-- User experience -->
+      <rect x="0" y="60" width="500" height="25" rx="3" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="250" y="77" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">User Experience: First request fails, then recovers</text>
+    </g>
+    
+    <!-- Pros/Cons -->
+    <g transform="translate(20, 135)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#16a34a">✓ Pros:</text>
+      <text x="15" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• No background activity</text>
+      <text x="15" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Refresh only when needed</text>
+      
+      <text x="270" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#dc2626">⚠ Cons:</text>
+      <text x="285" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• First request after expiry fails</text>
+      <text x="285" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Requires request queuing</text>
+    </g>
+  </g>
+  
+  <!-- Token Rotation -->
+  <g transform="translate(50, 285)">
+    <rect x="0" y="0" width="540" height="180" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+    <text x="270" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#4f46e5">Token Rotation (Security)</text>
+    
+    <!-- Rotation diagram -->
+    <g transform="translate(20, 45)">
+      <!-- Token A -->
+      <rect x="0" y="10" width="100" height="40" rx="4" fill="#ffffff" stroke="#6366f1"/>
+      <text x="50" y="28" text-anchor="middle" font-family="monospace" font-size="10" fill="#0f172a">Token A</text>
+      <text x="50" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#475569">(Active)</text>
+      
+      <line x1="100" y1="30" x2="140" y2="30" stroke="#6366f1" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <text x="120" y="23" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#475569">Use</text>
+      
+      <!-- Token B -->
+      <rect x="140" y="10" width="100" height="40" rx="4" fill="#ffffff" stroke="#6366f1"/>
+      <text x="190" y="28" text-anchor="middle" font-family="monospace" font-size="10" fill="#0f172a">Token B</text>
+      <text x="190" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#475569">(New)</text>
+      
+      <line x1="190" y1="50" x2="190" y2="80" stroke="#6366f1" stroke-width="2" marker-end="url(#arrowhead)"/>
+      
+      <!-- Token A invalidated -->
+      <rect x="0" y="90" width="100" height="35" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-dasharray="4,2"/>
+      <text x="50" y="108" text-anchor="middle" font-family="monospace" font-size="10" fill="#dc2626">Token A</text>
+      <text x="50" y="122" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#dc2626">(Invalidated)</text>
+      
+      <text x="250" y="110" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Each refresh invalidates old token</text>
+    </g>
+    
+    <!-- Pros/Cons -->
+    <g transform="translate(20, 135)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#16a34a">✓ Pros:</text>
+      <text x="15" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Detects token theft</text>
+      <text x="15" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Limits damage from compromise</text>
+      
+      <text x="270" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#dc2626">⚠ Cons:</text>
+      <text x="285" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Requires token tracking</text>
+      <text x="285" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Multi-tab coordination needed</text>
+    </g>
+  </g>
+  
+  <!-- Sliding Session -->
+  <g transform="translate(610, 285)">
+    <rect x="0" y="0" width="540" height="180" rx="8" fill="#f3e8ff" stroke="#a855f7" stroke-width="2"/>
+    <text x="270" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#9333ea">Sliding Session Expiration</text>
+    
+    <!-- Sliding diagram -->
+    <g transform="translate(20, 45)">
+      <line x1="0" y1="30" x2="500" y2="30" stroke="#a855f7" stroke-width="2"/>
+      <text x="250" y="23" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Session Timeline</text>
+      
+      <!-- Initial session -->
+      <rect x="0" y="45" width="200" height="25" rx="3" fill="#f3e8ff" stroke="#a855f7"/>
+      <text x="100" y="62" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#9333ea">7 days</text>
+      
+      <!-- User activity -->
+      <circle cx="180" cy="30" r="8" fill="#a855f7"/>
+      <text x="180" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#475569">Activity</text>
+      
+      <!-- Extended session -->
+      <rect x="180" y="45" width="200" height="25" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="280" y="62" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#92400e">+7 days (slid)</text>
+      
+      <!-- Another activity -->
+      <circle cx="360" cy="30" r="8" fill="#a855f7"/>
+      
+      <!-- Further extended -->
+      <rect x="360" y="45" width="120" height="25" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="420" y="62" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#92400e">+7 days</text>
+      
+      <!-- Absolute max -->
+      <line x1="480" y1="20" x2="480" y2="80" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,2"/>
+      <text x="480" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#dc2626">30 days absolute max</text>
+    </g>
+    
+    <!-- Pros/Cons -->
+    <g transform="translate(20, 135)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#16a34a">✓ Pros:</text>
+      <text x="15" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Active users stay logged in</text>
+      <text x="15" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Inactive sessions expire</text>
+      
+      <text x="270" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#dc2626">⚠ Cons:</text>
+      <text x="285" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Can extend indefinitely</text>
+      <text x="285" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Need absolute maximum</text>
+    </g>
+  </g>
+  
+  <!-- Recommendation Matrix -->
+  <g transform="translate(50, 485)">
+    <rect x="0" y="0" width="1100" height="200" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="550" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#0f172a">Pattern Selection Guide</text>
+    
+    <!-- Header -->
+    <rect x="20" y="40" width="200" height="30" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <text x="120" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Use Case</text>
+    
+    <rect x="220" y="40" width="210" height="30" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <text x="325" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Recommended Pattern</text>
+    
+    <rect x="430" y="40" width="210" height="30" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <text x="535" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Security Level</text>
+    
+    <rect x="640" y="40" width="460" height="30" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <text x="870" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Notes</text>
+    
+    <!-- Row 1: Consumer App -->
+    <rect x="20" y="70" width="200" height="35" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="120" y="92" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Consumer Web App</text>
+    
+    <rect x="220" y="70" width="210" height="35" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="325" y="92" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">Silent Refresh + Sliding</text>
+    
+    <rect x="430" y="70" width="210" height="35" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="535" y="92" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">Medium</text>
+    
+    <rect x="640" y="70" width="460" height="35" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="870" y="92" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Balance UX and security, 30-day absolute max</text>
+    
+    <!-- Row 2: Enterprise -->
+    <rect x="20" y="105" width="200" height="35" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="120" y="127" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Enterprise / B2B</text>
+    
+    <rect x="220" y="105" width="210" height="35" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="325" y="127" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">Refresh on 401 + Rotation</text>
+    
+    <rect x="430" y="105" width="210" height="35" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="535" y="127" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">High</text>
+    
+    <rect x="640" y="105" width="460" height="35" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="870" y="127" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Theft detection, compliance requirements</text>
+    
+    <!-- Row 3: Banking -->
+    <rect x="20" y="140" width="200" height="35" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="120" y="162" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Banking / Healthcare</text>
+    
+    <rect x="220" y="140" width="210" height="35" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="325" y="162" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">Rotation + Absolute Expiry</text>
+    
+    <rect x="430" y="140" width="210" height="35" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="535" y="162" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">Maximum</text>
+    
+    <rect x="640" y="140" width="460" height="35" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="870" y="162" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Short sessions, mandatory re-auth, audit trails</text>
+  </g>
+  
+  <!-- Key insight -->
+  <g transform="translate(50, 700)">
+    <rect x="0" y="0" width="1100" height="40" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="550" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Best Practice: Combine patterns - Silent refresh for UX, rotation for security, absolute expiry for compliance</text>
+  </g>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+  </defs>
+</svg>

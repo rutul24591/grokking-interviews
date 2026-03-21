@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500" role="img" aria-label="Roving tabindex pattern showing arrow key navigation within groups">
+  <rect width="900" height="500" rx="16" fill="#f3f1f8" />
+
+  <text x="450" y="38" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="20" font-weight="700">Roving Tabindex Pattern</text>
+  <text x="450" y="60" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="13">Arrow keys move within a group; Tab moves between groups</text>
+
+  <defs>
+    <marker id="arrow2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#6d5bd0" />
+    </marker>
+    <marker id="arrowGray" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#94a3b8" />
+    </marker>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#22c55e" />
+    </marker>
+  </defs>
+
+  <!-- Group 1: Toolbar -->
+  <rect x="60" y="90" width="780" height="120" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
+  <text x="80" y="115" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Group 1: Toolbar (role=&quot;toolbar&quot;)</text>
+
+  <!-- Toolbar buttons -->
+  <rect x="90" y="135" width="90" height="40" rx="8" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="2" />
+  <text x="135" y="160" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Bold</text>
+  <text x="135" y="190" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10" font-weight="600">tabindex=&quot;0&quot;</text>
+  <text x="135" y="202" text-anchor="middle" fill="#22c55e" font-family="system-ui, sans-serif" font-size="10" font-weight="600">Focused</text>
+
+  <rect x="200" y="135" width="90" height="40" rx="8" fill="#f8f7fc" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="245" y="160" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12">Italic</text>
+  <text x="245" y="190" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">tabindex=&quot;-1&quot;</text>
+
+  <rect x="310" y="135" width="110" height="40" rx="8" fill="#f8f7fc" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="365" y="160" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12">Underline</text>
+  <text x="365" y="190" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">tabindex=&quot;-1&quot;</text>
+
+  <rect x="440" y="135" width="120" height="40" rx="8" fill="#f8f7fc" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="500" y="160" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12">Strikethrough</text>
+  <text x="500" y="190" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">tabindex=&quot;-1&quot;</text>
+
+  <!-- Arrow keys between toolbar items -->
+  <line x1="185" y1="147" x2="198" y2="147" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow2)" />
+  <line x1="295" y1="147" x2="308" y2="147" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow2)" />
+  <line x1="425" y1="147" x2="438" y2="147" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow2)" />
+
+  <!-- Arrow key labels -->
+  <text x="600" y="148" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Arrow Right/Left</text>
+  <text x="600" y="164" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="11">moves within group</text>
+
+  <!-- Tab arrow from Group 1 to Group 2 -->
+  <path d="M450,210 L450,250" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-dasharray="6,4" marker-end="url(#arrowGreen)" />
+  <rect x="395" y="222" width="110" height="22" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1.5" />
+  <text x="450" y="238" text-anchor="middle" fill="#22c55e" font-family="system-ui, sans-serif" font-size="12" font-weight="700">Tab Key</text>
+
+  <!-- Group 2: Tab List -->
+  <rect x="60" y="255" width="780" height="120" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
+  <text x="80" y="280" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Group 2: Tab List (role=&quot;tablist&quot;)</text>
+
+  <rect x="90" y="300" width="130" height="40" rx="8" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="2" />
+  <text x="155" y="325" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="600">General</text>
+  <text x="155" y="355" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10" font-weight="600">tabindex=&quot;0&quot;</text>
+
+  <rect x="240" y="300" width="130" height="40" rx="8" fill="#f8f7fc" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="305" y="325" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12">Security</text>
+  <text x="305" y="355" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">tabindex=&quot;-1&quot;</text>
+
+  <rect x="390" y="300" width="130" height="40" rx="8" fill="#f8f7fc" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="455" y="325" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12">Notifications</text>
+  <text x="455" y="355" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">tabindex=&quot;-1&quot;</text>
+
+  <!-- Arrow keys between tab items -->
+  <line x1="225" y1="312" x2="238" y2="312" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow2)" />
+  <line x1="375" y1="312" x2="388" y2="312" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow2)" />
+
+  <text x="570" y="313" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Arrow Right/Left</text>
+  <text x="570" y="329" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="11">moves within group</text>
+
+  <!-- Tab arrow from Group 2 to Group 3 -->
+  <path d="M450,375 L450,410" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-dasharray="6,4" marker-end="url(#arrowGreen)" />
+  <rect x="395" y="384" width="110" height="22" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1.5" />
+  <text x="450" y="400" text-anchor="middle" fill="#22c55e" font-family="system-ui, sans-serif" font-size="12" font-weight="700">Tab Key</text>
+
+  <!-- Group 3: Action buttons -->
+  <rect x="60" y="415" width="780" height="60" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
+  <text x="80" y="440" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Group 3: Actions</text>
+
+  <rect x="250" y="425" width="100" height="36" rx="8" fill="#6d5bd0" />
+  <text x="300" y="448" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Save</text>
+
+  <rect x="370" y="425" width="100" height="36" rx="8" fill="#f8f7fc" stroke="#d7d1e6" stroke-width="1.5" />
+  <text x="420" y="448" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12">Cancel</text>
+
+  <!-- Legend -->
+  <rect x="580" y="425" width="240" height="40" rx="6" fill="#f8f7fc" stroke="#d7d1e6" stroke-width="1" />
+  <line x1="600" y1="440" x2="630" y2="440" stroke="#22c55e" stroke-width="2.5" stroke-dasharray="6,4" />
+  <text x="640" y="444" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10">Tab (between groups)</text>
+  <line x1="600" y1="456" x2="630" y2="456" stroke="#6d5bd0" stroke-width="2" />
+  <text x="640" y="460" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10">Arrow (within group)</text>
+</svg>

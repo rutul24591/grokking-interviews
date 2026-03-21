@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 650" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1100" height="650" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="550" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">ABAC Model (Attribute-Based Access Control)</text>
+  <text x="550" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">Access decisions based on attributes of user, resource, action, and environment</text>
+  
+  <!-- Policy Decision Point -->
+  <g transform="translate(450, 85)">
+    <rect x="0" y="0" width="200" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"/>
+    <text x="100" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#d97706">Policy Decision</text>
+    <text x="100" y="55" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#d97706">Point (PDP)</text>
+    <text x="100" y="80" text-anchor="middle" font-family="monospace" font-size="10" fill="#475569">Evaluates policies</text>
+  </g>
+  
+  <!-- Subject Attributes -->
+  <g transform="translate(50, 220)">
+    <rect x="0" y="0" width="250" height="180" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="125" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#2563eb">Subject (User)</text>
+    
+    <g transform="translate(15, 45)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#475569">Attributes:</text>
+      <rect x="0" y="10" width="220" height="25" rx="3" fill="#ffffff" stroke="#3b82f6"/>
+      <text x="10" y="27" font-family="monospace" font-size="10" fill="#475569">role: "manager"</text>
+      
+      <rect x="0" y="40" width="220" height="25" rx="3" fill="#ffffff" stroke="#3b82f6"/>
+      <text x="10" y="57" font-family="monospace" font-size="10" fill="#475569">department: "engineering"</text>
+      
+      <rect x="0" y="70" width="220" height="25" rx="3" fill="#ffffff" stroke="#3b82f6"/>
+      <text x="10" y="87" font-family="monospace" font-size="10" fill="#475569">clearance: 3</text>
+      
+      <rect x="0" y="100" width="220" height="25" rx="3" fill="#ffffff" stroke="#3b82f6"/>
+      <text x="10" y="117" font-family="monospace" font-size="10" fill="#475569">location: "office"</text>
+    </g>
+  </g>
+  
+  <!-- Resource Attributes -->
+  <g transform="translate(320, 220)">
+    <rect x="0" y="0" width="250" height="180" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="125" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#d97706">Resource</text>
+    
+    <g transform="translate(15, 45)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#475569">Attributes:</text>
+      <rect x="0" y="10" width="220" height="25" rx="3" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="10" y="27" font-family="monospace" font-size="10" fill="#475569">type: "document"</text>
+      
+      <rect x="0" y="40" width="220" height="25" rx="3" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="10" y="57" font-family="monospace" font-size="10" fill="#475569">owner: "alice"</text>
+      
+      <rect x="0" y="70" width="220" height="25" rx="3" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="10" y="87" font-family="monospace" font-size="10" fill="#475569">classification: 2</text>
+      
+      <rect x="0" y="100" width="220" height="25" rx="3" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="10" y="117" font-family="monospace" font-size="10" fill="#475569">department: "engineering"</text>
+    </g>
+  </g>
+  
+  <!-- Action Attributes -->
+  <g transform="translate(590, 220)">
+    <rect x="0" y="0" width="250" height="180" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+    <text x="125" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#4f46e5">Action</text>
+    
+    <g transform="translate(15, 45)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#475569">Attributes:</text>
+      <rect x="0" y="10" width="220" height="25" rx="3" fill="#ffffff" stroke="#6366f1"/>
+      <text x="10" y="27" font-family="monospace" font-size="10" fill="#475569">type: "read"</text>
+      
+      <rect x="0" y="40" width="220" height="25" rx="3" fill="#ffffff" stroke="#6366f1"/>
+      <text x="10" y="57" font-family="monospace" font-size="10" fill="#475569">resource_type: "document"</text>
+      
+      <rect x="0" y="70" width="220" height="25" rx="3" fill="#ffffff" stroke="#6366f1"/>
+      <text x="10" y="87" font-family="monospace" font-size="10" fill="#475569">sensitivity: "normal"</text>
+    </g>
+  </g>
+  
+  <!-- Environment Attributes -->
+  <g transform="translate(860, 220)">
+    <rect x="0" y="0" width="200" height="180" rx="8" fill="#f3e8ff" stroke="#a855f7" stroke-width="2"/>
+    <text x="100" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#9333ea">Environment</text>
+    
+    <g transform="translate(15, 45)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#475569">Attributes:</text>
+      <rect x="0" y="10" width="170" height="25" rx="3" fill="#ffffff" stroke="#a855f7"/>
+      <text x="10" y="27" font-family="monospace" font-size="10" fill="#475569">time: 14:30</text>
+      
+      <rect x="0" y="40" width="170" height="25" rx="3" fill="#ffffff" stroke="#a855f7"/>
+      <text x="10" y="57" font-family="monospace" font-size="10" fill="#475569">day: "weekday"</text>
+      
+      <rect x="0" y="70" width="170" height="25" rx="3" fill="#ffffff" stroke="#a855f7"/>
+      <text x="10" y="87" font-family="monospace" font-size="10" fill="#475569">ip: "10.0.0.1"</text>
+      
+      <rect x="0" y="100" width="170" height="25" rx="3" fill="#ffffff" stroke="#a855f7"/>
+      <text x="10" y="117" font-family="monospace" font-size="10" fill="#475569">network: "internal"</text>
+    </g>
+  </g>
+  
+  <!-- Arrows to PDP -->
+  <g transform="translate(0, 410)">
+    <line x1="175" y1="0" x2="175" y2="30" x3="520" y3="30" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead-blue)"/>
+    <line x1="445" y1="0" x2="445" y2="30" x3="520" y3="30" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead-orange)"/>
+    <line x1="715" y1="0" x2="715" y2="30" x3="580" y3="30" stroke="#6366f1" stroke-width="2" marker-end="url(#arrowhead-purple)"/>
+    <line x1="960" y1="0" x2="960" y2="30" x3="680" y3="30" stroke="#a855f7" stroke-width="2" marker-end="url(#arrowhead-pink)"/>
+  </g>
+  
+  <!-- Policy Examples -->
+  <g transform="translate(50, 450)">
+    <rect x="0" y="0" width="1000" height="180" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="500" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#0f172a">Example Policy Evaluations</text>
+    
+    <!-- Policy 1: ALLOW -->
+    <g transform="translate(20, 45)">
+      <rect x="0" y="0" width="470" height="60" rx="6" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="235" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#16a34a">Policy 1: Department Match (ALLOW)</text>
+      <text x="20" y="42" font-family="monospace" font-size="10" fill="#475569">ALLOW IF user.department == resource.department</text>
+      <text x="20" y="55" font-family="monospace" font-size="10" fill="#16a34a">✓ "engineering" == "engineering" → ACCESS GRANTED</text>
+    </g>
+    
+    <!-- Policy 2: ALLOW -->
+    <g transform="translate(510, 45)">
+      <rect x="0" y="0" width="470" height="60" rx="6" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="235" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#16a34a">Policy 2: Clearance Level (ALLOW)</text>
+      <text x="20" y="42" font-family="monospace" font-size="10" fill="#475569">ALLOW IF user.clearance >= resource.classification</text>
+      <text x="20" y="55" font-family="monospace" font-size="10" fill="#16a34a">✓ 3 >= 2 → ACCESS GRANTED</text>
+    </g>
+    
+    <!-- Policy 3: Complex -->
+    <g transform="translate(20, 115)">
+      <rect x="0" y="0" width="960" height="55" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="480" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Policy 3: Complex Multi-Attribute (ALLOW)</text>
+      <text x="20" y="38" font-family="monospace" font-size="9" fill="#475569">ALLOW IF (user.clearance >= resource.classification) AND (user.department == resource.department) AND (time.hour >= 9 AND time.hour <= 18)</text>
+      <text x="20" y="50" font-family="monospace" font-size="9" fill="#16a34a">✓ (3 >= 2) AND ("engineering" == "engineering") AND (14 >= 9 AND 14 <= 18) → ACCESS GRANTED</text>
+    </g>
+  </g>
+  
+  <!-- Key insight -->
+  <g transform="translate(50, 650)">
+    <rect x="0" y="0" width="1000" height="50" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="500" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Key Advantage: Fine-Grained, Context-Aware Access Control</text>
+    <text x="500" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">ABAC enables dynamic access decisions based on multiple attributes. More flexible than RBAC but more complex to implement and manage.</text>
+  </g>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowhead-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrowhead-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+    <marker id="arrowhead-pink" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#a855f7"/>
+    </marker>
+  </defs>
+</svg>

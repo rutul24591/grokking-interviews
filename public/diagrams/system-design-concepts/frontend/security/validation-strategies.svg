@@ -1,0 +1,155 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 600" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1100" height="600" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="550" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">Input Validation Strategies</text>
+  <text x="550" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#475569">Allowlist (Whitelist) vs Blocklist (Blacklist) Comparison</text>
+  
+  <!-- Allowlist section -->
+  <g transform="translate(50, 85)">
+    <rect x="0" y="0" width="480" height="240" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+    <text x="240" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#16a34a">Allowlist (Whitelist)</text>
+    <text x="240" y="48" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">Define what is ALLOWED, reject everything else</text>
+    
+    <!-- Visual representation -->
+    <g transform="translate(20, 65)">
+      <rect x="0" y="0" width="200" height="160" rx="6" fill="#ffffff" stroke="#22c55e"/>
+      <text x="100" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Allowed Input</text>
+      
+      <!-- Allowed items -->
+      <g transform="translate(15, 40)">
+        <rect x="0" y="0" width="80" height="25" rx="3" fill="#f0fdf4" stroke="#22c55e"/>
+        <text x="40" y="17" text-anchor="middle" font-family="monospace" font-size="10" fill="#16a34a">✓ "draft"</text>
+        
+        <rect x="90" y="0" width="80" height="25" rx="3" fill="#f0fdf4" stroke="#22c55e"/>
+        <text x="130" y="17" text-anchor="middle" font-family="monospace" font-size="10" fill="#16a34a">✓ "published"</text>
+        
+        <rect x="0" y="35" width="80" height="25" rx="3" fill="#f0fdf4" stroke="#22c55e"/>
+        <text x="40" y="52" text-anchor="middle" font-family="monospace" font-size="10" fill="#16a34a">✓ "archived"</text>
+        
+        <rect x="90" y="35" width="80" height="25" rx="3" fill="#fef2f2" stroke="#ef4444" stroke-dasharray="3,2"/>
+        <text x="130" y="52" text-anchor="middle" font-family="monospace" font-size="10" fill="#dc2626">✗ "deleted"</text>
+        
+        <rect x="0" y="70" width="170" height="25" rx="3" fill="#fef2f2" stroke="#ef4444" stroke-dasharray="3,2"/>
+        <text x="85" y="87" text-anchor="middle" font-family="monospace" font-size="10" fill="#dc2626">✗ "&lt;script&gt;alert(1)&lt;/script&gt;"</text>
+      </g>
+    </g>
+    
+    <!-- Code example -->
+    <g transform="translate(240, 65)">
+      <rect x="0" y="0" width="220" height="160" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="110" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Example Code</text>
+      
+      <text x="10" y="45" font-family="monospace" font-size="9" fill="#475569">// Allowlist pattern</text>
+      <text x="10" y="60" font-family="monospace" font-size="9" fill="#0f172a">const allowed =</text>
+      <text x="10" y="75" font-family="monospace" font-size="9" fill="#0f172a">  ['draft', 'published',</text>
+      <text x="10" y="90" font-family="monospace" font-size="9" fill="#0f172a">   'archived'];</text>
+      <text x="10" y="110" font-family="monospace" font-size="9" fill="#0f172a">if (!allowed.includes(input))</text>
+      <text x="10" y="125" font-family="monospace" font-size="9" fill="#dc2626">  throw Error('Invalid');</text>
+      
+      <rect x="10" y="138" width="200" height="18" rx="2" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="110" y="151" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#16a34a">✓ More Secure</text>
+    </g>
+    
+    <!-- Pros/Cons -->
+    <g transform="translate(20, 245)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#16a34a">Advantages:</text>
+      <text x="15" y="15" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Impossible to bypass with unknown attacks</text>
+      <text x="15" y="30" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Clear, maintainable rules</text>
+      <text x="250" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#dc2626">Disadvantages:</text>
+      <text x="265" y="15" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Requires knowing all valid values</text>
+      <text x="265" y="30" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• May reject valid edge cases</text>
+    </g>
+  </g>
+  
+  <!-- Blocklist section -->
+  <g transform="translate(570, 85)">
+    <rect x="0" y="0" width="480" height="240" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+    <text x="240" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#dc2626">Blocklist (Blacklist)</text>
+    <text x="240" y="48" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">Define what is FORBIDDEN, allow everything else</text>
+    
+    <!-- Visual representation -->
+    <g transform="translate(20, 65)">
+      <rect x="0" y="0" width="200" height="160" rx="6" fill="#ffffff" stroke="#ef4444"/>
+      <text x="100" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Blocked Input</text>
+      
+      <!-- Blocked items -->
+      <g transform="translate(15, 40)">
+        <rect x="0" y="0" width="170" height="25" rx="3" fill="#fef2f2" stroke="#ef4444"/>
+        <text x="85" y="17" text-anchor="middle" font-family="monospace" font-size="10" fill="#dc2626">✗ "&lt;script&gt;"</text>
+        
+        <rect x="0" y="35" width="170" height="25" rx="3" fill="#fef2f2" stroke="#ef4444"/>
+        <text x="85" y="52" text-anchor="middle" font-family="monospace" font-size="10" fill="#dc2626">✗ "javascript:"</text>
+        
+        <rect x="0" y="70" width="170" height="25" rx="3" fill="#fef2f2" stroke="#ef4444"/>
+        <text x="85" y="87" text-anchor="middle" font-family="monospace" font-size="10" fill="#dc2626">✗ "onerror="</text>
+        
+        <rect x="0" y="105" width="170" height="25" rx="3" fill="#f0fdf4" stroke="#22c55e" stroke-dasharray="3,2"/>
+        <text x="85" y="122" text-anchor="middle" font-family="monospace" font-size="10" fill="#16a34a">✓ "&lt;SCRIPT&gt;" (bypass!)</text>
+      </g>
+    </g>
+    
+    <!-- Code example -->
+    <g transform="translate(240, 65)">
+      <rect x="0" y="0" width="220" height="160" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="110" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Example Code</text>
+      
+      <text x="10" y="45" font-family="monospace" font-size="9" fill="#475569">// Blocklist pattern</text>
+      <text x="10" y="60" font-family="monospace" font-size="9" fill="#0f172a">const blocked =</text>
+      <text x="10" y="75" font-family="monospace" font-size="9" fill="#0f172a">  [/&lt;script/i,</text>
+      <text x="10" y="90" font-family="monospace" font-size="9" fill="#0f172a">   /javascript:/i];</text>
+      <text x="10" y="110" font-family="monospace" font-size="9" fill="#0f172a">for (const pattern of blocked)</text>
+      <text x="10" y="125" font-family="monospace" font-size="9" fill="#0f172a">  if (pattern.test(input))</text>
+      <text x="10" y="140" font-family="monospace" font-size="9" fill="#dc2626">    throw Error('Invalid');</text>
+      
+      <rect x="10" y="138" width="200" height="18" rx="2" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="110" y="151" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="bold" fill="#dc2626">✗ Less Secure</text>
+    </g>
+    
+    <!-- Pros/Cons -->
+    <g transform="translate(20, 245)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#16a34a">Advantages:</text>
+      <text x="15" y="15" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Easy to implement initially</text>
+      <text x="15" y="30" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Less restrictive UX</text>
+      <text x="250" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#dc2626">Disadvantages:</text>
+      <text x="265" y="15" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Inherently bypassable</text>
+      <text x="265" y="30" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Requires constant updates</text>
+    </g>
+  </g>
+  
+  <!-- Key insight banner -->
+  <g transform="translate(50, 350)">
+    <rect x="0" y="0" width="1000" height="70" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="500" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#92400e">Key Insight: Allowlist Is Always More Secure</text>
+    <text x="500" y="48" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">Blocklist is like trying to keep water out of a sieve—you can't plug every hole. Allowlist is like a dam—it only lets through what you explicitly allow.</text>
+    <text x="500" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">Use allowlist whenever possible. Use blocklist only as a secondary defense layer, never as primary protection.</text>
+  </g>
+  
+  <!-- Bypass examples -->
+  <g transform="translate(50, 440)">
+    <rect x="0" y="0" width="1000" height="140" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="500" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#0f172a">Common Blocklist Bypasses</text>
+    
+    <g transform="translate(20, 45)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#475569">Blocklist blocks:</text>
+      <text x="150" y="0" font-family="monospace" font-size="10" fill="#dc2626">&lt;script&gt;</text>
+      
+      <text x="0" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#475569">Attackers bypass with:</text>
+      <text x="20" y="40" font-family="monospace" font-size="10" fill="#dc2626">&lt;SCRIPT&gt;</text>
+      <text x="120" y="40" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">(case variation)</text>
+      
+      <text x="20" y="60" font-family="monospace" font-size="10" fill="#dc2626">&lt;scr&lt;script&gt;ipt&gt;</text>
+      <text x="180" y="60" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">(nested tags)</text>
+      
+      <text x="20" y="80" font-family="monospace" font-size="10" fill="#dc2626">&amp;#60;script&amp;#62;</text>
+      <text x="170" y="80" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">(HTML entities)</text>
+      
+      <text x="20" y="100" font-family="monospace" font-size="10" fill="#dc2626">&lt;svg onload=...&gt;</text>
+      <text x="180" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">(different event)</text>
+      
+      <text x="400" y="50" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#dc2626">Endless variations...</text>
+      <text x="400" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#dc2626">Impossible to block all!</text>
+    </g>
+  </g>
+</svg>

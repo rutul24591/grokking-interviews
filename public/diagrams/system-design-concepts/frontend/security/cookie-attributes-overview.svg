@@ -1,0 +1,194 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 750" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1100" height="750" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="550" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">Cookie Security Attributes Overview</text>
+  <text x="550" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#475569">Essential attributes for secure cookie configuration</text>
+  
+  <!-- Cookie visualization -->
+  <g transform="translate(100, 100)">
+    <rect x="0" y="0" width="400" height="280" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="200" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#92400e">Secure Cookie Configuration</text>
+    
+    <!-- Cookie header -->
+    <rect x="20" y="50" width="360" height="40" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+    <text x="30" y="70" font-family="monospace" font-size="11" fill="#475569">Set-Cookie: sessionId=abc123;</text>
+    <text x="30" y="85" font-family="monospace" font-size="11" fill="#475569">  Path=/; Domain=example.com;</text>
+    
+    <!-- Attribute badges -->
+    <g transform="translate(20, 110)">
+      <rect x="0" y="0" width="110" height="45" rx="6" fill="#dbeafe" stroke="#3b82f6"/>
+      <text x="55" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#2563eb">HttpOnly</text>
+      <text x="55" y="38" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">No JS access</text>
+      
+      <rect x="125" y="0" width="110" height="45" rx="6" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="180" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#16a34a">Secure</text>
+      <text x="180" y="38" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">HTTPS only</text>
+      
+      <rect x="250" y="0" width="110" height="45" rx="6" fill="#e0e7ff" stroke="#6366f1"/>
+      <text x="305" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#4f46e5">SameSite</text>
+      <text x="305" y="38" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">CSRF protection</text>
+    </g>
+    
+    <!-- Additional attributes -->
+    <g transform="translate(20, 170)">
+      <rect x="0" y="0" width="170" height="35" rx="4" fill="#ffffff" stroke="#cbd5e1"/>
+      <text x="15" y="20" font-family="monospace" font-size="10" fill="#475569">Expires: 24 hours</text>
+      
+      <rect x="185" y="0" width="175" height="35" rx="4" fill="#ffffff" stroke="#cbd5e1"/>
+      <text x="195" y="20" font-family="monospace" font-size="10" fill="#475569">Domain: example.com</text>
+    </g>
+    
+    <!-- Protection summary -->
+    <rect x="20" y="220" width="360" height="50" rx="6" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="200" y="240" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#16a34a">Protection Provided:</text>
+    <text x="200" y="258" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">XSS theft prevention + Network encryption + CSRF protection</text>
+  </g>
+  
+  <!-- HttpOnly details -->
+  <g transform="translate(550, 100)">
+    <rect x="0" y="0" width="500" height="85" rx="8" fill="#dbeafe" stroke="#3b82f6"/>
+    <text x="250" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#2563eb">HttpOnly - Prevents JavaScript Access</text>
+    
+    <g transform="translate(15, 40)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Without: document.cookie exposes session</text>
+      <text x="0" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">With: Cookie inaccessible to JavaScript</text>
+      <text x="0" y="36" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#16a34a">✓ Protects against XSS session theft</text>
+    </g>
+  </g>
+  
+  <!-- Secure details -->
+  <g transform="translate(550, 195)">
+    <rect x="0" y="0" width="500" height="85" rx="8" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="250" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#16a34a">Secure - HTTPS Only Transmission</text>
+    
+    <g transform="translate(15, 40)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Without: Cookie sent over HTTP (unencrypted)</text>
+      <text x="0" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">With: Cookie only sent over HTTPS</text>
+      <text x="0" y="36" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#16a34a">✓ Prevents network interception</text>
+    </g>
+  </g>
+  
+  <!-- SameSite details -->
+  <g transform="translate(550, 290)">
+    <rect x="0" y="0" width="500" height="85" rx="8" fill="#e0e7ff" stroke="#6366f1"/>
+    <text x="250" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#4f46e5">SameSite - Controls Cross-Origin Sending</text>
+    
+    <g transform="translate(15, 40)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Strict: Never cross-origin | Lax: Top-level nav only</text>
+      <text x="0" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">None: Always send (requires Secure)</text>
+      <text x="0" y="36" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#16a34a">✓ Provides CSRF protection</text>
+    </g>
+  </g>
+  
+  <!-- Attack prevention matrix -->
+  <g transform="translate(100, 420)">
+    <rect x="0" y="0" width="900" height="200" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="450" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#0f172a">Which Attacks Does Each Attribute Prevent?</text>
+    
+    <!-- Header -->
+    <rect x="20" y="45" width="200" height="30" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <text x="120" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Attack Type</text>
+    
+    <rect x="220" y="45" width="170" height="30" fill="#dbeafe" stroke="#3b82f6"/>
+    <text x="305" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#2563eb">HttpOnly</text>
+    
+    <rect x="390" y="45" width="170" height="30" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="475" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#16a34a">Secure</text>
+    
+    <rect x="560" y="45" width="170" height="30" fill="#e0e7ff" stroke="#6366f1"/>
+    <text x="645" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#4f46e5">SameSite</text>
+    
+    <rect x="730" y="45" width="170" height="30" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="815" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#92400e">CSRF Token</text>
+    
+    <!-- XSS Session Theft -->
+    <rect x="20" y="75" width="200" height="25" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="120" y="92" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">XSS Session Theft</text>
+    
+    <rect x="220" y="75" width="170" height="25" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="305" y="92" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">✓ Prevents</text>
+    
+    <rect x="390" y="75" width="170" height="25" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="475" y="92" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#dc2626">✗ No protection</text>
+    
+    <rect x="560" y="75" width="170" height="25" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="645" y="92" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#dc2626">✗ No protection</text>
+    
+    <rect x="730" y="75" width="170" height="25" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="815" y="92" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#dc2626">✗ No protection</text>
+    
+    <!-- Network Interception -->
+    <rect x="20" y="100" width="200" height="25" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="120" y="117" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Network Interception</text>
+    
+    <rect x="220" y="100" width="170" height="25" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="305" y="117" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#dc2626">✗ No protection</text>
+    
+    <rect x="390" y="100" width="170" height="25" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="475" y="117" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">✓ Prevents</text>
+    
+    <rect x="560" y="100" width="170" height="25" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="645" y="117" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#dc2626">✗ No protection</text>
+    
+    <rect x="730" y="100" width="170" height="25" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="815" y="117" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#dc2626">✗ No protection</text>
+    
+    <!-- CSRF Attack -->
+    <rect x="20" y="125" width="200" height="25" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="120" y="142" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">CSRF Attack</text>
+    
+    <rect x="220" y="125" width="170" height="25" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="305" y="142" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#dc2626">✗ No protection</text>
+    
+    <rect x="390" y="125" width="170" height="25" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="475" y="142" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#dc2626">✗ No protection</text>
+    
+    <rect x="560" y="125" width="170" height="25" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="645" y="142" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">✓ Prevents</text>
+    
+    <rect x="730" y="125" width="170" height="25" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="815" y="142" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">✓ Prevents</text>
+    
+    <!-- Man-in-the-Middle -->
+    <rect x="20" y="150" width="200" height="25" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="120" y="167" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Man-in-the-Middle</text>
+    
+    <rect x="220" y="150" width="170" height="25" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="305" y="167" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#dc2626">✗ No protection</text>
+    
+    <rect x="390" y="150" width="170" height="25" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="475" y="167" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">✓ Prevents</text>
+    
+    <rect x="560" y="150" width="170" height="25" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="645" y="167" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#dc2626">✗ No protection</text>
+    
+    <rect x="730" y="150" width="170" height="25" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="815" y="167" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#dc2626">✗ No protection</text>
+    
+    <!-- Session Fixation -->
+    <rect x="20" y="175" width="200" height="25" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="120" y="192" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Session Fixation</text>
+    
+    <rect x="220" y="175" width="170" height="25" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="305" y="192" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">Partial</text>
+    
+    <rect x="390" y="175" width="170" height="25" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="475" y="192" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#dc2626">✗ No protection</text>
+    
+    <rect x="560" y="175" width="170" height="25" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="645" y="192" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">Partial</text>
+    
+    <rect x="730" y="175" width="170" height="25" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="815" y="192" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">Partial</text>
+  </g>
+  
+  <!-- Key insight -->
+  <g transform="translate(100, 640)">
+    <rect x="0" y="0" width="900" height="60" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="450" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Key Insight: Layer Your Defenses</text>
+    <text x="450" y="43" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">No single attribute provides complete protection. Use HttpOnly + Secure + SameSite together for comprehensive cookie security.</text>
+    <text x="450" y="57" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">Add CSRF tokens for defense in depth, especially for state-changing operations.</text>
+  </g>
+</svg>

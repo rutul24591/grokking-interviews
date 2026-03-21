@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1200" height="700" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="600" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">Authentication Pattern Comparison</text>
+  <text x="600" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#475569">Session vs JWT vs OAuth trade-offs</text>
+  
+  <!-- Session-Based Column -->
+  <g transform="translate(50, 85)">
+    <rect x="0" y="0" width="350" height="550" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="175" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#2563eb">Session-Based</text>
+    
+    <!-- Diagram -->
+    <g transform="translate(20, 50)">
+      <rect x="0" y="0" width="310" height="100" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+      <text x="155" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Flow</text>
+      <text x="15" y="45" font-family="monospace" font-size="9" fill="#475569">1. Login → Create session</text>
+      <text x="15" y="60" font-family="monospace" font-size="9" fill="#475569">2. Store in DB/Redis</text>
+      <text x="15" y="75" font-family="monospace" font-size="9" fill="#475569">3. Send sessionId cookie</text>
+      <text x="15" y="90" font-family="monospace" font-size="9" fill="#475569">4. Lookup session each request</text>
+    </g>
+    
+    <!-- Pros -->
+    <g transform="translate(20, 170)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#16a34a">✓ Advantages</text>
+      <rect x="0" y="10" width="310" height="100" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="15" y="30" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Immediate revocation (delete session)</text>
+      <text x="15" y="50" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• HttpOnly cookies (XSS protected)</text>
+      <text x="15" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Simple implementation</text>
+      <text x="15" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Full control over auth flow</text>
+    </g>
+    
+    <!-- Cons -->
+    <g transform="translate(20, 290)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#dc2626">⚠ Disadvantages</text>
+      <rect x="0" y="10" width="310" height="100" rx="4" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="15" y="30" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Requires session store (Redis/DB)</text>
+      <text x="15" y="50" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Session sharing for scale</text>
+      <text x="15" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• CSRF protection needed</text>
+      <text x="15" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Mobile cookie handling</text>
+    </g>
+    
+    <!-- Best For -->
+    <g transform="translate(20, 410)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Best For:</text>
+      <text x="15" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Traditional server-rendered apps</text>
+      <text x="15" y="40" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Single-domain applications</text>
+      <text x="15" y="60" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• High-security requirements</text>
+      <text x="15" y="80" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Teams prioritizing security</text>
+    </g>
+  </g>
+  
+  <!-- JWT Column -->
+  <g transform="translate(425, 85)">
+    <rect x="0" y="0" width="350" height="550" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="175" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#d97706">JWT (Token-Based)</text>
+    
+    <!-- Diagram -->
+    <g transform="translate(20, 50)">
+      <rect x="0" y="0" width="310" height="100" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="155" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Flow</text>
+      <text x="15" y="45" font-family="monospace" font-size="9" fill="#475569">1. Login → Sign JWT</text>
+      <text x="15" y="60" font-family="monospace" font-size="9" fill="#475569">2. Send to client</text>
+      <text x="15" y="75" font-family="monospace" font-size="9" fill="#475569">3. Client sends in header</text>
+      <text x="15" y="90" font-family="monospace" font-size="9" fill="#475569">4. Verify signature (stateless)</text>
+    </g>
+    
+    <!-- Pros -->
+    <g transform="translate(20, 170)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#16a34a">✓ Advantages</text>
+      <rect x="0" y="10" width="310" height="100" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="15" y="30" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Stateless (no session store)</text>
+      <text x="15" y="50" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Horizontally scalable</text>
+      <text x="15" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Mobile-friendly</text>
+      <text x="15" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Microservices ready</text>
+    </g>
+    
+    <!-- Cons -->
+    <g transform="translate(20, 290)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#dc2626">⚠ Disadvantages</text>
+      <rect x="0" y="10" width="310" height="100" rx="4" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="15" y="30" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Hard to revoke (need blocklist)</text>
+      <text x="15" y="50" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• localStorage vulnerable to XSS</text>
+      <text x="15" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Token size overhead</text>
+      <text x="15" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Complex refresh logic</text>
+    </g>
+    
+    <!-- Best For -->
+    <g transform="translate(20, 410)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Best For:</text>
+      <text x="15" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Microservices architecture</text>
+      <text x="15" y="40" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Mobile + web + desktop</text>
+      <text x="15" y="60" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Third-party API access</text>
+      <text x="15" y="80" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Serverless architectures</text>
+    </g>
+  </g>
+  
+  <!-- OAuth/OIDC Column -->
+  <g transform="translate(800, 85)">
+    <rect x="0" y="0" width="350" height="550" rx="8" fill="#f3e8ff" stroke="#a855f7" stroke-width="2"/>
+    <text x="175" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#9333ea">OAuth 2.0 / OIDC</text>
+    
+    <!-- Diagram -->
+    <g transform="translate(20, 50)">
+      <rect x="0" y="0" width="310" height="100" rx="4" fill="#ffffff" stroke="#a855f7"/>
+      <text x="155" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Flow</text>
+      <text x="15" y="45" font-family="monospace" font-size="9" fill="#475569">1. Redirect to IdP</text>
+      <text x="15" y="60" font-family="monospace" font-size="9" fill="#475569">2. User authenticates at IdP</text>
+      <text x="15" y="75" font-family="monospace" font-size="9" fill="#475569">3. Get authorization code</text>
+      <text x="15" y="90" font-family="monospace" font-size="9" fill="#475569">4. Exchange code for tokens</text>
+    </g>
+    
+    <!-- Pros -->
+    <g transform="translate(20, 170)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#16a34a">✓ Advantages</text>
+      <rect x="0" y="10" width="310" height="100" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="15" y="30" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Third-party login (Google, etc.)</text>
+      <text x="15" y="50" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Single Sign-On (SSO)</text>
+      <text x="15" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Delegated authorization</text>
+      <text x="15" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• No password management</text>
+    </g>
+    
+    <!-- Cons -->
+    <g transform="translate(20, 290)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#dc2626">⚠ Disadvantages</text>
+      <rect x="0" y="10" width="310" height="100" rx="4" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="15" y="30" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Complex implementation</text>
+      <text x="15" y="50" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Dependency on IdP</text>
+      <text x="15" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Less control over flow</text>
+      <text x="15" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Cost (paid IdP services)</text>
+    </g>
+    
+    <!-- Best For -->
+    <g transform="translate(20, 410)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Best For:</text>
+      <text x="15" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• "Login with Google/Facebook"</text>
+      <text x="15" y="40" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Enterprise SSO (SAML, OIDC)</text>
+      <text x="15" y="60" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Third-party integrations</text>
+      <text x="15" y="80" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Multi-product ecosystems</text>
+    </g>
+  </g>
+  
+  <!-- Quick Comparison Table -->
+  <g transform="translate(50, 650)">
+    <rect x="0" y="0" width="1100" height="40" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="550" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Quick Decision: Session for simplicity/security | JWT for scale/microservices | OAuth for third-party/SSO</text>
+  </g>
+</svg>

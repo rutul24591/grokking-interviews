@@ -1,0 +1,260 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 650" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1100" height="650" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="550" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">HTTPS Performance Comparison</text>
+  <text x="550" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#475569">HTTP/1.1 vs HTTP/2 vs HTTP/3 latency and connection patterns</text>
+  
+  <!-- HTTP/1.1 -->
+  <g transform="translate(50, 85)">
+    <rect x="0" y="0" width="320" height="200" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+    <text x="160" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="400" fill="#dc2626">HTTP/1.1 over TLS</text>
+    
+    <!-- Connection diagram -->
+    <g transform="translate(20, 40)">
+      <rect x="0" y="0" width="60" height="40" rx="4" fill="#ffffff" stroke="#ef4444"/>
+      <text x="30" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#0f172a">Client</text>
+      
+      <!-- Multiple connections -->
+      <line x1="60" y1="20" x2="100" y2="10" stroke="#ef4444" stroke-width="2"/>
+      <line x1="60" y1="20" x2="100" y2="30" stroke="#ef4444" stroke-width="2"/>
+      <line x1="60" y1="20" x2="100" y2="50" stroke="#ef4444" stroke-width="2"/>
+      <text x="80" y="15" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#475569">6 parallel</text>
+      <text x="80" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#475569">connections</text>
+      
+      <rect x="100" y="0" width="60" height="40" rx="4" fill="#ffffff" stroke="#ef4444"/>
+      <text x="130" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#0f172a">Server</text>
+    </g>
+    
+    <!-- Request/Response timeline -->
+    <g transform="translate(20, 100)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#0f172a">Request/Response Pattern:</text>
+      
+      <!-- Request 1 -->
+      <rect x="0" y="10" width="80" height="15" rx="2" fill="#dbeafe" stroke="#3b82f6"/>
+      <text x="40" y="21" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#2563eb">Request 1</text>
+      <line x1="80" y1="17" x2="100" y2="17" stroke="#64748b" stroke-width="1"/>
+      <rect x="100" y="10" width="100" height="15" rx="2" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="150" y="21" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#92400e">Response 1</text>
+      
+      <!-- Request 2 (blocked) -->
+      <rect x="0" y="30" width="80" height="15" rx="2" fill="#dbeafe" stroke="#3b82f6"/>
+      <text x="40" y="41" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#2563eb">Request 2</text>
+      <line x1="80" y1="37" x2="100" y2="37" stroke="#64748b" stroke-width="1"/>
+      <rect x="100" y="30" width="100" height="15" rx="2" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="150" y="41" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#92400e">Response 2</text>
+      
+      <!-- Request 3 (blocked) -->
+      <rect x="0" y="50" width="80" height="15" rx="2" fill="#dbeafe" stroke="#3b82f6"/>
+      <text x="40" y="61" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#2563eb">Request 3</text>
+      <line x1="80" y1="57" x2="100" y2="57" stroke="#64748b" stroke-width="1"/>
+      <rect x="100" y="50" width="100" height="15" rx="2" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="150" y="61" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#92400e">Response 3</text>
+      
+      <text x="200" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#dc2626">Head-of-line blocking</text>
+    </g>
+    
+    <!-- Metrics -->
+    <g transform="translate(200, 170)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">TLS overhead: ~2 RTT</text>
+      <text x="0" y="15" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Multiple TCP connections</text>
+    </g>
+  </g>
+  
+  <!-- HTTP/2 -->
+  <g transform="translate(390, 85)">
+    <rect x="0" y="0" width="320" height="200" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="160" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="400" fill="#2563eb">HTTP/2 over TLS</text>
+    
+    <!-- Connection diagram -->
+    <g transform="translate(20, 40)">
+      <rect x="0" y="0" width="60" height="40" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+      <text x="30" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#0f172a">Client</text>
+      
+      <!-- Single connection -->
+      <line x1="60" y1="20" x2="100" y2="20" stroke="#3b82f6" stroke-width="3"/>
+      <text x="80" y="15" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#475569">Single</text>
+      <text x="80" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#475569">connection</text>
+      
+      <rect x="100" y="0" width="60" height="40" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+      <text x="130" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#0f172a">Server</text>
+    </g>
+    
+    <!-- Multiplexing timeline -->
+    <g transform="translate(20, 100)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#0f172a">Multiplexed Streams:</text>
+      
+      <!-- Stream 1 -->
+      <rect x="0" y="10" width="60" height="12" rx="2" fill="#dbeafe" stroke="#3b82f6"/>
+      <text x="30" y="19" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="7" fill="#2563eb">Stream 1</text>
+      <line x1="60" y1="16" x2="70" y2="16" stroke="#64748b" stroke-width="1"/>
+      <rect x="70" y="10" width="80" height="12" rx="2" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="110" y="19" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="7" fill="#92400e">Response 1</text>
+      
+      <!-- Stream 2 (interleaved) -->
+      <rect x="40" y="25" width="60" height="12" rx="2" fill="#dbeafe" stroke="#3b82f6"/>
+      <text x="70" y="34" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="7" fill="#2563eb">Stream 2</text>
+      <line x1="100" y1="31" x2="110" y2="31" stroke="#64748b" stroke-width="1"/>
+      <rect x="110" y="25" width="80" height="12" rx="2" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="150" y="34" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="7" fill="#92400e">Response 2</text>
+      
+      <!-- Stream 3 (interleaved) -->
+      <rect x="80" y="40" width="60" height="12" rx="2" fill="#dbeafe" stroke="#3b82f6"/>
+      <text x="110" y="49" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="7" fill="#2563eb">Stream 3</text>
+      <line x1="140" y1="46" x2="150" y2="46" stroke="#64748b" stroke-width="1"/>
+      <rect x="150" y="40" width="80" height="12" rx="2" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="190" y="49" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="7" fill="#92400e">Response 3</text>
+      
+      <text x="200" y="35" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#16a34a">Multiplexing!</text>
+    </g>
+    
+    <!-- Features -->
+    <g transform="translate(200, 170)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">TLS overhead: ~1 RTT</text>
+      <text x="0" y="15" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Header compression (HPACK)</text>
+      <text x="0" y="30" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Server push (optional)</text>
+    </g>
+  </g>
+  
+  <!-- HTTP/3 -->
+  <g transform="translate(730, 85)">
+    <rect x="0" y="0" width="320" height="200" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+    <text x="160" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="400" fill="#16a34a">HTTP/3 (QUIC)</text>
+    
+    <!-- Connection diagram -->
+    <g transform="translate(20, 40)">
+      <rect x="0" y="0" width="60" height="40" rx="4" fill="#ffffff" stroke="#22c55e"/>
+      <text x="30" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#0f172a">Client</text>
+      
+      <!-- UDP connection -->
+      <line x1="60" y1="20" x2="100" y2="20" stroke="#22c55e" stroke-width="3" stroke-dasharray="5,3"/>
+      <text x="80" y="15" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#475569">UDP-based</text>
+      <text x="80" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#475569">QUIC</text>
+      
+      <rect x="100" y="0" width="60" height="40" rx="4" fill="#ffffff" stroke="#22c55e"/>
+      <text x="130" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#0f172a">Server</text>
+    </g>
+    
+    <!-- Timeline -->
+    <g transform="translate(20, 100)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#0f172a">0-RTT Connection:</text>
+      
+      <!-- 0-RTT -->
+      <rect x="0" y="10" width="100" height="15" rx="2" fill="#dbeafe" stroke="#3b82f6"/>
+      <text x="50" y="21" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#2563eb">Request + Data</text>
+      <line x1="100" y1="17" x2="120" y2="17" stroke="#64748b" stroke-width="1"/>
+      <rect x="120" y="10" width="100" height="15" rx="2" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="170" y="21" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#92400e">Response (fast!)</text>
+      
+      <!-- Multiplexing -->
+      <text x="0" y="40" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#0f172a">No HOL Blocking:</text>
+      <rect x="0" y="50" width="50" height="12" rx="2" fill="#dbeafe" stroke="#3b82f6"/>
+      <text x="25" y="59" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="7" fill="#2563eb">Stream A</text>
+      <rect x="55" y="50" width="50" height="12" rx="2" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="80" y="59" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="7" fill="#dc2626">Lost</text>
+      <rect x="110" y="50" width="50" height="12" rx="2" fill="#dbeafe" stroke="#3b82f6"/>
+      <text x="135" y="59" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="7" fill="#2563eb">Stream B</text>
+      <text x="170" y="59" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#16a34a">Continues!</text>
+    </g>
+    
+    <!-- Features -->
+    <g transform="translate(200, 170)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">TLS 1.3 built-in</text>
+      <text x="0" y="15" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">0-RTT for resumed</text>
+      <text x="0" y="30" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">No TCP HOL blocking</text>
+    </g>
+  </g>
+  
+  <!-- Performance comparison table -->
+  <g transform="translate(50, 310)">
+    <rect x="0" y="0" width="1000" height="200" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="500" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="400" fill="#0f172a">Performance Comparison</text>
+    
+    <!-- Header -->
+    <rect x="20" y="35" width="300" height="30" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <text x="170" y="55" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#0f172a">Feature</text>
+    
+    <rect x="320" y="35" width="220" height="30" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <text x="430" y="55" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#0f172a">HTTP/1.1</text>
+    
+    <rect x="540" y="35" width="220" height="30" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <text x="650" y="55" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#0f172a">HTTP/2</text>
+    
+    <rect x="760" y="35" width="220" height="30" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <text x="870" y="55" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#0f172a">HTTP/3 (QUIC)</text>
+    
+    <!-- Row 1: Connection -->
+    <rect x="20" y="65" width="300" height="25" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="170" y="82" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Transport</text>
+    
+    <rect x="320" y="65" width="220" height="25" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="430" y="82" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">TCP</text>
+    
+    <rect x="540" y="65" width="220" height="25" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="650" y="82" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">TCP</text>
+    
+    <rect x="760" y="65" width="220" height="25" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="870" y="82" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">UDP (QUIC)</text>
+    
+    <!-- Row 2: TLS Handshake -->
+    <rect x="20" y="90" width="300" height="25" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="170" y="107" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">TLS Handshake</text>
+    
+    <rect x="320" y="90" width="220" height="25" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="430" y="107" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">2 RTT (TLS 1.2)</text>
+    
+    <rect x="540" y="90" width="220" height="25" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="650" y="107" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">1 RTT (TLS 1.3)</text>
+    
+    <rect x="760" y="90" width="220" height="25" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="870" y="107" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">0-1 RTT (built-in)</text>
+    
+    <!-- Row 3: Multiplexing -->
+    <rect x="20" y="115" width="300" height="25" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="170" y="132" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Multiplexing</text>
+    
+    <rect x="320" y="115" width="220" height="25" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="430" y="132" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#dc2626">No (HOL blocking)</text>
+    
+    <rect x="540" y="115" width="220" height="25" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="650" y="132" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#16a34a">Yes (streams)</text>
+    
+    <rect x="760" y="115" width="220" height="25" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="870" y="132" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#16a34a">Yes (independent)</text>
+    
+    <!-- Row 4: Header Compression -->
+    <rect x="20" y="140" width="300" height="25" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="170" y="157" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Header Compression</text>
+    
+    <rect x="320" y="140" width="220" height="25" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="430" y="157" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">No</text>
+    
+    <rect x="540" y="140" width="220" height="25" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="650" y="157" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#16a34a">Yes (HPACK)</text>
+    
+    <rect x="760" y="140" width="220" height="25" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="870" y="157" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#16a34a">Yes (QPACK)</text>
+    
+    <!-- Row 5: Connection Migration -->
+    <rect x="20" y="165" width="300" height="25" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="170" y="182" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Connection Migration</text>
+    
+    <rect x="320" y="165" width="220" height="25" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="430" y="182" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#dc2626">No (new handshake)</text>
+    
+    <rect x="540" y="165" width="220" height="25" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="650" y="182" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#dc2626">No (new handshake)</text>
+    
+    <rect x="760" y="165" width="220" height="25" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="870" y="182" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#16a34a">Yes (connection ID)</text>
+  </g>
+  
+  <!-- Key insight -->
+  <g transform="translate(50, 530)">
+    <rect x="0" y="0" width="1000" height="60" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="500" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#92400e">Key Insight</text>
+    <text x="500" y="43" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">HTTP/2 and HTTP/3 significantly reduce latency through multiplexing and improved connection handling.</text>
+    <text x="500" y="57" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">HTTP/3 provides best performance on unreliable networks due to UDP-based QUIC transport.</text>
+  </g>
+</svg>

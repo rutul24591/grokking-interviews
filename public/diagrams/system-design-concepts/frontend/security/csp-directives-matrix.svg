@@ -1,0 +1,223 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1200" height="900" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="600" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">CSP Directives Matrix</text>
+  <text x="600" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#475569">Complete reference for Content Security Policy directives</text>
+  
+  <!-- Header row -->
+  <g transform="translate(50, 80)">
+    <rect x="0" y="0" width="300" height="35" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <text x="150" y="23" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#0f172a">Directive</text>
+    
+    <rect x="300" y="0" width="450" height="35" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <text x="525" y="23" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#0f172a">Purpose</text>
+    
+    <rect x="750" y="0" width="450" height="35" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <text x="975" y="23" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#0f172a">Example</text>
+  </g>
+  
+  <!-- script-src -->
+  <g transform="translate(50, 115)">
+    <rect x="0" y="0" width="300" height="50" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="150" y="25" text-anchor="middle" font-family="monospace" font-size="13" font-weight="400" fill="#92400e">script-src</text>
+    <text x="150" y="43" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Controls JavaScript execution</text>
+    
+    <rect x="300" y="0" width="450" height="50" fill="#ffffff" stroke="#f59e0b"/>
+    <text x="320" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">• Blocks/allows scripts from sources</text>
+    <text x="320" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">• Critical for XSS prevention</text>
+    
+    <rect x="750" y="0" width="450" height="50" fill="#ffffff" stroke="#f59e0b"/>
+    <text x="770" y="25" font-family="monospace" font-size="10" fill="#475569">script-src 'self' 'nonce-abc' https://cdn.com</text>
+  </g>
+  
+  <!-- style-src -->
+  <g transform="translate(50, 165)">
+    <rect x="0" y="0" width="300" height="40" fill="#dbeafe" stroke="#3b82f6"/>
+    <text x="150" y="25" text-anchor="middle" font-family="monospace" font-size="13" font-weight="400" fill="#2563eb">style-src</text>
+    
+    <rect x="300" y="0" width="450" height="40" fill="#ffffff" stroke="#3b82f6"/>
+    <text x="320" y="25" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">• Controls stylesheet loading and inline styles</text>
+    
+    <rect x="750" y="0" width="450" height="40" fill="#ffffff" stroke="#3b82f6"/>
+    <text x="770" y="25" font-family="monospace" font-size="10" fill="#475569">style-src 'self' 'unsafe-inline'</text>
+  </g>
+  
+  <!-- default-src -->
+  <g transform="translate(50, 205)">
+    <rect x="0" y="0" width="300" height="50" fill="#e0e7ff" stroke="#6366f1"/>
+    <text x="150" y="25" text-anchor="middle" font-family="monospace" font-size="13" font-weight="400" fill="#4f46e5">default-src</text>
+    <text x="150" y="43" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Fallback for all resources</text>
+    
+    <rect x="300" y="0" width="450" height="50" fill="#ffffff" stroke="#6366f1"/>
+    <text x="320" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">• Applied when specific directive missing</text>
+    <text x="320" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">• Always set as safety net</text>
+    
+    <rect x="750" y="0" width="450" height="50" fill="#ffffff" stroke="#6366f1"/>
+    <text x="770" y="25" font-family="monospace" font-size="10" fill="#475569">default-src 'self'</text>
+    <text x="770" y="42" font-family="monospace" font-size="10" fill="#475569">(fallback for all)</text>
+  </g>
+  
+  <!-- img-src -->
+  <g transform="translate(50, 255)">
+    <rect x="0" y="0" width="300" height="40" fill="#f3e8ff" stroke="#a855f7"/>
+    <text x="150" y="25" text-anchor="middle" font-family="monospace" font-size="13" font-weight="400" fill="#9333ea">img-src</text>
+    
+    <rect x="300" y="0" width="450" height="40" fill="#ffffff" stroke="#a855f7"/>
+    <text x="320" y="25" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">• Controls image sources</text>
+    
+    <rect x="750" y="0" width="450" height="40" fill="#ffffff" stroke="#a855f7"/>
+    <text x="770" y="25" font-family="monospace" font-size="10" fill="#475569">img-src 'self' data: https:</text>
+  </g>
+  
+  <!-- connect-src -->
+  <g transform="translate(50, 295)">
+    <rect x="0" y="0" width="300" height="50" fill="#fce7f3" stroke="#ec4899"/>
+    <text x="150" y="25" text-anchor="middle" font-family="monospace" font-size="13" font-weight="400" fill="#db2777">connect-src</text>
+    <text x="150" y="43" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Controls fetch/XHR/WebSocket</text>
+    
+    <rect x="300" y="0" width="450" height="50" fill="#ffffff" stroke="#ec4899"/>
+    <text x="320" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">• API calls, WebSocket connections</text>
+    <text x="320" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">• EventSource, sendBeacon</text>
+    
+    <rect x="750" y="0" width="450" height="50" fill="#ffffff" stroke="#ec4899"/>
+    <text x="770" y="25" font-family="monospace" font-size="10" fill="#475569">connect-src 'self' https://api.example.com</text>
+  </g>
+  
+  <!-- frame-ancestors -->
+  <g transform="translate(50, 345)">
+    <rect x="0" y="0" width="300" height="50" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="150" y="25" text-anchor="middle" font-family="monospace" font-size="13" font-weight="400" fill="#dc2626">frame-ancestors</text>
+    <text x="150" y="43" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Clickjacking protection</text>
+    
+    <rect x="300" y="0" width="450" height="50" fill="#ffffff" stroke="#ef4444"/>
+    <text x="320" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">• Controls who can embed this page</text>
+    <text x="320" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">• Replaces X-Frame-Options</text>
+    
+    <rect x="750" y="0" width="450" height="50" fill="#ffffff" stroke="#ef4444"/>
+    <text x="770" y="25" font-family="monospace" font-size="10" fill="#475569">frame-ancestors 'none'</text>
+    <text x="770" y="42" font-family="monospace" font-size="10" fill="#475569">(prevent all framing)</text>
+  </g>
+  
+  <!-- form-action -->
+  <g transform="translate(50, 395)">
+    <rect x="0" y="0" width="300" height="40" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="150" y="25" text-anchor="middle" font-family="monospace" font-size="13" font-weight="400" fill="#16a34a">form-action</text>
+    
+    <rect x="300" y="0" width="450" height="40" fill="#ffffff" stroke="#22c55e"/>
+    <text x="320" y="25" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">• Controls where forms can submit</text>
+    
+    <rect x="750" y="0" width="450" height="40" fill="#ffffff" stroke="#22c55e"/>
+    <text x="770" y="25" font-family="monospace" font-size="10" fill="#475569">form-action 'self'</text>
+  </g>
+  
+  <!-- base-uri -->
+  <g transform="translate(50, 435)">
+    <rect x="0" y="0" width="300" height="40" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="150" y="25" text-anchor="middle" font-family="monospace" font-size="13" font-weight="400" fill="#92400e">base-uri</text>
+    
+    <rect x="300" y="0" width="450" height="40" fill="#ffffff" stroke="#f59e0b"/>
+    <text x="320" y="25" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">• Controls &lt;base&gt; element</text>
+    
+    <rect x="750" y="0" width="450" height="40" fill="#ffffff" stroke="#f59e0b"/>
+    <text x="770" y="25" font-family="monospace" font-size="10" fill="#475569">base-uri 'self'</text>
+  </g>
+  
+  <!-- object-src -->
+  <g transform="translate(50, 475)">
+    <rect x="0" y="0" width="300" height="40" fill="#dbeafe" stroke="#3b82f6"/>
+    <text x="150" y="25" text-anchor="middle" font-family="monospace" font-size="13" font-weight="400" fill="#2563eb">object-src</text>
+    
+    <rect x="300" y="0" width="450" height="40" fill="#ffffff" stroke="#3b82f6"/>
+    <text x="320" y="25" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">• Controls plugins (Flash, Silverlight)</text>
+    
+    <rect x="750" y="0" width="450" height="40" fill="#ffffff" stroke="#3b82f6"/>
+    <text x="770" y="25" font-family="monospace" font-size="10" fill="#475569">object-src 'none'</text>
+  </g>
+  
+  <!-- Additional directives section -->
+  <g transform="translate(50, 535)">
+    <rect x="0" y="0" width="1100" height="350" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="550" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="400" fill="#0f172a">Additional Directives</text>
+    
+    <!-- Grid of additional directives -->
+    <g transform="translate(30, 50)">
+      <!-- Row 1 -->
+      <rect x="0" y="0" width="340" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+      <text x="20" y="22" font-family="monospace" font-size="12" font-weight="400" fill="#0f172a">frame-src</text>
+      <text x="20" y="40" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Controls which sources can be embedded in frames</text>
+      
+      <rect x="360" y="0" width="340" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+      <text x="380" y="22" font-family="monospace" font-size="12" font-weight="400" fill="#0f172a">font-src</text>
+      <text x="380" y="40" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Controls font loading sources</text>
+      
+      <rect x="720" y="0" width="340" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+      <text x="740" y="22" font-family="monospace" font-size="12" font-weight="400" fill="#0f172a">media-src</text>
+      <text x="740" y="40" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Controls audio/video sources</text>
+      
+      <!-- Row 2 -->
+      <rect x="0" y="60" width="340" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+      <text x="20" y="82" font-family="monospace" font-size="12" font-weight="400" fill="#0f172a">worker-src</text>
+      <text x="20" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Controls Web Worker, Shared Worker, Service Worker</text>
+      
+      <rect x="360" y="60" width="340" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+      <text x="380" y="82" font-family="monospace" font-size="12" font-weight="400" fill="#0f172a">child-src</text>
+      <text x="380" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Controls nested browsing contexts (deprecated, use frame-src)</text>
+      
+      <rect x="720" y="60" width="340" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+      <text x="740" y="82" font-family="monospace" font-size="12" font-weight="400" fill="#0f172a">manifest-src</text>
+      <text x="740" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Controls web app manifest loading</text>
+      
+      <!-- Row 3 -->
+      <rect x="0" y="120" width="340" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+      <text x="20" y="142" font-family="monospace" font-size="12" font-weight="400" fill="#0f172a">navigate-to</text>
+      <text x="20" y="160" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Controls where page can navigate (CSP Level 3)</text>
+      
+      <rect x="360" y="120" width="340" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+      <text x="380" y="142" font-family="monospace" font-size="12" font-weight="400" fill="#0f172a">sandbox</text>
+      <text x="380" y="160" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Applies sandbox restrictions to embedded content</text>
+      
+      <rect x="720" y="120" width="340" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+      <text x="740" y="142" font-family="monospace" font-size="12" font-weight="400" fill="#0f172a">upgrade-insecure-requests</text>
+      <text x="740" y="160" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Automatically upgrades HTTP URLs to HTTPS</text>
+      
+      <!-- Row 4 -->
+      <rect x="0" y="180" width="340" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+      <text x="20" y="202" font-family="monospace" font-size="12" font-weight="400" fill="#0f172a">block-all-mixed-content</text>
+      <text x="20" y="220" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Blocks mixed content (HTTP on HTTPS pages)</text>
+      
+      <rect x="360" y="180" width="340" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+      <text x="380" y="202" font-family="monospace" font-size="12" font-weight="400" fill="#0f172a">report-uri</text>
+      <text x="380" y="220" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Endpoint for violation reports (deprecated)</text>
+      
+      <rect x="720" y="180" width="340" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+      <text x="740" y="202" font-family="monospace" font-size="12" font-weight="400" fill="#0f172a">report-to</text>
+      <text x="740" y="220" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Modern reporting endpoint (CSP Level 3)</text>
+    </g>
+  </g>
+  
+  <!-- Source values legend -->
+  <g transform="translate(50, 895)">
+    <rect x="0" y="0" width="1100" height="80" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="550" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#92400e">Common Source Values</text>
+    
+    <text x="30" y="45" font-family="monospace" font-size="11" fill="#92400e">'self'</text>
+    <text x="100" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">- Same origin only</text>
+    
+    <text x="250" y="45" font-family="monospace" font-size="11" fill="#92400e">'unsafe-inline'</text>
+    <text x="380" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">- Allow inline resources</text>
+    
+    <text x="580" y="45" font-family="monospace" font-size="11" fill="#92400e">'nonce-{value}'</text>
+    <text x="720" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">- Allow with matching nonce</text>
+    
+    <text x="30" y="65" font-family="monospace" font-size="11" fill="#92400e">'none'</text>
+    <text x="100" y="65" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">- Block all</text>
+    
+    <text x="250" y="65" font-family="monospace" font-size="11" fill="#92400e">'strict-dynamic'</text>
+    <text x="390" y="65" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">- Trust scripts loaded by trusted scripts</text>
+    
+    <text x="720" y="65" font-family="monospace" font-size="11" fill="#92400e">https://example.com</text>
+    <text x="890" y="65" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">- Specific origin</text>
+  </g>
+</svg>

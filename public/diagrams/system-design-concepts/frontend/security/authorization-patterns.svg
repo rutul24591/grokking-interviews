@@ -1,0 +1,215 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 700" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1100" height="700" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="550" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Authorization Patterns Comparison</text>
+  <text x="550" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">RBAC vs ABAC vs ACL vs Capability-Based</text>
+  
+  <!-- RBAC -->
+  <g transform="translate(50, 85)">
+    <rect x="0" y="0" width="500" height="280" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="250" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#2563eb">RBAC (Role-Based)</text>
+    
+    <!-- Diagram -->
+    <g transform="translate(20, 45)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Users → Roles → Permissions</text>
+      <rect x="0" y="10" width="80" height="35" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+      <text x="40" y="32" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#0f172a">Users</text>
+      
+      <line x1="80" y1="27" x2="120" y2="27" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+      
+      <rect x="120" y="10" width="80" height="35" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+      <text x="160" y="32" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#0f172a">Roles</text>
+      
+      <line x1="200" y1="27" x2="240" y2="27" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+      
+      <rect x="240" y="10" width="80" height="35" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+      <text x="280" y="32" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#0f172a">Permissions</text>
+    </g>
+    
+    <!-- Pros/Cons -->
+    <g transform="translate(20, 110)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#16a34a">✓ Pros:</text>
+      <text x="15" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Simple to understand and implement</text>
+      <text x="15" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Easy to audit and manage</text>
+      <text x="15" y="48" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Good for organizations with clear roles</text>
+      
+      <text x="250" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#dc2626">⚠ Cons:</text>
+      <text x="265" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Role explosion at scale</text>
+      <text x="265" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Not context-aware</text>
+      <text x="265" y="48" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Hard to express complex rules</text>
+    </g>
+    
+    <!-- Use Cases -->
+    <g transform="translate(20, 180)">
+      <rect x="0" y="0" width="460" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="230" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">Best for: Enterprise apps, SaaS with clear job functions, compliance requirements</text>
+    </g>
+    
+    <!-- Example -->
+    <g transform="translate(20, 235)">
+      <rect x="0" y="0" width="460" height="35" rx="4" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="10" y="22" font-family="monospace" font-size="9" fill="#475569">Example: "Admins can delete documents" | user.role === 'admin'</text>
+    </g>
+  </g>
+  
+  <!-- ABAC -->
+  <g transform="translate(570, 85)">
+    <rect x="0" y="0" width="500" height="280" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="250" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#d97706">ABAC (Attribute-Based)</text>
+    
+    <!-- Diagram -->
+    <g transform="translate(20, 45)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Attributes + Policies → Decision</text>
+      <rect x="0" y="10" width="100" height="35" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="50" y="27" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#0f172a">User Attrs</text>
+      <text x="50" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#0f172a">Resource Attrs</text>
+      
+      <line x1="100" y1="27" x2="140" y2="27" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead)"/>
+      
+      <rect x="140" y="10" width="80" height="35" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="180" y="27" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#0f172a">Policy Engine</text>
+      
+      <line x1="220" y1="27" x2="260" y2="27" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead)"/>
+      
+      <rect x="260" y="10" width="80" height="35" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="300" y="27" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#0f172a">Allow/Deny</text>
+    </g>
+    
+    <!-- Pros/Cons -->
+    <g transform="translate(20, 110)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#16a34a">✓ Pros:</text>
+      <text x="15" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Highly flexible and granular</text>
+      <text x="15" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Context-aware decisions</text>
+      <text x="15" y="48" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• No role explosion</text>
+      
+      <text x="250" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#dc2626">⚠ Cons:</text>
+      <text x="265" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Complex to implement</text>
+      <text x="265" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Policy management overhead</text>
+      <text x="265" y="48" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Performance considerations</text>
+    </g>
+    
+    <!-- Use Cases -->
+    <g transform="translate(20, 180)">
+      <rect x="0" y="0" width="460" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="230" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">Best for: Healthcare, government, finance, multi-tenant SaaS</text>
+    </g>
+    
+    <!-- Example -->
+    <g transform="translate(20, 235)">
+      <rect x="0" y="0" width="460" height="35" rx="4" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="10" y="22" font-family="monospace" font-size="9" fill="#475569">Example: "Users can access docs from their dept during business hours"</text>
+    </g>
+  </g>
+  
+  <!-- ACL -->
+  <g transform="translate(50, 385)">
+    <rect x="0" y="0" width="500" height="280" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+    <text x="250" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#4f46e5">ACL (Access Control List)</text>
+    
+    <!-- Diagram -->
+    <g transform="translate(20, 45)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Resource → List of Users/Permissions</text>
+      <rect x="0" y="10" width="80" height="35" rx="4" fill="#ffffff" stroke="#6366f1"/>
+      <text x="40" y="32" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#0f172a">Resource</text>
+      
+      <line x1="80" y1="27" x2="120" y2="27" stroke="#6366f1" stroke-width="2" marker-end="url(#arrowhead)"/>
+      
+      <rect x="120" y="10" width="200" height="60" rx="4" fill="#ffffff" stroke="#6366f1"/>
+      <text x="220" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#0f172a">Access Control List</text>
+      <text x="130" y="42" font-family="monospace" font-size="8" fill="#475569">Alice: read, write</text>
+      <text x="130" y="55" font-family="monospace" font-size="8" fill="#475569">Bob: read</text>
+      <text x="220" y="55" font-family="monospace" font-size="8" fill="#475569">Carol: read, write, delete</text>
+    </g>
+    
+    <!-- Pros/Cons -->
+    <g transform="translate(20, 130)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#16a34a">✓ Pros:</text>
+      <text x="15" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Fine-grained per-resource control</text>
+      <text x="15" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Intuitive for file systems</text>
+      <text x="15" y="48" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Easy to see who has access</text>
+      
+      <text x="250" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#dc2626">⚠ Cons:</text>
+      <text x="265" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Doesn't scale (N resources × M users)</text>
+      <text x="265" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Hard to manage at scale</text>
+      <text x="265" y="48" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• No abstraction layer</text>
+    </g>
+    
+    <!-- Use Cases -->
+    <g transform="translate(20, 200)">
+      <rect x="0" y="0" width="460" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="230" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">Best for: File systems, small apps, resource-level sharing</text>
+    </g>
+    
+    <!-- Example -->
+    <g transform="translate(20, 250)">
+      <rect x="0" y="0" width="460" height="25" rx="4" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="10" y="17" font-family="monospace" font-size="9" fill="#475569">Example: document.json → {Alice: rw, Bob: r, Carol: rwd}</text>
+    </g>
+  </g>
+  
+  <!-- Capability-Based -->
+  <g transform="translate(570, 385)">
+    <rect x="0" y="0" width="500" height="280" rx="8" fill="#f3e8ff" stroke="#a855f7" stroke-width="2"/>
+    <text x="250" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#9333ea">Capability-Based</text>
+    
+    <!-- Diagram -->
+    <g transform="translate(20, 45)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">User holds capability tokens</text>
+      <rect x="0" y="10" width="80" height="35" rx="4" fill="#ffffff" stroke="#a855f7"/>
+      <text x="40" y="32" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#0f172a">User</text>
+      
+      <line x1="80" y1="27" x2="120" y2="27" stroke="#a855f7" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <text x="100" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#475569">holds</text>
+      
+      <rect x="120" y="10" width="100" height="35" rx="4" fill="#ffffff" stroke="#a855f7"/>
+      <text x="170" y="27" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#0f172a">Capability Token</text>
+      <text x="170" y="38" text-anchor="middle" font-family="monospace" font-size="8" fill="#475569">(read:doc:123)</text>
+      
+      <line x1="220" y1="27" x2="260" y2="27" stroke="#a855f7" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <text x="240" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="#475569">present</text>
+      
+      <rect x="260" y="10" width="80" height="35" rx="4" fill="#ffffff" stroke="#a855f7"/>
+      <text x="300" y="27" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#0f172a">Resource</text>
+    </g>
+    
+    <!-- Pros/Cons -->
+    <g transform="translate(20, 110)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#16a34a">✓ Pros:</text>
+      <text x="15" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Decentralized authorization</text>
+      <text x="15" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Good for distributed systems</text>
+      <text x="15" y="48" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Capabilities can be delegated</text>
+      
+      <text x="250" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#dc2626">⚠ Cons:</text>
+      <text x="265" y="18" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Complex to implement correctly</text>
+      <text x="265" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Token management overhead</text>
+      <text x="265" y="48" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Revocation challenges</text>
+    </g>
+    
+    <!-- Use Cases -->
+    <g transform="translate(20, 180)">
+      <rect x="0" y="0" width="460" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="230" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">Best for: Microservices, distributed systems, blockchain</text>
+    </g>
+    
+    <!-- Example -->
+    <g transform="translate(20, 235)">
+      <rect x="0" y="0" width="460" height="35" rx="4" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="10" y="22" font-family="monospace" font-size="9" fill="#475569">Example: User presents signed token "read:document:123" to access resource</text>
+    </g>
+  </g>
+  
+  <!-- Quick comparison table -->
+  <g transform="translate(50, 680)">
+    <rect x="0" y="0" width="1000" height="40" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="500" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Quick Decision: RBAC for simplicity | ABAC for flexibility | ACL for file-like access | Capability for distributed systems</text>
+  </g>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0f172a"/>
+    </marker>
+  </defs>
+</svg>

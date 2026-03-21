@@ -1,0 +1,167 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1200" height="800" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="600" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">CSP Implementation Strategies</text>
+  <text x="600" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#475569">Comparing different approaches to CSP deployment</text>
+  
+  <!-- Strategy 1: Strict CSP -->
+  <g transform="translate(50, 85)">
+    <rect x="0" y="0" width="540" height="180" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="270" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="400" fill="#d97706">Strategy 1: Strict CSP (Recommended)</text>
+    
+    <!-- Policy example -->
+    <rect x="20" y="40" width="500" height="70" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+    <text x="30" y="60" font-family="monospace" font-size="9" fill="#475569">Content-Security-Policy:</text>
+    <text x="30" y="75" font-family="monospace" font-size="9" fill="#475569">  default-src 'self';</text>
+    <text x="30" y="90" font-family="monospace" font-size="9" fill="#475569">  script-src 'self' 'nonce-{random}';</text>
+    <text x="30" y="105" font-family="monospace" font-size="9" fill="#475569">  style-src 'self';</text>
+    
+    <!-- Pros/Cons -->
+    <g transform="translate(20, 120)">
+      <rect x="0" y="0" width="240" height="50" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="120" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#16a34a">Pros</text>
+      <text x="120" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Maximum XSS protection</text>
+      
+      <rect x="260" y="0" width="240" height="50" rx="4" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="380" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#dc2626">Cons</text>
+      <text x="380" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Requires code refactoring</text>
+    </g>
+    
+    <!-- Best for -->
+    <rect x="20" y="155" width="500" height="20" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="270" y="169" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">Best for: New applications, security-critical systems</text>
+  </g>
+  
+  <!-- Strategy 2: Moderate CSP -->
+  <g transform="translate(610, 85)">
+    <rect x="0" y="0" width="540" height="180" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="270" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="400" fill="#2563eb">Strategy 2: Moderate CSP</text>
+    
+    <!-- Policy example -->
+    <rect x="20" y="40" width="500" height="70" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+    <text x="30" y="60" font-family="monospace" font-size="9" fill="#475569">Content-Security-Policy:</text>
+    <text x="30" y="75" font-family="monospace" font-size="9" fill="#475569">  default-src 'self';</text>
+    <text x="30" y="90" font-family="monospace" font-size="9" fill="#475569">  script-src 'self' https://cdn.com;</text>
+    <text x="30" y="105" font-family="monospace" font-size="9" fill="#475569">  style-src 'self' 'unsafe-inline';</text>
+    
+    <!-- Pros/Cons -->
+    <g transform="translate(20, 120)">
+      <rect x="0" y="0" width="240" height="50" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="120" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#16a34a">Pros</text>
+      <text x="120" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Easier implementation</text>
+      
+      <rect x="260" y="0" width="240" height="50" rx="4" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="380" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#dc2626">Cons</text>
+      <text x="380" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Weaker than strict CSP</text>
+    </g>
+    
+    <!-- Best for -->
+    <rect x="20" y="155" width="500" height="20" rx="3" fill="#dbeafe" stroke="#3b82f6"/>
+    <text x="270" y="169" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#2563eb">Best for: Existing applications, transitioning teams</text>
+  </g>
+  
+  <!-- Strategy 3: strict-dynamic -->
+  <g transform="translate(50, 285)">
+    <rect x="0" y="0" width="540" height="180" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+    <text x="270" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="400" fill="#4f46e5">Strategy 3: CSP with strict-dynamic</text>
+    
+    <!-- Policy example -->
+    <rect x="20" y="40" width="500" height="70" rx="4" fill="#ffffff" stroke="#6366f1"/>
+    <text x="30" y="60" font-family="monospace" font-size="9" fill="#475569">Content-Security-Policy:</text>
+    <text x="30" y="75" font-family="monospace" font-size="9" fill="#475569">  script-src 'self' 'nonce-{random}' 'strict-dynamic' https: http: 'unsafe-inline';</text>
+    <text x="30" y="90" font-family="monospace" font-size="9" fill="#475569">  (fallback for older browsers)</text>
+    
+    <!-- How it works -->
+    <g transform="translate(20, 115)">
+      <rect x="0" y="0" width="500" height="55" rx="4" fill="#f8fafc" stroke="#64748b"/>
+      <text x="250" y="18" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#0f172a">How strict-dynamic Works</text>
+      <text x="250" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Scripts with valid nonces are trusted → They can load other scripts without nonces</text>
+      <text x="250" y="50" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Parser-inserted scripts (without nonces) are still blocked</text>
+    </g>
+    
+    <!-- Best for -->
+    <rect x="20" y="155" width="500" height="20" rx="3" fill="#e0e7ff" stroke="#6366f1"/>
+    <text x="270" y="169" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#4f46e5">Best for: Complex apps with many third-party scripts</text>
+  </g>
+  
+  <!-- Strategy 4: Report-Only -->
+  <g transform="translate(610, 285)">
+    <rect x="0" y="0" width="540" height="180" rx="8" fill="#f3e8ff" stroke="#a855f7" stroke-width="2"/>
+    <text x="270" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="400" fill="#9333ea">Strategy 4: Monitoring-Only (Report-Only)</text>
+    
+    <!-- Policy example -->
+    <rect x="20" y="40" width="500" height="70" rx="4" fill="#ffffff" stroke="#a855f7"/>
+    <text x="30" y="60" font-family="monospace" font-size="9" fill="#475569">Content-Security-Policy-Report-Only:</text>
+    <text x="30" y="75" font-family="monospace" font-size="9" fill="#475569">  default-src 'self';</text>
+    <text x="30" y="90" font-family="monospace" font-size="9" fill="#475569">  report-uri /csp-report;</text>
+    
+    <!-- Use cases -->
+    <g transform="translate(20, 115)">
+      <rect x="0" y="0" width="500" height="55" rx="4" fill="#faf5ff" stroke="#a855f7"/>
+      <text x="250" y="18" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#9333ea">Use Cases</text>
+      <text x="250" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Testing new policies before enforcement</text>
+      <text x="250" y="50" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Monitoring violations without breaking functionality</text>
+    </g>
+    
+    <!-- Best for -->
+    <rect x="20" y="155" width="500" height="20" rx="3" fill="#f3e8ff" stroke="#a855f7"/>
+    <text x="270" y="169" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#9333ea">Best for: Initial CSP deployment, testing phase</text>
+  </g>
+  
+  <!-- Implementation roadmap -->
+  <g transform="translate(50, 485)">
+    <rect x="0" y="0" width="1100" height="290" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="550" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="400" fill="#0f172a">Recommended Implementation Roadmap</text>
+    
+    <!-- Phase 1 -->
+    <g transform="translate(30, 50)">
+      <circle cx="25" cy="25" r="20" fill="#f59e0b" stroke="#d97706" stroke-width="2"/>
+      <text x="25" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="400" fill="#ffffff">1</text>
+      
+      <rect x="55" y="0" width="1000" height="50" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="545" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#92400e">Phase 1: Audit &amp; Report-Only</text>
+      <text x="545" y="38" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Deploy CSP in Report-Only mode, analyze violations, identify all required sources</text>
+      
+      <text x="70" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Set up violation reporting endpoint</text>
+      <text x="70" y="85" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Monitor for 2-4 weeks</text>
+      <text x="70" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Document all legitimate sources</text>
+    </g>
+    
+    <!-- Phase 2 -->
+    <g transform="translate(30, 130)">
+      <circle cx="25" cy="25" r="20" fill="#3b82f6" stroke="#2563eb" stroke-width="2"/>
+      <text x="25" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="400" fill="#ffffff">2</text>
+      
+      <rect x="55" y="0" width="1000" height="50" rx="4" fill="#dbeafe" stroke="#3b82f6"/>
+      <text x="545" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#2563eb">Phase 2: Moderate CSP Enforcement</text>
+      <text x="545" y="38" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Deploy moderate CSP with enforcement, fix any issues that arise</text>
+      
+      <text x="70" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Start with default-src 'self'</text>
+      <text x="70" y="85" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Allow 'unsafe-inline' for styles if needed</text>
+      <text x="70" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Keep monitoring violations</text>
+    </g>
+    
+    <!-- Phase 3 -->
+    <g transform="translate(30, 210)">
+      <circle cx="25" cy="25" r="20" fill="#22c55e" stroke="#16a34a" stroke-width="2"/>
+      <text x="25" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="400" fill="#ffffff">3</text>
+      
+      <rect x="55" y="0" width="1000" height="50" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="545" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#16a34a">Phase 3: Strict CSP (Optional)</text>
+      <text x="545" y="38" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Gradually tighten to strict CSP with nonces, remove 'unsafe-inline'</text>
+      
+      <text x="70" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Implement nonce-based script loading</text>
+      <text x="70" y="85" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Remove 'unsafe-inline' from scripts</text>
+      <text x="70" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Consider strict-dynamic for third-party scripts</text>
+    </g>
+  </g>
+  
+  <!-- Key insight -->
+  <g transform="translate(50, 790)">
+    <rect x="0" y="0" width="1100" height="50" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="550" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#d97706">Key Insight</text>
+    <text x="550" y="38" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Start with Report-Only, enforce gradually. A gradually-improved CSP that works is better than a perfect CSP that breaks your app.</text>
+  </g>
+</svg>

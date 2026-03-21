@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 650" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1100" height="650" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="550" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">CSP frame-ancestors Protection</text>
+  <text x="550" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">Browser checks if framing origin is in allowed list</text>
+  
+  <!-- Your Site -->
+  <g transform="translate(50, 85)">
+    <rect x="0" y="0" width="300" height="150" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="150" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#2563eb">Your Site</text>
+    <text x="150" y="55" text-anchor="middle" font-family="monospace" font-size="11" fill="#475569">https://yoursite.com</text>
+    
+    <!-- CSP Header -->
+    <rect x="20" y="70" width="260" height="70" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+    <text x="150" y="90" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">CSP Header</text>
+    <text x="150" y="110" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">frame-ancestors 'self'</text>
+    <text x="150" y="128" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">https://partner.com</text>
+  </g>
+  
+  <!-- Arrow to Browser -->
+  <line x1="360" y1="160" x2="410" y2="160" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead-blue)"/>
+  <text x="385" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Sends page</text>
+  
+  <!-- Browser Check -->
+  <g transform="translate(420, 85)">
+    <rect x="0" y="0" width="260" height="150" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="130" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#d97706">Browser</text>
+    
+    <!-- Allowed List -->
+    <rect x="20" y="45" width="220" height="50" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+    <text x="110" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Allowed Ancestors</text>
+    <text x="110" y="85" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">• 'self' (yoursite.com)</text>
+    <text x="110" y="100" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">• partner.com</text>
+    
+    <!-- Decision -->
+    <rect x="20" y="105" width="220" height="35" rx="4" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="110" y="127" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Check: Is framing origin allowed?</text>
+  </g>
+  
+  <!-- Two paths: Allowed and Blocked -->
+  
+  <!-- Path 1: Allowed (top) -->
+  <path d="M 690 135 C 750 135, 750 100, 810 100" stroke="#22c55e" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+  <text x="750" y="90" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">ALLOWED</text>
+  
+  <!-- Path 2: Blocked (bottom) -->
+  <path d="M 690 185 C 750 185, 750 220, 810 220" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowhead-red)"/>
+  <text x="750" y="235" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#dc2626">BLOCKED</text>
+  
+  <!-- Allowed Scenario -->
+  <g transform="translate(820, 50)">
+    <rect x="0" y="0" width="260" height="180" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+    <text x="130" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#16a34a">Scenario 1: Allowed Origin</text>
+    
+    <!-- Framing site -->
+    <rect x="20" y="45" width="220" height="50" rx="4" fill="#ffffff" stroke="#22c55e"/>
+    <text x="130" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Framing Site</text>
+    <text x="130" y="85" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">https://partner.com</text>
+    
+    <!-- Check result -->
+    <rect x="20" y="105" width="220" height="35" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="130" y="127" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">✓ ALLOWED</text>
+    <text x="130" y="145" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">partner.com is in allowed list</text>
+    
+    <!-- Result -->
+    <rect x="20" y="150" width="220" height="25" rx="3" fill="#ffffff" stroke="#22c55e"/>
+    <text x="130" y="167" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Page loads in iframe</text>
+  </g>
+  
+  <!-- Blocked Scenario -->
+  <g transform="translate(820, 250)">
+    <rect x="0" y="0" width="260" height="180" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+    <text x="130" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#dc2626">Scenario 2: Blocked Origin</text>
+    
+    <!-- Framing site -->
+    <rect x="20" y="45" width="220" height="50" rx="4" fill="#ffffff" stroke="#ef4444"/>
+    <text x="130" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Framing Site</text>
+    <text x="130" y="85" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">https://evil.com</text>
+    
+    <!-- Check result -->
+    <rect x="20" y="105" width="220" height="35" rx="4" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="130" y="127" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#dc2626">✗ BLOCKED</text>
+    <text x="130" y="145" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">evil.com NOT in allowed list</text>
+    
+    <!-- Result -->
+    <rect x="20" y="150" width="220" height="25" rx="3" fill="#ffffff" stroke="#ef4444"/>
+    <text x="130" y="167" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Console error, page blocked</text>
+  </g>
+  
+  <!-- Common Attack Scenarios -->
+  <g transform="translate(50, 350)">
+    <rect x="0" y="0" width="1000" height="280" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="500" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#0f172a">frame-ancestors Values &amp; Protection</text>
+    
+    <!-- 'none' -->
+    <g transform="translate(20, 45)">
+      <rect x="0" y="0" width="300" height="100" rx="6" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="150" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#dc2626">frame-ancestors 'none'</text>
+      <text x="15" y="48" font-family="monospace" font-size="10" fill="#475569">Effect: No site can frame you</text>
+      <text x="15" y="68" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Protection: ✓ Blocks all clickjacking</text>
+      <text x="15" y="88" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Use case: Most web apps (no framing needed)</text>
+    </g>
+    
+    <!-- 'self' -->
+    <g transform="translate(340, 45)">
+      <rect x="0" y="0" width="300" height="100" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="150" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#d97706">frame-ancestors 'self'</text>
+      <text x="15" y="48" font-family="monospace" font-size="10" fill="#475569">Effect: Only same origin can frame</text>
+      <text x="15" y="68" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Protection: ✓ Blocks external clickjacking</text>
+      <text x="15" y="88" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Use case: Sites with internal framing</text>
+    </g>
+    
+    <!-- Specific origins -->
+    <g transform="translate(660, 45)">
+      <rect x="0" y="0" width="300" height="100" rx="6" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="150" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#16a34a">frame-ancestors 'self' https://partner.com</text>
+      <text x="15" y="48" font-family="monospace" font-size="10" fill="#475569">Effect: Allow specific trusted origins</text>
+      <text x="15" y="68" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Protection: ✓ Blocks untrusted framing</text>
+      <text x="15" y="88" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Use case: Partner integrations, widgets</text>
+    </g>
+    
+    <!-- Attack blocked examples -->
+    <g transform="translate(20, 160)">
+      <rect x="0" y="0" width="960" height="100" rx="6" fill="#f1f5f9" stroke="#cbd5e1"/>
+      <text x="480" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#0f172a">Attacks Blocked by frame-ancestors</text>
+      
+      <g transform="translate(15, 40)">
+        <rect x="0" y="0" width="290" height="50" rx="4" fill="#fef2f2" stroke="#ef4444"/>
+        <text x="145" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#dc2626">✗ evil.com/attack.html</text>
+        <text x="145" y="42" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Blocked: Not in allowed list</text>
+        
+        <rect x="310" y="0" width="290" height="50" rx="4" fill="#fef2f2" stroke="#ef4444"/>
+        <text x="455" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#dc2626">✗ attacker.com/phish</text>
+        <text x="455" y="42" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Blocked: Not in allowed list</text>
+        
+        <rect x="620" y="0" width="290" height="50" rx="4" fill="#fef2f2" stroke="#ef4444"/>
+        <text x="765" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#dc2626">✗ malicious-site.net</text>
+        <text x="765" y="42" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Blocked: Not in allowed list</text>
+      </g>
+    </g>
+  </g>
+  
+  <!-- Key insight -->
+  <g transform="translate(50, 645)">
+    <rect x="0" y="0" width="1000" height="40" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="500" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Best Practice: Use both CSP frame-ancestors + X-Frame-Options for maximum browser coverage</text>
+  </g>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
+</svg>

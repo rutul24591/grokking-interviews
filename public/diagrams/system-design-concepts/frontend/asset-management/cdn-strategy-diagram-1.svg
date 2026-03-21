@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" role="img" aria-label="CDN architecture with edge, shield, and origin layers showing request flow from user to edge PoP to shield to origin server" font-family="system-ui, sans-serif">
+  <rect width="900" height="520" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">CDN Architecture: Edge / Shield / Origin Layers</text>
+
+  <!-- Users -->
+  <g>
+    <rect x="30" y="70" width="100" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+    <text x="80" y="100" text-anchor="middle" font-size="12" fill="#1a1822">User A (NYC)</text>
+  </g>
+  <g>
+    <rect x="30" y="140" width="100" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+    <text x="80" y="170" text-anchor="middle" font-size="12" fill="#1a1822">User B (LON)</text>
+  </g>
+  <g>
+    <rect x="30" y="210" width="100" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+    <text x="80" y="240" text-anchor="middle" font-size="12" fill="#1a1822">User C (TYO)</text>
+  </g>
+
+  <!-- Label: Users -->
+  <text x="80" y="290" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="600">End Users</text>
+
+  <!-- Anycast DNS -->
+  <rect x="170" y="130" width="90" height="60" rx="8" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="215" y="155" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="600">Anycast</text>
+  <text x="215" y="172" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="600">DNS</text>
+
+  <!-- Arrows: Users to DNS -->
+  <line x1="130" y1="95" x2="170" y2="150" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+  <line x1="130" y1="165" x2="170" y2="160" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+  <line x1="130" y1="235" x2="170" y2="170" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+
+  <!-- Edge PoPs layer -->
+  <rect x="300" y="55" width="180" height="250" rx="10" fill="none" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="390" y="78" text-anchor="middle" font-size="13" fill="#6d5bd0" font-weight="700">Edge PoPs (Tier 1)</text>
+
+  <rect x="320" y="90" width="140" height="45" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="390" y="110" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">NYC Edge PoP</text>
+  <text x="390" y="126" text-anchor="middle" font-size="10" fill="#6d5bd0">Cache + TLS termination</text>
+
+  <rect x="320" y="150" width="140" height="45" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="390" y="170" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">LON Edge PoP</text>
+  <text x="390" y="186" text-anchor="middle" font-size="10" fill="#6d5bd0">Cache + TLS termination</text>
+
+  <rect x="320" y="210" width="140" height="45" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="390" y="230" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">TYO Edge PoP</text>
+  <text x="390" y="246" text-anchor="middle" font-size="10" fill="#6d5bd0">Cache + TLS termination</text>
+
+  <!-- Arrows: DNS to Edge PoPs -->
+  <line x1="260" y1="150" x2="320" y2="112" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+  <line x1="260" y1="160" x2="320" y2="172" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+  <line x1="260" y1="170" x2="320" y2="232" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+
+  <!-- Shield layer -->
+  <rect x="530" y="100" width="160" height="160" rx="10" fill="none" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="610" y="123" text-anchor="middle" font-size="13" fill="#6d5bd0" font-weight="700">Shield (Tier 2)</text>
+
+  <rect x="550" y="135" width="120" height="50" rx="6" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="610" y="157" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="600">US-East Shield</text>
+  <text x="610" y="174" text-anchor="middle" font-size="10" fill="#ffffff">Coalesces requests</text>
+
+  <rect x="550" y="200" width="120" height="50" rx="6" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="610" y="222" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="600">EU Shield</text>
+  <text x="610" y="239" text-anchor="middle" font-size="10" fill="#ffffff">Coalesces requests</text>
+
+  <!-- Arrows: Edge to Shield -->
+  <line x1="460" y1="112" x2="550" y2="155" stroke="#d7d1e6" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <line x1="460" y1="172" x2="550" y2="220" stroke="#d7d1e6" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <line x1="460" y1="232" x2="550" y2="160" stroke="#d7d1e6" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+
+  <!-- Origin -->
+  <rect x="740" y="140" width="130" height="80" rx="8" fill="#1a1822" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="805" y="168" text-anchor="middle" font-size="12" fill="#ffffff" font-weight="600">Origin Server</text>
+  <text x="805" y="186" text-anchor="middle" font-size="10" fill="#d7d1e6">App + DB + Storage</text>
+  <text x="805" y="202" text-anchor="middle" font-size="10" fill="#d7d1e6">us-east-1</text>
+
+  <!-- Arrows: Shield to Origin -->
+  <line x1="670" y1="160" x2="740" y2="170" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrowDark)"/>
+  <line x1="670" y1="225" x2="740" y2="190" stroke="#1a1822" stroke-width="1.5" marker-end="url(#arrowDark)"/>
+
+  <!-- Flow legend -->
+  <rect x="30" y="340" width="840" height="155" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="368" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1822">Request Flow</text>
+
+  <circle cx="60" cy="400" r="8" fill="#4ade80"/>
+  <text x="78" y="404" font-size="11" fill="#1a1822" font-weight="600">Cache HIT (Edge):</text>
+  <text x="195" y="404" font-size="11" fill="#1a1822">User --&gt; Edge PoP (cached response returned, ~10-50ms)</text>
+
+  <circle cx="60" cy="430" r="8" fill="#facc15"/>
+  <text x="78" y="434" font-size="11" fill="#1a1822" font-weight="600">Cache MISS (Shield HIT):</text>
+  <text x="230" y="434" font-size="11" fill="#1a1822">User --&gt; Edge --&gt; Shield (cached, ~50-100ms)</text>
+
+  <circle cx="60" cy="460" r="8" fill="#f87171"/>
+  <text x="78" y="464" font-size="11" fill="#1a1822" font-weight="600">Full MISS:</text>
+  <text x="148" y="464" font-size="11" fill="#1a1822">User --&gt; Edge --&gt; Shield --&gt; Origin (fetch + cache, ~200-500ms)</text>
+
+  <!-- Arrowhead definitions -->
+  <defs>
+    <marker id="arrowPurple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#d7d1e6"/>
+    </marker>
+    <marker id="arrowDark" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#1a1822"/>
+    </marker>
+  </defs>
+</svg>

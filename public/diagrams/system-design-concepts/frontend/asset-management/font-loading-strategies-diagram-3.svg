@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" role="img" aria-label="Font loading waterfall with preload showing network requests and rendering phases" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Font Loading Waterfall — Without vs With Preload</text>
+
+  <!-- Timeline header -->
+  <text x="450" y="58" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Network Request Timeline</text>
+
+  <!-- WITHOUT PRELOAD section -->
+  <rect x="30" y="70" width="840" height="185" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="50" y="92" font-size="14" font-weight="700" fill="#1a1822">Without Preload</text>
+  <text x="240" y="92" font-size="10" fill="#888">(font discovered late in render tree)</text>
+
+  <!-- Time axis without preload -->
+  <line x1="180" y1="240" x2="840" y2="240" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="180" y="254" text-anchor="middle" font-size="9" fill="#888">0ms</text>
+  <text x="345" y="254" text-anchor="middle" font-size="9" fill="#888">200ms</text>
+  <text x="510" y="254" text-anchor="middle" font-size="9" fill="#888">500ms</text>
+  <text x="675" y="254" text-anchor="middle" font-size="9" fill="#888">1000ms</text>
+  <text x="840" y="254" text-anchor="middle" font-size="9" fill="#888">1500ms</text>
+
+  <!-- Row: HTML -->
+  <text x="100" y="118" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">HTML</text>
+  <rect x="180" y="105" width="100" height="22" rx="4" fill="#6d5bd0"/>
+  <text x="230" y="120" text-anchor="middle" font-size="9" fill="#ffffff">download</text>
+
+  <!-- Row: CSS -->
+  <text x="100" y="144" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">CSS</text>
+  <rect x="280" y="131" width="130" height="22" rx="4" fill="#8b7bd0"/>
+  <text x="345" y="146" text-anchor="middle" font-size="9" fill="#ffffff">download + parse</text>
+
+  <!-- Row: CSSOM / Layout -->
+  <text x="100" y="170" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">CSSOM</text>
+  <rect x="410" y="157" width="100" height="22" rx="4" fill="#b0a3d8"/>
+  <text x="460" y="172" text-anchor="middle" font-size="9" fill="#ffffff">build tree</text>
+
+  <!-- Row: Font (discovered late!) -->
+  <text x="100" y="196" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">Font</text>
+  <rect x="510" y="183" width="200" height="22" rx="4" fill="#ff6b35"/>
+  <text x="610" y="198" text-anchor="middle" font-size="9" fill="#ffffff">download .woff2</text>
+
+  <!-- Row: Render -->
+  <text x="100" y="222" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">Render</text>
+  <rect x="510" y="209" width="200" height="22" rx="4" fill="#e8e4f0" stroke="#d7d1e6"/>
+  <text x="610" y="224" text-anchor="middle" font-size="9" fill="#888">FOIT / FOUT</text>
+  <rect x="710" y="209" width="100" height="22" rx="4" fill="#6d5bd0"/>
+  <text x="760" y="224" text-anchor="middle" font-size="9" fill="#ffffff">styled</text>
+
+  <!-- Red annotation -->
+  <line x1="510" y1="100" x2="510" y2="235" stroke="#ff6b35" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="512" y="100" font-size="9" fill="#ff6b35" font-weight="600">Font request starts late!</text>
+
+  <!-- WITH PRELOAD section -->
+  <rect x="30" y="270" width="840" height="185" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="50" y="292" font-size="14" font-weight="700" fill="#6d5bd0">With Preload</text>
+  <text x="195" y="292" font-size="10" fill="#6d5bd0">&lt;link rel=&quot;preload&quot; as=&quot;font&quot; crossorigin&gt;</text>
+
+  <!-- Time axis with preload -->
+  <line x1="180" y1="440" x2="840" y2="440" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="180" y="454" text-anchor="middle" font-size="9" fill="#888">0ms</text>
+  <text x="345" y="454" text-anchor="middle" font-size="9" fill="#888">200ms</text>
+  <text x="510" y="454" text-anchor="middle" font-size="9" fill="#888">500ms</text>
+  <text x="675" y="454" text-anchor="middle" font-size="9" fill="#888">1000ms</text>
+  <text x="840" y="454" text-anchor="middle" font-size="9" fill="#888">1500ms</text>
+
+  <!-- Row: HTML -->
+  <text x="100" y="318" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">HTML</text>
+  <rect x="180" y="305" width="100" height="22" rx="4" fill="#6d5bd0"/>
+  <text x="230" y="320" text-anchor="middle" font-size="9" fill="#ffffff">download</text>
+
+  <!-- Row: CSS (parallel) -->
+  <text x="100" y="344" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">CSS</text>
+  <rect x="280" y="331" width="130" height="22" rx="4" fill="#8b7bd0"/>
+  <text x="345" y="346" text-anchor="middle" font-size="9" fill="#ffffff">download + parse</text>
+
+  <!-- Row: Font (preloaded - starts early!) -->
+  <text x="100" y="370" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">Font</text>
+  <rect x="280" y="357" width="200" height="22" rx="4" fill="#28a745"/>
+  <text x="380" y="372" text-anchor="middle" font-size="9" fill="#ffffff">preload .woff2 (parallel!)</text>
+
+  <!-- Row: CSSOM -->
+  <text x="100" y="396" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">CSSOM</text>
+  <rect x="410" y="383" width="100" height="22" rx="4" fill="#b0a3d8"/>
+  <text x="460" y="398" text-anchor="middle" font-size="9" fill="#ffffff">build tree</text>
+
+  <!-- Row: Render (much earlier!) -->
+  <text x="100" y="422" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">Render</text>
+  <rect x="510" y="409" width="300" height="22" rx="4" fill="#6d5bd0"/>
+  <text x="660" y="424" text-anchor="middle" font-size="9" fill="#ffffff">styled immediately — font already cached!</text>
+
+  <!-- Green annotation -->
+  <line x1="280" y1="300" x2="280" y2="380" stroke="#28a745" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="282" y="300" font-size="9" fill="#28a745" font-weight="600">Font starts with CSS!</text>
+
+  <!-- Savings annotation -->
+  <rect x="590" y="465" width="260" height="28" rx="6" fill="#6d5bd0"/>
+  <text x="720" y="484" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="600">~500-1000ms faster font rendering</text>
+</svg>

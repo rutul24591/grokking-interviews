@@ -1,0 +1,178 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 750" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1100" height="750" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="550" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">CSP Enforcement Flow</text>
+  <text x="550" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#475569">How the browser enforces Content Security Policy</text>
+  
+  <!-- Step 1: Server sends CSP -->
+  <g transform="translate(50, 90)">
+    <rect x="0" y="0" width="450" height="100" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+    <text x="225" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="400" fill="#16a34a">Step 1: Server Sends CSP Header</text>
+    
+    <rect x="30" y="40" width="120" height="50" rx="4" fill="#ffffff" stroke="#22c55e"/>
+    <text x="90" y="62" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#0f172a">Web Server</text>
+    <text x="90" y="78" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Application</text>
+    
+    <line x1="150" y1="65" x2="200" y2="65" stroke="#22c55e" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+    
+    <rect x="205" y="40" width="220" height="50" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="315" y="55" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#92400e">HTTP Response Header</text>
+    <text x="315" y="72" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Content-Security-Policy: ...</text>
+    <text x="315" y="84" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">script-src 'self' 'nonce-abc'</text>
+  </g>
+  
+  <!-- Arrow down -->
+  <line x1="275" y1="200" x2="275" y2="230" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 2: Browser parses -->
+  <g transform="translate(50, 240)">
+    <rect x="0" y="0" width="450" height="100" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="225" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="400" fill="#2563eb">Step 2: Browser Parses Policy</text>
+    
+    <rect x="30" y="40" width="140" height="50" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+    <text x="100" y="62" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#0f172a">Browser Engine</text>
+    <text x="100" y="78" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Parses CSP header</text>
+    
+    <line x1="170" y1="65" x2="220" y2="65" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead-blue)"/>
+    
+    <rect x="225" y="40" width="200" height="50" rx="4" fill="#f8fafc" stroke="#64748b"/>
+    <text x="325" y="55" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#0f172a">Internal Policy Store</text>
+    <text x="325" y="72" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">scripts: ['self', 'nonce-abc']</text>
+    <text x="325" y="84" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">styles: ['self']</text>
+  </g>
+  
+  <!-- Arrow down -->
+  <line x1="275" y1="350" x2="275" y2="380" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 3: Resource encountered -->
+  <g transform="translate(50, 390)">
+    <rect x="0" y="0" width="450" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="225" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="400" fill="#d97706">Step 3: Browser Encounters Resources</text>
+    
+    <!-- Script tag -->
+    <g transform="translate(30, 40)">
+      <rect x="0" y="0" width="180" height="35" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="90" y="20" text-anchor="middle" font-family="monospace" font-size="10" fill="#0f172a">&lt;script src="cdn.js"&gt;</text>
+      <line x1="90" y1="35" x2="90" y2="50" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead-orange)"/>
+      <text x="90" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Check CSP</text>
+    </g>
+    
+    <!-- Inline script -->
+    <g transform="translate(240, 40)">
+      <rect x="0" y="0" width="180" height="35" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="90" y="20" text-anchor="middle" font-family="monospace" font-size="10" fill="#0f172a">&lt;script&gt;inline&lt;/script&gt;</text>
+      <line x1="90" y1="35" x2="90" y2="50" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead-orange)"/>
+      <text x="90" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Check nonce</text>
+    </g>
+    
+    <!-- Image -->
+    <g transform="translate(30, 95)">
+      <rect x="0" y="0" width="180" height="35" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="90" y="20" text-anchor="middle" font-family="monospace" font-size="10" fill="#0f172a">&lt;img src="..."&gt;</text>
+      <line x1="90" y1="35" x2="90" y2="50" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead-orange)"/>
+      <text x="90" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Check img-src</text>
+    </g>
+    
+    <!-- Style -->
+    <g transform="translate(240, 95)">
+      <rect x="0" y="0" width="180" height="35" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="90" y="20" text-anchor="middle" font-family="monospace" font-size="10" fill="#0f172a">&lt;link rel="stylesheet"&gt;</text>
+      <line x1="90" y1="35" x2="90" y2="50" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead-orange)"/>
+      <text x="90" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Check style-src</text>
+    </g>
+  </g>
+  
+  <!-- Arrow right to decision -->
+  <line x1="510" y1="460" x2="560" y2="460" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 4: Validation -->
+  <g transform="translate(570, 390)">
+    <rect x="0" y="0" width="480" height="140" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+    <text x="240" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="400" fill="#4f46e5">Step 4: Source Validation</text>
+    
+    <!-- Decision diamond -->
+    <path d="M 100 70 L 180 70 L 220 95 L 180 120 L 100 120 Z" fill="#ffffff" stroke="#6366f1"/>
+    <text x="160" y="85" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#0f172a">Source in</text>
+    <text x="160" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#0f172a">allowed list?</text>
+    
+    <!-- YES path -->
+    <line x1="220" y1="95" x2="270" y2="95" stroke="#22c55e" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+    <text x="245" y="85" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#16a34a">YES</text>
+    
+    <rect x="275" y="75" width="90" height="40" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="320" y="92" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#16a34a">ALLOW</text>
+    <text x="320" y="107" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Load resource</text>
+    
+    <!-- NO path -->
+    <line x1="180" y1="120" x2="180" y2="150" x2="230" y2="150" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowhead-red)"/>
+    <text x="190" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#dc2626">NO</text>
+    
+    <rect x="235" y="130" width="90" height="40" rx="4" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="280" y="147" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#dc2626">BLOCK</text>
+    <text x="280" y="162" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Console error</text>
+    
+    <!-- Report path -->
+    <line x1="325" y1="150" x2="325" y2="180" x2="380" y2="180" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arrowhead-orange)"/>
+    <rect x="385" y="165" width="80" height="30" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="425" y="182" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#92400e">Send Report</text>
+  </g>
+  
+  <!-- Examples section -->
+  <g transform="translate(50, 550)">
+    <rect x="0" y="0" width="1000" height="180" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="500" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="400" fill="#0f172a">Example Scenarios</text>
+    
+    <!-- Example 1: Allowed -->
+    <g transform="translate(30, 40)">
+      <rect x="0" y="0" width="450" height="60" rx="6" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="225" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#16a34a">✓ Scenario 1: Trusted Script</text>
+      <text x="225" y="40" text-anchor="middle" font-family="monospace" font-size="10" fill="#475569">CSP: script-src 'self' https://cdn.example.com</text>
+      <text x="225" y="54" text-anchor="middle" font-family="monospace" font-size="10" fill="#475569">Script: &lt;script src="https://cdn.example.com/app.js"&gt; → ALLOWED</text>
+    </g>
+    
+    <!-- Example 2: Blocked -->
+    <g transform="translate(510, 40)">
+      <rect x="0" y="0" width="450" height="60" rx="6" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="225" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#dc2626">✗ Scenario 2: Untrusted Script</text>
+      <text x="225" y="40" text-anchor="middle" font-family="monospace" font-size="10" fill="#475569">CSP: script-src 'self' https://cdn.example.com</text>
+      <text x="225" y="54" text-anchor="middle" font-family="monospace" font-size="10" fill="#475569">Script: &lt;script src="https://evil.com/malicious.js"&gt; → BLOCKED</text>
+    </g>
+    
+    <!-- Example 3: Nonce -->
+    <g transform="translate(30, 110)">
+      <rect x="0" y="0" width="450" height="60" rx="6" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="225" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#16a34a">✓ Scenario 3: Valid Nonce</text>
+      <text x="225" y="40" text-anchor="middle" font-family="monospace" font-size="10" fill="#475569">CSP: script-src 'self' 'nonce-abc123'</text>
+      <text x="225" y="54" text-anchor="middle" font-family="monospace" font-size="10" fill="#475569">Script: &lt;script nonce="abc123"&gt;...&lt;/script&gt; → ALLOWED</text>
+    </g>
+    
+    <!-- Example 4: Invalid Nonce -->
+    <g transform="translate(510, 110)">
+      <rect x="0" y="0" width="450" height="60" rx="6" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="225" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#dc2626">✗ Scenario 4: Missing/Invalid Nonce</text>
+      <text x="225" y="40" text-anchor="middle" font-family="monospace" font-size="10" fill="#475569">CSP: script-src 'self' 'nonce-abc123'</text>
+      <text x="225" y="54" text-anchor="middle" font-family="monospace" font-size="10" fill="#475569">Script: &lt;script&gt;...&lt;/script&gt; (no nonce) → BLOCKED</text>
+    </g>
+  </g>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/>
+    </marker>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrowhead-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowhead-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
+</svg>

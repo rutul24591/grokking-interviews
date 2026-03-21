@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 650" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1100" height="650" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="550" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">SRI Verification Flow</text>
+  <text x="550" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">Browser verifies resource integrity using cryptographic hash</text>
+  
+  <!-- HTML with SRI -->
+  <g transform="translate(50, 85)">
+    <rect x="0" y="0" width="300" height="150" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="150" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#2563eb">1. HTML with SRI</text>
+    
+    <rect x="20" y="45" width="260" height="90" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+    <text x="30" y="65" font-family="monospace" font-size="9" fill="#475569">&lt;script src="https://cdn...</text>
+    <text x="30" y="80" font-family="monospace" font-size="9" fill="#475569">  integrity="sha384-abc123..."</text>
+    <text x="30" y="95" font-family="monospace" font-size="9" fill="#475569">  crossorigin="anonymous"</text>
+    <text x="30" y="110" font-family="monospace" font-size="9" fill="#475569">&gt;&lt;/script&gt;</text>
+    
+    <rect x="20" y="120" width="260" height="25" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="150" y="137" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">Expected hash: sha384-abc123...</text>
+  </g>
+  
+  <!-- Arrow to Fetch -->
+  <line x1="360" y1="160" x2="410" y2="160" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead-blue)"/>
+  <text x="385" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Fetch</text>
+  
+  <!-- CDN/Server -->
+  <g transform="translate(420, 85)">
+    <rect x="0" y="0" width="260" height="150" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="130" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#d97706">2. CDN / Server</text>
+    
+    <rect x="20" y="45" width="220" height="60" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+    <text x="130" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Resource File</text>
+    <text x="130" y="85" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">library.js</text>
+    <text x="130" y="100" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">(actual content)</text>
+    
+    <rect x="20" y="115" width="220" height="30" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="130" y="134" text-anchor="middle" font-family="monospace" font-size="9" fill="#92400e">Sends: Raw bytes</text>
+  </g>
+  
+  <!-- Arrow to Browser -->
+  <line x1="690" y1="160" x2="740" y2="160" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead-orange)"/>
+  <text x="715" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Response</text>
+  
+  <!-- Browser Verification -->
+  <g transform="translate(750, 85)">
+    <rect x="0" y="0" width="300" height="150" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+    <text x="150" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#4f46e5">3. Browser Verification</text>
+    
+    <!-- Hash computation -->
+    <g transform="translate(20, 45)">
+      <rect x="0" y="0" width="260" height="45" rx="4" fill="#ffffff" stroke="#6366f1"/>
+      <text x="130" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Compute Hash</text>
+      <text x="130" y="38" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">SHA-384(resource bytes)</text>
+    </g>
+    
+    <!-- Comparison -->
+    <g transform="translate(20, 100)">
+      <rect x="0" y="0" width="260" height="45" rx="4" fill="#ffffff" stroke="#6366f1"/>
+      <text x="130" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Compare Hashes</text>
+      <text x="130" y="38" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Computed == Expected?</text>
+    </g>
+  </g>
+  
+  <!-- Arrow to Result -->
+  <line x1="900" y1="245" x2="900" y2="285" stroke="#6366f1" stroke-width="2" marker-end="url(#arrowhead-purple)"/>
+  
+  <!-- Result: Match -->
+  <g transform="translate(750, 300)">
+    <rect x="0" y="0" width="300" height="100" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+    <text x="150" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#16a34a">4a. Hash Match ✓</text>
+    
+    <circle cx="150" cy="60" r="25" fill="#22c55e"/>
+    <path d="M 135 60 L 145 70 L 165 50" stroke="#ffffff" stroke-width="4" fill="none"/>
+    <text x="150" y="85" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Resource loads normally</text>
+  </g>
+  
+  <!-- Result: Mismatch -->
+  <g transform="translate(750, 420)">
+    <rect x="0" y="0" width="300" height="100" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+    <text x="150" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#dc2626">4b. Hash Mismatch ✗</text>
+    
+    <circle cx="150" cy="60" r="25" fill="#ef4444"/>
+    <line x1="135" y1="50" x2="165" y2="70" stroke="#ffffff" stroke-width="4"/>
+    <line x1="165" y1="50" x2="135" y2="70" stroke="#ffffff" stroke-width="4"/>
+    <text x="150" y="85" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Resource BLOCKED</text>
+  </g>
+  
+  <!-- Arrow back to HTML -->
+  <path d="M 740 470 C 600 470, 600 470, 460 470" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arrowhead-red)"/>
+  <path d="M 460 470 L 460 235" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,2"/>
+  <text x="445" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#dc2626">Error:</text>
+  <text x="445" y="365" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#dc2626">Integrity</text>
+  <text x="445" y="380" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#dc2626">violation</text>
+  
+  <!-- Key insight -->
+  <g transform="translate(50, 540)">
+    <rect x="0" y="0" width="1000" height="60" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="500" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Key Security Guarantee</text>
+    <text x="500" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">Even if the CDN is compromised, the browser will block malicious resources that don't match the expected hash.</text>
+  </g>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowhead-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrowhead-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
+</svg>

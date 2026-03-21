@@ -137,12 +137,8 @@ export default function CSRFProtectionArticle() {
         <h4 className="mt-4 mb-2 font-semibold">GET-based CSRF</h4>
         <p>
           If state-changing actions use GET requests (a violation of REST principles), CSRF is trivial:
-        </p>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`<!-- Attacker's malicious page -->
-<img src="https://bank.com/transfer?to=attacker&amount=1000" width="0" height="0">`}</code>
-        </pre>
-        <p>
+          An attacker can embed an image tag with the source pointing to the transfer endpoint with parameters,
+          such as an image with src set to the bank&apos;s transfer URL with the attacker&apos;s account and amount.
           When the victim visits the attacker&apos;s page, the browser loads the image—which is actually a
           GET request to the bank&apos;s transfer endpoint. The browser automatically includes the session
           cookie, and the transfer executes.
@@ -150,36 +146,18 @@ export default function CSRFProtectionArticle() {
 
         <h4 className="mt-4 mb-2 font-semibold">POST-based CSRF (Form-based)</h4>
         <p>
-          For POST requests, attackers use auto-submitting forms:
-        </p>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`<!-- Attacker's malicious page -->
-<form id="csrf-form" action="https://bank.com/transfer" method="POST">
-  <input type="hidden" name="to" value="attacker-account">
-  <input type="hidden" name="amount" value="1000">
-</form>
-<script>document.getElementById('csrf-form').submit();</script>`}</code>
-        </pre>
-        <p>
+          For POST requests, attackers use auto-submitting forms. An attacker might create a hidden form with
+          the action set to the target endpoint and hidden inputs containing the attacker&apos;s account details
+          and transfer amount, then use JavaScript to automatically submit the form when the page loads.
           The form auto-submits when the page loads, sending a POST request with the victim&apos;s session
           cookie to the bank&apos;s transfer endpoint.
         </p>
 
         <h4 className="mt-4 mb-2 font-semibold">AJAX/Fetch-based CSRF</h4>
         <p>
-          Modern attacks use fetch or XMLHttpRequest:
-        </p>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`// Attacker's malicious JavaScript
-fetch('https://bank.com/api/transfer', {
-  method: 'POST',
-  credentials: 'include', // Include cookies
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ to: 'attacker', amount: 1000 })
-});`}</code>
-        </pre>
-        <p>
-          Note: CORS restrictions may block this attack unless the server allows cross-origin requests with
+          Modern attacks use fetch or XMLHttpRequest. An attacker might use the fetch API with credentials
+          included to send a POST request to the transfer endpoint with JSON data containing the attacker&apos;s
+          account and amount. Note: CORS restrictions may block this attack unless the server allows cross-origin requests with
           <code className="text-sm">Access-Control-Allow-Credentials: true</code>. However, simple POST requests
           (without custom headers) can still succeed via form-based attacks.
         </p>
@@ -280,34 +258,20 @@ fetch('https://bank.com/api/transfer', {
 
         <h4 className="mt-4 mb-2 font-semibold">Token Implementation Patterns</h4>
         <p>
-          <strong>Form-based (traditional):</strong>
+          <strong>Form-based (traditional):</strong> The server renders forms with a hidden CSRF token field.
+          For example, a form might include a hidden input named <code className="text-sm">_csrf</code> with
+          a cryptographically random value like <code className="text-sm">abc123xyz789</code> that gets submitted
+          with the form data.
         </p>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`<!-- Server renders form with hidden CSRF token -->
-<form action="/transfer" method="POST">
-  <input type="hidden" name="_csrf" value="abc123xyz789">
-  <input name="amount" value="100">
-  <button type="submit">Transfer</button>
-</form>`}</code>
-        </pre>
 
         <p>
-          <strong>Header-based (SPA/API):</strong>
+          <strong>Header-based (SPA/API):</strong> For single-page applications and APIs, the client reads the
+          CSRF token from a meta tag or cookie (for example, by querying for a meta tag with name
+          <code className="text-sm">csrf-token</code>), then includes it in a custom header such as
+          <code className="text-sm">X-CSRF-Token</code> with each fetch or XMLHttpRequest. The request would
+          include the Content-Type header set to application/json along with the CSRF token header and the
+          request body.
         </p>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`// Client reads token from meta tag or cookie
-const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-
-// Include in fetch requests
-fetch('/api/transfer', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'X-CSRF-Token': csrfToken
-  },
-  body: JSON.stringify({ amount: 100 })
-});`}</code>
-        </pre>
 
         <h4 className="mt-4 mb-2 font-semibold">Token Best Practices</h4>
         <ul className="space-y-2">
@@ -354,17 +318,14 @@ fetch('/api/transfer', {
         </ul>
 
         <h4 className="mt-4 mb-2 font-semibold">SameSite Implementation</h4>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`// Server-side cookie setting
-Set-Cookie: sessionId=abc123; SameSite=Lax; Secure; HttpOnly
-
-// Or in Express.js
-res.cookie('sessionId', 'abc123', {
-  sameSite: 'lax',
-  secure: true,
-  httpOnly: true
-});`}</code>
-        </pre>
+        <p>
+          On the server side, set the SameSite attribute when creating cookies. For example, set the
+          <code className="text-sm">SameSite</code> attribute to <code className="text-sm">Lax</code> along
+          with <code className="text-sm">Secure</code> and <code className="text-sm">HttpOnly</code> flags.
+          In Express.js, you would pass an options object to the cookie method with
+          <code className="text-sm">sameSite: 'lax'</code>, <code className="text-sm">secure: true</code>, and
+          <code className="text-sm">httpOnly: true</code>.
+        </p>
 
         <h4 className="mt-4 mb-2 font-semibold">SameSite Limitations</h4>
         <ul className="space-y-2">
@@ -402,21 +363,12 @@ res.cookie('sessionId', 'abc123', {
         </ul>
 
         <h4 className="mt-4 mb-2 font-semibold">Validation Logic</h4>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`// Server-side validation (Node.js example)
-function validateOrigin(req) {
-  const origin = req.headers.origin || req.headers.referer;
-  
-  if (!origin) {
-    return false; // Missing headers - suspicious
-  }
-  
-  const allowedOrigins = ['https://example.com', 'https://app.example.com'];
-  const originUrl = new URL(origin);
-  
-  return allowedOrigins.includes(originUrl.origin);
-}`}</code>
-        </pre>
+        <p>
+          On the server side, validate the Origin or Referer header from incoming requests. Extract the origin
+          from either the <code className="text-sm">origin</code> or <code className="text-sm">referer</code>
+          header, then check if it&apos;s missing (which is suspicious), parse it as a URL, and verify it&apos;s
+          in your whitelist of allowed origins such as your main domain and app subdomain.
+        </p>
 
         <h4 className="mt-4 mb-2 font-semibold">Limitations</h4>
         <ul className="space-y-2">

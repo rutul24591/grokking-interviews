@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 750" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1100" height="750" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="550" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">Token Lifecycle &amp; Refresh Flow</text>
+  <text x="550" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">Access token expiration, refresh token exchange, and token rotation</text>
+  
+  <!-- Initial Login -->
+  <g transform="translate(50, 85)">
+    <rect x="0" y="0" width="200" height="100" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="100" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#2563eb">1. Initial Login</text>
+    <text x="100" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">User authenticates</text>
+    <text x="100" y="80" text-anchor="middle" font-family="monospace" font-size="10" fill="#475569">POST /login</text>
+  </g>
+  
+  <!-- Arrow -->
+  <line x1="260" y1="135" x2="310" y2="135" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Token Issuance -->
+  <g transform="translate(320, 85)">
+    <rect x="0" y="0" width="220" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="110" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#d97706">2. Token Issuance</text>
+    <text x="110" y="60" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Access Token (15 min)</text>
+    <text x="110" y="80" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Refresh Token (7 days)</text>
+  </g>
+  
+  <!-- Arrow -->
+  <line x1="550" y1="135" x2="600" y2="135" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- API Requests -->
+  <g transform="translate(610, 85)">
+    <rect x="0" y="0" width="200" height="100" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+    <text x="100" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#4f46e5">3. API Requests</text>
+    <text x="100" y="60" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Authorization: Bearer</text>
+    <text x="100" y="80" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Access Token</text>
+  </g>
+  
+  <!-- Arrow down to expiration -->
+  <path d="M 710 190 L 710 230" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Token Expiration -->
+  <g transform="translate(610, 240)">
+    <rect x="0" y="0" width="200" height="80" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+    <text x="100" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#dc2626">4. Token Expires</text>
+    <text x="100" y="55" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">API returns 401</text>
+    <text x="100" y="72" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">"Token expired"</text>
+  </g>
+  
+  <!-- Arrow left to refresh -->
+  <path d="M 600 280 L 550 280" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Refresh Request -->
+  <g transform="translate(320, 240)">
+    <rect x="0" y="0" width="220" height="80" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="110" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#d97706">5. Refresh Request</text>
+    <text x="110" y="55" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">POST /api/refresh</text>
+    <text x="110" y="72" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Refresh Token (cookie)</text>
+  </g>
+  
+  <!-- Arrow left to rotation -->
+  <path d="M 310 280 L 260 280" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Token Rotation -->
+  <g transform="translate(50, 240)">
+    <rect x="0" y="0" width="200" height="80" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+    <text x="100" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#16a34a">6. Token Rotation</text>
+    <text x="100" y="55" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Invalidate old token</text>
+    <text x="100" y="72" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Issue new tokens</text>
+  </g>
+  
+  <!-- Arrow down to retry -->
+  <path d="M 150 325 L 150 370" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Retry Request -->
+  <g transform="translate(50, 380)">
+    <rect x="0" y="0" width="200" height="80" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="100" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#2563eb">7. Retry Request</text>
+    <text x="100" y="55" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Original API call</text>
+    <text x="100" y="72" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">New Access Token</text>
+  </g>
+  
+  <!-- Arrow right to success -->
+  <path d="M 260 420 L 310 420" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Success -->
+  <g transform="translate(320, 380)">
+    <rect x="0" y="0" width="220" height="80" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+    <text x="110" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#16a34a">8. Success</text>
+    <text x="110" y="60" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">200 OK + Data</text>
+    <text x="110" y="75" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Continue normal flow</text>
+  </g>
+  
+  <!-- Token Rotation Detail -->
+  <g transform="translate(50, 490)">
+    <rect x="0" y="0" width="1000" height="240" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="500" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#0f172a">Token Rotation &amp; Reuse Detection</text>
+    
+    <!-- Normal Flow -->
+    <g transform="translate(20, 45)">
+      <rect x="0" y="0" width="460" height="180" rx="6" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="230" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#16a34a">Normal Rotation Flow</text>
+      
+      <text x="15" y="50" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">1. User refreshes with Token A</text>
+      <text x="15" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">2. Server validates Token A</text>
+      <text x="15" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">3. Server marks Token A as used</text>
+      <text x="15" y="110" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">4. Server issues Token B (new)</text>
+      <text x="15" y="130" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">5. User uses Token B for next refresh</text>
+      
+      <rect x="15" y="145" width="430" height="25" rx="3" fill="#ffffff" stroke="#22c55e"/>
+      <text x="230" y="162" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">✓ Each token used exactly once</text>
+    </g>
+    
+    <!-- Theft Detection -->
+    <g transform="translate(520, 45)">
+      <rect x="0" y="0" width="460" height="180" rx="6" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="230" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#dc2626">Token Reuse = Theft Detected</text>
+      
+      <text x="15" y="50" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">1. Attacker steals Token A</text>
+      <text x="15" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">2. Legitimate user refreshes (Token A → B)</text>
+      <text x="15" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">3. Attacker tries to use Token A</text>
+      <text x="15" y="110" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">4. Server detects Token A already used!</text>
+      
+      <rect x="15" y="125" width="430" height="45" rx="3" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="230" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#dc2626">⚠️ SECURITY RESPONSE:</text>
+      <text x="230" y="162" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Invalidate ALL tokens, force re-login, alert user</text>
+    </g>
+  </g>
+  
+  <!-- Key insight -->
+  <g transform="translate(50, 745)">
+    <rect x="0" y="0" width="1000" height="40" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="500" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Key Security: Token rotation with reuse detection catches stolen refresh tokens</text>
+  </g>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" role="img" aria-label="Icon font rendering pipeline showing font-face loading, Unicode mapping, glyph rendering, and CSS styling" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Icon Font Rendering Pipeline</text>
+
+  <defs>
+    <marker id="arrow2" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+
+  <!-- Step 1: @font-face Declaration -->
+  <rect x="30" y="65" width="190" height="170" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <rect x="30" y="65" width="190" height="35" rx="8" fill="#6d5bd0"/>
+  <rect x="30" y="85" width="190" height="15" fill="#6d5bd0"/>
+  <text x="125" y="88" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">1. @font-face</text>
+  <text x="125" y="120" text-anchor="middle" font-size="9" fill="#1a1822">@font-face {{</text>
+  <text x="125" y="135" text-anchor="middle" font-size="9" fill="#1a1822">  family: &apos;icons&apos;;</text>
+  <text x="125" y="150" text-anchor="middle" font-size="9" fill="#1a1822">  src: url(icons.woff2)</text>
+  <text x="125" y="165" text-anchor="middle" font-size="9" fill="#1a1822">       format(&apos;woff2&apos;),</text>
+  <text x="125" y="180" text-anchor="middle" font-size="9" fill="#1a1822">       url(icons.woff)</text>
+  <text x="125" y="195" text-anchor="middle" font-size="9" fill="#1a1822">       format(&apos;woff&apos;);</text>
+  <text x="125" y="220" text-anchor="middle" font-size="9" fill="#1a1822">}}</text>
+
+  <!-- Arrow -->
+  <path d="M 220 150 L 255 150" stroke="#6d5bd0" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
+
+  <!-- Step 2: Font Download -->
+  <rect x="260" y="65" width="160" height="170" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <rect x="260" y="65" width="160" height="35" rx="8" fill="#6d5bd0"/>
+  <rect x="260" y="85" width="160" height="15" fill="#6d5bd0"/>
+  <text x="340" y="88" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">2. Font Download</text>
+  <text x="340" y="120" text-anchor="middle" font-size="10" fill="#1a1822">Browser fetches</text>
+  <text x="340" y="137" text-anchor="middle" font-size="10" fill="#1a1822">font file via HTTP</text>
+  <line x1="280" y1="150" x2="400" y2="150" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="340" y="168" text-anchor="middle" font-size="9" fill="#6d5bd0">FOIT / FOUT period</text>
+  <text x="340" y="185" text-anchor="middle" font-size="9" fill="#1a1822">Icons invisible or</text>
+  <text x="340" y="200" text-anchor="middle" font-size="9" fill="#1a1822">show fallback until</text>
+  <text x="340" y="215" text-anchor="middle" font-size="9" fill="#1a1822">font is loaded</text>
+
+  <!-- Arrow -->
+  <path d="M 420 150 L 455 150" stroke="#6d5bd0" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
+
+  <!-- Step 3: Unicode Mapping -->
+  <rect x="460" y="65" width="180" height="170" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <rect x="460" y="65" width="180" height="35" rx="8" fill="#6d5bd0"/>
+  <rect x="460" y="85" width="180" height="15" fill="#6d5bd0"/>
+  <text x="550" y="88" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">3. Unicode Mapping</text>
+  <text x="550" y="118" text-anchor="middle" font-size="10" fill="#1a1822">CSS class to codepoint</text>
+  <rect x="478" y="128" width="144" height="24" rx="3" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="550" y="144" text-anchor="middle" font-size="9" fill="#1a1822">.icon-home:before</text>
+  <rect x="478" y="158" width="144" height="24" rx="3" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="550" y="174" text-anchor="middle" font-size="9" fill="#6d5bd0">content: &apos;\e900&apos;</text>
+  <rect x="478" y="188" width="144" height="24" rx="3" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="550" y="204" text-anchor="middle" font-size="9" fill="#1a1822">.icon-search = \e901</text>
+
+  <!-- Arrow -->
+  <path d="M 640 150 L 675 150" stroke="#6d5bd0" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
+
+  <!-- Step 4: Glyph Rendering -->
+  <rect x="680" y="65" width="190" height="170" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <rect x="680" y="65" width="190" height="35" rx="8" fill="#6d5bd0"/>
+  <rect x="680" y="85" width="190" height="15" fill="#6d5bd0"/>
+  <text x="775" y="88" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">4. Glyph Render</text>
+  <text x="775" y="118" text-anchor="middle" font-size="10" fill="#1a1822">Browser renders glyph</text>
+  <text x="775" y="135" text-anchor="middle" font-size="10" fill="#1a1822">as text character</text>
+  <line x1="700" y1="148" x2="850" y2="148" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="775" y="168" text-anchor="middle" font-size="9" fill="#1a1822">Styled via CSS:</text>
+  <text x="775" y="185" text-anchor="middle" font-size="9" fill="#6d5bd0">color, font-size,</text>
+  <text x="775" y="200" text-anchor="middle" font-size="9" fill="#6d5bd0">text-shadow, opacity</text>
+  <text x="775" y="220" text-anchor="middle" font-size="9" fill="#1a1822">Single color only</text>
+
+  <!-- HTML Usage Section -->
+  <text x="450" y="280" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1822">HTML Usage Patterns</text>
+
+  <!-- Ligature Based -->
+  <rect x="30" y="300" width="260" height="175" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="160" y="325" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Ligature-Based</text>
+  <text x="160" y="342" text-anchor="middle" font-size="10" fill="#1a1822">(Material Icons style)</text>
+  <rect x="45" y="355" width="230" height="30" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="160" y="375" text-anchor="middle" font-size="10" fill="#1a1822">&lt;span class="material-icons"&gt;</text>
+  <rect x="45" y="390" width="230" height="25" rx="4" fill="#6d5bd0"/>
+  <text x="160" y="407" text-anchor="middle" font-size="10" fill="#ffffff">home</text>
+  <rect x="45" y="420" width="230" height="30" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="160" y="440" text-anchor="middle" font-size="10" fill="#1a1822">&lt;/span&gt;</text>
+
+  <!-- Unicode/Class Based -->
+  <rect x="320" y="300" width="260" height="175" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="450" y="325" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Class-Based</text>
+  <text x="450" y="342" text-anchor="middle" font-size="10" fill="#1a1822">(Font Awesome style)</text>
+  <rect x="335" y="355" width="230" height="30" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="375" text-anchor="middle" font-size="10" fill="#1a1822">&lt;i class="fa fa-home"</text>
+  <rect x="335" y="390" width="230" height="25" rx="4" fill="#6d5bd0"/>
+  <text x="450" y="407" text-anchor="middle" font-size="10" fill="#ffffff">aria-hidden="true"&gt;&lt;/i&gt;</text>
+  <rect x="335" y="420" width="230" height="30" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="440" text-anchor="middle" font-size="10" fill="#1a1822">Uses ::before pseudo-element</text>
+
+  <!-- Accessibility Warning -->
+  <rect x="610" y="300" width="260" height="175" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="740" y="325" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Accessibility Issues</text>
+  <rect x="625" y="345" width="230" height="28" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="740" y="363" text-anchor="middle" font-size="9" fill="#1a1822">Screen readers read Unicode chars</text>
+  <rect x="625" y="380" width="230" height="28" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="740" y="398" text-anchor="middle" font-size="9" fill="#1a1822">Requires aria-hidden + sr-only text</text>
+  <rect x="625" y="415" width="230" height="28" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="740" y="433" text-anchor="middle" font-size="9" fill="#1a1822">No semantic meaning in DOM</text>
+  <rect x="625" y="450" width="230" height="20" rx="4" fill="#6d5bd0"/>
+  <text x="740" y="464" text-anchor="middle" font-size="9" fill="#ffffff">All-or-nothing loading</text>
+</svg>

@@ -1,0 +1,209 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 700" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1100" height="700" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="550" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">SameSite Attribute Comparison</text>
+  <text x="550" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#475569">How Strict, Lax, and None handle different request types</text>
+  
+  <!-- SameSite=Strict -->
+  <g transform="translate(50, 85)">
+    <rect x="0" y="0" width="320" height="280" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+    <text x="160" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#dc2626">SameSite=Strict</text>
+    <text x="160" y="48" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Maximum security, no cross-origin</text>
+    
+    <!-- Scenarios -->
+    <g transform="translate(15, 65)">
+      <!-- Link click -->
+      <rect x="0" y="0" width="290" height="45" rx="4" fill="#ffffff" stroke="#ef4444"/>
+      <text x="15" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">External link click</text>
+      <text x="15" y="35" font-family="monospace" font-size="9" fill="#475569">external.com → yoursite.com</text>
+      <circle cx="265" cy="22" r="12" fill="#ef4444"/>
+      <text x="265" y="27" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#ffffff">×</text>
+      <text x="210" y="27" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#dc2626">BLOCKED</text>
+      
+      <!-- Direct navigation -->
+      <rect x="0" y="55" width="290" height="45" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="15" y="75" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Direct URL / Bookmark</text>
+      <text x="15" y="90" font-family="monospace" font-size="9" fill="#475569">Type URL or use bookmark</text>
+      <circle cx="265" cy="77" r="12" fill="#22c55e"/>
+      <text x="265" y="82" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#ffffff">✓</text>
+      <text x="210" y="82" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">ALLOWED</text>
+      
+      <!-- Form POST -->
+      <rect x="0" y="110" width="290" height="45" rx="4" fill="#ffffff" stroke="#ef4444"/>
+      <text x="15" y="130" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Cross-origin form POST</text>
+      <text x="15" y="145" font-family="monospace" font-size="9" fill="#475569">external.com form → yoursite.com</text>
+      <circle cx="265" cy="132" r="12" fill="#ef4444"/>
+      <text x="265" y="137" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#ffffff">×</text>
+      <text x="210" y="137" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#dc2626">BLOCKED</text>
+      
+      <!-- API request -->
+      <rect x="0" y="165" width="290" height="45" rx="4" fill="#ffffff" stroke="#ef4444"/>
+      <text x="15" y="185" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Cross-origin API (fetch/XHR)</text>
+      <text x="15" y="200" font-family="monospace" font-size="9" fill="#475569">external.com API call → yoursite.com</text>
+      <circle cx="265" cy="187" r="12" fill="#ef4444"/>
+      <text x="265" y="192" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#ffffff">×</text>
+      <text x="210" y="192" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#dc2626">BLOCKED</text>
+      
+      <!-- Image request -->
+      <rect x="0" y="220" width="290" height="45" rx="4" fill="#ffffff" stroke="#ef4444"/>
+      <text x="15" y="240" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Cross-origin image</text>
+      <text x="15" y="255" font-family="monospace" font-size="9" fill="#475569">&lt;img src="yoursite.com/img"&gt;</text>
+      <circle cx="265" cy="242" r="12" fill="#ef4444"/>
+      <text x="265" y="247" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#ffffff">×</text>
+      <text x="210" y="247" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#dc2626">BLOCKED</text>
+    </g>
+  </g>
+  
+  <!-- SameSite=Lax -->
+  <g transform="translate(390, 85)">
+    <rect x="0" y="0" width="320" height="280" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="160" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#d97706">SameSite=Lax (Default)</text>
+    <text x="160" y="48" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Balanced security and UX</text>
+    
+    <!-- Scenarios -->
+    <g transform="translate(15, 65)">
+      <!-- Link click -->
+      <rect x="0" y="0" width="290" height="45" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="15" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">External link click</text>
+      <text x="15" y="35" font-family="monospace" font-size="9" fill="#475569">external.com → yoursite.com</text>
+      <circle cx="265" cy="22" r="12" fill="#22c55e"/>
+      <text x="265" y="27" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#ffffff">✓</text>
+      <text x="210" y="27" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">ALLOWED</text>
+      
+      <!-- Direct navigation -->
+      <rect x="0" y="55" width="290" height="45" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="15" y="75" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Direct URL / Bookmark</text>
+      <text x="15" y="90" font-family="monospace" font-size="9" fill="#475569">Type URL or use bookmark</text>
+      <circle cx="265" cy="77" r="12" fill="#22c55e"/>
+      <text x="265" y="82" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#ffffff">✓</text>
+      <text x="210" y="82" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">ALLOWED</text>
+      
+      <!-- Form POST -->
+      <rect x="0" y="110" width="290" height="45" rx="4" fill="#ffffff" stroke="#ef4444"/>
+      <text x="15" y="130" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Cross-origin form POST</text>
+      <text x="15" y="145" font-family="monospace" font-size="9" fill="#475569">external.com form → yoursite.com</text>
+      <circle cx="265" cy="132" r="12" fill="#ef4444"/>
+      <text x="265" y="137" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#ffffff">×</text>
+      <text x="210" y="137" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#dc2626">BLOCKED</text>
+      
+      <!-- API request -->
+      <rect x="0" y="165" width="290" height="45" rx="4" fill="#ffffff" stroke="#ef4444"/>
+      <text x="15" y="185" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Cross-origin API (fetch/XHR)</text>
+      <text x="15" y="200" font-family="monospace" font-size="9" fill="#475569">external.com API call → yoursite.com</text>
+      <circle cx="265" cy="187" r="12" fill="#ef4444"/>
+      <text x="265" y="192" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#ffffff">×</text>
+      <text x="210" y="192" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#dc2626">BLOCKED</text>
+      
+      <!-- Image request -->
+      <rect x="0" y="220" width="290" height="45" rx="4" fill="#ffffff" stroke="#ef4444"/>
+      <text x="15" y="240" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Cross-origin image</text>
+      <text x="15" y="255" font-family="monospace" font-size="9" fill="#475569">&lt;img src="yoursite.com/img"&gt;</text>
+      <circle cx="265" cy="242" r="12" fill="#ef4444"/>
+      <text x="265" y="247" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#ffffff">×</text>
+      <text x="210" y="247" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#dc2626">BLOCKED</text>
+    </g>
+  </g>
+  
+  <!-- SameSite=None -->
+  <g transform="translate(730, 85)">
+    <rect x="0" y="0" width="320" height="280" rx="8" fill="#f3e8ff" stroke="#a855f7" stroke-width="2"/>
+    <text x="160" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#9333ea">SameSite=None</text>
+    <text x="160" y="48" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">All cross-origin allowed (requires Secure)</text>
+    
+    <!-- Scenarios -->
+    <g transform="translate(15, 65)">
+      <!-- Link click -->
+      <rect x="0" y="0" width="290" height="45" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="15" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">External link click</text>
+      <text x="15" y="35" font-family="monospace" font-size="9" fill="#475569">external.com → yoursite.com</text>
+      <circle cx="265" cy="22" r="12" fill="#22c55e"/>
+      <text x="265" y="27" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#ffffff">✓</text>
+      <text x="210" y="27" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">ALLOWED</text>
+      
+      <!-- Direct navigation -->
+      <rect x="0" y="55" width="290" height="45" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="15" y="75" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Direct URL / Bookmark</text>
+      <text x="15" y="90" font-family="monospace" font-size="9" fill="#475569">Type URL or use bookmark</text>
+      <circle cx="265" cy="77" r="12" fill="#22c55e"/>
+      <text x="265" y="82" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#ffffff">✓</text>
+      <text x="210" y="82" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">ALLOWED</text>
+      
+      <!-- Form POST -->
+      <rect x="0" y="110" width="290" height="45" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="15" y="130" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Cross-origin form POST</text>
+      <text x="15" y="145" font-family="monospace" font-size="9" fill="#475569">external.com form → yoursite.com</text>
+      <circle cx="265" cy="132" r="12" fill="#22c55e"/>
+      <text x="265" y="137" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#ffffff">✓</text>
+      <text x="210" y="137" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">ALLOWED</text>
+      
+      <!-- API request -->
+      <rect x="0" y="165" width="290" height="45" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="15" y="185" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Cross-origin API (fetch/XHR)</text>
+      <text x="15" y="200" font-family="monospace" font-size="9" fill="#475569">external.com API call → yoursite.com</text>
+      <circle cx="265" cy="187" r="12" fill="#22c55e"/>
+      <text x="265" y="192" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#ffffff">✓</text>
+      <text x="210" y="192" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">ALLOWED</text>
+      
+      <!-- Image request -->
+      <rect x="0" y="220" width="290" height="45" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="15" y="240" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Cross-origin image</text>
+      <text x="15" y="255" font-family="monospace" font-size="9" fill="#475569">&lt;img src="yoursite.com/img"&gt;</text>
+      <circle cx="265" cy="242" r="12" fill="#22c55e"/>
+      <text x="265" y="247" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#ffffff">✓</text>
+      <text x="210" y="247" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">ALLOWED</text>
+    </g>
+  </g>
+  
+  <!-- Use cases -->
+  <g transform="translate(50, 390)">
+    <rect x="0" y="0" width="1000" height="180" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="500" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#0f172a">Recommended Use Cases</text>
+    
+    <!-- Strict use cases -->
+    <g transform="translate(30, 50)">
+      <rect x="0" y="0" width="300" height="110" rx="6" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="150" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#dc2626">SameSite=Strict</text>
+      <text x="15" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Best for:</text>
+      <text x="15" y="63" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Banking and financial apps</text>
+      <text x="15" y="80" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Healthcare applications</text>
+      <text x="15" y="97" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• High-security admin panels</text>
+    </g>
+    
+    <!-- Lax use cases -->
+    <g transform="translate(350, 50)">
+      <rect x="0" y="0" width="300" height="110" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="150" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#d97706">SameSite=Lax (Default)</text>
+      <text x="15" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Best for:</text>
+      <text x="15" y="63" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Most web applications</text>
+      <text x="15" y="80" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• E-commerce sites</text>
+      <text x="15" y="97" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Social media platforms</text>
+    </g>
+    
+    <!-- None use cases -->
+    <g transform="translate(670, 50)">
+      <rect x="0" y="0" width="300" height="110" rx="6" fill="#f3e8ff" stroke="#a855f7"/>
+      <text x="150" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#9333ea">SameSite=None (+Secure)</text>
+      <text x="15" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Best for:</text>
+      <text x="15" y="63" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Third-party widgets</text>
+      <text x="15" y="80" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Embedded authentication</text>
+      <text x="15" y="97" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Cross-site API access</text>
+    </g>
+    
+    <!-- Warning -->
+    <g transform="translate(30, 175)">
+      <rect x="0" y="0" width="940" height="40" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-dasharray="4,2"/>
+      <text x="470" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Important: SameSite=None Requires Secure Flag</text>
+      <text x="470" y="37" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Modern browsers (Chrome 80+, Firefox 80+, Safari 13.1+) reject SameSite=None cookies without the Secure attribute.</text>
+    </g>
+  </g>
+  
+  <!-- CSRF protection summary -->
+  <g transform="translate(50, 590)">
+    <rect x="0" y="0" width="1000" height="80" rx="8" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="500" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#16a34a">CSRF Protection Summary</text>
+    <text x="500" y="48" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">SameSite=Lax blocks most CSRF attacks (cross-origin form POSTs, API calls) while allowing normal link navigation.</text>
+    <text x="500" y="68" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">For maximum protection, combine SameSite with CSRF tokens for state-changing operations.</text>
+  </g>
+</svg>

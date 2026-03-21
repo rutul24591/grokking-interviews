@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 750" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1100" height="750" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="550" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">Input Validation Layers</text>
+  <text x="550" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#475569">Defense in depth: validate at every trust boundary</text>
+  
+  <!-- Layer 1: Client-side -->
+  <g transform="translate(50, 85)">
+    <rect x="0" y="0" width="1000" height="120" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="500" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#2563eb">Layer 1: Client-Side Validation</text>
+    <text x="500" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">Purpose: User Experience | Security: NONE (can be bypassed)</text>
+    
+    <!-- Examples -->
+    <g transform="translate(20, 60)">
+      <rect x="0" y="0" width="220" height="50" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+      <text x="110" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">HTML5 Validation</text>
+      <text x="110" y="40" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">type="email" required</text>
+      
+      <rect x="240" y="0" width="220" height="50" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+      <text x="350" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">JavaScript Validation</text>
+      <text x="350" y="40" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">pattern.test(input)</text>
+      
+      <rect x="480" y="0" width="220" height="50" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+      <text x="590" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Framework Validation</text>
+      <text x="590" y="40" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">React Hook Form, Yup</text>
+      
+      <rect x="720" y="0" width="260" height="50" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+      <text x="850" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#92400e">⚠️ For UX Only!</text>
+      <text x="850" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Server MUST validate independently</text>
+    </g>
+  </g>
+  
+  <!-- Arrow down -->
+  <line x1="550" y1="215" x2="550" y2="235" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Layer 2: Server-side -->
+  <g transform="translate(50, 245)">
+    <rect x="0" y="0" width="1000" height="120" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+    <text x="500" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#16a34a">Layer 2: Server-Side Validation (CRITICAL)</text>
+    <text x="500" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">Purpose: Security | This is your primary defense</text>
+    
+    <!-- Examples -->
+    <g transform="translate(20, 60)">
+      <rect x="0" y="0" width="220" height="50" rx="4" fill="#ffffff" stroke="#22c55e"/>
+      <text x="110" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Type Validation</text>
+      <text x="110" y="40" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">typeof, instanceof</text>
+      
+      <rect x="240" y="0" width="220" height="50" rx="4" fill="#ffffff" stroke="#22c55e"/>
+      <text x="350" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Pattern Matching</text>
+      <text x="350" y="40" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Regex allowlist</text>
+      
+      <rect x="480" y="0" width="220" height="50" rx="4" fill="#ffffff" stroke="#22c55e"/>
+      <text x="590" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Range Checks</text>
+      <text x="590" y="40" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">min, max, length</text>
+      
+      <rect x="720" y="0" width="260" height="50" rx="4" fill="#ffffff" stroke="#22c55e"/>
+      <text x="850" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Business Rules</text>
+      <text x="850" y="40" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Domain-specific logic</text>
+    </g>
+  </g>
+  
+  <!-- Arrow down -->
+  <line x1="550" y1="375" x2="550" y2="395" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Layer 3: Database -->
+  <g transform="translate(50, 405)">
+    <rect x="0" y="0" width="1000" height="120" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+    <text x="500" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#4f46e5">Layer 3: Database Validation</text>
+    <text x="500" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">Purpose: Data Integrity | Final safety net</text>
+    
+    <!-- Examples -->
+    <g transform="translate(20, 60)">
+      <rect x="0" y="0" width="220" height="50" rx="4" fill="#ffffff" stroke="#6366f1"/>
+      <text x="110" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Constraints</text>
+      <text x="110" y="40" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">CHECK, UNIQUE, NOT NULL</text>
+      
+      <rect x="240" y="0" width="220" height="50" rx="4" fill="#ffffff" stroke="#6366f1"/>
+      <text x="350" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Parameterized Queries</text>
+      <text x="350" y="40" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Prevents SQL injection</text>
+      
+      <rect x="480" y="0" width="220" height="50" rx="4" fill="#ffffff" stroke="#6366f1"/>
+      <text x="590" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Data Types</text>
+      <text x="590" y="40" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">INTEGER, VARCHAR, DATE</text>
+      
+      <rect x="720" y="0" width="260" height="50" rx="4" fill="#ffffff" stroke="#6366f1"/>
+      <text x="850" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Triggers</text>
+      <text x="850" y="40" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Automated validation</text>
+    </g>
+  </g>
+  
+  <!-- Arrow down -->
+  <line x1="550" y1="535" x2="550" y2="555" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Layer 4: Output -->
+  <g transform="translate(50, 565)">
+    <rect x="0" y="0" width="1000" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="500" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#d97706">Layer 4: Output Validation</text>
+    <text x="500" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">Purpose: Prevent Injection | Encode for context</text>
+    
+    <!-- Examples -->
+    <g transform="translate(20, 60)">
+      <rect x="0" y="0" width="220" height="50" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="110" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">HTML Encoding</text>
+      <text x="110" y="40" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">&lt; → &amp;lt;, &gt; → &amp;gt;</text>
+      
+      <rect x="240" y="0" width="220" height="50" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="350" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">JavaScript Encoding</text>
+      <text x="350" y="40" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">\uXXXX escape</text>
+      
+      <rect x="480" y="0" width="220" height="50" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="590" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">URL Encoding</text>
+      <text x="590" y="40" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">encodeURIComponent()</text>
+      
+      <rect x="720" y="0" width="260" height="50" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="850" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">HTML Sanitization</text>
+      <text x="850" y="40" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">DOMPurify for rich text</text>
+    </g>
+  </g>
+  
+  <!-- Key insight -->
+  <g transform="translate(50, 705)">
+    <rect x="0" y="0" width="1000" height="35" rx="6" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="500" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Key Insight: Each Layer Provides Fallback Protection</text>
+    <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">If one layer fails or is bypassed, other layers still provide protection. Never rely on a single validation layer.</text>
+  </g>
+  
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/>
+    </marker>
+  </defs>
+</svg>

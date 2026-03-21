@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="38" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1822">WCAG Conformance Levels &amp; Success Criteria</text>
+
+  <!-- Pyramid structure -->
+  <!-- Level AAA (top, smallest) -->
+  <polygon points="450,75 320,195 580,195" fill="#4a3ba0" stroke="#ffffff" stroke-width="2"/>
+  <text x="450" y="150" text-anchor="middle" font-size="18" font-weight="bold" fill="#ffffff">AAA</text>
+  <text x="450" y="172" text-anchor="middle" font-size="11" fill="#ffffff">Enhanced</text>
+
+  <!-- Level AA (middle) -->
+  <polygon points="320,195 220,315 680,315 580,195" fill="#6d5bd0" stroke="#ffffff" stroke-width="2"/>
+  <text x="450" y="260" text-anchor="middle" font-size="18" font-weight="bold" fill="#ffffff">AA</text>
+  <text x="450" y="282" text-anchor="middle" font-size="11" fill="#ffffff">Standard Compliance Target</text>
+
+  <!-- Level A (bottom, largest) -->
+  <polygon points="220,315 120,435 780,435 680,315" fill="#8b7de0" stroke="#ffffff" stroke-width="2"/>
+  <text x="450" y="375" text-anchor="middle" font-size="18" font-weight="bold" fill="#ffffff">A</text>
+  <text x="450" y="397" text-anchor="middle" font-size="11" fill="#ffffff">Minimum Accessibility</text>
+
+  <!-- Right side: success criteria counts -->
+  <rect x="660" y="90" width="220" height="55" rx="8" fill="#4a3ba0"/>
+  <text x="770" y="113" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">Level AAA</text>
+  <text x="770" y="133" text-anchor="middle" font-size="12" fill="#ffffff">24 Success Criteria</text>
+
+  <rect x="660" y="155" width="220" height="55" rx="8" fill="#6d5bd0"/>
+  <text x="770" y="178" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">Level AA</text>
+  <text x="770" y="198" text-anchor="middle" font-size="12" fill="#ffffff">33 Success Criteria</text>
+
+  <rect x="660" y="220" width="220" height="55" rx="8" fill="#8b7de0"/>
+  <text x="770" y="243" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">Level A</text>
+  <text x="770" y="263" text-anchor="middle" font-size="12" fill="#ffffff">29 Success Criteria</text>
+
+  <!-- Left side: descriptions -->
+  <rect x="20" y="90" width="250" height="55" rx="8" fill="#ffffff" stroke="#4a3ba0" stroke-width="1.5"/>
+  <text x="145" y="112" text-anchor="middle" font-size="11" font-weight="bold" fill="#4a3ba0">AAA - Ideal</text>
+  <text x="145" y="130" text-anchor="middle" font-size="10" fill="#1a1822">Maximum accessibility. Not always</text>
+  <text x="145" y="142" text-anchor="middle" font-size="10" fill="#1a1822">feasible for all content types.</text>
+
+  <rect x="20" y="155" width="250" height="55" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="145" y="177" text-anchor="middle" font-size="11" font-weight="bold" fill="#6d5bd0">AA - Required Target</text>
+  <text x="145" y="195" text-anchor="middle" font-size="10" fill="#1a1822">Legal standard (ADA, EAA, Section</text>
+  <text x="145" y="207" text-anchor="middle" font-size="10" fill="#1a1822">508). Most organizations target AA.</text>
+
+  <rect x="20" y="220" width="250" height="55" rx="8" fill="#ffffff" stroke="#8b7de0" stroke-width="1.5"/>
+  <text x="145" y="242" text-anchor="middle" font-size="11" font-weight="bold" fill="#8b7de0">A - Minimum Baseline</text>
+  <text x="145" y="260" text-anchor="middle" font-size="10" fill="#1a1822">Essential barriers removed. Not</text>
+  <text x="145" y="272" text-anchor="middle" font-size="10" fill="#1a1822">sufficient for legal compliance.</text>
+
+  <!-- Bottom summary -->
+  <rect x="100" y="450" width="700" height="36" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="474" text-anchor="middle" font-size="13" fill="#1a1822">
+    Total: <tspan font-weight="bold" fill="#6d5bd0">86 Success Criteria</tspan> across <tspan font-weight="bold" fill="#6d5bd0">13 Guidelines</tspan> under <tspan font-weight="bold" fill="#6d5bd0">4 Principles</tspan>
+  </text>
+</svg>

@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 600" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1100" height="600" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="550" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">SRI + CSP: Layered Defense</text>
+  <text x="550" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">CSP restricts WHERE, SRI verifies WHAT</text>
+  
+  <!-- CSP Layer -->
+  <g transform="translate(50, 85)">
+    <rect x="0" y="0" width="480" height="220" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="240" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#2563eb">Layer 1: CSP (Content Security Policy)</text>
+    <text x="240" y="48" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Restricts WHERE resources can load from</text>
+    
+    <!-- CSP Policy -->
+    <rect x="20" y="60" width="440" height="60" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+    <text x="240" y="80" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">CSP Policy</text>
+    <text x="240" y="100" text-anchor="middle" font-family="monospace" font-size="10" fill="#475569">script-src 'self' https://cdn.example.com</text>
+    <text x="240" y="115" text-anchor="middle" font-family="monospace" font-size="10" fill="#475569">require-sri-for script</text>
+    
+    <!-- Allowed Sources -->
+    <g transform="translate(20, 135)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#16a34a">✓ Allowed Sources:</text>
+      <rect x="0" y="10" width="140" height="30" rx="3" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="70" y="30" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">'self'</text>
+      
+      <rect x="150" y="10" width="140" height="30" rx="3" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="220" y="30" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">cdn.example.com</text>
+      
+      <rect x="300" y="10" width="120" height="30" rx="3" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="360" y="30" text-anchor="middle" font-family="monospace" font-size="9" fill="#dc2626">evil.com ✗</text>
+    </g>
+    
+    <!-- CSP Function -->
+    <rect x="20" y="180" width="440" height="35" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="240" y="202" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">CSP blocks: Scripts from unauthorized domains</text>
+  </g>
+  
+  <!-- SRI Layer -->
+  <g transform="translate(570, 85)">
+    <rect x="0" y="0" width="480" height="220" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="240" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#d97706">Layer 2: SRI (Subresource Integrity)</text>
+    <text x="240" y="48" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Verifies WHAT content is loaded</text>
+    
+    <!-- SRI Hash -->
+    <rect x="20" y="60" width="440" height="60" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+    <text x="240" y="80" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Expected Hash</text>
+    <text x="240" y="100" text-anchor="middle" font-family="monospace" font-size="10" fill="#475569">sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K...</text>
+    <text x="240" y="115" text-anchor="middle" font-family="monospace" font-size="10" fill="#475569">(computed from known-good version)</text>
+    
+    <!-- Verification -->
+    <g transform="translate(20, 135)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#16a34a">✓ Hash Match:</text>
+      <rect x="0" y="10" width="210" height="30" rx="3" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="105" y="30" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Resource loads</text>
+      
+      <text x="230" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#dc2626">✗ Hash Mismatch:</text>
+      <rect x="230" y="10" width="210" height="30" rx="3" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="335" y="30" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Resource BLOCKED</text>
+    </g>
+    
+    <!-- SRI Function -->
+    <rect x="20" y="180" width="440" height="35" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="240" y="202" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">SRI blocks: Modified/tampered resources from allowed domains</text>
+  </g>
+  
+  <!-- Attack Scenarios -->
+  <g transform="translate(50, 330)">
+    <rect x="0" y="0" width="1000" height="250" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="500" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#0f172a">Attack Scenarios &amp; Protection</text>
+    
+    <!-- Scenario 1: CDN Compromise -->
+    <g transform="translate(20, 45)">
+      <rect x="0" y="0" width="470" height="90" rx="6" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="235" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#dc2626">Scenario 1: CDN Compromised</text>
+      
+      <text x="15" y="42" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Attack: CDN hacked, serves malicious library.js</text>
+      
+      <rect x="15" y="50" width="210" height="35" rx="3" fill="#ffffff" stroke="#3b82f6"/>
+      <text x="120" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#0f172a">CSP: ✓ Allows (trusted domain)</text>
+      <text x="120" y="80" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">cdn.example.com is allowed</text>
+      
+      <rect x="235" y="50" width="210" height="35" rx="3" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="340" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">SRI: ✓ BLOCKS (hash mismatch)</text>
+      <text x="340" y="80" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Malicious content ≠ expected hash</text>
+    </g>
+    
+    <!-- Scenario 2: Unauthorized Domain -->
+    <g transform="translate(510, 45)">
+      <rect x="0" y="0" width="470" height="90" rx="6" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="235" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#dc2626">Scenario 2: Unauthorized Domain</text>
+      
+      <text x="15" y="42" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Attack: Attacker injects script from evil.com</text>
+      
+      <rect x="15" y="50" width="210" height="35" rx="3" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="120" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">CSP: ✓ BLOCKS (unauthorized)</text>
+      <text x="120" y="80" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">evil.com not in allowed list</text>
+      
+      <rect x="235" y="50" width="210" height="35" rx="3" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="340" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">SRI: N/A (already blocked)</text>
+      <text x="340" y="80" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Never reaches SRI check</text>
+    </g>
+    
+    <!-- Scenario 3: Supply Chain Attack -->
+    <g transform="translate(20, 145)">
+      <rect x="0" y="0" width="470" height="90" rx="6" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="235" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#dc2626">Scenario 3: Supply Chain Attack</text>
+      
+      <text x="15" y="42" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Attack: Library update includes malicious code</text>
+      
+      <rect x="15" y="50" width="210" height="35" rx="3" fill="#ffffff" stroke="#3b82f6"/>
+      <text x="120" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#0f172a">CSP: ✓ Allows (trusted domain)</text>
+      <text x="120" y="80" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Same domain, different version</text>
+      
+      <rect x="235" y="50" width="210" height="35" rx="3" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="340" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">SRI: ✓ BLOCKS (version changed)</text>
+      <text x="340" y="80" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">New version ≠ pinned hash</text>
+    </g>
+    
+    <!-- Scenario 4: MITM Attack -->
+    <g transform="translate(510, 145)">
+      <rect x="0" y="0" width="470" height="90" rx="6" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="235" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#dc2626">Scenario 4: Man-in-the-Middle</text>
+      
+      <text x="15" y="42" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Attack: Network attacker modifies response</text>
+      
+      <rect x="15" y="50" width="210" height="35" rx="3" fill="#ffffff" stroke="#3b82f6"/>
+      <text x="120" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#0f172a">CSP: ✓ Allows (from allowed domain)</text>
+      <text x="120" y="80" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Domain is trusted</text>
+      
+      <rect x="235" y="50" width="210" height="35" rx="3" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="340" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">SRI: ✓ BLOCKS (modified content)</text>
+      <text x="340" y="80" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Modified ≠ original hash</text>
+    </g>
+  </g>
+  
+  <!-- Key insight -->
+  <g transform="translate(50, 600)">
+    <rect x="0" y="0" width="1000" height="50" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="500" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Layered Defense: CSP + SRI</text>
+    <text x="500" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">CSP blocks unauthorized sources. SRI blocks unauthorized content from authorized sources. Together they provide comprehensive protection.</text>
+  </g>
+</svg>

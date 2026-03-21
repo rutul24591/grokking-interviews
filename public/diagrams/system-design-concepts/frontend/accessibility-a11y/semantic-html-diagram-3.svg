@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="560" viewBox="0 0 900 560" role="img" aria-label="Implicit ARIA roles from semantic HTML elements">
+  <rect width="900" height="560" rx="16" fill="#f3f1f8" />
+
+  <text x="450" y="36" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="20" font-weight="700">Implicit ARIA Roles from Semantic Elements</text>
+  <text x="450" y="56" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="13">HTML elements carry built-in roles -- no need to add role= attributes manually</text>
+
+  <!-- Column headers -->
+  <rect x="40" y="74" width="360" height="36" rx="8" fill="#6d5bd0" />
+  <text x="220" y="98" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="14" font-weight="700">HTML Element</text>
+
+  <rect x="420" y="74" width="120" height="36" rx="8" fill="#6d5bd0" />
+  <text x="480" y="98" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Implicit Role</text>
+
+  <rect x="560" y="74" width="310" height="36" rx="8" fill="#6d5bd0" />
+  <text x="715" y="98" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Assistive Tech Behavior</text>
+
+  <!-- Row 1 -->
+  <rect x="40" y="118" width="830" height="38" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1" />
+  <text x="60" y="142" fill="#1a1822" font-family="monospace" font-size="13">&lt;header&gt;</text>
+  <text x="440" y="142" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">banner</text>
+  <text x="580" y="142" fill="#64748b" font-family="system-ui, sans-serif" font-size="12">Announced as site banner landmark</text>
+
+  <!-- Row 2 -->
+  <rect x="40" y="162" width="830" height="38" rx="6" fill="#f8f7fc" stroke="#d7d1e6" stroke-width="1" />
+  <text x="60" y="186" fill="#1a1822" font-family="monospace" font-size="13">&lt;nav&gt;</text>
+  <text x="440" y="186" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">navigation</text>
+  <text x="580" y="186" fill="#64748b" font-family="system-ui, sans-serif" font-size="12">Listed in landmarks rotor/menu</text>
+
+  <!-- Row 3 -->
+  <rect x="40" y="206" width="830" height="38" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1" />
+  <text x="60" y="230" fill="#1a1822" font-family="monospace" font-size="13">&lt;main&gt;</text>
+  <text x="440" y="230" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">main</text>
+  <text x="580" y="230" fill="#64748b" font-family="system-ui, sans-serif" font-size="12">Skip-to-main-content target</text>
+
+  <!-- Row 4 -->
+  <rect x="40" y="250" width="830" height="38" rx="6" fill="#f8f7fc" stroke="#d7d1e6" stroke-width="1" />
+  <text x="60" y="274" fill="#1a1822" font-family="monospace" font-size="13">&lt;aside&gt;</text>
+  <text x="440" y="274" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">complementary</text>
+  <text x="580" y="274" fill="#64748b" font-family="system-ui, sans-serif" font-size="12">Skippable supporting content</text>
+
+  <!-- Row 5 -->
+  <rect x="40" y="294" width="830" height="38" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1" />
+  <text x="60" y="318" fill="#1a1822" font-family="monospace" font-size="13">&lt;footer&gt;</text>
+  <text x="440" y="318" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">contentinfo</text>
+  <text x="580" y="318" fill="#64748b" font-family="system-ui, sans-serif" font-size="12">Site-wide footer information</text>
+
+  <!-- Row 6 -->
+  <rect x="40" y="338" width="830" height="38" rx="6" fill="#f8f7fc" stroke="#d7d1e6" stroke-width="1" />
+  <text x="60" y="362" fill="#1a1822" font-family="monospace" font-size="13">&lt;article&gt;</text>
+  <text x="440" y="362" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">article</text>
+  <text x="580" y="362" fill="#64748b" font-family="system-ui, sans-serif" font-size="12">Self-contained, syndicatable content</text>
+
+  <!-- Row 7 -->
+  <rect x="40" y="382" width="830" height="38" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1" />
+  <text x="60" y="406" fill="#1a1822" font-family="monospace" font-size="13">&lt;section&gt; (with label)</text>
+  <text x="440" y="406" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">region</text>
+  <text x="580" y="406" fill="#64748b" font-family="system-ui, sans-serif" font-size="12">Named region in landmarks list</text>
+
+  <!-- Row 8 -->
+  <rect x="40" y="426" width="830" height="38" rx="6" fill="#f8f7fc" stroke="#d7d1e6" stroke-width="1" />
+  <text x="60" y="450" fill="#1a1822" font-family="monospace" font-size="13">&lt;form&gt; (with label)</text>
+  <text x="440" y="450" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">form</text>
+  <text x="580" y="450" fill="#64748b" font-family="system-ui, sans-serif" font-size="12">Form landmark, announced on entry</text>
+
+  <!-- Row 9 -->
+  <rect x="40" y="470" width="830" height="38" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1" />
+  <text x="60" y="494" fill="#1a1822" font-family="monospace" font-size="13">&lt;button&gt;</text>
+  <text x="440" y="494" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">button</text>
+  <text x="580" y="494" fill="#64748b" font-family="system-ui, sans-serif" font-size="12">Focusable, Enter/Space activation</text>
+
+  <!-- Row 10 -->
+  <rect x="40" y="514" width="830" height="38" rx="6" fill="#f8f7fc" stroke="#d7d1e6" stroke-width="1" />
+  <text x="60" y="538" fill="#1a1822" font-family="monospace" font-size="13">&lt;a href=&quot;...&quot;&gt;</text>
+  <text x="440" y="538" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="13" font-weight="600">link</text>
+  <text x="580" y="538" fill="#64748b" font-family="system-ui, sans-serif" font-size="12">Focusable, listed in links rotor</text>
+</svg>

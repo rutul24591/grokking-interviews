@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" role="img" aria-label="Build tool fingerprinting flow showing how Webpack and Vite generate content hashes and reference them in output" font-family="system-ui, sans-serif">
+  <rect width="900" height="540" fill="#f3f1f8" rx="8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Build Tool Fingerprinting Flow</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d7d1e6"/>
+    </marker>
+  </defs>
+
+  <!-- Webpack Section -->
+  <rect x="20" y="55" width="425" height="230" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <rect x="20" y="55" width="425" height="35" rx="8" fill="#6d5bd0"/>
+  <rect x="20" y="75" width="425" height="15" fill="#6d5bd0"/>
+  <text x="232" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">Webpack [contenthash] Flow</text>
+
+  <!-- Step 1 -->
+  <rect x="35" y="100" width="120" height="55" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="95" y="120" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">1. Entry Point</text>
+  <text x="95" y="135" text-anchor="middle" font-size="9" fill="#1a1822">webpack.config.js</text>
+  <text x="95" y="148" text-anchor="middle" font-size="9" fill="#1a1822">entry: &apos;./src/app.js&apos;</text>
+
+  <path d="M 155 127 L 175 127" stroke="#6d5bd0" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Step 2 -->
+  <rect x="175" y="100" width="120" height="55" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="235" y="120" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">2. Module Graph</text>
+  <text x="235" y="135" text-anchor="middle" font-size="9" fill="#1a1822">Parse imports</text>
+  <text x="235" y="148" text-anchor="middle" font-size="9" fill="#1a1822">Build dependency tree</text>
+
+  <path d="M 295 127 L 315 127" stroke="#6d5bd0" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Step 3 -->
+  <rect x="315" y="100" width="120" height="55" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="375" y="120" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">3. Chunk Emit</text>
+  <text x="375" y="135" text-anchor="middle" font-size="9" fill="#1a1822">Generate bundles</text>
+  <text x="375" y="148" text-anchor="middle" font-size="9" fill="#1a1822">Split code chunks</text>
+
+  <!-- Config -->
+  <rect x="35" y="170" width="400" height="50" rx="6" fill="#1a1822" stroke="#1a1822" stroke-width="1"/>
+  <text x="50" y="190" font-size="10" fill="#22c55e">output:</text>
+  <text x="100" y="190" font-size="10" fill="#ffffff">{</text>
+  <text x="110" y="207" font-size="10" fill="#22c55e">filename:</text>
+  <text x="175" y="207" font-size="10" fill="#f59e0b">&apos;[name].[contenthash:8].js&apos;</text>
+  <text x="380" y="207" font-size="10" fill="#ffffff">}</text>
+
+  <!-- Hash detail -->
+  <rect x="35" y="230" width="400" height="45" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="235" y="250" text-anchor="middle" font-size="10" fill="#1a1822"><tspan font-weight="bold">contenthash</tspan> = MD4 of chunk content only (not metadata)</text>
+  <text x="235" y="265" text-anchor="middle" font-size="10" fill="#6d5bd0">Stable across builds if content unchanged</text>
+
+  <!-- Vite Section -->
+  <rect x="455" y="55" width="425" height="230" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <rect x="455" y="55" width="425" height="35" rx="8" fill="#6d5bd0"/>
+  <rect x="455" y="75" width="425" height="15" fill="#6d5bd0"/>
+  <text x="667" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">Vite (Rollup) Hashing Flow</text>
+
+  <!-- Step 1 -->
+  <rect x="470" y="100" width="120" height="55" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="530" y="120" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">1. Dev: No Hash</text>
+  <text x="530" y="135" text-anchor="middle" font-size="9" fill="#1a1822">Native ESM imports</text>
+  <text x="530" y="148" text-anchor="middle" font-size="9" fill="#1a1822">No bundling needed</text>
+
+  <path d="M 590 127 L 610 127" stroke="#6d5bd0" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Step 2 -->
+  <rect x="610" y="100" width="120" height="55" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="670" y="120" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">2. Build: Rollup</text>
+  <text x="670" y="135" text-anchor="middle" font-size="9" fill="#1a1822">Tree-shake</text>
+  <text x="670" y="148" text-anchor="middle" font-size="9" fill="#1a1822">Chunk splitting</text>
+
+  <path d="M 730 127 L 750 127" stroke="#6d5bd0" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Step 3 -->
+  <rect x="750" y="100" width="120" height="55" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="810" y="120" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">3. Hash Output</text>
+  <text x="810" y="135" text-anchor="middle" font-size="9" fill="#1a1822">SHA-256 hash</text>
+  <text x="810" y="148" text-anchor="middle" font-size="9" fill="#1a1822">8-char suffix</text>
+
+  <!-- Config -->
+  <rect x="470" y="170" width="400" height="50" rx="6" fill="#1a1822" stroke="#1a1822" stroke-width="1"/>
+  <text x="485" y="190" font-size="10" fill="#22c55e">build:</text>
+  <text x="530" y="190" font-size="10" fill="#ffffff">{</text>
+  <text x="540" y="207" font-size="10" fill="#22c55e">rollupOptions:</text>
+  <text x="635" y="207" font-size="10" fill="#ffffff">{ output: {</text>
+  <text x="485" y="207" font-size="10" fill="#f59e0b"> </text>
+  <text x="710" y="207" font-size="10" fill="#22c55e">assetFileNames:</text>
+  <text x="820" y="207" font-size="10" fill="#f59e0b">&apos;[hash]&apos;</text>
+
+  <!-- Hash detail -->
+  <rect x="470" y="230" width="400" height="45" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="670" y="250" text-anchor="middle" font-size="10" fill="#1a1822"><tspan font-weight="bold">Default:</tspan> SHA-256 content hash, 8 chars</text>
+  <text x="670" y="265" text-anchor="middle" font-size="10" fill="#6d5bd0">CSS extracted and separately hashed</text>
+
+  <!-- Common Output Section -->
+  <rect x="20" y="300" width="860" height="225" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="450" y="325" text-anchor="middle" font-size="14" font-weight="bold" fill="#6d5bd0">Output: Fingerprinted Assets &amp; References</text>
+  <line x1="40" y1="335" x2="860" y2="335" stroke="#d7d1e6" stroke-width="1"/>
+
+  <!-- dist folder -->
+  <rect x="40" y="350" width="250" height="160" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="165" y="372" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a1822">dist/assets/</text>
+  <text x="60" y="395" font-size="10" fill="#1a1822">index-BkH3a9f2.js</text>
+  <text x="210" y="395" font-size="9" fill="#6d5bd0">148 KB</text>
+  <text x="60" y="415" font-size="10" fill="#1a1822">vendor-Ck9dE1b7.js</text>
+  <text x="210" y="415" font-size="9" fill="#6d5bd0">312 KB</text>
+  <text x="60" y="435" font-size="10" fill="#1a1822">index-Dn4fG8h3.css</text>
+  <text x="210" y="435" font-size="9" fill="#6d5bd0">24 KB</text>
+  <text x="60" y="455" font-size="10" fill="#1a1822">logo-Fp6jK2m1.png</text>
+  <text x="210" y="455" font-size="9" fill="#6d5bd0">8 KB</text>
+  <text x="60" y="475" font-size="10" fill="#1a1822">chunk-Lr8nP4q5.js</text>
+  <text x="210" y="475" font-size="9" fill="#6d5bd0">56 KB (lazy)</text>
+  <text x="60" y="495" font-size="10" fill="#1a1822">index.html</text>
+  <text x="210" y="495" font-size="9" fill="#6d5bd0">no hash</text>
+
+  <!-- HTML with refs -->
+  <rect x="320" y="350" width="290" height="160" rx="6" fill="#1a1822" stroke="#1a1822" stroke-width="1"/>
+  <text x="465" y="372" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">index.html (injected refs)</text>
+  <text x="335" y="395" font-size="9" fill="#d7d1e6">&lt;!DOCTYPE html&gt;</text>
+  <text x="335" y="412" font-size="9" fill="#d7d1e6">&lt;head&gt;</text>
+  <text x="345" y="429" font-size="9" fill="#22c55e">&lt;link rel=&quot;stylesheet&quot;</text>
+  <text x="355" y="443" font-size="9" fill="#f59e0b">href=&quot;/assets/index-Dn4fG8h3.css&quot;&gt;</text>
+  <text x="335" y="460" font-size="9" fill="#d7d1e6">&lt;/head&gt;&lt;body&gt;</text>
+  <text x="345" y="477" font-size="9" fill="#22c55e">&lt;script type=&quot;module&quot;</text>
+  <text x="355" y="491" font-size="9" fill="#f59e0b">src=&quot;/assets/index-BkH3a9f2.js&quot;&gt;</text>
+
+  <!-- Cache headers -->
+  <rect x="640" y="350" width="220" height="160" rx="6" fill="#f3f1f8" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="750" y="375" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Deployment Headers</text>
+  <line x1="655" y1="385" x2="845" y2="385" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="660" y="405" font-size="10" font-weight="bold" fill="#1a1822">/assets/*:</text>
+  <text x="670" y="422" font-size="9" fill="#6d5bd0">Cache-Control: public,</text>
+  <text x="670" y="436" font-size="9" fill="#6d5bd0">max-age=31536000, immutable</text>
+  <text x="660" y="460" font-size="10" font-weight="bold" fill="#1a1822">/index.html:</text>
+  <text x="670" y="477" font-size="9" fill="#6d5bd0">Cache-Control: no-cache</text>
+  <text x="670" y="491" font-size="9" fill="#1a1822">(always revalidate entry point)</text>
+</svg>

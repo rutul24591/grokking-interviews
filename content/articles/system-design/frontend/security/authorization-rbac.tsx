@@ -1,0 +1,740 @@
+"use client";
+
+import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { ArticleImage } from "@/components/articles/ArticleImage";
+import type { ArticleMetadata } from "@/types/article";
+
+export const metadata: ArticleMetadata = {
+  id: "article-frontend-security-authorization-rbac-extensive",
+  title: "Authorization & RBAC",
+  description:
+    "Comprehensive guide to authorization patterns, Role-Based Access Control (RBAC), Attribute-Based Access Control (ABAC), and implementation strategies for staff/principal engineer interviews.",
+  category: "frontend",
+  subcategory: "security",
+  slug: "authorization-rbac",
+  version: "extensive",
+  wordCount: 7500,
+  readingTime: 30,
+  lastUpdated: "2026-03-19",
+  tags: [
+    "security",
+    "authorization",
+    "rbac",
+    "abac",
+    "access-control",
+    "frontend",
+    "permissions",
+    "roles",
+  ],
+  relatedTopics: [
+    "authentication-patterns",
+    "secure-cookie-attributes",
+    "input-validation-sanitization",
+  ],
+};
+
+export default function AuthorizationRBACArticle() {
+  return (
+    <ArticleLayout metadata={metadata}>
+      <section>
+        <h2>Definition & Context</h2>
+        <p>
+          <strong>Authorization</strong> determines what an authenticated user
+          can do—answering the question &quot;What are you allowed to do?&quot;
+          It&apos;s distinct from <strong>authentication</strong>
+          (who you are) and is equally critical for security. A user might be
+          authenticated but should only access resources and perform actions
+          they&apos;re authorized for.
+        </p>
+        <p>
+          Authorization models define how permissions are structured and
+          enforced:
+        </p>
+        <ul className="space-y-2">
+          <li>
+            <strong>Role-Based Access Control (RBAC):</strong> Permissions
+            assigned to roles, users assigned to roles. Most common pattern.
+          </li>
+          <li>
+            <strong>Attribute-Based Access Control (ABAC):</strong> Access
+            decisions based on attributes (user, resource, environment). More
+            flexible, more complex.
+          </li>
+          <li>
+            <strong>Access Control Lists (ACL):</strong> Permissions defined per
+            resource. Fine-grained but hard to manage at scale.
+          </li>
+          <li>
+            <strong>Capability-Based:</strong> Users hold tokens (capabilities)
+            granting specific permissions. Emerging pattern for distributed
+            systems.
+          </li>
+        </ul>
+        <p>
+          <strong>
+            Why authorization matters for staff/principal engineers:
+          </strong>{" "}
+          As a technical leader, you&apos;re responsible for designing
+          authorization systems that balance security, usability, and
+          maintainability. Poor authorization design leads to privilege
+          escalation, data breaches, and compliance failures. Understanding
+          authorization models enables you to make informed architectural
+          decisions.
+        </p>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">
+            Key Insight: Authorization Is Multi-Layered
+          </h3>
+          <p>
+            Authorization must be enforced at every layer: frontend (UX), API
+            gateway (routing), service layer (business logic), and data layer
+            (row/column level). Frontend authorization improves UX but provides
+            no security—always enforce on the server.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Role-Based Access Control (RBAC)</h2>
+        <p>
+          RBAC is the most widely used authorization model. Permissions are
+          assigned to roles, and users are assigned to roles. This abstraction
+          simplifies permission management.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">RBAC Components</h3>
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/security/rbac-model.svg"
+          alt="RBAC Model showing Users, Roles, and Permissions relationships"
+          caption="RBAC Model: Users are assigned to Roles, Roles have Permissions. Users inherit permissions from their roles."
+        />
+
+        <ul className="space-y-2">
+          <li>
+            <strong>Users:</strong> Authenticated identities (employees,
+            customers, partners)
+          </li>
+          <li>
+            <strong>Roles:</strong> Named collections of permissions (Admin,
+            Editor, Viewer)
+          </li>
+          <li>
+            <strong>Permissions:</strong> Specific actions on resources
+            (read:document, write:document, delete:document)
+          </li>
+          <li>
+            <strong>Resources:</strong> Objects being protected (documents,
+            users, settings)
+          </li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">RBAC Implementation</h3>
+        <p>
+          A typical RBAC database schema includes tables for users (with id and
+          email), roles (with id, name like 'admin'/'editor'/'viewer', and
+          description), permissions (with id, name like
+          'document:read'/'document:write', resource, and action),
+          role_permissions (linking role_id and permission_id as composite
+          primary key), and user_roles (linking user_id and role_id with
+          assigned_at timestamp). To check if a user has a permission, query by
+          joining user_roles, role_permissions, and permissions tables,
+          filtering by user_id and permission name, and checking if the count is
+          greater than zero.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">
+          Common Role Hierarchies
+        </h3>
+        <p>
+          A typical SaaS role hierarchy includes: super_admin with all
+          permissions (wildcard), admin with organization-level permissions for
+          users, settings, documents, and reports:read, manager with team-level
+          permissions for documents, reports, and team:read, editor with content
+          creation permissions for documents:read/write and reports:read, and
+          viewer with read-only access to documents:read and reports:read.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">RBAC Best Practices</h3>
+        <ul className="space-y-2">
+          <li>
+            <strong>Principle of Least Privilege:</strong> Grant minimum
+            permissions necessary for the role
+          </li>
+          <li>
+            <strong>Role naming:</strong> Use descriptive names (ContentEditor
+            not Role3)
+          </li>
+          <li>
+            <strong>Permission granularity:</strong> Fine enough for security,
+            coarse enough for manageability
+          </li>
+          <li>
+            <strong>Audit role assignments:</strong> Log who assigned which role
+            to whom
+          </li>
+          <li>
+            <strong>Regular reviews:</strong> Periodically audit role
+            permissions and user assignments
+          </li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">When to Use RBAC</h3>
+        <p>
+          <strong>Best for:</strong>
+        </p>
+        <ul className="space-y-2">
+          <li>Organizations with clear job functions</li>
+          <li>Applications with stable permission requirements</li>
+          <li>Teams needing simple permission management</li>
+          <li>Compliance requirements (SOX, HIPAA, PCI-DSS)</li>
+        </ul>
+        <p>
+          <strong>Not ideal for:</strong>
+        </p>
+        <ul className="space-y-2">
+          <li>Highly dynamic permission requirements</li>
+          <li>Context-dependent access decisions</li>
+          <li>Fine-grained resource-level permissions at scale</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Attribute-Based Access Control (ABAC)</h2>
+        <p>
+          ABAC makes access decisions based on attributes of the user, resource,
+          action, and environment. It&apos;s more flexible than RBAC but also
+          more complex.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">ABAC Components</h3>
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/security/abac-model.svg"
+          alt="ABAC Model showing Policy Decision Point evaluating User, Resource, and Environment attributes"
+          caption="ABAC Model: Access decisions based on attributes of user, resource, action, and environment evaluated against policies."
+        />
+
+        <ul className="space-y-2">
+          <li>
+            <strong>Subject Attributes:</strong> User properties (role,
+            department, clearance level, location)
+          </li>
+          <li>
+            <strong>Resource Attributes:</strong> Resource properties (owner,
+            classification, sensitivity)
+          </li>
+          <li>
+            <strong>Action Attributes:</strong> What&apos;s being done (read,
+            write, delete, share)
+          </li>
+          <li>
+            <strong>Environment Attributes:</strong> Context (time, location,
+            device, network)
+          </li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">
+          ABAC Policy Examples
+        </h3>
+        <p>
+          ABAC policies evaluate attributes to make access decisions. Examples
+          include: department-based access (ALLOW IF user.department ==
+          resource.department), time-based access (ALLOW IF user.role ==
+          "employee" AND time is between 9 and 18), clearance level (ALLOW IF
+          user.clearance &gt;= resource.classification), resource owner (ALLOW
+          IF user.id == resource.ownerId), location-based (ALLOW IF
+          user.location == "office" OR user.role == "executive"), and complex
+          policies combining multiple attributes like department match AND
+          clearance level AND business hours AND (office location OR public
+          resource).
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">ABAC Implementation</h3>
+        <p>
+          Implement a Policy Evaluation Engine (ABACEngine) with an async{" "}
+          <code className="text-sm">
+            checkAccess(user, resource, action, environment)
+          </code>{" "}
+          method that loads applicable policies, evaluates each policy with the
+          context (user, resource, action, environment), and returns
+          allowed:true with the policy ID if any policy allows, or allowed:false
+          with a reason if no matching allow policy. Include an async{" "}
+          <code className="text-sm">evaluatePolicy(policy, context)</code>{" "}
+          method that parses and evaluates policy conditions and returns the
+          policy effect (ALLOW or DENY) based on the condition result. Usage:
+          create an instance and call{" "}
+          <code className="text-sm">checkAccess()</code> with user object,
+          resource object, action string, and environment object.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">When to Use ABAC</h3>
+        <p>
+          <strong>Best for:</strong>
+        </p>
+        <ul className="space-y-2">
+          <li>Dynamic, context-dependent access decisions</li>
+          <li>Fine-grained resource-level permissions</li>
+          <li>Regulated environments (healthcare, government, finance)</li>
+          <li>Multi-tenant applications with complex requirements</li>
+        </ul>
+        <p>
+          <strong>Not ideal for:</strong>
+        </p>
+        <ul className="space-y-2">
+          <li>Simple applications with stable roles</li>
+          <li>Teams without authorization expertise</li>
+          <li>Performance-critical systems (policy evaluation overhead)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Frontend Authorization Patterns</h2>
+        <p>
+          Frontend authorization improves user experience by hiding unauthorized
+          actions and showing appropriate UI. However, frontend authorization
+          provides <strong>no security</strong>—always enforce on the server.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">
+          Permission Checking in UI
+        </h3>
+        <p>
+          Implement a <code className="text-sm">usePermission(permission)</code>{" "}
+          React hook that reads the user from auth context and checks if their
+          permissions array includes the required permission. Use it in
+          components to conditionally render elements: check{" "}
+          <code className="text-sm">canEdit</code> for document:write,{" "}
+          <code className="text-sm">canDelete</code> for document:delete, and{" "}
+          <code className="text-sm">isOwner</code> for document:owner with a
+          document parameter. Alternatively, create a Higher-Order Component{" "}
+          <code className="text-sm">
+            withPermission(WrappedComponent, requiredPermission)
+          </code>{" "}
+          that wraps a component and returns an AuthorizedComponent that checks
+          the permission and renders UnauthorizedMessage if not authorized, or
+          the WrappedComponent if authorized.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Route Protection</h3>
+        <p>
+          For Next.js Middleware, create a middleware function that reads the
+          auth_token cookie, verifies the token, allows public routes (like
+          /public/*), redirects unauthenticated users to /login, and checks
+          role-based access for admin routes (redirecting to /unauthorized if
+          user doesn't have the admin role). For React Router, create a
+          ProtectedRoute component that checks authentication state and required
+          role, shows Loading while loading, redirects to /login if not
+          authenticated, redirects to /unauthorized if missing required role, or
+          renders children if authorized.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">
+          UI Element Authorization
+        </h3>
+        <p>
+          Create an Authorized component pattern with props for children,
+          permission, and fallback (default null). The component checks{" "}
+          <code className="text-sm">usePermission(permission)</code> and returns
+          the fallback if not authorized, or children if authorized. Usage: wrap
+          sensitive elements like DeleteButton with Authorized, passing
+          permission="document:delete" and a fallback like a Tooltip saying
+          "Admins only". For menu items, check permissions like{" "}
+          <code className="text-sm">isAdmin</code> for admin:access and
+          conditionally render admin menu items.
+        </p>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">
+            Key Insight: Frontend Authorization Is UX, Not Security
+          </h3>
+          <p>
+            Frontend authorization improves user experience by hiding
+            unauthorized actions. But attackers can bypass frontend checks.
+            Always enforce authorization on the server. Frontend authorization
+            is about UX; backend authorization is about security.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Backend Authorization Enforcement</h2>
+        <p>
+          Backend authorization is where security happens. Every API endpoint
+          must verify the user has permission for the requested action.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">
+          Middleware-Based Authorization
+        </h3>
+        <p>
+          Create a{" "}
+          <code className="text-sm">requirePermission(permission)</code>{" "}
+          middleware function that extracts the user from the request, returns
+          401 if unauthorized, checks if the user has the required permission,
+          and returns 403 Forbidden if not. Use it to protect routes like GET
+          /api/documents with document:read, POST /api/documents with
+          document:write, and DELETE /api/documents/:id with document:delete.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">
+          Resource-Level Authorization
+        </h3>
+        <p>
+          For delete operations, check ownership before the action: find the
+          document by ID, return 404 if not found, check if the user is the
+          owner (document.ownerId === user.id) or has admin role, return 403
+          Forbidden if neither, then delete and return 204. For policy-based
+          authorization, use an ABAC engine to check access with user, document,
+          action, and environment context (including updates and request
+          metadata like time and IP), and return 403 with the reason if not
+          allowed.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">
+          Database-Level Authorization
+        </h3>
+        <p>
+          Implement Row-Level Security in PostgreSQL by creating a policy on
+          documents table that allows access if owner_id matches the current
+          user ID (from app.current_user_id setting) OR if the user has an admin
+          role (checked via user_roles and roles join). Query with authorization
+          built-in by filtering WHERE owner_id equals the user ID OR the user is
+          admin OR visibility is public. For ORM-level authorization with
+          Prisma, use a where clause with OR conditions for ownerId match,
+          public visibility, or sharedWith containing the user ID.
+        </p>
+      </section>
+
+      <section>
+        <h2>Authorization Patterns Comparison</h2>
+        <table className="w-full border-collapse">
+          <thead>
+            <tr className="border-b border-theme">
+              <th className="p-3 text-left">Pattern</th>
+              <th className="p-3 text-left">Complexity</th>
+              <th className="p-3 text-left">Flexibility</th>
+              <th className="p-3 text-left">Best Use Case</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-theme">
+            <tr>
+              <td className="p-3">
+                <strong>RBAC</strong>
+              </td>
+              <td className="p-3">Low</td>
+              <td className="p-3">Medium</td>
+              <td className="p-3">Organizations with clear roles</td>
+            </tr>
+            <tr>
+              <td className="p-3">
+                <strong>ABAC</strong>
+              </td>
+              <td className="p-3">High</td>
+              <td className="p-3">High</td>
+              <td className="p-3">Context-dependent access</td>
+            </tr>
+            <tr>
+              <td className="p-3">
+                <strong>ACL</strong>
+              </td>
+              <td className="p-3">Medium</td>
+              <td className="p-3">High</td>
+              <td className="p-3">Resource-level permissions</td>
+            </tr>
+            <tr>
+              <td className="p-3">
+                <strong>Capability-Based</strong>
+              </td>
+              <td className="p-3">High</td>
+              <td className="p-3">High</td>
+              <td className="p-3">Distributed systems, microservices</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/security/authorization-patterns.svg"
+          alt="Authorization Patterns comparison showing RBAC, ABAC, ACL, and Capability-Based approaches"
+          caption="Authorization Patterns: Each pattern has different trade-offs. RBAC is simplest, ABAC is most flexible."
+        />
+      </section>
+
+      <section>
+        <h2>Best Practices</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">
+          Authorization Design
+        </h3>
+        <ul className="space-y-2">
+          <li>
+            <strong>Default deny:</strong> Deny by default, explicitly grant
+            permissions
+          </li>
+          <li>
+            <strong>Principle of least privilege:</strong> Grant minimum
+            permissions necessary
+          </li>
+          <li>
+            <strong>Separate concerns:</strong> Authentication (who) separate
+            from authorization (what)
+          </li>
+          <li>
+            <strong>Centralize authorization logic:</strong> Single source of
+            truth for permissions
+          </li>
+          <li>
+            <strong>Use standard patterns:</strong> RBAC for most cases, ABAC
+            for complex requirements
+          </li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Implementation</h3>
+        <ul className="space-y-2">
+          <li>
+            <strong>Enforce on server:</strong> Frontend authorization is UX
+            only
+          </li>
+          <li>
+            <strong>Check at every layer:</strong> API, service, data layers
+          </li>
+          <li>
+            <strong>Log authorization decisions:</strong> Audit who accessed
+            what
+          </li>
+          <li>
+            <strong>Cache permission checks:</strong> For performance, with
+            appropriate invalidation
+          </li>
+          <li>
+            <strong>Test authorization:</strong> Include authorization tests in
+            CI/CD
+          </li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Maintenance</h3>
+        <ul className="space-y-2">
+          <li>
+            <strong>Regular audits:</strong> Review role permissions and user
+            assignments
+          </li>
+          <li>
+            <strong>Deprovision promptly:</strong> Remove access when users
+            leave or change roles
+          </li>
+          <li>
+            <strong>Monitor for anomalies:</strong> Unusual access patterns,
+            privilege escalation attempts
+          </li>
+          <li>
+            <strong>Document policies:</strong> Clear documentation of roles and
+            permissions
+          </li>
+        </ul>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">
+            Key Insight: Authorization Is Ongoing
+          </h3>
+          <p>
+            Authorization isn&apos;t set-and-forget. Users change roles,
+            requirements evolve, and permissions accumulate. Regular audits,
+            monitoring, and deprovisioning are essential for maintaining secure
+            authorization over time.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Common Pitfalls</h2>
+        <ul className="space-y-3">
+          <li>
+            <strong>Relying on frontend authorization:</strong> Frontend checks
+            are for UX only. Always enforce on server.
+          </li>
+          <li>
+            <strong>Hardcoded role checks:</strong>{" "}
+            <code className="text-sm">if (user.role === 'admin')</code>
+            scattered throughout codebase. Use permission-based checks instead.
+          </li>
+          <li>
+            <strong>Missing resource-level checks:</strong> Checking user has
+            &quot;read&quot; permission but not if they can read{" "}
+            <em>this specific</em> resource.
+          </li>
+          <li>
+            <strong>Over-permissive roles:</strong> Admin role with all
+            permissions. Create granular roles.
+          </li>
+          <li>
+            <strong>No audit logging:</strong> Not logging authorization
+            decisions makes incident response impossible.
+          </li>
+          <li>
+            <strong>Stale permissions:</strong> Cached permissions not
+            invalidated when roles change.
+          </li>
+          <li>
+            <strong>IDOR vulnerabilities:</strong> Accessing resources by ID
+            without ownership check (Insecure Direct Object Reference).
+          </li>
+          <li>
+            <strong>Role explosion:</strong> Too many roles (Admin, SuperAdmin,
+            MegaAdmin). Use ABAC for complex requirements.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a
+              href="https://csrc.nist.gov/projects/rbac"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              NIST RBAC Standard
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Access Control Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.openpolicyagent.org/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open Policy Agent (OPA)
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://casbin.org/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Casbin Authorization Library
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP IDOR Prevention Cheat Sheet
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interview Questions & Answers</h2>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q1: What&apos;s the difference between RBAC and ABAC?
+            </p>
+            <p className="mt-2 text-sm">
+              A: <strong>RBAC (Role-Based Access Control)</strong> assigns
+              permissions to roles, users to roles. Simple, widely used, good
+              for organizations with clear job functions.
+              <strong>ABAC (Attribute-Based Access Control)</strong> makes
+              decisions based on attributes (user, resource, environment). More
+              flexible but complex. RBAC: &quot;Admins can delete
+              documents.&quot; ABAC: &quot;Users can delete documents they own,
+              during business hours, from the office network.&quot;
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q2: How do you prevent IDOR (Insecure Direct Object Reference)
+              vulnerabilities?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Always check resource ownership or permission before accessing
+              by ID. Don&apos;t just check
+              <code className="text-sm">
+                user has &apos;read&apos; permission
+              </code>
+              —check
+              <code className="text-sm">user can read THIS document</code>.
+              Example:
+              <code className="text-sm">
+                if (document.ownerId !== user.id && !user.isAdmin) throw
+                Forbidden
+              </code>
+              . Never trust client-provided IDs without authorization checks.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q3: Where should authorization be enforced?
+            </p>
+            <p className="mt-2 text-sm">
+              A: At every layer: (1) Frontend for UX (hide unauthorized
+              actions), (2) API gateway for routing decisions, (3) Service layer
+              for business logic, (4) Data layer for row/column-level security.
+              Frontend authorization provides zero security—attackers bypass it
+              easily. Server-side enforcement is mandatory.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q4: How do you handle permission caching?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Cache permission checks for performance but invalidate on role
+              changes. Use cache keys like
+              <code className="text-sm">permissions:{`{userId}`}</code> with TTL
+              (5-15 min). Invalidate cache when user&apos;s roles change, user
+              is deactivated, or permissions are modified. For high-security
+              applications, reduce TTL or skip caching.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q5: What is the principle of least privilege?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Grant users the minimum permissions necessary to perform their
+              job functions. A content editor doesn&apos;t need delete
+              permissions. A viewer doesn&apos;t need write permissions. This
+              limits damage from compromised accounts, insider threats, and
+              mistakes. Regularly audit and remove unnecessary permissions.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q6: How would you design authorization for a multi-tenant SaaS?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Hybrid approach: RBAC for roles within each tenant (Admin,
+              Member, Viewer), ABAC for cross-tenant isolation (user.tenantId
+              === resource.tenantId). Add resource-level ownership checks. Cache
+              permissions per tenant. Audit all cross-tenant access attempts.
+              Consider data residency requirements for global tenants.
+            </p>
+          </div>
+        </div>
+      </section>
+    </ArticleLayout>
+  );
+}

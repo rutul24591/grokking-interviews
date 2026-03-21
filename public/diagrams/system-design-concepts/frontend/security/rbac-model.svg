@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1000" height="600" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">RBAC Model</text>
+  <text x="500" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">Users → Roles → Permissions</text>
+  
+  <!-- Users -->
+  <g transform="translate(50, 100)">
+    <rect x="0" y="0" width="280" height="200" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="140" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#2563eb">Users</text>
+    
+    <g transform="translate(20, 45)">
+      <rect x="0" y="0" width="240" height="35" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+      <text x="20" y="22" font-family="monospace" font-size="11" fill="#0f172a">Alice (alice@example.com)</text>
+      <circle cx="220" cy="17" r="12" fill="#3b82f6"/>
+      <text x="220" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#ffffff">1</text>
+      
+      <rect x="0" y="45" width="240" height="35" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+      <text x="20" y="67" font-family="monospace" font-size="11" fill="#0f172a">Bob (bob@example.com)</text>
+      <circle cx="220" cy="62" r="12" fill="#3b82f6"/>
+      <text x="220" y="67" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#ffffff">2</text>
+      
+      <rect x="0" y="90" width="240" height="35" rx="4" fill="#ffffff" stroke="#3b82f6"/>
+      <text x="20" y="112" font-family="monospace" font-size="11" fill="#0f172a">Carol (carol@example.com)</text>
+      <circle cx="220" cy="107" r="12" fill="#3b82f6"/>
+      <text x="220" y="112" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#ffffff">3</text>
+    </g>
+  </g>
+  
+  <!-- Roles -->
+  <g transform="translate(360, 100)">
+    <rect x="0" y="0" width="280" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="140" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#d97706">Roles</text>
+    
+    <g transform="translate(20, 45)">
+      <rect x="0" y="0" width="240" height="45" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="20" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Admin</text>
+      <text x="20" y="38" font-family="monospace" font-size="10" fill="#475569">Full system access</text>
+      
+      <rect x="0" y="55" width="240" height="45" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="20" y="77" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Editor</text>
+      <text x="20" y="93" font-family="monospace" font-size="10" fill="#475569">Create, edit content</text>
+      
+      <rect x="0" y="110" width="240" height="45" rx="4" fill="#ffffff" stroke="#f59e0b"/>
+      <text x="20" y="132" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Viewer</text>
+      <text x="20" y="148" font-family="monospace" font-size="10" fill="#475569">Read-only access</text>
+    </g>
+  </g>
+  
+  <!-- Permissions -->
+  <g transform="translate(670, 100)">
+    <rect x="0" y="0" width="280" height="200" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+    <text x="140" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#16a34a">Permissions</text>
+    
+    <g transform="translate(20, 45)">
+      <rect x="0" y="0" width="240" height="30" rx="4" fill="#ffffff" stroke="#22c55e"/>
+      <text x="15" y="20" font-family="monospace" font-size="10" fill="#0f172a">document:read</text>
+      
+      <rect x="0" y="35" width="240" height="30" rx="4" fill="#ffffff" stroke="#22c55e"/>
+      <text x="15" y="55" font-family="monospace" font-size="10" fill="#0f172a">document:write</text>
+      
+      <rect x="0" y="70" width="240" height="30" rx="4" fill="#ffffff" stroke="#22c55e"/>
+      <text x="15" y="90" font-family="monospace" font-size="10" fill="#0f172a">document:delete</text>
+      
+      <rect x="0" y="105" width="240" height="30" rx="4" fill="#ffffff" stroke="#22c55e"/>
+      <text x="15" y="125" font-family="monospace" font-size="10" fill="#0f172a">users:manage</text>
+      
+      <rect x="0" y="140" width="240" height="30" rx="4" fill="#ffffff" stroke="#22c55e"/>
+      <text x="15" y="160" font-family="monospace" font-size="10" fill="#0f172a">settings:admin</text>
+    </g>
+  </g>
+  
+  <!-- User-Role assignments -->
+  <g transform="translate(340, 150)">
+    <!-- Alice → Admin -->
+    <path d="M 0 65 C 50 65, 50 65, 100 65" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arrowhead-blue)"/>
+    <text x="50" y="55" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">assigned to</text>
+    
+    <!-- Bob → Editor -->
+    <path d="M 0 110 C 50 110, 50 110, 100 110" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arrowhead-blue)"/>
+    
+    <!-- Carol → Viewer -->
+    <path d="M 0 155 C 50 155, 50 155, 100 155" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arrowhead-blue)"/>
+  </g>
+  
+  <!-- Role-Permission assignments -->
+  <g transform="translate(650, 150)">
+    <!-- Admin → All permissions -->
+    <path d="M 0 65 C 50 65, 50 40, 100 40" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arrowhead-orange)"/>
+    <text x="50" y="55" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">has</text>
+    
+    <!-- Admin → users:manage -->
+    <path d="M 0 65 C 50 65, 50 120, 100 120" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arrowhead-orange)"/>
+    
+    <!-- Editor → read, write -->
+    <path d="M 0 110 C 50 110, 50 40, 100 40" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arrowhead-orange)"/>
+    <path d="M 0 110 C 50 110, 50 70, 100 70" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arrowhead-orange)"/>
+    
+    <!-- Viewer → read only -->
+    <path d="M 0 155 C 50 155, 50 40, 100 40" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arrowhead-orange)"/>
+  </g>
+  
+  <!-- Legend -->
+  <g transform="translate(50, 330)">
+    <rect x="0" y="0" width="900" height="80" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="450" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#0f172a">Example Assignments</text>
+    
+    <g transform="translate(20, 40)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Alice (Admin):</text>
+      <text x="100" y="0" font-family="monospace" font-size="10" fill="#16a34a">document:read, document:write, document:delete, users:manage, settings:admin</text>
+      
+      <text x="0" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Bob (Editor):</text>
+      <text x="100" y="20" font-family="monospace" font-size="10" fill="#16a34a">document:read, document:write</text>
+      
+      <text x="0" y="40" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Carol (Viewer):</text>
+      <text x="100" y="40" font-family="monospace" font-size="10" fill="#16a34a">document:read</text>
+    </g>
+  </g>
+  
+  <!-- Key insight -->
+  <g transform="translate(50, 430)">
+    <rect x="0" y="0" width="900" height="60" rx="8" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="450" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Key Benefit: Simplified Management</text>
+    <text x="450" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Add/remove permissions from roles without changing user assignments. Users inherit permissions from their assigned roles.</text>
+  </g>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowhead-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+</svg>

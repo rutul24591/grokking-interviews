@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500" role="img" aria-label="Dialog ARIA role hierarchy showing dialog and alertdialog roles with required ARIA attributes and their relationship to the inert background">
+  <rect width="900" height="500" rx="16" fill="#f3f1f8" />
+
+  <!-- Title -->
+  <text x="450" y="38" fill="#1a1822" font-family="system-ui, sans-serif" font-size="22" font-weight="700" text-anchor="middle">Dialog ARIA Role Hierarchy</text>
+  <text x="450" y="60" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="13" text-anchor="middle">Required ARIA attributes and relationship between dialog, alertdialog, and the inert background</text>
+
+  <!-- Background layer (inert) -->
+  <rect x="30" y="80" width="840" height="400" rx="12" fill="#e8e4f0" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="8,4" />
+  <text x="450" y="106" fill="#1a1822" font-family="system-ui, sans-serif" font-size="14" font-weight="700" text-anchor="middle">Page Background (inert)</text>
+  <text x="450" y="124" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="11" text-anchor="middle">All content behind the modal receives the inert attribute or aria-hidden=&quot;true&quot;</text>
+
+  <!-- Dialog role box -->
+  <rect x="60" y="145" width="370" height="310" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2.5" />
+  <rect x="60" y="145" width="370" height="44" rx="12" fill="#6d5bd0" />
+  <rect x="60" y="169" width="370" height="20" fill="#6d5bd0" />
+  <text x="245" y="174" fill="#ffffff" font-family="system-ui, sans-serif" font-size="16" font-weight="700" text-anchor="middle">role=&quot;dialog&quot;</text>
+
+  <text x="80" y="214" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-style="italic">Non-modal or modal overlay for user interaction</text>
+
+  <!-- Required attributes for dialog -->
+  <text x="80" y="245" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Required Attributes:</text>
+
+  <rect x="80" y="258" width="330" height="34" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1" />
+  <text x="92" y="280" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700">aria-modal=&quot;true&quot;</text>
+  <text x="240" y="280" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Indicates modal behavior</text>
+
+  <rect x="80" y="300" width="330" height="34" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1" />
+  <text x="92" y="322" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700">aria-labelledby</text>
+  <text x="218" y="322" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Points to the dialog title</text>
+
+  <rect x="80" y="342" width="330" height="34" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1" />
+  <text x="92" y="364" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700">aria-describedby</text>
+  <text x="224" y="364" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Points to descriptive text</text>
+
+  <text x="80" y="402" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" font-style="italic">Use for: confirmations, forms, settings,</text>
+  <text x="80" y="418" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" font-style="italic">interactive content, information display</text>
+
+  <!-- alertdialog role box -->
+  <rect x="470" y="145" width="370" height="310" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2.5" />
+  <rect x="470" y="145" width="370" height="44" rx="12" fill="#6d5bd0" />
+  <rect x="470" y="169" width="370" height="20" fill="#6d5bd0" />
+  <text x="655" y="174" fill="#ffffff" font-family="system-ui, sans-serif" font-size="16" font-weight="700" text-anchor="middle">role=&quot;alertdialog&quot;</text>
+
+  <text x="490" y="214" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-style="italic">Urgent modal requiring immediate user response</text>
+
+  <!-- Required attributes for alertdialog -->
+  <text x="490" y="245" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Required Attributes:</text>
+
+  <rect x="490" y="258" width="330" height="34" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1" />
+  <text x="502" y="280" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700">aria-modal=&quot;true&quot;</text>
+  <text x="650" y="280" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Always modal</text>
+
+  <rect x="490" y="300" width="330" height="34" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1" />
+  <text x="502" y="322" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700">aria-labelledby</text>
+  <text x="628" y="322" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Points to the alert title</text>
+
+  <rect x="490" y="342" width="330" height="34" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1" />
+  <text x="502" y="364" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700">aria-describedby</text>
+  <text x="634" y="364" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Points to alert message</text>
+
+  <text x="490" y="402" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" font-style="italic">Use for: destructive actions, unsaved changes,</text>
+  <text x="490" y="418" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" font-style="italic">critical errors, data loss warnings</text>
+
+  <!-- Inherits arrow -->
+  <text x="450" y="440" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="11" font-weight="700" text-anchor="middle">alertdialog inherits from dialog</text>
+  <line x1="430" y1="430" x2="470" y2="430" stroke="#6d5bd0" stroke-width="2" marker-end="url(#inheritArrow)" />
+  <line x1="430" y1="430" x2="430" y2="445" stroke="#6d5bd0" stroke-width="2" />
+  <line x1="470" y1="430" x2="470" y2="445" stroke="#6d5bd0" stroke-width="2" />
+
+  <!-- Key difference callout -->
+  <rect x="200" y="460" width="500" height="24" rx="6" fill="#6d5bd0" />
+  <text x="450" y="477" fill="#ffffff" font-family="system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">Key difference: alertdialog announces its message to screen readers immediately via implicit role=&quot;alert&quot;</text>
+
+  <defs>
+    <marker id="inheritArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0" />
+    </marker>
+  </defs>
+</svg>

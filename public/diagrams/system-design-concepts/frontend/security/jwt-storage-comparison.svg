@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 650" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1100" height="650" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="550" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">JWT Storage Comparison</text>
+  <text x="550" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#475569">HttpOnly Cookie vs localStorage security trade-offs</text>
+  
+  <!-- HttpOnly Cookie approach -->
+  <g transform="translate(50, 85)">
+    <rect x="0" y="0" width="480" height="280" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+    <text x="240" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#16a34a">JWT in HttpOnly Cookie</text>
+    <text x="240" y="48" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Recommended for most applications</text>
+    
+    <!-- Architecture flow -->
+    <g transform="translate(20, 65)">
+      <rect x="0" y="0" width="100" height="50" rx="4" fill="#ffffff" stroke="#22c55e"/>
+      <text x="50" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Browser</text>
+      <text x="50" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">(HttpOnly Cookie)</text>
+      
+      <line x1="100" y1="25" x2="150" y2="25" stroke="#22c55e" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+      <text x="125" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Auto-sent</text>
+      
+      <rect x="150" y="0" width="100" height="50" rx="4" fill="#ffffff" stroke="#22c55e"/>
+      <text x="200" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Server</text>
+      <text x="200" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Validates JWT</text>
+      
+      <line x1="250" y1="25" x2="300" y2="25" stroke="#22c55e" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+      <text x="275" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Response</text>
+      
+      <rect x="300" y="0" width="100" height="50" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="350" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#16a34a">Protected</text>
+    </g>
+    
+    <!-- Pros -->
+    <g transform="translate(20, 135)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#16a34a">✓ Advantages</text>
+      <rect x="0" y="10" width="440" height="70" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="15" y="30" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Protected from XSS (JavaScript cannot read HttpOnly cookies)</text>
+      <text x="15" y="48" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Automatic inclusion in requests (no manual token management)</text>
+      <text x="15" y="66" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• SameSite attribute provides CSRF protection</text>
+    </g>
+    
+    <!-- Cons -->
+    <g transform="translate(20, 225)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#dc2626">⚠ Disadvantages</text>
+      <rect x="0" y="10" width="440" height="45" rx="4" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="15" y="30" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• CSRF vulnerability (mitigated with SameSite + CSRF tokens)</text>
+    </g>
+  </g>
+  
+  <!-- localStorage approach -->
+  <g transform="translate(570, 85)">
+    <rect x="0" y="0" width="480" height="280" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+    <text x="240" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#dc2626">JWT in localStorage</text>
+    <text x="240" y="48" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Use only with strong XSS controls</text>
+    
+    <!-- Architecture flow -->
+    <g transform="translate(20, 65)">
+      <rect x="0" y="0" width="100" height="50" rx="4" fill="#ffffff" stroke="#ef4444"/>
+      <text x="50" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Browser</text>
+      <text x="50" y="38" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">(localStorage)</text>
+      
+      <line x1="100" y1="25" x2="150" y2="25" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowhead-red)"/>
+      <text x="125" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Manual attach</text>
+      
+      <rect x="150" y="0" width="100" height="50" rx="4" fill="#ffffff" stroke="#ef4444"/>
+      <text x="200" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Server</text>
+      <text x="200" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Validates JWT</text>
+      
+      <line x1="250" y1="25" x2="300" y2="25" stroke="#ef4444" stroke-width="2" marker-end="url(#arrowhead-red)"/>
+      <text x="275" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Response</text>
+      
+      <rect x="300" y="0" width="100" height="50" rx="4" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="350" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#dc2626">Vulnerable</text>
+    </g>
+    
+    <!-- Pros -->
+    <g transform="translate(20, 135)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#16a34a">✓ Advantages</text>
+      <rect x="0" y="10" width="440" height="70" rx="4" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="15" y="30" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• No CSRF risk (tokens not automatically sent with requests)</text>
+      <text x="15" y="48" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Easy client-side access (no server-side cookie handling needed)</text>
+      <text x="15" y="66" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Works well with token-based API architectures</text>
+    </g>
+    
+    <!-- Cons -->
+    <g transform="translate(20, 225)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#dc2626">⚠ Disadvantages</text>
+      <rect x="0" y="10" width="440" height="45" rx="4" fill="#fef2f2" stroke="#ef4444"/>
+      <text x="15" y="30" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Vulnerable to XSS (any script can read localStorage and steal token)</text>
+    </g>
+  </g>
+  
+  <!-- Attack comparison -->
+  <g transform="translate(50, 390)">
+    <rect x="0" y="0" width="1000" height="150" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="500" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#0f172a">Security Comparison: Attack Vectors</text>
+    
+    <!-- Header -->
+    <rect x="20" y="45" width="280" height="30" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <text x="160" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">Attack Type</text>
+    
+    <rect x="300" y="45" width="340" height="30" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="470" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#16a34a">HttpOnly Cookie</text>
+    
+    <rect x="640" y="45" width="340" height="30" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="810" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#dc2626">localStorage</text>
+    
+    <!-- XSS Attack -->
+    <rect x="20" y="75" width="280" height="30" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="160" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">XSS Token Theft</text>
+    
+    <rect x="300" y="75" width="340" height="30" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="470" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">✓ Protected (cookie inaccessible to JS)</text>
+    
+    <rect x="640" y="75" width="340" height="30" fill="#fef2f2" stroke="#ef4444"/>
+    <text x="810" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#dc2626">✗ Vulnerable (localStorage readable by any script)</text>
+    
+    <!-- CSRF Attack -->
+    <rect x="20" y="105" width="280" height="30" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="160" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">CSRF Attack</text>
+    
+    <rect x="300" y="105" width="340" height="30" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="470" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">Partial (protected with SameSite + CSRF tokens)</text>
+    
+    <rect x="640" y="105" width="340" height="30" fill="#f0fdf4" stroke="#22c55e"/>
+    <text x="810" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#16a34a">✓ Protected (token not auto-sent)</text>
+  </g>
+  
+  <!-- Recommendation -->
+  <g transform="translate(50, 560)">
+    <rect x="0" y="0" width="1000" height="70" rx="8" fill="#dbeafe" stroke="#3b82f6"/>
+    <text x="500" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#2563eb">Recommendation</text>
+    <text x="500" y="48" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">Use HttpOnly cookies for most applications. The XSS protection is more valuable than CSRF protection since CSRF can be mitigated with SameSite and tokens.</text>
+    <text x="500" y="65" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#475569">Use localStorage only if you have strong XSS controls (CSP, input validation, output encoding) and need client-side token access.</text>
+  </g>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
+</svg>
