@@ -431,56 +431,7 @@ export default function AriaAttributesArticle() {
         </p>
       </section>
 
-      {/* ─────────────────── 8. References & Further Reading ─────────────────── */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://www.w3.org/TR/wai-aria-1.2/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              WAI-ARIA 1.2 Specification (W3C Recommendation)
-            </a>
-            &mdash; The definitive specification for all ARIA roles, states, and properties.
-          </li>
-          <li>
-            <a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              ARIA Authoring Practices Guide (APG)
-            </a>
-            &mdash; Pattern-by-pattern implementation guides for accordions, carousels, comboboxes, dialogs, grids, menus, tabs, and more.
-          </li>
-          <li>
-            <a href="https://www.w3.org/TR/accname-1.2/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              Accessible Name and Description Computation 1.2
-            </a>
-            &mdash; How browsers compute the accessible name from aria-label, aria-labelledby, native labels, and text content.
-          </li>
-          <li>
-            <a href="https://react-spectrum.adobe.com/react-aria/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              React Aria by Adobe
-            </a>
-            &mdash; Production-grade React hooks that implement ARIA patterns with full keyboard and screen reader support.
-          </li>
-          <li>
-            <a href="https://www.deque.com/axe/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              axe-core by Deque Systems
-            </a>
-            &mdash; The most widely used automated accessibility testing engine, supporting ARIA validation rules.
-          </li>
-          <li>
-            <a href="https://a11ysupport.io/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              Accessibility Support (a11ysupport.io)
-            </a>
-            &mdash; Community-driven database of screen reader support for ARIA roles and attributes across browser/AT combinations.
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              MDN ARIA Documentation
-            </a>
-            &mdash; Practical guides and reference documentation for every ARIA role and attribute.
-          </li>
-        </ul>
-      </section>
-
-      {/* ─────────────────── 9. Common Interview Questions ─────────────────── */}
+      {/* ─────────────────── 8. Common Interview Questions ─────────────────── */}
       <section>
         <h2>Common Interview Questions</h2>
 
@@ -567,6 +518,55 @@ export default function AriaAttributesArticle() {
             audits using NVDA + Chrome and VoiceOver + Safari to catch the 60-70% of issues that automated tools miss.
           </p>
         </div>
+      </section>
+
+      {/* ─────────────────── 9. References & Further Reading ─────────────────── */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://www.w3.org/TR/wai-aria-1.2/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              WAI-ARIA 1.2 Specification (W3C Recommendation)
+            </a>
+            &mdash; The definitive specification for all ARIA roles, states, and properties.
+          </li>
+          <li>
+            <a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              ARIA Authoring Practices Guide (APG)
+            </a>
+            &mdash; Pattern-by-pattern implementation guides for accordions, carousels, comboboxes, dialogs, grids, menus, tabs, and more.
+          </li>
+          <li>
+            <a href="https://www.w3.org/TR/accname-1.2/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              Accessible Name and Description Computation 1.2
+            </a>
+            &mdash; How browsers compute the accessible name from aria-label, aria-labelledby, native labels, and text content.
+          </li>
+          <li>
+            <a href="https://react-spectrum.adobe.com/react-aria/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              React Aria by Adobe
+            </a>
+            &mdash; Production-grade React hooks that implement ARIA patterns with full keyboard and screen reader support.
+          </li>
+          <li>
+            <a href="https://www.deque.com/axe/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              axe-core by Deque Systems
+            </a>
+            &mdash; The most widely used automated accessibility testing engine, supporting ARIA validation rules.
+          </li>
+          <li>
+            <a href="https://a11ysupport.io/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              Accessibility Support (a11ysupport.io)
+            </a>
+            &mdash; Community-driven database of screen reader support for ARIA roles and attributes across browser/AT combinations.
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              MDN ARIA Documentation
+            </a>
+            &mdash; Practical guides and reference documentation for every ARIA role and attribute.
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

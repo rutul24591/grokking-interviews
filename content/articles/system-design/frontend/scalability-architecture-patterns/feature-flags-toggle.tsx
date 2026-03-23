@@ -148,6 +148,12 @@ export default function FeatureFlagsToggleArticle() {
           </table>
         </div>
 
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/feature-flags-toggle-diagram-2.svg"
+          alt="Feature flag evaluation flow comparing client-side (local SDK evaluation) versus server-side (flag service evaluation) with their security and performance trade-offs"
+          caption="Evaluation strategies — client-side offers instant evaluation but exposes rules; server-side keeps rules confidential but adds latency"
+        />
+
         <div className="my-6 rounded-lg bg-panel-soft p-6">
           <h3 className="mb-4 text-lg font-semibold">Canary Progressive Rollout</h3>
           <p>Progressive rollout stages with monitoring gates between each:</p>
@@ -159,6 +165,12 @@ export default function FeatureFlagsToggleArticle() {
             <li><strong>Stage 5 (100%):</strong> Full rollout. Remove flag after bake period (1-2 weeks with no issues).</li>
           </ol>
         </div>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/feature-flags-toggle-diagram-3.svg"
+          alt="Progressive rollout stages from 1% to 100% with monitoring gates between stages and automated rollback path on threshold breach"
+          caption="Progressive rollout — gradual percentage increase with monitoring gates and automated rollback on metric threshold breaches"
+        />
       </section>
 
       <section>
@@ -339,32 +351,6 @@ export default function FeatureFlagsToggleArticle() {
       </section>
 
       <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://martinfowler.com/articles/feature-toggles.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Pete Hodgson — Feature Toggles (Feature Flags) on martinfowler.com
-            </a>
-          </li>
-          <li>
-            <a href="https://launchdarkly.com/blog/what-are-feature-flags/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              LaunchDarkly — What Are Feature Flags?
-            </a>
-          </li>
-          <li>
-            <a href="https://trunkbaseddevelopment.com/feature-flags/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Trunk Based Development — Feature Flags
-            </a>
-          </li>
-          <li>
-            <a href="https://openfeature.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OpenFeature — Open Standard for Feature Flagging
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -431,6 +417,32 @@ export default function FeatureFlagsToggleArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://martinfowler.com/articles/feature-toggles.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Pete Hodgson — Feature Toggles (Feature Flags) on martinfowler.com
+            </a>
+          </li>
+          <li>
+            <a href="https://launchdarkly.com/blog/what-are-feature-flags/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              LaunchDarkly — What Are Feature Flags?
+            </a>
+          </li>
+          <li>
+            <a href="https://trunkbaseddevelopment.com/feature-flags/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Trunk Based Development — Feature Flags
+            </a>
+          </li>
+          <li>
+            <a href="https://openfeature.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OpenFeature — Open Standard for Feature Flagging
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

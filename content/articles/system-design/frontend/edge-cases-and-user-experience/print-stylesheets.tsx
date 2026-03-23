@@ -214,37 +214,6 @@ export default function PrintStylesheetsArticle() {
       </section>
 
       <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://www.smashingmagazine.com/2018/05/print-stylesheets-in-2018/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Smashing Magazine — A Guide to the State of Print Stylesheets
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              MDN — @media CSS At-Rule
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/articles/css-printing" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              web.dev — CSS for Print
-            </a>
-          </li>
-          <li>
-            <a href="https://www.w3.org/TR/css-page-3/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              W3C — CSS Paged Media Module Level 3
-            </a>
-          </li>
-          <li>
-            <a href="https://alistapart.com/article/goingtoprint/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              A List Apart — Going to Print
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
         <h2>Common Interview Questions</h2>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4 mb-4">
@@ -296,6 +265,37 @@ export default function PrintStylesheetsArticle() {
             A: Interactive elements that hide content behind user interactions present a significant print challenge because paper does not support interaction. I would handle each type specifically. For tabbed interfaces, the print stylesheet should override the tab visibility to show all tab panels sequentially — remove <code>display: none</code> from inactive panels and add section headings that indicate the tab names. For accordions and collapsible sections, expand all sections by overriding the collapsed state and removing the toggle controls. For dropdown menus and select elements, display the currently selected value as static text. For carousels, show all slides in a vertical stack. For modal dialogs, either hide them entirely if they contain transient content or show them inline if they contain important information. The general principle is to make all content visible and static — if information is important enough to exist in the application, it should be printable without interaction. I would also add print-specific headings or labels to distinguish sections that were separated by interactive controls on screen.
           </p>
         </div>
+      </section>
+
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://www.smashingmagazine.com/2018/05/print-stylesheets-in-2018/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Smashing Magazine — A Guide to the State of Print Stylesheets
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              MDN — @media CSS At-Rule
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/css-printing" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              web.dev — CSS for Print
+            </a>
+          </li>
+          <li>
+            <a href="https://www.w3.org/TR/css-page-3/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              W3C — CSS Paged Media Module Level 3
+            </a>
+          </li>
+          <li>
+            <a href="https://alistapart.com/article/goingtoprint/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              A List Apart — Going to Print
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

@@ -216,37 +216,6 @@ export default function DarkModeImplementationArticle() {
       </section>
 
       <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://material.io/design/color/dark-theme.html" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Material Design — Dark Theme Guidelines
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              MDN — prefers-color-scheme Media Query
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/articles/prefers-color-scheme" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              web.dev — prefers-color-scheme: Hello Darkness, My Old Friend
-            </a>
-          </li>
-          <li>
-            <a href="https://www.nngroup.com/articles/dark-mode/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Nielsen Norman Group — Dark Mode vs Light Mode: Which Is Better?
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.apple.com/design/human-interface-guidelines/dark-mode" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Apple Human Interface Guidelines — Dark Mode
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
         <h2>Common Interview Questions</h2>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4 mb-4">
@@ -296,6 +265,37 @@ export default function DarkModeImplementationArticle() {
             A: Testing dark mode requires multiple approaches. First, visual regression testing — capture screenshots of all key pages and components in both themes and compare against approved baselines. Tools like Chromatic, Percy, or Playwright&apos;s screenshot testing can automate this. Second, automated contrast checking — run axe-core or similar accessibility tools in both themes to verify WCAG contrast compliance for all text-on-background and interactive-element-on-background combinations. Third, cross-browser verification — dark mode rendering can differ across browsers, especially for form elements (inputs, selects, checkboxes) that use browser-default styling. Test in Chrome, Firefox, Safari, and Edge in both themes. Fourth, system preference integration testing — verify that the application correctly responds to OS-level theme changes, both on initial load and during runtime switching. Fifth, persistence testing — verify that theme preference survives page refresh, tab closure, and new tab opening. Sixth, SSR verification — ensure the server-rendered HTML includes the correct theme class and no FOIT occurs. Finally, edge case testing — verify themes in modals, toasts, dropdowns, and other overlay elements that may have their own background surfaces.
           </p>
         </div>
+      </section>
+
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://material.io/design/color/dark-theme.html" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Material Design — Dark Theme Guidelines
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              MDN — prefers-color-scheme Media Query
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/prefers-color-scheme" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              web.dev — prefers-color-scheme: Hello Darkness, My Old Friend
+            </a>
+          </li>
+          <li>
+            <a href="https://www.nngroup.com/articles/dark-mode/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Nielsen Norman Group — Dark Mode vs Light Mode: Which Is Better?
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.apple.com/design/human-interface-guidelines/dark-mode" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Apple Human Interface Guidelines — Dark Mode
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

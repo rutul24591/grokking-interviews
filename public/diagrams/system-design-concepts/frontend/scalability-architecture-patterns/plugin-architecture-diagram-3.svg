@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">Plugin Architecture Sandboxing Strategies</title>
+  <desc id="desc">Comparison of plugin sandboxing strategies: iframe, web worker, same-context with capability restrictions</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="500" fill="var(--bg-color, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="var(--text-color, #1a1a1a)">Plugin Sandboxing Strategies</text>
+  
+  <!-- Iframe Sandbox -->
+  <rect x="50" y="70" width="220" height="200" rx="8" fill="var(--primary-light, #e3f2fd)" stroke="var(--primary-color, #1976d2)" stroke-width="2"/>
+  <text x="160" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--primary-color, #1976d2)">Iframe Sandbox</text>
+  
+  <!-- Iframe visual -->
+  <rect x="70" y="110" width="180" height="100" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="2"/>
+  <rect x="75" y="115" width="170" height="20" rx="2" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="160" y="129" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Plugin Document (separate origin)</text>
+  
+  <text x="160" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-color, #1a1a1a)">Plugin Content</text>
+  <text x="160" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-color, #1a1a1a)">Plugin Scripts</text>
+  <text x="160" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-color, #1a1a1a)">Plugin Styles</text>
+  
+  <text x="160" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Communication: postMessage</text>
+  <text x="160" y="230" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Serialization required</text>
+  <text x="160" y="245" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Slow but complete isolation</text>
+  
+  <rect x="70" y="255" width="180" height="25" rx="4" fill="var(--success-light, #d4edda)" stroke="var(--success-color, #28a745)" stroke-width="1"/>
+  <text x="160" y="272" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="var(--success-color, #28a745)">✓ Complete DOM isolation</text>
+  
+  <rect x="70" y="285" width="180" height="25" rx="4" fill="var(--error-light, #f8d7da)" stroke="var(--error-color, #dc3545)" stroke-width="1"/>
+  <text x="160" y="302" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="var(--error-color, #dc3545)">✗ High communication overhead</text>
+  
+  <!-- Web Worker Sandbox -->
+  <rect x="290" y="70" width="220" height="200" rx="8" fill="var(--warning-light, #fff3cd)" stroke="var(--warning-color, #ffc107)" stroke-width="2"/>
+  <text x="400" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--warning-color, #ffc107)">Web Worker</text>
+  
+  <!-- Worker visual -->
+  <rect x="310" y="110" width="180" height="100" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="2"/>
+  <text x="400" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="var(--text-color, #1a1a1a)">Worker Thread</text>
+  <text x="400" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-color, #1a1a1a)">Plugin Logic</text>
+  <text x="400" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-color, #1a1a1a)">Background Processing</text>
+  <text x="400" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-color, #1a1a1a)">No DOM Access</text>
+  
+  <text x="400" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Communication: postMessage</text>
+  <text x="400" y="230" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Separate thread</text>
+  <text x="400" y="245" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">CPU-intensive tasks</text>
+  
+  <rect x="310" y="255" width="180" height="25" rx="4" fill="var(--success-light, #d4edda)" stroke="var(--success-color, #28a745)" stroke-width="1"/>
+  <text x="400" y="272" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="var(--success-color, #28a745)">✓ Non-blocking execution</text>
+  
+  <rect x="310" y="285" width="180" height="25" rx="4" fill="var(--error-light, #f8d7da)" stroke="var(--error-color, #dc3545)" stroke-width="1"/>
+  <text x="400" y="302" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="var(--error-color, #dc3545)">✗ No DOM access</text>
+  
+  <!-- Same-Context Sandbox -->
+  <rect x="530" y="70" width="220" height="200" rx="8" fill="var(--info-light, #e7f3ff)" stroke="var(--info-color, #0d6efd)" stroke-width="2"/>
+  <text x="640" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--info-color, #0d6efd)">Same-Context</text>
+  
+  <!-- Same-context visual -->
+  <rect x="550" y="110" width="180" height="100" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="2"/>
+  <text x="640" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="var(--text-color, #1a1a1a)">Main Thread</text>
+  <text x="640" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-color, #1a1a1a)">Plugin + Host</text>
+  <text x="640" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-color, #1a1a1a)">Full DOM Access</text>
+  <text x="640" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-color, #1a1a1a)">Capability Restrictions</text>
+  
+  <text x="640" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Communication: Direct calls</text>
+  <text x="640" y="230" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Proxy-based restrictions</text>
+  <text x="640" y="245" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Fast but trust required</text>
+  
+  <rect x="550" y="255" width="180" height="25" rx="4" fill="var(--success-light, #d4edda)" stroke="var(--success-color, #28a745)" stroke-width="1"/>
+  <text x="640" y="272" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="var(--success-color, #28a745)">✓ Fast, full API access</text>
+  
+  <rect x="550" y="285" width="180" height="25" rx="4" fill="var(--error-light, #f8d7da)" stroke="var(--error-color, #dc3545)" stroke-width="1"/>
+  <text x="640" y="302" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="var(--error-color, #dc3545)">✗ Plugin can crash host</text>
+  
+  <!-- Comparison Table -->
+  <text x="400" y="360" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--text-color, #1a1a1a)">Strategy Comparison</text>
+  
+  <rect x="100" y="375" width="600" height="110" rx="6" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  
+  <!-- Table headers -->
+  <rect x="100" y="375" width="150" height="25" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="250" y="375" width="150" height="25" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="400" y="375" width="150" height="25" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="550" y="375" width="150" height="25" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  
+  <text x="175" y="392" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="var(--text-color, #1a1a1a)">Aspect</text>
+  <text x="325" y="392" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="var(--text-color, #1a1a1a)">Iframe</text>
+  <text x="475" y="392" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="var(--text-color, #1a1a1a)">Worker</text>
+  <text x="625" y="392" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="var(--text-color, #1a1a1a)">Same-Context</text>
+  
+  <!-- Row 1: Isolation -->
+  <rect x="100" y="400" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="250" y="400" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="400" y="400" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="550" y="400" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  
+  <text x="175" y="417" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-color, #1a1a1a)">Isolation</text>
+  <text x="325" y="417" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--success-color, #28a745)">Complete</text>
+  <text x="475" y="417" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--warning-color, #ffc107)">Thread</text>
+  <text x="625" y="417" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--error-color, #dc3545)">None</text>
+  
+  <!-- Row 2: Performance -->
+  <rect x="100" y="425" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="250" y="425" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="400" y="425" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="550" y="425" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  
+  <text x="175" y="442" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-color, #1a1a1a)">Performance</text>
+  <text x="325" y="442" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--error-color, #dc3545)">Slow</text>
+  <text x="475" y="442" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--warning-color, #ffc107)">Medium</text>
+  <text x="625" y="442" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--success-color, #28a745)">Fast</text>
+  
+  <!-- Row 3: Use Case -->
+  <rect x="100" y="450" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="250" y="450" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="400" y="450" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="550" y="450" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  
+  <text x="175" y="467" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-color, #1a1a1a)">Best For</text>
+  <text x="325" y="467" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-color, #1a1a1a)">Untrusted</text>
+  <text x="475" y="467" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-color, #1a1a1a)">CPU tasks</text>
+  <text x="625" y="467" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-color, #1a1a1a)">Trusted</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-color, #1a1a1a)"/>
+    </marker>
+  </defs>
+</svg>

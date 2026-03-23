@@ -1,18 +1,113 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Dark Mode Implementation diagram 2">
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Theme Initialization &amp; FOIT Prevention Flow</text>
+
+  <!-- Server / Build -->
+  <rect x="30" y="60" width="200" height="60" rx="8" fill="#6d5bd0"/>
+  <text x="130" y="85" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Server / Build Time</text>
+  <text x="130" y="105" text-anchor="middle" font-size="10" fill="#ffffff">SSR renders HTML shell</text>
+
+  <line x1="130" y1="120" x2="130" y2="145" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Blocking Script -->
+  <rect x="30" y="145" width="200" height="80" rx="8" fill="#ffffff" stroke="#cc3333" stroke-width="2"/>
+  <text x="130" y="167" text-anchor="middle" font-size="11" font-weight="600" fill="#cc3333">Blocking &lt;script&gt; in &lt;head&gt;</text>
+  <text x="45" y="187" font-size="9" fill="#1a1822">1. Read localStorage theme</text>
+  <text x="45" y="201" font-size="9" fill="#1a1822">2. Check prefers-color-scheme</text>
+  <text x="45" y="215" font-size="9" fill="#1a1822">3. Set data-theme on &lt;html&gt;</text>
+
+  <line x1="230" y1="185" x2="280" y2="185" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Decision: stored preference -->
+  <rect x="280" y="145" width="210" height="80" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="385" y="167" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Resolve Theme</text>
+  <text x="295" y="187" font-size="9" fill="#1a1822">Priority order:</text>
+  <text x="295" y="201" font-size="9" fill="#1a1822">1. localStorage (&quot;user chose&quot;)</text>
+  <text x="295" y="215" font-size="9" fill="#1a1822">2. OS preference (media query)</text>
+
+  <!-- Branch: User chosen -->
+  <line x1="385" y1="225" x2="200" y2="260" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="275" y="240" font-size="9" fill="#6d5bd0">Stored preference</text>
+
+  <rect x="80" y="260" width="240" height="45" rx="6" fill="#6d5bd0"/>
+  <text x="200" y="280" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Apply Stored Theme</text>
+  <text x="200" y="296" text-anchor="middle" font-size="9" fill="#ffffff">html.dataset.theme = stored</text>
+
+  <!-- Branch: OS preference -->
+  <line x1="385" y1="225" x2="550" y2="260" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="490" y="240" font-size="9" fill="#6d5bd0">No stored pref</text>
+
+  <rect x="430" y="260" width="240" height="45" rx="6" fill="#6d5bd0"/>
+  <text x="550" y="280" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Apply OS Preference</text>
+  <text x="550" y="296" text-anchor="middle" font-size="9" fill="#ffffff">matchMedia(&quot;prefers-color-scheme&quot;)</text>
+
+  <!-- Convergence: CSS activates -->
+  <line x1="200" y1="305" x2="380" y2="335" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="550" y1="305" x2="470" y2="335" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="330" y="335" width="240" height="45" rx="8" fill="#228B22"/>
+  <text x="450" y="355" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">CSS Variables Activate</text>
+  <text x="450" y="372" text-anchor="middle" font-size="10" fill="#ffffff">Correct theme on first paint</text>
+
+  <line x1="450" y1="380" x2="450" y2="405" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="330" y="405" width="240" height="35" rx="6" fill="#ffffff" stroke="#d7d1e6"/>
+  <text x="450" y="427" text-anchor="middle" font-size="10" fill="#1a1822">React hydration proceeds normally</text>
+
+  <!-- OS Change Listener -->
+  <rect x="620" y="60" width="250" height="195" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="745" y="82" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Runtime OS Change Listener</text>
+
+  <text x="635" y="105" font-size="10" fill="#1a1822">User toggles OS dark mode</text>
+  <line x1="745" y1="112" x2="745" y2="128" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="640" y="128" width="210" height="30" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="745" y="148" text-anchor="middle" font-size="9" fill="#1a1822">matchMedia.addListener()</text>
+
+  <line x1="745" y1="158" x2="745" y2="175" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="640" y="175" width="210" height="30" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="745" y="195" text-anchor="middle" font-size="9" fill="#1a1822">If user pref = &quot;system&quot;</text>
+
+  <line x1="745" y1="205" x2="745" y2="218" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="640" y="218" width="210" height="30" rx="4" fill="#6d5bd0"/>
+  <text x="745" y="238" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Update data-theme attr</text>
+
+  <!-- FOIT comparison -->
+  <rect x="30" y="330" width="280" height="155" rx="8" fill="#ffffff" stroke="#cc3333" stroke-width="2"/>
+  <text x="170" y="352" text-anchor="middle" font-size="12" font-weight="600" fill="#cc3333">Without Blocking Script (FOIT)</text>
+
+  <rect x="50" y="365" width="60" height="25" rx="3" fill="#ffffff" stroke="#d7d1e6"/>
+  <text x="80" y="382" text-anchor="middle" font-size="8" fill="#1a1822">Light</text>
+
+  <text x="125" y="382" font-size="14" fill="#cc3333">→</text>
+
+  <rect x="145" y="365" width="60" height="25" rx="3" fill="#1a1822"/>
+  <text x="175" y="382" text-anchor="middle" font-size="8" fill="#ffffff">Dark</text>
+
+  <text x="220" y="382" font-size="14" fill="#cc3333">!</text>
+
+  <text x="50" y="410" font-size="9" fill="#1a1822">1. SSR renders with default (light)</text>
+  <text x="50" y="425" font-size="9" fill="#1a1822">2. Page paints light theme</text>
+  <text x="50" y="440" font-size="9" fill="#1a1822">3. JS loads, reads preference</text>
+  <text x="50" y="455" font-size="9" fill="#1a1822">4. Theme switches → visible flash</text>
+  <text x="50" y="470" font-size="9" fill="#cc3333" font-weight="600">User sees jarring white→dark flash</text>
+
+  <!-- Transition config -->
+  <rect x="620" y="280" width="250" height="160" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="745" y="302" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Smooth Transitions</text>
+  <text x="635" y="325" font-size="9" fill="#1a1822">On user toggle (not initial load):</text>
+  <text x="635" y="345" font-size="9" fill="#1a1822">1. Add transition class to html</text>
+  <text x="635" y="360" font-size="9" fill="#1a1822">   * { transition: color 200ms,</text>
+  <text x="635" y="375" font-size="9" fill="#1a1822">     background 200ms }</text>
+  <text x="635" y="395" font-size="9" fill="#1a1822">2. Swap data-theme attribute</text>
+  <text x="635" y="415" font-size="9" fill="#1a1822">3. Remove transition class</text>
+  <text x="635" y="435" font-size="9" fill="#1a1822">   after 300ms (cleanup)</text>
+
   <defs>
-    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
   </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg2)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Dark Mode Implementation</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 2</text>
 </svg>

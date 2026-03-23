@@ -355,44 +355,7 @@ export default function ScreenReaderSupportArticle() {
         </ul>
       </section>
 
-      {/* ─── Section 8: References & Further Reading ─── */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              WAI-ARIA Authoring Practices Guide
-            </a>{" "}
-            — Widget patterns with screen reader considerations.
-          </li>
-          <li>
-            <a href="https://www.w3.org/TR/accname-1.2/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              Accessible Name and Description Computation 1.2
-            </a>{" "}
-            — The algorithm browsers use to compute accessible names.
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Live_Regions" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              MDN: ARIA Live Regions
-            </a>{" "}
-            — Practical guide to implementing live regions.
-          </li>
-          <li>
-            <a href="https://www.nvaccess.org/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              NVDA Screen Reader
-            </a>{" "}
-            — Free, open-source screen reader for Windows.
-          </li>
-          <li>
-            <a href="https://webaim.org/projects/screenreadersurvey10/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              WebAIM Screen Reader User Survey #10
-            </a>{" "}
-            — Data on how screen reader users actually navigate the web.
-          </li>
-        </ul>
-      </section>
-
-      {/* ─── Section 9: Common Interview Questions ─── */}
+      {/* ─── Section 8: Common Interview Questions ─── */}
       <section>
         <h2>Common Interview Questions</h2>
 
@@ -475,6 +438,43 @@ export default function ScreenReaderSupportArticle() {
             sessions with screen reader users from the disability community for real-world feedback.
           </p>
         </div>
+      </section>
+
+      {/* ─── Section 9: References & Further Reading ─── */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              WAI-ARIA Authoring Practices Guide
+            </a>{" "}
+            — Widget patterns with screen reader considerations.
+          </li>
+          <li>
+            <a href="https://www.w3.org/TR/accname-1.2/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              Accessible Name and Description Computation 1.2
+            </a>{" "}
+            — The algorithm browsers use to compute accessible names.
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Live_Regions" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              MDN: ARIA Live Regions
+            </a>{" "}
+            — Practical guide to implementing live regions.
+          </li>
+          <li>
+            <a href="https://www.nvaccess.org/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              NVDA Screen Reader
+            </a>{" "}
+            — Free, open-source screen reader for Windows.
+          </li>
+          <li>
+            <a href="https://webaim.org/projects/screenreadersurvey10/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              WebAIM Screen Reader User Survey #10
+            </a>{" "}
+            — Data on how screen reader users actually navigate the web.
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

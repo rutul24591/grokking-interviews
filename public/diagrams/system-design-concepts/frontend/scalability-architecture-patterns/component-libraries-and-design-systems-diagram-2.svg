@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-labelledby="title desc">
+  <title id="title">Design Token Hierarchy</title>
+  <desc id="desc">Three-tier design token hierarchy showing global tokens, alias tokens, and component tokens with multi-brand theming flow</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="450" fill="var(--bg-color, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="var(--text-color, #1a1a1a)">Design Token Hierarchy</text>
+  
+  <!-- Tier 1: Global Tokens -->
+  <rect x="50" y="70" width="220" height="160" rx="8" fill="var(--primary-light, #e3f2fd)" stroke="var(--primary-color, #1976d2)" stroke-width="2"/>
+  <text x="160" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--primary-color, #1976d2)">Tier 1: Global Tokens</text>
+  <text x="160" y="115" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Raw values (no meaning)</text>
+  
+  <rect x="70" y="130" width="180" height="25" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="160" y="147" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--text-color, #1a1a1a)">color.blue.500: #3B82F6</text>
+  
+  <rect x="70" y="160" width="180" height="25" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="160" y="177" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--text-color, #1a1a1a)">color.red.500: #EF4444</text>
+  
+  <rect x="70" y="190" width="180" height="25" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="160" y="207" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--text-color, #1a1a1a)">spacing.4: 16px</text>
+  
+  <rect x="70" y="220" width="180" height="25" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="160" y="237" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--text-color, #1a1a1a)">font.size.md: 14px</text>
+  
+  <!-- Arrows to Tier 2 -->
+  <path d="M270 150 L300 150" stroke="var(--text-color, #1a1a1a)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="285" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-muted, #666666)">Maps to</text>
+  
+  <!-- Tier 2: Alias Tokens -->
+  <rect x="300" y="70" width="220" height="160" rx="8" fill="var(--warning-light, #fff3cd)" stroke="var(--warning-color, #ffc107)" stroke-width="2"/>
+  <text x="410" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--warning-color, #ffc107)">Tier 2: Alias Tokens</text>
+  <text x="410" y="115" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Semantic meaning</text>
+  
+  <rect x="320" y="130" width="180" height="25" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="410" y="147" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--text-color, #1a1a1a)">color.primary: color.blue.500</text>
+  
+  <rect x="320" y="160" width="180" height="25" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="410" y="177" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--text-color, #1a1a1a)">color.danger: color.red.500</text>
+  
+  <rect x="320" y="190" width="180" height="25" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="410" y="207" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--text-color, #1a1a1a)">spacing.md: spacing.4</text>
+  
+  <rect x="320" y="220" width="180" height="25" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="410" y="237" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--text-color, #1a1a1a)">font.body: font.size.md</text>
+  
+  <!-- Arrows to Tier 3 -->
+  <path d="M520 150 L550 150" stroke="var(--text-color, #1a1a1a)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="535" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-muted, #666666)">Used by</text>
+  
+  <!-- Tier 3: Component Tokens -->
+  <rect x="550" y="70" width="200" height="160" rx="8" fill="var(--info-light, #e7f3ff)" stroke="var(--info-color, #0d6efd)" stroke-width="2"/>
+  <text x="650" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--info-color, #0d6efd)">Tier 3: Component</text>
+  <text x="650" y="115" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Component-specific</text>
+  
+  <rect x="570" y="130" width="160" height="25" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="650" y="147" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--text-color, #1a1a1a)">button.bg: color.primary</text>
+  
+  <rect x="570" y="160" width="160" height="25" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="650" y="177" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--text-color, #1a1a1a)">button.padding: spacing.md</text>
+  
+  <rect x="570" y="190" width="160" height="25" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="650" y="207" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--text-color, #1a1a1a)">input.border: color.primary</text>
+  
+  <rect x="570" y="220" width="160" height="25" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="650" y="237" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--text-color, #1a1a1a)">card.font: font.body</text>
+  
+  <!-- Multi-brand theming -->
+  <text x="400" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--text-color, #1a1a1a)">Multi-Brand Theming (Swap Alias Layer)</text>
+  
+  <!-- Brand A -->
+  <rect x="100" y="295" width="280" height="70" rx="6" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="2"/>
+  <text x="240" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="var(--text-color, #1a1a1a)">Brand A</text>
+  <text x="240" y="335" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--text-color, #1a1a1a)">color.primary → color.blue.500 (#3B82F6)</text>
+  <text x="240" y="352" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--text-color, #1a1a1a)">Components use alias → Blue theme</text>
+  
+  <!-- Arrow between brands -->
+  <path d="M380 330 L420 330" stroke="var(--text-color, #1a1a1a)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="400" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Swap</text>
+  
+  <!-- Brand B -->
+  <rect x="420" y="295" width="280" height="70" rx="6" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="2"/>
+  <text x="560" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="var(--text-color, #1a1a1a)">Brand B</text>
+  <text x="560" y="335" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--text-color, #1a1a1a)">color.primary → color.green.600 (#16A34A)</text>
+  <text x="560" y="352" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--text-color, #1a1a1a)">Components use alias → Green theme</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-color, #1a1a1a)"/>
+    </marker>
+  </defs>
+</svg>

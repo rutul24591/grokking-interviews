@@ -70,9 +70,9 @@ export default function CSSVendorPrefixesArticle() {
           landscape, forcing other browser vendors to implement -webkit-
           compatibility (Firefox and Edge both support many -webkit- prefixed
           properties for web compatibility, even though they are not WebKit
-          browsers). The resulting compatibility chaos led to a significant shift
-          in how browsers introduce new features: modern browsers now prefer
-          runtime flags (behind developer settings) and the CSS @supports
+          browsers). The resulting compatibility chaos led to a significant
+          shift in how browsers introduce new features: modern browsers now
+          prefer runtime flags (behind developer settings) and the CSS @supports
           mechanism over vendor prefixes for most new features.
         </p>
         <p>
@@ -122,8 +122,8 @@ export default function CSSVendorPrefixesArticle() {
             standard (unprefixed only, prefixed deprecated). The transition
             phase can last years as older browser versions that only support the
             prefixed version remain in the support matrix. Autoprefixer manages
-            this lifecycle automatically — as browsers in the browserslist target
-            all support the unprefixed version, the prefix is dropped.
+            this lifecycle automatically — as browsers in the browserslist
+            target all support the unprefixed version, the prefix is dropped.
           </li>
           <li>
             <strong>WebKit Compatibility:</strong> The dominance of WebKit-based
@@ -132,9 +132,8 @@ export default function CSSVendorPrefixesArticle() {
             implemented -webkit- prefix compatibility for commonly used
             properties (including -webkit-appearance, -webkit-text-fill-color,
             and certain transform and animation properties). This compatibility
-            layer means that -webkit- prefixed properties are de facto
-            standards for some CSS features, complicating the clean removal of
-            prefixes.
+            layer means that -webkit- prefixed properties are de facto standards
+            for some CSS features, complicating the clean removal of prefixes.
           </li>
           <li>
             <strong>Specification Divergence:</strong> In some cases, the
@@ -148,18 +147,17 @@ export default function CSSVendorPrefixesArticle() {
             legacy prefixed support.
           </li>
           <li>
-            <strong>PostCSS Pipeline:</strong> Autoprefixer operates within
-            the broader PostCSS CSS processing pipeline. The pipeline may
-            include other PostCSS plugins for CSS nesting, custom properties
-            fallbacks, logical properties polyfills, and minification.
-            Autoprefixer&apos;s position in the pipeline matters — it should
-            run after all other transformations that produce standard CSS
-            properties, ensuring all generated properties receive appropriate
-            prefixes.
+            <strong>PostCSS Pipeline:</strong> Autoprefixer operates within the
+            broader PostCSS CSS processing pipeline. The pipeline may include
+            other PostCSS plugins for CSS nesting, custom properties fallbacks,
+            logical properties polyfills, and minification. Autoprefixer&apos;s
+            position in the pipeline matters — it should run after all other
+            transformations that produce standard CSS properties, ensuring all
+            generated properties receive appropriate prefixes.
           </li>
           <li>
-            <strong>CSS Feature Flags:</strong> Modern browsers increasingly
-            use runtime feature flags (available in developer settings like
+            <strong>CSS Feature Flags:</strong> Modern browsers increasingly use
+            runtime feature flags (available in developer settings like
             chrome://flags) instead of vendor prefixes for experimental
             features. This approach limits experimental feature exposure to
             developers who explicitly opt in, preventing the web compatibility
@@ -173,9 +171,9 @@ export default function CSSVendorPrefixesArticle() {
             early implementation under -ms-grid with a significantly different
             API than the final specification. Autoprefixer includes specific
             logic to translate standard grid syntax into the IE grid syntax
-            where possible, but many grid features (auto-placement, named
-            areas, implicit tracks) have no IE equivalent, requiring manual
-            fallback strategies for IE support.
+            where possible, but many grid features (auto-placement, named areas,
+            implicit tracks) have no IE equivalent, requiring manual fallback
+            strategies for IE support.
           </li>
         </ul>
       </section>
@@ -198,8 +196,8 @@ export default function CSSVendorPrefixesArticle() {
           The PostCSS pipeline processes CSS through a series of plugins, each
           performing a specific transformation. CSS source (written as standard,
           unprefixed CSS) enters the pipeline and flows through plugins in
-          order: CSS nesting transformation (converting nested rules to flat
-          CSS for browsers without native nesting support), custom properties
+          order: CSS nesting transformation (converting nested rules to flat CSS
+          for browsers without native nesting support), custom properties
           processing (computing fallback values for browsers without custom
           property support), Autoprefixer (adding vendor prefixes based on
           browserslist), and finally minification (removing whitespace and
@@ -223,8 +221,8 @@ export default function CSSVendorPrefixesArticle() {
           target browser requires a prefixed version. If so, the prefixed
           declaration is added above the standard declaration (ensuring the
           standard version takes precedence in browsers that support both). If
-          the source contains obsolete prefixed properties that no target browser
-          needs, Autoprefixer removes them — this cleanup function is as
+          the source contains obsolete prefixed properties that no target
+          browser needs, Autoprefixer removes them — this cleanup function is as
           important as prefix addition, preventing stale prefixes from
           accumulating in the codebase as browser support evolves.
         </p>
@@ -296,10 +294,9 @@ export default function CSSVendorPrefixesArticle() {
                 compatibility requirements.
               </td>
               <td className="border border-theme p-2">
-                Extremely error-prone at scale — missed prefixes cause
-                rendering bugs, stale prefixes bloat CSS. Requires constant
-                monitoring of browser support changes. Not viable for
-                large codebases.
+                Extremely error-prone at scale — missed prefixes cause rendering
+                bugs, stale prefixes bloat CSS. Requires constant monitoring of
+                browser support changes. Not viable for large codebases.
               </td>
             </tr>
             <tr>
@@ -309,14 +306,14 @@ export default function CSSVendorPrefixesArticle() {
               <td className="border border-theme p-2">
                 Runtime prefixing adapts to the actual browser without
                 build-time analysis. Styled-components, Emotion, and similar
-                libraries include built-in prefix logic. No separate
-                PostCSS pipeline needed.
+                libraries include built-in prefix logic. No separate PostCSS
+                pipeline needed.
               </td>
               <td className="border border-theme p-2">
                 Runtime prefixing adds JavaScript execution cost. The prefixing
                 logic is tied to the CSS-in-JS library version, not live data.
-                Cannot benefit from Autoprefixer&apos;s continuously updated
-                Can I Use database without library updates.
+                Cannot benefit from Autoprefixer&apos;s continuously updated Can
+                I Use database without library updates.
               </td>
             </tr>
             <tr>
@@ -324,13 +321,13 @@ export default function CSSVendorPrefixesArticle() {
                 Prefix removal strategy
               </td>
               <td className="border border-theme p-2">
-                Removing obsolete prefixes reduces CSS bundle size and simplifies
-                debugging. Autoprefixer handles removal automatically when
-                browserslist evolves.
+                Removing obsolete prefixes reduces CSS bundle size and
+                simplifies debugging. Autoprefixer handles removal automatically
+                when browserslist evolves.
               </td>
               <td className="border border-theme p-2">
-                Aggressive prefix removal risks breaking rendering for users
-                on browsers just outside the browserslist threshold. Must align
+                Aggressive prefix removal risks breaking rendering for users on
+                browsers just outside the browserslist threshold. Must align
                 removal with analytics data confirming minimal traffic from
                 affected browsers.
               </td>
@@ -360,7 +357,9 @@ export default function CSSVendorPrefixesArticle() {
         <h2>Best Practices</h2>
         <ol className="space-y-3">
           <li>
-            <strong>Use Autoprefixer as the sole prefix management mechanism:</strong>{" "}
+            <strong>
+              Use Autoprefixer as the sole prefix management mechanism:
+            </strong>{" "}
             Never manually write vendor-prefixed CSS in source files.
             Autoprefixer is more accurate, more complete, and automatically
             adapts to browser support changes. Writing prefixes manually
@@ -369,7 +368,10 @@ export default function CSSVendorPrefixesArticle() {
             the PostCSS pipeline and write only standard, unprefixed CSS.
           </li>
           <li>
-            <strong>Align Autoprefixer&apos;s browserslist with your compatibility contract:</strong>{" "}
+            <strong>
+              Align Autoprefixer&apos;s browserslist with your compatibility
+              contract:
+            </strong>{" "}
             The browserslist configuration drives Autoprefixer&apos;s decisions.
             Use the same browserslist that governs JavaScript transpilation and
             polyfill injection. Share a single .browserslistrc file across all
@@ -378,34 +380,41 @@ export default function CSSVendorPrefixesArticle() {
             production analytics data.
           </li>
           <li>
-            <strong>Enable Autoprefixer&apos;s remove option:</strong>{" "}
-            By default, Autoprefixer adds prefixes but also removes outdated
-            ones from the source. Ensure this removal is enabled — it prevents
-            stale prefixes from accumulating in the codebase and unnecessarily
-            inflating CSS bundle size. Removal is safe because Autoprefixer
-            only removes prefixes that are no longer needed by any browser in
-            the browserslist target.
+            <strong>Enable Autoprefixer&apos;s remove option:</strong> By
+            default, Autoprefixer adds prefixes but also removes outdated ones
+            from the source. Ensure this removal is enabled — it prevents stale
+            prefixes from accumulating in the codebase and unnecessarily
+            inflating CSS bundle size. Removal is safe because Autoprefixer only
+            removes prefixes that are no longer needed by any browser in the
+            browserslist target.
           </li>
           <li>
-            <strong>Position Autoprefixer correctly in the PostCSS pipeline:</strong>{" "}
-            Autoprefixer should run after all plugins that generate standard
-            CSS properties (nesting, custom property resolution, logical
-            property conversion) and before minification. This ordering ensures
-            that all generated CSS receives appropriate prefixes and that the
-            minifier operates on the final, prefixed output.
+            <strong>
+              Position Autoprefixer correctly in the PostCSS pipeline:
+            </strong>{" "}
+            Autoprefixer should run after all plugins that generate standard CSS
+            properties (nesting, custom property resolution, logical property
+            conversion) and before minification. This ordering ensures that all
+            generated CSS receives appropriate prefixes and that the minifier
+            operates on the final, prefixed output.
           </li>
           <li>
-            <strong>Audit CSS bundle size impact of prefix requirements:</strong>{" "}
+            <strong>
+              Audit CSS bundle size impact of prefix requirements:
+            </strong>{" "}
             When supporting legacy browsers that require extensive prefixing
             (especially IE 11 grid prefixes), the prefixed CSS can be
             significantly larger than the unprefixed source. Monitor CSS bundle
-            size as a performance metric and use the cost of prefixing as a
-            data point in discussions about dropping legacy browser support.
+            size as a performance metric and use the cost of prefixing as a data
+            point in discussions about dropping legacy browser support.
           </li>
           <li>
-            <strong>Test rendering in actual target browsers, not just prefix presence:</strong>{" "}
-            Autoprefixer ensures that prefixed declarations are present, but
-            it cannot guarantee that the prefixed implementation behaves
+            <strong>
+              Test rendering in actual target browsers, not just prefix
+              presence:
+            </strong>{" "}
+            Autoprefixer ensures that prefixed declarations are present, but it
+            cannot guarantee that the prefixed implementation behaves
             identically to the standard version. Visual regression testing in
             actual target browsers (via BrowserStack or similar services) is
             necessary to catch rendering differences between prefixed and
@@ -436,36 +445,40 @@ export default function CSSVendorPrefixesArticle() {
             Autoprefixer and never write a vendor prefix in source CSS.
           </li>
           <li>
-            <strong>Using only -webkit- prefixes:</strong>{" "}
-            A historical anti-pattern where developers included only -webkit-
-            prefixes because Chrome and Safari were the primary target browsers.
-            This practice was so widespread that Firefox and Edge had to
-            implement -webkit- prefix compatibility to render the web correctly.
-            While this compatibility layer exists, relying on it is fragile and
-            does not cover all -webkit- properties. Autoprefixer adds all
-            necessary prefixes automatically.
+            <strong>Using only -webkit- prefixes:</strong> A historical
+            anti-pattern where developers included only -webkit- prefixes
+            because Chrome and Safari were the primary target browsers. This
+            practice was so widespread that Firefox and Edge had to implement
+            -webkit- prefix compatibility to render the web correctly. While
+            this compatibility layer exists, relying on it is fragile and does
+            not cover all -webkit- properties. Autoprefixer adds all necessary
+            prefixes automatically.
           </li>
           <li>
-            <strong>Assuming prefixed and unprefixed properties are identical:</strong>{" "}
+            <strong>
+              Assuming prefixed and unprefixed properties are identical:
+            </strong>{" "}
             Some CSS features evolved significantly between their prefixed
             experimental implementation and the final standard. The old
-            -webkit-box Flexbox syntax has different property names, values,
-            and behavior than the standard display: flex syntax. Autoprefixer
+            -webkit-box Flexbox syntax has different property names, values, and
+            behavior than the standard display: flex syntax. Autoprefixer
             handles many of these translations, but complex layouts may require
-            explicit fallback strategies for browsers that only support the
-            old syntax.
+            explicit fallback strategies for browsers that only support the old
+            syntax.
           </li>
           <li>
-            <strong>Not running Autoprefixer in development:</strong>{" "}
-            If Autoprefixer only runs in the production build, developers test
-            in modern browsers (which need no prefixes) and never see the
-            prefixed output. Issues with prefix-related rendering (especially
-            IE Grid translations) are not discovered until production. Run
-            Autoprefixer in all environments, including development, to catch
-            prefix-related issues early.
+            <strong>Not running Autoprefixer in development:</strong> If
+            Autoprefixer only runs in the production build, developers test in
+            modern browsers (which need no prefixes) and never see the prefixed
+            output. Issues with prefix-related rendering (especially IE Grid
+            translations) are not discovered until production. Run Autoprefixer
+            in all environments, including development, to catch prefix-related
+            issues early.
           </li>
           <li>
-            <strong>Forgetting to update browserslist as support requirements change:</strong>{" "}
+            <strong>
+              Forgetting to update browserslist as support requirements change:
+            </strong>{" "}
             A stale browserslist continues generating prefixes for browsers that
             the team no longer supports, inflating CSS bundle size without
             providing value. Conversely, if new legacy browser requirements are
@@ -474,7 +487,9 @@ export default function CSSVendorPrefixesArticle() {
             that must be updated alongside the compatibility contract.
           </li>
           <li>
-            <strong>Ignoring vendor prefix impact on CSS specificity and cascade:</strong>{" "}
+            <strong>
+              Ignoring vendor prefix impact on CSS specificity and cascade:
+            </strong>{" "}
             Autoprefixer adds prefixed declarations above the standard
             declaration, ensuring the standard version takes precedence in
             browsers that support both. However, in edge cases with complex
@@ -493,9 +508,9 @@ export default function CSSVendorPrefixesArticle() {
           <strong>Tailwind CSS and Autoprefixer integration:</strong> Tailwind
           CSS recommends Autoprefixer as a required PostCSS plugin in its
           installation guide. Tailwind generates utility classes with standard,
-          unprefixed CSS properties, and Autoprefixer adds the necessary
-          vendor prefixes during the build process. This separation of concerns
-          means Tailwind can focus on generating semantically correct CSS while
+          unprefixed CSS properties, and Autoprefixer adds the necessary vendor
+          prefixes during the build process. This separation of concerns means
+          Tailwind can focus on generating semantically correct CSS while
           Autoprefixer handles the compatibility layer. The browserslist
           configuration shared between Tailwind&apos;s CSS and the
           application&apos;s JavaScript bundler ensures consistent compatibility
@@ -507,17 +522,17 @@ export default function CSSVendorPrefixesArticle() {
           source to using Autoprefixer as part of its build pipeline. In earlier
           versions (Bootstrap 3), vendor prefixes were hardcoded in the source
           Sass files, requiring manual updates with each browser support change.
-          Bootstrap 4 and 5 adopted Autoprefixer, allowing the framework team
-          to write clean CSS and let the tooling handle prefix management. This
-          shift reduced maintenance burden and ensured that Bootstrap&apos;s
-          CSS output remained compatible with each project&apos;s specific
+          Bootstrap 4 and 5 adopted Autoprefixer, allowing the framework team to
+          write clean CSS and let the tooling handle prefix management. This
+          shift reduced maintenance burden and ensured that Bootstrap&apos;s CSS
+          output remained compatible with each project&apos;s specific
           browserslist configuration.
         </p>
         <p>
           <strong>Microsoft Teams&apos; IE 11 Grid support:</strong> When
-          Microsoft Teams needed to support IE 11 (which only supports the
-          old -ms- Grid syntax), their CSS pipeline used Autoprefixer&apos;s
-          grid translation feature to convert standard CSS Grid syntax into IE
+          Microsoft Teams needed to support IE 11 (which only supports the old
+          -ms- Grid syntax), their CSS pipeline used Autoprefixer&apos;s grid
+          translation feature to convert standard CSS Grid syntax into IE
           11&apos;s -ms-grid equivalent. Not all Grid features could be
           translated — auto-placement, named areas, and implicit tracks required
           manual fallback layouts using Flexbox. The team documented which Grid
@@ -539,7 +554,116 @@ export default function CSSVendorPrefixesArticle() {
         </p>
       </section>
 
-      {/* Section 8: References & Further Reading */}
+      {/* Section 8: Common Interview Questions */}
+      <section>
+        <h2>Common Interview Questions</h2>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What are CSS vendor prefixes, and why did the web standards
+              community move away from them?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Vendor prefixes are browser-specific identifiers (-webkit-,
+              -moz-, -ms-, -o-) prepended to CSS properties to namespace
+              experimental implementations. They allowed browsers to ship early
+              feature implementations without conflicting with the eventual
+              standard syntax. The community moved away from them because they
+              created significant web compatibility problems: developers shipped
+              sites with only -webkit- prefixes, forcing other browsers to
+              implement -webkit- compatibility; old prefixed code persisted long
+              after standards stabilized; and the maintenance burden on both
+              developers and browser vendors was unsustainable. Modern browsers
+              now use feature flags for experimental CSS features, limiting
+              experimental exposure to developers who explicitly opt in.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How does Autoprefixer work, and how should it be configured?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Autoprefixer is a PostCSS plugin that reads standard CSS and
+              automatically adds or removes vendor prefixes based on two data
+              sources: the project&apos;s browserslist configuration (which
+              browsers to target) and the Can I Use database (which features
+              each browser supports). It processes each CSS property-value pair,
+              checks whether any target browser requires a prefixed version,
+              adds the prefix if needed, and removes obsolete prefixes that no
+              target browser requires. Configuration is primarily through
+              .browserslistrc or the browserslist key in package.json. The key
+              configuration decision is the browserslist query — it should
+              reflect actual user browser distribution from analytics data and
+              be shared with other build tools (Babel, PostCSS plugins) for
+              consistent compatibility scope.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What happens when the prefixed version of a CSS feature behaves
+              differently from the standard version?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Specification divergence occurs when the CSS spec evolved
+              significantly between the prefixed experimental implementation and
+              the final standard. The most notable example is Flexbox: the old
+              -webkit-box syntax used completely different property names and
+              values than the standard display: flex syntax. Autoprefixer can
+              translate between syntaxes for some features (including basic
+              Flexbox and partial IE Grid), but complex layouts may produce
+              different rendering between the prefixed and standard versions.
+              The solution is visual regression testing in actual target
+              browsers, documenting which features have known divergences, and
+              providing explicit fallback layouts for browsers that only support
+              the old syntax rather than relying solely on Autoprefixer
+              translation.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you decide when to drop vendor prefix support for a CSS
+              feature?
+            </p>
+            <p className="mt-2 text-sm">
+              A: The decision is driven by analytics data and the browserslist
+              configuration. When all browsers in the browserslist support the
+              unprefixed version of a CSS property, the prefix is no longer
+              needed. Autoprefixer handles this automatically — updating
+              browserslist to drop legacy browsers automatically stops
+              generating their prefixes. The decision to update browserslist
+              should be based on production analytics showing that the browser
+              version population has dropped below the support threshold
+              (typically one to two percent). Quarterly reviews of the
+              browserslist configuration ensure that prefix overhead decreases
+              as the browser landscape evolves, reducing CSS bundle size over
+              time.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: Why do some non-WebKit browsers support -webkit- prefixed
+              properties?
+            </p>
+            <p className="mt-2 text-sm">
+              A: During the mobile web&apos;s growth period (2010-2015), many
+              sites were built exclusively for WebKit browsers (Safari on iOS,
+              Chrome on Android) and shipped CSS with only -webkit- prefixes.
+              When these sites displayed incorrectly in Firefox or Edge (because
+              those browsers did not recognize -webkit- properties), users
+              blamed the browser rather than the site. To maintain web
+              compatibility and avoid losing users, Firefox, Edge, and other
+              browsers implemented support for commonly used -webkit- properties
+              as a compatibility layer. This means properties like
+              -webkit-appearance, -webkit-text-fill-color, and various
+              -webkit-transform variants work across browsers despite being
+              nominally WebKit-specific. This situation is a cautionary tale
+              about the unintended consequences of prefix-only development.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 9: References & Further Reading */}
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
@@ -594,113 +718,6 @@ export default function CSSVendorPrefixesArticle() {
             </a>
           </li>
         </ul>
-      </section>
-
-      {/* Section 9: Common Interview Questions */}
-      <section>
-        <h2>Common Interview Questions</h2>
-        <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: What are CSS vendor prefixes, and why did the web standards
-              community move away from them?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Vendor prefixes are browser-specific identifiers (-webkit-,
-              -moz-, -ms-, -o-) prepended to CSS properties to namespace
-              experimental implementations. They allowed browsers to ship early
-              feature implementations without conflicting with the eventual
-              standard syntax. The community moved away from them because they
-              created significant web compatibility problems: developers shipped
-              sites with only -webkit- prefixes, forcing other browsers to
-              implement -webkit- compatibility; old prefixed code persisted long
-              after standards stabilized; and the maintenance burden on both
-              developers and browser vendors was unsustainable. Modern browsers
-              now use feature flags for experimental CSS features, limiting
-              experimental exposure to developers who explicitly opt in.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How does Autoprefixer work, and how should it be configured?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Autoprefixer is a PostCSS plugin that reads standard CSS and
-              automatically adds or removes vendor prefixes based on two data
-              sources: the project&apos;s browserslist configuration (which
-              browsers to target) and the Can I Use database (which features
-              each browser supports). It processes each CSS property-value pair,
-              checks whether any target browser requires a prefixed version,
-              adds the prefix if needed, and removes obsolete prefixes that no
-              target browser requires. Configuration is primarily through
-              .browserslistrc or the browserslist key in package.json. The key
-              configuration decision is the browserslist query — it should
-              reflect actual user browser distribution from analytics data and
-              be shared with other build tools (Babel, PostCSS plugins) for
-              consistent compatibility scope.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: What happens when the prefixed version of a CSS feature behaves
-              differently from the standard version?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Specification divergence occurs when the CSS spec evolved
-              significantly between the prefixed experimental implementation
-              and the final standard. The most notable example is Flexbox: the
-              old -webkit-box syntax used completely different property names
-              and values than the standard display: flex syntax. Autoprefixer
-              can translate between syntaxes for some features (including basic
-              Flexbox and partial IE Grid), but complex layouts may produce
-              different rendering between the prefixed and standard versions.
-              The solution is visual regression testing in actual target browsers,
-              documenting which features have known divergences, and providing
-              explicit fallback layouts for browsers that only support the old
-              syntax rather than relying solely on Autoprefixer translation.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How do you decide when to drop vendor prefix support for a
-              CSS feature?
-            </p>
-            <p className="mt-2 text-sm">
-              A: The decision is driven by analytics data and the browserslist
-              configuration. When all browsers in the browserslist support the
-              unprefixed version of a CSS property, the prefix is no longer
-              needed. Autoprefixer handles this automatically — updating
-              browserslist to drop legacy browsers automatically stops generating
-              their prefixes. The decision to update browserslist should be based
-              on production analytics showing that the browser version
-              population has dropped below the support threshold (typically one
-              to two percent). Quarterly reviews of the browserslist
-              configuration ensure that prefix overhead decreases as the browser
-              landscape evolves, reducing CSS bundle size over time.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: Why do some non-WebKit browsers support -webkit- prefixed
-              properties?
-            </p>
-            <p className="mt-2 text-sm">
-              A: During the mobile web&apos;s growth period (2010-2015), many
-              sites were built exclusively for WebKit browsers (Safari on iOS,
-              Chrome on Android) and shipped CSS with only -webkit- prefixes.
-              When these sites displayed incorrectly in Firefox or Edge (because
-              those browsers did not recognize -webkit- properties), users
-              blamed the browser rather than the site. To maintain web
-              compatibility and avoid losing users, Firefox, Edge, and other
-              browsers implemented support for commonly used -webkit- properties
-              as a compatibility layer. This means properties like
-              -webkit-appearance, -webkit-text-fill-color, and various
-              -webkit-transform variants work across browsers despite being
-              nominally WebKit-specific. This situation is a cautionary tale
-              about the unintended consequences of prefix-only development.
-            </p>
-          </div>
-        </div>
       </section>
     </ArticleLayout>
   );

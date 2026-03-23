@@ -385,37 +385,6 @@ export default function LoadingStatesArticle() {
       </section>
 
       <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://www.nngroup.com/articles/response-times-3-important-limits/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Nielsen Norman Group — Response Time Limits
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/articles/cls" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              web.dev — Cumulative Layout Shift (CLS)
-            </a>
-          </li>
-          <li>
-            <a href="https://react.dev/reference/react/Suspense" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              React — Suspense Component Documentation
-            </a>
-          </li>
-          <li>
-            <a href="https://swr.vercel.app/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              SWR — React Hooks for Data Fetching
-            </a>
-          </li>
-          <li>
-            <a href="https://www.lukew.com/ff/entry.asp?1797" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              LukeW — Mobile Design Details: Avoid The Spinner
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -449,6 +418,37 @@ export default function LoadingStatesArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://www.nngroup.com/articles/response-times-3-important-limits/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Nielsen Norman Group — Response Time Limits
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/cls" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              web.dev — Cumulative Layout Shift (CLS)
+            </a>
+          </li>
+          <li>
+            <a href="https://react.dev/reference/react/Suspense" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              React — Suspense Component Documentation
+            </a>
+          </li>
+          <li>
+            <a href="https://swr.vercel.app/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              SWR — React Hooks for Data Fetching
+            </a>
+          </li>
+          <li>
+            <a href="https://www.lukew.com/ff/entry.asp?1797" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              LukeW — Mobile Design Details: Avoid The Spinner
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

@@ -64,9 +64,9 @@ export default function CrossBrowserTestingArticle() {
         </p>
         <p>
           At the staff and principal engineer level, cross-browser testing is an
-          infrastructure and strategy problem, not a manual QA activity. The
-          key decisions involve which browser-platform combinations to include
-          in the test matrix, how to automate testing across those combinations,
+          infrastructure and strategy problem, not a manual QA activity. The key
+          decisions involve which browser-platform combinations to include in
+          the test matrix, how to automate testing across those combinations,
           how to integrate cross-browser validation into the CI pipeline, and
           how to balance test coverage against CI time and infrastructure costs.
           Cloud-based testing services (BrowserStack, Sauce Labs, LambdaTest)
@@ -78,14 +78,15 @@ export default function CrossBrowserTestingArticle() {
         <p>
           The economics of cross-browser testing require careful attention.
           Testing every feature on every browser-device combination is
-          impractical — the cost of comprehensive testing must be weighed against
-          the risk and impact of browser-specific bugs. Staff engineers design
-          tiered testing strategies where critical user flows (authentication,
-          checkout, core interactions) receive broad cross-browser coverage while
-          secondary features receive targeted testing based on analytics data
-          showing which browsers are most used for specific features. This
-          risk-based approach maximizes coverage impact within the constraints
-          of available testing infrastructure and CI time budgets.
+          impractical — the cost of comprehensive testing must be weighed
+          against the risk and impact of browser-specific bugs. Staff engineers
+          design tiered testing strategies where critical user flows
+          (authentication, checkout, core interactions) receive broad
+          cross-browser coverage while secondary features receive targeted
+          testing based on analytics data showing which browsers are most used
+          for specific features. This risk-based approach maximizes coverage
+          impact within the constraints of available testing infrastructure and
+          CI time budgets.
         </p>
       </section>
 
@@ -97,8 +98,8 @@ export default function CrossBrowserTestingArticle() {
             <strong>Test Matrix:</strong> The cross-product of browsers, browser
             versions, operating systems, and device types that define the scope
             of cross-browser testing. A typical matrix might include Chrome
-            (latest, latest-1) on Windows and macOS, Safari (latest, latest-1) on
-            macOS and iOS, Firefox (latest) on Windows, and Edge (latest) on
+            (latest, latest-1) on Windows and macOS, Safari (latest, latest-1)
+            on macOS and iOS, Firefox (latest) on Windows, and Edge (latest) on
             Windows. The matrix is derived from the compatibility contract and
             production analytics, prioritizing combinations with significant
             user traffic.
@@ -117,19 +118,19 @@ export default function CrossBrowserTestingArticle() {
             <strong>Browser Automation Frameworks:</strong> Tools that
             programmatically control browsers for automated testing. Playwright
             supports Chromium, Firefox, and WebKit from a single API. Selenium
-            WebDriver supports all major browsers through driver implementations.
-            Cypress supports Chromium-family browsers and Firefox. The choice of
-            framework determines which browsers can be tested in CI and the
-            quality of the automation experience.
+            WebDriver supports all major browsers through driver
+            implementations. Cypress supports Chromium-family browsers and
+            Firefox. The choice of framework determines which browsers can be
+            tested in CI and the quality of the automation experience.
           </li>
           <li>
-            <strong>Cloud Testing Services:</strong> Platforms like BrowserStack,
-            Sauce Labs, and LambdaTest provide access to real browsers on real
-            devices via cloud infrastructure. They eliminate the need to maintain
-            physical device labs and support manual testing (live interactive
-            sessions) and automated testing (Selenium, Playwright, or Cypress
-            tests running on cloud browsers). Pricing is typically per-parallel-
-            session and per-minute of testing time.
+            <strong>Cloud Testing Services:</strong> Platforms like
+            BrowserStack, Sauce Labs, and LambdaTest provide access to real
+            browsers on real devices via cloud infrastructure. They eliminate
+            the need to maintain physical device labs and support manual testing
+            (live interactive sessions) and automated testing (Selenium,
+            Playwright, or Cypress tests running on cloud browsers). Pricing is
+            typically per-parallel- session and per-minute of testing time.
           </li>
           <li>
             <strong>Rendering Engine Coverage:</strong> Rather than testing
@@ -146,9 +147,9 @@ export default function CrossBrowserTestingArticle() {
             where different features receive different levels of cross-browser
             coverage based on their criticality and user impact. Tier 1
             (critical flows) receives full-matrix testing on every PR. Tier 2
-            (important features) receives periodic cross-browser testing (nightly
-            builds or release candidates). Tier 3 (secondary features) receives
-            spot-checking on major releases.
+            (important features) receives periodic cross-browser testing
+            (nightly builds or release candidates). Tier 3 (secondary features)
+            receives spot-checking on major releases.
           </li>
           <li>
             <strong>Browser Compatibility Bugs:</strong> Issues that arise from
@@ -162,8 +163,8 @@ export default function CrossBrowserTestingArticle() {
           </li>
           <li>
             <strong>Test Fragility and Flakiness:</strong> Cross-browser tests
-            are inherently more prone to flakiness than single-browser tests
-            due to differences in rendering timing, animation behavior, scroll
+            are inherently more prone to flakiness than single-browser tests due
+            to differences in rendering timing, animation behavior, scroll
             position precision, and network simulation. Managing flakiness
             requires robust wait strategies (waiting for specific DOM state
             rather than arbitrary timeouts), tolerance thresholds for visual
@@ -195,11 +196,11 @@ export default function CrossBrowserTestingArticle() {
           test suite. The test matrix is expanded into individual test
           configurations (test file plus browser plus platform), and these
           configurations are distributed across parallel execution nodes. Each
-          node launches the specified browser (either locally via Playwright
-          or remotely via a cloud testing service), runs the assigned tests,
-          and reports results. Results are aggregated into a unified report
-          that shows pass/fail status per browser, screenshot comparisons for
-          visual tests, and performance metrics. Failed tests are linked to the
+          node launches the specified browser (either locally via Playwright or
+          remotely via a cloud testing service), runs the assigned tests, and
+          reports results. Results are aggregated into a unified report that
+          shows pass/fail status per browser, screenshot comparisons for visual
+          tests, and performance metrics. Failed tests are linked to the
           specific browser-platform combination for diagnosis.
         </p>
 
@@ -210,18 +211,17 @@ export default function CrossBrowserTestingArticle() {
         />
         <p>
           Visual regression testing captures screenshots of components and pages
-          in a known-good state (the baseline). When code changes are made,
-          new screenshots are captured under identical conditions and compared
+          in a known-good state (the baseline). When code changes are made, new
+          screenshots are captured under identical conditions and compared
           pixel-by-pixel against the baselines. Differences exceeding the
-          configured tolerance threshold are flagged as visual regressions.
-          The diff report shows the baseline image, the new image, and a
-          highlighted overlay of differences. Reviewers approve intentional
-          visual changes (which update the baselines) and flag unintentional
-          regressions for investigation. Each browser in the test matrix
-          maintains its own set of baselines because rendering differences
-          between browsers are expected and acceptable — the goal is detecting
-          unexpected changes, not enforcing pixel-perfect cross-browser
-          rendering.
+          configured tolerance threshold are flagged as visual regressions. The
+          diff report shows the baseline image, the new image, and a highlighted
+          overlay of differences. Reviewers approve intentional visual changes
+          (which update the baselines) and flag unintentional regressions for
+          investigation. Each browser in the test matrix maintains its own set
+          of baselines because rendering differences between browsers are
+          expected and acceptable — the goal is detecting unexpected changes,
+          not enforcing pixel-perfect cross-browser rendering.
         </p>
 
         <ArticleImage
@@ -238,11 +238,11 @@ export default function CrossBrowserTestingArticle() {
           rendering-engine-coverage — one representative browser per engine
           (Chrome, Safari, Firefox) on each PR, with full-matrix testing in
           nightly builds. Secondary features (settings pages, admin panels)
-          receive targeted coverage — tested on the single most-used browser
-          in CI, with periodic full-matrix checks on release candidates. This
+          receive targeted coverage — tested on the single most-used browser in
+          CI, with periodic full-matrix checks on release candidates. This
           tiered approach keeps CI times manageable (15 to 30 minutes for PR
-          checks) while maintaining high confidence in cross-browser quality
-          for features that matter most.
+          checks) while maintaining high confidence in cross-browser quality for
+          features that matter most.
         </p>
       </section>
 
@@ -274,8 +274,8 @@ export default function CrossBrowserTestingArticle() {
                 services. Excellent auto-waiting reduces flakiness.
               </td>
               <td className="border border-theme p-2">
-                WebKit in Playwright is not identical to production Safari.
-                No native mobile browser testing. Limited to three rendering
+                WebKit in Playwright is not identical to production Safari. No
+                native mobile browser testing. Limited to three rendering
                 engines. Cannot test older browser versions.
               </td>
             </tr>
@@ -337,8 +337,8 @@ export default function CrossBrowserTestingArticle() {
               </td>
               <td className="border border-theme p-2">
                 Manual testing does not scale, is not reproducible, and becomes
-                a bottleneck as the test matrix grows. Cannot be integrated
-                into CI pipelines. Relies on QA team availability.
+                a bottleneck as the test matrix grows. Cannot be integrated into
+                CI pipelines. Relies on QA team availability.
               </td>
             </tr>
           </tbody>
@@ -350,7 +350,10 @@ export default function CrossBrowserTestingArticle() {
         <h2>Best Practices</h2>
         <ol className="space-y-3">
           <li>
-            <strong>Design the test matrix from analytics data and the compatibility contract:</strong>{" "}
+            <strong>
+              Design the test matrix from analytics data and the compatibility
+              contract:
+            </strong>{" "}
             The test matrix should reflect actual user browser distribution, not
             aspirational or historical targets. Pull browser and device data
             from production analytics quarterly. Prioritize browser-platform
@@ -359,7 +362,9 @@ export default function CrossBrowserTestingArticle() {
             pass all tests versus which receive best-effort coverage.
           </li>
           <li>
-            <strong>Implement tiered testing to manage CI time and costs:</strong>{" "}
+            <strong>
+              Implement tiered testing to manage CI time and costs:
+            </strong>{" "}
             Not every feature needs full-matrix testing on every PR. Critical
             flows (authentication, payment, core interactions) receive
             full-matrix coverage. Important features receive engine-
@@ -368,16 +373,21 @@ export default function CrossBrowserTestingArticle() {
             PR feedback loops under 30 minutes while maintaining confidence.
           </li>
           <li>
-            <strong>Use Playwright for CI-integrated cross-browser testing:</strong>{" "}
-            Playwright provides the broadest cross-browser coverage available
-            in a local testing framework — Chromium, Firefox, and WebKit from
-            a single API. Its auto-waiting mechanism and consistent API reduce
+            <strong>
+              Use Playwright for CI-integrated cross-browser testing:
+            </strong>{" "}
+            Playwright provides the broadest cross-browser coverage available in
+            a local testing framework — Chromium, Firefox, and WebKit from a
+            single API. Its auto-waiting mechanism and consistent API reduce
             test flakiness. Use Playwright for CI-integrated tests and
             supplement with cloud testing services for mobile browsers and
             specific browser versions not available locally.
           </li>
           <li>
-            <strong>Integrate visual regression testing for layout-sensitive components:</strong>{" "}
+            <strong>
+              Integrate visual regression testing for layout-sensitive
+              components:
+            </strong>{" "}
             Components with complex layouts, responsive behavior, or design
             system compliance benefit from visual regression testing. Use
             per-browser baselines (do not compare Chrome screenshots against
@@ -386,31 +396,36 @@ export default function CrossBrowserTestingArticle() {
             rounding) while catching meaningful visual regressions.
           </li>
           <li>
-            <strong>Maintain a browser compatibility playbook:</strong>{" "}
-            Document known browser-specific quirks, workarounds, and testing
-            gotchas in a shared team resource. Include entries for common
-            issues like Safari 100vh viewport behavior, Firefox default form
-            element styling, Chrome&apos;s lazy image loading behavior, and
-            Edge&apos;s smooth scrolling differences. This playbook accelerates
-            diagnosis of cross-browser bugs and prevents teams from
-            re-discovering known issues.
+            <strong>Maintain a browser compatibility playbook:</strong> Document
+            known browser-specific quirks, workarounds, and testing gotchas in a
+            shared team resource. Include entries for common issues like Safari
+            100vh viewport behavior, Firefox default form element styling,
+            Chrome&apos;s lazy image loading behavior, and Edge&apos;s smooth
+            scrolling differences. This playbook accelerates diagnosis of
+            cross-browser bugs and prevents teams from re-discovering known
+            issues.
           </li>
           <li>
-            <strong>Quarantine flaky tests rather than disabling cross-browser testing:</strong>{" "}
+            <strong>
+              Quarantine flaky tests rather than disabling cross-browser
+              testing:
+            </strong>{" "}
             Cross-browser tests are inherently more prone to flakiness due to
             rendering timing, animation behavior, and infrastructure variation.
-            Implement a quarantine mechanism that temporarily removes flaky tests
-            from the critical path while they are investigated, rather than
-            disabling entire browser configurations. Track quarantine duration
-            and ensure quarantined tests are resolved within a sprint.
+            Implement a quarantine mechanism that temporarily removes flaky
+            tests from the critical path while they are investigated, rather
+            than disabling entire browser configurations. Track quarantine
+            duration and ensure quarantined tests are resolved within a sprint.
           </li>
           <li>
-            <strong>Run critical cross-browser tests on merge, not just on PR:</strong>{" "}
-            PR-level cross-browser testing validates individual changes, but
-            the combined effect of merged changes can introduce cross-browser
-            issues that no single PR tested. Run the Tier 1 cross-browser
-            suite on merge to main and on nightly builds to catch integration-
-            level cross-browser regressions before they accumulate.
+            <strong>
+              Run critical cross-browser tests on merge, not just on PR:
+            </strong>{" "}
+            PR-level cross-browser testing validates individual changes, but the
+            combined effect of merged changes can introduce cross-browser issues
+            that no single PR tested. Run the Tier 1 cross-browser suite on
+            merge to main and on nightly builds to catch integration- level
+            cross-browser regressions before they accumulate.
           </li>
         </ol>
       </section>
@@ -420,19 +435,19 @@ export default function CrossBrowserTestingArticle() {
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
           <li>
-            <strong>Testing only in Chrome:</strong>{" "}
-            Chrome&apos;s dominant market share tempts teams to test exclusively
-            in Chrome, but Safari (particularly on iOS) and Firefox have
-            meaningful rendering and API differences. Safari&apos;s viewport
-            handling, date input behavior, and CSS feature support diverge from
-            Chrome in ways that affect real users. Firefox&apos;s stricter
-            security defaults (CORS, mixed content) surface issues that Chrome
-            permits. Test at least one browser per rendering engine.
+            <strong>Testing only in Chrome:</strong> Chrome&apos;s dominant
+            market share tempts teams to test exclusively in Chrome, but Safari
+            (particularly on iOS) and Firefox have meaningful rendering and API
+            differences. Safari&apos;s viewport handling, date input behavior,
+            and CSS feature support diverge from Chrome in ways that affect real
+            users. Firefox&apos;s stricter security defaults (CORS, mixed
+            content) surface issues that Chrome permits. Test at least one
+            browser per rendering engine.
           </li>
           <li>
-            <strong>Building an unmaintainable test matrix:</strong>{" "}
-            Including every browser-version-platform combination creates a test
-            matrix so large that test runs take hours and flakiness rates become
+            <strong>Building an unmaintainable test matrix:</strong> Including
+            every browser-version-platform combination creates a test matrix so
+            large that test runs take hours and flakiness rates become
             unmanageable. A matrix of 5 browsers × 3 platforms × 2 versions ×
             100 test files = 3,000 test configurations. Ruthlessly prioritize
             based on analytics data and use tiered testing to keep the matrix
@@ -448,31 +463,32 @@ export default function CrossBrowserTestingArticle() {
             workflow where flagged differences are triaged by a human reviewer.
           </li>
           <li>
-            <strong>Not testing on real mobile devices:</strong>{" "}
-            Desktop browser simulations of mobile viewports do not capture
-            real mobile browser behavior — touch event handling, viewport
-            management, address bar interaction, safe area insets, and
-            performance characteristics all differ on actual devices.
-            Supplement Playwright&apos;s mobile emulation with periodic testing
-            on real devices (via cloud services or a minimal device lab).
+            <strong>Not testing on real mobile devices:</strong> Desktop browser
+            simulations of mobile viewports do not capture real mobile browser
+            behavior — touch event handling, viewport management, address bar
+            interaction, safe area insets, and performance characteristics all
+            differ on actual devices. Supplement Playwright&apos;s mobile
+            emulation with periodic testing on real devices (via cloud services
+            or a minimal device lab).
           </li>
           <li>
-            <strong>Ignoring cross-browser performance testing:</strong>{" "}
-            Teams typically measure performance only in Chrome DevTools, but
+            <strong>Ignoring cross-browser performance testing:</strong> Teams
+            typically measure performance only in Chrome DevTools, but
             JavaScript execution speed, rendering performance, and memory
-            behavior vary across browsers. Safari&apos;s JIT compiler, Firefox&apos;s
-            garbage collector, and Chrome&apos;s V8 optimizer produce different
-            performance profiles for the same code. Include performance
-            benchmarks in cross-browser testing for performance-critical features.
+            behavior vary across browsers. Safari&apos;s JIT compiler,
+            Firefox&apos;s garbage collector, and Chrome&apos;s V8 optimizer
+            produce different performance profiles for the same code. Include
+            performance benchmarks in cross-browser testing for
+            performance-critical features.
           </li>
           <li>
-            <strong>Neglecting accessibility across browsers:</strong>{" "}
-            Screen reader behavior varies significantly across browser-screen
-            reader combinations (VoiceOver+Safari, NVDA+Chrome, JAWS+Edge).
-            ARIA attribute support and interpretation differs between browsers.
-            Cross-browser testing must include accessibility validation for
-            each supported browser-assistive technology pairing, not just
-            Chrome with a synthetic accessibility audit.
+            <strong>Neglecting accessibility across browsers:</strong> Screen
+            reader behavior varies significantly across browser-screen reader
+            combinations (VoiceOver+Safari, NVDA+Chrome, JAWS+Edge). ARIA
+            attribute support and interpretation differs between browsers.
+            Cross-browser testing must include accessibility validation for each
+            supported browser-assistive technology pairing, not just Chrome with
+            a synthetic accessibility audit.
           </li>
         </ul>
       </section>
@@ -487,12 +503,14 @@ export default function CrossBrowserTestingArticle() {
           Every PR to the Next.js repository triggers a test suite that runs
           against all three rendering engines, catching cross-browser
           regressions before they are merged. The three-engine approach provides
-          high confidence in cross-browser compatibility without the overhead
-          of testing every browser-version combination, since the rendering
-          engine determines the vast majority of rendering behavior.
+          high confidence in cross-browser compatibility without the overhead of
+          testing every browser-version combination, since the rendering engine
+          determines the vast majority of rendering behavior.
         </p>
         <p>
-          <strong>Shopify&apos;s tiered testing for merchant storefronts:</strong>{" "}
+          <strong>
+            Shopify&apos;s tiered testing for merchant storefronts:
+          </strong>{" "}
           Shopify implements a tiered cross-browser testing strategy for their
           merchant-facing storefront platform. The checkout flow (Tier 1) is
           tested on every PR against the full browser matrix including mobile
@@ -504,95 +522,40 @@ export default function CrossBrowserTestingArticle() {
           receive the broadest cross-browser coverage.
         </p>
         <p>
-          <strong>Chromatic&apos;s visual regression for component libraries:</strong>{" "}
+          <strong>
+            Chromatic&apos;s visual regression for component libraries:
+          </strong>{" "}
           Chromatic (built by the Storybook team) provides visual regression
           testing specifically designed for component libraries and design
           systems. Teams capture visual snapshots of every component state in
           Storybook across multiple browsers, and Chromatic flags visual
           differences when components change. This approach tests components in
           isolation, making it easier to identify which component change caused
-          a cross-browser regression. Design system teams at companies like
-          the BBC, GitHub, and Airbnb use this approach to maintain visual
+          a cross-browser regression. Design system teams at companies like the
+          BBC, GitHub, and Airbnb use this approach to maintain visual
           consistency across their component libraries.
         </p>
         <p>
           <strong>GOV.UK&apos;s accessibility-focused browser testing:</strong>{" "}
           The UK Government Digital Service tests GOV.UK against a published
           browser and device matrix that includes screen reader and assistive
-          technology combinations. Their testing goes beyond visual rendering
-          to verify that every user flow works with VoiceOver on Safari, NVDA
-          on Chrome, and JAWS on Edge. This comprehensive accessibility-
-          inclusive cross-browser testing ensures that government services are
-          accessible to all citizens, regardless of their browser, device, or
-          assistive technology.
+          technology combinations. Their testing goes beyond visual rendering to
+          verify that every user flow works with VoiceOver on Safari, NVDA on
+          Chrome, and JAWS on Edge. This comprehensive accessibility- inclusive
+          cross-browser testing ensures that government services are accessible
+          to all citizens, regardless of their browser, device, or assistive
+          technology.
         </p>
       </section>
 
-      {/* Section 8: References & Further Reading */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://playwright.dev/docs/browsers"
-              className="text-accent underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Playwright — Cross-Browser Testing Documentation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.browserstack.com/"
-              className="text-accent underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              BrowserStack — Cloud Cross-Browser Testing Platform
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://percy.io/"
-              className="text-accent underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Percy — Visual Regression Testing Service
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Testing/Cross_browser_testing"
-              className="text-accent underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              MDN — Cross-Browser Testing Guide
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://web.dev/articles/ta-what-to-test"
-              className="text-accent underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              web.dev — What to Test and How to Prioritize
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      {/* Section 9: Common Interview Questions */}
+      {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
-              Q: How do you design a cross-browser test matrix for a
-              large-scale application?
+              Q: How do you design a cross-browser test matrix for a large-scale
+              application?
             </p>
             <p className="mt-2 text-sm">
               A: Start with production analytics to identify which browser-
@@ -624,8 +587,8 @@ export default function CrossBrowserTestingArticle() {
               genuinely failing. Fourth, quarantine persistently flaky tests to
               prevent them from blocking CI while they are investigated. Fifth,
               track flakiness metrics (which tests, which browsers, which
-              infrastructure) to identify and fix systematic causes. The goal
-              is reducing the flakiness rate below two percent while maintaining
+              infrastructure) to identify and fix systematic causes. The goal is
+              reducing the flakiness rate below two percent while maintaining
               the breadth of cross-browser coverage.
             </p>
           </div>
@@ -688,6 +651,63 @@ export default function CrossBrowserTestingArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 9: References & Further Reading */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a
+              href="https://playwright.dev/docs/browsers"
+              className="text-accent underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Playwright — Cross-Browser Testing Documentation
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.browserstack.com/"
+              className="text-accent underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              BrowserStack — Cloud Cross-Browser Testing Platform
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://percy.io/"
+              className="text-accent underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Percy — Visual Regression Testing Service
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Testing/Cross_browser_testing"
+              className="text-accent underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MDN — Cross-Browser Testing Guide
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://web.dev/articles/ta-what-to-test"
+              className="text-accent underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              web.dev — What to Test and How to Prioritize
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

@@ -202,6 +202,12 @@ export default function ComponentLibrariesDesignSystemsArticle() {
             values in their native formats.
           </p>
         </div>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/component-libraries-and-design-systems-diagram-2.svg"
+          alt="Design token hierarchy showing three tiers: global tokens (raw values), alias tokens (semantic meaning), and component tokens with multi-brand theming flow"
+          caption="Design token hierarchy — three-tier system enabling multi-brand theming through alias layer swapping"
+        />
       </section>
 
       <section>
@@ -417,6 +423,270 @@ export default function ComponentLibrariesDesignSystemsArticle() {
             between consistency and flexibility.
           </li>
         </ul>
+      </section>
+
+      <section>
+        <h2>Security Considerations</h2>
+        <p>
+          Design systems and component libraries introduce unique security considerations because they are deployed across multiple applications and can become a single point of failure for security vulnerabilities.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Supply Chain Security</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Dependency Vulnerabilities:</strong> A vulnerability in the design system propagates to all consuming applications. Mitigation: implement automated dependency scanning (Snyk, Dependabot), pin exact versions, maintain a security patch SLA, communicate vulnerabilities to consuming teams immediately.
+            </li>
+            <li>
+              <strong>Malicious Package Injection:</strong> Compromised build pipelines could inject malicious code. Mitigation: use private registries with strict access control, implement build pipeline security (OIDC authentication, signed commits), use package signing and verification.
+            </li>
+            <li>
+              <strong>CDN Compromise:</strong> If components are served from CDN, a compromised CDN affects all applications. Mitigation: use Subresource Integrity (SRI) hashes, implement CDN failover, use multiple CDN providers, monitor for unexpected content changes.
+            </li>
+            <li>
+              <strong>Third-Party Component Risk:</strong> Components wrapping third-party services (analytics, chat widgets) can leak data. Mitigation: audit all third-party integrations, implement data minimization, use sandboxed iframes for untrusted third-party code.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">XSS Prevention in Components</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Props Sanitization:</strong> Components accepting user-generated content (tooltips, modals, notifications) must sanitize props. Mitigation: use DOMPurify or similar libraries, avoid dangerouslySetInnerHTML, implement strict Content Security Policy.
+            </li>
+            <li>
+              <strong>Event Handler Security:</strong> Components passing event handlers as props can be exploited. Mitigation: validate handler props, avoid passing untrusted callbacks, implement event handler allowlists.
+            </li>
+            <li>
+              <strong>URL Validation:</strong> Components accepting URLs (links, images) must validate against allowlists. Mitigation: validate URL schemes (http/https only), prevent javascript: URLs, implement URL allowlists for user-provided links.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Accessibility as Security</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Focus Management:</strong> Poor focus management can lead to focus hijacking attacks. Mitigation: implement proper focus trapping in modals, restore focus correctly, avoid auto-focusing without user action.
+            </li>
+            <li>
+              <strong>ARIA Security:</strong> Incorrect ARIA can be exploited for phishing. Mitigation: validate ARIA attributes, use ARIA only when native HTML is insufficient, test with screen readers.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Testing Strategies</h2>
+        <p>
+          Design systems require comprehensive testing to ensure consistency, accessibility, and correctness across all consuming applications.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Testing Pyramid for Design Systems</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Unit Tests (Base):</strong> Test individual components in isolation. Test props, events, slots, and business logic. Aim for 90%+ coverage on core components. Use Jest, Vitest, or similar.
+            </li>
+            <li>
+              <strong>Visual Regression Tests (Middle):</strong> Capture screenshots of all component states. Compare against baselines to detect visual regressions. Use Percy, Chromatic, or Loki. Run on every PR.
+            </li>
+            <li>
+              <strong>Accessibility Tests (Middle):</strong> Automated a11y testing with axe-core, pa11y, or jest-axe. Test all interactive components. Aim for zero violations. Include in CI/CD pipeline.
+            </li>
+            <li>
+              <strong>Integration Tests (Middle):</strong> Test component composition and interaction. Verify that components work correctly when nested or combined. Test with different themes and configurations.
+            </li>
+            <li>
+              <strong>Consumer Integration Tests (Top):</strong> Test the design system in real consuming applications. Catch issues that only appear in production-like environments. Use canary releases for major versions.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Cross-Browser Testing</h3>
+          <p>
+            Design systems must work consistently across all supported browsers:
+          </p>
+          <ul className="mt-3 space-y-2">
+            <li>
+              <strong>Browser Matrix:</strong> Test on Chrome, Firefox, Safari, Edge (latest 2 versions each). Include mobile Safari and Chrome for mobile components.
+            </li>
+            <li>
+              <strong>Automated Cross-Browser Tests:</strong> Use BrowserStack, Sauce Labs, or Playwright for automated cross-browser testing. Run visual regression tests across all browsers.
+            </li>
+            <li>
+              <strong>Progressive Enhancement:</strong> Test that core functionality works in older browsers. Enhanced features can degrade gracefully.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Theme Testing</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Token Validation:</strong> Test that all design tokens are defined and have valid values. Use schema validation for token files.
+            </li>
+            <li>
+              <strong>Theme Switching:</strong> Test theme switching at runtime. Verify that all components update correctly. Test for CSS variable leaks between themes.
+            </li>
+            <li>
+              <strong>Contrast Testing:</strong> Automated contrast ratio testing for all text/background combinations. Use tools like @axe-core/react or custom scripts.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Performance Benchmarks</h2>
+        <p>
+          Design system performance directly impacts all consuming applications. Understanding and optimizing performance characteristics is essential.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Metric</th>
+                <th className="p-2 text-left">Target</th>
+                <th className="p-2 text-left">Measurement</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Bundle Size (Core)</td>
+                <td className="p-2">&lt;50KB compressed</td>
+                <td className="p-2">Webpack Bundle Analyzer</td>
+              </tr>
+              <tr>
+                <td className="p-2">Bundle Size (Full)</td>
+                <td className="p-2">&lt;200KB compressed</td>
+                <td className="p-2">Bundle size CI checks</td>
+              </tr>
+              <tr>
+                <td className="p-2">Component Render Time</td>
+                <td className="p-2">&lt;5ms per component</td>
+                <td className="p-2">React DevTools Profiler</td>
+              </tr>
+              <tr>
+                <td className="p-2">Tree-Shaking Efficiency</td>
+                <td className="p-2">&gt;80% unused code eliminated</td>
+                <td className="p-2">Source map analysis</td>
+              </tr>
+              <tr>
+                <td className="p-2">First Paint Impact</td>
+                <td className="p-2">&lt;100ms delay</td>
+                <td className="p-2">Lighthouse, WebPageTest</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Bundle Size Optimization</h3>
+          <p>
+            Design system bundle size is critical for consumer applications:
+          </p>
+          <ul className="mt-3 space-y-2">
+            <li>
+              <strong>Tree-Shaking:</strong> Use ES modules with sideEffects: false in package.json. Avoid side effects in component files. Test tree-shaking effectiveness with webpack bundle analyzer.
+            </li>
+            <li>
+              <strong>Code Splitting:</strong> Split large components (data tables, rich text editors) into separate chunks. Load on demand. Use dynamic imports for heavy components.
+            </li>
+            <li>
+              <strong>Dependency Management:</strong> Keep peer dependencies minimal. Avoid bundling React, lodash, etc. Use tree-shakeable alternatives (lodash-es).
+            </li>
+            <li>
+              <strong>CSS Optimization:</strong> Use CSS-in-JS with critical CSS extraction. Purge unused CSS. Minify and compress CSS output.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Real-World Performance Data</h3>
+          <p>
+            Based on published data from major design systems:
+          </p>
+          <ul className="mt-3 space-y-2">
+            <li>
+              <strong>Material-UI (MUI):</strong> Core bundle: ~12KB gzipped. Full library: ~150KB gzipped. Tree-shaking efficiency: ~85%.
+            </li>
+            <li>
+              <strong>Chakra UI:</strong> Core bundle: ~10KB gzipped. Uses emotion for CSS-in-JS. Tree-shaking via barrel exports.
+            </li>
+            <li>
+              <strong>Radix UI:</strong> Headless primitives: ~5KB per component. Zero runtime CSS. Maximum tree-shaking efficiency.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Cost Analysis</h2>
+        <p>
+          Building and maintaining a design system requires significant investment. Understanding the total cost of ownership is essential for justifying the investment.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Initial Development:</strong> Building a comprehensive design system (50+ components, tokens, documentation) requires 3-5 engineers for 6-12 months. Estimate: $500K-1.5M (fully-loaded costs).
+            </li>
+            <li>
+              <strong>Ongoing Maintenance:</strong> Dedicated team of 2-4 engineers for updates, bug fixes, new components. Estimate: $300K-600K/year.
+            </li>
+            <li>
+              <strong>Documentation:</strong> Technical writer or dedicated documentation engineer. Estimate: $100K-150K/year.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Package Registry:</strong> Private npm registry (Verdaccio, npm org, GitHub Packages). Estimate: $0-500/month depending on usage.
+            </li>
+            <li>
+              <strong>Documentation Hosting:</strong> Storybook hosting (Chromatic, Netlify, Vercel). Estimate: $100-500/month.
+            </li>
+            <li>
+              <strong>CI/CD Infrastructure:</strong> Build pipelines, visual regression testing, accessibility testing. Estimate: $500-2,000/month.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">ROI Calculation</h3>
+          <p>
+            Design system ROI comes from developer productivity gains:
+          </p>
+          <ul className="mt-3 space-y-2">
+            <li>
+              <strong>Development Velocity:</strong> Teams build features 30-50% faster with pre-built components. For a team of 20 engineers at $200K/year, 30% velocity gain = $1.2M/year savings.
+            </li>
+            <li>
+              <strong>Consistency:</strong> Reduced design debt, fewer UX bugs, faster design reviews. Hard to quantify but significant.
+            </li>
+            <li>
+              <strong>Accessibility Compliance:</strong> Built-in a11y reduces legal risk and remediation costs. Accessibility lawsuits average $50K-150K in legal fees alone.
+            </li>
+            <li>
+              <strong>Net ROI:</strong> Typical design systems show positive ROI within 12-18 months for organizations with 5+ product teams.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">Make vs Buy Decision Framework</h3>
+          <p>
+            Consider buying (MUI, Chakra, Ant Design) when: (1) you have &lt;5 product teams, (2) no unique branding requirements, (3) limited engineering resources. Consider building custom when: (1) you have 5+ teams, (2) strong brand differentiation needs, (3) unique interaction patterns, (4) dedicated platform team available.
+          </p>
+        </div>
       </section>
 
       <section>

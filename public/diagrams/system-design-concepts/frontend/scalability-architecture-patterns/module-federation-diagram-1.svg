@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">Module Federation Host-Remote Architecture</title>
+  <desc id="desc">Architecture diagram showing Module Federation with Host application consuming Remote modules through shared scope and exposed components</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="500" fill="var(--bg-color, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="var(--text-color, #1a1a1a)">Module Federation Architecture</text>
+  
+  <!-- Host Application -->
+  <rect x="50" y="70" width="320" height="380" rx="8" fill="var(--primary-light, #e3f2fd)" stroke="var(--primary-color, #1976d2)" stroke-width="3"/>
+  <text x="210" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="var(--primary-color, #1976d2)">Host Application</text>
+  
+  <!-- Host Container -->
+  <rect x="70" y="110" width="280" height="100" rx="6" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="2"/>
+  <text x="210" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="var(--text-color, #1a1a1a)">Host Container</text>
+  <text x="210" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="var(--text-muted, #666666)">Main app shell</text>
+  <text x="210" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="var(--text-muted, #666666)">(navigation, layout, routing)</text>
+  <text x="210" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="var(--text-muted, #666666)">+ local components</text>
+  
+  <!-- Remote Slot 1 -->
+  <rect x="70" y="230" width="280" height="60" rx="6" fill="var(--success-light, #d4edda)" stroke="var(--success-color, #28a745)" stroke-width="2" stroke-dasharray="4,2"/>
+  <text x="210" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="var(--success-color, #28a745)">Remote Module Slot 1</text>
+  <text x="210" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Dynamically loaded at runtime</text>
+  
+  <!-- Remote Slot 2 -->
+  <rect x="70" y="305" width="280" height="60" rx="6" fill="var(--success-light, #d4edda)" stroke="var(--success-color, #28a745)" stroke-width="2" stroke-dasharray="4,2"/>
+  <text x="210" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="var(--success-color, #28a745)">Remote Module Slot 2</text>
+  <text x="210" y="350" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Dynamically loaded at runtime</text>
+  
+  <!-- Remote Applications -->
+  <rect x="450" y="70" width="300" height="180" rx="8" fill="var(--warning-light, #fff3cd)" stroke="var(--warning-color, #ffc107)" stroke-width="3"/>
+  <text x="600" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="var(--warning-color, #ffc107)">Remote Applications</text>
+  
+  <!-- Remote 1 -->
+  <rect x="470" y="110" width="260" height="55" rx="6" fill="var(--bg-color, #ffffff)" stroke="var(--warning-color, #ffc107)" stroke-width="2"/>
+  <text x="600" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="var(--text-color, #1a1a1a)">Remote App 1</text>
+  <text x="600" y="152" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Exposes: Header, Navigation</text>
+  
+  <!-- Remote 2 -->
+  <rect x="470" y="180" width="260" height="55" rx="6" fill="var(--bg-color, #ffffff)" stroke="var(--warning-color, #ffc107)" stroke-width="2"/>
+  <text x="600" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="var(--text-color, #1a1a1a)">Remote App 2</text>
+  <text x="600" y="222" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Exposes: Dashboard, Charts</text>
+  
+  <!-- Shared Scope -->
+  <rect x="450" y="280" width="300" height="170" rx="8" fill="var(--info-light, #e7f3ff)" stroke="var(--info-color, #0d6efd)" stroke-width="3"/>
+  <text x="600" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="var(--info-color, #0d6efd)">Shared Scope</text>
+  
+  <!-- Shared Dependencies -->
+  <rect x="470" y="320" width="260" height="45" rx="6" fill="var(--bg-color, #ffffff)" stroke="var(--info-color, #0d6efd)" stroke-width="2"/>
+  <text x="600" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="var(--text-color, #1a1a1a)">React / React DOM</text>
+  <text x="600" y="357" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Single instance shared across all apps</text>
+  
+  <rect x="470" y="380" width="260" height="45" rx="6" fill="var(--bg-color, #ffffff)" stroke="var(--info-color, #0d6efd)" stroke-width="2"/>
+  <text x="600" y="400" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="var(--text-color, #1a1a1a)">Shared Libraries</text>
+  <text x="600" y="417" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Utils, UI components, types</text>
+  
+  <!-- Connection arrows -->
+  <!-- Host to Remote 1 -->
+  <path d="M370 260 C410 260, 410 140, 450 140" stroke="var(--primary-color, #1976d2)" stroke-width="2" stroke-dasharray="5,3" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="410" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Loads</text>
+  
+  <!-- Host to Remote 2 -->
+  <path d="M370 335 C410 335, 410 210, 450 210" stroke="var(--primary-color, #1976d2)" stroke-width="2" stroke-dasharray="5,3" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="410" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Loads</text>
+  
+  <!-- Shared to Host -->
+  <path d="M450 350 L370 350" stroke="var(--info-color, #0d6efd)" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="410" y="340" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Shares</text>
+  
+  <!-- Shared to Remotes -->
+  <path d="M600 320 L600 270" stroke="var(--info-color, #0d6efd)" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="615" y="300" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Shares</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-color, #1a1a1a)"/>
+    </marker>
+  </defs>
+</svg>

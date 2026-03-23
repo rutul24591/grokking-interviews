@@ -219,37 +219,6 @@ export default function KeyboardShortcutsArticle() {
       </section>
 
       <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://www.nngroup.com/articles/keyboard-accessibility/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Nielsen Norman Group — Keyboard Accessibility
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              MDN — KeyboardEvent API
-            </a>
-          </li>
-          <li>
-            <a href="https://www.w3.org/WAI/ARIA/apg/patterns/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              WAI-ARIA Authoring Practices — Keyboard Interaction Patterns
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/articles/keyboard-access" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              web.dev — Keyboard Access Fundamentals
-            </a>
-          </li>
-          <li>
-            <a href="https://code.visualstudio.com/docs/getstarted/keybindings" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              VS Code — Key Bindings Documentation
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
         <h2>Common Interview Questions</h2>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4 mb-4">
@@ -300,6 +269,37 @@ export default function KeyboardShortcutsArticle() {
             A: I would build a keybinding editor that presents all available actions with their current bindings, allows users to record new bindings by pressing their desired key combination, detects and warns about conflicts with other shortcuts or browser/OS reserved combinations, and persists custom bindings to the user&apos;s profile. The persistence layer stores a map of action IDs to custom key combinations, applied as overrides on top of the default bindings during registry initialization. A &ldquo;Reset to Defaults&rdquo; option removes all custom bindings. The shortcut registry would maintain a two-layer lookup — custom bindings take precedence over defaults. Help dialogs and tooltip annotations would reflect the user&apos;s custom bindings rather than defaults. For implementation, I would use a recording component that captures keydown events, displays the combination being recorded (e.g., &ldquo;Ctrl + Shift + K&rdquo;), and validates the combination against reserved keys and existing bindings. VS Code&apos;s keybinding editor is an excellent reference implementation.
           </p>
         </div>
+      </section>
+
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://www.nngroup.com/articles/keyboard-accessibility/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Nielsen Norman Group — Keyboard Accessibility
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              MDN — KeyboardEvent API
+            </a>
+          </li>
+          <li>
+            <a href="https://www.w3.org/WAI/ARIA/apg/patterns/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              WAI-ARIA Authoring Practices — Keyboard Interaction Patterns
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/keyboard-access" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              web.dev — Keyboard Access Fundamentals
+            </a>
+          </li>
+          <li>
+            <a href="https://code.visualstudio.com/docs/getstarted/keybindings" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              VS Code — Key Bindings Documentation
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

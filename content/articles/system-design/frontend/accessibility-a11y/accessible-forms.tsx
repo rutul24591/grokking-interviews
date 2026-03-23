@@ -354,44 +354,7 @@ export default function AccessibleFormsArticle() {
         </ul>
       </section>
 
-      {/* ─── Section 8: References & Further Reading ─── */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://www.w3.org/WAI/tutorials/forms/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              W3C WAI: Forms Tutorial
-            </a>{" "}
-            — Comprehensive guide to building accessible forms.
-          </li>
-          <li>
-            <a href="https://design-system.service.gov.uk/patterns/validation/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              GOV.UK: Form Validation Pattern
-            </a>{" "}
-            — The error summary and inline error pattern used by GOV.UK.
-          </li>
-          <li>
-            <a href="https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              Understanding WCAG 3.3.2: Labels or Instructions
-            </a>{" "}
-            — Requirements for form labeling.
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              MDN: HTML autocomplete attribute
-            </a>{" "}
-            — Complete list of autocomplete values and usage.
-          </li>
-          <li>
-            <a href="https://adrianroselli.com/2019/02/avoid-default-field-validation.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              Adrian Roselli: Avoid Default Field Validation
-            </a>{" "}
-            — Why custom validation often provides a better accessible experience.
-          </li>
-        </ul>
-      </section>
-
-      {/* ─── Section 9: Common Interview Questions ─── */}
+      {/* ─── Section 8: Common Interview Questions ─── */}
       <section>
         <h2>Common Interview Questions</h2>
 
@@ -485,6 +448,43 @@ export default function AccessibleFormsArticle() {
             or selectable, and autocomplete is the primary mechanism for achieving this.
           </p>
         </div>
+      </section>
+
+      {/* ─── Section 9: References & Further Reading ─── */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://www.w3.org/WAI/tutorials/forms/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              W3C WAI: Forms Tutorial
+            </a>{" "}
+            — Comprehensive guide to building accessible forms.
+          </li>
+          <li>
+            <a href="https://design-system.service.gov.uk/patterns/validation/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              GOV.UK: Form Validation Pattern
+            </a>{" "}
+            — The error summary and inline error pattern used by GOV.UK.
+          </li>
+          <li>
+            <a href="https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              Understanding WCAG 3.3.2: Labels or Instructions
+            </a>{" "}
+            — Requirements for form labeling.
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              MDN: HTML autocomplete attribute
+            </a>{" "}
+            — Complete list of autocomplete values and usage.
+          </li>
+          <li>
+            <a href="https://adrianroselli.com/2019/02/avoid-default-field-validation.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              Adrian Roselli: Avoid Default Field Validation
+            </a>{" "}
+            — Why custom validation often provides a better accessible experience.
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

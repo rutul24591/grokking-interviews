@@ -1,7 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
   <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="240" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">account lockout flow</text>
-  <text x="400" y="270" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Identity Access Diagram</text>
-  <text x="400" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Valid XML</text>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Account Lockout Flow</text>
+  
+  <!-- Login Attempt -->
+  <rect x="50" y="80" width="120" height="80" rx="8" fill="#3b82f6"/>
+  <text x="110" y="115" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#ffffff">Login</text>
+  <text x="110" y="140" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Attempt</text>
+  
+  <line x1="170" y1="120" x2="210" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="190" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">1. Submit</text>
+  
+  <!-- Auth Service -->
+  <rect x="220" y="60" width="180" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="310" y="85" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Auth Service</text>
+  
+  <rect x="240" y="100" width="140" height="30" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="310" y="120" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Validate Credentials</text>
+  
+  <rect x="240" y="135" width="140" height="30" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="310" y="155" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Increment Counter</text>
+  
+  <line x1="400" y1="120" x2="440" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="420" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">2. Check</text>
+  
+  <!-- Counter Check -->
+  <rect x="450" y="70" width="140" height="100" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="520" y="95" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Counter Check</text>
+  
+  <rect x="470" y="110" width="100" height="25" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="520" y="127" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">&lt; 5: Continue</text>
+  
+  <rect x="470" y="140" width="100" height="25" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="520" y="157" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">5-9: CAPTCHA</text>
+  
+  <line x1="590" y1="120" x2="630" y2="120" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="610" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ef4444">≥10: Lock</text>
+  
+  <!-- Lockout -->
+  <rect x="640" y="70" width="120" height="100" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="700" y="95" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">LOCKED</text>
+  
+  <rect x="660" y="110" width="80" height="25" rx="4" fill="#ef4444"/>
+  <text x="700" y="127" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Set locked_until</text>
+  
+  <rect x="660" y="140" width="80" height="25" rx="4" fill="#ef4444" opacity="0.7"/>
+  <text x="700" y="157" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Send Email</text>
+  
+  <line x1="700" y1="170" x2="700" y2="210" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Unlock Options -->
+  <rect x="620" y="220" width="160" height="120" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="700" y="245" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Unlock Options</text>
+  
+  <rect x="640" y="260" width="120" height="25" rx="4" fill="#22c55e" opacity="0.8"/>
+  <text x="700" y="277" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Auto (time expiry)</text>
+  
+  <rect x="640" y="290" width="120" height="25" rx="4" fill="#22c55e" opacity="0.6"/>
+  <text x="700" y="307" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Email Link</text>
+  
+  <rect x="640" y="320" width="120" height="25" rx="4" fill="#22c55e" opacity="0.4"/>
+  <text x="700" y="337" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Admin Reset</text>
+  
+  <!-- Success Path -->
+  <line x1="400" y1="150" x2="440" y2="280" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="420" y="200" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">Success</text>
+  
+  <rect x="450" y="290" width="140" height="60" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="520" y="315" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Login Success</text>
+  <text x="520" y="335" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Reset counter to 0</text>
+  
+  <!-- CAPTCHA Path -->
+  <line x1="590" y1="150" x2="630" y2="280" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrow)"/>
+  <text x="610" y="200" text-anchor="middle" font-family="system-ui" font-size="8" fill="#f59e0b">CAPTCHA</text>
+  
+  <rect x="640" y="290" width="120" height="50" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="700" y="315" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">CAPTCHA</text>
+  <text x="700" y="330" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Verify human</text>
+
 </svg>

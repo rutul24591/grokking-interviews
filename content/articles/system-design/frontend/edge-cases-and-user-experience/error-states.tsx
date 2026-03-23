@@ -230,37 +230,6 @@ export default function ErrorStatesArticle() {
       </section>
 
       <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://www.nngroup.com/articles/error-message-guidelines/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Nielsen Norman Group — Error Message Guidelines
-            </a>
-          </li>
-          <li>
-            <a href="https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              React Documentation — Error Boundaries
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/articles/resilient-search-experiences" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              web.dev — Building Resilient Search Experiences
-            </a>
-          </li>
-          <li>
-            <a href="https://www.smashingmagazine.com/2022/08/error-messages-ux-design/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Smashing Magazine — Designing Better Error Messages
-            </a>
-          </li>
-          <li>
-            <a href="https://martinfowler.com/bliki/CircuitBreaker.html" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Martin Fowler — Circuit Breaker Pattern
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
         <h2>Common Interview Questions</h2>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4 mb-4">
@@ -321,6 +290,37 @@ export default function ErrorStatesArticle() {
             A: Accessible error states require multiple considerations. First, error messages must be announced to screen readers using ARIA live regions — <code>aria-live=&quot;assertive&quot;</code> for critical errors that need immediate attention and <code>aria-live=&quot;polite&quot;</code> for informational errors. Second, color alone must never be the sole indicator of an error state; always pair red coloring with icons, text labels, or border changes that are perceivable without color vision. Third, inline form errors should be programmatically associated with their fields using <code>aria-describedby</code> so screen readers announce the error when the field is focused. Fourth, focus management must guide keyboard users to the error — when a form submission fails, focus should move to the first field with an error or to an error summary at the top of the form. Fifth, auto-dismissing notifications must provide sufficient time for slow readers and screen reader users, or better yet, persist until explicitly dismissed. Finally, error recovery actions (retry buttons, navigation links) must be keyboard-accessible and have descriptive labels that make sense without visual context.
           </p>
         </div>
+      </section>
+
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://www.nngroup.com/articles/error-message-guidelines/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Nielsen Norman Group — Error Message Guidelines
+            </a>
+          </li>
+          <li>
+            <a href="https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              React Documentation — Error Boundaries
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/resilient-search-experiences" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              web.dev — Building Resilient Search Experiences
+            </a>
+          </li>
+          <li>
+            <a href="https://www.smashingmagazine.com/2022/08/error-messages-ux-design/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Smashing Magazine — Designing Better Error Messages
+            </a>
+          </li>
+          <li>
+            <a href="https://martinfowler.com/bliki/CircuitBreaker.html" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Martin Fowler — Circuit Breaker Pattern
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

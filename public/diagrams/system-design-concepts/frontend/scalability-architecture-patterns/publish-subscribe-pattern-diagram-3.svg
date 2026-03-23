@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-labelledby="title desc">
+  <title id="title">Observer Pattern vs Publish-Subscribe Pattern</title>
+  <desc id="desc">Comparison showing direct observer registration versus broker-mediated publish-subscribe with coupling differences</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="450" fill="var(--bg-color, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="var(--text-color, #1a1a1a)">Observer vs Publish-Subscribe</text>
+  
+  <!-- Observer Pattern -->
+  <rect x="50" y="70" width="340" height="180" rx="8" fill="var(--primary-light, #e3f2fd)" stroke="var(--primary-color, #1976d2)" stroke-width="2"/>
+  <text x="220" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--primary-color, #1976d2)">Observer Pattern</text>
+  
+  <!-- Subject -->
+  <rect x="70" y="115" width="100" height="60" rx="6" fill="var(--bg-color, #ffffff)" stroke="var(--primary-color, #1976d2)" stroke-width="2"/>
+  <text x="120" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="var(--primary-color, #1976d2)">Subject</text>
+  <text x="120" y="157" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">State + observers[]</text>
+  
+  <!-- Direct connections -->
+  <path d="M170 130 L220 130" stroke="var(--primary-color, #1976d2)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <path d="M170 145 L220 145" stroke="var(--primary-color, #1976d2)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <path d="M170 160 L220 160" stroke="var(--primary-color, #1976d2)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Observers -->
+  <rect x="220" y="115" width="80" height="25" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="260" y="132" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-color, #1a1a1a)">Observer 1</text>
+  
+  <rect x="220" y="145" width="80" height="25" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="260" y="162" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-color, #1a1a1a)">Observer 2</text>
+  
+  <rect x="220" y="175" width="80" height="25" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="260" y="192" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-color, #1a1a1a)">Observer 3</text>
+  
+  <!-- Observer characteristics -->
+  <rect x="70" y="220" width="300" height="25" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="220" y="237" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-color, #1a1a1a)">Direct coupling: Subject knows all observers</text>
+  
+  <!-- Publish-Subscribe Pattern -->
+  <rect x="410" y="70" width="340" height="180" rx="8" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="2"/>
+  <text x="580" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--text-color, #1a1a1a)">Publish-Subscribe Pattern</text>
+  
+  <!-- Publisher -->
+  <rect x="430" y="115" width="80" height="60" rx="6" fill="var(--bg-color, #ffffff)" stroke="var(--warning-color, #ffc107)" stroke-width="2"/>
+  <text x="470" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="var(--warning-color, #ffc107)">Publisher</text>
+  <text x="470" y="157" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Emits events</text>
+  
+  <!-- Connection to broker -->
+  <path d="M510 145 L540 145" stroke="var(--warning-color, #ffc107)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="525" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-muted, #666666)">publish()</text>
+  
+  <!-- Message Broker -->
+  <rect x="540" y="115" width="100" height="60" rx="6" fill="var(--info-light, #e7f3ff)" stroke="var(--info-color, #0d6efd)" stroke-width="2"/>
+  <text x="590" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="var(--info-color, #0d6efd)">Broker</text>
+  <text x="590" y="157" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Topic routing</text>
+  
+  <!-- Connections to subscribers -->
+  <path d="M640 130 L690 130" stroke="var(--info-color, #0d6efd)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <path d="M640 145 L690 145" stroke="var(--info-color, #0d6efd)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <path d="M640 160 L690 160" stroke="var(--info-color, #0d6efd)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="665" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-muted, #666666)">subscribe()</text>
+  
+  <!-- Subscribers -->
+  <rect x="690" y="115" width="80" height="25" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="730" y="132" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-color, #1a1a1a)">Subscriber 1</text>
+  
+  <rect x="690" y="145" width="80" height="25" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="730" y="162" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-color, #1a1a1a)">Subscriber 2</text>
+  
+  <rect x="690" y="175" width="80" height="25" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="730" y="192" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-color, #1a1a1a)">Subscriber 3</text>
+  
+  <!-- PubSub characteristics -->
+  <rect x="430" y="220" width="300" height="25" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="580" y="237" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-color, #1a1a1a)">Full decoupling: Publisher unaware of subscribers</text>
+  
+  <!-- Comparison Table -->
+  <text x="400" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--text-color, #1a1a1a)">Key Differences</text>
+  
+  <rect x="100" y="300" width="600" height="135" rx="6" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  
+  <!-- Headers -->
+  <rect x="100" y="300" width="150" height="25" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="250" y="300" width="225" height="25" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="475" y="300" width="225" height="25" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  
+  <text x="175" y="317" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="var(--text-color, #1a1a1a)">Aspect</text>
+  <text x="362" y="317" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="var(--text-color, #1a1a1a)">Observer</text>
+  <text x="587" y="317" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="var(--text-color, #1a1a1a)">Publish-Subscribe</text>
+  
+  <!-- Row 1: Coupling -->
+  <rect x="100" y="325" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="250" y="325" width="225" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="475" y="325" width="225" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  
+  <text x="175" y="342" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-color, #1a1a1a)">Coupling</text>
+  <text x="362" y="342" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--error-color, #dc3545)">Direct (subject knows observers)</text>
+  <text x="587" y="342" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--success-color, #28a745)">Full (broker mediates)</text>
+  
+  <!-- Row 2: Communication -->
+  <rect x="100" y="350" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="250" y="350" width="225" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="475" y="350" width="225" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  
+  <text x="175" y="367" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-color, #1a1a1a)">Communication</text>
+  <text x="362" y="367" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-color, #1a1a1a)">Direct method calls</text>
+  <text x="587" y="367" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-color, #1a1a1a)">Via message broker</text>
+  
+  <!-- Row 3: Scale -->
+  <rect x="100" y="375" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="250" y="375" width="225" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="475" y="375" width="225" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  
+  <text x="175" y="392" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-color, #1a1a1a)">Scale</text>
+  <text x="362" y="392" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-color, #1a1a1a)">In-process, single app</text>
+  <text x="587" y="392" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-color, #1a1a1a)">Cross-process, distributed</text>
+  
+  <!-- Row 4: Use Case -->
+  <rect x="100" y="400" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="250" y="400" width="225" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="475" y="400" width="225" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  
+  <text x="175" y="417" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-color, #1a1a1a)">Best For</text>
+  <text x="362" y="417" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-color, #1a1a1a)">UI event handling</text>
+  <text x="587" y="417" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-color, #1a1a1a)">Microservices, event buses</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-color, #1a1a1a)"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,18 +1,48 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Skeleton Screens diagram 1">
-  <defs>
-    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
-  </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg1)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Skeleton Screens</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 1</text>
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Skeleton Screen Rendering Decision Flow</text>
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6d5bd0"/></marker></defs>
+  <rect x="350" y="55" width="200" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="80" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Data Request</text>
+  <line x1="450" y1="95" x2="450" y2="125" stroke="#6d5bd0" stroke-width="2" marker-end="url(#a)"/>
+  <polygon points="450,125 550,160 450,195 350,160" fill="#fff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="157" text-anchor="middle" font-size="10" fill="#1a1822">Cache?</text>
+  <line x1="350" y1="160" x2="160" y2="160" stroke="#6d5bd0" stroke-width="2" marker-end="url(#a)"/>
+  <text x="255" y="152" text-anchor="middle" font-size="10" fill="#6d5bd0">Fresh hit</text>
+  <rect x="30" y="140" width="130" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="95" y="165" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Render Now</text>
+  <line x1="550" y1="160" x2="770" y2="160" stroke="#6d5bd0" stroke-width="2" marker-end="url(#a)"/>
+  <text x="660" y="152" text-anchor="middle" font-size="10" fill="#6d5bd0">Stale hit</text>
+  <rect x="770" y="140" width="120" height="40" rx="6" fill="#fff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="830" y="158" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a1822">Show Stale</text>
+  <text x="830" y="173" text-anchor="middle" font-size="8" fill="#6d5bd0">+ revalidate</text>
+  <line x1="450" y1="195" x2="450" y2="235" stroke="#6d5bd0" stroke-width="2" marker-end="url(#a)"/>
+  <text x="470" y="220" font-size="10" fill="#6d5bd0">Miss</text>
+  <rect x="350" y="235" width="200" height="45" rx="8" fill="#fff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="255" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1822">Start Threshold Timer</text>
+  <text x="450" y="272" text-anchor="middle" font-size="9" fill="#6d5bd0">200-500ms configurable</text>
+  <line x1="350" y1="257" x2="160" y2="257" stroke="#6d5bd0" stroke-width="2" marker-end="url(#a)"/>
+  <text x="255" y="250" text-anchor="middle" font-size="9" fill="#6d5bd0">Data arrives fast</text>
+  <rect x="30" y="237" width="130" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="95" y="262" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Skip Skeleton</text>
+  <line x1="450" y1="280" x2="450" y2="320" stroke="#6d5bd0" stroke-width="2" marker-end="url(#a)"/>
+  <text x="470" y="305" font-size="10" fill="#6d5bd0">Timeout elapsed</text>
+  <rect x="350" y="320" width="200" height="45" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="340" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Show Skeleton</text>
+  <text x="450" y="358" text-anchor="middle" font-size="9" fill="#fff">Shimmer animation active</text>
+  <line x1="450" y1="365" x2="450" y2="400" stroke="#6d5bd0" stroke-width="2" marker-end="url(#a)"/>
+  <text x="470" y="387" font-size="10" fill="#6d5bd0">Data arrives</text>
+  <rect x="350" y="400" width="200" height="40" rx="8" fill="#fff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="420" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1822">Crossfade Transition</text>
+  <text x="450" y="435" text-anchor="middle" font-size="9" fill="#6d5bd0">150-300ms smooth</text>
+  <line x1="450" y1="440" x2="450" y2="470" stroke="#6d5bd0" stroke-width="2" marker-end="url(#a)"/>
+  <rect x="370" y="470" width="160" height="25" rx="6" fill="#6d5bd0"/>
+  <text x="450" y="488" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Content Visible</text>
+  <rect x="650" y="320" width="220" height="80" rx="8" fill="#fff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="760" y="342" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Error Handling</text>
+  <line x1="665" y1="352" x2="855" y2="352" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="760" y="370" text-anchor="middle" font-size="9" fill="#1a1822">If fetch fails: replace</text>
+  <text x="760" y="385" text-anchor="middle" font-size="9" fill="#1a1822">skeleton with error state.</text>
+  <text x="760" y="397" text-anchor="middle" font-size="9" fill="#1a1822">Never persist skeleton.</text>
+  <line x1="550" y1="342" x2="650" y2="342" stroke="#d7d1e6" stroke-width="1.5" stroke-dasharray="4"/>
 </svg>

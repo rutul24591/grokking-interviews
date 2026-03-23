@@ -1,18 +1,123 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Keyboard Shortcuts diagram 3">
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Keyboard Shortcut Discoverability System</text>
+
+  <!-- Inline Hints -->
+  <rect x="30" y="60" width="260" height="190" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="160" y="82" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Inline Hints</text>
+
+  <!-- Menu item mockup -->
+  <rect x="50" y="95" width="220" height="30" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="62" y="114" font-size="10" fill="#1a1822">Save</text>
+  <rect x="198" y="100" width="60" height="20" rx="3" fill="#6d5bd0"/>
+  <text x="228" y="114" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">⌘S</text>
+
+  <rect x="50" y="130" width="220" height="30" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="62" y="149" font-size="10" fill="#1a1822">Undo</text>
+  <rect x="198" y="135" width="60" height="20" rx="3" fill="#6d5bd0"/>
+  <text x="228" y="149" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">⌘Z</text>
+
+  <rect x="50" y="165" width="220" height="30" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="62" y="184" font-size="10" fill="#1a1822">Copy</text>
+  <rect x="198" y="170" width="60" height="20" rx="3" fill="#6d5bd0"/>
+  <text x="228" y="184" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">⌘C</text>
+
+  <text x="50" y="218" font-size="9" fill="#1a1822">Show key combos in menus,</text>
+  <text x="50" y="232" font-size="9" fill="#1a1822">tooltips, and context menus.</text>
+  <text x="50" y="246" font-size="9" fill="#1a1822">Updates for platform (⌘/Ctrl).</text>
+
+  <!-- Tooltip Pattern -->
+  <rect x="320" y="60" width="260" height="190" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="82" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Tooltip Shortcuts</text>
+
+  <!-- Button with tooltip -->
+  <rect x="390" y="100" width="120" height="36" rx="6" fill="#6d5bd0"/>
+  <text x="450" y="123" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Bold</text>
+
+  <!-- Tooltip -->
+  <rect x="370" y="142" width="160" height="32" rx="6" fill="#1a1822"/>
+  <text x="450" y="162" text-anchor="middle" font-size="10" fill="#ffffff">Bold (⌘+B)</text>
+  <!-- Arrow up -->
+  <polygon points="445,142 455,142 450,136" fill="#1a1822"/>
+
+  <text x="340" y="200" font-size="9" fill="#1a1822">Show on hover after 500ms delay.</text>
+  <text x="340" y="214" font-size="9" fill="#1a1822">Include action name + shortcut.</text>
+  <text x="340" y="228" font-size="9" fill="#1a1822">Hide immediately on mouse leave.</text>
+  <text x="340" y="242" font-size="9" fill="#1a1822">Accessible via aria-keyshortcuts.</text>
+
+  <!-- Command Palette -->
+  <rect x="610" y="60" width="260" height="190" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="740" y="82" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Command Palette (⌘K)</text>
+
+  <!-- Search bar -->
+  <rect x="625" y="95" width="230" height="28" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="637" y="113" font-size="10" fill="#d7d1e6">Search commands...</text>
+
+  <!-- Results -->
+  <rect x="625" y="128" width="230" height="24" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <text x="637" y="144" font-size="9" fill="#1a1822">Toggle Sidebar</text>
+  <text x="815" y="144" font-size="9" fill="#6d5bd0" text-anchor="end">⌘B</text>
+
+  <rect x="625" y="156" width="230" height="24" rx="3" fill="#ffffff"/>
+  <text x="637" y="172" font-size="9" fill="#1a1822">Open Terminal</text>
+  <text x="815" y="172" font-size="9" fill="#6d5bd0" text-anchor="end">⌘`</text>
+
+  <rect x="625" y="184" width="230" height="24" rx="3" fill="#ffffff"/>
+  <text x="637" y="200" font-size="9" fill="#1a1822">Find in Files</text>
+  <text x="815" y="200" font-size="9" fill="#6d5bd0" text-anchor="end">⌘⇧F</text>
+
+  <text x="625" y="232" font-size="9" fill="#1a1822">Fuzzy search across all commands.</text>
+  <text x="625" y="246" font-size="9" fill="#1a1822">Execute without knowing shortcut.</text>
+
+  <!-- Shortcut Overlay (? key) -->
+  <rect x="30" y="270" width="410" height="210" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="235" y="292" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Shortcut Reference Sheet (press ?)</text>
+
+  <!-- Categories -->
+  <rect x="50" y="305" width="180" height="160" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="140" y="323" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Navigation</text>
+  <text x="62" y="342" font-size="9" fill="#1a1822">⌘K    Command palette</text>
+  <text x="62" y="358" font-size="9" fill="#1a1822">⌘P    Quick open file</text>
+  <text x="62" y="374" font-size="9" fill="#1a1822">⌘⇧P   Run command</text>
+  <text x="62" y="390" font-size="9" fill="#1a1822">⌘B    Toggle sidebar</text>
+  <text x="62" y="406" font-size="9" fill="#1a1822">⌘1-9  Switch tab</text>
+  <text x="62" y="422" font-size="9" fill="#1a1822">⌘\    Split editor</text>
+  <text x="62" y="438" font-size="9" fill="#1a1822">⌘W    Close tab</text>
+  <text x="62" y="454" font-size="9" fill="#1a1822">⌘⇧T   Reopen tab</text>
+
+  <rect x="245" y="305" width="180" height="160" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="335" y="323" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Editing</text>
+  <text x="257" y="342" font-size="9" fill="#1a1822">⌘Z    Undo</text>
+  <text x="257" y="358" font-size="9" fill="#1a1822">⌘⇧Z   Redo</text>
+  <text x="257" y="374" font-size="9" fill="#1a1822">⌘D    Select next match</text>
+  <text x="257" y="390" font-size="9" fill="#1a1822">⌘L    Select line</text>
+  <text x="257" y="406" font-size="9" fill="#1a1822">⌥↑↓   Move line</text>
+  <text x="257" y="422" font-size="9" fill="#1a1822">⌘/    Toggle comment</text>
+  <text x="257" y="438" font-size="9" fill="#1a1822">⌘⇧K   Delete line</text>
+  <text x="257" y="454" font-size="9" fill="#1a1822">Tab   Indent</text>
+
+  <!-- Progressive Disclosure -->
+  <rect x="460" y="270" width="410" height="210" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="665" y="292" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Progressive Disclosure Strategy</text>
+
+  <rect x="480" y="310" width="370" height="40" rx="4" fill="#6d5bd0"/>
+  <text x="665" y="327" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Level 1: Essential (day 1)</text>
+  <text x="665" y="342" text-anchor="middle" font-size="9" fill="#ffffff">⌘S Save | ⌘Z Undo | ⌘C/V Copy/Paste — shown in onboarding</text>
+
+  <rect x="480" y="357" width="370" height="40" rx="4" fill="#6d5bd0" opacity="0.75"/>
+  <text x="665" y="374" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Level 2: Productive (week 1)</text>
+  <text x="665" y="389" text-anchor="middle" font-size="9" fill="#ffffff">⌘K Palette | ⌘⇧F Find | ⌘B Sidebar — tooltip hints</text>
+
+  <rect x="480" y="404" width="370" height="40" rx="4" fill="#6d5bd0" opacity="0.5"/>
+  <text x="665" y="421" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Level 3: Power User (month 1)</text>
+  <text x="665" y="436" text-anchor="middle" font-size="9" fill="#ffffff">Chord sequences | Vim keys | Custom bindings — reference sheet</text>
+
+  <rect x="480" y="451" width="370" height="22" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="665" y="466" text-anchor="middle" font-size="9" fill="#1a1822">Show &quot;Pro tip: press ⌘K for command palette&quot; after 10 menu uses</text>
+
   <defs>
-    <linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
   </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg3)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Keyboard Shortcuts</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 3</text>
 </svg>

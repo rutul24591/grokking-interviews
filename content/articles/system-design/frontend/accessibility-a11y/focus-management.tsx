@@ -356,44 +356,7 @@ export default function FocusManagementArticle() {
         </ul>
       </section>
 
-      {/* ─── Section 8: References & Further Reading ─── */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              Understanding WCAG 2.4.7: Focus Visible
-            </a>{" "}
-            — Requirements for visible focus indicators.
-          </li>
-          <li>
-            <a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              Understanding WCAG 2.4.11: Focus Not Obscured
-            </a>{" "}
-            — WCAG 2.2 requirements for focus indicator visibility.
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inert" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              MDN: The inert attribute
-            </a>{" "}
-            — Native HTML attribute for disabling interaction with background content.
-          </li>
-          <li>
-            <a href="https://github.com/focus-trap/focus-trap" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              focus-trap Library
-            </a>{" "}
-            — Production-grade JavaScript focus trapping library.
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              MDN: :focus-visible
-            </a>{" "}
-            — CSS pseudo-class for keyboard-only focus styles.
-          </li>
-        </ul>
-      </section>
-
-      {/* ─── Section 9: Common Interview Questions ─── */}
+      {/* ─── Section 8: Common Interview Questions ─── */}
       <section>
         <h2>Common Interview Questions</h2>
 
@@ -480,6 +443,43 @@ export default function FocusManagementArticle() {
             through the top layer rendering order.
           </p>
         </div>
+      </section>
+
+      {/* ─── Section 9: References & Further Reading ─── */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              Understanding WCAG 2.4.7: Focus Visible
+            </a>{" "}
+            — Requirements for visible focus indicators.
+          </li>
+          <li>
+            <a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              Understanding WCAG 2.4.11: Focus Not Obscured
+            </a>{" "}
+            — WCAG 2.2 requirements for focus indicator visibility.
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inert" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              MDN: The inert attribute
+            </a>{" "}
+            — Native HTML attribute for disabling interaction with background content.
+          </li>
+          <li>
+            <a href="https://github.com/focus-trap/focus-trap" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              focus-trap Library
+            </a>{" "}
+            — Production-grade JavaScript focus trapping library.
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              MDN: :focus-visible
+            </a>{" "}
+            — CSS pseudo-class for keyboard-only focus styles.
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

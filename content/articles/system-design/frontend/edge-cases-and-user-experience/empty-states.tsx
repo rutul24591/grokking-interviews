@@ -357,32 +357,6 @@ export default function EmptyStatesArticle() {
       </section>
 
       <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://www.nngroup.com/articles/empty-state-interface-design/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Nielsen Norman Group — Empty State Design
-            </a>
-          </li>
-          <li>
-            <a href="https://www.invisionapp.com/inside-design/empty-state-design-guidelines/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              InVision — Empty State Design Guidelines
-            </a>
-          </li>
-          <li>
-            <a href="https://emptystat.es/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              emptystat.es — Collection of Empty State Design Inspiration
-            </a>
-          </li>
-          <li>
-            <a href="https://material.io/design/communication/empty-states.html" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Material Design — Empty States Guidelines
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -416,6 +390,32 @@ export default function EmptyStatesArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://www.nngroup.com/articles/empty-state-interface-design/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Nielsen Norman Group — Empty State Design
+            </a>
+          </li>
+          <li>
+            <a href="https://www.invisionapp.com/inside-design/empty-state-design-guidelines/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              InVision — Empty State Design Guidelines
+            </a>
+          </li>
+          <li>
+            <a href="https://emptystat.es/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              emptystat.es — Collection of Empty State Design Inspiration
+            </a>
+          </li>
+          <li>
+            <a href="https://material.io/design/communication/empty-states.html" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Material Design — Empty States Guidelines
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

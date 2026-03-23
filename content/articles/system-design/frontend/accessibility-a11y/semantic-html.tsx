@@ -591,56 +591,7 @@ export default function SemanticHTMLArticle() {
       </section>
 
       {/* ============================================================
-          SECTION 8: REFERENCES & FURTHER READING
-          ============================================================ */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://html.spec.whatwg.org/multipage/" target="_blank" rel="noopener noreferrer" className="text-accent underline">
-              WHATWG HTML Living Standard
-            </a> &mdash; The authoritative specification for HTML elements, their semantics, and content models.
-          </li>
-          <li>
-            <a href="https://www.w3.org/TR/html-aria/" target="_blank" rel="noopener noreferrer" className="text-accent underline">
-              ARIA in HTML (W3C)
-            </a> &mdash; Defines the mapping between HTML elements and their implicit ARIA roles, states, and properties.
-          </li>
-          <li>
-            <a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noopener noreferrer" className="text-accent underline">
-              WAI-ARIA Authoring Practices Guide
-            </a> &mdash; Design patterns and examples for building accessible web components, including when to use native HTML vs. ARIA.
-          </li>
-          <li>
-            <a href="https://www.w3.org/TR/WCAG21/" target="_blank" rel="noopener noreferrer" className="text-accent underline">
-              Web Content Accessibility Guidelines (WCAG) 2.1
-            </a> &mdash; The global standard for web accessibility. Semantic HTML directly supports Success Criteria 1.3.1, 2.4.1, 2.4.6, 4.1.2, and others.
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element" target="_blank" rel="noopener noreferrer" className="text-accent underline">
-              MDN Web Docs: HTML Elements Reference
-            </a> &mdash; Comprehensive reference for every HTML element with usage examples and browser compatibility tables.
-          </li>
-          <li>
-            <a href="https://www.scottohara.me/blog/2022/09/12/details-summary.html" target="_blank" rel="noopener noreferrer" className="text-accent underline">
-              Scott O&apos;Hara: Details/Summary Accessibility
-            </a> &mdash; In-depth analysis of the details/summary pattern&apos;s accessibility characteristics across browsers and screen readers.
-          </li>
-          <li>
-            <a href="https://testing-library.com/docs/queries/byrole" target="_blank" rel="noopener noreferrer" className="text-accent underline">
-              Testing Library: ByRole Queries
-            </a> &mdash; Documentation for role-based queries that validate accessibility as a side effect of functional testing.
-          </li>
-          <li>
-            <a href="https://www.deque.com/axe/" target="_blank" rel="noopener noreferrer" className="text-accent underline">
-              Deque axe-core
-            </a> &mdash; The industry-standard automated accessibility testing engine. Integrates with CI pipelines, browser extensions, and testing frameworks.
-          </li>
-        </ul>
-      </section>
-
-      {/* ============================================================
-          SECTION 9: COMMON INTERVIEW QUESTIONS
+          SECTION 8: COMMON INTERVIEW QUESTIONS
           ============================================================ */}
       <section>
         <h2>Common Interview Questions</h2>
@@ -745,6 +696,55 @@ export default function SemanticHTMLArticle() {
             composition boundaries.
           </p>
         </div>
+      </section>
+
+      {/* ============================================================
+          SECTION 9: REFERENCES & FURTHER READING
+          ============================================================ */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://html.spec.whatwg.org/multipage/" target="_blank" rel="noopener noreferrer" className="text-accent underline">
+              WHATWG HTML Living Standard
+            </a> &mdash; The authoritative specification for HTML elements, their semantics, and content models.
+          </li>
+          <li>
+            <a href="https://www.w3.org/TR/html-aria/" target="_blank" rel="noopener noreferrer" className="text-accent underline">
+              ARIA in HTML (W3C)
+            </a> &mdash; Defines the mapping between HTML elements and their implicit ARIA roles, states, and properties.
+          </li>
+          <li>
+            <a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noopener noreferrer" className="text-accent underline">
+              WAI-ARIA Authoring Practices Guide
+            </a> &mdash; Design patterns and examples for building accessible web components, including when to use native HTML vs. ARIA.
+          </li>
+          <li>
+            <a href="https://www.w3.org/TR/WCAG21/" target="_blank" rel="noopener noreferrer" className="text-accent underline">
+              Web Content Accessibility Guidelines (WCAG) 2.1
+            </a> &mdash; The global standard for web accessibility. Semantic HTML directly supports Success Criteria 1.3.1, 2.4.1, 2.4.6, 4.1.2, and others.
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element" target="_blank" rel="noopener noreferrer" className="text-accent underline">
+              MDN Web Docs: HTML Elements Reference
+            </a> &mdash; Comprehensive reference for every HTML element with usage examples and browser compatibility tables.
+          </li>
+          <li>
+            <a href="https://www.scottohara.me/blog/2022/09/12/details-summary.html" target="_blank" rel="noopener noreferrer" className="text-accent underline">
+              Scott O&apos;Hara: Details/Summary Accessibility
+            </a> &mdash; In-depth analysis of the details/summary pattern&apos;s accessibility characteristics across browsers and screen readers.
+          </li>
+          <li>
+            <a href="https://testing-library.com/docs/queries/byrole" target="_blank" rel="noopener noreferrer" className="text-accent underline">
+              Testing Library: ByRole Queries
+            </a> &mdash; Documentation for role-based queries that validate accessibility as a side effect of functional testing.
+          </li>
+          <li>
+            <a href="https://www.deque.com/axe/" target="_blank" rel="noopener noreferrer" className="text-accent underline">
+              Deque axe-core
+            </a> &mdash; The industry-standard automated accessibility testing engine. Integrates with CI pipelines, browser extensions, and testing frameworks.
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

@@ -51,15 +51,15 @@ export default function MetaTagsArticle() {
           In the late 1990s, the <code>meta keywords</code> tag was a primary
           ranking signal — search engines trusted page authors to accurately
           describe their content. Widespread abuse through keyword stuffing led
-          Google to formally deprecate meta keywords as a ranking factor in 2009.
-          Today, the meta landscape is far more sophisticated: the{" "}
+          Google to formally deprecate meta keywords as a ranking factor in
+          2009. Today, the meta landscape is far more sophisticated: the{" "}
           <code>title</code> tag and <code>meta description</code> directly
           influence click-through rates from search results, Open Graph tags
-          control social media previews across Facebook, LinkedIn, and
-          messaging apps, Twitter Cards provide platform-specific rich previews,
-          and technical meta tags like <code>robots</code>,{" "}
-          <code>viewport</code>, and <code>canonical</code> govern crawling,
-          rendering, and duplicate content resolution.
+          control social media previews across Facebook, LinkedIn, and messaging
+          apps, Twitter Cards provide platform-specific rich previews, and
+          technical meta tags like <code>robots</code>, <code>viewport</code>,
+          and <code>canonical</code> govern crawling, rendering, and duplicate
+          content resolution.
         </p>
         <p>
           At the staff/principal engineer level, meta tag strategy is an
@@ -109,21 +109,21 @@ export default function MetaTagsArticle() {
             <code>og:locale</code>, and type-specific properties. OG tags are
             read by Facebook, LinkedIn, Pinterest, WhatsApp, Telegram, Slack,
             Discord, and most modern messaging platforms. The{" "}
-            <code>og:image</code> should be at least 1200×630 pixels for
-            optimal display across platforms.
+            <code>og:image</code> should be at least 1200×630 pixels for optimal
+            display across platforms.
           </li>
           <li>
             <strong>Twitter Cards:</strong> Twitter&apos;s proprietary meta tag
             system that controls how links appear when shared on the platform.
             Four card types exist: <code>summary</code> (small square image),{" "}
             <code>summary_large_image</code> (large rectangular image),{" "}
-            <code>app</code> (app install card), and <code>player</code>{" "}
-            (inline video/audio). Twitter falls back to OG tags when
-            Twitter-specific tags are absent, so sites implementing OG tags get
-            basic Twitter previews automatically. The{" "}
-            <code>twitter:card</code> meta tag specifies the card type, while{" "}
-            <code>twitter:site</code> and <code>twitter:creator</code> link to
-            organizational and author Twitter accounts.
+            <code>app</code> (app install card), and <code>player</code> (inline
+            video/audio). Twitter falls back to OG tags when Twitter-specific
+            tags are absent, so sites implementing OG tags get basic Twitter
+            previews automatically. The <code>twitter:card</code> meta tag
+            specifies the card type, while <code>twitter:site</code> and{" "}
+            <code>twitter:creator</code> link to organizational and author
+            Twitter accounts.
           </li>
           <li>
             <strong>Viewport Meta:</strong> The{" "}
@@ -141,10 +141,10 @@ export default function MetaTagsArticle() {
             <strong>Robots Meta Tag:</strong> Controls search engine crawling
             and indexing behavior at the page level. Common directives include{" "}
             <code>noindex</code> (prevent indexing), <code>nofollow</code>{" "}
-            (don&apos;t follow links), <code>noarchive</code> (don&apos;t cache),{" "}
-            <code>nosnippet</code> (don&apos;t show snippets), and{" "}
-            <code>max-snippet</code> (limit snippet length). The robots meta
-            tag provides page-level granularity that robots.txt cannot offer.
+            (don&apos;t follow links), <code>noarchive</code> (don&apos;t
+            cache), <code>nosnippet</code> (don&apos;t show snippets), and{" "}
+            <code>max-snippet</code> (limit snippet length). The robots meta tag
+            provides page-level granularity that robots.txt cannot offer.
           </li>
           <li>
             <strong>Canonical Link Tag:</strong> While technically a{" "}
@@ -210,8 +210,8 @@ export default function MetaTagsArticle() {
           tag generation requires integration with the rendering pipeline. In
           Next.js, the <code>generateMetadata</code> function (App Router) or{" "}
           <code>next/head</code> (Pages Router) handles this at the framework
-          level. The architecture must account for data fetching (product titles,
-          article descriptions), image generation (dynamic OG images via
+          level. The architecture must account for data fetching (product
+          titles, article descriptions), image generation (dynamic OG images via
           services like Vercel OG or Cloudinary), template composition (brand
           patterns, character limits), and validation (ensuring all required
           tags are present before deployment).
@@ -250,16 +250,16 @@ export default function MetaTagsArticle() {
               </td>
               <td className="p-3">
                 Adds server-side latency; data fetching failures can result in
-                missing tags; requires server infrastructure; higher
-                compute costs
+                missing tags; requires server infrastructure; higher compute
+                costs
               </td>
             </tr>
             <tr>
               <td className="p-3 font-medium">SSG with Revalidation</td>
               <td className="p-3">
                 Pre-generated at build time for speed; ISR allows periodic
-                updates; CDN-cacheable; combines static performance with
-                dynamic content
+                updates; CDN-cacheable; combines static performance with dynamic
+                content
               </td>
               <td className="p-3">
                 Stale data between revalidation intervals; build times scale
@@ -301,7 +301,8 @@ export default function MetaTagsArticle() {
             og:title, og:description, og:image, og:url, and og:type on every
             publicly shareable page. Missing og:image is the most impactful
             omission — pages shared without images receive 50-80% fewer clicks
-            on social platforms compared to those with compelling preview images.
+            on social platforms compared to those with compelling preview
+            images.
           </li>
           <li>
             <strong>Use Server-Side Rendering for Meta Tags:</strong> Social
@@ -334,9 +335,9 @@ export default function MetaTagsArticle() {
           <li>
             <strong>Handle Fallbacks Gracefully:</strong> Design the meta tag
             generation pipeline with fallback chains. If a product image is
-            missing, fall back to category image, then site default image.
-            Never render a page without meta tags — always have defaults that
-            produce a reasonable social preview.
+            missing, fall back to category image, then site default image. Never
+            render a page without meta tags — always have defaults that produce
+            a reasonable social preview.
           </li>
         </ol>
       </section>
@@ -354,9 +355,9 @@ export default function MetaTagsArticle() {
           <li>
             <strong>Ignoring Social Platform Caching:</strong> After updating OG
             tags, engineers expect the changes to appear immediately on social
-            platforms. Facebook caches scrape results for up to 30 days.
-            Without manual cache invalidation via each platform&apos;s debugging
-            tool, outdated previews persist indefinitely.
+            platforms. Facebook caches scrape results for up to 30 days. Without
+            manual cache invalidation via each platform&apos;s debugging tool,
+            outdated previews persist indefinitely.
           </li>
           <li>
             <strong>Duplicate Titles Across Pages:</strong> Template-driven
@@ -401,9 +402,9 @@ export default function MetaTagsArticle() {
             <strong>Shopify Storefronts:</strong> Shopify&apos;s Liquid
             templating engine generates product-specific meta tags from catalog
             data — product name as title, description from product copy, first
-            product image as og:image. This automated pipeline ensures
-            thousands of product pages have complete, unique metadata without
-            manual intervention.
+            product image as og:image. This automated pipeline ensures thousands
+            of product pages have complete, unique metadata without manual
+            intervention.
           </li>
           <li>
             <strong>The New York Times:</strong> Implements comprehensive
@@ -415,61 +416,14 @@ export default function MetaTagsArticle() {
           <li>
             <strong>Vercel/Next.js:</strong> Their documentation site uses
             Next.js generateMetadata API to produce page-specific meta tags at
-            build time with ISR, and Vercel OG (@vercel/og) for dynamic OG
-            image generation at the edge using Satori — converting React
-            components to SVG to PNG in milliseconds.
+            build time with ISR, and Vercel OG (@vercel/og) for dynamic OG image
+            generation at the edge using Satori — converting React components to
+            SVG to PNG in milliseconds.
           </li>
         </ul>
       </section>
 
-      {/* Section 8: References & Further Reading */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://ogp.me/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              The Open Graph Protocol — Official Specification
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/abouts-cards"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              Twitter Cards Documentation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developers.google.com/search/docs/appearance/title-link"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              Google Search Central — Title Links
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://nextjs.org/docs/app/building-your-application/optimizing/metadata"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              Next.js Metadata API Documentation
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      {/* Section 9: Common Interview Questions */}
+      {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -517,14 +471,14 @@ export default function MetaTagsArticle() {
             <p className="mt-2 text-sm">
               A: Social media crawlers (Facebook, Twitter, LinkedIn) do not
               execute JavaScript at all — they parse raw HTML. While Googlebot
-              does execute JavaScript, it uses a two-phase indexing process where
-              content is first indexed from the raw HTML and JavaScript rendering
-              happens later in a separate queue. This means client-side meta
-              tags may not be indexed for hours or days, and during high crawl
-              periods, the rendering queue backs up significantly. Additionally,
-              any JavaScript error that prevents meta tag injection leaves the
-              page with no metadata at all — a silent failure that is difficult
-              to detect at scale.
+              does execute JavaScript, it uses a two-phase indexing process
+              where content is first indexed from the raw HTML and JavaScript
+              rendering happens later in a separate queue. This means
+              client-side meta tags may not be indexed for hours or days, and
+              during high crawl periods, the rendering queue backs up
+              significantly. Additionally, any JavaScript error that prevents
+              meta tag injection leaves the page with no metadata at all — a
+              silent failure that is difficult to detect at scale.
             </p>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -558,9 +512,10 @@ export default function MetaTagsArticle() {
               descriptions with auto-generated snippets from page content when
               it determines the content better matches the user&apos;s query.
               Despite this, providing a well-crafted meta description remains a
-              best practice because it acts as a default when Google doesn&apos;t
-              generate its own snippet and it improves social sharing previews
-              where platforms use the description tag as a fallback.
+              best practice because it acts as a default when Google
+              doesn&apos;t generate its own snippet and it improves social
+              sharing previews where platforms use the description tag as a
+              fallback.
             </p>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -569,20 +524,67 @@ export default function MetaTagsArticle() {
             </p>
             <p className="mt-2 text-sm">
               A: I would use an edge function (Vercel OG with Satori, or
-              Cloudflare Workers with sharp) that accepts page parameters (title,
-              author, category) as query parameters and generates a branded
-              image on-the-fly. The function renders a React-like component to
-              SVG, converts to PNG, and returns the image with aggressive cache
-              headers (Cache-Control: public, max-age=86400). The og:image URL
-              in the page head points to this edge function with the appropriate
-              parameters. This approach eliminates the need to pre-generate and
-              store millions of OG images while ensuring every page has a unique,
-              branded social preview. Cache invalidation is handled by changing
-              the query parameters (e.g., adding a version hash) when the
-              template or content changes.
+              Cloudflare Workers with sharp) that accepts page parameters
+              (title, author, category) as query parameters and generates a
+              branded image on-the-fly. The function renders a React-like
+              component to SVG, converts to PNG, and returns the image with
+              aggressive cache headers (Cache-Control: public, max-age=86400).
+              The og:image URL in the page head points to this edge function
+              with the appropriate parameters. This approach eliminates the need
+              to pre-generate and store millions of OG images while ensuring
+              every page has a unique, branded social preview. Cache
+              invalidation is handled by changing the query parameters (e.g.,
+              adding a version hash) when the template or content changes.
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 9: References & Further Reading */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a
+              href="https://ogp.me/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              The Open Graph Protocol — Official Specification
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/abouts-cards"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              Twitter Cards Documentation
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developers.google.com/search/docs/appearance/title-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              Google Search Central — Title Links
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://nextjs.org/docs/app/building-your-application/optimizing/metadata"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              Next.js Metadata API Documentation
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

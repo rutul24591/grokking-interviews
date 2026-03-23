@@ -91,9 +91,9 @@ export default function CanonicalUrlsArticle() {
           <li>
             <strong>Canonical in Sitemap:</strong> URLs listed in XML sitemaps
             serve as a weak canonical signal. If a sitemap lists URL-A but not
-            URL-B, and both serve similar content, Google may prefer URL-A.
-            This is the weakest of the canonical signals but still contributes
-            to Google&apos;s canonical selection algorithm.
+            URL-B, and both serve similar content, Google may prefer URL-A. This
+            is the weakest of the canonical signals but still contributes to
+            Google&apos;s canonical selection algorithm.
           </li>
           <li>
             <strong>301 Redirect vs Canonical:</strong> A 301 redirect
@@ -133,8 +133,8 @@ export default function CanonicalUrlsArticle() {
           </li>
           <li>
             <strong>Pagination Canonicalization:</strong> Paginated content
-            (page 1, page 2, etc.) should not canonicalize all pages to page 1
-            — each page has unique content. Self-referencing canonicals on each
+            (page 1, page 2, etc.) should not canonicalize all pages to page 1 —
+            each page has unique content. Self-referencing canonicals on each
             paginated page are correct. The deprecated rel=prev/next provided
             additional pagination signals.
           </li>
@@ -256,10 +256,10 @@ export default function CanonicalUrlsArticle() {
           <li>
             <strong>Use Self-Referencing Canonicals on Every Page:</strong>{" "}
             Every page should include a canonical tag pointing to its own clean
-            URL. This prevents accidental duplicate indexing from URL parameters,
-            session IDs, or tracking codes appended by external systems. Even if
-            a page has no known duplicates today, a self-referencing canonical
-            protects against future duplication.
+            URL. This prevents accidental duplicate indexing from URL
+            parameters, session IDs, or tracking codes appended by external
+            systems. Even if a page has no known duplicates today, a
+            self-referencing canonical protects against future duplication.
           </li>
           <li>
             <strong>Always Use Absolute URLs:</strong> Canonical tags must
@@ -327,8 +327,8 @@ export default function CanonicalUrlsArticle() {
           <li>
             <strong>Canonical Chains:</strong> Page A canonicalizes to Page B,
             which canonicalizes to Page C. Google may follow these chains but
-            the signal weakens with each hop. Direct canonical relationships
-            (A → C) are more reliable than chains.
+            the signal weakens with each hop. Direct canonical relationships (A
+            → C) are more reliable than chains.
           </li>
           <li>
             <strong>HTTP/HTTPS Canonical Mismatch:</strong> Declaring an HTTP
@@ -372,71 +372,24 @@ export default function CanonicalUrlsArticle() {
             pointing back to the original theverge.com URL.
           </li>
           <li>
-            <strong>Multi-Region Sites:</strong> Sites serving identical
-            English content across .com, .co.uk, and .com.au domains use
-            hreflang annotations alongside canonical tags. Each regional version
+            <strong>Multi-Region Sites:</strong> Sites serving identical English
+            content across .com, .co.uk, and .com.au domains use hreflang
+            annotations alongside canonical tags. Each regional version
             self-canonicalizes while hreflang declares the language/region
             relationships.
           </li>
           <li>
             <strong>SaaS Documentation:</strong> Documentation platforms like
             Stripe or Twilio have versioned docs (/v1/docs, /v2/docs). The
-            latest version uses a self-referencing canonical at the
-            unversioned URL (/docs), while older versions either canonicalize to
-            the latest (if content is unchanged) or self-canonicalize (if
-            content differs by version).
+            latest version uses a self-referencing canonical at the unversioned
+            URL (/docs), while older versions either canonicalize to the latest
+            (if content is unchanged) or self-canonicalize (if content differs
+            by version).
           </li>
         </ul>
       </section>
 
-      {/* Section 8: References & Further Reading */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              Google Search Central — Consolidate Duplicate URLs
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://datatracker.ietf.org/doc/html/rfc6596"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              RFC 6596 — The Canonical Link Relation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developers.google.com/search/docs/crawling-indexing/canonicalization"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              Google — How Google Selects Canonical URLs
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://ahrefs.com/blog/canonical-tags/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              Ahrefs — Complete Guide to Canonical Tags
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      {/* Section 9: Common Interview Questions */}
+      {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -486,8 +439,8 @@ export default function CanonicalUrlsArticle() {
               demand (e.g., &quot;red running shoes&quot;), create dedicated
               landing pages with self-referencing canonicals. Complement
               canonicals with noindex on low-value filter combinations and
-              robots.txt disallow on parameter patterns that generate no
-              search value.
+              robots.txt disallow on parameter patterns that generate no search
+              value.
             </p>
           </div>
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -537,6 +490,53 @@ export default function CanonicalUrlsArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 9: References & Further Reading */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a
+              href="https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              Google Search Central — Consolidate Duplicate URLs
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://datatracker.ietf.org/doc/html/rfc6596"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              RFC 6596 — The Canonical Link Relation
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developers.google.com/search/docs/crawling-indexing/canonicalization"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              Google — How Google Selects Canonical URLs
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://ahrefs.com/blog/canonical-tags/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              Ahrefs — Complete Guide to Canonical Tags
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

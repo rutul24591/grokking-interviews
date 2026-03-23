@@ -1,18 +1,65 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Error States diagram 2">
-  <defs>
-    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
-  </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg2)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Error States</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 2</text>
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Error Boundary Hierarchy &amp; Component Isolation</text>
+  <rect x="30" y="55" width="840" height="425" rx="12" fill="none" stroke="#6d5bd0" stroke-width="3"/>
+  <rect x="30" y="55" width="300" height="28" rx="12" fill="#6d5bd0"/>
+  <text x="180" y="74" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">App-Level Error Boundary</text>
+  <rect x="680" y="58" width="180" height="40" rx="6" fill="#fff" stroke="#d7d1e6"/>
+  <text x="770" y="75" text-anchor="middle" font-size="9" font-weight="bold" fill="#6d5bd0">Fallback:</text>
+  <text x="770" y="90" text-anchor="middle" font-size="9" fill="#1a1822">Full recovery page</text>
+  <rect x="50" y="98" width="400" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="250" y="123" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Navigation (Always Functional)</text>
+  <rect x="470" y="98" width="380" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="660" y="123" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Top Bar (Always Functional)</text>
+  <rect x="50" y="155" width="400" height="305" rx="10" fill="none" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="6"/>
+  <rect x="50" y="155" width="280" height="24" rx="10" fill="#6d5bd0" opacity="0.8"/>
+  <text x="190" y="172" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Section Boundary: Main Content</text>
+  <rect x="355" y="158" width="90" height="40" rx="4" fill="#fff" stroke="#d7d1e6"/>
+  <text x="400" y="173" text-anchor="middle" font-size="8" font-weight="bold" fill="#6d5bd0">Fallback:</text>
+  <text x="400" y="188" text-anchor="middle" font-size="8" fill="#1a1822">Error panel</text>
+  <rect x="70" y="195" width="170" height="100" rx="6" fill="none" stroke="#d7d1e6" stroke-width="2"/>
+  <rect x="70" y="195" width="130" height="20" rx="6" fill="#d7d1e6"/>
+  <text x="135" y="209" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">Widget: Product</text>
+  <rect x="82" y="223" width="145" height="20" rx="4" fill="#fff" stroke="#d7d1e6"/>
+  <text x="155" y="237" text-anchor="middle" font-size="8" fill="#1a1822">Fallback: Retry card</text>
+  <rect x="82" y="250" width="145" height="35" rx="4" fill="#6d5bd0" opacity="0.08"/>
+  <text x="155" y="272" text-anchor="middle" font-size="9" fill="#1a1822">Product details</text>
+  <rect x="260" y="195" width="170" height="100" rx="6" fill="none" stroke="#d7d1e6" stroke-width="2"/>
+  <rect x="260" y="195" width="130" height="20" rx="6" fill="#d7d1e6"/>
+  <text x="325" y="209" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">Widget: Reviews</text>
+  <rect x="272" y="223" width="145" height="20" rx="4" fill="#fff" stroke="#d7d1e6"/>
+  <text x="345" y="237" text-anchor="middle" font-size="8" fill="#1a1822">Fallback: Retry card</text>
+  <rect x="272" y="250" width="145" height="35" rx="4" fill="#6d5bd0" opacity="0.08"/>
+  <text x="345" y="272" text-anchor="middle" font-size="9" fill="#1a1822">User reviews</text>
+  <rect x="70" y="310" width="360" height="60" rx="6" fill="none" stroke="#d7d1e6" stroke-width="2"/>
+  <rect x="70" y="310" width="150" height="20" rx="6" fill="#d7d1e6"/>
+  <text x="145" y="324" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">Widget: Recommendations</text>
+  <rect x="82" y="338" width="335" height="22" rx="4" fill="#6d5bd0" opacity="0.08"/>
+  <text x="250" y="353" text-anchor="middle" font-size="9" fill="#1a1822">Related product cards</text>
+  <rect x="70" y="385" width="360" height="55" rx="6" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="250" y="405" text-anchor="middle" font-size="9" font-weight="bold" fill="#6d5bd0">Crash in Reviews widget:</text>
+  <text x="250" y="420" text-anchor="middle" font-size="9" fill="#1a1822">Shows retry card in Reviews only.</text>
+  <text x="250" y="433" text-anchor="middle" font-size="9" fill="#1a1822">Product + Recommendations unaffected.</text>
+  <rect x="470" y="155" width="400" height="305" rx="10" fill="none" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="6"/>
+  <rect x="470" y="155" width="230" height="24" rx="10" fill="#6d5bd0" opacity="0.8"/>
+  <text x="585" y="172" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Section Boundary: Sidebar</text>
+  <rect x="490" y="195" width="170" height="80" rx="6" fill="none" stroke="#d7d1e6" stroke-width="2"/>
+  <rect x="490" y="195" width="120" height="20" rx="6" fill="#d7d1e6"/>
+  <text x="550" y="209" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">Widget: Cart</text>
+  <rect x="502" y="225" width="145" height="38" rx="4" fill="#6d5bd0" opacity="0.08"/>
+  <text x="575" y="248" text-anchor="middle" font-size="9" fill="#1a1822">Cart items</text>
+  <rect x="490" y="290" width="170" height="80" rx="6" fill="none" stroke="#d7d1e6" stroke-width="2"/>
+  <rect x="490" y="290" width="120" height="20" rx="6" fill="#d7d1e6"/>
+  <text x="550" y="304" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a1822">Widget: Promo</text>
+  <rect x="502" y="320" width="145" height="38" rx="4" fill="#6d5bd0" opacity="0.08"/>
+  <text x="575" y="343" text-anchor="middle" font-size="9" fill="#1a1822">Promo banners</text>
+  <rect x="680" y="195" width="175" height="175" rx="6" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="768" y="218" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Isolation Benefit</text>
+  <line x1="695" y1="228" x2="840" y2="228" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="768" y="248" text-anchor="middle" font-size="9" fill="#1a1822">Crash in any widget</text>
+  <text x="768" y="263" text-anchor="middle" font-size="9" fill="#1a1822">only affects that widget.</text>
+  <text x="768" y="288" text-anchor="middle" font-size="9" fill="#1a1822">Navigation always works.</text>
+  <text x="768" y="308" text-anchor="middle" font-size="9" fill="#1a1822">Other sections render.</text>
+  <text x="768" y="333" text-anchor="middle" font-size="9" fill="#1a1822">User can retry or</text>
+  <text x="768" y="348" text-anchor="middle" font-size="9" fill="#1a1822">navigate away safely.</text>
 </svg>

@@ -362,44 +362,7 @@ export default function KeyboardNavigationArticle() {
         </ul>
       </section>
 
-      {/* ─── Section 8: References & Further Reading ─── */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              WAI-ARIA Authoring Practices Guide (APG)
-            </a>{" "}
-            — Keyboard interaction patterns for every common widget type.
-          </li>
-          <li>
-            <a href="https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              Understanding WCAG 2.1.1: Keyboard
-            </a>{" "}
-            — Official W3C guidance on keyboard accessibility requirements.
-          </li>
-          <li>
-            <a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              Understanding WCAG 2.4.7: Focus Visible
-            </a>{" "}
-            — Requirements for visible focus indicators.
-          </li>
-          <li>
-            <a href="https://react-spectrum.adobe.com/react-aria/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              React Aria by Adobe
-            </a>{" "}
-            — Hooks library implementing WAI-ARIA keyboard patterns for React.
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/Keyboard-navigable_JavaScript_widgets" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              MDN: Keyboard-navigable JavaScript widgets
-            </a>{" "}
-            — Practical guide to making custom widgets keyboard accessible.
-          </li>
-        </ul>
-      </section>
-
-      {/* ─── Section 9: Common Interview Questions ─── */}
+      {/* ─── Section 8: Common Interview Questions ─── */}
       <section>
         <h2>Common Interview Questions</h2>
 
@@ -482,6 +445,43 @@ export default function KeyboardNavigationArticle() {
             All modern browsers support <code>:focus-visible</code>.
           </p>
         </div>
+      </section>
+
+      {/* ─── Section 9: References & Further Reading ─── */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              WAI-ARIA Authoring Practices Guide (APG)
+            </a>{" "}
+            — Keyboard interaction patterns for every common widget type.
+          </li>
+          <li>
+            <a href="https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              Understanding WCAG 2.1.1: Keyboard
+            </a>{" "}
+            — Official W3C guidance on keyboard accessibility requirements.
+          </li>
+          <li>
+            <a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              Understanding WCAG 2.4.7: Focus Visible
+            </a>{" "}
+            — Requirements for visible focus indicators.
+          </li>
+          <li>
+            <a href="https://react-spectrum.adobe.com/react-aria/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              React Aria by Adobe
+            </a>{" "}
+            — Hooks library implementing WAI-ARIA keyboard patterns for React.
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/Keyboard-navigable_JavaScript_widgets" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              MDN: Keyboard-navigable JavaScript widgets
+            </a>{" "}
+            — Practical guide to making custom widgets keyboard accessible.
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

@@ -1,18 +1,119 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Undo/Redo Functionality diagram 2">
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Snapshot-Based vs Command-Based Undo Comparison</text>
+
+  <!-- Left: Snapshot -->
+  <rect x="30" y="55" width="410" height="420" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="235" y="80" text-anchor="middle" font-size="14" font-weight="600" fill="#6d5bd0">Snapshot-Based (Memento Pattern)</text>
+
+  <!-- State snapshots -->
+  <rect x="50" y="95" width="370" height="30" rx="4" fill="#6d5bd0"/>
+  <text x="235" y="115" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Full State Snapshots in History</text>
+
+  <rect x="55" y="135" width="110" height="70" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="110" y="153" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">State v0</text>
+  <text x="110" y="168" text-anchor="middle" font-size="8" fill="#1a1822">{ canvas: [...],</text>
+  <text x="110" y="180" text-anchor="middle" font-size="8" fill="#1a1822">  layers: 3,</text>
+  <text x="110" y="192" text-anchor="middle" font-size="8" fill="#1a1822">  selection: null }</text>
+
+  <text x="180" y="170" font-size="12" fill="#6d5bd0">→</text>
+
+  <rect x="195" y="135" width="110" height="70" rx="4" fill="#f3f1f8" stroke="#6d5bd0"/>
+  <text x="250" y="153" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">State v1</text>
+  <text x="250" y="168" text-anchor="middle" font-size="8" fill="#1a1822">{ canvas: [...+rect],</text>
+  <text x="250" y="180" text-anchor="middle" font-size="8" fill="#1a1822">  layers: 3,</text>
+  <text x="250" y="192" text-anchor="middle" font-size="8" fill="#1a1822">  selection: rect }</text>
+
+  <text x="320" y="170" font-size="12" fill="#6d5bd0">→</text>
+
+  <rect x="335" y="135" width="90" height="70" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="380" y="153" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">State v2</text>
+  <text x="380" y="168" text-anchor="middle" font-size="8" fill="#1a1822">{ canvas: [...]</text>
+  <text x="380" y="180" text-anchor="middle" font-size="8" fill="#1a1822">  layers: 4</text>
+  <text x="380" y="192" text-anchor="middle" font-size="8" fill="#1a1822">  ... }</text>
+
+  <!-- Pros/Cons -->
+  <rect x="50" y="220" width="175" height="120" rx="4" fill="#f3f1f8" stroke="#228B22" stroke-width="1.5"/>
+  <text x="137" y="240" text-anchor="middle" font-size="10" font-weight="600" fill="#228B22">Advantages</text>
+  <text x="60" y="258" font-size="9" fill="#1a1822">• Simple implementation</text>
+  <text x="60" y="274" font-size="9" fill="#1a1822">• Guaranteed correctness</text>
+  <text x="60" y="290" font-size="9" fill="#1a1822">• No inverse logic needed</text>
+  <text x="60" y="306" font-size="9" fill="#1a1822">• Easy state inspection</text>
+  <text x="60" y="322" font-size="9" fill="#1a1822">• Time-travel debugging</text>
+
+  <rect x="240" y="220" width="185" height="120" rx="4" fill="#f3f1f8" stroke="#cc3333" stroke-width="1.5"/>
+  <text x="332" y="240" text-anchor="middle" font-size="10" font-weight="600" fill="#cc3333">Disadvantages</text>
+  <text x="250" y="258" font-size="9" fill="#1a1822">• High memory usage</text>
+  <text x="250" y="274" font-size="9" fill="#1a1822">• O(n) per snapshot</text>
+  <text x="250" y="290" font-size="9" fill="#1a1822">• Deep clone overhead</text>
+  <text x="250" y="306" font-size="9" fill="#1a1822">• Limited history depth</text>
+  <text x="250" y="322" font-size="9" fill="#1a1822">• Poor for large states</text>
+
+  <rect x="50" y="350" width="370" height="50" rx="4" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0"/>
+  <text x="235" y="370" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Optimization: Structural Sharing</text>
+  <text x="235" y="387" text-anchor="middle" font-size="9" fill="#1a1822">Immer / Immutable.js — share unchanged subtrees between snapshots</text>
+
+  <rect x="50" y="410" width="370" height="50" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="235" y="430" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Best For</text>
+  <text x="235" y="447" text-anchor="middle" font-size="9" fill="#1a1822">Small-medium state: form editors, Redux-based apps, game state</text>
+
+  <!-- Right: Command -->
+  <rect x="460" y="55" width="410" height="420" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="665" y="80" text-anchor="middle" font-size="14" font-weight="600" fill="#6d5bd0">Command-Based (Command Pattern)</text>
+
+  <!-- Command log -->
+  <rect x="480" y="95" width="370" height="30" rx="4" fill="#6d5bd0"/>
+  <text x="665" y="115" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Operation Log with Inverse Functions</text>
+
+  <rect x="485" y="135" width="110" height="70" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="540" y="153" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">Cmd 1</text>
+  <text x="540" y="168" text-anchor="middle" font-size="8" fill="#1a1822">type: addRect</text>
+  <text x="540" y="180" text-anchor="middle" font-size="8" fill="#1a1822">exec: insert(rect)</text>
+  <text x="540" y="192" text-anchor="middle" font-size="8" fill="#1a1822">undo: remove(rect)</text>
+
+  <text x="610" y="170" font-size="12" fill="#6d5bd0">→</text>
+
+  <rect x="625" y="135" width="110" height="70" rx="4" fill="#f3f1f8" stroke="#6d5bd0"/>
+  <text x="680" y="153" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Cmd 2</text>
+  <text x="680" y="168" text-anchor="middle" font-size="8" fill="#1a1822">type: addLayer</text>
+  <text x="680" y="180" text-anchor="middle" font-size="8" fill="#1a1822">exec: createLayer</text>
+  <text x="680" y="192" text-anchor="middle" font-size="8" fill="#1a1822">undo: deleteLayer</text>
+
+  <text x="750" y="170" font-size="12" fill="#6d5bd0">→</text>
+
+  <rect x="765" y="135" width="90" height="70" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="810" y="153" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">Cmd 3</text>
+  <text x="810" y="168" text-anchor="middle" font-size="8" fill="#1a1822">type: move</text>
+  <text x="810" y="180" text-anchor="middle" font-size="8" fill="#1a1822">from → to</text>
+  <text x="810" y="192" text-anchor="middle" font-size="8" fill="#1a1822">to → from</text>
+
+  <rect x="480" y="220" width="175" height="120" rx="4" fill="#f3f1f8" stroke="#228B22" stroke-width="1.5"/>
+  <text x="567" y="240" text-anchor="middle" font-size="10" font-weight="600" fill="#228B22">Advantages</text>
+  <text x="490" y="258" font-size="9" fill="#1a1822">• O(1) memory per action</text>
+  <text x="490" y="274" font-size="9" fill="#1a1822">• Unlimited history depth</text>
+  <text x="490" y="290" font-size="9" fill="#1a1822">• Composable commands</text>
+  <text x="490" y="306" font-size="9" fill="#1a1822">• Serializable to server</text>
+  <text x="490" y="322" font-size="9" fill="#1a1822">• Network replayable</text>
+
+  <rect x="670" y="220" width="185" height="120" rx="4" fill="#f3f1f8" stroke="#cc3333" stroke-width="1.5"/>
+  <text x="762" y="240" text-anchor="middle" font-size="10" font-weight="600" fill="#cc3333">Disadvantages</text>
+  <text x="680" y="258" font-size="9" fill="#1a1822">• Complex inverse logic</text>
+  <text x="680" y="274" font-size="9" fill="#1a1822">• Bug-prone undo fns</text>
+  <text x="680" y="290" font-size="9" fill="#1a1822">• Order-dependent replay</text>
+  <text x="680" y="306" font-size="9" fill="#1a1822">• Side-effect management</text>
+  <text x="680" y="322" font-size="9" fill="#1a1822">• Testing overhead</text>
+
+  <rect x="480" y="350" width="370" height="50" rx="4" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0"/>
+  <text x="665" y="370" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Optimization: Command Merging</text>
+  <text x="665" y="387" text-anchor="middle" font-size="9" fill="#1a1822">Coalesce rapid keystrokes into single &quot;type word&quot; command with debounce</text>
+
+  <rect x="480" y="410" width="370" height="50" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="665" y="430" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Best For</text>
+  <text x="665" y="447" text-anchor="middle" font-size="9" fill="#1a1822">Large state: canvas editors, IDEs, collaborative docs, CAD tools</text>
+
   <defs>
-    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
   </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg2)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Undo/Redo Functionality</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 2</text>
 </svg>

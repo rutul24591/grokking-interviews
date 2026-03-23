@@ -352,44 +352,7 @@ export default function AccessibleModalsAndDialogsArticle() {
         </ul>
       </section>
 
-      {/* ─── Section 8: References & Further Reading ─── */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              WAI-ARIA APG: Dialog (Modal) Pattern
-            </a>{" "}
-            — Official ARIA pattern for modal dialogs.
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              MDN: The &lt;dialog&gt; Element
-            </a>{" "}
-            — Native HTML dialog element documentation.
-          </li>
-          <li>
-            <a href="https://www.radix-ui.com/primitives/docs/components/dialog" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              Radix UI: Dialog Component
-            </a>{" "}
-            — Headless, accessible dialog primitive for React.
-          </li>
-          <li>
-            <a href="https://github.com/focus-trap/focus-trap-react" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              focus-trap-react
-            </a>{" "}
-            — React wrapper for the focus-trap library.
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inert" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              MDN: The inert Attribute
-            </a>{" "}
-            — Native method for making background content non-interactive.
-          </li>
-        </ul>
-      </section>
-
-      {/* ─── Section 9: Common Interview Questions ─── */}
+      {/* ─── Section 8: Common Interview Questions ─── */}
       <section>
         <h2>Common Interview Questions</h2>
 
@@ -482,6 +445,43 @@ export default function AccessibleModalsAndDialogsArticle() {
             property to communicate which button was pressed.
           </p>
         </div>
+      </section>
+
+      {/* ─── Section 9: References & Further Reading ─── */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              WAI-ARIA APG: Dialog (Modal) Pattern
+            </a>{" "}
+            — Official ARIA pattern for modal dialogs.
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              MDN: The &lt;dialog&gt; Element
+            </a>{" "}
+            — Native HTML dialog element documentation.
+          </li>
+          <li>
+            <a href="https://www.radix-ui.com/primitives/docs/components/dialog" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              Radix UI: Dialog Component
+            </a>{" "}
+            — Headless, accessible dialog primitive for React.
+          </li>
+          <li>
+            <a href="https://github.com/focus-trap/focus-trap-react" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              focus-trap-react
+            </a>{" "}
+            — React wrapper for the focus-trap library.
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inert" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              MDN: The inert Attribute
+            </a>{" "}
+            — Native method for making background content non-interactive.
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

@@ -1,18 +1,106 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Print Stylesheets diagram 1">
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Print Stylesheet Cascade &amp; Override Flow</text>
+
+  <!-- Screen CSS -->
+  <rect x="30" y="60" width="250" height="180" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="155" y="82" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Screen Stylesheet</text>
+  <text x="155" y="98" text-anchor="middle" font-size="9" fill="#1a1822">@media screen { ... }</text>
+
+  <rect x="45" y="110" width="220" height="22" rx="3" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="55" y="125" font-size="9" fill="#1a1822">Navigation sidebar — flex layout</text>
+
+  <rect x="45" y="137" width="220" height="22" rx="3" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="55" y="152" font-size="9" fill="#1a1822">Header with sticky position</text>
+
+  <rect x="45" y="164" width="220" height="22" rx="3" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="55" y="179" font-size="9" fill="#1a1822">Background colors &amp; gradients</text>
+
+  <rect x="45" y="191" width="220" height="22" rx="3" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="55" y="206" font-size="9" fill="#1a1822">Interactive buttons &amp; hover states</text>
+
+  <rect x="45" y="218" width="220" height="22" rx="3" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="55" y="233" font-size="9" fill="#1a1822">Animations &amp; transitions</text>
+
+  <!-- Arrow showing cascade -->
+  <line x1="280" y1="150" x2="330" y2="150" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="305" y="140" text-anchor="middle" font-size="9" fill="#6d5bd0">+</text>
+
+  <!-- Print CSS Override -->
+  <rect x="330" y="60" width="260" height="180" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="460" y="82" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Print Stylesheet Override</text>
+  <text x="460" y="98" text-anchor="middle" font-size="9" fill="#1a1822">@media print { ... }</text>
+
+  <rect x="345" y="110" width="230" height="22" rx="3" fill="#cc3333" opacity="0.15" stroke="#cc3333"/>
+  <text x="355" y="125" font-size="9" fill="#cc3333">nav, .sidebar { display: none }</text>
+
+  <rect x="345" y="137" width="230" height="22" rx="3" fill="#cc3333" opacity="0.15" stroke="#cc3333"/>
+  <text x="355" y="152" font-size="9" fill="#cc3333">header { position: static }</text>
+
+  <rect x="345" y="164" width="230" height="22" rx="3" fill="#cc3333" opacity="0.15" stroke="#cc3333"/>
+  <text x="355" y="179" font-size="9" fill="#cc3333">* { background: white !important }</text>
+
+  <rect x="345" y="191" width="230" height="22" rx="3" fill="#cc3333" opacity="0.15" stroke="#cc3333"/>
+  <text x="355" y="206" font-size="9" fill="#cc3333">.btn, .interactive { display: none }</text>
+
+  <rect x="345" y="218" width="230" height="22" rx="3" fill="#cc3333" opacity="0.15" stroke="#cc3333"/>
+  <text x="355" y="233" font-size="9" fill="#cc3333">* { animation: none !important }</text>
+
+  <!-- Arrow to result -->
+  <line x1="590" y1="150" x2="640" y2="150" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="615" y="140" text-anchor="middle" font-size="9" fill="#6d5bd0">=</text>
+
+  <!-- Print Result -->
+  <rect x="640" y="60" width="230" height="180" rx="8" fill="#ffffff" stroke="#228B22" stroke-width="2"/>
+  <text x="755" y="82" text-anchor="middle" font-size="13" font-weight="600" fill="#228B22">Print Output</text>
+
+  <rect x="655" y="100" width="200" height="125" rx="4" fill="#ffffff" stroke="#d7d1e6"/>
+  <text x="755" y="120" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Article Title</text>
+  <line x1="670" y1="128" x2="840" y2="128" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="665" y="145" font-size="8" fill="#1a1822">Content flows full width...</text>
+  <text x="665" y="158" font-size="8" fill="#1a1822">No sidebar, no nav, no buttons.</text>
+  <text x="665" y="171" font-size="8" fill="#1a1822">Black text on white background.</text>
+  <text x="665" y="184" font-size="8" fill="#1a1822">Links show URLs in brackets.</text>
+  <text x="665" y="197" font-size="8" fill="#1a1822">Page breaks at section heads.</text>
+  <text x="665" y="215" font-size="8" fill="#6d5bd0">optimized for ink &amp; paper</text>
+
+  <!-- Elements to hide/show -->
+  <rect x="30" y="265" width="840" height="100" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="287" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Print Visibility Rules</text>
+
+  <!-- Hide column -->
+  <rect x="50" y="300" width="380" height="55" rx="4" fill="#cc3333" opacity="0.1" stroke="#cc3333"/>
+  <text x="240" y="318" text-anchor="middle" font-size="10" font-weight="600" fill="#cc3333">Hide (display: none)</text>
+  <text x="60" y="340" font-size="9" fill="#1a1822">nav | sidebar | footer | ads | modal | cookie banner | chat widget</text>
+  <text x="60" y="352" font-size="9" fill="#1a1822">buttons | forms | video players | audio controls | toasts | tooltips</text>
+
+  <!-- Show column -->
+  <rect x="450" y="300" width="400" height="55" rx="4" fill="#228B22" opacity="0.1" stroke="#228B22"/>
+  <text x="650" y="318" text-anchor="middle" font-size="10" font-weight="600" fill="#228B22">Show / Enhance</text>
+  <text x="460" y="340" font-size="9" fill="#1a1822">article content | headings | tables | images (with captions)</text>
+  <text x="460" y="352" font-size="9" fill="#1a1822">link URLs (::after) | code blocks | blockquotes | footnotes | page numbers</text>
+
+  <!-- @page rules -->
+  <rect x="30" y="380" width="410" height="105" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="235" y="402" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">@page Rules</text>
+
+  <text x="50" y="422" font-size="10" fill="#1a1822">@page { margin: 2cm; }</text>
+  <text x="50" y="440" font-size="10" fill="#1a1822">@page :first { margin-top: 4cm; }</text>
+  <text x="50" y="458" font-size="10" fill="#1a1822">@page :left { margin-right: 3cm; }</text>
+  <text x="50" y="476" font-size="10" fill="#1a1822">@page :right { margin-left: 3cm; }</text>
+
+  <!-- Link expansion -->
+  <rect x="460" y="380" width="410" height="105" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="665" y="402" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Link URL Expansion</text>
+
+  <text x="475" y="422" font-size="10" fill="#1a1822">a[href]::after {</text>
+  <text x="475" y="440" font-size="10" fill="#1a1822">  content: &quot; (&quot; attr(href) &quot;)&quot;;</text>
+  <text x="475" y="458" font-size="10" fill="#1a1822">}</text>
+  <text x="475" y="478" font-size="9" fill="#6d5bd0">Renders: Visit docs (https://example.com/docs)</text>
+
   <defs>
-    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
   </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg1)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Print Stylesheets</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 1</text>
 </svg>

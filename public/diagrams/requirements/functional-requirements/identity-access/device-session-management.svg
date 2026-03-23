@@ -1,7 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
   <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="240" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">device session management</text>
-  <text x="400" y="270" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Identity Access Diagram</text>
-  <text x="400" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Valid XML</text>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Device Session Management</text>
+  
+  <!-- Active Sessions List -->
+  <rect x="50" y="70" width="280" height="380" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="190" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Active Sessions</text>
+  
+  <rect x="70" y="115" width="240" height="55" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="2"/>
+  <text x="90" y="135" text-anchor="start" font-family="system-ui" font-size="9" font-weight="bold" fill="#0f172a">📱 iPhone 14 Pro</text>
+  <text x="300" y="135" text-anchor="end" font-family="system-ui" font-size="8" fill="#22c55e">✓ Current</text>
+  <text x="90" y="155" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">San Francisco, US</text>
+  <text x="250" y="155" text-anchor="end" font-family="system-ui" font-size="8" fill="#475569">Active now</text>
+  
+  <rect x="70" y="180" width="240" height="55" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="90" y="200" text-anchor="start" font-family="system-ui" font-size="9" font-weight="bold" fill="#0f172a">💻 MacBook Pro</text>
+  <text x="300" y="200" text-anchor="end" font-family="system-ui" font-size="8" fill="#ef4444">Sign Out</text>
+  <text x="90" y="220" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">San Francisco, US</text>
+  <text x="250" y="220" text-anchor="end" font-family="system-ui" font-size="8" fill="#475569">1 hour ago</text>
+  
+  <rect x="70" y="245" width="240" height="55" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="90" y="265" text-anchor="start" font-family="system-ui" font-size="9" font-weight="bold" fill="#0f172a">🖥️ Windows Desktop</text>
+  <text x="300" y="265" text-anchor="end" font-family="system-ui" font-size="8" fill="#ef4444">Sign Out</text>
+  <text x="90" y="285" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">New York, US</text>
+  <text x="250" y="285" text-anchor="end" font-family="system-ui" font-size="8" fill="#475569">3 days ago</text>
+  
+  <rect x="70" y="310" width="240" height="55" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="90" y="330" text-anchor="start" font-family="system-ui" font-size="9" font-weight="bold" fill="#0f172a">📱 iPad Air</text>
+  <text x="300" y="330" text-anchor="end" font-family="system-ui" font-size="8" fill="#ef4444">Sign Out</text>
+  <text x="90" y="350" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">London, UK</text>
+  <text x="250" y="350" text-anchor="end" font-family="system-ui" font-size="8" fill="#475569">1 week ago</text>
+  
+  <rect x="70" y="375" width="240" height="60" rx="4" fill="#ef4444"/>
+  <text x="190" y="400" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#ffffff">Sign Out All Other Devices</text>
+  <text x="190" y="420" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Keeps current session active</text>
+  
+  <!-- Session Actions -->
+  <rect x="360" y="70" width="200" height="200" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="460" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Session Actions</text>
+  
+  <rect x="380" y="115" width="160" height="40" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="460" y="140" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">🔍 View Details</text>
+  
+  <rect x="380" y="160" width="160" height="40" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="460" y="185" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">🏷️ Rename Device</text>
+  
+  <rect x="380" y="205" width="160" height="40" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="460" y="230" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">🔒 Force Logout</text>
+  
+  <rect x="380" y="250" width="160" height="40" rx="4" fill="#3b82f6"/>
+  <text x="460" y="275" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Manage Session</text>
+  
+  <!-- Trust Settings -->
+  <rect x="590" y="70" width="170" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="675" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Trust Settings</text>
+  
+  <rect x="610" y="115" width="130" height="40" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="675" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Trusted Device</text>
+  <text x="730" y="135" text-anchor="end" font-family="system-ui" font-size="10" fill="#22c55e">✓</text>
+  
+  <rect x="610" y="160" width="130" height="40" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="675" y="180" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Skip MFA</text>
+  <text x="730" y="180" text-anchor="end" font-family="system-ui" font-size="10" fill="#22c55e">✓</text>
+  
+  <rect x="610" y="205" width="130" height="40" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="675" y="225" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Remember Me</text>
+  <text x="730" y="225" text-anchor="end" font-family="system-ui" font-size="10" fill="#22c55e">✓</text>
+  
+  <rect x="610" y="250" width="130" height="35" rx="4" fill="#f59e0b"/>
+  <text x="675" y="272" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Edit Trust</text>
+  
+  <!-- Session Limits -->
+  <rect x="360" y="290" width="400" height="160" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="560" y="315" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Session Limits & Alerts</text>
+  
+  <rect x="380" y="330" width="170" height="45" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="465" y="350" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Max Sessions</text>
+  <text x="465" y="365" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">10 devices</text>
+  
+  <rect x="560" y="330" width="170" height="45" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="645" y="350" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Session Timeout</text>
+  <text x="645" y="365" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">30 days</text>
+  
+  <rect x="380" y="385" width="170" height="45" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="465" y="405" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">New Device Alert</text>
+  <text x="465" y="420" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#22c55e">Enabled</text>
+  
+  <rect x="560" y="385" width="170" height="45" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="645" y="405" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Location Alert</text>
+  <text x="645" y="420" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#22c55e">Enabled</text>
+
 </svg>

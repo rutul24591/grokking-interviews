@@ -1,7 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
   <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="240" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">account recovery flow</text>
-  <text x="400" y="270" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Identity Access Diagram</text>
-  <text x="400" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Valid XML</text>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Account Recovery Flow</text>
+  
+  <!-- User initiates recovery -->
+  <circle cx="80" cy="100" r="35" fill="#3b82f6"/>
+  <text x="80" y="105" text-anchor="middle" font-family="system-ui" font-size="11" fill="#ffffff">User</text>
+  
+  <rect x="180" y="70" width="140" height="60" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="250" y="105" text-anchor="middle" font-family="system-ui" font-size="11" fill="#0f172a">Forgot Password?</text>
+  
+  <line x1="115" y1="100" x2="170" y2="100" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="320" y1="100" x2="370" y2="100" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Recovery Options -->
+  <rect x="380" y="60" width="200" height="180" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="480" y="85" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Recovery Options</text>
+  
+  <rect x="400" y="100" width="160" height="35" rx="4" fill="#3b82f6" opacity="0.8"/>
+  <text x="480" y="122" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">📧 Recovery Email</text>
+  
+  <rect x="400" y="140" width="160" height="35" rx="4" fill="#3b82f6" opacity="0.6"/>
+  <text x="480" y="162" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">📱 SMS to Phone</text>
+  
+  <rect x="400" y="180" width="160" height="35" rx="4" fill="#3b82f6" opacity="0.4"/>
+  <text x="480" y="202" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">🔑 Backup Codes</text>
+  
+  <line x1="580" y1="150" x2="630" y2="150" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Verification -->
+  <rect x="640" y="70" width="120" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="700" y="95" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Verify</text>
+  <text x="700" y="120" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Enter code from</text>
+  <text x="700" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">email/SMS/backup</text>
+  <text x="700" y="160" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">10 min expiry</text>
+  
+  <line x1="700" y1="190" x2="700" y2="240" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Reset Password -->
+  <rect x="620" y="250" width="160" height="80" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="700" y="275" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Reset Password</text>
+  <rect x="640" y="290" width="120" height="30" rx="4" fill="#3b82f6"/>
+  <text x="700" y="310" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Set New Password</text>
+  
+  <line x1="620" y1="290" x2="570" y2="290" stroke="#22c55e" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrow)"/>
+  <text x="595" y="280" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">Success</text>
+  
+  <!-- Post-Recovery Actions -->
+  <rect x="380" y="280" width="200" height="140" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="480" y="305" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Post-Recovery</text>
+  
+  <rect x="400" y="320" width="160" height="25" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="480" y="337" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Revoke all sessions</text>
+  
+  <rect x="400" y="350" width="160" height="25" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="480" y="367" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Email notification</text>
+  
+  <rect x="400" y="380" width="160" height="25" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="480" y="397" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Audit log created</text>
+  
+  <line x1="380" y1="350" x2="330" y2="350" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Success State -->
+  <rect x="180" y="320" width="140" height="80" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="250" y="350" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">✓ Recovery</text>
+  <text x="250" y="370" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Complete</text>
+  <text x="250" y="390" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Redirect to login</text>
+  
+  <!-- Fallback Options -->
+  <rect x="50" y="250" width="280" height="180" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="190" y="275" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Fallback Options</text>
+  
+  <rect x="70" y="295" width="240" height="35" rx="4" fill="#ffffff" stroke="#ef4444" stroke-width="1"/>
+  <text x="90" y="317" text-anchor="start" font-family="system-ui" font-size="9" fill="#0f172a">📞 Contact Support (ID verification)</text>
+  
+  <rect x="70" y="335" width="240" height="35" rx="4" fill="#ffffff" stroke="#ef4444" stroke-width="1"/>
+  <text x="90" y="357" text-anchor="start" font-family="system-ui" font-size="9" fill="#0f172a">👥 Trusted Contacts (if enabled)</text>
+  
+  <rect x="70" y="375" width="240" height="35" rx="4" fill="#ffffff" stroke="#ef4444" stroke-width="1"/>
+  <text x="90" y="397" text-anchor="start" font-family="system-ui" font-size="9" fill="#0f172a">⏰ 24-hour cooling period for manual review</text>
+  
+  <line x1="190" y1="240" x2="190" y2="250" stroke="#475569" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="210" y="245" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">If primary fails</text>
+
 </svg>

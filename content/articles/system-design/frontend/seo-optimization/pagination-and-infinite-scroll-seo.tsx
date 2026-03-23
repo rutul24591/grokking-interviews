@@ -38,8 +38,8 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
           engines, pagination determines how content is discovered, crawled, and
           indexed across multi-page sequences. <strong>Infinite scroll</strong>{" "}
           — where content loads continuously as the user scrolls — presents
-          unique SEO challenges because there are no discrete page boundaries
-          or URLs for search engines to crawl.
+          unique SEO challenges because there are no discrete page boundaries or
+          URLs for search engines to crawl.
         </p>
         <p>
           The tension between pagination and infinite scroll is fundamentally a
@@ -55,14 +55,13 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
         <p>
           At the staff/principal engineer level, pagination strategy is an
           information architecture decision that impacts organic traffic
-          acquisition. E-commerce category pages with hundreds of products,
-          blog archives with thousands of posts, and search result pages all
-          require thoughtful pagination design that balances user engagement
-          metrics with crawl efficiency. A category page showing 10,000
-          products across 500 paginated pages needs every product discoverable
-          by search engines, while an infinite-scroll social feed may
-          intentionally limit search engine access to prevent thin content
-          indexing.
+          acquisition. E-commerce category pages with hundreds of products, blog
+          archives with thousands of posts, and search result pages all require
+          thoughtful pagination design that balances user engagement metrics
+          with crawl efficiency. A category page showing 10,000 products across
+          500 paginated pages needs every product discoverable by search
+          engines, while an infinite-scroll social feed may intentionally limit
+          search engine access to prevent thin content indexing.
         </p>
       </section>
 
@@ -88,12 +87,12 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
             traditional pagination&apos;s SEO benefits.
           </li>
           <li>
-            <strong>Infinite Scroll:</strong> Content loads automatically as
-            the user scrolls toward the bottom of the page, with no explicit
-            user action required. Without intervention, infinite scroll creates
-            a single URL that contains an indeterminate amount of content.
-            Search engine crawlers cannot scroll — they only see content present
-            in the initial HTML response or loaded by JavaScript within
+            <strong>Infinite Scroll:</strong> Content loads automatically as the
+            user scrolls toward the bottom of the page, with no explicit user
+            action required. Without intervention, infinite scroll creates a
+            single URL that contains an indeterminate amount of content. Search
+            engine crawlers cannot scroll — they only see content present in the
+            initial HTML response or loaded by JavaScript within
             Googlebot&apos;s rendering timeout.
           </li>
           <li>
@@ -113,28 +112,27 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
             and UX problems.
           </li>
           <li>
-            <strong>Crawl Depth:</strong> The number of clicks required to
-            reach a page from the homepage. Deeply paginated content (page 50
-            of a category) has high crawl depth, reducing the likelihood that
-            search engines will crawl and index it. Reducing crawl depth
-            through smart internal linking and sitemap inclusion improves
-            discoverability of deep paginated content.
+            <strong>Crawl Depth:</strong> The number of clicks required to reach
+            a page from the homepage. Deeply paginated content (page 50 of a
+            category) has high crawl depth, reducing the likelihood that search
+            engines will crawl and index it. Reducing crawl depth through smart
+            internal linking and sitemap inclusion improves discoverability of
+            deep paginated content.
           </li>
           <li>
             <strong>Component URLs:</strong> Google&apos;s recommended approach
-            post-deprecation of rel=prev/next. Each paginated page should have
-            a unique, crawlable URL that accurately represents its content.
-            These URLs should be included in sitemaps and linked through both
+            post-deprecation of rel=prev/next. Each paginated page should have a
+            unique, crawlable URL that accurately represents its content. These
+            URLs should be included in sitemaps and linked through both
             sequential (next/prev) and jump (page 1, 2, 3...50) navigation.
           </li>
           <li>
-            <strong>JavaScript-Dependent Pagination:</strong> Pagination
-            where page content is loaded via client-side JavaScript (fetch/XHR)
-            and rendered in the browser. While Googlebot can execute JavaScript,
-            it has a rendering budget and timeout. Content loaded after
-            significant scroll events or complex user interactions may not be
-            rendered by Googlebot, effectively making it invisible to search
-            engines.
+            <strong>JavaScript-Dependent Pagination:</strong> Pagination where
+            page content is loaded via client-side JavaScript (fetch/XHR) and
+            rendered in the browser. While Googlebot can execute JavaScript, it
+            has a rendering budget and timeout. Content loaded after significant
+            scroll events or complex user interactions may not be rendered by
+            Googlebot, effectively making it invisible to search engines.
           </li>
         </ul>
       </section>
@@ -167,9 +165,9 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
           following links (both sequential prev/next and jump navigation) and
           sitemap entries. Deep pages (beyond page 10) are often only
           discoverable via sitemaps because link-based crawl depth limits make
-          sequential traversal unreliable. The crawler does not &quot;scroll&quot;
-          — it can only follow links and render JavaScript within its rendering
-          budget.
+          sequential traversal unreliable. The crawler does not
+          &quot;scroll&quot; — it can only follow links and render JavaScript
+          within its rendering budget.
         </p>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/pagination-and-infinite-scroll-seo-diagram-3.svg"
@@ -236,7 +234,9 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
               </td>
             </tr>
             <tr>
-              <td className="p-3 font-medium">Hybrid (SSR + Infinite Scroll)</td>
+              <td className="p-3 font-medium">
+                Hybrid (SSR + Infinite Scroll)
+              </td>
               <td className="p-3">
                 Best of both worlds — crawlable paginated URLs plus smooth
                 scrolling UX; progressive enhancement; URL updates via History
@@ -271,9 +271,9 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
           </li>
           <li>
             <strong>Self-Canonicalize Each Paginated Page:</strong> Do not
-            canonicalize page 2, 3, etc. to page 1. Each page has unique
-            content and should self-canonicalize. Canonicalizing all pages to
-            page 1 de-indexes all products/items on subsequent pages.
+            canonicalize page 2, 3, etc. to page 1. Each page has unique content
+            and should self-canonicalize. Canonicalizing all pages to page 1
+            de-indexes all products/items on subsequent pages.
           </li>
           <li>
             <strong>Include Paginated Pages in Sitemaps:</strong> Deep paginated
@@ -282,25 +282,25 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
             discovery regardless of crawl depth.
           </li>
           <li>
-            <strong>Use the Hybrid Pattern for Large Collections:</strong>{" "}
-            Serve server-rendered paginated HTML for crawlers and initial page
-            loads, while enhancing the experience with client-side infinite
-            scroll or load more for JavaScript-enabled users. Update the URL
-            with History API as users scroll.
+            <strong>Use the Hybrid Pattern for Large Collections:</strong> Serve
+            server-rendered paginated HTML for crawlers and initial page loads,
+            while enhancing the experience with client-side infinite scroll or
+            load more for JavaScript-enabled users. Update the URL with History
+            API as users scroll.
           </li>
           <li>
             <strong>Minimize Crawl Depth for Important Content:</strong>{" "}
-            Important items buried on page 50 of a paginated series are
-            unlikely to be crawled frequently. Use category hierarchies,
-            featured sections, and internal linking to reduce crawl depth for
-            high-value content.
+            Important items buried on page 50 of a paginated series are unlikely
+            to be crawled frequently. Use category hierarchies, featured
+            sections, and internal linking to reduce crawl depth for high-value
+            content.
           </li>
           <li>
             <strong>Avoid Orphaned Paginated Pages:</strong> Every paginated
             page should have both previous and next navigation links plus jump
-            links to key pages (first, last, nearby pages). Orphaned pages
-            (with no incoming links from the pagination sequence) are difficult
-            for crawlers to discover.
+            links to key pages (first, last, nearby pages). Orphaned pages (with
+            no incoming links from the pagination sequence) are difficult for
+            crawlers to discover.
           </li>
         </ol>
       </section>
@@ -310,10 +310,10 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
           <li>
-            <strong>Canonicalizing All Pages to Page 1:</strong> The most
-            common and most damaging pagination SEO error. This tells search
-            engines that content on pages 2+ is duplicate of page 1, hiding
-            all products/items beyond the first page from search results.
+            <strong>Canonicalizing All Pages to Page 1:</strong> The most common
+            and most damaging pagination SEO error. This tells search engines
+            that content on pages 2+ is duplicate of page 1, hiding all
+            products/items beyond the first page from search results.
           </li>
           <li>
             <strong>Infinite Scroll Without Fallback URLs:</strong> Implementing
@@ -330,21 +330,19 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
           </li>
           <li>
             <strong>No-Indexing Paginated Pages:</strong> Applying noindex to
-            pages 2+ removes their content from search results. While
-            sometimes intentional for thin-content pages, this is usually a
-            mistake that prevents indexing of items that appear only on deeper
-            pages.
+            pages 2+ removes their content from search results. While sometimes
+            intentional for thin-content pages, this is usually a mistake that
+            prevents indexing of items that appear only on deeper pages.
           </li>
           <li>
             <strong>JavaScript-Only Pagination Links:</strong> If next/prev
             navigation buttons are implemented as JavaScript event handlers
             rather than HTML anchor tags with href attributes, crawlers cannot
-            follow them. Pagination navigation should always use standard
-            links.
+            follow them. Pagination navigation should always use standard links.
           </li>
           <li>
-            <strong>Inconsistent Items Per Page:</strong> Changing the number
-            of items per page (e.g., when a product is deleted) causes items to
+            <strong>Inconsistent Items Per Page:</strong> Changing the number of
+            items per page (e.g., when a product is deleted) causes items to
             shift between pages, breaking bookmarks and potentially creating
             soft 404s for pages that no longer have enough content.
           </li>
@@ -388,54 +386,7 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
         </ul>
       </section>
 
-      {/* Section 8: References & Further Reading */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://developers.google.com/search/docs/specialty/ecommerce/pagination-and-incremental-page-loading"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              Google Search Central — Pagination and Incremental Page Loading
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://web.dev/articles/infinite-scroll-search-friendly"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              web.dev — Infinite Scroll Search-Friendly Recommendations
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.searchenginejournal.com/google-on-rel-prev-next/298187/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              Search Engine Journal — Google Deprecates rel=prev/next
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://ahrefs.com/blog/pagination-seo/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              Ahrefs — Pagination SEO Best Practices
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      {/* Section 9: Common Interview Questions */}
+      {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -508,16 +459,63 @@ export default function PaginationAndInfiniteScrollSeoArticle() {
             </p>
             <p className="mt-2 text-sm">
               A: Changing items per page shifts content between pages, breaking
-              existing indexed URLs. If page 3 previously showed items 21-30
-              and now shows items 31-45, the URL&apos;s content changes
-              completely. This can trigger re-indexing, temporary ranking
-              fluctuations, and broken bookmarks/saved links. If you must
-              change items per page, treat it as a content migration — redirect
-              old page URLs to the most relevant new page, update sitemaps, and
-              monitor indexation recovery.
+              existing indexed URLs. If page 3 previously showed items 21-30 and
+              now shows items 31-45, the URL&apos;s content changes completely.
+              This can trigger re-indexing, temporary ranking fluctuations, and
+              broken bookmarks/saved links. If you must change items per page,
+              treat it as a content migration — redirect old page URLs to the
+              most relevant new page, update sitemaps, and monitor indexation
+              recovery.
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 9: References & Further Reading */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a
+              href="https://developers.google.com/search/docs/specialty/ecommerce/pagination-and-incremental-page-loading"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              Google Search Central — Pagination and Incremental Page Loading
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://web.dev/articles/infinite-scroll-search-friendly"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              web.dev — Infinite Scroll Search-Friendly Recommendations
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.searchenginejournal.com/google-on-rel-prev-next/298187/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              Search Engine Journal — Google Deprecates rel=prev/next
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://ahrefs.com/blog/pagination-seo/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              Ahrefs — Pagination SEO Best Practices
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

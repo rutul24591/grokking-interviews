@@ -1,18 +1,147 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Infinite Scroll vs Pagination diagram 2">
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Data Flow: Virtualized Infinite Scroll Architecture</text>
+
+  <!-- Scroll Viewport -->
+  <rect x="30" y="60" width="200" height="380" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="130" y="82" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Scroll Viewport</text>
+
+  <rect x="45" y="95" width="170" height="30" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="130" y="114" text-anchor="middle" font-size="10" fill="#1a1822">Overscan Buffer (top)</text>
+
+  <rect x="45" y="130" width="170" height="120" rx="4" fill="#6d5bd0" stroke="#6d5bd0"/>
+  <text x="130" y="170" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Visible Window</text>
+  <text x="130" y="190" text-anchor="middle" font-size="10" fill="#ffffff">Items 47–62</text>
+  <text x="130" y="210" text-anchor="middle" font-size="10" fill="#ffffff">Rendered in DOM</text>
+  <text x="130" y="230" text-anchor="middle" font-size="10" fill="#ffffff">~15 items visible</text>
+
+  <rect x="45" y="255" width="170" height="30" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="130" y="274" text-anchor="middle" font-size="10" fill="#1a1822">Overscan Buffer (bottom)</text>
+
+  <!-- Sentinel -->
+  <rect x="45" y="295" width="170" height="28" rx="4" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="130" y="313" text-anchor="middle" font-size="10" fill="#6d5bd0">Intersection Sentinel</text>
+
+  <rect x="45" y="330" width="170" height="50" rx="4" fill="#ffffff" stroke="#d7d1e6"/>
+  <text x="130" y="352" text-anchor="middle" font-size="10" fill="#1a1822">Spacer Element</text>
+  <text x="130" y="366" text-anchor="middle" font-size="9" fill="#1a1822">height: totalItems × rowH</text>
+
+  <rect x="45" y="390" width="170" height="40" rx="4" fill="#ffffff" stroke="#d7d1e6"/>
+  <text x="130" y="410" text-anchor="middle" font-size="10" fill="#1a1822">Scroll Position</text>
+  <text x="130" y="424" text-anchor="middle" font-size="9" fill="#1a1822">Saved to sessionStorage</text>
+
+  <!-- Arrow from sentinel to observer -->
+  <line x1="230" y1="309" x2="290" y2="309" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Intersection Observer -->
+  <rect x="290" y="60" width="190" height="100" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="385" y="82" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">IntersectionObserver</text>
+  <text x="300" y="102" font-size="10" fill="#1a1822">• threshold: 0.1</text>
+  <text x="300" y="118" font-size="10" fill="#1a1822">• rootMargin: 200px</text>
+  <text x="300" y="134" font-size="10" fill="#1a1822">• Fires: onIntersect()</text>
+  <text x="300" y="150" font-size="10" fill="#1a1822">• Debounced: 150ms</text>
+
+  <!-- Arrow down -->
+  <line x1="385" y1="160" x2="385" y2="185" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Data Manager -->
+  <rect x="290" y="185" width="190" height="110" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="385" y="207" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Data Manager</text>
+  <text x="300" y="227" font-size="10" fill="#1a1822">• Cursor tracking</text>
+  <text x="300" y="243" font-size="10" fill="#1a1822">• Page deduplication</text>
+  <text x="300" y="259" font-size="10" fill="#1a1822">• Cache window (±3 pages)</text>
+  <text x="300" y="275" font-size="10" fill="#1a1822">• Stale-while-revalidate</text>
+  <text x="300" y="291" font-size="10" fill="#1a1822">• Loading state management</text>
+
+  <!-- Arrow to API -->
+  <line x1="480" y1="240" x2="540" y2="240" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- API Layer -->
+  <rect x="540" y="60" width="170" height="100" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="625" y="82" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">API Layer</text>
+  <text x="550" y="102" font-size="10" fill="#1a1822">GET /items?cursor=abc</text>
+  <text x="550" y="118" font-size="10" fill="#1a1822">&amp;limit=20</text>
+  <text x="550" y="138" font-size="10" fill="#1a1822">Response: { items, next }</text>
+  <text x="550" y="154" font-size="10" fill="#1a1822">hasMore: boolean</text>
+
+  <!-- Arrow to cache -->
+  <line x1="625" y1="160" x2="625" y2="185" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Cache -->
+  <rect x="540" y="185" width="170" height="90" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="625" y="207" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Query Cache</text>
+  <text x="550" y="227" font-size="10" fill="#1a1822">• React Query / SWR</text>
+  <text x="550" y="243" font-size="10" fill="#1a1822">• useInfiniteQuery()</text>
+  <text x="550" y="259" font-size="10" fill="#1a1822">• getNextPageParam()</text>
+  <text x="550" y="271" font-size="10" fill="#1a1822">• Garbage collection</text>
+
+  <!-- Arrow back to data manager -->
+  <line x1="540" y1="270" x2="480" y2="270" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Virtualizer -->
+  <rect x="290" y="315" width="190" height="90" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="385" y="337" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Virtualizer Engine</text>
+  <text x="300" y="357" font-size="10" fill="#1a1822">• Calculate visible range</text>
+  <text x="300" y="373" font-size="10" fill="#1a1822">• Position transforms</text>
+  <text x="300" y="389" font-size="10" fill="#1a1822">• Dynamic row heights</text>
+  <text x="300" y="401" font-size="10" fill="#1a1822">• Recycle DOM nodes</text>
+
+  <!-- Arrow from data manager to virtualizer -->
+  <line x1="385" y1="295" x2="385" y2="315" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Arrow from virtualizer back to viewport -->
+  <line x1="290" y1="360" x2="230" y2="200" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Performance Metrics -->
+  <rect x="540" y="310" width="170" height="95" rx="8" fill="#6d5bd0"/>
+  <text x="625" y="332" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Performance Targets</text>
+  <text x="555" y="352" font-size="10" fill="#ffffff">DOM nodes: &lt; 50</text>
+  <text x="555" y="368" font-size="10" fill="#ffffff">Scroll FPS: 60</text>
+  <text x="555" y="384" font-size="10" fill="#ffffff">Fetch latency: &lt; 200ms</text>
+  <text x="555" y="400" font-size="10" fill="#ffffff">Memory: &lt; 50MB</text>
+
+  <!-- Scroll Restoration -->
+  <rect x="740" y="60" width="140" height="345" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="810" y="82" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Scroll Restoration</text>
+
+  <text x="752" y="105" font-size="10" font-weight="600" fill="#1a1822">On Navigate Away</text>
+  <text x="752" y="120" font-size="9" fill="#1a1822">1. Save scrollTop</text>
+  <text x="752" y="134" font-size="9" fill="#1a1822">2. Save cursor position</text>
+  <text x="752" y="148" font-size="9" fill="#1a1822">3. Save visible index</text>
+  <text x="752" y="162" font-size="9" fill="#1a1822">4. Serialize to session</text>
+
+  <line x1="752" y1="175" x2="868" y2="175" stroke="#d7d1e6" stroke-width="1"/>
+
+  <text x="752" y="195" font-size="10" font-weight="600" fill="#1a1822">On Return (Back)</text>
+  <text x="752" y="210" font-size="9" fill="#1a1822">1. Read session state</text>
+  <text x="752" y="224" font-size="9" fill="#1a1822">2. Prefetch cached pages</text>
+  <text x="752" y="238" font-size="9" fill="#1a1822">3. Render virtual list</text>
+  <text x="752" y="252" font-size="9" fill="#1a1822">4. scrollTo(savedPos)</text>
+  <text x="752" y="266" font-size="9" fill="#1a1822">5. Resume observation</text>
+
+  <line x1="752" y1="280" x2="868" y2="280" stroke="#d7d1e6" stroke-width="1"/>
+
+  <text x="752" y="300" font-size="10" font-weight="600" fill="#1a1822">Edge Cases</text>
+  <text x="752" y="315" font-size="9" fill="#1a1822">• Content shifted</text>
+  <text x="752" y="329" font-size="9" fill="#1a1822">• Items deleted</text>
+  <text x="752" y="343" font-size="9" fill="#1a1822">• Cache expired</text>
+  <text x="752" y="357" font-size="9" fill="#1a1822">• Tab restored</text>
+  <text x="752" y="371" font-size="9" fill="#1a1822">• Layout changed</text>
+  <text x="752" y="385" font-size="9" fill="#1a1822">• Fallback: scroll top</text>
+
+  <!-- Legend -->
+  <rect x="540" y="430" width="340" height="55" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="555" y="450" font-size="10" font-weight="600" fill="#1a1822">Data Flow</text>
+  <line x1="555" y1="460" x2="585" y2="460" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="595" y="464" font-size="9" fill="#1a1822">Event / data direction</text>
+  <rect x="555" y="470" width="12" height="8" rx="2" fill="#6d5bd0"/>
+  <text x="575" y="478" font-size="9" fill="#1a1822">Rendered / Visible</text>
+  <rect x="680" y="470" width="12" height="8" rx="2" fill="#ffffff" stroke="#d7d1e6"/>
+  <text x="700" y="478" font-size="9" fill="#1a1822">Virtual / Offscreen</text>
+
   <defs>
-    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
   </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg2)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Infinite Scroll vs Pagination</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 2</text>
 </svg>

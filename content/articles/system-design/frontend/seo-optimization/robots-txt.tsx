@@ -36,10 +36,10 @@ export default function RobotsTxtArticle() {
           <strong>robots.txt</strong> is a plain-text file placed at the root of
           a website (example.com/robots.txt) that instructs web crawlers which
           URLs they are allowed or disallowed from accessing. Formally defined
-          by the <strong>Robots Exclusion Protocol</strong> (RFC 9309,
-          published in 2022), robots.txt has been the primary mechanism for
-          managing crawler access since 1994, making it one of the oldest and
-          most fundamental web standards still in active use.
+          by the <strong>Robots Exclusion Protocol</strong> (RFC 9309, published
+          in 2022), robots.txt has been the primary mechanism for managing
+          crawler access since 1994, making it one of the oldest and most
+          fundamental web standards still in active use.
         </p>
         <p>
           Every major search engine crawler — Googlebot, Bingbot, Baiduspider,
@@ -73,15 +73,15 @@ export default function RobotsTxtArticle() {
             following rules apply to. <code>User-agent: *</code> targets all
             crawlers. Specific crawlers like <code>User-agent: Googlebot</code>{" "}
             or <code>User-agent: Bingbot</code> allow crawler-specific rules.
-            Crawlers use the most specific matching user-agent block — if both
-            a wildcard and Googlebot-specific block exist, Googlebot follows
-            only its specific block.
+            Crawlers use the most specific matching user-agent block — if both a
+            wildcard and Googlebot-specific block exist, Googlebot follows only
+            its specific block.
           </li>
           <li>
             <strong>Disallow Directive:</strong> Prevents crawlers from
             accessing URLs matching the specified path prefix.{" "}
-            <code>Disallow: /admin</code> blocks all URLs starting with
-            /admin. <code>Disallow: /</code> blocks the entire site.{" "}
+            <code>Disallow: /admin</code> blocks all URLs starting with /admin.{" "}
+            <code>Disallow: /</code> blocks the entire site.{" "}
             <code>Disallow:</code> (empty value) allows everything. Disallow
             prevents crawling but does not prevent indexing — a page can still
             appear in search results (without a snippet) if other pages link to
@@ -89,24 +89,23 @@ export default function RobotsTxtArticle() {
           </li>
           <li>
             <strong>Allow Directive:</strong> Explicitly permits access to URLs
-            within a disallowed path. <code>Allow: /admin/public</code>{" "}
-            combined with <code>Disallow: /admin</code> blocks all /admin
-            paths except /admin/public. The Allow directive was not in the
-            original protocol but is now standardized in RFC 9309 and supported
-            by all major crawlers.
+            within a disallowed path. <code>Allow: /admin/public</code> combined
+            with <code>Disallow: /admin</code> blocks all /admin paths except
+            /admin/public. The Allow directive was not in the original protocol
+            but is now standardized in RFC 9309 and supported by all major
+            crawlers.
           </li>
           <li>
             <strong>Sitemap Directive:</strong> Declares the location of XML
-            sitemaps. <code>Sitemap: https://example.com/sitemap.xml</code>{" "}
-            can appear anywhere in the file and is not scoped to a user-agent
-            block. Multiple Sitemap directives can reference different sitemap
-            files.
+            sitemaps. <code>Sitemap: https://example.com/sitemap.xml</code> can
+            appear anywhere in the file and is not scoped to a user-agent block.
+            Multiple Sitemap directives can reference different sitemap files.
           </li>
           <li>
             <strong>Crawl-delay Directive:</strong> Specifies the number of
-            seconds a crawler should wait between requests. Supported by
-            Bingbot and Yandex but ignored by Googlebot (which manages its own
-            crawl rate). Google provides crawl rate settings in Search Console
+            seconds a crawler should wait between requests. Supported by Bingbot
+            and Yandex but ignored by Googlebot (which manages its own crawl
+            rate). Google provides crawl rate settings in Search Console
             instead.
           </li>
           <li>
@@ -232,8 +231,8 @@ export default function RobotsTxtArticle() {
                 useful for UGC and sponsored content
               </td>
               <td className="p-3">
-                Does not prevent discovery or indexing; Google treats nofollow as
-                a hint since 2019; requires per-link implementation
+                Does not prevent discovery or indexing; Google treats nofollow
+                as a hint since 2019; requires per-link implementation
               </td>
             </tr>
           </tbody>
@@ -258,11 +257,13 @@ export default function RobotsTxtArticle() {
             experience assessment.
           </li>
           <li>
-            <strong>Use noindex Instead of Disallow for Sensitive Pages:</strong>{" "}
+            <strong>
+              Use noindex Instead of Disallow for Sensitive Pages:
+            </strong>{" "}
             Disallow prevents crawling but not indexing. A disallowed URL can
             still appear in search results if external sites link to it. To
-            fully remove a page from search results, use the noindex meta tag
-            or X-Robots-Tag header.
+            fully remove a page from search results, use the noindex meta tag or
+            X-Robots-Tag header.
           </li>
           <li>
             <strong>Block Low-Value URL Patterns:</strong> Internal search
@@ -271,11 +272,11 @@ export default function RobotsTxtArticle() {
             focus crawl resources on high-value content.
           </li>
           <li>
-            <strong>Ensure robots.txt High Availability:</strong> A 5xx error
-            on robots.txt causes crawlers to assume the entire site is
-            disallowed and stop crawling. Serve robots.txt from a CDN or static
-            file system with high availability guarantees, separate from dynamic
-            application infrastructure.
+            <strong>Ensure robots.txt High Availability:</strong> A 5xx error on
+            robots.txt causes crawlers to assume the entire site is disallowed
+            and stop crawling. Serve robots.txt from a CDN or static file system
+            with high availability guarantees, separate from dynamic application
+            infrastructure.
           </li>
           <li>
             <strong>Include Sitemap Directive:</strong> Always declare sitemap
@@ -358,8 +359,8 @@ export default function RobotsTxtArticle() {
             <strong>SaaS Platforms (Salesforce, HubSpot):</strong> Block
             customer-specific subdomains and tenant paths from public search
             crawling while allowing marketing pages, documentation, and blog
-            content. Crawler-specific rules may allow Googlebot access to
-            public API documentation while blocking other crawlers.
+            content. Crawler-specific rules may allow Googlebot access to public
+            API documentation while blocking other crawlers.
           </li>
           <li>
             <strong>AI Crawler Blocking:</strong> With the rise of AI training
@@ -371,7 +372,97 @@ export default function RobotsTxtArticle() {
         </ul>
       </section>
 
-      {/* Section 8: References & Further Reading */}
+      {/* Section 8: Common Interview Questions */}
+      <section>
+        <h2>Common Interview Questions</h2>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: Does robots.txt Disallow prevent a page from appearing in
+              Google search results?
+            </p>
+            <p className="mt-2 text-sm">
+              A: No. Disallow prevents crawling, not indexing. Google may still
+              index a disallowed URL and display it in search results — just
+              without a content snippet or cached version. This happens when
+              external sites link to the URL, giving Google enough signals to
+              list it. To fully prevent indexing, use the noindex meta robots
+              tag. Importantly, you cannot use both Disallow and noindex
+              together — if the URL is disallowed, Google cannot crawl the page
+              to see the noindex tag. The URL must be crawlable for noindex to
+              work.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What happens when robots.txt returns a 500 error?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Major crawlers interpret a 5xx error on robots.txt as a
+              &quot;full disallow&quot; — they assume the site owner
+              doesn&apos;t want crawling and temporarily stop crawling the
+              entire site. Google specifically waits and retries, reducing crawl
+              rate significantly. If the error persists for an extended period,
+              Google may begin removing pages from the index. This makes
+              robots.txt availability a critical infrastructure concern — it
+              should be served from highly available infrastructure (CDN, static
+              file hosting) rather than through the application server.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do Allow and Disallow directives interact when they
+              conflict?
+            </p>
+            <p className="mt-2 text-sm">
+              A: The most specific (longest matching path) directive wins. If{" "}
+              <code>Disallow: /admin</code> and{" "}
+              <code>Allow: /admin/public</code> both match a URL like
+              /admin/public/page, the Allow directive wins because
+              &quot;/admin/public&quot; is a longer, more specific match than
+              &quot;/admin&quot;. If the paths have equal length, Allow takes
+              precedence (per Google&apos;s implementation of RFC 9309). This
+              specificity-based resolution enables patterns like &quot;disallow
+              everything under /api except /api/docs.&quot;
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How would you manage robots.txt for a large microservices
+              architecture with multiple subdomains?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Each subdomain requires its own robots.txt — the protocol is
+              scoped to the subdomain level. I would centralize robots.txt
+              configuration in a shared repository with per-subdomain config
+              files. A deployment pipeline generates each subdomain&apos;s
+              robots.txt from the centralized config, validates it against
+              known-good patterns (no accidental Disallow: /), and deploys it to
+              each subdomain&apos;s static hosting. Monitoring checks robots.txt
+              availability and content hash across all subdomains to detect
+              drift or outages.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: Should you use robots.txt to block AI training crawlers?
+            </p>
+            <p className="mt-2 text-sm">
+              A: This is increasingly common — sites add User-agent blocks for
+              GPTBot, CCBot, Google-Extended, and other AI crawlers to prevent
+              content from being used in training data. However, robots.txt is
+              voluntary — there&apos;s no enforcement mechanism guaranteeing
+              compliance. Well-established AI companies (OpenAI, Google,
+              Anthropic) generally respect robots.txt, but smaller or less
+              scrupulous crawlers may ignore it. For stronger protection,
+              combine robots.txt directives with rate limiting, bot detection,
+              and legal terms of service.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 9: References & Further Reading */}
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
@@ -416,96 +507,6 @@ export default function RobotsTxtArticle() {
             </a>
           </li>
         </ul>
-      </section>
-
-      {/* Section 9: Common Interview Questions */}
-      <section>
-        <h2>Common Interview Questions</h2>
-        <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: Does robots.txt Disallow prevent a page from appearing in
-              Google search results?
-            </p>
-            <p className="mt-2 text-sm">
-              A: No. Disallow prevents crawling, not indexing. Google may still
-              index a disallowed URL and display it in search results — just
-              without a content snippet or cached version. This happens when
-              external sites link to the URL, giving Google enough signals to
-              list it. To fully prevent indexing, use the noindex meta robots
-              tag. Importantly, you cannot use both Disallow and noindex
-              together — if the URL is disallowed, Google cannot crawl the page
-              to see the noindex tag. The URL must be crawlable for noindex to
-              work.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: What happens when robots.txt returns a 500 error?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Major crawlers interpret a 5xx error on robots.txt as a
-              &quot;full disallow&quot; — they assume the site owner doesn&apos;t
-              want crawling and temporarily stop crawling the entire site.
-              Google specifically waits and retries, reducing crawl rate
-              significantly. If the error persists for an extended period,
-              Google may begin removing pages from the index. This makes
-              robots.txt availability a critical infrastructure concern — it
-              should be served from highly available infrastructure (CDN, static
-              file hosting) rather than through the application server.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How do Allow and Disallow directives interact when they
-              conflict?
-            </p>
-            <p className="mt-2 text-sm">
-              A: The most specific (longest matching path) directive wins. If{" "}
-              <code>Disallow: /admin</code> and{" "}
-              <code>Allow: /admin/public</code> both match a URL like
-              /admin/public/page, the Allow directive wins because
-              &quot;/admin/public&quot; is a longer, more specific match than
-              &quot;/admin&quot;. If the paths have equal length, Allow takes
-              precedence (per Google&apos;s implementation of RFC 9309). This
-              specificity-based resolution enables patterns like
-              &quot;disallow everything under /api except /api/docs.&quot;
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How would you manage robots.txt for a large microservices
-              architecture with multiple subdomains?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Each subdomain requires its own robots.txt — the protocol is
-              scoped to the subdomain level. I would centralize robots.txt
-              configuration in a shared repository with per-subdomain config
-              files. A deployment pipeline generates each subdomain&apos;s
-              robots.txt from the centralized config, validates it against
-              known-good patterns (no accidental Disallow: /), and deploys it to
-              each subdomain&apos;s static hosting. Monitoring checks robots.txt
-              availability and content hash across all subdomains to detect
-              drift or outages.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: Should you use robots.txt to block AI training crawlers?
-            </p>
-            <p className="mt-2 text-sm">
-              A: This is increasingly common — sites add User-agent blocks for
-              GPTBot, CCBot, Google-Extended, and other AI crawlers to prevent
-              content from being used in training data. However, robots.txt is
-              voluntary — there&apos;s no enforcement mechanism guaranteeing
-              compliance. Well-established AI companies (OpenAI, Google,
-              Anthropic) generally respect robots.txt, but smaller or less
-              scrupulous crawlers may ignore it. For stronger protection,
-              combine robots.txt directives with rate limiting, bot detection,
-              and legal terms of service.
-            </p>
-          </div>
-        </div>
       </section>
     </ArticleLayout>
   );

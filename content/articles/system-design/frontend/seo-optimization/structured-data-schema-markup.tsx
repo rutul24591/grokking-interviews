@@ -87,7 +87,9 @@ export default function StructuredDataSchemaMarkupArticle() {
             Search Gallery.
           </li>
           <li>
-            <strong>JSON-LD (JavaScript Object Notation for Linked Data):</strong>{" "}
+            <strong>
+              JSON-LD (JavaScript Object Notation for Linked Data):
+            </strong>{" "}
             Google&apos;s recommended format for structured data. JSON-LD is
             injected as a{" "}
             <code>&lt;script type=&quot;application/ld+json&quot;&gt;</code>{" "}
@@ -107,7 +109,9 @@ export default function StructuredDataSchemaMarkupArticle() {
             manage at scale.
           </li>
           <li>
-            <strong>RDFa (Resource Description Framework in Attributes):</strong>{" "}
+            <strong>
+              RDFa (Resource Description Framework in Attributes):
+            </strong>{" "}
             Another inline annotation format using <code>vocab</code>,{" "}
             <code>typeof</code>, and <code>property</code> attributes. RDFa is
             more expressive than Microdata but also more complex. It sees
@@ -139,11 +143,11 @@ export default function StructuredDataSchemaMarkupArticle() {
             (job listings), and Review (ratings and reviews).
           </li>
           <li>
-            <strong>Nested Entities:</strong> Schema.org supports entity
-            nesting — a Product can contain an Offer (with price and
-            availability), an AggregateRating (average rating), a Brand, and
-            Review objects. Proper nesting ensures search engines understand
-            entity relationships and can display comprehensive rich results.
+            <strong>Nested Entities:</strong> Schema.org supports entity nesting
+            — a Product can contain an Offer (with price and availability), an
+            AggregateRating (average rating), a Brand, and Review objects.
+            Proper nesting ensures search engines understand entity
+            relationships and can display comprehensive rich results.
           </li>
         </ul>
       </section>
@@ -161,8 +165,8 @@ export default function StructuredDataSchemaMarkupArticle() {
           alt="Schema.org type hierarchy showing Thing as the root type branching into CreativeWork, Product, Event, Organization, and other entity types"
         />
         <p>
-          The Schema.org hierarchy is rooted at the <code>Thing</code> type.
-          All entities inherit properties from their parent types — a{" "}
+          The Schema.org hierarchy is rooted at the <code>Thing</code> type. All
+          entities inherit properties from their parent types — a{" "}
           <code>Product</code> inherits <code>name</code>,{" "}
           <code>description</code>, <code>image</code>, and <code>url</code>{" "}
           from <code>Thing</code> while adding product-specific properties like{" "}
@@ -278,11 +282,11 @@ export default function StructuredDataSchemaMarkupArticle() {
             types unlock more rich result features.
           </li>
           <li>
-            <strong>Validate with Google&apos;s Rich Results Test:</strong>{" "}
-            Run validation as part of CI/CD to catch regressions before
-            deployment. Google&apos;s requirements are stricter than Schema.org
-            validation alone — a schema valid per Schema.org may still fail
-            Google&apos;s rich result requirements.
+            <strong>Validate with Google&apos;s Rich Results Test:</strong> Run
+            validation as part of CI/CD to catch regressions before deployment.
+            Google&apos;s requirements are stricter than Schema.org validation
+            alone — a schema valid per Schema.org may still fail Google&apos;s
+            rich result requirements.
           </li>
           <li>
             <strong>Ensure Structured Data Matches Visible Content:</strong>{" "}
@@ -384,54 +388,7 @@ export default function StructuredDataSchemaMarkupArticle() {
         </ul>
       </section>
 
-      {/* Section 8: References & Further Reading */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://schema.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              Schema.org — Official Vocabulary Documentation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              Google Search Central — Structured Data Overview
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://search.google.com/test/rich-results"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              Google Rich Results Test Tool
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://json-ld.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              JSON-LD — Official Specification
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      {/* Section 9: Common Interview Questions */}
+      {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -504,12 +461,59 @@ export default function StructuredDataSchemaMarkupArticle() {
               <code>@graph</code> array or multiple separate script blocks. A
               product page might include Product (with nested Offer and
               AggregateRating), BreadcrumbList, and Organization. Each entity
-              should represent a distinct semantic concept. Use{" "}
-              <code>@id</code> references to link related entities within the
-              same graph rather than duplicating properties.
+              should represent a distinct semantic concept. Use <code>@id</code>{" "}
+              references to link related entities within the same graph rather
+              than duplicating properties.
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 9: References & Further Reading */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a
+              href="https://schema.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              Schema.org — Official Vocabulary Documentation
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              Google Search Central — Structured Data Overview
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://search.google.com/test/rich-results"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              Google Rich Results Test Tool
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://json-ld.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              JSON-LD — Official Specification
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

@@ -1,18 +1,128 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Print Stylesheets diagram 2">
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Page Break Management &amp; Content Flow Control</text>
+
+  <!-- Page 1 -->
+  <rect x="30" y="60" width="200" height="310" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="130" y="80" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Page 1</text>
+
+  <rect x="45" y="90" width="170" height="25" rx="3" fill="#6d5bd0"/>
+  <text x="130" y="107" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Article Title</text>
+
+  <rect x="45" y="120" width="170" height="15" rx="2" fill="#d7d1e6"/>
+  <rect x="45" y="140" width="170" height="15" rx="2" fill="#d7d1e6"/>
+  <rect x="45" y="160" width="120" height="15" rx="2" fill="#d7d1e6"/>
+  <text x="55" y="193" font-size="8" fill="#1a1822">Paragraph text content...</text>
+
+  <rect x="45" y="208" width="170" height="20" rx="3" fill="#6d5bd0" opacity="0.7"/>
+  <text x="130" y="222" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">Section 1 Heading</text>
+
+  <rect x="45" y="235" width="170" height="15" rx="2" fill="#d7d1e6"/>
+  <rect x="45" y="255" width="170" height="15" rx="2" fill="#d7d1e6"/>
+  <rect x="45" y="275" width="170" height="15" rx="2" fill="#d7d1e6"/>
+  <rect x="45" y="295" width="150" height="15" rx="2" fill="#d7d1e6"/>
+
+  <!-- Page break indicator -->
+  <line x1="45" y1="325" x2="215" y2="325" stroke="#cc3333" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="130" y="340" text-anchor="middle" font-size="8" fill="#cc3333">break-before: page</text>
+
+  <!-- Page 2 -->
+  <rect x="250" y="60" width="200" height="310" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="350" y="80" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Page 2</text>
+
+  <rect x="265" y="90" width="170" height="20" rx="3" fill="#6d5bd0" opacity="0.7"/>
+  <text x="350" y="104" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">Section 2 Heading</text>
+
+  <rect x="265" y="117" width="170" height="15" rx="2" fill="#d7d1e6"/>
+  <rect x="265" y="137" width="170" height="15" rx="2" fill="#d7d1e6"/>
+
+  <!-- Table that shouldn't break -->
+  <rect x="265" y="162" width="170" height="80" rx="3" fill="#f3f1f8" stroke="#228B22" stroke-width="1.5"/>
+  <text x="350" y="178" text-anchor="middle" font-size="8" font-weight="600" fill="#228B22">break-inside: avoid</text>
+  <rect x="270" y="185" width="160" height="12" rx="1" fill="#6d5bd0" opacity="0.3"/>
+  <rect x="270" y="200" width="160" height="12" rx="1" fill="#d7d1e6"/>
+  <rect x="270" y="215" width="160" height="12" rx="1" fill="#d7d1e6"/>
+  <rect x="270" y="230" width="160" height="12" rx="1" fill="#d7d1e6"/>
+
+  <rect x="265" y="252" width="170" height="15" rx="2" fill="#d7d1e6"/>
+  <rect x="265" y="272" width="170" height="15" rx="2" fill="#d7d1e6"/>
+
+  <!-- Image that shouldn't break -->
+  <rect x="265" y="297" width="170" height="55" rx="3" fill="#f3f1f8" stroke="#228B22" stroke-width="1.5"/>
+  <text x="350" y="320" text-anchor="middle" font-size="8" font-weight="600" fill="#228B22">break-inside: avoid</text>
+  <text x="350" y="340" text-anchor="middle" font-size="8" fill="#1a1822">[Image + Caption]</text>
+
+  <!-- Page 3 -->
+  <rect x="470" y="60" width="200" height="310" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="570" y="80" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Page 3</text>
+
+  <rect x="485" y="90" width="170" height="20" rx="3" fill="#6d5bd0" opacity="0.7"/>
+  <text x="570" y="104" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">Section 3 Heading</text>
+
+  <rect x="485" y="117" width="170" height="15" rx="2" fill="#d7d1e6"/>
+  <rect x="485" y="137" width="170" height="15" rx="2" fill="#d7d1e6"/>
+  <rect x="485" y="157" width="170" height="15" rx="2" fill="#d7d1e6"/>
+  <rect x="485" y="177" width="170" height="15" rx="2" fill="#d7d1e6"/>
+  <rect x="485" y="197" width="140" height="15" rx="2" fill="#d7d1e6"/>
+
+  <!-- Orphan protection -->
+  <rect x="485" y="225" width="170" height="55" rx="3" fill="#FFB800" opacity="0.15" stroke="#FFB800" stroke-width="1.5"/>
+  <text x="570" y="245" text-anchor="middle" font-size="8" font-weight="600" fill="#1a1822">Orphan Protection</text>
+  <text x="495" y="262" font-size="7" fill="#1a1822">orphans: 3 (min lines at bottom)</text>
+  <text x="495" y="274" font-size="7" fill="#1a1822">widows: 3 (min lines at top)</text>
+
+  <!-- Break rules reference -->
+  <rect x="690" y="60" width="180" height="310" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="780" y="82" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Break Properties</text>
+
+  <text x="700" y="105" font-size="9" font-weight="600" fill="#1a1822">break-before</text>
+  <text x="700" y="120" font-size="8" fill="#1a1822">page: new page before</text>
+  <text x="700" y="133" font-size="8" fill="#1a1822">avoid: keep with previous</text>
+  <text x="700" y="146" font-size="8" fill="#1a1822">auto: browser decides</text>
+
+  <line x1="700" y1="155" x2="860" y2="155" stroke="#d7d1e6" stroke-width="1"/>
+
+  <text x="700" y="172" font-size="9" font-weight="600" fill="#1a1822">break-after</text>
+  <text x="700" y="187" font-size="8" fill="#1a1822">page: new page after</text>
+  <text x="700" y="200" font-size="8" fill="#1a1822">avoid: keep with next</text>
+
+  <line x1="700" y1="210" x2="860" y2="210" stroke="#d7d1e6" stroke-width="1"/>
+
+  <text x="700" y="227" font-size="9" font-weight="600" fill="#1a1822">break-inside</text>
+  <text x="700" y="242" font-size="8" fill="#1a1822">avoid: don&apos;t split element</text>
+  <text x="700" y="255" font-size="8" fill="#1a1822">Use on: tables, figures,</text>
+  <text x="700" y="268" font-size="8" fill="#1a1822">code blocks, cards</text>
+
+  <line x1="700" y1="278" x2="860" y2="278" stroke="#d7d1e6" stroke-width="1"/>
+
+  <text x="700" y="295" font-size="9" font-weight="600" fill="#1a1822">Heading Protection</text>
+  <text x="700" y="310" font-size="8" fill="#1a1822">h1-h6 { break-after: avoid }</text>
+  <text x="700" y="323" font-size="8" fill="#1a1822">Prevents heading orphaned</text>
+  <text x="700" y="336" font-size="8" fill="#1a1822">at page bottom without</text>
+  <text x="700" y="349" font-size="8" fill="#1a1822">content following it</text>
+
+  <!-- Best practices -->
+  <rect x="30" y="390" width="840" height="95" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="412" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Page Break Best Practices</text>
+
+  <rect x="50" y="425" width="245" height="50" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="172" y="443" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Sections</text>
+  <text x="60" y="460" font-size="8" fill="#1a1822">break-before: page on h2</text>
+  <text x="60" y="472" font-size="8" fill="#1a1822">Each major section starts fresh</text>
+
+  <rect x="310" y="425" width="245" height="50" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="432" y="443" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Tables &amp; Figures</text>
+  <text x="320" y="460" font-size="8" fill="#1a1822">break-inside: avoid</text>
+  <text x="320" y="472" font-size="8" fill="#1a1822">Keep data tables &amp; images intact</text>
+
+  <rect x="570" y="425" width="280" height="50" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="710" y="443" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Typography</text>
+  <text x="580" y="460" font-size="8" fill="#1a1822">orphans: 3, widows: 3</text>
+  <text x="580" y="472" font-size="8" fill="#1a1822">Avoid single lines stranded across pages</text>
+
   <defs>
-    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
   </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg2)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Print Stylesheets</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 2</text>
 </svg>

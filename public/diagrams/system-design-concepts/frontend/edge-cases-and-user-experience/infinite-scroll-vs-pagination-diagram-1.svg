@@ -1,18 +1,122 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Infinite Scroll vs Pagination diagram 1">
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Pagination Strategy Decision Framework</text>
+
+  <!-- Entry -->
+  <rect x="340" y="55" width="220" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="80" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">Content Type Analysis</text>
+
+  <!-- Decision 1 -->
+  <rect x="310" y="115" width="280" height="36" rx="18" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="138" text-anchor="middle" font-size="12" fill="#1a1822">Is content discovery-oriented?</text>
+  <line x1="450" y1="95" x2="450" y2="115" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Yes branch left -->
+  <text x="270" y="145" text-anchor="end" font-size="11" fill="#6d5bd0" font-weight="600">Yes</text>
+  <line x1="310" y1="133" x2="200" y2="175" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- No branch right -->
+  <text x="630" y="145" text-anchor="start" font-size="11" fill="#6d5bd0" font-weight="600">No</text>
+  <line x1="590" y1="133" x2="700" y2="175" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Left: Infinite Scroll path -->
+  <rect x="80" y="175" width="240" height="36" rx="18" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="200" y="198" text-anchor="middle" font-size="12" fill="#1a1822">Dataset &gt; 10,000 items?</text>
+
+  <text x="60" y="240" text-anchor="end" font-size="11" fill="#6d5bd0" font-weight="600">Yes</text>
+  <line x1="80" y1="211" x2="40" y2="250" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <rect x="10" y="250" width="160" height="44" rx="8" fill="#6d5bd0"/>
+  <text x="90" y="270" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Virtualized</text>
+  <text x="90" y="285" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Infinite Scroll</text>
+
+  <text x="280" y="240" text-anchor="start" font-size="11" fill="#6d5bd0" font-weight="600">No</text>
+  <line x1="240" y1="211" x2="280" y2="250" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <rect x="230" y="250" width="160" height="44" rx="8" fill="#6d5bd0"/>
+  <text x="310" y="270" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Standard</text>
+  <text x="310" y="285" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Infinite Scroll</text>
+
+  <!-- Right: Pagination path -->
+  <rect x="580" y="175" width="240" height="36" rx="18" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="700" y="198" text-anchor="middle" font-size="12" fill="#1a1822">Need deep-link to page?</text>
+
+  <text x="560" y="240" text-anchor="end" font-size="11" fill="#6d5bd0" font-weight="600">Yes</text>
+  <line x1="580" y1="211" x2="540" y2="250" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <rect x="460" y="250" width="160" height="44" rx="8" fill="#6d5bd0"/>
+  <text x="540" y="270" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Numbered</text>
+  <text x="540" y="285" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Pagination</text>
+
+  <text x="800" y="240" text-anchor="start" font-size="11" fill="#6d5bd0" font-weight="600">No</text>
+  <line x1="740" y1="211" x2="780" y2="250" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <rect x="700" y="250" width="160" height="44" rx="8" fill="#6d5bd0"/>
+  <text x="780" y="270" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Load More</text>
+  <text x="780" y="285" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Button</text>
+
+  <!-- Characteristics boxes -->
+  <rect x="10" y="310" width="160" height="85" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="90" y="330" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Characteristics</text>
+  <text x="20" y="348" font-size="9" fill="#1a1822">• Window rendering only</text>
+  <text x="20" y="362" font-size="9" fill="#1a1822">• DOM recycling</text>
+  <text x="20" y="376" font-size="9" fill="#1a1822">• Low memory footprint</text>
+  <text x="20" y="390" font-size="9" fill="#1a1822">• Complex scroll math</text>
+
+  <rect x="230" y="310" width="160" height="85" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="310" y="330" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Characteristics</text>
+  <text x="240" y="348" font-size="9" fill="#1a1822">• Append on threshold</text>
+  <text x="240" y="362" font-size="9" fill="#1a1822">• IntersectionObserver</text>
+  <text x="240" y="376" font-size="9" fill="#1a1822">• Growing DOM</text>
+  <text x="240" y="390" font-size="9" fill="#1a1822">• Memory pressure risk</text>
+
+  <rect x="460" y="310" width="160" height="85" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="540" y="330" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Characteristics</text>
+  <text x="470" y="348" font-size="9" fill="#1a1822">• URL-addressable pages</text>
+  <text x="470" y="362" font-size="9" fill="#1a1822">• SEO-friendly</text>
+  <text x="470" y="376" font-size="9" fill="#1a1822">• Predictable memory</text>
+  <text x="470" y="390" font-size="9" fill="#1a1822">• Known total count</text>
+
+  <rect x="700" y="310" width="160" height="85" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="780" y="330" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Characteristics</text>
+  <text x="710" y="348" font-size="9" fill="#1a1822">• User-controlled loading</text>
+  <text x="710" y="362" font-size="9" fill="#1a1822">• Cursor-based API</text>
+  <text x="710" y="376" font-size="9" fill="#1a1822">• Footer accessible</text>
+  <text x="710" y="390" font-size="9" fill="#1a1822">• Hybrid approach</text>
+
+  <!-- Use cases -->
+  <rect x="10" y="405" width="160" height="60" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="90" y="422" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Best For</text>
+  <text x="20" y="438" font-size="9" fill="#1a1822">Social feeds, chat logs,</text>
+  <text x="20" y="452" font-size="9" fill="#1a1822">large catalogs, timelines</text>
+
+  <rect x="230" y="405" width="160" height="60" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="310" y="422" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Best For</text>
+  <text x="240" y="438" font-size="9" fill="#1a1822">Photo galleries, news</text>
+  <text x="240" y="452" font-size="9" fill="#1a1822">feeds, blog listings</text>
+
+  <rect x="460" y="405" width="160" height="60" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="540" y="422" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Best For</text>
+  <text x="470" y="438" font-size="9" fill="#1a1822">Search results, tables,</text>
+  <text x="470" y="452" font-size="9" fill="#1a1822">documentation, e-commerce</text>
+
+  <rect x="700" y="405" width="160" height="60" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="780" y="422" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Best For</text>
+  <text x="710" y="438" font-size="9" fill="#1a1822">Comments, reviews,</text>
+  <text x="710" y="452" font-size="9" fill="#1a1822">related items, threads</text>
+
+  <!-- Legend -->
+  <rect x="300" y="475" width="300" height="20" rx="4" fill="none"/>
+  <rect x="310" y="479" width="10" height="10" rx="2" fill="#6d5bd0"/>
+  <text x="325" y="488" font-size="9" fill="#1a1822">Decision Node</text>
+  <rect x="420" y="479" width="10" height="10" rx="2" fill="#ffffff" stroke="#d7d1e6"/>
+  <text x="435" y="488" font-size="9" fill="#1a1822">Details</text>
+  <rect x="490" y="479" width="10" height="10" rx="2" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="505" y="488" font-size="9" fill="#1a1822">Use Cases</text>
+
   <defs>
-    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
   </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg1)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Infinite Scroll vs Pagination</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 1</text>
 </svg>

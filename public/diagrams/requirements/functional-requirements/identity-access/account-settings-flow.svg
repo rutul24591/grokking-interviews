@@ -1,7 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
   <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="240" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">account settings flow</text>
-  <text x="400" y="270" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Identity Access Diagram</text>
-  <text x="400" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Valid XML</text>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Account Settings Flow</text>
+  
+  <!-- User -->
+  <circle cx="80" cy="250" r="35" fill="#3b82f6"/>
+  <text x="80" y="255" text-anchor="middle" font-family="system-ui" font-size="11" fill="#ffffff">User</text>
+  
+  <!-- Settings Page -->
+  <rect x="180" y="100" width="160" height="300" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="260" y="130" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Settings Page</text>
+  <rect x="200" y="150" width="120" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="260" y="172" text-anchor="middle" font-family="system-ui" font-size="10" fill="#475569">Email/Phone</text>
+  <rect x="200" y="195" width="120" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="260" y="217" text-anchor="middle" font-family="system-ui" font-size="10" fill="#475569">Password</text>
+  <rect x="200" y="240" width="120" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="260" y="262" text-anchor="middle" font-family="system-ui" font-size="10" fill="#475569">Privacy</text>
+  <rect x="200" y="285" width="120" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="260" y="307" text-anchor="middle" font-family="system-ui" font-size="10" fill="#475569">Data Export</text>
+  <rect x="200" y="330" width="120" height="35" rx="4" fill="#ef4444"/>
+  <text x="260" y="352" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Delete Account</text>
+  
+  <!-- Verification -->
+  <rect x="420" y="120" width="180" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="510" y="150" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Verification</text>
+  <rect x="440" y="170" width="140" height="30" rx="4" fill="#ffffff"/>
+  <text x="510" y="190" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Password/MFA</text>
+  <rect x="440" y="210" width="140" height="30" rx="4" fill="#ffffff"/>
+  <text x="510" y="230" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Email/SMS Code</text>
+  
+  <!-- Backend Services -->
+  <rect x="420" y="280" width="180" height="140" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="510" y="310" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Backend Services</text>
+  <rect x="440" y="330" width="140" height="30" rx="4" fill="#ffffff"/>
+  <text x="510" y="350" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Update Profile</text>
+  <rect x="440" y="370" width="140" height="30" rx="4" fill="#ffffff"/>
+  <text x="510" y="390" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Audit Log</text>
+  
+  <!-- Database -->
+  <rect x="660" y="200" width="100" height="100" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="710" y="240" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">User DB</text>
+  <text x="710" y="265" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Update record</text>
+  <text x="710" y="280" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Audit trail</text>
+  
+  <!-- Arrows -->
+  <line x1="115" y1="250" x2="170" y2="250" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="142" y="240" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">1. Navigate</text>
+  
+  <line x1="340" y1="250" x2="410" y2="250" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="375" y="240" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">2. Submit change</text>
+  
+  <line x1="510" y1="240" x2="510" y2="270" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="530" y="255" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">3. Verify</text>
+  
+  <line x1="600" y1="350" x2="650" y2="250" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="640" y="300" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">4. Update</text>
+  
+  <!-- Notification -->
+  <rect x="180" y="420" width="420" height="50" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="390" y="440" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">✓ Settings Updated</text>
+  <text x="390" y="460" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Email notification sent • Audit log created</text>
+
 </svg>

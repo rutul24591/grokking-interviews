@@ -1,7 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
   <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="240" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">auth audit analysis</text>
-  <text x="400" y="270" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Identity Access Diagram</text>
-  <text x="400" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Valid XML</text>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Audit Log Analysis &amp; Threat Detection</text>
+  
+  <!-- Log Ingestion -->
+  <rect x="50" y="70" width="180" height="120" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="140" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Log Ingestion</text>
+  
+  <rect x="70" y="115" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.8"/>
+  <text x="140" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Stream Processing</text>
+  
+  <rect x="70" y="150" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.6"/>
+  <text x="140" y="170" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Kafka / Kinesis</text>
+  
+  <line x1="230" y1="130" x2="270" y2="130" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Anomaly Detection -->
+  <rect x="280" y="60" width="200" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="380" y="85" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Anomaly Detection</text>
+  
+  <rect x="300" y="105" width="160" height="35" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="380" y="127" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">ML-Based Detection</text>
+  
+  <rect x="300" y="145" width="160" height="35" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="380" y="167" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Behavioral Analysis</text>
+  
+  <rect x="300" y="185" width="160" height="35" rx="4" fill="#f59e0b"/>
+  <text x="380" y="207" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Alert on Anomalies</text>
+  
+  <line x1="480" y1="130" x2="520" y2="130" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Threat Intelligence -->
+  <rect x="530" y="70" width="220" height="120" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="640" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Threat Intelligence</text>
+  
+  <rect x="550" y="115" width="180" height="30" rx="4" fill="#ffffff" stroke="#ef4444" stroke-width="1"/>
+  <text x="640" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Known Bad IPs</text>
+  
+  <rect x="550" y="150" width="180" height="30" rx="4" fill="#ffffff" stroke="#ef4444" stroke-width="1"/>
+  <text x="640" y="170" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Compromised Credentials</text>
+  
+  <rect x="550" y="185" width="180" height="30" rx="4" fill="#ef4444"/>
+  <text x="640" y="205" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Block + Alert</text>
+  
+  <line x1="640" y1="260" x2="640" y2="300" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Alerting -->
+  <rect x="530" y="310" width="220" height="140" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="640" y="335" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Alerting</text>
+  
+  <rect x="550" y="350" width="180" height="35" rx="4" fill="#22c55e" opacity="0.8"/>
+  <text x="640" y="372" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">PagerDuty / OpsGenie</text>
+  
+  <rect x="550" y="390" width="180" height="35" rx="4" fill="#22c55e" opacity="0.6"/>
+  <text x="640" y="412" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Email / Slack</text>
+  
+  <rect x="550" y="430" width="180" height="35" rx="4" fill="#22c55e" opacity="0.4"/>
+  <text x="640" y="452" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">SIEM Integration</text>
+  
+  <!-- Search & Investigation -->
+  <rect x="50" y="220" width="450" height="230" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="275" y="245" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Search &amp; Investigation</text>
+  
+  <rect x="70" y="260" width="130" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="135" y="285" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Full-Text</text>
+  <text x="135" y="300" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Elasticsearch</text>
+  
+  <rect x="210" y="260" width="130" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="275" y="285" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Time Range</text>
+  <text x="275" y="300" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Last 24h, 7d, 30d</text>
+  
+  <rect x="350" y="260" width="130" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="415" y="285" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Filters</text>
+  <text x="415" y="300" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">user_id, event_type</text>
+  
+  <rect x="70" y="320" width="130" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="135" y="345" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Aggregations</text>
+  <text x="135" y="360" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Count by type</text>
+  
+  <rect x="210" y="320" width="130" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="275" y="345" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Timeline</text>
+  <text x="275" y="360" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Event sequence</text>
+  
+  <rect x="350" y="320" width="130" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="415" y="345" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Export</text>
+  <text x="415" y="360" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">CSV, PDF for audit</text>
+  
+  <rect x="70" y="380" width="410" height="50" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="275" y="405" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Use Case: Investigate Suspicious Login</text>
+  <text x="275" y="420" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Filter by user_id → View timeline → Check geolocation → Compare with baseline</text>
+  
+  <!-- Compliance Reporting -->
+  <rect x="530" y="70" width="220" height="120" rx="8" fill="#f1f5f9" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="640" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Compliance Reports</text>
+  
+  <rect x="550" y="115" width="180" height="30" rx="4" fill="#ffffff" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="640" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">SOC 2 Reports</text>
+  
+  <rect x="550" y="150" width="180" height="30" rx="4" fill="#ffffff" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="640" y="170" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">HIPAA Access Logs</text>
+  
+  <rect x="550" y="185" width="180" height="30" rx="4" fill="#8b5cf6"/>
+  <text x="640" y="205" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">PCI-DSS Audit</text>
+
 </svg>

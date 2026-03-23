@@ -40,30 +40,29 @@ export default function PolyfillsAndTranspilationArticle() {
         <p>
           <strong>Polyfills</strong> are runtime patches that provide
           implementations of web platform APIs in environments where those APIs
-          are not natively available. A polyfill for
-          Array.prototype.includes, for example, adds the includes method to
-          the Array prototype in browsers that shipped before ES2016, allowing
-          application code to use modern syntax uniformly.{" "}
-          <strong>Transpilation</strong> is a build-time process that transforms
-          source code written in a newer language version into equivalent code in
-          an older version — converting arrow functions, optional chaining,
-          async/await, and other modern syntax into ES5-compatible equivalents
-          that older JavaScript engines can execute. Together, polyfills and
-          transpilation form the compatibility layer that enables teams to write
-          modern JavaScript while serving users across a wide spectrum of browser
-          capabilities.
+          are not natively available. A polyfill for Array.prototype.includes,
+          for example, adds the includes method to the Array prototype in
+          browsers that shipped before ES2016, allowing application code to use
+          modern syntax uniformly. <strong>Transpilation</strong> is a
+          build-time process that transforms source code written in a newer
+          language version into equivalent code in an older version — converting
+          arrow functions, optional chaining, async/await, and other modern
+          syntax into ES5-compatible equivalents that older JavaScript engines
+          can execute. Together, polyfills and transpilation form the
+          compatibility layer that enables teams to write modern JavaScript
+          while serving users across a wide spectrum of browser capabilities.
         </p>
         <p>
           The distinction between polyfills and transpilation is fundamental:
-          transpilation handles syntax differences (language features that change
-          how code is written), while polyfills handle API differences (runtime
-          features that provide new functionality). Optional chaining (?.) is a
-          syntax feature that must be transpiled because older parsers cannot
-          parse it. Promise is an API feature that must be polyfilled because
-          older engines lack the constructor. Some features require both — async
-          functions need transpilation of the syntax into generator functions or
-          state machines, plus polyfilling of the Promise API that the
-          transpiled output depends on.
+          transpilation handles syntax differences (language features that
+          change how code is written), while polyfills handle API differences
+          (runtime features that provide new functionality). Optional chaining
+          (?.) is a syntax feature that must be transpiled because older parsers
+          cannot parse it. Promise is an API feature that must be polyfilled
+          because older engines lack the constructor. Some features require both
+          — async functions need transpilation of the syntax into generator
+          functions or state machines, plus polyfilling of the Promise API that
+          the transpiled output depends on.
         </p>
         <p>
           At the staff and principal engineer level, polyfills and transpilation
@@ -83,11 +82,11 @@ export default function PolyfillsAndTranspilationArticle() {
           The era of monolithic polyfill bundles (core-js included in every
           build) is giving way to targeted, analytics-driven approaches:
           differential serving delivers modern code to modern browsers and
-          transpiled code to legacy browsers, polyfill services deliver
-          only the polyfills a specific browser needs, and build tools like SWC
-          and esbuild offer near-instant transpilation that makes per-target
-          builds practical. Understanding these approaches and their tradeoffs
-          is essential for architecting frontend systems that are both broadly
+          transpiled code to legacy browsers, polyfill services deliver only the
+          polyfills a specific browser needs, and build tools like SWC and
+          esbuild offer near-instant transpilation that makes per-target builds
+          practical. Understanding these approaches and their tradeoffs is
+          essential for architecting frontend systems that are both broadly
           compatible and performantly modern.
         </p>
       </section>
@@ -98,9 +97,9 @@ export default function PolyfillsAndTranspilationArticle() {
         <ul className="space-y-3">
           <li>
             <strong>Polyfill:</strong> A runtime script that implements a web
-            platform API (DOM method, JavaScript built-in, CSS property behavior)
-            in browsers that do not natively support it. Polyfills must
-            faithfully replicate the specification behavior, including edge
+            platform API (DOM method, JavaScript built-in, CSS property
+            behavior) in browsers that do not natively support it. Polyfills
+            must faithfully replicate the specification behavior, including edge
             cases, error handling, and return values. Conformant polyfills pass
             the official test suites (Test262 for JavaScript, Web Platform Tests
             for DOM APIs). Non-conformant polyfills that only implement the
@@ -111,20 +110,20 @@ export default function PolyfillsAndTranspilationArticle() {
             <strong>Transpiler:</strong> A build tool that transforms source
             code from one language version to another. Babel is the canonical
             JavaScript transpiler, converting modern ECMAScript syntax (ES2015
-            through ESNext) to ES5 or other target versions. SWC and esbuild
-            are newer alternatives offering significantly faster compilation.
+            through ESNext) to ES5 or other target versions. SWC and esbuild are
+            newer alternatives offering significantly faster compilation.
             Transpilers use abstract syntax tree (AST) manipulation to rewrite
             code patterns while preserving semantics.
           </li>
           <li>
             <strong>Browserslist:</strong> A standard configuration format that
-            specifies target browser environments using queries like &quot;last 2
-            versions&quot;, &quot;&gt; 1%&quot;, or &quot;not dead&quot;. Build
-            tools (Babel, Autoprefixer, PostCSS) read browserslist to determine
-            which transformations and polyfills are necessary for the target
-            environment. The browserslist configuration is the single source of
-            truth for compatibility scope and should be aligned with the
-            organization&apos;s compatibility contract.
+            specifies target browser environments using queries like &quot;last
+            2 versions&quot;, &quot;&gt; 1%&quot;, or &quot;not dead&quot;.
+            Build tools (Babel, Autoprefixer, PostCSS) read browserslist to
+            determine which transformations and polyfills are necessary for the
+            target environment. The browserslist configuration is the single
+            source of truth for compatibility scope and should be aligned with
+            the organization&apos;s compatibility contract.
           </li>
           <li>
             <strong>core-js:</strong> The most comprehensive JavaScript polyfill
@@ -164,11 +163,11 @@ export default function PolyfillsAndTranspilationArticle() {
           </li>
           <li>
             <strong>Runtime Polyfill Service:</strong> A server-side service
-            that analyzes the user agent string of incoming requests and
-            returns only the polyfills that the specific browser needs. This
-            minimizes payload size by avoiding the delivery of polyfills for
-            APIs the browser already supports natively. The trade-off is an
-            additional network request and dependency on an external service.
+            that analyzes the user agent string of incoming requests and returns
+            only the polyfills that the specific browser needs. This minimizes
+            payload size by avoiding the delivery of polyfills for APIs the
+            browser already supports natively. The trade-off is an additional
+            network request and dependency on an external service.
           </li>
         </ul>
       </section>
@@ -216,8 +215,8 @@ export default function PolyfillsAndTranspilationArticle() {
           bundle during build time — simple to deploy but every user downloads
           polyfills regardless of whether their browser needs them. Polyfill
           services deliver polyfills via a server-side user-agent analysis,
-          returning only the necessary patches — optimal payload size but adds
-          a network dependency and CORS considerations. Feature-detect-and-load
+          returning only the necessary patches — optimal payload size but adds a
+          network dependency and CORS considerations. Feature-detect-and-load
           uses runtime feature detection to conditionally load polyfill chunks
           via dynamic import — no server dependency and optimal payload, but
           adds a loading waterfall for the polyfill chunk before the application
@@ -295,9 +294,7 @@ export default function PolyfillsAndTranspilationArticle() {
               </td>
             </tr>
             <tr>
-              <td className="border border-theme p-2">
-                Transpilation (Babel)
-              </td>
+              <td className="border border-theme p-2">Transpilation (Babel)</td>
               <td className="border border-theme p-2">
                 Mature ecosystem with extensive plugin library. Handles complex
                 syntax transformations (decorators, class fields, pipeline
@@ -319,9 +316,9 @@ export default function PolyfillsAndTranspilationArticle() {
               </td>
               <td className="border border-theme p-2">
                 Smaller plugin ecosystem. Some Babel transformations have no
-                equivalent. Less mature with occasional edge case differences
-                in output. Custom plugin development requires Rust (SWC) or
-                Go (esbuild) knowledge.
+                equivalent. Less mature with occasional edge case differences in
+                output. Custom plugin development requires Rust (SWC) or Go
+                (esbuild) knowledge.
               </td>
             </tr>
             <tr>
@@ -347,17 +344,22 @@ export default function PolyfillsAndTranspilationArticle() {
         <h2>Best Practices</h2>
         <ol className="space-y-3">
           <li>
-            <strong>Align browserslist with analytics data, not aspirational targets:</strong>{" "}
-            Set browserslist queries based on actual user agent distribution from
-            production analytics, not on what the team wishes the audience looked
-            like. A browserslist of &quot;last 2 versions&quot; may include
-            browsers with zero actual users while excluding browsers with
-            significant traffic from specific regions or demographics. Review
-            and update browserslist quarterly alongside the compatibility
+            <strong>
+              Align browserslist with analytics data, not aspirational targets:
+            </strong>{" "}
+            Set browserslist queries based on actual user agent distribution
+            from production analytics, not on what the team wishes the audience
+            looked like. A browserslist of &quot;last 2 versions&quot; may
+            include browsers with zero actual users while excluding browsers
+            with significant traffic from specific regions or demographics.
+            Review and update browserslist quarterly alongside the compatibility
             contract.
           </li>
           <li>
-            <strong>Use preset-env with useBuiltIns &quot;usage&quot; for automatic polyfill injection:</strong>{" "}
+            <strong>
+              Use preset-env with useBuiltIns &quot;usage&quot; for automatic
+              polyfill injection:
+            </strong>{" "}
             The &quot;usage&quot; mode analyzes actual API usage in your source
             code and injects only the polyfills for APIs that are both used and
             unsupported by your browserslist targets. This eliminates manual
@@ -366,7 +368,10 @@ export default function PolyfillsAndTranspilationArticle() {
             polyfill implementations are used.
           </li>
           <li>
-            <strong>Implement differential serving for significant bundle size savings:</strong>{" "}
+            <strong>
+              Implement differential serving for significant bundle size
+              savings:
+            </strong>{" "}
             The module/nomodule pattern delivers 30 to 50 percent smaller
             bundles to modern browsers. For applications with significant
             traffic, this translates to meaningful performance improvements and
@@ -374,37 +379,37 @@ export default function PolyfillsAndTranspilationArticle() {
             sets and the HTML template correctly renders both script tags.
           </li>
           <li>
-            <strong>Audit polyfill bundle impact regularly:</strong>{" "}
-            Run bundle analysis to understand the size contribution of polyfills
-            and transpilation output. core-js modules can silently accumulate
-            as new features are used. A quarterly polyfill audit identifies
-            polyfills that are no longer needed (because the minimum browser
-            target now supports the feature natively) and can be removed by
-            updating browserslist.
+            <strong>Audit polyfill bundle impact regularly:</strong> Run bundle
+            analysis to understand the size contribution of polyfills and
+            transpilation output. core-js modules can silently accumulate as new
+            features are used. A quarterly polyfill audit identifies polyfills
+            that are no longer needed (because the minimum browser target now
+            supports the feature natively) and can be removed by updating
+            browserslist.
           </li>
           <li>
-            <strong>Prefer ponyfills in library code:</strong>{" "}
-            Libraries that polyfill globals create conflicts when multiple
-            libraries in the same application polyfill the same API with
-            different implementations. Libraries should use ponyfills (local
-            imports) to avoid global namespace pollution and let the consuming
-            application control its own polyfill strategy.
+            <strong>Prefer ponyfills in library code:</strong> Libraries that
+            polyfill globals create conflicts when multiple libraries in the
+            same application polyfill the same API with different
+            implementations. Libraries should use ponyfills (local imports) to
+            avoid global namespace pollution and let the consuming application
+            control its own polyfill strategy.
           </li>
           <li>
             <strong>Test transpiled output, not just source code:</strong>{" "}
-            Transpilation can introduce subtle behavioral differences, especially
-            for complex features like async iterators, decorators, and class
-            private fields. Integration tests should run against the actual
-            build output, not the source code, to catch transpilation-induced
-            bugs before they reach production.
+            Transpilation can introduce subtle behavioral differences,
+            especially for complex features like async iterators, decorators,
+            and class private fields. Integration tests should run against the
+            actual build output, not the source code, to catch
+            transpilation-induced bugs before they reach production.
           </li>
           <li>
-            <strong>Consider SWC or esbuild for build performance:</strong>{" "}
-            For large codebases where Babel build times exceed acceptable
+            <strong>Consider SWC or esbuild for build performance:</strong> For
+            large codebases where Babel build times exceed acceptable
             thresholds, migrating to SWC or esbuild can reduce transpilation
             time by an order of magnitude. Validate that the output is
-            equivalent by running the full test suite against both Babel and
-            the new transpiler output before switching.
+            equivalent by running the full test suite against both Babel and the
+            new transpiler output before switching.
           </li>
         </ol>
       </section>
@@ -414,17 +419,19 @@ export default function PolyfillsAndTranspilationArticle() {
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
           <li>
-            <strong>Including the entire core-js library:</strong>{" "}
-            Importing core-js without granular configuration adds 80 to 150 KB
-            (minified and gzipped) to the bundle, polyfilling hundreds of APIs
-            that the application never uses. Always use preset-env with
-            useBuiltIns &quot;usage&quot; or manually import only the specific
-            core-js modules needed. Regularly audit which core-js modules are
-            being included and whether they are still necessary given current
+            <strong>Including the entire core-js library:</strong> Importing
+            core-js without granular configuration adds 80 to 150 KB (minified
+            and gzipped) to the bundle, polyfilling hundreds of APIs that the
+            application never uses. Always use preset-env with useBuiltIns
+            &quot;usage&quot; or manually import only the specific core-js
+            modules needed. Regularly audit which core-js modules are being
+            included and whether they are still necessary given current
             browserslist targets.
           </li>
           <li>
-            <strong>Assuming transpilation guarantees identical behavior:</strong>{" "}
+            <strong>
+              Assuming transpilation guarantees identical behavior:
+            </strong>{" "}
             Transpiled code is semantically equivalent in most cases, but edge
             cases exist. Babel&apos;s loose mode trades specification compliance
             for smaller output — loose class transformation, for example, does
@@ -434,36 +441,38 @@ export default function PolyfillsAndTranspilationArticle() {
             edge cases.
           </li>
           <li>
-            <strong>Neglecting CSS polyfilling and prefixing:</strong>{" "}
-            Teams that meticulously polyfill JavaScript often neglect CSS
+            <strong>Neglecting CSS polyfilling and prefixing:</strong> Teams
+            that meticulously polyfill JavaScript often neglect CSS
             compatibility. CSS custom properties, container queries, logical
             properties, and newer selectors like :has() require their own
             compatibility strategy — Autoprefixer for vendor prefixes, PostCSS
-            plugins for feature polyfills, or CSS @supports queries for
-            graceful degradation. The CSS compatibility pipeline should be
-            aligned with the same browserslist configuration as JavaScript.
+            plugins for feature polyfills, or CSS @supports queries for graceful
+            degradation. The CSS compatibility pipeline should be aligned with
+            the same browserslist configuration as JavaScript.
           </li>
           <li>
-            <strong>Polyfilling in third-party library code:</strong>{" "}
-            Including node_modules in the transpilation pipeline to polyfill
-            third-party libraries dramatically increases build time and can
-            introduce unexpected behavior changes. Instead, ensure that
-            third-party libraries already ship code compatible with your
-            browserslist targets, or choose alternative libraries that do. If a
-            critical library requires transpilation, vendor it and transpile
-            only that specific module.
+            <strong>Polyfilling in third-party library code:</strong> Including
+            node_modules in the transpilation pipeline to polyfill third-party
+            libraries dramatically increases build time and can introduce
+            unexpected behavior changes. Instead, ensure that third-party
+            libraries already ship code compatible with your browserslist
+            targets, or choose alternative libraries that do. If a critical
+            library requires transpilation, vendor it and transpile only that
+            specific module.
           </li>
           <li>
-            <strong>Not testing the nomodule fallback path:</strong>{" "}
-            The legacy bundle in differential serving often receives less
-            testing attention because developers primarily work in modern
-            browsers. But the nomodule path serves the most fragile user
-            segment — if it is broken, those users have no fallback to fall back
-            to. Include legacy bundle smoke tests in the CI pipeline and
-            periodically verify the nomodule path in actual target browsers.
+            <strong>Not testing the nomodule fallback path:</strong> The legacy
+            bundle in differential serving often receives less testing attention
+            because developers primarily work in modern browsers. But the
+            nomodule path serves the most fragile user segment — if it is
+            broken, those users have no fallback to fall back to. Include legacy
+            bundle smoke tests in the CI pipeline and periodically verify the
+            nomodule path in actual target browsers.
           </li>
           <li>
-            <strong>Relying on a polyfill service as a single point of failure:</strong>{" "}
+            <strong>
+              Relying on a polyfill service as a single point of failure:
+            </strong>{" "}
             External polyfill services (including the original polyfill.io,
             which experienced a supply chain compromise in 2024) introduce both
             availability and security risks. If the service is down, browsers
@@ -483,23 +492,23 @@ export default function PolyfillsAndTranspilationArticle() {
           automatic polyfill management as part of its build pipeline. The
           framework detects API usage and injects polyfills for features like
           fetch, Object.assign, and URL based on the configured browserslist.
-          Next.js also implements differential serving through its module/nomodule
-          output, delivering modern ES module bundles to capable browsers.
-          This built-in approach means application developers benefit from
-          optimized polyfill delivery without manual configuration, while the
-          framework team centrally manages polyfill strategy updates across
+          Next.js also implements differential serving through its
+          module/nomodule output, delivering modern ES module bundles to capable
+          browsers. This built-in approach means application developers benefit
+          from optimized polyfill delivery without manual configuration, while
+          the framework team centrally manages polyfill strategy updates across
           thousands of applications.
         </p>
         <p>
           <strong>Airbnb&apos;s migration from Babel to SWC:</strong> Airbnb
           migrated their large monorepo from Babel to SWC for transpilation,
           reducing build times by over 60 percent. The migration involved
-          validating output equivalence across their full test suite, identifying
-          Babel plugins without SWC equivalents (requiring custom SWC plugins or
-          code refactoring), and gradually rolling out SWC per-package while
-          keeping Babel as a fallback. The migration demonstrated that for
-          large codebases, transpiler performance directly impacts developer
-          productivity and CI costs.
+          validating output equivalence across their full test suite,
+          identifying Babel plugins without SWC equivalents (requiring custom
+          SWC plugins or code refactoring), and gradually rolling out SWC
+          per-package while keeping Babel as a fallback. The migration
+          demonstrated that for large codebases, transpiler performance directly
+          impacts developer productivity and CI costs.
         </p>
         <p>
           <strong>Shopify&apos;s polyfill service architecture:</strong> Shopify
@@ -513,77 +522,20 @@ export default function PolyfillsAndTranspilationArticle() {
           Shopify&apos;s edge network for low-latency delivery.
         </p>
         <p>
-          <strong>BBC&apos;s browserslist-driven compatibility:</strong> The
-          BBC uses analytics-driven browserslist configuration to determine
-          their compatibility scope. Their production analytics feed a dashboard
-          that tracks browser version distribution across their global audience.
-          When a browser version drops below their support threshold (0.5
-          percent of total traffic), it is removed from browserslist, and the
-          next build automatically drops the associated polyfills and
-          transpilation. This data-driven approach has progressively reduced
-          their polyfill bundle size by 40 percent over two years while
-          maintaining compatibility for all significant user segments.
+          <strong>BBC&apos;s browserslist-driven compatibility:</strong> The BBC
+          uses analytics-driven browserslist configuration to determine their
+          compatibility scope. Their production analytics feed a dashboard that
+          tracks browser version distribution across their global audience. When
+          a browser version drops below their support threshold (0.5 percent of
+          total traffic), it is removed from browserslist, and the next build
+          automatically drops the associated polyfills and transpilation. This
+          data-driven approach has progressively reduced their polyfill bundle
+          size by 40 percent over two years while maintaining compatibility for
+          all significant user segments.
         </p>
       </section>
 
-      {/* Section 8: References & Further Reading */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://github.com/zloirock/core-js"
-              className="text-accent underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              core-js — Modular Standard Library for JavaScript
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://babeljs.io/docs/babel-preset-env"
-              className="text-accent underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Babel — @babel/preset-env Documentation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://browsersl.ist/"
-              className="text-accent underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Browserslist — Target Browser Configuration
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://web.dev/articles/serve-modern-code-to-modern-browsers"
-              className="text-accent underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              web.dev — Serve Modern Code to Modern Browsers
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://swc.rs/"
-              className="text-accent underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              SWC — Rust-Based JavaScript/TypeScript Compiler
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      {/* Section 9: Common Interview Questions */}
+      {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -654,8 +606,8 @@ export default function PolyfillsAndTranspilationArticle() {
               two sets of bundles. Script tags with type=&quot;module&quot; are
               loaded by browsers supporting ES modules (roughly Chrome 61+,
               Firefox 60+, Safari 11+). Script tags with the nomodule attribute
-              are loaded only by browsers that do not understand modules.
-              The modern bundle can skip most transpilation and polyfills,
+              are loaded only by browsers that do not understand modules. The
+              modern bundle can skip most transpilation and polyfills,
               delivering 30 to 50 percent smaller bundles. Limitations include
               some older browsers loading both bundles (Safari 10.1 downloads
               both), doubled build output requiring more storage and CI time,
@@ -681,13 +633,70 @@ export default function PolyfillsAndTranspilationArticle() {
               (decorators with legacy semantics, custom AST transforms, specific
               proposal stage support), when the team lacks Rust or Go expertise
               for custom plugin development, or when output fidelity must match
-              Babel exactly for compliance or testing reasons. A common migration
-              path is running both transpilers in CI for a period, comparing
-              output, and gradually switching when confidence in equivalence is
-              established.
+              Babel exactly for compliance or testing reasons. A common
+              migration path is running both transpilers in CI for a period,
+              comparing output, and gradually switching when confidence in
+              equivalence is established.
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 9: References & Further Reading */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a
+              href="https://github.com/zloirock/core-js"
+              className="text-accent underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              core-js — Modular Standard Library for JavaScript
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://babeljs.io/docs/babel-preset-env"
+              className="text-accent underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Babel — @babel/preset-env Documentation
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://browsersl.ist/"
+              className="text-accent underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Browserslist — Target Browser Configuration
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://web.dev/articles/serve-modern-code-to-modern-browsers"
+              className="text-accent underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              web.dev — Serve Modern Code to Modern Browsers
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://swc.rs/"
+              className="text-accent underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              SWC — Rust-Based JavaScript/TypeScript Compiler
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

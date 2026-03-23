@@ -629,106 +629,7 @@ export default function WCAGGuidelinesArticle() {
         </p>
       </section>
 
-      {/* ─── Section 8: References & Further Reading ─── */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://www.w3.org/TR/WCAG22/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:underline"
-            >
-              WCAG 2.2 — W3C Recommendation (October 2023)
-            </a>{" "}
-            — The full normative specification with all 86 success criteria.
-          </li>
-          <li>
-            <a
-              href="https://www.w3.org/WAI/WCAG22/Understanding/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:underline"
-            >
-              Understanding WCAG 2.2
-            </a>{" "}
-            — W3C&apos;s non-normative companion that explains the intent, benefits, and examples
-            for each success criterion.
-          </li>
-          <li>
-            <a
-              href="https://www.w3.org/WAI/WCAG22/Techniques/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:underline"
-            >
-              Techniques for WCAG 2.2
-            </a>{" "}
-            — Sufficient and advisory techniques (HTML, CSS, ARIA, scripting) for meeting each
-            success criterion.
-          </li>
-          <li>
-            <a
-              href="https://www.w3.org/WAI/ARIA/apg/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:underline"
-            >
-              WAI-ARIA Authoring Practices Guide (APG)
-            </a>{" "}
-            — Design patterns and keyboard interaction models for common UI components.
-          </li>
-          <li>
-            <a
-              href="https://github.com/dequelabs/axe-core"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:underline"
-            >
-              axe-core — Deque Systems
-            </a>{" "}
-            — Open-source accessibility testing engine used in CI/CD pipelines and browser DevTools.
-          </li>
-          <li>
-            <a
-              href="https://accessibilityinsights.io/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:underline"
-            >
-              Accessibility Insights — Microsoft
-            </a>{" "}
-            — Free tools for web, Windows, and Android accessibility testing, including guided WCAG
-            assessments.
-          </li>
-          <li>
-            <a
-              href="https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:underline"
-            >
-              What&apos;s New in WCAG 2.2 — W3C WAI
-            </a>{" "}
-            — Summary of the 9 new success criteria added in WCAG 2.2.
-          </li>
-          <li>
-            <a
-              href="https://webaim.org/standards/wcag/checklist"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:underline"
-            >
-              WebAIM WCAG 2 Checklist
-            </a>{" "}
-            — A practical checklist organized by WCAG success criteria with plain-language
-            explanations.
-          </li>
-        </ul>
-      </section>
-
-      {/* ─── Section 9: Common Interview Questions ─── */}
+      {/* ─── Section 8: Common Interview Questions ─── */}
       <section>
         <h2>Common Interview Questions</h2>
 
@@ -858,6 +759,105 @@ export default function WCAGGuidelinesArticle() {
             composed page.
           </p>
         </div>
+      </section>
+
+      {/* ─── Section 9: References & Further Reading ─── */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a
+              href="https://www.w3.org/TR/WCAG22/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline"
+            >
+              WCAG 2.2 — W3C Recommendation (October 2023)
+            </a>{" "}
+            — The full normative specification with all 86 success criteria.
+          </li>
+          <li>
+            <a
+              href="https://www.w3.org/WAI/WCAG22/Understanding/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline"
+            >
+              Understanding WCAG 2.2
+            </a>{" "}
+            — W3C&apos;s non-normative companion that explains the intent, benefits, and examples
+            for each success criterion.
+          </li>
+          <li>
+            <a
+              href="https://www.w3.org/WAI/WCAG22/Techniques/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline"
+            >
+              Techniques for WCAG 2.2
+            </a>{" "}
+            — Sufficient and advisory techniques (HTML, CSS, ARIA, scripting) for meeting each
+            success criterion.
+          </li>
+          <li>
+            <a
+              href="https://www.w3.org/WAI/ARIA/apg/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline"
+            >
+              WAI-ARIA Authoring Practices Guide (APG)
+            </a>{" "}
+            — Design patterns and keyboard interaction models for common UI components.
+          </li>
+          <li>
+            <a
+              href="https://github.com/dequelabs/axe-core"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline"
+            >
+              axe-core — Deque Systems
+            </a>{" "}
+            — Open-source accessibility testing engine used in CI/CD pipelines and browser DevTools.
+          </li>
+          <li>
+            <a
+              href="https://accessibilityinsights.io/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline"
+            >
+              Accessibility Insights — Microsoft
+            </a>{" "}
+            — Free tools for web, Windows, and Android accessibility testing, including guided WCAG
+            assessments.
+          </li>
+          <li>
+            <a
+              href="https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline"
+            >
+              What&apos;s New in WCAG 2.2 — W3C WAI
+            </a>{" "}
+            — Summary of the 9 new success criteria added in WCAG 2.2.
+          </li>
+          <li>
+            <a
+              href="https://webaim.org/standards/wcag/checklist"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline"
+            >
+              WebAIM WCAG 2 Checklist
+            </a>{" "}
+            — A practical checklist organized by WCAG success criteria with plain-language
+            explanations.
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

@@ -216,37 +216,6 @@ export default function InfiniteScrollVsPaginationArticle() {
       </section>
 
       <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://www.nngroup.com/articles/infinite-scrolling-tips/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Nielsen Norman Group — Infinite Scrolling: When to Use It and When to Avoid It
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/articles/virtualize-long-lists-react-window" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              web.dev — Virtualize Large Lists with react-window
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              MDN — Intersection Observer API
-            </a>
-          </li>
-          <li>
-            <a href="https://relay.dev/docs/guides/graphql-server-specification/#connections" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Relay Documentation — Cursor-Based Connection Specification
-            </a>
-          </li>
-          <li>
-            <a href="https://www.smashingmagazine.com/2016/03/pagination-infinite-scrolling-load-more-buttons/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Smashing Magazine — Pagination, Infinite Scroll, or Load More Buttons
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
         <h2>Common Interview Questions</h2>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4 mb-4">
@@ -298,6 +267,37 @@ export default function InfiniteScrollVsPaginationArticle() {
             A: Variable-height virtualization is more complex than fixed-height because you cannot calculate scroll position from a simple index multiplication. I would use a measured approach: initially estimate item heights using a reasonable default, render items as they enter the viewport, measure their actual heights after rendering using ResizeObserver, and cache the measured heights for subsequent renders. The virtualizer maintains a running total of heights to calculate the total scroll area and determine which items are visible at any scroll position. When the user scrolls, the virtualizer uses binary search through the cumulative height array to find the first visible item, then renders items from there until the viewport is filled plus a buffer. For items that have not been measured yet (scrolling forward into unseen territory), estimates are used until actual measurements replace them. Libraries like react-virtuoso handle this complexity, but the important architectural consideration is that the height cache must persist across re-renders and survive component unmounting if scroll restoration is needed. The estimation strategy significantly affects scroll bar accuracy — poor estimates cause the scroll bar to jump as measured heights replace estimates.
           </p>
         </div>
+      </section>
+
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://www.nngroup.com/articles/infinite-scrolling-tips/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Nielsen Norman Group — Infinite Scrolling: When to Use It and When to Avoid It
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/virtualize-long-lists-react-window" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              web.dev — Virtualize Large Lists with react-window
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              MDN — Intersection Observer API
+            </a>
+          </li>
+          <li>
+            <a href="https://relay.dev/docs/guides/graphql-server-specification/#connections" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Relay Documentation — Cursor-Based Connection Specification
+            </a>
+          </li>
+          <li>
+            <a href="https://www.smashingmagazine.com/2016/03/pagination-infinite-scrolling-load-more-buttons/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Smashing Magazine — Pagination, Infinite Scroll, or Load More Buttons
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

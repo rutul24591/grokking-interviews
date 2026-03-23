@@ -63,8 +63,8 @@ export default function UrlStructureArticle() {
           the structure of existing URLs — require comprehensive redirect
           mapping, sitemap regeneration, canonical updates, and months of
           monitoring as search engines process the changes. A URL structure
-          designed with scalability, internationalization, and content growth
-          in mind prevents costly migrations later.
+          designed with scalability, internationalization, and content growth in
+          mind prevents costly migrations later.
         </p>
       </section>
 
@@ -92,10 +92,9 @@ export default function UrlStructureArticle() {
           <li>
             <strong>Hierarchical Paths:</strong> URLs organized in a tree
             structure (/electronics/phones/iphone-16) that reflects the
-            site&apos;s content taxonomy. Each path segment represents a
-            level in the hierarchy. This structure helps search engines
-            understand content relationships and enables breadcrumb
-            generation.
+            site&apos;s content taxonomy. Each path segment represents a level
+            in the hierarchy. This structure helps search engines understand
+            content relationships and enables breadcrumb generation.
           </li>
           <li>
             <strong>Flat URL Structures:</strong> All pages exist at the root
@@ -109,8 +108,8 @@ export default function UrlStructureArticle() {
             attributes should be path segments (/shoes/red) while state
             modifiers should be parameters (/shoes?sort=price). Path segments
             are considered part of the URL identity (different paths = different
-            pages), while parameters are often treated as variations of the
-            same page by search engines.
+            pages), while parameters are often treated as variations of the same
+            page by search engines.
           </li>
           <li>
             <strong>Trailing Slashes:</strong> Whether URLs end with a trailing
@@ -122,9 +121,9 @@ export default function UrlStructureArticle() {
           <li>
             <strong>Case Sensitivity:</strong> URLs are technically
             case-sensitive per HTTP specification. /About and /about are
-            different URLs. However, most sites and search engines treat URLs
-            as case-insensitive. Best practice is to use lowercase exclusively
-            and redirect any uppercase variants to lowercase.
+            different URLs. However, most sites and search engines treat URLs as
+            case-insensitive. Best practice is to use lowercase exclusively and
+            redirect any uppercase variants to lowercase.
           </li>
           <li>
             <strong>Hyphens vs Underscores:</strong> Google treats hyphens as
@@ -138,13 +137,13 @@ export default function UrlStructureArticle() {
             choose between subdirectories (/en/products, /fr/products),
             subdomains (en.example.com, fr.example.com), or country-code TLDs
             (example.co.uk, example.fr). Each approach has different
-            implications for domain authority, server configuration, and
-            content management.
+            implications for domain authority, server configuration, and content
+            management.
           </li>
           <li>
             <strong>URL Length:</strong> While no official limit exists for SEO,
-            URLs beyond 2,048 characters may be truncated by browsers and
-            tools. Practical best practice is to keep URLs under 100 characters.
+            URLs beyond 2,048 characters may be truncated by browsers and tools.
+            Practical best practice is to keep URLs under 100 characters.
             Shorter, more readable URLs tend to perform better in click-through
             rates and social sharing.
           </li>
@@ -190,11 +189,11 @@ export default function UrlStructureArticle() {
         <p>
           URL migrations require comprehensive redirect mapping to preserve
           ranking signals. Each old URL must 301 redirect to its corresponding
-          new URL. Redirect chains (old → intermediate → new) should be
-          avoided — always redirect directly to the final destination. During
-          migration, sitemaps must be updated, canonical tags adjusted, and
-          internal links rewritten. Google Search Console&apos;s Change of
-          Address tool can accelerate the process for domain-level migrations.
+          new URL. Redirect chains (old → intermediate → new) should be avoided
+          — always redirect directly to the final destination. During migration,
+          sitemaps must be updated, canonical tags adjusted, and internal links
+          rewritten. Google Search Console&apos;s Change of Address tool can
+          accelerate the process for domain-level migrations.
         </p>
       </section>
 
@@ -217,15 +216,15 @@ export default function UrlStructureArticle() {
                 taxonomy; helps search engines understand topic clusters
               </td>
               <td className="p-3">
-                Deeper paths reduce crawl priority; category changes require
-                URL changes; rigid structure limits content reorganization
+                Deeper paths reduce crawl priority; category changes require URL
+                changes; rigid structure limits content reorganization
               </td>
             </tr>
             <tr>
               <td className="p-3 font-medium">Flat URLs</td>
               <td className="p-3">
-                Minimal crawl depth; simple routing; content can be
-                reorganized without URL changes; no dependency on taxonomy
+                Minimal crawl depth; simple routing; content can be reorganized
+                without URL changes; no dependency on taxonomy
               </td>
               <td className="p-3">
                 No hierarchical context; harder to generate breadcrumbs;
@@ -236,24 +235,25 @@ export default function UrlStructureArticle() {
             <tr>
               <td className="p-3 font-medium">Subdirectory i18n (/en/)</td>
               <td className="p-3">
-                Consolidated domain authority; single hosting setup; easy
-                to manage in one codebase; clear language segmentation
+                Consolidated domain authority; single hosting setup; easy to
+                manage in one codebase; clear language segmentation
               </td>
               <td className="p-3">
-                Less geo-targeting signal than ccTLDs; all languages share
-                one domain reputation; complex routing configuration
+                Less geo-targeting signal than ccTLDs; all languages share one
+                domain reputation; complex routing configuration
               </td>
             </tr>
             <tr>
-              <td className="p-3 font-medium">Subdomain i18n (en.example.com)</td>
-              <td className="p-3">
-                Can be hosted independently; separate Search Console
-                properties; flexible infrastructure per region
+              <td className="p-3 font-medium">
+                Subdomain i18n (en.example.com)
               </td>
               <td className="p-3">
-                Domain authority is not fully shared; treated as separate
-                sites by search engines; additional DNS and hosting
-                complexity
+                Can be hosted independently; separate Search Console properties;
+                flexible infrastructure per region
+              </td>
+              <td className="p-3">
+                Domain authority is not fully shared; treated as separate sites
+                by search engines; additional DNS and hosting complexity
               </td>
             </tr>
           </tbody>
@@ -281,43 +281,41 @@ export default function UrlStructureArticle() {
           <li>
             <strong>Use Hyphens as Word Separators:</strong> Always use hyphens
             (-) not underscores (_) or spaces (%20). Google explicitly treats
-            hyphens as word separators, making
-            &quot;url-structure-guide&quot; parseable as three distinct words.
+            hyphens as word separators, making &quot;url-structure-guide&quot;
+            parseable as three distinct words.
           </li>
           <li>
             <strong>Enforce Lowercase URLs:</strong> Implement server-side or
-            CDN-level redirects that convert any uppercase URL to its
-            lowercase equivalent. This prevents duplicate content from case
-            variations.
+            CDN-level redirects that convert any uppercase URL to its lowercase
+            equivalent. This prevents duplicate content from case variations.
           </li>
           <li>
             <strong>Choose a Trailing Slash Convention and Enforce It:</strong>{" "}
             Pick either trailing slash or no trailing slash and redirect the
-            alternative. Next.js&apos;s <code>trailingSlash</code> config
-            option handles this at the framework level. Inconsistency creates
-            duplicate URLs.
+            alternative. Next.js&apos;s <code>trailingSlash</code> config option
+            handles this at the framework level. Inconsistency creates duplicate
+            URLs.
           </li>
           <li>
             <strong>Design for Stability:</strong> URLs should be permanent.
             Once published and indexed, changing a URL requires a redirect and
             loses some ranking equity. Design URL patterns that accommodate
             content changes — use slugs based on content identity rather than
-            attributes that might change (product titles can change, product
-            IDs should not).
+            attributes that might change (product titles can change, product IDs
+            should not).
           </li>
           <li>
-            <strong>Plan URL Migrations Carefully:</strong> Map every old URL
-            to its new counterpart. Implement 301 redirects (not 302). Update
-            sitemaps, canonical tags, and internal links. Monitor 404 errors
-            in Search Console for missed redirects. Allow 3-6 months for
-            full migration to settle.
+            <strong>Plan URL Migrations Carefully:</strong> Map every old URL to
+            its new counterpart. Implement 301 redirects (not 302). Update
+            sitemaps, canonical tags, and internal links. Monitor 404 errors in
+            Search Console for missed redirects. Allow 3-6 months for full
+            migration to settle.
           </li>
           <li>
-            <strong>Use Subdirectories for Internationalization:</strong>{" "}
-            Google recommends subdirectories (/en/, /fr/) as the default
-            approach for multi-language sites. They consolidate domain
-            authority, are simpler to manage, and work well with hreflang
-            annotations.
+            <strong>Use Subdirectories for Internationalization:</strong> Google
+            recommends subdirectories (/en/, /fr/) as the default approach for
+            multi-language sites. They consolidate domain authority, are simpler
+            to manage, and work well with hreflang annotations.
           </li>
         </ol>
       </section>
@@ -334,11 +332,10 @@ export default function UrlStructureArticle() {
             (/product/123456/nike-air-max).
           </li>
           <li>
-            <strong>Session IDs in URLs:</strong> Appending session IDs to
-            URLs (/page?sessionid=abc123) creates infinite duplicate URLs. Each
-            user session generates a new &quot;page&quot; from the
-            crawler&apos;s perspective. Use cookies for session management, not
-            URL parameters.
+            <strong>Session IDs in URLs:</strong> Appending session IDs to URLs
+            (/page?sessionid=abc123) creates infinite duplicate URLs. Each user
+            session generates a new &quot;page&quot; from the crawler&apos;s
+            perspective. Use cookies for session management, not URL parameters.
           </li>
           <li>
             <strong>Hash-Based Routing for Content:</strong> Using fragment
@@ -355,10 +352,10 @@ export default function UrlStructureArticle() {
             to 3-4 levels.
           </li>
           <li>
-            <strong>Changing URLs Without Redirects:</strong> Restructuring
-            URLs without implementing 301 redirects causes 404 errors for all
-            existing links, bookmarks, and search engine index entries.
-            Ranking equity built over months or years is lost instantly.
+            <strong>Changing URLs Without Redirects:</strong> Restructuring URLs
+            without implementing 301 redirects causes 404 errors for all
+            existing links, bookmarks, and search engine index entries. Ranking
+            equity built over months or years is lost instantly.
           </li>
           <li>
             <strong>Keyword Stuffing in URLs:</strong> URLs like
@@ -377,15 +374,14 @@ export default function UrlStructureArticle() {
             <strong>Stack Overflow:</strong> Uses a hybrid ID + slug pattern
             (/questions/12345/how-to-parse-json). The numeric ID ensures
             uniqueness while the slug provides readability and keyword signals.
-            If the slug changes (question title edit), the old slug redirects
-            to the new one while the ID remains stable.
+            If the slug changes (question title edit), the old slug redirects to
+            the new one while the ID remains stable.
           </li>
           <li>
-            <strong>Shopify:</strong> Enforces a consistent URL structure
-            across millions of stores: /collections/collection-name for
-            categories, /products/product-slug for products. This predictable
-            pattern enables platform-wide SEO tooling and consistent crawler
-            behavior.
+            <strong>Shopify:</strong> Enforces a consistent URL structure across
+            millions of stores: /collections/collection-name for categories,
+            /products/product-slug for products. This predictable pattern
+            enables platform-wide SEO tooling and consistent crawler behavior.
           </li>
           <li>
             <strong>Wikipedia:</strong> Uses a flat URL structure with
@@ -396,15 +392,103 @@ export default function UrlStructureArticle() {
           </li>
           <li>
             <strong>Airbnb:</strong> Implements subdirectory
-            internationalization with hierarchical paths:
-            /en/rooms/12345 for English, /fr/rooms/12345 for French. The room
-            ID ensures cross-language consistency while hreflang annotations
-            connect language variants.
+            internationalization with hierarchical paths: /en/rooms/12345 for
+            English, /fr/rooms/12345 for French. The room ID ensures
+            cross-language consistency while hreflang annotations connect
+            language variants.
           </li>
         </ul>
       </section>
 
-      {/* Section 8: References & Further Reading */}
+      {/* Section 8: Common Interview Questions */}
+      <section>
+        <h2>Common Interview Questions</h2>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: Should you use a hierarchical or flat URL structure?
+            </p>
+            <p className="mt-2 text-sm">
+              A: It depends on the content model. Hierarchical URLs
+              (/category/subcategory/item) are best for e-commerce,
+              documentation, and sites with clear taxonomies — they communicate
+              content relationships and enable breadcrumbs. Flat URLs
+              (/item-slug) are better for blogs, news sites, and content that
+              doesn&apos;t have a natural hierarchy. The key principle is that
+              URL structure should reflect actual content organization. Avoid
+              deep hierarchies (more than 3-4 levels) as they increase crawl
+              depth and reduce URL readability.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How would you handle a large-scale URL migration?
+            </p>
+            <p className="mt-2 text-sm">
+              A: First, create a comprehensive mapping between old and new URLs
+              — every old URL must have a 301 redirect to its new counterpart.
+              Implement redirects at the server/CDN level for performance.
+              Update all internal links to point directly to new URLs
+              (don&apos;t rely on redirect chains). Regenerate sitemaps with new
+              URLs. Update canonical tags. Submit new sitemaps in Search
+              Console. Monitor 404 reports daily for the first month. Track
+              organic traffic at the page level to identify pages that lost
+              rankings. Keep old redirects in place for at least 12 months —
+              removing them too early causes ranking loss.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What is the SEO difference between subdirectory and subdomain
+              for internationalization?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Subdirectories (/en/, /fr/) consolidate all domain authority
+              under one domain — links to any language version benefit the
+              entire domain. Subdomains (en.example.com) are treated as separate
+              sites by search engines, meaning domain authority is split. Google
+              recommends subdirectories as the default approach. Subdomains are
+              appropriate when language versions need different infrastructure,
+              CDN configurations, or hosting regions. ccTLDs (.co.uk, .fr)
+              provide the strongest geo-targeting signal but fully split domain
+              authority.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: Why should you avoid using hash-based routing for SEO content?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Hash fragments (#section) are not sent to the server in HTTP
+              requests — the server always receives the URL without the
+              fragment. Search engines strip fragments before indexing, meaning
+              /app#/products and /app#/about are the same URL to Google. All
+              content behind hash routing is invisible to crawlers that
+              don&apos;t execute JavaScript. Even Googlebot, which does execute
+              JavaScript, does not interact with hash-based state changes.
+              Path-based routing (/products, /about) is mandatory for any
+              content targeting search traffic.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you handle URL slugs when content titles change?
+            </p>
+            <p className="mt-2 text-sm">
+              A: The safest approach is to generate the slug once at content
+              creation and never change it, even if the title is updated. This
+              preserves the URL permanently, avoiding redirect management. Stack
+              Overflow uses this pattern — question URLs contain the original
+              title slug, and any slug works as long as the numeric ID is
+              correct. If slugs must change (rare), implement a 301 redirect
+              from the old slug to the new one and keep the redirect
+              permanently. Never change slugs without redirects.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 9: References & Further Reading */}
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
@@ -449,94 +533,6 @@ export default function UrlStructureArticle() {
             </a>
           </li>
         </ul>
-      </section>
-
-      {/* Section 9: Common Interview Questions */}
-      <section>
-        <h2>Common Interview Questions</h2>
-        <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: Should you use a hierarchical or flat URL structure?
-            </p>
-            <p className="mt-2 text-sm">
-              A: It depends on the content model. Hierarchical URLs
-              (/category/subcategory/item) are best for e-commerce, documentation,
-              and sites with clear taxonomies — they communicate content
-              relationships and enable breadcrumbs. Flat URLs (/item-slug) are
-              better for blogs, news sites, and content that doesn&apos;t have
-              a natural hierarchy. The key principle is that URL structure
-              should reflect actual content organization. Avoid deep
-              hierarchies (more than 3-4 levels) as they increase crawl depth
-              and reduce URL readability.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How would you handle a large-scale URL migration?
-            </p>
-            <p className="mt-2 text-sm">
-              A: First, create a comprehensive mapping between old and new
-              URLs — every old URL must have a 301 redirect to its new
-              counterpart. Implement redirects at the server/CDN level for
-              performance. Update all internal links to point directly to new
-              URLs (don&apos;t rely on redirect chains). Regenerate sitemaps
-              with new URLs. Update canonical tags. Submit new sitemaps in
-              Search Console. Monitor 404 reports daily for the first month.
-              Track organic traffic at the page level to identify pages that
-              lost rankings. Keep old redirects in place for at least 12
-              months — removing them too early causes ranking loss.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: What is the SEO difference between subdirectory and subdomain
-              for internationalization?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Subdirectories (/en/, /fr/) consolidate all domain authority
-              under one domain — links to any language version benefit the
-              entire domain. Subdomains (en.example.com) are treated as
-              separate sites by search engines, meaning domain authority is
-              split. Google recommends subdirectories as the default approach.
-              Subdomains are appropriate when language versions need different
-              infrastructure, CDN configurations, or hosting regions. ccTLDs
-              (.co.uk, .fr) provide the strongest geo-targeting signal but
-              fully split domain authority.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: Why should you avoid using hash-based routing for SEO content?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Hash fragments (#section) are not sent to the server in HTTP
-              requests — the server always receives the URL without the
-              fragment. Search engines strip fragments before indexing, meaning
-              /app#/products and /app#/about are the same URL to Google. All
-              content behind hash routing is invisible to crawlers that
-              don&apos;t execute JavaScript. Even Googlebot, which does execute
-              JavaScript, does not interact with hash-based state changes.
-              Path-based routing (/products, /about) is mandatory for any
-              content targeting search traffic.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How do you handle URL slugs when content titles change?
-            </p>
-            <p className="mt-2 text-sm">
-              A: The safest approach is to generate the slug once at content
-              creation and never change it, even if the title is updated. This
-              preserves the URL permanently, avoiding redirect management.
-              Stack Overflow uses this pattern — question URLs contain the
-              original title slug, and any slug works as long as the numeric ID
-              is correct. If slugs must change (rare), implement a 301
-              redirect from the old slug to the new one and keep the redirect
-              permanently. Never change slugs without redirects.
-            </p>
-          </div>
-        </div>
       </section>
     </ArticleLayout>
   );

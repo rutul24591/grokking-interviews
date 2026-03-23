@@ -1,7 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
   <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="240" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">auth audit schema</text>
-  <text x="400" y="270" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Identity Access Diagram</text>
-  <text x="400" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Valid XML</text>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Audit Log Event Schema</text>
+  
+  <!-- Core Fields -->
+  <rect x="50" y="70" width="340" height="280" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="220" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Core Fields (Required)</text>
+  
+  <rect x="70" y="115" width="300" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="90" y="135" text-anchor="start" font-family="monospace" font-size="10" font-weight="bold" fill="#3b82f6">event_id</text>
+  <text x="200" y="135" text-anchor="start" font-family="system-ui" font-size="9" fill="#475569">UUID v4</text>
+  
+  <rect x="70" y="155" width="300" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="90" y="175" text-anchor="start" font-family="monospace" font-size="10" font-weight="bold" fill="#3b82f6">timestamp</text>
+  <text x="200" y="175" text-anchor="start" font-family="system-ui" font-size="9" fill="#475569">ISO 8601 with ms + TZ</text>
+  
+  <rect x="70" y="195" width="300" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="90" y="215" text-anchor="start" font-family="monospace" font-size="10" font-weight="bold" fill="#3b82f6">event_type</text>
+  <text x="200" y="215" text-anchor="start" font-family="system-ui" font-size="9" fill="#475569">auth.login.success</text>
+  
+  <rect x="70" y="235" width="300" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="90" y="255" text-anchor="start" font-family="monospace" font-size="10" font-weight="bold" fill="#3b82f6">user_id</text>
+  <text x="200" y="255" text-anchor="start" font-family="system-ui" font-size="9" fill="#475569">User identifier (if known)</text>
+  
+  <rect x="70" y="275" width="300" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="90" y="295" text-anchor="start" font-family="monospace" font-size="10" font-weight="bold" fill="#3b82f6">outcome</text>
+  <text x="200" y="295" text-anchor="start" font-family="system-ui" font-size="9" fill="#475569">success / failure + reason</text>
+  
+  <rect x="70" y="315" width="300" height="35" rx="4" fill="#22c55e"/>
+  <text x="220" y="337" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">All fields indexed for search</text>
+  
+  <!-- Context Fields -->
+  <rect x="420" y="70" width="330" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="585" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Context Fields</text>
+  
+  <rect x="440" y="115" width="290" height="35" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="460" y="135" text-anchor="start" font-family="monospace" font-size="10" font-weight="bold" fill="#f59e0b">ip_address</text>
+  <text x="580" y="135" text-anchor="start" font-family="system-ui" font-size="9" fill="#475569">192.168.1.1</text>
+  
+  <rect x="440" y="155" width="290" height="35" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="460" y="175" text-anchor="start" font-family="monospace" font-size="10" font-weight="bold" fill="#f59e0b">user_agent</text>
+  <text x="580" y="175" text-anchor="start" font-family="system-ui" font-size="9" fill="#475569">Mozilla/5.0...</text>
+  
+  <rect x="440" y="195" width="290" height="35" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="460" y="215" text-anchor="start" font-family="monospace" font-size="10" font-weight="bold" fill="#f59e0b">device_fingerprint</text>
+  <text x="580" y="215" text-anchor="start" font-family="system-ui" font-size="9" fill="#475569">Hash</text>
+  
+  <rect x="440" y="235" width="290" height="35" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="460" y="255" text-anchor="start" font-family="monospace" font-size="10" font-weight="bold" fill="#f59e0b">geolocation</text>
+  <text x="580" y="255" text-anchor="start" font-family="system-ui" font-size="9" fill="#475569">{lat, lon, city, country}</text>
+  
+  <rect x="440" y="275" width="290" height="35" rx="4" fill="#f59e0b"/>
+  <text x="585" y="297" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Enriched from IP + device</text>
+  
+  <!-- Additional Fields -->
+  <rect x="420" y="290" width="330" height="160" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="585" y="315" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Additional Fields</text>
+  
+  <rect x="440" y="330" width="290" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="460" y="350" text-anchor="start" font-family="monospace" font-size="10" font-weight="bold" fill="#8b5cf6">correlation_id</text>
+  <text x="580" y="350" text-anchor="start" font-family="system-ui" font-size="9" fill="#475569">Trace across services</text>
+  
+  <rect x="440" y="365" width="290" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="460" y="385" text-anchor="start" font-family="monospace" font-size="10" font-weight="bold" fill="#8b5cf6">session_id</text>
+  <text x="580" y="385" text-anchor="start" font-family="system-ui" font-size="9" fill="#475569">Associated session</text>
+  
+  <rect x="440" y="400" width="290" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="460" y="420" text-anchor="start" font-family="monospace" font-size="10" font-weight="bold" fill="#8b5cf6">metadata</text>
+  <text x="580" y="420" text-anchor="start" font-family="system-ui" font-size="9" fill="#475569">Event-specific JSON</text>
+  
+  <rect x="440" y="435" width="290" height="30" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="585" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Optional but recommended</text>
+  
+  <!-- Example Event -->
+  <rect x="50" y="370" width="340" height="110" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="220" y="395" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Example Event</text>
+  
+  <rect x="70" y="410" width="300" height="60" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="85" y="430" text-anchor="start" font-family="monospace" font-size="8" fill="#0f172a">{</text>
+  <text x="85" y="445" text-anchor="start" font-family="monospace" font-size="8" fill="#0f172a">"event_type": "auth.login.success",</text>
+  <text x="85" y="460" text-anchor="start" font-family="monospace" font-size="8" fill="#0f172a">"user_id": "usr_123", "outcome": "success"</text>
+  <text x="85" y="470" text-anchor="start" font-family="monospace" font-size="8" fill="#0f172a">}</text>
+
 </svg>

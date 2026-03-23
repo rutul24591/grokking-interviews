@@ -1,7 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
   <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="240" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">sso enterprise</text>
-  <text x="400" y="270" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Identity Access Diagram</text>
-  <text x="400" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Valid XML</text>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Enterprise SSO Integration</text>
+  
+  <!-- Identity Provider -->
+  <rect x="50" y="70" width="200" height="180" rx="8" fill="#f1f5f9" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="150" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#8b5cf6">Identity Provider</text>
+  
+  <rect x="70" y="115" width="160" height="35" rx="4" fill="#8b5cf6" opacity="0.8"/>
+  <text x="150" y="137" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Okta / Azure AD</text>
+  
+  <rect x="70" y="155" width="160" height="35" rx="4" fill="#8b5cf6" opacity="0.6"/>
+  <text x="150" y="177" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">User Directory</text>
+  
+  <rect x="70" y="195" width="160" height="35" rx="4" fill="#8b5cf6" opacity="0.4"/>
+  <text x="150" y="217" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Groups &amp; Roles</text>
+  
+  <line x1="250" y1="160" x2="290" y2="160" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="270" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">SAML/OIDC</text>
+  
+  <!-- JIT Provisioning -->
+  <rect x="300" y="70" width="200" height="180" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="400" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#f59e0b">JIT Provisioning</text>
+  
+  <rect x="320" y="115" width="160" height="35" rx="4" fill="#f59e0b" opacity="0.8"/>
+  <text x="400" y="137" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">First Login</text>
+  
+  <rect x="320" y="155" width="160" height="35" rx="4" fill="#f59e0b" opacity="0.6"/>
+  <text x="400" y="177" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Create User Account</text>
+  
+  <rect x="320" y="195" width="160" height="35" rx="4" fill="#f59e0b" opacity="0.4"/>
+  <text x="400" y="217" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Map Attributes</text>
+  
+  <line x1="500" y1="160" x2="540" y2="160" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="520" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">User Created</text>
+  
+  <!-- Group Mapping -->
+  <rect x="550" y="70" width="200" height="180" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="650" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Group Mapping</text>
+  
+  <rect x="570" y="115" width="160" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="650" y="137" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">IdP Group: Admins</text>
+  
+  <rect x="570" y="155" width="160" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="650" y="177" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">→ Local Role: Admin</text>
+  
+  <rect x="570" y="195" width="160" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="650" y="217" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">IdP Group: Users</text>
+  
+  <line x1="650" y1="250" x2="650" y2="290" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- SCIM Provisioning -->
+  <rect x="550" y="300" width="200" height="150" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="650" y="325" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">SCIM Sync</text>
+  
+  <rect x="570" y="340" width="160" height="35" rx="4" fill="#22c55e" opacity="0.8"/>
+  <text x="650" y="362" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">User Create/Update</text>
+  
+  <rect x="570" y="380" width="160" height="35" rx="4" fill="#22c55e" opacity="0.6"/>
+  <text x="650" y="402" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Group Membership</text>
+  
+  <rect x="570" y="420" width="160" height="35" rx="4" fill="#ef4444" opacity="0.8"/>
+  <text x="650" y="442" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">User Delete (Termination)</text>
+  
+  <!-- Application -->
+  <rect x="50" y="300" width="200" height="150" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="150" y="325" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#3b82f6">Your Application</text>
+  
+  <rect x="70" y="340" width="160" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="150" y="362" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">User Accounts</text>
+  
+  <rect x="70" y="380" width="160" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="150" y="402" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Roles &amp; Permissions</text>
+  
+  <rect x="70" y="420" width="160" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="150" y="442" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Active Sessions</text>
+  
+  <!-- Flow Arrows -->
+  <line x1="250" y1="375" x2="290" y2="375" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="270" y="365" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">SSO Login</text>
+  
+  <line x1="500" y1="375" x2="540" y2="375" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="520" y="365" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Auto-Provision</text>
+  
+  <!-- Benefits -->
+  <rect x="300" y="300" width="200" height="150" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="400" y="325" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#f59e0b">Benefits</text>
+  
+  <rect x="320" y="340" width="160" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="400" y="360" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Centralized Identity</text>
+  
+  <rect x="320" y="375" width="160" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="400" y="395" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Auto-Provisioning</text>
+  
+  <rect x="320" y="410" width="160" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="400" y="430" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Instant Deprovision</text>
+
 </svg>

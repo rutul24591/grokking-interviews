@@ -211,37 +211,6 @@ export default function OptimisticUiUpdatesArticle() {
       </section>
 
       <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://tanstack.com/query/latest/docs/react/guides/optimistic-updates" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              TanStack Query — Optimistic Updates Guide
-            </a>
-          </li>
-          <li>
-            <a href="https://www.apollographql.com/docs/react/performance/optimistic-ui/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Apollo Client — Optimistic Mutation Results
-            </a>
-          </li>
-          <li>
-            <a href="https://www.nngroup.com/articles/response-times-3-important-limits/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Nielsen Norman Group — Response Times: The 3 Important Limits
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/articles/offline-cookbook" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              web.dev — The Offline Cookbook
-            </a>
-          </li>
-          <li>
-            <a href="https://martinfowler.com/eaaDev/EventSourcing.html" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Martin Fowler — Event Sourcing
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
         <h2>Common Interview Questions</h2>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4 mb-4">
@@ -293,6 +262,37 @@ export default function OptimisticUiUpdatesArticle() {
             A: The risk of masking data integrity issues is real — if the optimistic UI consistently shows success while the server is silently failing, users and developers may not notice the problem until data loss has accumulated. I would address this through several layers. First, establish a reconciliation verification step that compares the server response against the optimistic prediction and logs discrepancies. High discrepancy rates indicate either a faulty optimistic prediction logic or a server-side issue. Second, implement a background consistency check that periodically refetches authoritative data and compares it against the cached optimistic state, flagging divergences. Third, monitor mutation failure rates and alert when they exceed a threshold — a spike in optimistic rollbacks indicates a systemic issue. Fourth, use feature flags to disable optimistic updates for specific operations if data integrity concerns arise, falling back to pessimistic loading states while the issue is investigated. The principle is that optimistic updates are a UX optimization, not a replacement for correctness — the system must always converge to the server&apos;s authoritative state.
           </p>
         </div>
+      </section>
+
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://tanstack.com/query/latest/docs/react/guides/optimistic-updates" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              TanStack Query — Optimistic Updates Guide
+            </a>
+          </li>
+          <li>
+            <a href="https://www.apollographql.com/docs/react/performance/optimistic-ui/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Apollo Client — Optimistic Mutation Results
+            </a>
+          </li>
+          <li>
+            <a href="https://www.nngroup.com/articles/response-times-3-important-limits/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Nielsen Norman Group — Response Times: The 3 Important Limits
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/offline-cookbook" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              web.dev — The Offline Cookbook
+            </a>
+          </li>
+          <li>
+            <a href="https://martinfowler.com/eaaDev/EventSourcing.html" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Martin Fowler — Event Sourcing
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

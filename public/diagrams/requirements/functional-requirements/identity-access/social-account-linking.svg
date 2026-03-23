@@ -1,7 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
   <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="240" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">social account linking</text>
-  <text x="400" y="270" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Identity Access Diagram</text>
-  <text x="400" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Valid XML</text>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Social Account Linking Flow</text>
+  
+  <!-- User with Email Account -->
+  <circle cx="80" cy="100" r="35" fill="#3b82f6"/>
+  <text x="80" y="105" text-anchor="middle" font-family="system-ui" font-size="11" fill="#ffffff">User</text>
+  
+  <rect x="180" y="70" width="140" height="60" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="250" y="105" text-anchor="middle" font-family="system-ui" font-size="11" fill="#0f172a">Email Account</text>
+  <text x="250" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">user@email.com</text>
+  
+  <line x1="115" y1="100" x2="170" y2="100" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Social Login Clicked -->
+  <rect x="350" y="70" width="140" height="60" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="420" y="95" text-anchor="middle" font-family="system-ui" font-size="11" fill="#0f172a">Social Login</text>
+  <text x="420" y="115" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Google OAuth</text>
+  
+  <line x1="320" y1="100" x2="340" y2="100" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Email Match Check -->
+  <rect x="520" y="60" width="160" height="120" rx="8" fill="#f8fafc" stroke="#3b82f6" stroke-width="2"/>
+  <text x="600" y="85" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Email Match?</text>
+  
+  <rect x="540" y="100" width="120" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="600" y="120" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">user@email.com</text>
+  <text x="600" y="140" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">= user@email.com ✓</text>
+  
+  <line x1="600" y1="180" x2="600" y2="220" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="620" y="200" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">Match found</text>
+  
+  <!-- Link Prompt -->
+  <rect x="520" y="230" width="160" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="600" y="255" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Link Accounts?</text>
+  <text x="600" y="280" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">This email is registered</text>
+  <text x="600" y="295" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Link Google account?</text>
+  
+  <rect x="540" y="305" width="60" height="25" rx="4" fill="#ef4444"/>
+  <text x="570" y="322" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Cancel</text>
+  
+  <rect x="610" y="305" width="60" height="25" rx="4" fill="#22c55e"/>
+  <text x="640" y="322" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Link</text>
+  
+  <line x1="680" y1="280" x2="730" y2="280" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Verification Required -->
+  <rect x="520" y="350" width="160" height="80" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="600" y="375" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Verify Password</text>
+  <text x="600" y="395" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Enter email password</text>
+  <text x="600" y="410" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">to confirm ownership</text>
+  
+  <line x1="520" y1="390" x2="470" y2="390" stroke="#475569" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="495" y="380" text-anchor="start" font-family="system-ui" font-size="7" fill="#475569">If wrong password</text>
+  
+  <!-- No Match Path -->
+  <line x1="680" y1="120" x2="730" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="705" y="110" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">No match</text>
+  
+  <!-- Create New Account -->
+  <rect x="520" y="60" width="160" height="80" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2" transform="translate(200, 0)"/>
+  <text x="720" y="85" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Create Account</text>
+  <text x="720" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">New account created</text>
+  <text x="720" y="125" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">with social provider</text>
+  
+  <!-- Linked Account -->
+  <rect x="180" y="400" width="140" height="70" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="250" y="425" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">✓ Linked Account</text>
+  <text x="250" y="445" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Email + Google</text>
+  <text x="250" y="460" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Either can login</text>
+  
+  <line x1="600" y1="430" x2="330" y2="430" stroke="#22c55e" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrow)"/>
+  <text x="465" y="420" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">Success</text>
+
 </svg>

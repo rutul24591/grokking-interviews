@@ -1,7 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
   <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="240" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">permission caching</text>
-  <text x="400" y="270" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Identity Access Diagram</text>
-  <text x="400" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Valid XML</text>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Permission Caching Strategies</text>
+  
+  <!-- JWT Claims -->
+  <rect x="50" y="70" width="220" height="240" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="160" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">JWT Claims</text>
+  
+  <rect x="70" y="115" width="180" height="50" rx="4" fill="#3b82f6" opacity="0.8"/>
+  <text x="160" y="140" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Embed in Token</text>
+  <text x="160" y="160" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">permissions: ["read", "write"]</text>
+  
+  <rect x="70" y="175" width="180" height="50" rx="4" fill="#3b82f6" opacity="0.6"/>
+  <text x="160" y="200" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Sub-1ms Access</text>
+  <text x="160" y="220" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">No network call</text>
+  
+  <rect x="70" y="235" width="180" height="50" rx="4" fill="#3b82f6" opacity="0.4"/>
+  <text x="160" y="260" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Stale Until Refresh</text>
+  <text x="160" y="280" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Changes don't take effect immediately</text>
+  
+  <rect x="70" y="295" width="180" height="30" rx="4" fill="#22c55e"/>
+  <text x="160" y="315" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">✓ Fast, stateless</text>
+  
+  <line x1="270" y1="190" x2="310" y2="190" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Redis Cache -->
+  <rect x="320" y="70" width="220" height="240" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="430" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Redis Cache</text>
+  
+  <rect x="340" y="115" width="180" height="50" rx="4" fill="#f59e0b" opacity="0.8"/>
+  <text x="430" y="140" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">user_id → Permissions Set</text>
+  <text x="430" y="160" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Load from DB on first check</text>
+  
+  <rect x="340" y="175" width="180" height="50" rx="4" fill="#f59e0b" opacity="0.6"/>
+  <text x="430" y="200" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">~1ms Lookup</text>
+  <text x="430" y="220" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Network call to Redis</text>
+  
+  <rect x="340" y="235" width="180" height="50" rx="4" fill="#f59e0b" opacity="0.4"/>
+  <text x="430" y="260" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Invalidate on Change</text>
+  <text x="430" y="280" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Clear cache on role change</text>
+  
+  <rect x="340" y="295" width="180" height="30" rx="4" fill="#22c55e"/>
+  <text x="430" y="315" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">✓ Real-time, detailed</text>
+  
+  <line x1="540" y1="190" x2="580" y2="190" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Hybrid -->
+  <rect x="590" y="70" width="160" height="240" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="670" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Hybrid</text>
+  
+  <rect x="610" y="115" width="120" height="60" rx="4" fill="#8b5cf6" opacity="0.8"/>
+  <text x="670" y="140" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">JWT for Common</text>
+  <text x="670" y="160" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">read, write in JWT</text>
+  
+  <rect x="610" y="185" width="120" height="60" rx="4" fill="#8b5cf6" opacity="0.6"/>
+  <text x="670" y="210" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Redis for Detailed</text>
+  <text x="670" y="230" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">admin, delete in Redis</text>
+  
+  <rect x="610" y="255" width="120" height="50" rx="4" fill="#22c55e"/>
+  <text x="670" y="280" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">✓ Best of both</text>
+  <text x="670" y="295" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Used by Google, Netflix</text>
+  
+  <line x1="670" y1="310" x2="670" y2="350" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Invalidation -->
+  <rect x="590" y="360" width="160" height="110" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="670" y="385" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Invalidation</text>
+  
+  <rect x="610" y="400" width="120" height="30" rx="4" fill="#22c55e" opacity="0.8"/>
+  <text x="670" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">On Role Change</text>
+  
+  <rect x="610" y="435" width="120" height="30" rx="4" fill="#22c55e" opacity="0.6"/>
+  <text x="670" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Increment Version</text>
+  
+  <!-- Version Check -->
+  <rect x="50" y="360" width="220" height="110" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="160" y="385" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Version Check</text>
+  
+  <rect x="70" y="400" width="180" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="160" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">permission_version in JWT</text>
+  
+  <rect x="70" y="435" width="180" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="160" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Validate vs current version</text>
+  
+  <!-- TTL Expiry -->
+  <rect x="320" y="360" width="220" height="110" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="430" y="385" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">TTL Expiry</text>
+  
+  <rect x="340" y="400" width="180" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="430" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Redis TTL (15-60 min)</text>
+  
+  <rect x="340" y="435" width="180" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="430" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Auto-expire stale entries</text>
+
 </svg>

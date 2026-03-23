@@ -297,32 +297,6 @@ export default function FacadePatternArticle() {
       </section>
 
       <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://refactoring.guru/design-patterns/facade" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Refactoring Guru — Facade Pattern
-            </a>
-          </li>
-          <li>
-            <a href="https://www.patterns.dev/vanilla/facade-pattern" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              patterns.dev — Facade Pattern
-            </a>
-          </li>
-          <li>
-            <a href="https://react.dev/learn/reusing-logic-with-custom-hooks" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              React Documentation — Custom Hooks
-            </a>
-          </li>
-          <li>
-            <a href="https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Joel Spolsky — The Law of Leaky Abstractions
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -384,6 +358,32 @@ export default function FacadePatternArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://refactoring.guru/design-patterns/facade" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Refactoring Guru — Facade Pattern
+            </a>
+          </li>
+          <li>
+            <a href="https://www.patterns.dev/vanilla/facade-pattern" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              patterns.dev — Facade Pattern
+            </a>
+          </li>
+          <li>
+            <a href="https://react.dev/learn/reusing-logic-with-custom-hooks" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              React Documentation — Custom Hooks
+            </a>
+          </li>
+          <li>
+            <a href="https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Joel Spolsky — The Law of Leaky Abstractions
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

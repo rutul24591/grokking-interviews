@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-labelledby="title desc">
+  <title id="title">Monorepo Migration Strategy</title>
+  <desc id="desc">Step-by-step migration path from polyrepo to monorepo showing package consolidation and tooling setup</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="450" fill="var(--bg-color, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="var(--text-color, #1a1a1a)">Polyrepo → Monorepo Migration Path</text>
+  
+  <!-- Step 1: Current State -->
+  <rect x="50" y="70" width="150" height="100" rx="8" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="2"/>
+  <text x="125" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="var(--text-color, #1a1a1a)">Step 1</text>
+  <text x="125" y="115" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="var(--text-color, #1a1a1a)">Current State</text>
+  <text x="125" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">5 separate repos</text>
+  <text x="125" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Independent CI/CD</text>
+  
+  <!-- Arrow 1 -->
+  <path d="M200 120 L240 120" stroke="var(--text-color, #1a1a1a)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 2: Setup Monorepo -->
+  <rect x="240" y="70" width="150" height="100" rx="8" fill="var(--primary-light, #e3f2fd)" stroke="var(--primary-color, #1976d2)" stroke-width="2"/>
+  <text x="315" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="var(--primary-color, #1976d2)">Step 2</text>
+  <text x="315" y="115" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="var(--text-color, #1a1a1a)">Setup Monorepo</text>
+  <text x="315" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Initialize Nx/Turborepo</text>
+  <text x="315" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Configure workspaces</text>
+  
+  <!-- Arrow 2 -->
+  <path d="M390 120 L430 120" stroke="var(--text-color, #1a1a1a)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 3: Migrate Packages -->
+  <rect x="430" y="70" width="150" height="100" rx="8" fill="var(--warning-light, #fff3cd)" stroke="var(--warning-color, #ffc107)" stroke-width="2"/>
+  <text x="505" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="var(--warning-color, #ffc107)">Step 3</text>
+  <text x="505" y="115" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="var(--text-color, #1a1a1a)">Migrate Packages</text>
+  <text x="505" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Start with shared libs</text>
+  <text x="505" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Preserve git history</text>
+  
+  <!-- Arrow 3 -->
+  <path d="M580 120 L620 120" stroke="var(--text-color, #1a1a1a)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 4: Unified CI/CD -->
+  <rect x="620" y="70" width="150" height="100" rx="8" fill="var(--success-light, #d4edda)" stroke="var(--success-color, #28a745)" stroke-width="2"/>
+  <text x="695" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="var(--success-color, #28a745)">Step 4</text>
+  <text x="695" y="115" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="var(--text-color, #1a1a1a)">Unified CI/CD</text>
+  <text x="695" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Single pipeline</text>
+  <text x="695" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Affected detection</text>
+  
+  <!-- Visual: Migration flow -->
+  <text x="400" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--text-color, #1a1a1a)">Migration Flow</text>
+  
+  <!-- Before -->
+  <rect x="100" y="230" width="280" height="100" rx="8" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="2"/>
+  <text x="240" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="var(--text-color, #1a1a1a)">Before (Polyrepo)</text>
+  
+  <rect x="120" y="270" width="70" height="45" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--warning-color, #ffc107)" stroke-width="1"/>
+  <text x="155" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="var(--warning-color, #ffc107)">repo-1</text>
+  <text x="155" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-muted, #666666)">web-app</text>
+  
+  <rect x="200" y="270" width="70" height="45" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--warning-color, #ffc107)" stroke-width="1"/>
+  <text x="235" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="var(--warning-color, #ffc107)">repo-2</text>
+  <text x="235" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-muted, #666666)">ui-lib</text>
+  
+  <rect x="280" y="270" width="70" height="45" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--warning-color, #ffc107)" stroke-width="1"/>
+  <text x="315" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="var(--warning-color, #ffc107)">repo-3</text>
+  <text x="315" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-muted, #666666)">utils</text>
+  
+  <text x="240" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--error-color, #dc3545)">✗ Manual version sync</text>
+  
+  <!-- Arrow between before/after -->
+  <path d="M380 280 L420 280" stroke="var(--text-color, #1a1a1a)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="400" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Migrate</text>
+  
+  <!-- After -->
+  <rect x="420" y="230" width="280" height="100" rx="8" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="2"/>
+  <text x="560" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="var(--text-color, #1a1a1a)">After (Monorepo)</text>
+  
+  <rect x="440" y="270" width="240" height="45" rx="4" fill="var(--primary-light, #e3f2fd)" stroke="var(--primary-color, #1976d2)" stroke-width="2"/>
+  <text x="560" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="var(--primary-color, #1976d2)">monorepo/ (single repo)</text>
+  <text x="560" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-muted, #666666)">apps/web, packages/ui, packages/utils</text>
+  
+  <text x="560" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--success-color, #28a745)">✓ Atomic commits, shared CI</text>
+  
+  <!-- Key considerations -->
+  <text x="400" y="370" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--text-color, #1a1a1a)">Key Considerations</text>
+  
+  <rect x="100" y="390" width="600" height="50" rx="6" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  
+  <text x="120" y="410" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="var(--text-color, #1a1a1a)">Git History:</text>
+  <text x="200" y="410" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Use git filter-repo to preserve history</text>
+  
+  <text x="350" y="410" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="var(--text-color, #1a1a1a)">Tooling:</text>
+  <text x="410" y="410" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Nx, Turborepo, or pnpm workspaces</text>
+  
+  <text x="550" y="410" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="var(--text-color, #1a1a1a)">Timeline:</text>
+  <text x="610" y="410" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">2-4 weeks for typical org</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-color, #1a1a1a)"/>
+    </marker>
+  </defs>
+</svg>

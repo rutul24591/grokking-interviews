@@ -1,7 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
   <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="240" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">oauth flow</text>
-  <text x="400" y="270" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Identity Access Diagram</text>
-  <text x="400" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Valid XML</text>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">OAuth 2.0 Authorization Code Flow with PKCE</text>
+  
+  <!-- Client -->
+  <rect x="50" y="80" width="120" height="80" rx="8" fill="#3b82f6"/>
+  <text x="110" y="115" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#ffffff">Client App</text>
+  <text x="110" y="140" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Generate Verifier</text>
+  
+  <line x1="170" y1="120" x2="210" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="190" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">1. Auth Request</text>
+  <text x="190" y="125" text-anchor="middle" font-family="system-ui" font-size="7" fill="#475569">(code_challenge)</text>
+  
+  <!-- Authorization Server -->
+  <rect x="220" y="60" width="200" height="120" rx="8" fill="#8b5cf6"/>
+  <text x="320" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#ffffff">Authorization Server</text>
+  <text x="320" y="115" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">(Google, Apple, etc.)</text>
+  <text x="320" y="140" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">User Authenticates</text>
+  <text x="320" y="160" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Consent to Scopes</text>
+  
+  <line x1="420" y1="120" x2="460" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="440" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">2. Redirect</text>
+  <text x="440" y="125" text-anchor="middle" font-family="system-ui" font-size="7" fill="#475569">(auth_code + state)</text>
+  
+  <!-- Callback -->
+  <rect x="470" y="80" width="120" height="80" rx="8" fill="#f59e0b"/>
+  <text x="530" y="115" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#ffffff">Callback URL</text>
+  <text x="530" y="140" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Validate State</text>
+  
+  <line x1="530" y1="160" x2="530" y2="200" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="550" y="180" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">3. Token Request</text>
+  <text x="550" y="195" text-anchor="middle" font-family="system-ui" font-size="7" fill="#475569">(code + verifier)</text>
+  
+  <!-- Token Endpoint -->
+  <rect x="470" y="210" width="120" height="80" rx="8" fill="#8b5cf6"/>
+  <text x="530" y="240" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#ffffff">Token Endpoint</text>
+  <text x="530" y="265" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Verify PKCE</text>
+  <text x="530" y="280" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Return Tokens</text>
+  
+  <line x1="470" y1="250" x2="430" y2="250" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="450" y="240" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">4. Tokens</text>
+  <text x="450" y="255" text-anchor="middle" font-family="system-ui" font-size="7" fill="#22c55e">(access, refresh, id)</text>
+  
+  <!-- User Info -->
+  <rect x="220" y="210" width="200" height="80" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="320" y="240" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">User Info Endpoint</text>
+  <text x="320" y="265" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Fetch User Profile</text>
+  <text x="320" y="280" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Create/Link Account</text>
+  
+  <line x1="320" y1="180" x2="320" y2="210" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="340" y="195" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">5. Get User Info</text>
+  
+  <!-- Session Created -->
+  <rect x="50" y="210" width="120" height="80" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="110" y="240" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Session</text>
+  <text x="110" y="265" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">User Logged In</text>
+  <text x="110" y="280" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Access Granted</text>
+  
+  <line x1="220" y1="250" x2="170" y2="250" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="195" y="240" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">6. Create Session</text>
+  
+  <!-- Security Notes -->
+  <rect x="50" y="320" width="700" height="150" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="400" y="345" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Security Considerations</text>
+  
+  <rect x="70" y="360" width="300" height="40" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="220" y="382" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">⚠ PKCE prevents code interception</text>
+  
+  <rect x="430" y="360" width="300" height="40" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="580" y="382" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">⚠ State parameter prevents CSRF</text>
+  
+  <rect x="70" y="410" width="300" height="40" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="220" y="432" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">⚠ Validate token signatures</text>
+  
+  <rect x="430" y="410" width="300" height="40" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="580" y="432" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">⚠ Use HTTPS only</text>
+
 </svg>

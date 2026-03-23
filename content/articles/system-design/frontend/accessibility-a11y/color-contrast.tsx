@@ -339,44 +339,7 @@ export default function ColorContrastArticle() {
         </ul>
       </section>
 
-      {/* ─── Section 8: References & Further Reading ─── */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              Understanding WCAG 1.4.3: Contrast (Minimum)
-            </a>{" "}
-            — Official guidance on text contrast requirements.
-          </li>
-          <li>
-            <a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              Understanding WCAG 1.4.11: Non-text Contrast
-            </a>{" "}
-            — Requirements for UI component and graphical object contrast.
-          </li>
-          <li>
-            <a href="https://git.apcacontrast.com/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              APCA Contrast Calculator
-            </a>{" "}
-            — Advanced Perceptual Contrast Algorithm, the proposed WCAG 3.0 method.
-          </li>
-          <li>
-            <a href="https://webaim.org/resources/contrastchecker/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              WebAIM Contrast Checker
-            </a>{" "}
-            — Simple tool for checking WCAG contrast compliance.
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              MDN: forced-colors Media Query
-            </a>{" "}
-            — CSS support for Windows High Contrast Mode.
-          </li>
-        </ul>
-      </section>
-
-      {/* ─── Section 9: Common Interview Questions ─── */}
+      {/* ─── Section 8: Common Interview Questions ─── */}
       <section>
         <h2>Common Interview Questions</h2>
 
@@ -447,6 +410,43 @@ export default function ColorContrastArticle() {
             WCAG 2.x ratios.
           </p>
         </div>
+      </section>
+
+      {/* ─── Section 9: References & Further Reading ─── */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              Understanding WCAG 1.4.3: Contrast (Minimum)
+            </a>{" "}
+            — Official guidance on text contrast requirements.
+          </li>
+          <li>
+            <a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              Understanding WCAG 1.4.11: Non-text Contrast
+            </a>{" "}
+            — Requirements for UI component and graphical object contrast.
+          </li>
+          <li>
+            <a href="https://git.apcacontrast.com/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              APCA Contrast Calculator
+            </a>{" "}
+            — Advanced Perceptual Contrast Algorithm, the proposed WCAG 3.0 method.
+          </li>
+          <li>
+            <a href="https://webaim.org/resources/contrastchecker/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              WebAIM Contrast Checker
+            </a>{" "}
+            — Simple tool for checking WCAG contrast compliance.
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              MDN: forced-colors Media Query
+            </a>{" "}
+            — CSS support for Windows High Contrast Mode.
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

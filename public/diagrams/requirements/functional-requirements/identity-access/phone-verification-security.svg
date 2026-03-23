@@ -1,7 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
   <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="240" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">phone verification security</text>
-  <text x="400" y="270" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Identity Access Diagram</text>
-  <text x="400" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Valid XML</text>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Phone Verification Security</text>
+  
+  <!-- Rate Limiting -->
+  <rect x="50" y="70" width="220" height="200" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="160" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#3b82f6">Rate Limiting</text>
+  
+  <rect x="70" y="115" width="180" height="45" rx="4" fill="#3b82f6" opacity="0.8"/>
+  <text x="160" y="140" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Per Phone: 3/hour</text>
+  <text x="160" y="155" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">10 per day max</text>
+  
+  <rect x="70" y="170" width="180" height="45" rx="4" fill="#3b82f6" opacity="0.6"/>
+  <text x="160" y="195" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Per IP: 10/hour</text>
+  <text x="160" y="210" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Prevent SMS pumping</text>
+  
+  <rect x="70" y="225" width="180" height="45" rx="4" fill="#3b82f6" opacity="0.4"/>
+  <text x="160" y="250" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Cooldown: 60 sec</text>
+  <text x="160" y="265" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Between requests</text>
+  
+  <line x1="270" y1="170" x2="310" y2="170" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Fraud Detection -->
+  <rect x="320" y="70" width="220" height="200" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="430" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#ef4444">Fraud Detection</text>
+  
+  <rect x="340" y="115" width="180" height="45" rx="4" fill="#ef4444" opacity="0.8"/>
+  <text x="430" y="140" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Block Known Fraud</text>
+  <text x="430" y="155" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Fraud number database</text>
+  
+  <rect x="340" y="170" width="180" height="45" rx="4" fill="#ef4444" opacity="0.6"/>
+  <text x="430" y="195" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Pattern Detection</text>
+  <text x="430" y="210" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Many numbers from same IP</text>
+  
+  <rect x="340" y="225" width="180" height="45" rx="4" fill="#ef4444" opacity="0.4"/>
+  <text x="430" y="250" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Country Blocking</text>
+  <text x="430" y="265" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Block high-risk countries</text>
+  
+  <line x1="540" y1="170" x2="580" y2="170" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- SIM Swap Detection -->
+  <rect x="590" y="70" width="160" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="670" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#f59e0b">SIM Swap Detection</text>
+  
+  <rect x="610" y="115" width="120" height="50" rx="4" fill="#f59e0b" opacity="0.8"/>
+  <text x="670" y="140" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Detect Carrier Change</text>
+  <text x="670" y="160" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Phone number moved</text>
+  
+  <rect x="610" y="175" width="120" height="50" rx="4" fill="#f59e0b" opacity="0.6"/>
+  <text x="670" y="200" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Alert on Swap</text>
+  <text x="670" y="220" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Potential attack</text>
+  
+  <rect x="610" y="235" width="120" height="30" rx="4" fill="#ef4444"/>
+  <text x="670" y="255" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Block Verification</text>
+  
+  <line x1="670" y1="270" x2="670" y2="310" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- OTP Security -->
+  <rect x="590" y="320" width="160" height="130" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="670" y="345" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">OTP Security</text>
+  
+  <rect x="610" y="360" width="120" height="35" rx="4" fill="#22c55e" opacity="0.8"/>
+  <text x="670" y="382" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Crypto Random</text>
+  
+  <rect x="610" y="400" width="120" height="35" rx="4" fill="#22c55e" opacity="0.6"/>
+  <text x="670" y="422" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Store Hash</text>
+  
+  <rect x="610" y="440" width="120" height="35" rx="4" fill="#22c55e" opacity="0.4"/>
+  <text x="670" y="462" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Invalidate After Use</text>
+  
+  <!-- OTP Storage -->
+  <rect x="50" y="320" width="220" height="130" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="160" y="345" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">OTP Storage</text>
+  
+  <rect x="70" y="360" width="180" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="160" y="382" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Store bcrypt hash</text>
+  
+  <rect x="70" y="400" width="180" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="160" y="422" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">5-10 minute expiry</text>
+  
+  <rect x="70" y="440" width="180" height="35" rx="4" fill="#ef4444" opacity="0.3"/>
+  <text x="160" y="462" text-anchor="middle" font-family="system-ui" font-size="9" fill="#991b1b">Never store plaintext</text>
+  
+  <!-- Constant-Time Compare -->
+  <rect x="320" y="320" width="220" height="130" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="430" y="345" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Constant-Time Compare</text>
+  
+  <rect x="340" y="360" width="180" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="430" y="382" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Prevent timing attacks</text>
+  
+  <rect x="340" y="400" width="180" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="430" y="422" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Same time for all inputs</text>
+  
+  <rect x="340" y="440" width="180" height="35" rx="4" fill="#8b5cf6"/>
+  <text x="430" y="462" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Required for security</text>
+
 </svg>

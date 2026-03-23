@@ -58,10 +58,10 @@ export default function LegacyBrowserSupportArticle() {
           losing users who cannot or will not upgrade. Maintaining support
           increases costs through additional polyfills, transpilation, testing,
           and reduced ability to adopt modern platform features. The staff or
-          principal engineer&apos;s role is to provide the data and analysis that
-          enables informed business decisions: what does support cost, what is
-          the user population at risk, what alternatives exist for those users,
-          and what is the timeline for natural attrition as those users
+          principal engineer&apos;s role is to provide the data and analysis
+          that enables informed business decisions: what does support cost, what
+          is the user population at risk, what alternatives exist for those
+          users, and what is the timeline for natural attrition as those users
           eventually upgrade.
         </p>
         <p>
@@ -71,11 +71,11 @@ export default function LegacyBrowserSupportArticle() {
           This approach draws from graceful degradation principles: users on
           legacy browsers can complete core tasks but may not see advanced
           animations, sophisticated layouts, or interactive enhancements that
-          require modern APIs. The tiered model aligns business value (core
-          task completion) with engineering reality (modern features require
-          modern APIs) and is documented in a formal compatibility contract
-          that all stakeholders — product, design, engineering, QA, and customer
-          support — review and agree upon.
+          require modern APIs. The tiered model aligns business value (core task
+          completion) with engineering reality (modern features require modern
+          APIs) and is documented in a formal compatibility contract that all
+          stakeholders — product, design, engineering, QA, and customer support
+          — review and agree upon.
         </p>
         <p>
           The legacy browser landscape continues to evolve. While Internet
@@ -84,10 +84,11 @@ export default function LegacyBrowserSupportArticle() {
           Android devices with non-updatable WebView implementations, enterprise
           environments locked to specific Chrome or Edge versions, and
           government systems running outdated browsers create ongoing
-          compatibility challenges. The engineering principles for managing these
-          challenges — analytics-driven support decisions, tiered compatibility,
-          polyfill and transpilation strategy, and systematic sunset
-          planning — remain constant even as the specific legacy browsers change.
+          compatibility challenges. The engineering principles for managing
+          these challenges — analytics-driven support decisions, tiered
+          compatibility, polyfill and transpilation strategy, and systematic
+          sunset planning — remain constant even as the specific legacy browsers
+          change.
         </p>
       </section>
 
@@ -102,26 +103,28 @@ export default function LegacyBrowserSupportArticle() {
             Tier 2 (functionally supported) receives core feature testing with
             accepted visual differences. Tier 3 (best-effort) receives basic
             rendering checks with no bug fixes. Unsupported browsers receive an
-            upgrade notice. The policy is version-controlled, reviewed quarterly,
-            and derived from analytics data and business requirements.
+            upgrade notice. The policy is version-controlled, reviewed
+            quarterly, and derived from analytics data and business
+            requirements.
           </li>
           <li>
             <strong>Analytics-Driven Sunset Planning:</strong> The practice of
             using production analytics to track legacy browser usage over time
             and plan for support removal. When a browser version&apos;s traffic
             drops below a defined threshold (commonly one to two percent of
-            total sessions), it becomes a candidate for tier demotion or removal.
-            Tracking the attrition trend allows teams to forecast when a browser
-            will naturally fall below the threshold and plan the engineering
-            work (removing polyfills, dropping transpilation targets) accordingly.
+            total sessions), it becomes a candidate for tier demotion or
+            removal. Tracking the attrition trend allows teams to forecast when
+            a browser will naturally fall below the threshold and plan the
+            engineering work (removing polyfills, dropping transpilation
+            targets) accordingly.
           </li>
           <li>
             <strong>Compatibility Cost Accounting:</strong> The practice of
-            tracking the engineering costs attributable to legacy browser support.
-            This includes polyfill and transpilation bundle size overhead,
-            developer time spent on legacy-specific bug fixes, CI time for
-            legacy browser testing, the opportunity cost of features that cannot
-            be built because the required APIs are unavailable in legacy
+            tracking the engineering costs attributable to legacy browser
+            support. This includes polyfill and transpilation bundle size
+            overhead, developer time spent on legacy-specific bug fixes, CI time
+            for legacy browser testing, the opportunity cost of features that
+            cannot be built because the required APIs are unavailable in legacy
             browsers, and the maintenance burden of fallback code paths.
             Quantifying these costs provides concrete data for business
             discussions about support tier adjustments.
@@ -136,11 +139,11 @@ export default function LegacyBrowserSupportArticle() {
           </li>
           <li>
             <strong>Upgrade Nudge Strategy:</strong> Techniques for encouraging
-            users on legacy browsers to upgrade while maintaining access to
-            core functionality. Strategies range from informational banners
+            users on legacy browsers to upgrade while maintaining access to core
+            functionality. Strategies range from informational banners
             (&quot;This site works best in a modern browser&quot;) to functional
-            limitations (reduced feature set with explicit messaging about
-            why), to hard blocks (upgrade required for access). The appropriate
+            limitations (reduced feature set with explicit messaging about why),
+            to hard blocks (upgrade required for access). The appropriate
             strategy depends on the user population — enterprise users may not
             have control over their browser version, making hard blocks
             counterproductive.
@@ -157,13 +160,13 @@ export default function LegacyBrowserSupportArticle() {
           </li>
           <li>
             <strong>Legacy Abstraction Layer:</strong> An architectural pattern
-            where legacy-specific code is isolated behind abstraction interfaces.
-            Components interact with the abstraction layer rather than directly
-            with browser APIs, and the abstraction layer provides the appropriate
-            implementation — native API for modern browsers, polyfill or
-            alternative for legacy browsers. This pattern keeps legacy support
-            code out of the main codebase and makes removal clean when
-            support is dropped.
+            where legacy-specific code is isolated behind abstraction
+            interfaces. Components interact with the abstraction layer rather
+            than directly with browser APIs, and the abstraction layer provides
+            the appropriate implementation — native API for modern browsers,
+            polyfill or alternative for legacy browsers. This pattern keeps
+            legacy support code out of the main codebase and makes removal clean
+            when support is dropped.
           </li>
           <li>
             <strong>Support Sunset Communication Plan:</strong> A structured
@@ -171,8 +174,8 @@ export default function LegacyBrowserSupportArticle() {
             stakeholders about upcoming legacy browser support removal. The plan
             typically includes advance notice (six to twelve months for
             enterprise products), in-browser notifications for affected users,
-            documentation updates, customer support training, and a final
-            cutoff date after which the legacy browser is no longer tested or
+            documentation updates, customer support training, and a final cutoff
+            date after which the legacy browser is no longer tested or
             supported.
           </li>
         </ul>
@@ -199,15 +202,15 @@ export default function LegacyBrowserSupportArticle() {
           is evaluated against two dimensions: the user population it represents
           (what percentage of sessions, revenue, or critical user segments use
           this browser?) and the engineering cost of supporting it (what
-          polyfills, transpilation, testing, and developer time does this browser
-          require?). Browser versions are then assigned to support tiers based
-          on the cost-benefit analysis. High population and low cost browsers
-          are Tier 1. High population and high cost browsers are Tier 2 (with
-          investment in reducing the cost, such as targeted polyfilling).
-          Low population and high cost browsers are candidates for tier
-          demotion or sunset. The framework outputs a compatibility contract
-          with explicit tier assignments and a sunset timeline for browsers
-          trending toward the removal threshold.
+          polyfills, transpilation, testing, and developer time does this
+          browser require?). Browser versions are then assigned to support tiers
+          based on the cost-benefit analysis. High population and low cost
+          browsers are Tier 1. High population and high cost browsers are Tier 2
+          (with investment in reducing the cost, such as targeted polyfilling).
+          Low population and high cost browsers are candidates for tier demotion
+          or sunset. The framework outputs a compatibility contract with
+          explicit tier assignments and a sunset timeline for browsers trending
+          toward the removal threshold.
         </p>
 
         <ArticleImage
@@ -223,12 +226,12 @@ export default function LegacyBrowserSupportArticle() {
           transpilation, comprehensive polyfills, larger bundle size). The HTML
           template uses the module/nomodule pattern to deliver the appropriate
           bundle set — modern browsers load the module bundle, legacy browsers
-          load the nomodule bundle. CSS follows a similar pattern: modern CSS
-          is served as-is, while legacy CSS includes vendor prefixes and
-          fallback values generated by Autoprefixer. This architecture means
-          that the 80 to 95 percent of users on modern browsers pay no
-          performance penalty for legacy support, while the legacy user
-          population receives functional (if slower) bundles.
+          load the nomodule bundle. CSS follows a similar pattern: modern CSS is
+          served as-is, while legacy CSS includes vendor prefixes and fallback
+          values generated by Autoprefixer. This architecture means that the 80
+          to 95 percent of users on modern browsers pay no performance penalty
+          for legacy support, while the legacy user population receives
+          functional (if slower) bundles.
         </p>
 
         <ArticleImage
@@ -304,9 +307,7 @@ export default function LegacyBrowserSupportArticle() {
               </td>
             </tr>
             <tr>
-              <td className="border border-theme p-2">
-                Tiered support model
-              </td>
+              <td className="border border-theme p-2">Tiered support model</td>
               <td className="border border-theme p-2">
                 Balances access and development velocity. Legacy users retain
                 core functionality. Modern users get optimal experience. Clear
@@ -319,9 +320,7 @@ export default function LegacyBrowserSupportArticle() {
               </td>
             </tr>
             <tr>
-              <td className="border border-theme p-2">
-                Differential loading
-              </td>
+              <td className="border border-theme p-2">Differential loading</td>
               <td className="border border-theme p-2">
                 Modern users pay no performance penalty. Legacy users receive
                 functional bundles. Clean separation between modern and legacy
@@ -356,18 +355,22 @@ export default function LegacyBrowserSupportArticle() {
         <h2>Best Practices</h2>
         <ol className="space-y-3">
           <li>
-            <strong>Base support decisions on analytics data, not assumptions:</strong>{" "}
+            <strong>
+              Base support decisions on analytics data, not assumptions:
+            </strong>{" "}
             Implement browser version tracking in your analytics pipeline and
             review the data quarterly. Decisions to maintain or drop legacy
             support should be grounded in actual user population data, revenue
-            attribution by browser, and task completion rates by browser —
-            not assumptions about who uses what. Analytics data often reveals
-            surprising patterns: an enterprise product might have significant
-            IE 11 traffic while a consumer product might have more Safari iOS
-            13 users than expected.
+            attribution by browser, and task completion rates by browser — not
+            assumptions about who uses what. Analytics data often reveals
+            surprising patterns: an enterprise product might have significant IE
+            11 traffic while a consumer product might have more Safari iOS 13
+            users than expected.
           </li>
           <li>
-            <strong>Formalize support tiers in a compatibility contract:</strong>{" "}
+            <strong>
+              Formalize support tiers in a compatibility contract:
+            </strong>{" "}
             Document the support tier for every browser-version combination in a
             shared, version-controlled document. Define what each tier means
             (feature parity, functional access, basic rendering, unsupported).
@@ -377,30 +380,30 @@ export default function LegacyBrowserSupportArticle() {
             means and prevents ad hoc support commitments.
           </li>
           <li>
-            <strong>Track and report compatibility cost:</strong>{" "}
-            Quantify the engineering cost of legacy browser support including
-            polyfill bundle size, transpilation build time, CI time for legacy
-            testing, developer time on legacy bug fixes, and features blocked
-            by legacy compatibility constraints. Present this data to business
-            stakeholders alongside the user population data — the combination
-            of cost and population informs whether the investment is
-            proportionate to the value.
+            <strong>Track and report compatibility cost:</strong> Quantify the
+            engineering cost of legacy browser support including polyfill bundle
+            size, transpilation build time, CI time for legacy testing,
+            developer time on legacy bug fixes, and features blocked by legacy
+            compatibility constraints. Present this data to business
+            stakeholders alongside the user population data — the combination of
+            cost and population informs whether the investment is proportionate
+            to the value.
           </li>
           <li>
-            <strong>Implement differential loading from the start:</strong>{" "}
-            If legacy browser support is required, implement differential
-            loading immediately rather than adding it later. The module/nomodule
-            pattern is straightforward to set up in modern build tools and
-            ensures that legacy support costs do not degrade performance for
-            modern browser users. Retrofitting differential loading into an
-            existing application is significantly more complex than including
-            it in the initial architecture.
+            <strong>Implement differential loading from the start:</strong> If
+            legacy browser support is required, implement differential loading
+            immediately rather than adding it later. The module/nomodule pattern
+            is straightforward to set up in modern build tools and ensures that
+            legacy support costs do not degrade performance for modern browser
+            users. Retrofitting differential loading into an existing
+            application is significantly more complex than including it in the
+            initial architecture.
           </li>
           <li>
-            <strong>Plan sunset timelines proactively:</strong>{" "}
-            Do not wait for a legacy browser to become a crisis before planning
-            its removal. Monitor usage trends and start the sunset process when
-            a browser&apos;s traffic enters decline — typically six to twelve
+            <strong>Plan sunset timelines proactively:</strong> Do not wait for
+            a legacy browser to become a crisis before planning its removal.
+            Monitor usage trends and start the sunset process when a
+            browser&apos;s traffic enters decline — typically six to twelve
             months before it reaches the removal threshold. Proactive planning
             allows orderly communication, gradual degradation, and clean code
             removal rather than emergency deprecation.
@@ -432,33 +435,36 @@ export default function LegacyBrowserSupportArticle() {
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
           <li>
-            <strong>Supporting legacy browsers without data justification:</strong>{" "}
+            <strong>
+              Supporting legacy browsers without data justification:
+            </strong>{" "}
             Teams sometimes maintain legacy support based on assumptions
             (&quot;our enterprise customers use IE 11&quot;) without verifying
             with analytics data. In many cases, the assumed legacy user
-            population has already migrated, and the team is maintaining
-            support for a non-existent audience. Always validate support
-            decisions with current analytics data, refreshed at least quarterly.
+            population has already migrated, and the team is maintaining support
+            for a non-existent audience. Always validate support decisions with
+            current analytics data, refreshed at least quarterly.
           </li>
           <li>
-            <strong>Treating legacy support as all-or-nothing:</strong>{" "}
-            Teams often frame legacy support as a binary choice — full support
-            or no support. The tiered model (full, functional, basic,
-            unsupported) provides a middle path that maintains access for legacy
-            users while reducing the engineering burden. A legacy user who can
-            complete core tasks with a simplified UI is better served than one
-            who is blocked entirely because full support was deemed too
-            expensive.
+            <strong>Treating legacy support as all-or-nothing:</strong> Teams
+            often frame legacy support as a binary choice — full support or no
+            support. The tiered model (full, functional, basic, unsupported)
+            provides a middle path that maintains access for legacy users while
+            reducing the engineering burden. A legacy user who can complete core
+            tasks with a simplified UI is better served than one who is blocked
+            entirely because full support was deemed too expensive.
           </li>
           <li>
-            <strong>Accumulating legacy technical debt without tracking it:</strong>{" "}
-            Polyfills, transpilation workarounds, CSS hacks, and browser-specific
-            fallbacks accumulate gradually. Without explicit tracking, the total
-            cost of legacy support becomes invisible until it reaches a crisis
-            point — a critical feature that cannot be built because a required
-            API is unavailable in a legacy browser. Track legacy support costs
-            as a distinct category in sprint planning and technical debt
-            management.
+            <strong>
+              Accumulating legacy technical debt without tracking it:
+            </strong>{" "}
+            Polyfills, transpilation workarounds, CSS hacks, and
+            browser-specific fallbacks accumulate gradually. Without explicit
+            tracking, the total cost of legacy support becomes invisible until
+            it reaches a crisis point — a critical feature that cannot be built
+            because a required API is unavailable in a legacy browser. Track
+            legacy support costs as a distinct category in sprint planning and
+            technical debt management.
           </li>
           <li>
             <strong>Removing support without a communication plan:</strong>{" "}
@@ -469,7 +475,9 @@ export default function LegacyBrowserSupportArticle() {
             respects users and reduces support burden.
           </li>
           <li>
-            <strong>Assuming modern frameworks handle legacy support automatically:</strong>{" "}
+            <strong>
+              Assuming modern frameworks handle legacy support automatically:
+            </strong>{" "}
             Next.js, Create React App, and other frameworks include some
             polyfill and transpilation support, but they cannot make modern
             React patterns work in truly legacy environments without significant
@@ -479,14 +487,16 @@ export default function LegacyBrowserSupportArticle() {
             against your compatibility contract.
           </li>
           <li>
-            <strong>Neglecting legacy support in new feature development:</strong>{" "}
+            <strong>
+              Neglecting legacy support in new feature development:
+            </strong>{" "}
             When legacy browsers are in the support contract, new features must
             be tested and, where necessary, adapted for those browsers. Teams
             that build features exclusively for modern browsers and then
             discover legacy incompatibilities in QA face costly retrofitting.
             The compatibility contract should be referenced during feature
-            planning, and legacy implications should be considered in
-            technical design.
+            planning, and legacy implications should be considered in technical
+            design.
           </li>
         </ul>
       </section>
@@ -507,13 +517,13 @@ export default function LegacyBrowserSupportArticle() {
           reducing Microsoft&apos;s IE 11 maintenance burden.
         </p>
         <p>
-          <strong>GitHub&apos;s browser support policy:</strong> GitHub publishes
-          a clear browser support policy that targets the latest two versions
-          of each major browser (Chrome, Firefox, Safari, Edge). When a browser
-          version falls outside this window, GitHub does not actively test or
-          fix issues for that version. This rolling support window means GitHub
-          never needs a formal &quot;sunset&quot; — support naturally rolls
-          forward with browser releases. The policy is simple enough that
+          <strong>GitHub&apos;s browser support policy:</strong> GitHub
+          publishes a clear browser support policy that targets the latest two
+          versions of each major browser (Chrome, Firefox, Safari, Edge). When a
+          browser version falls outside this window, GitHub does not actively
+          test or fix issues for that version. This rolling support window means
+          GitHub never needs a formal &quot;sunset&quot; — support naturally
+          rolls forward with browser releases. The policy is simple enough that
           developers internalize it without referencing documentation, reducing
           the overhead of support decisions in daily development.
         </p>
@@ -545,7 +555,116 @@ export default function LegacyBrowserSupportArticle() {
         </p>
       </section>
 
-      {/* Section 8: References & Further Reading */}
+      {/* Section 8: Common Interview Questions */}
+      <section>
+        <h2>Common Interview Questions</h2>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you decide when to drop support for a legacy browser?
+            </p>
+            <p className="mt-2 text-sm">
+              A: The decision framework balances user population against
+              engineering cost. Pull analytics data showing the browser&apos;s
+              traffic share, revenue attribution, and usage trend over time.
+              Quantify the engineering cost of support: polyfill bundle size, CI
+              time for legacy testing, developer time on legacy-specific bugs,
+              and features blocked by compatibility constraints. When the cost
+              significantly exceeds the value of the user population (or the
+              population drops below a defined threshold like one to two
+              percent), propose a sunset timeline. Present both data sets to
+              business stakeholders — this is a business decision informed by
+              engineering data, not purely an engineering decision. For
+              enterprise products, factor in contractual obligations and
+              customer communication timelines.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How would you implement a tiered browser support strategy?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Define three to four tiers with explicit criteria. Tier 1
+              (fully supported): latest versions of major browsers — full
+              feature parity, visual regression testing, bug fixes within SLA.
+              Tier 2 (functionally supported): older but still-used versions —
+              core features work, accepted visual differences, bug fixes
+              prioritized below Tier 1. Tier 3 (best-effort): browsers nearing
+              sunset — basic rendering, no active testing, no bug fixes.
+              Implement the tiers technically through feature detection and
+              capability-gated rendering — not by checking user agent strings.
+              Document the tiers in a compatibility contract reviewed quarterly.
+              Track analytics data per tier to validate tier assignments and
+              identify when browsers should be demoted or promoted.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What is the engineering cost of maintaining IE 11 support, and
+              how would you quantify it?
+            </p>
+            <p className="mt-2 text-sm">
+              A: IE 11 support costs manifest in several measurable dimensions.
+              Bundle size: core-js polyfills for IE 11 add 80 to 150 KB
+              (gzipped); full ES5 transpilation increases bundle size by 20 to
+              40 percent. Build time: transpiling to ES5 and generating polyfill
+              bundles adds build pipeline time. Testing: IE 11 testing (via
+              BrowserStack or similar) adds CI time and infrastructure cost.
+              Developer time: IE 11-specific bugs (CSS Grid limitations, Flexbox
+              quirks, Promise and fetch polyfill issues) require dedicated
+              debugging and workaround implementation. Feature restrictions:
+              modern APIs (IntersectionObserver, CSS Custom Properties, CSS Grid
+              auto-placement, ES module imports) cannot be used without
+              fallbacks. To quantify, instrument each dimension and present the
+              aggregate cost alongside the IE 11 user population percentage.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you communicate a legacy browser sunset to enterprise
+              customers?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Enterprise sunset communication requires a structured,
+              multi-phase approach. Six to twelve months before sunset, announce
+              the plan through official channels (blog post, email, customer
+              success outreach) with a specific end-of-support date. Provide
+              migration guidance — recommended browsers, known compatibility
+              issues, IT planning resources. Three months before sunset, add
+              in-browser notifications for affected users with links to upgrade
+              documentation. One month before, increase notification prominence
+              and begin demoting the browser to Tier 3 (reduced feature set). At
+              sunset, display a clear upgrade notice and cease legacy-specific
+              testing and bug fixes. Post-sunset, monitor error rates and
+              support tickets for two to four weeks to catch unexpected impact.
+              Throughout the process, maintain a FAQ for customer-facing teams
+              to handle inquiries consistently.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How does differential loading reduce the performance impact of
+              legacy browser support?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Differential loading uses the module/nomodule pattern to serve
+              separate bundles. Modern browsers receive ES module bundles with
+              minimal transpilation and no polyfills — these bundles are 30 to
+              50 percent smaller than fully transpiled equivalents. Legacy
+              browsers receive ES5 bundles with comprehensive polyfills. The key
+              insight is that the majority of users (on modern browsers) pay
+              zero performance penalty for legacy support — only legacy users
+              receive the larger bundles. Implementation involves running the
+              build pipeline twice with different target configurations and
+              including both script tags in the HTML. The trade-off is doubled
+              build output and CI time, but the performance benefit for the
+              majority of users typically justifies this cost.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 9: References & Further Reading */}
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
@@ -600,115 +719,6 @@ export default function LegacyBrowserSupportArticle() {
             </a>
           </li>
         </ul>
-      </section>
-
-      {/* Section 9: Common Interview Questions */}
-      <section>
-        <h2>Common Interview Questions</h2>
-        <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How do you decide when to drop support for a legacy browser?
-            </p>
-            <p className="mt-2 text-sm">
-              A: The decision framework balances user population against
-              engineering cost. Pull analytics data showing the browser&apos;s
-              traffic share, revenue attribution, and usage trend over time.
-              Quantify the engineering cost of support: polyfill bundle size,
-              CI time for legacy testing, developer time on legacy-specific
-              bugs, and features blocked by compatibility constraints. When the
-              cost significantly exceeds the value of the user population (or
-              the population drops below a defined threshold like one to two
-              percent), propose a sunset timeline. Present both data sets to
-              business stakeholders — this is a business decision informed by
-              engineering data, not purely an engineering decision. For
-              enterprise products, factor in contractual obligations and
-              customer communication timelines.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How would you implement a tiered browser support strategy?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Define three to four tiers with explicit criteria. Tier 1
-              (fully supported): latest versions of major browsers — full
-              feature parity, visual regression testing, bug fixes within SLA.
-              Tier 2 (functionally supported): older but still-used versions —
-              core features work, accepted visual differences, bug fixes
-              prioritized below Tier 1. Tier 3 (best-effort): browsers nearing
-              sunset — basic rendering, no active testing, no bug fixes.
-              Implement the tiers technically through feature detection and
-              capability-gated rendering — not by checking user agent strings.
-              Document the tiers in a compatibility contract reviewed quarterly.
-              Track analytics data per tier to validate tier assignments and
-              identify when browsers should be demoted or promoted.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: What is the engineering cost of maintaining IE 11 support, and
-              how would you quantify it?
-            </p>
-            <p className="mt-2 text-sm">
-              A: IE 11 support costs manifest in several measurable dimensions.
-              Bundle size: core-js polyfills for IE 11 add 80 to 150 KB
-              (gzipped); full ES5 transpilation increases bundle size by 20 to
-              40 percent. Build time: transpiling to ES5 and generating polyfill
-              bundles adds build pipeline time. Testing: IE 11 testing (via
-              BrowserStack or similar) adds CI time and infrastructure cost.
-              Developer time: IE 11-specific bugs (CSS Grid limitations, Flexbox
-              quirks, Promise and fetch polyfill issues) require dedicated
-              debugging and workaround implementation. Feature restrictions:
-              modern APIs (IntersectionObserver, CSS Custom Properties, CSS Grid
-              auto-placement, ES module imports) cannot be used without fallbacks.
-              To quantify, instrument each dimension and present the aggregate
-              cost alongside the IE 11 user population percentage.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How do you communicate a legacy browser sunset to enterprise
-              customers?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Enterprise sunset communication requires a structured,
-              multi-phase approach. Six to twelve months before sunset, announce
-              the plan through official channels (blog post, email, customer
-              success outreach) with a specific end-of-support date. Provide
-              migration guidance — recommended browsers, known compatibility
-              issues, IT planning resources. Three months before sunset, add
-              in-browser notifications for affected users with links to
-              upgrade documentation. One month before, increase notification
-              prominence and begin demoting the browser to Tier 3 (reduced
-              feature set). At sunset, display a clear upgrade notice and cease
-              legacy-specific testing and bug fixes. Post-sunset, monitor error
-              rates and support tickets for two to four weeks to catch
-              unexpected impact. Throughout the process, maintain a FAQ for
-              customer-facing teams to handle inquiries consistently.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How does differential loading reduce the performance impact of
-              legacy browser support?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Differential loading uses the module/nomodule pattern to serve
-              separate bundles. Modern browsers receive ES module bundles with
-              minimal transpilation and no polyfills — these bundles are 30 to
-              50 percent smaller than fully transpiled equivalents. Legacy
-              browsers receive ES5 bundles with comprehensive polyfills. The
-              key insight is that the majority of users (on modern browsers)
-              pay zero performance penalty for legacy support — only legacy
-              users receive the larger bundles. Implementation involves running
-              the build pipeline twice with different target configurations and
-              including both script tags in the HTML. The trade-off is doubled
-              build output and CI time, but the performance benefit for the
-              majority of users typically justifies this cost.
-            </p>
-          </div>
-        </div>
       </section>
     </ArticleLayout>
   );

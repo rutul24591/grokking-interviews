@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">Micro-Frontends Composition Patterns</title>
+  <desc id="desc">Comparison of four composition patterns: Build-time, Server-side, Runtime JS, and Iframe with their isolation and performance characteristics</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="500" fill="var(--bg-color, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="var(--text-color, #1a1a1a)">Micro-Frontends Composition Patterns</text>
+  
+  <!-- Grid headers -->
+  <rect x="50" y="60" width="175" height="50" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="225" y="60" width="175" height="50" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="400" y="60" width="175" height="50" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="575" y="60" width="175" height="50" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  
+  <text x="137" y="85" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="var(--text-color, #1a1a1a)">Pattern</text>
+  <text x="312" y="85" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="var(--text-color, #1a1a1a)">When</text>
+  <text x="487" y="85" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="var(--text-color, #1a1a1a)">Isolation</text>
+  <text x="662" y="85" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="var(--text-color, #1a1a1a)">Performance</text>
+  
+  <!-- Row 1: Build-time -->
+  <rect x="50" y="110" width="175" height="70" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="225" y="110" width="175" height="70" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="400" y="110" width="175" height="70" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="575" y="110" width="175" height="70" fill="var(--success-light, #d4edda)" stroke="var(--success-border, #28a745)" stroke-width="2"/>
+  
+  <text x="137" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="var(--text-color, #1a1a1a)">Build-time (npm)</text>
+  <text x="137" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="var(--text-muted, #666666)">Packages integrated</text>
+  <text x="137" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="var(--text-muted, #666666)">at build</text>
+  
+  <text x="312" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="var(--text-color, #1a1a1a)">Build</text>
+  
+  <text x="487" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="var(--error-color, #dc3545)" font-weight="600">None</text>
+  
+  <text x="662" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="var(--success-color, #28a745)" font-weight="700">Best</text>
+  
+  <!-- Row 2: Server-side -->
+  <rect x="50" y="180" width="175" height="70" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="225" y="180" width="175" height="70" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="400" y="180" width="175" height="70" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="575" y="180" width="175" height="70" fill="var(--warning-light, #fff3cd)" stroke="var(--warning-border, #ffc107)" stroke-width="2"/>
+  
+  <text x="137" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="var(--text-color, #1a1a1a)">Server-side</text>
+  <text x="137" y="225" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="var(--text-muted, #666666)">SSI/ESI fragments</text>
+  
+  <text x="312" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="var(--text-color, #1a1a1a)">Server</text>
+  
+  <text x="487" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="var(--warning-color, #ffc107)" font-weight="600">Request-level</text>
+  
+  <text x="662" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="var(--warning-color, #ffc107)" font-weight="600">Good</text>
+  
+  <!-- Row 3: Runtime JS -->
+  <rect x="50" y="250" width="175" height="70" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="225" y="250" width="175" height="70" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="400" y="250" width="175" height="70" fill="var(--warning-light, #fff3cd)" stroke="var(--warning-border, #ffc107)" stroke-width="2"/>
+  <rect x="575" y="250" width="175" height="70" fill="var(--warning-light, #fff3cd)" stroke="var(--warning-border, #ffc107)" stroke-width="2"/>
+  
+  <text x="137" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="var(--text-color, #1a1a1a)">Runtime JS</text>
+  <text x="137" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="var(--text-muted, #666666)">single-spa, Module Fed</text>
+  
+  <text x="312" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="var(--text-color, #1a1a1a)">Client</text>
+  
+  <text x="487" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="var(--warning-color, #ffc107)" font-weight="600">Moderate</text>
+  
+  <text x="662" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="var(--warning-color, #ffc107)" font-weight="600">Moderate</text>
+  
+  <!-- Row 4: Iframe -->
+  <rect x="50" y="320" width="175" height="70" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="225" y="320" width="175" height="70" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="400" y="320" width="175" height="70" fill="var(--success-light, #d4edda)" stroke="var(--success-border, #28a745)" stroke-width="2"/>
+  <rect x="575" y="320" width="175" height="70" fill="var(--error-light, #f8d7da)" stroke="var(--error-border, #dc3545)" stroke-width="2"/>
+  
+  <text x="137" y="345" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="var(--text-color, #1a1a1a)">Iframe</text>
+  <text x="137" y="365" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="var(--text-muted, #666666)">Complete isolation</text>
+  
+  <text x="312" y="355" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="var(--text-color, #1a1a1a)">Client</text>
+  
+  <text x="487" y="355" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="var(--success-color, #28a745)" font-weight="700">Complete</text>
+  
+  <text x="662" y="355" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="var(--error-color, #dc3545)" font-weight="700">Worst</text>
+  
+  <!-- Legend -->
+  <text x="400" y="420" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--text-color, #1a1a1a)">Performance Scale</text>
+  
+  <rect x="150" y="435" width="30" height="20" fill="var(--success-light, #d4edda)" stroke="var(--success-border, #28a745)" stroke-width="2"/>
+  <text x="190" y="450" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="var(--text-color, #1a1a1a)">Best</text>
+  
+  <rect x="280" y="435" width="30" height="20" fill="var(--warning-light, #fff3cd)" stroke="var(--warning-border, #ffc107)" stroke-width="2"/>
+  <text x="320" y="450" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="var(--text-color, #1a1a1a)">Moderate</text>
+  
+  <rect x="430" y="435" width="30" height="20" fill="var(--error-light, #f8d7da)" stroke="var(--error-border, #dc3545)" stroke-width="2"/>
+  <text x="470" y="450" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="var(--text-color, #1a1a1a)">Worst</text>
+  
+  <rect x="560" y="435" width="30" height="20" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="600" y="450" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="var(--text-color, #1a1a1a)">Isolation Level</text>
+</svg>

@@ -1,7 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
   <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="240" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">saml flow</text>
-  <text x="400" y="270" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Identity Access Diagram</text>
-  <text x="400" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Valid XML</text>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">SAML 2.0 SP-Initiated Flow</text>
+  
+  <!-- User -->
+  <rect x="50" y="80" width="100" height="60" rx="8" fill="#3b82f6"/>
+  <text x="100" y="110" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#ffffff">User</text>
+  
+  <line x1="150" y1="110" x2="190" y2="110" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="170" y="100" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">1. Access App</text>
+  
+  <!-- Service Provider -->
+  <rect x="200" y="60" width="180" height="100" rx="8" fill="#f59e0b"/>
+  <text x="290" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Service Provider</text>
+  <text x="290" y="115" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">(Your Application)</text>
+  
+  <rect x="220" y="130" width="140" height="30" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="290" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">Generate AuthnRequest</text>
+  
+  <line x1="380" y1="110" x2="420" y2="110" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="400" y="100" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">2. Redirect to IdP</text>
+  
+  <!-- Identity Provider -->
+  <rect x="430" y="60" width="200" height="100" rx="8" fill="#8b5cf6"/>
+  <text x="530" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#ffffff">Identity Provider</text>
+  <text x="530" y="115" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">(Okta, Azure AD)</text>
+  
+  <rect x="450" y="130" width="160" height="30" rx="4" fill="#ffffff" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="530" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">User Authentication</text>
+  
+  <line x1="530" y1="160" x2="530" y2="200" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="550" y="180" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">3. Authenticate</text>
+  
+  <!-- SAML Assertion -->
+  <rect x="430" y="210" width="200" height="80" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="530" y="235" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">SAML Assertion</text>
+  <text x="530" y="260" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">XML with user attributes</text>
+  <text x="530" y="275" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Signed with IdP private key</text>
+  
+  <line x1="430" y1="250" x2="390" y2="250" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="410" y="240" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">4. POST Assertion</text>
+  
+  <!-- Assertion Consumer Service -->
+  <rect x="200" y="210" width="180" height="80" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="290" y="235" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Assertion Consumer</text>
+  <text x="290" y="260" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Validate signature</text>
+  <text x="290" y="275" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Extract attributes</text>
+  
+  <line x1="200" y1="250" x2="160" y2="250" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="180" y="240" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">5. Create Session</text>
+  
+  <!-- Session Created -->
+  <rect x="50" y="210" width="100" height="80" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="100" y="240" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Session</text>
+  <text x="100" y="265" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">User logged in</text>
+  <text x="100" y="280" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Access granted</text>
+  
+  <!-- Step 6 -->
+  <line x1="100" y1="140" x2="100" y2="210" stroke="#22c55e" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="120" y="175" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">6. Redirect to App</text>
+  
+  <!-- Security Notes -->
+  <rect x="50" y="320" width="700" height="150" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="400" y="345" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Security Considerations</text>
+  
+  <rect x="70" y="360" width="300" height="40" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="220" y="382" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">⚠ Validate assertion signature</text>
+  
+  <rect x="430" y="360" width="300" height="40" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="580" y="382" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">⚠ Check audience &amp; expiry</text>
+  
+  <rect x="70" y="410" width="300" height="40" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="220" y="432" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">⚠ Prevent replay attacks</text>
+  
+  <rect x="430" y="410" width="300" height="40" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="580" y="432" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">⚠ Use HTTPS only</text>
+
 </svg>

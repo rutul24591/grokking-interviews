@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">Module Federation Build-time vs Runtime Composition</title>
+  <desc id="desc">Comparison diagram showing build-time npm integration versus runtime Module Federation integration with their trade-offs</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="500" fill="var(--bg-color, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="var(--text-color, #1a1a1a)">Build-time vs Runtime Composition</text>
+  
+  <!-- Build-time (npm) side -->
+  <rect x="50" y="70" width="340" height="200" rx="8" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="2"/>
+  <text x="220" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="var(--text-color, #1a1a1a)">Build-time (npm Packages)</text>
+  
+  <!-- Build-time flow -->
+  <rect x="70" y="115" width="100" height="50" rx="6" fill="var(--primary-light, #e3f2fd)" stroke="var(--primary-color, #1976d2)" stroke-width="2"/>
+  <text x="120" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="var(--primary-color, #1976d2)">Remote Lib</text>
+  <text x="120" y="152" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">v1.0.0</text>
+  
+  <path d="M170 140 L200 140" stroke="var(--text-color, #1a1a1a)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="185" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">npm install</text>
+  
+  <rect x="200" y="115" width="100" height="50" rx="6" fill="var(--warning-light, #fff3cd)" stroke="var(--warning-color, #ffc107)" stroke-width="2"/>
+  <text x="250" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="var(--warning-color, #ffc107)">Host App</text>
+  <text x="250" y="152" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">package.json</text>
+  
+  <path d="M250 165 L250 195" stroke="var(--text-color, #1a1a1a)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="265" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Build</text>
+  
+  <rect x="200" y="195" width="100" height="50" rx="6" fill="var(--success-light, #d4edda)" stroke="var(--success-color, #28a745)" stroke-width="2"/>
+  <text x="250" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="var(--success-color, #28a745)">Bundled</text>
+  <text x="250" y="232" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Single bundle</text>
+  
+  <!-- Build-time characteristics -->
+  <rect x="70" y="260" width="300" height="80" rx="6" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="220" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="var(--text-color, #1a1a1a)">Characteristics</text>
+  <text x="85" y="300" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--success-color, #28a745)">✓ Best performance (single bundle)</text>
+  <text x="85" y="315" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--success-color, #28a745)">✓ Type safety at build time</text>
+  <text x="85" y="330" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--error-color, #dc3545)">✗ Requires redeploy to update</text>
+  
+  <!-- Runtime (Module Federation) side -->
+  <rect x="410" y="70" width="340" height="200" rx="8" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="2"/>
+  <text x="580" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="var(--text-color, #1a1a1a)">Runtime (Module Federation)</text>
+  
+  <!-- Runtime flow -->
+  <rect x="430" y="115" width="100" height="50" rx="6" fill="var(--primary-light, #e3f2fd)" stroke="var(--primary-color, #1976d2)" stroke-width="2"/>
+  <text x="480" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="var(--primary-color, #1976d2)">Remote App</text>
+  <text x="480" y="152" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">CDN URL</text>
+  
+  <path d="M530 140 L560 140" stroke="var(--text-color, #1a1a1a)" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowhead)"/>
+  <text x="545" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Runtime load</text>
+  
+  <rect x="560" y="115" width="100" height="50" rx="6" fill="var(--warning-light, #fff3cd)" stroke="var(--warning-color, #ffc107)" stroke-width="2"/>
+  <text x="610" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="var(--warning-color, #ffc107)">Host App</text>
+  <text x="610" y="152" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">remoteEntry.js</text>
+  
+  <path d="M610 165 L610 195" stroke="var(--text-color, #1a1a1a)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="625" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Runtime</text>
+  
+  <rect x="560" y="195" width="100" height="50" rx="6" fill="var(--info-light, #e7f3ff)" stroke="var(--info-color, #0d6efd)" stroke-width="2"/>
+  <text x="610" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="var(--info-color, #0d6efd)">Dynamic</text>
+  <text x="610" y="232" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Separate chunks</text>
+  
+  <!-- Runtime characteristics -->
+  <rect x="430" y="260" width="300" height="80" rx="6" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="580" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="var(--text-color, #1a1a1a)">Characteristics</text>
+  <text x="445" y="300" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--success-color, #28a745)">✓ Independent deployments</text>
+  <text x="445" y="315" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--success-color, #28a745)">✓ Runtime version negotiation</text>
+  <text x="445" y="330" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--error-color, #dc3545)">✗ Multiple bundle downloads</text>
+  
+  <!-- Comparison table -->
+  <text x="400" y="370" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--text-color, #1a1a1a)">Comparison</text>
+  
+  <rect x="100" y="385" width="600" height="100" rx="6" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  
+  <!-- Table headers -->
+  <rect x="100" y="385" width="150" height="25" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="250" y="385" width="225" height="25" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="475" y="385" width="225" height="25" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  
+  <text x="175" y="402" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="var(--text-color, #1a1a1a)">Aspect</text>
+  <text x="362" y="402" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="var(--text-color, #1a1a1a)">Build-time (npm)</text>
+  <text x="587" y="402" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="var(--text-color, #1a1a1a)">Runtime (MF)</text>
+  
+  <!-- Row 1: Deployment -->
+  <rect x="100" y="410" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="250" y="410" width="225" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="475" y="410" width="225" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  
+  <text x="175" y="427" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-color, #1a1a1a)">Deployment</text>
+  <text x="362" y="427" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--error-color, #dc3545)">Coupled (redeploy all)</text>
+  <text x="587" y="427" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--success-color, #28a745)">Independent</text>
+  
+  <!-- Row 2: Performance -->
+  <rect x="100" y="435" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="250" y="435" width="225" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="475" y="435" width="225" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  
+  <text x="175" y="452" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-color, #1a1a1a)">Performance</text>
+  <text x="362" y="452" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--success-color, #28a745)">Best (single bundle)</text>
+  <text x="587" y="452" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--warning-color, #ffc107)">Moderate (multiple)</text>
+  
+  <!-- Row 3: Type Safety -->
+  <rect x="100" y="460" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="250" y="460" width="225" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="475" y="460" width="225" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  
+  <text x="175" y="477" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-color, #1a1a1a)">Type Safety</text>
+  <text x="362" y="477" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--success-color, #28a745)">Build-time checked</text>
+  <text x="587" y="477" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--error-color, #dc3545)">Runtime only</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-color, #1a1a1a)"/>
+    </marker>
+  </defs>
+</svg>

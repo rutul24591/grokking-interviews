@@ -1,69 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
-  <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
-    </marker>
-  </defs>
   <rect width="800" height="500" fill="#ffffff"/>
   
   <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">RBAC vs ABAC Comparison</text>
   
-  <!-- RBAC -->
+  <!-- RBAC Column -->
   <rect x="50" y="70" width="340" height="380" rx="8" fill="#f1f5f9" stroke="#8b5cf6" stroke-width="2"/>
-  <text x="220" y="95" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#8b5cf6">Role-Based Access Control</text>
+  <text x="220" y="95" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#8b5cf6">RBAC</text>
+  <text x="220" y="115" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Role-Based Access Control</text>
   
-  <rect x="70" y="115" width="300" height="80" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="220" y="140" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">How it Works</text>
-  <text x="220" y="165" text-anchor="middle" font-family="system-ui" font-size="10" fill="#475569">Users assigned to Roles → Roles grant Permissions</text>
-  <text x="220" y="185" text-anchor="middle" font-family="system-ui" font-size="10" fill="#475569">Access = f(User's Roles)</text>
+  <rect x="70" y="135" width="300" height="80" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="160" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">How It Works</text>
+  <text x="220" y="185" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Users → Roles → Permissions</text>
+  <text x="220" y="205" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Admin role has admin:all permission</text>
   
-  <rect x="70" y="210" width="300" height="70" rx="4" fill="#22c55e" opacity="0.2"/>
-  <text x="220" y="235" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Pros</text>
-  <text x="220" y="255" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Simple, intuitive, easy to audit</text>
-  <text x="220" y="270" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Good for org structures</text>
+  <rect x="70" y="225" width="300" height="80" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="220" y="250" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Pros</text>
+  <text x="220" y="275" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">✓ Simple to understand &amp; audit</text>
+  <text x="220" y="295" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">✓ Good for org hierarchies</text>
   
-  <rect x="70" y="295" width="300" height="70" rx="4" fill="#ef4444" opacity="0.2"/>
-  <text x="220" y="320" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Cons</text>
-  <text x="220" y="340" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Role explosion</text>
-  <text x="220" y="355" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Cannot handle context (time, location)</text>
+  <rect x="70" y="315" width="300" height="80" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="220" y="340" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Cons</text>
+  <text x="220" y="365" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">✗ Coarse-grained access</text>
+  <text x="220" y="385" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">✗ No context-aware rules</text>
   
-  <rect x="70" y="380" width="300" height="60" rx="4" fill="#f8fafc"/>
-  <text x="220" y="405" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Best For</text>
-  <text x="220" y="425" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Internal tools, enterprise apps, clear org hierarchy</text>
-  
-  <!-- ABAC -->
+  <!-- ABAC Column -->
   <rect x="410" y="70" width="340" height="380" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
-  <text x="580" y="95" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#3b82f6">Attribute-Based Access Control</text>
+  <text x="580" y="95" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#3b82f6">ABAC</text>
+  <text x="580" y="115" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Attribute-Based Access Control</text>
   
-  <rect x="430" y="115" width="300" height="80" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="580" y="140" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">How it Works</text>
-  <text x="580" y="165" text-anchor="middle" font-family="system-ui" font-size="10" fill="#475569">Access = f(Subject, Resource, Action, Context)</text>
-  <text x="580" y="185" text-anchor="middle" font-family="system-ui" font-size="10" fill="#475569">Policy: "Allow if user.dept == resource.dept"</text>
+  <rect x="430" y="135" width="300" height="80" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="580" y="160" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">How It Works</text>
+  <text x="580" y="185" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Policy: user.dept == resource.dept</text>
+  <text x="580" y="205" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">AND time &gt; 9AM AND time &lt; 5PM</text>
   
-  <rect x="430" y="210" width="300" height="70" rx="4" fill="#22c55e" opacity="0.2"/>
-  <text x="580" y="235" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Pros</text>
-  <text x="580" y="255" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Fine-grained, context-aware</text>
-  <text x="580" y="270" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">No role explosion</text>
+  <rect x="430" y="225" width="300" height="80" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="580" y="250" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Pros</text>
+  <text x="580" y="275" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">✓ Fine-grained, flexible</text>
+  <text x="580" y="295" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">✓ Context-aware (time, location)</text>
   
-  <rect x="430" y="295" width="300" height="70" rx="4" fill="#ef4444" opacity="0.2"/>
-  <text x="580" y="320" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Cons</text>
-  <text x="580" y="340" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Complex policies</text>
-  <text x="580" y="355" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Harder to audit, debug</text>
-  
-  <rect x="430" y="380" width="300" height="60" rx="4" fill="#f8fafc"/>
-  <text x="580" y="405" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Best For</text>
-  <text x="580" y="425" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Multi-tenant, healthcare, finance, compliance-heavy</text>
+  <rect x="430" y="315" width="300" height="80" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="580" y="340" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Cons</text>
+  <text x="580" y="365" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">✗ Complex to manage &amp; audit</text>
+  <text x="580" y="385" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">✗ Performance overhead</text>
   
   <!-- Example Policies -->
-  <rect x="50" y="465" width="340" height="80" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="220" y="490" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">RBAC Example</text>
-  <text x="220" y="515" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">IF user has role "Manager" THEN allow "approve_budget"</text>
-  <text x="220" y="535" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">IF user has role "HR" THEN allow "view_salaries"</text>
-  
-  <rect x="410" y="465" width="340" height="80" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
-  <text x="580" y="490" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">ABAC Example</text>
-  <text x="580" y="515" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">ALLOW IF user.department == resource.department</text>
-  <text x="580" y="535" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">AND time BETWEEN 09:00 AND 18:00 AND location == "office"</text>
+  <rect x="50" y="460" width="700" height="30" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="400" y="480" text-anchor="middle" font-family="system-ui" font-size="10" fill="#475569">Example: RBAC = "Admin can delete", ABAC = "User can delete if owner AND during business hours"</text>
 
 </svg>

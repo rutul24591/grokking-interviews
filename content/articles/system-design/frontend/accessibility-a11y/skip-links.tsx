@@ -329,44 +329,7 @@ export default function SkipLinksArticle() {
         </ul>
       </section>
 
-      {/* ─── Section 8: References & Further Reading ─── */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://www.w3.org/WAI/WCAG22/Understanding/bypass-blocks.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              Understanding WCAG 2.4.1: Bypass Blocks
-            </a>{" "}
-            — Official W3C guidance on skip link requirements.
-          </li>
-          <li>
-            <a href="https://webaim.org/techniques/skipnav/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              WebAIM: Skip Navigation Links
-            </a>{" "}
-            — Practical implementation guide with examples.
-          </li>
-          <li>
-            <a href="https://css-tricks.com/how-to-create-a-skip-to-content-link/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              CSS-Tricks: How to Create a Skip-to-Content Link
-            </a>{" "}
-            — Step-by-step tutorial with CSS patterns.
-          </li>
-          <li>
-            <a href="https://www.a11yproject.com/posts/skip-nav-links/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              The A11Y Project: Skip Navigation Links
-            </a>{" "}
-            — Community guide to skip link best practices.
-          </li>
-          <li>
-            <a href="https://design-system.service.gov.uk/components/skip-link/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-              GOV.UK Design System: Skip Link Component
-            </a>{" "}
-            — The UK government&apos;s skip link implementation and documentation.
-          </li>
-        </ul>
-      </section>
-
-      {/* ─── Section 9: Common Interview Questions ─── */}
+      {/* ─── Section 8: Common Interview Questions ─── */}
       <section>
         <h2>Common Interview Questions</h2>
 
@@ -455,6 +418,43 @@ export default function SkipLinksArticle() {
             off-screen until focused.
           </p>
         </div>
+      </section>
+
+      {/* ─── Section 9: References & Further Reading ─── */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://www.w3.org/WAI/WCAG22/Understanding/bypass-blocks.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              Understanding WCAG 2.4.1: Bypass Blocks
+            </a>{" "}
+            — Official W3C guidance on skip link requirements.
+          </li>
+          <li>
+            <a href="https://webaim.org/techniques/skipnav/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              WebAIM: Skip Navigation Links
+            </a>{" "}
+            — Practical implementation guide with examples.
+          </li>
+          <li>
+            <a href="https://css-tricks.com/how-to-create-a-skip-to-content-link/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              CSS-Tricks: How to Create a Skip-to-Content Link
+            </a>{" "}
+            — Step-by-step tutorial with CSS patterns.
+          </li>
+          <li>
+            <a href="https://www.a11yproject.com/posts/skip-nav-links/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              The A11Y Project: Skip Navigation Links
+            </a>{" "}
+            — Community guide to skip link best practices.
+          </li>
+          <li>
+            <a href="https://design-system.service.gov.uk/components/skip-link/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              GOV.UK Design System: Skip Link Component
+            </a>{" "}
+            — The UK government&apos;s skip link implementation and documentation.
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

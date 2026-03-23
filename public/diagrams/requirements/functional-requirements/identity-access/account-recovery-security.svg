@@ -1,7 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
   <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="240" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">account recovery security</text>
-  <text x="400" y="270" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Identity Access Diagram</text>
-  <text x="400" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Valid XML</text>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Account Recovery - Security Measures</text>
+  
+  <!-- Identity Verification -->
+  <rect x="50" y="70" width="220" height="200" rx="8" fill="#f1f5f9" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="160" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Identity Verification</text>
+  
+  <rect x="70" y="115" width="180" height="40" rx="4" fill="#8b5cf6" opacity="0.8"/>
+  <text x="160" y="135" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">📧 Email Verification</text>
+  <text x="160" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Code expires in 10 min</text>
+  
+  <rect x="70" y="160" width="180" height="40" rx="4" fill="#8b5cf6" opacity="0.6"/>
+  <text x="160" y="180" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">📱 Phone Verification</text>
+  <text x="160" y="195" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">SMS rate limited (3/hour)</text>
+  
+  <rect x="70" y="205" width="180" height="40" rx="4" fill="#8b5cf6" opacity="0.4"/>
+  <text x="160" y="225" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">🆔 ID Document Upload</text>
+  <text x="160" y="240" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">For manual recovery only</text>
+  
+  <rect x="70" y="250" width="180" height="30" rx="4" fill="#ef4444" opacity="0.2"/>
+  <text x="160" y="270" text-anchor="middle" font-family="system-ui" font-size="9" fill="#991b1b">⚠️ Max 3 attempts per method</text>
+  
+  <!-- Rate Limiting -->
+  <rect x="300" y="70" width="240" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="420" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Rate Limiting</text>
+  
+  <rect x="320" y="115" width="200" height="35" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="420" y="137" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">3 recovery requests/hour</text>
+  
+  <rect x="320" y="155" width="200" height="35" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="420" y="177" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">10 requests/day per account</text>
+  
+  <rect x="320" y="195" width="200" height="35" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="420" y="217" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Progressive delays (1min → 1hr)</text>
+  
+  <rect x="320" y="235" width="200" height="35" rx="4" fill="#f59e0b"/>
+  <text x="420" y="257" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Prevents brute force attacks</text>
+  
+  <!-- Cooling Period -->
+  <rect x="570" y="70" width="190" height="200" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="665" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Cooling Period</text>
+  
+  <rect x="590" y="115" width="150" height="50" rx="4" fill="#ffffff" stroke="#ef4444" stroke-width="1"/>
+  <text x="665" y="140" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">24-hour delay</text>
+  <text x="665" y="155" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">For high-risk accounts</text>
+  
+  <rect x="590" y="175" width="150" height="50" rx="4" fill="#ffffff" stroke="#ef4444" stroke-width="1"/>
+  <text x="665" y="200" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Manual review</text>
+  <text x="665" y="215" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Support team verification</text>
+  
+  <rect x="590" y="235" width="150" height="30" rx="4" fill="#ef4444"/>
+  <text x="665" y="255" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Prevents account takeover</text>
+  
+  <!-- Notification System -->
+  <rect x="50" y="300" width="340" height="170" rx="8" fill="#f8fafc" stroke="#22c55e" stroke-width="2"/>
+  <text x="220" y="325" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Security Notifications</text>
+  
+  <rect x="70" y="345" width="300" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="90" y="367" text-anchor="start" font-family="system-ui" font-size="9" fill="#0f172a">✓ Email notification sent immediately</text>
+  
+  <rect x="70" y="385" width="300" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="90" y="407" text-anchor="start" font-family="system-ui" font-size="9" fill="#0f172a">✓ SMS alert for high-value accounts</text>
+  
+  <rect x="70" y="425" width="300" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="90" y="447" text-anchor="start" font-family="system-ui" font-size="9" fill="#0f172a">✓ "Was this you?" quick response link</text>
+  
+  <!-- Audit Trail -->
+  <rect x="420" y="300" width="340" height="170" rx="8" fill="#f8fafc" stroke="#3b82f6" stroke-width="2"/>
+  <text x="590" y="325" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Audit Trail</text>
+  
+  <rect x="440" y="345" width="300" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="460" y="365" text-anchor="start" font-family="system-ui" font-size="9" fill="#0f172a">📝 Recovery request timestamp</text>
+  
+  <rect x="440" y="380" width="300" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="460" y="400" text-anchor="start" font-family="system-ui" font-size="9" fill="#0f172a">📝 IP address & device fingerprint</text>
+  
+  <rect x="440" y="415" width="300" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="460" y="435" text-anchor="start" font-family="system-ui" font-size="9" fill="#0f172a">📝 Recovery method used</text>
+  
+  <rect x="440" y="450" width="300" height="30" rx="4" fill="#3b82f6" opacity="0.2"/>
+  <text x="590" y="470" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Immutable log • 7 year retention</text>
+
 </svg>

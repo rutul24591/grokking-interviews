@@ -47,14 +47,14 @@ export default function SocialMediaOptimizationArticle() {
           the preview card is the primary driver of click-through decisions.
         </p>
         <p>
-          When a URL is shared on a social platform, the platform&apos;s
-          crawler fetches the page, extracts metadata (Open Graph tags, Twitter
-          Card tags, or fallback HTML elements), downloads the referenced
-          preview image, generates a link preview card, and caches the result
-          for future shares. This entire process happens without JavaScript
-          execution — social crawlers parse raw HTML only. If metadata is
-          missing or injected client-side via JavaScript, the preview card will
-          be blank, generic, or broken.
+          When a URL is shared on a social platform, the platform&apos;s crawler
+          fetches the page, extracts metadata (Open Graph tags, Twitter Card
+          tags, or fallback HTML elements), downloads the referenced preview
+          image, generates a link preview card, and caches the result for future
+          shares. This entire process happens without JavaScript execution —
+          social crawlers parse raw HTML only. If metadata is missing or
+          injected client-side via JavaScript, the preview card will be blank,
+          generic, or broken.
         </p>
         <p>
           At the staff/principal engineer level, SMO is a cross-cutting
@@ -75,19 +75,18 @@ export default function SocialMediaOptimizationArticle() {
         <h2>Core Concepts</h2>
         <ul className="space-y-3">
           <li>
-            <strong>Open Graph Protocol:</strong> Developed by Facebook in
-            2010, the Open Graph (OG) protocol is the universal standard for
-            social media metadata. Core properties include{" "}
-            <code>og:title</code> (preview headline), <code>og:description</code>{" "}
-            (preview summary), <code>og:image</code> (preview image URL),{" "}
-            <code>og:url</code> (canonical URL), and <code>og:type</code>{" "}
-            (content type — article, website, product, etc.). Additional
-            properties include <code>og:site_name</code>,{" "}
-            <code>og:locale</code>, and type-specific properties like{" "}
-            <code>article:published_time</code> and{" "}
-            <code>article:author</code>. OG tags are read by Facebook,
-            LinkedIn, Pinterest, WhatsApp, Telegram, Slack, Discord, and most
-            modern platforms.
+            <strong>Open Graph Protocol:</strong> Developed by Facebook in 2010,
+            the Open Graph (OG) protocol is the universal standard for social
+            media metadata. Core properties include <code>og:title</code>{" "}
+            (preview headline), <code>og:description</code> (preview summary),{" "}
+            <code>og:image</code> (preview image URL), <code>og:url</code>{" "}
+            (canonical URL), and <code>og:type</code> (content type — article,
+            website, product, etc.). Additional properties include{" "}
+            <code>og:site_name</code>, <code>og:locale</code>, and type-specific
+            properties like <code>article:published_time</code> and{" "}
+            <code>article:author</code>. OG tags are read by Facebook, LinkedIn,
+            Pinterest, WhatsApp, Telegram, Slack, Discord, and most modern
+            platforms.
           </li>
           <li>
             <strong>Twitter Cards:</strong> Twitter&apos;s proprietary meta tag
@@ -106,10 +105,10 @@ export default function SocialMediaOptimizationArticle() {
             size is 1200×630 pixels (1.91:1 ratio) — this works well across
             Facebook, LinkedIn, Twitter (summary_large_image), and messaging
             apps. Minimum size is 200×200 pixels. Maximum file size varies by
-            platform (Facebook: 8MB, Twitter: 5MB). Images should be JPEG or
-            PNG (not SVG or WebP, which some platforms don&apos;t support).
-            Critical content should be within the center 60% of the image to
-            account for platform-specific cropping.
+            platform (Facebook: 8MB, Twitter: 5MB). Images should be JPEG or PNG
+            (not SVG or WebP, which some platforms don&apos;t support). Critical
+            content should be within the center 60% of the image to account for
+            platform-specific cropping.
           </li>
           <li>
             <strong>Dynamic OG Image Generation:</strong> Instead of
@@ -124,14 +123,14 @@ export default function SocialMediaOptimizationArticle() {
             <strong>Social Crawler Behavior:</strong> Social crawlers
             (Facebook&apos;s crawler, Twitter&apos;s bot, LinkedInBot) fetch
             pages with their own User-Agent strings but do not execute
-            JavaScript. They parse raw HTML for meta tags, follow image URLs
-            to download preview images, and cache the result. Facebook caches
-            for approximately 30 days. Twitter caches until manually
-            invalidated. LinkedIn caches for approximately 7 days.
+            JavaScript. They parse raw HTML for meta tags, follow image URLs to
+            download preview images, and cache the result. Facebook caches for
+            approximately 30 days. Twitter caches until manually invalidated.
+            LinkedIn caches for approximately 7 days.
           </li>
           <li>
-            <strong>Cache Invalidation Tools:</strong> Each platform provides
-            a debugging and cache invalidation tool. Facebook Sharing Debugger
+            <strong>Cache Invalidation Tools:</strong> Each platform provides a
+            debugging and cache invalidation tool. Facebook Sharing Debugger
             (developers.facebook.com/tools/debug/) scrapes the URL fresh and
             displays the extracted metadata. Twitter Card Validator validates
             card markup. LinkedIn Post Inspector scrapes and previews shared
@@ -148,8 +147,8 @@ export default function SocialMediaOptimizationArticle() {
           <li>
             <strong>WhatsApp and Messaging App Previews:</strong> WhatsApp,
             Telegram, Signal, and iMessage generate link previews from OG tags.
-            These platforms often have more aggressive image size limits and
-            may crop images differently than traditional social platforms. The
+            These platforms often have more aggressive image size limits and may
+            crop images differently than traditional social platforms. The
             og:image must be an absolute URL accessible without authentication.
           </li>
         </ul>
@@ -168,11 +167,11 @@ export default function SocialMediaOptimizationArticle() {
         />
         <p>
           The meta tag ecosystem is hierarchical with fallback chains. Primary
-          tags (OG and Twitter) are consumed by their respective platforms.
-          When platform-specific tags are missing, platforms fall back to OG
-          tags, then to standard HTML elements (title tag, meta description,
-          first image on page). Implementing a complete OG tag set provides
-          baseline coverage across all platforms, with Twitter Card tags adding
+          tags (OG and Twitter) are consumed by their respective platforms. When
+          platform-specific tags are missing, platforms fall back to OG tags,
+          then to standard HTML elements (title tag, meta description, first
+          image on page). Implementing a complete OG tag set provides baseline
+          coverage across all platforms, with Twitter Card tags adding
           platform-specific enhancements.
         </p>
         <ArticleImage
@@ -181,27 +180,26 @@ export default function SocialMediaOptimizationArticle() {
         />
         <p>
           Dynamic OG image generation eliminates the need to pre-create and
-          store images for every page. An edge function receives page
-          parameters (title, author, category, brand colors) via query string,
-          renders a template component to SVG using Satori, converts the SVG
-          to PNG using Resvg or Sharp, and returns the image with cache headers.
-          The og:image tag on each page points to this function with
-          appropriate parameters. Edge deployment ensures low latency regardless
-          of where the social crawler requests from.
+          store images for every page. An edge function receives page parameters
+          (title, author, category, brand colors) via query string, renders a
+          template component to SVG using Satori, converts the SVG to PNG using
+          Resvg or Sharp, and returns the image with cache headers. The og:image
+          tag on each page points to this function with appropriate parameters.
+          Edge deployment ensures low latency regardless of where the social
+          crawler requests from.
         </p>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/social-media-optimization-diagram-3.svg"
           alt="Social crawler architecture and cache invalidation flow showing how platforms fetch, cache, and refresh page metadata"
         />
         <p>
-          When a URL is first shared, the platform crawler fetches the page
-          and caches the metadata. Subsequent shares of the same URL use the
-          cached preview. Cache duration varies by platform — Facebook holds
-          cache for up to 30 days, making it critical to validate previews
-          before content goes live. After updating OG tags, cache must be
-          manually invalidated using each platform&apos;s debugging tool, or
-          programmatically via API (Facebook&apos;s Graph API supports
-          automated re-scraping).
+          When a URL is first shared, the platform crawler fetches the page and
+          caches the metadata. Subsequent shares of the same URL use the cached
+          preview. Cache duration varies by platform — Facebook holds cache for
+          up to 30 days, making it critical to validate previews before content
+          goes live. After updating OG tags, cache must be manually invalidated
+          using each platform&apos;s debugging tool, or programmatically via API
+          (Facebook&apos;s Graph API supports automated re-scraping).
         </p>
       </section>
 
@@ -245,8 +243,8 @@ export default function SocialMediaOptimizationArticle() {
             <tr>
               <td className="p-3 font-medium">Screenshot-Based OG Images</td>
               <td className="p-3">
-                Shows actual page content; accurate visual representation;
-                works with any page design
+                Shows actual page content; accurate visual representation; works
+                with any page design
               </td>
               <td className="p-3">
                 Heavy compute (headless Chrome); slow generation; high
@@ -258,8 +256,8 @@ export default function SocialMediaOptimizationArticle() {
               <td className="p-3 font-medium">Platform-Specific Tags</td>
               <td className="p-3">
                 Optimized preview per platform; can show different images for
-                different platforms; platform-specific features (Twitter
-                player card)
+                different platforms; platform-specific features (Twitter player
+                card)
               </td>
               <td className="p-3">
                 More tags to maintain; increased complexity; platform APIs
@@ -275,24 +273,24 @@ export default function SocialMediaOptimizationArticle() {
         <h2>Best Practices</h2>
         <ol className="space-y-3">
           <li>
-            <strong>Implement Complete OG Tags on Every Public Page:</strong>{" "}
-            At minimum: og:title, og:description, og:image, og:url, and
-            og:type. These five tags ensure baseline coverage across all social
+            <strong>Implement Complete OG Tags on Every Public Page:</strong> At
+            minimum: og:title, og:description, og:image, og:url, and og:type.
+            These five tags ensure baseline coverage across all social
             platforms. Missing og:image is the single most impactful omission —
             pages shared without images receive dramatically fewer clicks.
           </li>
           <li>
             <strong>Use 1200×630 as the Standard OG Image Size:</strong> This
             1.91:1 ratio works well across Facebook, LinkedIn, Twitter
-            (summary_large_image), and messaging apps. Keep critical content
-            in the center 60% to account for cropping. Test on mobile devices
-            where preview cards are smaller.
+            (summary_large_image), and messaging apps. Keep critical content in
+            the center 60% to account for cropping. Test on mobile devices where
+            preview cards are smaller.
           </li>
           <li>
             <strong>Serve OG Tags in Server-Rendered HTML:</strong> Social
-            crawlers do not execute JavaScript. OG tags injected client-side
-            are invisible to every social platform. Always include OG tags in
-            the initial HTML response from the server.
+            crawlers do not execute JavaScript. OG tags injected client-side are
+            invisible to every social platform. Always include OG tags in the
+            initial HTML response from the server.
           </li>
           <li>
             <strong>Validate Before Publishing:</strong> Use Facebook Sharing
@@ -308,11 +306,11 @@ export default function SocialMediaOptimizationArticle() {
             accessible without authentication.
           </li>
           <li>
-            <strong>Set og:url to the Canonical URL:</strong> The og:url
-            should match the page&apos;s canonical URL, stripping tracking
-            parameters, session IDs, and other non-content parameters. This
-            ensures share counts are consolidated to a single URL rather than
-            fragmented across parameter variants.
+            <strong>Set og:url to the Canonical URL:</strong> The og:url should
+            match the page&apos;s canonical URL, stripping tracking parameters,
+            session IDs, and other non-content parameters. This ensures share
+            counts are consolidated to a single URL rather than fragmented
+            across parameter variants.
           </li>
           <li>
             <strong>Implement Automated OG Image Generation for Scale:</strong>{" "}
@@ -337,10 +335,10 @@ export default function SocialMediaOptimizationArticle() {
         <ul className="space-y-3">
           <li>
             <strong>Client-Side OG Tag Injection:</strong> Single-page
-            applications that inject meta tags via JavaScript (react-helmet,
-            Vue Meta) produce blank social previews because social crawlers
-            don&apos;t execute JavaScript. This is the most common and
-            most impactful SMO mistake.
+            applications that inject meta tags via JavaScript (react-helmet, Vue
+            Meta) produce blank social previews because social crawlers
+            don&apos;t execute JavaScript. This is the most common and most
+            impactful SMO mistake.
           </li>
           <li>
             <strong>Not Invalidating Social Cache After Updates:</strong>{" "}
@@ -350,33 +348,34 @@ export default function SocialMediaOptimizationArticle() {
             platform&apos;s debugging tool.
           </li>
           <li>
-            <strong>Using Images That Don&apos;t Render Well at Small Sizes:</strong>{" "}
+            <strong>
+              Using Images That Don&apos;t Render Well at Small Sizes:
+            </strong>{" "}
             OG images are often displayed as small thumbnails on mobile devices.
             Detailed photography, small text, or complex graphics become
             illegible at thumbnail size. Use bold text, high contrast, and
             simple compositions that remain clear at any display size.
           </li>
           <li>
-            <strong>Missing og:url or Setting It Incorrectly:</strong>{" "}
-            Without og:url, platforms use the shared URL as the canonical
-            reference. If URLs include tracking parameters (UTM codes), share
-            counts fragment across parameter variants. If og:url points to
-            the wrong page, the preview card links to an unexpected
-            destination.
+            <strong>Missing og:url or Setting It Incorrectly:</strong> Without
+            og:url, platforms use the shared URL as the canonical reference. If
+            URLs include tracking parameters (UTM codes), share counts fragment
+            across parameter variants. If og:url points to the wrong page, the
+            preview card links to an unexpected destination.
           </li>
           <li>
             <strong>Using WebP or SVG for OG Images:</strong> Some social
-            platforms don&apos;t support WebP or SVG formats for preview
-            images. Use JPEG for photographic images and PNG for graphics with
-            transparency or text. Always test with the platform&apos;s
-            debugging tool to verify image rendering.
+            platforms don&apos;t support WebP or SVG formats for preview images.
+            Use JPEG for photographic images and PNG for graphics with
+            transparency or text. Always test with the platform&apos;s debugging
+            tool to verify image rendering.
           </li>
           <li>
-            <strong>Identical OG Tags Across All Pages:</strong> Using the
-            same title, description, and image for every page (often the
-            site-wide defaults) wastes the opportunity for page-specific
-            social previews. Each page should have unique OG content
-            reflecting its specific content.
+            <strong>Identical OG Tags Across All Pages:</strong> Using the same
+            title, description, and image for every page (often the site-wide
+            defaults) wastes the opportunity for page-specific social previews.
+            Each page should have unique OG content reflecting its specific
+            content.
           </li>
         </ul>
       </section>
@@ -394,16 +393,16 @@ export default function SocialMediaOptimizationArticle() {
             information.
           </li>
           <li>
-            <strong>GitHub:</strong> Generates dynamic social preview images
-            for repositories, showing the repo name, description, star count,
+            <strong>GitHub:</strong> Generates dynamic social preview images for
+            repositories, showing the repo name, description, star count,
             language distribution, and contributor avatars. These rich previews
             make GitHub links immediately recognizable and informative when
             shared on social platforms.
           </li>
           <li>
             <strong>Spotify:</strong> Creates rich sharing previews for songs,
-            albums, playlists, and podcasts. Each shared link includes album
-            art as the OG image, artist name in the title, and a compelling
+            albums, playlists, and podcasts. Each shared link includes album art
+            as the OG image, artist name in the title, and a compelling
             description. The Twitter player card type enables inline audio
             playback directly in the Twitter feed.
           </li>
@@ -411,13 +410,100 @@ export default function SocialMediaOptimizationArticle() {
             <strong>The New York Times:</strong> Implements article-specific OG
             images using headline photography, with article:published_time and
             article:author OG properties. Their social team actively monitors
-            preview quality for breaking news articles, where seconds matter
-            for social engagement.
+            preview quality for breaking news articles, where seconds matter for
+            social engagement.
           </li>
         </ul>
       </section>
 
-      {/* Section 8: References & Further Reading */}
+      {/* Section 8: Common Interview Questions */}
+      <section>
+        <h2>Common Interview Questions</h2>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do social media crawlers differ from search engine
+              crawlers?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Social crawlers (Facebook, Twitter, LinkedIn) do not execute
+              JavaScript — they only parse raw HTML. Search engine crawlers
+              (Googlebot) can execute JavaScript in a headless browser. Social
+              crawlers focus exclusively on meta tags (OG, Twitter Cards) and
+              the referenced image, ignoring page content for ranking purposes.
+              They cache results aggressively (Facebook for up to 30 days)
+              unlike search engines which re-crawl frequently. Social crawlers
+              are triggered by sharing events, not by systematic site crawling.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How would you implement dynamic OG image generation?
+            </p>
+            <p className="mt-2 text-sm">
+              A: I would use an edge function (Vercel OG/Satori, or Cloudflare
+              Workers) that accepts page parameters as query strings. The
+              function renders a branded template component with the page&apos;s
+              title, author, and category to SVG, then converts to PNG. The
+              og:image URL in each page&apos;s head points to this function with
+              appropriate parameters. Cache headers (max-age: 86400) prevent
+              re-generation for identical requests. Cache busting is handled by
+              including a content hash in the URL when the template or content
+              changes.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you handle social preview cache invalidation at scale?
+            </p>
+            <p className="mt-2 text-sm">
+              A: For automated invalidation, use Facebook&apos;s Graph API (POST
+              to /?id=URL&amp;scrape=true) to force a re-scrape of updated URLs.
+              This can be integrated into the CMS publish workflow — when
+              content is updated, automatically trigger re-scrape requests to
+              Facebook, and use Twitter and LinkedIn APIs similarly. For the
+              og:image specifically, append a version hash or content-based
+              query parameter to the image URL, so when content changes, the
+              image URL changes, and platforms treat it as a new image.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What is the minimum set of OG tags every page should have?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Five essential tags: og:title (the headline, under 65
+              characters), og:description (the summary, under 155 characters),
+              og:image (absolute URL to a 1200×630 image), og:url (the canonical
+              URL), and og:type (usually &quot;article&quot; or
+              &quot;website&quot;). Additionally, twitter:card should be set to
+              &quot;summary_large_image&quot; for optimal Twitter display. This
+              minimal set provides good coverage across all major platforms.
+              Additional tags (og:site_name, og:locale, article:author) enhance
+              previews but are not critical.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: Why might a social preview show the wrong image even after
+              updating og:image?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Three common causes: First, platform caching — Facebook caches
+              for up to 30 days. Use the Sharing Debugger to force a re-scrape.
+              Second, the image URL hasn&apos;t changed — if the og:image URL is
+              identical but the image file at that URL has changed, some
+              platforms serve the cached version of the image. Fix by adding a
+              cache-busting parameter (?v=2). Third, CDN caching — if the HTML
+              page itself is cached at the CDN with the old og:image tag, the
+              social crawler receives stale HTML. Purge the CDN cache for the
+              page URL before scraping.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 9: References & Further Reading */}
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
@@ -462,94 +548,6 @@ export default function SocialMediaOptimizationArticle() {
             </a>
           </li>
         </ul>
-      </section>
-
-      {/* Section 9: Common Interview Questions */}
-      <section>
-        <h2>Common Interview Questions</h2>
-        <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How do social media crawlers differ from search engine
-              crawlers?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Social crawlers (Facebook, Twitter, LinkedIn) do not execute
-              JavaScript — they only parse raw HTML. Search engine crawlers
-              (Googlebot) can execute JavaScript in a headless browser. Social
-              crawlers focus exclusively on meta tags (OG, Twitter Cards) and
-              the referenced image, ignoring page content for ranking purposes.
-              They cache results aggressively (Facebook for up to 30 days)
-              unlike search engines which re-crawl frequently. Social crawlers
-              are triggered by sharing events, not by systematic site crawling.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How would you implement dynamic OG image generation?
-            </p>
-            <p className="mt-2 text-sm">
-              A: I would use an edge function (Vercel OG/Satori, or
-              Cloudflare Workers) that accepts page parameters as query strings.
-              The function renders a branded template component with the
-              page&apos;s title, author, and category to SVG, then converts to
-              PNG. The og:image URL in each page&apos;s head points to this
-              function with appropriate parameters. Cache headers (max-age:
-              86400) prevent re-generation for identical requests. Cache
-              busting is handled by including a content hash in the URL when
-              the template or content changes.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How do you handle social preview cache invalidation at scale?
-            </p>
-            <p className="mt-2 text-sm">
-              A: For automated invalidation, use Facebook&apos;s Graph API
-              (POST to /?id=URL&amp;scrape=true) to force a re-scrape of
-              updated URLs. This can be integrated into the CMS publish
-              workflow — when content is updated, automatically trigger
-              re-scrape requests to Facebook, and use Twitter and LinkedIn
-              APIs similarly. For the og:image specifically, append a version
-              hash or content-based query parameter to the image URL, so when
-              content changes, the image URL changes, and platforms treat it
-              as a new image.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: What is the minimum set of OG tags every page should have?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Five essential tags: og:title (the headline, under 65
-              characters), og:description (the summary, under 155 characters),
-              og:image (absolute URL to a 1200×630 image), og:url (the
-              canonical URL), and og:type (usually &quot;article&quot; or
-              &quot;website&quot;). Additionally, twitter:card should be set to
-              &quot;summary_large_image&quot; for optimal Twitter display. This
-              minimal set provides good coverage across all major platforms.
-              Additional tags (og:site_name, og:locale, article:author) enhance
-              previews but are not critical.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: Why might a social preview show the wrong image even after
-              updating og:image?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Three common causes: First, platform caching — Facebook caches
-              for up to 30 days. Use the Sharing Debugger to force a re-scrape.
-              Second, the image URL hasn&apos;t changed — if the og:image URL
-              is identical but the image file at that URL has changed, some
-              platforms serve the cached version of the image. Fix by adding a
-              cache-busting parameter (?v=2). Third, CDN caching — if the HTML
-              page itself is cached at the CDN with the old og:image tag, the
-              social crawler receives stale HTML. Purge the CDN cache for the
-              page URL before scraping.
-            </p>
-          </div>
-        </div>
       </section>
     </ArticleLayout>
   );

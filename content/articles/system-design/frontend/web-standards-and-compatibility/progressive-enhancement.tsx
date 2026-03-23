@@ -233,8 +233,8 @@ export default function ProgressiveEnhancementArticle() {
             <tr>
               <td className="p-3 font-medium">Graceful Degradation</td>
               <td className="p-3">
-                Faster initial development for modern browsers; full feature
-                set designed first; familiar to SPA developers
+                Faster initial development for modern browsers; full feature set
+                designed first; familiar to SPA developers
               </td>
               <td className="p-3">
                 Retrofitting fallbacks is expensive and often incomplete;
@@ -278,17 +278,17 @@ export default function ProgressiveEnhancementArticle() {
           <li>
             <strong>Start Every Feature with the HTML Layer:</strong> Before
             writing any JavaScript, build the feature using only HTML. Forms
-            should submit to server endpoints, navigation should use anchor
-            tags with real hrefs, and content should be structured semantically.
-            This baseline becomes the fallback that works everywhere.
+            should submit to server endpoints, navigation should use anchor tags
+            with real hrefs, and content should be structured semantically. This
+            baseline becomes the fallback that works everywhere.
           </li>
           <li>
             <strong>Use Feature Detection, Not Browser Detection:</strong> Test
             for specific capabilities rather than identifying browsers. Feature
             detection is forward-compatible — new browsers that support a
             feature automatically receive the enhancement. User-agent sniffing
-            is fragile, easily spoofed, and requires constant maintenance as
-            new browsers emerge.
+            is fragile, easily spoofed, and requires constant maintenance as new
+            browsers emerge.
           </li>
           <li>
             <strong>Define and Document the Baseline Contract:</strong>{" "}
@@ -302,11 +302,13 @@ export default function ProgressiveEnhancementArticle() {
             <strong>Test with JavaScript Disabled:</strong> Regularly test the
             application with JavaScript disabled to verify the baseline
             experience. Add this to CI/CD as an automated check — crawl key
-            pages without JavaScript and verify that core content is present
-            and forms are functional.
+            pages without JavaScript and verify that core content is present and
+            forms are functional.
           </li>
           <li>
-            <strong>Use Server-Side Rendering as the Delivery Mechanism:</strong>{" "}
+            <strong>
+              Use Server-Side Rendering as the Delivery Mechanism:
+            </strong>{" "}
             SSR naturally produces the HTML baseline layer. React Server
             Components, Next.js, and similar frameworks generate complete HTML
             on the server. Client-side hydration then becomes the enhancement
@@ -329,7 +331,9 @@ export default function ProgressiveEnhancementArticle() {
             everything.
           </li>
           <li>
-            <strong>Encode Progressive Enhancement in the Design System:</strong>{" "}
+            <strong>
+              Encode Progressive Enhancement in the Design System:
+            </strong>{" "}
             Component libraries should produce semantic HTML by default and
             enhance with JavaScript. A Button component should render as an
             actual <code>&lt;button&gt;</code> or <code>&lt;a&gt;</code>
@@ -347,8 +351,8 @@ export default function ProgressiveEnhancementArticle() {
           <li>
             <strong>JavaScript-Only Navigation:</strong> Client-side routing
             without server-side fallback means users cannot access pages when
-            JavaScript fails. Every route in the application should resolve to
-            a server-rendered page. This is the most common progressive
+            JavaScript fails. Every route in the application should resolve to a
+            server-rendered page. This is the most common progressive
             enhancement violation in modern SPAs.
           </li>
           <li>
@@ -380,7 +384,9 @@ export default function ProgressiveEnhancementArticle() {
             &quot;baseline&quot; may require JavaScript for basic tasks.
           </li>
           <li>
-            <strong>Confusing Progressive Enhancement with Feature Flags:</strong>{" "}
+            <strong>
+              Confusing Progressive Enhancement with Feature Flags:
+            </strong>{" "}
             Progressive enhancement is about capability-based layering, not
             toggling features on and off. Feature flags control business logic
             (who sees what). Progressive enhancement controls technical
@@ -407,17 +413,17 @@ export default function ProgressiveEnhancementArticle() {
             enhancement. Repository browsing, file viewing, and issue reading
             work with server-rendered HTML. JavaScript enhances with inline
             editing, real-time notifications, code review interactions, and
-            keyboard shortcuts. When GitHub&apos;s JavaScript CDN had an
-            outage in 2018, the site remained functional for reading and
-            navigation — the baseline held.
+            keyboard shortcuts. When GitHub&apos;s JavaScript CDN had an outage
+            in 2018, the site remained functional for reading and navigation —
+            the baseline held.
           </li>
           <li>
-            <strong>Basecamp/Hey:</strong> Basecamp&apos;s products use
-            Hotwire (Turbo + Stimulus) which is architecturally progressive
-            enhancement. Server-rendered HTML is the baseline, Turbo enhances
-            page transitions without full reloads, and Stimulus adds
-            lightweight interactivity. The entire product works without
-            JavaScript — it just works better with it.
+            <strong>Basecamp/Hey:</strong> Basecamp&apos;s products use Hotwire
+            (Turbo + Stimulus) which is architecturally progressive enhancement.
+            Server-rendered HTML is the baseline, Turbo enhances page
+            transitions without full reloads, and Stimulus adds lightweight
+            interactivity. The entire product works without JavaScript — it just
+            works better with it.
           </li>
           <li>
             <strong>Financial Times:</strong> The FT uses a &quot;cut the
@@ -430,7 +436,118 @@ export default function ProgressiveEnhancementArticle() {
         </ul>
       </section>
 
-      {/* Section 8: References & Further Reading */}
+      {/* Section 8: Common Interview Questions */}
+      <section>
+        <h2>Common Interview Questions</h2>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What is the difference between progressive enhancement and
+              graceful degradation?
+            </p>
+            <p className="mt-2 text-sm">
+              A: They address the same problem from opposite directions.
+              Progressive enhancement starts with a minimal, universally
+              functional baseline (HTML) and adds layers of capability for more
+              advanced browsers. Graceful degradation starts with the
+              full-featured experience and adds fallbacks for less capable
+              browsers. The practical difference is significant — progressive
+              enhancement ensures the baseline always works because it was
+              designed first. Graceful degradation often has an incomplete
+              baseline because fallbacks are added retroactively, and edge cases
+              are discovered in production rather than during design.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How would you implement progressive enhancement in a React
+              application?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Use server-side rendering as the baseline layer — React Server
+              Components or Next.js SSR generates complete HTML on the server.
+              This HTML is functional without JavaScript (forms have action
+              attributes, links have hrefs). Client-side hydration then enhances
+              with interactive features — inline validation, optimistic updates,
+              real-time notifications. For complex interactions, use the Islands
+              pattern (selective hydration) so only interactive components load
+              JavaScript. Feature detection gates advanced capabilities like
+              Service Workers or Web Animations API.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: Is progressive enhancement still relevant with modern browsers?
+            </p>
+            <p className="mt-2 text-sm">
+              A: More relevant than ever. JavaScript failures are not just about
+              old browsers — they include network failures (CDN outages,
+              unreliable connections), content blockers (which can block
+              third-party JavaScript), corporate proxies (which may strip
+              scripts), JavaScript errors (a single uncaught exception can break
+              the entire app), and slow networks (where users interact with HTML
+              before JavaScript loads). Progressive enhancement protects against
+              all these real-world failure modes that affect modern browsers on
+              modern devices.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you enforce progressive enhancement across a large
+              engineering organization?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Three mechanisms: First, encode it in the design system —
+              components should render semantic HTML by default with JavaScript
+              enhancements layered on top. Second, automate baseline testing in
+              CI/CD — crawl pages without JavaScript and verify content
+              presence, form functionality, and navigation. Third, define an
+              explicit baseline contract in documentation — specifying which
+              features are baseline and which are enhancements. Code review
+              should verify that new features don&apos;t break the baseline
+              contract.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What is &quot;cutting the mustard&quot; and when would you use
+              it?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Cutting the mustard is a technique where a small JavaScript
+              feature detection test determines whether a browser is
+              &quot;modern enough&quot; to receive the enhanced experience.
+              Browsers that pass get the full JavaScript bundle; browsers that
+              fail get only the HTML/CSS baseline. The BBC pioneered this to
+              simplify their support matrix — instead of supporting hundreds of
+              browser/version combinations, they support two tiers: enhanced and
+              baseline. This reduces QA effort, simplifies development, and
+              ensures baseline users get a working experience rather than a
+              broken enhanced experience.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How does progressive enhancement relate to accessibility?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Progressive enhancement and accessibility share the same
+              foundation — semantic HTML. A progressively enhanced baseline
+              built with proper heading hierarchy, form labels, link text, and
+              landmark elements is inherently accessible. Screen readers consume
+              the HTML layer directly, so a strong baseline means strong
+              accessibility by default. JavaScript enhancements must maintain
+              accessibility (ARIA attributes, focus management, keyboard
+              support), but the baseline provides the essential structure.
+              Organizations that practice progressive enhancement consistently
+              score higher on accessibility audits because the foundation is
+              solid.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 9: References & Further Reading */}
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
@@ -475,117 +592,6 @@ export default function ProgressiveEnhancementArticle() {
             </a>
           </li>
         </ul>
-      </section>
-
-      {/* Section 9: Common Interview Questions */}
-      <section>
-        <h2>Common Interview Questions</h2>
-        <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: What is the difference between progressive enhancement and
-              graceful degradation?
-            </p>
-            <p className="mt-2 text-sm">
-              A: They address the same problem from opposite directions.
-              Progressive enhancement starts with a minimal, universally
-              functional baseline (HTML) and adds layers of capability for
-              more advanced browsers. Graceful degradation starts with the
-              full-featured experience and adds fallbacks for less capable
-              browsers. The practical difference is significant — progressive
-              enhancement ensures the baseline always works because it was
-              designed first. Graceful degradation often has an incomplete
-              baseline because fallbacks are added retroactively, and edge
-              cases are discovered in production rather than during design.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How would you implement progressive enhancement in a React
-              application?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Use server-side rendering as the baseline layer — React Server
-              Components or Next.js SSR generates complete HTML on the server.
-              This HTML is functional without JavaScript (forms have action
-              attributes, links have hrefs). Client-side hydration then
-              enhances with interactive features — inline validation, optimistic
-              updates, real-time notifications. For complex interactions, use
-              the Islands pattern (selective hydration) so only interactive
-              components load JavaScript. Feature detection gates advanced
-              capabilities like Service Workers or Web Animations API.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: Is progressive enhancement still relevant with modern browsers?
-            </p>
-            <p className="mt-2 text-sm">
-              A: More relevant than ever. JavaScript failures are not just about
-              old browsers — they include network failures (CDN outages,
-              unreliable connections), content blockers (which can block
-              third-party JavaScript), corporate proxies (which may strip
-              scripts), JavaScript errors (a single uncaught exception can break
-              the entire app), and slow networks (where users interact with HTML
-              before JavaScript loads). Progressive enhancement protects
-              against all these real-world failure modes that affect modern
-              browsers on modern devices.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How do you enforce progressive enhancement across a large
-              engineering organization?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Three mechanisms: First, encode it in the design system —
-              components should render semantic HTML by default with JavaScript
-              enhancements layered on top. Second, automate baseline testing in
-              CI/CD — crawl pages without JavaScript and verify content
-              presence, form functionality, and navigation. Third, define an
-              explicit baseline contract in documentation — specifying which
-              features are baseline and which are enhancements. Code review
-              should verify that new features don&apos;t break the baseline
-              contract.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: What is &quot;cutting the mustard&quot; and when would you
-              use it?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Cutting the mustard is a technique where a small JavaScript
-              feature detection test determines whether a browser is
-              &quot;modern enough&quot; to receive the enhanced experience.
-              Browsers that pass get the full JavaScript bundle; browsers that
-              fail get only the HTML/CSS baseline. The BBC pioneered this to
-              simplify their support matrix — instead of supporting hundreds
-              of browser/version combinations, they support two tiers: enhanced
-              and baseline. This reduces QA effort, simplifies development,
-              and ensures baseline users get a working experience rather than a
-              broken enhanced experience.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How does progressive enhancement relate to accessibility?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Progressive enhancement and accessibility share the same
-              foundation — semantic HTML. A progressively enhanced baseline
-              built with proper heading hierarchy, form labels, link text, and
-              landmark elements is inherently accessible. Screen readers
-              consume the HTML layer directly, so a strong baseline means
-              strong accessibility by default. JavaScript enhancements must
-              maintain accessibility (ARIA attributes, focus management,
-              keyboard support), but the baseline provides the essential
-              structure. Organizations that practice progressive enhancement
-              consistently score higher on accessibility audits because the
-              foundation is solid.
-            </p>
-          </div>
-        </div>
       </section>
     </ArticleLayout>
   );

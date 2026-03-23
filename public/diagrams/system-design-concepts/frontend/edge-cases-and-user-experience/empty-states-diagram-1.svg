@@ -1,18 +1,69 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Empty States diagram 1">
-  <defs>
-    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
-  </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg1)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Empty States</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 1</text>
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Empty State Taxonomy &amp; Classification</text>
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6d5bd0"/></marker></defs>
+  <rect x="340" y="55" width="220" height="42" rx="10" fill="#6d5bd0"/>
+  <text x="450" y="75" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">Empty State</text>
+  <text x="450" y="90" text-anchor="middle" font-size="9" fill="#fff">No content to display</text>
+  <line x1="450" y1="97" x2="450" y2="115" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="90" y1="115" x2="810" y2="115" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="90" y1="115" x2="90" y2="145" stroke="#6d5bd0" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="270" y1="115" x2="270" y2="145" stroke="#6d5bd0" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="450" y1="115" x2="450" y2="145" stroke="#6d5bd0" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="630" y1="115" x2="630" y2="145" stroke="#6d5bd0" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="810" y1="115" x2="810" y2="145" stroke="#6d5bd0" stroke-width="2" marker-end="url(#a)"/>
+  <rect x="25" y="145" width="130" height="38" rx="8" fill="#6d5bd0"/>
+  <text x="90" y="169" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">First Use</text>
+  <rect x="25" y="193" width="130" height="85" rx="6" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="90" y="212" text-anchor="middle" font-size="9" font-weight="bold" fill="#6d5bd0">Context</text>
+  <text x="90" y="227" text-anchor="middle" font-size="9" fill="#1a1822">New user, no data yet</text>
+  <text x="90" y="246" text-anchor="middle" font-size="9" font-weight="bold" fill="#6d5bd0">CTA</text>
+  <text x="90" y="261" text-anchor="middle" font-size="9" fill="#1a1822">"Create your first..."</text>
+  <rect x="205" y="145" width="130" height="38" rx="8" fill="#6d5bd0"/>
+  <text x="270" y="169" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">No Results</text>
+  <rect x="205" y="193" width="130" height="85" rx="6" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="270" y="212" text-anchor="middle" font-size="9" font-weight="bold" fill="#6d5bd0">Context</text>
+  <text x="270" y="227" text-anchor="middle" font-size="9" fill="#1a1822">Search/filter yields 0</text>
+  <text x="270" y="246" text-anchor="middle" font-size="9" font-weight="bold" fill="#6d5bd0">CTA</text>
+  <text x="270" y="261" text-anchor="middle" font-size="9" fill="#1a1822">Clear filters, suggest</text>
+  <rect x="385" y="145" width="130" height="38" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="169" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Completed</text>
+  <rect x="385" y="193" width="130" height="85" rx="6" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="212" text-anchor="middle" font-size="9" font-weight="bold" fill="#6d5bd0">Context</text>
+  <text x="450" y="227" text-anchor="middle" font-size="9" fill="#1a1822">All items processed</text>
+  <text x="450" y="246" text-anchor="middle" font-size="9" font-weight="bold" fill="#6d5bd0">CTA</text>
+  <text x="450" y="261" text-anchor="middle" font-size="9" fill="#1a1822">Celebrate, next steps</text>
+  <rect x="565" y="145" width="130" height="38" rx="8" fill="#6d5bd0"/>
+  <text x="630" y="169" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Error-Induced</text>
+  <rect x="565" y="193" width="130" height="85" rx="6" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="630" y="212" text-anchor="middle" font-size="9" font-weight="bold" fill="#6d5bd0">Context</text>
+  <text x="630" y="227" text-anchor="middle" font-size="9" fill="#1a1822">Fetch failed</text>
+  <text x="630" y="246" text-anchor="middle" font-size="9" font-weight="bold" fill="#6d5bd0">CTA</text>
+  <text x="630" y="261" text-anchor="middle" font-size="9" fill="#1a1822">Retry, report issue</text>
+  <rect x="745" y="145" width="130" height="38" rx="8" fill="#6d5bd0"/>
+  <text x="810" y="165" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Permission-</text>
+  <text x="810" y="178" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Based</text>
+  <rect x="745" y="193" width="130" height="85" rx="6" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="810" y="212" text-anchor="middle" font-size="9" font-weight="bold" fill="#6d5bd0">Context</text>
+  <text x="810" y="227" text-anchor="middle" font-size="9" fill="#1a1822">No access rights</text>
+  <text x="810" y="246" text-anchor="middle" font-size="9" font-weight="bold" fill="#6d5bd0">CTA</text>
+  <text x="810" y="261" text-anchor="middle" font-size="9" fill="#1a1822">Request access</text>
+  <rect x="100" y="320" width="700" height="155" rx="10" fill="#fff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="450" y="345" text-anchor="middle" font-size="14" font-weight="bold" fill="#6d5bd0">Shared Empty State Anatomy</text>
+  <line x1="120" y1="355" x2="780" y2="355" stroke="#d7d1e6" stroke-width="1"/>
+  <rect x="125" y="370" width="110" height="80" rx="6" fill="#6d5bd0" opacity="0.12"/>
+  <circle cx="180" cy="400" r="18" fill="#6d5bd0" opacity="0.3"/>
+  <text x="180" y="440" text-anchor="middle" font-size="9" font-weight="bold" fill="#6d5bd0">Illustration</text>
+  <rect x="255" y="375" width="130" height="28" rx="4" fill="#6d5bd0"/>
+  <text x="320" y="394" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Primary Message</text>
+  <rect x="255" y="412" width="130" height="22" rx="4" fill="#fff" stroke="#d7d1e6"/>
+  <text x="320" y="427" text-anchor="middle" font-size="9" fill="#1a1822">Description text</text>
+  <rect x="405" y="375" width="120" height="35" rx="6" fill="#6d5bd0"/>
+  <text x="465" y="397" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">CTA Button</text>
+  <rect x="405" y="418" width="120" height="22" rx="4" fill="#fff" stroke="#d7d1e6"/>
+  <text x="465" y="433" text-anchor="middle" font-size="9" fill="#1a1822">Secondary link</text>
+  <rect x="545" y="375" width="130" height="60" rx="6" fill="#fff" stroke="#d7d1e6"/>
+  <text x="610" y="398" text-anchor="middle" font-size="9" font-weight="bold" fill="#6d5bd0">Suggestions</text>
+  <text x="610" y="415" text-anchor="middle" font-size="9" fill="#1a1822">Contextual help</text>
+  <text x="610" y="430" text-anchor="middle" font-size="9" fill="#1a1822">or related links</text>
 </svg>

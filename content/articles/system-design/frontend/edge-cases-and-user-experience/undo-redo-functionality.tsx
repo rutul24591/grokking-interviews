@@ -219,37 +219,6 @@ export default function UndoRedoFunctionalityArticle() {
       </section>
 
       <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://refactoring.guru/design-patterns/command" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Refactoring Guru — Command Pattern
-            </a>
-          </li>
-          <li>
-            <a href="https://redux.js.org/usage/implementing-undo-history" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Redux — Implementing Undo History
-            </a>
-          </li>
-          <li>
-            <a href="https://www.nngroup.com/articles/undo/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Nielsen Norman Group — Undo, a Powerful Interaction Design Pattern
-            </a>
-          </li>
-          <li>
-            <a href="https://immerjs.github.io/immer/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Immer — Immutable State with Structural Sharing
-            </a>
-          </li>
-          <li>
-            <a href="https://en.wikipedia.org/wiki/Operational_transformation" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Wikipedia — Operational Transformation
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
         <h2>Common Interview Questions</h2>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4 mb-4">
@@ -299,6 +268,37 @@ export default function UndoRedoFunctionalityArticle() {
             A: This depends on the operation type and the server&apos;s capability. For operations that the server can reverse (soft-deleted records, version-controlled documents), the undo sends a corresponding reverse API call — an undelete, a version revert, a property update back to the previous value. For operations that the server cannot reverse (sent emails, published posts, processed payments), the client-side undo can only warn the user that the action cannot be undone. For intermediate cases, I would implement a &ldquo;grace period&rdquo; pattern — the client sends the action to the server but the server delays actual execution for a configurable window (5-30 seconds). During this window, the client can send a cancellation request that prevents execution. This is how Gmail&apos;s &ldquo;Undo Send&rdquo; works — the email is not actually sent until the undo window closes. The grace period approach provides server-side reversibility for operations that would otherwise be irreversible, at the cost of delayed execution visibility to other users.
           </p>
         </div>
+      </section>
+
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://refactoring.guru/design-patterns/command" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Refactoring Guru — Command Pattern
+            </a>
+          </li>
+          <li>
+            <a href="https://redux.js.org/usage/implementing-undo-history" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Redux — Implementing Undo History
+            </a>
+          </li>
+          <li>
+            <a href="https://www.nngroup.com/articles/undo/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Nielsen Norman Group — Undo, a Powerful Interaction Design Pattern
+            </a>
+          </li>
+          <li>
+            <a href="https://immerjs.github.io/immer/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Immer — Immutable State with Structural Sharing
+            </a>
+          </li>
+          <li>
+            <a href="https://en.wikipedia.org/wiki/Operational_transformation" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Wikipedia — Operational Transformation
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

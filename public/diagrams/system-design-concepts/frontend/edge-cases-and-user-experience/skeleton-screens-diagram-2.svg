@@ -1,18 +1,63 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Skeleton Screens diagram 2">
-  <defs>
-    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
-  </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg2)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Skeleton Screens</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 2</text>
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Skeleton Component Architecture</text>
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6d5bd0"/></marker></defs>
+  <rect x="30" y="55" width="840" height="110" rx="10" fill="#fff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="78" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d5bd0">Atomic Skeleton Primitives</text>
+  <line x1="50" y1="88" x2="850" y2="88" stroke="#d7d1e6" stroke-width="1"/>
+  <rect x="55" y="100" width="120" height="50" rx="6" fill="#6d5bd0"/>
+  <rect x="72" y="110" width="86" height="8" rx="4" fill="#fff" opacity="0.5"/>
+  <rect x="72" y="125" width="60" height="8" rx="4" fill="#fff" opacity="0.3"/>
+  <text x="115" y="148" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">SkeletonLine</text>
+  <rect x="200" y="100" width="120" height="50" rx="6" fill="#6d5bd0"/>
+  <circle cx="260" cy="122" r="15" fill="#fff" opacity="0.4"/>
+  <text x="260" y="148" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">SkeletonCircle</text>
+  <rect x="345" y="100" width="120" height="50" rx="6" fill="#6d5bd0"/>
+  <rect x="365" y="108" width="80" height="28" rx="4" fill="#fff" opacity="0.3"/>
+  <text x="405" y="148" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">SkeletonRect</text>
+  <rect x="490" y="100" width="120" height="50" rx="6" fill="#6d5bd0"/>
+  <rect x="505" y="108" width="90" height="28" rx="8" fill="#fff" opacity="0.2"/>
+  <text x="550" y="148" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">SkeletonBlock</text>
+  <rect x="635" y="100" width="220" height="50" rx="6" fill="#fff" stroke="#d7d1e6"/>
+  <text x="745" y="120" text-anchor="middle" font-size="9" font-weight="bold" fill="#6d5bd0">Props: width, height,</text>
+  <text x="745" y="135" text-anchor="middle" font-size="9" fill="#6d5bd0">borderRadius, animation</text>
+  <text x="745" y="148" text-anchor="middle" font-size="9" fill="#6d5bd0">(shimmer | pulse | none)</text>
+  <line x1="450" y1="165" x2="450" y2="195" stroke="#6d5bd0" stroke-width="2" marker-end="url(#a)"/>
+  <text x="475" y="185" font-size="9" fill="#6d5bd0">compose</text>
+  <rect x="30" y="195" width="840" height="130" rx="10" fill="#fff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="218" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d5bd0">Composition Layer</text>
+  <line x1="50" y1="228" x2="850" y2="228" stroke="#d7d1e6" stroke-width="1"/>
+  <rect x="55" y="240" width="240" height="70" rx="6" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="175" y="258" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">SkeletonCard</text>
+  <rect x="70" y="265" width="100" height="35" rx="4" fill="#6d5bd0" opacity="0.1"/>
+  <rect x="180" y="267" width="100" height="8" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <rect x="180" y="280" width="70" height="8" rx="3" fill="#6d5bd0" opacity="0.1"/>
+  <rect x="180" y="293" width="85" height="6" rx="3" fill="#6d5bd0" opacity="0.08"/>
+  <rect x="320" y="240" width="240" height="70" rx="6" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="440" y="258" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">SkeletonListItem</text>
+  <circle cx="350" cy="282" r="14" fill="#6d5bd0" opacity="0.12"/>
+  <rect x="375" y="273" width="120" height="8" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <rect x="375" y="287" width="80" height="8" rx="3" fill="#6d5bd0" opacity="0.1"/>
+  <rect x="585" y="240" width="270" height="70" rx="6" fill="#fff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="720" y="258" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">SkeletonProfile</text>
+  <circle cx="625" cy="282" r="18" fill="#6d5bd0" opacity="0.12"/>
+  <rect x="655" y="270" width="130" height="10" rx="3" fill="#6d5bd0" opacity="0.15"/>
+  <rect x="655" y="286" width="90" height="8" rx="3" fill="#6d5bd0" opacity="0.1"/>
+  <line x1="450" y1="325" x2="450" y2="355" stroke="#6d5bd0" stroke-width="2" marker-end="url(#a)"/>
+  <text x="475" y="345" font-size="9" fill="#6d5bd0">assemble</text>
+  <rect x="30" y="355" width="840" height="125" rx="10" fill="#fff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="378" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d5bd0">Page Assembly Layer</text>
+  <line x1="50" y1="388" x2="850" y2="388" stroke="#d7d1e6" stroke-width="1"/>
+  <rect x="55" y="400" width="500" height="60" rx="6" fill="#6d5bd0" opacity="0.06" stroke="#d7d1e6"/>
+  <rect x="65" y="408" width="230" height="18" rx="3" fill="#6d5bd0" opacity="0.1"/>
+  <rect x="65" y="432" width="105" height="18" rx="3" fill="#6d5bd0" opacity="0.08"/>
+  <rect x="180" y="432" width="105" height="18" rx="3" fill="#6d5bd0" opacity="0.08"/>
+  <rect x="310" y="408" width="230" height="42" rx="3" fill="#6d5bd0" opacity="0.07"/>
+  <text x="305" y="472" text-anchor="middle" font-size="9" fill="#6d5bd0">Feed page skeleton (cards + list items in grid)</text>
+  <rect x="580" y="400" width="270" height="60" rx="6" fill="#6d5bd0" opacity="0.06" stroke="#d7d1e6"/>
+  <circle cx="612" cy="420" r="10" fill="#6d5bd0" opacity="0.1"/>
+  <rect x="630" y="412" width="120" height="8" rx="3" fill="#6d5bd0" opacity="0.1"/>
+  <rect x="630" y="425" width="80" height="6" rx="3" fill="#6d5bd0" opacity="0.07"/>
+  <rect x="595" y="440" width="240" height="14" rx="3" fill="#6d5bd0" opacity="0.06"/>
+  <text x="715" y="472" text-anchor="middle" font-size="9" fill="#6d5bd0">Profile page skeleton</text>
 </svg>

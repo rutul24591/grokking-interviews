@@ -1,7 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
   <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="240" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">identity providers</text>
-  <text x="400" y="270" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Identity Access Diagram</text>
-  <text x="400" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Valid XML</text>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Identity Provider Landscape</text>
+  
+  <!-- Enterprise IdPs -->
+  <rect x="50" y="70" width="220" height="200" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="160" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Enterprise IdPs</text>
+  
+  <rect x="70" y="115" width="180" height="45" rx="4" fill="#3b82f6" opacity="0.8"/>
+  <text x="160" y="140" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Okta</text>
+  <text x="160" y="155" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">30% market share</text>
+  
+  <rect x="70" y="165" width="180" height="45" rx="4" fill="#3b82f6" opacity="0.6"/>
+  <text x="160" y="190" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Azure AD (Entra ID)</text>
+  <text x="160" y="205" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Microsoft ecosystem</text>
+  
+  <rect x="70" y="215" width="180" height="45" rx="4" fill="#3b82f6" opacity="0.4"/>
+  <text x="160" y="240" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Ping Identity</text>
+  <text x="160" y="255" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Complex enterprise</text>
+  
+  <!-- Social IdPs -->
+  <rect x="300" y="70" width="240" height="200" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="420" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Social IdPs</text>
+  
+  <rect x="320" y="115" width="200" height="45" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="420" y="140" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Google</text>
+  <text x="420" y="155" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Most common consumer</text>
+  
+  <rect x="320" y="165" width="200" height="45" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="420" y="190" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Apple</text>
+  <text x="420" y="205" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Required for iOS apps</text>
+  
+  <rect x="320" y="215" width="200" height="45" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="420" y="240" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Facebook</text>
+  <text x="420" y="255" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Declining usage</text>
+  
+  <!-- Regional IdPs -->
+  <rect x="570" y="70" width="190" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="665" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Regional IdPs</text>
+  
+  <rect x="590" y="115" width="150" height="40" rx="4" fill="#f59e0b" opacity="0.8"/>
+  <text x="665" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">WeChat (China)</text>
+  
+  <rect x="590" y="160" width="150" height="40" rx="4" fill="#f59e0b" opacity="0.6"/>
+  <text x="665" y="180" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">LINE (Japan)</text>
+  
+  <rect x="590" y="205" width="150" height="40" rx="4" fill="#f59e0b" opacity="0.4"/>
+  <text x="665" y="225" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">KakaoTalk (Korea)</text>
+  
+  <!-- Selection Criteria -->
+  <rect x="50" y="290" width="340" height="180" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="315" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Selection Criteria</text>
+  
+  <rect x="70" y="330" width="145" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="142" y="350" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#0f172a">Target Audience</text>
+  <text x="142" y="370" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Enterprise vs Consumer</text>
+  
+  <rect x="225" y="330" width="145" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="297" y="350" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#0f172a">Geography</text>
+  <text x="297" y="370" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Regional providers</text>
+  
+  <rect x="70" y="390" width="145" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="142" y="410" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#0f172a">Platform</text>
+  <text x="142" y="430" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">iOS requires Apple</text>
+  
+  <rect x="225" y="390" width="145" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="297" y="410" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#0f172a">Privacy</text>
+  <text x="297" y="430" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Apple for privacy</text>
+  
+  <!-- Integration Complexity -->
+  <rect x="420" y="290" width="340" height="180" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="590" y="315" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Integration Complexity</text>
+  
+  <rect x="440" y="335" width="145" height="50" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="512" y="355" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#0f172a">Easy</text>
+  <text x="512" y="375" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Google, Facebook</text>
+  
+  <rect x="595" y="335" width="145" height="50" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="667" y="355" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#0f172a">Medium</text>
+  <text x="667" y="375" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Okta, Azure AD</text>
+  
+  <rect x="440" y="395" width="145" height="50" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="512" y="415" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#0f172a">Complex</text>
+  <text x="512" y="435" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">SAML, Custom IdP</text>
+  
+  <rect x="595" y="395" width="145" height="50" rx="4" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+  <text x="667" y="415" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#0f172a">Recommendation</text>
+  <text x="667" y="435" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Support 3-5 providers</text>
+
 </svg>

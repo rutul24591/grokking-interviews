@@ -1,7 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
   <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="240" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">resource permissions</text>
-  <text x="400" y="270" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Identity Access Diagram</text>
-  <text x="400" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Valid XML</text>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Resource-Level Permissions</text>
+  
+  <!-- Ownership Check -->
+  <rect x="50" y="70" width="220" height="200" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="160" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Ownership Check</text>
+  
+  <rect x="70" y="115" width="180" height="50" rx="4" fill="#3b82f6" opacity="0.8"/>
+  <text x="160" y="140" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">User Owns Resource?</text>
+  <text x="160" y="160" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Check owner_id = user_id</text>
+  
+  <rect x="70" y="175" width="180" height="50" rx="4" fill="#3b82f6" opacity="0.6"/>
+  <text x="160" y="200" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">If Yes: Allow</text>
+  <text x="160" y="220" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Owner can modify</text>
+  
+  <rect x="70" y="235" width="180" height="30" rx="4" fill="#22c55e"/>
+  <text x="160" y="255" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">✓ Fine-grained control</text>
+  
+  <line x1="270" y1="170" x2="310" y2="170" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Role-Based Access -->
+  <rect x="320" y="70" width="220" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="430" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Role-Based Access</text>
+  
+  <rect x="340" y="115" width="180" height="50" rx="4" fill="#f59e0b" opacity="0.8"/>
+  <text x="430" y="140" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">User Has Role?</text>
+  <text x="430" y="160" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Check user roles</text>
+  
+  <rect x="340" y="175" width="180" height="50" rx="4" fill="#f59e0b" opacity="0.6"/>
+  <text x="430" y="200" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">If Admin: Allow</text>
+  <text x="430" y="220" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Admin can modify all</text>
+  
+  <rect x="340" y="235" width="180" height="30" rx="4" fill="#22c55e"/>
+  <text x="430" y="255" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">✓ Simple to manage</text>
+  
+  <line x1="540" y1="170" x2="580" y2="170" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Combination -->
+  <rect x="590" y="70" width="160" height="200" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="670" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Combination</text>
+  
+  <rect x="610" y="115" width="120" height="50" rx="4" fill="#8b5cf6" opacity="0.8"/>
+  <text x="670" y="140" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Owner OR Admin?</text>
+  <text x="670" y="160" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Check both conditions</text>
+  
+  <rect x="610" y="175" width="120" height="50" rx="4" fill="#8b5cf6" opacity="0.6"/>
+  <text x="670" y="200" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">If Either: Allow</text>
+  <text x="670" y="220" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Flexible access</text>
+  
+  <rect x="610" y="235" width="120" height="30" rx="4" fill="#22c55e"/>
+  <text x="670" y="255" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">✓ Best of both</text>
+  
+  <line x1="670" y1="270" x2="670" y2="310" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Hierarchical Resources -->
+  <rect x="590" y="320" width="160" height="130" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="670" y="345" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Hierarchical</text>
+  
+  <rect x="610" y="360" width="120" height="35" rx="4" fill="#22c55e" opacity="0.8"/>
+  <text x="670" y="382" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Folder Permission</text>
+  
+  <rect x="610" y="400" width="120" height="35" rx="4" fill="#22c55e" opacity="0.6"/>
+  <text x="670" y="422" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Inherits to Documents</text>
+  
+  <rect x="610" y="440" width="120" height="35" rx="4" fill="#22c55e" opacity="0.4"/>
+  <text x="670" y="462" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Parent → Child</text>
+  
+  <!-- Resource Tree -->
+  <rect x="50" y="320" width="510" height="130" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="305" y="345" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Resource Hierarchy Example</text>
+  
+  <rect x="70" y="360" width="140" height="40" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="140" y="382" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">📁 Folder A</text>
+  <text x="140" y="395" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">User: Edit</text>
+  
+  <rect x="230" y="380" width="100" height="30" rx="4" fill="#3b82f6" opacity="0.2"/>
+  <text x="280" y="400" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">📄 Doc 1</text>
+  <text x="280" y="410" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Inherited</text>
+  
+  <rect x="350" y="380" width="100" height="30" rx="4" fill="#3b82f6" opacity="0.2"/>
+  <text x="400" y="400" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">📄 Doc 2</text>
+  <text x="400" y="410" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Inherited</text>
+  
+  <rect x="470" y="360" width="80" height="40" rx="4" fill="#ef4444" opacity="0.3"/>
+  <text x="510" y="382" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">📁 Folder B</text>
+  <text x="510" y="395" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">User: None</text>
+
 </svg>

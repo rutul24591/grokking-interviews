@@ -219,37 +219,6 @@ export default function SkeletonScreensArticle() {
       </section>
 
       <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://uxdesign.cc/what-you-should-know-about-skeleton-screens-a820c45a571a" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              UX Collective — What You Should Know About Skeleton Screens
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/articles/cls" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              web.dev — Cumulative Layout Shift (CLS)
-            </a>
-          </li>
-          <li>
-            <a href="https://www.nngroup.com/articles/progress-indicators/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Nielsen Norman Group — Progress Indicators Make a Slow System Less Insufferable
-            </a>
-          </li>
-          <li>
-            <a href="https://www.smashingmagazine.com/2020/04/skeleton-screens-react/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              Smashing Magazine — Implementing Skeleton Screens in React
-            </a>
-          </li>
-          <li>
-            <a href="https://react.dev/reference/react/Suspense" className="text-accent underline" target="_blank" rel="noopener noreferrer">
-              React Documentation — Suspense
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
         <h2>Common Interview Questions</h2>
 
         <div className="rounded-lg border border-theme bg-panel-soft p-4 mb-4">
@@ -301,6 +270,37 @@ export default function SkeletonScreensArticle() {
             A: Keeping skeletons in sync with their loaded counterparts is one of the biggest maintenance challenges. I would address it through several strategies. First, build skeletons from shared primitives in the design system rather than bespoke per-component skeletons — when the design system&apos;s card component changes its padding, the skeleton primitive automatically reflects that change. Second, co-locate skeleton definitions with their loaded component definitions in the same file or directory so changes to one naturally prompt review of the other. Third, implement visual regression tests that compare the skeleton and loaded states of each component, failing when their dimensions diverge beyond a threshold. Fourth, for components with stable layouts, consider generating skeletons automatically from the component&apos;s style definitions — extracting dimensions, border-radius, and spacing to construct placeholder shapes programmatically. This auto-generation approach eliminates manual maintenance entirely for simple components, though complex components with conditional rendering paths may still need hand-crafted skeletons.
           </p>
         </div>
+      </section>
+
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://uxdesign.cc/what-you-should-know-about-skeleton-screens-a820c45a571a" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              UX Collective — What You Should Know About Skeleton Screens
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/cls" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              web.dev — Cumulative Layout Shift (CLS)
+            </a>
+          </li>
+          <li>
+            <a href="https://www.nngroup.com/articles/progress-indicators/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Nielsen Norman Group — Progress Indicators Make a Slow System Less Insufferable
+            </a>
+          </li>
+          <li>
+            <a href="https://www.smashingmagazine.com/2020/04/skeleton-screens-react/" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              Smashing Magazine — Implementing Skeleton Screens in React
+            </a>
+          </li>
+          <li>
+            <a href="https://react.dev/reference/react/Suspense" className="text-accent underline" target="_blank" rel="noopener noreferrer">
+              React Documentation — Suspense
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

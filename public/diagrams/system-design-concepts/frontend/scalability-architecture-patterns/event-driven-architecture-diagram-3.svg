@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-labelledby="title desc">
+  <title id="title">Event Sourcing vs Event Notification vs Event-Carried State Transfer</title>
+  <desc id="desc">Comparison of three event patterns showing what data each pattern carries and their use cases</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="450" fill="var(--bg-color, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="var(--text-color, #1a1a1a)">Event Patterns Comparison</text>
+  
+  <!-- Event Notification -->
+  <rect x="50" y="70" width="220" height="180" rx="8" fill="var(--primary-light, #e3f2fd)" stroke="var(--primary-color, #1976d2)" stroke-width="2"/>
+  <text x="160" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--primary-color, #1976d2)">Event Notification</text>
+  
+  <!-- Event payload -->
+  <rect x="70" y="115" width="180" height="50" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="160" y="135" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--text-color, #1a1a1a)">{ type: "OrderPlaced" }</text>
+  <text x="160" y="150" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--text-color, #1a1a1a)">{ orderId: "123" }</text>
+  <text x="160" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-muted, #666666)">Minimal payload</text>
+  
+  <path d="M160 195 L160 220" stroke="var(--text-color, #1a1a1a)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <rect x="70" y="220" width="180" height="25" rx="4" fill="var(--warning-light, #fff3cd)" stroke="var(--warning-color, #ffc107)" stroke-width="1"/>
+  <text x="160" y="237" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-color, #1a1a1a)">Consumer must query</text>
+  
+  <text x="160" y="265" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Low coupling, extra query</text>
+  
+  <!-- Event-Carried State Transfer -->
+  <rect x="290" y="70" width="220" height="180" rx="8" fill="var(--warning-light, #fff3cd)" stroke="var(--warning-color, #ffc107)" stroke-width="2"/>
+  <text x="400" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--warning-color, #ffc107)">Event-Carried State</text>
+  
+  <!-- Event payload -->
+  <rect x="310" y="115" width="180" height="70" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="400" y="135" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--text-color, #1a1a1a)">{ type: "OrderPlaced" }</text>
+  <text x="400" y="150" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--text-color, #1a1a1a)">{ orderId: "123" }</text>
+  <text x="400" y="162" text-anchor="middle" font-family="monospace" font-size="9" fill="var(--text-color, #1a1a1a)">{ items: [...], total: 99 }</text>
+  <text x="400" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-muted, #666666)">Full state included</text>
+  
+  <path d="M400 195 L400 220" stroke="var(--text-color, #1a1a1a)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <rect x="310" y="220" width="180" height="25" rx="4" fill="var(--success-light, #d4edda)" stroke="var(--success-color, #28a745)" stroke-width="1"/>
+  <text x="400" y="237" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-color, #1a1a1a)">No additional query needed</text>
+  
+  <text x="400" y="265" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Self-contained, larger payload</text>
+  
+  <!-- Event Sourcing -->
+  <rect x="530" y="70" width="220" height="180" rx="8" fill="var(--info-light, #e7f3ff)" stroke="var(--info-color, #0d6efd)" stroke-width="2"/>
+  <text x="640" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--info-color, #0d6efd)">Event Sourcing</text>
+  
+  <!-- Event stream -->
+  <rect x="550" y="115" width="180" height="70" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="640" y="135" text-anchor="middle" font-family="monospace" font-size="8" fill="var(--text-color, #1a1a1a)">Event Stream (append-only)</text>
+  <text x="640" y="150" text-anchor="middle" font-family="monospace" font-size="8" fill="var(--text-color, #1a1a1a)">1. OrderCreated</text>
+  <text x="640" y="162" text-anchor="middle" font-family="monospace" font-size="8" fill="var(--text-color, #1a1a1a)">2. ItemAdded</text>
+  <text x="640" y="174" text-anchor="middle" font-family="monospace" font-size="8" fill="var(--text-color, #1a1a1a)">3. OrderPlaced</text>
+  
+  <path d="M640 195 L640 220" stroke="var(--text-color, #1a1a1a)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <rect x="550" y="220" width="180" height="25" rx="4" fill="var(--info-light, #e7f3ff)" stroke="var(--info-color, #0d6efd)" stroke-width="1"/>
+  <text x="640" y="237" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-color, #1a1a1a)">Replay to rebuild state</text>
+  
+  <text x="640" y="265" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Full history, time-travel</text>
+  
+  <!-- Comparison Table -->
+  <text x="400" y="300" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--text-color, #1a1a1a)">Pattern Comparison</text>
+  
+  <rect x="100" y="315" width="600" height="120" rx="6" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  
+  <!-- Headers -->
+  <rect x="100" y="315" width="150" height="25" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="250" y="315" width="150" height="25" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="400" y="315" width="150" height="25" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="550" y="315" width="150" height="25" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  
+  <text x="175" y="332" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="var(--text-color, #1a1a1a)">Aspect</text>
+  <text x="325" y="332" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="var(--text-color, #1a1a1a)">Notification</text>
+  <text x="475" y="332" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="var(--text-color, #1a1a1a)">State Transfer</text>
+  <text x="625" y="332" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="var(--text-color, #1a1a1a)">Event Sourcing</text>
+  
+  <!-- Row 1: Payload Size -->
+  <rect x="100" y="340" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="250" y="340" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="400" y="340" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="550" y="340" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  
+  <text x="175" y="357" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-color, #1a1a1a)">Payload Size</text>
+  <text x="325" y="357" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--success-color, #28a745)">Smallest</text>
+  <text x="475" y="357" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--warning-color, #ffc107)">Medium</text>
+  <text x="625" y="357" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--error-color, #dc3545)">Largest (stream)</text>
+  
+  <!-- Row 2: Coupling -->
+  <rect x="100" y="365" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="250" y="365" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="400" y="365" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="550" y="365" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  
+  <text x="175" y="382" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-color, #1a1a1a)">Coupling</text>
+  <text x="325" y="382" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--success-color, #28a745)">Lowest</text>
+  <text x="475" y="382" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--warning-color, #ffc107)">Medium</text>
+  <text x="625" y="382" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--error-color, #dc3545)">Highest</text>
+  
+  <!-- Row 3: Use Case -->
+  <rect x="100" y="390" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="250" y="390" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="400" y="390" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <rect x="550" y="390" width="150" height="25" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  
+  <text x="175" y="407" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-color, #1a1a1a)">Best For</text>
+  <text x="325" y="407" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-color, #1a1a1a)">Notifications</text>
+  <text x="475" y="407" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-color, #1a1a1a)">Sync state</text>
+  <text x="625" y="407" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-color, #1a1a1a)">Audit/History</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-color, #1a1a1a)"/>
+    </marker>
+  </defs>
+</svg>

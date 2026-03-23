@@ -1,18 +1,98 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Optimistic UI Updates diagram 3">
-  <defs>
-    <linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
-  </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg3)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Optimistic UI Updates</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 3</text>
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Optimistic Update Eligibility Matrix</text>
+
+  <!-- Table Header -->
+  <rect x="30" y="55" width="840" height="40" rx="0" fill="#6d5bd0"/>
+  <text x="130" y="80" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Operation Type</text>
+  <text x="295" y="80" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Optimistic?</text>
+  <text x="440" y="80" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Failure Cost</text>
+  <text x="590" y="80" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Rollback Strategy</text>
+  <text x="770" y="80" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Example</text>
+
+  <!-- Row 1: Toggle -->
+  <rect x="30" y="95" width="840" height="50" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="130" y="118" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Toggle Action</text>
+  <text x="130" y="133" text-anchor="middle" font-size="9" fill="#1a1822">(like, follow, bookmark)</text>
+  <rect x="268" y="108" width="55" height="22" rx="4" fill="#228B22"/>
+  <text x="295" y="123" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Yes</text>
+  <text x="440" y="123" text-anchor="middle" font-size="10" fill="#1a1822">Low — revert toggle</text>
+  <text x="590" y="118" text-anchor="middle" font-size="10" fill="#1a1822">Flip boolean back,</text>
+  <text x="590" y="133" text-anchor="middle" font-size="9" fill="#1a1822">decrement counter</text>
+  <text x="770" y="123" text-anchor="middle" font-size="10" fill="#1a1822">Twitter Like, Reddit Upvote</text>
+
+  <!-- Row 2: Text Update -->
+  <rect x="30" y="145" width="840" height="50" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="130" y="168" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Text Update</text>
+  <text x="130" y="183" text-anchor="middle" font-size="9" fill="#1a1822">(edit comment, rename)</text>
+  <rect x="268" y="158" width="55" height="22" rx="4" fill="#228B22"/>
+  <text x="295" y="173" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Yes</text>
+  <text x="440" y="173" text-anchor="middle" font-size="10" fill="#1a1822">Low — restore old text</text>
+  <text x="590" y="168" text-anchor="middle" font-size="10" fill="#1a1822">Snapshot previous value,</text>
+  <text x="590" y="183" text-anchor="middle" font-size="9" fill="#1a1822">restore on error</text>
+  <text x="770" y="173" text-anchor="middle" font-size="10" fill="#1a1822">Slack edit, Notion rename</text>
+
+  <!-- Row 3: Create -->
+  <rect x="30" y="195" width="840" height="50" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="130" y="218" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Create Entity</text>
+  <text x="130" y="233" text-anchor="middle" font-size="9" fill="#1a1822">(new message, comment)</text>
+  <rect x="268" y="208" width="55" height="22" rx="4" fill="#228B22"/>
+  <text x="295" y="223" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Yes*</text>
+  <text x="440" y="218" text-anchor="middle" font-size="10" fill="#1a1822">Medium — remove ghost</text>
+  <text x="440" y="233" text-anchor="middle" font-size="9" fill="#1a1822">entity from UI</text>
+  <text x="590" y="218" text-anchor="middle" font-size="10" fill="#1a1822">Temp ID → replace or</text>
+  <text x="590" y="233" text-anchor="middle" font-size="9" fill="#1a1822">remove with &quot;failed&quot; badge</text>
+  <text x="770" y="218" text-anchor="middle" font-size="10" fill="#1a1822">iMessage, WhatsApp send</text>
+
+  <!-- Row 4: Reorder -->
+  <rect x="30" y="245" width="840" height="50" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="130" y="268" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Reorder / Move</text>
+  <text x="130" y="283" text-anchor="middle" font-size="9" fill="#1a1822">(drag-drop, priority change)</text>
+  <rect x="268" y="258" width="55" height="22" rx="4" fill="#FFB800"/>
+  <text x="295" y="273" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Maybe</text>
+  <text x="440" y="268" text-anchor="middle" font-size="10" fill="#1a1822">Medium — jarring snap</text>
+  <text x="440" y="283" text-anchor="middle" font-size="9" fill="#1a1822">back to original position</text>
+  <text x="590" y="268" text-anchor="middle" font-size="10" fill="#1a1822">Animate back to original</text>
+  <text x="590" y="283" text-anchor="middle" font-size="9" fill="#1a1822">position with transition</text>
+  <text x="770" y="268" text-anchor="middle" font-size="10" fill="#1a1822">Trello card move, Jira rank</text>
+
+  <!-- Row 5: Delete -->
+  <rect x="30" y="295" width="840" height="50" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="130" y="318" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Delete Entity</text>
+  <text x="130" y="333" text-anchor="middle" font-size="9" fill="#1a1822">(remove item, unsubscribe)</text>
+  <rect x="268" y="308" width="55" height="22" rx="4" fill="#FFB800"/>
+  <text x="295" y="323" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Maybe</text>
+  <text x="440" y="318" text-anchor="middle" font-size="10" fill="#1a1822">High — re-insert deleted</text>
+  <text x="440" y="333" text-anchor="middle" font-size="9" fill="#1a1822">item at correct position</text>
+  <text x="590" y="318" text-anchor="middle" font-size="10" fill="#1a1822">Soft-delete with undo</text>
+  <text x="590" y="333" text-anchor="middle" font-size="9" fill="#1a1822">toast (5s window)</text>
+  <text x="770" y="318" text-anchor="middle" font-size="10" fill="#1a1822">Gmail archive, Figma delete</text>
+
+  <!-- Row 6: Financial -->
+  <rect x="30" y="345" width="840" height="50" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="130" y="368" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Financial Transaction</text>
+  <text x="130" y="383" text-anchor="middle" font-size="9" fill="#1a1822">(payment, transfer)</text>
+  <rect x="268" y="358" width="55" height="22" rx="4" fill="#cc3333"/>
+  <text x="295" y="373" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">No</text>
+  <text x="440" y="368" text-anchor="middle" font-size="10" fill="#1a1822">Critical — incorrect</text>
+  <text x="440" y="383" text-anchor="middle" font-size="9" fill="#1a1822">balance display</text>
+  <text x="590" y="368" text-anchor="middle" font-size="10" fill="#1a1822">N/A — wait for server</text>
+  <text x="590" y="383" text-anchor="middle" font-size="9" fill="#1a1822">confirmation always</text>
+  <text x="770" y="368" text-anchor="middle" font-size="10" fill="#1a1822">Stripe, Venmo, bank transfer</text>
+
+  <!-- Row 7: Multi-user -->
+  <rect x="30" y="395" width="840" height="50" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="130" y="418" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Multi-User Mutation</text>
+  <text x="130" y="433" text-anchor="middle" font-size="9" fill="#1a1822">(shared doc, permissions)</text>
+  <rect x="268" y="408" width="55" height="22" rx="4" fill="#cc3333"/>
+  <text x="295" y="423" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">No</text>
+  <text x="440" y="418" text-anchor="middle" font-size="10" fill="#1a1822">High — conflict with</text>
+  <text x="440" y="433" text-anchor="middle" font-size="9" fill="#1a1822">concurrent editors</text>
+  <text x="590" y="418" text-anchor="middle" font-size="10" fill="#1a1822">Use CRDT / OT for</text>
+  <text x="590" y="433" text-anchor="middle" font-size="9" fill="#1a1822">conflict-free convergence</text>
+  <text x="770" y="418" text-anchor="middle" font-size="10" fill="#1a1822">Google Docs, Notion collab</text>
+
+  <!-- Decision rule -->
+  <rect x="30" y="460" width="840" height="30" rx="6" fill="#6d5bd0"/>
+  <text x="450" y="480" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Rule: Optimistic if rollback cost &lt; perceived latency cost AND operation is idempotent or safely reversible</text>
 </svg>

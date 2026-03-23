@@ -1,7 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
   <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="240" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">profile settings flow</text>
-  <text x="400" y="270" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Identity Access Diagram</text>
-  <text x="400" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Valid XML</text>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Profile Settings Flow</text>
+  
+  <!-- User -->
+  <circle cx="80" cy="250" r="35" fill="#3b82f6"/>
+  <text x="80" y="255" text-anchor="middle" font-family="system-ui" font-size="11" fill="#ffffff">User</text>
+  
+  <!-- Profile Form -->
+  <rect x="180" y="80" width="180" height="340" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="270" y="110" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Profile Form</text>
+  
+  <rect x="200" y="130" width="140" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="270" y="152" text-anchor="middle" font-family="system-ui" font-size="10" fill="#475569">Display Name</text>
+  
+  <rect x="200" y="175" width="140" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="270" y="197" text-anchor="middle" font-family="system-ui" font-size="10" fill="#475569">Username @handle</text>
+  
+  <rect x="200" y="220" width="140" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="270" y="240" text-anchor="middle" font-family="system-ui" font-size="10" fill="#475569">Bio</text>
+  <text x="270" y="255" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">160 chars max</text>
+  
+  <rect x="200" y="280" width="140" height="50" rx="4" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="270" y="305" text-anchor="middle" font-family="system-ui" font-size="10" fill="#3b82f6">+ Upload Avatar</text>
+  <text x="270" y="320" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">PNG, JPG, max 5MB</text>
+  
+  <rect x="200" y="340" width="140" height="35" rx="4" fill="#3b82f6"/>
+  <text x="270" y="362" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Save Changes</text>
+  
+  <line x1="115" y1="250" x2="170" y2="250" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="360" y1="250" x2="410" y2="250" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Validation -->
+  <rect x="420" y="100" width="180" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="510" y="125" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Validation</text>
+  
+  <rect x="440" y="145" width="140" height="30" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="510" y="165" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Username availability</text>
+  
+  <rect x="440" y="180" width="140" height="30" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="510" y="200" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Profanity filter</text>
+  
+  <rect x="440" y="215" width="140" height="30" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="510" y="235" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Bio length check</text>
+  
+  <line x1="600" y1="170" x2="650" y2="170" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Avatar Processing -->
+  <rect x="660" y="80" width="100" height="120" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="710" y="105" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Avatar</text>
+  <text x="710" y="130" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Crop</text>
+  <text x="710" y="150" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Resize</text>
+  <text x="710" y="170" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Optimize</text>
+  <text x="710" y="190" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">CDN upload</text>
+  
+  <line x1="710" y1="200" x2="710" y2="240" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Backend Update -->
+  <rect x="660" y="250" width="100" height="80" rx="8" fill="#f1f5f9" stroke="#22c55e" stroke-width="2"/>
+  <text x="710" y="275" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Update</text>
+  <text x="710" y="295" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Profile DB</text>
+  <text x="710" y="310" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Audit log</text>
+  
+  <line x1="660" y1="290" x2="610" y2="290" stroke="#22c55e" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrow)"/>
+  <text x="635" y="280" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">Success</text>
+  
+  <!-- Success State -->
+  <rect x="420" y="270" width="180" height="80" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="510" y="300" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">✓ Profile Updated</text>
+  <text x="510" y="325" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Changes saved successfully</text>
+  <text x="510" y="340" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Avatar processed & uploaded</text>
+  
+  <line x1="420" y1="310" x2="370" y2="310" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Notification -->
+  <rect x="180" y="430" width="420" height="50" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="390" y="450" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">✓ Profile Updated Successfully</text>
+  <text x="390" y="470" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Avatar updated • Username changed • Bio updated</text>
+
 </svg>

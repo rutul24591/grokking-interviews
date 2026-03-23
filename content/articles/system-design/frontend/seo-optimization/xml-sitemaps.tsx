@@ -391,54 +391,7 @@ export default function XmlSitemapsArticle() {
         </ul>
       </section>
 
-      {/* Section 8: References & Further Reading */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://www.sitemaps.org/protocol.html"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              Sitemaps.org — Sitemaps XML Protocol
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              Google Search Central — Sitemaps Overview
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developers.google.com/search/docs/crawling-indexing/sitemaps/news-sitemap"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              Google — News Sitemaps
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.indexnow.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              IndexNow Protocol — Instant URL Indexing
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      {/* Section 9: Common Interview Questions */}
+      {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -524,6 +477,53 @@ export default function XmlSitemapsArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 9: References & Further Reading */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a
+              href="https://www.sitemaps.org/protocol.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              Sitemaps.org — Sitemaps XML Protocol
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              Google Search Central — Sitemaps Overview
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developers.google.com/search/docs/crawling-indexing/sitemaps/news-sitemap"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              Google — News Sitemaps
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.indexnow.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              IndexNow Protocol — Instant URL Indexing
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

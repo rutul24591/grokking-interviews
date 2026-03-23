@@ -1,18 +1,123 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Keyboard Shortcuts diagram 2">
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Shortcut Registry Architecture with Scope Hierarchy</text>
+
+  <!-- Central Registry -->
+  <rect x="300" y="55" width="300" height="110" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="77" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Shortcut Registry (Singleton)</text>
+  <text x="315" y="97" font-size="10" fill="#1a1822">register(binding, handler, scope, priority)</text>
+  <text x="315" y="113" font-size="10" fill="#1a1822">unregister(bindingId)</text>
+  <text x="315" y="129" font-size="10" fill="#1a1822">getActiveBindings(scope): Binding[]</text>
+  <text x="315" y="145" font-size="10" fill="#1a1822">setEnabled(scope, boolean)</text>
+  <text x="315" y="157" font-size="10" fill="#1a1822">onConflict: &quot;warn&quot; | &quot;override&quot; | &quot;throw&quot;</text>
+
+  <!-- Component Registration Pattern -->
+  <rect x="30" y="55" width="250" height="110" rx="8" fill="#6d5bd0"/>
+  <text x="155" y="77" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Component Registration</text>
+  <text x="45" y="100" font-size="9" fill="#ffffff">useKeyboardShortcut({</text>
+  <text x="45" y="115" font-size="9" fill="#ffffff">  key: &quot;Mod+S&quot;,</text>
+  <text x="45" y="130" font-size="9" fill="#ffffff">  handler: handleSave,</text>
+  <text x="45" y="145" font-size="9" fill="#ffffff">  scope: &quot;editor&quot;,</text>
+  <text x="45" y="160" font-size="9" fill="#ffffff">}); // auto-cleanup on unmount</text>
+
+  <line x1="280" y1="110" x2="300" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Conflict Resolution -->
+  <rect x="630" y="55" width="240" height="110" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="750" y="77" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Conflict Resolution</text>
+  <text x="645" y="100" font-size="9" fill="#1a1822">1. Higher scope priority wins</text>
+  <text x="645" y="116" font-size="9" fill="#1a1822">2. More specific binding wins</text>
+  <text x="645" y="132" font-size="9" fill="#1a1822">3. Last registered wins (same)</text>
+  <text x="645" y="148" font-size="9" fill="#1a1822">4. Dev warning in console</text>
+  <text x="645" y="160" font-size="9" fill="#1a1822">5. Override table for exceptions</text>
+
+  <line x1="600" y1="110" x2="630" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Scope layers -->
+  <text x="450" y="195" text-anchor="middle" font-size="14" font-weight="600" fill="#1a1822">Active Scope Stack</text>
+
+  <!-- Global bindings -->
+  <rect x="30" y="215" width="840" height="55" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="30" y="215" width="120" height="55" rx="6" fill="#6d5bd0"/>
+  <text x="90" y="240" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Global</text>
+  <text x="90" y="255" text-anchor="middle" font-size="9" fill="#ffffff">Always active</text>
+
+  <rect x="165" y="225" width="115" height="35" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="222" y="247" text-anchor="middle" font-size="9" fill="#1a1822">Mod+K: Palette</text>
+
+  <rect x="290" y="225" width="115" height="35" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="347" y="247" text-anchor="middle" font-size="9" fill="#1a1822">Mod+,: Settings</text>
+
+  <rect x="415" y="225" width="115" height="35" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="472" y="247" text-anchor="middle" font-size="9" fill="#1a1822">Mod+/: Help</text>
+
+  <rect x="540" y="225" width="115" height="35" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="597" y="247" text-anchor="middle" font-size="9" fill="#1a1822">?: Shortcuts</text>
+
+  <rect x="665" y="225" width="115" height="35" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="722" y="247" text-anchor="middle" font-size="9" fill="#1a1822">Esc: Close</text>
+
+  <!-- Page bindings -->
+  <rect x="30" y="280" width="840" height="55" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="30" y="280" width="120" height="55" rx="6" fill="#6d5bd0" opacity="0.85"/>
+  <text x="90" y="305" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Editor Page</text>
+  <text x="90" y="320" text-anchor="middle" font-size="9" fill="#ffffff">When editor open</text>
+
+  <rect x="165" y="290" width="115" height="35" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="222" y="312" text-anchor="middle" font-size="9" fill="#1a1822">Mod+S: Save</text>
+
+  <rect x="290" y="290" width="115" height="35" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="347" y="312" text-anchor="middle" font-size="9" fill="#1a1822">Mod+Z: Undo</text>
+
+  <rect x="415" y="290" width="140" height="35" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="485" y="312" text-anchor="middle" font-size="9" fill="#1a1822">Mod+Shift+Z: Redo</text>
+
+  <rect x="565" y="290" width="115" height="35" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="622" y="312" text-anchor="middle" font-size="9" fill="#1a1822">Mod+P: Preview</text>
+
+  <!-- Panel bindings -->
+  <rect x="30" y="345" width="840" height="55" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="30" y="345" width="120" height="55" rx="6" fill="#6d5bd0" opacity="0.7"/>
+  <text x="90" y="370" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Canvas Panel</text>
+  <text x="90" y="385" text-anchor="middle" font-size="9" fill="#ffffff">When focused</text>
+
+  <rect x="165" y="355" width="95" height="35" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="212" y="377" text-anchor="middle" font-size="9" fill="#1a1822">V: Select</text>
+
+  <rect x="270" y="355" width="95" height="35" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="317" y="377" text-anchor="middle" font-size="9" fill="#1a1822">R: Rectangle</text>
+
+  <rect x="375" y="355" width="95" height="35" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="422" y="377" text-anchor="middle" font-size="9" fill="#1a1822">T: Text</text>
+
+  <rect x="480" y="355" width="95" height="35" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="527" y="377" text-anchor="middle" font-size="9" fill="#1a1822">Space: Pan</text>
+
+  <rect x="585" y="355" width="115" height="35" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="642" y="377" text-anchor="middle" font-size="9" fill="#1a1822">Del: Remove</text>
+
+  <rect x="710" y="355" width="115" height="35" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="767" y="377" text-anchor="middle" font-size="9" fill="#1a1822">Arrows: Nudge</text>
+
+  <!-- Platform Mapping -->
+  <rect x="30" y="415" width="410" height="75" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="235" y="437" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Platform-Adaptive Mapping</text>
+
+  <text x="45" y="457" font-size="10" fill="#1a1822">macOS: ⌘ (Cmd) as primary modifier</text>
+  <text x="45" y="473" font-size="10" fill="#1a1822">Windows/Linux: Ctrl as primary modifier</text>
+  <text x="45" y="489" font-size="10" fill="#1a1822">&quot;Mod&quot; abstract maps to platform-correct key</text>
+
+  <!-- Lifecycle -->
+  <rect x="460" y="415" width="410" height="75" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="665" y="437" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Lifecycle Management</text>
+
+  <text x="475" y="457" font-size="10" fill="#1a1822">Register on mount → unregister on unmount</text>
+  <text x="475" y="473" font-size="10" fill="#1a1822">Disable when scope inactive (blur, overlay)</text>
+  <text x="475" y="489" font-size="10" fill="#1a1822">Re-enable on scope return (focus, close modal)</text>
+
   <defs>
-    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
   </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg2)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Keyboard Shortcuts</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 2</text>
 </svg>

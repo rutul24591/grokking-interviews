@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-labelledby="title desc">
+  <title id="title">Plugin Architecture Lifecycle</title>
+  <desc id="desc">Plugin lifecycle flow showing discovery, loading, activation, execution, and deactivation phases</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="450" fill="var(--bg-color, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="var(--text-color, #1a1a1a)">Plugin Lifecycle Flow</text>
+  
+  <!-- Phase 1: Discovery -->
+  <rect x="50" y="70" width="140" height="100" rx="8" fill="var(--primary-light, #e3f2fd)" stroke="var(--primary-color, #1976d2)" stroke-width="2"/>
+  <text x="120" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="var(--primary-color, #1976d2)">1. Discovery</text>
+  <text x="120" y="120" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Scan plugin dirs</text>
+  <text x="120" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Read manifests</text>
+  <text x="120" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Validate metadata</text>
+  
+  <!-- Arrow 1 -->
+  <path d="M190 120 L230 120" stroke="var(--text-color, #1a1a1a)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Phase 2: Loading -->
+  <rect x="230" y="70" width="140" height="100" rx="8" fill="var(--warning-light, #fff3cd)" stroke="var(--warning-color, #ffc107)" stroke-width="2"/>
+  <text x="300" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="var(--warning-color, #ffc107)">2. Loading</text>
+  <text x="300" y="120" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Dynamic import</text>
+  <text x="300" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Create sandbox</text>
+  <text x="300" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Initialize context</text>
+  
+  <!-- Arrow 2 -->
+  <path d="M370 120 L410 120" stroke="var(--text-color, #1a1a1a)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Phase 3: Activation -->
+  <rect x="410" y="70" width="140" height="100" rx="8" fill="var(--info-light, #e7f3ff)" stroke="var(--info-color, #0d6efd)" stroke-width="2"/>
+  <text x="480" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="var(--info-color, #0d6efd)">3. Activation</text>
+  <text x="480" y="120" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Register hooks</text>
+  <text x="480" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Bind extension pts</text>
+  <text x="480" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Enable UI slots</text>
+  
+  <!-- Arrow 3 -->
+  <path d="M550 120 L590 120" stroke="var(--text-color, #1a1a1a)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Phase 4: Execution -->
+  <rect x="590" y="70" width="140" height="100" rx="8" fill="var(--success-light, #d4edda)" stroke="var(--success-color, #28a745)" stroke-width="2"/>
+  <text x="660" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="var(--success-color, #28a745)">4. Execution</text>
+  <text x="660" y="120" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Handle events</text>
+  <text x="660" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Render UI</text>
+  <text x="660" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Call host APIs</text>
+  
+  <!-- Deactivation arrow (loop back) -->
+  <path d="M660 170 L660 200 L120 200 L120 175" stroke="var(--error-color, #dc3545)" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowhead)"/>
+  <text x="675" y="190" text-anchor="start" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--error-color, #dc3545)" font-weight="600">On disable/uninstall</text>
+  
+  <!-- Phase 5: Deactivation -->
+  <rect x="590" y="220" width="140" height="80" rx="8" fill="var(--error-light, #f8d7da)" stroke="var(--error-color, #dc3545)" stroke-width="2"/>
+  <text x="660" y="245" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="var(--error-color, #dc3545)">5. Deactivation</text>
+  <text x="660" y="265" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Unregister hooks</text>
+  <text x="660" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Cleanup resources</text>
+  
+  <!-- Plugin Manifest Example -->
+  <rect x="50" y="220" width="340" height="120" rx="8" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="2"/>
+  <text x="220" y="245" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--text-color, #1a1a1a)">Plugin Manifest (plugin.json)</text>
+  
+  <text x="70" y="270" text-anchor="start" font-family="monospace" font-size="10" fill="var(--text-color, #1a1a1a)">{</text>
+  <text x="85" y="285" text-anchor="start" font-family="monospace" font-size="10" fill="var(--text-color, #1a1a1a)">"name": "analytics-plugin",</text>
+  <text x="85" y="300" text-anchor="start" font-family="monospace" font-size="10" fill="var(--text-color, #1a1a1a)">"version": "1.0.0",</text>
+  <text x="85" y="315" text-anchor="start" font-family="monospace" font-size="10" fill="var(--text-color, #1a1a1a)">"hostVersion": "^2.0.0",</text>
+  <text x="85" y="330" text-anchor="start" font-family="monospace" font-size="10" fill="var(--text-color, #1a1a1a)">"extensionPoints": ["dashboard-widget"],</text>
+  <text x="85" y="345" text-anchor="start" font-family="monospace" font-size="10" fill="var(--text-color, #1a1a1a)">"permissions": ["read:analytics", "write:events"]</text>
+  <text x="70" y="360" text-anchor="start" font-family="monospace" font-size="10" fill="var(--text-color, #1a1a1a)">}</text>
+  
+  <!-- Capability Model -->
+  <rect x="410" y="220" width="340" height="120" rx="8" fill="var(--panel-color, #f5f5f5)" stroke="var(--border-color, #e0e0e0)" stroke-width="2"/>
+  <text x="580" y="245" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--text-color, #1a1a1a)">Capability Model</text>
+  
+  <rect x="425" y="260" width="140" height="65" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="495" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="var(--text-color, #1a1a1a)">Host Capabilities</text>
+  <text x="495" y="297" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">• API access</text>
+  <text x="495" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">• UI extension points</text>
+  
+  <path d="M565 292 L585 292" stroke="var(--text-color, #1a1a1a)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="575" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-muted, #666666)">grants</text>
+  
+  <rect x="585" y="260" width="140" height="65" rx="4" fill="var(--bg-color, #ffffff)" stroke="var(--border-color, #e0e0e0)" stroke-width="1"/>
+  <text x="655" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="var(--text-color, #1a1a1a)">Plugin Permissions</text>
+  <text x="655" y="297" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">• Declared in manifest</text>
+  <text x="655" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">• Enforced at runtime</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--text-color, #1a1a1a)"/>
+    </marker>
+  </defs>
+</svg>

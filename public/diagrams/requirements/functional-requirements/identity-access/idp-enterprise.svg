@@ -1,7 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
   <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="240" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">idp enterprise</text>
-  <text x="400" y="270" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Identity Access Diagram</text>
-  <text x="400" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Valid XML</text>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Enterprise IdP Deployment</text>
+  
+  <!-- On-Premises -->
+  <rect x="50" y="70" width="220" height="380" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="160" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">On-Premises IdP</text>
+  
+  <rect x="70" y="115" width="180" height="50" rx="4" fill="#ef4444" opacity="0.8"/>
+  <text x="160" y="140" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Active Directory</text>
+  <text x="160" y="155" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Legacy enterprise</text>
+  
+  <rect x="70" y="175" width="180" height="50" rx="4" fill="#ef4444" opacity="0.6"/>
+  <text x="160" y="200" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">ADFS</text>
+  <text x="160" y="215" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Microsoft federation</text>
+  
+  <rect x="70" y="235" width="180" height="50" rx="4" fill="#ef4444" opacity="0.4"/>
+  <text x="160" y="260" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Oracle IAM</text>
+  <text x="160" y="275" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Large enterprise</text>
+  
+  <rect x="70" y="295" width="180" height="120" rx="4" fill="#ffffff" stroke="#ef4444" stroke-width="1"/>
+  <text x="160" y="320" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Pros</text>
+  <text x="160" y="340" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">• Full data control</text>
+  <text x="160" y="355" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">• No internet dependency</text>
+  <text x="160" y="370" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">• Compliance friendly</text>
+  <text x="160" y="385" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ef4444">Cons: High maintenance</text>
+  
+  <rect x="70" y="425" width="180" height="30" rx="4" fill="#ef4444" opacity="0.3"/>
+  <text x="160" y="445" text-anchor="middle" font-family="system-ui" font-size="9" fill="#991b1b">Declining adoption</text>
+  
+  <!-- Cloud IdP -->
+  <rect x="300" y="70" width="240" height="380" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="420" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Cloud IdP</text>
+  
+  <rect x="320" y="115" width="200" height="50" rx="4" fill="#22c55e" opacity="0.8"/>
+  <text x="420" y="140" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Okta</text>
+  <text x="420" y="155" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Market leader</text>
+  
+  <rect x="320" y="175" width="200" height="50" rx="4" fill="#22c55e" opacity="0.6"/>
+  <text x="420" y="200" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Azure AD (Entra ID)</text>
+  <text x="420" y="215" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Microsoft ecosystem</text>
+  
+  <rect x="320" y="235" width="200" height="50" rx="4" fill="#22c55e" opacity="0.4"/>
+  <text x="420" y="260" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">OneLogin</text>
+  <text x="420" y="275" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">SMB focused</text>
+  
+  <rect x="320" y="295" width="200" height="120" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1"/>
+  <text x="420" y="320" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Pros</text>
+  <text x="420" y="340" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">• Managed service</text>
+  <text x="420" y="355" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">• Auto updates</text>
+  <text x="420" y="370" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">• Easy integration</text>
+  <text x="420" y="385" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">Cons: Internet required</text>
+  
+  <rect x="320" y="425" width="200" height="30" rx="4" fill="#22c55e"/>
+  <text x="420" y="445" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Recommended for most</text>
+  
+  <!-- Hybrid -->
+  <rect x="570" y="70" width="190" height="380" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="665" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Hybrid Approach</text>
+  
+  <rect x="590" y="115" width="150" height="50" rx="4" fill="#f59e0b" opacity="0.8"/>
+  <text x="665" y="140" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Cloud + On-Prem</text>
+  <text x="665" y="155" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Best of both</text>
+  
+  <rect x="590" y="175" width="150" height="50" rx="4" fill="#f59e0b" opacity="0.6"/>
+  <text x="665" y="200" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">AD Connect</text>
+  <text x="665" y="215" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Sync to cloud</text>
+  
+  <rect x="590" y="235" width="150" height="50" rx="4" fill="#f59e0b" opacity="0.4"/>
+  <text x="665" y="260" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Pass-through Auth</text>
+  <text x="665" y="275" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Validate on-prem</text>
+  
+  <rect x="590" y="295" width="150" height="120" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="1"/>
+  <text x="665" y="320" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Use Cases</text>
+  <text x="665" y="340" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">• Regulated industries</text>
+  <text x="665" y="355" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">• Data residency</text>
+  <text x="665" y="370" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">• Gradual migration</text>
+  <text x="665" y="385" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">• Legacy integration</text>
+  
+  <rect x="590" y="425" width="150" height="30" rx="4" fill="#f59e0b"/>
+  <text x="665" y="445" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Complex but flexible</text>
+
 </svg>

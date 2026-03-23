@@ -1,7 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
   <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="240" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">phone verification methods</text>
-  <text x="400" y="270" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Identity Access Diagram</text>
-  <text x="400" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Valid XML</text>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Phone Verification Methods Comparison</text>
+  
+  <!-- SMS -->
+  <rect x="50" y="70" width="220" height="280" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="160" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#3b82f6">SMS OTP</text>
+  
+  <rect x="70" y="115" width="180" height="50" rx="4" fill="#3b82f6" opacity="0.8"/>
+  <text x="160" y="140" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Universal</text>
+  <text x="160" y="155" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Works on all phones</text>
+  
+  <rect x="70" y="175" width="180" height="50" rx="4" fill="#3b82f6" opacity="0.6"/>
+  <text x="160" y="200" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Cost: $0.005-$0.05</text>
+  <text x="160" y="220" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Varies by country</text>
+  
+  <rect x="70" y="235" width="180" height="50" rx="4" fill="#3b82f6" opacity="0.4"/>
+  <text x="160" y="260" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Delivery: 5-30 sec</text>
+  <text x="160" y="280" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Can be delayed</text>
+  
+  <rect x="70" y="295" width="180" height="40" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="160" y="317" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Most common method</text>
+  <text x="160" y="332" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ef4444">✗ SIM swap risk</text>
+  
+  <!-- Voice Call -->
+  <rect x="300" y="70" width="220" height="280" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="410" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f59e0b">Voice Call</text>
+  
+  <rect x="320" y="115" width="180" height="50" rx="4" fill="#f59e0b" opacity="0.8"/>
+  <text x="410" y="140" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Reliable Fallback</text>
+  <text x="410" y="155" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Works when SMS fails</text>
+  
+  <rect x="320" y="175" width="180" height="50" rx="4" fill="#f59e0b" opacity="0.6"/>
+  <text x="410" y="200" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Cost: $0.01-$0.10</text>
+  <text x="410" y="220" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Higher than SMS</text>
+  
+  <rect x="320" y="235" width="180" height="50" rx="4" fill="#f59e0b" opacity="0.4"/>
+  <text x="410" y="260" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Delivery: 30-60 sec</text>
+  <text x="410" y="280" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">User must answer</text>
+  
+  <rect x="320" y="295" width="180" height="40" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="410" y="317" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ More reliable</text>
+  <text x="410" y="332" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ef4444">✗ Higher cost</text>
+  
+  <!-- WhatsApp -->
+  <rect x="550" y="70" width="200" height="280" rx="8" fill="#f8fafc" stroke="#22c55e" stroke-width="2"/>
+  <text x="650" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#22c55e">WhatsApp</text>
+  
+  <rect x="570" y="115" width="160" height="50" rx="4" fill="#22c55e" opacity="0.8"/>
+  <text x="650" y="140" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Data-Based</text>
+  <text x="650" y="155" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Works on data connection</text>
+  
+  <rect x="570" y="175" width="160" height="50" rx="4" fill="#22c55e" opacity="0.6"/>
+  <text x="650" y="200" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Cost: Lower</text>
+  <text x="650" y="220" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Free first 1000/month</text>
+  
+  <rect x="570" y="235" width="160" height="50" rx="4" fill="#22c55e" opacity="0.4"/>
+  <text x="650" y="260" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Popular Regions</text>
+  <text x="650" y="280" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Latin America, India</text>
+  
+  <rect x="570" y="295" width="160" height="40" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="650" y="317" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Lower cost</text>
+  <text x="650" y="332" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ef4444">✗ Requires app</text>
+  
+  <!-- Comparison Matrix -->
+  <rect x="50" y="370" width="700" height="110" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="400" y="395" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Method Selection Guide</text>
+  
+  <rect x="70" y="410" width="200" height="60" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="170" y="430" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Primary: SMS</text>
+  <text x="170" y="450" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Default for all users</text>
+  
+  <rect x="290" y="410" width="200" height="60" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="390" y="430" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Fallback: Voice</text>
+  <text x="390" y="450" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">When SMS fails</text>
+  
+  <rect x="510" y="410" width="200" height="60" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="610" y="430" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Regional: WhatsApp</text>
+  <text x="610" y="450" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Emerging markets</text>
+
 </svg>

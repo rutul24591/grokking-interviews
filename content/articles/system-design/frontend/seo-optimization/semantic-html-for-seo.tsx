@@ -87,11 +87,11 @@ export default function SemanticHtmlForSeoArticle() {
           </li>
           <li>
             <strong>&lt;section&gt;:</strong> Represents a thematic grouping of
-            content, typically with a heading. Sections communicate that
-            content within them shares a common theme. Unlike article, a
-            section is not independently meaningful — it is a structural
-            division within a larger document. Each section should ideally have
-            a heading element as its first child.
+            content, typically with a heading. Sections communicate that content
+            within them shares a common theme. Unlike article, a section is not
+            independently meaningful — it is a structural division within a
+            larger document. Each section should ideally have a heading element
+            as its first child.
           </li>
           <li>
             <strong>&lt;nav&gt;:</strong> Identifies major navigation blocks —
@@ -112,14 +112,14 @@ export default function SemanticHtmlForSeoArticle() {
             <strong>&lt;header&gt; and &lt;footer&gt;:</strong> Define
             introductory and closing content for their parent sectioning
             element. A page-level header typically contains the site logo and
-            primary navigation, while an article-level header contains the
-            title and byline. Search engines use these to identify boilerplate
-            content that repeats across pages.
+            primary navigation, while an article-level header contains the title
+            and byline. Search engines use these to identify boilerplate content
+            that repeats across pages.
           </li>
           <li>
             <strong>&lt;main&gt;:</strong> Identifies the dominant content of
-            the document body. There should be only one visible main element
-            per page. Search engines use main to isolate primary content from
+            the document body. There should be only one visible main element per
+            page. Search engines use main to isolate primary content from
             navigation, sidebars, and footers — this is the content most
             relevant for ranking and snippet generation.
           </li>
@@ -136,8 +136,8 @@ export default function SemanticHtmlForSeoArticle() {
             <strong>&lt;figure&gt; and &lt;figcaption&gt;:</strong> Associates
             an image, diagram, or code snippet with its caption. Search engines
             use figcaption as context for understanding the figure&apos;s
-            content, which influences image search ranking and may contribute
-            to the surrounding content&apos;s relevance signals.
+            content, which influences image search ranking and may contribute to
+            the surrounding content&apos;s relevance signals.
           </li>
           <li>
             <strong>&lt;time&gt;:</strong> Represents a specific date or time
@@ -151,8 +151,7 @@ export default function SemanticHtmlForSeoArticle() {
             map to ARIA landmark roles — main maps to the main landmark, nav to
             navigation, aside to complementary, header to banner (when
             page-level), footer to contentinfo. These landmarks help both
-            assistive technologies and search engines understand page
-            structure.
+            assistive technologies and search engines understand page structure.
           </li>
         </ul>
       </section>
@@ -188,20 +187,20 @@ export default function SemanticHtmlForSeoArticle() {
           topic structure. Content within article and section elements is
           weighted more heavily than content in nav, aside, or footer elements.
           The final content model informs both ranking (which topics the page
-          covers) and snippet generation (which text best answers the user&apos;s
-          query).
+          covers) and snippet generation (which text best answers the
+          user&apos;s query).
         </p>
         <ArticleImage
           src="/diagrams/system-design-concepts/frontend/seo-optimization/semantic-html-for-seo-diagram-3.svg"
           alt="Heading hierarchy and content weight distribution showing how h1 through h6 elements affect content importance signals"
         />
         <p>
-          The heading hierarchy creates a weighted content structure. h1
-          defines the primary page topic and should align with the title tag.
-          h2 headings define major sections — these are often used for featured
+          The heading hierarchy creates a weighted content structure. h1 defines
+          the primary page topic and should align with the title tag. h2
+          headings define major sections — these are often used for featured
           snippet generation when they match user queries. h3-h6 headings
-          provide increasingly granular structure. Skipping heading levels
-          (h1 → h3) breaks the outline and may confuse content parsers.
+          provide increasingly granular structure. Skipping heading levels (h1 →
+          h3) breaks the outline and may confuse content parsers.
         </p>
       </section>
 
@@ -278,15 +277,15 @@ export default function SemanticHtmlForSeoArticle() {
             <strong>Use Exactly One h1 Per Page:</strong> The h1 should clearly
             state the page&apos;s primary topic and align semantically with the
             title tag. While Google has said multiple h1s are technically fine,
-            a single h1 provides the clearest topical signal and avoids
-            diluting the primary heading.
+            a single h1 provides the clearest topical signal and avoids diluting
+            the primary heading.
           </li>
           <li>
             <strong>Maintain a Logical Heading Hierarchy:</strong> Never skip
-            heading levels — go from h1 to h2 to h3, not h1 to h3. The
-            heading outline should read like a table of contents for the page.
-            Screen readers and search engines use this hierarchy to navigate
-            and understand content structure.
+            heading levels — go from h1 to h2 to h3, not h1 to h3. The heading
+            outline should read like a table of contents for the page. Screen
+            readers and search engines use this hierarchy to navigate and
+            understand content structure.
           </li>
           <li>
             <strong>Wrap Primary Content in main:</strong> Every page should
@@ -319,10 +318,10 @@ export default function SemanticHtmlForSeoArticle() {
           </li>
           <li>
             <strong>Build Semantics Into Component Libraries:</strong> Design
-            system components should render semantic elements by default. A
-            Card component should render as article, a Navigation component as
-            nav, a Sidebar component as aside. This ensures semantic correctness
-            at scale without relying on individual developer decisions.
+            system components should render semantic elements by default. A Card
+            component should render as article, a Navigation component as nav, a
+            Sidebar component as aside. This ensures semantic correctness at
+            scale without relying on individual developer decisions.
           </li>
         </ol>
       </section>
@@ -359,9 +358,9 @@ export default function SemanticHtmlForSeoArticle() {
           </li>
           <li>
             <strong>Multiple main Elements:</strong> While the HTML spec allows
-            multiple main elements if only one is visible, this pattern
-            confuses crawlers and assistive technologies. Use a single main
-            element containing the page&apos;s primary content.
+            multiple main elements if only one is visible, this pattern confuses
+            crawlers and assistive technologies. Use a single main element
+            containing the page&apos;s primary content.
           </li>
         </ul>
       </section>
@@ -372,8 +371,8 @@ export default function SemanticHtmlForSeoArticle() {
         <ul className="space-y-3">
           <li>
             <strong>Wikipedia:</strong> Uses semantic HTML extensively — each
-            article page has a clear heading hierarchy (h1 for article title,
-            h2 for major sections, h3 for subsections), article elements for
+            article page has a clear heading hierarchy (h1 for article title, h2
+            for major sections, h3 for subsections), article elements for
             content, nav for table of contents, and figure/figcaption for
             images. This semantic structure is a key factor in Wikipedia&apos;s
             consistently high search rankings.
@@ -381,16 +380,16 @@ export default function SemanticHtmlForSeoArticle() {
           <li>
             <strong>MDN Web Docs:</strong> Mozilla&apos;s documentation uses
             semantic elements as a reference implementation — article for each
-            doc page, nav for sidebar navigation, section for content
-            divisions, and a strict heading hierarchy. Their featured snippets
-            in Google often pull directly from well-structured heading and
-            paragraph combinations.
+            doc page, nav for sidebar navigation, section for content divisions,
+            and a strict heading hierarchy. Their featured snippets in Google
+            often pull directly from well-structured heading and paragraph
+            combinations.
           </li>
           <li>
             <strong>E-Commerce Product Listings:</strong> Sites like Best Buy
             use article elements for each product card in category listings,
-            with figure/figcaption for product images, and semantic headings
-            for product names. This structure helps Google understand individual
+            with figure/figcaption for product images, and semantic headings for
+            product names. This structure helps Google understand individual
             products within a listing page.
           </li>
           <li>
@@ -403,7 +402,93 @@ export default function SemanticHtmlForSeoArticle() {
         </ul>
       </section>
 
-      {/* Section 8: References & Further Reading */}
+      {/* Section 8: Common Interview Questions */}
+      <section>
+        <h2>Common Interview Questions</h2>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How does semantic HTML improve SEO beyond accessibility?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Semantic HTML gives search engines explicit structural signals.
+              The main element identifies primary content for ranking and
+              snippet generation. The heading hierarchy reveals topic
+              organization, enabling featured snippet selection. Article
+              boundaries help identify individually rankable content units. Time
+              elements with datetime attributes feed freshness signals.
+              Figure/figcaption pairs provide context for image search ranking.
+              Without these signals, search engines must infer structure from
+              visual layout — a less reliable process that can misidentify
+              content importance.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: Should you have multiple h1 tags on a single page?
+            </p>
+            <p className="mt-2 text-sm">
+              A: While the HTML5 spec technically allows multiple h1 elements
+              within different sectioning elements, and Google has confirmed it
+              won&apos;t cause ranking penalties, the best practice is to use
+              exactly one h1 per page. A single h1 provides the clearest primary
+              topic signal. Multiple h1s can dilute the topical focus and may
+              confuse content parsers about the page&apos;s main subject. The
+              exception is aggregation pages (feeds, search results) where each
+              listed item could reasonably have its own h1 within an article
+              element.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What is the difference between section and div for SEO?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Section is a semantic element indicating a thematic content
+              grouping that would logically appear in a document outline. Div is
+              a generic container with no semantic meaning. For SEO, section
+              helps search engines understand content organization — each
+              section represents a subtopic with its own heading. Div carries no
+              such signal. Use section when the content group has a theme and
+              heading; use div for layout and styling purposes where no semantic
+              grouping is intended.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How would you audit a site&apos;s semantic HTML for SEO issues?
+            </p>
+            <p className="mt-2 text-sm">
+              A: I would check for: presence of a single main element on each
+              page; a logical heading hierarchy (h1 → h2 → h3 without skips); h1
+              alignment with the title tag; article elements wrapping standalone
+              content; nav elements around navigation; aside for sidebar
+              content; figure/figcaption for captioned media; time elements with
+              datetime for dates; no semantic elements used purely for styling
+              (h3 for visual size); and no critical content inside elements that
+              search engines might deprioritize (nav, footer, aside).
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do web components and Shadow DOM affect SEO?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Web components using Shadow DOM present SEO challenges. Content
+              inside Shadow DOM may not be fully accessible to search engine
+              crawlers, particularly those that don&apos;t execute JavaScript.
+              Custom element names carry no inherent semantic meaning — a
+              custom-card element means nothing to search engines without ARIA
+              roles. The best approach is to use web components for interactive
+              widgets while keeping primary, indexable content in the Light DOM
+              with standard semantic elements. Critical SEO content (headings,
+              paragraphs, links) should never be locked inside Shadow DOM.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 9: References & Further Reading */}
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
@@ -448,95 +533,6 @@ export default function SemanticHtmlForSeoArticle() {
             </a>
           </li>
         </ul>
-      </section>
-
-      {/* Section 9: Common Interview Questions */}
-      <section>
-        <h2>Common Interview Questions</h2>
-        <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How does semantic HTML improve SEO beyond accessibility?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Semantic HTML gives search engines explicit structural signals.
-              The main element identifies primary content for ranking and
-              snippet generation. The heading hierarchy reveals topic
-              organization, enabling featured snippet selection. Article
-              boundaries help identify individually rankable content units.
-              Time elements with datetime attributes feed freshness signals.
-              Figure/figcaption pairs provide context for image search ranking.
-              Without these signals, search engines must infer structure from
-              visual layout — a less reliable process that can misidentify
-              content importance.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: Should you have multiple h1 tags on a single page?
-            </p>
-            <p className="mt-2 text-sm">
-              A: While the HTML5 spec technically allows multiple h1 elements
-              within different sectioning elements, and Google has confirmed it
-              won&apos;t cause ranking penalties, the best practice is to use
-              exactly one h1 per page. A single h1 provides the clearest
-              primary topic signal. Multiple h1s can dilute the topical focus
-              and may confuse content parsers about the page&apos;s main
-              subject. The exception is aggregation pages (feeds, search
-              results) where each listed item could reasonably have its own h1
-              within an article element.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: What is the difference between section and div for SEO?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Section is a semantic element indicating a thematic content
-              grouping that would logically appear in a document outline. Div
-              is a generic container with no semantic meaning. For SEO, section
-              helps search engines understand content organization — each
-              section represents a subtopic with its own heading. Div carries
-              no such signal. Use section when the content group has a theme
-              and heading; use div for layout and styling purposes where no
-              semantic grouping is intended.
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How would you audit a site&apos;s semantic HTML for SEO
-              issues?
-            </p>
-            <p className="mt-2 text-sm">
-              A: I would check for: presence of a single main element on each
-              page; a logical heading hierarchy (h1 → h2 → h3 without skips);
-              h1 alignment with the title tag; article elements wrapping
-              standalone content; nav elements around navigation; aside for
-              sidebar content; figure/figcaption for captioned media; time
-              elements with datetime for dates; no semantic elements used
-              purely for styling (h3 for visual size); and no critical content
-              inside elements that search engines might deprioritize (nav,
-              footer, aside).
-            </p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How do web components and Shadow DOM affect SEO?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Web components using Shadow DOM present SEO challenges.
-              Content inside Shadow DOM may not be fully accessible to search
-              engine crawlers, particularly those that don&apos;t execute
-              JavaScript. Custom element names carry no inherent semantic
-              meaning — a custom-card element means nothing to search engines
-              without ARIA roles. The best approach is to use web components
-              for interactive widgets while keeping primary, indexable content
-              in the Light DOM with standard semantic elements. Critical SEO
-              content (headings, paragraphs, links) should never be locked
-              inside Shadow DOM.
-            </p>
-          </div>
-        </div>
       </section>
     </ArticleLayout>
   );
