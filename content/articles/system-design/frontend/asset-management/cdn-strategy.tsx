@@ -159,29 +159,24 @@ export default function CdnStrategyExtensiveArticle() {
         <h3 className="mt-6 font-semibold">Cache-Control Header Design</h3>
         <p>
           Correct cache header configuration is the foundation of CDN strategy.
-          The primary directives to understand:
+          The primary directives to understand: For static assets with content
+          hashing (like <code>/assets/main.a1b2c3d4.js</code>), use{" "}
+          <code>Cache-Control: public, max-age=31536000, immutable</code>. For
+          HTML pages, use a short cache with revalidation:{" "}
+          <code>Cache-Control: public, max-age=0, s-maxage=60, stale-while-revalidate=300</code>{" "}
+          which caches for 60 seconds at the CDN and serves stale content for up
+          to 5 minutes while revalidating. API responses use{" "}
+          <code>Cache-Control: private, max-age=60, must-revalidate</code> to
+          allow browser caching but prevent CDN caching. CDN-specific directives
+          like <code>Surrogate-Control: max-age=86400</code> are stripped by
+          Fastly/Varnish-based CDNs before forwarding to the client. The{" "}
+          <code>Vary</code> header should be used sparingly —{" "}
+          <code>Vary: Accept-Encoding</code> is appropriate, but{" "}
+          <code>Vary: User-Agent</code> destroys cache hit rates by creating a
+          separate cache entry for every unique user-agent string. Instead,
+          normalize device detection at the edge and use{" "}
+          <code>Vary: X-Device-Type</code>.
         </p>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`// Static assets with content hashing (immutable)
-Cache-Control: public, max-age=31536000, immutable
-// File: /assets/main.a1b2c3d4.js
-
-// HTML pages (short cache, revalidate)
-Cache-Control: public, max-age=0, s-maxage=60, stale-while-revalidate=300
-// CDN caches for 60s, serves stale up to 5min while revalidating
-
-// API responses (no CDN cache, browser can cache)
-Cache-Control: private, max-age=60, must-revalidate
-
-// CDN-specific (not sent to browser)
-Surrogate-Control: max-age=86400
-// Fastly/Varnish-based CDNs strip this before forwarding to client
-
-// Vary header - use sparingly
-Vary: Accept-Encoding
-// NEVER: Vary: User-Agent (destroys hit rate)
-// Instead: Vary: X-Device-Type (normalized at edge)`}</code>
-        </pre>
         <p>
           The distinction between <code>max-age</code> and{" "}
           <code>s-maxage</code> is critical: <code>max-age</code> applies to
@@ -686,74 +681,7 @@ Vary: Accept-Encoding
         </ul>
       </section>
 
-      {/* Section 11: References & Further Reading */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-1">
-          <li>
-            <a
-              href="https://web.dev/articles/content-delivery-networks"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:underline"
-            >
-              web.dev - Content Delivery Networks
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developers.cloudflare.com/cache/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:underline"
-            >
-              Cloudflare Cache Documentation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://docs.fastly.com/en/guides/working-with-surrogate-keys"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:underline"
-            >
-              Fastly - Working with Surrogate Keys
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://openconnect.netflix.com/en/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:underline"
-            >
-              Netflix Open Connect CDN
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://httpwg.org/specs/rfc9111.html"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:underline"
-            >
-              RFC 9111 - HTTP Caching
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:underline"
-            >
-              MDN - Cache-Control Header
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      {/* Section 12: Common Interview Questions */}
+      {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -890,6 +818,73 @@ Vary: Accept-Encoding
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 9: References & Further Reading */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-1">
+          <li>
+            <a
+              href="https://web.dev/articles/content-delivery-networks"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline"
+            >
+              web.dev - Content Delivery Networks
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developers.cloudflare.com/cache/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline"
+            >
+              Cloudflare Cache Documentation
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://docs.fastly.com/en/guides/working-with-surrogate-keys"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline"
+            >
+              Fastly - Working with Surrogate Keys
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://openconnect.netflix.com/en/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline"
+            >
+              Netflix Open Connect CDN
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://httpwg.org/specs/rfc9111.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline"
+            >
+              RFC 9111 - HTTP Caching
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:underline"
+            >
+              MDN - Cache-Control Header
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

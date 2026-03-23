@@ -30,17 +30,36 @@ export default function CredentialRotationArticle() {
           compromised credentials. It is a fundamental security practice for protecting
           user accounts and system access.
         </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/credential-rotation-flow.svg"
+          alt="Credential Rotation Flow"
+          caption="Credential Rotation Flow — showing scheduled rotation, compromise-triggered rotation, and validation"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/token-rotation.svg"
+          alt="Token Rotation"
+          caption="Token Rotation — showing refresh token rotation, invalidation, and reuse detection"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/credential-rotation-security.svg"
+          alt="Credential Rotation Security"
+          caption="Credential Rotation Security — showing old credential invalidation and grace periods"
+        />
+      
         <p>
           For staff and principal engineers, implementing credential rotation requires
           understanding password policies, token rotation, key rotation, and security
           best practices. The implementation must balance security with usability.
         </p>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/credential-rotation-flow.svg"
-          alt="Credential Rotation Flow"
-          caption="Credential Rotation — showing password, token, and key rotation patterns"
-        />
+        
+
+        
+
+        
       </section>
 
       <section>
@@ -56,11 +75,7 @@ export default function CredentialRotationArticle() {
       <section>
         <h2>Token Rotation</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/token-rotation.svg"
-          alt="Token Rotation"
-          caption="Token Rotation — showing refresh token rotation, reuse detection, and family revocation"
-        />
+        
 
         <ul className="space-y-3">
           <li><strong>Refresh Tokens:</strong> New token on each use.</li>
@@ -207,11 +222,7 @@ export default function CredentialRotationArticle() {
       <section>
         <h2>Interview Questions</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/credential-rotation-security.svg"
-          alt="Credential Rotation Security"
-          caption="Security — showing rotation policies, expiry handling, and compromise detection"
-        />
+        
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -598,6 +609,65 @@ export default function CredentialRotationArticle() {
         <p>
           Meet regulatory requirements for rotation. SOC2 audit trails. HIPAA immediate rotation. PCI-DSS session controls. GDPR right to rotation. Regular compliance reviews. External audit support.
         </p>
+      </section>
+
+      <section>
+        <h2>Real-world Use Cases</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce Credential Rotation</h3>
+        <p>
+          Large e-commerce platform with 50M users, password change and token rotation requirements.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Password change requires session revocation. Token rotation for security. Users forget to update saved passwords.</li>
+          <li><strong>Solution:</strong> Automatic session revocation on password change. Refresh token rotation on each use. Email notification for credential changes. Grace period for token update.</li>
+          <li><strong>Result:</strong> Zero unauthorized access post-rotation. 99% successful token rotation. Customer trust maintained.</li>
+          <li><strong>Security:</strong> Session revocation, token rotation, email notifications.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Banking Credential Rotation</h3>
+        <p>
+          Online banking with FFIEC compliance and mandatory password rotation.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> FFIEC requires password rotation (90 days). Customers forget passwords. Multiple devices need sync.</li>
+          <li><strong>Solution:</strong> Password expiry reminders (14, 7, 1 days before). Graceful rotation with MFA verification. Cross-device sync via server-side invalidation. Emergency override for locked accounts.</li>
+          <li><strong>Result:</strong> Passed FFIEC audits. 95% on-time rotation. Support tickets reduced 40%.</li>
+          <li><strong>Security:</strong> MFA verification, cross-device invalidation, emergency override.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SaaS Credential Rotation</h3>
+        <p>
+          B2B SaaS with 10,000 enterprise customers, admin-managed rotation policies.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Enterprise customers have different rotation policies. Admin needs to force rotation. SSO users bypass local rotation.</li>
+          <li><strong>Solution:</strong> Tenant-specific rotation policies. Admin-forced rotation API. SSO policy sync with IdP. Audit logging for all rotations.</li>
+          <li><strong>Result:</strong> Enterprise compliance maintained. Admin efficiency improved. Zero rotation failures.</li>
+          <li><strong>Security:</strong> Policy enforcement, admin controls, SSO sync.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Healthcare Credential Rotation</h3>
+        <p>
+          HIPAA-compliant EHR system with 50,000 providers, shared workstation considerations.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> HIPAA requires credential rotation. Shared workstations complicate rotation. Provider access critical for patient care.</li>
+          <li><strong>Solution:</strong> Role-based rotation (providers: 1 year, staff: 90 days). Shared workstation bypass with badge auth. Emergency override with audit. Manager notification for overdue rotation.</li>
+          <li><strong>Result:</strong> Passed HIPAA audits. Provider workflow maintained. 90% on-time rotation.</li>
+          <li><strong>Security:</strong> Role-based policies, badge auth, emergency override.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Gaming Platform Credential Rotation</h3>
+        <p>
+          Online gaming platform with 100M users, account security and parental controls.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> High-value accounts targeted. Young users forget passwords. Parental approval for minor account changes.</li>
+          <li><strong>Solution:</strong> Optional rotation reminders for standard accounts. Mandatory for high-value (purchase history). Parental approval for minor accounts. Breach-forced rotation for compromised credentials.</li>
+          <li><strong>Result:</strong> Account takeovers reduced 85%. Parent satisfaction improved. Breach response under 1 hour.</li>
+          <li><strong>Security:</strong> Value-based rotation, parental controls, breach response.</li>
+        </ul>
       </section>
     </ArticleLayout>
   );

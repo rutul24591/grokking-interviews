@@ -22,10 +22,10 @@
 
   <!-- Code representation -->
   <rect x="38" y="182" width="164" height="70" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1" />
-  <text x="48" y="200" fill="#6d5bd0" font-family="monospace" font-size="10" font-weight="600">&lt;label for=&quot;email&quot;&gt;</text>
+  <text x="48" y="200" fill="#6d5bd0" font-family="monospace" font-size="10" font-weight="600">&amp;lt;label for=&amp;quot;email&amp;quot;&amp;gt;</text>
   <text x="56" y="215" fill="#1a1822" font-family="monospace" font-size="10">Email</text>
-  <text x="48" y="230" fill="#6d5bd0" font-family="monospace" font-size="10" font-weight="600">&lt;/label&gt;</text>
-  <text x="48" y="245" fill="#6d5bd0" font-family="monospace" font-size="10" font-weight="600">&lt;input id=&quot;email&quot; /&gt;</text>
+  <text x="48" y="230" fill="#6d5bd0" font-family="monospace" font-size="10" font-weight="600">&amp;lt;/label&amp;gt;</text>
+  <text x="48" y="245" fill="#6d5bd0" font-family="monospace" font-size="10" font-weight="600">&amp;lt;input id=&amp;quot;email&amp;quot; /&amp;gt;</text>
 
   <!-- Arrow showing connection -->
   <line x1="92" y1="260" x2="92" y2="280" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)" />
@@ -59,10 +59,10 @@
 
   <!-- Code representation -->
   <rect x="258" y="182" width="164" height="70" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1" />
-  <text x="268" y="200" fill="#6d5bd0" font-family="monospace" font-size="10" font-weight="600">&lt;label&gt;</text>
+  <text x="268" y="200" fill="#6d5bd0" font-family="monospace" font-size="10" font-weight="600">&amp;lt;label&amp;gt;</text>
   <text x="276" y="215" fill="#1a1822" font-family="monospace" font-size="10">Email</text>
-  <text x="276" y="230" fill="#6d5bd0" font-family="monospace" font-size="10" font-weight="600">&lt;input /&gt;</text>
-  <text x="268" y="245" fill="#6d5bd0" font-family="monospace" font-size="10" font-weight="600">&lt;/label&gt;</text>
+  <text x="276" y="230" fill="#6d5bd0" font-family="monospace" font-size="10" font-weight="600">&amp;lt;input /&amp;gt;</text>
+  <text x="268" y="245" fill="#6d5bd0" font-family="monospace" font-size="10" font-weight="600">&amp;lt;/label&amp;gt;</text>
 
   <!-- Arrow showing connection -->
   <rect x="258" y="285" width="164" height="32" rx="6" fill="#6d5bd0" opacity="0.15" />
@@ -92,10 +92,10 @@
 
   <!-- Code representation -->
   <rect x="478" y="182" width="164" height="70" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1" />
-  <text x="488" y="200" fill="#6d5bd0" font-family="monospace" font-size="10" font-weight="600">&lt;input</text>
+  <text x="488" y="200" fill="#6d5bd0" font-family="monospace" font-size="10" font-weight="600">&amp;lt;input</text>
   <text x="496" y="215" fill="#1a1822" font-family="monospace" font-size="10">aria-label=</text>
-  <text x="496" y="230" fill="#6d5bd0" font-family="monospace" font-size="10">&quot;Search site&quot;</text>
-  <text x="488" y="245" fill="#6d5bd0" font-family="monospace" font-size="10" font-weight="600">/&gt;</text>
+  <text x="496" y="230" fill="#6d5bd0" font-family="monospace" font-size="10">&amp;quot;Search site&amp;quot;</text>
+  <text x="488" y="245" fill="#6d5bd0" font-family="monospace" font-size="10" font-weight="600">/&amp;gt;</text>
 
   <!-- Arrow showing connection -->
   <rect x="478" y="285" width="164" height="32" rx="6" fill="#6d5bd0" opacity="0.15" />
@@ -125,10 +125,10 @@
 
   <!-- Code representation -->
   <rect x="698" y="182" width="164" height="70" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1" />
-  <text x="708" y="200" fill="#6d5bd0" font-family="monospace" font-size="10" font-weight="600">&lt;h2 id=&quot;sec&quot;&gt;</text>
+  <text x="708" y="200" fill="#6d5bd0" font-family="monospace" font-size="10" font-weight="600">&amp;lt;h2 id=&amp;quot;sec&amp;quot;&amp;gt;</text>
   <text x="716" y="215" fill="#1a1822" font-family="monospace" font-size="10">Billing</text>
-  <text x="708" y="230" fill="#6d5bd0" font-family="monospace" font-size="10" font-weight="600">&lt;/h2&gt;</text>
-  <text x="708" y="245" fill="#6d5bd0" font-family="monospace" font-size="9">&lt;input aria-labelledby=&quot;sec&quot;/&gt;</text>
+  <text x="708" y="230" fill="#6d5bd0" font-family="monospace" font-size="10" font-weight="600">&amp;lt;/h2&amp;gt;</text>
+  <text x="708" y="245" fill="#6d5bd0" font-family="monospace" font-size="9">&amp;lt;input aria-labelledby=&amp;quot;sec&amp;quot;/&amp;gt;</text>
 
   <!-- Arrow showing connection -->
   <rect x="698" y="285" width="164" height="32" rx="6" fill="#6d5bd0" opacity="0.15" />
@@ -141,7 +141,7 @@
   <circle cx="708" cy="378" r="3" fill="#6d5bd0" />
   <text x="716" y="382" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10">Multiple label sources</text>
   <circle cx="708" cy="398" r="3" fill="#6d5bd0" />
-  <text x="716" y="402" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10">Overrides native &lt;label&gt;</text>
+  <text x="716" y="402" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10">Overrides native &amp;lt;label&amp;gt;</text>
   <circle cx="708" cy="418" r="3" fill="#6d5bd0" />
   <text x="716" y="422" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10">Composable from many IDs</text>
 

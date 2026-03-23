@@ -8,40 +8,40 @@
 
   <!-- Header -->
   <rect x="56" y="72" width="448" height="56" rx="8" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="6 3" />
-  <text x="280" y="96" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="13" font-weight="700">&lt;header&gt;</text>
-  <text x="280" y="114" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="11">role=&quot;banner&quot;</text>
+  <text x="280" y="96" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="13" font-weight="700">&amp;lt;header&amp;gt;</text>
+  <text x="280" y="114" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="11">role=&amp;quot;banner&amp;quot;</text>
 
   <!-- Nav -->
   <rect x="56" y="136" width="448" height="44" rx="8" fill="#2ecc71" opacity="0.15" stroke="#2ecc71" stroke-width="1.5" stroke-dasharray="6 3" />
-  <text x="280" y="158" text-anchor="middle" fill="#1a8c4e" font-family="system-ui, sans-serif" font-size="13" font-weight="700">&lt;nav&gt;</text>
-  <text x="280" y="174" text-anchor="middle" fill="#1a8c4e" font-family="system-ui, sans-serif" font-size="11">role=&quot;navigation&quot;</text>
+  <text x="280" y="158" text-anchor="middle" fill="#1a8c4e" font-family="system-ui, sans-serif" font-size="13" font-weight="700">&amp;lt;nav&amp;gt;</text>
+  <text x="280" y="174" text-anchor="middle" fill="#1a8c4e" font-family="system-ui, sans-serif" font-size="11">role=&amp;quot;navigation&amp;quot;</text>
 
   <!-- Main + Aside row -->
   <rect x="56" y="188" width="304" height="264" rx="8" fill="#3498db" opacity="0.12" stroke="#3498db" stroke-width="1.5" stroke-dasharray="6 3" />
-  <text x="208" y="212" text-anchor="middle" fill="#2980b9" font-family="system-ui, sans-serif" font-size="13" font-weight="700">&lt;main&gt;</text>
-  <text x="208" y="230" text-anchor="middle" fill="#2980b9" font-family="system-ui, sans-serif" font-size="11">role=&quot;main&quot;</text>
+  <text x="208" y="212" text-anchor="middle" fill="#2980b9" font-family="system-ui, sans-serif" font-size="13" font-weight="700">&amp;lt;main&amp;gt;</text>
+  <text x="208" y="230" text-anchor="middle" fill="#2980b9" font-family="system-ui, sans-serif" font-size="11">role=&amp;quot;main&amp;quot;</text>
 
   <!-- Article inside main -->
   <rect x="72" y="244" width="272" height="80" rx="6" fill="#3498db" opacity="0.1" stroke="#3498db" stroke-width="1" />
-  <text x="208" y="268" text-anchor="middle" fill="#2980b9" font-family="system-ui, sans-serif" font-size="12" font-weight="600">&lt;article&gt;</text>
-  <text x="208" y="286" text-anchor="middle" fill="#2980b9" font-family="system-ui, sans-serif" font-size="10">role=&quot;article&quot;</text>
-  <text x="208" y="304" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">&lt;h1&gt;, &lt;h2&gt;, &lt;p&gt;, &lt;figure&gt;</text>
+  <text x="208" y="268" text-anchor="middle" fill="#2980b9" font-family="system-ui, sans-serif" font-size="12" font-weight="600">&amp;lt;article&amp;gt;</text>
+  <text x="208" y="286" text-anchor="middle" fill="#2980b9" font-family="system-ui, sans-serif" font-size="10">role=&amp;quot;article&amp;quot;</text>
+  <text x="208" y="304" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">&amp;lt;h1&amp;gt;, &amp;lt;h2&amp;gt;, &amp;lt;p&amp;gt;, &amp;lt;figure&amp;gt;</text>
 
   <!-- Section inside main -->
   <rect x="72" y="332" width="272" height="56" rx="6" fill="#3498db" opacity="0.08" stroke="#3498db" stroke-width="1" />
-  <text x="208" y="356" text-anchor="middle" fill="#2980b9" font-family="system-ui, sans-serif" font-size="12" font-weight="600">&lt;section&gt;</text>
-  <text x="208" y="374" text-anchor="middle" fill="#2980b9" font-family="system-ui, sans-serif" font-size="10">role=&quot;region&quot; (when labeled)</text>
+  <text x="208" y="356" text-anchor="middle" fill="#2980b9" font-family="system-ui, sans-serif" font-size="12" font-weight="600">&amp;lt;section&amp;gt;</text>
+  <text x="208" y="374" text-anchor="middle" fill="#2980b9" font-family="system-ui, sans-serif" font-size="10">role=&amp;quot;region&amp;quot; (when labeled)</text>
 
   <!-- Aside -->
   <rect x="372" y="188" width="132" height="264" rx="8" fill="#e67e22" opacity="0.15" stroke="#e67e22" stroke-width="1.5" stroke-dasharray="6 3" />
-  <text x="438" y="270" text-anchor="middle" fill="#d35400" font-family="system-ui, sans-serif" font-size="13" font-weight="700">&lt;aside&gt;</text>
+  <text x="438" y="270" text-anchor="middle" fill="#d35400" font-family="system-ui, sans-serif" font-size="13" font-weight="700">&amp;lt;aside&amp;gt;</text>
   <text x="438" y="290" text-anchor="middle" fill="#d35400" font-family="system-ui, sans-serif" font-size="10">role=</text>
-  <text x="438" y="304" text-anchor="middle" fill="#d35400" font-family="system-ui, sans-serif" font-size="10">&quot;complementary&quot;</text>
+  <text x="438" y="304" text-anchor="middle" fill="#d35400" font-family="system-ui, sans-serif" font-size="10">&amp;quot;complementary&amp;quot;</text>
 
   <!-- Footer -->
   <rect x="56" y="460" width="448" height="44" rx="8" fill="#9b59b6" opacity="0.15" stroke="#9b59b6" stroke-width="1.5" stroke-dasharray="6 3" />
-  <text x="280" y="482" text-anchor="middle" fill="#8e44ad" font-family="system-ui, sans-serif" font-size="13" font-weight="700">&lt;footer&gt;</text>
-  <text x="280" y="498" text-anchor="middle" fill="#8e44ad" font-family="system-ui, sans-serif" font-size="11">role=&quot;contentinfo&quot;</text>
+  <text x="280" y="482" text-anchor="middle" fill="#8e44ad" font-family="system-ui, sans-serif" font-size="13" font-weight="700">&amp;lt;footer&amp;gt;</text>
+  <text x="280" y="498" text-anchor="middle" fill="#8e44ad" font-family="system-ui, sans-serif" font-size="11">role=&amp;quot;contentinfo&amp;quot;</text>
 
   <!-- Right panel: Landmark list -->
   <rect x="550" y="56" width="320" height="460" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
@@ -77,6 +77,6 @@
   <text x="710" y="438" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="11">Jump between landmarks in</text>
   <text x="710" y="454" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="11">NVDA, JAWS, VoiceOver</text>
 
-  <text x="710" y="484" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Only 1 &lt;main&gt; per page</text>
-  <text x="710" y="502" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="11">Multiple &lt;nav&gt; allowed (label each)</text>
+  <text x="710" y="484" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Only 1 &amp;lt;main&amp;gt; per page</text>
+  <text x="710" y="502" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="11">Multiple &amp;lt;nav&amp;gt; allowed (label each)</text>
 </svg>

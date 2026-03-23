@@ -384,38 +384,132 @@ export default function SecureStorageSensitiveDataArticle() {
       </section>
 
       <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
+        <h2>Architecture at Scale: Secure Storage in Enterprise Systems</h2>
+        <p>
+          Enterprise-scale secure storage requires coordinated encryption key management, consistent storage policies, and centralized monitoring across multiple applications, services, and geographic regions. In microservices architectures, each service must handle sensitive data consistently while supporting different storage requirements.
+        </p>
+        <p>
+          <strong>Centralized Key Management:</strong> Implement a centralized key management service (AWS KMS, HashiCorp Vault, Azure Key Vault) that manages encryption keys centrally. Services request keys on-demand for encryption/decryption operations. Implement key rotation policies with automatic key versioning. Document key management architecture in system design documentation.
+        </p>
+        <p>
+          <strong>Multi-Tenant Data Isolation:</strong> For SaaS applications, implement tenant isolation at the storage layer. Use tenant-specific encryption keys for data isolation. Implement tenant-aware storage quotas. Support custom data retention policies per tenant. Document multi-tenant storage architecture in security documentation.
+        </p>
+        <p>
+          <strong>Edge Storage Considerations:</strong> For edge-computed applications (Cloudflare Workers, Lambda@Edge), implement secure storage at the edge. Use edge key management for encryption. Implement edge-side token validation. Document edge storage security in infrastructure documentation.
+        </p>
+        <p>
+          <strong>Cross-Device Synchronization:</strong> For applications requiring cross-device data sync, implement secure synchronization protocols. Use end-to-end encryption for synced data. Implement conflict resolution for concurrent modifications. Document sync security in API documentation.
+        </p>
+      </section>
+
+      <section>
+        <h2>Testing Strategies: Secure Storage Validation</h2>
+        <p>
+          Comprehensive secure storage testing requires automated scanning, manual verification, and penetration testing integrated into security operations.
+        </p>
+        <p>
+          <strong>Automated Storage Scanning:</strong> Use browser DevTools, OWASP ZAP, or custom scripts to verify storage attributes. Configure CI/CD pipelines to scan storage usage after each deployment. Set up automated alerts for: sensitive data in localStorage, missing encryption for PII, excessive data retention, insecure cookie attributes.
+        </p>
+        <p>
+          <strong>XSS Exfiltration Testing:</strong> Test for data exfiltration via XSS: (1) Inject XSS payload, (2) Attempt to read stored data, (3) Verify HttpOnly cookies are inaccessible, (4) Verify encrypted data cannot be decrypted without keys. Use tools like XSS Hunter for automated exfiltration testing. Document XSS test results.
+        </p>
+        <p>
+          <strong>Encryption Validation:</strong> Test encryption implementation: (1) Verify data at rest is encrypted, (2) Verify encryption keys are not stored with data, (3) Test key derivation strength, (4) Verify encryption algorithm is industry-standard (AES-GCM, ChaCha20). Use cryptographic validation tools. Document encryption test results.
+        </p>
+        <p>
+          <strong>Data Retention Testing:</strong> Test data retention policies: (1) Verify data is cleared on logout, (2) Verify session storage clears on tab close, (3) Verify expired data is purged, (4) Test auto-lock functionality. Implement automated retention testing in CI/CD. Document retention test results.
+        </p>
+        <p>
+          <strong>Penetration Testing:</strong> Include storage security in quarterly penetration tests. Specific test cases: (1) localStorage data extraction, (2) Cookie theft via XSS, (3) Encryption key extraction, (4) IndexedDB injection attacks, (5) Cache poisoning. Require remediation of all storage-related findings before production deployment.
+        </p>
+      </section>
+
+      <section>
+        <h2>Compliance and Legal Context</h2>
+        <p>
+          Secure storage implementation has significant compliance implications, particularly for applications handling financial transactions, healthcare data, or operating in regulated industries.
+        </p>
+        <p>
+          <strong>GDPR Requirements:</strong> GDPR Article 5 requires data minimization—only store necessary data client-side. Article 17 (Right to Erasure) requires clearing client-side data on user request. Article 32 requires appropriate encryption for personal data. Document storage practices in privacy policy. Implement data export functionality for Article 20 (Data Portability).
+        </p>
+        <p>
+          <strong>CCPA/CPRA Requirements:</strong> California Consumer Privacy Act requires disclosure of data storage practices. Implement &quot;Do Not Sell My Personal Information&quot; mechanism. Disclose what data is stored client-side and why. Provide client-side data deletion mechanism for California residents.
+        </p>
+        <p>
+          <strong>PCI-DSS Requirements:</strong> PCI-DSS Requirement 3.4 requires rendering PAN unreadable anywhere it is stored. Never store card data client-side—use payment processor tokens (Stripe, Braintree). Document tokenization approach in ROC (Report on Compliance). Annual penetration testing must include storage security testing.
+        </p>
+        <p>
+          <strong>HIPAA Requirements:</strong> HIPAA Security Rule 45 CFR 164.312(a)(2)(iv) requires encryption for ePHI at rest. Implement encryption for any PHI stored client-side. Document encryption procedures in security policies. Audit access to encrypted PHI. Implement automatic logoff for apps storing PHI.
+        </p>
+        <p>
+          <strong>SOC 2 Controls:</strong> Secure storage maps to SOC 2 Common Criteria CC6.1 (logical access controls) and CC7.2 (system monitoring). Document storage policies, encryption procedures, and monitoring for annual SOC 2 audits. Track storage-related security incidents.
+        </p>
+      </section>
+
+      <section>
+        <h2>Performance Trade-offs: Security vs. User Experience</h2>
+        <p>
+          Secure storage measures introduce measurable performance overhead that must be balanced against security requirements and user experience.
+        </p>
+        <p>
+          <strong>Encryption Overhead:</strong> AES-GCM encryption adds 5-50ms per operation depending on data size. Use Web Workers for encryption to avoid blocking main thread. Cache encrypted data to reduce repeated encryption. For large datasets (&gt;1MB), consider chunked encryption. Monitor encryption latency and adjust algorithms accordingly.
+        </p>
+        <p>
+          <strong>Key Derivation Latency:</strong> PBKDF2 key derivation takes 100-500ms depending on iteration count. This is intentional (slows brute force). Use appropriate iteration count (100,000+ for PBKDF2, 4+ for Argon2). Show loading indicator during key derivation. Cache derived keys in memory (not storage).
+        </p>
+        <p>
+          <strong>Storage Access Latency:</strong> localStorage access is synchronous and blocks main thread (&lt;1ms). IndexedDB access is asynchronous (5-20ms). Use IndexedDB for large datasets to avoid blocking. Implement storage access queuing for concurrent operations. Monitor storage access patterns.
+        </p>
+        <p>
+          <strong>Cookie Size Impact:</strong> Cookies are sent with every HTTP request. Large cookies (greater than 4KB) increase bandwidth and latency. Keep session cookies minimal (token only). Use localStorage for non-sensitive data that doesn&apos;t need server access. Monitor cookie size in performance budgets.
+        </p>
+        <p>
+          <strong>Private Browsing Limitations:</strong> Private/Incognito modes block or limit storage. IndexedDB may be blocked. localStorage may be cleared on close. Implement graceful degradation for private browsing. Detect private browsing and inform users of limitations. Consider server-side fallback for private browsing users.
+        </p>
+      </section>
+
+      <section>
+        <h2>Browser and Platform Compatibility</h2>
+        <p>
+          Secure storage support varies across browsers, operating systems, and platforms, requiring careful compatibility planning.
+        </p>
+        <p>
+          <strong>Web Crypto API Support:</strong> Supported in Chrome 37+, Firefox 34+, Safari 10.1+, Edge 79+. Not supported in IE11. For legacy browser support, use polyfills (webcrypto-liner) or server-side encryption fallback. Document Web Crypto support in browser compatibility matrix.
+        </p>
+        <p>
+          <strong>IndexedDB Support:</strong> Supported in all modern browsers (IE10+, all current versions). Safari has had bugs with IndexedDB in private browsing. Test IndexedDB across target browsers. Implement localStorage fallback for very old browsers. Monitor IndexedDB quota across browsers.
+        </p>
+        <p>
+          <strong>HttpOnly Cookie Support:</strong> HttpOnly supported in all modern browsers (IE6+, all current versions). Some older mobile browsers have partial HttpOnly support. Test HttpOnly effectiveness using browser DevTools. Document HttpOnly support in browser compatibility matrix.
+        </p>
+        <p>
+          <strong>Mobile Storage Considerations:</strong> iOS WKWebView and Android WebView have separate storage from system browsers. Mobile browsers have stricter storage quotas. Implement storage quota detection and graceful degradation. Test storage on actual mobile devices, not just emulators.
+        </p>
+        <p>
+          <strong>Storage Quota Variations:</strong> localStorage: 5-10MB across browsers. IndexedDB: varies (Chrome: 60% of disk, Firefox: 50%, Safari: 1GB max). Cookie: 4KB per cookie, 50+ cookies per domain. Monitor quota usage and implement cleanup strategies. Request quota increase for IndexedDB when needed.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-World Use Cases</h2>
+        <ul className="space-y-3">
           <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN Web Docs: Web Crypto API
-            </a>
+            <strong>Healthcare Patient Portal:</strong> Store encrypted patient records in IndexedDB for offline access. Encryption key derived from user password. Auto-lock after 5 minutes of inactivity. Clear all data on logout. HIPAA-compliant audit logging for all data access.
           </li>
           <li>
-            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Client-side_Storage_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP Client-side Storage Cheat Sheet
-            </a>
+            <strong>Financial Trading Platform:</strong> Session tokens in HttpOnly cookies. Trading preferences in encrypted localStorage. Real-time portfolio data fetched on-demand, not cached. Auto-logout after 15 minutes of inactivity. PCI-DSS compliant—no card data stored client-side.
           </li>
           <li>
-            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP Authentication Cheat Sheet
-            </a>
+            <strong>Offline-First Field Service App:</strong> Customer PII encrypted with AES-GCM before storing in IndexedDB. Encryption key derived from user credentials, kept in memory only. Sync encrypted data to server when online. Auto-clear data after job completion. GDPR-compliant data retention policies.
           </li>
           <li>
-            <a href="https://web.dev/storage-for-developers/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              web.dev: Storage for Developers
-            </a>
-          </li>
-          <li>
-            <a href="https://www.w3.org/TR/WebCryptoAPI/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              W3C Web Crypto API Specification
-            </a>
+            <strong>E-Commerce Shopping Cart:</strong> Cart contents in localStorage (non-sensitive). Session cookie with HttpOnly + Secure + SameSite for authentication. Payment data never stored—use Stripe/Braintree tokens. Clear cart on purchase completion. CCPA-compliant data disclosure.
           </li>
         </ul>
       </section>
 
       <section>
-        <h2>Interview Questions & Answers</h2>
+        <h2>Interview Questions and Answers</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q1: Where should you store authentication tokens and why?</p>
@@ -484,6 +578,37 @@ export default function SecureStorageSensitiveDataArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      <section>
+        <h2>References and Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN Web Docs: Web Crypto API
+            </a>
+          </li>
+          <li>
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Client-side_Storage_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OWASP Client-side Storage Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OWASP Authentication Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/storage-for-developers/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              web.dev: Storage for Developers
+            </a>
+          </li>
+          <li>
+            <a href="https://www.w3.org/TR/WebCryptoAPI/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              W3C Web Crypto API Specification
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

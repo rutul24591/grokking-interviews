@@ -332,7 +332,114 @@ export default function TokenRefreshStrategiesArticle() {
       </section>
 
       <section>
-        <h2>References & Further Reading</h2>
+        <h2>Architecture at Scale: Token Refresh in Enterprise Systems</h2>
+        <p>
+          Enterprise-scale token refresh requires coordinated session management, consistent refresh policies, and centralized monitoring across multiple applications, services, and geographic regions. In microservices architectures, each service must handle token refresh consistently while supporting different token types and expiration policies.
+        </p>
+        <p>
+          <strong>Centralized Token Service:</strong> Implement a centralized token service that handles refresh for all applications. Use a token service (Auth0, Okta, AWS Cognito, Keycloak) that manages token lifecycle centrally. Implement token refresh endpoints with rate limiting. Document token architecture in system design documentation.
+        </p>
+        <p>
+          <strong>Multi-Region Token Refresh:</strong> For global applications, implement token refresh in multiple regions. Use geo-DNS to route refresh requests to nearest region. Implement token replication across regions for failover. Document multi-region token architecture in infrastructure documentation.
+        </p>
+        <p>
+          <strong>API Gateway Integration:</strong> Implement token refresh at the API gateway level. Gateway intercepts 401 responses and triggers refresh. Queue concurrent requests during refresh. Use gateway-level token caching to reduce refresh frequency. Document gateway token configuration in API documentation.
+        </p>
+        <p>
+          <strong>Service-to-Service Token Refresh:</strong> For microservices, implement service account token refresh. Use client credentials grant for service accounts. Implement automatic token refresh before expiration. Use mutual TLS for service-to-service authentication. Document service authentication in architecture documentation.
+        </p>
+      </section>
+
+      <section>
+        <h2>Testing Strategies: Token Refresh Validation</h2>
+        <p>
+          Comprehensive token refresh testing requires automated testing, manual verification, and penetration testing integrated into security operations.
+        </p>
+        <p>
+          <strong>Automated Refresh Testing:</strong> Use Postman, Newman, or custom scripts to test token refresh flows. Configure CI/CD pipelines to test refresh after each deployment. Set up automated alerts for: refresh endpoint failures, token expiration anomalies, refresh rate limiting issues.
+        </p>
+        <p>
+          <strong>Token Expiration Testing:</strong> Test token expiration behavior: (1) Access token expiration triggers refresh, (2) Refresh token expiration requires re-authentication, (3) Token expiration during API call is handled gracefully. Use time manipulation in tests to simulate expiration. Document token expiration test results.
+        </p>
+        <p>
+          <strong>Concurrent Request Testing:</strong> Test concurrent request handling: (1) Multiple 401s trigger single refresh, (2) Queued requests complete after refresh, (3) No race conditions in token update. Use load testing tools (k6, Artillery) for concurrent testing. Document concurrent request test results.
+        </p>
+        <p>
+          <strong>Token Rotation Testing:</strong> Test refresh token rotation: (1) Old refresh token invalidated after use, (2) Reuse of old token triggers security alert, (3) Token rotation doesn&apos;t break active sessions. Implement automated rotation testing in CI/CD. Document token rotation test results.
+        </p>
+        <p>
+          <strong>Penetration Testing:</strong> Include token refresh in quarterly penetration tests. Specific test cases: (1) Refresh token theft and reuse, (2) Token manipulation attacks, (3) Refresh endpoint abuse, (4) Race condition exploitation, (5) Token enumeration attacks. Require remediation of all token-related findings before production deployment.
+        </p>
+      </section>
+
+      <section>
+        <h2>Compliance and Legal Context</h2>
+        <p>
+          Token refresh implementation has significant compliance implications, particularly for applications handling financial transactions, healthcare data, or operating in regulated industries.
+        </p>
+        <p>
+          <strong>PCI-DSS Requirements:</strong> PCI-DSS Requirement 8 requires secure authentication for cardholder data access. Token refresh must implement secure token storage, rotation, and revocation. Document token refresh controls in ROC (Report on Compliance). Annual penetration testing must include token security testing.
+        </p>
+        <p>
+          <strong>HIPAA Requirements:</strong> HIPAA Security Rule 45 CFR 164.312(d) requires authentication for ePHI access. Token refresh must implement secure session management. Document token refresh procedures in security policies. Audit token refresh events involving ePHI.
+        </p>
+        <p>
+          <strong>GDPR Implications:</strong> GDPR Article 32 requires appropriate security for personal data protection. Token refresh must implement secure token storage and transmission. Document token refresh measures as part of security of processing. Token refresh logs containing personal data must follow GDPR retention policies.
+        </p>
+        <p>
+          <strong>SOC 2 Controls:</strong> Token refresh maps to SOC 2 Common Criteria CC6.1 (logical access controls). Document token refresh policies, rotation procedures, and monitoring for annual SOC 2 audits. Track token refresh-related security incidents.
+        </p>
+        <p>
+          <strong>Industry Regulations:</strong> FFIEC requires secure session management for online banking. PSD2 requires Strong Customer Authentication with secure token handling. Document compliance with applicable industry regulations.
+        </p>
+      </section>
+
+      <section>
+        <h2>Performance Trade-offs: Security vs. Latency</h2>
+        <p>
+          Token refresh measures introduce measurable performance overhead that must be balanced against security requirements.
+        </p>
+        <p>
+          <strong>Refresh Latency:</strong> Token refresh adds 100-500ms to API flow when triggered. Use silent refresh (background refresh before expiration) to avoid user-visible delays. Implement refresh token caching to reduce database lookups. Monitor refresh latency percentiles (p50, p95, p99).
+        </p>
+        <p>
+          <strong>Token Validation Overhead:</strong> JWT validation adds 1-5ms per request for signature verification. Use symmetric algorithms (HS256) for single-service, asymmetric (RS256) for microservices. Cache token validation results with TTL. For high-traffic APIs (&gt;10K RPS), consider token introspection caching.
+        </p>
+        <p>
+          <strong>Concurrent Request Handling:</strong> Request queuing during refresh adds latency for queued requests (100-1000ms). Implement request prioritization (user requests before background tasks). Use request deduplication to reduce concurrent refreshes. Monitor queue depth and adjust refresh thresholds.
+        </p>
+        <p>
+          <strong>Token Storage Latency:</strong> HttpOnly cookie storage has zero latency (browser-managed). localStorage access adds &lt;1ms. Encrypted token storage adds 5-20ms for encryption/decryption. Choose storage based on security requirements and latency budgets.
+        </p>
+        <p>
+          <strong>Refresh Rate Limiting:</strong> Rate limiting refresh endpoints prevents abuse but may impact legitimate users during high-traffic periods. Implement adaptive rate limiting based on user behavior. Use exponential backoff for failed refresh attempts. Monitor rate limiting metrics and adjust thresholds.
+        </p>
+      </section>
+
+      <section>
+        <h2>Browser and Platform Compatibility</h2>
+        <p>
+          Token refresh support varies across browsers, operating systems, and platforms, requiring careful compatibility planning.
+        </p>
+        <p>
+          <strong>Cookie-Based Refresh:</strong> HttpOnly cookies supported in all modern browsers (IE6+, all current versions). SameSite cookie attribute supported in Chrome 51+, Firefox 60+, Safari 12.1+, Edge 79+. Test cookie-based refresh across target browsers. Document cookie support matrix.
+        </p>
+        <p>
+          <strong>Mobile App Refresh:</strong> Native mobile apps should use custom token refresh logic. Implement background token refresh in mobile apps. Use secure enclave for token storage. Test token refresh on actual devices, not just emulators. Handle network interruptions gracefully.
+        </p>
+        <p>
+          <strong>WebView Considerations:</strong> iOS WKWebView and Android WebView have separate cookie storage. Token refresh in WebViews may have different behavior than system browsers. Test token refresh in actual app WebViews. Consider using system browser for OAuth flows.
+        </p>
+        <p>
+          <strong>Service Worker Refresh:</strong> Service workers can intercept 401 responses and trigger refresh. Implement refresh logic in service worker for PWA. Handle offline scenarios gracefully. Test service worker refresh across browsers (Chrome, Firefox, Safari, Edge).
+        </p>
+        <p>
+          <strong>Legacy Browser Support:</strong> Older browsers may not support modern token refresh patterns (SameSite cookies, Fetch API). Document minimum browser requirements. Implement fallback refresh mechanisms for legacy browsers. Consider user-agent detection for browser-specific refresh logic.
+        </p>
+      </section>
+
+      <section>
+        <h2>References and Further Reading</h2>
         <ul className="space-y-2">
           <li>
             <a href="https://datatracker.ietf.org/doc/html/rfc6749" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">

@@ -30,6 +30,25 @@ export default function AuthenticationServiceArticle() {
           for the entire platform and must be designed for high security, high availability, and 
           horizontal scalability.
         </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/authentication-service-architecture.svg"
+          alt="Authentication Service Architecture"
+          caption="Authentication Service Architecture — showing service components, data flow, and integrations"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/token-management.svg"
+          alt="Token Management"
+          caption="Token Management — showing token lifecycle, storage, and rotation strategies"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/auth-scalability.svg"
+          alt="Auth Scalability"
+          caption="Auth Scalability — showing horizontal scaling, caching strategies, and load distribution"
+        />
+      
         <p>
           For staff and principal engineers, building an authentication service requires deep 
           knowledge of cryptographic protocols, token standards (JWT, OAuth), session management 
@@ -46,11 +65,11 @@ export default function AuthenticationServiceArticle() {
           degradation during incidents.
         </p>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/authentication-service-architecture.svg"
-          alt="Authentication Service Architecture"
-          caption="Auth Service — showing credential validation, token issuance, session management, and scaling"
-        />
+        
+
+        
+
+        
       </section>
 
       <section>
@@ -145,11 +164,7 @@ export default function AuthenticationServiceArticle() {
       <section>
         <h2>Token Management</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/token-management.svg"
-          alt="Token Management"
-          caption="Token Management — showing JWT structure, refresh tokens, and token rotation"
-        />
+        
 
         <p>
           Proper token handling is critical for security and user experience.
@@ -403,11 +418,7 @@ export default function AuthenticationServiceArticle() {
       <section>
         <h2>Interview Questions</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/auth-scalability.svg"
-          alt="Authentication Service Scalability"
-          caption="Scalability — showing horizontal scaling, Redis Cluster, and multi-region deployment"
-        />
+        
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -582,6 +593,65 @@ export default function AuthenticationServiceArticle() {
         <p>
           Use generic error messages for authentication failures (no user enumeration). Return structured error responses with error codes for client handling. Implement circuit breakers for downstream dependencies. Graceful degradation when non-critical services unavailable. Log detailed errors internally, show user-friendly messages externally.
         </p>
+      </section>
+
+      <section>
+        <h2>Real-world Use Cases</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Global Social Media Authentication</h3>
+        <p>
+          Social media platform with 2B users, 100M daily authentications across multiple regions.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Handle 1M auth requests/minute during peak. Multi-region failover. Support multiple auth methods (password, social, passkey).</li>
+          <li><strong>Solution:</strong> Stateless JWT validation at edge (CDN). Redis Cluster for sessions (sharded by user_id). Active-active deployment across 5 regions.</li>
+          <li><strong>Result:</strong> p99 latency under 50ms. 99.999% availability. Zero downtime during region failover.</li>
+          <li><strong>Security:</strong> Rate limiting (100 req/min per IP), credential stuffing detection, adaptive MFA based on risk.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Financial Services Authentication</h3>
+        <p>
+          Online banking and investment platform with strict regulatory requirements.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> PCI-DSS, SOX, GDPR compliance. Strong customer authentication (SCA) required. Audit trail for all auth events.</li>
+          <li><strong>Solution:</strong> Mandatory MFA for all users. Step-up authentication for high-value transactions. Immutable audit logging to WORM storage.</li>
+          <li><strong>Result:</strong> Passed all compliance audits. Fraud reduced by 90%. Customer satisfaction improved (clear auth flows).</li>
+          <li><strong>Security:</strong> Hardware security modules (HSM) for key storage, transaction signing, biometric authentication support.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Healthcare Platform Authentication</h3>
+        <p>
+          HIPAA-compliant telemedicine platform serving 10M patients.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> HIPAA compliance requires strict access controls. Elderly patients need simple auth flow. Support for providers (doctors) and patients.</li>
+          <li><strong>Solution:</strong> Role-based auth flows (simplified for patients, enhanced for providers). Passwordless option for patients. Mandatory MFA for providers.</li>
+          <li><strong>Result:</strong> HIPAA audit passed. 95% patient adoption. Provider satisfaction high (quick MFA with hardware keys).</li>
+          <li><strong>Security:</strong> Session timeout (15 min idle), automatic logout, audit logging, break-glass access for emergencies.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Gaming Platform Authentication</h3>
+        <p>
+          Online gaming platform with 50M registered users, high concurrent logins during game launches.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> 10M concurrent logins during new game releases. Prevent account sharing and bot accounts. Global player base.</li>
+          <li><strong>Solution:</strong> Edge authentication (JWT validation at CDN). Queue-based auth during peak. Device fingerprinting for account sharing detection.</li>
+          <li><strong>Result:</strong> Handled 15M concurrent logins. p99 latency under 100ms. Account sharing reduced by 70%.</li>
+          <li><strong>Security:</strong> Behavioral analysis for bot detection, rate limiting per account, geographic anomaly detection.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SSO Authentication</h3>
+        <p>
+          B2B SaaS platform with 50,000 enterprise customers requiring SSO integration.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Support multiple IdPs (Okta, Azure AD, OneLogin, Ping). JIT provisioning for automatic user creation. Handle SAML + OIDC.</li>
+          <li><strong>Solution:</strong> Abstract IdP integration behind common interface. Support both SAML 2.0 and OIDC. SCIM for user provisioning.</li>
+          <li><strong>Result:</strong> Onboarded 500 enterprise customers in 6 months. 99.9% SSO success rate. Reduced support tickets by 60%.</li>
+          <li><strong>Security:</strong> IdP-initiated logout, session sync with IdP policies, audit logging for compliance reporting.</li>
+        </ul>
       </section>
 
       <section>

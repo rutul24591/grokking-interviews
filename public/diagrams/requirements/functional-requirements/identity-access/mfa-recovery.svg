@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">MFA Recovery &amp; Backup Options</text>
+  
+  <!-- Lost Access -->
+  <rect x="50" y="70" width="140" height="100" rx="8" fill="#ef4444"/>
+  <text x="120" y="100" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#ffffff">Lost Access</text>
+  <text x="120" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Lost phone</text>
+  <text x="120" y="140" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Deleted app</text>
+  <text x="120" y="155" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Broken token</text>
+  
+  <line x1="190" y1="120" x2="230" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Recovery Options -->
+  <rect x="240" y="60" width="320" height="120" rx="8" fill="#f1f5f9" stroke="#f59e0b" stroke-width="2"/>
+  <text x="400" y="85" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Recovery Options</text>
+  
+  <rect x="260" y="100" width="130" height="35" rx="4" fill="#22c55e" opacity="0.8"/>
+  <text x="325" y="122" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Backup Codes</text>
+  
+  <rect x="410" y="100" width="130" height="35" rx="4" fill="#3b82f6" opacity="0.8"/>
+  <text x="475" y="122" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Recovery Email</text>
+  
+  <rect x="260" y="140" width="130" height="35" rx="4" fill="#8b5cf6" opacity="0.8"/>
+  <text x="325" y="162" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Recovery Phone</text>
+  
+  <rect x="410" y="140" width="130" height="35" rx="4" fill="#f59e0b" opacity="0.8"/>
+  <text x="475" y="162" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Support Ticket</text>
+  
+  <line x1="560" y1="120" x2="600" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Verification -->
+  <rect x="610" y="70" width="140" height="100" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="680" y="95" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Verify Identity</text>
+  <text x="680" y="120" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Security questions</text>
+  <text x="680" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">ID verification</text>
+  <text x="680" y="150" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Manager approval</text>
+  
+  <line x1="680" y1="170" x2="680" y2="200" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Reset MFA -->
+  <rect x="610" y="210" width="140" height="80" rx="8" fill="#22c55e"/>
+  <text x="680" y="240" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#ffffff">Reset MFA</text>
+  <text x="680" y="265" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Generate new secret</text>
+  <text x="680" y="280" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Invalidate old</text>
+  
+  <!-- Backup Codes -->
+  <rect x="50" y="210" width="340" height="240" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="240" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Backup Codes (Recommended)</text>
+  
+  <rect x="70" y="260" width="300" height="80" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="285" text-anchor="middle" font-family="monospace" font-size="10" fill="#475569">ABCD-1234    EFGH-5678    IJKL-9012</text>
+  <text x="220" y="305" text-anchor="middle" font-family="monospace" font-size="10" fill="#475569">MNOP-3456    QRST-7890    UVWX-1234</text>
+  <text x="220" y="325" text-anchor="middle" font-family="monospace" font-size="10" fill="#475569">YZAB-5678    CDEF-9012    GHIJ-3456</text>
+  
+  <text x="220" y="360" text-anchor="middle" font-family="system-ui" font-size="10" fill="#22c55e">✓ 10-20 single-use codes</text>
+  <text x="220" y="380" text-anchor="middle" font-family="system-ui" font-size="10" fill="#22c55e">✓ Download or print</text>
+  <text x="220" y="400" text-anchor="middle" font-family="system-ui" font-size="10" fill="#22c55e">✓ Store securely offline</text>
+  <text x="220" y="420" text-anchor="middle" font-family="system-ui" font-size="10" fill="#22c55e">✓ One code = one login</text>
+  <text x="220" y="440" text-anchor="middle" font-family="system-ui" font-size="10" fill="#f59e0b">⚠ Cannot be regenerated</text>
+  
+  <!-- Best Practices -->
+  <rect x="420" y="210" width="330" height="240" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="585" y="240" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Recovery Best Practices</text>
+  
+  <rect x="440" y="260" width="290" height="35" rx="4" fill="#f1f5f9"/>
+  <text x="585" y="282" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Multiple recovery methods</text>
+  <text x="710" y="282" text-anchor="end" font-family="system-ui" font-size="9" fill="#22c55e">✓ Recommended</text>
+  
+  <rect x="440" y="300" width="290" height="35" rx="4" fill="#f1f5f9"/>
+  <text x="585" y="322" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Trusted contacts (enterprise)</text>
+  <text x="710" y="322" text-anchor="end" font-family="system-ui" font-size="9" fill="#22c55e">✓ Recommended</text>
+  
+  <rect x="440" y="340" width="290" height="35" rx="4" fill="#f1f5f9"/>
+  <text x="585" y="362" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Hardware security key backup</text>
+  <text x="710" y="362" text-anchor="end" font-family="system-ui" font-size="9" fill="#22c55e">✓ Recommended</text>
+  
+  <rect x="440" y="380" width="290" height="35" rx="4" fill="#f1f5f9"/>
+  <text x="585" y="402" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Waiting period for changes</text>
+  <text x="710" y="402" text-anchor="end" font-family="system-ui" font-size="9" fill="#22c55e">✓ Security delay</text>
+  
+  <rect x="440" y="420" width="290" height="25" rx="4" fill="#ef4444" opacity="0.2"/>
+  <text x="585" y="437" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">⚠ Notify user of all MFA changes</text>
+
+</svg>

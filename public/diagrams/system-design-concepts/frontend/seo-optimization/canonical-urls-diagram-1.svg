@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Duplicate Content Problem &amp; Canonical Resolution</text>
+
+  <!-- Left side: Duplicate URLs -->
+  <text x="180" y="70" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">Duplicate URLs (Same Content)</text>
+
+  <rect x="30" y="85" width="300" height="38" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="180" y="109" text-anchor="middle" font-size="11" fill="#1a1822">https://example.com/page</text>
+
+  <rect x="30" y="133" width="300" height="38" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="180" y="157" text-anchor="middle" font-size="11" fill="#1a1822">https://www.example.com/page</text>
+
+  <rect x="30" y="181" width="300" height="38" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="180" y="205" text-anchor="middle" font-size="11" fill="#1a1822">http://example.com/page</text>
+
+  <rect x="30" y="229" width="300" height="38" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="180" y="253" text-anchor="middle" font-size="11" fill="#1a1822">https://example.com/page?ref=social</text>
+
+  <rect x="30" y="277" width="300" height="38" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="180" y="301" text-anchor="middle" font-size="11" fill="#1a1822">https://example.com/page?utm_src=ggl</text>
+
+  <rect x="30" y="325" width="300" height="38" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="180" y="349" text-anchor="middle" font-size="11" fill="#1a1822">https://example.com/Page</text>
+
+  <rect x="30" y="373" width="300" height="38" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="180" y="397" text-anchor="middle" font-size="11" fill="#1a1822">https://example.com/page/</text>
+
+  <!-- Without canonical: scattered signals -->
+  <text x="450" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Without Canonical</text>
+
+  <!-- Scattered ranking boxes -->
+  <rect x="395" y="90" width="110" height="32" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="111" text-anchor="middle" font-size="9" fill="#1a1822">Rank signal: 15%</text>
+
+  <rect x="395" y="130" width="110" height="32" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="151" text-anchor="middle" font-size="9" fill="#1a1822">Rank signal: 10%</text>
+
+  <rect x="395" y="170" width="110" height="32" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="191" text-anchor="middle" font-size="9" fill="#1a1822">Rank signal: 5%</text>
+
+  <rect x="395" y="210" width="110" height="32" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="231" text-anchor="middle" font-size="9" fill="#1a1822">Rank signal: 20%</text>
+
+  <rect x="395" y="250" width="110" height="32" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="271" text-anchor="middle" font-size="9" fill="#1a1822">Rank signal: 25%</text>
+
+  <rect x="395" y="290" width="110" height="32" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="311" text-anchor="middle" font-size="9" fill="#1a1822">Rank signal: 15%</text>
+
+  <rect x="395" y="330" width="110" height="32" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="351" text-anchor="middle" font-size="9" fill="#1a1822">Rank signal: 10%</text>
+
+  <!-- Arrows from URLs to scattered -->
+  <line x1="330" y1="104" x2="392" y2="106" stroke="#d7d1e6" stroke-width="1" marker-end="url(#arrowC1g)"/>
+  <line x1="330" y1="152" x2="392" y2="146" stroke="#d7d1e6" stroke-width="1" marker-end="url(#arrowC1g)"/>
+  <line x1="330" y1="200" x2="392" y2="186" stroke="#d7d1e6" stroke-width="1" marker-end="url(#arrowC1g)"/>
+  <line x1="330" y1="248" x2="392" y2="226" stroke="#d7d1e6" stroke-width="1" marker-end="url(#arrowC1g)"/>
+  <line x1="330" y1="296" x2="392" y2="266" stroke="#d7d1e6" stroke-width="1" marker-end="url(#arrowC1g)"/>
+  <line x1="330" y1="344" x2="392" y2="306" stroke="#d7d1e6" stroke-width="1" marker-end="url(#arrowC1g)"/>
+  <line x1="330" y1="392" x2="392" y2="346" stroke="#d7d1e6" stroke-width="1" marker-end="url(#arrowC1g)"/>
+
+  <!-- Result: diluted -->
+  <rect x="385" y="380" width="130" height="35" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="450" y="402" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Diluted ranking</text>
+
+  <!-- Right side: With canonical -->
+  <text x="730" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">With Canonical</text>
+
+  <!-- Canonical URL (highlighted) -->
+  <rect x="600" y="195" width="260" height="50" rx="8" fill="#6d5bd0"/>
+  <text x="730" y="217" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Canonical URL</text>
+  <text x="730" y="234" text-anchor="middle" font-size="10" fill="#ffffff">https://example.com/page</text>
+
+  <!-- Consolidated signal -->
+  <rect x="650" y="270" width="160" height="45" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="730" y="291" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">100% Signal</text>
+  <text x="730" y="307" text-anchor="middle" font-size="10" fill="#1a1822">Consolidated ranking</text>
+
+  <!-- Arrows from all URLs converging to canonical -->
+  <line x1="330" y1="104" x2="597" y2="210" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowC1)"/>
+  <line x1="330" y1="152" x2="597" y2="212" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowC1)"/>
+  <line x1="330" y1="200" x2="597" y2="215" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowC1)"/>
+  <line x1="330" y1="248" x2="597" y2="220" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowC1)"/>
+  <line x1="330" y1="296" x2="597" y2="225" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowC1)"/>
+  <line x1="330" y1="344" x2="597" y2="230" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowC1)"/>
+  <line x1="330" y1="392" x2="597" y2="235" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowC1)"/>
+
+  <!-- Arrow from canonical to consolidated -->
+  <line x1="730" y1="245" x2="730" y2="267" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowC1)"/>
+
+  <!-- Benefits -->
+  <rect x="580" y="340" width="300" height="140" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="730" y="365" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Benefits</text>
+  <line x1="590" y1="375" x2="870" y2="375" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="600" y="395" font-size="11" fill="#1a1822">Consolidates link equity</text>
+  <text x="600" y="415" font-size="11" fill="#1a1822">Prevents duplicate indexing</text>
+  <text x="600" y="435" font-size="11" fill="#1a1822">Preserves crawl budget</text>
+  <text x="600" y="455" font-size="11" fill="#1a1822">Single URL in search results</text>
+  <text x="600" y="475" font-size="11" fill="#1a1822">Clean analytics data</text>
+
+  <defs>
+    <marker id="arrowC1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowC1g" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#d7d1e6"/>
+    </marker>
+  </defs>
+</svg>

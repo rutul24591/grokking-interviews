@@ -30,6 +30,25 @@ export default function PasswordHashingArticle() {
           irreversible representations, protecting user credentials even if the database is 
           compromised.
         </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/password-hashing-flow.svg"
+          alt="Password Hashing Flow"
+          caption="Password Hashing Flow — showing registration and login flows with bcrypt/Argon2"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/password-validation.svg"
+          alt="Password Validation"
+          caption="Password Validation — showing rules, strength meter, blocked passwords, and NIST guidelines"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/password-algorithms.svg"
+          alt="Password Algorithms"
+          caption="Password Algorithms — comparing Argon2, bcrypt, scrypt, and PBKDF2"
+        />
+      
         <p>
           For staff and principal engineers, implementing password hashing requires 
           understanding hashing algorithms (bcrypt, argon2, scrypt), salt generation, 
@@ -38,11 +57,11 @@ export default function PasswordHashingArticle() {
           with performance (authentication latency).
         </p>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/password-hashing-flow.svg"
-          alt="Password Hashing Flow"
-          caption="Password Hashing — showing salt generation, hashing, and secure storage"
-        />
+        
+
+        
+
+        
       </section>
 
       <section>
@@ -133,11 +152,7 @@ export default function PasswordHashingArticle() {
       <section>
         <h2>Implementation Patterns</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/password-validation.svg"
-          alt="Password Validation Patterns"
-          caption="Validation — showing timing-safe comparison, breach detection, and migration"
-        />
+        
 
         <p>
           Proper implementation is critical for security.
@@ -362,11 +377,7 @@ export default function PasswordHashingArticle() {
       <section>
         <h2>Interview Questions</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/password-algorithms.svg"
-          alt="Password Hashing Algorithms Comparison"
-          caption="Algorithms — comparing bcrypt, argon2, scrypt with security and performance"
-        />
+        
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -753,6 +764,65 @@ export default function PasswordHashingArticle() {
         <p>
           Meet regulatory requirements for hashing. SOC2 audit trails. HIPAA immediate hashing. PCI-DSS session controls. GDPR right to hashing. Regular compliance reviews. External audit support.
         </p>
+      </section>
+
+      <section>
+        <h2>Real-world Use Cases</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce Password Storage</h3>
+        <p>
+          Large e-commerce platform with 50M users, legacy password hashes needing migration.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Legacy MD5 hashes from 2010. Need to migrate to bcrypt/argon2. Can't force all users to reset passwords.</li>
+          <li><strong>Solution:</strong> Gradual migration: re-hash on successful login. MD5 → bcrypt → argon2 over 2 years. Force reset for high-risk accounts (no login in 1 year).</li>
+          <li><strong>Result:</strong> 100% migration in 18 months. Zero user disruption. Security improved significantly.</li>
+          <li><strong>Security:</strong> Breached password checking, progressive hashing, cost factor increases over time.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Banking Password Hashing</h3>
+        <p>
+          Financial institution with strict regulatory requirements (FFIEC, PCI-DSS).
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Regulatory requirements for password storage. Need FIPS 140-2 validated cryptography. Audit trail for all password operations.</li>
+          <li><strong>Solution:</strong> Argon2id with FIPS-validated library. HSM for salt storage. Immutable audit logging for all hash operations. Quarterly penetration testing.</li>
+          <li><strong>Result:</strong> Passed all regulatory audits. Zero password breaches. Customer trust maintained.</li>
+          <li><strong>Security:</strong> Hardware security modules, dual-control for hash parameter changes, real-time breach detection.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Healthcare Password Management</h3>
+        <p>
+          HIPAA-compliant healthcare platform with 50,000 providers accessing patient records.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> HIPAA requires secure password storage. Providers need quick access in emergencies. Shared workstations complicate password policies.</li>
+          <li><strong>Solution:</strong> Argon2id hashing with optimized parameters (balance security/speed). Passwordless option for shared workstations (hardware keys). Break-glass access with audit.</li>
+          <li><strong>Result:</strong> Passed HIPAA audits. Provider satisfaction high. Zero credential-based breaches.</li>
+          <li><strong>Security:</strong> Mandatory password rotation (1 year), breached password checking, hardware key fallback.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Gaming Platform Password Security</h3>
+        <p>
+          Online gaming platform with 100M users, high account value (virtual items).
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> High-value accounts targeted. Young users with weak passwords. Credential stuffing attacks from breached databases.</li>
+          <li><strong>Solution:</strong> Bcrypt hashing (cost 14). Real-time breached password checking (Have I Been Pwned API). Rate limiting on login. MFA for high-value accounts.</li>
+          <li><strong>Result:</strong> Credential stuffing attacks blocked 99%. Account takeovers reduced by 90%. User experience maintained.</li>
+          <li><strong>Security:</strong> Breached password detection, progressive hashing, mandatory MFA for trading.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SSO Password Hashing</h3>
+        <p>
+          B2B SaaS with 10,000 enterprise customers, hybrid auth (local + SSO).
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Local accounts for admin fallback. Enterprise SSO for employees. Different password policies per tenant. Compliance requirements vary.</li>
+          <li><strong>Solution:</strong> Argon2id for local accounts. Tenant-specific password policies. SSO password hashing delegated to IdP. Audit logging for all local password operations.</li>
+          <li><strong>Result:</strong> Supported 500+ custom password policies. Passed SOC 2, HIPAA, GDPR audits. Zero local account breaches.</li>
+          <li><strong>Security:</strong> Tenant isolation, policy enforcement, regular password audits for admin accounts.</li>
+        </ul>
       </section>
     </ArticleLayout>
   );

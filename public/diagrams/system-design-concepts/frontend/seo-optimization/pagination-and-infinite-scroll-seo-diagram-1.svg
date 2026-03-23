@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Pagination Strategies: Crawler Visibility Comparison</text>
+
+  <!-- Column 1: Traditional Pagination -->
+  <rect x="25" y="60" width="270" height="420" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="25" y="60" width="270" height="44" rx="8" fill="#6d5bd0"/>
+  <text x="160" y="87" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Traditional Pagination</text>
+
+  <rect x="45" y="118" width="230" height="32" rx="5" fill="#ece8f6" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="160" y="139" text-anchor="middle" font-size="11" fill="#1a1822">/products?page=1</text>
+  <rect x="45" y="158" width="230" height="32" rx="5" fill="#ece8f6" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="160" y="179" text-anchor="middle" font-size="11" fill="#1a1822">/products?page=2</text>
+  <rect x="45" y="198" width="230" height="32" rx="5" fill="#ece8f6" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="160" y="219" text-anchor="middle" font-size="11" fill="#1a1822">/products?page=3</text>
+  <text x="160" y="252" text-anchor="middle" font-size="11" fill="#1a1822">Each page = unique URL</text>
+  <text x="160" y="268" text-anchor="middle" font-size="11" fill="#1a1822">with &amp;lt;a&amp;gt; links between</text>
+
+  <!-- Crawler visibility -->
+  <rect x="45" y="290" width="230" height="80" rx="5" fill="#e8f5e9" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="160" y="312" text-anchor="middle" font-size="12" font-weight="700" fill="#2e7d32">Crawler Visibility</text>
+  <text x="160" y="332" text-anchor="middle" font-size="20" fill="#2e7d32">HIGH</text>
+  <text x="160" y="355" text-anchor="middle" font-size="10" fill="#2e7d32">All pages discoverable</text>
+  <text x="160" y="370" text-anchor="middle" font-size="10" fill="#2e7d32">via &amp;lt;a href&amp;gt; links</text>
+
+  <text x="160" y="405" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="600">rel="next" / rel="prev"</text>
+  <text x="160" y="420" text-anchor="middle" font-size="10" fill="#1a1822">signals pagination chain</text>
+  <text x="160" y="440" text-anchor="middle" font-size="10" fill="#1a1822">Fully indexable content</text>
+  <text x="160" y="460" text-anchor="middle" font-size="10" fill="#1a1822">on every page</text>
+
+  <!-- Column 2: Load More -->
+  <rect x="315" y="60" width="270" height="420" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="315" y="60" width="270" height="44" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="87" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Load More Button</text>
+
+  <rect x="335" y="118" width="230" height="32" rx="5" fill="#ece8f6" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="139" text-anchor="middle" font-size="11" fill="#1a1822">/products (single URL)</text>
+  <rect x="370" y="158" width="160" height="28" rx="14" fill="#6d5bd0"/>
+  <text x="450" y="177" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Load More</text>
+  <rect x="335" y="194" width="230" height="28" rx="5" fill="#ddd6f0" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="4"/>
+  <text x="450" y="213" text-anchor="middle" font-size="10" fill="#1a1822">JS-loaded content (AJAX)</text>
+  <rect x="335" y="228" width="230" height="28" rx="5" fill="#ddd6f0" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="4"/>
+  <text x="450" y="247" text-anchor="middle" font-size="10" fill="#1a1822">More JS-loaded content</text>
+
+  <!-- Crawler visibility -->
+  <rect x="335" y="290" width="230" height="80" rx="5" fill="#fff3e0" stroke="#ff9800" stroke-width="1.5"/>
+  <text x="450" y="312" text-anchor="middle" font-size="12" font-weight="700" fill="#e65100">Crawler Visibility</text>
+  <text x="450" y="332" text-anchor="middle" font-size="20" fill="#e65100">MEDIUM</text>
+  <text x="450" y="355" text-anchor="middle" font-size="10" fill="#e65100">Only initial content visible</text>
+  <text x="450" y="370" text-anchor="middle" font-size="10" fill="#e65100">Button click not followed</text>
+
+  <text x="450" y="405" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="600">JS execution required</text>
+  <text x="450" y="420" text-anchor="middle" font-size="10" fill="#1a1822">to discover more content</text>
+  <text x="450" y="440" text-anchor="middle" font-size="10" fill="#1a1822">Googlebot may click but</text>
+  <text x="450" y="460" text-anchor="middle" font-size="10" fill="#1a1822">not guaranteed</text>
+
+  <!-- Column 3: Infinite Scroll -->
+  <rect x="605" y="60" width="270" height="420" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="605" y="60" width="270" height="44" rx="8" fill="#6d5bd0"/>
+  <text x="740" y="87" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Infinite Scroll</text>
+
+  <rect x="625" y="118" width="230" height="32" rx="5" fill="#ece8f6" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="740" y="139" text-anchor="middle" font-size="11" fill="#1a1822">/products (single URL)</text>
+  <text x="740" y="170" text-anchor="middle" font-size="10" fill="#1a1822">Scroll triggers fetch</text>
+  <rect x="625" y="180" width="230" height="22" rx="4" fill="#ddd6f0" stroke-dasharray="4" stroke="#d7d1e6" stroke-width="1"/>
+  <rect x="625" y="206" width="230" height="22" rx="4" fill="#ddd6f0" stroke-dasharray="4" stroke="#d7d1e6" stroke-width="1"/>
+  <rect x="625" y="232" width="230" height="22" rx="4" fill="#ddd6f0" stroke-dasharray="4" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="740" y="272" text-anchor="middle" font-size="10" fill="#1a1822">Auto-loading via scroll</text>
+
+  <!-- Crawler visibility -->
+  <rect x="625" y="290" width="230" height="80" rx="5" fill="#ffebee" stroke="#f44336" stroke-width="1.5"/>
+  <text x="740" y="312" text-anchor="middle" font-size="12" font-weight="700" fill="#c62828">Crawler Visibility</text>
+  <text x="740" y="332" text-anchor="middle" font-size="20" fill="#c62828">LOW</text>
+  <text x="740" y="355" text-anchor="middle" font-size="10" fill="#c62828">Crawlers do not scroll</text>
+  <text x="740" y="370" text-anchor="middle" font-size="10" fill="#c62828">Most content invisible</text>
+
+  <text x="740" y="405" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="600">No discoverable links</text>
+  <text x="740" y="420" text-anchor="middle" font-size="10" fill="#1a1822">No URL state changes</text>
+  <text x="740" y="440" text-anchor="middle" font-size="10" fill="#1a1822">Content lost to crawlers</text>
+  <text x="740" y="460" text-anchor="middle" font-size="10" fill="#1a1822">unless SSR fallback exists</text>
+</svg>

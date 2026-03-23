@@ -29,6 +29,25 @@ export default function SessionRevocationArticle() {
           either individually or in bulk. It is essential for security (compromised accounts),
           user control (logout all devices), and compliance (password changes).
         </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/session-revocation-flow.svg"
+          alt="Session Revocation Flow"
+          caption="Session Revocation Flow — showing user-initiated and admin-initiated revocation"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/session-revocation-patterns.svg"
+          alt="Session Revocation Patterns"
+          caption="Session Revocation Patterns — comparing single, bulk, and distributed revocation"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/session-revocation-distributed.svg"
+          alt="Session Revocation Distributed"
+          caption="Session Revocation Distributed — showing distributed cache invalidation and propagation"
+        />
+      
         <p>
           For staff and principal engineers, implementing session revocation requires
           understanding revocation scenarios, implementation patterns, and distributed
@@ -36,11 +55,11 @@ export default function SessionRevocationArticle() {
           distributed systems challenges.
         </p>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/session-revocation-flow.svg"
-          alt="Session Revocation Flow"
-          caption="Session Revocation — showing logout, token invalidation, and distributed revocation"
-        />
+        
+
+        
+
+        
       </section>
 
       <section>
@@ -56,11 +75,7 @@ export default function SessionRevocationArticle() {
       <section>
         <h2>Implementation Patterns</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/session-revocation-patterns.svg"
-          alt="Session Revocation Patterns"
-          caption="Revocation Patterns — showing denylist, session delete, version increment, and broadcast"
-        />
+        
 
         <ul className="space-y-3">
           <li><strong>Token Denylist:</strong> Add JTI to denylist until expiry.</li>
@@ -203,11 +218,7 @@ export default function SessionRevocationArticle() {
       <section>
         <h2>Interview Questions</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/session-revocation-distributed.svg"
-          alt="Distributed Session Revocation"
-          caption="Distributed Revocation — showing event stream, shared store, and broadcast patterns"
-        />
+        
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -596,6 +607,65 @@ export default function SessionRevocationArticle() {
         <p>
           Meet regulatory requirements for revocation. SOC2 audit trails. HIPAA immediate revocation. PCI-DSS session controls. GDPR right to revoke. Regular compliance reviews. External audit support.
         </p>
+      </section>
+
+      <section>
+        <h2>Real-world Use Cases</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce Session Revocation</h3>
+        <p>
+          Large e-commerce platform with cart persistence and password change requirements.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Password change requires session revocation. Cart must persist. Cross-device logout needed.</li>
+          <li><strong>Solution:</strong> Session versioning on password change. Cart stored server-side (not session). Push notification to all devices for logout.</li>
+          <li><strong>Result:</strong> Cart persistence maintained. 99% successful revocation. Cross-device logout working.</li>
+          <li><strong>Security:</strong> Session versioning, server-side cart, push notifications.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Banking Session Revocation</h3>
+        <p>
+          Online banking with immediate revocation for security incidents.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> FFIEC requires immediate session termination. Fraud detection triggers revocation. Customer notification needed.</li>
+          <li><strong>Solution:</strong> Real-time denylist propagation. Fraud detection → immediate revoke. SMS/email notification. Forced re-auth with MFA.</li>
+          <li><strong>Result:</strong> Passed FFIEC audits. Fraud response time under 1 minute. Customer trust maintained.</li>
+          <li><strong>Security:</strong> Real-time denylist, fraud integration, forced re-auth.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SaaS Session Revocation</h3>
+        <p>
+          B2B SaaS with 10,000 enterprise customers, employee offboarding.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> HR offboarding triggers session revocation. Admin needs bulk revoke. Compliance requires audit trail.</li>
+          <li><strong>Solution:</strong> HR integration (Workday) triggers revoke. Admin bulk revoke API. Audit logging for all revocations. Session export for compliance.</li>
+          <li><strong>Result:</strong> Offboarding time reduced from hours to seconds. Compliance audits passed. Zero unauthorized post-termination access.</li>
+          <li><strong>Security:</strong> HR integration, bulk revoke, audit logging.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Social Media Session Revocation</h3>
+        <p>
+          Social platform with 500M users, compromised account response.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Compromised accounts need immediate revoke. 5+ devices per user. Cross-platform (web, iOS, Android).</li>
+          <li><strong>Solution:</strong> One-click "revoke all sessions". Cross-platform push for logout. Password change triggers auto-revoke. Suspicious activity alerts.</li>
+          <li><strong>Result:</strong> Account takeover response under 5 minutes. 99% revocation success. User trust improved.</li>
+          <li><strong>Security:</strong> Cross-platform revoke, auto-revoke on password change, alerts.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Gaming Platform Session Revocation</h3>
+        <p>
+          Online gaming platform with active game sessions and account sharing prevention.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Revoke during active game. Account sharing detection. Cross-platform (PC, console, mobile).</li>
+          <li><strong>Solution:</strong> Graceful revoke: save game state, then terminate. Account sharing detection → auto-revoke extra sessions. Cross-platform session linking.</li>
+          <li><strong>Result:</strong> Zero game state loss. Account sharing reduced 70%. Cross-platform revocation working.</li>
+          <li><strong>Security:</strong> Game state save, sharing detection, cross-platform linking.</li>
+        </ul>
       </section>
     </ArticleLayout>
   );

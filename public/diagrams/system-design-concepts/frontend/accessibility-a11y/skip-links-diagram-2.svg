@@ -66,7 +66,7 @@
   <!-- Main content area - target 1 -->
   <rect x="460" y="166" width="410" height="230" rx="6" fill="#f0edf9" stroke="#6d5bd0" stroke-width="2.5" />
   <text x="665" y="190" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Main Content Area</text>
-  <text x="665" y="210" text-anchor="middle" fill="#6d5bd0" font-family="monospace" font-size="10">&lt;main id=&quot;main-content&quot; tabindex=&quot;-1&quot;&gt;</text>
+  <text x="665" y="210" text-anchor="middle" fill="#6d5bd0" font-family="monospace" font-size="10">&amp;lt;main id=&amp;quot;main-content&amp;quot; tabindex=&amp;quot;-1&amp;quot;&amp;gt;</text>
   <rect x="476" y="226" width="380" height="10" rx="2" fill="#b8aee6" />
   <rect x="476" y="244" width="350" height="10" rx="2" fill="#b8aee6" />
   <rect x="476" y="262" width="370" height="10" rx="2" fill="#b8aee6" />
@@ -110,8 +110,8 @@
   <!-- Legend -->
   <rect x="30" y="238" width="240" height="100" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1" />
   <text x="150" y="258" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11" font-weight="700">HTML Targets</text>
-  <text x="46" y="278" fill="#1a1822" font-family="monospace" font-size="9">1: &lt;main id=&quot;main-content&quot;&gt;</text>
-  <text x="46" y="294" fill="#1a1822" font-family="monospace" font-size="9">2: &lt;input id=&quot;search&quot;&gt;</text>
-  <text x="46" y="310" fill="#1a1822" font-family="monospace" font-size="9">3: &lt;nav id=&quot;navigation&quot;&gt;</text>
-  <text x="46" y="326" fill="#1a1822" font-family="monospace" font-size="9">4: &lt;footer id=&quot;footer&quot;&gt;</text>
+  <text x="46" y="278" fill="#1a1822" font-family="monospace" font-size="9">1: &amp;lt;main id=&amp;quot;main-content&amp;quot;&amp;gt;</text>
+  <text x="46" y="294" fill="#1a1822" font-family="monospace" font-size="9">2: &amp;lt;input id=&amp;quot;search&amp;quot;&amp;gt;</text>
+  <text x="46" y="310" fill="#1a1822" font-family="monospace" font-size="9">3: &amp;lt;nav id=&amp;quot;navigation&amp;quot;&amp;gt;</text>
+  <text x="46" y="326" fill="#1a1822" font-family="monospace" font-size="9">4: &amp;lt;footer id=&amp;quot;footer&amp;quot;&amp;gt;</text>
 </svg>

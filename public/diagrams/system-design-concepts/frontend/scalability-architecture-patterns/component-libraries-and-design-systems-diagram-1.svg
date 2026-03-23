@@ -2,7 +2,7 @@
   <rect width="900" height="550" rx="8" fill="#f3f1f8"/>
 
   <text x="450" y="35" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="bold" fill="#1a1822">Design System Layered Architecture</text>
-  <text x="450" y="55" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#6d5bd0">Tokens &#x2192; Primitives &#x2192; Components &#x2192; Patterns</text>
+  <text x="450" y="55" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#6d5bd0">Tokens &amp;#x2192; Primitives &amp;#x2192; Components &amp;#x2192; Patterns</text>
 
   <!-- Layer 4: Patterns (top) -->
   <rect x="60" y="80" width="780" height="95" rx="10" fill="#6d5bd0" fill-opacity="0.15" stroke="#6d5bd0" stroke-width="2"/>

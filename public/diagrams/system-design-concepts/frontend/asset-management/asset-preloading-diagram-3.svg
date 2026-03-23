@@ -73,16 +73,16 @@
   <!-- Code examples -->
   <rect x="50" y="385" width="390" height="100" rx="8" fill="#1a1822"/>
   <text x="65" y="405" font-size="11" fill="#2e8b57">/* Boost LCP image priority */</text>
-  <text x="65" y="423" font-size="11" fill="#ffffff">&lt;img src="hero.webp"</text>
+  <text x="65" y="423" font-size="11" fill="#ffffff">&amp;lt;img src="hero.webp"</text>
   <text x="65" y="441" font-size="11" fill="#e8850c">     fetchpriority="high"</text>
-  <text x="65" y="459" font-size="11" fill="#ffffff">     alt="Hero" /&gt;</text>
+  <text x="65" y="459" font-size="11" fill="#ffffff">     alt="Hero" /&amp;gt;</text>
   <text x="65" y="477" font-size="11" fill="#2e8b57">/* Reduces LCP by 30-100ms */</text>
 
   <rect x="460" y="385" width="390" height="100" rx="8" fill="#1a1822"/>
   <text x="475" y="405" font-size="11" fill="#d94f57">/* Deprioritize offscreen images */</text>
-  <text x="475" y="423" font-size="11" fill="#ffffff">&lt;img src="footer-banner.webp"</text>
+  <text x="475" y="423" font-size="11" fill="#ffffff">&amp;lt;img src="footer-banner.webp"</text>
   <text x="475" y="441" font-size="11" fill="#e8850c">     fetchpriority="low"</text>
-  <text x="475" y="459" font-size="11" fill="#ffffff">     loading="lazy" alt="Ad" /&gt;</text>
+  <text x="475" y="459" font-size="11" fill="#ffffff">     loading="lazy" alt="Ad" /&amp;gt;</text>
   <text x="475" y="477" font-size="11" fill="#d94f57">/* Yields bandwidth to critical */</text>
 
   <!-- Arrow markers -->

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Access Control Policy Models</text>
+  
+  <!-- DAC -->
+  <rect x="50" y="70" width="170" height="180" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="135" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">DAC</text>
+  <text x="135" y="115" text-anchor="middle" font-family="system-ui" font-size="10" fill="#475569">Discretionary</text>
+  
+  <rect x="70" y="130" width="130" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="135" y="150" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Owner decides</text>
+  <text x="135" y="165" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Unix file perms</text>
+  
+  <text x="135" y="205" text-anchor="middle" font-family="system-ui" font-size="9" fill="#22c55e">✓ Flexible</text>
+  <text x="135" y="220" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ef4444">✗ Security risks</text>
+  <text x="135" y="235" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Personal devices</text>
+  
+  <!-- MAC -->
+  <rect x="240" y="70" width="170" height="180" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="325" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">MAC</text>
+  <text x="325" y="115" text-anchor="middle" font-family="system-ui" font-size="10" fill="#475569">Mandatory</text>
+  
+  <rect x="260" y="130" width="130" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="325" y="150" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">System decides</text>
+  <text x="325" y="165" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Classification labels</text>
+  
+  <text x="325" y="205" text-anchor="middle" font-family="system-ui" font-size="9" fill="#22c55e">✓ Most secure</text>
+  <text x="325" y="220" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ef4444">✗ Inflexible</text>
+  <text x="325" y="235" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Military, gov</text>
+  
+  <!-- RBAC -->
+  <rect x="430" y="70" width="170" height="180" rx="8" fill="#f1f5f9" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="515" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#8b5cf6">RBAC</text>
+  <text x="515" y="115" text-anchor="middle" font-family="system-ui" font-size="10" fill="#475569">Role-Based</text>
+  
+  <rect x="450" y="130" width="130" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="515" y="150" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Role decides</text>
+  <text x="515" y="165" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Job function based</text>
+  
+  <text x="515" y="205" text-anchor="middle" font-family="system-ui" font-size="9" fill="#22c55e">✓ Easy management</text>
+  <text x="515" y="220" text-anchor="middle" font-family="system-ui" font-size="9" fill="#f59e0b">⚠ Role explosion</text>
+  <text x="515" y="235" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Enterprise apps</text>
+  
+  <!-- ABAC -->
+  <rect x="620" y="70" width="170" height="180" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="705" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#3b82f6">ABAC</text>
+  <text x="705" y="115" text-anchor="middle" font-family="system-ui" font-size="10" fill="#475569">Attribute-Based</text>
+  
+  <rect x="640" y="130" width="130" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="705" y="150" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Policy decides</text>
+  <text x="705" y="165" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Context-aware</text>
+  
+  <text x="705" y="205" text-anchor="middle" font-family="system-ui" font-size="9" fill="#22c55e">✓ Fine-grained</text>
+  <text x="705" y="220" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ef4444">✗ Complex</text>
+  <text x="705" y="235" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Cloud, multi-tenant</text>
+  
+  <!-- Decision Matrix -->
+  <rect x="50" y="280" width="740" height="170" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="420" y="305" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Selection Matrix</text>
+  
+  <rect x="70" y="320" width="160" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="150" y="340" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Small team, simple</text>
+  <text x="280" y="340" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#22c55e">→ DAC</text>
+  
+  <rect x="70" y="355" width="160" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="150" y="375" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Clear org structure</text>
+  <text x="280" y="375" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#8b5cf6">→ RBAC</text>
+  
+  <rect x="70" y="390" width="160" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="150" y="410" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">High security needed</text>
+  <text x="280" y="410" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#ef4444">→ MAC</text>
+  
+  <rect x="70" y="425" width="160" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="150" y="445" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Complex, context-aware</text>
+  <text x="280" y="445" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#3b82f6">→ ABAC</text>
+  
+  <!-- Hybrid approach -->
+  <rect x="450" y="320" width="320" height="135" rx="8" fill="#f1f5f9" stroke="#f59e0b" stroke-width="2"/>
+  <text x="610" y="345" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Hybrid Approach (Recommended)</text>
+  <text x="610" y="375" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">RBAC + ABAC combination:</text>
+  <text x="610" y="395" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">• Base access via roles</text>
+  <text x="610" y="415" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">• Fine-tuning via attributes</text>
+  <text x="610" y="435" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">• Example: "Manager can approve"</text>
+  <text x="610" y="450" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">"IF amount &lt; $10,000 AND dept match"</text>
+
+</svg>

@@ -1,18 +1,119 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Legacy Browser Support diagram 1">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
   <defs>
-    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
+    <marker id="arrow-lb1" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
   </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg1)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Legacy Browser Support</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 1</text>
+
+  <!-- Background -->
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Legacy Support Decision Framework</text>
+
+  <!-- Input 1: Analytics Data -->
+  <rect x="30" y="65" width="170" height="90" rx="8" fill="#6d5bd0"/>
+  <text x="115" y="90" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Analytics Data</text>
+  <line x1="45" y1="98" x2="185" y2="98" stroke="#ffffff" stroke-width="1" opacity="0.3"/>
+  <text x="115" y="115" text-anchor="middle" font-size="9" fill="#ffffff">Browser usage share</text>
+  <text x="115" y="129" text-anchor="middle" font-size="9" fill="#ffffff">Feature adoption rates</text>
+  <text x="115" y="143" text-anchor="middle" font-size="9" fill="#ffffff">User demographics</text>
+
+  <!-- Input 2: Cost Analysis -->
+  <rect x="30" y="175" width="170" height="90" rx="8" fill="#6d5bd0"/>
+  <text x="115" y="200" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Cost Analysis</text>
+  <line x1="45" y1="208" x2="185" y2="208" stroke="#ffffff" stroke-width="1" opacity="0.3"/>
+  <text x="115" y="225" text-anchor="middle" font-size="9" fill="#ffffff">Dev hours per browser</text>
+  <text x="115" y="239" text-anchor="middle" font-size="9" fill="#ffffff">Testing infrastructure</text>
+  <text x="115" y="253" text-anchor="middle" font-size="9" fill="#ffffff">Bug fix overhead</text>
+
+  <!-- Input 3: Business Requirements -->
+  <rect x="30" y="285" width="170" height="90" rx="8" fill="#6d5bd0"/>
+  <text x="115" y="310" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Business Rules</text>
+  <line x1="45" y1="318" x2="185" y2="318" stroke="#ffffff" stroke-width="1" opacity="0.3"/>
+  <text x="115" y="335" text-anchor="middle" font-size="9" fill="#ffffff">Compliance needs</text>
+  <text x="115" y="349" text-anchor="middle" font-size="9" fill="#ffffff">Enterprise contracts</text>
+  <text x="115" y="363" text-anchor="middle" font-size="9" fill="#ffffff">Accessibility mandates</text>
+
+  <!-- Arrows to evaluation -->
+  <line x1="200" y1="110" x2="260" y2="200" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-lb1)"/>
+  <line x1="200" y1="220" x2="260" y2="210" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-lb1)"/>
+  <line x1="200" y1="330" x2="260" y2="225" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-lb1)"/>
+
+  <!-- Evaluation Engine -->
+  <rect x="270" y="170" width="180" height="80" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2.5"/>
+  <text x="360" y="195" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">Evaluation</text>
+  <text x="360" y="212" text-anchor="middle" font-size="10" fill="#1a1822">ROI = Revenue Impact /</text>
+  <text x="360" y="226" text-anchor="middle" font-size="10" fill="#1a1822">Support Cost per Browser</text>
+  <text x="360" y="242" text-anchor="middle" font-size="9" fill="#6d5bd0">Score each browser</text>
+
+  <!-- Arrow to tier assignment -->
+  <line x1="450" y1="210" x2="510" y2="210" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-lb1)"/>
+
+  <!-- Tier Assignment -->
+  <rect x="520" y="60" width="170" height="80" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="605" y="85" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Tier A — Full</text>
+  <line x1="535" y1="93" x2="675" y2="93" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="605" y="110" text-anchor="middle" font-size="9" fill="#1a1822">Chrome, Safari, Firefox, Edge</text>
+  <text x="605" y="125" text-anchor="middle" font-size="9" fill="#6d5bd0">&gt; 5% traffic share</text>
+  <text x="605" y="138" text-anchor="middle" font-size="9" fill="#1a1822">Full feature parity</text>
+
+  <rect x="520" y="155" width="170" height="80" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="605" y="180" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Tier B — Partial</text>
+  <line x1="535" y1="188" x2="675" y2="188" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="605" y="205" text-anchor="middle" font-size="9" fill="#1a1822">Safari N-1, Samsung Internet</text>
+  <text x="605" y="219" text-anchor="middle" font-size="9" fill="#6d5bd0">1-5% traffic share</text>
+  <text x="605" y="233" text-anchor="middle" font-size="9" fill="#1a1822">Core features work</text>
+
+  <rect x="520" y="250" width="170" height="80" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="605" y="275" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Tier C — Minimal</text>
+  <line x1="535" y1="283" x2="675" y2="283" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="605" y="300" text-anchor="middle" font-size="9" fill="#1a1822">Older browsers, niche</text>
+  <text x="605" y="314" text-anchor="middle" font-size="9" fill="#6d5bd0">&lt; 1% traffic share</text>
+  <text x="605" y="328" text-anchor="middle" font-size="9" fill="#1a1822">Content readable only</text>
+
+  <!-- Arrows from evaluation to tiers -->
+  <line x1="490" y1="195" x2="520" y2="100" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrow-lb1)"/>
+  <line x1="490" y1="210" x2="520" y2="195" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrow-lb1)"/>
+  <line x1="490" y1="225" x2="520" y2="290" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrow-lb1)"/>
+
+  <!-- Arrows from tiers to sunset timeline -->
+  <line x1="690" y1="100" x2="730" y2="100" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrow-lb1)"/>
+  <line x1="690" y1="195" x2="730" y2="195" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrow-lb1)"/>
+  <line x1="690" y1="290" x2="730" y2="290" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrow-lb1)"/>
+
+  <!-- Sunset Timeline -->
+  <rect x="740" y="60" width="140" height="80" rx="8" fill="#6d5bd0"/>
+  <text x="810" y="85" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">No Sunset</text>
+  <text x="810" y="100" text-anchor="middle" font-size="9" fill="#ffffff">Ongoing support</text>
+  <text x="810" y="115" text-anchor="middle" font-size="9" fill="#ffffff">Regular testing</text>
+  <text x="810" y="130" text-anchor="middle" font-size="9" fill="#ffffff">Full QA coverage</text>
+
+  <rect x="740" y="155" width="140" height="80" rx="8" fill="#6d5bd0" opacity="0.7"/>
+  <text x="810" y="180" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Review Quarterly</text>
+  <text x="810" y="195" text-anchor="middle" font-size="9" fill="#ffffff">Monitor traffic trends</text>
+  <text x="810" y="210" text-anchor="middle" font-size="9" fill="#ffffff">Move to Tier C when</text>
+  <text x="810" y="225" text-anchor="middle" font-size="9" fill="#ffffff">share drops below 1%</text>
+
+  <rect x="740" y="250" width="140" height="80" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="810" y="275" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Sunset in 6mo</text>
+  <text x="810" y="295" text-anchor="middle" font-size="9" fill="#6d5bd0">User notification</text>
+  <text x="810" y="310" text-anchor="middle" font-size="9" fill="#1a1822">Graceful degradation</text>
+  <text x="810" y="325" text-anchor="middle" font-size="9" fill="#1a1822">Remove polyfills</text>
+
+  <!-- Decision criteria box -->
+  <rect x="30" y="400" width="850" height="70" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="420" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Key Decision Criteria</text>
+  <line x1="45" y1="428" x2="865" y2="428" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="120" y="448" text-anchor="middle" font-size="10" fill="#6d5bd0">Traffic Share</text>
+  <text x="120" y="462" text-anchor="middle" font-size="9" fill="#1a1822">% of total users</text>
+  <text x="310" y="448" text-anchor="middle" font-size="10" fill="#6d5bd0">Revenue Impact</text>
+  <text x="310" y="462" text-anchor="middle" font-size="9" fill="#1a1822">$ per browser cohort</text>
+  <text x="500" y="448" text-anchor="middle" font-size="10" fill="#6d5bd0">Dev Cost</text>
+  <text x="500" y="462" text-anchor="middle" font-size="9" fill="#1a1822">Hours per sprint</text>
+  <text x="680" y="448" text-anchor="middle" font-size="10" fill="#6d5bd0">Trend Direction</text>
+  <text x="680" y="462" text-anchor="middle" font-size="9" fill="#1a1822">Growing or declining</text>
+
+  <!-- Watermark -->
+  <text x="870" y="490" text-anchor="end" font-size="8" fill="#d7d1e6">Legacy Support Decision Framework</text>
 </svg>

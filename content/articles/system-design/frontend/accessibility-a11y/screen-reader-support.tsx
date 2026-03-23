@@ -167,35 +167,10 @@ export default function ScreenReaderSupportArticle() {
           caption="The announcement pipeline: DOM change → Browser accessibility tree update → Platform API event → Screen reader processing → Speech/braille output."
         />
 
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// Accessible name computation examples
-// Priority: aria-labelledby > aria-label > <label> > content > title
-
-// 1. aria-labelledby (highest priority, can reference multiple elements)
-<span id="billing">Billing</span>
-<span id="name">Name</span>
-<input aria-labelledby="billing name" />
-// Screen reader announces: "Billing Name, edit"
-
-// 2. aria-label (direct string label)
-<button aria-label="Close dialog">×</button>
-// Screen reader announces: "Close dialog, button"
-
-// 3. Native <label> association
-<label for="email">Email address</label>
-<input id="email" type="email" />
-// Screen reader announces: "Email address, edit"
-
-// 4. Text content (for buttons, links)
-<button>Submit Order</button>
-// Screen reader announces: "Submit Order, button"
-
-// 5. aria-describedby (supplementary, announced after name+role)
-<label for="pwd">Password</label>
-<input id="pwd" type="password" aria-describedby="pwd-help" />
-<span id="pwd-help">Must be at least 8 characters</span>
-// Announces: "Password, edit, protected, Must be at least 8 characters"`}</code>
-        </pre>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Accessible Name Computation</h3>
+        <p>
+          For accessible name computation, the priority order is aria-labelledby, then aria-label, then native label, then content, then title. For aria-labelledby, reference multiple element IDs like billing and name for an input, which announces as "Billing Name, edit". For aria-label, use a direct string like "Close dialog" on a button with X icon, which announces as "Close dialog, button". For native label, use label with for attribute matching input id, which announces as "Email address, edit". For text content, buttons and links announce their inner text plus role like "Submit Order, button". For aria-describedby, add supplementary information announced after name and role, like "Password, edit, protected, Must be at least 8 characters" when referencing a help text span.
+        </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Live Region Priority</h3>
         <p>
@@ -209,59 +184,10 @@ export default function ScreenReaderSupportArticle() {
           caption="aria-live='polite' queues announcements until the screen reader finishes current speech. aria-live='assertive' interrupts immediately — use sparingly for urgent notifications."
         />
 
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// Live region patterns in React
-import { useState, useRef, useEffect } from 'react';
-
-// Pattern 1: Status message (polite)
-function SearchResults({ results, query }) {
-  return (
-    <div>
-      <div role="status" aria-live="polite" aria-atomic="true">
-        {results.length} results found for "{query}"
-      </div>
-      <ul>
-        {results.map(r => <li key={r.id}>{r.title}</li>)}
-      </ul>
-    </div>
-  );
-}
-
-// Pattern 2: Error alert (assertive)
-function FormError({ error }) {
-  return (
-    <div role="alert" aria-live="assertive">
-      {error && <p>Error: {error}</p>}
-    </div>
-  );
-}
-
-// Pattern 3: Visually hidden live region for async updates
-function useScreenReaderAnnounce() {
-  const [message, setMessage] = useState('');
-  const timeoutRef = useRef(null);
-
-  const announce = (text, priority = 'polite') => {
-    // Clear and re-set to ensure announcement even with same text
-    setMessage('');
-    clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => setMessage(text), 100);
-  };
-
-  const LiveRegion = () => (
-    <div
-      role="status"
-      aria-live="polite"
-      aria-atomic="true"
-      className="sr-only" // visually hidden
-    >
-      {message}
-    </div>
-  );
-
-  return { announce, LiveRegion };
-}`}</code>
-        </pre>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Live Region Patterns in React</h3>
+        <p>
+          For live region patterns in React, create a SearchResults component with role status, aria-live polite, and aria-atomic true that announces results count and query. For error alerts, create FormError component with role alert and aria-live assertive that shows error messages. For async updates, create useScreenReaderAnnounce hook with useState for message, useRef for timeout, and announce function that clears message, clears timeout, and sets message after 100ms delay. Return announce function and LiveRegion component with role status, aria-live polite, aria-atomic true, and sr-only class for visually hidden announcements.
+        </p>
       </section>
 
       {/* ─── Section 4: Trade-offs & Comparisons ─── */}

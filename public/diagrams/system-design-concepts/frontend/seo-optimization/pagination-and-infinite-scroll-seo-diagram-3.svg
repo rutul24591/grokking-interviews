@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Hybrid Pagination + Infinite Scroll Architecture</text>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+
+  <!-- Foundation layer: Server-rendered pages -->
+  <rect x="40" y="60" width="820" height="130" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="60" y="82" font-size="13" font-weight="700" fill="#6d5bd0">Foundation: Server-Rendered Paginated Pages</text>
+
+  <rect x="60" y="95" width="150" height="80" rx="6" fill="#6d5bd0"/>
+  <text x="135" y="125" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">/products/page/1</text>
+  <text x="135" y="145" text-anchor="middle" font-size="10" fill="#ffffff">Items 1-20</text>
+  <text x="135" y="162" text-anchor="middle" font-size="10" fill="#ffffff">Full HTML</text>
+
+  <line x1="210" y1="135" x2="240" y2="135" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <rect x="240" y="95" width="150" height="80" rx="6" fill="#6d5bd0"/>
+  <text x="315" y="125" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">/products/page/2</text>
+  <text x="315" y="145" text-anchor="middle" font-size="10" fill="#ffffff">Items 21-40</text>
+  <text x="315" y="162" text-anchor="middle" font-size="10" fill="#ffffff">Full HTML</text>
+
+  <line x1="390" y1="135" x2="420" y2="135" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <rect x="420" y="95" width="150" height="80" rx="6" fill="#6d5bd0"/>
+  <text x="495" y="125" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">/products/page/3</text>
+  <text x="495" y="145" text-anchor="middle" font-size="10" fill="#ffffff">Items 41-60</text>
+  <text x="495" y="162" text-anchor="middle" font-size="10" fill="#ffffff">Full HTML</text>
+
+  <text x="600" y="135" font-size="20" fill="#6d5bd0">...</text>
+
+  <rect x="640" y="95" width="195" height="80" rx="6" fill="#ece8f6" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="737" y="118" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">rel="next" / rel="prev"</text>
+  <text x="737" y="136" text-anchor="middle" font-size="10" fill="#1a1822">Canonical per page</text>
+  <text x="737" y="152" text-anchor="middle" font-size="10" fill="#1a1822">Crawlable &amp;lt;a&amp;gt; links</text>
+  <text x="737" y="168" text-anchor="middle" font-size="10" fill="#1a1822">In sitemap.xml</text>
+
+  <!-- Client-side overlay layer -->
+  <rect x="40" y="210" width="820" height="100" rx="8" fill="#ffffff" stroke="#8b7de0" stroke-width="2"/>
+  <text x="60" y="232" font-size="13" font-weight="700" fill="#8b7de0">Client-Side Layer: Infinite Scroll Overlay</text>
+
+  <rect x="60" y="245" width="160" height="50" rx="6" fill="#8b7de0"/>
+  <text x="140" y="268" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">User scrolls down</text>
+  <text x="140" y="284" text-anchor="middle" font-size="10" fill="#ffffff">IntersectionObserver</text>
+
+  <line x1="220" y1="270" x2="250" y2="270" stroke="#8b7de0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <rect x="250" y="245" width="160" height="50" rx="6" fill="#8b7de0"/>
+  <text x="330" y="268" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Fetch next items</text>
+  <text x="330" y="284" text-anchor="middle" font-size="10" fill="#ffffff">via API call</text>
+
+  <line x1="410" y1="270" x2="440" y2="270" stroke="#8b7de0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <rect x="440" y="245" width="160" height="50" rx="6" fill="#8b7de0"/>
+  <text x="520" y="268" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Append to DOM</text>
+  <text x="520" y="284" text-anchor="middle" font-size="10" fill="#ffffff">Seamless UX</text>
+
+  <line x1="600" y1="270" x2="630" y2="270" stroke="#8b7de0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <rect x="630" y="245" width="210" height="50" rx="6" fill="#8b7de0"/>
+  <text x="735" y="268" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">History API: Update URL</text>
+  <text x="735" y="284" text-anchor="middle" font-size="10" fill="#ffffff">/products/page/2 in address bar</text>
+
+  <!-- noscript fallback -->
+  <rect x="40" y="330" width="820" height="70" rx="8" fill="#ffffff" stroke="#a89fd0" stroke-width="2"/>
+  <text x="60" y="352" font-size="13" font-weight="700" fill="#a89fd0">Fallback: &amp;lt;noscript&amp;gt; Pagination Links</text>
+
+  <rect x="60" y="362" width="780" height="28" rx="5" fill="#ece8f6"/>
+  <text x="450" y="381" text-anchor="middle" font-size="11" fill="#1a1822">&amp;lt;noscript&amp;gt; &amp;lt;a href="/page/1"&amp;gt;1&amp;lt;/a&amp;gt; &amp;lt;a href="/page/2"&amp;gt;2&amp;lt;/a&amp;gt; &amp;lt;a href="/page/3"&amp;gt;3&amp;lt;/a&amp;gt; ... &amp;lt;/noscript&amp;gt;</text>
+
+  <!-- Benefits at bottom -->
+  <rect x="40" y="420" width="250" height="65" rx="6" fill="#6d5bd0"/>
+  <text x="165" y="443" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">SEO Benefits</text>
+  <text x="165" y="460" text-anchor="middle" font-size="10" fill="#ffffff">Every page crawlable</text>
+  <text x="165" y="475" text-anchor="middle" font-size="10" fill="#ffffff">Unique URLs for indexing</text>
+
+  <rect x="325" y="420" width="250" height="65" rx="6" fill="#8b7de0"/>
+  <text x="450" y="443" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">UX Benefits</text>
+  <text x="450" y="460" text-anchor="middle" font-size="10" fill="#ffffff">Smooth infinite scroll</text>
+  <text x="450" y="475" text-anchor="middle" font-size="10" fill="#ffffff">Shareable URLs via History API</text>
+
+  <rect x="610" y="420" width="250" height="65" rx="6" fill="#a89fd0"/>
+  <text x="735" y="443" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Accessibility</text>
+  <text x="735" y="460" text-anchor="middle" font-size="10" fill="#ffffff">noscript fallback for no-JS</text>
+  <text x="735" y="475" text-anchor="middle" font-size="10" fill="#ffffff">Keyboard navigable pages</text>
+</svg>

@@ -1,18 +1,87 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Polyfills and Transpilation diagram 1">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif" role="img" aria-label="Build Pipeline: Transpilation and Polyfill Injection">
   <defs>
-    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
+    <marker id="pt1-arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
   </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg1)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Polyfills and Transpilation</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 1</text>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Build Pipeline: Transpilation &amp; Polyfill Injection</text>
+
+  <!-- Source Code -->
+  <rect x="50" y="65" width="160" height="70" rx="8" fill="#6d5bd0" stroke="#1a1822" stroke-width="2"/>
+  <text x="130" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Source Code</text>
+  <text x="130" y="110" text-anchor="middle" font-size="10" fill="#f3f1f8">ES2024+ / TypeScript</text>
+  <text x="130" y="125" text-anchor="middle" font-size="10" fill="#f3f1f8">JSX, optional chaining</text>
+
+  <line x1="210" y1="100" x2="260" y2="100" stroke="#6d5bd0" stroke-width="2" marker-end="url(#pt1-arrow)"/>
+
+  <!-- Transpiler -->
+  <rect x="265" y="55" width="180" height="90" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="355" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Transpiler</text>
+  <text x="355" y="100" text-anchor="middle" font-size="10" fill="#6d5bd0">Babel / SWC / esbuild</text>
+  <text x="355" y="116" text-anchor="middle" font-size="10" fill="#1a1822">Converts modern syntax</text>
+  <text x="355" y="130" text-anchor="middle" font-size="10" fill="#1a1822">to target ES version</text>
+
+  <!-- .browserslistrc input -->
+  <rect x="280" y="160" width="150" height="35" rx="6" fill="#d7d1e6" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="355" y="182" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">.browserslistrc config</text>
+
+  <line x1="355" y1="160" x2="355" y2="145" stroke="#d7d1e6" stroke-width="1.5" marker-end="url(#pt1-arrow)"/>
+
+  <line x1="445" y1="100" x2="495" y2="100" stroke="#6d5bd0" stroke-width="2" marker-end="url(#pt1-arrow)"/>
+
+  <!-- Polyfill Injection -->
+  <rect x="500" y="55" width="180" height="90" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="590" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Polyfill Injection</text>
+  <text x="590" y="100" text-anchor="middle" font-size="10" fill="#6d5bd0">core-js / regenerator</text>
+  <text x="590" y="116" text-anchor="middle" font-size="10" fill="#1a1822">Adds missing APIs:</text>
+  <text x="590" y="130" text-anchor="middle" font-size="10" fill="#1a1822">Promise, fetch, Array.at()</text>
+
+  <!-- Usage analysis input -->
+  <rect x="515" y="160" width="150" height="35" rx="6" fill="#d7d1e6" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="590" y="182" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">useBuiltIns: "usage"</text>
+
+  <line x1="590" y1="160" x2="590" y2="145" stroke="#d7d1e6" stroke-width="1.5" marker-end="url(#pt1-arrow)"/>
+
+  <line x1="680" y1="100" x2="720" y2="100" stroke="#6d5bd0" stroke-width="2" marker-end="url(#pt1-arrow)"/>
+
+  <!-- Bundler -->
+  <rect x="725" y="65" width="150" height="70" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="800" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Bundler</text>
+  <text x="800" y="110" text-anchor="middle" font-size="10" fill="#6d5bd0">Webpack / Vite / Rollup</text>
+  <text x="800" y="125" text-anchor="middle" font-size="10" fill="#1a1822">Tree-shaking, splitting</text>
+
+  <!-- Arrow down to differential bundles -->
+  <line x1="800" y1="135" x2="800" y2="220" stroke="#6d5bd0" stroke-width="2" marker-end="url(#pt1-arrow)"/>
+  <text x="810" y="180" font-size="10" font-weight="600" fill="#6d5bd0" transform="rotate(90, 810, 180)">Output</text>
+
+  <!-- Differential Bundles -->
+  <text x="450" y="240" text-anchor="middle" font-size="16" font-weight="700" fill="#1a1822">Differential Bundles</text>
+
+  <!-- Modern Bundle -->
+  <rect x="50" y="260" width="380" height="110" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="50" y="260" width="380" height="30" rx="8" fill="#6d5bd0"/>
+  <rect x="50" y="282" width="380" height="8" fill="#6d5bd0"/>
+  <text x="240" y="282" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Modern Bundle (ES2020+)</text>
+  <text x="240" y="312" text-anchor="middle" font-size="11" fill="#1a1822">Minimal transpilation, few polyfills</text>
+  <text x="240" y="330" text-anchor="middle" font-size="11" fill="#1a1822">Smaller size: ~120KB gzipped</text>
+  <text x="240" y="348" text-anchor="middle" font-size="11" fill="#6d5bd0">Served via: &lt;script type="module"&gt;</text>
+  <text x="240" y="363" text-anchor="middle" font-size="10" fill="#1a1822">Target: Chrome 80+, Firefox 78+, Safari 14+</text>
+
+  <!-- Legacy Bundle -->
+  <rect x="470" y="260" width="380" height="110" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <rect x="470" y="260" width="380" height="30" rx="8" fill="#8b7de0"/>
+  <rect x="470" y="282" width="380" height="8" fill="#8b7de0"/>
+  <text x="660" y="282" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Legacy Bundle (ES5)</text>
+  <text x="660" y="312" text-anchor="middle" font-size="11" fill="#1a1822">Full transpilation, all polyfills included</text>
+  <text x="660" y="330" text-anchor="middle" font-size="11" fill="#1a1822">Larger size: ~280KB gzipped</text>
+  <text x="660" y="348" text-anchor="middle" font-size="11" fill="#6d5bd0">Served via: &lt;script nomodule&gt;</text>
+  <text x="660" y="363" text-anchor="middle" font-size="10" fill="#1a1822">Target: IE11, older mobile browsers</text>
+
+  <!-- Pipeline flow summary -->
+  <rect x="100" y="400" width="700" height="50" rx="8" fill="#6d5bd0" opacity="0.08" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="450" y="420" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Pipeline Summary</text>
+  <text x="450" y="438" text-anchor="middle" font-size="11" fill="#6d5bd0">Source &#x2192; Parse AST &#x2192; Transform Syntax &#x2192; Inject Polyfills &#x2192; Bundle &#x2192; Differential Output</text>
+
+  <text x="450" y="480" text-anchor="middle" font-size="11" fill="#6d5bd0">Modern browsers get smaller, faster bundles — legacy browsers still work</text>
 </svg>

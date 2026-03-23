@@ -117,8 +117,8 @@
   <rect x="680" y="312" width="170" height="8" rx="2" fill="#b8aee6" />
 
   <!-- ID target indicator -->
-  <text x="765" y="370" text-anchor="middle" fill="#1a1822" font-family="monospace" font-size="10">&lt;main id=&quot;main-content&quot;</text>
-  <text x="765" y="386" text-anchor="middle" fill="#1a1822" font-family="monospace" font-size="10">tabindex=&quot;-1&quot;&gt;</text>
+  <text x="765" y="370" text-anchor="middle" fill="#1a1822" font-family="monospace" font-size="10">&amp;lt;main id=&amp;quot;main-content&amp;quot;</text>
+  <text x="765" y="386" text-anchor="middle" fill="#1a1822" font-family="monospace" font-size="10">tabindex=&amp;quot;-1&amp;quot;&amp;gt;</text>
 
   <text x="765" y="416" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10" font-weight="600">Keyboard user can now</text>
   <text x="765" y="432" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10" font-weight="600">Tab through content</text>

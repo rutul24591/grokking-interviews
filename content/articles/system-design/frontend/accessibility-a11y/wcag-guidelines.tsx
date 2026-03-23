@@ -323,78 +323,15 @@ export default function WCAGGuidelinesArticle() {
           and design system at the lowest level. Here is an example of a React component that
           enforces several WCAG criteria by default:
         </p>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// Accessible Button component enforcing WCAG 2.5.8 (target size),
-// 1.4.3 (contrast), and 2.1.1 (keyboard operability)
-import React from 'react';
 
-interface AccessibleButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
-  isLoading?: boolean;
-  loadingLabel?: string;
-}
-
-export function AccessibleButton({
-  children,
-  variant = 'primary',
-  size = 'md',
-  isLoading = false,
-  loadingLabel = 'Loading, please wait',
-  disabled,
-  ...props
-}: AccessibleButtonProps) {
-  // WCAG 2.5.8: Minimum target size of 24x24 CSS pixels
-  const sizeClasses = {
-    sm: 'min-h-[32px] min-w-[32px] px-3 py-1 text-sm',
-    md: 'min-h-[44px] min-w-[44px] px-4 py-2 text-base',
-    lg: 'min-h-[48px] min-w-[48px] px-6 py-3 text-lg',
-  };
-
-  // WCAG 1.4.3: Ensure contrast ratios meet 4.5:1 for normal text
-  const variantClasses = {
-    primary: 'bg-blue-700 text-white hover:bg-blue-800',
-    secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300',
-    danger: 'bg-red-700 text-white hover:bg-red-800',
-  };
-
-  return (
-    <button
-      className={\`\${sizeClasses[size]} \${variantClasses[variant]}
-        rounded-md font-medium
-        focus-visible:outline-2 focus-visible:outline-offset-2
-        focus-visible:outline-blue-600
-        disabled:opacity-50 disabled:cursor-not-allowed
-        transition-colors\`}
-      disabled={disabled || isLoading}
-      // WCAG 4.1.2: Communicate loading state to AT
-      aria-busy={isLoading}
-      aria-disabled={disabled || isLoading}
-      aria-label={isLoading ? loadingLabel : undefined}
-      {...props}
-    >
-      {isLoading ? (
-        <span className="flex items-center gap-2">
-          <span
-            className="h-4 w-4 animate-spin rounded-full border-2
-              border-current border-t-transparent"
-            aria-hidden="true"
-          />
-          <span>{loadingLabel}</span>
-        </span>
-      ) : (
-        children
-      )}
-    </button>
-  );
-}`}</code>
-        </pre>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Accessible Button Component Pattern</h3>
+        <p>
+          For an Accessible Button component enforcing WCAG 2.5.8 (target size), 1.4.3 (contrast), and 2.1.1 (keyboard operability), create a React component accepting variant (primary, secondary, danger), size (sm, md, lg), isLoading, and loadingLabel props. For WCAG 2.5.8, define size classes with minimum dimensions: sm at 32x32px, md at 44x44px, lg at 48x48px. For WCAG 1.4.3, define variant classes with sufficient contrast: primary with blue-700 background and white text, secondary with gray-200 background and gray-900 text, danger with red-700 background and white text. Render button with combined className including size, variant, rounded-md, font-medium, focus-visible outline styling (2px offset, blue-600), disabled styling (opacity-50, cursor-not-allowed), and transition-colors. Set disabled when disabled or isLoading prop is true. For WCAG 4.1.2, add aria-busy for loading state, aria-disabled for disabled state, and aria-label with loadingLabel when loading. When loading, render spinner with aria-hidden true and loadingLabel text; otherwise render children.
+        </p>
         <p>
           This pattern ensures every button in the application meets target size requirements,
           provides proper focus indicators (2.4.7), communicates loading state to assistive
-          technologies via <code>aria-busy</code>, and maintains contrast ratios through the design
-          system&apos;s color tokens.
+          technologies via aria-busy, and maintains contrast ratios through the design system&apos;s color tokens.
         </p>
       </section>
 
@@ -551,80 +488,9 @@ export function AccessibleButton({
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Automated Testing Setup Example
         </h3>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// playwright.config.ts — axe-core integration
-import { defineConfig } from '@playwright/test';
-
-export default defineConfig({
-  use: {
-    baseURL: 'http://localhost:3000',
-  },
-  projects: [
-    {
-      name: 'accessibility',
-      testDir: './tests/a11y',
-    },
-  ],
-});
-
-// tests/a11y/wcag-audit.spec.ts
-import { test, expect } from '@playwright/test';
-import AxeBuilder from '@axe-core/playwright';
-
-const CRITICAL_PAGES = [
-  '/',
-  '/login',
-  '/dashboard',
-  '/settings',
-  '/checkout',
-];
-
-for (const page of CRITICAL_PAGES) {
-  test(\`WCAG 2.2 AA audit: \${page}\`, async ({ page: browserPage }) => {
-    await browserPage.goto(page);
-
-    const results = await new AxeBuilder({ page: browserPage })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag22aa'])
-      .analyze();
-
-    // Log violations with full detail for debugging
-    if (results.violations.length > 0) {
-      console.log(
-        'Violations:',
-        JSON.stringify(results.violations, null, 2)
-      );
-    }
-
-    expect(results.violations).toEqual([]);
-  });
-}
-
-// tests/a11y/keyboard-navigation.spec.ts
-import { test, expect } from '@playwright/test';
-
-test('modal keyboard trap and escape', async ({ page }) => {
-  await page.goto('/dashboard');
-
-  // Open modal
-  await page.getByRole('button', { name: 'Create New' }).click();
-
-  // Verify focus moves to modal
-  const modal = page.getByRole('dialog');
-  await expect(modal).toBeFocused();
-
-  // Tab through modal — focus should not escape
-  const firstFocusable = modal.locator(':focus');
-  await page.keyboard.press('Tab');
-  await expect(modal.locator(':focus')).toBeVisible();
-
-  // Escape closes modal and returns focus to trigger
-  await page.keyboard.press('Escape');
-  await expect(modal).not.toBeVisible();
-  await expect(
-    page.getByRole('button', { name: 'Create New' })
-  ).toBeFocused();
-});`}</code>
-        </pre>
+        <p>
+          For playwright.config.ts with axe-core integration, import defineConfig from playwright/test, export config with baseURL localhost:3000, and define accessibility project with testDir pointing to tests/a11y. For tests/a11y/wcag-audit.spec.ts, import test and expect from playwright/test and AxeBuilder from axe-core/playwright. Define CRITICAL_PAGES array with paths for home, login, dashboard, settings, and checkout. Loop through pages, navigate to each, run AxeBuilder with wcag2a, wcag2aa, and wcag22aa tags to analyze, log violations if any, and expect zero violations. For tests/a11y/keyboard-navigation.spec.ts, test modal keyboard trap by navigating to dashboard, clicking Create New button to open modal, expecting dialog to be focused, pressing Tab and expecting focus to stay within modal, pressing Escape and expecting modal to close and focus to return to Create New button.
+        </p>
       </section>
 
       {/* ─── Section 6: Common Pitfalls ─── */}

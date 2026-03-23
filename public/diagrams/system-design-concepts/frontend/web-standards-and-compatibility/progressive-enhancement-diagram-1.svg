@@ -1,18 +1,48 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Progressive Enhancement diagram 1">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif" role="img" aria-label="Progressive Enhancement Layer Architecture">
   <defs>
-    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
+    <marker id="pe1-arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
   </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg1)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Progressive Enhancement</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 1</text>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Progressive Enhancement Layer Architecture</text>
+
+  <!-- Base Layer: HTML -->
+  <rect x="100" y="360" width="700" height="90" rx="8" fill="#6d5bd0" stroke="#1a1822" stroke-width="2"/>
+  <text x="450" y="395" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff">Layer 1: HTML — Semantic Structure</text>
+  <text x="450" y="420" text-anchor="middle" font-size="13" fill="#f3f1f8">Headings, paragraphs, forms, links, lists — functional without styling or scripts</text>
+  <text x="450" y="438" text-anchor="middle" font-size="12" fill="#d7d1e6">All users receive this content regardless of browser capability</text>
+
+  <!-- Middle Layer: CSS -->
+  <rect x="160" y="230" width="580" height="90" rx="8" fill="#8b7de0" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="265" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff">Layer 2: CSS — Presentation</text>
+  <text x="450" y="290" text-anchor="middle" font-size="13" fill="#f3f1f8">Layout, typography, colors, responsive design, animations</text>
+  <text x="450" y="308" text-anchor="middle" font-size="12" fill="#d7d1e6">Enhances visual experience; content remains accessible without it</text>
+
+  <!-- Top Layer: JavaScript -->
+  <rect x="230" y="100" width="440" height="90" rx="8" fill="#a99de8" stroke="#8b7de0" stroke-width="2"/>
+  <text x="450" y="135" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Layer 3: JavaScript — Interaction</text>
+  <text x="450" y="160" text-anchor="middle" font-size="13" fill="#1a1822">Dynamic UI, async data, real-time updates, client-side validation</text>
+  <text x="450" y="178" text-anchor="middle" font-size="12" fill="#6d5bd0">Richest experience for capable browsers</text>
+
+  <!-- Arrows showing build-up -->
+  <line x1="450" y1="360" x2="450" y2="325" stroke="#6d5bd0" stroke-width="2" marker-end="url(#pe1-arrow)"/>
+  <line x1="450" y1="230" x2="450" y2="195" stroke="#6d5bd0" stroke-width="2" marker-end="url(#pe1-arrow)"/>
+
+  <!-- Side annotations -->
+  <text x="60" y="410" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0" transform="rotate(-90, 60, 410)">CORE</text>
+  <text x="60" y="280" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0" transform="rotate(-90, 60, 280)">ENHANCED</text>
+  <text x="60" y="150" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0" transform="rotate(-90, 60, 150)">RICH</text>
+
+  <!-- Right side: User reach indicators -->
+  <rect x="820" y="360" width="60" height="90" rx="4" fill="#6d5bd0" opacity="0.9"/>
+  <text x="850" y="410" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">100%</text>
+  <rect x="820" y="230" width="60" height="90" rx="4" fill="#8b7de0" opacity="0.7"/>
+  <text x="850" y="280" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">95%</text>
+  <rect x="820" y="100" width="60" height="90" rx="4" fill="#a99de8" opacity="0.5"/>
+  <text x="850" y="150" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">85%</text>
+  <text x="850" y="80" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">User Reach</text>
+
+  <!-- Bottom label -->
+  <text x="450" y="480" text-anchor="middle" font-size="12" fill="#6d5bd0">Each layer builds upon the previous — content works at every level</text>
 </svg>

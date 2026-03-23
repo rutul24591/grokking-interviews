@@ -52,7 +52,7 @@
   <!-- WITH PRELOAD section -->
   <rect x="30" y="270" width="840" height="185" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
   <text x="50" y="292" font-size="14" font-weight="700" fill="#6d5bd0">With Preload</text>
-  <text x="195" y="292" font-size="10" fill="#6d5bd0">&lt;link rel=&quot;preload&quot; as=&quot;font&quot; crossorigin&gt;</text>
+  <text x="195" y="292" font-size="10" fill="#6d5bd0">&amp;lt;link rel=&amp;quot;preload&amp;quot; as=&amp;quot;font&amp;quot; crossorigin&amp;gt;</text>
 
   <!-- Time axis with preload -->
   <line x1="180" y1="440" x2="840" y2="440" stroke="#d7d1e6" stroke-width="1"/>

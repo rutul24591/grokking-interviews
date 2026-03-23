@@ -615,7 +615,114 @@ export default function SecureCookieAttributesArticle() {
       </section>
 
       <section>
-        <h2>References & Further Reading</h2>
+        <h2>Architecture at Scale: Cookie Security in Enterprise Systems</h2>
+        <p>
+          Enterprise-scale cookie security requires coordinated session management, consistent attribute policies, and centralized monitoring across multiple applications and domains. In microservices architectures, each service must validate cookies consistently while supporting different session lifecycles.
+        </p>
+        <p>
+          <strong>Centralized Session Management:</strong> Implement a session service (Redis, Memcached) that stores session state centrally. All services validate session cookies against the central store. Use session tokens (not raw session data) in cookies to minimize cookie size. Implement session replication across regions for high availability. Document session architecture in system design documentation.
+        </p>
+        <p>
+          <strong>Cross-Domain Cookie Strategy:</strong> For multi-domain applications (example.com, app.example.com, api.example.com), use Domain attribute carefully. Prefer subdomain-specific cookies (app.example.com) over parent domain cookies (.example.com) to limit exposure. Use separate cookies for different security domains (auth cookie vs. preferences cookie). Document cookie domain strategy in security standards.
+        </p>
+        <p>
+          <strong>Token-Based Architecture:</strong> For API-heavy applications, use JWT tokens in HttpOnly cookies for web clients and Bearer tokens in Authorization headers for API clients. Implement token refresh endpoints with rotation. Store token blacklist in Redis for revocation scenarios. Use short-lived access tokens (15 minutes) with longer-lived refresh tokens (7 days).
+        </p>
+        <p>
+          <strong>CDN and Edge Considerations:</strong> When using CDN, configure cookie forwarding rules to minimize origin requests. Use Cache-Control headers to prevent CDN caching of authenticated responses. Implement edge authentication (Cloudflare Workers, Lambda@Edge) to validate cookies at the edge before reaching origin. Document CDN cookie configuration in infrastructure documentation.
+        </p>
+      </section>
+
+      <section>
+        <h2>Testing Strategies: Cookie Security Validation</h2>
+        <p>
+          Comprehensive cookie security testing requires automated scanning, manual verification, and penetration testing integrated into security operations.
+        </p>
+        <p>
+          <strong>Automated Cookie Scanning:</strong> Use OWASP ZAP, Burp Suite, or cookie-specific scanners (CookieScan, EditThisCookie) to verify cookie attributes. Configure CI/CD pipelines to scan staging environments after each deployment. Set up automated alerts for: missing HttpOnly on session cookies, missing Secure flag, SameSite=None without Secure, overly broad Domain attribute, excessive cookie expiration.
+        </p>
+        <p>
+          <strong>Session Fixation Testing:</strong> Test for session fixation vulnerabilities: (1) Obtain session cookie before authentication, (2) Authenticate with that session, (3) Verify session ID changes after login. Proper implementations regenerate session ID on authentication. Document session fixation test results in security assessments.
+        </p>
+        <p>
+          <strong>Cookie Tampering Tests:</strong> Attempt cookie manipulation: modify session ID, change expiration, alter signature (for signed cookies). Verify server rejects tampered cookies. Test for weak session ID generation (predictable patterns, insufficient entropy). Use tools like Burp Intruder for automated cookie fuzzing.
+        </p>
+        <p>
+          <strong>Cross-Site Cookie Testing:</strong> Test SameSite effectiveness: (1) Create cross-origin request from attacker domain, (2) Verify cookie is not sent with request, (3) Test with different SameSite values (Lax, Strict, None). Document SameSite behavior across browsers. Test CSRF token validation as backup for older browsers.
+        </p>
+        <p>
+          <strong>Penetration Testing:</strong> Include cookie security in quarterly penetration tests. Specific test cases: (1) Session hijacking via XSS, (2) Session fixation attacks, (3) Cookie tossing attacks, (4) Subdomain takeover via broad Domain attribute, (5) Remember-me token prediction. Require remediation of all cookie-related findings before production deployment.
+        </p>
+      </section>
+
+      <section>
+        <h2>Compliance and Legal Context</h2>
+        <p>
+          Cookie security has significant compliance implications, particularly for applications handling personal data, financial transactions, or operating in regulated industries.
+        </p>
+        <p>
+          <strong>GDPR Requirements:</strong> GDPR Article 5 requires data minimization—cookies should only collect necessary data. Article 7 requires explicit consent for non-essential cookies. Implement cookie consent banners with granular opt-in/opt-out. Document cookie purposes in privacy policy. Allow users to withdraw consent and delete cookies. Non-compliance can result in fines up to 4% of annual revenue or €20 million.
+        </p>
+        <p>
+          <strong>CCPA/CPRA Requirements:</strong> California Consumer Privacy Act requires disclosure of cookie categories and purposes. Implement &quot;Do Not Sell My Personal Information&quot; mechanism. Honor Global Privacy Control (GPC) signals. Document cookie data sharing with third parties. Provide cookie deletion mechanism for California residents.
+        </p>
+        <p>
+          <strong>PCI-DSS Requirements:</strong> PCI-DSS Requirement 6.5.4 requires secure session management for payment processing. Session cookies must use Secure flag, have reasonable timeout, and be invalidated on logout. Document cookie security controls in ROC (Report on Compliance). Annual penetration testing must include cookie security testing.
+        </p>
+        <p>
+          <strong>ePrivacy Directive:</strong> EU ePrivacy Directive (Cookie Law) requires informed consent before storing non-essential cookies. Implement cookie consent mechanism before setting cookies. Essential cookies (authentication, shopping cart) are exempt but must be documented. Maintain cookie audit documentation for regulatory inspections.
+        </p>
+        <p>
+          <strong>Industry Regulations:</strong> HIPAA requires secure session management for healthcare applications. FFIEC requires strong authentication for online banking. COPPA requires parental consent for cookies targeting children under 13. Document compliance with applicable industry regulations.
+        </p>
+      </section>
+
+      <section>
+        <h2>Performance Trade-offs: Security vs. User Experience</h2>
+        <p>
+          Cookie security measures introduce trade-offs between security, performance, and user experience that must be carefully balanced.
+        </p>
+        <p>
+          <strong>Cookie Size Impact:</strong> Cookies are sent with every HTTP request. Large cookies (greater than 4KB) increase bandwidth and latency. Keep session cookies minimal (token only, no user data). Use localStorage for non-sensitive data that doesn&apos;t need server access. Compress cookie values if necessary. Monitor cookie size in performance budgets.
+        </p>
+        <p>
+          <strong>Session Validation Overhead:</strong> Server-side session validation adds database/Redis lookup (5-20ms) per request. Use session caching with TTL matching cookie expiration. Implement lazy session loading (only validate when accessing session data). For high-traffic APIs, consider stateless JWT tokens to eliminate server-side validation.
+        </p>
+        <p>
+          <strong>SameSite Impact on UX:</strong> SameSite=Strict breaks legitimate cross-origin flows (SSO, payment gateways, embedded widgets). Test cross-origin flows thoroughly before deploying SameSite=Strict. Use SameSite=Lax as default with Strict for high-risk operations. Implement CSRF tokens as backup for scenarios requiring SameSite=None.
+        </p>
+        <p>
+          <strong>Token Refresh Latency:</strong> Short-lived tokens require frequent refresh, adding latency. Use silent refresh (background token renewal) to avoid user-visible delays. Implement refresh token rotation to balance security and performance. Cache refresh tokens to reduce database lookups. Monitor refresh endpoint latency and error rates.
+        </p>
+        <p>
+          <strong>CDN Caching Impact:</strong> Cookies prevent CDN caching by default (Vary: Cookie header). For authenticated content, this is correct. For public content with tracking cookies, use separate domains (static.example.com without cookies) for CDN-cached assets. Implement cookie stripping at CDN edge for static asset requests.
+        </p>
+      </section>
+
+      <section>
+        <h2>Browser and Platform Compatibility</h2>
+        <p>
+          Cookie attribute support varies across browsers, requiring careful compatibility planning and fallback strategies.
+        </p>
+        <p>
+          <strong>SameSite Support:</strong> SameSite supported in Chrome 51+, Firefox 60+, Safari 12.1+, Edge 79+. Chrome 80+ enforces SameSite=Lax as default for cookies without explicit attribute. For older browsers, SameSite is ignored (treated as no protection). Always combine SameSite with CSRF tokens for comprehensive protection. Test SameSite behavior across target browsers.
+        </p>
+        <p>
+          <strong>Secure Flag Requirements:</strong> Secure flag supported in all browsers. However, Secure cookies don&apos;t work on localhost HTTP (use localhost HTTPS or omit Secure in development). Some testing tools strip Secure flag. Test Secure cookie behavior in staging environment before production deployment.
+        </p>
+        <p>
+          <strong>HttpOnly Support:</strong> HttpOnly supported in all modern browsers (IE6+, all current versions). Some older mobile browsers have partial HttpOnly support. Test HttpOnly effectiveness using browser DevTools (cookie should not be accessible via document.cookie). Document HttpOnly support in browser compatibility matrix.
+        </p>
+        <p>
+          <strong>Mobile WebView Considerations:</strong> iOS WKWebView and Android WebView have separate cookie storage from system browsers. WKWebView uses HTTPCookieStorage. Test cookie behavior in actual app WebViews, not just mobile browsers. Consider using custom Authorization headers for mobile apps instead of cookie-based authentication.
+        </p>
+        <p>
+          <strong>Third-Party Cookie Deprecation:</strong> Chrome, Firefox, Safari are phasing out third-party cookies (2024-2025). SameSite=None cookies may be blocked in future browsers. Plan migration strategy: use first-party cookies, implement Storage Access API, or use server-side session correlation. Monitor browser announcements for third-party cookie deprecation timelines.
+        </p>
+      </section>
+
+      <section>
+        <h2>References and Further Reading</h2>
         <ul className="space-y-2">
           <li>
             <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">

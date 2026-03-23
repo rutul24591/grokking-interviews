@@ -41,7 +41,7 @@
   <text x="155" y="235" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a1822">Accessibility</text>
   <text x="155" y="252" text-anchor="middle" font-size="9" fill="#6d5bd0">Screen Readers &amp; A11y</text>
   <rect x="280" y="210" width="290" height="55" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
-  <text x="425" y="230" text-anchor="middle" font-size="10" fill="#1a1822">Native &lt;title&gt; and &lt;desc&gt;</text>
+  <text x="425" y="230" text-anchor="middle" font-size="10" fill="#1a1822">Native &amp;lt;title&amp;gt; and &amp;lt;desc&amp;gt;</text>
   <text x="425" y="247" text-anchor="middle" font-size="10" fill="#1a1822">role="img" + aria-label support</text>
   <circle cx="295" cy="238" r="6" fill="#4ade80"/>
   <rect x="570" y="210" width="300" height="55" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>

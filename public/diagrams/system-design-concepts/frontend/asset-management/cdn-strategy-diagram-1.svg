@@ -83,15 +83,15 @@
 
   <circle cx="60" cy="400" r="8" fill="#4ade80"/>
   <text x="78" y="404" font-size="11" fill="#1a1822" font-weight="600">Cache HIT (Edge):</text>
-  <text x="195" y="404" font-size="11" fill="#1a1822">User --&gt; Edge PoP (cached response returned, ~10-50ms)</text>
+  <text x="195" y="404" font-size="11" fill="#1a1822">User --&amp;gt; Edge PoP (cached response returned, ~10-50ms)</text>
 
   <circle cx="60" cy="430" r="8" fill="#facc15"/>
   <text x="78" y="434" font-size="11" fill="#1a1822" font-weight="600">Cache MISS (Shield HIT):</text>
-  <text x="230" y="434" font-size="11" fill="#1a1822">User --&gt; Edge --&gt; Shield (cached, ~50-100ms)</text>
+  <text x="230" y="434" font-size="11" fill="#1a1822">User --&amp;gt; Edge --&amp;gt; Shield (cached, ~50-100ms)</text>
 
   <circle cx="60" cy="460" r="8" fill="#f87171"/>
   <text x="78" y="464" font-size="11" fill="#1a1822" font-weight="600">Full MISS:</text>
-  <text x="148" y="464" font-size="11" fill="#1a1822">User --&gt; Edge --&gt; Shield --&gt; Origin (fetch + cache, ~200-500ms)</text>
+  <text x="148" y="464" font-size="11" fill="#1a1822">User --&amp;gt; Edge --&amp;gt; Shield --&amp;gt; Origin (fetch + cache, ~200-500ms)</text>
 
   <!-- Arrowhead definitions -->
   <defs>

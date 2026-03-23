@@ -111,5 +111,5 @@ To add a new concept category or topic:
 - Store UI state (expanded items, selections) in Zustand
 - Persist user preferences (theme, sidebar state) to localStorage with SSR-safe patterns.
 - Each extensive article should possess in depth information for a staff/principal engineer interview prep/research work.
-- Each extensive article should also contain a comprehension example of code.
+- No code to be included in the article content. For code example we have a separate toggle to show code(which will be worked upon later)
 - Do not use Mermaid for diagram creation. We will use svg from publicly available images from web.

@@ -778,6 +778,107 @@ export default function XSSPreventionArticle() {
       </section>
 
       <section>
+        <h2>Architecture at Scale: XSS Defense in Enterprise Systems</h2>
+        <p>
+          Implementing XSS prevention at enterprise scale requires architectural decisions that make security the default, not an afterthought. In microservices architectures, each service must independently validate and encode output, as there is no central security layer. API gateways can enforce Content Security Policy headers across all services, while service meshes can inject security headers at the proxy level.
+        </p>
+        <p>
+          <strong>Design System Integration:</strong> Component libraries should enforce XSS-safe patterns by default. React components should never expose <code className="text-sm">dangerouslySetInnerHTML</code> without explicit sanitization. Template systems should auto-escape by default (Twig, Jinja2, EJS). Build pipelines should include automated CSP generation based on actual resource usage.
+        </p>
+        <p>
+          <strong>CDN Security:</strong> When serving static assets through CDNs, implement Subresource Integrity (SRI) hashes to prevent CDN compromise from becoming XSS vectors. Use CDN-managed CSP reporting to detect violations across all edge locations. Consider using CDN WAF rules that block common XSS patterns at the edge before requests reach origin servers.
+        </p>
+        <p>
+          <strong>Third-Party Script Management:</strong> Modern applications load dozens of third-party scripts (analytics, ads, widgets). Each represents a potential XSS vector if compromised. Implement strict CSP with nonces for first-party scripts only. Use <code className="text-sm">trusted-types</code> CSP policy to require explicit sanitization before DOM insertion. Consider using sandboxed iframes for third-party widgets to contain potential compromises.
+        </p>
+      </section>
+
+      <section>
+        <h2>Testing Strategies: Automated XSS Detection</h2>
+        <p>
+          Comprehensive XSS testing requires multiple layers of automated and manual testing integrated into CI/CD pipelines.
+        </p>
+        <p>
+          <strong>Static Analysis (SAST):</strong> Tools like Semgrep, CodeQL, and ESLint security plugins can detect unsafe patterns: <code className="text-sm">innerHTML</code> assignments, <code className="text-sm">eval()</code> calls, <code className="text-sm">document.write()</code>, and unsanitized template literals. Configure these tools to fail builds on high-severity findings. Run SAST on every pull request with results posted as comments.
+        </p>
+        <p>
+          <strong>Dynamic Analysis (DAST):</strong> OWASP ZAP, Burp Suite, and commercial scanners can automatically probe for XSS vulnerabilities by injecting payloads and analyzing responses. Configure DAST scans to run against staging environments after each deployment. Use authenticated scans to test logged-in functionality. Integrate DAST results with issue tracking for automatic ticket creation.
+        </p>
+        <p>
+          <strong>Interactive Analysis (IAST):</strong> Tools like Contrast Security and HCL AppScan instrument running applications to detect XSS during functional testing. IAST provides better accuracy than DAST with fewer false positives. Run IAST agents in staging and production (read-only mode) for continuous monitoring.
+        </p>
+        <p>
+          <strong>Penetration Testing:</strong> Quarterly manual penetration tests by security professionals catch complex XSS chains that automated tools miss. Provide pentesters with test accounts covering all user roles. Require remediation of all high/critical findings before production deployment. Track mean-time-to-remediation as a security metric.
+        </p>
+        <p>
+          <strong>CSP Reporting:</strong> Implement CSP with <code className="text-sm">report-uri</code> or <code className="text-sm">report-to</code> directives to collect violation reports. Use services like Report URI or CSP Evaluator to analyze reports and identify potential XSS attempts. Monitor for sudden spikes in violations that may indicate active attacks.
+        </p>
+      </section>
+
+      <section>
+        <h2>Compliance & Legal Context</h2>
+        <p>
+          XSS vulnerabilities have significant compliance and legal implications beyond technical risk.
+        </p>
+        <p>
+          <strong>OWASP Top 10:</strong> XSS consistently ranks in OWASP Top 10 (currently #3 in 2021). Many compliance frameworks reference OWASP Top 10 as a baseline requirement. Regular XSS testing demonstrates due diligence in security practices.
+        </p>
+        <p>
+          <strong>GDPR Implications:</strong> XSS that leads to personal data exfiltration constitutes a data breach under GDPR Article 33, requiring notification within 72 hours. Fines can reach 4% of annual global revenue or €20 million. Document XSS prevention measures as part of Article 32 &quot;security of processing&quot; requirements.
+        </p>
+        <p>
+          <strong>PCI-DSS Requirements:</strong> PCI-DSS Requirement 6.5.7 explicitly requires protection against XSS for payment processing systems. Annual penetration testing (Requirement 11.3) must include XSS testing. Non-compliance can result in fines up to $500,000 per incident and loss of payment processing capabilities.
+        </p>
+        <p>
+          <strong>SOC 2 Controls:</strong> XSS prevention maps to SOC 2 Common Criteria CC6.1 (logical access controls) and CC7.2 (system monitoring). Document XSS testing procedures and results for annual SOC 2 audits. Track XSS vulnerability metrics as part of security monitoring.
+        </p>
+        <p>
+          <strong>Industry-Specific Regulations:</strong> Healthcare (HIPAA), finance (GLBA), and education (FERPA) sectors have additional requirements for protecting user data from XSS-based exfiltration. Consult legal counsel for industry-specific compliance requirements.
+        </p>
+      </section>
+
+      <section>
+        <h2>Performance Trade-offs: Security vs. Latency</h2>
+        <p>
+          XSS prevention measures introduce latency that must be balanced against security requirements.
+        </p>
+        <p>
+          <strong>Output Encoding Overhead:</strong> HTML entity encoding adds minimal latency (&lt;1ms per response) but is essential for security. Use streaming encoders for large responses to avoid buffering entire responses in memory. Pre-compute encoded versions of static content during build time.
+        </p>
+        <p>
+          <strong>CSP Evaluation:</strong> Browser CSP evaluation adds 5-50ms depending on policy complexity. Keep CSP policies simple: avoid excessive <code className="text-sm">script-src</code> entries, use nonces instead of hashes for dynamic scripts, and leverage browser CSP caching. Test CSP impact using Chrome DevTools Performance panel.
+        </p>
+        <p>
+          <strong>Sanitization Costs:</strong> DOMPurify sanitization of user HTML takes 10-100ms depending on input size. Cache sanitized versions of frequently-accessed content. Use Web Workers for sanitization to avoid blocking main thread. Consider server-side sanitization with CDN caching to amortize costs across users.
+        </p>
+        <p>
+          <strong>WAF Latency:</strong> Cloud WAFs (Cloudflare, AWS WAF) add 10-100ms round-trip latency but provide edge-based XSS protection. Configure WAF rules to be less aggressive for authenticated API endpoints to reduce false positives. Use WAF logging to tune rules based on actual traffic patterns.
+        </p>
+        <p>
+          <strong>Monitoring Overhead:</strong> CSP reporting and security monitoring add minimal latency when implemented asynchronously. Use <code className="text-sm">navigator.sendBeacon()</code> for violation reports to avoid blocking page unload. Batch security events for periodic transmission rather than real-time streaming.
+        </p>
+      </section>
+
+      <section>
+        <h2>Browser & Platform Compatibility</h2>
+        <p>
+          XSS prevention effectiveness varies across browsers and platforms.
+        </p>
+        <p>
+          <strong>CSP Support:</strong> CSP Level 3 (nonce, strict-dynamic) supported in Chrome 63+, Firefox 67+, Safari 12.1+, Edge 79+. For older browsers, implement CSP Level 2 with <code className="text-sm">unsafe-inline</code> fallback (less secure). Use <code className="text-sm">Content-Security-Policy-Report-Only</code> header to test policies before enforcement.
+        </p>
+        <p>
+          <strong>Trusted Types:</strong> Chrome 83+, Edge 83+ support Trusted Types API for DOM XSS prevention. Firefox and Safari have not implemented. Use as progressive enhancement: <code className="text-sm">if (window.trustedTypes)</code> to enable stricter policies for supporting browsers.
+        </p>
+        <p>
+          <strong>Mobile Considerations:</strong> Mobile browsers often have stricter resource limits. CSP evaluation and sanitization can impact battery life. Test XSS prevention on low-end devices (2GB RAM, quad-core CPU) to ensure acceptable performance. Consider reducing sanitization complexity for mobile user agents.
+        </p>
+        <p>
+          <strong>WebView Security:</strong> In-app WebViews (iOS WKWebView, Android WebView) may have different XSS characteristics than mobile browsers. Test XSS prevention in actual app WebViews, not just mobile browsers. Consider disabling JavaScript entirely for read-only content in WebViews.
+        </p>
+      </section>
+
+      <section>
         <h2>Real-World Use Cases</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Social Media Platform</h3>

@@ -1,18 +1,139 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Cross-Browser Testing diagram 1">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
   <defs>
-    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
+    <marker id="arrow-cb1" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
   </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg1)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Cross-Browser Testing</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 1</text>
+
+  <!-- Background -->
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Cross-Browser Testing Pipeline</text>
+
+  <!-- CI Trigger -->
+  <rect x="30" y="60" width="130" height="70" rx="8" fill="#6d5bd0"/>
+  <text x="95" y="88" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">CI Trigger</text>
+  <text x="95" y="105" text-anchor="middle" font-size="9" fill="#ffffff">Push / PR / Schedule</text>
+  <text x="95" y="118" text-anchor="middle" font-size="9" fill="#ffffff">GitHub Actions</text>
+
+  <!-- Arrow -->
+  <line x1="160" y1="95" x2="200" y2="95" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-cb1)"/>
+
+  <!-- Build Step -->
+  <rect x="210" y="65" width="130" height="60" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="275" y="90" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Build App</text>
+  <text x="275" y="108" text-anchor="middle" font-size="9" fill="#6d5bd0">npm run build</text>
+
+  <!-- Arrow -->
+  <line x1="340" y1="95" x2="380" y2="95" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-cb1)"/>
+
+  <!-- Test Matrix Expansion -->
+  <rect x="390" y="55" width="170" height="80" rx="8" fill="#6d5bd0"/>
+  <text x="475" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Matrix Expansion</text>
+  <line x1="405" y1="86" x2="545" y2="86" stroke="#ffffff" stroke-width="1" opacity="0.3"/>
+  <text x="475" y="103" text-anchor="middle" font-size="9" fill="#ffffff">OS: [mac, win, linux]</text>
+  <text x="475" y="116" text-anchor="middle" font-size="9" fill="#ffffff">Browser: [chrome, ff, safari]</text>
+  <text x="475" y="129" text-anchor="middle" font-size="9" fill="#ffffff">Viewport: [mobile, desktop]</text>
+
+  <!-- Arrows to parallel browser lanes -->
+  <line x1="475" y1="135" x2="475" y2="160" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="475" y1="160" x2="100" y2="160" stroke="#6d5bd0" stroke-width="1.5"/>
+  <line x1="475" y1="160" x2="850" y2="160" stroke="#6d5bd0" stroke-width="1.5"/>
+
+  <!-- Parallel Execution Label -->
+  <text x="450" y="180" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Parallel Browser Execution</text>
+
+  <!-- Lane 1: Chrome -->
+  <line x1="100" y1="160" x2="100" y2="195" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrow-cb1)"/>
+  <rect x="30" y="205" width="140" height="130" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="205" width="140" height="30" rx="8" fill="#6d5bd0"/>
+  <rect x="30" y="227" width="140" height="5" fill="#6d5bd0"/>
+  <text x="100" y="225" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Chrome (latest)</text>
+  <text x="50" y="252" font-size="9" fill="#1a1822">Unit tests</text>
+  <text x="50" y="267" font-size="9" fill="#1a1822">Integration tests</text>
+  <text x="50" y="282" font-size="9" fill="#1a1822">E2E flows</text>
+  <text x="50" y="297" font-size="9" fill="#6d5bd0">Playwright</text>
+  <text x="50" y="312" font-size="9" fill="#6d5bd0">macOS + Windows</text>
+  <text x="50" y="327" font-size="9" fill="#1a1822">Desktop + Mobile</text>
+
+  <!-- Lane 2: Firefox -->
+  <line x1="270" y1="160" x2="270" y2="195" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrow-cb1)"/>
+  <rect x="200" y="205" width="140" height="130" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="200" y="205" width="140" height="30" rx="8" fill="#6d5bd0"/>
+  <rect x="200" y="227" width="140" height="5" fill="#6d5bd0"/>
+  <text x="270" y="225" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Firefox (latest)</text>
+  <text x="220" y="252" font-size="9" fill="#1a1822">Unit tests</text>
+  <text x="220" y="267" font-size="9" fill="#1a1822">Integration tests</text>
+  <text x="220" y="282" font-size="9" fill="#1a1822">E2E flows</text>
+  <text x="220" y="297" font-size="9" fill="#6d5bd0">Playwright</text>
+  <text x="220" y="312" font-size="9" fill="#6d5bd0">macOS + Linux</text>
+  <text x="220" y="327" font-size="9" fill="#1a1822">Desktop</text>
+
+  <!-- Lane 3: Safari -->
+  <line x1="440" y1="160" x2="440" y2="195" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrow-cb1)"/>
+  <rect x="370" y="205" width="140" height="130" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="370" y="205" width="140" height="30" rx="8" fill="#6d5bd0"/>
+  <rect x="370" y="227" width="140" height="5" fill="#6d5bd0"/>
+  <text x="440" y="225" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Safari (latest)</text>
+  <text x="390" y="252" font-size="9" fill="#1a1822">Unit tests</text>
+  <text x="390" y="267" font-size="9" fill="#1a1822">Integration tests</text>
+  <text x="390" y="282" font-size="9" fill="#1a1822">E2E flows</text>
+  <text x="390" y="297" font-size="9" fill="#6d5bd0">WebKit (Playwright)</text>
+  <text x="390" y="312" font-size="9" fill="#6d5bd0">macOS</text>
+  <text x="390" y="327" font-size="9" fill="#1a1822">Desktop + iOS</text>
+
+  <!-- Lane 4: Edge -->
+  <line x1="610" y1="160" x2="610" y2="195" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrow-cb1)"/>
+  <rect x="540" y="205" width="140" height="130" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="540" y="205" width="140" height="30" rx="8" fill="#6d5bd0"/>
+  <rect x="540" y="227" width="140" height="5" fill="#6d5bd0"/>
+  <text x="610" y="225" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Edge (latest)</text>
+  <text x="560" y="252" font-size="9" fill="#1a1822">Unit tests</text>
+  <text x="560" y="267" font-size="9" fill="#1a1822">Integration tests</text>
+  <text x="560" y="282" font-size="9" fill="#1a1822">E2E flows</text>
+  <text x="560" y="297" font-size="9" fill="#6d5bd0">Chromium (Playwright)</text>
+  <text x="560" y="312" font-size="9" fill="#6d5bd0">Windows</text>
+  <text x="560" y="327" font-size="9" fill="#1a1822">Desktop</text>
+
+  <!-- Lane 5: Mobile -->
+  <line x1="780" y1="160" x2="780" y2="195" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrow-cb1)"/>
+  <rect x="710" y="205" width="140" height="130" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="710" y="205" width="140" height="30" rx="8" fill="#6d5bd0"/>
+  <rect x="710" y="227" width="140" height="5" fill="#6d5bd0"/>
+  <text x="780" y="225" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Mobile Browsers</text>
+  <text x="730" y="252" font-size="9" fill="#1a1822">Critical path only</text>
+  <text x="730" y="267" font-size="9" fill="#1a1822">Touch interactions</text>
+  <text x="730" y="282" font-size="9" fill="#1a1822">Viewport tests</text>
+  <text x="730" y="297" font-size="9" fill="#6d5bd0">BrowserStack</text>
+  <text x="730" y="312" font-size="9" fill="#6d5bd0">iOS + Android</text>
+  <text x="730" y="327" font-size="9" fill="#1a1822">Real devices</text>
+
+  <!-- Convergence arrows -->
+  <line x1="100" y1="335" x2="100" y2="370" stroke="#6d5bd0" stroke-width="1.5"/>
+  <line x1="270" y1="335" x2="270" y2="370" stroke="#6d5bd0" stroke-width="1.5"/>
+  <line x1="440" y1="335" x2="440" y2="370" stroke="#6d5bd0" stroke-width="1.5"/>
+  <line x1="610" y1="335" x2="610" y2="370" stroke="#6d5bd0" stroke-width="1.5"/>
+  <line x1="780" y1="335" x2="780" y2="370" stroke="#6d5bd0" stroke-width="1.5"/>
+  <line x1="100" y1="370" x2="780" y2="370" stroke="#6d5bd0" stroke-width="1.5"/>
+  <line x1="440" y1="370" x2="440" y2="395" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-cb1)"/>
+
+  <!-- Results Aggregation -->
+  <rect x="330" y="405" width="220" height="70" rx="8" fill="#6d5bd0"/>
+  <text x="440" y="430" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Results Aggregation</text>
+  <line x1="345" y1="438" x2="535" y2="438" stroke="#ffffff" stroke-width="1" opacity="0.3"/>
+  <text x="440" y="455" text-anchor="middle" font-size="10" fill="#ffffff">Merge reports &amp; generate dashboard</text>
+  <text x="440" y="468" text-anchor="middle" font-size="10" fill="#ffffff">Pass/Fail gate for PR merge</text>
+
+  <!-- Status outputs -->
+  <rect x="600" y="415" width="90" height="35" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="645" y="437" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">PR Status</text>
+  <line x1="550" y1="440" x2="600" y2="437" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrow-cb1)"/>
+
+  <rect x="730" y="415" width="90" height="35" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="775" y="437" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Slack Alert</text>
+  <line x1="690" y1="437" x2="730" y2="437" stroke="#d7d1e6" stroke-width="1.5" marker-end="url(#arrow-cb1)"/>
+
+  <!-- Watermark -->
+  <text x="870" y="490" text-anchor="end" font-size="8" fill="#d7d1e6">Cross-Browser Testing Pipeline</text>
 </svg>

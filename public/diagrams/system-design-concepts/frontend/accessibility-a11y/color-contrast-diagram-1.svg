@@ -39,13 +39,13 @@
 
   <!-- AA Normal Text -->
   <rect x="80" y="220" width="340" height="65" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
-  <text x="100" y="245" font-size="14" font-weight="bold" fill="#1a1822">Normal Text (&lt;18pt / &lt;14pt bold)</text>
+  <text x="100" y="245" font-size="14" font-weight="bold" fill="#1a1822">Normal Text (&amp;lt;18pt / &amp;lt;14pt bold)</text>
   <text x="100" y="268" font-size="28" font-weight="bold" fill="#6d5bd0">4.5 : 1</text>
   <text x="250" y="268" font-size="13" fill="#1a1822">minimum ratio</text>
 
   <!-- AA Large Text -->
   <rect x="80" y="296" width="340" height="65" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
-  <text x="100" y="321" font-size="14" font-weight="bold" fill="#1a1822">Large Text (&gt;=18pt / &gt;=14pt bold)</text>
+  <text x="100" y="321" font-size="14" font-weight="bold" fill="#1a1822">Large Text (&amp;gt;=18pt / &amp;gt;=14pt bold)</text>
   <text x="100" y="344" font-size="28" font-weight="bold" fill="#6d5bd0">3 : 1</text>
   <text x="210" y="344" font-size="13" fill="#1a1822">minimum ratio</text>
 
@@ -63,13 +63,13 @@
 
   <!-- AAA Normal Text -->
   <rect x="490" y="220" width="340" height="65" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
-  <text x="510" y="245" font-size="14" font-weight="bold" fill="#1a1822">Normal Text (&lt;18pt / &lt;14pt bold)</text>
+  <text x="510" y="245" font-size="14" font-weight="bold" fill="#1a1822">Normal Text (&amp;lt;18pt / &amp;lt;14pt bold)</text>
   <text x="510" y="268" font-size="28" font-weight="bold" fill="#1a1822">7 : 1</text>
   <text x="630" y="268" font-size="13" fill="#1a1822">minimum ratio</text>
 
   <!-- AAA Large Text -->
   <rect x="490" y="296" width="340" height="65" rx="8" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
-  <text x="510" y="321" font-size="14" font-weight="bold" fill="#1a1822">Large Text (&gt;=18pt / &gt;=14pt bold)</text>
+  <text x="510" y="321" font-size="14" font-weight="bold" fill="#1a1822">Large Text (&amp;gt;=18pt / &amp;gt;=14pt bold)</text>
   <text x="510" y="344" font-size="28" font-weight="bold" fill="#1a1822">4.5 : 1</text>
   <text x="650" y="344" font-size="13" fill="#1a1822">minimum ratio</text>
 

@@ -30,6 +30,25 @@ export default function SocialLoginOptionsArticle() {
           Social login reduces signup friction, improves conversion rates, and eliminates 
           password management overhead for users.
         </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/social-login-flow.svg"
+          alt="Social Login Flow"
+          caption="Social Login Flow — showing OAuth flow, account linking, and profile import"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/social-account-linking.svg"
+          alt="Social Account Linking"
+          caption="Social Account Linking — showing multiple provider linking and conflict resolution"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/social-login-conversion.svg"
+          alt="Social Login Conversion"
+          caption="Social Login Conversion — showing conversion optimization and provider selection"
+        />
+      
         <p>
           For staff and principal engineers, implementing social login requires understanding 
           OAuth flows, provider-specific requirements, button placement and design, account 
@@ -37,11 +56,11 @@ export default function SocialLoginOptionsArticle() {
           seamless UX while maintaining security and respecting user privacy.
         </p>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/social-login-flow.svg"
-          alt="Social Login Flow"
-          caption="Social Login — showing OAuth flow, provider selection, and account creation"
-        />
+        
+
+        
+
+        
       </section>
 
       <section>
@@ -164,11 +183,7 @@ export default function SocialLoginOptionsArticle() {
       <section>
         <h2>Account Linking</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/social-account-linking.svg"
-          alt="Social Account Linking"
-          caption="Account Linking — showing email match, multiple providers, unlinking, and conflict resolution"
-        />
+        
 
         <ul className="space-y-3">
           <li>
@@ -341,11 +356,7 @@ export default function SocialLoginOptionsArticle() {
       <section>
         <h2>Interview Questions</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/social-login-conversion.svg"
-          alt="Social Login Conversion Optimization"
-          caption="Conversion Optimization — showing A/B testing, button placement, and provider selection"
-        />
+        
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -595,6 +606,65 @@ export default function SocialLoginOptionsArticle() {
         <p>
           Monitor passkey adoption. Track passwordless trends. Evaluate biometric options. Watch regulatory changes. Prepare for protocol updates. Plan technology roadmap.
         </p>
+      </section>
+
+      <section>
+        <h2>Real-world Use Cases</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Consumer App Social Login</h3>
+        <p>
+          Social media platform driving 60% signup conversion via social login.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Low email signup conversion (25%). Users abandon due to password friction. Need multiple provider options.</li>
+          <li><strong>Solution:</strong> Prominent social buttons (Google, Apple, Facebook). OAuth 2.0 with PKCE. Account linking for existing users.</li>
+          <li><strong>Result:</strong> 60% signups via social. Overall conversion increased to 45%. Password reset tickets reduced by 50%.</li>
+          <li><strong>Security:</strong> PKCE, token validation, account linking verification.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Mobile App Social Login</h3>
+        <p>
+          Mobile-first platform with iOS/Android apps, 10M mobile users.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> iOS requires Sign in with Apple. Deep linking for OAuth callback. App-claimed URLs for secure redirect.</li>
+          <li><strong>Solution:</strong> Sign in with Apple (mandatory). Universal links (iOS) + App Links (Android). PKCE for public clients. Secure token storage.</li>
+          <li><strong>Result:</strong> App Store compliance. 70% mobile signups via social. Zero callback hijacking.</li>
+          <li><strong>Security:</strong> PKCE, secure storage, app-claimed URLs, certificate pinning.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise Social Login</h3>
+        <p>
+          B2B SaaS with LinkedIn integration for professional networking.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> LinkedIn for professional identity. Company verification. Role inference from LinkedIn profile.</li>
+          <li><strong>Solution:</strong> LinkedIn OAuth integration. Company domain matching. Role inference (title → permissions). Manual override option.</li>
+          <li><strong>Result:</strong> 80% LinkedIn adoption. Company verification automated. Role accuracy 90%.</li>
+          <li><strong>Security:</strong> LinkedIn verification, domain matching, role validation.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Gaming Platform Social Login</h3>
+        <p>
+          Online gaming with Steam, PlayStation, Xbox, Discord integrations.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Multiple gaming platform logins. Cross-platform play requires unified identity. Friend list import.</li>
+          <li><strong>Solution:</strong> Platform-specific OAuth adapters. Unified internal identity. Cross-platform linking. Friend import per platform.</li>
+          <li><strong>Result:</strong> 80% users linked multiple platforms. Cross-platform seamless. Friend adoption increased 60%.</li>
+          <li><strong>Security:</strong> Platform verification, account linking, cross-platform binding.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">International Social Login</h3>
+        <p>
+          Global platform with regional providers (WeChat, LINE, KakaoTalk).
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Different providers by region. Google/Facebook blocked in some countries. Local compliance requirements.</li>
+          <li><strong>Solution:</strong> Region-aware provider selection. WeChat (China), LINE (Japan), Kakao (Korea). Local compliance (data residency).</li>
+          <li><strong>Result:</strong> 85% social adoption globally. Regional compliance maintained. Market penetration improved.</li>
+          <li><strong>Security:</strong> Regional compliance, provider validation, unified token handling.</li>
+        </ul>
       </section>
     </ArticleLayout>
   );

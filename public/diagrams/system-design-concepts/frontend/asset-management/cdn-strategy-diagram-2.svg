@@ -80,8 +80,8 @@
   <text x="235" y="295" text-anchor="middle" font-size="13" fill="#6d5bd0" font-weight="700">4. Versioned / Fingerprinted URLs</text>
 
   <text x="50" y="318" font-size="11" fill="#1a1822" font-weight="600">Immutable cache strategy (cache forever):</text>
-  <text x="50" y="338" font-size="10" fill="#1a1822">/assets/main.<tspan fill="#6d5bd0" font-weight="600">a1b2c3d4</tspan>.js  --&gt;  Cache-Control: max-age=31536000, immutable</text>
-  <text x="50" y="356" font-size="10" fill="#1a1822">New deploy --&gt; new hash --&gt; new URL --&gt; no purge needed</text>
+  <text x="50" y="338" font-size="10" fill="#1a1822">/assets/main.<tspan fill="#6d5bd0" font-weight="600">a1b2c3d4</tspan>.js  --&amp;gt;  Cache-Control: max-age=31536000, immutable</text>
+  <text x="50" y="356" font-size="10" fill="#1a1822">New deploy --&amp;gt; new hash --&amp;gt; new URL --&amp;gt; no purge needed</text>
 
   <!-- Surrogate Keys section -->
   <rect x="470" y="270" width="400" height="100" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
@@ -89,7 +89,7 @@
 
   <text x="490" y="318" font-size="10" fill="#1a1822" font-weight="600">Tag responses with logical identifiers:</text>
   <text x="490" y="338" font-size="10" fill="#6d5bd0">Surrogate-Key: product-123 category-shoes homepage</text>
-  <text x="490" y="356" font-size="10" fill="#1a1822">Purge "category-shoes" --&gt; invalidates all tagged pages</text>
+  <text x="490" y="356" font-size="10" fill="#1a1822">Purge "category-shoes" --&amp;gt; invalidates all tagged pages</text>
 
   <!-- Comparison table -->
   <rect x="30" y="390" width="840" height="95" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>

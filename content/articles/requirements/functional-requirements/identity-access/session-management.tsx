@@ -59,6 +59,25 @@ class SessionStore {
           across requests, enforces session policies, and provides the foundation for 
           authorization decisions.
         </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/session-management-flow.svg"
+          alt="Session Management Flow"
+          caption="Session Management Flow — showing session creation, validation, and cleanup across services"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/session-lifecycle.svg"
+          alt="Session Lifecycle"
+          caption="Session Lifecycle — showing Create → Active → Idle → Expired with timeline"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/session-scalability.svg"
+          alt="Session Scalability"
+          caption="Session Scalability — showing distributed session storage and horizontal scaling"
+        />
+      
         <p>
           For staff and principal engineers, implementing session management requires 
           understanding storage options (Redis, database), timeout strategies (sliding vs 
@@ -67,11 +86,11 @@ class SessionStore {
           lookup while maintaining security and consistency.
         </p>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/session-management-flow.svg"
-          alt="Session Management Flow"
-          caption="Session Management — showing session creation, validation, timeout, and revocation"
-        />
+        
+
+        
+
+        
       </section>
 
       <section>
@@ -137,11 +156,7 @@ class SessionStore {
       <section>
         <h2>Session Lifecycle</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/session-lifecycle.svg"
-          alt="Session Lifecycle"
-          caption="Session Lifecycle — showing creation, validation, refresh, and termination"
-        />
+        
 
         <p>
           Sessions have a lifecycle from creation to termination.
@@ -462,11 +477,7 @@ class SessionStore {
       <section>
         <h2>Interview Questions</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/session-scalability.svg"
-          alt="Session Scalability Patterns"
-          caption="Scalability — showing Redis Cluster, cross-region replication, and distributed sessions"
-        />
+        
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -597,6 +608,65 @@ class SessionStore {
           <li>Test Redis Cluster failover</li>
           <li>Test cross-region failover</li>
           <li>Test session creation at scale</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Real-world Use Cases</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Social Media Platform Sessions</h3>
+        <p>
+          Global social media platform with 500M DAU, users access from multiple devices.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Users logged in on 5+ devices simultaneously. Session sync across devices. Handle 50M concurrent sessions.</li>
+          <li><strong>Solution:</strong> Redis Cluster with 100 nodes. Session replication across 3 regions. Device-aware sessions with metadata.</li>
+          <li><strong>Result:</strong> p99 session lookup latency under 5ms. 99.99% availability. Seamless cross-device experience.</li>
+          <li><strong>Security:</strong> Session binding to device fingerprint, anomaly detection for session hijacking.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Banking Session Management</h3>
+        <p>
+          Online banking platform with strict security and compliance requirements.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> PCI-DSS compliance requires session timeout, concurrent session limits, audit logging.</li>
+          <li><strong>Solution:</strong> Hybrid timeout (15-min idle, 8-hour absolute). Max 2 concurrent sessions. Session versioning for instant invalidation.</li>
+          <li><strong>Result:</strong> Passed PCI-DSS audit. Fraud reduced by 80%. Customer complaints about timeouts down 40% (clear warnings added).</li>
+          <li><strong>Security:</strong> Mandatory re-authentication for transfers, session binding to IP range, automatic logout on password change.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce Session Persistence</h3>
+        <p>
+          Large e-commerce site with cart persistence across sessions.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Users expect cart to persist across devices and sessions. 30-day "remember me" sessions.</li>
+          <li><strong>Solution:</strong> Long-lived refresh tokens (30 days). Cart stored server-side linked to user_id. Session metadata includes device info.</li>
+          <li><strong>Result:</strong> Cart abandonment reduced by 25%. 70% of users stay logged in. Cross-device cart sync working.</li>
+          <li><strong>Security:</strong> Refresh token rotation, session revocation on password change, device trust scoring.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SSO Sessions</h3>
+        <p>
+          Enterprise SaaS with SAML SSO integration for 10,000+ corporate customers.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> SSO sessions must respect IdP session policies. Handle session logout from IdP (SLO).</li>
+          <li><strong>Solution:</strong> SAML session mapping. IdP-initiated logout propagation. Session timeout synced with IdP policies.</li>
+          <li><strong>Result:</strong> Seamless SSO experience for 5M enterprise users. SLO working across all IdPs (Okta, Azure AD, OneLogin).</li>
+          <li><strong>Security:</strong> Session invalidation on IdP logout, audit logging for compliance, tenant-specific session policies.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Gaming Platform Sessions</h3>
+        <p>
+          Online gaming platform handling millions of concurrent player sessions.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> 10M concurrent sessions during peak. Session state for game progress. Low latency required.</li>
+          <li><strong>Solution:</strong> Edge-based session validation (CDN). Session state in Redis with async persistence. Regional session affinity.</li>
+          <li><strong>Result:</strong> Handled 15M concurrent sessions. p99 latency under 10ms. Zero session loss during region failover.</li>
+          <li><strong>Security:</strong> Session binding to game client, anti-cheat session validation, rate limiting per session.</li>
         </ul>
       </section>
 

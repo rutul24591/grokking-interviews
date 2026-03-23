@@ -30,6 +30,25 @@ export default function SSOIntegrationsArticle() {
           customers, SSO is often a mandatory requirement, enabling centralized identity
           management, improved security, and reduced IT overhead.
         </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/sso-flow.svg"
+          alt="Sso Flow"
+          caption="SSO Flow — showing SAML and OIDC flows with IdP integration"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/saml-flow.svg"
+          alt="Saml Flow"
+          caption="SAML Flow — showing SAML assertion exchange between IdP and SP"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/sso-enterprise.svg"
+          alt="Sso Enterprise"
+          caption="SSO Enterprise — showing enterprise SSO with SCIM provisioning and directory sync"
+        />
+      
         <p>
           For staff and principal engineers, implementing SSO requires understanding SAML
           2.0, OpenID Connect, identity provider integration, Just-In-Time (JIT)
@@ -38,11 +57,11 @@ export default function SSOIntegrationsArticle() {
           providing seamless user experience.
         </p>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/sso-flow.svg"
-          alt="SSO Flow"
-          caption="SSO Flow — showing SAML/OIDC flow, IdP integration, and user authentication"
-        />
+        
+
+        
+
+        
       </section>
 
       <section>
@@ -94,11 +113,7 @@ export default function SSOIntegrationsArticle() {
       <section>
         <h2>SAML Flow</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/saml-flow.svg"
-          alt="SAML 2.0 Flow"
-          caption="SAML Flow — showing IdP-initiated, SP-initiated, and assertion consumption"
-        />
+        
 
         <ul className="space-y-3">
           <li>
@@ -260,11 +275,7 @@ export default function SSOIntegrationsArticle() {
       <section>
         <h2>Interview Questions</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/sso-enterprise.svg"
-          alt="Enterprise SSO Integration"
-          caption="Enterprise SSO — showing multi-IdP support, JIT provisioning, and directory sync"
-        />
+        
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -654,6 +665,65 @@ export default function SSOIntegrationsArticle() {
         <p>
           Meet regulatory requirements for SSO. SOC2 audit trails. HIPAA immediate SSO. PCI-DSS session controls. GDPR right to SSO. Regular compliance reviews. External audit support.
         </p>
+      </section>
+
+      <section>
+        <h2>Real-world Use Cases</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SaaS SSO</h3>
+        <p>
+          B2B SaaS with 10,000 enterprise customers requiring SAML/OIDC SSO integration.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Each enterprise has different IdP (Okta, Azure AD, OneLogin). Custom attribute mapping. JIT provisioning for automatic user creation.</li>
+          <li><strong>Solution:</strong> Abstract IdP integration behind common interface. Support SAML 2.0 + OIDC. Configurable attribute mapping. SCIM for user provisioning.</li>
+          <li><strong>Result:</strong> Onboarded 500 enterprise customers in 6 months. 99.9% SSO success rate. Reduced support tickets by 70%.</li>
+          <li><strong>Security:</strong> IdP-initiated logout, session sync, audit logging for compliance.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Healthcare SSO Integration</h3>
+        <p>
+          EHR system with 50,000 providers accessing from hospital networks with existing IdPs.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Hospitals have existing IdPs (Active Directory, Epic). HIPAA requires audit trail. Providers need seamless access across systems.</li>
+          <li><strong>Solution:</strong> SAML 2.0 integration with hospital IdPs. Provider attribute mapping (NPI, specialty). Break-glass access override. Comprehensive audit logging.</li>
+          <li><strong>Result:</strong> Passed HIPAA audits. Provider satisfaction high (single sign-on). Zero unauthorized access.</li>
+          <li><strong>Security:</strong> SAML assertion validation, audit logging, break-glass override.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Financial Services SSO</h3>
+        <p>
+          Investment platform with SEC/FINRA compliance and enterprise customer SSO requirements.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> SEC requires audit trail for all access. Enterprise customers mandate SSO. MFA enforcement via IdP.</li>
+          <li><strong>Solution:</strong> SAML SSO with MFA passthrough. Comprehensive audit logging. Session timeout sync with IdP policies. Compliance reporting.</li>
+          <li><strong>Result:</strong> Passed SEC/FINRA audits. Enterprise contracts secured. Zero compliance violations.</li>
+          <li><strong>Security:</strong> MFA passthrough, audit logging, session policy sync.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Education Platform SSO</h3>
+        <p>
+          Learning management system with 1000+ universities, each with their own IdP.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Universities have diverse IdPs (Shibboleth, Azure AD, Google). Student/faculty role differentiation. Semester-based access cycles.</li>
+          <li><strong>Solution:</strong> Multi-protocol support (SAML, OIDC, Shibboleth). Role mapping from student/faculty attributes. Automated enrollment sync per semester.</li>
+          <li><strong>Result:</strong> 95% university adoption. Student onboarding automated. Support tickets reduced by 80%.</li>
+          <li><strong>Security:</strong> Role validation, enrollment sync, semester-based access control.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Government SSO Integration</h3>
+        <p>
+          GovTech platform serving multiple agencies with PIV/CAC card authentication requirements.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Federal agencies require PIV/CAC card auth. FIPS 140-2 compliance. Agency-specific access controls.</li>
+          <li><strong>Solution:</strong> PIV/CAC card integration via IdP. FIPS-validated cryptography. Agency-specific attribute mapping. Comprehensive audit for compliance.</li>
+          <li><strong>Result:</strong> FedRAMP authorization achieved. 50+ agencies onboarded. Zero security incidents.</li>
+          <li><strong>Security:</strong> PIV/CAC validation, FIPS compliance, agency isolation.</li>
+        </ul>
       </section>
     </ArticleLayout>
   );

@@ -222,36 +222,14 @@ export default function StaticAssetHostingArticle() {
           appropriate variant based on the <code>Accept-Encoding</code> header.
           Brotli achieves 15-25% better compression ratios than gzip for text
           assets, translating to meaningful performance gains on slower
-          connections.
+          connections. Build tools like Vite support compression plugins that
+          generate both .br files (Brotli quality 11) and .gz fallback files
+          during the build, with a threshold setting to only compress files
+          larger than 1KB. The S3 upload script then uploads all three variants
+          (original, .br, .gz) with appropriate Content-Encoding headers, and
+          CloudFront uses an Origin Request Policy to route based on the
+          Accept-Encoding header.
         </p>
-        <pre className="overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// Build-time pre-compression (vite.config.ts)
-import viteCompression from 'vite-plugin-compression';
-
-export default defineConfig({
-  plugins: [
-    // Generate .br files (Brotli, quality 11)
-    viteCompression({
-      algorithm: 'brotliCompress',
-      ext: '.br',
-      threshold: 1024, // Only compress files > 1KB
-    }),
-    // Generate .gz fallback
-    viteCompression({
-      algorithm: 'gzip',
-      ext: '.gz',
-      threshold: 1024,
-    }),
-  ],
-});
-
-// S3 upload script: upload all three variants
-// app.a1b2c3.js        → Content-Encoding: identity
-// app.a1b2c3.js.br     → Content-Encoding: br
-// app.a1b2c3.js.gz     → Content-Encoding: gzip
-// CloudFront: Use Origin Request Policy to route
-// based on Accept-Encoding header`}</code>
-        </pre>
 
         <h3>CORS Configuration for Cross-Origin Assets</h3>
         <p>
@@ -260,28 +238,15 @@ export default defineConfig({
           ), CORS headers must be configured on the storage bucket and
           propagated through the CDN. Fonts are particularly sensitive: browsers
           require <code>Access-Control-Allow-Origin</code> for cross-origin font
-          loading.
+          loading. S3 CORS configuration is a JSON policy specifying allowed
+          origins (e.g., https://app.example.com), allowed methods (GET, HEAD),
+          allowed headers (*), exposed headers (ETag, Content-Length), and
+          MaxAgeSeconds (86400 for one day). CloudFront adds CORS headers via a
+          Response Headers Policy with Access-Control-Allow-Origin set to the
+          app domain, Access-Control-Allow-Methods for GET and HEAD,
+          Access-Control-Max-Age of 86400, and critically Vary: Origin to ensure
+          correct caching behavior.
         </p>
-        <pre className="overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// S3 CORS Configuration (JSON)
-{
-  "CORSRules": [
-    {
-      "AllowedOrigins": ["https://app.example.com"],
-      "AllowedMethods": ["GET", "HEAD"],
-      "AllowedHeaders": ["*"],
-      "ExposeHeaders": ["ETag", "Content-Length"],
-      "MaxAgeSeconds": 86400
-    }
-  ]
-}
-
-// CloudFront: Add CORS headers via Response Headers Policy
-// - Access-Control-Allow-Origin: https://app.example.com
-// - Access-Control-Allow-Methods: GET, HEAD
-// - Access-Control-Max-Age: 86400
-// - Vary: Origin (critical for correct caching)`}</code>
-        </pre>
       </section>
 
       {/* ── 4. Trade-offs & Comparisons ───────────────────────── */}
@@ -607,57 +572,18 @@ export default defineConfig({
           Static asset hosting has a unique security profile: assets are public
           by design (anyone can fetch your JS bundles), but the infrastructure
           serving them must be locked down to prevent unauthorized uploads,
-          bucket enumeration, and supply chain attacks.
+          bucket enumeration, and supply chain attacks. Bucket policies enforce
+          CDN-only access via Origin Access Control (OAC), with a statement
+          allowing CloudFront service principal to get objects only from a
+          specific distribution ARN, and a deny statement for all other access.
+          Subresource Integrity (SRI) protects against CDN tampering: build
+          tools generate SHA-384 integrity hashes that are included in script
+          tags, and browsers verify the fetched content matches the expected
+          hash before execution. For sensitive assets like premium video
+          content, signed URLs with expiration times (e.g., 1 hour) are
+          generated using CloudFront key pairs, ensuring only authorized users
+          can access the content.
         </p>
-        <pre className="overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// Bucket policy: CDN-only access via OAC (Origin Access Control)
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "AllowCloudFrontServicePrincipal",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "cloudfront.amazonaws.com"
-      },
-      "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::my-assets-bucket/*",
-      "Condition": {
-        "StringEquals": {
-          "AWS:SourceArn": "arn:aws:cloudfront::123456789:distribution/EDFDVBD6EXAMPLE"
-        }
-      }
-    },
-    {
-      "Sid": "DenyDirectAccess",
-      "Effect": "Deny",
-      "Principal": "*",
-      "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::my-assets-bucket/*",
-      "Condition": {
-        "StringNotEquals": {
-          "AWS:SourceArn": "arn:aws:cloudfront::123456789:distribution/EDFDVBD6EXAMPLE"
-        }
-      }
-    }
-  ]
-}
-
-// SRI in HTML: build tool generates integrity hashes
-<script
-  src="https://assets.example.com/app.a1b2c3.js"
-  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"
-  crossorigin="anonymous"
-></script>
-
-// Signed URLs for sensitive assets (e.g., premium content)
-const signedUrl = cloudfront.getSignedUrl({
-  url: 'https://assets.example.com/premium/video.mp4',
-  dateLessThan: new Date(Date.now() + 3600 * 1000), // 1 hour
-  keypairId: process.env.CF_KEY_PAIR_ID,
-  privateKey: process.env.CF_PRIVATE_KEY,
-});`}</code>
-        </pre>
       </section>
 
       {/* ── 9. Cost Optimization ──────────────────────────────── */}
@@ -667,40 +593,20 @@ const signedUrl = cloudfront.getSignedUrl({
           At scale, static asset hosting costs are dominated by CDN egress
           (data transfer out) and CDN request fees, not storage. A systematic
           approach to cost optimization focuses on maximizing cache hit ratios
-          and minimizing origin fetches.
+          and minimizing origin fetches. For a typical workload of 10M daily
+          page views with 2MB average assets per page and 95% CDN cache hit
+          ratio, the cost breakdown is approximately: storage at $1.15/month
+          (50GB × $0.023/GB), CDN requests at $300/month, CDN egress at
+          $850/month, and origin egress at $900/month, totaling around
+          $2,050/month. Key optimization levers include: Origin Shield which
+          reduces origin egress by 90% (saving $810/month), Brotli compression
+          reducing payload by 25% (saving $212/month), using Cloudflare R2 for
+          zero egress fees (saving $900/month on origin), and improving cache
+          hit ratio from 95% to 99% which reduces egress by 80%. S3 Lifecycle
+          policies automatically transition old assets to cheaper storage
+          classes (STANDARD_IA after 30 days, GLACIER after 90 days) and
+          expire assets after 180 days.
         </p>
-        <pre className="overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// Cost model for 10M daily page views, 2MB average assets/page
-// Assuming 95% CDN cache hit ratio:
-
-// Storage: 50GB assets × $0.023/GB = $1.15/month
-// CDN Requests: 10M × 30 assets × $0.01/10K = $300/month
-// CDN Egress: 10M × 2MB × 5% miss × $0.085/GB = $850/month
-// Origin Egress: 10M × 2MB × 5% × $0.09/GB = $900/month
-// Total: ~$2,050/month
-
-// Optimization levers:
-// 1. Origin Shield: reduces origin egress by 90% → saves $810/month
-// 2. Brotli compression: reduces payload 25% → saves $212/month
-// 3. Cloudflare R2: zero egress → saves $900/month on origin
-// 4. Cache hit ratio 95% → 99%: reduces egress by 80%
-
-// S3 Lifecycle policy for old assets
-{
-  "Rules": [
-    {
-      "ID": "TransitionOldAssets",
-      "Filter": { "Prefix": "assets/" },
-      "Status": "Enabled",
-      "Transitions": [
-        { "Days": 30, "StorageClass": "STANDARD_IA" },
-        { "Days": 90, "StorageClass": "GLACIER" }
-      ],
-      "Expiration": { "Days": 180 }
-    }
-  ]
-}`}</code>
-        </pre>
       </section>
 
       {/* ── 10. Monitoring & Observability ────────────────────── */}
@@ -709,124 +615,20 @@ const signedUrl = cloudfront.getSignedUrl({
         <p>
           Effective monitoring of a static asset hosting stack requires tracking
           metrics at every layer of the caching hierarchy. The key metrics to
-          alert on are:
+          alert on are: At the CDN layer, cache hit ratio (target 0.95, alert
+          below 0.90), edge latency P95 (target 50ms, alert above 200ms), and
+          origin error rate (target 0.1%, alert above 1%). At the client layer
+          (Real User Monitoring), resource load time for cached assets (target
+          100ms, alert above 500ms) and SRI failures (target 0, alert above 1).
+          At the cost layer, monthly egress against budget (e.g., 5000GB budget,
+          alert at 4000GB). CloudWatch dashboards for S3 + CloudFront should
+          track TotalErrorRate, 4xx/5xxErrorRate, BytesDownloaded,
+          BytesUploaded, CacheHitRate by distribution, and OriginLatency at
+          p50, p95, and p99 percentiles.
         </p>
-        <pre className="overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// Key metrics and alert thresholds
-const assetHostingMetrics = {
-  // CDN Layer
-  cacheHitRatio: {
-    target: 0.95,
-    alertBelow: 0.90,
-    query: 'sum(cdn_hits) / sum(cdn_requests)',
-  },
-  edgeLatencyP95: {
-    target: 50,  // ms
-    alertAbove: 200,
-    query: 'histogram_quantile(0.95, cdn_response_time)',
-  },
-  originErrorRate: {
-    target: 0.001, // 0.1%
-    alertAbove: 0.01,
-    query: 'sum(rate(origin_5xx[5m])) / sum(rate(origin_requests[5m]))',
-  },
-
-  // Client Layer (Real User Monitoring)
-  resourceLoadTime: {
-    target: 100, // ms for cached assets
-    alertAbove: 500,
-    query: 'performance.getEntriesByType("resource")',
-  },
-  sriFailures: {
-    target: 0,
-    alertAbove: 1,
-    query: 'count(securitypolicyviolation events)',
-  },
-
-  // Cost Layer
-  monthlyEgress: {
-    budgetGB: 5000,
-    alertAbove: 4000,
-    query: 'sum(cdn_bytes_out) over 30d',
-  },
-};
-
-// CloudWatch dashboard for S3 + CloudFront
-// - TotalErrorRate, 4xxErrorRate, 5xxErrorRate
-// - BytesDownloaded, BytesUploaded
-// - CacheHitRate by distribution
-// - OriginLatency p50, p95, p99`}</code>
-        </pre>
       </section>
 
-      {/* ── 11. References & Further Reading ──────────────────── */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/origin-shield.html"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              AWS CloudFront Origin Shield Documentation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://web.dev/articles/reliable"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              web.dev &ndash; Network Reliability
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              MDN &ndash; Subresource Integrity (SRI)
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developers.cloudflare.com/r2/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              Cloudflare R2 &ndash; Zero Egress Object Storage
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://vercel.com/docs/edge-network/overview"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              Vercel Edge Network Architecture
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://cloud.google.com/cdn/docs/overview"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              Google Cloud CDN Documentation
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      {/* ── 12. Common Interview Questions ────────────────────── */}
+      {/* ── 11. Common Interview Questions ────────────────────── */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -948,6 +750,73 @@ const assetHostingMetrics = {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* ── 12. References & Further Reading ──────────────────── */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a
+              href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/origin-shield.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              AWS CloudFront Origin Shield Documentation
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://web.dev/articles/reliable"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              web.dev &ndash; Network Reliability
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              MDN &ndash; Subresource Integrity (SRI)
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developers.cloudflare.com/r2/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              Cloudflare R2 &ndash; Zero Egress Object Storage
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://vercel.com/docs/edge-network/overview"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              Vercel Edge Network Architecture
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cloud.google.com/cdn/docs/overview"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              Google Cloud CDN Documentation
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

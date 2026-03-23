@@ -59,6 +59,25 @@ axios.interceptors.response.use(
           "remember me" functionality, seamless navigation, and multi-session support 
           while balancing convenience with security.
         </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/session-persistence-flow.svg"
+          alt="Session Persistence Flow"
+          caption="Session Persistence Flow — comparing server-side, JWT, and hybrid approaches"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/session-token-refresh.svg"
+          alt="Session Token Refresh"
+          caption="Session Token Refresh — showing access/refresh token flow with rotation"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/session-security.svg"
+          alt="Session Security"
+          caption="Session Security — showing cookie security, token security, attack prevention, and anomaly detection"
+        />
+      
         <p>
           For staff and principal engineers, implementing session persistence requires 
           understanding token storage strategies, refresh mechanisms, security trade-offs 
@@ -67,11 +86,11 @@ axios.interceptors.response.use(
           and unauthorized access.
         </p>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/session-persistence-flow.svg"
-          alt="Session Persistence Flow"
-          caption="Session Persistence — showing token storage, refresh, and cross-tab sync"
-        />
+        
+
+        
+
+        
       </section>
 
       <section>
@@ -158,11 +177,7 @@ axios.interceptors.response.use(
       <section>
         <h2>Token Refresh Strategy</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/session-token-refresh.svg"
-          alt="Token Refresh Strategy"
-          caption="Token Refresh — showing access token expiry, refresh token rotation, and silent refresh"
-        />
+        
 
         <p>
           Token refresh maintains session without requiring user re-authentication.
@@ -386,11 +401,7 @@ axios.interceptors.response.use(
       <section>
         <h2>Interview Questions</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/session-security.svg"
-          alt="Session Security Threats and Defenses"
-          caption="Session Security — showing XSS, CSRF, token theft, and defense mechanisms"
-        />
+        
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -779,6 +790,65 @@ axios.interceptors.response.use(
         <p>
           Meet regulatory requirements for sessions. SOC2 audit trails. HIPAA immediate sessions. PCI-DSS session controls. GDPR right to sessions. Regular compliance reviews. External audit support.
         </p>
+      </section>
+
+      <section>
+        <h2>Real-world Use Cases</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce Session Persistence</h3>
+        <p>
+          Large e-commerce platform with cart persistence across devices and sessions.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Users expect cart to persist across devices (phone → desktop). 30-day "remember me" sessions. Abandoned cart recovery.</li>
+          <li><strong>Solution:</strong> Long-lived refresh tokens (30 days). Cart stored server-side linked to user_id. Cross-device session sync via user_id.</li>
+          <li><strong>Result:</strong> Cart abandonment reduced by 25%. 70% users stay logged in. Cross-device conversion increased by 40%.</li>
+          <li><strong>Security:</strong> Refresh token rotation, device trust scoring, session anomaly detection.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Banking Session Persistence</h3>
+        <p>
+          Online banking with strict security but need for customer convenience.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> FFIEC requires session timeout. Customers want "remember me" convenience. Balance security with UX.</li>
+          <li><strong>Solution:</strong> Hybrid approach: short access token (15 min), long refresh token (7 days). Mandatory re-auth for sensitive actions (transfers). Device trust for known devices.</li>
+          <li><strong>Result:</strong> Passed regulatory audits. Customer satisfaction improved. Fraud reduced by 80%.</li>
+          <li><strong>Security:</strong> Device binding, step-up authentication, session timeout enforcement.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Social Media Session Persistence</h3>
+        <p>
+          Social platform with 500M DAU, users accessing from multiple devices.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Users on 5+ devices simultaneously. Infinite scroll requires seamless session. Cross-device notification sync.</li>
+          <li><strong>Solution:</strong> Multi-device session support. Silent token refresh. Push-based session sync across devices. Background refresh for mobile apps.</li>
+          <li><strong>Result:</strong> 99.99% session availability. Cross-device engagement increased 35%. Zero session-related support tickets.</li>
+          <li><strong>Security:</strong> Device fingerprinting, concurrent session limits, anomaly detection.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SaaS Session Persistence</h3>
+        <p>
+          B2B SaaS with 10,000 enterprise customers, SSO session management.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> SSO session must respect IdP policies. Enterprise requires "remember me" for productivity. Session sync with IdP.</li>
+          <li><strong>Solution:</strong> SAML session mapping. IdP session timeout sync. Local "remember me" within IdP session bounds. Graceful re-auth on IdP session expiry.</li>
+          <li><strong>Result:</strong> 99% SSO session success. Enterprise productivity maintained. Compliance with customer IdP policies.</li>
+          <li><strong>Security:</strong> IdP session validation, timeout sync, graceful re-authentication.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Gaming Platform Session Persistence</h3>
+        <p>
+          Online gaming platform with persistent game state and cross-platform play.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Game state must persist across sessions. Cross-platform session (PC → mobile). Anti-cheat session validation.</li>
+          <li><strong>Solution:</strong> Game state stored server-side. Session-bound game progress. Cross-platform session linking. Anti-cheat session validation on resume.</li>
+          <li><strong>Result:</strong> Zero game state loss. 80% users play on multiple platforms. Cheating detected 90% faster.</li>
+          <li><strong>Security:</strong> Game state encryption, session binding, anti-cheat validation.</li>
+        </ul>
       </section>
     </ArticleLayout>
   );

@@ -305,46 +305,9 @@ export default function SemanticHTMLArticle() {
           significance: elements with roles, names, states, and properties. Semantic HTML directly controls the
           shape and quality of this tree.
         </p>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// DOM Tree (simplified)
-<body>
-  <header>
-    <nav aria-label="Main">
-      <a href="/">Home</a>
-      <a href="/products">Products</a>
-    </nav>
-  </header>
-  <main>
-    <h1>Product Catalog</h1>
-    <article>
-      <h2>Widget Pro</h2>
-      <p>Description...</p>
-      <button>Add to Cart</button>
-    </article>
-  </main>
-  <footer>
-    <small>&copy; 2026 Acme Inc.</small>
-  </footer>
-</body>
-
-// Resulting Accessibility Tree
-document "Product Catalog"
-├── banner (header)
-│   └── navigation "Main"
-│       ├── link "Home"
-│       └── link "Products"
-├── main
-│   ├── heading level 1 "Product Catalog"
-│   └── article
-│       ├── heading level 2 "Widget Pro"
-│       ├── paragraph "Description..."
-│       └── button "Add to Cart"
-└── contentinfo (footer)
-    └── text "&copy; 2026 Acme Inc."`}</code>
-        </pre>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">DOM Tree vs Accessibility Tree</h3>
         <p>
-          Notice how generic <code className="text-sm">&lt;div&gt;</code> wrappers would have been invisible in this
-          tree. The semantic elements create the structure that screen readers announce and that users navigate.
+          The DOM tree contains all elements including divs and spans, while the accessibility tree is a filtered subset that represents what assistive technologies see. A proper DOM with semantic elements like header, nav, main, article, heading levels, button, footer, and small produces an accessibility tree with document, banner, navigation, main, heading level 1, heading level 2, article, paragraph, button, and contentinfo roles. Notice how generic div wrappers would have been invisible in this tree. The semantic elements create the structure that screen readers announce and that users navigate.
         </p>
       </section>
 
@@ -415,27 +378,10 @@ document "Product Catalog"
           using them <em>alongside</em> semantic elements for presentation.
         </p>
 
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// WRONG: div doing a button's job
-<div className="btn btn-primary" onClick={handleSubmit}>
-  Submit Order
-</div>
-// Issues: not focusable, no keyboard activation, no button role,
-// not announced as interactive by screen readers
-
-// RIGHT: semantic button with styling
-<button className="btn btn-primary" onClick={handleSubmit}>
-  Submit Order
-</button>
-// Focusable, Enter/Space activation, announced as "Submit Order, button"
-
-// ACCEPTABLE: div as layout wrapper around semantic elements
-<div className="grid grid-cols-2 gap-4">
-  <article>...</article>
-  <aside>...</aside>
-</div>
-// The div adds layout; the semantic children carry the meaning`}</code>
-        </pre>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Div vs Semantic Elements</h3>
+        <p>
+          Using a div with a button class and onClick handler is wrong because it is not focusable, has no keyboard activation, has no button role, and is not announced as interactive by screen readers. The right approach is to use a semantic button element with the same class and onClick handler, which is focusable, supports Enter and Space key activation, and is announced as a button by screen readers. It is acceptable to use a div as a layout wrapper around semantic elements like article and aside for grid layouts, where the div adds layout structure and the semantic children carry the meaning.
+        </p>
       </section>
 
       {/* ============================================================
@@ -633,179 +579,15 @@ document "Product Catalog"
           architecture. By baking the semantic elements into reusable components, product engineers automatically
           produce accessible markup.
         </p>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// components/PageLayout.tsx
-// Enforces landmark structure for every page
-interface PageLayoutProps {
-  children: React.ReactNode;
-  sidebarContent?: React.ReactNode;
-  pageTitle: string;
-}
-
-export function PageLayout({ children, sidebarContent, pageTitle }: PageLayoutProps) {
-  return (
-    <>
-      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4">
-        Skip to main content
-      </a>
-      <header>
-        <nav aria-label="Primary">
-          {/* Navigation links */}
-        </nav>
-      </header>
-      <div className="flex">
-        <main id="main-content" aria-label={pageTitle}>
-          {children}
-        </main>
-        {sidebarContent && (
-          <aside aria-label="Sidebar">
-            {sidebarContent}
-          </aside>
-        )}
-      </div>
-      <footer>
-        <nav aria-label="Footer">
-          {/* Footer links */}
-        </nav>
-      </footer>
-    </>
-  );
-}
-
-// components/ArticleCard.tsx
-// Every card is semantically an article
-interface ArticleCardProps {
-  title: string;
-  href: string;
-  summary: string;
-  publishedAt: string;
-  author: string;
-}
-
-export function ArticleCard({ title, href, summary, publishedAt, author }: ArticleCardProps) {
-  return (
-    <article className="rounded-lg border p-4">
-      <h3>
-        <a href={href} className="after:absolute after:inset-0">
-          {title}
-        </a>
-      </h3>
-      <p>{summary}</p>
-      <footer>
-        <span>By {author}</span>
-        <time dateTime={publishedAt}>
-          {new Date(publishedAt).toLocaleDateString()}
-        </time>
-      </footer>
-    </article>
-  );
-}
-
-// components/ExpandableSection.tsx
-// Native disclosure widget with custom styling
-interface ExpandableSectionProps {
-  title: string;
-  children: React.ReactNode;
-  defaultOpen?: boolean;
-}
-
-export function ExpandableSection({ title, children, defaultOpen }: ExpandableSectionProps) {
-  return (
-    <details open={defaultOpen} className="group rounded-lg border">
-      <summary className="cursor-pointer list-none p-4 font-semibold">
-        <span className="flex items-center justify-between">
-          {title}
-          <svg
-            className="h-5 w-5 transition-transform group-open:rotate-180"
-            fill="none" viewBox="0 0 24 24" stroke="currentColor"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </span>
-      </summary>
-      <div className="border-t p-4">
-        {children}
-      </div>
-    </details>
-  );
-}
-
-// components/HeadingContext.tsx
-// Automatically manages heading levels in nested components
-const HeadingLevelContext = React.createContext(2);
-
-export function HeadingLevelProvider({ children }: { children: React.ReactNode }) {
-  const currentLevel = React.useContext(HeadingLevelContext);
-  return (
-    <HeadingLevelContext.Provider value={Math.min(currentLevel + 1, 6)}>
-      {children}
-    </HeadingLevelContext.Provider>
-  );
-}
-
-export function Heading({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
-  const level = React.useContext(HeadingLevelContext);
-  const Tag = \`h\${level}\` as keyof JSX.IntrinsicElements;
-  return <Tag {...props}>{children}</Tag>;
-}`}</code>
-        </pre>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Design System Component Examples</h3>
+        <p>
+          For PageLayout component, enforce landmark structure for every page by accepting children, optional sidebarContent, and pageTitle props. The component renders a skip-to-content link as the first focusable element, a header with primary navigation, a main element with the page title as aria-label and an ID for skip link targeting, an optional aside for sidebar content with aria-label, and a footer with footer navigation. For ArticleCard component, every card is semantically an article containing a heading level 3 with a link, a paragraph for summary, and a footer with author and time elements. For ExpandableSection component, use the native details and summary elements for a disclosure widget with custom styling, where the summary contains the title and a chevron icon that rotates when open. For HeadingContext, create a HeadingLevelContext starting at level 2, a HeadingLevelProvider that increments the level for nested content (capped at 6), and a Heading component that reads the current level from context and renders the appropriate h tag dynamically.
+        </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Testing Semantic HTML with React Testing Library</h3>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { PageLayout } from './PageLayout';
-
-describe('PageLayout semantic structure', () => {
-  it('renders all landmark regions', () => {
-    render(
-      <PageLayout pageTitle="Dashboard" sidebarContent={<p>Sidebar</p>}>
-        <p>Main content</p>
-      </PageLayout>
-    );
-
-    // These queries validate the accessibility tree
-    expect(screen.getByRole('banner')).toBeInTheDocument();      // <header>
-    expect(screen.getByRole('navigation', { name: 'Primary' })).toBeInTheDocument();
-    expect(screen.getByRole('main', { name: 'Dashboard' })).toBeInTheDocument();
-    expect(screen.getByRole('complementary', { name: 'Sidebar' })).toBeInTheDocument();
-    expect(screen.getByRole('contentinfo')).toBeInTheDocument(); // <footer>
-  });
-
-  it('provides skip-to-content link as first focusable element', async () => {
-    render(
-      <PageLayout pageTitle="Dashboard">
-        <p>Content</p>
-      </PageLayout>
-    );
-
-    await userEvent.tab();
-    const skipLink = screen.getByText('Skip to main content');
-    expect(skipLink).toHaveFocus();
-    expect(skipLink).toHaveAttribute('href', '#main-content');
-  });
-
-  it('maintains heading hierarchy', () => {
-    render(
-      <PageLayout pageTitle="Products">
-        <h1>Product Catalog</h1>
-        <section>
-          <h2>Featured</h2>
-          <article>
-            <h3>Widget Pro</h3>
-          </article>
-        </section>
-      </PageLayout>
-    );
-
-    const headings = screen.getAllByRole('heading');
-    expect(headings[0]).toHaveAttribute('aria-level', undefined); // h1
-    expect(headings[0].tagName).toBe('H1');
-    expect(headings[1].tagName).toBe('H2');
-    expect(headings[2].tagName).toBe('H3');
-  });
-});`}</code>
-        </pre>
+        <p>
+          Test semantic structure by rendering the PageLayout component and using React Testing Library queries to validate the accessibility tree. Test that all landmark regions render correctly by querying for banner role for header, navigation role with name Primary, main role with the page name, complementary role for sidebar, and contentinfo role for footer. Test that the skip-to-content link is the first focusable element by tabbing and checking focus and href attribute. Test that heading hierarchy is maintained by querying all heading roles and verifying their aria-level attributes and tag names follow the correct sequence from h1 to h2 to h3.
+        </p>
       </section>
 
       {/* ============================================================

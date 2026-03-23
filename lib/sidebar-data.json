@@ -9,53 +9,116 @@
           "slug": "frontend-concepts",
           "subcategories": [
             { "name": "Rendering Strategies", "slug": "rendering-strategies" },
-            { "name": "Performance Optimization", "slug": "performance-optimization" },
+            {
+              "name": "Performance Optimization",
+              "slug": "performance-optimization"
+            },
             { "name": "Caching Strategies", "slug": "caching-strategies" },
             { "name": "State Management", "slug": "state-management" },
             { "name": "Data Storage", "slug": "data-storage" },
-            { "name": "Networking & API Communication", "slug": "networking-api-communication" },
+            {
+              "name": "Networking & API Communication",
+              "slug": "networking-api-communication"
+            },
             { "name": "Offline Support", "slug": "offline-support" },
             { "name": "Security", "slug": "security" },
-            { "name": "Scalability & Architecture Patterns", "slug": "scalability-architecture-patterns" },
+            {
+              "name": "Scalability & Architecture Patterns",
+              "slug": "scalability-architecture-patterns"
+            },
             { "name": "Accessibility (a11y)", "slug": "accessibility-a11y" },
             { "name": "SEO Optimization", "slug": "seo-optimization" },
             { "name": "Asset Management", "slug": "asset-management" },
             { "name": "Routing", "slug": "routing" },
-            { "name": "Error Handling & Monitoring", "slug": "error-handling-monitoring" },
+            {
+              "name": "Error Handling & Monitoring",
+              "slug": "error-handling-monitoring"
+            },
             { "name": "Real-time Features", "slug": "real-time-features" },
-            { "name": "Internationalization (i18n) & Localization (l10n)", "slug": "internationalization-i18n-localization-l10n" },
+            {
+              "name": "Internationalization (i18n) & Localization (l10n)",
+              "slug": "internationalization-i18n-localization-l10n"
+            },
             { "name": "Testing Strategies", "slug": "testing-strategies" },
             { "name": "Build & Deployment", "slug": "build-deployment" },
             { "name": "Browser APIs", "slug": "browser-apis" },
-            { "name": "Mobile Considerations", "slug": "mobile-considerations" },
+            {
+              "name": "Mobile Considerations",
+              "slug": "mobile-considerations"
+            },
             { "name": "Search & Filtering", "slug": "search-filtering" },
             { "name": "Forms & Validation", "slug": "forms-validation" },
             { "name": "Data Visualization", "slug": "data-visualization" },
             { "name": "Component Design", "slug": "component-design" },
             { "name": "Analytics & Tracking", "slug": "analytics-tracking" },
-            { "name": "Third-Party Integration", "slug": "third-party-integration" },
+            {
+              "name": "Third-Party Integration",
+              "slug": "third-party-integration"
+            },
             { "name": "Memory Management", "slug": "memory-management" },
-            { "name": "Animation & Transitions", "slug": "animation-transitions" },
-            { "name": "Web Standards and Compatibility", "slug": "web-standards-compatibility" },
-            { "name": "Edge Cases and User Experience", "slug": "edge-cases-user-experience" }
+            {
+              "name": "Animation & Transitions",
+              "slug": "animation-transitions"
+            },
+            {
+              "name": "Web Standards and Compatibility",
+              "slug": "web-standards-and-compatibility"
+            },
+            {
+              "name": "Edge Cases and User Experience",
+              "slug": "edge-cases-and-user-experience"
+            }
           ]
         },
         {
           "name": "Backend Concepts",
           "slug": "backend-concepts",
           "subcategories": [
-            { "name": "Fundamentals & Building Blocks", "slug": "fundamentals-building-blocks" },
-            { "name": "Data Storage & Databases", "slug": "data-storage-databases" },
+            {
+              "name": "Fundamentals & Building Blocks",
+              "slug": "fundamentals-building-blocks"
+            },
+            {
+              "name": "Data Storage & Databases",
+              "slug": "data-storage-databases"
+            },
             { "name": "Caching & Performance", "slug": "caching-performance" },
-            { "name": "Network & Communication", "slug": "network-communication" },
-            { "name": "Scalability & Distributed Systems", "slug": "scalability-distributed-systems" },
-            { "name": "Reliability & Fault Tolerance", "slug": "reliability-fault-tolerance" },
-            { "name": "Security & Authentication", "slug": "security-authentication" },
-            { "name": "Monitoring & Operations", "slug": "monitoring-operations" },
-            { "name": "Data Processing & Analytics", "slug": "data-processing-analytics" },
-            { "name": "Design Patterns & Architectures", "slug": "design-patterns-architectures" },
-            { "name": "Infrastructure & Deployment", "slug": "infrastructure-deployment" },
-            { "name": "System Components & Services", "slug": "system-components-services" },
+            {
+              "name": "Network & Communication",
+              "slug": "network-communication"
+            },
+            {
+              "name": "Scalability & Distributed Systems",
+              "slug": "scalability-distributed-systems"
+            },
+            {
+              "name": "Reliability & Fault Tolerance",
+              "slug": "reliability-fault-tolerance"
+            },
+            {
+              "name": "Security & Authentication",
+              "slug": "security-authentication"
+            },
+            {
+              "name": "Monitoring & Operations",
+              "slug": "monitoring-operations"
+            },
+            {
+              "name": "Data Processing & Analytics",
+              "slug": "data-processing-analytics"
+            },
+            {
+              "name": "Design Patterns & Architectures",
+              "slug": "design-patterns-architectures"
+            },
+            {
+              "name": "Infrastructure & Deployment",
+              "slug": "infrastructure-deployment"
+            },
+            {
+              "name": "System Components & Services",
+              "slug": "system-components-services"
+            },
             { "name": "Advanced Topics", "slug": "advanced-topics" }
           ]
         }
@@ -70,13 +133,31 @@
           "slug": "functional-requirements",
           "subcategories": [
             { "name": "Identity & Access", "slug": "identity-access" },
-            { "name": "Content / Core Resource Management", "slug": "content-core-resource-management" },
-            { "name": "Discovery (Search / Feed / Browsing)", "slug": "discovery-search-feed-browsing" },
-            { "name": "Interaction & Engagement", "slug": "interaction-engagement" },
+            {
+              "name": "Content / Core Resource Management",
+              "slug": "content-management"
+            },
+            {
+              "name": "Discovery (Search / Feed / Browsing)",
+              "slug": "discovery-search-feed-browsing"
+            },
+            {
+              "name": "Interaction & Engagement",
+              "slug": "interaction-engagement"
+            },
             { "name": "Communication", "slug": "communication" },
-            { "name": "Transactions / State Changes", "slug": "transactions-state-changes" },
-            { "name": "Administration & Moderation", "slug": "administration-moderation" },
-            { "name": "Other (Cross-cutting Functional Requirements)", "slug": "other-cross-cutting-functional-requirements" }
+            {
+              "name": "Transactions / State Changes",
+              "slug": "transactions-state-changes"
+            },
+            {
+              "name": "Administration & Moderation",
+              "slug": "administration-moderation"
+            },
+            {
+              "name": "Other (Cross-cutting Functional Requirements)",
+              "slug": "other-cross-cutting-functional-requirements"
+            }
           ]
         },
         {
@@ -85,7 +166,10 @@
           "subcategories": [
             { "name": "Frontend NFR", "slug": "frontend-nfr" },
             { "name": "Backend NFR", "slug": "backend-nfr" },
-            { "name": "Shared/Cross-cutting NFR", "slug": "shared-cross-cutting-nfr" },
+            {
+              "name": "Shared/Cross-cutting NFR",
+              "slug": "shared-cross-cutting-nfr"
+            },
             { "name": "Advanced/Bonus", "slug": "advanced-bonus" }
           ]
         }

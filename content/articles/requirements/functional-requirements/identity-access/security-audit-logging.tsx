@@ -30,6 +30,25 @@ export default function SecurityAuditLoggingArticle() {
           of who did what, when, and from where—essential for incident response and regulatory 
           compliance (SOC 2, GDPR, HIPAA).
         </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/security-audit-logging.svg"
+          alt="Security Audit Logging"
+          caption="Security Audit Logging — showing event capture, storage, and alerting"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/audit-event-schema.svg"
+          alt="Audit Event Schema"
+          caption="Audit Event Schema — showing standardized event structure and fields"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/audit-compliance.svg"
+          alt="Audit Compliance"
+          caption="Audit Compliance — showing SOC2, ISO27001, and GDPR compliance mapping"
+        />
+      
         <p>
           For staff and principal engineers, implementing audit logging requires understanding 
           event schemas, immutable storage, retention policies, compliance requirements, and 
@@ -37,11 +56,11 @@ export default function SecurityAuditLoggingArticle() {
           impacting performance or exposing sensitive data.
         </p>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/security-audit-logging.svg"
-          alt="Security Audit Logging"
-          caption="Audit Logging — showing event capture, schema, storage, and compliance"
-        />
+        
+
+        
+
+        
       </section>
 
       <section>
@@ -93,11 +112,7 @@ export default function SecurityAuditLoggingArticle() {
       <section>
         <h2>Event Schema</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/audit-event-schema.svg"
-          alt="Audit Event Schema"
-          caption="Event Schema — showing standard fields, event types, and sensitive data handling"
-        />
+        
 
         <ul className="space-y-3">
           <li>
@@ -303,11 +318,7 @@ export default function SecurityAuditLoggingArticle() {
       <section>
         <h2>Interview Questions</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/audit-compliance.svg"
-          alt="Audit Compliance Requirements"
-          caption="Compliance — showing SOC 2, GDPR, HIPAA requirements and retention policies"
-        />
+        
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -696,6 +707,65 @@ export default function SecurityAuditLoggingArticle() {
         <p>
           Meet regulatory requirements for audit. SOC2 audit trails. HIPAA immediate audit. PCI-DSS session controls. GDPR right to audit. Regular compliance reviews. External audit support.
         </p>
+      </section>
+
+      <section>
+        <h2>Real-world Use Cases</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Financial Services Audit Logging</h3>
+        <p>
+          Investment platform with SEC, FINRA, SOX compliance requirements.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Regulatory requirements for 7-year audit retention. Real-time fraud detection. Immutable audit trail for investigations.</li>
+          <li><strong>Solution:</strong> Write-once-read-many (WORM) storage. Real-time streaming to SIEM. Automated compliance reporting. Tamper-evident logging with hash chains.</li>
+          <li><strong>Result:</strong> Passed all regulatory audits. Fraud detection time reduced from days to minutes. Successful prosecution of fraud cases.</li>
+          <li><strong>Security:</strong> Immutable storage, access logging for audit system, quarterly audit reviews.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Healthcare HIPAA Audit Logging</h3>
+        <p>
+          EHR system with 50,000 healthcare providers accessing patient records.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> HIPAA requires audit of all PHI access. Need to detect unauthorized access. Breach notification within 60 days.</li>
+          <li><strong>Solution:</strong> Log all record access (who, what, when, why). Automated anomaly detection (access outside normal patterns). Breach detection alerts. Patient access reports on request.</li>
+          <li><strong>Result:</strong> Passed HIPAA audits. Unauthorized access detected within hours. Breach notification compliance maintained.</li>
+          <li><strong>Security:</strong> Minimum necessary access logging, break-glass audit, automatic review of suspicious access.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce PCI-DSS Audit Logging</h3>
+        <p>
+          Online retailer processing 1M credit card transactions/month.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> PCI-DSS requires audit trail for all cardholder data access. Separate admin accounts for database access. Quarterly access reviews.</li>
+          <li><strong>Solution:</strong> Comprehensive audit logging for all cardholder data operations. Separated admin accounts with MFA. Automated quarterly access certification. Real-time alerting for suspicious access.</li>
+          <li><strong>Result:</strong> Passed PCI-DSS Level 1 audit. Zero cardholder data breaches. Reduced audit preparation time by 80%.</li>
+          <li><strong>Security:</strong> Cardholder data access logging, admin action logging, quarterly access reviews.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SaaS SOC 2 Audit</h3>
+        <p>
+          B2B SaaS platform with 10,000 enterprise customers requiring SOC 2 Type II.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> SOC 2 requires comprehensive audit trails. Customer-specific audit reports. Evidence collection for auditors.</li>
+          <li><strong>Solution:</strong> Centralized audit logging with customer tagging. Automated report generation per customer. Audit evidence API for auditors. Continuous compliance monitoring.</li>
+          <li><strong>Result:</strong> Passed SOC 2 Type II audit. Customer audit requests fulfilled in hours (not weeks). Sales cycles shortened (audit reports available).</li>
+          <li><strong>Security:</strong> Customer data isolation logging, admin action logging, change management audit trail.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Cloud Platform Audit Logging</h3>
+        <p>
+          Cloud infrastructure platform managing AWS/GCP/Azure resources for enterprises.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Multi-cloud audit aggregation. Customer compliance requirements vary. Real-time security monitoring across clouds.</li>
+          <li><strong>Solution:</strong> Unified audit schema across clouds. Cloud-specific collectors (CloudTrail, Cloud Audit Logs, Activity Log). Centralized SIEM integration. Cross-cloud correlation rules.</li>
+          <li><strong>Result:</strong> Single pane of glass for multi-cloud audit. Security incidents detected 90% faster. Compliance reporting automated.</li>
+          <li><strong>Security:</strong> Cross-cloud threat detection, unified audit retention, automated compliance mapping.</li>
+        </ul>
       </section>
     </ArticleLayout>
   );

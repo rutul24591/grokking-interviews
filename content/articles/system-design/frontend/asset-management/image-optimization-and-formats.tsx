@@ -270,68 +270,15 @@ export default function ImageOptimizationAndFormatsArticle() {
             and loading behavior. Necessary when you need custom placeholder
             transitions (blur-up effect), loading priority queues, or analytics
             on image visibility. Use <code>rootMargin: &quot;200px&quot;</code>{" "}
-            to start loading before images enter the viewport.
+            to start loading before images enter the viewport. Production
+            implementations typically combine Intersection Observer with a
+            blur-up pattern: a tiny LQIP or BlurHash placeholder is displayed
+            instantly, then cross-faded to the full image once loaded. The
+            component tracks loaded and in-view state, decodes the BlurHash to
+            a canvas placeholder, and applies smooth opacity transitions between
+            placeholder and full image.
           </li>
         </ul>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-{`// Production lazy loading with blur-up transition
-function LazyImage({ src, blurhash, width, height, alt }) {
-  const [loaded, setLoaded] = useState(false);
-  const [inView, setInView] = useState(false);
-  const imgRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: '200px' }
-    );
-    if (imgRef.current) observer.observe(imgRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div
-      ref={imgRef}
-      style={{ aspectRatio: \`\${width}/\${height}\` }}
-      className="relative overflow-hidden"
-    >
-      {/* BlurHash placeholder - always rendered, hidden after load */}
-      <canvas
-        className={\`absolute inset-0 w-full h-full transition-opacity duration-500 \${
-          loaded ? 'opacity-0' : 'opacity-100'
-        }\`}
-        ref={(canvas) => {
-          if (canvas && blurhash) {
-            const pixels = decode(blurhash, 32, 32);
-            const ctx = canvas.getContext('2d');
-            const imageData = ctx.createImageData(32, 32);
-            imageData.data.set(pixels);
-            ctx.putImageData(imageData, 0, 0);
-          }
-        }}
-      />
-      {/* Actual image - loaded when in view */}
-      {inView && (
-        <img
-          src={src}
-          alt={alt}
-          width={width}
-          height={height}
-          onLoad={() => setLoaded(true)}
-          className={\`w-full h-full object-cover transition-opacity duration-500 \${
-            loaded ? 'opacity-100' : 'opacity-0'
-          }\`}
-        />
-      )}
-    </div>
-  );
-}`}
-        </pre>
       </section>
 
       {/* ── Section 4: Trade-offs & Comparisons ── */}
@@ -595,122 +542,24 @@ function LazyImage({ src, blurhash, width, height, alt }) {
         <h3 className="mt-8 mb-4 text-xl font-semibold">
           Production Image Component with Next.js
         </h3>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-{`// next.config.js - configure allowed image domains
-module.exports = {
-  images: {
-    formats: ['image/avif', 'image/webp'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    remotePatterns: [
-      { protocol: 'https', hostname: 'cdn.example.com' },
-    ],
-  },
-};
-
-// components/OptimizedHero.tsx
-import Image from 'next/image';
-import heroImage from '@/public/hero.jpg';
-
-export function OptimizedHero() {
-  return (
-    <Image
-      src={heroImage}
-      alt="Hero banner showing product showcase"
-      // Static import: width, height, blurDataURL auto-generated
-      placeholder="blur"
-      priority           // LCP image — eager load + preload hint
-      sizes="100vw"      // Full viewport width
-      quality={85}
-      className="w-full h-auto object-cover"
-    />
-  );
-}
-
-// For dynamic/remote images where dimensions are unknown:
-export function UserAvatar({ user }) {
-  return (
-    <Image
-      src={user.avatarUrl}
-      alt={\`\${user.name}'s avatar\`}
-      width={48}
-      height={48}
-      loading="lazy"     // Not LCP — defer loading
-      className="rounded-full"
-    />
-  );
-}`}
-        </pre>
+        <p>
+          Framework-level integration like Next.js Image component automates most
+          optimization concerns. The <code>next.config.js</code> configuration
+          specifies allowed image formats (AVIF, WebP), device sizes, and remote
+          patterns for external images. For static imports, the component
+          automatically generates width, height, and blurDataURL from the image
+          file. Using <code>placeholder=&quot;blur&quot;</code> enables the
+          blur-up effect, <code>priority</code> adds a preload hint for LCP
+          images, and <code>sizes</code> tells the browser the expected display
+          size for proper srcset selection. For dynamic remote images where
+          dimensions are unknown, explicit width and height props are required
+          along with <code>loading=&quot;lazy&quot;</code> for non-LCP images.
+          This framework-level integration eliminates developer-facing complexity
+          while ensuring consistent optimization across the application.
+        </p>
       </section>
 
-      {/* ── Section 8: References & Further Reading ── */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://web.dev/learn/images/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline hover:no-underline"
-            >
-              web.dev &mdash; Learn Images (Google)
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline hover:no-underline"
-            >
-              MDN &mdash; Responsive Images
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://nextjs.org/docs/app/api-reference/components/image"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline hover:no-underline"
-            >
-              Next.js Image Component Documentation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.smashingmagazine.com/2021/09/modern-image-formats-avif-webp/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline hover:no-underline"
-            >
-              Smashing Magazine &mdash; Modern Image Formats: AVIF and WebP
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://blurha.sh/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline hover:no-underline"
-            >
-              BlurHash &mdash; Compact Image Placeholder Encoding
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://sharp.pixelplumbing.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline hover:no-underline"
-            >
-              Sharp &mdash; High-Performance Node.js Image Processing
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      {/* ── Section 9: Common Interview Questions ── */}
+      {/* ── Section 8: Common Interview Questions ── */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -829,6 +678,73 @@ export function UserAvatar({ user }) {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* ── Section 9: References & Further Reading ── */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a
+              href="https://web.dev/learn/images/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline hover:no-underline"
+            >
+              web.dev &mdash; Learn Images (Google)
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline hover:no-underline"
+            >
+              MDN &mdash; Responsive Images
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://nextjs.org/docs/app/api-reference/components/image"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline hover:no-underline"
+            >
+              Next.js Image Component Documentation
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.smashingmagazine.com/2021/09/modern-image-formats-avif-webp/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline hover:no-underline"
+            >
+              Smashing Magazine &mdash; Modern Image Formats: AVIF and WebP
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://blurha.sh/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline hover:no-underline"
+            >
+              BlurHash &mdash; Compact Image Placeholder Encoding
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://sharp.pixelplumbing.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline hover:no-underline"
+            >
+              Sharp &mdash; High-Performance Node.js Image Processing
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

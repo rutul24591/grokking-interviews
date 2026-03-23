@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Search Engine Content Parsing Pipeline</text>
+
+  <!-- Step 1: DOM -->
+  <rect x="20" y="180" width="110" height="80" rx="8" fill="#6d5bd0"/>
+  <text x="75" y="215" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">DOM</text>
+  <text x="75" y="235" text-anchor="middle" font-size="10" fill="#ffffff">Raw HTML</text>
+  <text x="75" y="248" text-anchor="middle" font-size="10" fill="#ffffff">Document</text>
+
+  <!-- Arrow 1 -->
+  <line x1="130" y1="220" x2="155" y2="220" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 2: Identify main -->
+  <rect x="155" y="180" width="115" height="80" rx="8" fill="#6d5bd0"/>
+  <text x="212" y="210" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Identify</text>
+  <text x="212" y="228" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">&amp;lt;main&amp;gt;</text>
+  <text x="212" y="248" text-anchor="middle" font-size="10" fill="#ffffff">Element</text>
+
+  <!-- Arrow 2 -->
+  <line x1="270" y1="220" x2="295" y2="220" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 3: Extract headings -->
+  <rect x="295" y="180" width="115" height="80" rx="8" fill="#6d5bd0"/>
+  <text x="352" y="210" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Extract</text>
+  <text x="352" y="228" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Heading</text>
+  <text x="352" y="246" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Hierarchy</text>
+
+  <!-- Arrow 3 -->
+  <line x1="410" y1="220" x2="435" y2="220" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 4: Weight content -->
+  <rect x="435" y="180" width="115" height="80" rx="8" fill="#6d5bd0"/>
+  <text x="492" y="210" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Weight by</text>
+  <text x="492" y="228" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Element</text>
+  <text x="492" y="246" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Type</text>
+
+  <!-- Arrow 4 -->
+  <line x1="550" y1="220" x2="575" y2="220" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 5: Build content model -->
+  <rect x="575" y="180" width="115" height="80" rx="8" fill="#6d5bd0"/>
+  <text x="632" y="210" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Build</text>
+  <text x="632" y="228" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Content</text>
+  <text x="632" y="246" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Model</text>
+
+  <!-- Arrow 5 -->
+  <line x1="690" y1="220" x2="715" y2="220" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 6: Generate ranking -->
+  <rect x="715" y="180" width="165" height="80" rx="8" fill="#6d5bd0"/>
+  <text x="797" y="210" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Generate</text>
+  <text x="797" y="228" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Ranking</text>
+  <text x="797" y="246" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Signals</text>
+
+  <!-- Weight annotations -->
+  <text x="450" y="80" text-anchor="middle" font-size="14" font-weight="600" fill="#1a1822">Content Weight by Element Type</text>
+
+  <rect x="140" y="95" width="160" height="32" rx="5" fill="#6d5bd0"/>
+  <text x="220" y="116" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">&amp;lt;article&amp;gt; — Highest</text>
+
+  <rect x="320" y="95" width="140" height="32" rx="5" fill="#8b7de0"/>
+  <text x="390" y="116" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">&amp;lt;section&amp;gt; — High</text>
+
+  <rect x="480" y="95" width="140" height="32" rx="5" fill="#a89fd0"/>
+  <text x="550" y="116" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">&amp;lt;aside&amp;gt; — Medium</text>
+
+  <rect x="640" y="95" width="140" height="32" rx="5" fill="#d7d1e6"/>
+  <text x="710" y="116" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">&amp;lt;footer&amp;gt; — Low</text>
+
+  <!-- Resulting signals -->
+  <text x="450" y="310" text-anchor="middle" font-size="14" font-weight="600" fill="#1a1822">Generated Ranking Signals</text>
+
+  <rect x="60" y="325" width="170" height="55" rx="6" fill="#ece8f6" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="145" y="348" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Topic Relevance</text>
+  <text x="145" y="368" text-anchor="middle" font-size="10" fill="#1a1822">From headings &amp; main</text>
+
+  <rect x="250" y="325" width="170" height="55" rx="6" fill="#ece8f6" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="335" y="348" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Content Structure</text>
+  <text x="335" y="368" text-anchor="middle" font-size="10" fill="#1a1822">From semantic nesting</text>
+
+  <rect x="440" y="325" width="170" height="55" rx="6" fill="#ece8f6" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="525" y="348" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Content Depth</text>
+  <text x="525" y="368" text-anchor="middle" font-size="10" fill="#1a1822">From heading depth</text>
+
+  <rect x="630" y="325" width="200" height="55" rx="6" fill="#ece8f6" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="730" y="348" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Primary vs Secondary</text>
+  <text x="730" y="368" text-anchor="middle" font-size="10" fill="#1a1822">From main vs aside weight</text>
+
+  <!-- Arrowhead marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

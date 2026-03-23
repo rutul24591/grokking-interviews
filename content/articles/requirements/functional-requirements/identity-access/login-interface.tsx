@@ -25,30 +25,49 @@ export default function LoginInterfaceArticle() {
       <section>
         <h2>Definition &amp; Context</h2>
         <p>
-          The <strong>Login Interface</strong> (also called Sign-in) is the primary authentication 
-          entry point for existing users to access their accounts. It is one of the most frequently 
+          The <strong>Login Interface</strong> (also called Sign-in) is the primary authentication
+          entry point for existing users to access their accounts. It is one of the most frequently
           used features on any platform and must balance security, convenience, and accessibility.
-        </p>
-        <p>
-          For staff and principal engineers, designing a login interface requires deep understanding 
-          of authentication protocols, session management, security threats (credential stuffing, 
-          phishing, brute force), and UX patterns that reduce friction while maintaining security. 
-          The login flow also sets the foundation for the entire session and must integrate with 
-          broader identity infrastructure (MFA, SSO, passwordless).
-        </p>
-        <p>
-          Modern login interfaces have evolved from simple username/password forms to multi-factor 
-          authentication flows, passwordless options (magic links, WebAuthn), biometric 
-          authentication (Touch ID, Face ID), and seamless SSO experiences. The technical complexity 
-          includes secure token handling, session persistence, device trust, and compliance with 
-          security standards (OWASP, NIST).
         </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/login-interface-flow.svg"
           alt="Login Interface Flow"
-          caption="Login Flow — showing authentication methods, MFA challenge, session creation, and redirect"
+          caption="Login Interface Flow — showing authentication methods, MFA challenge, session creation, and redirect"
         />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/login-security.svg"
+          alt="Login Security"
+          caption="Login Security Layers — showing threats, defenses, monitoring, and TLS protection"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/login-ux-patterns.svg"
+          alt="Login Ux Patterns"
+          caption="Login UX Patterns — comparing traditional, social, passwordless, biometric, SSO, and adaptive MFA"
+        />
+      
+        <p>
+          For staff and principal engineers, designing a login interface requires deep understanding
+          of authentication protocols, session management, security threats (credential stuffing,
+          phishing, brute force), and UX patterns that reduce friction while maintaining security.
+          The login flow also sets the foundation for the entire session and must integrate with
+          broader identity infrastructure (MFA, SSO, passwordless).
+        </p>
+        <p>
+          Modern login interfaces have evolved from simple username/password forms to multi-factor
+          authentication flows, passwordless options (magic links, WebAuthn), biometric
+          authentication (Touch ID, Face ID), and seamless SSO experiences. The technical complexity
+          includes secure token handling, session persistence, device trust, and compliance with
+          security standards (OWASP, NIST).
+        </p>
+
+        
+
+        
+
+        
       </section>
 
       <section>
@@ -61,25 +80,25 @@ export default function LoginInterfaceArticle() {
           <h3 className="mb-4 text-lg font-semibold">Authentication Methods</h3>
           <ul className="space-y-3">
             <li>
-              <strong>Email/Password:</strong> Traditional method with email and password fields. 
-              Support "remember me" checkbox for extended sessions. Show password visibility 
+              <strong>Email/Password:</strong> Traditional method with email and password fields.
+              Support "remember me" checkbox for extended sessions. Show password visibility
               toggle. Enable autocomplete for password managers.
             </li>
             <li>
-              <strong>Phone/SMS:</strong> Phone number input with country code selector. Send 
-              OTP via SMS. Support auto-read on mobile (SMS Retriever API). Rate limit OTP 
+              <strong>Phone/SMS:</strong> Phone number input with country code selector. Send
+              OTP via SMS. Support auto-read on mobile (SMS Retriever API). Rate limit OTP
               requests.
             </li>
             <li>
-              <strong>Passwordless:</strong> Magic link sent to email/phone. One-time codes. 
+              <strong>Passwordless:</strong> Magic link sent to email/phone. One-time codes.
               WebAuthn/FIDO2 for biometric authentication. No password to remember or steal.
             </li>
             <li>
-              <strong>Social Login:</strong> Continue with Google, Facebook, Apple, etc. OAuth 
+              <strong>Social Login:</strong> Continue with Google, Facebook, Apple, etc. OAuth
               flow with proper scope requests. Handle account linking for existing users.
             </li>
             <li>
-              <strong>SSO/SAML:</strong> Enterprise SSO integration. "Sign in with Company" 
+              <strong>SSO/SAML:</strong> Enterprise SSO integration. "Sign in with Company"
               option. Redirect to identity provider. Handle SAML assertion response.
             </li>
           </ul>
@@ -89,24 +108,24 @@ export default function LoginInterfaceArticle() {
           <h3 className="mb-4 text-lg font-semibold">Security Requirements</h3>
           <ul className="space-y-3">
             <li>
-              <strong>Rate Limiting:</strong> Limit login attempts per IP (10/minute), per 
-              account (5/hour). Implement exponential backoff (1s, 2s, 4s, 8s). Account 
+              <strong>Rate Limiting:</strong> Limit login attempts per IP (10/minute), per
+              account (5/hour). Implement exponential backoff (1s, 2s, 4s, 8s). Account
               lockout after 10 failed attempts.
             </li>
             <li>
-              <strong>Generic Errors:</strong> Use "Invalid email or password" (not "email 
+              <strong>Generic Errors:</strong> Use "Invalid email or password" (not "email
               not found" or "wrong password"). Prevents user enumeration attacks.
             </li>
             <li>
-              <strong>CSRF Protection:</strong> Include CSRF token in login form. Validate 
+              <strong>CSRF Protection:</strong> Include CSRF token in login form. Validate
               on server. Prevent cross-site request forgery.
             </li>
             <li>
-              <strong>Secure Transmission:</strong> HTTPS only. HSTS headers. Never transmit 
+              <strong>Secure Transmission:</strong> HTTPS only. HSTS headers. Never transmit
               credentials over HTTP. Consider certificate pinning for mobile apps.
             </li>
             <li>
-              <strong>Bot Prevention:</strong> CAPTCHA after failed attempts. Device 
+              <strong>Bot Prevention:</strong> CAPTCHA after failed attempts. Device
               fingerprinting. Behavioral analysis (typing patterns, mouse movements).
             </li>
           </ul>
@@ -116,129 +135,19 @@ export default function LoginInterfaceArticle() {
           <h3 className="mb-4 text-lg font-semibold">Session Management</h3>
           <ul className="space-y-3">
             <li>
-              <strong>Remember Me:</strong> Extended session (30 days) via persistent cookie. 
+              <strong>Remember Me:</strong> Extended session (30 days) via persistent cookie.
               Store refresh token securely. Allow users to see and revoke active sessions.
             </li>
             <li>
-              <strong>Device Trust:</strong> Remember trusted devices. Skip MFA on trusted 
+              <strong>Device Trust:</strong> Remember trusted devices. Skip MFA on trusted
               devices. Show device in session management. Allow revocation.
             </li>
             <li>
-              <strong>Session Notification:</strong> Email on new device login. Show location, 
+              <strong>Session Notification:</strong> Email on new device login. Show location,
               device, time. Provide "Was this you?" link for quick password reset if compromised.
             </li>
           </ul>
         </div>
-      </section>
-
-      <section>
-        <h2>UX Best Practices</h2>
-
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/login-ux-patterns.svg"
-          alt="Login UX Best Practices"
-          caption="UX Patterns — showing error handling, password visibility, remember me, and social login"
-        />
-
-        <p>
-          Login should be frictionless for legitimate users while maintaining security against
-          attackers.
-        </p>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Form Design</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Auto-focus:</strong> Focus email field on page load. Enable Enter key 
-              to submit. Preserve email on error (clear password only).
-            </li>
-            <li>
-              <strong>Password Visibility:</strong> Toggle button to show/hide password. 
-              Reduces typos and frustration. Default to hidden for security.
-            </li>
-            <li>
-              <strong>Autocomplete:</strong> autocomplete="username" and autocomplete="current-password" 
-              for password manager integration. Supports biometric authentication on 
-              supported devices.
-            </li>
-            <li>
-              <strong>Clear Errors:</strong> Inline validation for format errors. Generic 
-              message for auth failures. Link to password reset after 2-3 failures.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Recovery Options</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Forgot Password:</strong> Prominent link near login button. Clear flow 
-              with email input, verification, reset form. Invalidate sessions on password 
-              change.
-            </li>
-            <li>
-              <strong>Account Recovery:</strong> Alternative recovery methods (phone, backup 
-              email, security questions as last resort). Identity verification process.
-            </li>
-            <li>
-              <strong>Support Link:</strong> "Can't access your account?" link to help center 
-              or support contact. Provide self-service options first.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Mobile Considerations</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Biometric Auth:</strong> Support Touch ID, Face ID, fingerprint. Use 
-              WebAuthn API. Fallback to password/biometric option.
-            </li>
-            <li>
-              <strong>Mobile Keyboard:</strong> type="email" for email field (shows @ key). 
-              type="tel" for phone. Autocorrect off for passwords.
-            </li>
-            <li>
-              <strong>Responsive Design:</strong> Full-width form on mobile. Large touch 
-              targets (44px minimum). Avoid zoom on focus (viewport settings).
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Implementation Patterns</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Login Form with Error Handling</h3>
-        <p>
-          A production-ready login form handles loading states, error messages, and MFA redirects gracefully. Key considerations include: preserving the email on error (clear password only), showing inline validation for format errors, using generic messages for authentication failures, providing a link to password reset after 2-3 failures, and implementing proper loading states to prevent double-submission.
-        </p>
-        <p>
-          For state management, use local component state for credentials and errors. Store access tokens in memory (not localStorage) for security. Handle MFA redirects by navigating to MFA verification page with session ID. Implement retry logic with exponential backoff for transient failures.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Token Storage Strategy</h3>
-        <p>
-          Store access tokens in memory (JavaScript variables) for maximum security. Use HttpOnly, Secure, SameSite cookies for refresh tokens. Never store tokens in localStorage (XSS vulnerability). For "remember me" functionality, use persistent refresh tokens with rotation. Implement token refresh before expiry to maintain seamless sessions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">MFA Integration</h3>
-        <p>
-          Check for MFA requirement after initial authentication. If MFA is required, return session ID and redirect to MFA verification page. Support multiple MFA methods (TOTP, SMS, email, WebAuthn). Allow users to remember trusted devices for 30 days. Provide backup codes for account recovery.
-        </p>
-      </section>
-
-      <section>
-        <h2>Metrics &amp; Monitoring</h2>
-        <ul className="space-y-2">
-          <li><strong>Login Success Rate:</strong> Successful logins / Total login attempts</li>
-          <li><strong>Failed Login Rate:</strong> Failed attempts / Total attempts (monitor for attacks)</li>
-          <li><strong>Time to Login:</strong> Average time from page load to successful auth</li>
-          <li><strong>MFA Completion Rate:</strong> Users who complete MFA / Users prompted for MFA</li>
-          <li><strong>Password Reset Rate:</strong> Password reset requests / Total logins</li>
-          <li><strong>Social Login %:</strong> Logins via social / Total logins</li>
-          <li><strong>Account Lockout Rate:</strong> Accounts locked / Total login attempts</li>
-        </ul>
       </section>
 
       <section>
@@ -378,12 +287,6 @@ export default function LoginInterfaceArticle() {
       <section>
         <h2>Interview Questions</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/login-security.svg"
-          alt="Login Security Threats and Defenses"
-          caption="Login Security — showing credential stuffing, phishing, brute force, and defense mechanisms"
-        />
-
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you prevent credential stuffing attacks?</p>
@@ -451,140 +354,61 @@ export default function LoginInterfaceArticle() {
       </section>
 
       <section>
-        <h2>References &amp; Further Reading</h2>
+        <h2>Real-world Use Cases</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce Platform Login</h3>
+        <p>
+          Large e-commerce platform with 50M users handling 1M logins/day.
+        </p>
         <ul className="space-y-2">
-          <li><a href="https://pages.nist.gov/800-63-3/sp800-63b.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">NIST SP 800-63B - Digital Identity Guidelines</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Authentication Cheat Sheet</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Credential_Stuffing_Prevention_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Credential Stuffing Prevention</a></li>
-          <li><a href="https://www.fidoalliance.org/fido2/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">FIDO2/WebAuthn Specification</a></li>
-          <li><a href="https://haveibeenpwned.com/API/v3" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Have I Been Pwned API</a></li>
-          <li><a href="https://auth0.com/blog/a-look-at-the-latest-draft-for-oauth-2-1/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OAuth 2.1 Security Best Practices</a></li>
-          <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">MDN - HTTP Cookies Guide</a></li>
-          <li><a href="https://portswigger.net/web-security/authentication" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">PortSwigger - Authentication Vulnerabilities</a></li>
-          <li><a href="https://www.yubico.com/resources/white-papers/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Yubico - Passwordless White Papers</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Session Management Cheat Sheet</a></li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Security Checklist</h2>
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Pre-Launch Checklist</h3>
-          <ul className="space-y-2">
-            <li>☐ HTTPS enforced with HSTS headers</li>
-            <li>☐ Rate limiting implemented (IP and account level)</li>
-            <li>☐ Generic error messages (no user enumeration)</li>
-            <li>☐ CSRF token validation on login form</li>
-            <li>☐ Password hashing with Argon2id or bcrypt</li>
-            <li>☐ Session ID regeneration after login</li>
-            <li>☐ Secure cookie flags (HttpOnly, Secure, SameSite)</li>
-            <li>☐ MFA option available and easy to enable</li>
-            <li>☐ Account lockout with progressive delays</li>
-            <li>☐ Audit logging for all authentication events</li>
-            <li>☐ Password breach detection (Have I Been Pwned)</li>
-            <li>☐ Security headers configured (CSP, X-Frame-Options, etc.)</li>
-            <li>☐ Session timeout configured (idle and absolute)</li>
-            <li>☐ Logout invalidates server-side session</li>
-            <li>☐ Password reset flow secure and tested</li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Testing Strategy</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Unit Tests</h3>
-        <ul className="space-y-2">
-          <li>Test form validation (email format, required fields)</li>
-          <li>Test error message display for various failure scenarios</li>
-          <li>Test loading state during authentication</li>
-          <li>Test MFA redirect logic</li>
-          <li>Test "remember me" checkbox behavior</li>
+          <li><strong>Challenge:</strong> High cart abandonment during checkout due to login friction.</li>
+          <li><strong>Solution:</strong> Implemented guest checkout + social login (Google, Facebook, Apple). Added "remember me" with 30-day sessions.</li>
+          <li><strong>Result:</strong> 35% reduction in checkout abandonment, 60% of users chose social login.</li>
+          <li><strong>Security:</strong> Rate limiting (10/min per IP), credential stuffing detection, mandatory MFA for orders over $500.</li>
         </ul>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Integration Tests</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SaaS Login</h3>
+        <p>
+          B2B SaaS platform with enterprise customers requiring SSO.
+        </p>
         <ul className="space-y-2">
-          <li>Test complete login flow with valid credentials</li>
-          <li>Test login failure with invalid credentials</li>
-          <li>Test rate limiting (multiple failed attempts)</li>
-          <li>Test MFA flow end-to-end</li>
-          <li>Test password reset flow</li>
-          <li>Test session persistence across page refresh</li>
+          <li><strong>Challenge:</strong> Enterprise customers demanded SAML SSO integration with their IdP (Okta, Azure AD).</li>
+          <li><strong>Solution:</strong> Implemented SAML 2.0 + OIDC support. Added JIT provisioning for automatic user creation. Supported multiple IdPs per tenant.</li>
+          <li><strong>Result:</strong> Closed 15 enterprise deals requiring SSO. Reduced IT overhead for customer onboarding by 80%.</li>
+          <li><strong>Security:</strong> Enforced MFA via IdP, session timeout policies, audit logging for compliance.</li>
         </ul>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Tests</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Banking App Login</h3>
+        <p>
+          Mobile banking app with high-security requirements.
+        </p>
         <ul className="space-y-2">
-          <li>Test for user enumeration (same error for all failures)</li>
-          <li>Test CSRF token validation</li>
-          <li>Test session fixation (new session ID after login)</li>
-          <li>Test brute force protection (account lockout)</li>
-          <li>Test credential stuffing detection</li>
-          <li>Penetration testing for authentication bypass</li>
+          <li><strong>Challenge:</strong> Balance security (fraud prevention) with usability (quick access to account).</li>
+          <li><strong>Solution:</strong> Biometric login (Touch ID, Face ID) for returning users. MFA for new devices. Risk-based authentication (location, device, behavior).</li>
+          <li><strong>Result:</strong> 90% of users enabled biometric login. Fraud reduced by 70%. Login time under 2 seconds for returning users.</li>
+          <li><strong>Security:</strong> Device binding, geographic anomaly detection, step-up authentication for transfers over $1000.</li>
         </ul>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Accessibility Tests</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Healthcare Portal Login</h3>
+        <p>
+          HIPAA-compliant patient portal for accessing medical records.
+        </p>
         <ul className="space-y-2">
-          <li>Test keyboard navigation (Tab, Enter)</li>
-          <li>Test screen reader announcements</li>
-          <li>Test color contrast for error messages</li>
-          <li>Test form labels and ARIA attributes</li>
-          <li>Test browser zoom (200%, 300%)</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Monitoring &amp; Alerting</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Key Metrics</h3>
-        <ul className="space-y-2">
-          <li>Login success/failure rate by method (password, social, MFA)</li>
-          <li>Authentication latency (p50, p95, p99)</li>
-          <li>Failed login attempts per IP/account (detect attacks)</li>
-          <li>MFA completion rate and drop-off points</li>
-          <li>Account lockout rate and reasons</li>
-          <li>Password reset rate (indicates UX issues)</li>
-          <li>Social login adoption by provider</li>
+          <li><strong>Challenge:</strong> HIPAA compliance requires strict authentication while serving elderly patients unfamiliar with technology.</li>
+          <li><strong>Solution:</strong> Simple email + password with mandatory MFA (SMS or email code). Passwordless option for patients over 65. Session timeout after 15 minutes of inactivity.</li>
+          <li><strong>Result:</strong> Passed HIPAA audit. 85% patient adoption rate. Support tickets for login issues reduced by 50%.</li>
+          <li><strong>Security:</strong> Mandatory MFA, audit logging, automatic logout, IP-based access restrictions.</li>
         </ul>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Alerts</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Gaming Platform Login</h3>
+        <p>
+          Online gaming platform with 100M registered users, high concurrent logins during peak hours.
+        </p>
         <ul className="space-y-2">
-          <li>Spike in failed login attempts (credential stuffing)</li>
-          <li>Geographic anomalies (login from unusual location)</li>
-          <li>Multiple accounts from same IP (bot detection)</li>
-          <li>MFA bypass attempts</li>
-          <li>Account lockout threshold reached</li>
-          <li>Unusual login patterns (time, frequency, device)</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Dashboards</h3>
-        <ul className="space-y-2">
-          <li>Real-time authentication metrics</li>
-          <li>Security incident dashboard</li>
-          <li>User login patterns and trends</li>
-          <li>Method adoption (password vs passwordless vs social)</li>
-          <li>Geographic distribution of logins</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Operational Excellence</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Incident Response</h3>
-        <ul className="space-y-2">
-          <li>Document authentication incident procedures</li>
-          <li>Define escalation paths for security incidents</li>
-          <li>Practice credential stuffing response drills</li>
-          <li>Maintain communication templates for user notifications</li>
-          <li>Post-incident reviews and learnings</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Continuous Improvement</h3>
-        <ul className="space-y-2">
-          <li>Regular security audits and penetration testing</li>
-          <li>A/B test login flow improvements</li>
-          <li>User research on authentication friction points</li>
-          <li>Stay current with authentication standards (FIDO, OAuth)</li>
-          <li>Monitor industry trends (passwordless, passkeys)</li>
+          <li><strong>Challenge:</strong> Handle 5M concurrent logins during game launches. Prevent account sharing and bot logins.</li>
+          <li><strong>Solution:</strong> Stateless JWT validation at edge (CDN). Queue-based login during peak. Device fingerprinting for account sharing detection.</li>
+          <li><strong>Result:</strong> Handled 10M concurrent logins during major release. p99 latency under 200ms. Account sharing reduced by 60%.</li>
+          <li><strong>Security:</strong> Device binding, behavioral analysis for bot detection, rate limiting per account.</li>
         </ul>
       </section>
 

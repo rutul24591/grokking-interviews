@@ -149,81 +149,10 @@ export default function FocusManagementArticle() {
           caption="Focus trap lifecycle: Open triggers focus movement into the modal, Tab/Shift+Tab cycle within, Escape deactivates and restores focus to the original trigger."
         />
 
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// Complete focus trap with inert and focus restoration
-import { useEffect, useRef, useCallback } from 'react';
-
-function Modal({ isOpen, onClose, children }) {
-  const modalRef = useRef(null);
-  const triggerRef = useRef(null);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    // Store trigger element for focus restoration
-    triggerRef.current = document.activeElement;
-
-    // Make background content inert
-    const mainContent = document.getElementById('main-content');
-    if (mainContent) mainContent.setAttribute('inert', '');
-
-    // Move focus to modal
-    const firstFocusable = modalRef.current?.querySelector(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    );
-    firstFocusable?.focus();
-
-    return () => {
-      // Remove inert from background
-      if (mainContent) mainContent.removeAttribute('inert');
-      // Restore focus to trigger
-      triggerRef.current?.focus();
-    };
-  }, [isOpen]);
-
-  const handleKeyDown = useCallback((e) => {
-    if (e.key === 'Escape') {
-      onClose();
-      return;
-    }
-
-    if (e.key !== 'Tab') return;
-
-    const focusable = modalRef.current?.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    );
-    if (!focusable?.length) return;
-
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-
-    if (e.shiftKey && document.activeElement === first) {
-      e.preventDefault();
-      last.focus();
-    } else if (!e.shiftKey && document.activeElement === last) {
-      e.preventDefault();
-      first.focus();
-    }
-  }, [onClose]);
-
-  if (!isOpen) return null;
-
-  return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div
-        ref={modalRef}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="modal-title"
-        onKeyDown={handleKeyDown}
-        onClick={e => e.stopPropagation()}
-      >
-        {children}
-      </div>
-    </div>
-  );
-}`}</code>
-        </pre>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Focus Trap Implementation Pattern</h3>
+        <p>
+          Implement a complete focus trap with inert and focus restoration using useEffect, useRef, and useCallback hooks. For a Modal component, store the trigger element reference for focus restoration. In useEffect when isOpen changes, store the current active element as the trigger, set inert attribute on background content (like main-content div), query for the first focusable element inside the modal using a selector for button, href, input, select, textarea, and tabindex elements, and focus it. The cleanup function removes inert from background and restores focus to the trigger element. For keyboard handling, use useCallback to listen for Escape key to close the modal, and Tab key to cycle focus. Query all focusable elements, get the first and last, and if Shift+Tab is pressed on the first element, prevent default and focus the last. If Tab is pressed on the last element, prevent default and focus the first. The modal renders with a ref, role dialog, aria-modal true, aria-labelledby pointing to the title, onKeyDown handler, and onClick that stops propagation to prevent overlay clicks.
+        </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Route Change Focus Strategy</h3>
         <p>
@@ -238,45 +167,10 @@ function Modal({ isOpen, onClose, children }) {
           caption="After SPA route change, focus should move to the new page's main heading (h1) or a designated focus target, and the document title should update."
         />
 
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// SPA route change focus management (React Router / Next.js pattern)
-import { useEffect, useRef } from 'react';
-import { usePathname } from 'next/navigation';
-
-function RouteAnnouncer() {
-  const pathname = usePathname();
-  const headingRef = useRef(null);
-  const announcerRef = useRef(null);
-
-  useEffect(() => {
-    // Strategy 1: Focus the main heading
-    const mainHeading = document.querySelector('h1');
-    if (mainHeading) {
-      // Ensure the heading is focusable
-      if (!mainHeading.hasAttribute('tabindex')) {
-        mainHeading.setAttribute('tabindex', '-1');
-      }
-      mainHeading.focus({ preventScroll: false });
-    }
-
-    // Strategy 2: Announce via live region
-    if (announcerRef.current) {
-      const pageTitle = document.title;
-      announcerRef.current.textContent = \`Navigated to \${pageTitle}\`;
-    }
-  }, [pathname]);
-
-  return (
-    <div
-      ref={announcerRef}
-      role="status"
-      aria-live="assertive"
-      aria-atomic="true"
-      className="sr-only"
-    />
-  );
-}`}</code>
-        </pre>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">SPA Route Change Focus Management</h3>
+        <p>
+          For SPA route change focus management using React Router or Next.js pattern, create a RouteAnnouncer component that uses usePathname hook and two refs. In useEffect on pathname change, implement two strategies. Strategy 1 focuses the main heading by querying for h1, ensuring it has tabindex negative one if not already set, then calling focus with preventScroll false. Strategy 2 announces via live region by setting the announcer text content to the new page title. The component renders a div with ref, role status, aria-live assertive, aria-atomic true, and sr-only class for screen reader only visibility.
+        </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Focus Ring Visibility States</h3>
         <p>
@@ -290,42 +184,10 @@ function RouteAnnouncer() {
           caption=":focus applies on all focus events; :focus-visible applies only on keyboard focus; :focus-within applies when any descendant is focused."
         />
 
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`/* Focus visibility CSS patterns */
-
-/* Remove default outline, add custom focus-visible ring */
-button:focus {
-  outline: none;
-}
-
-button:focus-visible {
-  outline: 2px solid #6d5bd0;
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-
-/* Focus-within for form groups */
-.form-group:focus-within {
-  border-color: #6d5bd0;
-  box-shadow: 0 0 0 3px rgba(109, 91, 208, 0.2);
-}
-
-/* High-contrast focus indicator (WCAG 2.4.11 compliant) */
-:focus-visible {
-  outline: 3px solid #6d5bd0;
-  outline-offset: 2px;
-  /* Ensure focus indicator is visible against any background */
-  box-shadow:
-    0 0 0 2px #ffffff,
-    0 0 0 5px #6d5bd0;
-}
-
-/* Skip focus ring for mouse users but keep for keyboard */
-.interactive:focus:not(:focus-visible) {
-  outline: none;
-  box-shadow: none;
-}`}</code>
-        </pre>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Focus Ring CSS Patterns</h3>
+        <p>
+          For focus visibility CSS patterns, remove default outline on button focus and add custom focus-visible ring with 2px solid color and 2px offset. For form groups, use focus-within to style the container when any descendant is focused with border color change and box shadow. For WCAG 2.4.11 compliance, use 3px solid outline on focus-visible with box-shadow for high contrast focus indicators that are visible against any background. For mouse users, use focus not focus-visible to remove outline and box-shadow while keeping keyboard focus visible.
+        </p>
       </section>
 
       {/* ─── Section 4: Trade-offs & Comparisons ─── */}

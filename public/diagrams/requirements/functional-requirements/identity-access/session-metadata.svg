@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Session Metadata Schema</text>
+  
+  <!-- Session Object -->
+  <rect x="50" y="70" width="340" height="380" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Session Object</text>
+  
+  <!-- Core fields -->
+  <rect x="70" y="115" width="300" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="90" y="137" font-family="monospace" font-size="10" fill="#3b82f6">session_id</text>
+  <text x="200" y="137" font-family="system-ui" font-size="10" fill="#475569">UUID v4</text>
+  
+  <rect x="70" y="155" width="300" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="90" y="177" font-family="monospace" font-size="10" fill="#3b82f6">user_id</text>
+  <text x="200" y="177" font-family="system-ui" font-size="10" fill="#475569">Reference to users table</text>
+  
+  <rect x="70" y="195" width="300" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="90" y="217" font-family="monospace" font-size="10" fill="#3b82f6">created_at</text>
+  <text x="200" y="217" font-family="system-ui" font-size="10" fill="#475569">ISO 8601 timestamp</text>
+  
+  <rect x="70" y="235" width="300" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="90" y="257" font-family="monospace" font-size="10" fill="#3b82f6">expires_at</text>
+  <text x="200" y="257" font-family="system-ui" font-size="10" fill="#475569">Absolute expiry</text>
+  
+  <rect x="70" y="275" width="300" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="90" y="297" font-family="monospace" font-size="10" fill="#3b82f6">last_seen_at</text>
+  <text x="200" y="297" font-family="system-ui" font-size="10" fill="#475569">For sliding sessions</text>
+  
+  <rect x="70" y="315" width="300" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="90" y="337" font-family="monospace" font-size="10" fill="#3b82f6">status</text>
+  <text x="200" y="337" font-family="system-ui" font-size="10" fill="#475569">active | idle | expired | revoked</text>
+  
+  <rect x="70" y="355" width="300" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="90" y="377" font-family="monospace" font-size="10" fill="#3b82f6">roles</text>
+  <text x="200" y="377" font-family="system-ui" font-size="10" fill="#475569">Array of role IDs</text>
+  
+  <!-- Device Info -->
+  <rect x="420" y="70" width="330" height="180" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="585" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Device Metadata</text>
+  
+  <rect x="440" y="115" width="290" height="30" rx="4" fill="#f8fafc"/>
+  <text x="460" y="135" font-family="monospace" font-size="9" fill="#0f172a">ip_address</text>
+  <text x="580" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">192.168.1.1</text>
+  
+  <rect x="440" y="150" width="290" height="30" rx="4" fill="#f8fafc"/>
+  <text x="460" y="170" font-family="monospace" font-size="9" fill="#0f172a">user_agent</text>
+  <text x="580" y="170" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Mozilla/5.0...</text>
+  
+  <rect x="440" y="185" width="290" height="30" rx="4" fill="#f8fafc"/>
+  <text x="460" y="205" font-family="monospace" font-size="9" fill="#0f172a">device_fingerprint</text>
+  <text x="580" y="205" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Hash</text>
+  
+  <rect x="440" y="220" width="290" height="30" rx="4" fill="#f8fafc"/>
+  <text x="460" y="240" font-family="monospace" font-size="9" fill="#0f172a">geo_location</text>
+  <text x="580" y="240" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">{lat, lon, city}</text>
+  
+  <!-- Security -->
+  <rect x="420" y="270" width="330" height="180" rx="8" fill="#f1f5f9" stroke="#ef4444" stroke-width="2"/>
+  <text x="585" y="295" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Security Fields</text>
+  
+  <rect x="440" y="315" width="290" height="30" rx="4" fill="#ef4444" opacity="0.2"/>
+  <text x="460" y="335" font-family="monospace" font-size="9" fill="#0f172a">auth_method</text>
+  <text x="580" y="335" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">password | mfa | sso</text>
+  
+  <rect x="440" y="350" width="290" height="30" rx="4" fill="#ef4444" opacity="0.2"/>
+  <text x="460" y="370" font-family="monospace" font-size="9" fill="#0f172a">mfa_verified</text>
+  <text x="580" y="370" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">boolean</text>
+  
+  <rect x="440" y="385" width="290" height="30" rx="4" fill="#ef4444" opacity="0.2"/>
+  <text x="460" y="405" font-family="monospace" font-size="9" fill="#0f172a">revocation_reason</text>
+  <text x="580" y="405" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">user_logout | security | admin</text>
+  
+  <rect x="440" y="420" width="290" height="30" rx="4" fill="#ef4444" opacity="0.2"/>
+  <text x="460" y="440" font-family="monospace" font-size="9" fill="#0f172a">risk_score</text>
+  <text x="580" y="440" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">0.0 - 1.0</text>
+
+</svg>

@@ -116,8 +116,9 @@ To add a new concept category or topic:
 
 - Each article contains a toggle i.e article and example. By default article is selected in the toggle. Article will contain the actual content and code example will contain multiple examples of code with example 1 being a full fledged app with respect to the topic and example 2 and so on covering secondary small pieces of code which could add important coverage/context to article.
 - Each article must provide in-depth information suitable for rigorous interview prep and research work.
-- Each article must include a comprehension-focused code example that is clearly tied to the concept.
 - Each article should possess in depth information for a staff/principal engineer interview prep/research work.
-- Each article should also contain a comprehension example of code relevant to the concept and not generic.
+- Each article will have a toggle called examples where the code will be shown and not in the article itself. The example is not to be developed yet.
+- The code example in question will be shown in example toggle and not in the article itself.
+- The article should not contain any code or any sort of code description.
 - Each article should also contain 2-3 images related to the concept.
 - Do not use Mermaid for diagram creation. We will use svg from publicly available images from web.

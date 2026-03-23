@@ -8,13 +8,13 @@
   <!-- Background layer (inert) -->
   <rect x="30" y="80" width="840" height="400" rx="12" fill="#e8e4f0" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="8,4" />
   <text x="450" y="106" fill="#1a1822" font-family="system-ui, sans-serif" font-size="14" font-weight="700" text-anchor="middle">Page Background (inert)</text>
-  <text x="450" y="124" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="11" text-anchor="middle">All content behind the modal receives the inert attribute or aria-hidden=&quot;true&quot;</text>
+  <text x="450" y="124" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="11" text-anchor="middle">All content behind the modal receives the inert attribute or aria-hidden=&amp;quot;true&amp;quot;</text>
 
   <!-- Dialog role box -->
   <rect x="60" y="145" width="370" height="310" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2.5" />
   <rect x="60" y="145" width="370" height="44" rx="12" fill="#6d5bd0" />
   <rect x="60" y="169" width="370" height="20" fill="#6d5bd0" />
-  <text x="245" y="174" fill="#ffffff" font-family="system-ui, sans-serif" font-size="16" font-weight="700" text-anchor="middle">role=&quot;dialog&quot;</text>
+  <text x="245" y="174" fill="#ffffff" font-family="system-ui, sans-serif" font-size="16" font-weight="700" text-anchor="middle">role=&amp;quot;dialog&amp;quot;</text>
 
   <text x="80" y="214" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-style="italic">Non-modal or modal overlay for user interaction</text>
 
@@ -22,7 +22,7 @@
   <text x="80" y="245" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Required Attributes:</text>
 
   <rect x="80" y="258" width="330" height="34" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1" />
-  <text x="92" y="280" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700">aria-modal=&quot;true&quot;</text>
+  <text x="92" y="280" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700">aria-modal=&amp;quot;true&amp;quot;</text>
   <text x="240" y="280" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Indicates modal behavior</text>
 
   <rect x="80" y="300" width="330" height="34" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1" />
@@ -40,7 +40,7 @@
   <rect x="470" y="145" width="370" height="310" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2.5" />
   <rect x="470" y="145" width="370" height="44" rx="12" fill="#6d5bd0" />
   <rect x="470" y="169" width="370" height="20" fill="#6d5bd0" />
-  <text x="655" y="174" fill="#ffffff" font-family="system-ui, sans-serif" font-size="16" font-weight="700" text-anchor="middle">role=&quot;alertdialog&quot;</text>
+  <text x="655" y="174" fill="#ffffff" font-family="system-ui, sans-serif" font-size="16" font-weight="700" text-anchor="middle">role=&amp;quot;alertdialog&amp;quot;</text>
 
   <text x="490" y="214" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-style="italic">Urgent modal requiring immediate user response</text>
 
@@ -48,7 +48,7 @@
   <text x="490" y="245" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Required Attributes:</text>
 
   <rect x="490" y="258" width="330" height="34" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1" />
-  <text x="502" y="280" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700">aria-modal=&quot;true&quot;</text>
+  <text x="502" y="280" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700">aria-modal=&amp;quot;true&amp;quot;</text>
   <text x="650" y="280" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">Always modal</text>
 
   <rect x="490" y="300" width="330" height="34" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1" />
@@ -70,7 +70,7 @@
 
   <!-- Key difference callout -->
   <rect x="200" y="460" width="500" height="24" rx="6" fill="#6d5bd0" />
-  <text x="450" y="477" fill="#ffffff" font-family="system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">Key difference: alertdialog announces its message to screen readers immediately via implicit role=&quot;alert&quot;</text>
+  <text x="450" y="477" fill="#ffffff" font-family="system-ui, sans-serif" font-size="11" font-weight="600" text-anchor="middle">Key difference: alertdialog announces its message to screen readers immediately via implicit role=&amp;quot;alert&amp;quot;</text>
 
   <defs>
     <marker id="inheritArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">

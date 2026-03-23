@@ -29,17 +29,36 @@ export default function AccessControlPoliciesArticle() {
           what resources under which conditions. Beyond simple RBAC, policies enable fine-grained,
           context-aware authorization decisions.
         </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/access-control-policies.svg"
+          alt="Access Control Policies"
+          caption="Access Control Policies — comparing DAC, MAC, RBAC, and ABAC models with selection matrix"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/policy-evaluation.svg"
+          alt="Policy Evaluation"
+          caption="Policy Evaluation — XACML-style flow with PEP, PDP, PIP components and decision logic"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/policy-management.svg"
+          alt="Policy Management"
+          caption="Policy Management — lifecycle from creation to deployment with policy engine components"
+        />
+      
         <p>
           For staff and principal engineers, implementing access control policies requires
           understanding policy types, evaluation engines, and policy management. The
           implementation must provide flexible authorization while maintaining performance.
         </p>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/access-control-policies.svg"
-          alt="Access Control Policies"
-          caption="Access Control — showing RBAC, ABAC, ReBAC, and policy evaluation"
-        />
+        
+
+        
+
+        
       </section>
 
       <section>
@@ -55,11 +74,7 @@ export default function AccessControlPoliciesArticle() {
       <section>
         <h2>Policy Engines</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/policy-evaluation.svg"
-          alt="Policy Evaluation Engine"
-          caption="Policy Evaluation — showing policy definition, attribute lookup, and decision engine"
-        />
+        
 
         <ul className="space-y-3">
           <li><strong>OPA (Open Policy Agent):</strong> General-purpose policy engine.</li>
@@ -278,11 +293,7 @@ export default function AccessControlPoliciesArticle() {
       <section>
         <h2>Interview Questions</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/policy-management.svg"
-          alt="Policy Management"
-          caption="Policy Management — showing versioning, testing, and deployment"
-        />
+        
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -632,6 +643,65 @@ export default function AccessControlPoliciesArticle() {
         <p>
           Optimize policy system costs. Right-size policy engine infrastructure. Use serverless for variable workloads. Optimize storage for policy data. Reduce unnecessary policy evaluations. Monitor cost per evaluation. Balance performance with cost.
         </p>
+      </section>
+
+      <section>
+        <h2>Real-world Use Cases</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce Access Control Policies</h3>
+        <p>
+          Multi-vendor marketplace with complex vendor, customer, and admin access policies.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Vendors can only access their products. Time-based access for flash sales. Geographic restrictions for certain products.</li>
+          <li><strong>Solution:</strong> ABAC policies with vendor_id, time, and location attributes. Real-time policy evaluation. Policy caching for performance.</li>
+          <li><strong>Result:</strong> Vendor isolation maintained. Flash sale access working. Geographic compliance achieved.</li>
+          <li><strong>Security:</strong> Attribute validation, real-time evaluation, policy caching.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Healthcare Access Control Policies</h3>
+        <p>
+          HIPAA-compliant EHR system with patient-physician relationship policies.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Doctors access only their patients. Nurse access limited by department. Emergency break-glass access with audit.</li>
+          <li><strong>Solution:</strong> Relationship-based policies. Department scoping for nurses. Break-glass override with automatic audit and review.</li>
+          <li><strong>Result:</strong> Passed HIPAA audits. Unauthorized access reduced 95%. Emergency access maintained.</li>
+          <li><strong>Security:</strong> Relationship validation, department scoping, break-glass audit.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Cloud Infrastructure Access Policies</h3>
+        <p>
+          Cloud platform managing AWS/GCP/Azure with environment-based access policies.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Developers need dev access, not prod. Compliance requires separation of duties. Time-based access for contractors.</li>
+          <li><strong>Solution:</strong> Environment-tagged policies. Separation of duties enforcement. Contractor time-bound policies with auto-expiry.</li>
+          <li><strong>Result:</strong> Accidental production changes reduced 90%. Compliance audits passed. Contractor access auto-expired.</li>
+          <li><strong>Security:</strong> Environment scoping, duty separation, time-bound access.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Financial Trading Access Policies</h3>
+        <p>
+          Trading platform with SEC/FINRA compliance and Chinese wall requirements.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Chinese wall between trading teams. Traders access only assigned securities. Compliance monitoring for insider trading.</li>
+          <li><strong>Solution:</strong> Team-based access policies. Security-level scoping. Automated compliance monitoring with alerts.</li>
+          <li><strong>Result:</strong> Passed SEC/FINRA audits. Zero Chinese wall violations. Insider trading detection improved.</li>
+          <li><strong>Security:</strong> Team isolation, security scoping, compliance monitoring.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SaaS Access Policies</h3>
+        <p>
+          B2B SaaS with 10,000 enterprise customers, tenant-specific policies.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Multi-tenant policy isolation. Customer-specific policy customization. Platform admin cross-tenant access for support.</li>
+          <li><strong>Solution:</strong> Tenant-scoped policies. Custom policy templates per customer. Audit-logged cross-tenant admin access.</li>
+          <li><strong>Result:</strong> Tenant isolation maintained. Customer customization enabled. Zero unauthorized cross-tenant access.</li>
+          <li><strong>Security:</strong> Tenant scoping, policy templates, audit logging.</li>
+        </ul>
       </section>
     </ArticleLayout>
   );

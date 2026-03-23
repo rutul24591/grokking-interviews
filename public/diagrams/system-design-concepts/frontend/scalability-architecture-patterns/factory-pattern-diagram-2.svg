@@ -39,10 +39,10 @@
   <rect x="620" y="80" width="250" height="130" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
   <text x="745" y="104" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Component Registry</text>
   <line x1="640" y1="114" x2="850" y2="114" stroke="#d7d1e6" stroke-width="1" />
-  <text x="645" y="134" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">"button" &#8594; ButtonComponent</text>
-  <text x="645" y="152" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">"input" &#8594; InputComponent</text>
-  <text x="645" y="170" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">"card" &#8594; CardComponent</text>
-  <text x="645" y="188" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">"modal" &#8594; ModalComponent</text>
+  <text x="645" y="134" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">"button" &amp;#8594; ButtonComponent</text>
+  <text x="645" y="152" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">"input" &amp;#8594; InputComponent</text>
+  <text x="645" y="170" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">"card" &amp;#8594; CardComponent</text>
+  <text x="645" y="188" fill="#1a1822" font-family="system-ui, sans-serif" font-size="11">"modal" &amp;#8594; ModalComponent</text>
 
   <!-- Arrow factory to registry -->
   <line x1="552" y1="130" x2="618" y2="130" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arr2)" />

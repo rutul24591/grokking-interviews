@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Crawl Budget Components &amp; robots.txt Optimization</text>
+
+  <!-- Crawl Budget equation -->
+  <rect x="50" y="55" width="800" height="70" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+
+  <rect x="80" y="67" width="200" height="45" rx="6" fill="#6d5bd0"/>
+  <text x="180" y="87" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Crawl Rate Limit</text>
+  <text x="180" y="104" text-anchor="middle" font-size="10" fill="#ffffff">Server capacity</text>
+
+  <text x="310" y="97" text-anchor="middle" font-size="24" font-weight="700" fill="#6d5bd0">+</text>
+
+  <rect x="345" y="67" width="200" height="45" rx="6" fill="#6d5bd0"/>
+  <text x="445" y="87" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Crawl Demand</text>
+  <text x="445" y="104" text-anchor="middle" font-size="10" fill="#ffffff">Content importance</text>
+
+  <text x="575" y="97" text-anchor="middle" font-size="24" font-weight="700" fill="#6d5bd0">=</text>
+
+  <rect x="610" y="67" width="210" height="45" rx="6" fill="#6d5bd0"/>
+  <text x="715" y="87" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Crawl Budget</text>
+  <text x="715" y="104" text-anchor="middle" font-size="10" fill="#ffffff">Pages crawled per session</text>
+
+  <!-- Before robots.txt optimization -->
+  <text x="225" y="155" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">Before robots.txt Optimization</text>
+
+  <rect x="30" y="165" width="390" height="200" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+
+  <!-- Budget pool visualization -->
+  <text x="225" y="190" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Crawl Budget Pool: 1000 pages/day</text>
+
+  <!-- Stacked bar -->
+  <rect x="50" y="205" width="350" height="40" rx="6" fill="#d7d1e6"/>
+  <!-- High value portion -->
+  <rect x="50" y="205" width="120" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="110" y="230" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Products</text>
+  <text x="110" y="240" text-anchor="middle" font-size="9" fill="#ffffff">350 pages</text>
+
+  <!-- Low value portions -->
+  <rect x="170" y="205" width="60" height="40" fill="#d7d1e6"/>
+  <text x="200" y="225" text-anchor="middle" font-size="8" fill="#1a1822">Search</text>
+  <text x="200" y="237" text-anchor="middle" font-size="8" fill="#1a1822">200</text>
+
+  <rect x="230" y="205" width="50" height="40" fill="#d7d1e6"/>
+  <text x="255" y="225" text-anchor="middle" font-size="8" fill="#1a1822">Filters</text>
+  <text x="255" y="237" text-anchor="middle" font-size="8" fill="#1a1822">150</text>
+
+  <rect x="280" y="205" width="40" height="40" fill="#d7d1e6"/>
+  <text x="300" y="225" text-anchor="middle" font-size="8" fill="#1a1822">Cart</text>
+  <text x="300" y="237" text-anchor="middle" font-size="8" fill="#1a1822">100</text>
+
+  <rect x="320" y="205" width="50" height="40" fill="#d7d1e6"/>
+  <text x="345" y="225" text-anchor="middle" font-size="8" fill="#1a1822">Tags</text>
+  <text x="345" y="237" text-anchor="middle" font-size="8" fill="#1a1822">120</text>
+
+  <rect x="370" y="205" width="30" height="40" rx="0" fill="#d7d1e6"/>
+  <text x="385" y="230" text-anchor="middle" font-size="7" fill="#1a1822">80</text>
+
+  <!-- Labels -->
+  <rect x="50" y="260" width="14" height="10" rx="2" fill="#6d5bd0"/>
+  <text x="70" y="269" font-size="10" fill="#1a1822">High-value: 35%</text>
+  <rect x="200" y="260" width="14" height="10" rx="2" fill="#d7d1e6"/>
+  <text x="220" y="269" font-size="10" fill="#1a1822">Low-value: 65% (wasted)</text>
+
+  <!-- Low value URLs list -->
+  <text x="60" y="295" font-size="11" font-weight="600" fill="#1a1822">Wasted budget on:</text>
+  <text x="60" y="312" font-size="10" fill="#1a1822">/search?q=* (internal search results)</text>
+  <text x="60" y="328" font-size="10" fill="#1a1822">/products?sort=*&amp;filter=* (faceted nav)</text>
+  <text x="60" y="344" font-size="10" fill="#1a1822">/cart, /checkout (user-specific pages)</text>
+  <text x="60" y="360" font-size="10" fill="#1a1822">/tag/*, /archive/* (thin content)</text>
+
+  <!-- After robots.txt optimization -->
+  <text x="675" y="155" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">After robots.txt Optimization</text>
+
+  <rect x="480" y="165" width="390" height="200" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+
+  <text x="675" y="190" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Crawl Budget Pool: 1000 pages/day</text>
+
+  <!-- Stacked bar - optimized -->
+  <rect x="500" y="205" width="350" height="40" rx="6" fill="#6d5bd0"/>
+  <!-- All high value -->
+  <rect x="500" y="205" width="180" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="590" y="230" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Products: 550 pages</text>
+
+  <rect x="680" y="205" width="80" height="40" fill="#6d5bd0" opacity="0.8"/>
+  <text x="720" y="230" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Blog: 250</text>
+
+  <rect x="760" y="205" width="60" height="40" fill="#6d5bd0" opacity="0.6"/>
+  <text x="790" y="230" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Cat: 120</text>
+
+  <rect x="820" y="205" width="30" height="40" rx="0" fill="#6d5bd0" opacity="0.4"/>
+  <text x="835" y="230" text-anchor="middle" font-size="8" font-weight="600" fill="#ffffff">80</text>
+
+  <!-- Labels -->
+  <rect x="500" y="260" width="14" height="10" rx="2" fill="#6d5bd0"/>
+  <text x="520" y="269" font-size="10" fill="#1a1822">High-value: 100%</text>
+
+  <!-- robots.txt rules applied -->
+  <text x="510" y="295" font-size="11" font-weight="600" fill="#6d5bd0">robots.txt rules applied:</text>
+  <text x="510" y="312" font-size="10" fill="#1a1822">Disallow: /search</text>
+  <text x="510" y="328" font-size="10" fill="#1a1822">Disallow: /products?sort=*</text>
+  <text x="510" y="344" font-size="10" fill="#1a1822">Disallow: /cart</text>
+  <text x="510" y="360" font-size="10" fill="#1a1822">Disallow: /tag/</text>
+
+  <!-- Arrow showing improvement -->
+  <rect x="200" y="385" width="500" height="95" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="410" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">Impact of robots.txt Optimization</text>
+  <line x1="210" y1="420" x2="690" y2="420" stroke="#d7d1e6" stroke-width="1"/>
+
+  <text x="280" y="443" text-anchor="middle" font-size="12" fill="#1a1822">High-value crawls:</text>
+  <text x="280" y="462" text-anchor="middle" font-size="16" font-weight="700" fill="#1a1822">350 <tspan fill="#6d5bd0">-&amp;gt;</tspan> 1000</text>
+
+  <text x="450" y="443" text-anchor="middle" font-size="12" fill="#1a1822">Efficiency gain:</text>
+  <text x="450" y="462" text-anchor="middle" font-size="16" font-weight="700" fill="#6d5bd0">+185%</text>
+
+  <text x="620" y="443" text-anchor="middle" font-size="12" fill="#1a1822">Budget waste:</text>
+  <text x="620" y="462" text-anchor="middle" font-size="16" font-weight="700" fill="#1a1822">65% <tspan fill="#6d5bd0">-&amp;gt;</tspan> 0%</text>
+</svg>

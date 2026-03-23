@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Sitemap Generation Pipeline: Three Approaches</text>
+
+  <!-- Approach 1: Build-time -->
+  <rect x="20" y="60" width="270" height="410" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="20" y="60" width="270" height="40" rx="10" fill="#6d5bd0"/>
+  <text x="155" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Build-Time (Static)</text>
+
+  <!-- Build steps -->
+  <rect x="45" y="120" width="220" height="45" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="155" y="140" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Content Files</text>
+  <text x="155" y="155" text-anchor="middle" font-size="10" fill="#1a1822">MDX, pages, routes</text>
+
+  <line x1="155" y1="165" x2="155" y2="185" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowXS3)"/>
+
+  <rect x="45" y="190" width="220" height="45" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="155" y="210" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Build Script / Plugin</text>
+  <text x="155" y="225" text-anchor="middle" font-size="10" fill="#1a1822">next-sitemap, gatsby-plugin</text>
+
+  <line x1="155" y1="235" x2="155" y2="255" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowXS3)"/>
+
+  <rect x="45" y="260" width="220" height="45" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="155" y="280" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Static sitemap.xml</text>
+  <text x="155" y="295" text-anchor="middle" font-size="10" fill="#1a1822">Deployed with build output</text>
+
+  <line x1="155" y1="305" x2="155" y2="325" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowXS3)"/>
+
+  <rect x="45" y="330" width="220" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="155" y="355" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">CDN / Static Host</text>
+
+  <!-- Pros/Cons -->
+  <text x="55" y="395" font-size="10" fill="#6d5bd0" font-weight="600">Best for:</text>
+  <text x="55" y="412" font-size="10" fill="#1a1822">Marketing sites, docs, blogs</text>
+  <text x="55" y="429" font-size="10" fill="#1a1822">Content changes infrequently</text>
+  <text x="55" y="446" font-size="10" fill="#1a1822">No runtime overhead</text>
+  <text x="55" y="463" font-size="10" fill="#1a1822">Fast serving from CDN</text>
+
+  <!-- Approach 2: Runtime -->
+  <rect x="315" y="60" width="270" height="410" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="315" y="60" width="270" height="40" rx="10" fill="#6d5bd0"/>
+  <text x="450" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Runtime (Dynamic)</text>
+
+  <!-- Runtime steps -->
+  <rect x="340" y="120" width="220" height="45" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="140" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Database / CMS API</text>
+  <text x="450" y="155" text-anchor="middle" font-size="10" fill="#1a1822">Products, posts, categories</text>
+
+  <line x1="450" y1="165" x2="450" y2="185" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowXS3)"/>
+
+  <rect x="340" y="190" width="220" height="45" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="210" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Server Route Handler</text>
+  <text x="450" y="225" text-anchor="middle" font-size="10" fill="#1a1822">GET /sitemap.xml endpoint</text>
+
+  <line x1="450" y1="235" x2="450" y2="255" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowXS3)"/>
+
+  <rect x="340" y="260" width="220" height="45" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="280" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Cache Layer</text>
+  <text x="450" y="295" text-anchor="middle" font-size="10" fill="#1a1822">Redis / in-memory, TTL 1-6h</text>
+
+  <line x1="450" y1="305" x2="450" y2="325" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowXS3)"/>
+
+  <rect x="340" y="330" width="220" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="450" y="355" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">XML Response</text>
+
+  <!-- Pros/Cons -->
+  <text x="350" y="395" font-size="10" fill="#6d5bd0" font-weight="600">Best for:</text>
+  <text x="350" y="412" font-size="10" fill="#1a1822">E-commerce, large catalogs</text>
+  <text x="350" y="429" font-size="10" fill="#1a1822">Frequently changing content</text>
+  <text x="350" y="446" font-size="10" fill="#1a1822">Always up-to-date URLs</text>
+  <text x="350" y="463" font-size="10" fill="#1a1822">Requires caching strategy</text>
+
+  <!-- Approach 3: Hybrid -->
+  <rect x="610" y="60" width="270" height="410" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="610" y="60" width="270" height="40" rx="10" fill="#6d5bd0"/>
+  <text x="745" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Hybrid (Best of Both)</text>
+
+  <!-- Hybrid steps -->
+  <rect x="635" y="120" width="100" height="45" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="685" y="140" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Static Pages</text>
+  <text x="685" y="155" text-anchor="middle" font-size="9" fill="#1a1822">About, FAQ</text>
+
+  <rect x="755" y="120" width="100" height="45" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="805" y="140" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Dynamic Data</text>
+  <text x="805" y="155" text-anchor="middle" font-size="9" fill="#1a1822">Products, DB</text>
+
+  <line x1="685" y1="165" x2="685" y2="185" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowXS3)"/>
+  <line x1="805" y1="165" x2="805" y2="185" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowXS3)"/>
+
+  <rect x="635" y="190" width="100" height="45" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="685" y="210" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Build-time</text>
+  <text x="685" y="225" text-anchor="middle" font-size="9" fill="#1a1822">Generates XML</text>
+
+  <rect x="755" y="190" width="100" height="45" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="805" y="210" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Runtime</text>
+  <text x="805" y="225" text-anchor="middle" font-size="9" fill="#1a1822">Generates XML</text>
+
+  <line x1="685" y1="235" x2="720" y2="260" stroke="#6d5bd0" stroke-width="1.5"/>
+  <line x1="805" y1="235" x2="770" y2="260" stroke="#6d5bd0" stroke-width="1.5"/>
+
+  <rect x="665" y="260" width="160" height="45" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="745" y="280" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Sitemap Index</text>
+  <text x="745" y="295" text-anchor="middle" font-size="10" fill="#1a1822">Combines both sources</text>
+
+  <line x1="745" y1="305" x2="745" y2="325" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowXS3)"/>
+
+  <rect x="665" y="330" width="160" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="745" y="355" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Served via CDN + Origin</text>
+
+  <!-- Pros/Cons -->
+  <text x="645" y="395" font-size="10" fill="#6d5bd0" font-weight="600">Best for:</text>
+  <text x="645" y="412" font-size="10" fill="#1a1822">Complex applications</text>
+  <text x="645" y="429" font-size="10" fill="#1a1822">Mixed static + dynamic content</text>
+  <text x="645" y="446" font-size="10" fill="#1a1822">Optimal freshness per section</text>
+  <text x="645" y="463" font-size="10" fill="#1a1822">ISR / on-demand revalidation</text>
+
+  <defs>
+    <marker id="arrowXS3" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

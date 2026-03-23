@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Dynamic Rendering: User-Agent Based Routing</text>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2e7d32"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1565c0"/>
+    </marker>
+  </defs>
+
+  <!-- Request arrives -->
+  <rect x="350" y="60" width="200" height="50" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">HTTP Request Arrives</text>
+  <text x="450" y="100" text-anchor="middle" font-size="10" fill="#ffffff">GET /products/widget</text>
+
+  <!-- Arrow down -->
+  <line x1="450" y1="110" x2="450" y2="145" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- User-Agent Detection -->
+  <rect x="325" y="145" width="250" height="50" rx="8" fill="#8b7de0"/>
+  <text x="450" y="168" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">User-Agent Detection</text>
+  <text x="450" y="185" text-anchor="middle" font-size="10" fill="#ffffff">Middleware / Edge Function</text>
+
+  <!-- Arrow down to decision -->
+  <line x1="450" y1="195" x2="450" y2="230" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Decision diamond (using rotated rect) -->
+  <g transform="translate(450, 262)">
+    <rect x="-55" y="-32" width="110" height="64" rx="6" fill="#6d5bd0" transform="rotate(0)"/>
+    <text x="0" y="-6" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Is Bot?</text>
+    <text x="0" y="12" text-anchor="middle" font-size="10" fill="#ffffff">Googlebot, Bing,</text>
+    <text x="0" y="24" text-anchor="middle" font-size="10" fill="#ffffff">social crawlers</text>
+  </g>
+
+  <!-- YES arrow (left - bot path) -->
+  <line x1="395" y1="262" x2="260" y2="262" stroke="#2e7d32" stroke-width="2.5" marker-end="url(#arrowGreen)"/>
+  <text x="330" y="252" font-size="12" font-weight="700" fill="#2e7d32">YES</text>
+
+  <!-- NO arrow (right - user path) -->
+  <line x1="505" y1="262" x2="640" y2="262" stroke="#1565c0" stroke-width="2.5" marker-end="url(#arrowBlue)"/>
+  <text x="570" y="252" font-size="12" font-weight="700" fill="#1565c0">NO</text>
+
+  <!-- Bot path (left side) -->
+  <rect x="60" y="235" width="200" height="55" rx="8" fill="#2e7d32"/>
+  <text x="160" y="258" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Prerender Service</text>
+  <text x="160" y="278" text-anchor="middle" font-size="10" fill="#ffffff">Puppeteer / Rendertron</text>
+
+  <line x1="160" y1="290" x2="160" y2="325" stroke="#2e7d32" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+  <rect x="55" y="325" width="210" height="55" rx="8" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="160" y="350" text-anchor="middle" font-size="12" font-weight="700" fill="#2e7d32">Cached Static HTML</text>
+  <text x="160" y="368" text-anchor="middle" font-size="10" fill="#2e7d32">Full content, meta tags, links</text>
+
+  <line x1="160" y1="380" x2="160" y2="415" stroke="#2e7d32" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+  <rect x="60" y="415" width="200" height="65" rx="8" fill="#2e7d32"/>
+  <text x="160" y="438" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Bot receives</text>
+  <text x="160" y="456" text-anchor="middle" font-size="10" fill="#ffffff">Complete, indexable HTML</text>
+  <text x="160" y="472" text-anchor="middle" font-size="10" fill="#ffffff">Fast response from cache</text>
+
+  <!-- User path (right side) -->
+  <rect x="640" y="235" width="200" height="55" rx="8" fill="#1565c0"/>
+  <text x="740" y="258" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">SPA Application</text>
+  <text x="740" y="278" text-anchor="middle" font-size="10" fill="#ffffff">React / Next.js client</text>
+
+  <line x1="740" y1="290" x2="740" y2="325" stroke="#1565c0" stroke-width="2" marker-end="url(#arrowBlue)"/>
+
+  <rect x="635" y="325" width="210" height="55" rx="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="740" y="350" text-anchor="middle" font-size="12" font-weight="700" fill="#1565c0">JS Bundle + Shell</text>
+  <text x="740" y="368" text-anchor="middle" font-size="10" fill="#1565c0">Rich interactive experience</text>
+
+  <line x1="740" y1="380" x2="740" y2="415" stroke="#1565c0" stroke-width="2" marker-end="url(#arrowBlue)"/>
+
+  <rect x="640" y="415" width="200" height="65" rx="8" fill="#1565c0"/>
+  <text x="740" y="438" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">User receives</text>
+  <text x="740" y="456" text-anchor="middle" font-size="10" fill="#ffffff">Full SPA with client routing</text>
+  <text x="740" y="472" text-anchor="middle" font-size="10" fill="#ffffff">Dynamic, interactive UI</text>
+
+  <!-- Warning note at bottom center -->
+  <rect x="290" y="370" width="320" height="110" rx="8" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
+  <text x="450" y="395" text-anchor="middle" font-size="12" font-weight="700" fill="#e65100">Caveats</text>
+  <text x="450" y="415" text-anchor="middle" font-size="10" fill="#1a1822">Google recommends this as a</text>
+  <text x="450" y="430" text-anchor="middle" font-size="10" fill="#1a1822">workaround, not a long-term solution</text>
+  <text x="450" y="450" text-anchor="middle" font-size="10" fill="#1a1822">Content parity must be maintained</text>
+  <text x="450" y="468" text-anchor="middle" font-size="10" fill="#e65100" font-weight="600">Not considered cloaking if same content</text>
+</svg>

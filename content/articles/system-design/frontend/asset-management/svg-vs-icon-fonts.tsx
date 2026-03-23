@@ -466,84 +466,7 @@ export default function SvgVsIconFontsArticle() {
         </p>
       </section>
 
-      {/* ── 8. References & Further Reading ── */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://css-tricks.com/icon-fonts-vs-svg/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              CSS-Tricks &mdash; Inline SVG vs Icon Fonts
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://github.blog/2016-02-22-delivering-octicons-with-svg/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              GitHub Engineering &mdash; Delivering Octicons with SVG
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://svgo.dev/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              SVGO &mdash; SVG Optimizer Documentation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://react-svgr.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              SVGR &mdash; Transform SVGs into React Components
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.sarasoueidan.com/blog/icon-fonts-to-svg/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              Sara Soueidan &mdash; Making the Switch from Icon Fonts to SVG
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developer.mozilla.org/en-US/docs/Web/SVG/Element/use"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              MDN &mdash; SVG &lt;use&gt; Element Reference
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://web.dev/font-best-practices/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline"
-            >
-              web.dev &mdash; Best Practices for Fonts (including icon fonts)
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      {/* ── 9. Common Interview Questions ── */}
+      {/* ── 8. Common Interview Questions ── */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -700,6 +623,83 @@ export default function SvgVsIconFontsArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* ── 9. References & Further Reading ── */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a
+              href="https://css-tricks.com/icon-fonts-vs-svg/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              CSS-Tricks &mdash; Inline SVG vs Icon Fonts
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://github.blog/2016-02-22-delivering-octicons-with-svg/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              GitHub Engineering &mdash; Delivering Octicons with SVG
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://svgo.dev/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              SVGO &mdash; SVG Optimizer Documentation
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://react-svgr.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              SVGR &mdash; Transform SVGs into React Components
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.sarasoueidan.com/blog/icon-fonts-to-svg/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              Sara Soueidan &mdash; Making the Switch from Icon Fonts to SVG
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/SVG/Element/use"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              MDN &mdash; SVG &lt;use&gt; Element Reference
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://web.dev/font-best-practices/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline"
+            >
+              web.dev &mdash; Best Practices for Fonts (including icon fonts)
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

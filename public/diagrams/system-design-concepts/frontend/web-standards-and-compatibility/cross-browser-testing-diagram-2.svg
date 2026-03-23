@@ -1,18 +1,120 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Cross-Browser Testing diagram 2">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
   <defs>
-    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
+    <marker id="arrow-cb2" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
   </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg2)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Cross-Browser Testing</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 2</text>
+
+  <!-- Background -->
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Visual Regression Testing Workflow</text>
+
+  <!-- Step 1: Baseline Capture -->
+  <rect x="30" y="70" width="180" height="100" rx="8" fill="#6d5bd0"/>
+  <text x="120" y="95" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Baseline Capture</text>
+  <line x1="45" y1="103" x2="195" y2="103" stroke="#ffffff" stroke-width="1" opacity="0.3"/>
+  <text x="120" y="122" text-anchor="middle" font-size="9" fill="#ffffff">Screenshots of stable UI</text>
+  <text x="120" y="136" text-anchor="middle" font-size="9" fill="#ffffff">Per component/page</text>
+  <text x="120" y="150" text-anchor="middle" font-size="9" fill="#ffffff">Multiple viewports</text>
+  <text x="120" y="164" text-anchor="middle" font-size="9" fill="#ffffff">Stored in version control</text>
+
+  <!-- Arrow -->
+  <line x1="210" y1="120" x2="250" y2="120" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-cb2)"/>
+
+  <!-- Step 2: New Build -->
+  <rect x="260" y="70" width="160" height="100" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="340" y="95" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">New Screenshot</text>
+  <line x1="275" y1="103" x2="405" y2="103" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="340" y="122" text-anchor="middle" font-size="9" fill="#6d5bd0">PR branch build</text>
+  <text x="340" y="136" text-anchor="middle" font-size="9" fill="#1a1822">Same pages/components</text>
+  <text x="340" y="150" text-anchor="middle" font-size="9" fill="#1a1822">Same viewports</text>
+  <text x="340" y="164" text-anchor="middle" font-size="9" fill="#1a1822">Headless browser</text>
+
+  <!-- Arrows from both to comparison -->
+  <line x1="120" y1="170" x2="120" y2="210" stroke="#6d5bd0" stroke-width="1.5"/>
+  <line x1="340" y1="170" x2="340" y2="210" stroke="#6d5bd0" stroke-width="1.5"/>
+  <line x1="120" y1="210" x2="340" y2="210" stroke="#6d5bd0" stroke-width="1.5"/>
+  <line x1="230" y1="210" x2="230" y2="245" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-cb2)"/>
+
+  <!-- Step 3: Pixel Comparison -->
+  <rect x="140" y="255" width="180" height="90" rx="8" fill="#6d5bd0"/>
+  <text x="230" y="280" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Pixel Comparison</text>
+  <line x1="155" y1="288" x2="305" y2="288" stroke="#ffffff" stroke-width="1" opacity="0.3"/>
+  <text x="230" y="305" text-anchor="middle" font-size="9" fill="#ffffff">Pixel-by-pixel diff</text>
+  <text x="230" y="319" text-anchor="middle" font-size="9" fill="#ffffff">Threshold: 0.1% tolerance</text>
+  <text x="230" y="333" text-anchor="middle" font-size="9" fill="#ffffff">Anti-aliasing handling</text>
+
+  <!-- Arrow to decision -->
+  <line x1="320" y1="300" x2="380" y2="300" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-cb2)"/>
+
+  <!-- Decision: Diff Found? -->
+  <polygon points="460,255 530,300 460,345 390,300" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="460" y="295" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Diff</text>
+  <text x="460" y="310" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Found?</text>
+
+  <!-- No diff - Pass -->
+  <line x1="460" y1="345" x2="460" y2="400" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-cb2)"/>
+  <text x="475" y="375" font-size="10" font-weight="600" fill="#6d5bd0">No</text>
+
+  <rect x="390" y="410" width="140" height="50" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="460" y="435" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Tests Pass</text>
+  <text x="460" y="450" text-anchor="middle" font-size="9" fill="#1a1822">Auto-merge ready</text>
+
+  <!-- Yes diff - Generate Report -->
+  <line x1="530" y1="300" x2="590" y2="300" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-cb2)"/>
+  <text x="555" y="293" font-size="10" font-weight="600" fill="#6d5bd0">Yes</text>
+
+  <!-- Diff Report -->
+  <rect x="600" y="255" width="170" height="90" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="685" y="280" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Diff Report</text>
+  <line x1="615" y1="288" x2="755" y2="288" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="685" y="305" text-anchor="middle" font-size="9" fill="#1a1822">Highlighted changes</text>
+  <text x="685" y="319" text-anchor="middle" font-size="9" fill="#1a1822">Side-by-side view</text>
+  <text x="685" y="333" text-anchor="middle" font-size="9" fill="#6d5bd0">Overlay diff image</text>
+
+  <!-- Arrow to approval -->
+  <line x1="685" y1="345" x2="685" y2="375" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-cb2)"/>
+
+  <!-- Approval Flow -->
+  <polygon points="685,385 755,420 685,455 615,420" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="685" y="415" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Review</text>
+  <text x="685" y="430" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Decision</text>
+
+  <!-- Approve -->
+  <line x1="755" y1="420" x2="810" y2="420" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-cb2)"/>
+  <text x="780" y="413" font-size="9" font-weight="600" fill="#6d5bd0">Approve</text>
+
+  <rect x="820" y="395" width="60" height="50" rx="8" fill="#6d5bd0"/>
+  <text x="850" y="417" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">Update</text>
+  <text x="850" y="432" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">Base</text>
+
+  <!-- Reject -->
+  <line x1="685" y1="455" x2="685" y2="475" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-cb2)"/>
+  <text x="700" y="470" font-size="9" font-weight="600" fill="#1a1822">Reject</text>
+
+  <rect x="640" y="478" width="90" height="15" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="685" y="490" text-anchor="middle" font-size="8" fill="#1a1822">Fix &amp; re-run</text>
+
+  <!-- Tools sidebar -->
+  <rect x="470" y="70" width="170" height="100" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="555" y="92" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">Testing Tools</text>
+  <line x1="485" y1="100" x2="625" y2="100" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="495" y="118" font-size="9" fill="#6d5bd0">Percy (BrowserStack)</text>
+  <text x="495" y="133" font-size="9" fill="#6d5bd0">Chromatic (Storybook)</text>
+  <text x="495" y="148" font-size="9" fill="#6d5bd0">Playwright Screenshots</text>
+  <text x="495" y="163" font-size="9" fill="#6d5bd0">BackstopJS</text>
+
+  <!-- Configuration sidebar -->
+  <rect x="680" y="70" width="180" height="100" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="770" y="92" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">Configuration</text>
+  <line x1="695" y1="100" x2="845" y2="100" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="700" y="118" font-size="9" fill="#1a1822">Threshold: 0.1%</text>
+  <text x="700" y="133" font-size="9" fill="#1a1822">Viewports: 320, 768, 1440</text>
+  <text x="700" y="148" font-size="9" fill="#1a1822">Wait for: fonts, images</text>
+  <text x="700" y="163" font-size="9" fill="#1a1822">Mask: dynamic content</text>
+
+  <!-- Watermark -->
+  <text x="870" y="490" text-anchor="end" font-size="8" fill="#d7d1e6">Visual Regression Testing Workflow</text>
 </svg>

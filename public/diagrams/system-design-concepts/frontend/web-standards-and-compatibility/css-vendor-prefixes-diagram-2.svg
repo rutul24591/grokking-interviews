@@ -1,18 +1,113 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="CSS Vendor Prefixes diagram 2">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
   <defs>
-    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
+    <marker id="arrow-vp2" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrow-vp2g" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d7d1e6"/>
+    </marker>
   </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg2)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">CSS Vendor Prefixes</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 2</text>
+
+  <!-- Background -->
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Autoprefixer Decision Flow</text>
+
+  <!-- Input: Browserslist -->
+  <rect x="30" y="70" width="170" height="80" rx="8" fill="#6d5bd0"/>
+  <text x="115" y="95" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Browserslist Config</text>
+  <line x1="45" y1="103" x2="185" y2="103" stroke="#ffffff" stroke-width="1" opacity="0.3"/>
+  <text x="115" y="120" text-anchor="middle" font-size="9" fill="#ffffff">&gt; 0.5%</text>
+  <text x="115" y="133" text-anchor="middle" font-size="9" fill="#ffffff">last 2 versions, not dead</text>
+
+  <!-- Input: Can I Use -->
+  <rect x="30" y="180" width="170" height="80" rx="8" fill="#6d5bd0"/>
+  <text x="115" y="205" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Can I Use Data</text>
+  <line x1="45" y1="213" x2="185" y2="213" stroke="#ffffff" stroke-width="1" opacity="0.3"/>
+  <text x="115" y="230" text-anchor="middle" font-size="9" fill="#ffffff">Browser support tables</text>
+  <text x="115" y="243" text-anchor="middle" font-size="9" fill="#ffffff">caniuse-lite database</text>
+
+  <!-- Arrows to Autoprefixer -->
+  <line x1="200" y1="110" x2="260" y2="150" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-vp2)"/>
+  <line x1="200" y1="220" x2="260" y2="180" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-vp2)"/>
+
+  <!-- Autoprefixer Core -->
+  <rect x="270" y="120" width="180" height="100" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2.5"/>
+  <text x="360" y="148" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">Autoprefixer</text>
+  <line x1="285" y1="156" x2="435" y2="156" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="360" y="175" text-anchor="middle" font-size="10" fill="#1a1822">1. Parse CSS properties</text>
+  <text x="360" y="190" text-anchor="middle" font-size="10" fill="#1a1822">2. Query support data</text>
+  <text x="360" y="205" text-anchor="middle" font-size="10" fill="#1a1822">3. Apply prefix rules</text>
+
+  <!-- Arrow to decision -->
+  <line x1="450" y1="170" x2="510" y2="170" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-vp2)"/>
+
+  <!-- Decision Diamond: Needs Prefix? -->
+  <polygon points="600,120 690,170 600,220 510,170" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="600" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Needs</text>
+  <text x="600" y="180" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Prefix?</text>
+
+  <!-- Yes branch - Add Prefix -->
+  <line x1="600" y1="220" x2="600" y2="270" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-vp2)"/>
+  <text x="615" y="250" font-size="10" font-weight="600" fill="#6d5bd0">Yes</text>
+
+  <rect x="510" y="280" width="180" height="70" rx="8" fill="#6d5bd0"/>
+  <text x="600" y="305" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Add Vendor Prefix</text>
+  <line x1="525" y1="313" x2="675" y2="313" stroke="#ffffff" stroke-width="1" opacity="0.3"/>
+  <text x="600" y="330" text-anchor="middle" font-size="9" fill="#ffffff">-webkit-backdrop-filter</text>
+  <text x="600" y="343" text-anchor="middle" font-size="9" fill="#ffffff">-webkit-text-stroke</text>
+
+  <!-- No branch - Check outdated -->
+  <line x1="690" y1="170" x2="740" y2="170" stroke="#d7d1e6" stroke-width="2" marker-end="url(#arrow-vp2g)"/>
+  <text x="715" y="163" font-size="10" font-weight="600" fill="#1a1822">No</text>
+
+  <!-- Decision: Has Outdated Prefix? -->
+  <polygon points="830,120 870,170 830,220 790,170" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="830" y="163" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">Has Old</text>
+  <text x="830" y="178" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">Prefix?</text>
+
+  <!-- Yes - Remove -->
+  <line x1="830" y1="220" x2="830" y2="270" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-vp2)"/>
+  <text x="845" y="250" font-size="10" font-weight="600" fill="#6d5bd0">Yes</text>
+
+  <rect x="745" y="280" width="140" height="70" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="815" y="305" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Remove Prefix</text>
+  <line x1="760" y1="313" x2="870" y2="313" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="815" y="332" text-anchor="middle" font-size="9" fill="#6d5bd0">-moz-border-radius</text>
+  <text x="815" y="345" text-anchor="middle" font-size="9" fill="#1a1822">(fully standard now)</text>
+
+  <!-- Both converge to Output -->
+  <line x1="600" y1="350" x2="600" y2="390" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-vp2)"/>
+  <line x1="815" y1="350" x2="815" y2="390" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="815" y1="390" x2="600" y2="390" stroke="#6d5bd0" stroke-width="2"/>
+
+  <!-- Output CSS -->
+  <rect x="510" y="400" width="180" height="60" rx="8" fill="#6d5bd0"/>
+  <text x="600" y="425" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">Prefixed CSS Output</text>
+  <text x="600" y="445" text-anchor="middle" font-size="10" fill="#ffffff">Optimized for targets</text>
+
+  <!-- Example boxes at bottom -->
+  <rect x="30" y="310" width="200" height="130" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="130" y="332" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">Input Example</text>
+  <line x1="45" y1="340" x2="215" y2="340" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="45" y="358" font-size="9" fill="#6d5bd0">display: grid;</text>
+  <text x="45" y="373" font-size="9" fill="#6d5bd0">user-select: none;</text>
+  <text x="45" y="388" font-size="9" fill="#6d5bd0">backdrop-filter: blur();</text>
+  <text x="45" y="403" font-size="9" fill="#6d5bd0">-moz-border-radius: 5px;</text>
+  <text x="45" y="425" font-size="8" fill="#1a1822">Mix of standard, needing prefix,</text>
+  <text x="45" y="436" font-size="8" fill="#1a1822">and outdated prefixed properties</text>
+
+  <rect x="260" y="310" width="210" height="130" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="365" y="332" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">Output Example</text>
+  <line x1="275" y1="340" x2="455" y2="340" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="275" y="358" font-size="9" fill="#1a1822">display: grid;</text>
+  <text x="275" y="373" font-size="9" fill="#6d5bd0">-webkit-user-select: none;</text>
+  <text x="275" y="388" font-size="9" fill="#1a1822">user-select: none;</text>
+  <text x="275" y="403" font-size="9" fill="#6d5bd0">-webkit-backdrop-filter: blur();</text>
+  <text x="275" y="418" font-size="9" fill="#1a1822">backdrop-filter: blur();</text>
+  <text x="275" y="433" font-size="9" fill="#1a1822">border-radius: 5px;</text>
+
+  <!-- Watermark -->
+  <text x="870" y="490" text-anchor="end" font-size="8" fill="#d7d1e6">Autoprefixer Decision Flow</text>
 </svg>

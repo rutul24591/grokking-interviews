@@ -156,59 +156,10 @@ export default function AccessibleModalsAndDialogsArticle() {
           caption="Focus trap cycle: Tab moves forward through all focusable elements in the modal, wrapping from last to first. Shift+Tab moves backward, wrapping from first to last."
         />
 
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// Native <dialog> implementation (recommended approach)
-import { useRef, useEffect, useCallback } from 'react';
-
-function NativeDialog({ isOpen, onClose, title, children }) {
-  const dialogRef = useRef(null);
-
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-
-    if (isOpen && !dialog.open) {
-      dialog.showModal(); // Focus trapping + Escape + top layer
-    } else if (!isOpen && dialog.open) {
-      dialog.close();
-    }
-  }, [isOpen]);
-
-  // Handle close event (Escape key or dialog.close())
-  const handleClose = useCallback(() => {
-    onClose();
-  }, [onClose]);
-
-  // Handle backdrop click
-  const handleBackdropClick = useCallback((e) => {
-    // Only close if clicking the backdrop, not the dialog content
-    if (e.target === dialogRef.current) {
-      onClose();
-    }
-  }, [onClose]);
-
-  return (
-    <dialog
-      ref={dialogRef}
-      onClose={handleClose}
-      onClick={handleBackdropClick}
-      aria-labelledby="dialog-title"
-    >
-      <div className="dialog-content">
-        <h2 id="dialog-title">{title}</h2>
-        {children}
-        <button onClick={onClose} aria-label="Close dialog">
-          ×
-        </button>
-      </div>
-    </dialog>
-  );
-}
-
-// CSS for native dialog
-// dialog::backdrop { background: rgba(0, 0, 0, 0.5); }
-// dialog { border: none; border-radius: 8px; padding: 24px; }`}</code>
-        </pre>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Native Dialog Implementation</h3>
+        <p>
+          For native dialog implementation using the dialog element, create a NativeDialog component with useRef and useEffect. Store dialog ref, and in useEffect check if isOpen and dialog not open, call showModal which handles focus trapping, Escape key, and top layer positioning. If not isOpen and dialog open, call close. Handle close event with useCallback for onClose prop. Handle backdrop click by checking if event target equals the dialog ref, then call onClose. Render dialog element with ref, onClose handler, onClick handler, and aria-labelledby. Inside render content div with h2 title, children, and close button with aria-label. For CSS, use dialog backdrop with rgba black background at 50 percent opacity, and dialog with no border, 8px border-radius, and 24px padding.
+        </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Dialog ARIA Role Hierarchy</h3>
         <p>
@@ -222,117 +173,10 @@ function NativeDialog({ isOpen, onClose, title, children }) {
           caption="ARIA dialog hierarchy: role='dialog' or 'alertdialog' with aria-modal='true', labeled via aria-labelledby, and optionally described via aria-describedby."
         />
 
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// Custom accessible modal with ARIA and focus management
-import { useEffect, useRef, useCallback } from 'react';
-import { createPortal } from 'react-dom';
-
-function AccessibleModal({ isOpen, onClose, title, description, children }) {
-  const modalRef = useRef(null);
-  const triggerRef = useRef(null);
-
-  // Focus trapping
-  const trapFocus = useCallback((e) => {
-    if (e.key === 'Escape') {
-      onClose();
-      return;
-    }
-    if (e.key !== 'Tab') return;
-
-    const focusable = modalRef.current?.querySelectorAll(
-      'a[href], button:not([disabled]), input:not([disabled]), ' +
-      'select:not([disabled]), textarea:not([disabled]), ' +
-      '[tabindex]:not([tabindex="-1"])'
-    );
-    if (!focusable?.length) return;
-
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-
-    if (e.shiftKey && document.activeElement === first) {
-      e.preventDefault();
-      last.focus();
-    } else if (!e.shiftKey && document.activeElement === last) {
-      e.preventDefault();
-      first.focus();
-    }
-  }, [onClose]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    // Store trigger for focus restoration
-    triggerRef.current = document.activeElement;
-
-    // Make background inert
-    const appRoot = document.getElementById('app-root');
-    appRoot?.setAttribute('inert', '');
-
-    // Prevent background scroll
-    const scrollY = window.scrollY;
-    document.body.style.position = 'fixed';
-    document.body.style.top = \`-\${scrollY}px\`;
-    document.body.style.width = '100%';
-
-    // Focus first focusable element
-    requestAnimationFrame(() => {
-      const first = modalRef.current?.querySelector(
-        'a[href], button:not([disabled]), input:not([disabled]), ' +
-        '[tabindex]:not([tabindex="-1"])'
-      );
-      first?.focus();
-    });
-
-    return () => {
-      // Remove inert
-      appRoot?.removeAttribute('inert');
-
-      // Restore scroll
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      window.scrollTo(0, scrollY);
-
-      // Restore focus to trigger
-      triggerRef.current?.focus();
-    };
-  }, [isOpen]);
-
-  if (!isOpen) return null;
-
-  return createPortal(
-    <div className="modal-overlay" onClick={onClose}>
-      <div
-        ref={modalRef}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="modal-title"
-        aria-describedby={description ? "modal-desc" : undefined}
-        onKeyDown={trapFocus}
-        onClick={(e) => e.stopPropagation()}
-        className="modal-content"
-      >
-        <h2 id="modal-title">{title}</h2>
-        {description && <p id="modal-desc">{description}</p>}
-        {children}
-      </div>
-    </div>,
-    document.body
-  );
-}`}</code>
-        </pre>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Modal Open/Close Focus Restoration</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Custom Accessible Modal Pattern</h3>
         <p>
-          The focus lifecycle of a modal has five critical moments: the trigger activation, initial
-          focus placement, user interaction within the modal, dismissal, and focus restoration.
-          Each moment must be handled correctly for a seamless experience.
+          For custom accessible modal with ARIA and focus management, create an AccessibleModal component using useEffect, useRef, useCallback, and createPortal. Store modalRef and triggerRef. For focus trapping, use useCallback to listen for Escape key to close, and Tab key to cycle focus. Query all focusable elements including links, buttons, inputs, selects, textareas, and tabindex elements. Get first and last focusable elements. If Shift+Tab on first element, prevent default and focus last. If Tab on last element, prevent default and focus first. In useEffect on isOpen, store trigger for focus restoration, set inert on app-root, prevent background scroll by setting body position fixed and adjusting top to negative scrollY, focus first focusable element using requestAnimationFrame. Cleanup removes inert, restores scroll position, and restores focus to trigger. Use createPortal to render modal-overlay div with onClick, inner div with ref, role dialog, aria-modal true, aria-labelledby, and aria-describedby if description exists.
         </p>
-        <ArticleImage
-          src="/diagrams/system-design-concepts/frontend/accessibility-a11y/accessible-modals-and-dialogs-diagram-3.svg"
-          alt="Modal open/close focus restoration sequence showing trigger → open → focus inside → close → return to trigger"
-          caption="Focus restoration sequence: User activates trigger → Modal opens, focus moves inside → User interacts → Modal closes → Focus returns to the original trigger button."
-        />
       </section>
 
       {/* ─── Section 4: Trade-offs & Comparisons ─── */}

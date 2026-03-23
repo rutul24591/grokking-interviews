@@ -30,6 +30,25 @@ export default function OAuthProvidersArticle() {
           OAuth integration reduces signup friction, improves conversion, and offloads password
           management to specialized providers.
         </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/oauth-flow.svg"
+          alt="Oauth Flow"
+          caption="OAuth Flow — showing authorization code flow with PKCE"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/oauth-providers.svg"
+          alt="Oauth Providers"
+          caption="OAuth Providers — comparing Google, GitHub, Microsoft, and other providers"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/oauth-security.svg"
+          alt="Oauth Security"
+          caption="OAuth Security — showing state parameter, PKCE, scope validation, and token handling"
+        />
+      
         <p>
           For staff and principal engineers, integrating OAuth providers requires understanding
           OAuth 2.0 flows, provider-specific quirks, security considerations (token handling, scope
@@ -45,11 +64,11 @@ export default function OAuthProvidersArticle() {
           common interface.
         </p>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/oauth-flow.svg"
-          alt="OAuth 2.0 Flow"
-          caption="OAuth Flow — showing authorization code flow, token exchange, and user info retrieval"
-        />
+        
+
+        
+
+        
       </section>
 
       <section>
@@ -133,11 +152,7 @@ export default function OAuthProvidersArticle() {
       <section>
         <h2>Provider Integration</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/oauth-providers.svg"
-          alt="OAuth Provider Integration"
-          caption="Provider Integration — showing Google, Facebook, Apple, GitHub integration patterns"
-        />
+        
 
         <p>
           Each OAuth provider has unique requirements and quirks.
@@ -334,11 +349,7 @@ export default function OAuthProvidersArticle() {
 <section>
         <h2>Common Interview Questions</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/oauth-security.svg"
-          alt="OAuth Security Considerations"
-          caption="OAuth Security — showing token handling, scope validation, and CSRF protection"
-        />
+        
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -593,6 +604,65 @@ export default function OAuthProvidersArticle() {
           <li><a href="https://docs.openfga.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OpenFGA - Fine-Grained Authorization</a></li>
           <li><a href="https://www.cerbos.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Cerbos - Policy as Code</a></li>
           <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Authorization Cheat Sheet</a></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Real-world Use Cases</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Consumer App Social Login</h3>
+        <p>
+          Social media platform driving 60% signup conversion via OAuth providers.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Low email signup conversion (25%). Users abandon signup due to password creation friction. Need to support multiple providers.</li>
+          <li><strong>Solution:</strong> Prominent social login buttons (Google, Apple, Facebook). OAuth 2.0 with PKCE. Account linking for existing users. Fallback to email signup.</li>
+          <li><strong>Result:</strong> 60% of signups via social login. Overall conversion increased to 45%. Support tickets for password reset reduced by 50%.</li>
+          <li><strong>Security:</strong> PKCE for all flows, token validation, account linking verification.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SSO Integration</h3>
+        <p>
+          B2B SaaS with 5,000 enterprise customers requiring SAML/OIDC SSO.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Each enterprise has different IdP (Okta, Azure AD, OneLogin). Custom attribute mapping. JIT provisioning for automatic user creation.</li>
+          <li><strong>Solution:</strong> Abstract IdP integration behind common interface. Support SAML 2.0 + OIDC. Configurable attribute mapping. SCIM for user provisioning.</li>
+          <li><strong>Result:</strong> Onboarded 500 enterprise customers in 6 months. 99.9% SSO success rate. Reduced support tickets by 70%.</li>
+          <li><strong>Security:</strong> IdP-initiated logout, session sync, audit logging for compliance.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Mobile App OAuth</h3>
+        <p>
+          Mobile-first platform with iOS and Android apps, 10M mobile users.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> iOS requires Sign in with Apple if offering other social logins. Deep linking for OAuth callback. App-claimed URLs for secure redirect.</li>
+          <li><strong>Solution:</strong> Implement Sign in with Apple (mandatory). Universal links (iOS) + App Links (Android). PKCE for public clients. Secure token storage in Keychain/Keystore.</li>
+          <li><strong>Result:</strong> App Store compliance maintained. 70% mobile signups via social. Zero OAuth callback hijacking incidents.</li>
+          <li><strong>Security:</strong> PKCE, secure token storage, app-claimed URLs, certificate pinning.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Gaming Platform OAuth</h3>
+        <p>
+          Online gaming platform with Steam, PlayStation, Xbox integrations.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Multiple gaming platform OAuth integrations. Each has unique OAuth flow. Account linking across platforms. Cross-platform play requires unified identity.</li>
+          <li><strong>Solution:</strong> Platform-specific OAuth adapters. Unified internal identity system. Account linking flow with verification. Cross-platform session management.</li>
+          <li><strong>Result:</strong> 80% users linked multiple platforms. Cross-platform play seamless. Account takeover reduced by 90%.</li>
+          <li><strong>Security:</strong> Platform verification, account linking confirmation, cross-platform session binding.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">International OAuth Providers</h3>
+        <p>
+          Global platform supporting regional providers (WeChat, LINE, KakaoTalk).
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Different providers by region (Google/Facebook in West, WeChat in China, LINE in Japan, Kakao in Korea). Each has unique OAuth requirements.</li>
+          <li><strong>Solution:</strong> Region-aware provider selection. Localized OAuth flows. Compliance with local regulations (China data residency, Japan APPI). Fallback to email signup.</li>
+          <li><strong>Result:</strong> 85% social login adoption globally. Regional compliance maintained. User experience optimized per market.</li>
+          <li><strong>Security:</strong> Regional compliance, provider-specific validation, unified token handling.</li>
         </ul>
       </section>
     </ArticleLayout>

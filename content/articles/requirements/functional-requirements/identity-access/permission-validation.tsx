@@ -57,17 +57,36 @@ app.delete(
           user has the required permissions to perform a specific action or access a resource.
           It is the enforcement layer of authorization that protects against unauthorized access.
         </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/permission-validation-flow.svg"
+          alt="Permission Validation Flow"
+          caption="Permission Validation Flow — showing request interception, policy evaluation, and enforcement"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/resource-permissions.svg"
+          alt="Resource Permissions"
+          caption="Resource Permissions — showing ownership, sharing, and access levels"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/permission-caching.svg"
+          alt="Permission Caching"
+          caption="Permission Caching — showing cache strategies, invalidation, and consistency"
+        />
+      
         <p>
           For staff and principal engineers, implementing permission validation requires
           understanding validation patterns, caching strategies, and resource-level permissions.
           The implementation must provide sub-millisecond permission checks.
         </p>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/permission-validation-flow.svg"
-          alt="Permission Validation Flow"
-          caption="Permission Validation — showing authorization check, middleware, and policy evaluation"
-        />
+        
+
+        
+
+        
       </section>
 
       <section>
@@ -83,11 +102,7 @@ app.delete(
       <section>
         <h2>Resource-Level Permissions</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/resource-permissions.svg"
-          alt="Resource-Level Permissions"
-          caption="Resource Permissions — showing ownership check, role-based access, and combined evaluation"
-        />
+        
 
         <ul className="space-y-3">
           <li><strong>Ownership Check:</strong> User can modify own resources.</li>
@@ -229,11 +244,7 @@ app.delete(
       <section>
         <h2>Interview Questions</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/permission-caching.svg"
-          alt="Permission Caching Strategies"
-          caption="Caching — showing JWT claims, Redis cache, and cache invalidation"
-        />
+        
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -614,6 +625,65 @@ app.delete(
         <p>
           Meet regulatory requirements for permissions. SOC2 audit trails. HIPAA immediate permissions. PCI-DSS session controls. GDPR right to permissions. Regular compliance reviews. External audit support.
         </p>
+      </section>
+
+      <section>
+        <h2>Real-world Use Cases</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce Permission Validation</h3>
+        <p>
+          Multi-vendor marketplace with vendor, customer, and admin permissions.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Vendors can only manage their products. Support needs limited order access. Finance needs payment data only.</li>
+          <li><strong>Solution:</strong> Resource-scoped permissions. Vendor role scoped to vendor_id. Support role with read-only order access. Finance role with payment permissions.</li>
+          <li><strong>Result:</strong> Vendor data isolation maintained. Support efficiency improved. Reduced access tickets by 60%.</li>
+          <li><strong>Security:</strong> Tenant isolation, data access logging, permission audits.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Healthcare Permission Validation</h3>
+        <p>
+          EHR system with HIPAA-compliant access controls for patient records.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> HIPAA requires minimum necessary access. Doctors access their patients only. Nurses need limited access. Break-glass for emergencies.</li>
+          <li><strong>Solution:</strong> Patient-physician relationship validation. Role-based access with resource scoping. Break-glass override with audit. Automatic access review.</li>
+          <li><strong>Result:</strong> Passed HIPAA audits. Unauthorized access reduced 95%. Clear audit trail.</li>
+          <li><strong>Security:</strong> Relationship validation, break-glass audit, access review.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Cloud Infrastructure Permission Validation</h3>
+        <p>
+          Cloud platform managing AWS/GCP/Azure resources with fine-grained permissions.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Developers need deploy access, not delete. Compliance requires separation of duties. Environment-based access (dev/staging/prod).</li>
+          <li><strong>Solution:</strong> Attribute-based permissions. Resource tags for environment scoping. Approval workflow for sensitive actions. Pre-action permission check.</li>
+          <li><strong>Result:</strong> Accidental production changes reduced 90%. Passed SOC 2 audit. Developer velocity improved.</li>
+          <li><strong>Security:</strong> Separation of duties, approval workflows, pre-action validation.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Financial Trading Permission Validation</h3>
+        <p>
+          Trading platform with SEC/FINRA compliance and trader-specific permissions.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Traders can only trade assigned securities. Compliance requires Chinese wall between teams. Audit trail for all trades.</li>
+          <li><strong>Solution:</strong> Security-level permissions. Trader role scoped to assigned securities. Compliance role with read-only audit access. Pre-trade permission check.</li>
+          <li><strong>Result:</strong> Passed regulatory audits. Zero unauthorized trades. Clear audit trail.</li>
+          <li><strong>Security:</strong> Pre-trade validation, real-time monitoring, Chinese wall enforcement.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SaaS Permission Validation</h3>
+        <p>
+          B2B SaaS with 10,000 enterprise customers, tenant-scoped permissions.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Multi-tenant permission isolation. Customer admins manage their users. Platform admins need cross-tenant access for support.</li>
+          <li><strong>Solution:</strong> Tenant-scoped permissions. Customer admin role with tenant boundary. Platform admin with audit-logged cross-tenant access. Permission caching per tenant.</li>
+          <li><strong>Result:</strong> Tenant isolation maintained. Customer self-service enabled. Zero cross-tenant access incidents.</li>
+          <li><strong>Security:</strong> Tenant isolation, audit logging, permission caching.</li>
+        </ul>
       </section>
     </ArticleLayout>
   );

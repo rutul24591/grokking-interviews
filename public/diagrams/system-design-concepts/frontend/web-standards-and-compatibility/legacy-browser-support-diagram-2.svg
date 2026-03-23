@@ -1,18 +1,107 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Legacy Browser Support diagram 2">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
   <defs>
-    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
+    <marker id="arrow-lb2" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
   </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg2)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Legacy Browser Support</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 2</text>
+
+  <!-- Background -->
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Differential Loading Architecture</text>
+  <text x="450" y="52" text-anchor="middle" font-size="11" fill="#6d5bd0">module/nomodule Pattern for Modern &amp; Legacy Bundle Delivery</text>
+
+  <!-- Source Code -->
+  <rect x="350" y="65" width="200" height="55" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="88" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">Application Source</text>
+  <text x="450" y="105" text-anchor="middle" font-size="10" fill="#ffffff">ES2022+ / TypeScript</text>
+
+  <!-- Arrow down splits -->
+  <line x1="450" y1="120" x2="450" y2="145" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="450" y1="145" x2="220" y2="145" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="450" y1="145" x2="680" y2="145" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="220" y1="145" x2="220" y2="165" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-lb2)"/>
+  <line x1="680" y1="145" x2="680" y2="165" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-lb2)"/>
+
+  <!-- Build Pipeline label -->
+  <rect x="395" y="135" width="110" height="20" rx="4" fill="#f3f1f8"/>
+  <text x="450" y="150" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Build Pipeline</text>
+
+  <!-- Modern Build -->
+  <rect x="100" y="175" width="240" height="110" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="100" y="175" width="240" height="30" rx="8" fill="#6d5bd0"/>
+  <rect x="100" y="197" width="240" height="8" fill="#6d5bd0"/>
+  <text x="220" y="196" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Modern Bundle</text>
+
+  <text x="120" y="225" font-size="10" fill="#1a1822">Target: ES2020+</text>
+  <text x="120" y="242" font-size="10" fill="#1a1822">No polyfills needed</text>
+  <text x="120" y="259" font-size="10" fill="#6d5bd0">Size: ~150 KB (gzipped)</text>
+  <text x="120" y="276" font-size="10" fill="#1a1822">async/await, modules, etc.</text>
+
+  <!-- Legacy Build -->
+  <rect x="560" y="175" width="240" height="110" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <rect x="560" y="175" width="240" height="30" rx="8" fill="#6d5bd0" opacity="0.6"/>
+  <rect x="560" y="197" width="240" height="8" fill="#6d5bd0" opacity="0.6"/>
+  <text x="680" y="196" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Legacy Bundle</text>
+
+  <text x="580" y="225" font-size="10" fill="#1a1822">Target: ES5</text>
+  <text x="580" y="242" font-size="10" fill="#1a1822">Includes core-js polyfills</text>
+  <text x="580" y="259" font-size="10" fill="#6d5bd0">Size: ~320 KB (gzipped)</text>
+  <text x="580" y="276" font-size="10" fill="#1a1822">Babel transpiled</text>
+
+  <!-- Arrows down -->
+  <line x1="220" y1="285" x2="220" y2="315" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-lb2)"/>
+  <line x1="680" y1="285" x2="680" y2="315" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-lb2)"/>
+
+  <!-- HTML Delivery -->
+  <rect x="180" y="325" width="540" height="75" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="348" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">HTML Script Tags</text>
+  <line x1="195" y1="356" x2="705" y2="356" stroke="#d7d1e6" stroke-width="1"/>
+
+  <text x="280" y="375" text-anchor="middle" font-size="10" fill="#6d5bd0">&lt;script type=&quot;module&quot;&gt;</text>
+  <text x="280" y="390" text-anchor="middle" font-size="9" fill="#1a1822">modern.js</text>
+
+  <line x1="450" y1="358" x2="450" y2="395" stroke="#d7d1e6" stroke-width="1"/>
+
+  <text x="620" y="375" text-anchor="middle" font-size="10" fill="#6d5bd0">&lt;script nomodule&gt;</text>
+  <text x="620" y="390" text-anchor="middle" font-size="9" fill="#1a1822">legacy.js</text>
+
+  <!-- Arrows down to browsers -->
+  <line x1="280" y1="400" x2="280" y2="425" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-lb2)"/>
+  <line x1="620" y1="400" x2="620" y2="425" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-lb2)"/>
+
+  <!-- Modern Browsers -->
+  <rect x="160" y="435" width="240" height="45" rx="8" fill="#6d5bd0"/>
+  <text x="280" y="455" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Modern Browsers</text>
+  <text x="280" y="470" text-anchor="middle" font-size="9" fill="#ffffff">Chrome 80+, Firefox 80+, Safari 14+, Edge 80+</text>
+
+  <!-- Legacy Browsers -->
+  <rect x="500" y="435" width="240" height="45" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="620" y="455" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Legacy Browsers</text>
+  <text x="620" y="470" text-anchor="middle" font-size="9" fill="#6d5bd0">IE 11, older Safari, older Chrome</text>
+
+  <!-- Key insight labels -->
+  <rect x="30" y="340" width="140" height="55" rx="6" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1"/>
+  <text x="100" y="360" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Modern browsers</text>
+  <text x="100" y="375" text-anchor="middle" font-size="9" fill="#1a1822">ignore nomodule</text>
+  <text x="100" y="388" text-anchor="middle" font-size="9" fill="#1a1822">load type=module</text>
+
+  <rect x="730" y="340" width="140" height="55" rx="6" fill="#6d5bd0" opacity="0.1" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="800" y="360" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Legacy browsers</text>
+  <text x="800" y="375" text-anchor="middle" font-size="9" fill="#1a1822">ignore type=module</text>
+  <text x="800" y="388" text-anchor="middle" font-size="9" fill="#1a1822">load nomodule</text>
+
+  <!-- Size comparison -->
+  <rect x="30" y="65" width="55" height="220" rx="4" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="57" y="85" text-anchor="middle" font-size="8" font-weight="600" fill="#1a1822">Size</text>
+  <rect x="38" y="100" width="38" height="60" rx="3" fill="#6d5bd0"/>
+  <text x="57" y="135" text-anchor="middle" font-size="7" fill="#ffffff">150KB</text>
+  <rect x="38" y="175" width="38" height="100" rx="3" fill="#6d5bd0" opacity="0.5"/>
+  <text x="57" y="230" text-anchor="middle" font-size="7" fill="#ffffff">320KB</text>
+  <text x="57" y="95" text-anchor="middle" font-size="7" fill="#6d5bd0">Modern</text>
+  <text x="57" y="170" text-anchor="middle" font-size="7" fill="#6d5bd0">Legacy</text>
+
+  <!-- Watermark -->
+  <text x="870" y="490" text-anchor="end" font-size="8" fill="#d7d1e6">Differential Loading Architecture</text>
 </svg>

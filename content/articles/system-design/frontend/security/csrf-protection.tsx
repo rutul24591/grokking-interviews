@@ -753,6 +753,110 @@ export default function CSRFProtectionArticle() {
       </section>
 
       <section>
+        <h2>Architecture at Scale: CSRF Defense in Enterprise Systems</h2>
+        <p>
+          Enterprise-scale CSRF protection requires coordinated defense across multiple architectural layers. In microservices architectures, each service must independently validate CSRF tokens, as there is no central authorization layer. API gateways can enforce CSRF validation at the edge for all state-changing requests, while service meshes can inject additional validation at the sidecar level.
+        </p>
+        <p>
+          <strong>Token Management at Scale:</strong> For high-traffic applications, CSRF token generation and validation must be stateless. Use JWT-based tokens signed with HMAC-SHA256 that encode user session ID and expiration. Store token blacklist in Redis with TTL matching token expiration for revocation scenarios. Implement token rotation on privilege changes (password change, role modification).
+        </p>
+        <p>
+          <strong>Cross-Service CSRF:</strong> In microservices, service-to-service calls should use mutual TLS (mTLS) or service account tokens instead of CSRF tokens. CSRF protection is for user-initiated requests; service communication requires different authentication mechanisms. Document which endpoints are user-facing vs. service-facing in API documentation.
+        </p>
+        <p>
+          <strong>Mobile App Considerations:</strong> Native mobile apps cannot use cookie-based CSRF tokens. Use custom Authorization headers with Bearer tokens instead. For hybrid apps (React Native, Flutter with WebView), ensure WebView doesn&apos; inherit browser cookies that could be CSRF targets. Implement app-specific token validation that differs from web token validation.
+        </p>
+      </section>
+
+      <section>
+        <h2>Testing Strategies: Automated CSRF Detection</h2>
+        <p>
+          Comprehensive CSRF testing requires both automated scanning and manual verification integrated into CI/CD pipelines.
+        </p>
+        <p>
+          <strong>Automated CSRF Scanning:</strong> OWASP ZAP and Burp Suite Professional include CSRF detection modules that identify forms without tokens, weak token implementations, and SameSite cookie misconfigurations. Configure scanners to run against staging environments with authenticated sessions. Use CI plugins (OWASP ZAP GitHub Action) to fail builds on critical CSRF findings.
+        </p>
+        <p>
+          <strong>Token Validation Testing:</strong> Write integration tests that verify: (1) requests without tokens are rejected with 403, (2) requests with expired tokens are rejected, (3) requests with tokens from different sessions are rejected, (4) token comparison uses constant-time functions. Use test frameworks like Jest or Pytest with CSRF-specific test suites.
+        </p>
+        <p>
+          <strong>SameSite Cookie Testing:</strong> Verify SameSite attribute is set correctly on all authentication cookies. Test cross-origin request behavior: POST requests from external domains should fail, while same-origin requests succeed. Use browser DevTools Application panel to inspect cookie attributes. Test across browsers (Chrome, Firefox, Safari, Edge) as SameSite implementation varies.
+        </p>
+        <p>
+          <strong>Penetration Testing:</strong> Include CSRF in quarterly penetration test scope. Provide testers with test accounts and application documentation. Specific test cases: (1) CSRF to change email/password, (2) CSRF to initiate financial transactions, (3) CSRF to modify user permissions, (4) CSRF via subdomain or related domains. Require remediation of all CSRF findings before production deployment.
+        </p>
+        <p>
+          <strong>Monitoring & Detection:</strong> Implement logging for CSRF validation failures with request metadata (IP, User-Agent, Referer). Set up alerts for sudden spikes in CSRF failures that may indicate active attacks. Use SIEM integration to correlate CSRF failures with other security events. Track CSRF failure rate as a security metric (target: &lt;0.1% of requests).
+        </p>
+      </section>
+
+      <section>
+        <h2>Compliance & Legal Context</h2>
+        <p>
+          CSRF vulnerabilities have significant compliance implications, particularly for applications handling financial transactions or personal data.
+        </p>
+        <p>
+          <strong>OWASP Top 10:</strong> CSRF was #8 in OWASP Top 10 2017 but was merged into &quot;Broken Access Control&quot; in 2021. Despite the consolidation, CSRF remains a critical vulnerability class. Many compliance auditors still reference OWASP Top 10 2017 and expect explicit CSRF protection measures.
+        </p>
+        <p>
+          <strong>PCI-DSS Requirements:</strong> PCI-DSS Requirement 6.5.8 requires protection against CSRF for payment processing systems. Annual penetration testing (Requirement 11.3) must include CSRF testing. Non-compliance can result in fines up to $500,000 per incident and potential loss of payment processing capabilities. Document CSRF protection mechanisms for annual ROC (Report on Compliance).
+        </p>
+        <p>
+          <strong>GDPR Implications:</strong> CSRF that leads to unauthorized data modification or exfiltration constitutes a data breach under GDPR Article 33. Organizations must notify supervisory authorities within 72 hours of breach discovery. Fines can reach 4% of annual global revenue or €20 million. Document CSRF prevention measures as part of Article 32 &quot;security of processing&quot; requirements.
+        </p>
+        <p>
+          <strong>SOC 2 Controls:</strong> CSRF prevention maps to SOC 2 Common Criteria CC6.1 (logical access controls) and CC7.2 (system monitoring). Document CSRF token implementation, testing procedures, and monitoring for annual SOC 2 audits. Track CSRF-related incidents as part of security event monitoring.
+        </p>
+        <p>
+          <strong>Financial Regulations:</strong> PSD2 (EU Payment Services Directive 2) requires Strong Customer Authentication (SCA) which includes CSRF protection for payment initiation. FFIEC guidelines for US banks require multi-factor authentication and CSRF protection for online banking. Non-compliance can result in regulatory enforcement actions.
+        </p>
+      </section>
+
+      <section>
+        <h2>Performance Trade-offs: Security vs. Latency</h2>
+        <p>
+          CSRF protection measures introduce minimal but measurable latency that must be considered in high-throughput systems.
+        </p>
+        <p>
+          <strong>Token Generation Overhead:</strong> Cryptographically secure token generation (crypto.randomBytes) takes 0.1-1ms per token. For high-traffic applications, pre-generate token pools during idle periods. Use token caching with LRU eviction to avoid regenerating tokens for returning users. Consider stateless JWT tokens that don&apos;t require server-side storage.
+        </p>
+        <p>
+          <strong>Token Validation Latency:</strong> Server-side token validation (database lookup) adds 5-20ms per request. Use Redis for sub-millisecond token validation. Implement token caching at the application layer with TTL matching token expiration. For stateless tokens (JWT), validation takes 1-5ms for signature verification.
+        </p>
+        <p>
+          <strong>SameSite Cookie Impact:</strong> SameSite cookies have zero performance impact as validation happens in the browser. However, SameSite=Strict can break legitimate cross-origin flows (SSO, payment gateways). Test cross-origin flows thoroughly before deploying SameSite=Strict. Consider SameSite=Lax as default with Strict for high-risk operations.
+        </p>
+        <p>
+          <strong>Origin/Referer Validation:</strong> Header validation adds &lt;1ms per request but requires parsing and comparison. Implement early-exit validation: check Referer first (faster), then Origin if Referer is missing. Cache validated origins to avoid repeated DNS lookups. Be aware that some privacy-focused browsers strip Referer headers.
+        </p>
+        <p>
+          <strong>CDN/WAF Considerations:</strong> Cloud WAFs can validate CSRF tokens at the edge, reducing origin server load. However, WAF validation adds 10-50ms round-trip latency. Configure WAF to skip CSRF validation for known-good origins (mobile apps, trusted partners). Use WAF logging to identify false positives and tune rules.
+        </p>
+      </section>
+
+      <section>
+        <h2>Browser & Platform Compatibility</h2>
+        <p>
+          CSRF protection effectiveness varies across browsers and platforms, requiring careful compatibility testing.
+        </p>
+        <p>
+          <strong>SameSite Support:</strong> SameSite cookies supported in Chrome 51+, Firefox 60+, Safari 12.1+, Edge 79+. Chrome 80+ enforces SameSite=Lax as default for cookies without explicit attribute. For older browsers, SameSite is ignored (treated as SameSite=None). Always combine SameSite with CSRF tokens for comprehensive protection.
+        </p>
+        <p>
+          <strong>Origin/Referer Reliability:</strong> Referer header stripped by some privacy extensions, HTTPS→HTTP transitions, and mobile browsers. Origin header more reliable but not sent by older browsers (IE11 partial support). Never rely solely on header validation; always use CSRF tokens as primary defense.
+        </p>
+        <p>
+          <strong>Mobile WebView Considerations:</strong> iOS WKWebView and Android WebView have different cookie handling than mobile browsers. WKWebView uses separate cookie storage from Safari. Test CSRF protection in actual app WebViews, not just mobile browsers. Consider using custom Authorization headers for mobile apps instead of cookie-based authentication.
+        </p>
+        <p>
+          <strong>CORS Preflight Interaction:</strong> CSRF tokens in custom headers trigger CORS preflight (OPTIONS) requests. For high-traffic APIs, this doubles request count. Consider using cookie-based token transmission (no preflight) or implement CORS preflight caching (Access-Control-Max-Age). Test CSRF with CORS-enabled endpoints thoroughly.
+        </p>
+        <p>
+          <strong>Progressive Web Apps (PWA):</strong> PWAs running in standalone mode have different cookie behavior than browser tabs. Service workers can intercept requests and modify headers, potentially bypassing CSRF protection. Implement CSRF validation in service worker scope or exclude service-worker-handled requests from cookie-based auth.
+        </p>
+      </section>
+
+      <section>
         <h2>Real-World Use Cases</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">E-Commerce Platform</h3>

@@ -12,10 +12,10 @@
     <text x="150" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#2563eb">1. HTML with SRI</text>
     
     <rect x="20" y="45" width="260" height="90" rx="4" fill="#ffffff" stroke="#3b82f6"/>
-    <text x="30" y="65" font-family="monospace" font-size="9" fill="#475569">&lt;script src="https://cdn...</text>
+    <text x="30" y="65" font-family="monospace" font-size="9" fill="#475569">&amp;lt;script src="https://cdn...</text>
     <text x="30" y="80" font-family="monospace" font-size="9" fill="#475569">  integrity="sha384-abc123..."</text>
     <text x="30" y="95" font-family="monospace" font-size="9" fill="#475569">  crossorigin="anonymous"</text>
-    <text x="30" y="110" font-family="monospace" font-size="9" fill="#475569">&gt;&lt;/script&gt;</text>
+    <text x="30" y="110" font-family="monospace" font-size="9" fill="#475569">&amp;gt;&amp;lt;/script&amp;gt;</text>
     
     <rect x="20" y="120" width="260" height="25" rx="3" fill="#fef3c7" stroke="#f59e0b"/>
     <text x="150" y="137" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">Expected hash: sha384-abc123...</text>

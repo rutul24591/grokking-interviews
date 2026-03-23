@@ -136,100 +136,15 @@ export default function SkipLinksArticle() {
           caption="Skip link flow: Tab reveals the skip link at the top of the page. Activating it moves focus past all navigation directly to the main content area."
         />
 
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// Basic skip link implementation
-function SkipLink() {
-  const handleClick = (e) => {
-    e.preventDefault();
-    const target = document.getElementById('main-content');
-    if (target) {
-      // Ensure the target is focusable
-      if (!target.hasAttribute('tabindex')) {
-        target.setAttribute('tabindex', '-1');
-      }
-      target.focus();
-      // Scroll into view if needed
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Skip Link Implementation Pattern</h3>
+        <p>
+          For basic skip link implementation, create a SkipLink component with a handleClick function that prevents default, gets the target element by ID (main-content), ensures it has tabindex negative one for programmatic focus, calls focus on the target, and optionally scrolls into view with smooth behavior. The component renders an anchor with href pointing to main-content, a CSS class for skip-link styling, and onClick handler. In the layout, render SkipLink first, then Header, Navigation, main element with id main-content, and Footer.
+        </p>
 
-  return (
-    <a
-      href="#main-content"
-      className="skip-link"
-      onClick={handleClick}
-    >
-      Skip to main content
-    </a>
-  );
-}
-
-// In your layout
-function Layout({ children }) {
-  return (
-    <>
-      <SkipLink />
-      <Header />
-      <Navigation />
-      <main id="main-content">
-        {children}
-      </main>
-      <Footer />
-    </>
-  );
-}`}</code>
-        </pre>
-
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`/* Skip link CSS — hidden by default, visible on focus */
-.skip-link {
-  position: absolute;
-  top: -100%;
-  left: 16px;
-  z-index: 9999;
-  padding: 12px 24px;
-  background: #6d5bd0;
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 14px;
-  text-decoration: none;
-  border-radius: 0 0 8px 8px;
-  transition: top 0.2s ease-in-out;
-}
-
-.skip-link:focus {
-  top: 0;
-  outline: 3px solid #1a1822;
-  outline-offset: 2px;
-}
-
-/* Alternative: sr-only approach */
-.skip-link-sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-.skip-link-sr-only:focus {
-  position: fixed;
-  top: 8px;
-  left: 8px;
-  width: auto;
-  height: auto;
-  padding: 12px 24px;
-  margin: 0;
-  overflow: visible;
-  clip: auto;
-  white-space: normal;
-  z-index: 9999;
-}`}</code>
-        </pre>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Skip Link CSS Patterns</h3>
+        <p>
+          For skip link CSS, position absolute with top negative 100 percent to hide off-screen, left 16px, z-index 9999, padding 12px by 24px, background color, white text, font-weight 600, font-size 14px, no text-decoration, and border-radius for rounded bottom corners. Add transition for top property. On focus, set top to 0 to reveal the link, add 3px solid outline with 2px offset. For sr-only approach, use position absolute with 1px dimensions, negative margin, hidden overflow, clip rect, and no border. On focus, change to position fixed at top 8px left 8px with auto dimensions, visible overflow, normal white-space, and 9999 z-index.
+        </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Multiple Skip Targets</h3>
         <p>
@@ -243,54 +158,10 @@ function Layout({ children }) {
           caption="Multiple skip targets allow users to jump to specific page regions. All links appear together on the first Tab press."
         />
 
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// Multiple skip links component
-function SkipLinks() {
-  const targets = [
-    { id: 'main-content', label: 'Skip to main content' },
-    { id: 'search', label: 'Skip to search' },
-    { id: 'navigation', label: 'Skip to navigation' },
-  ];
-
-  const handleSkip = (e, targetId) => {
-    e.preventDefault();
-    const target = document.getElementById(targetId);
-    if (target) {
-      if (!target.hasAttribute('tabindex')) {
-        target.setAttribute('tabindex', '-1');
-      }
-      target.focus();
-    }
-  };
-
-  return (
-    <nav aria-label="Skip links" className="skip-links-container">
-      {targets.map(({ id, label }) => (
-        <a
-          key={id}
-          href={\`#\${id}\`}
-          className="skip-link"
-          onClick={(e) => handleSkip(e, id)}
-        >
-          {label}
-        </a>
-      ))}
-    </nav>
-  );
-}`}</code>
-        </pre>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Skip Link Visibility on Focus</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Multiple Skip Links Component</h3>
         <p>
-          The CSS technique for hiding and revealing skip links must ensure the link is completely
-          hidden from sighted users when not focused, fully visible and positioned prominently when
-          focused, and smoothly transitions to avoid jarring visual changes.
+          For multiple skip links, create a SkipLinks component with a targets array containing objects with id and label properties for main-content, search, and navigation. The handleSkip function prevents default, gets target by ID, ensures tabindex negative one, and calls focus. Render a nav with aria-label skip links, map over targets to create anchor elements with key, href, skip-link class, onClick handler, and label text.
         </p>
-        <ArticleImage
-          src="/diagrams/system-design-concepts/frontend/accessibility-a11y/skip-links-diagram-3.svg"
-          alt="Skip link visibility states showing hidden, focused (visible), and blur (hidden again) states"
-          caption="Skip link visibility: Hidden off-screen by default, slides into view on :focus, returns to hidden on blur."
-        />
       </section>
 
       {/* ─── Section 4: Trade-offs & Comparisons ─── */}

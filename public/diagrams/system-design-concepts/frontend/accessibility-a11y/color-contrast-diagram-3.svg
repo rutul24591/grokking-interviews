@@ -40,13 +40,13 @@
 
   <text x="270" y="130" font-size="11" fill="#1a1822">On White (#FFF):</text>
   <rect x="270" y="136" width="50" height="18" rx="3" fill="#2563eb"/>
-  <text x="330" y="150" font-size="10" font-weight="bold" fill="#22c55e">4.6:1 &#x2713;</text>
+  <text x="330" y="150" font-size="10" font-weight="bold" fill="#22c55e">4.6:1 &amp;#x2713;</text>
   <rect x="270" y="158" width="50" height="18" rx="3" fill="#dc2626"/>
-  <text x="330" y="172" font-size="10" font-weight="bold" fill="#22c55e">4.6:1 &#x2713;</text>
+  <text x="330" y="172" font-size="10" font-weight="bold" fill="#22c55e">4.6:1 &amp;#x2713;</text>
   <rect x="270" y="180" width="50" height="18" rx="3" fill="#16a34a"/>
-  <text x="330" y="194" font-size="10" font-weight="bold" fill="#ef4444">3.2:1 &#x2717;</text>
+  <text x="330" y="194" font-size="10" font-weight="bold" fill="#ef4444">3.2:1 &amp;#x2717;</text>
   <rect x="270" y="202" width="50" height="18" rx="3" fill="#9333ea"/>
-  <text x="330" y="216" font-size="10" font-weight="bold" fill="#22c55e">5.6:1 &#x2713;</text>
+  <text x="330" y="216" font-size="10" font-weight="bold" fill="#22c55e">5.6:1 &amp;#x2713;</text>
 
   <text x="340" y="235" text-anchor="middle" font-size="10" font-style="italic" fill="#6d5bd0">WCAG 2.2 formula</text>
 
@@ -59,19 +59,19 @@
   <rect x="470" y="100" width="180" height="12" fill="#6d5bd0"/>
   <text x="560" y="101" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">3. Adjust Failures</text>
 
-  <text x="490" y="130" font-size="11" fill="#1a1822">Green fails &#x2192; darken:</text>
+  <text x="490" y="130" font-size="11" fill="#1a1822">Green fails &amp;#x2192; darken:</text>
 
   <rect x="490" y="140" width="30" height="20" rx="3" fill="#16a34a"/>
-  <text x="530" y="155" font-size="11" fill="#1a1822">&#x2192;</text>
+  <text x="530" y="155" font-size="11" fill="#1a1822">&amp;#x2192;</text>
   <rect x="550" y="140" width="30" height="20" rx="3" fill="#15803d"/>
-  <text x="590" y="155" font-size="11" fill="#1a1822">&#x2192;</text>
+  <text x="590" y="155" font-size="11" fill="#1a1822">&amp;#x2192;</text>
   <rect x="610" y="140" width="30" height="20" rx="3" fill="#166534"/>
 
   <text x="490" y="180" font-size="10" fill="#1a1822">#16A34A</text>
   <text x="550" y="180" font-size="10" fill="#1a1822">#15803D</text>
   <text x="610" y="180" font-size="10" font-weight="bold" fill="#22c55e">#166534</text>
 
-  <text x="560" y="200" text-anchor="middle" font-size="10" fill="#1a1822">Ratio: 3.2 &#x2192; 4.1 &#x2192; 5.1</text>
+  <text x="560" y="200" text-anchor="middle" font-size="10" fill="#1a1822">Ratio: 3.2 &amp;#x2192; 4.1 &amp;#x2192; 5.1</text>
 
   <text x="560" y="225" text-anchor="middle" font-size="10" fill="#1a1822">Strategies: darken, shift hue,</text>
   <text x="560" y="235" text-anchor="middle" font-size="10" fill="#1a1822">adjust saturation</text>
@@ -152,6 +152,6 @@
   <text x="720" y="439" text-anchor="middle" font-size="11" font-weight="bold" fill="#22c55e">3.4:1 AA*</text>
 
   <!-- Footer note -->
-  <text x="450" y="470" text-anchor="middle" font-size="10" fill="#6d5bd0">* AA for large text only (&#x2265;18pt or &#x2265;14pt bold). For normal text AA, target &#x2265;4.5:1.</text>
+  <text x="450" y="470" text-anchor="middle" font-size="10" fill="#6d5bd0">* AA for large text only (&amp;#x2265;18pt or &amp;#x2265;14pt bold). For normal text AA, target &amp;#x2265;4.5:1.</text>
   <text x="450" y="486" text-anchor="middle" font-size="10" fill="#1a1822">Always test both light and dark mode backgrounds. Generate shade scales (50-950) for each base color.</text>
 </svg>

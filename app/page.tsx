@@ -58,7 +58,7 @@ export default function HomePage() {
         </div>
 
         {/* CTA Button */}
-        <div className="mt-12">
+        {/* <div className="mt-12">
           <Link
             href="/articles/system-design-concepts/frontend-concepts/rendering-strategies/client-side-rendering"
             className="inline-flex items-center gap-3 rounded-full bg-accent px-8 py-4 text-lg font-semibold text-white shadow-soft-theme transition hover:bg-accent/90 hover:shadow-strong-theme focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
@@ -66,7 +66,7 @@ export default function HomePage() {
             Explore Content
             <span aria-hidden="true">→</span>
           </Link>
-        </div>
+        </div> */}
 
         {/* Additional Info */}
         <div className="mt-12 border-t border-theme pt-8">

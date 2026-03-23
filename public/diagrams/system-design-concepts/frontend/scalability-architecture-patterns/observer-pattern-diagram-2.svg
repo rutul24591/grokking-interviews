@@ -6,7 +6,7 @@
   <rect x="310" y="58" width="280" height="72" rx="10" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="2"/>
   <text x="450" y="82" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">Zustand Store (Subject)</text>
   <text x="450" y="100" text-anchor="middle" font-size="11" fill="#ffffff">state = { user: "Alice", theme: "dark", count: 5 }</text>
-  <text x="450" y="118" text-anchor="middle" font-size="10" fill="#ffffff">Internally maintains a Set&lt;Listener&gt;</text>
+  <text x="450" y="118" text-anchor="middle" font-size="10" fill="#ffffff">Internally maintains a Set&amp;lt;Listener&amp;gt;</text>
 
   <!-- setState trigger -->
   <rect x="30" y="72" width="160" height="44" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
@@ -29,7 +29,7 @@
   <rect x="40" y="260" width="200" height="30" rx="8" fill="#6d5bd0"/>
   <rect x="40" y="278" width="200" height="12" fill="#6d5bd0"/>
   <text x="140" y="282" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">CounterDisplay</text>
-  <text x="60" y="310" font-size="10" fill="#1a1822">useStore(s =&gt; s.count)</text>
+  <text x="60" y="310" font-size="10" fill="#1a1822">useStore(s =&amp;gt; s.count)</text>
   <text x="60" y="328" font-size="10" fill="#6d5bd0">selector returns: 6</text>
   <text x="60" y="346" font-size="10" fill="#1a1822">prev: 5 !== 6</text>
   <rect x="60" y="352" width="160" height="20" rx="4" fill="#6d5bd0"/>
@@ -40,7 +40,7 @@
   <rect x="280" y="260" width="200" height="30" rx="8" fill="#6d5bd0"/>
   <rect x="280" y="278" width="200" height="12" fill="#6d5bd0"/>
   <text x="380" y="282" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">UserProfile</text>
-  <text x="300" y="310" font-size="10" fill="#1a1822">useStore(s =&gt; s.user)</text>
+  <text x="300" y="310" font-size="10" fill="#1a1822">useStore(s =&amp;gt; s.user)</text>
   <text x="300" y="328" font-size="10" fill="#6d5bd0">selector returns: "Alice"</text>
   <text x="300" y="346" font-size="10" fill="#1a1822">prev: "Alice" === "Alice"</text>
   <rect x="300" y="352" width="160" height="20" rx="4" fill="#d7d1e6"/>
@@ -51,7 +51,7 @@
   <rect x="520" y="260" width="200" height="30" rx="8" fill="#6d5bd0"/>
   <rect x="520" y="278" width="200" height="12" fill="#6d5bd0"/>
   <text x="620" y="282" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">ThemeToggle</text>
-  <text x="540" y="310" font-size="10" fill="#1a1822">useStore(s =&gt; s.theme)</text>
+  <text x="540" y="310" font-size="10" fill="#1a1822">useStore(s =&amp;gt; s.theme)</text>
   <text x="540" y="328" font-size="10" fill="#6d5bd0">selector returns: "dark"</text>
   <text x="540" y="346" font-size="10" fill="#1a1822">prev: "dark" === "dark"</text>
   <rect x="540" y="352" width="160" height="20" rx="4" fill="#d7d1e6"/>
@@ -82,7 +82,7 @@
   <text x="450" y="420" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a1822">Resulting DOM Updates</text>
 
   <rect x="40" y="435" width="200" height="40" rx="6" fill="#6d5bd0"/>
-  <text x="140" y="460" text-anchor="middle" font-size="11" fill="#ffffff">Count: 5 -&gt; 6 (patched)</text>
+  <text x="140" y="460" text-anchor="middle" font-size="11" fill="#ffffff">Count: 5 -&amp;gt; 6 (patched)</text>
 
   <rect x="280" y="435" width="200" height="40" rx="6" fill="#d7d1e6"/>
   <text x="380" y="460" text-anchor="middle" font-size="11" fill="#1a1822">No DOM change</text>

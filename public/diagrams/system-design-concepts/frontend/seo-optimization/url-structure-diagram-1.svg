@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">URL Anatomy &amp; SEO Relevance</text>
+
+  <!-- Full URL display -->
+  <rect x="40" y="55" width="820" height="50" rx="8" fill="#1a1822"/>
+  <text x="450" y="85" text-anchor="middle" font-size="14" font-weight="600" fill="#ffffff">https://www.example.com/category/product?color=red#reviews</text>
+
+  <!-- Color-coded segments -->
+  <rect x="40" y="120" width="820" height="40" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <rect x="42" y="122" width="68" height="36" rx="4" fill="#6d5bd0"/>
+  <text x="76" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">https://</text>
+  <rect x="112" y="122" width="56" height="36" rx="4" fill="#8b7de0"/>
+  <text x="140" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">www.</text>
+  <rect x="170" y="122" width="120" height="36" rx="4" fill="#6d5bd0"/>
+  <text x="230" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">example.com</text>
+  <rect x="292" y="122" width="130" height="36" rx="4" fill="#8b7de0"/>
+  <text x="357" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">/category/product</text>
+  <rect x="424" y="122" width="120" height="36" rx="4" fill="#a89fd0"/>
+  <text x="484" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">?color=red</text>
+  <rect x="546" y="122" width="90" height="36" rx="4" fill="#d7d1e6"/>
+  <text x="591" y="145" text-anchor="middle" font-size="10" font-weight="700" fill="#1a1822">#reviews</text>
+
+  <!-- Breakdown cards -->
+  <!-- Protocol -->
+  <rect x="40" y="180" width="250" height="130" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="40" y="180" width="250" height="34" rx="8" fill="#6d5bd0"/>
+  <text x="165" y="202" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Protocol: https://</text>
+  <text x="55" y="234" font-size="11" font-weight="600" fill="#6d5bd0">SEO Impact: HIGH</text>
+  <text x="55" y="252" font-size="10" fill="#1a1822">HTTPS is a ranking signal</text>
+  <text x="55" y="268" font-size="10" fill="#1a1822">HTTP sites penalized in rankings</text>
+  <text x="55" y="284" font-size="10" fill="#1a1822">Required for Core Web Vitals</text>
+  <text x="55" y="300" font-size="10" fill="#1a1822">Mixed content blocks resources</text>
+
+  <!-- Subdomain -->
+  <rect x="325" y="180" width="250" height="130" rx="8" fill="#ffffff" stroke="#8b7de0" stroke-width="2"/>
+  <rect x="325" y="180" width="250" height="34" rx="8" fill="#8b7de0"/>
+  <text x="450" y="202" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Subdomain: www</text>
+  <text x="340" y="234" font-size="11" font-weight="600" fill="#8b7de0">SEO Impact: MEDIUM</text>
+  <text x="340" y="252" font-size="10" fill="#1a1822">www vs non-www: pick one</text>
+  <text x="340" y="268" font-size="10" fill="#1a1822">Canonical to chosen version</text>
+  <text x="340" y="284" font-size="10" fill="#1a1822">blog.example.com treated as</text>
+  <text x="340" y="300" font-size="10" fill="#1a1822">separate site by Google</text>
+
+  <!-- Domain -->
+  <rect x="610" y="180" width="250" height="130" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="610" y="180" width="250" height="34" rx="8" fill="#6d5bd0"/>
+  <text x="735" y="202" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Domain: example.com</text>
+  <text x="625" y="234" font-size="11" font-weight="600" fill="#6d5bd0">SEO Impact: HIGHEST</text>
+  <text x="625" y="252" font-size="10" fill="#1a1822">Domain authority / trust signals</text>
+  <text x="625" y="268" font-size="10" fill="#1a1822">Brand recognition in SERPs</text>
+  <text x="625" y="284" font-size="10" fill="#1a1822">Short, memorable preferred</text>
+  <text x="625" y="300" font-size="10" fill="#1a1822">Keywords in domain: minor signal</text>
+
+  <!-- Path -->
+  <rect x="40" y="330" width="250" height="130" rx="8" fill="#ffffff" stroke="#8b7de0" stroke-width="2"/>
+  <rect x="40" y="330" width="250" height="34" rx="8" fill="#8b7de0"/>
+  <text x="165" y="352" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Path: /category/product</text>
+  <text x="55" y="384" font-size="11" font-weight="600" fill="#8b7de0">SEO Impact: HIGH</text>
+  <text x="55" y="402" font-size="10" fill="#1a1822">Keywords in path boost relevance</text>
+  <text x="55" y="418" font-size="10" fill="#1a1822">Hierarchy signals topic structure</text>
+  <text x="55" y="434" font-size="10" fill="#1a1822">Shorter paths rank better</text>
+  <text x="55" y="450" font-size="10" fill="#1a1822">Used for breadcrumb generation</text>
+
+  <!-- Query params -->
+  <rect x="325" y="330" width="250" height="130" rx="8" fill="#ffffff" stroke="#a89fd0" stroke-width="2"/>
+  <rect x="325" y="330" width="250" height="34" rx="8" fill="#a89fd0"/>
+  <text x="450" y="352" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Query: ?color=red</text>
+  <text x="340" y="384" font-size="11" font-weight="600" fill="#a89fd0">SEO Impact: LOW / RISKY</text>
+  <text x="340" y="402" font-size="10" fill="#1a1822">Can cause duplicate content</text>
+  <text x="340" y="418" font-size="10" fill="#1a1822">Use canonical to consolidate</text>
+  <text x="340" y="434" font-size="10" fill="#1a1822">Configure in Search Console</text>
+  <text x="340" y="450" font-size="10" fill="#1a1822">Crawl budget waste risk</text>
+
+  <!-- Fragment -->
+  <rect x="610" y="330" width="250" height="130" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <rect x="610" y="330" width="250" height="34" rx="8" fill="#d7d1e6"/>
+  <text x="735" y="352" text-anchor="middle" font-size="12" font-weight="700" fill="#1a1822">Fragment: #reviews</text>
+  <text x="625" y="384" font-size="11" font-weight="600" fill="#1a1822">SEO Impact: NONE</text>
+  <text x="625" y="402" font-size="10" fill="#1a1822">Not sent to server</text>
+  <text x="625" y="418" font-size="10" fill="#1a1822">Ignored by crawlers</text>
+  <text x="625" y="434" font-size="10" fill="#1a1822">Client-side navigation only</text>
+  <text x="625" y="450" font-size="10" fill="#1a1822">Hashbang (#!) deprecated</text>
+
+  <!-- Bottom note -->
+  <text x="450" y="490" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="600">Best practice: short, descriptive paths with hyphens, HTTPS, minimal query parameters, no fragments for routing</text>
+</svg>

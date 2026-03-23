@@ -10,7 +10,7 @@
   <rect x="150" y="90" width="600" height="48" rx="14" fill="#6d5bd0" />
   <rect x="150" y="118" width="600" height="20" fill="#6d5bd0" />
   <text x="450" y="122" fill="#ffffff" font-family="system-ui, sans-serif" font-size="16" font-weight="700" text-anchor="middle">Modal Dialog</text>
-  <text x="450" y="162" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" text-anchor="middle" font-style="italic">role=&quot;dialog&quot; aria-modal=&quot;true&quot;</text>
+  <text x="450" y="162" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" text-anchor="middle" font-style="italic">role=&amp;quot;dialog&amp;quot; aria-modal=&amp;quot;true&amp;quot;</text>
 
   <!-- Close Button (Element 1) -->
   <rect x="260" y="185" width="160" height="50" rx="10" fill="#6d5bd0" stroke="#1a1822" stroke-width="1.5" />

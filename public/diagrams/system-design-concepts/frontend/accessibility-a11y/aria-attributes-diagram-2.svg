@@ -50,7 +50,7 @@
   <rect x="50" y="285" width="380" height="190" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
   <rect x="50" y="285" width="380" height="40" rx="12" fill="#6d5bd0" />
   <rect x="50" y="305" width="380" height="20" fill="#6d5bd0" />
-  <text x="240" y="311" fill="#ffffff" font-family="system-ui, sans-serif" font-size="15" font-weight="700" text-anchor="middle">aria-live=&quot;polite&quot;</text>
+  <text x="240" y="311" fill="#ffffff" font-family="system-ui, sans-serif" font-size="15" font-weight="700" text-anchor="middle">aria-live=&amp;quot;polite&amp;quot;</text>
 
   <text x="70" y="350" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Behavior:</text>
   <text x="146" y="350" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12"> Waits for current speech to finish</text>
@@ -63,13 +63,13 @@
   <text x="148" y="418" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="11"> Chat messages, form feedback</text>
 
   <text x="70" y="448" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Default for:</text>
-  <text x="158" y="448" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12"> role=&quot;status&quot;, role=&quot;log&quot;</text>
+  <text x="158" y="448" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12"> role=&amp;quot;status&amp;quot;, role=&amp;quot;log&amp;quot;</text>
 
   <!-- ASSERTIVE panel -->
   <rect x="470" y="285" width="380" height="190" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
   <rect x="470" y="285" width="380" height="40" rx="12" fill="#6d5bd0" />
   <rect x="470" y="305" width="380" height="20" fill="#6d5bd0" />
-  <text x="660" y="311" fill="#ffffff" font-family="system-ui, sans-serif" font-size="15" font-weight="700" text-anchor="middle">aria-live=&quot;assertive&quot;</text>
+  <text x="660" y="311" fill="#ffffff" font-family="system-ui, sans-serif" font-size="15" font-weight="700" text-anchor="middle">aria-live=&amp;quot;assertive&amp;quot;</text>
 
   <text x="490" y="350" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Behavior:</text>
   <text x="566" y="350" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12"> Interrupts current speech</text>
@@ -82,7 +82,7 @@
   <text x="568" y="418" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="11"> Critical validation, network loss</text>
 
   <text x="490" y="448" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Default for:</text>
-  <text x="578" y="448" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12"> role=&quot;alert&quot;</text>
+  <text x="578" y="448" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12"> role=&amp;quot;alert&amp;quot;</text>
 
   <!-- Arrowhead marker -->
   <defs>

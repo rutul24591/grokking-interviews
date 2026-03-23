@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">MFA Authentication Methods</text>
+  
+  <!-- Knowledge Factor -->
+  <rect x="50" y="70" width="220" height="180" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="160" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Knowledge Factor</text>
+  <text x="160" y="115" text-anchor="middle" font-family="system-ui" font-size="10" fill="#475569">Something you know</text>
+  
+  <rect x="70" y="130" width="180" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="160" y="152" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Password / PIN</text>
+  
+  <rect x="70" y="170" width="180" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="160" y="192" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Security Questions</text>
+  
+  <rect x="70" y="210" width="180" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="160" y="232" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Pattern Lock</text>
+  
+  <text x="160" y="260" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ef4444">✗ Weakest factor</text>
+  
+  <!-- Possession Factor -->
+  <rect x="290" y="70" width="220" height="180" rx="8" fill="#f1f5f9" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="400" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Possession Factor</text>
+  <text x="400" y="115" text-anchor="middle" font-family="system-ui" font-size="10" fill="#475569">Something you have</text>
+  
+  <rect x="310" y="130" width="180" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="400" y="152" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">SMS / Voice Call</text>
+  
+  <rect x="310" y="170" width="180" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="400" y="192" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Authenticator App (TOTP)</text>
+  
+  <rect x="310" y="210" width="180" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="400" y="232" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Hardware Token (YubiKey)</text>
+  
+  <text x="400" y="260" text-anchor="middle" font-family="system-ui" font-size="9" fill="#22c55e">✓ Strong factor</text>
+  
+  <!-- Inherence Factor -->
+  <rect x="530" y="70" width="220" height="180" rx="8" fill="#f1f5f9" stroke="#22c55e" stroke-width="2"/>
+  <text x="640" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Inherence Factor</text>
+  <text x="640" y="115" text-anchor="middle" font-family="system-ui" font-size="10" fill="#475569">Something you are</text>
+  
+  <rect x="550" y="130" width="180" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="640" y="152" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Fingerprint</text>
+  
+  <rect x="550" y="170" width="180" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="640" y="192" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Face Recognition</text>
+  
+  <rect x="550" y="210" width="180" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="640" y="232" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Iris / Retina Scan</text>
+  
+  <text x="640" y="260" text-anchor="middle" font-family="system-ui" font-size="9" fill="#22c55e">✓ Strongest factor</text>
+  
+  <!-- Location/Time -->
+  <rect x="50" y="280" width="340" height="170" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="305" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Contextual Factors (Adaptive MFA)</text>
+  
+  <rect x="70" y="325" width="130" height="40" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="135" y="345" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Geolocation</text>
+  <text x="135" y="360" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">IP, GPS</text>
+  
+  <rect x="220" y="325" width="130" height="40" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="285" y="345" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Time of Day</text>
+  <text x="285" y="360" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Business hours</text>
+  
+  <rect x="70" y="375" width="130" height="40" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="135" y="395" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Device Fingerprint</text>
+  <text x="135" y="410" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Known device</text>
+  
+  <rect x="220" y="375" width="130" height="40" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="285" y="395" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Behavior Analysis</text>
+  <text x="285" y="410" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Typing pattern</text>
+  
+  <!-- Security Ranking -->
+  <rect x="420" y="280" width="330" height="170" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="585" y="305" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Security Strength Ranking</text>
+  
+  <rect x="440" y="325" width="290" height="30" rx="4" fill="#22c55e"/>
+  <text x="585" y="345" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">1. WebAuthn / FIDO2 (Phishing-resistant)</text>
+  
+  <rect x="440" y="360" width="290" height="30" rx="4" fill="#22c55e" opacity="0.8"/>
+  <text x="585" y="380" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">2. TOTP Authenticator App</text>
+  
+  <rect x="440" y="395" width="290" height="30" rx="4" fill="#f59e0b"/>
+  <text x="585" y="415" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">3. SMS / Voice (Vulnerable to SIM swap)</text>
+  
+  <rect x="440" y="430" width="290" height="20" rx="4" fill="#ef4444" opacity="0.5"/>
+  <text x="585" y="445" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">4. Email (Weakest, not recommended)</text>
+
+</svg>

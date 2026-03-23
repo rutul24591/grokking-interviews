@@ -1,18 +1,158 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Legacy Browser Support diagram 3">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
   <defs>
-    <linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
+    <marker id="arrow-lb3" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
   </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg3)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Legacy Browser Support</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 3</text>
+
+  <!-- Background -->
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Legacy Browser Sunset Lifecycle</text>
+
+  <!-- Timeline arrow -->
+  <line x1="50" y1="75" x2="850" y2="75" stroke="#6d5bd0" stroke-width="3" marker-end="url(#arrow-lb3)"/>
+
+  <!-- Phase markers -->
+  <text x="50" y="67" font-size="9" fill="#6d5bd0">Month 0</text>
+  <text x="250" y="67" font-size="9" fill="#6d5bd0">Month 3</text>
+  <text x="475" y="67" font-size="9" fill="#6d5bd0">Month 6</text>
+  <text x="700" y="67" font-size="9" fill="#6d5bd0">Month 9</text>
+
+  <circle cx="100" cy="75" r="8" fill="#6d5bd0"/>
+  <circle cx="310" cy="75" r="8" fill="#6d5bd0"/>
+  <circle cx="530" cy="75" r="8" fill="#6d5bd0"/>
+  <circle cx="750" cy="75" r="8" fill="#6d5bd0"/>
+
+  <!-- Phase 1: Planning -->
+  <rect x="30" y="95" width="200" height="190" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="95" width="200" height="35" rx="8" fill="#6d5bd0"/>
+  <rect x="30" y="120" width="200" height="10" fill="#6d5bd0"/>
+  <text x="130" y="118" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">1. Planning</text>
+
+  <text x="50" y="152" font-size="10" font-weight="600" fill="#1a1822">Data Collection</text>
+  <text x="50" y="168" font-size="9" fill="#6d5bd0">Audit browser traffic share</text>
+  <text x="50" y="182" font-size="9" fill="#1a1822">Identify affected users</text>
+  <text x="50" y="196" font-size="9" fill="#1a1822">Calculate cost savings</text>
+
+  <line x1="45" y1="206" x2="215" y2="206" stroke="#d7d1e6" stroke-width="1"/>
+
+  <text x="50" y="222" font-size="10" font-weight="600" fill="#1a1822">Define Criteria</text>
+  <text x="50" y="238" font-size="9" fill="#6d5bd0">Set traffic threshold (&lt;0.5%)</text>
+  <text x="50" y="252" font-size="9" fill="#1a1822">Get stakeholder approval</text>
+  <text x="50" y="266" font-size="9" fill="#1a1822">Create sunset timeline</text>
+  <text x="50" y="280" font-size="9" fill="#1a1822">Prepare migration guides</text>
+
+  <!-- Arrow -->
+  <line x1="230" y1="190" x2="250" y2="190" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-lb3)"/>
+
+  <!-- Phase 2: Communication -->
+  <rect x="260" y="95" width="200" height="190" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="260" y="95" width="200" height="35" rx="8" fill="#6d5bd0"/>
+  <rect x="260" y="120" width="200" height="10" fill="#6d5bd0"/>
+  <text x="360" y="118" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">2. Communication</text>
+
+  <text x="280" y="152" font-size="10" font-weight="600" fill="#1a1822">User Notification</text>
+  <text x="280" y="168" font-size="9" fill="#6d5bd0">In-app banner warnings</text>
+  <text x="280" y="182" font-size="9" fill="#1a1822">Email notifications</text>
+  <text x="280" y="196" font-size="9" fill="#1a1822">Help center articles</text>
+
+  <line x1="275" y1="206" x2="445" y2="206" stroke="#d7d1e6" stroke-width="1"/>
+
+  <text x="280" y="222" font-size="10" font-weight="600" fill="#1a1822">Messaging</text>
+  <text x="280" y="238" font-size="9" fill="#6d5bd0">&quot;Upgrade your browser&quot;</text>
+  <text x="280" y="252" font-size="9" fill="#1a1822">Link to modern options</text>
+  <text x="280" y="266" font-size="9" fill="#1a1822">Show countdown date</text>
+  <text x="280" y="280" font-size="9" fill="#1a1822">Dismissible but persistent</text>
+
+  <!-- Arrow -->
+  <line x1="460" y1="190" x2="480" y2="190" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-lb3)"/>
+
+  <!-- Phase 3: Gradual Degradation -->
+  <rect x="490" y="95" width="200" height="190" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="490" y="95" width="200" height="35" rx="8" fill="#6d5bd0"/>
+  <rect x="490" y="120" width="200" height="10" fill="#6d5bd0"/>
+  <text x="590" y="112" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">3. Gradual Degradation</text>
+
+  <text x="510" y="152" font-size="10" font-weight="600" fill="#1a1822">Feature Reduction</text>
+  <text x="510" y="168" font-size="9" fill="#6d5bd0">Stop shipping polyfills</text>
+  <text x="510" y="182" font-size="9" fill="#1a1822">Disable non-critical features</text>
+  <text x="510" y="196" font-size="9" fill="#1a1822">Simplify UI fallback</text>
+
+  <line x1="505" y1="206" x2="675" y2="206" stroke="#d7d1e6" stroke-width="1"/>
+
+  <text x="510" y="222" font-size="10" font-weight="600" fill="#1a1822">Testing Reduction</text>
+  <text x="510" y="238" font-size="9" fill="#6d5bd0">Remove from CI matrix</text>
+  <text x="510" y="252" font-size="9" fill="#1a1822">Stop fixing legacy bugs</text>
+  <text x="510" y="266" font-size="9" fill="#1a1822">Move to Tier 3 testing</text>
+  <text x="510" y="280" font-size="9" fill="#1a1822">Monitor error rates</text>
+
+  <!-- Arrow -->
+  <line x1="690" y1="190" x2="710" y2="190" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-lb3)"/>
+
+  <!-- Phase 4: Complete Removal -->
+  <rect x="720" y="95" width="160" height="190" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="720" y="95" width="160" height="35" rx="8" fill="#6d5bd0"/>
+  <rect x="720" y="120" width="160" height="10" fill="#6d5bd0"/>
+  <text x="800" y="112" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">4. Full Removal</text>
+
+  <text x="740" y="152" font-size="10" font-weight="600" fill="#1a1822">Code Cleanup</text>
+  <text x="740" y="168" font-size="9" fill="#6d5bd0">Remove polyfills</text>
+  <text x="740" y="182" font-size="9" fill="#1a1822">Delete legacy bundles</text>
+  <text x="740" y="196" font-size="9" fill="#1a1822">Remove workarounds</text>
+
+  <line x1="735" y1="206" x2="865" y2="206" stroke="#d7d1e6" stroke-width="1"/>
+
+  <text x="740" y="222" font-size="10" font-weight="600" fill="#1a1822">Benefits</text>
+  <text x="740" y="238" font-size="9" fill="#6d5bd0">Smaller bundle size</text>
+  <text x="740" y="252" font-size="9" fill="#1a1822">Faster builds</text>
+  <text x="740" y="266" font-size="9" fill="#1a1822">Modern APIs only</text>
+  <text x="740" y="280" font-size="9" fill="#1a1822">Less tech debt</text>
+
+  <!-- Impact Timeline Bar -->
+  <text x="450" y="315" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Impact Over Time</text>
+
+  <!-- User Impact -->
+  <text x="30" y="345" font-size="10" font-weight="600" fill="#1a1822">User Impact</text>
+  <rect x="130" y="333" width="40" height="16" rx="3" fill="#6d5bd0" opacity="0.2"/>
+  <rect x="310" y="333" width="120" height="16" rx="3" fill="#6d5bd0" opacity="0.4"/>
+  <rect x="530" y="333" width="150" height="16" rx="3" fill="#6d5bd0" opacity="0.7"/>
+  <rect x="750" y="333" width="100" height="16" rx="3" fill="#6d5bd0"/>
+  <text x="150" y="344" text-anchor="middle" font-size="7" fill="#1a1822">Low</text>
+  <text x="370" y="344" text-anchor="middle" font-size="7" fill="#1a1822">Banner shown</text>
+  <text x="605" y="344" text-anchor="middle" font-size="7" fill="#ffffff">Features degrade</text>
+  <text x="800" y="344" text-anchor="middle" font-size="7" fill="#ffffff">Blocked</text>
+
+  <!-- Dev Effort -->
+  <text x="30" y="375" font-size="10" font-weight="600" fill="#1a1822">Dev Effort</text>
+  <rect x="130" y="363" width="140" height="16" rx="3" fill="#6d5bd0" opacity="0.7"/>
+  <rect x="310" y="363" width="80" height="16" rx="3" fill="#6d5bd0" opacity="0.5"/>
+  <rect x="530" y="363" width="100" height="16" rx="3" fill="#6d5bd0" opacity="0.4"/>
+  <rect x="750" y="363" width="60" height="16" rx="3" fill="#6d5bd0" opacity="0.3"/>
+  <text x="200" y="374" text-anchor="middle" font-size="7" fill="#ffffff">Planning</text>
+  <text x="350" y="374" text-anchor="middle" font-size="7" fill="#ffffff">Comms</text>
+  <text x="580" y="374" text-anchor="middle" font-size="7" fill="#1a1822">Degrade</text>
+  <text x="780" y="374" text-anchor="middle" font-size="7" fill="#1a1822">Cleanup</text>
+
+  <!-- Bundle Size -->
+  <text x="30" y="405" font-size="10" font-weight="600" fill="#1a1822">Bundle Size</text>
+  <rect x="130" y="393" width="580" height="16" rx="3" fill="#6d5bd0" opacity="0.5"/>
+  <rect x="750" y="393" width="100" height="16" rx="3" fill="#6d5bd0" opacity="0.2"/>
+  <text x="420" y="404" text-anchor="middle" font-size="7" fill="#ffffff">Legacy bundle still shipped</text>
+  <text x="800" y="404" text-anchor="middle" font-size="7" fill="#1a1822">Modern only</text>
+
+  <!-- Key Metrics -->
+  <rect x="30" y="425" width="840" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="130" y="448" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Bundle: -40%</text>
+  <text x="130" y="463" text-anchor="middle" font-size="8" fill="#1a1822">After full removal</text>
+  <text x="340" y="448" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Build Time: -30%</text>
+  <text x="340" y="463" text-anchor="middle" font-size="8" fill="#1a1822">No dual compilation</text>
+  <text x="555" y="448" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Test Time: -25%</text>
+  <text x="555" y="463" text-anchor="middle" font-size="8" fill="#1a1822">Fewer browser targets</text>
+  <text x="770" y="448" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Bug Fixes: -50%</text>
+  <text x="770" y="463" text-anchor="middle" font-size="8" fill="#1a1822">No compat workarounds</text>
+
+  <!-- Watermark -->
+  <text x="870" y="490" text-anchor="end" font-size="8" fill="#d7d1e6">Legacy Browser Sunset Lifecycle</text>
 </svg>

@@ -8,32 +8,32 @@
   <!-- srcset box -->
   <rect x="30" y="74" width="260" height="120" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
   <text x="160" y="94" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">srcset + sizes (Resolution)</text>
-  <text x="42" y="114" font-size="10" fill="#1a1822" font-family="monospace">&lt;img</text>
+  <text x="42" y="114" font-size="10" fill="#1a1822" font-family="monospace">&amp;lt;img</text>
   <text x="52" y="128" font-size="10" fill="#1a1822" font-family="monospace">srcset="img-400.jpg 400w,</text>
   <text x="100" y="142" font-size="10" fill="#1a1822" font-family="monospace">img-800.jpg 800w,</text>
   <text x="100" y="156" font-size="10" fill="#1a1822" font-family="monospace">img-1200.jpg 1200w"</text>
   <text x="52" y="170" font-size="10" fill="#1a1822" font-family="monospace">sizes="(max-width:800px) 100vw,</text>
-  <text x="100" y="184" font-size="10" fill="#1a1822" font-family="monospace">50vw" /&gt;</text>
+  <text x="100" y="184" font-size="10" fill="#1a1822" font-family="monospace">50vw" /&amp;gt;</text>
 
   <!-- picture box -->
   <rect x="310" y="74" width="280" height="120" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
-  <text x="450" y="94" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">&lt;picture&gt; (Format Negotiation)</text>
-  <text x="322" y="114" font-size="10" fill="#1a1822" font-family="monospace">&lt;picture&gt;</text>
-  <text x="332" y="128" font-size="10" fill="#1a1822" font-family="monospace">&lt;source type="image/avif"</text>
-  <text x="352" y="142" font-size="10" fill="#1a1822" font-family="monospace">srcset="photo.avif" /&gt;</text>
-  <text x="332" y="156" font-size="10" fill="#1a1822" font-family="monospace">&lt;source type="image/webp"</text>
-  <text x="352" y="170" font-size="10" fill="#1a1822" font-family="monospace">srcset="photo.webp" /&gt;</text>
-  <text x="332" y="184" font-size="10" fill="#1a1822" font-family="monospace">&lt;img src="photo.jpg" /&gt;</text>
+  <text x="450" y="94" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">&amp;lt;picture&amp;gt; (Format Negotiation)</text>
+  <text x="322" y="114" font-size="10" fill="#1a1822" font-family="monospace">&amp;lt;picture&amp;gt;</text>
+  <text x="332" y="128" font-size="10" fill="#1a1822" font-family="monospace">&amp;lt;source type="image/avif"</text>
+  <text x="352" y="142" font-size="10" fill="#1a1822" font-family="monospace">srcset="photo.avif" /&amp;gt;</text>
+  <text x="332" y="156" font-size="10" fill="#1a1822" font-family="monospace">&amp;lt;source type="image/webp"</text>
+  <text x="352" y="170" font-size="10" fill="#1a1822" font-family="monospace">srcset="photo.webp" /&amp;gt;</text>
+  <text x="332" y="184" font-size="10" fill="#1a1822" font-family="monospace">&amp;lt;img src="photo.jpg" /&amp;gt;</text>
 
   <!-- Art direction box -->
   <rect x="610" y="74" width="270" height="120" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
-  <text x="745" y="94" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">&lt;picture&gt; (Art Direction)</text>
-  <text x="622" y="114" font-size="10" fill="#1a1822" font-family="monospace">&lt;picture&gt;</text>
-  <text x="632" y="128" font-size="10" fill="#1a1822" font-family="monospace">&lt;source media="(max-width:600px)"</text>
-  <text x="652" y="142" font-size="10" fill="#1a1822" font-family="monospace">srcset="hero-mobile.jpg" /&gt;</text>
-  <text x="632" y="156" font-size="10" fill="#1a1822" font-family="monospace">&lt;source media="(min-width:601px)"</text>
-  <text x="652" y="170" font-size="10" fill="#1a1822" font-family="monospace">srcset="hero-desktop.jpg" /&gt;</text>
-  <text x="632" y="184" font-size="10" fill="#1a1822" font-family="monospace">&lt;img src="hero-fallback.jpg" /&gt;</text>
+  <text x="745" y="94" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">&amp;lt;picture&amp;gt; (Art Direction)</text>
+  <text x="622" y="114" font-size="10" fill="#1a1822" font-family="monospace">&amp;lt;picture&amp;gt;</text>
+  <text x="632" y="128" font-size="10" fill="#1a1822" font-family="monospace">&amp;lt;source media="(max-width:600px)"</text>
+  <text x="652" y="142" font-size="10" fill="#1a1822" font-family="monospace">srcset="hero-mobile.jpg" /&amp;gt;</text>
+  <text x="632" y="156" font-size="10" fill="#1a1822" font-family="monospace">&amp;lt;source media="(min-width:601px)"</text>
+  <text x="652" y="170" font-size="10" fill="#1a1822" font-family="monospace">srcset="hero-desktop.jpg" /&amp;gt;</text>
+  <text x="632" y="184" font-size="10" fill="#1a1822" font-family="monospace">&amp;lt;img src="hero-fallback.jpg" /&amp;gt;</text>
 
   <!-- Row 2: Browser Selection Flow -->
   <text x="40" y="224" font-size="13" font-weight="700" fill="#6d5bd0">2. Browser Selection Flow</text>
@@ -41,13 +41,13 @@
   <!-- Flow boxes -->
   <rect x="30" y="238" width="130" height="55" rx="6" fill="#6d5bd0"/>
   <text x="95" y="260" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Parse HTML</text>
-  <text x="95" y="278" text-anchor="middle" font-size="10" fill="#ffffff">&lt;picture&gt; / &lt;img&gt;</text>
+  <text x="95" y="278" text-anchor="middle" font-size="10" fill="#ffffff">&amp;lt;picture&amp;gt; / &amp;lt;img&amp;gt;</text>
 
   <line x1="160" y1="265" x2="185" y2="265" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow)"/>
 
   <rect x="185" y="238" width="140" height="55" rx="6" fill="#6d5bd0"/>
   <text x="255" y="260" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Check Format</text>
-  <text x="255" y="278" text-anchor="middle" font-size="10" fill="#ffffff">AVIF &gt; WebP &gt; JPEG</text>
+  <text x="255" y="278" text-anchor="middle" font-size="10" fill="#ffffff">AVIF &amp;gt; WebP &amp;gt; JPEG</text>
 
   <line x1="325" y1="265" x2="350" y2="265" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow)"/>
 
@@ -75,7 +75,7 @@
   <text x="160" y="362" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Mobile (375px, 2x DPR)</text>
   <text x="42" y="382" font-size="10" fill="#1a1822">sizes="100vw" = 375px effective</text>
   <text x="42" y="398" font-size="10" fill="#1a1822">375px x 2 = 750px needed</text>
-  <text x="42" y="412" font-size="10" font-weight="600" fill="#6d5bd0">Selected: img-800.jpg (closest &gt;= 750w)</text>
+  <text x="42" y="412" font-size="10" font-weight="600" fill="#6d5bd0">Selected: img-800.jpg (closest &amp;gt;= 750w)</text>
 
   <!-- Tablet -->
   <rect x="310" y="342" width="280" height="75" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
@@ -89,7 +89,7 @@
   <text x="745" y="362" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Desktop (1440px, 1x DPR)</text>
   <text x="622" y="382" font-size="10" fill="#1a1822">sizes="50vw" = 720px effective</text>
   <text x="622" y="398" font-size="10" fill="#1a1822">720px x 1 = 720px needed</text>
-  <text x="622" y="412" font-size="10" font-weight="600" fill="#6d5bd0">Selected: img-800.jpg (closest &gt;= 720w)</text>
+  <text x="622" y="412" font-size="10" font-weight="600" fill="#6d5bd0">Selected: img-800.jpg (closest &amp;gt;= 720w)</text>
 
   <!-- Key insight box -->
   <rect x="30" y="435" width="850" height="50" rx="6" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>

@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Heading Hierarchy &amp; SEO Weight</text>
+
+  <!-- Column headers -->
+  <text x="100" y="70" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">Level</text>
+  <text x="420" y="70" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">Visual Representation &amp; SEO Weight</text>
+  <text x="770" y="70" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">Typical Use</text>
+
+  <!-- h1 -->
+  <rect x="40" y="85" width="120" height="48" rx="6" fill="#6d5bd0"/>
+  <text x="100" y="114" text-anchor="middle" font-size="18" font-weight="800" fill="#ffffff">&amp;lt;h1&amp;gt;</text>
+  <rect x="180" y="85" width="480" height="48" rx="6" fill="#6d5bd0"/>
+  <text x="420" y="110" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Highest SEO Weight — Primary Topic Signal</text>
+  <text x="770" y="105" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">Page Title</text>
+  <text x="770" y="122" text-anchor="middle" font-size="10" fill="#1a1822">One per page only</text>
+
+  <!-- h2 -->
+  <rect x="40" y="145" width="120" height="48" rx="6" fill="#7b6ad5"/>
+  <text x="100" y="174" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff">&amp;lt;h2&amp;gt;</text>
+  <rect x="200" y="145" width="420" height="48" rx="6" fill="#7b6ad5"/>
+  <text x="410" y="174" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">High Weight — Major Section Topics</text>
+  <text x="770" y="165" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">Major Sections</text>
+  <text x="770" y="182" text-anchor="middle" font-size="10" fill="#1a1822">Features, About, etc.</text>
+
+  <!-- h3 -->
+  <rect x="40" y="205" width="120" height="48" rx="6" fill="#8b7de0"/>
+  <text x="100" y="234" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">&amp;lt;h3&amp;gt;</text>
+  <rect x="220" y="205" width="360" height="48" rx="6" fill="#8b7de0"/>
+  <text x="400" y="234" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Medium Weight — Subsections</text>
+  <text x="770" y="225" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">Subsections</text>
+  <text x="770" y="242" text-anchor="middle" font-size="10" fill="#1a1822">Details within sections</text>
+
+  <!-- h4 -->
+  <rect x="40" y="265" width="120" height="48" rx="6" fill="#a89fd0"/>
+  <text x="100" y="294" text-anchor="middle" font-size="14" font-weight="600" fill="#ffffff">&amp;lt;h4&amp;gt;</text>
+  <rect x="240" y="265" width="300" height="48" rx="6" fill="#a89fd0"/>
+  <text x="390" y="294" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Lower Weight — Sub-subsections</text>
+  <text x="770" y="285" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">Sub-subsections</text>
+  <text x="770" y="302" text-anchor="middle" font-size="10" fill="#1a1822">Specific topics</text>
+
+  <!-- h5 -->
+  <rect x="40" y="325" width="120" height="48" rx="6" fill="#c0b8dd"/>
+  <text x="100" y="354" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">&amp;lt;h5&amp;gt;</text>
+  <rect x="260" y="325" width="240" height="48" rx="6" fill="#c0b8dd"/>
+  <text x="380" y="354" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Minimal Weight</text>
+  <text x="770" y="345" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">Fine Details</text>
+  <text x="770" y="362" text-anchor="middle" font-size="10" fill="#1a1822">Rarely used in SEO</text>
+
+  <!-- h6 -->
+  <rect x="40" y="385" width="120" height="48" rx="6" fill="#d7d1e6"/>
+  <text x="100" y="414" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">&amp;lt;h6&amp;gt;</text>
+  <rect x="280" y="385" width="180" height="48" rx="6" fill="#d7d1e6"/>
+  <text x="370" y="414" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Least Weight</text>
+  <text x="770" y="405" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="600">Micro Details</text>
+  <text x="770" y="422" text-anchor="middle" font-size="10" fill="#1a1822">Footnotes, captions</text>
+
+  <!-- Gradient arrow -->
+  <text x="450" y="470" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">SEO Importance</text>
+  <line x1="200" y1="480" x2="700" y2="480" stroke="#6d5bd0" stroke-width="3" marker-end="url(#arr)"/>
+  <text x="200" y="495" font-size="10" fill="#1a1822">Highest</text>
+  <text x="680" y="495" font-size="10" fill="#1a1822">Lowest</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

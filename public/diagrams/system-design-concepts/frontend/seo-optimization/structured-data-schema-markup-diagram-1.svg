@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Schema.org Type Hierarchy</text>
+
+  <!-- Thing (root) -->
+  <rect x="370" y="55" width="160" height="45" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="83" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Thing</text>
+
+  <!-- Level 1 branches -->
+  <line x1="450" y1="100" x2="450" y2="120" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="110" y1="120" x2="790" y2="120" stroke="#6d5bd0" stroke-width="2"/>
+
+  <!-- Branch lines down -->
+  <line x1="110" y1="120" x2="110" y2="140" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSD1)"/>
+  <line x1="290" y1="120" x2="290" y2="140" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSD1)"/>
+  <line x1="450" y1="120" x2="450" y2="140" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSD1)"/>
+  <line x1="610" y1="120" x2="610" y2="140" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSD1)"/>
+  <line x1="790" y1="120" x2="790" y2="140" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSD1)"/>
+
+  <!-- CreativeWork -->
+  <rect x="30" y="145" width="160" height="45" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="110" y="173" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">CreativeWork</text>
+
+  <!-- Product -->
+  <rect x="210" y="145" width="160" height="45" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="290" y="173" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Product</text>
+
+  <!-- Event -->
+  <rect x="370" y="145" width="160" height="45" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="173" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Event</text>
+
+  <!-- Organization -->
+  <rect x="530" y="145" width="160" height="45" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="610" y="173" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Organization</text>
+
+  <!-- Place -->
+  <rect x="710" y="145" width="160" height="45" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="790" y="173" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Place</text>
+
+  <!-- CreativeWork children -->
+  <line x1="110" y1="190" x2="110" y2="210" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="30" y1="210" x2="190" y2="210" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="30" y1="210" x2="30" y2="230" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSD1)"/>
+  <line x1="110" y1="210" x2="110" y2="230" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSD1)"/>
+  <line x1="190" y1="210" x2="190" y2="230" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSD1)"/>
+
+  <!-- Article -->
+  <rect x="0" y="235" width="60" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="30" y="259" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Article</text>
+
+  <!-- BlogPosting -->
+  <rect x="70" y="235" width="80" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="110" y="259" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">BlogPosting</text>
+
+  <!-- NewsArticle -->
+  <rect x="160" y="235" width="80" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="200" y="259" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">NewsArticle</text>
+
+  <!-- Product children -->
+  <line x1="290" y1="190" x2="290" y2="230" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSD1)"/>
+  <rect x="250" y="235" width="80" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="290" y="255" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Individual</text>
+  <text x="290" y="268" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Product</text>
+
+  <!-- Event children -->
+  <line x1="450" y1="190" x2="450" y2="230" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSD1)"/>
+  <rect x="410" y="235" width="80" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="450" y="259" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">BusinessEvent</text>
+
+  <!-- Organization children -->
+  <line x1="610" y1="190" x2="610" y2="210" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="560" y1="210" x2="660" y2="210" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="560" y1="210" x2="560" y2="230" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSD1)"/>
+  <line x1="660" y1="210" x2="660" y2="230" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSD1)"/>
+
+  <rect x="520" y="235" width="80" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="560" y="255" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Local</text>
+  <text x="560" y="268" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Business</text>
+
+  <rect x="620" y="235" width="80" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="660" y="259" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Corporation</text>
+
+  <!-- Place children -->
+  <line x1="790" y1="190" x2="790" y2="230" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowSD1)"/>
+  <rect x="750" y="235" width="80" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="790" y="255" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Tourist</text>
+  <text x="790" y="268" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Attraction</text>
+
+  <!-- Properties section -->
+  <rect x="50" y="310" width="800" height="170" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="450" y="335" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1822">Common Properties per Type</text>
+  <line x1="60" y1="345" x2="840" y2="345" stroke="#d7d1e6" stroke-width="1"/>
+
+  <!-- Thing properties -->
+  <rect x="70" y="360" width="150" height="105" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="145" y="380" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Thing</text>
+  <text x="80" y="398" font-size="10" fill="#1a1822">name, description,</text>
+  <text x="80" y="412" font-size="10" fill="#1a1822">url, image,</text>
+  <text x="80" y="426" font-size="10" fill="#1a1822">identifier,</text>
+  <text x="80" y="440" font-size="10" fill="#1a1822">sameAs, subjectOf</text>
+
+  <!-- CreativeWork props -->
+  <rect x="240" y="360" width="150" height="105" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="315" y="380" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">CreativeWork</text>
+  <text x="250" y="398" font-size="10" fill="#1a1822">author, datePublished,</text>
+  <text x="250" y="412" font-size="10" fill="#1a1822">dateModified, headline,</text>
+  <text x="250" y="426" font-size="10" fill="#1a1822">publisher, keywords,</text>
+  <text x="250" y="440" font-size="10" fill="#1a1822">mainEntityOfPage</text>
+
+  <!-- Product props -->
+  <rect x="410" y="360" width="150" height="105" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="485" y="380" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Product</text>
+  <text x="420" y="398" font-size="10" fill="#1a1822">brand, offers, sku,</text>
+  <text x="420" y="412" font-size="10" fill="#1a1822">review, aggregateRating,</text>
+  <text x="420" y="426" font-size="10" fill="#1a1822">gtin, mpn,</text>
+  <text x="420" y="440" font-size="10" fill="#1a1822">category, color</text>
+
+  <!-- Event props -->
+  <rect x="580" y="360" width="130" height="105" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="645" y="380" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Event</text>
+  <text x="590" y="398" font-size="10" fill="#1a1822">startDate, endDate,</text>
+  <text x="590" y="412" font-size="10" fill="#1a1822">location, performer,</text>
+  <text x="590" y="426" font-size="10" fill="#1a1822">organizer, offers,</text>
+  <text x="590" y="440" font-size="10" fill="#1a1822">eventStatus</text>
+
+  <!-- Organization props -->
+  <rect x="725" y="360" width="110" height="105" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="780" y="380" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Organization</text>
+  <text x="735" y="398" font-size="10" fill="#1a1822">logo, address,</text>
+  <text x="735" y="412" font-size="10" fill="#1a1822">contactPoint,</text>
+  <text x="735" y="426" font-size="10" fill="#1a1822">foundingDate,</text>
+  <text x="735" y="440" font-size="10" fill="#1a1822">numberOfEmployees</text>
+
+  <defs>
+    <marker id="arrowSD1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

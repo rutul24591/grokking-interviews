@@ -34,7 +34,7 @@
   <rect x="410" y="160" width="200" height="30" rx="10" fill="#facc15"/>
   <rect x="410" y="175" width="200" height="15" fill="#facc15"/>
   <text x="510" y="180" text-anchor="middle" font-size="12" fill="#1a1822" font-weight="700">Secondary CDN (Fastly)</text>
-  <text x="510" y="210" text-anchor="middle" font-size="10" fill="#1a1822">Instant purge (&lt;150ms)</text>
+  <text x="510" y="210" text-anchor="middle" font-size="10" fill="#1a1822">Instant purge (&amp;lt;150ms)</text>
   <text x="510" y="226" text-anchor="middle" font-size="10" fill="#1a1822">VCL edge compute</text>
   <text x="510" y="242" text-anchor="middle" font-size="10" fill="#facc15" font-weight="600">Status: STANDBY</text>
 

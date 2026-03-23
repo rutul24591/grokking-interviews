@@ -29,17 +29,36 @@ export default function AccountLockoutArticle() {
           locks an account after repeated failed authentication attempts. It prevents brute force
           and credential stuffing attacks by limiting the number of password guesses.
         </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/account-lockout-flow.svg"
+          alt="Account Lockout Flow"
+          caption="Account Lockout Flow — showing failed attempts, lockout trigger, and unlock process"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/account-lockout-unlock.svg"
+          alt="Account Lockout Unlock"
+          caption="Account Unlock — showing admin unlock, self-service unlock, and automatic expiry"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/account-lockout-security.svg"
+          alt="Account Lockout Security"
+          caption="Account Lockout Security — showing DoS prevention, progressive delays, and CAPTCHA integration"
+        />
+      
         <p>
           For staff and principal engineers, implementing account lockout requires
           understanding threshold configuration, lockout duration, unlock mechanisms,
           and security patterns. The implementation must balance security with usability.
         </p>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/account-lockout-flow.svg"
-          alt="Account Lockout Flow"
-          caption="Account Lockout — showing failed attempts, threshold check, lockout, and unlock"
-        />
+        
+
+        
+
+        
       </section>
 
       <section>
@@ -94,11 +113,7 @@ export default function AccountLockoutArticle() {
       <section>
         <h2>Unlock Mechanisms</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/account-lockout-unlock.svg"
-          alt="Account Unlock Mechanisms"
-          caption="Unlock Mechanisms — showing automatic unlock, email unlock, and admin reset"
-        />
+        
 
         <ul className="space-y-3">
           <li><strong>Automatic:</strong> Unlock after duration expires.</li>
@@ -111,11 +126,7 @@ export default function AccountLockoutArticle() {
       <section>
         <h2>Security Considerations</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/account-lockout-security.svg"
-          alt="Account Lockout Security"
-          caption="Security — showing brute force prevention, DoS protection, and CAPTCHA integration"
-        />
+        
 
         <p>
           Account lockout must be implemented carefully to prevent abuse.
@@ -629,6 +640,65 @@ export default function AccountLockoutArticle() {
         <p>
           Meet regulatory requirements for lockout. SOC2 audit trails. HIPAA immediate lockout. PCI-DSS session controls. GDPR right to lockout. Regular compliance reviews. External audit support.
         </p>
+      </section>
+
+      <section>
+        <h2>Real-world Use Cases</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce Account Lockout</h3>
+        <p>
+          Large e-commerce platform with 50M users, credential stuffing protection.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Credential stuffing attacks (100K attempts/hour). Legitimate users getting locked out. Balance security with UX.</li>
+          <li><strong>Solution:</strong> Progressive lockout (3 failures → CAPTCHA, 5 → 15 min lockout, 10 → 24 hour). IP-based rate limiting separate from account lockout. Email unlock option.</li>
+          <li><strong>Result:</strong> Credential stuffing blocked 99%. Legitimate lockouts reduced 70%. Support tickets down 50%.</li>
+          <li><strong>Security:</strong> Progressive delays, CAPTCHA, IP rate limiting, email unlock.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Banking Account Lockout</h3>
+        <p>
+          Online banking with FFIEC compliance and strict security requirements.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> FFIEC requires account lockout. Can't enable DoS attacks. Customers need immediate access for urgent transactions.</li>
+          <li><strong>Solution:</strong> Soft lockout with step-up verification. After 5 failures, require MFA instead of hard lockout. Call center override for verified customers. 24-hour hard lockout for repeated attempts.</li>
+          <li><strong>Result:</strong> Passed FFIEC audits. DoS attacks mitigated. Customer access maintained for urgent needs.</li>
+          <li><strong>Security:</strong> Step-up verification, call center override, progressive lockout.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Healthcare Portal Lockout</h3>
+        <p>
+          HIPAA-compliant patient portal with provider and patient accounts.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> HIPAA requires access controls. Providers need access for patient care. Shared workstations cause accidental lockouts.</li>
+          <li><strong>Solution:</strong> Different thresholds for providers (10 failures) vs patients (5 failures). Break-glass override for providers (audit logged). Admin unlock for staff.</li>
+          <li><strong>Result:</strong> Passed HIPAA audits. Provider workflow maintained. Patient accounts protected.</li>
+          <li><strong>Security:</strong> Role-based thresholds, break-glass audit, admin unlock.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Gaming Platform Lockout</h3>
+        <p>
+          Online gaming platform with 100M users, account theft prevention.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> High-value accounts targeted. Young users forget passwords. Account sharing with friends causes lockouts.</li>
+          <li><strong>Solution:</strong> Geographic anomaly detection triggers lockout. Parental unlock for minor accounts. Purchase history verification for unlock. Waiting period for high-value accounts.</li>
+          <li><strong>Result:</strong> Account theft reduced 90%. Parent satisfaction improved. False lockouts reduced 60%.</li>
+          <li><strong>Security:</strong> Geographic detection, parental unlock, purchase verification.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SaaS Lockout</h3>
+        <p>
+          B2B SaaS with 10,000 enterprise customers, admin-managed lockout.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Employee lockouts affect productivity. Admin needs to unlock quickly. SSO users bypass local lockout.</li>
+          <li><strong>Solution:</strong> Admin dashboard for instant unlock. SSO lockout handled by IdP. Audit logging for all unlock actions. Self-service unlock via verified email.</li>
+          <li><strong>Result:</strong> Employee downtime reduced to minutes. Admin efficiency improved. Zero unauthorized unlocks.</li>
+          <li><strong>Security:</strong> Admin verification, SSO integration, audit logging.</li>
+        </ul>
       </section>
     </ArticleLayout>
   );

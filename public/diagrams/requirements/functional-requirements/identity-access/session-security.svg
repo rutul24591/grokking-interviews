@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Session Security Measures</text>
+  
+  <!-- Cookie Security -->
+  <rect x="50" y="70" width="220" height="180" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="160" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Cookie Security</text>
+  
+  <rect x="70" y="115" width="180" height="30" rx="4" fill="#22c55e" opacity="0.8"/>
+  <text x="160" y="135" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">HttpOnly</text>
+  
+  <rect x="70" y="150" width="180" height="30" rx="4" fill="#22c55e" opacity="0.8"/>
+  <text x="160" y="170" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Secure (HTTPS only)</text>
+  
+  <rect x="70" y="185" width="180" height="30" rx="4" fill="#22c55e" opacity="0.8"/>
+  <text x="160" y="205" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">SameSite=Strict</text>
+  
+  <rect x="70" y="220" width="180" height="20" rx="4" fill="#f8fafc"/>
+  <text x="160" y="235" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Prevents XSS, CSRF</text>
+  
+  <!-- Token Security -->
+  <rect x="290" y="70" width="220" height="180" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="400" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Token Security</text>
+  
+  <rect x="310" y="115" width="180" height="30" rx="4" fill="#3b82f6" opacity="0.8"/>
+  <text x="400" y="135" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">JWT with RS256</text>
+  
+  <rect x="310" y="150" width="180" height="30" rx="4" fill="#3b82f6" opacity="0.8"/>
+  <text x="400" y="170" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Short expiry (15min)</text>
+  
+  <rect x="310" y="185" width="180" height="30" rx="4" fill="#3b82f6" opacity="0.8"/>
+  <text x="400" y="205" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Refresh tokens</text>
+  
+  <rect x="310" y="220" width="180" height="20" rx="4" fill="#f8fafc"/>
+  <text x="400" y="235" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Rotation on use</text>
+  
+  <!-- Attack Prevention -->
+  <rect x="530" y="70" width="220" height="180" rx="8" fill="#f1f5f9" stroke="#ef4444" stroke-width="2"/>
+  <text x="640" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Attack Prevention</text>
+  
+  <rect x="550" y="115" width="180" height="30" rx="4" fill="#ef4444" opacity="0.2"/>
+  <text x="640" y="135" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Session Fixation</text>
+  <text x="710" y="135" text-anchor="end" font-family="system-ui" font-size="9" fill="#22c55e">Regenerate ID</text>
+  
+  <rect x="550" y="150" width="180" height="30" rx="4" fill="#ef4444" opacity="0.2"/>
+  <text x="640" y="170" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Session Hijacking</text>
+  <text x="710" y="170" text-anchor="end" font-family="system-ui" font-size="9" fill="#22c55e">Fingerprint binding</text>
+  
+  <rect x="550" y="185" width="180" height="30" rx="4" fill="#ef4444" opacity="0.2"/>
+  <text x="640" y="205" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">CSRF</text>
+  <text x="710" y="205" text-anchor="end" font-family="system-ui" font-size="9" fill="#22c55e">SameSite + CSRF token</text>
+  
+  <rect x="550" y="220" width="180" height="20" rx="4" fill="#f8fafc"/>
+  <text x="640" y="235" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">XSS: Content Security Policy</text>
+  
+  <!-- Detection -->
+  <rect x="50" y="280" width="340" height="140" rx="8" fill="#f1f5f9" stroke="#f59e0b" stroke-width="2"/>
+  <text x="220" y="310" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Anomaly Detection</text>
+  
+  <rect x="70" y="330" width="280" height="30" rx="4" fill="#f8fafc"/>
+  <text x="210" y="350" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">IP address change mid-session</text>
+  
+  <rect x="70" y="365" width="280" height="30" rx="4" fill="#f8fafc"/>
+  <text x="210" y="385" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Geographic impossibility</text>
+  
+  <rect x="70" y="400" width="280" height="20" rx="4" fill="#f8fafc"/>
+  <text x="210" y="415" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">User-Agent change, device fingerprint mismatch</text>
+  
+  <!-- Response -->
+  <rect x="420" y="280" width="330" height="140" rx="8" fill="#f1f5f9" stroke="#ef4444" stroke-width="2"/>
+  <text x="585" y="310" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Security Response</text>
+  
+  <rect x="440" y="330" width="290" height="30" rx="4" fill="#ef4444" opacity="0.2"/>
+  <text x="585" y="350" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Immediate revocation</text>
+  
+  <rect x="440" y="365" width="290" height="30" rx="4" fill="#ef4444" opacity="0.2"/>
+  <text x="585" y="385" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Force re-authentication</text>
+  
+  <rect x="440" y="400" width="290" height="20" rx="4" fill="#f8fafc"/>
+  <text x="585" y="415" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Alert user, log security event, notify admin</text>
+
+</svg>

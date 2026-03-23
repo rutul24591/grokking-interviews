@@ -21,7 +21,7 @@
   <rect x="35" y="100" width="120" height="55" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
   <text x="95" y="120" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">1. Entry Point</text>
   <text x="95" y="135" text-anchor="middle" font-size="9" fill="#1a1822">webpack.config.js</text>
-  <text x="95" y="148" text-anchor="middle" font-size="9" fill="#1a1822">entry: &apos;./src/app.js&apos;</text>
+  <text x="95" y="148" text-anchor="middle" font-size="9" fill="#1a1822">entry: &amp;apos;./src/app.js&amp;apos;</text>
 
   <path d="M 155 127 L 175 127" stroke="#6d5bd0" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
 
@@ -44,7 +44,7 @@
   <text x="50" y="190" font-size="10" fill="#22c55e">output:</text>
   <text x="100" y="190" font-size="10" fill="#ffffff">{</text>
   <text x="110" y="207" font-size="10" fill="#22c55e">filename:</text>
-  <text x="175" y="207" font-size="10" fill="#f59e0b">&apos;[name].[contenthash:8].js&apos;</text>
+  <text x="175" y="207" font-size="10" fill="#f59e0b">&amp;apos;[name].[contenthash:8].js&amp;apos;</text>
   <text x="380" y="207" font-size="10" fill="#ffffff">}</text>
 
   <!-- Hash detail -->
@@ -88,7 +88,7 @@
   <text x="635" y="207" font-size="10" fill="#ffffff">{ output: {</text>
   <text x="485" y="207" font-size="10" fill="#f59e0b"> </text>
   <text x="710" y="207" font-size="10" fill="#22c55e">assetFileNames:</text>
-  <text x="820" y="207" font-size="10" fill="#f59e0b">&apos;[hash]&apos;</text>
+  <text x="820" y="207" font-size="10" fill="#f59e0b">&amp;apos;[hash]&amp;apos;</text>
 
   <!-- Hash detail -->
   <rect x="470" y="230" width="400" height="45" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
@@ -119,13 +119,13 @@
   <!-- HTML with refs -->
   <rect x="320" y="350" width="290" height="160" rx="6" fill="#1a1822" stroke="#1a1822" stroke-width="1"/>
   <text x="465" y="372" text-anchor="middle" font-size="12" font-weight="bold" fill="#ffffff">index.html (injected refs)</text>
-  <text x="335" y="395" font-size="9" fill="#d7d1e6">&lt;!DOCTYPE html&gt;</text>
-  <text x="335" y="412" font-size="9" fill="#d7d1e6">&lt;head&gt;</text>
-  <text x="345" y="429" font-size="9" fill="#22c55e">&lt;link rel=&quot;stylesheet&quot;</text>
-  <text x="355" y="443" font-size="9" fill="#f59e0b">href=&quot;/assets/index-Dn4fG8h3.css&quot;&gt;</text>
-  <text x="335" y="460" font-size="9" fill="#d7d1e6">&lt;/head&gt;&lt;body&gt;</text>
-  <text x="345" y="477" font-size="9" fill="#22c55e">&lt;script type=&quot;module&quot;</text>
-  <text x="355" y="491" font-size="9" fill="#f59e0b">src=&quot;/assets/index-BkH3a9f2.js&quot;&gt;</text>
+  <text x="335" y="395" font-size="9" fill="#d7d1e6">&amp;lt;!DOCTYPE html&amp;gt;</text>
+  <text x="335" y="412" font-size="9" fill="#d7d1e6">&amp;lt;head&amp;gt;</text>
+  <text x="345" y="429" font-size="9" fill="#22c55e">&amp;lt;link rel=&amp;quot;stylesheet&amp;quot;</text>
+  <text x="355" y="443" font-size="9" fill="#f59e0b">href=&amp;quot;/assets/index-Dn4fG8h3.css&amp;quot;&amp;gt;</text>
+  <text x="335" y="460" font-size="9" fill="#d7d1e6">&amp;lt;/head&amp;gt;&amp;lt;body&amp;gt;</text>
+  <text x="345" y="477" font-size="9" fill="#22c55e">&amp;lt;script type=&amp;quot;module&amp;quot;</text>
+  <text x="355" y="491" font-size="9" fill="#f59e0b">src=&amp;quot;/assets/index-BkH3a9f2.js&amp;quot;&amp;gt;</text>
 
   <!-- Cache headers -->
   <rect x="640" y="350" width="220" height="160" rx="6" fill="#f3f1f8" stroke="#6d5bd0" stroke-width="2"/>

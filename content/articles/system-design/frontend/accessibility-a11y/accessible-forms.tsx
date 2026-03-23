@@ -156,70 +156,10 @@ export default function AccessibleFormsArticle() {
           caption="Four label association methods: explicit (for/id), implicit (wrapping), aria-label (string), and aria-labelledby (reference). Explicit association is the most widely supported."
         />
 
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// Accessible form field component in React
-import { useId } from 'react';
-
-function FormField({
-  label,
-  type = 'text',
-  required = false,
-  error,
-  helpText,
-  ...inputProps
-}) {
-  const id = useId();
-  const errorId = \`\${id}-error\`;
-  const helpId = \`\${id}-help\`;
-
-  // Build aria-describedby from available descriptions
-  const describedBy = [
-    error ? errorId : null,
-    helpText ? helpId : null,
-  ].filter(Boolean).join(' ') || undefined;
-
-  return (
-    <div className="form-field">
-      <label htmlFor={id}>
-        {label}
-        {required && <span aria-hidden="true"> *</span>}
-      </label>
-
-      <input
-        id={id}
-        type={type}
-        required={required}
-        aria-required={required}
-        aria-invalid={!!error}
-        aria-describedby={describedBy}
-        {...inputProps}
-      />
-
-      {helpText && (
-        <p id={helpId} className="help-text">
-          {helpText}
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Accessible FormField Component Pattern</h3>
+        <p>
+          Create a reusable FormField component using React's useId hook to generate unique IDs. The component accepts label, type, required, error, and helpText props. Generate unique IDs for the field, error message, and help text using template literals. Build aria-describedby by conditionally including error and help text IDs. The component renders a label with htmlFor pointing to the field ID, an asterisk for required fields with aria-hidden set to true, an input with id, type, required, aria-required, aria-invalid reflecting error state, and aria-describedby pointing to the description IDs. Conditionally render help text and error paragraphs with appropriate IDs and roles. Usage example shows a FormField for email address with type email, required, help text, error state, and autocomplete set to email.
         </p>
-      )}
-
-      {error && (
-        <p id={errorId} className="error-text" role="alert">
-          {error}
-        </p>
-      )}
-    </div>
-  );
-}
-
-// Usage
-<FormField
-  label="Email address"
-  type="email"
-  required
-  helpText="We'll never share your email"
-  error={errors.email}
-  autoComplete="email"
-/>`}</code>
-        </pre>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Error Announcement Flow</h3>
         <p>
@@ -233,160 +173,15 @@ function FormField({
           caption="Error handling flow: Submit → Validate → Show error summary at top → Move focus to summary → User clicks error links to jump to fields → Inline errors visible on each field."
         />
 
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// Error summary pattern (GOV.UK style)
-import { useRef, useEffect } from 'react';
-
-function ErrorSummary({ errors }) {
-  const summaryRef = useRef(null);
-
-  useEffect(() => {
-    if (errors.length > 0) {
-      summaryRef.current?.focus();
-    }
-  }, [errors]);
-
-  if (errors.length === 0) return null;
-
-  return (
-    <div
-      ref={summaryRef}
-      role="alert"
-      aria-labelledby="error-summary-title"
-      tabIndex={-1}
-      className="error-summary"
-    >
-      <h2 id="error-summary-title">
-        There {errors.length === 1 ? 'is 1 error' : \`are \${errors.length} errors\`}
-      </h2>
-      <ul>
-        {errors.map(({ fieldId, message }) => (
-          <li key={fieldId}>
-            <a href={\`#\${fieldId}\`} onClick={(e) => {
-              e.preventDefault();
-              document.getElementById(fieldId)?.focus();
-            }}>
-              {message}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}`}</code>
-        </pre>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Form Validation Accessibility Lifecycle</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">ErrorSummary Component Pattern</h3>
         <p>
-          The complete lifecycle of accessible form validation covers field entry, inline validation,
-          submit-time validation, error correction, and success confirmation. Each phase has specific
-          accessibility requirements.
+          Create an ErrorSummary component using useRef and useEffect hooks. The component accepts an errors array. Use a ref to reference the summary div for focus management. In useEffect, when errors length is greater than zero, focus the summary element. Return null if no errors exist. Otherwise render a div with ref, role set to alert, aria-labelledby pointing to the title ID, tabIndex set to negative one for programmatic focus, and a CSS class for styling. Include an h2 heading that announces the error count (singular or plural), and an unordered list where each error is a list item containing a link that, when clicked, prevents default behavior and focuses the corresponding form field by ID.
         </p>
-        <ArticleImage
-          src="/diagrams/system-design-concepts/frontend/accessibility-a11y/accessible-forms-diagram-3.svg"
-          alt="Form validation accessibility lifecycle from input through validation, error display, correction, and success"
-          caption="Complete validation lifecycle: User inputs → Optional inline validation on blur → Submit validation → Error summary + inline errors → User corrects → Success confirmation."
-        />
 
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// Complete accessible form with validation
-import { useState, useRef, useCallback } from 'react';
-
-function AccessibleForm() {
-  const [errors, setErrors] = useState({});
-  const [submitted, setSubmitted] = useState(false);
-  const errorSummaryRef = useRef(null);
-
-  const validate = useCallback((data) => {
-    const newErrors = {};
-    if (!data.name) newErrors.name = 'Enter your full name';
-    if (!data.email) newErrors.email = 'Enter your email address';
-    else if (!data.email.includes('@'))
-      newErrors.email = 'Enter an email address in the correct format, like name@example.com';
-    if (!data.password) newErrors.password = 'Enter a password';
-    else if (data.password.length < 8)
-      newErrors.password = 'Password must be at least 8 characters';
-    return newErrors;
-  }, []);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData);
-    const validationErrors = validate(data);
-
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      // Focus error summary after render
-      requestAnimationFrame(() => {
-        errorSummaryRef.current?.focus();
-      });
-    } else {
-      setErrors({});
-      setSubmitted(true);
-    }
-  };
-
-  // Clear error when user corrects a field
-  const handleBlur = (fieldName) => (e) => {
-    if (errors[fieldName] && e.target.value) {
-      setErrors(prev => {
-        const next = { ...prev };
-        delete next[fieldName];
-        return next;
-      });
-    }
-  };
-
-  if (submitted) {
-    return (
-      <div role="status" tabIndex={-1}>
-        <h2>Registration successful</h2>
-        <p>Your account has been created.</p>
-      </div>
-    );
-  }
-
-  return (
-    <form onSubmit={handleSubmit} noValidate>
-      {/* Error Summary */}
-      {Object.keys(errors).length > 0 && (
-        <div ref={errorSummaryRef} role="alert" tabIndex={-1}>
-          <h2>There are {Object.keys(errors).length} errors</h2>
-          <ul>
-            {Object.entries(errors).map(([field, msg]) => (
-              <li key={field}>
-                <a href={\`#\${field}\`}>{msg}</a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      <fieldset>
-        <legend>Create your account</legend>
-        <FormField
-          label="Full name" name="name" id="name"
-          required error={errors.name}
-          autoComplete="name" onBlur={handleBlur('name')}
-        />
-        <FormField
-          label="Email" name="email" id="email" type="email"
-          required error={errors.email}
-          autoComplete="email" onBlur={handleBlur('email')}
-        />
-        <FormField
-          label="Password" name="password" id="password" type="password"
-          required error={errors.password}
-          helpText="Must be at least 8 characters"
-          autoComplete="new-password" onBlur={handleBlur('password')}
-        />
-      </fieldset>
-      <button type="submit">Create account</button>
-    </form>
-  );
-}`}</code>
-        </pre>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Complete Accessible Form with Validation</h3>
+        <p>
+          Create a complete accessible form with validation using useState, useRef, and useCallback hooks. The form has errors state, submitted state, and an errorSummaryRef. The validate callback checks for required fields (name, email, password) and validates email format and password length. The handleSubmit handler prevents default, extracts form data, runs validation, and if errors exist, sets errors state and requests animation frame to focus the error summary. If no errors, clears errors and sets submitted to true. The handleBlur callback clears field-specific errors when the user corrects the field. When submitted is true, render a success message with role status and tabIndex negative one. Otherwise render the form with onSubmit handler and noValidate attribute. Conditionally render the ErrorSummary when errors exist. Wrap fields in a fieldset with legend. Use FormField components for each input with appropriate labels, types, required flags, error states, autocomplete values, and onBlur handlers.
+        </p>
       </section>
 
       {/* ─── Section 4: Trade-offs & Comparisons ─── */}

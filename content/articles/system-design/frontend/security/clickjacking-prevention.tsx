@@ -390,6 +390,128 @@ export default function ClickjackingPreventionArticle() {
       </section>
 
       <section>
+        <h2>Architecture at Scale: Clickjacking Defense in Enterprise Systems</h2>
+        <p>
+          Enterprise-scale clickjacking defense requires coordinated header management, consistent framing policies, and centralized monitoring across multiple applications, business units, and geographic regions. In microservices architectures, each service must enforce framing protection consistently.
+        </p>
+        <p>
+          <strong>Centralized Header Management:</strong> Implement header injection at the API gateway or load balancer level. Use infrastructure-as-code (Terraform, CloudFormation) to enforce X-Frame-Options and CSP frame-ancestors consistently across all services. Document framing policies in security standards.
+        </p>
+        <p>
+          <strong>Multi-Tenant Framing Policies:</strong> For SaaS applications with embedded widgets, implement tenant-specific framing allowlists. Use CSP frame-ancestors with tenant-specific origins. Implement framing policy management UI for tenant administrators. Document multi-tenant framing architecture.
+        </p>
+        <p>
+          <strong>CDN Integration:</strong> Configure CDN (Cloudflare, AWS CloudFront, Fastly) to inject clickjacking headers at the edge. Use CDN Workers or Lambda@Edge to dynamically set frame-ancestors based on request context. Implement header stripping for legacy browser compatibility. Document CDN header configuration.
+        </p>
+        <p>
+          <strong>Third-Party Integration:</strong> For legitimate third-party embedding (partners, integrations), implement secure embedding protocols. Use postMessage for cross-origin communication. Implement embedding request workflow with security review. Document third-party embedding guidelines.
+        </p>
+      </section>
+
+      <section>
+        <h2>Testing Strategies: Clickjacking Validation</h2>
+        <p>
+          Comprehensive clickjacking testing requires automated scanning, manual verification, and penetration testing integrated into security operations.
+        </p>
+        <p>
+          <strong>Automated Header Scanning:</strong> Use OWASP ZAP, Burp Suite, or custom scripts to verify X-Frame-Options and CSP frame-ancestors headers. Configure CI/CD pipelines to scan headers after each deployment. Set up automated alerts for: missing X-Frame-Options, missing frame-ancestors, overly permissive framing policies.
+        </p>
+        <p>
+          <strong>Framing Tests:</strong> Test framing protection: (1) Attempt to load pages in cross-origin iframes, (2) Verify pages are blocked or rendered unusable, (3) Test with different SameSite cookie values, (4) Test frame busting JavaScript effectiveness. Use tools like Burp Intruder for automated framing tests.
+        </p>
+        <p>
+          <strong>Cursorjacking Tests:</strong> Test for cursorjacking vulnerabilities: (1) Check for custom cursor implementations, (2) Verify click handlers match visual elements, (3) Test for hidden clickable elements. Document cursorjacking test results.
+        </p>
+        <p>
+          <strong>Penetration Testing:</strong> Include clickjacking in quarterly penetration tests. Specific test cases: (1) Classic clickjacking with transparent iframe, (2) Likejacking attacks, (3) Cursorjacking attacks, (4) Filejacking attacks, (5) Password manager auto-fill attacks. Require remediation of all clickjacking findings before production deployment.
+        </p>
+      </section>
+
+      <section>
+        <h2>Compliance and Legal Context</h2>
+        <p>
+          Clickjacking prevention has significant compliance implications, particularly for applications handling financial transactions, healthcare data, or operating in regulated industries.
+        </p>
+        <p>
+          <strong>PCI-DSS Requirements:</strong> PCI-DSS Requirement 6.5.9 requires protection against clickjacking for payment pages. Implement X-Frame-Options or CSP frame-ancestors for all payment-related pages. Document clickjacking controls in ROC (Report on Compliance). Annual penetration testing must include clickjacking testing.
+        </p>
+        <p>
+          <strong>HIPAA Requirements:</strong> HIPAA Security Rule 45 CFR 164.312(a)(1) requires access controls to prevent unauthorized access. Clickjacking can lead to unauthorized actions on ePHI. Document clickjacking prevention in security policies. Implement audit logging for actions that could be clickjacking targets.
+        </p>
+        <p>
+          <strong>GDPR Implications:</strong> GDPR Article 32 requires appropriate security for personal data protection. Clickjacking that leads to unauthorized data access or modification violates GDPR. Document clickjacking prevention measures as part of security of processing.
+        </p>
+        <p>
+          <strong>SOC 2 Controls:</strong> Clickjacking prevention maps to SOC 2 Common Criteria CC6.1 (logical access controls). Document clickjacking policies, header configuration, and testing for annual SOC 2 audits. Track clickjacking-related security incidents.
+        </p>
+        <p>
+          <strong>Industry Regulations:</strong> FFIEC requires clickjacking protection for online banking. PSD2 requires strong customer authentication which includes clickjacking prevention. Document compliance with applicable industry regulations.
+        </p>
+      </section>
+
+      <section>
+        <h2>Performance Trade-offs: Security vs. User Experience</h2>
+        <p>
+          Clickjacking prevention measures introduce minimal performance overhead but may impact legitimate use cases.
+        </p>
+        <p>
+          <strong>Header Overhead:</strong> X-Frame-Options and CSP headers add negligible overhead (less than 100 bytes per response). No measurable latency impact. Include headers in all responses, not just HTML (protects against MIME-type confusion attacks).
+        </p>
+        <p>
+          <strong>Frame Busting JavaScript:</strong> JavaScript frame busting adds minimal overhead (less than 1ms). However, it can interfere with legitimate framing scenarios. Test frame busting thoroughly before deployment. Consider user-agent detection to disable frame busting for known-good embedders.
+        </p>
+        <p>
+          <strong>Legitimate Embedding Impact:</strong> Strict framing policies block legitimate embedding (partner integrations, embedded widgets). Implement allowlisting for trusted origins. Use CSP frame-ancestors with specific origins instead of wildcard. Document legitimate embedding requirements.
+        </p>
+        <p>
+          <strong>CSRF Token Overhead:</strong> CSRF tokens add minimal overhead (token generation less than 1ms, validation less than 5ms). Use stateless CSRF tokens (HMAC-based) to eliminate server-side storage. Cache CSRF tokens per session. Monitor CSRF validation latency.
+        </p>
+        <p>
+          <strong>SameSite Cookie Impact:</strong> SameSite cookies have zero performance impact (browser-enforced). However, SameSite=Strict breaks legitimate cross-origin flows (SSO, payment gateways). Test cross-origin flows thoroughly. Use SameSite=Lax as default with Strict for high-risk operations.
+        </p>
+      </section>
+
+      <section>
+        <h2>Browser and Platform Compatibility</h2>
+        <p>
+          Clickjacking protection support varies across browsers, requiring careful compatibility planning.
+        </p>
+        <p>
+          <strong>X-Frame-Options Support:</strong> Supported in all modern browsers (IE8+, all current versions). Deprecated but still enforced. Chrome 91+ shows deprecation warnings but continues to enforce. Use as fallback for older browsers.
+        </p>
+        <p>
+          <strong>CSP frame-ancestors Support:</strong> Supported in Chrome 39+, Firefox 50+, Safari 12.1+, Edge 79+. Not supported in IE11. Use both X-Frame-Options and CSP for maximum coverage. Test frame-ancestors across target browsers.
+        </p>
+        <p>
+          <strong>Sandbox Attribute Support:</strong> Supported in all modern browsers (IE10+, all current versions). Some older mobile browsers have partial sandbox support. Test sandbox effectiveness using browser DevTools. Document sandbox support in browser compatibility matrix.
+        </p>
+        <p>
+          <strong>Mobile Browser Considerations:</strong> Mobile Chrome/Firefox match desktop support. iOS Safari has full support. Some older Android browsers have partial support. Test clickjacking protection on actual mobile devices.
+        </p>
+        <p>
+          <strong>WebView Considerations:</strong> iOS WKWebView and Android WebView have separate framing behavior. Some apps intentionally embed web content in WebViews. Test clickjacking protection in actual app WebViews. Consider user-agent detection for WebView-specific policies.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-World Use Cases</h2>
+        <ul className="space-y-3">
+          <li>
+            <strong>Banking Application:</strong> X-Frame-Options: DENY on all pages. CSP frame-ancestors 'none'. SameSite=Strict on session cookies. CSRF tokens on all transactions. Re-authentication for transfers. No legitimate embedding needed—maximum protection.
+          </li>
+          <li>
+            <strong>Social Media Platform:</strong> X-Frame-Options: SAMEORIGIN. CSP frame-ancestors 'self' for most pages. Allow specific partners for embedded posts (Twitter cards, Facebook posts). postMessage for cross-origin widget communication. Likejacking prevention critical.
+          </li>
+          <li>
+            <strong>E-Commerce Platform:</strong> X-Frame-Options: DENY on checkout pages. CSP frame-ancestors 'self' for product pages. Allow payment processor embedding (Stripe, PayPal) via specific origins. CSRF tokens on cart modifications. Clickjacking prevention for "Buy Now" buttons.
+          </li>
+          <li>
+            <strong>Enterprise SaaS:</strong> X-Frame-Options: SAMEORIGIN. CSP frame-ancestors with customer domains for embedded widgets. Tenant-specific framing allowlists. postMessage for secure cross-origin communication. Customer-controlled embedding settings.
+          </li>
+        </ul>
+      </section>
+
+      <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-3">
           <li>
@@ -428,43 +550,7 @@ export default function ClickjackingPreventionArticle() {
       </section>
 
       <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://owasp.org/www-community/attacks/Clickjacking" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP Clickjacking Documentation
-            </a>
-          </li>
-          <li>
-            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Clickjacking_Defense_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP Clickjacking Defense Cheat Sheet
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN Web Docs: X-Frame-Options
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN Web Docs: CSP frame-ancestors
-            </a>
-          </li>
-          <li>
-            <a href="https://www.w3.org/TR/html52/browsers.html#the-iframe-element" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              HTML5.2 Specification: iframe sandbox
-            </a>
-          </li>
-          <li>
-            <a href="https://portswigger.net/web-security/clickjacking" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              PortSwigger: Clickjacking Vulnerabilities
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Interview Questions & Answers</h2>
+        <h2>Interview Questions and Answers</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q1: What is clickjacking and how does it work?</p>
@@ -531,6 +617,42 @@ export default function ClickjackingPreventionArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      <section>
+        <h2>References and Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://owasp.org/www-community/attacks/Clickjacking" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OWASP Clickjacking Documentation
+            </a>
+          </li>
+          <li>
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Clickjacking_Defense_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OWASP Clickjacking Defense Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN Web Docs: X-Frame-Options
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN Web Docs: CSP frame-ancestors
+            </a>
+          </li>
+          <li>
+            <a href="https://www.w3.org/TR/html52/browsers.html#the-iframe-element" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              HTML5.2 Specification: iframe sandbox
+            </a>
+          </li>
+          <li>
+            <a href="https://portswigger.net/web-security/clickjacking" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              PortSwigger: Clickjacking Vulnerabilities
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

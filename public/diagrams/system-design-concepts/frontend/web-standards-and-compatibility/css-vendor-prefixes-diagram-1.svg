@@ -1,18 +1,130 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="CSS Vendor Prefixes diagram 1">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
   <defs>
-    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
+    <marker id="arrow-vp1" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
   </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg1)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">CSS Vendor Prefixes</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 1</text>
+
+  <!-- Background -->
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">PostCSS Processing Pipeline</text>
+  <text x="450" y="52" text-anchor="middle" font-size="11" fill="#6d5bd0">CSS Source &amp;rarr; Nesting &amp;rarr; Custom Properties &amp;rarr; Autoprefixer &amp;rarr; Minification</text>
+
+  <!-- CSS Source File -->
+  <rect x="30" y="90" width="140" height="80" rx="8" fill="#6d5bd0"/>
+  <text x="100" y="118" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">CSS Source</text>
+  <text x="100" y="136" text-anchor="middle" font-size="10" fill="#ffffff">styles.css</text>
+  <text x="100" y="155" text-anchor="middle" font-size="9" fill="#ffffff">Modern CSS syntax</text>
+
+  <!-- Arrow 1 -->
+  <line x1="170" y1="130" x2="215" y2="130" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-vp1)"/>
+
+  <!-- PostCSS Parser -->
+  <rect x="225" y="85" width="130" height="90" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="290" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">PostCSS</text>
+  <text x="290" y="124" text-anchor="middle" font-size="10" fill="#1a1822">Parser</text>
+  <line x1="240" y1="132" x2="340" y2="132" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="290" y="150" text-anchor="middle" font-size="9" fill="#1a1822">CSS &amp;rarr; AST</text>
+  <text x="290" y="164" text-anchor="middle" font-size="9" fill="#6d5bd0">Tokenize &amp; Parse</text>
+
+  <!-- Arrow 2 -->
+  <line x1="355" y1="130" x2="395" y2="130" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-vp1)"/>
+
+  <!-- Plugin Pipeline Container -->
+  <rect x="395" y="70" width="480" height="130" rx="10" fill="none" stroke="#d7d1e6" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="635" y="88" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Plugin Pipeline (sequential)</text>
+
+  <!-- Plugin 1 -->
+  <rect x="410" y="100" width="100" height="85" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <circle cx="415" cy="105" r="10" fill="#6d5bd0"/>
+  <text x="415" y="109" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">1</text>
+  <text x="460" y="125" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Nesting</text>
+  <line x1="420" y1="133" x2="500" y2="133" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="460" y="150" text-anchor="middle" font-size="8" fill="#6d5bd0">.a { .b {} }</text>
+  <text x="460" y="163" text-anchor="middle" font-size="8" fill="#1a1822">.a .b {}</text>
+  <text x="460" y="178" text-anchor="middle" font-size="7" fill="#6d5bd0">Flatten nesting</text>
+
+  <!-- Arrow -->
+  <line x1="510" y1="140" x2="525" y2="140" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-vp1)"/>
+
+  <!-- Plugin 2 -->
+  <rect x="535" y="100" width="100" height="85" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <circle cx="540" cy="105" r="10" fill="#6d5bd0"/>
+  <text x="540" y="109" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">2</text>
+  <text x="585" y="120" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Custom</text>
+  <text x="585" y="133" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Properties</text>
+  <line x1="545" y1="140" x2="625" y2="140" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="585" y="157" text-anchor="middle" font-size="8" fill="#6d5bd0">var(--c)</text>
+  <text x="585" y="170" text-anchor="middle" font-size="8" fill="#1a1822">#6d5bd0</text>
+
+  <!-- Arrow -->
+  <line x1="635" y1="140" x2="650" y2="140" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-vp1)"/>
+
+  <!-- Plugin 3 -->
+  <rect x="660" y="100" width="100" height="85" rx="8" fill="#6d5bd0"/>
+  <circle cx="665" cy="105" r="10" fill="#ffffff"/>
+  <text x="665" y="109" text-anchor="middle" font-size="8" font-weight="700" fill="#6d5bd0">3</text>
+  <text x="710" y="125" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Autoprefixer</text>
+  <line x1="670" y1="133" x2="750" y2="133" stroke="#ffffff" stroke-width="1" opacity="0.3"/>
+  <text x="710" y="150" text-anchor="middle" font-size="8" fill="#ffffff">Add -webkit-</text>
+  <text x="710" y="163" text-anchor="middle" font-size="8" fill="#ffffff">Add -moz-</text>
+  <text x="710" y="176" text-anchor="middle" font-size="8" fill="#ffffff">Remove old</text>
+
+  <!-- Arrow down from pipeline -->
+  <line x1="635" y1="200" x2="635" y2="250" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-vp1)"/>
+
+  <!-- Plugin 4: cssnano -->
+  <rect x="570" y="260" width="130" height="70" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <circle cx="575" cy="265" r="10" fill="#6d5bd0"/>
+  <text x="575" y="269" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">4</text>
+  <text x="635" y="285" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">cssnano</text>
+  <line x1="585" y1="293" x2="685" y2="293" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="635" y="310" text-anchor="middle" font-size="9" fill="#6d5bd0">Minify &amp; Optimize</text>
+  <text x="635" y="323" text-anchor="middle" font-size="9" fill="#1a1822">Remove whitespace</text>
+
+  <!-- Arrow down -->
+  <line x1="635" y1="330" x2="635" y2="375" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-vp1)"/>
+
+  <!-- Stringifier -->
+  <rect x="570" y="385" width="130" height="50" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="635" y="407" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Stringifier</text>
+  <text x="635" y="425" text-anchor="middle" font-size="9" fill="#6d5bd0">AST &amp;rarr; CSS String</text>
+
+  <!-- Arrow to output -->
+  <line x1="700" y1="410" x2="745" y2="410" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow-vp1)"/>
+
+  <!-- Output CSS -->
+  <rect x="755" y="380" width="120" height="60" rx="8" fill="#6d5bd0"/>
+  <text x="815" y="405" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Output CSS</text>
+  <text x="815" y="425" text-anchor="middle" font-size="9" fill="#ffffff">dist/styles.css</text>
+
+  <!-- Config files (left side) -->
+  <rect x="30" y="260" width="160" height="100" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="110" y="282" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">postcss.config.js</text>
+  <line x1="45" y1="290" x2="175" y2="290" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="50" y="308" font-size="9" fill="#6d5bd0">plugins: [</text>
+  <text x="60" y="322" font-size="9" fill="#1a1822">nesting, custom-props,</text>
+  <text x="60" y="336" font-size="9" fill="#1a1822">autoprefixer, cssnano</text>
+  <text x="50" y="350" font-size="9" fill="#6d5bd0">]</text>
+
+  <!-- Browserslist -->
+  <rect x="230" y="280" width="160" height="70" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="310" y="302" text-anchor="middle" font-size="11" font-weight="700" fill="#1a1822">.browserslistrc</text>
+  <line x1="245" y1="310" x2="375" y2="310" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="310" y="328" text-anchor="middle" font-size="9" fill="#6d5bd0">&gt; 0.5%, last 2 versions</text>
+  <text x="310" y="342" text-anchor="middle" font-size="9" fill="#1a1822">not dead</text>
+
+  <!-- Dashed arrow from config to pipeline -->
+  <line x1="110" y1="260" x2="110" y2="200" stroke="#d7d1e6" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="110" y1="200" x2="395" y2="200" stroke="#d7d1e6" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow-vp1)"/>
+
+  <!-- Source map output -->
+  <rect x="755" y="450" width="120" height="35" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="815" y="472" text-anchor="middle" font-size="10" fill="#1a1822">styles.css.map</text>
+  <line x1="815" y1="440" x2="815" y2="450" stroke="#d7d1e6" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Watermark -->
+  <text x="870" y="490" text-anchor="end" font-size="8" fill="#d7d1e6">PostCSS Pipeline Architecture</text>
 </svg>

@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Structured Data Format Comparison</text>
+
+  <!-- Column Headers -->
+  <rect x="20" y="55" width="275" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="157" y="80" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">JSON-LD (Recommended)</text>
+
+  <rect x="312" y="55" width="275" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="449" y="80" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Microdata</text>
+
+  <rect x="604" y="55" width="275" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="741" y="80" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">RDFa</text>
+
+  <!-- JSON-LD Column -->
+  <rect x="20" y="105" width="275" height="280" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="35" y="130" font-size="11" font-weight="600" fill="#6d5bd0">Separate &amp;lt;script&amp;gt; block:</text>
+  <text x="35" y="152" font-size="10" fill="#1a1822">&amp;lt;script type="application/ld+json"&amp;gt;</text>
+  <text x="35" y="168" font-size="10" fill="#1a1822">{</text>
+  <text x="45" y="184" font-size="10" fill="#6d5bd0">"@context": "https://schema.org"</text>
+  <text x="45" y="200" font-size="10" fill="#6d5bd0">"@type": "Product"</text>
+  <text x="45" y="216" font-size="10" fill="#1a1822">"name": "Widget Pro"</text>
+  <text x="45" y="232" font-size="10" fill="#1a1822">"description": "A great..."</text>
+  <text x="45" y="248" font-size="10" fill="#1a1822">"offers": {</text>
+  <text x="55" y="264" font-size="10" fill="#1a1822">"price": "29.99"</text>
+  <text x="55" y="280" font-size="10" fill="#1a1822">"priceCurrency": "USD"</text>
+  <text x="45" y="296" font-size="10" fill="#1a1822">}</text>
+  <text x="35" y="312" font-size="10" fill="#1a1822">}</text>
+  <text x="35" y="328" font-size="10" fill="#1a1822">&amp;lt;/script&amp;gt;</text>
+  <text x="35" y="358" font-size="10" fill="#1a1822">&amp;lt;h1&amp;gt;Widget Pro&amp;lt;/h1&amp;gt;</text>
+  <text x="35" y="374" font-size="10" fill="#1a1822">&amp;lt;p&amp;gt;$29.99&amp;lt;/p&amp;gt;</text>
+
+  <!-- Microdata Column -->
+  <rect x="312" y="105" width="275" height="280" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="327" y="130" font-size="11" font-weight="600" fill="#6d5bd0">Inline HTML attributes:</text>
+  <text x="327" y="155" font-size="10" fill="#1a1822">&amp;lt;div</text>
+  <text x="337" y="171" font-size="10" fill="#6d5bd0">itemscope</text>
+  <text x="337" y="187" font-size="10" fill="#6d5bd0">itemtype="...Product"</text>
+  <text x="327" y="203" font-size="10" fill="#1a1822">&amp;gt;</text>
+  <text x="337" y="222" font-size="10" fill="#1a1822">&amp;lt;h1 <tspan fill="#6d5bd0">itemprop="name"</tspan>&amp;gt;</text>
+  <text x="347" y="238" font-size="10" fill="#1a1822">Widget Pro&amp;lt;/h1&amp;gt;</text>
+  <text x="337" y="258" font-size="10" fill="#1a1822">&amp;lt;div <tspan fill="#6d5bd0">itemprop="offers"</tspan></text>
+  <text x="347" y="274" font-size="10" fill="#6d5bd0">itemscope</text>
+  <text x="347" y="290" font-size="10" fill="#6d5bd0">itemtype="...Offer"</text>
+  <text x="337" y="306" font-size="10" fill="#1a1822">&amp;gt;</text>
+  <text x="347" y="322" font-size="10" fill="#1a1822">&amp;lt;span <tspan fill="#6d5bd0">itemprop="price"</tspan>&amp;gt;</text>
+  <text x="357" y="338" font-size="10" fill="#1a1822">29.99&amp;lt;/span&amp;gt;</text>
+  <text x="327" y="358" font-size="10" fill="#1a1822">&amp;lt;/div&amp;gt;</text>
+  <text x="327" y="374" font-size="10" fill="#1a1822">&amp;lt;/div&amp;gt;</text>
+
+  <!-- RDFa Column -->
+  <rect x="604" y="105" width="275" height="280" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="619" y="130" font-size="11" font-weight="600" fill="#6d5bd0">Inline HTML attributes:</text>
+  <text x="619" y="155" font-size="10" fill="#1a1822">&amp;lt;div</text>
+  <text x="629" y="171" font-size="10" fill="#6d5bd0">vocab="https://schema.org"</text>
+  <text x="629" y="187" font-size="10" fill="#6d5bd0">typeof="Product"</text>
+  <text x="619" y="203" font-size="10" fill="#1a1822">&amp;gt;</text>
+  <text x="629" y="222" font-size="10" fill="#1a1822">&amp;lt;h1 <tspan fill="#6d5bd0">property="name"</tspan>&amp;gt;</text>
+  <text x="639" y="238" font-size="10" fill="#1a1822">Widget Pro&amp;lt;/h1&amp;gt;</text>
+  <text x="629" y="258" font-size="10" fill="#1a1822">&amp;lt;div <tspan fill="#6d5bd0">property="offers"</tspan></text>
+  <text x="639" y="274" font-size="10" fill="#6d5bd0">typeof="Offer"</text>
+  <text x="629" y="290" font-size="10" fill="#1a1822">&amp;gt;</text>
+  <text x="639" y="310" font-size="10" fill="#1a1822">&amp;lt;span <tspan fill="#6d5bd0">property="price"</tspan></text>
+  <text x="649" y="326" font-size="10" fill="#6d5bd0">content="29.99"</text>
+  <text x="639" y="342" font-size="10" fill="#1a1822">&amp;gt;$29.99&amp;lt;/span&amp;gt;</text>
+  <text x="619" y="362" font-size="10" fill="#1a1822">&amp;lt;/div&amp;gt;</text>
+  <text x="619" y="378" font-size="10" fill="#1a1822">&amp;lt;/div&amp;gt;</text>
+
+  <!-- Comparison Row -->
+  <rect x="20" y="400" width="275" height="85" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="157" y="420" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Advantages</text>
+  <text x="35" y="438" font-size="10" fill="#1a1822">Decoupled from HTML</text>
+  <text x="35" y="454" font-size="10" fill="#1a1822">Easy to generate dynamically</text>
+  <text x="35" y="470" font-size="10" fill="#1a1822">Google recommended format</text>
+
+  <rect x="312" y="400" width="275" height="85" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="449" y="420" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Advantages</text>
+  <text x="327" y="438" font-size="10" fill="#1a1822">Tied to visible content</text>
+  <text x="327" y="454" font-size="10" fill="#1a1822">Self-documenting markup</text>
+  <text x="327" y="470" font-size="10" fill="#1a1822">Supported by all engines</text>
+
+  <rect x="604" y="400" width="275" height="85" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="741" y="420" text-anchor="middle" font-size="11" font-weight="700" fill="#6d5bd0">Advantages</text>
+  <text x="619" y="438" font-size="10" fill="#1a1822">W3C standard</text>
+  <text x="619" y="454" font-size="10" fill="#1a1822">Supports multiple vocabs</text>
+  <text x="619" y="470" font-size="10" fill="#1a1822">Used by government sites</text>
+</svg>

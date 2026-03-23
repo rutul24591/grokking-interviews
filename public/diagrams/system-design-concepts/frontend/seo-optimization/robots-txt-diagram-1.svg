@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Crawler Flow: robots.txt Processing</text>
+
+  <!-- Step 1: Crawler Arrives -->
+  <rect x="350" y="55" width="200" height="50" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="85" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Crawler Arrives at Site</text>
+
+  <line x1="450" y1="105" x2="450" y2="130" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowR1)"/>
+
+  <!-- Step 2: Fetch robots.txt -->
+  <rect x="325" y="135" width="250" height="50" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="165" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Fetch /robots.txt</text>
+
+  <line x1="450" y1="185" x2="450" y2="210" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowR1)"/>
+
+  <!-- Decision: robots.txt found? -->
+  <polygon points="450,215 550,250 450,285 350,250" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="248" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Found?</text>
+
+  <!-- Yes path -->
+  <line x1="550" y1="250" x2="620" y2="250" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowR1)"/>
+  <text x="580" y="242" font-size="10" fill="#6d5bd0" font-weight="600">Yes</text>
+
+  <!-- No path -->
+  <line x1="350" y1="250" x2="250" y2="250" stroke="#d7d1e6" stroke-width="2" marker-end="url(#arrowR1g)"/>
+  <text x="300" y="242" font-size="10" fill="#1a1822">No / Error</text>
+
+  <!-- No: Crawl everything -->
+  <rect x="100" y="230" width="150" height="40" rx="6" fill="#d7d1e6"/>
+  <text x="175" y="255" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Crawl everything</text>
+
+  <!-- Step 3: Parse &amp; Cache Rules -->
+  <rect x="625" y="225" width="200" height="50" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="725" y="248" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Parse &amp; Cache Rules</text>
+  <text x="725" y="264" text-anchor="middle" font-size="10" fill="#1a1822">TTL: ~24 hours</text>
+
+  <line x1="725" y1="275" x2="725" y2="310" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowR1)"/>
+
+  <!-- Step 4: For each URL -->
+  <rect x="600" y="315" width="250" height="45" rx="8" fill="#6d5bd0"/>
+  <text x="725" y="343" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">For Each URL to Crawl</text>
+
+  <line x1="725" y1="360" x2="725" y2="390" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowR1)"/>
+
+  <!-- Decision: Check rules -->
+  <polygon points="725,395 825,430 725,465 625,430" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="725" y="426" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Allowed?</text>
+
+  <!-- Yes: Crawl -->
+  <line x1="825" y1="430" x2="870" y2="430" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="870" y1="430" x2="870" y2="475" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowR1)"/>
+  <text x="850" y="422" font-size="10" fill="#6d5bd0" font-weight="600">Yes</text>
+
+  <rect x="810" y="478" width="80" height="15" rx="4" fill="#6d5bd0"/>
+  <text x="850" y="490" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Crawl</text>
+
+  <!-- No: Skip -->
+  <line x1="625" y1="430" x2="580" y2="430" stroke="#d7d1e6" stroke-width="2"/>
+  <line x1="580" y1="430" x2="580" y2="475" stroke="#d7d1e6" stroke-width="2" marker-end="url(#arrowR1g)"/>
+  <text x="605" y="422" font-size="10" fill="#1a1822">No</text>
+
+  <rect x="540" y="478" width="80" height="15" rx="4" fill="#d7d1e6"/>
+  <text x="580" y="490" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Skip</text>
+
+  <!-- Rules Example -->
+  <rect x="30" y="300" width="370" height="185" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="215" y="325" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">Example robots.txt</text>
+  <line x1="40" y1="335" x2="390" y2="335" stroke="#d7d1e6" stroke-width="1"/>
+
+  <text x="50" y="358" font-size="11" fill="#6d5bd0" font-weight="600">User-agent: *</text>
+  <text x="50" y="378" font-size="11" fill="#1a1822">Disallow: /admin/</text>
+  <text x="50" y="398" font-size="11" fill="#1a1822">Disallow: /api/</text>
+  <text x="50" y="418" font-size="11" fill="#1a1822">Disallow: /search</text>
+  <text x="50" y="438" font-size="11" fill="#1a1822">Allow: /api/public/</text>
+  <text x="50" y="458" font-size="11" fill="#1a1822">Crawl-delay: 1</text>
+  <text x="50" y="478" font-size="11" fill="#1a1822">Sitemap: https://example.com/sitemap.xml</text>
+
+  <defs>
+    <marker id="arrowR1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowR1g" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#d7d1e6"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Dynamic Meta Tag Generation Strategies</text>
+
+  <!-- CMS / Database -->
+  <rect x="350" y="60" width="200" height="60" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="86" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">CMS / Database</text>
+  <text x="450" y="104" text-anchor="middle" font-size="11" fill="#ffffff">Content + metadata source</text>
+
+  <!-- Arrow down from CMS to three paths -->
+  <line x1="450" y1="120" x2="450" y2="150" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="150" y1="150" x2="750" y2="150" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="150" y1="150" x2="150" y2="175" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowM3)"/>
+  <line x1="450" y1="150" x2="450" y2="175" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowM3)"/>
+  <line x1="750" y1="150" x2="750" y2="175" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowM3)"/>
+
+  <!-- Path 1: SSG -->
+  <rect x="50" y="180" width="200" height="100" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="150" y="206" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">SSG Path</text>
+  <text x="150" y="226" text-anchor="middle" font-size="11" fill="#1a1822">At Build Time</text>
+  <line x1="60" y1="238" x2="240" y2="238" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="150" y="256" text-anchor="middle" font-size="10" fill="#1a1822">Queries CMS at build</text>
+  <text x="150" y="270" text-anchor="middle" font-size="10" fill="#1a1822">Generates static HTML files</text>
+
+  <!-- Path 2: SSR -->
+  <rect x="350" y="180" width="200" height="100" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="206" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">SSR Path</text>
+  <text x="450" y="226" text-anchor="middle" font-size="11" fill="#1a1822">Per Request</text>
+  <line x1="360" y1="238" x2="540" y2="238" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="256" text-anchor="middle" font-size="10" fill="#1a1822">Server renders on each request</text>
+  <text x="450" y="270" text-anchor="middle" font-size="10" fill="#1a1822">Fresh data every time</text>
+
+  <!-- Path 3: Edge -->
+  <rect x="650" y="180" width="200" height="100" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="750" y="206" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">Edge Path</text>
+  <text x="750" y="226" text-anchor="middle" font-size="11" fill="#1a1822">At CDN Edge</text>
+  <line x1="660" y1="238" x2="840" y2="238" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="750" y="256" text-anchor="middle" font-size="10" fill="#1a1822">Edge function modifies HTML</text>
+  <text x="750" y="270" text-anchor="middle" font-size="10" fill="#1a1822">Low latency, near user</text>
+
+  <!-- Timing labels -->
+  <rect x="80" y="290" width="140" height="24" rx="4" fill="#6d5bd0"/>
+  <text x="150" y="306" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Deploy-time freshness</text>
+
+  <rect x="380" y="290" width="140" height="24" rx="4" fill="#6d5bd0"/>
+  <text x="450" y="306" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Real-time freshness</text>
+
+  <rect x="680" y="290" width="140" height="24" rx="4" fill="#6d5bd0"/>
+  <text x="750" y="306" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Near real-time</text>
+
+  <!-- Converging arrows -->
+  <line x1="150" y1="314" x2="150" y2="345" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="450" y1="314" x2="450" y2="345" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="750" y1="314" x2="750" y2="345" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="150" y1="345" x2="750" y2="345" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="450" y1="345" x2="450" y2="370" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowM3)"/>
+
+  <!-- HTML Head output -->
+  <rect x="250" y="375" width="400" height="110" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="400" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">&amp;lt;head&amp;gt; with Meta Tags</text>
+  <line x1="260" y1="410" x2="640" y2="410" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="270" y="430" font-size="11" fill="#1a1822">&amp;lt;title&amp;gt;{dynamicTitle}&amp;lt;/title&amp;gt;</text>
+  <text x="270" y="448" font-size="11" fill="#1a1822">&amp;lt;meta name="description" content="{dynamicDesc}"&amp;gt;</text>
+  <text x="270" y="466" font-size="11" fill="#1a1822">&amp;lt;meta property="og:title" content="{dynamicOG}"&amp;gt;</text>
+  <text x="270" y="484" font-size="11" fill="#1a1822">&amp;lt;meta property="og:image" content="{dynamicImg}"&amp;gt;</text>
+
+  <defs>
+    <marker id="arrowM3" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

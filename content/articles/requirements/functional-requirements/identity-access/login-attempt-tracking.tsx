@@ -30,17 +30,36 @@ export default function LoginAttemptTrackingArticle() {
           protection. It enables detection of brute force attacks, credential stuffing, and
           unauthorized access attempts.
         </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/login-attempt-tracking.svg"
+          alt="Login Attempt Tracking"
+          caption="Login Attempt Tracking — showing Redis-based rate limiting and attempt logging"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/login-threat-detection.svg"
+          alt="Login Threat Detection"
+          caption="Login Threat Detection — showing risk signals, scoring engine, and adaptive responses"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/login-tracking-implementation.svg"
+          alt="Login Tracking Implementation"
+          caption="Login Tracking Implementation — showing detailed tracking schema and analysis"
+        />
+      
         <p>
           For staff and principal engineers, implementing login attempt tracking requires
           understanding tracking data, security use cases, and implementation patterns.
           The implementation must balance security monitoring with privacy.
         </p>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/login-attempt-tracking.svg"
-          alt="Login Attempt Tracking"
-          caption="Login Tracking — showing attempt capture, data enrichment, and threat detection"
-        />
+        
+
+        
+
+        
       </section>
 
       <section>
@@ -57,11 +76,7 @@ export default function LoginAttemptTrackingArticle() {
       <section>
         <h2>Security Use Cases</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/login-threat-detection.svg"
-          alt="Login Threat Detection"
-          caption="Threat Detection — showing brute force, credential stuffing, and anomaly detection"
-        />
+        
 
         <ul className="space-y-3">
           <li><strong>Brute Force Detection:</strong> Many failures on one account.</li>
@@ -210,11 +225,7 @@ export default function LoginAttemptTrackingArticle() {
       <section>
         <h2>Interview Questions</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/login-tracking-implementation.svg"
-          alt="Login Tracking Implementation"
-          caption="Implementation — showing Redis storage, rate limiting, and alerting"
-        />
+        
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -29,17 +29,36 @@ export default function IdentityProvidersArticle() {
           identities and authentication for organizations. Enterprise customers often require
           integration with their existing IdP for centralized identity management and compliance.
         </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/identity-providers.svg"
+          alt="Identity Providers"
+          caption="Identity Providers — comparing social, enterprise, and government identity providers"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/idp-integration.svg"
+          alt="Idp Integration"
+          caption="IdP Integration — showing protocol integration, attribute mapping, and trust configuration"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/idp-enterprise.svg"
+          alt="Idp Enterprise"
+          caption="Enterprise IdP — showing Azure AD, Okta, OneLogin integration patterns"
+        />
+      
         <p>
           For staff and principal engineers, integrating with identity providers requires
           understanding SAML, OIDC, directory sync, and enterprise SSO patterns. The
           implementation must support multiple IdPs while maintaining security.
         </p>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/identity-providers.svg"
-          alt="Identity Providers Integration"
-          caption="Identity Providers — showing Okta, Azure AD, SAML/OIDC integration"
-        />
+        
+
+        
+
+        
       </section>
 
       <section>
@@ -56,11 +75,7 @@ export default function IdentityProvidersArticle() {
       <section>
         <h2>Integration Patterns</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/idp-integration.svg"
-          alt="IdP Integration Patterns"
-          caption="Integration — showing SSO, directory sync, JIT provisioning, and group mapping"
-        />
+        
 
         <ul className="space-y-3">
           <li><strong>Enterprise SSO:</strong> SAML/OIDC for employee authentication.</li>
@@ -206,11 +221,7 @@ export default function IdentityProvidersArticle() {
       <section>
         <h2>Interview Questions</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/idp-enterprise.svg"
-          alt="Enterprise IdP Integration"
-          caption="Enterprise Integration — showing SSO, directory sync, JIT provisioning, and group mapping"
-        />
+        
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -597,6 +608,65 @@ export default function IdentityProvidersArticle() {
         <p>
           Test IdP integration thoroughly. Unit tests for IdP logic. Integration tests with IdP providers. End-to-end SSO flow tests. Certificate rotation tests. Failover tests. Load tests for IdP.
         </p>
+      </section>
+
+      <section>
+        <h2>Real-world Use Cases</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise Okta Integration</h3>
+        <p>
+          B2B SaaS integrating with Okta for 5,000 enterprise customers.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Okta is most common enterprise IdP. Custom attribute mapping per customer. JIT provisioning for automatic user creation.</li>
+          <li><strong>Solution:</strong> Okta OIDC integration. Configurable attribute mapping. JIT provisioning with role assignment. SCIM for user lifecycle management.</li>
+          <li><strong>Result:</strong> 80% enterprise customers use Okta integration. Onboarding time reduced from days to hours. 99.9% SSO success rate.</li>
+          <li><strong>Security:</strong> Okta token validation, JIT role assignment, SCIM provisioning.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Azure AD Enterprise Integration</h3>
+        <p>
+          Microsoft-centric enterprises requiring Azure AD (Entra ID) integration.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Azure AD is dominant in Fortune 500. Conditional access policies. Office 365 integration. Group-based access.</li>
+          <li><strong>Solution:</strong> Azure AD OIDC/SAML integration. Conditional access policy support. Office 365 group sync. Enterprise application gallery listing.</li>
+          <li><strong>Result:</strong> Fortune 500 adoption increased 60%. Conditional access working. Group-based access automated.</li>
+          <li><strong>Security:</strong> Conditional access, group sync, Azure AD validation.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Google Workspace Integration</h3>
+        <p>
+          Tech startups and SMBs using Google Workspace as their IdP.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Google Workspace popular with SMBs. Simple SAML integration. Domain-based user provisioning.</li>
+          <li><strong>Solution:</strong> Google Workspace SAML integration. Domain verification. Automatic user provisioning from Google directory.</li>
+          <li><strong>Result:</strong> 90% SMB customer adoption. Domain-based onboarding. Zero manual provisioning.</li>
+          <li><strong>Security:</strong> Google token validation, domain verification, directory sync.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Ping Identity Integration</h3>
+        <p>
+          Large enterprises with PingFederate/PingOne for complex SSO requirements.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Ping used by large enterprises with complex needs. Advanced federation requirements. Custom authentication workflows.</li>
+          <li><strong>Solution:</strong> PingFederate SAML integration. Advanced attribute mapping. Custom authentication workflow support. Federation metadata exchange.</li>
+          <li><strong>Result:</strong> Large enterprise adoption. Complex federation working. Custom workflows supported.</li>
+          <li><strong>Security:</strong> Ping validation, advanced mapping, federation security.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Multi-IdP Support</h3>
+        <p>
+          Global platform supporting 20+ different IdPs for enterprise customers.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Different customers use different IdPs. Need unified integration approach. Consistent user experience across IdPs.</li>
+          <li><strong>Solution:</strong> Abstract IdP layer supporting SAML + OIDC. IdP discovery via email domain. Consistent session management across IdPs.</li>
+          <li><strong>Result:</strong> 20+ IdPs supported. 99% SSO success across all IdPs. Customer choice maintained.</li>
+          <li><strong>Security:</strong> Unified validation, IdP discovery, consistent session security.</li>
+        </ul>
       </section>
     </ArticleLayout>
   );

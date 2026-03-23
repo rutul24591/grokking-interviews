@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Crawler Traversal: Crawl Depth vs Discovery Probability</text>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d7d1e6"/>
+    </marker>
+  </defs>
+
+  <!-- Googlebot -->
+  <rect x="30" y="85" width="100" height="55" rx="8" fill="#6d5bd0"/>
+  <text x="80" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Googlebot</text>
+  <text x="80" y="126" text-anchor="middle" font-size="10" fill="#ffffff">Starts crawl</text>
+
+  <!-- Arrow to homepage -->
+  <line x1="130" y1="112" x2="160" y2="112" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Homepage -->
+  <rect x="160" y="85" width="110" height="55" rx="8" fill="#6d5bd0"/>
+  <text x="215" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Homepage</text>
+  <text x="215" y="126" text-anchor="middle" font-size="10" fill="#ffffff">100% crawled</text>
+
+  <!-- Arrow to page 1 -->
+  <line x1="270" y1="112" x2="300" y2="112" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Page 1 -->
+  <rect x="300" y="85" width="100" height="55" rx="8" fill="#7b6ad5"/>
+  <text x="350" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Page 1</text>
+  <text x="350" y="126" text-anchor="middle" font-size="10" fill="#ffffff">~95% crawled</text>
+
+  <!-- Arrow to page 2 -->
+  <line x1="400" y1="112" x2="430" y2="112" stroke="#8b7de0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Page 2 -->
+  <rect x="430" y="85" width="100" height="55" rx="8" fill="#8b7de0"/>
+  <text x="480" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Page 2</text>
+  <text x="480" y="126" text-anchor="middle" font-size="10" fill="#ffffff">~80% crawled</text>
+
+  <!-- Arrow to page 3 -->
+  <line x1="530" y1="112" x2="560" y2="112" stroke="#a89fd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Page 3 -->
+  <rect x="560" y="85" width="100" height="55" rx="8" fill="#a89fd0"/>
+  <text x="610" y="108" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Page 3</text>
+  <text x="610" y="126" text-anchor="middle" font-size="10" fill="#ffffff">~50% crawled</text>
+
+  <!-- Dots -->
+  <text x="685" y="118" font-size="20" fill="#d7d1e6" font-weight="700">...</text>
+
+  <!-- Page N -->
+  <rect x="720" y="85" width="100" height="55" rx="8" fill="#d7d1e6"/>
+  <text x="770" y="108" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Page N</text>
+  <text x="770" y="126" text-anchor="middle" font-size="10" fill="#1a1822">~5% crawled</text>
+
+  <!-- Crawl probability bar chart -->
+  <text x="450" y="180" text-anchor="middle" font-size="14" font-weight="600" fill="#1a1822">Crawl Probability Decreases with Depth</text>
+
+  <rect x="120" y="200" width="660" height="20" rx="4" fill="#6d5bd0"/>
+  <text x="450" y="215" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Page 1 — 95%</text>
+  <rect x="120" y="228" width="528" height="20" rx="4" fill="#7b6ad5"/>
+  <text x="384" y="243" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Page 2 — 80%</text>
+  <rect x="120" y="256" width="330" height="20" rx="4" fill="#8b7de0"/>
+  <text x="285" y="271" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Page 3 — 50%</text>
+  <rect x="120" y="284" width="198" height="20" rx="4" fill="#a89fd0"/>
+  <text x="219" y="299" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Page 5 — 30%</text>
+  <rect x="120" y="312" width="66" height="20" rx="4" fill="#c0b8dd"/>
+  <text x="153" y="327" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Page 10 — 10%</text>
+  <rect x="120" y="340" width="33" height="20" rx="4" fill="#d7d1e6"/>
+  <text x="175" y="355" font-size="10" fill="#1a1822">Page 20+ — ~5%</text>
+
+  <!-- Sitemap solution -->
+  <rect x="60" y="385" width="780" height="95" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="410" text-anchor="middle" font-size="14" font-weight="700" fill="#6d5bd0">Solution: XML Sitemap for Deep Pages</text>
+  <text x="450" y="432" text-anchor="middle" font-size="12" fill="#1a1822">Deep pages (Page 5+) should be listed in sitemap.xml for guaranteed discovery</text>
+
+  <rect x="120" y="445" width="180" height="26" rx="5" fill="#ece8f6" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="210" y="463" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="600">sitemap.xml includes all URLs</text>
+
+  <line x1="300" y1="458" x2="340" y2="458" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <rect x="340" y="445" width="180" height="26" rx="5" fill="#ece8f6" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="430" y="463" text-anchor="middle" font-size="10" fill="#6d5bd0" font-weight="600">Crawler fetches directly</text>
+
+  <line x1="520" y1="458" x2="560" y2="458" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <rect x="560" y="445" width="220" height="26" rx="5" fill="#6d5bd0"/>
+  <text x="670" y="463" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">100% discovery guaranteed</text>
+</svg>

@@ -38,7 +38,7 @@
   <rect x="440" y="95" width="140" height="130" rx="8" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="2"/>
   <text x="510" y="120" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffffff">svg-sprite</text>
   <line x1="455" y1="130" x2="565" y2="130" stroke="#ffffff" stroke-width="1" opacity="0.3"/>
-  <text x="510" y="150" text-anchor="middle" font-size="10" fill="#ffffff">Wrap in &lt;symbol&gt;</text>
+  <text x="510" y="150" text-anchor="middle" font-size="10" fill="#ffffff">Wrap in &amp;lt;symbol&amp;gt;</text>
   <text x="510" y="167" text-anchor="middle" font-size="10" fill="#ffffff">Add viewBox attr</text>
   <text x="510" y="184" text-anchor="middle" font-size="10" fill="#ffffff">Set unique IDs</text>
   <text x="510" y="201" text-anchor="middle" font-size="10" fill="#ffffff">Bundle into sheet</text>
@@ -50,13 +50,13 @@
   <rect x="630" y="65" width="240" height="220" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
   <text x="750" y="90" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d5bd0">sprites.svg</text>
   <rect x="645" y="105" width="210" height="55" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
-  <text x="750" y="122" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a1822">&lt;symbol id="icon-home"&gt;</text>
-  <text x="750" y="140" text-anchor="middle" font-size="9" fill="#6d5bd0">&lt;path d="M10 20..." /&gt;</text>
-  <text x="750" y="153" text-anchor="middle" font-size="10" fill="#1a1822">&lt;/symbol&gt;</text>
+  <text x="750" y="122" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a1822">&amp;lt;symbol id="icon-home"&amp;gt;</text>
+  <text x="750" y="140" text-anchor="middle" font-size="9" fill="#6d5bd0">&amp;lt;path d="M10 20..." /&amp;gt;</text>
+  <text x="750" y="153" text-anchor="middle" font-size="10" fill="#1a1822">&amp;lt;/symbol&amp;gt;</text>
   <rect x="645" y="165" width="210" height="55" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
-  <text x="750" y="182" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a1822">&lt;symbol id="icon-search"&gt;</text>
-  <text x="750" y="200" text-anchor="middle" font-size="9" fill="#6d5bd0">&lt;path d="M5 15..." /&gt;</text>
-  <text x="750" y="213" text-anchor="middle" font-size="10" fill="#1a1822">&lt;/symbol&gt;</text>
+  <text x="750" y="182" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a1822">&amp;lt;symbol id="icon-search"&amp;gt;</text>
+  <text x="750" y="200" text-anchor="middle" font-size="9" fill="#6d5bd0">&amp;lt;path d="M5 15..." /&amp;gt;</text>
+  <text x="750" y="213" text-anchor="middle" font-size="10" fill="#1a1822">&amp;lt;/symbol&amp;gt;</text>
   <text x="750" y="270" text-anchor="middle" font-size="10" fill="#1a1822" opacity="0.5">... more symbols</text>
 
   <!-- Usage Section -->
@@ -66,11 +66,11 @@
   <rect x="30" y="340" width="260" height="150" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
   <text x="160" y="365" text-anchor="middle" font-size="12" font-weight="bold" fill="#6d5bd0">Inline Sprite (Hidden)</text>
   <rect x="45" y="380" width="230" height="50" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
-  <text x="160" y="398" text-anchor="middle" font-size="9" fill="#1a1822">&lt;svg style="display:none"&gt;</text>
-  <text x="160" y="414" text-anchor="middle" font-size="9" fill="#1a1822">  &lt;symbol id="icon-home"&gt;...&lt;/symbol&gt;</text>
-  <text x="160" y="425" text-anchor="middle" font-size="9" fill="#1a1822">&lt;/svg&gt;</text>
+  <text x="160" y="398" text-anchor="middle" font-size="9" fill="#1a1822">&amp;lt;svg style="display:none"&amp;gt;</text>
+  <text x="160" y="414" text-anchor="middle" font-size="9" fill="#1a1822">  &amp;lt;symbol id="icon-home"&amp;gt;...&amp;lt;/symbol&amp;gt;</text>
+  <text x="160" y="425" text-anchor="middle" font-size="9" fill="#1a1822">&amp;lt;/svg&amp;gt;</text>
   <rect x="45" y="435" width="230" height="30" rx="4" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="1"/>
-  <text x="160" y="455" text-anchor="middle" font-size="9" fill="#ffffff">&lt;svg&gt;&lt;use href="#icon-home" /&gt;&lt;/svg&gt;</text>
+  <text x="160" y="455" text-anchor="middle" font-size="9" fill="#ffffff">&amp;lt;svg&amp;gt;&amp;lt;use href="#icon-home" /&amp;gt;&amp;lt;/svg&amp;gt;</text>
 
   <!-- External Reference -->
   <rect x="320" y="340" width="260" height="150" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
@@ -78,8 +78,8 @@
   <rect x="335" y="380" width="230" height="35" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
   <text x="450" y="402" text-anchor="middle" font-size="9" fill="#1a1822">Sprite loaded via HTTP request</text>
   <rect x="335" y="420" width="230" height="45" rx="4" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="1"/>
-  <text x="450" y="440" text-anchor="middle" font-size="9" fill="#ffffff">&lt;svg&gt;</text>
-  <text x="450" y="455" text-anchor="middle" font-size="9" fill="#ffffff">  &lt;use href="/sprites.svg#icon-home" /&gt;</text>
+  <text x="450" y="440" text-anchor="middle" font-size="9" fill="#ffffff">&amp;lt;svg&amp;gt;</text>
+  <text x="450" y="455" text-anchor="middle" font-size="9" fill="#ffffff">  &amp;lt;use href="/sprites.svg#icon-home" /&amp;gt;</text>
 
   <!-- React Component -->
   <rect x="610" y="340" width="260" height="150" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
@@ -87,7 +87,7 @@
   <rect x="625" y="380" width="230" height="85" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
   <text x="740" y="398" text-anchor="middle" font-size="9" fill="#1a1822">function Icon({{ name, size }}) {{</text>
   <text x="740" y="413" text-anchor="middle" font-size="9" fill="#1a1822">  return (</text>
-  <text x="740" y="428" text-anchor="middle" font-size="9" fill="#6d5bd0">    &lt;svg width={{size}} height={{size}}&gt;</text>
-  <text x="740" y="443" text-anchor="middle" font-size="9" fill="#6d5bd0">      &lt;use href={{`#${{name}}`}} /&gt;</text>
-  <text x="740" y="458" text-anchor="middle" font-size="9" fill="#1a1822">    &lt;/svg&gt;)}</text>
+  <text x="740" y="428" text-anchor="middle" font-size="9" fill="#6d5bd0">    &amp;lt;svg width={{size}} height={{size}}&amp;gt;</text>
+  <text x="740" y="443" text-anchor="middle" font-size="9" fill="#6d5bd0">      &amp;lt;use href={{`#${{name}}`}} /&amp;gt;</text>
+  <text x="740" y="458" text-anchor="middle" font-size="9" fill="#1a1822">    &amp;lt;/svg&amp;gt;)}</text>
 </svg>

@@ -1,18 +1,94 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Progressive Enhancement diagram 2">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif" role="img" aria-label="Feature Detection and Enhancement Flow">
   <defs>
-    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
+    <marker id="pe2-arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="pe2-arrow-gray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#999"/>
+    </marker>
   </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg2)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Progressive Enhancement</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 2</text>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Feature Detection &amp; Enhancement Flow</text>
+
+  <!-- Page Load -->
+  <rect x="350" y="55" width="200" height="44" rx="8" fill="#6d5bd0" stroke="#1a1822" stroke-width="2"/>
+  <text x="450" y="82" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Page Load</text>
+
+  <line x1="450" y1="99" x2="450" y2="120" stroke="#6d5bd0" stroke-width="2" marker-end="url(#pe2-arrow)"/>
+
+  <!-- Feature Detection Module -->
+  <rect x="300" y="125" width="300" height="50" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="147" text-anchor="middle" font-size="14" font-weight="600" fill="#1a1822">Feature Detection Module</text>
+  <text x="450" y="165" text-anchor="middle" font-size="11" fill="#6d5bd0">Probes browser capabilities at runtime</text>
+
+  <!-- Branching into capability checks -->
+  <line x1="300" y1="175" x2="130" y2="210" stroke="#6d5bd0" stroke-width="2" marker-end="url(#pe2-arrow)"/>
+  <line x1="450" y1="175" x2="450" y2="210" stroke="#6d5bd0" stroke-width="2" marker-end="url(#pe2-arrow)"/>
+  <line x1="600" y1="175" x2="770" y2="210" stroke="#6d5bd0" stroke-width="2" marker-end="url(#pe2-arrow)"/>
+
+  <!-- Check 1: IntersectionObserver -->
+  <rect x="30" y="215" width="200" height="55" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="130" y="238" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">IntersectionObserver?</text>
+  <text x="130" y="258" text-anchor="middle" font-size="10" fill="#6d5bd0">"IntersectionObserver" in window</text>
+
+  <!-- Check 2: CSS Grid -->
+  <rect x="350" y="215" width="200" height="55" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="450" y="238" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">CSS Grid Support?</text>
+  <text x="450" y="258" text-anchor="middle" font-size="10" fill="#6d5bd0">@supports (display: grid)</text>
+
+  <!-- Check 3: Fetch API -->
+  <rect x="670" y="215" width="200" height="55" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="770" y="238" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Fetch API?</text>
+  <text x="770" y="258" text-anchor="middle" font-size="10" fill="#6d5bd0">"fetch" in window</text>
+
+  <!-- Yes/No branches -->
+  <line x1="80" y1="270" x2="80" y2="310" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#pe2-arrow)"/>
+  <text x="65" y="296" font-size="10" font-weight="600" fill="#6d5bd0">Yes</text>
+  <line x1="180" y1="270" x2="180" y2="310" stroke="#999" stroke-width="1.5" marker-end="url(#pe2-arrow-gray)"/>
+  <text x="190" y="296" font-size="10" font-weight="600" fill="#999">No</text>
+
+  <rect x="20" y="315" width="120" height="45" rx="8" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="80" y="335" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Lazy Loading</text>
+  <text x="80" y="350" text-anchor="middle" font-size="10" fill="#1a1822">Enhanced images</text>
+
+  <rect x="150" y="315" width="120" height="45" rx="8" fill="#d7d1e6" opacity="0.5" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="210" y="335" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Eager Load</text>
+  <text x="210" y="350" text-anchor="middle" font-size="10" fill="#1a1822">Standard images</text>
+
+  <line x1="400" y1="270" x2="400" y2="310" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#pe2-arrow)"/>
+  <text x="385" y="296" font-size="10" font-weight="600" fill="#6d5bd0">Yes</text>
+  <line x1="500" y1="270" x2="500" y2="310" stroke="#999" stroke-width="1.5" marker-end="url(#pe2-arrow-gray)"/>
+  <text x="510" y="296" font-size="10" font-weight="600" fill="#999">No</text>
+
+  <rect x="340" y="315" width="120" height="45" rx="8" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="400" y="335" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Grid Layout</text>
+  <text x="400" y="350" text-anchor="middle" font-size="10" fill="#1a1822">Modern layout</text>
+
+  <rect x="470" y="315" width="120" height="45" rx="8" fill="#d7d1e6" opacity="0.5" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="530" y="335" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">Flexbox Fallback</text>
+  <text x="530" y="350" text-anchor="middle" font-size="10" fill="#1a1822">Compatible layout</text>
+
+  <line x1="720" y1="270" x2="720" y2="310" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#pe2-arrow)"/>
+  <text x="705" y="296" font-size="10" font-weight="600" fill="#6d5bd0">Yes</text>
+  <line x1="820" y1="270" x2="820" y2="310" stroke="#999" stroke-width="1.5" marker-end="url(#pe2-arrow-gray)"/>
+  <text x="830" y="296" font-size="10" font-weight="600" fill="#999">No</text>
+
+  <rect x="660" y="315" width="120" height="45" rx="8" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="720" y="335" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Fetch API</text>
+  <text x="720" y="350" text-anchor="middle" font-size="10" fill="#1a1822">Async requests</text>
+
+  <rect x="790" y="315" width="100" height="45" rx="8" fill="#d7d1e6" opacity="0.5" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="840" y="335" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">XMLHttpRequest</text>
+  <text x="840" y="350" text-anchor="middle" font-size="10" fill="#1a1822">Fallback</text>
+
+  <!-- Merge -->
+  <line x1="130" y1="360" x2="450" y2="410" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <line x1="450" y1="360" x2="450" y2="410" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <line x1="770" y1="360" x2="450" y2="410" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="5,3"/>
+
+  <rect x="300" y="415" width="300" height="50" rx="8" fill="#6d5bd0" stroke="#1a1822" stroke-width="2"/>
+  <text x="450" y="437" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Composed Enhanced Page</text>
+  <text x="450" y="455" text-anchor="middle" font-size="11" fill="#f3f1f8">Best experience per browser capability</text>
+
+  <text x="450" y="490" text-anchor="middle" font-size="11" fill="#6d5bd0">Each feature independently detected and enhanced — no all-or-nothing</text>
 </svg>

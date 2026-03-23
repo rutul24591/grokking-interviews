@@ -29,17 +29,36 @@ export default function AccountVerificationArticle() {
           email, phone, or manual review. It prevents fake accounts, enables account recovery,
           and ensures reliable communication channels.
         </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/account-verification-flow.svg"
+          alt="Account Verification Flow"
+          caption="Account Verification Flow — showing verification requirements, document upload, and approval"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/verification-token-flow.svg"
+          alt="Verification Token Flow"
+          caption="Verification Token Flow — showing token generation, delivery, validation, and expiry"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/account-verification-security.svg"
+          alt="Account Verification Security"
+          caption="Account Verification Security — showing fraud detection, document validation, and manual review"
+        />
+      
         <p>
           For staff and principal engineers, implementing account verification requires
           understanding verification methods, token generation, and security patterns.
           The implementation must balance security with user experience.
         </p>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/account-verification-flow.svg"
-          alt="Account Verification Flow"
-          caption="Account Verification — showing email, phone, document, and manual verification"
-        />
+        
+
+        
+
+        
       </section>
 
       <section>
@@ -55,11 +74,7 @@ export default function AccountVerificationArticle() {
       <section>
         <h2>Verification Flow</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/verification-token-flow.svg"
-          alt="Verification Token Flow"
-          caption="Verification Flow — showing token generation, delivery, validation, and confirmation"
-        />
+        
 
         <ul className="space-y-3">
           <li><strong>Generate Token:</strong> Random token with expiry.</li>
@@ -198,11 +213,7 @@ export default function AccountVerificationArticle() {
       <section>
         <h2>Interview Questions</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/account-verification-security.svg"
-          alt="Account Verification Security"
-          caption="Security — showing token expiry, rate limiting, and fraud prevention"
-        />
+        
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

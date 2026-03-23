@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Canonical Signal Mechanisms &amp; Strength</text>
+
+  <!-- Signal Strength meter background -->
+  <rect x="50" y="65" width="800" height="30" rx="6" fill="#d7d1e6"/>
+  <rect x="50" y="65" width="800" height="30" rx="6" fill="none" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="100" y="84" font-size="10" font-weight="600" fill="#1a1822">WEAK</text>
+  <text x="430" y="84" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">MODERATE</text>
+  <text x="800" y="84" text-anchor="end" font-size="10" font-weight="600" fill="#1a1822">STRONG</text>
+
+  <!-- Mechanism 1: rel=canonical (Strong) -->
+  <rect x="50" y="120" width="800" height="110" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+
+  <!-- Strength bar -->
+  <rect x="65" y="132" width="770" height="8" rx="4" fill="#d7d1e6"/>
+  <rect x="65" y="132" width="770" height="8" rx="4" fill="#6d5bd0"/>
+
+  <text x="80" y="162" font-size="16" font-weight="700" fill="#6d5bd0">1. rel="canonical" Link Tag</text>
+  <text x="720" y="162" font-size="14" font-weight="700" fill="#6d5bd0">STRONG</text>
+
+  <text x="80" y="185" font-size="12" fill="#1a1822">Placed in &amp;lt;head&amp;gt; of the duplicate page, pointing to the canonical URL</text>
+
+  <rect x="80" y="195" width="400" height="25" rx="4" fill="#f3f1f8"/>
+  <text x="90" y="213" font-size="10" fill="#1a1822">&amp;lt;link rel="canonical" href="https://example.com/page" /&amp;gt;</text>
+
+  <!-- Mechanism 2: HTTP Link Header (Strong) -->
+  <rect x="50" y="245" width="800" height="110" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+
+  <!-- Strength bar -->
+  <rect x="65" y="257" width="770" height="8" rx="4" fill="#d7d1e6"/>
+  <rect x="65" y="257" width="700" height="8" rx="4" fill="#6d5bd0"/>
+
+  <text x="80" y="287" font-size="16" font-weight="700" fill="#6d5bd0">2. HTTP Link Header</text>
+  <text x="720" y="287" font-size="14" font-weight="700" fill="#6d5bd0">STRONG</text>
+
+  <text x="80" y="310" font-size="12" fill="#1a1822">Server sends canonical in HTTP response headers. Useful for PDFs, non-HTML resources.</text>
+
+  <rect x="80" y="320" width="500" height="25" rx="4" fill="#f3f1f8"/>
+  <text x="90" y="338" font-size="10" fill="#1a1822">Link: &amp;lt;https://example.com/page&amp;gt;; rel="canonical"</text>
+
+  <!-- Mechanism 3: Sitemap (Weak) -->
+  <rect x="50" y="370" width="800" height="110" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+
+  <!-- Strength bar -->
+  <rect x="65" y="382" width="770" height="8" rx="4" fill="#d7d1e6"/>
+  <rect x="65" y="382" width="250" height="8" rx="4" fill="#6d5bd0" opacity="0.5"/>
+
+  <text x="80" y="412" font-size="16" font-weight="700" fill="#6d5bd0">3. Sitemap URL Listing</text>
+  <text x="720" y="412" font-size="14" font-weight="600" fill="#d7d1e6">WEAK</text>
+
+  <text x="80" y="435" font-size="12" fill="#1a1822">URLs listed in sitemap are treated as implied canonical hints, but not authoritative.</text>
+
+  <rect x="80" y="445" width="400" height="25" rx="4" fill="#f3f1f8"/>
+  <text x="90" y="463" font-size="10" fill="#1a1822">&amp;lt;url&amp;gt;&amp;lt;loc&amp;gt;https://example.com/page&amp;lt;/loc&amp;gt;&amp;lt;/url&amp;gt;</text>
+</svg>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Role-Based Access Control (RBAC) Model</text>
+  
+  <!-- Users -->
+  <rect x="50" y="70" width="150" height="180" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="125" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Users</text>
+  
+  <circle cx="85" cy="130" r="25" fill="#3b82f6"/>
+  <text x="85" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Alice</text>
+  
+  <circle cx="165" cy="130" r="25" fill="#3b82f6"/>
+  <text x="165" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Bob</text>
+  
+  <circle cx="85" cy="180" r="25" fill="#3b82f6"/>
+  <text x="85" y="185" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Carol</text>
+  
+  <circle cx="165" cy="180" r="25" fill="#3b82f6"/>
+  <text x="165" y="185" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Dave</text>
+  
+  <line x1="200" y1="160" x2="240" y2="160" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="220" y="150" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">assigned to</text>
+  
+  <!-- Roles -->
+  <rect x="250" y="70" width="200" height="180" rx="8" fill="#f1f5f9" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="350" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Roles</text>
+  
+  <rect x="270" y="110" width="160" height="35" rx="4" fill="#8b5cf6" opacity="0.8"/>
+  <text x="350" y="132" text-anchor="middle" font-family="system-ui" font-size="11" fill="#ffffff">Admin</text>
+  
+  <rect x="270" y="150" width="160" height="35" rx="4" fill="#8b5cf6" opacity="0.6"/>
+  <text x="350" y="172" text-anchor="middle" font-family="system-ui" font-size="11" fill="#ffffff">Editor</text>
+  
+  <rect x="270" y="190" width="160" height="35" rx="4" fill="#8b5cf6" opacity="0.4"/>
+  <text x="350" y="212" text-anchor="middle" font-family="system-ui" font-size="11" fill="#ffffff">Viewer</text>
+  
+  <line x1="450" y1="160" x2="490" y2="160" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="470" y="150" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">grants</text>
+  
+  <!-- Permissions -->
+  <rect x="500" y="70" width="250" height="180" rx="8" fill="#f1f5f9" stroke="#22c55e" stroke-width="2"/>
+  <text x="625" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Permissions</text>
+  
+  <rect x="520" y="110" width="100" height="30" rx="4" fill="#22c55e" opacity="0.8"/>
+  <text x="570" y="130" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">user:create</text>
+  
+  <rect x="630" y="110" width="100" height="30" rx="4" fill="#22c55e" opacity="0.8"/>
+  <text x="680" y="130" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">user:delete</text>
+  
+  <rect x="520" y="145" width="100" height="30" rx="4" fill="#22c55e" opacity="0.6"/>
+  <text x="570" y="165" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">content:edit</text>
+  
+  <rect x="630" y="145" width="100" height="30" rx="4" fill="#22c55e" opacity="0.6"/>
+  <text x="680" y="165" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">content:publish</text>
+  
+  <rect x="520" y="180" width="100" height="30" rx="4" fill="#22c55e" opacity="0.4"/>
+  <text x="570" y="200" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">content:view</text>
+  
+  <rect x="630" y="180" width="100" height="30" rx="4" fill="#22c55e" opacity="0.4"/>
+  <text x="680" y="200" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">profile:read</text>
+  
+  <!-- Role Hierarchy -->
+  <rect x="50" y="280" width="340" height="170" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="305" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Role Hierarchy</text>
+  
+  <rect x="140" y="325" width="160" height="35" rx="4" fill="#ef4444" opacity="0.8"/>
+  <text x="220" y="347" text-anchor="middle" font-family="system-ui" font-size="11" fill="#ffffff">Super Admin</text>
+  
+  <line x1="220" y1="360" x2="140" y2="380" stroke="#475569" stroke-width="2"/>
+  <line x1="220" y1="360" x2="220" y2="380" stroke="#475569" stroke-width="2"/>
+  <line x1="220" y1="360" x2="300" y2="380" stroke="#475569" stroke-width="2"/>
+  
+  <rect x="80" y="385" width="120" height="35" rx="4" fill="#8b5cf6" opacity="0.8"/>
+  <text x="140" y="407" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Admin</text>
+  
+  <rect x="160" y="385" width="120" height="35" rx="4" fill="#8b5cf6" opacity="0.6"/>
+  <text x="220" y="407" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Manager</text>
+  
+  <rect x="240" y="385" width="120" height="35" rx="4" fill="#8b5cf6" opacity="0.4"/>
+  <text x="300" y="407" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Editor</text>
+  
+  <line x1="140" y1="420" x2="100" y2="440" stroke="#475569" stroke-width="2"/>
+  <line x1="140" y1="420" x2="180" y2="440" stroke="#475569" stroke-width="2"/>
+  
+  <rect x="60" y="445" width="80" height="30" rx="4" fill="#22c55e" opacity="0.4"/>
+  <text x="100" y="465" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Viewer</text>
+  
+  <rect x="140" y="445" width="80" height="30" rx="4" fill="#22c55e" opacity="0.4"/>
+  <text x="180" y="465" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">User</text>
+  
+  <!-- Core Principle -->
+  <rect x="420" y="280" width="330" height="170" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="585" y="305" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Core RBAC Principle</text>
+  
+  <text x="585" y="340" text-anchor="middle" font-family="system-ui" font-size="11" fill="#0f172a">Users → Roles → Permissions</text>
+  <text x="585" y="365" text-anchor="middle" font-family="system-ui" font-size="10" fill="#475569">(NOT Users → Permissions directly)</text>
+  
+  <rect x="440" y="385" width="290" height="55" rx="4" fill="#f1f5f9"/>
+  <text x="585" y="410" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Benefits:</text>
+  <text x="460" y="430" text-anchor="start" font-family="system-ui" font-size="9" fill="#475569">• Simplified management</text>
+  <text x="585" y="430" text-anchor="start" font-family="system-ui" font-size="9" fill="#475569">• Role inheritance</text>
+  <text x="460" y="445" text-anchor="start" font-family="system-ui" font-size="9" fill="#475569">• Least privilege enforcement</text>
+  <text x="585" y="445" text-anchor="start" font-family="system-ui" font-size="9" fill="#475569">• Audit-friendly</text>
+
+</svg>

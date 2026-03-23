@@ -30,6 +30,25 @@ export default function TokenGenerationArticle() {
           stateless authentication, API authorization, and secure session management across 
           distributed systems.
         </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/token-generation-flow.svg"
+          alt="Token Generation Flow"
+          caption="Token Generation Flow — showing JWT creation, signing, and delivery"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/jwt-structure.svg"
+          alt="Jwt Structure"
+          caption="JWT Structure — showing header, payload, signature with claims"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/token-security.svg"
+          alt="Token Security"
+          caption="Token Security — showing signing algorithms, expiry, and revocation"
+        />
+      
         <p>
           For staff and principal engineers, implementing token generation requires 
           understanding JWT structure, signing algorithms (RS256, HS256), token lifecycle 
@@ -38,11 +57,11 @@ export default function TokenGenerationArticle() {
           rotation) with usability (seamless refresh, long sessions).
         </p>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/token-generation-flow.svg"
-          alt="Token Generation Flow"
-          caption="Token Generation — showing JWT creation, signing, and token issuance"
-        />
+        
+
+        
+
+        
       </section>
 
       <section>
@@ -111,11 +130,7 @@ export default function TokenGenerationArticle() {
       <section>
         <h2>JWT Structure</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/jwt-structure.svg"
-          alt="JWT Token Structure"
-          caption="JWT Structure — showing header, payload, signature components with example claims"
-        />
+        
 
         <p>
           JWT tokens consist of three parts separated by dots.
@@ -423,11 +438,7 @@ export default function TokenGenerationArticle() {
       <section>
         <h2>Interview Questions</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/token-security.svg"
-          alt="Token Security Best Practices"
-          caption="Token Security — showing storage, transmission, rotation, and revocation best practices"
-        />
+        
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -816,6 +827,65 @@ export default function TokenGenerationArticle() {
         <p>
           Meet regulatory requirements for tokens. SOC2 audit trails. HIPAA immediate tokens. PCI-DSS session controls. GDPR right to tokens. Regular compliance reviews. External audit support.
         </p>
+      </section>
+
+      <section>
+        <h2>Real-world Use Cases</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce Token Generation</h3>
+        <p>
+          Large e-commerce platform with 50M users, JWT for API auth and refresh tokens for sessions.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> High-volume token generation during sales. Cart persistence across sessions. Guest checkout token handling.</li>
+          <li><strong>Solution:</strong> Stateless JWT validation at edge. Refresh token rotation for sessions. Guest cart token linked to session. Token expiry sync with cart retention.</li>
+          <li><strong>Result:</strong> Handled 1M tokens/minute during peak. Cart persistence 99.9%. Guest conversion improved 30%.</li>
+          <li><strong>Security:</strong> JWT validation, token rotation, guest token handling.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Banking Token Generation</h3>
+        <p>
+          Online banking with FFIEC compliance, short-lived access tokens and secure refresh.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> FFIEC requires strong auth. Transaction signing tokens. Short session timeout. Multi-device sync.</li>
+          <li><strong>Solution:</strong> RS256 JWT with 15-min expiry. Transaction-specific tokens. Refresh token with MFA. Cross-device token invalidation.</li>
+          <li><strong>Result:</strong> Passed FFIEC audits. Zero token-based fraud. Multi-device experience seamless.</li>
+          <li><strong>Security:</strong> RS256 signing, transaction tokens, MFA refresh.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Healthcare Token Generation (HIPAA)</h3>
+        <p>
+          HIPAA-compliant EHR system with 50,000 providers, audit trail for token usage.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> HIPAA requires audit of all access. Provider sessions across shifts. Break-glass emergency access tokens.</li>
+          <li><strong>Solution:</strong> JWT with comprehensive claims. Shift-based token expiry. Break-glass tokens with enhanced audit. Token usage logging for compliance.</li>
+          <li><strong>Result:</strong> Passed HIPAA audits. Provider shift handoff smooth. Emergency access maintained.</li>
+          <li><strong>Security:</strong> Enhanced claims, shift expiry, break-glass audit.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Gaming Platform Token Generation</h3>
+        <p>
+          Online gaming platform with 100M users, anti-cheat token binding and cross-platform play.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Account sharing for items. Cross-platform token sync. Anti-cheat token validation. Young users with shared devices.</li>
+          <li><strong>Solution:</strong> Device-bound tokens. Cross-platform token linking. Anti-cheat token validation. Parental control tokens for minors.</li>
+          <li><strong>Result:</strong> Account sharing reduced 70%. Cross-platform seamless. Cheating detected 90% faster.</li>
+          <li><strong>Security:</strong> Device binding, cross-platform linking, anti-cheat validation.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SaaS Token Generation</h3>
+        <p>
+          B2B SaaS with 10,000 enterprise customers, SSO token integration and tenant isolation.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> SSO token passthrough. Tenant isolation in tokens. Admin impersonation tokens. Token revocation for offboarded employees.</li>
+          <li><strong>Solution:</strong> SSO token exchange. Tenant-scoped token claims. Admin impersonation with audit. HR integration for auto-revocation.</li>
+          <li><strong>Result:</strong> SSO success 99.9%. Tenant isolation maintained. Offboarding automated.</li>
+          <li><strong>Security:</strong> Token exchange, tenant scoping, impersonation audit.</li>
+        </ul>
       </section>
     </ArticleLayout>
   );

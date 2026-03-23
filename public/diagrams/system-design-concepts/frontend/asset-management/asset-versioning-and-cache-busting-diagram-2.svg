@@ -82,7 +82,7 @@
 
   <text x="735" y="130" text-anchor="middle" font-size="11" fill="#1a1822" font-weight="bold">Example:</text>
   <rect x="615" y="138" width="240" height="28" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
-  <text x="735" y="157" text-anchor="middle" font-size="10" fill="#6d5bd0">ETag: &quot;33a64df5&quot;</text>
+  <text x="735" y="157" text-anchor="middle" font-size="10" fill="#6d5bd0">ETag: &amp;quot;33a64df5&amp;quot;</text>
 
   <text x="620" y="190" font-size="12" font-weight="bold" fill="#1a1822">Pros</text>
   <circle cx="625" cy="210" r="4" fill="#22c55e"/>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Session Persistence Strategies</text>
+  
+  <!-- Server-side -->
+  <rect x="50" y="70" width="220" height="200" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="160" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Server-side Sessions</text>
+  
+  <rect x="70" y="115" width="180" height="40" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="160" y="140" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Session ID in cookie</text>
+  
+  <rect x="70" y="160" width="180" height="40" rx="4" fill="#3b82f6" opacity="0.8"/>
+  <text x="160" y="185" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Session data in Redis/DB</text>
+  
+  <text x="160" y="225" text-anchor="middle" font-family="system-ui" font-size="9" fill="#22c55e">✓ Easy invalidation</text>
+  <text x="160" y="240" text-anchor="middle" font-family="system-ui" font-size="9" fill="#22c55e">✓ Small cookies</text>
+  <text x="160" y="255" text-anchor="middle" font-family="system-ui" font-size="9" fill="#f59e0b">⚠ DB dependency</text>
+  
+  <!-- Client-side JWT -->
+  <rect x="290" y="70" width="220" height="200" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="400" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Client-side JWT</text>
+  
+  <rect x="310" y="115" width="180" height="40" rx="4" fill="#8b5cf6" opacity="0.8"/>
+  <text x="400" y="140" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Full session in JWT</text>
+  
+  <rect x="310" y="160" width="180" height="40" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="400" y="185" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Signed, stateless</text>
+  
+  <text x="400" y="225" text-anchor="middle" font-family="system-ui" font-size="9" fill="#22c55e">✓ No DB lookup</text>
+  <text x="400" y="240" text-anchor="middle" font-family="system-ui" font-size="9" fill="#22c55e">✓ Scalable</text>
+  <text x="400" y="255" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ef4444">⚠ Hard to revoke</text>
+  
+  <!-- Hybrid -->
+  <rect x="530" y="70" width="220" height="200" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="640" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Hybrid Approach</text>
+  
+  <rect x="550" y="115" width="180" height="40" rx="4" fill="#3b82f6" opacity="0.8"/>
+  <text x="640" y="140" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">JWT with jti claim</text>
+  
+  <rect x="550" y="160" width="180" height="40" rx="4" fill="#f8fafc"/>
+  <text x="640" y="185" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Revocation list in Redis</text>
+  
+  <text x="640" y="225" text-anchor="middle" font-family="system-ui" font-size="9" fill="#22c55e">✓ Best of both</text>
+  <text x="640" y="240" text-anchor="middle" font-family="system-ui" font-size="9" fill="#22c55e">✓ Fast validation</text>
+  <text x="640" y="255" text-anchor="middle" font-family="system-ui" font-size="9" fill="#f59e0b">⚠ Revocation list</text>
+  
+  <!-- Storage comparison -->
+  <rect x="50" y="300" width="700" height="150" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="400" y="325" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Storage Comparison</text>
+  
+  <rect x="80" y="345" width="180" height="90" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="170" y="370" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Redis</text>
+  <text x="170" y="395" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">• Fast (sub-ms)</text>
+  <text x="170" y="410" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">• TTL support</text>
+  <text x="170" y="425" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">• Volatile</text>
+  
+  <rect x="290" y="345" width="180" height="90" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="380" y="370" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Database</text>
+  <text x="380" y="395" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">• Persistent</text>
+  <text x="380" y="410" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">• Slower (ms)</text>
+  <text x="380" y="425" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">• Complex queries</text>
+  
+  <rect x="500" y="345" width="180" height="90" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="370" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">In-Memory</text>
+  <text x="590" y="395" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">• Fastest</text>
+  <text x="590" y="410" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">• Single instance</text>
+  <text x="590" y="425" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">• Not distributed</text>
+
+</svg>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">MFA Setup Flow</text>
+  
+  <!-- User -->
+  <circle cx="80" cy="100" r="35" fill="#3b82f6"/>
+  <text x="80" y="105" text-anchor="middle" font-family="system-ui" font-size="11" fill="#ffffff">User</text>
+  
+  <!-- Security Settings -->
+  <rect x="180" y="70" width="140" height="60" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="250" y="105" text-anchor="middle" font-family="system-ui" font-size="11" fill="#0f172a">Security Settings</text>
+  
+  <!-- MFA Options -->
+  <rect x="370" y="60" width="180" height="80" rx="8" fill="#f1f5f9" stroke="#f59e0b" stroke-width="2"/>
+  <text x="460" y="85" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">MFA Methods</text>
+  <text x="460" y="110" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">TOTP, SMS, Email, WebAuthn</text>
+  
+  <!-- QR Code -->
+  <rect x="600" y="70" width="100" height="100" rx="8" fill="#ffffff" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="650" y="95" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">QR Code</text>
+  <rect x="615" y="105" width="70" height="50" fill="#f8fafc"/>
+  <text x="650" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Secret Key</text>
+  
+  <!-- Arrows -->
+  <line x1="115" y1="100" x2="170" y2="100" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="142" y="90" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">1. Navigate</text>
+  
+  <line x1="320" y1="100" x2="360" y2="100" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="340" y="90" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">2. Select method</text>
+  
+  <line x1="550" y1="100" x2="590" y2="100" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="570" y="90" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">3. Generate QR</text>
+  
+  <!-- Verification Steps -->
+  <rect x="180" y="180" width="440" height="140" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="400" y="205" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Verification Steps</text>
+  
+  <rect x="200" y="225" width="120" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="260" y="247" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Scan QR Code</text>
+  
+  <rect x="340" y="225" width="120" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="400" y="247" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Enter Code</text>
+  
+  <rect x="480" y="225" width="120" height="35" rx="4" fill="#22c55e" opacity="0.8"/>
+  <text x="540" y="247" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Verify</text>
+  
+  <line x1="320" y1="242" x2="335" y2="242" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="460" y1="242" x2="475" y2="242" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="200" y="275" width="400" height="35" rx="4" fill="#f1f5f9"/>
+  <text x="400" y="297" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Save Backup Codes (Download/Print)</text>
+  
+  <!-- MFA Methods -->
+  <rect x="50" y="350" width="160" height="120" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="130" y="375" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">TOTP App</text>
+  <text x="130" y="400" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Google Authenticator</text>
+  <text x="130" y="415" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Authy, 1Password</text>
+  <text x="130" y="435" text-anchor="middle" font-family="system-ui" font-size="9" fill="#22c55e">✓ Most secure</text>
+  
+  <rect x="230" y="350" width="160" height="120" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="310" y="375" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">SMS</text>
+  <text x="310" y="400" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Text message code</text>
+  <text x="310" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#f59e0b">⚠ SIM swapping</text>
+  <text x="310" y="435" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Wide adoption</text>
+  
+  <rect x="410" y="350" width="160" height="120" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="490" y="375" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Email</text>
+  <text x="490" y="400" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Magic link or code</text>
+  <text x="490" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#f59e0b">⚠ Email compromise</text>
+  <text x="490" y="435" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Fallback option</text>
+  
+  <rect x="590" y="350" width="160" height="120" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="670" y="375" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">WebAuthn</text>
+  <text x="670" y="400" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">FIDO2, Touch ID</text>
+  <text x="670" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Face ID, YubiKey</text>
+  <text x="670" y="440" text-anchor="middle" font-family="system-ui" font-size="9" fill="#22c55e">✓ Phishing resistant</text>
+
+</svg>

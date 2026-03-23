@@ -168,56 +168,10 @@ export default function KeyboardNavigationArticle() {
           caption="Roving tabindex: Only one item per group has tabindex='0'. Arrow keys move focus within the group; Tab/Shift+Tab moves between groups."
         />
 
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// Roving tabindex implementation in React
-import { useState, useRef, useCallback } from 'react';
-
-function Toolbar({ items }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const itemRefs = useRef([]);
-
-  const handleKeyDown = useCallback((e) => {
-    let newIndex = activeIndex;
-
-    switch (e.key) {
-      case 'ArrowRight':
-        newIndex = (activeIndex + 1) % items.length;
-        break;
-      case 'ArrowLeft':
-        newIndex = (activeIndex - 1 + items.length) % items.length;
-        break;
-      case 'Home':
-        newIndex = 0;
-        break;
-      case 'End':
-        newIndex = items.length - 1;
-        break;
-      default:
-        return; // Don't prevent default for unhandled keys
-    }
-
-    e.preventDefault();
-    setActiveIndex(newIndex);
-    itemRefs.current[newIndex]?.focus();
-  }, [activeIndex, items.length]);
-
-  return (
-    <div role="toolbar" aria-label="Formatting tools" onKeyDown={handleKeyDown}>
-      {items.map((item, index) => (
-        <button
-          key={item.id}
-          ref={el => itemRefs.current[index] = el}
-          tabIndex={index === activeIndex ? 0 : -1}
-          aria-pressed={item.active}
-          onClick={() => item.onToggle()}
-        >
-          {item.label}
-        </button>
-      ))}
-    </div>
-  );
-}`}</code>
-        </pre>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Roving Tabindex Implementation</h3>
+        <p>
+          For roving tabindex implementation in React, create a Toolbar component that accepts items array. Use useState for activeIndex (default 0) and useRef for itemRefs array. In handleKeyDown with useCallback, handle ArrowRight to increment index with modulo wrap, ArrowLeft to decrement with wrap, Home to go to index 0, and End to go to last index. Call preventDefault for handled keys, set new activeIndex, and focus the new element. Render div with role toolbar, aria-label, and onKeyDown handler. Map over items to create buttons with ref callback storing in itemRefs, tabIndex 0 for active item and -1 for others, aria-pressed for active state, onClick for toggle, and label text.
+        </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Keyboard Trap in Modal Dialog</h3>
         <p>
@@ -231,65 +185,10 @@ function Toolbar({ items }) {
           caption="Intentional focus trap in a modal: Tab cycles forward through focusable elements, Shift+Tab cycles backward, and Escape exits the modal."
         />
 
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// Focus trap hook for modal dialogs
-import { useEffect, useRef, useCallback } from 'react';
-
-function useFocusTrap(isOpen) {
-  const containerRef = useRef(null);
-  const previousFocusRef = useRef(null);
-
-  const getFocusableElements = useCallback(() => {
-    if (!containerRef.current) return [];
-    const selectors = [
-      'a[href]', 'button:not([disabled])', 'input:not([disabled])',
-      'select:not([disabled])', 'textarea:not([disabled])',
-      '[tabindex]:not([tabindex="-1"])'
-    ];
-    return Array.from(
-      containerRef.current.querySelectorAll(selectors.join(','))
-    );
-  }, []);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    // Store the element that had focus before modal opened
-    previousFocusRef.current = document.activeElement;
-
-    // Move focus into the modal
-    const focusable = getFocusableElements();
-    if (focusable.length > 0) {
-      focusable[0].focus();
-    }
-
-    const handleKeyDown = (e) => {
-      if (e.key !== 'Tab') return;
-
-      const focusable = getFocusableElements();
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      // Restore focus when modal closes
-      previousFocusRef.current?.focus();
-    };
-  }, [isOpen, getFocusableElements]);
-
-  return containerRef;
-}`}</code>
-        </pre>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Focus Trap Hook Implementation</h3>
+        <p>
+          For focus trap hook for modal dialogs, create useFocusTrap function accepting isOpen. Use containerRef and previousFocusRef. Create getFocusableElements callback that queries container for links, buttons, inputs, selects, textareas, and tabindex elements. In useEffect on isOpen, store previous focus, get focusable elements, focus first element. Add keydown listener for Tab key that gets first and last focusable elements, prevents default and focuses last on Shift+Tab at first, prevents default and focuses first on Tab at last. Cleanup removes listener and restores focus to previous focus element. Return containerRef.
+        </p>
       </section>
 
       {/* ─── Section 4: Trade-offs & Comparisons ─── */}

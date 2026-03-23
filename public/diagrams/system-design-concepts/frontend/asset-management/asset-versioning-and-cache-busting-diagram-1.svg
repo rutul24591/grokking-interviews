@@ -53,12 +53,12 @@
   <text x="455" y="305" text-anchor="middle" font-size="14" font-weight="bold" fill="#6d5bd0">Asset Manifest (manifest.json)</text>
   <line x1="345" y1="315" x2="565" y2="315" stroke="#d7d1e6" stroke-width="1"/>
   <text x="365" y="340" font-size="11" fill="#1a1822" font-weight="bold">{</text>
-  <text x="380" y="360" font-size="11" fill="#1a1822">&quot;app.js&quot;:</text>
-  <text x="380" y="378" font-size="10" fill="#6d5bd0">    &quot;app.a3f8c2b1.js&quot;,</text>
-  <text x="380" y="398" font-size="11" fill="#1a1822">&quot;styles.css&quot;:</text>
-  <text x="380" y="416" font-size="10" fill="#6d5bd0">    &quot;styles.7d4e1f09.css&quot;,</text>
-  <text x="380" y="436" font-size="11" fill="#1a1822">&quot;logo.png&quot;:</text>
-  <text x="380" y="454" font-size="10" fill="#6d5bd0">    &quot;logo.b2c9e4a7.png&quot;</text>
+  <text x="380" y="360" font-size="11" fill="#1a1822">&amp;quot;app.js&amp;quot;:</text>
+  <text x="380" y="378" font-size="10" fill="#6d5bd0">    &amp;quot;app.a3f8c2b1.js&amp;quot;,</text>
+  <text x="380" y="398" font-size="11" fill="#1a1822">&amp;quot;styles.css&amp;quot;:</text>
+  <text x="380" y="416" font-size="10" fill="#6d5bd0">    &amp;quot;styles.7d4e1f09.css&amp;quot;,</text>
+  <text x="380" y="436" font-size="11" fill="#1a1822">&amp;quot;logo.png&amp;quot;:</text>
+  <text x="380" y="454" font-size="10" fill="#6d5bd0">    &amp;quot;logo.b2c9e4a7.png&amp;quot;</text>
 
   <!-- Arrow from build to manifest -->
   <path d="M 355 220 L 355 260 L 420 280" stroke="#6d5bd0" stroke-width="1.5" fill="none" stroke-dasharray="6,3" marker-end="url(#arrowhead)"/>
@@ -68,9 +68,9 @@
   <rect x="650" y="310" width="220" height="130" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
   <text x="760" y="335" text-anchor="middle" font-size="14" font-weight="bold" fill="#6d5bd0">HTML Template</text>
   <line x1="665" y1="345" x2="855" y2="345" stroke="#d7d1e6" stroke-width="1"/>
-  <text x="670" y="368" font-size="10" fill="#1a1822">&lt;script src=&quot;/app.a3f8c2b1.js&quot;&gt;</text>
-  <text x="670" y="388" font-size="10" fill="#1a1822">&lt;link href=&quot;/styles.7d4e1f09.css&quot;&gt;</text>
-  <text x="670" y="408" font-size="10" fill="#1a1822">&lt;img src=&quot;/logo.b2c9e4a7.png&quot;&gt;</text>
+  <text x="670" y="368" font-size="10" fill="#1a1822">&amp;lt;script src=&amp;quot;/app.a3f8c2b1.js&amp;quot;&amp;gt;</text>
+  <text x="670" y="388" font-size="10" fill="#1a1822">&amp;lt;link href=&amp;quot;/styles.7d4e1f09.css&amp;quot;&amp;gt;</text>
+  <text x="670" y="408" font-size="10" fill="#1a1822">&amp;lt;img src=&amp;quot;/logo.b2c9e4a7.png&amp;quot;&amp;gt;</text>
   <text x="760" y="432" text-anchor="middle" font-size="9" fill="#6d5bd0">References resolve via manifest</text>
 
   <path d="M 580 375 L 650 375" stroke="#6d5bd0" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>

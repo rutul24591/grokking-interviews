@@ -31,7 +31,7 @@
     <g transform="translate(20, 230)">
       <rect x="0" y="0" width="310" height="60" rx="4" fill="#ffffff" stroke="#3b82f6"/>
       <text x="155" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0f172a">Authenticated API Request</text>
-      <text x="155" y="45" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Authorization: Bearer &lt;access_token&gt;</text>
+      <text x="155" y="45" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Authorization: Bearer &amp;lt;access_token&amp;gt;</text>
     </g>
     
     <!-- Token Refresh -->

@@ -32,7 +32,7 @@
         <text x="130" y="52" text-anchor="middle" font-family="monospace" font-size="10" fill="#dc2626">✗ "deleted"</text>
         
         <rect x="0" y="70" width="170" height="25" rx="3" fill="#fef2f2" stroke="#ef4444" stroke-dasharray="3,2"/>
-        <text x="85" y="87" text-anchor="middle" font-family="monospace" font-size="10" fill="#dc2626">✗ "&lt;script&gt;alert(1)&lt;/script&gt;"</text>
+        <text x="85" y="87" text-anchor="middle" font-family="monospace" font-size="10" fill="#dc2626">✗ "&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;"</text>
       </g>
     </g>
     
@@ -77,7 +77,7 @@
       <!-- Blocked items -->
       <g transform="translate(15, 40)">
         <rect x="0" y="0" width="170" height="25" rx="3" fill="#fef2f2" stroke="#ef4444"/>
-        <text x="85" y="17" text-anchor="middle" font-family="monospace" font-size="10" fill="#dc2626">✗ "&lt;script&gt;"</text>
+        <text x="85" y="17" text-anchor="middle" font-family="monospace" font-size="10" fill="#dc2626">✗ "&amp;lt;script&amp;gt;"</text>
         
         <rect x="0" y="35" width="170" height="25" rx="3" fill="#fef2f2" stroke="#ef4444"/>
         <text x="85" y="52" text-anchor="middle" font-family="monospace" font-size="10" fill="#dc2626">✗ "javascript:"</text>
@@ -86,7 +86,7 @@
         <text x="85" y="87" text-anchor="middle" font-family="monospace" font-size="10" fill="#dc2626">✗ "onerror="</text>
         
         <rect x="0" y="105" width="170" height="25" rx="3" fill="#f0fdf4" stroke="#22c55e" stroke-dasharray="3,2"/>
-        <text x="85" y="122" text-anchor="middle" font-family="monospace" font-size="10" fill="#16a34a">✓ "&lt;SCRIPT&gt;" (bypass!)</text>
+        <text x="85" y="122" text-anchor="middle" font-family="monospace" font-size="10" fill="#16a34a">✓ "&amp;lt;SCRIPT&amp;gt;" (bypass!)</text>
       </g>
     </g>
     
@@ -97,7 +97,7 @@
       
       <text x="10" y="45" font-family="monospace" font-size="9" fill="#475569">// Blocklist pattern</text>
       <text x="10" y="60" font-family="monospace" font-size="9" fill="#0f172a">const blocked =</text>
-      <text x="10" y="75" font-family="monospace" font-size="9" fill="#0f172a">  [/&lt;script/i,</text>
+      <text x="10" y="75" font-family="monospace" font-size="9" fill="#0f172a">  [/&amp;lt;script/i,</text>
       <text x="10" y="90" font-family="monospace" font-size="9" fill="#0f172a">   /javascript:/i];</text>
       <text x="10" y="110" font-family="monospace" font-size="9" fill="#0f172a">for (const pattern of blocked)</text>
       <text x="10" y="125" font-family="monospace" font-size="9" fill="#0f172a">  if (pattern.test(input))</text>
@@ -133,19 +133,19 @@
     
     <g transform="translate(20, 45)">
       <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#475569">Blocklist blocks:</text>
-      <text x="150" y="0" font-family="monospace" font-size="10" fill="#dc2626">&lt;script&gt;</text>
+      <text x="150" y="0" font-family="monospace" font-size="10" fill="#dc2626">&amp;lt;script&amp;gt;</text>
       
       <text x="0" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#475569">Attackers bypass with:</text>
-      <text x="20" y="40" font-family="monospace" font-size="10" fill="#dc2626">&lt;SCRIPT&gt;</text>
+      <text x="20" y="40" font-family="monospace" font-size="10" fill="#dc2626">&amp;lt;SCRIPT&amp;gt;</text>
       <text x="120" y="40" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">(case variation)</text>
       
-      <text x="20" y="60" font-family="monospace" font-size="10" fill="#dc2626">&lt;scr&lt;script&gt;ipt&gt;</text>
+      <text x="20" y="60" font-family="monospace" font-size="10" fill="#dc2626">&amp;lt;scr&amp;lt;script&amp;gt;ipt&amp;gt;</text>
       <text x="180" y="60" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">(nested tags)</text>
       
       <text x="20" y="80" font-family="monospace" font-size="10" fill="#dc2626">&amp;#60;script&amp;#62;</text>
       <text x="170" y="80" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">(HTML entities)</text>
       
-      <text x="20" y="100" font-family="monospace" font-size="10" fill="#dc2626">&lt;svg onload=...&gt;</text>
+      <text x="20" y="100" font-family="monospace" font-size="10" fill="#dc2626">&amp;lt;svg onload=...&amp;gt;</text>
       <text x="180" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">(different event)</text>
       
       <text x="400" y="50" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#dc2626">Endless variations...</text>

@@ -30,17 +30,36 @@ export default function DeviceSessionTrackingArticle() {
           trusted devices, detecting suspicious logins, and providing users visibility into their
           active sessions.
         </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/device-session-tracking.svg"
+          alt="Device Session Tracking"
+          caption="Device Session Tracking — showing device metadata, location tracking, and activity logs"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/session-metadata.svg"
+          alt="Session Metadata"
+          caption="Diagram for device-session-tracking.tsx"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/device-tracking-security.svg"
+          alt="Device Tracking Security"
+          caption="Device Tracking Security — showing privacy controls, consent management, and data retention"
+        />
+      
         <p>
           For staff and principal engineers, implementing device session tracking requires
           understanding device fingerprinting, session metadata, and security use cases.
           The implementation must balance security with privacy.
         </p>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/device-session-tracking.svg"
-          alt="Device Session Tracking"
-          caption="Device Tracking — showing fingerprinting, metadata collection, and session management"
-        />
+        
+
+        
+
+        
       </section>
 
       <section>
@@ -56,11 +75,7 @@ export default function DeviceSessionTrackingArticle() {
       <section>
         <h2>Session Metadata</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/session-metadata.svg"
-          alt="Session Metadata"
-          caption="Session Metadata — showing device info, location, network, and timing data"
-        />
+        
 
         <ul className="space-y-3">
           <li><strong>Device Info:</strong> Type (mobile/desktop), OS, browser, browser version.</li>
@@ -204,11 +219,7 @@ export default function DeviceSessionTrackingArticle() {
       <section>
         <h2>Interview Questions</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/device-tracking-security.svg"
-          alt="Device Tracking Security"
-          caption="Security — showing trusted devices, anomaly detection, and session revocation"
-        />
+        
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

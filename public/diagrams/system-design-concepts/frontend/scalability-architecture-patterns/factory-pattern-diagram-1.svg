@@ -6,7 +6,7 @@
 
   <!-- Abstract Factory box -->
   <rect x="325" y="56" width="250" height="54" rx="10" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="2" />
-  <text x="450" y="78" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="600">&lt;&lt;Abstract Factory&gt;&gt;</text>
+  <text x="450" y="78" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="13" font-weight="600">&amp;lt;&amp;lt;Abstract Factory&amp;gt;&amp;gt;</text>
   <text x="450" y="98" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="14" font-weight="700">UIComponentFactory</text>
 
   <!-- Dashed lines from abstract factory down to concrete factories -->
@@ -51,7 +51,7 @@
 
   <!-- Light Theme Products -->
   <rect x="55" y="250" width="200" height="44" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5" />
-  <text x="95" y="268" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="18">&#9744;</text>
+  <text x="95" y="268" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="18">&amp;#9744;</text>
   <text x="115" y="268" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="600">LightButton</text>
   <text x="155" y="286" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10">bg: #fff, border: #d7d1e6</text>
 

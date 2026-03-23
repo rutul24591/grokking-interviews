@@ -188,23 +188,18 @@ export default function AssetVersioningAndCacheBustingArticle() {
         <h3>Cache-Control Header Strategy</h3>
         <p>
           The optimal header strategy depends on whether the asset URL is
-          stable or content-hashed:
+          stable or content-hashed. For hashed assets like{" "}
+          <code>app.a3f8c2b1.js</code> or <code>styles.7d4e1f09.css</code>, use{" "}
+          <code>Cache-Control: public, max-age=31536000, immutable</code> to
+          enable year-long caching with no revalidation. The HTML entry point
+          (<code>index.html</code>) must always revalidate using{" "}
+          <code>Cache-Control: no-cache</code> or equivalently{" "}
+          <code>max-age=0, must-revalidate</code>. API responses typically use{" "}
+          <code>Cache-Control: private, no-store</code> to prevent caching
+          altogether. Shared assets without hashes (favicon.ico, robots.txt)
+          use <code>Cache-Control: public, max-age=3600, must-revalidate</code>{" "}
+          for short-term caching with revalidation.
         </p>
-        <pre className="overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-{`# Hashed assets (app.a3f8c2b1.js, styles.7d4e1f09.css)
-Cache-Control: public, max-age=31536000, immutable
-
-# Entry point HTML (index.html) — must always revalidate
-Cache-Control: no-cache
-# or equivalently:
-Cache-Control: max-age=0, must-revalidate
-
-# API responses — typically no long-term caching
-Cache-Control: private, no-store
-
-# Shared assets without hashes (favicon.ico, robots.txt)
-Cache-Control: public, max-age=3600, must-revalidate`}
-        </pre>
         <p>
           The critical pattern is: <strong>hashed assets get immutable caching;
           the HTML entry point always revalidates</strong>. This ensures users
@@ -219,37 +214,19 @@ Cache-Control: public, max-age=3600, must-revalidate`}
         <p>
           Service workers add a third cache layer between the browser cache and
           the network. When using content-hashed assets with service workers, the
-          recommended pattern is <strong>precaching with revision tracking</strong>:
+          recommended pattern is <strong>precaching with revision tracking</strong>.
+          Workbox&apos;s <code>precacheAndRoute</code> function automatically
+          caches content-hashed assets during service worker installation. The
+          build tool injects a manifest where each entry includes the hashed URL
+          — the revision is null because the hash itself serves as the revision.
+          For example, <code>/assets/app.a3f8c2b1.js</code> and{" "}
+          <code>/assets/styles.7d4e1f09.css</code> are precached with null
+          revision, while <code>/index.html</code> (which has no hash) uses a
+          build hash as its revision. Runtime caching for dynamic assets like
+          images can be configured separately using Workbox&apos;s routing and
+          strategy modules, typically with a CacheFirst strategy and expiration
+          plugin to limit cache size and age.
         </p>
-        <pre className="overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-{`// Using Workbox precaching with content-hashed assets
-import { precacheAndRoute } from 'workbox-precaching';
-
-// The build tool injects this manifest automatically
-// Each entry includes the hashed URL — revision is null
-// because the hash IS the revision
-precacheAndRoute([
-  { url: '/assets/app.a3f8c2b1.js', revision: null },
-  { url: '/assets/styles.7d4e1f09.css', revision: null },
-  { url: '/assets/vendor.c4d2e8f6.js', revision: null },
-  // index.html has no hash, so revision is a build hash
-  { url: '/index.html', revision: '8a3b2c1d' },
-]);
-
-// Runtime caching for dynamic assets (images loaded on demand)
-import { registerRoute } from 'workbox-routing';
-import { CacheFirst } from 'workbox-strategies';
-
-registerRoute(
-  ({ request }) => request.destination === 'image',
-  new CacheFirst({
-    cacheName: 'images-cache',
-    plugins: [
-      new ExpirationPlugin({ maxEntries: 100, maxAgeSeconds: 30 * 24 * 3600 }),
-    ],
-  })
-);`}
-        </pre>
         <p>
           When the service worker updates, it compares the new precache manifest
           against the cached entries. Assets with changed hashes are fetched and
@@ -539,86 +516,7 @@ registerRoute(
         </ul>
       </section>
 
-      {/* Section 9: References & Further Reading */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://web.dev/articles/http-cache"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline hover:no-underline"
-            >
-              web.dev &mdash; Prevent unnecessary network requests with the HTTP
-              Cache
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://webpack.js.org/guides/caching/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline hover:no-underline"
-            >
-              Webpack &mdash; Caching Guide
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://vitejs.dev/guide/build.html"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline hover:no-underline"
-            >
-              Vite &mdash; Building for Production
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developer.chrome.com/docs/workbox/modules/workbox-precaching/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline hover:no-underline"
-            >
-              Workbox &mdash; Precaching Guide
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://jakearchibald.com/2016/caching-best-practices/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline hover:no-underline"
-            >
-              Jake Archibald &mdash; Caching Best Practices &amp; max-age
-              Gotchas
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://httpwg.org/specs/rfc9111.html"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline hover:no-underline"
-            >
-              RFC 9111 &mdash; HTTP Caching
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent underline hover:no-underline"
-            >
-              MDN &mdash; Cache-Control
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      {/* Section 10: Common Interview Questions */}
+      {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -742,6 +640,85 @@ registerRoute(
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 9: References & Further Reading */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a
+              href="https://web.dev/articles/http-cache"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline hover:no-underline"
+            >
+              web.dev &mdash; Prevent unnecessary network requests with the HTTP
+              Cache
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://webpack.js.org/guides/caching/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline hover:no-underline"
+            >
+              Webpack &mdash; Caching Guide
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://vitejs.dev/guide/build.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline hover:no-underline"
+            >
+              Vite &mdash; Building for Production
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.chrome.com/docs/workbox/modules/workbox-precaching/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline hover:no-underline"
+            >
+              Workbox &mdash; Precaching Guide
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://jakearchibald.com/2016/caching-best-practices/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline hover:no-underline"
+            >
+              Jake Archibald &mdash; Caching Best Practices &amp; max-age
+              Gotchas
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://httpwg.org/specs/rfc9111.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline hover:no-underline"
+            >
+              RFC 9111 &mdash; HTTP Caching
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent underline hover:no-underline"
+            >
+              MDN &mdash; Cache-Control
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

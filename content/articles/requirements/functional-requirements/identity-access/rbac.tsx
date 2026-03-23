@@ -30,6 +30,25 @@ export default function RBACArticle() {
           simplifies permission management, enables hierarchical access control, and provides 
           clear audit trails for compliance.
         </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/rbac-model.svg"
+          alt="Rbac Model"
+          caption="RBAC Model — showing Users → Roles → Permissions flow with role hierarchy"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/rbac-schema.svg"
+          alt="Rbac Schema"
+          caption="RBAC Schema — showing database schema with users, roles, permissions tables"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/rbac-vs-abac.svg"
+          alt="Rbac Vs Abac"
+          caption="RBAC vs ABAC — side-by-side comparison with pros, cons, and example policies"
+        />
+      
         <p>
           For staff and principal engineers, implementing RBAC requires understanding role 
           hierarchies, permission granularity, many-to-many relationships, caching strategies, 
@@ -38,11 +57,11 @@ export default function RBACArticle() {
           authorization checks.
         </p>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/rbac-model.svg"
-          alt="RBAC Model"
-          caption="RBAC Model — showing users, roles, permissions, and assignments"
-        />
+        
+
+        
+
+        
       </section>
 
       <section>
@@ -94,11 +113,7 @@ export default function RBACArticle() {
       <section>
         <h2>Database Schema</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/rbac-schema.svg"
-          alt="RBAC Database Schema"
-          caption="Database Schema — showing users, roles, permissions, and junction tables"
-        />
+        
 
         <ul className="space-y-3">
           <li>
@@ -171,6 +186,37 @@ export default function RBACArticle() {
       </section>
 
       <section>
+        <h2>Trade-offs &amp; Comparison</h2>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">RBAC vs ABAC</h3>
+          <ul className="space-y-3">
+            <li>
+              <strong>RBAC:</strong> Simpler, easier to audit, good for org hierarchies. Limited flexibility for context-aware access.
+            </li>
+            <li>
+              <strong>ABAC:</strong> More flexible, context-aware, fine-grained. Complex to manage, harder to audit.
+            </li>
+            <li>
+              <strong>Hybrid:</strong> RBAC for coarse-grained, ABAC for resource-level. Best of both worlds.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Centralized vs Decentralized RBAC</h3>
+          <ul className="space-y-3">
+            <li>
+              <strong>Centralized:</strong> Single source of truth, easier audit. Single point of failure, latency.
+            </li>
+            <li>
+              <strong>Decentralized:</strong> Faster checks, resilient. Harder to audit, consistency challenges.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
         <h2>References</h2>
         <ul className="space-y-2">
           <li>
@@ -181,6 +227,31 @@ export default function RBACArticle() {
           <li>
             <a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               OWASP Authorization Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OWASP Access Control Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a href="https://auth0.com/blog/a-look-at-the-latest-draft-for-oauth-2-1/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OAuth 2.1 Security Best Practices
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Practical_security_guides/Access_control" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN - Access Control
+            </a>
+          </li>
+          <li>
+            <a href="https://docs.openfga.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OpenFGA - Fine-Grained Authorization
+            </a>
+          </li>
+          <li>
+            <a href="https://www.cerbos.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Cerbos - Policy as Code
             </a>
           </li>
         </ul>
@@ -273,6 +344,75 @@ export default function RBACArticle() {
       </section>
 
       <section>
+        <h2>Interview Questions</h2>
+
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: RBAC vs ABAC - which to choose?</p>
+            <p className="mt-2 text-sm">
+              A: RBAC for simple, role-based access (admin, moderator, user) - easier to manage, clearer audit trail. ABAC for fine-grained, context-aware access (user.department = resource.department). Hybrid approach: RBAC for coarse-grained access, ABAC for resource-level checks. Most systems start with RBAC, add ABAC for specific requirements.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How do you handle role changes?</p>
+            <p className="mt-2 text-sm">
+              A: Update user_roles table, invalidate permission cache (Redis/JWT), force token refresh on next request. Audit log the change (who, what, when, why). Notify user if appropriate (email for role removal). For JWT: include permission_version, increment on changes, validate version matches current.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How do you implement resource-level permissions?</p>
+            <p className="mt-2 text-sm">
+              A: Combine RBAC with ownership checks. User can delete posts IF (has delete:post permission OR is post owner). For team resources: check if user has team:manage permission AND is team member. Implementation: middleware checks role permission, service layer checks ownership. Cache ownership data for performance.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How do you cache permissions efficiently?</p>
+            <p className="mt-2 text-sm">
+              A: Two approaches: (1) JWT claims - include permissions array in token, sub-1ms access, stale until token refresh. (2) Redis cache - user_id → permissions Set, ~1ms access, invalidate on role change. Hybrid: JWT for common permissions, Redis for detailed checks. TTL-based expiry (15 min) for eventual consistency.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How do you handle permission versioning?</p>
+            <p className="mt-2 text-sm">
+              A: Include permission_version in JWT token. Increment global version on any permission change. Validate token version matches current version on each request. Force refresh if mismatch. For granular: track version per user, increment on user's role changes. Trade-off: more invalidations vs finer control.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How do you audit RBAC changes?</p>
+            <p className="mt-2 text-sm">
+              A: Log all role assignments, permission changes, role creation/deletion. Include: timestamp, actor (who made change), subject (user/role changed), action (assigned/removed), reason (ticket/approval). Store in immutable audit log. Queryable for compliance reports. Alert on suspicious patterns (mass role changes, self-assignment).
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How do you prevent privilege escalation?</p>
+            <p className="mt-2 text-sm">
+              A: Separate role management from application. Only super-admin can assign admin roles. Require approval workflow for sensitive role changes. Audit all role assignments. Implement four-eyes principle for critical changes. Log and alert on self-assignment attempts. Use read-only replicas for permission checks to prevent tampering.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How do you handle multi-tenant RBAC?</p>
+            <p className="mt-2 text-sm">
+              A: Scope roles to tenant (tenant_id in user_roles). Users can have different roles in different tenants. Check tenant context on every permission check. Cache permissions per tenant. For shared services: include tenant_id in permission key. Implementation: tenant-aware middleware, tenant-scoped queries.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: What metrics do you track for RBAC?</p>
+            <p className="mt-2 text-sm">
+              A: Primary: Authorization success/failure rate, permission check latency (p50, p99), cache hit rate. Security: Failed authorization attempts per user, privilege escalation attempts, unusual role assignments. Operational: Role count, permission count, user-role assignments. Set up alerts for anomalies (spike in failures, unusual role changes).
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
         <h2>Advanced Topics</h2>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Hierarchical RBAC</h3>
@@ -327,11 +467,7 @@ export default function RBACArticle() {
       <section>
         <h2>Interview Questions</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/rbac-vs-abac.svg"
-          alt="RBAC vs ABAC Comparison"
-          caption="RBAC vs ABAC — comparing role-based and attribute-based access control"
-        />
+        
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -595,6 +731,65 @@ export default function RBACArticle() {
         <p>
           Strengthen RBAC against attacks. Implement defense in depth. Regular penetration testing. Monitor for privilege escalation attempts. Encrypt role/permission data at rest. Use hardware security modules for key management. Implement zero-trust principles.
         </p>
+      </section>
+
+      <section>
+        <h2>Real-world Use Cases</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SaaS RBAC</h3>
+        <p>
+          B2B SaaS platform with 10,000+ enterprise customers, complex org hierarchies.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Each customer has unique role requirements. Admin, Manager, User, Viewer roles. Custom roles for specific customers.</li>
+          <li><strong>Solution:</strong> Hierarchical RBAC with inheritance. Base roles + custom permissions. Tenant-scoped roles. Permission groups for easier management.</li>
+          <li><strong>Result:</strong> Supported 500+ custom role configurations. Role assignment time reduced by 80%. Customer satisfaction improved.</li>
+          <li><strong>Security:</strong> Principle of least privilege, audit logging for all role changes, quarterly access reviews.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Healthcare EHR System RBAC</h3>
+        <p>
+          Electronic Health Records system with HIPAA compliance requirements.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> HIPAA requires strict access controls. Different roles: Doctors, Nurses, Admin, Billing. Need-to-know basis for patient data.</li>
+          <li><strong>Solution:</strong> Role-based access with resource-level permissions. Doctors can access their patients only. Break-glass for emergencies. Audit all access.</li>
+          <li><strong>Result:</strong> Passed HIPAA audits. Reduced unauthorized access by 95%. Clear audit trail for compliance.</li>
+          <li><strong>Security:</strong> Minimum necessary access, automatic role expiry for contractors, mandatory access reviews.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Cloud Infrastructure RBAC</h3>
+        <p>
+          Cloud platform managing AWS/GCP/Azure resources for enterprise customers.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Fine-grained permissions for cloud resources. Developers need deploy access, not delete. Compliance requires separation of duties.</li>
+          <li><strong>Solution:</strong> Attribute-based RBAC. Permissions scoped to resource tags (environment, team). Approval workflow for sensitive actions.</li>
+          <li><strong>Result:</strong> Reduced accidental production changes by 90%. Passed SOC 2 audit. Developer velocity improved (self-service for safe actions).</li>
+          <li><strong>Security:</strong> Separation of duties, approval workflows, just-in-time access for privileged operations.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce Platform RBAC</h3>
+        <p>
+          Multi-vendor marketplace with vendors, customers, and platform admins.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Vendors can only manage their products. Support team needs limited order access. Finance team needs payment data access only.</li>
+          <li><strong>Solution:</strong> Resource-scoped RBAC. Vendor role scoped to vendor_id. Support role with read-only order access. Finance role with payment permissions only.</li>
+          <li><strong>Result:</strong> Vendor data isolation maintained. Support efficiency improved (targeted access). Reduced support tickets for access issues by 60%.</li>
+          <li><strong>Security:</strong> Tenant isolation, data access logging, regular permission audits.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Financial Trading Platform RBAC</h3>
+        <p>
+          Trading platform with strict regulatory requirements (SEC, FINRA).
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Traders can only trade their assigned securities. Compliance requires Chinese wall between teams. Audit trail for all trades.</li>
+          <li><strong>Solution:</strong> RBAC with security-level permissions. Trader role scoped to assigned securities. Compliance role with read-only audit access. Pre-trade permission check.</li>
+          <li><strong>Result:</strong> Passed all regulatory audits. Zero unauthorized trades. Clear audit trail for investigations.</li>
+          <li><strong>Security:</strong> Pre-trade validation, real-time monitoring, mandatory vacation (auto role suspension).</li>
+        </ul>
       </section>
     </ArticleLayout>
   );

@@ -20,19 +20,19 @@
   <rect x="20" y="148" width="275" height="72" rx="6" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
   <text x="35" y="167" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">var MyModule = (function() {</text>
   <text x="35" y="182" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">  var _private = 42;</text>
-  <text x="35" y="197" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">  return { get: () =&gt; _private };</text>
+  <text x="35" y="197" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">  return { get: () =&amp;gt; _private };</text>
   <text x="35" y="212" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">})();</text>
 
   <rect x="312" y="148" width="275" height="72" rx="6" fill="#ffffff" stroke="#d4a843" stroke-width="1.5"/>
   <text x="327" y="167" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">// counter.js</text>
   <text x="327" y="182" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">let count = 0;</text>
   <text x="327" y="197" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">module.exports = {</text>
-  <text x="327" y="212" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">  inc: () =&gt; ++count };</text>
+  <text x="327" y="212" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">  inc: () =&amp;gt; ++count };</text>
 
   <rect x="604" y="148" width="275" height="72" rx="6" fill="#ffffff" stroke="#2f9d74" stroke-width="1.5"/>
   <text x="619" y="167" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">// counter.js</text>
   <text x="619" y="182" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">let count = 0;</text>
-  <text x="619" y="197" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">export const inc = () =&gt; ++count;</text>
+  <text x="619" y="197" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">export const inc = () =&amp;gt; ++count;</text>
   <text x="619" y="212" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">export default createCounter;</text>
 
   <!-- Row 2: Import Syntax -->
@@ -41,7 +41,7 @@
   <rect x="20" y="254" width="275" height="55" rx="6" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
   <text x="35" y="273" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">// via global variable</text>
   <text x="35" y="288" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">MyModule.get();</text>
-  <text x="35" y="303" font-family="system-ui, sans-serif" font-size="10" fill="#888888">// or &lt;script&gt; tag ordering</text>
+  <text x="35" y="303" font-family="system-ui, sans-serif" font-size="10" fill="#888888">// or &amp;lt;script&amp;gt; tag ordering</text>
 
   <rect x="312" y="254" width="275" height="55" rx="6" fill="#ffffff" stroke="#d4a843" stroke-width="1.5"/>
   <text x="327" y="273" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">const counter =</text>
@@ -58,7 +58,7 @@
 
   <!-- IIFE characteristics -->
   <rect x="20" y="348" width="275" height="135" rx="6" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
-  <text x="35" y="368" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Loading:   Synchronous (&lt;script&gt;)</text>
+  <text x="35" y="368" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Loading:   Synchronous (&amp;lt;script&amp;gt;)</text>
   <text x="35" y="385" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Analysis:  Runtime only</text>
   <text x="35" y="402" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Scope:     Closure-based</text>
   <text x="35" y="419" font-family="system-ui, sans-serif" font-size="10" fill="#1a1822">Tree Shake: Not possible</text>

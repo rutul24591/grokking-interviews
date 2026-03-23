@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Rendering Strategy Spectrum: SEO Reliability vs Content Dynamism</text>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+
+  <!-- Spectrum cards -->
+  <!-- SSG -->
+  <rect x="35" y="80" width="150" height="220" rx="8" fill="#ffffff" stroke="#2e7d32" stroke-width="2.5"/>
+  <rect x="35" y="80" width="150" height="38" rx="8" fill="#2e7d32"/>
+  <text x="110" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">SSG</text>
+  <text x="110" y="138" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Static Site</text>
+  <text x="110" y="152" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Generation</text>
+  <text x="110" y="178" text-anchor="middle" font-size="10" fill="#2e7d32">Pre-built HTML at</text>
+  <text x="110" y="192" text-anchor="middle" font-size="10" fill="#2e7d32">build time</text>
+  <text x="110" y="218" text-anchor="middle" font-size="10" fill="#1a1822">Fastest TTFB</text>
+  <text x="110" y="234" text-anchor="middle" font-size="10" fill="#1a1822">CDN-cached</text>
+  <text x="110" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#2e7d32">SEO: Excellent</text>
+  <text x="110" y="280" text-anchor="middle" font-size="9" fill="#1a1822">Content stale between builds</text>
+
+  <!-- ISR -->
+  <rect x="205" y="80" width="150" height="220" rx="8" fill="#ffffff" stroke="#4caf50" stroke-width="2.5"/>
+  <rect x="205" y="80" width="150" height="38" rx="8" fill="#4caf50"/>
+  <text x="280" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">ISR</text>
+  <text x="280" y="138" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Incremental</text>
+  <text x="280" y="152" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Static Regen</text>
+  <text x="280" y="178" text-anchor="middle" font-size="10" fill="#4caf50">Static + periodic</text>
+  <text x="280" y="192" text-anchor="middle" font-size="10" fill="#4caf50">revalidation</text>
+  <text x="280" y="218" text-anchor="middle" font-size="10" fill="#1a1822">Fast TTFB</text>
+  <text x="280" y="234" text-anchor="middle" font-size="10" fill="#1a1822">Fresh-ish content</text>
+  <text x="280" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#4caf50">SEO: Very Good</text>
+  <text x="280" y="280" text-anchor="middle" font-size="9" fill="#1a1822">Stale-while-revalidate</text>
+
+  <!-- SSR -->
+  <rect x="375" y="80" width="150" height="220" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2.5"/>
+  <rect x="375" y="80" width="150" height="38" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">SSR</text>
+  <text x="450" y="138" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Server-Side</text>
+  <text x="450" y="152" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Rendering</text>
+  <text x="450" y="178" text-anchor="middle" font-size="10" fill="#6d5bd0">HTML generated</text>
+  <text x="450" y="192" text-anchor="middle" font-size="10" fill="#6d5bd0">per request</text>
+  <text x="450" y="218" text-anchor="middle" font-size="10" fill="#1a1822">Moderate TTFB</text>
+  <text x="450" y="234" text-anchor="middle" font-size="10" fill="#1a1822">Always fresh</text>
+  <text x="450" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#6d5bd0">SEO: Good</text>
+  <text x="450" y="280" text-anchor="middle" font-size="9" fill="#1a1822">Server load per request</text>
+
+  <!-- Dynamic Rendering -->
+  <rect x="545" y="80" width="150" height="220" rx="8" fill="#ffffff" stroke="#e65100" stroke-width="2.5"/>
+  <rect x="545" y="80" width="150" height="38" rx="8" fill="#e65100"/>
+  <text x="620" y="105" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Dynamic Render</text>
+  <text x="620" y="138" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Different output</text>
+  <text x="620" y="152" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">for bots vs users</text>
+  <text x="620" y="178" text-anchor="middle" font-size="10" fill="#e65100">Pre-render for bots</text>
+  <text x="620" y="192" text-anchor="middle" font-size="10" fill="#e65100">SPA for users</text>
+  <text x="620" y="218" text-anchor="middle" font-size="10" fill="#1a1822">Extra infrastructure</text>
+  <text x="620" y="234" text-anchor="middle" font-size="10" fill="#1a1822">Content parity risk</text>
+  <text x="620" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#e65100">SEO: Moderate</text>
+  <text x="620" y="280" text-anchor="middle" font-size="9" fill="#1a1822">Cloaking concerns</text>
+
+  <!-- CSR -->
+  <rect x="715" y="80" width="150" height="220" rx="8" fill="#ffffff" stroke="#c62828" stroke-width="2.5"/>
+  <rect x="715" y="80" width="150" height="38" rx="8" fill="#c62828"/>
+  <text x="790" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">CSR</text>
+  <text x="790" y="138" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Client-Side</text>
+  <text x="790" y="152" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Rendering</text>
+  <text x="790" y="178" text-anchor="middle" font-size="10" fill="#c62828">JS renders content</text>
+  <text x="790" y="192" text-anchor="middle" font-size="10" fill="#c62828">in browser</text>
+  <text x="790" y="218" text-anchor="middle" font-size="10" fill="#1a1822">Empty initial HTML</text>
+  <text x="790" y="234" text-anchor="middle" font-size="10" fill="#1a1822">Second-wave indexing</text>
+  <text x="790" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#c62828">SEO: Poor</text>
+  <text x="790" y="280" text-anchor="middle" font-size="9" fill="#1a1822">JS failures = no index</text>
+
+  <!-- SEO Reliability arrow (top) -->
+  <text x="450" y="338" text-anchor="middle" font-size="13" font-weight="700" fill="#2e7d32">SEO Reliability</text>
+  <line x1="780" y1="350" x2="120" y2="350" stroke="#2e7d32" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <rect x="60" y="344" width="50" height="16" rx="3" fill="#2e7d32"/>
+  <text x="85" y="356" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">HIGH</text>
+  <rect x="790" y="344" width="50" height="16" rx="3" fill="#c62828"/>
+  <text x="815" y="356" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">LOW</text>
+
+  <!-- Content Dynamism arrow (bottom) -->
+  <text x="450" y="398" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">Content Dynamism</text>
+  <line x1="120" y1="410" x2="780" y2="410" stroke="#6d5bd0" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <rect x="60" y="404" width="50" height="16" rx="3" fill="#d7d1e6"/>
+  <text x="85" y="416" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">LOW</text>
+  <rect x="790" y="404" width="50" height="16" rx="3" fill="#6d5bd0"/>
+  <text x="815" y="416" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">HIGH</text>
+
+  <!-- Recommendation -->
+  <rect x="60" y="440" width="780" height="45" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="460" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">Recommendation: Use SSG/ISR for content-heavy pages, SSR for personalized/real-time pages</text>
+  <text x="450" y="476" text-anchor="middle" font-size="11" fill="#1a1822">Avoid pure CSR for any page that needs organic search traffic</text>
+</svg>

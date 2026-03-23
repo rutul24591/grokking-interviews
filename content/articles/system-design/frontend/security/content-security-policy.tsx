@@ -798,6 +798,113 @@ export default function ContentSecurityPolicyArticle() {
       </section>
 
       <section>
+        <h2>Architecture at Scale: CSP in Enterprise Systems</h2>
+        <p>
+          Enterprise-scale CSP implementation requires coordinated policy management across multiple applications, teams, and deployment environments. In microservices architectures, each service may have different CSP requirements based on its functionality and third-party dependencies.
+        </p>
+        <p>
+          <strong>Centralized Policy Management:</strong> Implement a CSP policy registry that documents allowed sources for each directive across all applications. Use infrastructure-as-code (Terraform, CloudFormation) to manage CSP headers consistently across load balancers, API gateways, and CDN configurations. Version control CSP policies with change tracking and approval workflows.
+        </p>
+        <p>
+          <strong>Automated CSP Generation:</strong> Use build-time tools to analyze application dependencies and generate baseline CSP policies. Tools like CSP Evaluator, Mozilla Observatory, and custom webpack plugins can scan for external resources and generate initial script-src, style-src, and img-src directives. Integrate CSP generation into CI/CD pipelines to detect policy drift.
+        </p>
+        <p>
+          <strong>Multi-Environment Strategy:</strong> Deploy CSP in Report-Only mode (Content-Security-Policy-Report-Only) in staging environments for 2-4 weeks before production enforcement. Collect violation reports to identify breaking changes. Use environment-specific policies: stricter in production, more permissive in development (with unsafe-eval for debugging tools).
+        </p>
+        <p>
+          <strong>CDN Integration:</strong> Configure CDN (Cloudflare, AWS CloudFront, Fastly) to inject CSP headers at the edge. Use CDN Workers or Lambda@Edge to dynamically generate nonces per request. Implement CSP violation reporting aggregation at CDN level to reduce origin server load. Consider using CDN-managed CSP with automatic policy recommendations based on observed traffic.
+        </p>
+      </section>
+
+      <section>
+        <h2>Testing Strategies: CSP Validation and Monitoring</h2>
+        <p>
+          Comprehensive CSP testing requires automated validation, violation monitoring, and periodic security audits integrated into development workflows.
+        </p>
+        <p>
+          <strong>Automated CSP Scanning:</strong> Use security scanners (OWASP ZAP, Burp Suite, Acunetix) to verify CSP headers are present and properly configured. Configure CI jobs to fail builds if CSP headers are missing from responses. Use custom scripts to parse CSP headers and validate syntax (balanced quotes, valid keywords, proper directive separation).
+        </p>
+        <p>
+          <strong>Report-Only Testing:</strong> Before enforcing CSP, deploy with Content-Security-Policy-Report-Only header for 2-4 weeks. Collect violation reports to identify: (1) missing allowed sources, (2) inline scripts that need nonces, (3) third-party services not in whitelist. Use violation data to refine policies before switching to enforcement mode.
+        </p>
+        <p>
+          <strong>Violation Monitoring:</strong> Implement violation endpoint that receives JSON reports via POST. Store reports in time-series database (InfluxDB, TimescaleDB) for trend analysis. Set up alerts for: sudden spike in violations (greater than 100/hour), violations from new blocked-uris, violations involving sensitive directives (script-src, frame-ancestors). Use SIEM integration to correlate violations with other security events.
+        </p>
+        <p>
+          <strong>Browser Testing Matrix:</strong> Test CSP implementation across browser/OS combinations: Chrome (latest 3 versions), Firefox (latest 3), Safari (latest 2), Edge (latest 2). Verify nonce support, strict-dynamic behavior, and fallback handling. Use BrowserStack or Sauce Labs for cross-browser testing. Document browser-specific CSP quirks in team wiki.
+        </p>
+        <p>
+          <strong>Penetration Testing:</strong> Include CSP bypass testing in quarterly penetration tests. Specific test cases: (1) XSS with CSP enabled, (2) nonce prediction attempts, (3) JSONP endpoint abuse, (4) AngularJS CSP bypass (if applicable), (5) CSP header injection/override. Require remediation of all CSP bypass findings before production deployment.
+        </p>
+      </section>
+
+      <section>
+        <h2>Compliance and Legal Context</h2>
+        <p>
+          CSP implementation has significant compliance implications, particularly for applications handling financial transactions, healthcare data, or government services.
+        </p>
+        <p>
+          <strong>OWASP Top 10:</strong> CSP is referenced in OWASP Top 10 2021 A03:Injection as a mitigation technique. OWASP recommends CSP as defense-in-depth layer against XSS. Many compliance auditors expect CSP implementation as evidence of security maturity. Document CSP policy and enforcement level for annual security assessments.
+        </p>
+        <p>
+          <strong>PCI-DSS Requirements:</strong> PCI-DSS v4.0 Requirement 6.4.3 recommends CSP for payment pages. While not mandatory, CSP demonstrates due diligence in XSS prevention. Annual penetration testing (Requirement 11.3) should verify CSP effectiveness. Document CSP implementation in ROC (Report on Compliance) for annual assessments.
+        </p>
+        <p>
+          <strong>GDPR Implications:</strong> CSP helps fulfill GDPR Article 32 security of processing by implementing appropriate technical measures against XSS-based data breaches. CSP violation logs can serve as evidence of security monitoring. However, violation reports containing user data (URLs, user-agents) must be handled per GDPR data retention policies.
+        </p>
+        <p>
+          <strong>SOC 2 Controls:</strong> CSP implementation maps to SOC 2 Common Criteria CC6.1 (logical access controls) and CC7.2 (system monitoring). Document CSP policy management, violation monitoring procedures, and incident response for CSP bypass attempts. Track CSP-related security metrics for annual SOC 2 audits.
+        </p>
+        <p>
+          <strong>Government Standards:</strong> NIST SP 800-53 SC-16 (Transmission Integrity) references CSP as implementation guidance. FedRAMP Moderate baseline recommends CSP for web applications. UK NCSC guidance recommends CSP with nonces for public sector websites. Document CSP compliance with applicable government standards.
+        </p>
+      </section>
+
+      <section>
+        <h2>Performance Trade-offs: Security vs. Latency</h2>
+        <p>
+          CSP implementation introduces measurable performance considerations that must be balanced against security requirements.
+        </p>
+        <p>
+          <strong>Header Size Impact:</strong> Comprehensive CSP policies can add 500-2000 bytes to HTTP response headers. For high-traffic APIs, this increases bandwidth costs. Mitigate by: using short directive names, minimizing allowed sources, leveraging HTTP/2 header compression. Test header size impact using curl verbose mode or browser DevTools Network panel.
+        </p>
+        <p>
+          <strong>Nonce Generation Overhead:</strong> Cryptographically secure nonce generation (crypto.randomBytes) takes 0.1-0.5ms per request. For high-traffic applications (greater than 10K RPS), this adds measurable CPU load. Pre-generate nonce pools during idle periods. Use nonces only for script-src and style-src; use hashes for static resources.
+        </p>
+        <p>
+          <strong>CSP Evaluation Latency:</strong> Browser CSP evaluation adds 5-50ms depending on policy complexity and number of resources. Complex policies with many sources take longer to evaluate. Optimize by: ordering sources by likelihood (most-used first), using wildcards sparingly, avoiding excessive data: or blob: schemes. Test CSP impact using Chrome DevTools Performance panel.
+        </p>
+        <p>
+          <strong>Violation Reporting Overhead:</strong> CSP violation reports sent via report-uri add network requests. Use report-to (Reporting API) for batched reporting. Implement client-side rate limiting (max 10 reports/minute per user). Use navigator.sendBeacon() for non-blocking report transmission.
+        </p>
+        <p>
+          <strong>CDN Caching Impact:</strong> Nonce-based CSP breaks CDN caching because each response has unique nonce. Solution: Use two-tier approach—static assets (JS, CSS) with hash-based CSP cached at CDN, dynamic HTML with nonce-based CSP served from origin. Or use strict-dynamic to allow CDN-cached scripts to load additional trusted scripts.
+        </p>
+      </section>
+
+      <section>
+        <h2>Browser and Platform Compatibility</h2>
+        <p>
+          CSP support varies significantly across browsers, requiring careful compatibility planning and fallback strategies.
+        </p>
+        <p>
+          <strong>CSP Level Support:</strong> CSP Level 1 (basic directives) supported in all modern browsers. CSP Level 2 (nonces, hashes) supported in Chrome 40+, Firefox 45+, Safari 10+, Edge 15+. CSP Level 3 (strict-dynamic, navigate-to) supported in Chrome 63+, Firefox 67+, Safari 12.1+, Edge 79+. Check caniuse.com for current support matrix.
+        </p>
+        <p>
+          <strong>Browser-Specific Quirks:</strong> Chrome blocks eval() by default in extensions. Firefox requires unsafe-eval for WebAssembly compilation. Safari has stricter data: URI handling. Edge (Legacy) has partial CSP Level 2 support. Test CSP in target browsers before deployment.
+        </p>
+        <p>
+          <strong>Mobile Browser Considerations:</strong> Mobile Chrome/Firefox generally match desktop CSP support. Samsung Internet has delayed CSP Level 3 support. iOS Safari lags behind desktop Safari by 1-2 versions. Test CSP on actual mobile devices, not just emulators. Consider reduced CSP strictness for mobile user agents if compatibility issues arise.
+        </p>
+        <p>
+          <strong>WebView Compatibility:</strong> Android WebView CSP support matches Chrome version (Chrome 90+ on Android 10+). iOS WKWebView CSP support matches iOS Safari version. Some older Android devices have broken CSP implementations. Test CSP in actual app WebViews. Consider user-agent detection to serve different CSP policies to problematic WebViews.
+        </p>
+        <p>
+          <strong>Legacy Browser Fallback:</strong> IE11 supports CSP Level 1 only (no nonces/hashes). For IE11 support, use hash-based CSP or accept unsafe-inline with other mitigations. Document legacy browser support decisions in security policy. Consider serving different CSP via user-agent detection for enterprise IE11 users.
+        </p>
+      </section>
+
+      <section>
         <h2>References & Further Reading</h2>
         <ul className="space-y-2">
           <li>

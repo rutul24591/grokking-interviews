@@ -465,7 +465,129 @@ export default function SubresourceIntegrityArticle() {
       </section>
 
       <section>
-        <h2>Interview Questions & Answers</h2>
+        <h2>Architecture at Scale: SRI in Enterprise Systems</h2>
+        <p>
+          Enterprise-scale SRI implementation requires coordinated hash management, consistent integrity policies, and centralized monitoring across multiple applications, build pipelines, and CDN configurations. In microservices architectures, each service must implement SRI consistently for all external resources.
+        </p>
+        <p>
+          <strong>Centralized Hash Management:</strong> Implement a centralized SRI hash registry that tracks all resource hashes across applications. Use infrastructure-as-code to manage SRI attributes consistently across all services. Document SRI policies in security standards.
+        </p>
+        <p>
+          <strong>Build Pipeline Integration:</strong> Integrate SRI hash generation into CI/CD pipelines. Use webpack-subresource-integrity or vite-plugin-sri for automatic hash generation. Implement hash verification as part of build process. Document SRI build configuration.
+        </p>
+        <p>
+          <strong>CDN Integration:</strong> Configure CDN (Cloudflare, AWS CloudFront, Fastly) to serve resources with proper CORS headers for SRI verification. Implement CDN cache invalidation that updates SRI hashes. Document CDN SRI configuration.
+        </p>
+        <p>
+          <strong>Multi-Environment Strategy:</strong> Use environment-specific SRI hashes for staging vs production. Implement SRI hash rotation for security updates. Document SRI deployment procedures.
+        </p>
+      </section>
+
+      <section>
+        <h2>Testing Strategies: SRI Validation</h2>
+        <p>
+          Comprehensive SRI testing requires automated validation, manual verification, and penetration testing integrated into security operations.
+        </p>
+        <p>
+          <strong>Automated Hash Verification:</strong> Use build tools to verify SRI hashes match resource content. Configure CI/CD pipelines to fail builds on hash mismatches. Set up automated alerts for: missing integrity attributes, hash mismatches, CORS configuration issues.
+        </p>
+        <p>
+          <strong>Browser Testing:</strong> Test SRI enforcement across browsers: (1) Verify resources load with correct hashes, (2) Verify resources are blocked with incorrect hashes, (3) Test fallback behavior for unsupported browsers. Use BrowserStack for cross-browser testing.
+        </p>
+        <p>
+          <strong>CDN Testing:</strong> Test SRI with CDN: (1) Verify CORS headers are set correctly, (2) Test cache invalidation updates hashes, (3) Test CDN failover with SRI. Document CDN SRI test results.
+        </p>
+        <p>
+          <strong>Penetration Testing:</strong> Include SRI in quarterly penetration tests. Specific test cases: (1) Resource manipulation attacks, (2) CDN compromise simulation, (3) Hash collision attempts, (4) CORS bypass attempts. Require remediation of all SRI-related findings before production deployment.
+        </p>
+      </section>
+
+      <section>
+        <h2>Compliance and Legal Context</h2>
+        <p>
+          SRI implementation has significant compliance implications, particularly for applications handling financial transactions, healthcare data, or operating in regulated industries.
+        </p>
+        <p>
+          <strong>PCI-DSS Requirements:</strong> PCI-DSS Requirement 6.4.3 recommends integrity verification for third-party scripts. SRI demonstrates due diligence in supply chain security. Document SRI implementation in ROC (Report on Compliance).
+        </p>
+        <p>
+          <strong>HIPAA Requirements:</strong> HIPAA Security Rule 45 CFR 164.312(c)(1) requires integrity controls for ePHI. SRI helps ensure third-party scripts don&apos;t compromise data integrity. Document SRI as part of integrity controls.
+        </p>
+        <p>
+          <strong>GDPR Implications:</strong> GDPR Article 32 requires appropriate security for personal data protection. SRI helps prevent unauthorized script injection that could exfiltrate personal data. Document SRI measures as part of security of processing.
+        </p>
+        <p>
+          <strong>SOC 2 Controls:</strong> SRI implementation maps to SOC 2 Common Criteria CC6.1 (logical access controls). Document SRI policies, hash management procedures, and monitoring for annual SOC 2 audits.
+        </p>
+        <p>
+          <strong>Supply Chain Security:</strong> Executive Order 14028 (US) requires software supply chain security measures. SRI is a key control for web application supply chain security. Document SRI as part of supply chain security program.
+        </p>
+      </section>
+
+      <section>
+        <h2>Performance Trade-offs: Security vs. Latency</h2>
+        <p>
+          SRI implementation introduces minimal performance overhead but requires careful hash management.
+        </p>
+        <p>
+          <strong>Hash Verification Overhead:</strong> Browser hash verification adds 5-20ms per resource depending on size. This is negligible compared to network latency. Use build-time hash generation to avoid runtime overhead.
+        </p>
+        <p>
+          <strong>CORS Preflight:</strong> Cross-origin resources with SRI may trigger CORS preflight (OPTIONS) requests. This adds 100-500ms round-trip latency. Use same-origin resources where possible. Implement CORS preflight caching (Access-Control-Max-Age).
+        </p>
+        <p>
+          <strong>Cache Invalidation:</strong> SRI requires hash updates when resources change. This can complicate cache invalidation strategies. Use content-based filenames (file.hash.js) for cache busting. Implement gradual hash rotation for critical resources.
+        </p>
+        <p>
+          <strong>Build Time Impact:</strong> SRI hash generation adds 100-500ms to build time depending on number of resources. Parallelize hash generation for large projects. Cache hashes for unchanged resources.
+        </p>
+        <p>
+          <strong>Fallback Overhead:</strong> For browsers that don&apos;t support SRI (IE11, old Safari), implement feature detection and graceful degradation. Test fallback behavior thoroughly.
+        </p>
+      </section>
+
+      <section>
+        <h2>Browser and Platform Compatibility</h2>
+        <p>
+          SRI support varies across browsers, requiring careful compatibility planning.
+        </p>
+        <p>
+          <strong>SRI Support:</strong> Supported in Chrome 45+, Firefox 43+, Safari 11+, Edge 79+. Not supported in IE11. For legacy browser support, implement feature detection and graceful degradation. Document SRI support in browser compatibility matrix.
+        </p>
+        <p>
+          <strong>CORS Requirements:</strong> SRI requires CORS support from CDN. Verify CDN sets proper CORS headers (Access-Control-Allow-Origin). Test CORS configuration across browsers.
+        </p>
+        <p>
+          <strong>Mobile Browser Considerations:</strong> Mobile Chrome/Firefox match desktop SRI support. iOS Safari 11+ has full support. Some older Android browsers have partial support. Test SRI on actual mobile devices.
+        </p>
+        <p>
+          <strong>WebView Considerations:</strong> iOS WKWebView and Android WebView have separate SRI behavior. Test SRI in actual app WebViews. Consider user-agent detection for WebView-specific policies.
+        </p>
+        <p>
+          <strong>CSP Integration:</strong> CSP Level 3 <code className="text-sm">require-sri-for</code> directive supported in Chrome 79+, Edge 79+. Not yet supported in Firefox, Safari. Use CSP reporting to monitor SRI enforcement.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-World Use Cases</h2>
+        <ul className="space-y-3">
+          <li>
+            <strong>E-Commerce Platform:</strong> SRI on all third-party scripts (analytics, payment widgets, chat). webpack-subresource-integrity plugin for automatic hash generation. CSP require-sri-for directive. Monitor SRI failures via CSP reporting.
+          </li>
+          <li>
+            <strong>Financial Services:</strong> SRI on all external resources. Pin all CDN resources to specific versions. Hash verification in CI/CD pipeline. Quarterly SRI audits as part of security compliance.
+          </li>
+          <li>
+            <strong>Healthcare Portal:</strong> SRI on all third-party scripts handling ePHI. Build-time hash generation. CDN CORS configuration for SRI. HIPAA compliance documentation includes SRI controls.
+          </li>
+          <li>
+            <strong>Government Website:</strong> SRI mandated by security policy. All external scripts require SRI hashes. Automated SRI verification in deployment pipeline. Executive Order 14028 compliance documentation.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Interview Questions and Answers</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q1: What is Subresource Integrity and why is it important?</p>
@@ -533,6 +655,37 @@ export default function SubresourceIntegrityArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      <section>
+        <h2>References and Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN Web Docs: Subresource Integrity
+            </a>
+          </li>
+          <li>
+            <a href="https://w3c.github.io/webappsec-subresource-integrity/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              W3C Subresource Integrity Specification
+            </a>
+          </li>
+          <li>
+            <a href="https://www.srihash.org/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              SRI Hash Generator (srihash.org)
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/webpack-contrib/webpack-subresource-integrity" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              webpack-subresource-integrity Plugin
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/subresource-integrity/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              web.dev: Subresource Integrity
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

@@ -65,7 +65,7 @@
 
   <!-- Transparency branch -->
   <rect x="600" y="196" width="160" height="36" rx="18" fill="#6d5bd0"/>
-  <text x="680" y="219" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Few colors (&lt;256)?</text>
+  <text x="680" y="219" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Few colors (&amp;lt;256)?</text>
 
   <line x1="640" y1="232" x2="610" y2="262" stroke="#6d5bd0" stroke-width="2"/>
   <text x="612" y="253" font-size="10" fill="#1a1822" font-weight="600">Yes</text>
@@ -89,5 +89,5 @@
   <text x="50" y="444" font-size="12" font-weight="700" fill="#1a1822">Format Summary:</text>
   <text x="50" y="464" font-size="11" fill="#1a1822"><tspan font-weight="600">AVIF</tspan> — 50% smaller than JPEG, excellent quality, slower encode. <tspan font-weight="600">WebP</tspan> — 25-35% smaller than JPEG, wide support (97%+).</text>
   <text x="50" y="482" font-size="11" fill="#1a1822"><tspan font-weight="600">JPEG</tspan> — Universal, lossy, no transparency. <tspan font-weight="600">PNG</tspan> — Lossless, transparency, larger files. <tspan font-weight="600">SVG</tspan> — Vector, resolution-independent.</text>
-  <text x="50" y="500" font-size="11" fill="#1a1822"><tspan font-weight="600">Key rule:</tspan> Always serve modern formats (AVIF/WebP) with &lt;picture&gt; fallback to JPEG/PNG for maximum performance.</text>
+  <text x="50" y="500" font-size="11" fill="#1a1822"><tspan font-weight="600">Key rule:</tspan> Always serve modern formats (AVIF/WebP) with &amp;lt;picture&amp;gt; fallback to JPEG/PNG for maximum performance.</text>
 </svg>

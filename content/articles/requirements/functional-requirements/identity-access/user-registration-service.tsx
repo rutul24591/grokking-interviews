@@ -30,6 +30,25 @@ export default function UserRegistrationServiceArticle() {
           verification flows. It is the gateway for user acquisition and must balance conversion 
           optimization with security and data quality.
         </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/user-registration-flow.svg"
+          alt="User Registration Flow"
+          caption="User Registration Flow — showing signup, validation, and account creation"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/registration-validation.svg"
+          alt="Registration Validation"
+          caption="Registration Validation — showing input validation, duplicate detection, and fraud prevention"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/registration-scalability.svg"
+          alt="Registration Scalability"
+          caption="Registration Scalability — showing horizontal scaling, queue-based processing, and rate limiting"
+        />
+      
         <p>
           For staff and principal engineers, building a registration service requires understanding 
           data validation, password security, fraud prevention, email verification, database design, 
@@ -37,11 +56,11 @@ export default function UserRegistrationServiceArticle() {
           while preventing abuse (fake accounts, bot signups) and maintaining data integrity.
         </p>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/user-registration-flow.svg"
-          alt="User Registration Flow"
-          caption="Registration Flow — showing input validation, fraud checks, password hashing, and verification"
-        />
+        
+
+        
+
+        
       </section>
 
       <section>
@@ -103,11 +122,7 @@ export default function UserRegistrationServiceArticle() {
       <section>
         <h2>Validation &amp; Security</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/registration-validation.svg"
-          alt="Registration Validation and Security"
-          caption="Validation — showing email verification, password strength, fraud detection, and rate limiting"
-        />
+        
 
         <p>
           Input validation and fraud prevention are critical for registration security.
@@ -353,11 +368,7 @@ export default function UserRegistrationServiceArticle() {
       <section>
         <h2>Interview Questions</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/registration-scalability.svg"
-          alt="Registration Service Scalability"
-          caption="Scalability — showing horizontal scaling, database sharding, and async verification"
-        />
+        
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -746,6 +757,65 @@ export default function UserRegistrationServiceArticle() {
         <p>
           Meet regulatory requirements for registration. SOC2 audit trails. HIPAA immediate registration. PCI-DSS session controls. GDPR right to registration. Regular compliance reviews. External audit support.
         </p>
+      </section>
+
+      <section>
+        <h2>Real-world Use Cases</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce User Registration</h3>
+        <p>
+          Large e-commerce platform with 50M users, high signup volume during sales.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> 100K signups/hour during Black Friday. Bot registrations (50% of signups). Email verification delays during peak.</li>
+          <li><strong>Solution:</strong> Queue-based registration processing. Async email verification. Bot detection (reCAPTCHA v3, device fingerprinting). Rate limiting per IP.</li>
+          <li><strong>Result:</strong> Handled 150K signups/hour. Bot registrations reduced to 5%. Email delivery maintained during peak.</li>
+          <li><strong>Security:</strong> Bot detection, email validation, breached password checking, rate limiting.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Banking Customer Onboarding</h3>
+        <p>
+          Digital bank with KYC/AML compliance requirements for account opening.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> KYC requires identity verification. AML screening for sanctioned individuals. GDPR consent collection. High-security bar for account creation.</li>
+          <li><strong>Solution:</strong> Multi-step registration: basic info → identity verification (ID upload + selfie) → AML screening → account approval. Async verification with status tracking.</li>
+          <li><strong>Result:</strong> 95% approval rate. KYC completion in under 5 minutes. Passed all regulatory audits.</li>
+          <li><strong>Security:</strong> Identity verification, AML screening, document validation, fraud detection.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Healthcare Patient Registration</h3>
+        <p>
+          Telemedicine platform with HIPAA compliance and insurance verification.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> HIPAA requires patient identity verification. Insurance verification needed. Elderly patients need simple flow. Minor patients require guardian consent.</li>
+          <li><strong>Solution:</strong> Simplified registration for patients. Insurance verification API integration. Guardian consent flow for minors. Phone verification fallback for non-tech-savvy users.</li>
+          <li><strong>Result:</strong> 90% completion rate. HIPAA compliance maintained. Insurance verification automated (95% success).</li>
+          <li><strong>Security:</strong> Identity verification, insurance validation, guardian consent, HIPAA-compliant data handling.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Gaming Platform Registration</h3>
+        <p>
+          Online gaming platform with 100M users, young user base, parental controls.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> COPPA compliance for users under 13. Parental consent required. Bot registrations for in-game rewards. Young users with weak passwords.</li>
+          <li><strong>Solution:</strong> Age-gated registration: under 13 requires parental consent (email verification). Bot detection. Password strength enforcement with breached password checking.</li>
+          <li><strong>Result:</strong> COPPA compliance maintained. Bot registrations reduced by 95%. Parent satisfaction improved.</li>
+          <li><strong>Security:</strong> Age verification, parental consent, bot detection, password strength enforcement.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SaaS User Registration</h3>
+        <p>
+          B2B SaaS with 10,000 enterprise customers, domain-based registration.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Enterprise domain verification. Auto-join company workspace. SSO redirect for enterprise emails. Individual vs team plans.</li>
+          <li><strong>Solution:</strong> Domain-based routing: enterprise emails → SSO flow, others → standard registration. Auto-join verified company domain. Team invitation flow.</li>
+          <li><strong>Result:</strong> 99% correct routing. Enterprise onboarding simplified. Team adoption increased by 60%.</li>
+          <li><strong>Security:</strong> Domain verification, SSO enforcement, team access controls, audit logging.</li>
+        </ul>
       </section>
     </ArticleLayout>
   );

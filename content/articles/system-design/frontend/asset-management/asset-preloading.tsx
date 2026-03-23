@@ -177,19 +177,15 @@ export default function AssetPreloadingArticle() {
         <h3 className="mt-4 font-semibold">Fonts</h3>
         <p>
           Fonts are the classic preload candidate because they are late-discovered (referenced in CSS,
-          not HTML) and render-blocking for text. Without preloading, the browser must: parse HTML &rarr;
-          fetch CSS &rarr; parse CSS &rarr; discover <code>@font-face</code> &rarr; fetch font. Preload
-          collapses this to a parallel fetch alongside CSS.
+          not HTML) and render-blocking for text. Without preloading, the browser must: parse HTML,
+          fetch CSS, parse CSS, discover <code>@font-face</code>, then fetch the font. Preload
+          collapses this to a parallel fetch alongside CSS. A font preload link specifies{" "}
+          <code>rel=&quot;preload&quot;</code>, <code>href</code> to the font file (e.g., inter-var.woff2),{" "}
+          <code>as=&quot;font&quot;</code>, <code>type=&quot;font/woff2&quot;</code>, and critically{" "}
+          <code>crossorigin</code> even for same-origin fonts. The crossorigin attribute is required
+          because fonts use anonymous CORS mode by default; without it, the preloaded response won&apos;t
+          match the font request and the font will be fetched twice.
         </p>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`<!-- Font preload: must include crossorigin even for same-origin -->
-<link rel="preload" href="/fonts/inter-var.woff2"
-      as="font" type="font/woff2" crossorigin />
-
-<!-- Why crossorigin? Fonts use anonymous CORS mode by default.
-     Without crossorigin, the preloaded response won't match
-     the font request and will be fetched twice. -->`}</code>
-        </pre>
 
         <h3 className="mt-6 font-semibold">Scripts &amp; ES Modules</h3>
         <p>
@@ -197,40 +193,22 @@ export default function AssetPreloadingArticle() {
           <code>rel=&quot;preload&quot; as=&quot;script&quot;</code>. For ES modules, use{" "}
           <code>rel=&quot;modulepreload&quot;</code> which additionally parses and compiles the module into
           the module map, avoiding the parse-compile cost at execution time. Vite automatically generates
-          modulepreload hints for production builds.
+          modulepreload hints for production builds, outputting links like{" "}
+          <code>&lt;link rel=&quot;modulepreload&quot; crossorigin href=&quot;/assets/index-a1b2c3d4.js&quot;&gt;</code>{" "}
+          for each module in the dependency graph.
         </p>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`<!-- Traditional script preload -->
-<link rel="preload" href="/js/vendor-analytics.js" as="script" />
-
-<!-- ES Module preload (also parses & compiles) -->
-<link rel="modulepreload" href="/js/chart-module.mjs" />
-
-<!-- Vite generates these automatically in production:
-<link rel="modulepreload" crossorigin href="/assets/index-a1b2c3d4.js">
-<link rel="modulepreload" crossorigin href="/assets/vendor-e5f6g7h8.js">
--->`}</code>
-        </pre>
 
         <h3 className="mt-6 font-semibold">Images (LCP Optimization)</h3>
         <p>
           The LCP image is often the single most impactful preload target. Combining{" "}
           <code>rel=&quot;preload&quot;</code> with <code>fetchpriority=&quot;high&quot;</code> and
           responsive <code>imagesrcset</code>/<code>imagesizes</code> is the gold standard for LCP
-          optimization.
+          optimization. For responsive images, the preload specifies <code>as=&quot;image&quot;</code>,{" "}
+          <code>fetchpriority=&quot;high&quot;</code>, <code>imagesrcset</code> with width descriptors
+          (400w, 800w, 1200w), and <code>imagesizes</code> matching the expected display size (e.g.,
+          &quot;(max-width: 600px) 100vw, 50vw&quot;). For single images, a simpler preload with just{" "}
+          <code>href</code> and <code>fetchpriority=&quot;high&quot;</code> suffices.
         </p>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`<!-- Preload responsive LCP image -->
-<link rel="preload" as="image" fetchpriority="high"
-      imagesrcset="/hero-400.webp 400w,
-                   /hero-800.webp 800w,
-                   /hero-1200.webp 1200w"
-      imagesizes="(max-width: 600px) 100vw, 50vw" />
-
-<!-- Or for a single image: -->
-<link rel="preload" as="image" href="/hero.webp"
-      fetchpriority="high" />`}</code>
-        </pre>
       </section>
 
       {/* Route-Based Prefetching */}
@@ -240,42 +218,13 @@ export default function AssetPreloadingArticle() {
           Modern frameworks implement route-based prefetching to load the JavaScript and data for the
           next page before the user navigates. Next.js automatically prefetches <code>{"<Link>"}</code>{" "}
           destinations that are visible in the viewport. This is a form of speculative loading that
-          dramatically improves perceived navigation speed.
+          dramatically improves perceived navigation speed. Manual implementations use a PrefetchLink
+          component that listens for mouseEnter or focus events, then dynamically creates a link element
+          with <code>rel=&quot;prefetch&quot;</code> for the route&apos;s JS chunk and prefetches the
+          route&apos;s data via fetch with low priority. Google&apos;s quicklink library automates this
+          pattern, prefetching visible links during idle time with a simple <code>listen()</code> call
+          configured with allowed origins.
         </p>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`// Route-based prefetching in React (manual implementation)
-function PrefetchLink({ href, children }) {
-  const prefetched = useRef(false);
-
-  const handleMouseEnter = () => {
-    if (prefetched.current) return;
-    prefetched.current = true;
-
-    // Prefetch the route's JS chunk
-    const link = document.createElement('link');
-    link.rel = 'prefetch';
-    link.href = \`/chunks/\${routeToChunk(href)}.js\`;
-    document.head.appendChild(link);
-
-    // Also prefetch the route's data
-    fetch(\`/api/page-data\${href}\`, { priority: 'low' })
-      .then(r => r.json())
-      .then(data => prefetchCache.set(href, data));
-  };
-
-  return (
-    <a href={href} onMouseEnter={handleMouseEnter}
-       onFocus={handleMouseEnter}>
-      {children}
-    </a>
-  );
-}
-
-// Google's quicklink library automates this:
-// Prefetches visible links during idle time
-import { listen } from 'quicklink';
-listen({ origins: [location.hostname] });`}</code>
-        </pre>
       </section>
 
       {/* Service Worker Precaching */}
@@ -284,40 +233,15 @@ listen({ origins: [location.hostname] });`}</code>
         <p>
           Service worker precaching downloads and caches a set of URLs during the service worker{" "}
           <code>install</code> event, before any user interaction. This enables instant page loads for
-          subsequent visits and is the foundation of offline-first architectures.
+          subsequent visits and is the foundation of offline-first architectures. Workbox&apos;s{" "}
+          <code>precacheAndRoute</code> function automates this: the build tool replaces{" "}
+          <code>self.__WB_MANIFEST</code> with the list of URLs to precache (including revision hashes).
+          Manual precaching patterns use the install event to call <code>cache.addAll()</code> with an
+          array of URLs (/, /offline.html, /css/critical.css, /js/app.js, /fonts/inter-var.woff2).
+          Runtime caching for dynamic content like images uses Workbox routing with strategies like{" "}
+          <code>StaleWhileRevalidate</code> which serves cached responses while fetching fresh content
+          in the background.
         </p>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`// Service worker precaching with Workbox
-import { precacheAndRoute } from 'workbox-precaching';
-
-// self.__WB_MANIFEST is replaced at build time with
-// the list of URLs to precache (with revision hashes)
-precacheAndRoute(self.__WB_MANIFEST);
-
-// Manual precaching pattern:
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open('app-shell-v2').then((cache) => {
-      return cache.addAll([
-        '/',
-        '/offline.html',
-        '/css/critical.css',
-        '/js/app.js',
-        '/fonts/inter-var.woff2',
-      ]);
-    })
-  );
-});
-
-// Runtime caching for dynamic content:
-import { registerRoute } from 'workbox-routing';
-import { StaleWhileRevalidate } from 'workbox-strategies';
-
-registerRoute(
-  ({ request }) => request.destination === 'image',
-  new StaleWhileRevalidate({ cacheName: 'images' })
-);`}</code>
-        </pre>
       </section>
 
       {/* Speculation Rules API */}
@@ -328,46 +252,16 @@ registerRoute(
           <code>{"<link rel=\"prerender\">"}</code> with a more powerful, JSON-based approach. It supports
           both <code>prefetch</code> (fetch the page&apos;s resources) and <code>prerender</code>{" "}
           (fully render the page in a hidden context). Prerendered pages load in near-zero time when
-          the user navigates.
-        </p>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`<!-- Speculation Rules in a script tag -->
-<script type="speculationrules">
-{
-  "prefetch": [
-    {
-      "source": "list",
-      "urls": ["/pricing", "/docs"],
-      "eagerness": "moderate"
-    }
-  ],
-  "prerender": [
-    {
-      "source": "document",
-      "where": {
-        "and": [
-          { "href_matches": "/*" },
-          { "not": { "href_matches": "/logout" } }
-        ]
-      },
-      "eagerness": "moderate"
-    }
-  ]
-}
-</script>
-
-<!-- Eagerness levels:
-  "immediate"  - speculate as soon as rules are observed
-  "eager"      - currently same as immediate (may change)
-  "moderate"   - speculate on hover (200ms threshold)
-  "conservative" - speculate on mousedown / touchstart
--->`}</code>
-        </pre>
-        <p>
-          The <code>eagerness</code> property controls how aggressively the browser speculates.
-          For high-confidence navigations (e.g., a multi-step checkout), use <code>eager</code>. For
-          general link prefetching, <code>moderate</code> is the sweet spot &mdash; it triggers on
-          hover, which gives a ~200-400ms head start before the click completes.
+          the user navigates. The speculation rules are declared in a script tag with type{" "}
+          <code>speculationrules</code> containing a JSON object. Prefetch rules specify a source
+          (&quot;list&quot; or &quot;document&quot;), URLs to prefetch (e.g., /pricing, /docs), and
+          eagerness level (&quot;moderate&quot; for hover-triggered prefetch). Prerender rules use
+          document source with conditional matching (e.g., prefetch all pages except /logout) and
+          eagerness levels ranging from &quot;conservative&quot; (mousedown) to &quot;eager&quot;
+          (immediate). The <code>eagerness</code> property controls how aggressively the browser
+          speculates. For high-confidence navigations (e.g., a multi-step checkout), use{" "}
+          <code>eager</code>. For general link prefetching, <code>moderate</code> is the sweet spot,
+          triggering on hover which gives a ~200-400ms head start before the click completes.
         </p>
       </section>
 
@@ -531,47 +425,14 @@ registerRoute(
         <p>
           The <strong>Resource Timing API</strong> exposes detailed timing for every resource fetch. By
           analyzing the timing entries for preloaded resources, you can verify that your preloading
-          strategy is actually reducing latency.
+          strategy is actually reducing latency. The <code>performance.getEntriesByType(&apos;resource&apos;)</code>{" "}
+          method returns timing entries for each resource, including DNS lookup time, connect time,
+          TTFB (Time to First Byte), and total load time. For preloaded resources, connect time should
+          be approximately zero if preconnect worked, and startTime should be very early indicating the
+          preload kicked in correctly. To detect wasted preloads (resources loaded but unused), a
+          PerformanceObserver can monitor resource entries and flag those with transferSize of zero
+          after the page load event.
         </p>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`// Measure preload effectiveness
-function analyzePreloadEffectiveness() {
-  const entries = performance.getEntriesByType('resource');
-
-  entries.forEach(entry => {
-    const wasPreloaded = entry.initiatorType === 'link' ||
-      document.querySelector(
-        \`link[rel="preload"][href*="\${new URL(entry.name).pathname}"]\`
-      );
-
-    if (wasPreloaded) {
-      console.log(\`[Preloaded] \${entry.name}\`);
-      console.log(\`  DNS:     \${entry.domainLookupEnd - entry.domainLookupStart}ms\`);
-      console.log(\`  Connect: \${entry.connectEnd - entry.connectStart}ms\`);
-      console.log(\`  TTFB:    \${entry.responseStart - entry.requestStart}ms\`);
-      console.log(\`  Total:   \${entry.responseEnd - entry.startTime}ms\`);
-
-      // If connectEnd - connectStart ≈ 0, preconnect worked
-      // If startTime is very early, preload kicked in correctly
-    }
-  });
-}
-
-// Check for wasted preloads (loaded but unused)
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    const observer = new PerformanceObserver((list) => {
-      for (const entry of list.getEntries()) {
-        if (entry.name.includes('preload') &&
-            entry.transferSize === 0) {
-          console.warn('Potential wasted preload:', entry.name);
-        }
-      }
-    });
-    observer.observe({ type: 'resource', buffered: true });
-  }, 5000);
-});`}</code>
-        </pre>
       </section>
 
       {/* 7. Real-World Use Cases */}
@@ -609,49 +470,7 @@ window.addEventListener('load', () => {
         </ul>
       </section>
 
-      {/* 8. References & Further Reading */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://web.dev/articles/preload-critical-assets" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-              web.dev &mdash; Preload Critical Assets to Improve Loading Speed
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/articles/fetch-priority" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-              web.dev &mdash; Optimize Resource Loading with the Fetch Priority API
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.chrome.com/docs/web-platform/prerender-pages" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-              Chrome Developers &mdash; Prerender Pages with Speculation Rules
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/articles/preconnect-and-dns-prefetch" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-              web.dev &mdash; Establish Network Connections Early (preconnect &amp; dns-prefetch)
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/modulepreload" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-              MDN &mdash; rel=modulepreload
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.chrome.com/docs/web-platform/early-hints" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-              Chrome Developers &mdash; Early Hints (103 Status Code)
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Performance_API/Resource_timing" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-              MDN &mdash; Resource Timing API
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      {/* 9. Common Interview Questions */}
+      {/* 8. Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -760,6 +579,48 @@ window.addEventListener('load', () => {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* 9. References & Further Reading */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://web.dev/articles/preload-critical-assets" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+              web.dev &mdash; Preload Critical Assets to Improve Loading Speed
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/fetch-priority" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+              web.dev &mdash; Optimize Resource Loading with the Fetch Priority API
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.chrome.com/docs/web-platform/prerender-pages" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+              Chrome Developers &mdash; Prerender Pages with Speculation Rules
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/preconnect-and-dns-prefetch" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+              web.dev &mdash; Establish Network Connections Early (preconnect &amp; dns-prefetch)
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/modulepreload" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+              MDN &mdash; rel=modulepreload
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.chrome.com/docs/web-platform/early-hints" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+              Chrome Developers &mdash; Early Hints (103 Status Code)
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Performance_API/Resource_timing" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+              MDN &mdash; Resource Timing API
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

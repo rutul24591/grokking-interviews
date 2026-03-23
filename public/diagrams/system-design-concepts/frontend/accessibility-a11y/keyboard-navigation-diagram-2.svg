@@ -18,25 +18,25 @@
 
   <!-- Group 1: Toolbar -->
   <rect x="60" y="90" width="780" height="120" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
-  <text x="80" y="115" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Group 1: Toolbar (role=&quot;toolbar&quot;)</text>
+  <text x="80" y="115" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Group 1: Toolbar (role=&amp;quot;toolbar&amp;quot;)</text>
 
   <!-- Toolbar buttons -->
   <rect x="90" y="135" width="90" height="40" rx="8" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="2" />
   <text x="135" y="160" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Bold</text>
-  <text x="135" y="190" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10" font-weight="600">tabindex=&quot;0&quot;</text>
+  <text x="135" y="190" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10" font-weight="600">tabindex=&amp;quot;0&amp;quot;</text>
   <text x="135" y="202" text-anchor="middle" fill="#22c55e" font-family="system-ui, sans-serif" font-size="10" font-weight="600">Focused</text>
 
   <rect x="200" y="135" width="90" height="40" rx="8" fill="#f8f7fc" stroke="#d7d1e6" stroke-width="1.5" />
   <text x="245" y="160" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12">Italic</text>
-  <text x="245" y="190" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">tabindex=&quot;-1&quot;</text>
+  <text x="245" y="190" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">tabindex=&amp;quot;-1&amp;quot;</text>
 
   <rect x="310" y="135" width="110" height="40" rx="8" fill="#f8f7fc" stroke="#d7d1e6" stroke-width="1.5" />
   <text x="365" y="160" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12">Underline</text>
-  <text x="365" y="190" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">tabindex=&quot;-1&quot;</text>
+  <text x="365" y="190" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">tabindex=&amp;quot;-1&amp;quot;</text>
 
   <rect x="440" y="135" width="120" height="40" rx="8" fill="#f8f7fc" stroke="#d7d1e6" stroke-width="1.5" />
   <text x="500" y="160" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12">Strikethrough</text>
-  <text x="500" y="190" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">tabindex=&quot;-1&quot;</text>
+  <text x="500" y="190" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">tabindex=&amp;quot;-1&amp;quot;</text>
 
   <!-- Arrow keys between toolbar items -->
   <line x1="185" y1="147" x2="198" y2="147" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow2)" />
@@ -54,19 +54,19 @@
 
   <!-- Group 2: Tab List -->
   <rect x="60" y="255" width="780" height="120" rx="12" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
-  <text x="80" y="280" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Group 2: Tab List (role=&quot;tablist&quot;)</text>
+  <text x="80" y="280" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Group 2: Tab List (role=&amp;quot;tablist&amp;quot;)</text>
 
   <rect x="90" y="300" width="130" height="40" rx="8" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="2" />
   <text x="155" y="325" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="600">General</text>
-  <text x="155" y="355" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10" font-weight="600">tabindex=&quot;0&quot;</text>
+  <text x="155" y="355" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="10" font-weight="600">tabindex=&amp;quot;0&amp;quot;</text>
 
   <rect x="240" y="300" width="130" height="40" rx="8" fill="#f8f7fc" stroke="#d7d1e6" stroke-width="1.5" />
   <text x="305" y="325" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12">Security</text>
-  <text x="305" y="355" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">tabindex=&quot;-1&quot;</text>
+  <text x="305" y="355" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">tabindex=&amp;quot;-1&amp;quot;</text>
 
   <rect x="390" y="300" width="130" height="40" rx="8" fill="#f8f7fc" stroke="#d7d1e6" stroke-width="1.5" />
   <text x="455" y="325" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12">Notifications</text>
-  <text x="455" y="355" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">tabindex=&quot;-1&quot;</text>
+  <text x="455" y="355" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">tabindex=&amp;quot;-1&amp;quot;</text>
 
   <!-- Arrow keys between tab items -->
   <line x1="225" y1="312" x2="238" y2="312" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow2)" />

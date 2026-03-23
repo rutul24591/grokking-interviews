@@ -143,45 +143,10 @@ export default function ColorContrastArticle() {
           caption="WCAG contrast thresholds: AA requires 4.5:1 for normal text and 3:1 for large text; AAA requires 7:1 and 4.5:1 respectively. Non-text contrast requires 3:1 at AA level."
         />
 
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// Contrast ratio calculation following WCAG 2.x algorithm
-function getRelativeLuminance(r, g, b) {
-  // Convert 0-255 sRGB to 0-1 linear values
-  const [rLinear, gLinear, bLinear] = [r, g, b].map(channel => {
-    const sRGB = channel / 255;
-    return sRGB <= 0.04045
-      ? sRGB / 12.92
-      : Math.pow((sRGB + 0.055) / 1.055, 2.4);
-  });
-
-  // Apply luminance coefficients
-  return 0.2126 * rLinear + 0.7152 * gLinear + 0.0722 * bLinear;
-}
-
-function getContrastRatio(color1, color2) {
-  const l1 = getRelativeLuminance(...color1);
-  const l2 = getRelativeLuminance(...color2);
-  const lighter = Math.max(l1, l2);
-  const darker = Math.min(l1, l2);
-  return (lighter + 0.05) / (darker + 0.05);
-}
-
-// Example usage
-const white = [255, 255, 255];
-const brandPurple = [109, 91, 208]; // #6d5bd0
-
-const ratio = getContrastRatio(white, brandPurple);
-console.log(ratio.toFixed(2)); // ~4.56:1
-
-// Check WCAG compliance
-function checkCompliance(ratio, fontSize, isBold) {
-  const isLargeText = fontSize >= 24 || (isBold && fontSize >= 18.66);
-  return {
-    aa: isLargeText ? ratio >= 3 : ratio >= 4.5,
-    aaa: isLargeText ? ratio >= 4.5 : ratio >= 7,
-  };
-}`}</code>
-        </pre>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">WCAG Contrast Ratio Calculation</h3>
+        <p>
+          For contrast ratio calculation following WCAG 2.x algorithm, implement getRelativeLuminance function that takes r, g, b values, converts 0-255 sRGB to 0-1 linear values by dividing by 255, then applies the formula where values less than or equal to 0.04045 are divided by 12.92, otherwise apply power of 2.4 to the adjusted value. Apply luminance coefficients (0.2126 for red, 0.7152 for green, 0.0722 for blue) and sum. The getContrastRatio function takes two colors, calculates luminance for each, determines lighter and darker, and returns the ratio using the formula (lighter + 0.05) divided by (darker + 0.05). For example, white (255, 255, 255) on brand purple (109, 91, 208, hex 6d5bd0) produces approximately 4.56:1 ratio. For compliance checking, create a function that takes ratio, fontSize, and isBold, determines if large text (24px or above, or 18.66px bold), and returns aa compliance (4.5:1 for normal, 3:1 for large) and aaa compliance (7:1 for normal, 4.5:1 for large).
+        </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Color Blindness Simulation</h3>
         <p>
@@ -208,50 +173,10 @@ function checkCompliance(ratio, fontSize, isBold) {
           caption="Accessible palette workflow: Start with brand colors, generate scales, check every combination against WCAG thresholds, adjust failing pairs, and document compliant pairings."
         />
 
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-          <code>{`// Design system contrast validation
-// Validate all foreground/background pairs in a token system
-
-const tokens = {
-  'text-primary': '#1a1822',
-  'text-secondary': '#5a5670',
-  'text-on-accent': '#ffffff',
-  'bg-default': '#ffffff',
-  'bg-surface': '#f3f1f8',
-  'bg-accent': '#6d5bd0',
-  'border-default': '#d7d1e6',
-};
-
-const requiredPairs = [
-  { fg: 'text-primary', bg: 'bg-default', type: 'normal-text' },
-  { fg: 'text-primary', bg: 'bg-surface', type: 'normal-text' },
-  { fg: 'text-secondary', bg: 'bg-default', type: 'normal-text' },
-  { fg: 'text-on-accent', bg: 'bg-accent', type: 'normal-text' },
-  { fg: 'border-default', bg: 'bg-default', type: 'ui-component' },
-];
-
-function validatePalette(tokens, pairs) {
-  const results = pairs.map(({ fg, bg, type }) => {
-    const fgColor = hexToRgb(tokens[fg]);
-    const bgColor = hexToRgb(tokens[bg]);
-    const ratio = getContrastRatio(fgColor, bgColor);
-    const minRatio = type === 'ui-component' ? 3 : 4.5;
-
-    return {
-      pair: \`\${fg} on \${bg}\`,
-      ratio: ratio.toFixed(2),
-      passes: ratio >= minRatio,
-      required: \`\${minRatio}:1\`,
-    };
-  });
-
-  const failures = results.filter(r => !r.passes);
-  if (failures.length > 0) {
-    console.error('Contrast failures:', failures);
-  }
-  return results;
-}`}</code>
-        </pre>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Design System Contrast Validation</h3>
+        <p>
+          For design system contrast validation, create a tokens object with text-primary, text-secondary, text-on-accent, bg-default, bg-surface, bg-accent, and border-default color values. Define requiredPairs array with foreground, background, and type for each combination to test (normal-text or ui-component). Create validatePalette function that maps over pairs, converts hex to RGB, calculates contrast ratio, determines minimum ratio (3:1 for ui-component, 4.5:1 for normal-text), and returns results with pair name, ratio, passes boolean, and required ratio. Filter failures and log any contrast failures for remediation.
+        </p>
       </section>
 
       {/* ─── Section 4: Trade-offs & Comparisons ─── */}

@@ -39,10 +39,10 @@
   <!-- Factory - When to use -->
   <line x1="45" y1="270" x2="275" y2="270" stroke="#d7d1e6" stroke-width="1" />
   <text x="160" y="290" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700">When to Use</text>
-  <text x="50" y="310" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&#x2713; Type decided at runtime</text>
-  <text x="50" y="328" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&#x2713; Multiple product families</text>
-  <text x="50" y="346" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&#x2713; Complex creation logic</text>
-  <text x="50" y="364" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&#x2713; Plugin/extension systems</text>
+  <text x="50" y="310" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&amp;#x2713; Type decided at runtime</text>
+  <text x="50" y="328" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&amp;#x2713; Multiple product families</text>
+  <text x="50" y="346" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&amp;#x2713; Complex creation logic</text>
+  <text x="50" y="364" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&amp;#x2713; Plugin/extension systems</text>
 
   <line x1="45" y1="378" x2="275" y2="378" stroke="#d7d1e6" stroke-width="1" />
   <text x="160" y="398" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="700">Frontend Example</text>
@@ -74,15 +74,15 @@
   <!-- Constructor - When to use -->
   <line x1="335" y1="270" x2="565" y2="270" stroke="#d7d1e6" stroke-width="1" />
   <text x="450" y="290" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700">When to Use</text>
-  <text x="340" y="310" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&#x2713; Type known at compile time</text>
-  <text x="340" y="328" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&#x2713; Simple, few parameters</text>
-  <text x="340" y="346" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&#x2713; No creation logic needed</text>
-  <text x="340" y="364" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&#x2713; Direct instantiation is clear</text>
+  <text x="340" y="310" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&amp;#x2713; Type known at compile time</text>
+  <text x="340" y="328" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&amp;#x2713; Simple, few parameters</text>
+  <text x="340" y="346" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&amp;#x2713; No creation logic needed</text>
+  <text x="340" y="364" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&amp;#x2713; Direct instantiation is clear</text>
 
   <line x1="335" y1="378" x2="565" y2="378" stroke="#d7d1e6" stroke-width="1" />
   <text x="450" y="398" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="700">Frontend Example</text>
   <text x="340" y="418" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">Direct React component</text>
-  <text x="340" y="434" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">usage: &lt;Button size="lg"&gt;</text>
+  <text x="340" y="434" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">usage: &amp;lt;Button size="lg"&amp;gt;</text>
   <text x="340" y="450" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">where the developer picks</text>
   <text x="340" y="466" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">the component explicitly.</text>
 
@@ -109,15 +109,15 @@
   <line x1="740" y1="220" x2="740" y2="228" stroke="#6d5bd0" stroke-width="1" marker-end="url(#arr3)" />
 
   <rect x="635" y="231" width="210" height="22" rx="6" fill="#6d5bd0" opacity="0.7" />
-  <text x="740" y="246" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="10" font-weight="600">.build() &#8594; ComplexForm</text>
+  <text x="740" y="246" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="10" font-weight="600">.build() &amp;#8594; ComplexForm</text>
 
   <!-- Builder - When to use -->
   <line x1="625" y1="270" x2="855" y2="270" stroke="#d7d1e6" stroke-width="1" />
   <text x="740" y="290" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700">When to Use</text>
-  <text x="630" y="310" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&#x2713; Many optional parameters</text>
-  <text x="630" y="328" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&#x2713; Step-by-step construction</text>
-  <text x="630" y="346" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&#x2713; Same process, diff results</text>
-  <text x="630" y="364" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&#x2713; Immutable object assembly</text>
+  <text x="630" y="310" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&amp;#x2713; Many optional parameters</text>
+  <text x="630" y="328" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&amp;#x2713; Step-by-step construction</text>
+  <text x="630" y="346" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&amp;#x2713; Same process, diff results</text>
+  <text x="630" y="364" fill="#1a1822" font-family="system-ui, sans-serif" font-size="10.5">&amp;#x2713; Immutable object assembly</text>
 
   <line x1="625" y1="378" x2="855" y2="378" stroke="#d7d1e6" stroke-width="1" />
   <text x="740" y="398" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="700">Frontend Example</text>

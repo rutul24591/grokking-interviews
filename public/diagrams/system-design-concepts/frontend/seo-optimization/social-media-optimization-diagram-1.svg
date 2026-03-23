@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Social Meta Tag Ecosystem</text>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+
+  <!-- Center: Page with meta tags -->
+  <rect x="310" y="155" width="280" height="190" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2.5"/>
+  <rect x="310" y="155" width="280" height="38" rx="10" fill="#6d5bd0"/>
+  <text x="450" y="180" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Web Page &amp;lt;head&amp;gt;</text>
+
+  <text x="325" y="215" font-size="10" font-weight="600" fill="#6d5bd0">Open Graph Tags:</text>
+  <text x="325" y="232" font-size="9" fill="#1a1822">og:title, og:description</text>
+  <text x="325" y="247" font-size="9" fill="#1a1822">og:image, og:url, og:type</text>
+
+  <text x="325" y="272" font-size="10" font-weight="600" fill="#6d5bd0">Twitter Card Tags:</text>
+  <text x="325" y="289" font-size="9" fill="#1a1822">twitter:card, twitter:title</text>
+  <text x="325" y="304" font-size="9" fill="#1a1822">twitter:description, twitter:image</text>
+
+  <text x="325" y="329" font-size="10" font-weight="600" fill="#6d5bd0">Schema.org:</text>
+  <text x="325" y="344" font-size="9" fill="#1a1822">JSON-LD structured data</text>
+
+  <!-- Facebook (top-left) -->
+  <rect x="40" y="55" width="200" height="80" rx="8" fill="#ffffff" stroke="#1877f2" stroke-width="2"/>
+  <text x="140" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#1877f2">Facebook</text>
+  <text x="140" y="100" text-anchor="middle" font-size="10" fill="#1a1822">Reads: og:* tags</text>
+  <text x="140" y="116" text-anchor="middle" font-size="10" fill="#1a1822">og:image (1200x630)</text>
+  <text x="140" y="128" text-anchor="middle" font-size="9" fill="#1877f2">Inventor of Open Graph</text>
+
+  <line x1="240" y1="115" x2="310" y2="200" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Twitter (top-right) -->
+  <rect x="660" y="55" width="200" height="80" rx="8" fill="#ffffff" stroke="#1a1822" stroke-width="2"/>
+  <text x="760" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">Twitter / X</text>
+  <text x="760" y="100" text-anchor="middle" font-size="10" fill="#1a1822">Reads: twitter:card first</text>
+  <text x="760" y="116" text-anchor="middle" font-size="10" fill="#1a1822">Falls back to og:* tags</text>
+  <text x="760" y="128" text-anchor="middle" font-size="9" fill="#6d5bd0">summary_large_image</text>
+
+  <line x1="660" y1="115" x2="590" y2="200" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- LinkedIn (left) -->
+  <rect x="40" y="210" width="200" height="80" rx="8" fill="#ffffff" stroke="#0077b5" stroke-width="2"/>
+  <text x="140" y="237" text-anchor="middle" font-size="13" font-weight="700" fill="#0077b5">LinkedIn</text>
+  <text x="140" y="255" text-anchor="middle" font-size="10" fill="#1a1822">Reads: og:* tags</text>
+  <text x="140" y="271" text-anchor="middle" font-size="10" fill="#1a1822">og:image (1200x627)</text>
+  <text x="140" y="283" text-anchor="middle" font-size="9" fill="#0077b5">Post Inspector for debugging</text>
+
+  <line x1="240" y1="250" x2="310" y2="250" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Pinterest (bottom-left) -->
+  <rect x="40" y="365" width="200" height="80" rx="8" fill="#ffffff" stroke="#e60023" stroke-width="2"/>
+  <text x="140" y="392" text-anchor="middle" font-size="13" font-weight="700" fill="#e60023">Pinterest</text>
+  <text x="140" y="410" text-anchor="middle" font-size="10" fill="#1a1822">Reads: og:* + Schema.org</text>
+  <text x="140" y="426" text-anchor="middle" font-size="10" fill="#1a1822">Rich Pins from structured data</text>
+  <text x="140" y="438" text-anchor="middle" font-size="9" fill="#e60023">Product, Recipe, Article pins</text>
+
+  <line x1="240" y1="395" x2="310" y2="320" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- WhatsApp (bottom-right) -->
+  <rect x="660" y="365" width="200" height="80" rx="8" fill="#ffffff" stroke="#25d366" stroke-width="2"/>
+  <text x="760" y="392" text-anchor="middle" font-size="13" font-weight="700" fill="#25d366">WhatsApp</text>
+  <text x="760" y="410" text-anchor="middle" font-size="10" fill="#1a1822">Reads: og:* tags</text>
+  <text x="760" y="426" text-anchor="middle" font-size="10" fill="#1a1822">Shows image + title + desc</text>
+  <text x="760" y="438" text-anchor="middle" font-size="9" fill="#25d366">Preview in chat bubble</text>
+
+  <line x1="660" y1="395" x2="590" y2="320" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Slack (right) -->
+  <rect x="660" y="210" width="200" height="80" rx="8" fill="#ffffff" stroke="#611f69" stroke-width="2"/>
+  <text x="760" y="237" text-anchor="middle" font-size="13" font-weight="700" fill="#611f69">Slack</text>
+  <text x="760" y="255" text-anchor="middle" font-size="10" fill="#1a1822">Reads: og:* tags</text>
+  <text x="760" y="271" text-anchor="middle" font-size="10" fill="#1a1822">Unfurl preview in channel</text>
+  <text x="760" y="283" text-anchor="middle" font-size="9" fill="#611f69">twitter:card as fallback</text>
+
+  <line x1="660" y1="250" x2="590" y2="250" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Bottom note -->
+  <rect x="200" y="462" width="500" height="28" rx="6" fill="#6d5bd0"/>
+  <text x="450" y="481" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Open Graph is the universal standard — always implement og:* tags as the baseline</text>
+</svg>

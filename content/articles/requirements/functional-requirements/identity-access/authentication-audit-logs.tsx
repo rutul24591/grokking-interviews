@@ -29,17 +29,36 @@ export default function AuthenticationAuditLogsArticle() {
           for security analysis, compliance, and forensics. They provide an immutable trail
           of who authenticated, when, from where, and with what outcome.
         </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/auth-audit-logs.svg"
+          alt="Auth Audit Logs"
+          caption="Auth Audit Logs — showing log structure, retention, and search capabilities"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/auth-audit-schema.svg"
+          alt="Auth Audit Schema"
+          caption="Auth Audit Schema — showing database schema for authentication events"
+        />
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/identity-access/auth-audit-analysis.svg"
+          alt="Auth Audit Analysis"
+          caption="Auth Audit Analysis — showing anomaly detection, threat hunting, and compliance reporting"
+        />
+      
         <p>
           For staff and principal engineers, implementing authentication audit logs requires
           understanding log schema, storage, compliance requirements, and analysis patterns.
           The implementation must capture comprehensive events while maintaining performance.
         </p>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/auth-audit-logs.svg"
-          alt="Authentication Audit Logs"
-          caption="Audit Logs — showing event capture, schema, storage, and compliance"
-        />
+        
+
+        
+
+        
       </section>
 
       <section>
@@ -56,11 +75,7 @@ export default function AuthenticationAuditLogsArticle() {
       <section>
         <h2>Log Schema</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/auth-audit-schema.svg"
-          alt="Audit Log Schema"
-          caption="Log Schema — showing event structure, fields, and storage format"
-        />
+        
 
         <ul className="space-y-3">
           <li><strong>event_id:</strong> Unique identifier.</li>
@@ -218,11 +233,7 @@ export default function AuthenticationAuditLogsArticle() {
       <section>
         <h2>Interview Questions</h2>
 
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/identity-access/auth-audit-analysis.svg"
-          alt="Authentication Audit Analysis"
-          caption="Audit Analysis — showing log aggregation, threat detection, and compliance reporting"
-        />
+        
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -603,6 +614,65 @@ export default function AuthenticationAuditLogsArticle() {
         <p>
           Meet regulatory requirements for logs. SOC2 audit trails. HIPAA immediate logs. PCI-DSS session controls. GDPR right to logs. Regular compliance reviews. External audit support.
         </p>
+      </section>
+
+      <section>
+        <h2>Real-world Use Cases</h2>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Financial Services Auth Audit</h3>
+        <p>
+          Investment platform with SEC/FINRA compliance requiring comprehensive auth audit trails.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> SEC requires 7-year audit retention. Real-time fraud detection. Immutable audit trail for investigations.</li>
+          <li><strong>Solution:</strong> WORM storage for audit logs. Real-time streaming to SIEM. Automated compliance reporting. Tamper-evident hash chains.</li>
+          <li><strong>Result:</strong> Passed all regulatory audits. Fraud detection time reduced from days to minutes. Successful fraud prosecutions.</li>
+          <li><strong>Security:</strong> Immutable storage, real-time monitoring, hash chain integrity.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Healthcare Auth Audit (HIPAA)</h3>
+        <p>
+          EHR system with HIPAA compliance requiring audit of all PHI access.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> HIPAA requires audit of all record access. Breach detection within hours. Patient access reports on request.</li>
+          <li><strong>Solution:</strong> Log all auth and access events. Automated anomaly detection. Breach detection alerts. Patient access report generation.</li>
+          <li><strong>Result:</strong> Passed HIPAA audits. Unauthorized access detected within hours. Breach notification compliance maintained.</li>
+          <li><strong>Security:</strong> Comprehensive logging, anomaly detection, breach alerts.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce Auth Audit (PCI-DSS)</h3>
+        <p>
+          Online retailer processing 1M credit card transactions/month with PCI-DSS requirements.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> PCI-DSS requires audit trail for cardholder data access. Separate admin accounts. Quarterly access reviews.</li>
+          <li><strong>Solution:</strong> Comprehensive auth logging for cardholder operations. Separated admin accounts with MFA. Automated quarterly access certification.</li>
+          <li><strong>Result:</strong> Passed PCI-DSS Level 1 audit. Zero cardholder data breaches. Audit prep time reduced 80%.</li>
+          <li><strong>Security:</strong> Cardholder access logging, admin separation, access certification.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SaaS Auth Audit (SOC 2)</h3>
+        <p>
+          B2B SaaS with 10,000 enterprise customers requiring SOC 2 Type II compliance.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> SOC 2 requires comprehensive audit trails. Customer-specific audit reports. Evidence collection for auditors.</li>
+          <li><strong>Solution:</strong> Centralized auth audit logging. Automated report generation per customer. Audit evidence API for auditors.</li>
+          <li><strong>Result:</strong> Passed SOC 2 Type II audit. Customer audit requests fulfilled in hours. Sales cycles shortened.</li>
+          <li><strong>Security:</strong> Centralized logging, automated reporting, evidence API.</li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Gaming Platform Auth Audit</h3>
+        <p>
+          Online gaming platform with 100M users, account security and fraud detection.
+        </p>
+        <ul className="space-y-2">
+          <li><strong>Challenge:</strong> Account takeover detection. Young user protection. Cross-platform auth correlation.</li>
+          <li><strong>Solution:</strong> Auth event logging with device fingerprint. Anomaly detection for account sharing. Parental alerts for suspicious activity.</li>
+          <li><strong>Result:</strong> Account takeovers detected 90% faster. Parent satisfaction improved. Cross-platform fraud correlation working.</li>
+          <li><strong>Security:</strong> Device fingerprinting, anomaly detection, parental alerts.</li>
+        </ul>
       </section>
     </ArticleLayout>
   );

@@ -95,19 +95,19 @@
 
   <!-- Solution error example -->
   <rect x="50" y="400" width="240" height="34" rx="6" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
-  <text x="76" y="422" font-size="18" fill="#ef4444">&#x26A0;</text>
+  <text x="76" y="422" font-size="18" fill="#ef4444">&amp;#x26A0;</text>
   <text x="100" y="422" font-size="12" font-weight="bold" fill="#ef4444">Error: Invalid input</text>
   <line x1="100" y1="430" x2="270" y2="430" stroke="#ef4444" stroke-width="2"/>
 
   <!-- Solution success example -->
   <rect x="50" y="442" width="240" height="34" rx="6" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
-  <text x="76" y="464" font-size="18" fill="#22c55e">&#x2713;</text>
+  <text x="76" y="464" font-size="18" fill="#22c55e">&amp;#x2713;</text>
   <text x="100" y="464" font-size="12" font-weight="bold" fill="#22c55e">Success: Saved!</text>
 
   <!-- Annotations for solution -->
-  <text x="320" y="418" font-size="11" fill="#1a1822">&#x2190; Icon + Color + Border + Background tint</text>
-  <text x="320" y="438" font-size="11" fill="#1a1822">&#x2190; Underline as additional visual cue</text>
-  <text x="320" y="462" font-size="11" fill="#1a1822">&#x2190; Checkmark icon distinguishes from error even without color</text>
+  <text x="320" y="418" font-size="11" fill="#1a1822">&amp;#x2190; Icon + Color + Border + Background tint</text>
+  <text x="320" y="438" font-size="11" fill="#1a1822">&amp;#x2190; Underline as additional visual cue</text>
+  <text x="320" y="462" font-size="11" fill="#1a1822">&amp;#x2190; Checkmark icon distinguishes from error even without color</text>
 
   <!-- Types legend -->
   <text x="560" y="400" font-size="11" font-weight="bold" fill="#1a1822">CVD Types:</text>

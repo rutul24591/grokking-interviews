@@ -115,56 +115,18 @@ export default function AriaAttributesArticle() {
           <li><strong>title attribute</strong> &mdash; Lowest priority and not recommended as the sole accessible name because it is not consistently exposed by all assistive technology.</li>
         </ol>
 
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-{`// aria-labelledby: references visible text
-<h2 id="billing-heading">Billing Address</h2>
-<form aria-labelledby="billing-heading">
-  <label htmlFor="street">Street</label>
-  <input id="street" type="text" />
-</form>
-
-// aria-label: no visible label exists
-<button aria-label="Close dialog" onClick={onClose}>
-  <svg aria-hidden="true">/* X icon */</svg>
-</button>
-
-// aria-labelledby with multiple IDs
-<div
-  role="progressbar"
-  aria-labelledby="upload-label upload-filename"
-  aria-valuenow={65}
-  aria-valuemin={0}
-  aria-valuemax={100}
->
-  <span id="upload-label">Uploading:</span>
-  <span id="upload-filename">report.pdf</span>
-</div>
-// Screen reader announces: "Uploading: report.pdf, progress bar, 65%"`}
-        </pre>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">aria-label and aria-labelledby Examples</h3>
+        <p>
+          For aria-labelledby referencing visible text, use a heading with an ID and reference it from a form. For aria-label when no visible label exists, use it on icon-only buttons like a close dialog button with an X icon. For multiple IDs, a progressbar can reference both a label span and a filename span, causing the screen reader to announce something like &quot;Uploading: report.pdf, progress bar, 65 percent&quot;.
+        </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">aria-describedby</h3>
         <p>
           While aria-label and aria-labelledby define the <strong>name</strong> of an element, aria-describedby provides
           supplemental <strong>description</strong>. It references element IDs whose text content is announced after the
           accessible name, typically with a brief pause. This is ideal for help text, format hints, error messages, and
-          constraint descriptions.
+          constraint descriptions. For example, a password input can reference both a hint paragraph describing requirements and an error paragraph that appears conditionally when validation fails. The screen reader announces the password field, then the hint about minimum character requirements.
         </p>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-{`<label htmlFor="password">Password</label>
-<input
-  id="password"
-  type="password"
-  aria-describedby="password-hint password-error"
-  aria-invalid={hasError}
-/>
-<p id="password-hint">Must be at least 12 characters with one number.</p>
-{hasError && (
-  <p id="password-error" role="alert">
-    Password does not meet requirements.
-  </p>
-)}
-// Screen reader: "Password, edit text, Must be at least 12 characters..."`}
-        </pre>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">aria-live Regions</h3>
         <p>
@@ -188,34 +150,10 @@ export default function AriaAttributesArticle() {
           <li><strong>aria-relevant</strong> &mdash; Specifies which types of mutations trigger announcements: &quot;additions&quot;, &quot;removals&quot;, &quot;text&quot;, or &quot;all&quot;. Default is &quot;additions text&quot;.</li>
         </ul>
 
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-{`// Polite live region for search results
-function SearchResults({ results, query }) {
-  return (
-    <>
-      <div aria-live="polite" aria-atomic="true">
-        {results.length} results for "{query}"
-      </div>
-      <ul>
-        {results.map((r) => (
-          <li key={r.id}>{r.title}</li>
-        ))}
-      </ul>
-    </>
-  );
-}
-
-// Assertive live region for errors
-function SessionWarning({ secondsLeft }) {
-  if (secondsLeft > 60) return null;
-  return (
-    <div role="alert" aria-live="assertive">
-      Your session expires in {secondsLeft} seconds.
-      <button onClick={extendSession}>Extend Session</button>
-    </div>
-  );
-}`}
-        </pre>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">aria-live Regions Examples</h3>
+        <p>
+          For polite live regions, use them for search results that announce the count when results update. The container should have aria-live set to polite and aria-atomic set to true so the entire count is re-announced. For assertive live regions, use them for critical errors like session expiration warnings that need immediate user attention. A session warning component might show a countdown and an extend session button, with role set to alert and aria-live set to assertive.
+        </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">aria-hidden</h3>
         <p>
@@ -224,31 +162,9 @@ function SessionWarning({ secondsLeft }) {
           off-screen elements that should not confuse screen reader users. The critical rule: <strong>never apply
           aria-hidden=&quot;true&quot; to a focusable element</strong>. If a user can tab to something, it must be announced.
         </p>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-{`// Decorative icon hidden from screen readers
-<button>
-  <svg aria-hidden="true" focusable="false">
-    <path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3z" />
-  </svg>
-  <span>Home</span>
-</button>
-
-// Modal pattern: hide background content
-function Modal({ isOpen, children }) {
-  return (
-    <>
-      <div id="app-root" aria-hidden={isOpen}>
-        {/* Main app content */}
-      </div>
-      {isOpen && (
-        <div role="dialog" aria-modal="true" aria-labelledby="modal-title">
-          {children}
-        </div>
-      )}
-    </>
-  );
-}`}
-        </pre>
+        <p>
+          For decorative icons, use aria-hidden set to true and focusable set to false on SVG elements inside buttons. For the modal pattern, hide background content by setting aria-hidden on the main app root when the modal is open, while the modal dialog has role set to dialog, aria-modal set to true, and aria-labelledby referencing the modal title.
+        </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">aria-expanded, aria-controls, and aria-haspopup</h3>
         <p>
@@ -256,66 +172,18 @@ function Modal({ isOpen, children }) {
           a collapsible section is open or closed. aria-controls references the ID of the element that is being
           controlled. aria-haspopup indicates that activating the element reveals a popup (menu, listbox, tree, grid, or dialog).
         </p>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-{`function Accordion({ title, children }) {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const panelId = React.useId();
-
-  return (
-    <div>
-      <button
-        aria-expanded={isOpen}
-        aria-controls={panelId}
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        {title}
-      </button>
-      <div
-        id={panelId}
-        role="region"
-        aria-labelledby={/* button id */}
-        hidden={!isOpen}
-      >
-        {children}
-      </div>
-    </div>
-  );
-}
-
-// Dropdown menu with aria-haspopup
-<button
-  aria-haspopup="menu"
-  aria-expanded={menuOpen}
-  aria-controls="user-menu"
->
-  Account
-</button>
-<ul id="user-menu" role="menu" hidden={!menuOpen}>
-  <li role="menuitem">Profile</li>
-  <li role="menuitem">Settings</li>
-  <li role="menuitem">Sign Out</li>
-</ul>`}
-        </pre>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">aria-expanded, aria-controls, and aria-haspopup Examples</h3>
+        <p>
+          For accordion patterns, use a button with aria-expanded reflecting the open state, aria-controls referencing the panel ID, and an onClick handler that toggles the state. The panel has an ID matching the aria-controls value, role set to region, and hidden attribute reflecting the closed state. For dropdown menus, use a button with aria-haspopup set to menu, aria-expanded reflecting menu open state, and aria-controls referencing the menu list ID. The menu is an unordered list with role set to menu, hidden when closed, containing list items with role set to menuitem.
+        </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">aria-current</h3>
         <p>
           The aria-current attribute indicates the current item within a set. It accepts values like &quot;page&quot; (current page
           in navigation), &quot;step&quot; (current step in a wizard), &quot;location&quot; (current location in a breadcrumb),
           &quot;date&quot; (current date in a calendar), and &quot;true&quot; (generic current item). This is often overlooked
-          but is invaluable for navigation patterns.
+          but is invaluable for navigation patterns. For navigation links, create a NavLink component that accepts href, children, and isActive props, then set aria-current to page when isActive is true, or undefined when inactive.
         </p>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-{`function NavLink({ href, children, isActive }) {
-  return (
-    <a
-      href={href}
-      aria-current={isActive ? "page" : undefined}
-    >
-      {children}
-    </a>
-  );
-}`}
-        </pre>
       </section>
 
       {/* ─────────────────── 3. Architecture & Flow ─────────────────── */}
@@ -356,27 +224,8 @@ function Modal({ isOpen, children }) {
           A common React pitfall with live regions: the container must exist in the DOM <em>before</em> the content changes.
           If you conditionally render the container and the content simultaneously, screen readers may miss the announcement
           because they only observe mutations within regions that are already tracked. Always render the live region container
-          in the initial render and update its content dynamically.
+          in the initial render and update its content dynamically. The wrong approach is conditionally rendering the alert div only when there is an error. The correct approach is to always have the div with role alert and aria-live assertive present, updating only its text content. An alternative is to use a visually-hidden persistent region with class sr-only, role status, aria-live polite, and aria-atomic true for non-urgent status messages.
         </p>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-{`// WRONG: Container and content appear at the same time
-{error && <div role="alert">{error}</div>}
-
-// CORRECT: Container always present, content changes
-<div role="alert" aria-live="assertive">
-  {error || ""}
-</div>
-
-// ALTERNATIVE: Use a visually-hidden persistent region
-<div
-  className="sr-only"
-  role="status"
-  aria-live="polite"
-  aria-atomic="true"
->
-  {statusMessage}
-</div>`}
-        </pre>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">ARIA Decision Tree</h3>
         <p>

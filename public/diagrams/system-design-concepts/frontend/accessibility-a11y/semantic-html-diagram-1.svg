@@ -9,22 +9,22 @@
   <rect x="30" y="80" width="410" height="16" fill="#e74c3c" />
   <text x="235" y="82" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Div Soup (Non-Semantic)</text>
 
-  <text x="50" y="120" fill="#64748b" font-family="monospace" font-size="11">&lt;div class=&quot;header&quot;&gt;</text>
-  <text x="70" y="138" fill="#64748b" font-family="monospace" font-size="11">&lt;div class=&quot;nav&quot;&gt;</text>
-  <text x="90" y="156" fill="#64748b" font-family="monospace" font-size="11">&lt;div class=&quot;nav-item&quot;&gt;Home&lt;/div&gt;</text>
-  <text x="90" y="174" fill="#64748b" font-family="monospace" font-size="11">&lt;div class=&quot;nav-item&quot;&gt;About&lt;/div&gt;</text>
-  <text x="70" y="192" fill="#64748b" font-family="monospace" font-size="11">&lt;/div&gt;</text>
-  <text x="50" y="210" fill="#64748b" font-family="monospace" font-size="11">&lt;/div&gt;</text>
-  <text x="50" y="234" fill="#64748b" font-family="monospace" font-size="11">&lt;div class=&quot;content&quot;&gt;</text>
-  <text x="70" y="252" fill="#64748b" font-family="monospace" font-size="11">&lt;div class=&quot;title&quot;&gt;Article&lt;/div&gt;</text>
-  <text x="70" y="270" fill="#64748b" font-family="monospace" font-size="11">&lt;div class=&quot;text&quot;&gt;Body...&lt;/div&gt;</text>
-  <text x="50" y="288" fill="#64748b" font-family="monospace" font-size="11">&lt;/div&gt;</text>
-  <text x="50" y="312" fill="#64748b" font-family="monospace" font-size="11">&lt;div class=&quot;sidebar&quot;&gt;</text>
-  <text x="70" y="330" fill="#64748b" font-family="monospace" font-size="11">&lt;div class=&quot;widget&quot;&gt;...&lt;/div&gt;</text>
-  <text x="50" y="348" fill="#64748b" font-family="monospace" font-size="11">&lt;/div&gt;</text>
-  <text x="50" y="372" fill="#64748b" font-family="monospace" font-size="11">&lt;div class=&quot;footer&quot;&gt;</text>
-  <text x="70" y="390" fill="#64748b" font-family="monospace" font-size="11">&lt;div class=&quot;copy&quot;&gt;&amp;copy; 2026&lt;/div&gt;</text>
-  <text x="50" y="408" fill="#64748b" font-family="monospace" font-size="11">&lt;/div&gt;</text>
+  <text x="50" y="120" fill="#64748b" font-family="monospace" font-size="11">&amp;lt;div class=&amp;quot;header&amp;quot;&amp;gt;</text>
+  <text x="70" y="138" fill="#64748b" font-family="monospace" font-size="11">&amp;lt;div class=&amp;quot;nav&amp;quot;&amp;gt;</text>
+  <text x="90" y="156" fill="#64748b" font-family="monospace" font-size="11">&amp;lt;div class=&amp;quot;nav-item&amp;quot;&amp;gt;Home&amp;lt;/div&amp;gt;</text>
+  <text x="90" y="174" fill="#64748b" font-family="monospace" font-size="11">&amp;lt;div class=&amp;quot;nav-item&amp;quot;&amp;gt;About&amp;lt;/div&amp;gt;</text>
+  <text x="70" y="192" fill="#64748b" font-family="monospace" font-size="11">&amp;lt;/div&amp;gt;</text>
+  <text x="50" y="210" fill="#64748b" font-family="monospace" font-size="11">&amp;lt;/div&amp;gt;</text>
+  <text x="50" y="234" fill="#64748b" font-family="monospace" font-size="11">&amp;lt;div class=&amp;quot;content&amp;quot;&amp;gt;</text>
+  <text x="70" y="252" fill="#64748b" font-family="monospace" font-size="11">&amp;lt;div class=&amp;quot;title&amp;quot;&amp;gt;Article&amp;lt;/div&amp;gt;</text>
+  <text x="70" y="270" fill="#64748b" font-family="monospace" font-size="11">&amp;lt;div class=&amp;quot;text&amp;quot;&amp;gt;Body...&amp;lt;/div&amp;gt;</text>
+  <text x="50" y="288" fill="#64748b" font-family="monospace" font-size="11">&amp;lt;/div&amp;gt;</text>
+  <text x="50" y="312" fill="#64748b" font-family="monospace" font-size="11">&amp;lt;div class=&amp;quot;sidebar&amp;quot;&amp;gt;</text>
+  <text x="70" y="330" fill="#64748b" font-family="monospace" font-size="11">&amp;lt;div class=&amp;quot;widget&amp;quot;&amp;gt;...&amp;lt;/div&amp;gt;</text>
+  <text x="50" y="348" fill="#64748b" font-family="monospace" font-size="11">&amp;lt;/div&amp;gt;</text>
+  <text x="50" y="372" fill="#64748b" font-family="monospace" font-size="11">&amp;lt;div class=&amp;quot;footer&amp;quot;&amp;gt;</text>
+  <text x="70" y="390" fill="#64748b" font-family="monospace" font-size="11">&amp;lt;div class=&amp;quot;copy&amp;quot;&amp;gt;&amp;copy; 2026&amp;lt;/div&amp;gt;</text>
+  <text x="50" y="408" fill="#64748b" font-family="monospace" font-size="11">&amp;lt;/div&amp;gt;</text>
 
   <!-- Problems list -->
   <text x="50" y="438" fill="#e74c3c" font-family="system-ui, sans-serif" font-size="11" font-weight="600">No landmarks for screen readers</text>
@@ -37,24 +37,24 @@
   <rect x="460" y="80" width="410" height="16" fill="#6d5bd0" />
   <text x="665" y="82" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Semantic HTML</text>
 
-  <text x="480" y="120" fill="#1a1822" font-family="monospace" font-size="11">&lt;header&gt;</text>
-  <text x="500" y="138" fill="#1a1822" font-family="monospace" font-size="11">&lt;nav aria-label=&quot;Main&quot;&gt;</text>
-  <text x="520" y="156" fill="#1a1822" font-family="monospace" font-size="11">&lt;a href=&quot;/&quot;&gt;Home&lt;/a&gt;</text>
-  <text x="520" y="174" fill="#1a1822" font-family="monospace" font-size="11">&lt;a href=&quot;/about&quot;&gt;About&lt;/a&gt;</text>
-  <text x="500" y="192" fill="#1a1822" font-family="monospace" font-size="11">&lt;/nav&gt;</text>
-  <text x="480" y="210" fill="#1a1822" font-family="monospace" font-size="11">&lt;/header&gt;</text>
-  <text x="480" y="234" fill="#1a1822" font-family="monospace" font-size="11">&lt;main&gt;</text>
-  <text x="500" y="252" fill="#1a1822" font-family="monospace" font-size="11">&lt;article&gt;</text>
-  <text x="520" y="270" fill="#1a1822" font-family="monospace" font-size="11">&lt;h1&gt;Article Title&lt;/h1&gt;</text>
-  <text x="520" y="288" fill="#1a1822" font-family="monospace" font-size="11">&lt;p&gt;Body text...&lt;/p&gt;</text>
-  <text x="500" y="306" fill="#1a1822" font-family="monospace" font-size="11">&lt;/article&gt;</text>
-  <text x="480" y="324" fill="#1a1822" font-family="monospace" font-size="11">&lt;/main&gt;</text>
-  <text x="480" y="348" fill="#1a1822" font-family="monospace" font-size="11">&lt;aside aria-label=&quot;Sidebar&quot;&gt;</text>
-  <text x="500" y="366" fill="#1a1822" font-family="monospace" font-size="11">&lt;section&gt;...&lt;/section&gt;</text>
-  <text x="480" y="384" fill="#1a1822" font-family="monospace" font-size="11">&lt;/aside&gt;</text>
-  <text x="480" y="408" fill="#1a1822" font-family="monospace" font-size="11">&lt;footer&gt;</text>
-  <text x="500" y="426" fill="#1a1822" font-family="monospace" font-size="11">&lt;small&gt;&amp;copy; 2026&lt;/small&gt;</text>
-  <text x="480" y="444" fill="#1a1822" font-family="monospace" font-size="11">&lt;/footer&gt;</text>
+  <text x="480" y="120" fill="#1a1822" font-family="monospace" font-size="11">&amp;lt;header&amp;gt;</text>
+  <text x="500" y="138" fill="#1a1822" font-family="monospace" font-size="11">&amp;lt;nav aria-label=&amp;quot;Main&amp;quot;&amp;gt;</text>
+  <text x="520" y="156" fill="#1a1822" font-family="monospace" font-size="11">&amp;lt;a href=&amp;quot;/&amp;quot;&amp;gt;Home&amp;lt;/a&amp;gt;</text>
+  <text x="520" y="174" fill="#1a1822" font-family="monospace" font-size="11">&amp;lt;a href=&amp;quot;/about&amp;quot;&amp;gt;About&amp;lt;/a&amp;gt;</text>
+  <text x="500" y="192" fill="#1a1822" font-family="monospace" font-size="11">&amp;lt;/nav&amp;gt;</text>
+  <text x="480" y="210" fill="#1a1822" font-family="monospace" font-size="11">&amp;lt;/header&amp;gt;</text>
+  <text x="480" y="234" fill="#1a1822" font-family="monospace" font-size="11">&amp;lt;main&amp;gt;</text>
+  <text x="500" y="252" fill="#1a1822" font-family="monospace" font-size="11">&amp;lt;article&amp;gt;</text>
+  <text x="520" y="270" fill="#1a1822" font-family="monospace" font-size="11">&amp;lt;h1&amp;gt;Article Title&amp;lt;/h1&amp;gt;</text>
+  <text x="520" y="288" fill="#1a1822" font-family="monospace" font-size="11">&amp;lt;p&amp;gt;Body text...&amp;lt;/p&amp;gt;</text>
+  <text x="500" y="306" fill="#1a1822" font-family="monospace" font-size="11">&amp;lt;/article&amp;gt;</text>
+  <text x="480" y="324" fill="#1a1822" font-family="monospace" font-size="11">&amp;lt;/main&amp;gt;</text>
+  <text x="480" y="348" fill="#1a1822" font-family="monospace" font-size="11">&amp;lt;aside aria-label=&amp;quot;Sidebar&amp;quot;&amp;gt;</text>
+  <text x="500" y="366" fill="#1a1822" font-family="monospace" font-size="11">&amp;lt;section&amp;gt;...&amp;lt;/section&amp;gt;</text>
+  <text x="480" y="384" fill="#1a1822" font-family="monospace" font-size="11">&amp;lt;/aside&amp;gt;</text>
+  <text x="480" y="408" fill="#1a1822" font-family="monospace" font-size="11">&amp;lt;footer&amp;gt;</text>
+  <text x="500" y="426" fill="#1a1822" font-family="monospace" font-size="11">&amp;lt;small&amp;gt;&amp;copy; 2026&amp;lt;/small&amp;gt;</text>
+  <text x="480" y="444" fill="#1a1822" font-family="monospace" font-size="11">&amp;lt;/footer&amp;gt;</text>
 
   <!-- Benefits list -->
   <text x="480" y="472" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Screen readers navigate by landmarks</text>

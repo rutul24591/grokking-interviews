@@ -118,7 +118,7 @@
     <text x="150" y="25" text-anchor="middle" font-family="monospace" font-size="13" font-weight="400" fill="#92400e">base-uri</text>
     
     <rect x="300" y="0" width="450" height="40" fill="#ffffff" stroke="#f59e0b"/>
-    <text x="320" y="25" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">• Controls &lt;base&gt; element</text>
+    <text x="320" y="25" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#0f172a">• Controls &amp;lt;base&amp;gt; element</text>
     
     <rect x="750" y="0" width="450" height="40" fill="#ffffff" stroke="#f59e0b"/>
     <text x="770" y="25" font-family="monospace" font-size="10" fill="#475569">base-uri 'self'</text>

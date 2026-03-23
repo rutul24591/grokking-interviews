@@ -7,7 +7,7 @@
   <rect x="30" y="70" width="160" height="80" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" />
   <text x="110" y="100" text-anchor="middle" fill="#6d5bd0" font-family="system-ui, sans-serif" font-size="12" font-weight="700">STEP 1</text>
   <text x="110" y="118" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="600">User clicks</text>
-  <text x="110" y="134" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="600">&quot;Open Modal&quot;</text>
+  <text x="110" y="134" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="600">&amp;quot;Open Modal&amp;quot;</text>
 
   <!-- Arrow 1 -->
   <line x1="190" y1="110" x2="230" y2="110" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowhead)" />

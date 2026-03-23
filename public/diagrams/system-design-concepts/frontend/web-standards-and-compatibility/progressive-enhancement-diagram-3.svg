@@ -1,18 +1,89 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Progressive Enhancement diagram 3">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif" role="img" aria-label="Server-Side vs Client-Side Rendering in Progressive Enhancement">
   <defs>
-    <linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1220" />
-      <stop offset="100%" stop-color="#1f2937" />
-    </linearGradient>
+    <marker id="pe3-arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
   </defs>
-  <rect width="960" height="540" rx="24" fill="url(#bg3)" />
-  <rect x="64" y="80" width="832" height="380" rx="20" fill="#0f172a" stroke="#334155" stroke-width="2" />
-  <rect x="96" y="120" width="280" height="24" rx="8" fill="#22d3ee" opacity="0.9" />
-  <rect x="96" y="168" width="420" height="14" rx="7" fill="#94a3b8" opacity="0.8" />
-  <rect x="96" y="196" width="360" height="14" rx="7" fill="#64748b" opacity="0.6" />
-  <rect x="96" y="240" width="220" height="110" rx="16" fill="#0ea5e9" opacity="0.2" />
-  <rect x="336" y="240" width="220" height="110" rx="16" fill="#38bdf8" opacity="0.2" />
-  <rect x="576" y="240" width="220" height="110" rx="16" fill="#22d3ee" opacity="0.2" />
-  <text x="96" y="420" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Progressive Enhancement</text>
-  <text x="96" y="452" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="16">Placeholder diagram 3</text>
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+  <text x="450" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Server-Side vs Client-Side in Progressive Enhancement</text>
+
+  <!-- Divider line -->
+  <line x1="450" y1="50" x2="450" y2="460" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="8,4"/>
+
+  <!-- LEFT: Server-Side -->
+  <text x="225" y="70" text-anchor="middle" font-size="16" font-weight="700" fill="#6d5bd0">Server-Side (Core Experience)</text>
+
+  <!-- Server -->
+  <rect x="120" y="90" width="210" height="50" rx="8" fill="#6d5bd0" stroke="#1a1822" stroke-width="2"/>
+  <text x="225" y="112" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Application Server</text>
+  <text x="225" y="130" text-anchor="middle" font-size="10" fill="#f3f1f8">Node.js / Next.js SSR</text>
+
+  <line x1="225" y1="140" x2="225" y2="160" stroke="#6d5bd0" stroke-width="2" marker-end="url(#pe3-arrow)"/>
+
+  <!-- Server renders HTML -->
+  <rect x="100" y="165" width="250" height="55" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="225" y="188" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Server-Rendered HTML</text>
+  <text x="225" y="205" text-anchor="middle" font-size="10" fill="#6d5bd0">Complete semantic markup with content</text>
+
+  <line x1="225" y1="220" x2="225" y2="240" stroke="#6d5bd0" stroke-width="2" marker-end="url(#pe3-arrow)"/>
+
+  <!-- Full page sent -->
+  <rect x="100" y="245" width="250" height="55" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="225" y="268" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Complete HTML Document</text>
+  <text x="225" y="285" text-anchor="middle" font-size="10" fill="#6d5bd0">Functional forms, links, content</text>
+
+  <line x1="225" y1="300" x2="225" y2="320" stroke="#6d5bd0" stroke-width="2" marker-end="url(#pe3-arrow)"/>
+
+  <!-- No-JS Browser -->
+  <rect x="100" y="325" width="250" height="55" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="225" y="348" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Works Without JavaScript</text>
+  <text x="225" y="365" text-anchor="middle" font-size="10" fill="#6d5bd0">Navigation, forms, reading — all functional</text>
+
+  <!-- Checkmarks -->
+  <text x="90" y="195" font-size="16" fill="#6d5bd0">&#x2713;</text>
+  <text x="90" y="275" font-size="16" fill="#6d5bd0">&#x2713;</text>
+  <text x="90" y="355" font-size="16" fill="#6d5bd0">&#x2713;</text>
+
+  <!-- RIGHT: Client-Side -->
+  <text x="675" y="70" text-anchor="middle" font-size="16" font-weight="700" fill="#6d5bd0">Client-Side (Enhanced Experience)</text>
+
+  <!-- Browser receives HTML -->
+  <rect x="570" y="90" width="210" height="50" rx="8" fill="#6d5bd0" stroke="#1a1822" stroke-width="2"/>
+  <text x="675" y="112" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Browser (JS Enabled)</text>
+  <text x="675" y="130" text-anchor="middle" font-size="10" fill="#f3f1f8">Receives server HTML first</text>
+
+  <line x1="675" y1="140" x2="675" y2="160" stroke="#6d5bd0" stroke-width="2" marker-end="url(#pe3-arrow)"/>
+
+  <!-- Hydration -->
+  <rect x="550" y="165" width="250" height="55" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="675" y="188" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Hydration / Enhancement</text>
+  <text x="675" y="205" text-anchor="middle" font-size="10" fill="#6d5bd0">Attach event listeners, enrich UI</text>
+
+  <line x1="675" y1="220" x2="675" y2="240" stroke="#6d5bd0" stroke-width="2" marker-end="url(#pe3-arrow)"/>
+
+  <!-- Interactive enhancements -->
+  <rect x="550" y="245" width="250" height="55" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="675" y="268" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Interactive Enhancements</text>
+  <text x="675" y="285" text-anchor="middle" font-size="10" fill="#6d5bd0">Smooth transitions, live validation</text>
+
+  <line x1="675" y1="300" x2="675" y2="320" stroke="#6d5bd0" stroke-width="2" marker-end="url(#pe3-arrow)"/>
+
+  <!-- Rich app -->
+  <rect x="550" y="325" width="250" height="55" rx="8" fill="#6d5bd0" opacity="0.12" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="675" y="348" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Rich Application Experience</text>
+  <text x="675" y="365" text-anchor="middle" font-size="10" fill="#6d5bd0">SPA-like nav, real-time updates, animations</text>
+
+  <!-- Enhancement arrows crossing -->
+  <text x="90" y="355" font-size="16" fill="#6d5bd0">&#x2713;</text>
+
+  <!-- Connection arrow from left to right -->
+  <path d="M350 350 Q450 350 550 350" fill="none" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#pe3-arrow)"/>
+  <text x="450" y="340" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Enhances</text>
+
+  <!-- Bottom summary -->
+  <rect x="100" y="410" width="700" height="55" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="450" y="433" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">Content Delivery Strategy</text>
+  <text x="450" y="452" text-anchor="middle" font-size="11" fill="#6d5bd0">Server delivers functional HTML first — client progressively layers on interactivity</text>
+
+  <text x="450" y="490" text-anchor="middle" font-size="11" fill="#6d5bd0">Users always get content; JS-capable browsers get the enhanced experience</text>
 </svg>

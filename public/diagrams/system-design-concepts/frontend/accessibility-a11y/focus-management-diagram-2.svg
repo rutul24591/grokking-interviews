@@ -68,7 +68,7 @@
   <!-- Option 3 -->
   <rect x="350" y="228" width="200" height="50" rx="8" fill="#f3f1f8" stroke="#6d5bd0" stroke-width="1.5" />
   <text x="450" y="248" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="700">3. Main Content Region</text>
-  <text x="450" y="266" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">role=&quot;main&quot; or &lt;main&gt;</text>
+  <text x="450" y="266" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">role=&amp;quot;main&amp;quot; or &amp;lt;main&amp;gt;</text>
 
   <!-- Option 4 (Anti-pattern) -->
   <rect x="350" y="288" width="200" height="40" rx="8" fill="#fff5f5" stroke="#e74c3c" stroke-width="1.5" />
@@ -91,13 +91,13 @@
 
   <!-- Heading with focus ring -->
   <rect x="640" y="185" width="210" height="36" rx="4" fill="#f3f1f8" stroke="#6d5bd0" stroke-width="2.5" stroke-dasharray="0" />
-  <text x="745" y="208" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="700">&lt;h1&gt; About Us &lt;/h1&gt;</text>
+  <text x="745" y="208" text-anchor="middle" fill="#1a1822" font-family="system-ui, sans-serif" font-size="13" font-weight="700">&amp;lt;h1&amp;gt; About Us &amp;lt;/h1&amp;gt;</text>
   <text x="745" y="237" text-anchor="middle" fill="#27ae60" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Focus lands here</text>
 
   <!-- Content area -->
   <rect x="640" y="255" width="210" height="65" rx="4" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1" />
   <text x="745" y="280" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="11">New page content</text>
-  <text x="745" y="298" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">with tabindex=&quot;-1&quot; on h1</text>
+  <text x="745" y="298" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="10">with tabindex=&amp;quot;-1&amp;quot; on h1</text>
 
   <!-- Arrow from strategy to Page B -->
   <line x1="570" y1="133" x2="620" y2="200" stroke="#27ae60" stroke-width="2" marker-end="url(#arrowGreen)" />
@@ -110,7 +110,7 @@
   <text x="80" y="420" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12">Announce route change to screen readers via aria-live region or document.title update</text>
 
   <text x="60" y="442" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">2.</text>
-  <text x="80" y="442" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12">Add tabindex=&quot;-1&quot; to non-interactive focus targets (headings, containers)</text>
+  <text x="80" y="442" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12">Add tabindex=&amp;quot;-1&amp;quot; to non-interactive focus targets (headings, containers)</text>
 
   <text x="60" y="464" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12" font-weight="600">3.</text>
   <text x="80" y="464" fill="#1a1822" font-family="system-ui, sans-serif" font-size="12">Use useEffect or router event listeners to call .focus() after DOM update completes</text>
