@@ -78,7 +78,7 @@ For each article:
   </audit-output>
 
   <visual-guidelines>
-  Generate exactly 2–5 SVG diagrams. Each must represent ONE of the following:
+  Generate exactly 3–5 SVG diagrams. Each must represent ONE of the following:
   Architecture
   Scaling strategies
   Failover / availability architecture
