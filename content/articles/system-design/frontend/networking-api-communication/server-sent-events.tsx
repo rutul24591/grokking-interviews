@@ -232,36 +232,7 @@ export default function ServerSentEventsConciseArticle() {
 
       <section>
         <h2>Implementation Examples</h2>
-        <p>
-          Implementing SSE involves both a server that writes the event stream
-          and a client that consumes it. The examples below demonstrate
-          production-grade patterns:
-        </p>
-
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-3 font-semibold">Node.js SSE Server</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">
-              Example code moved to the Example tab.
-            </div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">React EventSource Client</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">
-              Example code moved to the Example tab.
-            </div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">
-              Fetch + ReadableStream Alternative
-            </h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">
-              Example code moved to the Example tab.
-            </div>
-          </div>
-        </div>
+        <p>Implementing SSE involves both a server that writes the event stream and a client that consumes it. Code examples are available in the Example toggle.</p>
       </section>
 
       <section>
@@ -580,59 +551,351 @@ export default function ServerSentEventsConciseArticle() {
       </section>
 
       <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://html.spec.whatwg.org/multipage/server-sent-events.html"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              WHATWG HTML Living Standard - Server-Sent Events
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developer.mozilla.org/en-US/docs/Web/API/EventSource"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              MDN Web Docs - EventSource API
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              MDN Web Docs - Using Server-Sent Events
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://web.dev/articles/eventsource-basics"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              web.dev - Stream Updates with Server-Sent Events
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developer.chrome.com/docs/devtools/network/reference/#sse"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Chrome DevTools - Inspecting Server-Sent Events
-            </a>
-          </li>
-        </ul>
+        <h2>Security Considerations</h2>
+        <p>
+          Server-Sent Events introduce unique security considerations due to their persistent,
+          unidirectional nature and automatic reconnection behavior.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Authentication & Authorization</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Initial Connection Auth:</strong> Authenticate users during the initial HTTP
+              handshake. Use cookies (HttpOnly session cookies) or Authorization header. Note:
+              EventSource doesn't support custom headers, so use cookies or URL query parameters
+              (less secure).
+            </li>
+            <li>
+              <strong>Per-Event Authorization:</strong> Authorize each event before sending. Just
+              because a user is authenticated doesn't mean they should receive all events. Example:
+              user can only receive events for resources they own.
+            </li>
+            <li>
+              <strong>Token Refresh:</strong> For long-lived connections, implement token refresh
+              mechanism. Send a special event type that triggers client-side reconnection with fresh
+              credentials.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">CORS Configuration</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Cross-Origin SSE:</strong> By default, EventSource sends requests without
+              credentials. For cross-origin SSE with cookies, set <code>withCredentials: true</code>
+              on the client and <code>Access-Control-Allow-Credentials: true</code> on the server.
+            </li>
+            <li>
+              <strong>Origin Validation:</strong> Validate the Origin header to prevent unauthorized
+              cross-origin connections. Reject connections from untrusted origins.
+            </li>
+            <li>
+              <strong>CORS Headers:</strong> Set <code>Access-Control-Allow-Origin</code> to specific
+              trusted domains, not wildcard (*), when credentials are involved.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Event Injection Prevention</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Event Data Sanitization:</strong> Sanitize event data before sending to prevent
+              XSS when the client renders events. Even though SSE is text-based, malicious data could
+              be executed when rendered in the DOM.
+            </li>
+            <li>
+              <strong>Event Type Validation:</strong> Validate event types against an allowlist.
+              Reject unknown event types to prevent protocol confusion attacks.
+            </li>
+            <li>
+              <strong>Rate Limiting:</strong> Implement per-connection rate limiting to prevent
+              flooding attacks. Limit events per second per connection.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Connection Security</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>HTTPS Required:</strong> Always use <code>https://</code> for SSE endpoints.
+              Never use <code>http://</code> in production. TLS encrypts the entire event stream.
+            </li>
+            <li>
+              <strong>Connection Timeouts:</strong> Implement server-side connection timeouts to
+              prevent resource exhaustion. Close idle connections after a reasonable period.
+            </li>
+            <li>
+              <strong>Heartbeat/Ping:</strong> Send periodic comments (<code>: ping</code>) to keep
+              connections alive through proxies and detect dead connections.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Performance Benchmarks</h2>
+        <p>
+          Understanding SSE performance characteristics is essential for capacity planning and
+          diagnosing production issues.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Industry Performance Data</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Metric</th>
+                <th className="p-2 text-left">Target</th>
+                <th className="p-2 text-left">Industry Average</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Connection Latency</td>
+                <td className="p-2">&lt;100ms</td>
+                <td className="p-2">50-150ms (HTTP handshake)</td>
+              </tr>
+              <tr>
+                <td className="p-2">Event Delivery Latency</td>
+                <td className="p-2">&lt;50ms</td>
+                <td className="p-2">10-100ms server-to-client</td>
+              </tr>
+              <tr>
+                <td className="p-2">Connections per Server</td>
+                <td className="p-2">10,000+</td>
+                <td className="p-2">5,000-50,000 (depends on event rate)</td>
+              </tr>
+              <tr>
+                <td className="p-2">Reconnection Rate</td>
+                <td className="p-2">&lt;5%</td>
+                <td className="p-2">2-10% (mobile networks higher)</td>
+              </tr>
+              <tr>
+                <td className="p-2">Event Throughput</td>
+                <td className="p-2">1,000 events/sec</td>
+                <td className="p-2">500-5,000 events/sec per server</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Scalability Benchmarks</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>The New York Times:</strong> SSE for live news updates. Handles millions of
+              concurrent connections during breaking news. Uses Node.js with Redis pub/sub backbone.
+            </li>
+            <li>
+              <strong>GitHub:</strong> SSE for real-time notifications and build status updates.
+              Uses HTTP/2 multiplexing and connection draining for zero-downtime deploys.
+            </li>
+            <li>
+              <strong>Vercel:</strong> SSE for streaming build logs. Uses edge functions to terminate
+              connections close to users, reducing latency.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Diagnosing Performance Issues</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>High Reconnection Rate:</strong> Check server heartbeat interval (should be
+              &lt;30s). Verify proxy/load balancer timeout settings (should be &gt; SSE heartbeat).
+            </li>
+            <li>
+              <strong>Event Delivery Delays:</strong> Monitor event queue depth. High queue depth
+              indicates slow consumers or insufficient server capacity.
+            </li>
+            <li>
+              <strong>Memory Growth:</strong> Track memory per connection. Memory leaks often come
+              from unsubscribed event listeners or unbounded event buffers.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Cost Analysis</h2>
+        <p>
+          SSE has distinct cost characteristics compared to other real-time communication patterns.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Server Resources:</strong> SSE connections consume memory (~1-5KB per
+              connection) and file descriptors. For 100K concurrent connections: ~1-5GB RAM, 100K+
+              file descriptors. Instance size: c5.large or equivalent (~$75/month).
+            </li>
+            <li>
+              <strong>Pub/Sub Backbone:</strong> Redis Pub/Sub for event distribution: $200-1,000/month
+              for production-grade setup. NATS or Kafka for higher throughput: $500-2,000/month.
+            </li>
+            <li>
+              <strong>Load Balancer:</strong> Requires HTTP/2-aware load balancer with connection
+              draining. AWS ALB: ~$0.0225/hour + LCU charges. NGINX Plus: $2,500/year.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Initial Implementation:</strong> 1-2 weeks for production-ready SSE
+              infrastructure including authentication, reconnection handling, and monitoring.
+            </li>
+            <li>
+              <strong>Ongoing Maintenance:</strong> Monitoring connection health, debugging
+              reconnection issues, scaling infrastructure. Estimate: 5-10% of engineering time.
+            </li>
+            <li>
+              <strong>Testing Overhead:</strong> Load testing SSE connections requires specialized
+              tools. +10-20% testing time compared to REST APIs.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">When NOT to Use SSE (Cost Perspective)</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Bidirectional Communication:</strong> If you need client-to-server messages
+              frequently, WebSocket is more cost-effective than SSE + HTTP POST hybrid.
+            </li>
+            <li>
+              <strong>Infrequent Updates:</strong> If updates are &lt;1/hour, HTTP polling or
+              push notifications are more cost-effective. SSE connection overhead isn't justified.
+            </li>
+            <li>
+              <strong>Legacy Browser Support:</strong> SSE is not supported in IE. If IE support
+              is required, use long polling fallback or polyfill (adds complexity).
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
+          <p>
+            Use SSE when: (1) server-to-client communication is the primary pattern (notifications,
+            live feeds, dashboards), (2) automatic reconnection and event replay are valuable,
+            (3) HTTP-native operation simplifies infrastructure (proxies, auth, CORS). Use WebSocket
+            when: bidirectional communication is required, sub-50ms latency is critical. Use HTTP
+            polling when: updates are infrequent, simplicity is paramount, or legacy browser support
+            is required.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Decision Framework: When to Use SSE</h2>
+        <p>
+          SSE is not always the right solution. Use this decision framework to evaluate whether
+          SSE is appropriate for your use case.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Decision Tree</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Is communication primarily server-to-client?</strong>
+              <ul>
+                <li>Yes → SSE is a strong candidate</li>
+                <li>No → WebSocket may be better</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Do you need automatic reconnection?</strong>
+              <ul>
+                <li>Yes → SSE has built-in reconnection</li>
+                <li>No → WebSocket or polling works</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Is HTTP-native operation important?</strong>
+              <ul>
+                <li>Yes → SSE works with existing HTTP infrastructure</li>
+                <li>No → WebSocket is an option</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Do you need Last-Event-ID replay?</strong>
+              <ul>
+                <li>Yes → SSE has built-in event replay</li>
+                <li>No → WebSocket or polling works</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Alternative Comparison</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Approach</th>
+                <th className="p-2 text-left">Direction</th>
+                <th className="p-2 text-left">Reconnection</th>
+                <th className="p-2 text-left">Complexity</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">SSE</td>
+                <td className="p-2">Server→Client</td>
+                <td className="p-2">✅ Automatic</td>
+                <td className="p-2">Low</td>
+              </tr>
+              <tr>
+                <td className="p-2">WebSocket</td>
+                <td className="p-2">Bidirectional</td>
+                <td className="p-2">❌ Manual</td>
+                <td className="p-2">Medium-High</td>
+              </tr>
+              <tr>
+                <td className="p-2">Long Polling</td>
+                <td className="p-2">Server→Client</td>
+                <td className="p-2">❌ Manual</td>
+                <td className="p-2">Low</td>
+              </tr>
+              <tr>
+                <td className="p-2">Short Polling</td>
+                <td className="p-2">Server→Client</td>
+                <td className="p-2">N/A</td>
+                <td className="p-2">Lowest</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Organizational Readiness Checklist</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Event Infrastructure:</strong> Do you have a pub/sub backbone (Redis, Kafka)
+              for event distribution?
+            </li>
+            <li>
+              <strong>Connection Monitoring:</strong> Can you monitor connection counts, event
+              delivery rates, and reconnection patterns?
+            </li>
+            <li>
+              <strong>Event Buffering:</strong> Do you have infrastructure for Last-Event-ID replay
+              (in-memory buffer, Redis stream, database log)?
+            </li>
+            <li>
+              <strong>Load Balancer Support:</strong> Does your load balancer support long-lived
+              HTTP connections with connection draining?
+            </li>
+          </ul>
+        </div>
       </section>
 
       <section>
@@ -704,6 +967,37 @@ export default function ServerSentEventsConciseArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://html.spec.whatwg.org/multipage/server-sent-events.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              WHATWG HTML Living Standard - Server-Sent Events
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventSource" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN Web Docs - EventSource API
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN Web Docs - Using Server-Sent Events
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/eventsource-basics" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              web.dev - Stream Updates with Server-Sent Events
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.chrome.com/docs/devtools/network/reference/#sse" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Chrome DevTools - Inspecting Server-Sent Events
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

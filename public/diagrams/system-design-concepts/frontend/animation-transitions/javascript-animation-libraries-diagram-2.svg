@@ -1,0 +1,86 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Spring Physics Animation Model</text>
+
+  <!-- Spring diagram -->
+  <rect x="30" y="55" width="400" height="200" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="230" y="77" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Spring Parameters</text>
+
+  <!-- Visual spring -->
+  <line x1="60" y1="140" x2="100" y2="140" stroke="#6d5bd0" stroke-width="3"/>
+  <path d="M100,140 L110,120 L130,160 L150,120 L170,160 L190,120 L210,160 L220,140" fill="none" stroke="#6d5bd0" stroke-width="2"/>
+  <circle cx="240" cy="140" r="15" fill="#6d5bd0"/>
+  <text x="240" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">m</text>
+  <line x1="255" y1="140" x2="320" y2="140" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="290" y="133" text-anchor="middle" font-size="9" fill="#6d5bd0">velocity</text>
+
+  <text x="60" y="185" font-size="10" fill="#1a1822"><tspan font-weight="600">Stiffness</tspan> (tension): spring tautness</text>
+  <text x="60" y="200" font-size="10" fill="#1a1822"><tspan font-weight="600">Damping</tspan> (friction): oscillation decay</text>
+  <text x="60" y="215" font-size="10" fill="#1a1822"><tspan font-weight="600">Mass</tspan>: inertia of animated value</text>
+  <text x="60" y="230" font-size="10" fill="#1a1822"><tspan font-weight="600">Velocity</tspan>: initial speed (from gesture)</text>
+  <text x="60" y="245" font-size="10" fill="#1a1822"><tspan font-weight="600">Duration</tspan>: emergent — not specified!</text>
+
+  <!-- Comparison: Duration vs Spring -->
+  <rect x="450" y="55" width="420" height="200" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="660" y="77" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Duration-Based vs Spring-Based</text>
+
+  <!-- Duration curve -->
+  <text x="470" y="100" font-size="10" font-weight="600" fill="#1a1822">Duration: 300ms, ease-out</text>
+  <rect x="470" y="108" width="180" height="50" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <line x1="480" y1="148" x2="640" y2="148" stroke="#d7d1e6" stroke-width="1"/>
+  <line x1="480" y1="118" x2="480" y2="148" stroke="#d7d1e6" stroke-width="1"/>
+  <path d="M480,148 C520,118 560,115 640,115" fill="none" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="560" y="165" text-anchor="middle" font-size="8" fill="#1a1822">Fixed time, predictable end</text>
+
+  <!-- Spring curve -->
+  <text x="470" y="190" font-size="10" font-weight="600" fill="#1a1822">Spring: stiff=170, damp=26</text>
+  <rect x="470" y="198" width="180" height="50" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <line x1="480" y1="238" x2="640" y2="238" stroke="#d7d1e6" stroke-width="1"/>
+  <line x1="480" y1="208" x2="480" y2="238" stroke="#d7d1e6" stroke-width="1"/>
+  <path d="M480,238 C500,205 515,203 530,208 C545,213 550,210 560,212 C575,214 590,213 640,213" fill="none" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="560" y="254" text-anchor="middle" font-size="8" fill="#1a1822">Variable time, natural settle</text>
+
+  <!-- Interruptibility comparison -->
+  <rect x="30" y="275" width="840" height="200" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="297" text-anchor="middle" font-size="14" font-weight="600" fill="#6d5bd0">Interruptibility: The Key Advantage of Springs</text>
+
+  <!-- Duration interrupt -->
+  <rect x="50" y="310" width="380" height="150" rx="6" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="240" y="330" text-anchor="middle" font-size="11" font-weight="600" fill="#cc3333">Duration-Based Interrupt</text>
+
+  <rect x="65" y="345" width="350" height="30" rx="3" fill="#ffffff" stroke="#d7d1e6"/>
+  <circle cx="85" cy="360" r="8" fill="#6d5bd0"/>
+  <text x="100" y="364" font-size="8" fill="#1a1822">Target: 300px →</text>
+  <line x1="140" y1="360" x2="250" y2="360" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="255" y="364" font-size="8" fill="#cc3333" font-weight="600">INTERRUPT!</text>
+  <circle cx="310" cy="360" r="8" fill="#cc3333"/>
+  <text x="325" y="364" font-size="8" fill="#1a1822">Snap to new start</text>
+  <line x1="340" y1="360" x2="400" y2="360" stroke="#cc3333" stroke-width="2"/>
+
+  <text x="65" y="400" font-size="9" fill="#1a1822">1. Cancel current animation at position X</text>
+  <text x="65" y="415" font-size="9" fill="#1a1822">2. Read current value via getComputedStyle</text>
+  <text x="65" y="430" font-size="9" fill="#1a1822">3. Start new animation from X → new target</text>
+  <text x="65" y="445" font-size="9" fill="#cc3333" font-weight="600">Problem: visual discontinuity at interrupt point</text>
+
+  <!-- Spring interrupt -->
+  <rect x="460" y="310" width="390" height="150" rx="6" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="655" y="330" text-anchor="middle" font-size="11" font-weight="600" fill="#228B22">Spring-Based Interrupt</text>
+
+  <rect x="475" y="345" width="360" height="30" rx="3" fill="#ffffff" stroke="#d7d1e6"/>
+  <circle cx="495" cy="360" r="8" fill="#6d5bd0"/>
+  <text x="510" y="364" font-size="8" fill="#1a1822">Target: 300px →</text>
+  <line x1="550" y1="360" x2="640" y2="360" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="660" y="364" font-size="8" fill="#228B22" font-weight="600">REDIRECT</text>
+  <path d="M680,360 C700,350 720,345 740,340 C760,335 790,355 810,360" fill="none" stroke="#228B22" stroke-width="2"/>
+
+  <text x="475" y="400" font-size="9" fill="#1a1822">1. Update spring target to new value</text>
+  <text x="475" y="415" font-size="9" fill="#1a1822">2. Spring continues from current pos + velocity</text>
+  <text x="475" y="430" font-size="9" fill="#1a1822">3. Motion redirects smoothly toward new target</text>
+  <text x="475" y="445" font-size="9" fill="#228B22" font-weight="600">Smooth: no discontinuity, natural redirect</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

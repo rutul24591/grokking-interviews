@@ -1,0 +1,94 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">ScrollTimeline: Scroll-Driven Animation Architecture</text>
+
+  <!-- Traditional approach -->
+  <rect x="30" y="55" width="410" height="200" rx="8" fill="#ffffff" stroke="#cc3333" stroke-width="2"/>
+  <text x="235" y="77" text-anchor="middle" font-size="12" font-weight="600" fill="#cc3333">Traditional: JS Scroll Handler (Main Thread)</text>
+
+  <rect x="50" y="95" width="130" height="35" rx="4" fill="#cc3333" opacity="0.2" stroke="#cc3333"/>
+  <text x="115" y="117" text-anchor="middle" font-size="9" fill="#1a1822">scroll event</text>
+  <line x1="180" y1="112" x2="200" y2="112" stroke="#cc3333" stroke-width="1.5" marker-end="url(#arrR)"/>
+
+  <rect x="200" y="95" width="100" height="35" rx="4" fill="#cc3333" opacity="0.2" stroke="#cc3333"/>
+  <text x="250" y="117" text-anchor="middle" font-size="9" fill="#1a1822">rAF throttle</text>
+  <line x1="300" y1="112" x2="320" y2="112" stroke="#cc3333" stroke-width="1.5" marker-end="url(#arrR)"/>
+
+  <rect x="320" y="95" width="100" height="35" rx="4" fill="#cc3333" opacity="0.2" stroke="#cc3333"/>
+  <text x="370" y="117" text-anchor="middle" font-size="9" fill="#1a1822">Compute %</text>
+
+  <line x1="370" y1="130" x2="370" y2="148" stroke="#cc3333" stroke-width="1.5" marker-end="url(#arrR)"/>
+
+  <rect x="50" y="148" width="370" height="35" rx="4" fill="#cc3333" opacity="0.2" stroke="#cc3333"/>
+  <text x="235" y="170" text-anchor="middle" font-size="9" fill="#1a1822">element.style.transform = `translateY(${`progress * 100`}px)`</text>
+
+  <text x="50" y="210" font-size="9" fill="#cc3333">Problems:</text>
+  <text x="50" y="225" font-size="8" fill="#1a1822">• All computation on main thread → jank during heavy JS</text>
+  <text x="50" y="238" font-size="8" fill="#1a1822">• Scroll events are async → lag behind actual scroll position</text>
+  <text x="50" y="251" font-size="8" fill="#1a1822">• Non-passive listeners block scroll thread</text>
+
+  <!-- ScrollTimeline approach -->
+  <rect x="460" y="55" width="410" height="200" rx="8" fill="#ffffff" stroke="#228B22" stroke-width="2"/>
+  <text x="665" y="77" text-anchor="middle" font-size="12" font-weight="600" fill="#228B22">ScrollTimeline: Compositor Thread</text>
+
+  <rect x="480" y="95" width="180" height="45" rx="4" fill="#228B22" opacity="0.15" stroke="#228B22"/>
+  <text x="570" y="115" text-anchor="middle" font-size="9" font-weight="600" fill="#228B22">ScrollTimeline</text>
+  <text x="570" y="132" text-anchor="middle" font-size="8" fill="#1a1822">source: scrollContainer</text>
+
+  <line x1="660" y1="117" x2="690" y2="117" stroke="#228B22" stroke-width="1.5" marker-end="url(#arrG)"/>
+
+  <rect x="690" y="95" width="160" height="45" rx="4" fill="#228B22" opacity="0.15" stroke="#228B22"/>
+  <text x="770" y="115" text-anchor="middle" font-size="9" font-weight="600" fill="#228B22">element.animate()</text>
+  <text x="770" y="132" text-anchor="middle" font-size="8" fill="#1a1822">timeline: scrollTimeline</text>
+
+  <rect x="480" y="155" width="370" height="40" rx="4" fill="#228B22"/>
+  <text x="665" y="175" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Runs on compositor thread — zero JS per frame</text>
+  <text x="665" y="190" text-anchor="middle" font-size="9" fill="#ffffff">Scroll position → animation progress mapping is native</text>
+
+  <text x="480" y="220" font-size="9" fill="#228B22">Benefits:</text>
+  <text x="480" y="235" font-size="8" fill="#1a1822">• No JavaScript in scroll path → immune to main thread load</text>
+  <text x="480" y="248" font-size="8" fill="#1a1822">• Perfectly synchronized with scroll position — zero lag</text>
+
+  <!-- ViewTimeline -->
+  <rect x="30" y="275" width="840" height="100" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="297" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">ViewTimeline: Element Intersection-Driven Animation</text>
+
+  <!-- Viewport box -->
+  <rect x="120" y="315" width="660" height="45" rx="4" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="450" y="335" text-anchor="middle" font-size="9" fill="#6d5bd0">Viewport (scroll container)</text>
+
+  <!-- Element entering -->
+  <rect x="50" y="325" width="60" height="25" rx="3" fill="#d7d1e6"/>
+  <text x="80" y="342" text-anchor="middle" font-size="7" fill="#1a1822">0%</text>
+
+  <rect x="180" y="325" width="60" height="25" rx="3" fill="#6d5bd0" opacity="0.4"/>
+  <text x="210" y="342" text-anchor="middle" font-size="7" fill="#ffffff">25%</text>
+
+  <rect x="420" y="325" width="60" height="25" rx="3" fill="#6d5bd0"/>
+  <text x="450" y="342" text-anchor="middle" font-size="7" fill="#ffffff">50%</text>
+
+  <rect x="660" y="325" width="60" height="25" rx="3" fill="#6d5bd0" opacity="0.4"/>
+  <text x="690" y="342" text-anchor="middle" font-size="7" fill="#ffffff">75%</text>
+
+  <rect x="800" y="325" width="60" height="25" rx="3" fill="#d7d1e6"/>
+  <text x="830" y="342" text-anchor="middle" font-size="7" fill="#1a1822">100%</text>
+
+  <text x="450" y="367" text-anchor="middle" font-size="9" fill="#1a1822">Animation progress tracks element as it crosses viewport — replaces IntersectionObserver for animations</text>
+
+  <!-- Use cases -->
+  <rect x="30" y="390" width="840" height="95" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="412" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">ScrollTimeline Use Cases</text>
+
+  <text x="60" y="435" font-size="10" fill="#ffffff">• Parallax backgrounds — translateY linked to scroll percentage</text>
+  <text x="60" y="455" font-size="10" fill="#ffffff">• Progress indicators — scaleX(0→1) as page scrolls from top to bottom</text>
+  <text x="60" y="475" font-size="10" fill="#ffffff">• Entrance reveals — opacity/translate as elements enter viewport via ViewTimeline</text>
+
+  <defs>
+    <marker id="arrR" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#cc3333"/>
+    </marker>
+    <marker id="arrG" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#228B22"/>
+    </marker>
+  </defs>
+</svg>

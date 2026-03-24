@@ -1,6 +1,9 @@
 "use client";
 
 import { type ReactNode, useMemo, useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { MoveLeft } from "lucide-react";
 import type { ArticleMetadata } from "@/types/article";
 import { ExampleViewer } from "@/components/articles/ExampleViewer";
 import {
@@ -21,6 +24,12 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
     "en-US",
     { year: "numeric", month: "long", day: "numeric" },
   );
+  const pathname = usePathname();
+  const backHref = useMemo(() => {
+    const segments = pathname.split("/");
+    segments.pop();
+    return segments.join("/");
+  }, [pathname]);
   const [view, setView] = useArticleViewMode();
   const hasExamples = useMemo(() => examples.length > 0, [examples]);
   const [activeExampleId, setActiveExampleId] = useState(examples[0]?.id ?? "");
@@ -32,10 +41,12 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
         // Build the manifest key from metadata
         const manifestCategory = metadata.category.replace("-concepts", "");
         const manifestKey = `${manifestCategory}/${metadata.subcategory}/${metadata.slug}`;
-        
+
         // Import manifest dynamically
         const manifest = await import("@/content/examples-manifest.json");
-        const articleExamples = (manifest.default as Record<string, ExampleGroup[]>)[manifestKey] || [];
+        const articleExamples =
+          (manifest.default as Record<string, ExampleGroup[]>)[manifestKey] ||
+          [];
         setExamples(articleExamples);
       } catch (error) {
         console.warn("Failed to load examples:", error);
@@ -66,6 +77,27 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
         <header className="mb-8 border-b border-theme pb-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex-1">
+              <Link
+                href={backHref}
+                className="mb-3 inline-flex items-center gap-1.5 text-sm font-medium text-muted transition hover:text-accent"
+              >
+                <MoveLeft size={36} color="#ec4899" strokeWidth={2} />
+                {/* <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M19 12H5" />
+                  <path d="m12 19-7-7 7-7" />
+                </svg> */}
+                All Topics
+              </Link>
               <h1 className="text-3xl font-bold text-heading sm:text-4xl">
                 {metadata.title}
               </h1>

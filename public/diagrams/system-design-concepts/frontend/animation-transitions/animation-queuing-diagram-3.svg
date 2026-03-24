@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Timeline Orchestration with Parallel &amp; Sequential Tracks</text>
+
+  <!-- Master Timeline -->
+  <rect x="40" y="55" width="820" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="60" y="80" font-size="13" font-weight="700" fill="#ffffff">Master Timeline</text>
+  <text x="780" y="80" text-anchor="end" font-size="11" fill="#ffffff">duration: 3.2s | repeat: 1</text>
+
+  <!-- Time ruler -->
+  <rect x="40" y="105" width="820" height="20" rx="4" fill="#ffffff" stroke="#d7d1e6"/>
+  <text x="60" y="119" font-size="9" fill="#1a1822">0s</text>
+  <line x1="245" y1="105" x2="245" y2="125" stroke="#d7d1e6"/>
+  <text x="250" y="119" font-size="9" fill="#1a1822">0.5s</text>
+  <line x1="450" y1="105" x2="450" y2="125" stroke="#d7d1e6"/>
+  <text x="455" y="119" font-size="9" fill="#1a1822">1.0s</text>
+  <line x1="655" y1="105" x2="655" y2="125" stroke="#d7d1e6"/>
+  <text x="660" y="119" font-size="9" fill="#1a1822">2.0s</text>
+  <text x="840" y="119" text-anchor="end" font-size="9" fill="#1a1822">3.2s</text>
+
+  <!-- Labels (vertical markers) -->
+  <line x1="245" y1="125" x2="245" y2="430" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="4,4" opacity="0.4"/>
+  <text x="245" y="142" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">label: "intro"</text>
+  <line x1="450" y1="125" x2="450" y2="430" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="4,4" opacity="0.4"/>
+  <text x="450" y="142" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">label: "main"</text>
+  <line x1="655" y1="125" x2="655" y2="430" stroke="#6d5bd0" stroke-width="1" stroke-dasharray="4,4" opacity="0.4"/>
+  <text x="655" y="142" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">label: "outro"</text>
+
+  <!-- Track 1: Header -->
+  <text x="40" y="175" font-size="11" font-weight="600" fill="#1a1822">Track 1: Header</text>
+  <rect x="60" y="185" width="185" height="30" rx="6" fill="#6d5bd0" opacity="0.8"/>
+  <text x="152" y="205" text-anchor="middle" font-size="10" fill="#ffffff">fadeIn + slideDown</text>
+  <text x="60" y="230" font-size="9" fill="#1a1822">0s → 0.5s | ease: power2.out</text>
+
+  <!-- Track 2: Navigation (parallel with header at label "intro") -->
+  <text x="40" y="260" font-size="11" font-weight="600" fill="#1a1822">Track 2: Navigation</text>
+  <rect x="130" y="270" width="185" height="30" rx="6" fill="#6d5bd0" opacity="0.7"/>
+  <text x="222" y="290" text-anchor="middle" font-size="10" fill="#ffffff">stagger(0.1) fadeIn</text>
+  <text x="130" y="315" font-size="9" fill="#1a1822">0.2s → 0.7s | stagger: 5 items</text>
+  <!-- Overlap indicator -->
+  <rect x="130" y="185" width="115" height="30" rx="0" fill="#6d5bd0" opacity="0.15"/>
+  <text x="187" y="183" text-anchor="middle" font-size="8" fill="#6d5bd0">parallel overlap</text>
+
+  <!-- Track 3: Hero Content (starts at "main" label) -->
+  <text x="40" y="345" font-size="11" font-weight="600" fill="#1a1822">Track 3: Hero Content</text>
+  <rect x="450" y="350" width="205" height="30" rx="6" fill="#6d5bd0"/>
+  <text x="552" y="370" text-anchor="middle" font-size="10" fill="#ffffff">scale + fadeIn + morphSVG</text>
+  <text x="450" y="395" font-size="9" fill="#1a1822">1.0s → 2.0s | ease: elastic.out(1, 0.5)</text>
+
+  <!-- Track 4: CTA Button (sequential after hero, at "outro") -->
+  <text x="40" y="425" font-size="11" font-weight="600" fill="#1a1822">Track 4: CTA Button</text>
+  <rect x="655" y="430" width="175" height="30" rx="6" fill="#6d5bd0" opacity="0.9"/>
+  <text x="742" y="450" text-anchor="middle" font-size="10" fill="#ffffff">bounceIn + glow</text>
+  <text x="655" y="475" font-size="9" fill="#1a1822">2.0s → 3.2s | ease: bounce.out</text>
+
+  <!-- Sequential arrows between tracks -->
+  <path d="M245,215 L245,225 Q245,235 255,240 L440,355" fill="none" stroke="#d7d1e6" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#greyArrow)"/>
+  <path d="M655,380 L655,420" fill="none" stroke="#d7d1e6" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#greyArrow)"/>
+
+  <!-- Control bar at bottom -->
+  <rect x="40" y="485" width="820" height="8" rx="4" fill="#d7d1e6"/>
+  <rect x="40" y="485" width="520" height="8" rx="4" fill="#6d5bd0"/>
+  <circle cx="560" cy="489" r="6" fill="#6d5bd0" stroke="#ffffff" stroke-width="2"/>
+  <text x="570" y="498" font-size="8" fill="#1a1822">playhead: 2.0s</text>
+
+  <defs>
+    <marker id="greyArrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6Z" fill="#d7d1e6"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,79 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Motion Token System Architecture</text>
+
+  <!-- Primitive Tokens -->
+  <rect x="30" y="55" width="260" height="200" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="160" y="77" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Primitive Tokens</text>
+  <text x="45" y="100" font-size="10" font-weight="600" fill="#1a1822">Durations</text>
+  <text x="45" y="117" font-size="9" fill="#1a1822">--dur-50: 50ms    --dur-100: 100ms</text>
+  <text x="45" y="132" font-size="9" fill="#1a1822">--dur-200: 200ms  --dur-300: 300ms</text>
+  <text x="45" y="147" font-size="9" fill="#1a1822">--dur-500: 500ms</text>
+  <text x="45" y="170" font-size="10" font-weight="600" fill="#1a1822">Easing Curves</text>
+  <text x="45" y="187" font-size="9" fill="#1a1822">--ease-standard: cubic-bezier(.4,0,.2,1)</text>
+  <text x="45" y="202" font-size="9" fill="#1a1822">--ease-decel: cubic-bezier(0,0,.2,1)</text>
+  <text x="45" y="217" font-size="9" fill="#1a1822">--ease-accel: cubic-bezier(.4,0,1,1)</text>
+  <text x="45" y="232" font-size="9" fill="#1a1822">--ease-spring: linear(...bounce stops)</text>
+  <text x="160" y="250" text-anchor="middle" font-size="8" fill="#6d5bd0">Raw values — never used in components directly</text>
+
+  <!-- Arrow -->
+  <line x1="290" y1="155" x2="330" y2="155" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Semantic Tokens -->
+  <rect x="330" y="55" width="260" height="200" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="460" y="77" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Semantic Tokens</text>
+  <text x="345" y="100" font-size="10" font-weight="600" fill="#1a1822">Motion Intent</text>
+  <text x="345" y="117" font-size="9" fill="#1a1822">--motion-micro: var(--dur-100)</text>
+  <text x="345" y="132" font-size="9" fill="#1a1822">--motion-standard: var(--dur-200)</text>
+  <text x="345" y="147" font-size="9" fill="#1a1822">--motion-macro: var(--dur-300)</text>
+  <text x="345" y="170" font-size="10" font-weight="600" fill="#1a1822">Motion Direction</text>
+  <text x="345" y="187" font-size="9" fill="#1a1822">--motion-ease-enter: var(--ease-decel)</text>
+  <text x="345" y="202" font-size="9" fill="#1a1822">--motion-ease-exit: var(--ease-accel)</text>
+  <text x="345" y="217" font-size="9" fill="#1a1822">--motion-ease-move: var(--ease-standard)</text>
+  <text x="460" y="250" text-anchor="middle" font-size="8" fill="#6d5bd0">Describe purpose, not specific timing</text>
+
+  <!-- Arrow -->
+  <line x1="590" y1="155" x2="630" y2="155" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Component Tokens -->
+  <rect x="630" y="55" width="240" height="200" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="750" y="77" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Component Tokens</text>
+  <text x="645" y="100" font-size="9" fill="#1a1822">--modal-enter-dur: var(--motion-macro)</text>
+  <text x="645" y="117" font-size="9" fill="#1a1822">--modal-enter-ease: var(--motion-ease-enter)</text>
+  <text x="645" y="140" font-size="9" fill="#1a1822">--btn-feedback-dur: var(--motion-micro)</text>
+  <text x="645" y="157" font-size="9" fill="#1a1822">--btn-feedback-ease: var(--ease-standard)</text>
+  <text x="645" y="180" font-size="9" fill="#1a1822">--sidebar-slide-dur: var(--motion-standard)</text>
+  <text x="645" y="197" font-size="9" fill="#1a1822">--sidebar-slide-ease: var(--motion-ease-move)</text>
+  <text x="645" y="220" font-size="9" fill="#1a1822">--toast-enter-dur: var(--motion-standard)</text>
+  <text x="645" y="237" font-size="9" fill="#1a1822">--toast-exit-dur: var(--motion-micro)</text>
+
+  <!-- Reduced Motion Override -->
+  <rect x="30" y="275" width="840" height="80" rx="8" fill="#ffffff" stroke="#cc3333" stroke-width="2"/>
+  <text x="450" y="297" text-anchor="middle" font-size="13" font-weight="600" fill="#cc3333">@media (prefers-reduced-motion: reduce) Override</text>
+  <text x="50" y="320" font-size="10" fill="#1a1822">:root { --motion-micro: 1ms; --motion-standard: 1ms; --motion-macro: 1ms; }</text>
+  <text x="50" y="340" font-size="9" fill="#1a1822">Single override at root level disables all motion globally. Using 1ms (not 0ms) preserves transitionend event timing.</text>
+
+  <!-- Usage Examples -->
+  <rect x="30" y="370" width="400" height="115" rx="8" fill="#6d5bd0"/>
+  <text x="230" y="392" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Component Usage</text>
+  <text x="45" y="415" font-size="9" fill="#ffffff">.modal { transition: transform var(--modal-enter-dur)</text>
+  <text x="45" y="430" font-size="9" fill="#ffffff">                     var(--modal-enter-ease); }</text>
+  <text x="45" y="450" font-size="9" fill="#ffffff">.btn { transition: transform var(--btn-feedback-dur)</text>
+  <text x="45" y="465" font-size="9" fill="#ffffff">                   var(--btn-feedback-ease); }</text>
+  <text x="45" y="480" font-size="9" fill="#ffffff">.sidebar { transition: transform var(--sidebar-slide-dur); }</text>
+
+  <!-- Benefits -->
+  <rect x="450" y="370" width="420" height="115" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="660" y="392" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Architecture Benefits</text>
+  <text x="465" y="415" font-size="9" fill="#1a1822">• Change standard duration → propagates to all components</text>
+  <text x="465" y="432" font-size="9" fill="#1a1822">• Reduced motion: single root override disables everything</text>
+  <text x="465" y="449" font-size="9" fill="#1a1822">• Debug mode: slow all animations by 10x at root level</text>
+  <text x="465" y="466" font-size="9" fill="#1a1822">• Consistent motion language across entire design system</text>
+  <text x="465" y="483" font-size="9" fill="#1a1822">• Component tokens override semantic tokens for exceptions</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

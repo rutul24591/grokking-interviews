@@ -1,0 +1,68 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">CSS Property Cost Hierarchy for Animation</text>
+
+  <!-- Tier labels -->
+  <rect x="30" y="55" width="840" height="130" rx="8" fill="#228B22" opacity="0.08" stroke="#228B22" stroke-width="2"/>
+  <text x="60" y="77" font-size="13" font-weight="700" fill="#228B22">TIER 1: Composite Only (cheapest)</text>
+  <text x="60" y="95" font-size="10" fill="#1a1822">Pipeline: Composite → Display | Thread: Compositor (GPU) | Cost: ~0.1ms</text>
+
+  <rect x="50" y="110" width="120" height="30" rx="15" fill="#228B22"/>
+  <text x="110" y="130" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">transform</text>
+  <rect x="180" y="110" width="100" height="30" rx="15" fill="#228B22"/>
+  <text x="230" y="130" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">opacity</text>
+  <rect x="290" y="110" width="80" height="30" rx="15" fill="#228B22"/>
+  <text x="330" y="130" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">filter</text>
+  <rect x="380" y="110" width="140" height="30" rx="15" fill="#228B22"/>
+  <text x="450" y="130" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">backdrop-filter</text>
+
+  <text x="560" y="125" font-size="9" fill="#228B22">60fps guaranteed even with blocked main thread</text>
+  <text x="560" y="140" font-size="9" fill="#228B22">GPU handles all interpolation independently</text>
+  <text x="560" y="155" font-size="9" fill="#228B22">Ideal for all animations — use transform equivalents</text>
+  <text x="560" y="170" font-size="9" fill="#228B22">translate() for position, scale() for size, rotate() for rotation</text>
+
+  <rect x="30" y="195" width="840" height="130" rx="8" fill="#FFB800" opacity="0.08" stroke="#FFB800" stroke-width="2"/>
+  <text x="60" y="217" font-size="13" font-weight="700" fill="#FFB800">TIER 2: Paint + Composite (moderate)</text>
+  <text x="60" y="235" font-size="10" fill="#1a1822">Pipeline: Paint → Composite → Display | Thread: Main | Cost: ~1-5ms</text>
+
+  <rect x="50" y="250" width="80" height="28" rx="14" fill="#FFB800"/>
+  <text x="90" y="269" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">color</text>
+  <rect x="140" y="250" width="120" height="28" rx="14" fill="#FFB800"/>
+  <text x="200" y="269" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">background</text>
+  <rect x="270" y="250" width="110" height="28" rx="14" fill="#FFB800"/>
+  <text x="325" y="269" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">border-color</text>
+  <rect x="390" y="250" width="100" height="28" rx="14" fill="#FFB800"/>
+  <text x="440" y="269" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">box-shadow</text>
+  <rect x="500" y="250" width="90" height="28" rx="14" fill="#FFB800"/>
+  <text x="545" y="269" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">visibility</text>
+
+  <text x="560" y="300" font-size="9" fill="#FFB800">Skips layout but re-rasterizes affected pixels</text>
+  <text x="560" y="315" font-size="9" fill="#FFB800">Cost proportional to repaint area size</text>
+
+  <rect x="30" y="335" width="840" height="150" rx="8" fill="#cc3333" opacity="0.08" stroke="#cc3333" stroke-width="2"/>
+  <text x="60" y="357" font-size="13" font-weight="700" fill="#cc3333">TIER 3: Layout + Paint + Composite (most expensive)</text>
+  <text x="60" y="375" font-size="10" fill="#1a1822">Pipeline: Layout → Paint → Composite → Display | Thread: Main | Cost: ~5-50ms+</text>
+
+  <rect x="50" y="390" width="70" height="28" rx="14" fill="#cc3333"/>
+  <text x="85" y="409" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">width</text>
+  <rect x="130" y="390" width="70" height="28" rx="14" fill="#cc3333"/>
+  <text x="165" y="409" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">height</text>
+  <rect x="210" y="390" width="80" height="28" rx="14" fill="#cc3333"/>
+  <text x="250" y="409" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">padding</text>
+  <rect x="300" y="390" width="80" height="28" rx="14" fill="#cc3333"/>
+  <text x="340" y="409" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">margin</text>
+  <rect x="390" y="390" width="60" height="28" rx="14" fill="#cc3333"/>
+  <text x="420" y="409" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">top</text>
+  <rect x="460" y="390" width="60" height="28" rx="14" fill="#cc3333"/>
+  <text x="490" y="409" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">left</text>
+  <rect x="530" y="390" width="90" height="28" rx="14" fill="#cc3333"/>
+  <text x="575" y="409" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">font-size</text>
+  <rect x="630" y="390" width="80" height="28" rx="14" fill="#cc3333"/>
+  <text x="670" y="409" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">display</text>
+  <rect x="720" y="390" width="90" height="28" rx="14" fill="#cc3333"/>
+  <text x="765" y="409" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">overflow</text>
+
+  <text x="50" y="445" font-size="9" fill="#cc3333">Triggers full geometry recalculation for element AND affected siblings/descendants</text>
+  <text x="50" y="460" font-size="9" fill="#cc3333">Cost multiplied by number of elements in reflow scope — can easily exceed 16.67ms frame budget</text>
+  <text x="50" y="475" font-size="9" fill="#cc3333" font-weight="600">NEVER animate these properties — use transform equivalents instead</text>
+</svg>

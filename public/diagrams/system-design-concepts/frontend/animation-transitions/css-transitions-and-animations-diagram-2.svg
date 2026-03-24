@@ -1,0 +1,92 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">GPU Compositing Layer Architecture</text>
+
+  <!-- Main thread area -->
+  <rect x="30" y="55" width="400" height="250" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="230" y="77" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Main Thread</text>
+
+  <rect x="50" y="90" width="170" height="40" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="135" y="114" text-anchor="middle" font-size="10" fill="#1a1822">JavaScript Execution</text>
+
+  <rect x="230" y="90" width="180" height="40" rx="4" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="320" y="114" text-anchor="middle" font-size="10" fill="#1a1822">Style + Layout + Paint</text>
+
+  <!-- DOM tree with layers -->
+  <text x="50" y="155" font-size="10" font-weight="600" fill="#1a1822">Layer Tree:</text>
+
+  <rect x="50" y="165" width="360" height="30" rx="4" fill="#d7d1e6" opacity="0.5"/>
+  <text x="230" y="185" text-anchor="middle" font-size="9" fill="#1a1822">Root Layer — body, main content (shared texture)</text>
+
+  <rect x="50" y="200" width="170" height="45" rx="4" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0"/>
+  <text x="135" y="218" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Promoted Layer A</text>
+  <text x="135" y="235" text-anchor="middle" font-size="8" fill="#1a1822">will-change: transform</text>
+
+  <rect x="230" y="200" width="180" height="45" rx="4" fill="#6d5bd0" opacity="0.15" stroke="#6d5bd0"/>
+  <text x="320" y="218" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Promoted Layer B</text>
+  <text x="320" y="235" text-anchor="middle" font-size="8" fill="#1a1822">opacity animation active</text>
+
+  <rect x="50" y="252" width="360" height="40" rx="4" fill="#ffffff" stroke="#d7d1e6"/>
+  <text x="60" y="268" font-size="9" fill="#1a1822">Memory per layer: width × height × 4 bytes × devicePixelRatio²</text>
+  <text x="60" y="282" font-size="9" fill="#1a1822">Example: 400×300 @2x = 400×300×4×4 = 1.92 MB per layer</text>
+
+  <!-- Arrow to compositor -->
+  <line x1="430" y1="180" x2="480" y2="180" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="455" y="170" text-anchor="middle" font-size="8" fill="#6d5bd0">Textures</text>
+
+  <!-- Compositor thread area -->
+  <rect x="480" y="55" width="390" height="250" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="675" y="77" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Compositor Thread (GPU)</text>
+
+  <!-- GPU textures -->
+  <rect x="500" y="95" width="160" height="80" rx="4" fill="#d7d1e6" opacity="0.5" stroke="#d7d1e6"/>
+  <text x="580" y="115" text-anchor="middle" font-size="9" fill="#1a1822">Root Texture</text>
+  <text x="580" y="130" text-anchor="middle" font-size="8" fill="#1a1822">Static content</text>
+  <text x="580" y="145" text-anchor="middle" font-size="8" fill="#1a1822">Repainted only on change</text>
+  <text x="580" y="160" text-anchor="middle" font-size="8" fill="#1a1822">~16 MB (1920×1080 @2x)</text>
+
+  <rect x="670" y="95" width="80" height="80" rx="4" fill="#6d5bd0" opacity="0.3" stroke="#6d5bd0"/>
+  <text x="710" y="120" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Tex A</text>
+  <text x="710" y="140" text-anchor="middle" font-size="8" fill="#1a1822">1.92 MB</text>
+  <text x="710" y="155" text-anchor="middle" font-size="8" fill="#1a1822">Animated</text>
+
+  <rect x="760" y="95" width="80" height="80" rx="4" fill="#6d5bd0" opacity="0.3" stroke="#6d5bd0"/>
+  <text x="800" y="120" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Tex B</text>
+  <text x="800" y="140" text-anchor="middle" font-size="8" fill="#1a1822">0.48 MB</text>
+  <text x="800" y="155" text-anchor="middle" font-size="8" fill="#1a1822">Fading</text>
+
+  <!-- Composite operation -->
+  <rect x="500" y="190" width="350" height="50" rx="4" fill="#6d5bd0"/>
+  <text x="675" y="212" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Composite: Position + Blend Textures</text>
+  <text x="675" y="230" text-anchor="middle" font-size="9" fill="#ffffff">translateX(Tex A) + opacity(Tex B) + draw(Root) → frame</text>
+
+  <rect x="500" y="252" width="350" height="40" rx="4" fill="#228B22"/>
+  <text x="675" y="270" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Cost: &lt;1ms per frame — 60fps guaranteed</text>
+  <text x="675" y="284" text-anchor="middle" font-size="9" fill="#ffffff">No main thread involvement, immune to JS blocking</text>
+
+  <!-- Problems section -->
+  <rect x="30" y="320" width="840" height="165" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="342" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Layer Promotion: Benefits vs Risks</text>
+
+  <rect x="50" y="355" width="390" height="115" rx="4" fill="#228B22" opacity="0.1" stroke="#228B22"/>
+  <text x="245" y="375" text-anchor="middle" font-size="10" font-weight="600" fill="#228B22">Benefits of Promotion</text>
+  <text x="60" y="395" font-size="9" fill="#1a1822">• Animation runs on GPU compositor thread</text>
+  <text x="60" y="410" font-size="9" fill="#1a1822">• Independent of main thread blocking</text>
+  <text x="60" y="425" font-size="9" fill="#1a1822">• No repaint during transform/opacity animation</text>
+  <text x="60" y="440" font-size="9" fill="#1a1822">• Eliminates first-frame jank from on-the-fly promotion</text>
+  <text x="60" y="455" font-size="9" fill="#1a1822">• Sub-pixel rendering for smooth motion</text>
+
+  <rect x="460" y="355" width="390" height="115" rx="4" fill="#cc3333" opacity="0.1" stroke="#cc3333"/>
+  <text x="655" y="375" text-anchor="middle" font-size="10" font-weight="600" fill="#cc3333">Risks of Over-Promotion</text>
+  <text x="470" y="395" font-size="9" fill="#1a1822">• Each layer consumes GPU memory (can be MBs each)</text>
+  <text x="470" y="410" font-size="9" fill="#1a1822">• Mobile GPUs have limited texture memory (~256 MB)</text>
+  <text x="470" y="425" font-size="9" fill="#1a1822">• Exceeding GPU memory → software fallback (slower)</text>
+  <text x="470" y="440" font-size="9" fill="#1a1822">• Layer management overhead per composite frame</text>
+  <text x="470" y="455" font-size="9" fill="#1a1822">• Creates new stacking context (z-index side effects)</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

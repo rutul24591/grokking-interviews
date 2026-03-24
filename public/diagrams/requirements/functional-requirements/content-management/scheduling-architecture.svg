@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Scheduled Publishing Architecture</text>
+  
+  <!-- Scheduled Content -->
+  <rect x="50" y="70" width="140" height="100" rx="8" fill="#3b82f6"/>
+  <text x="120" y="110" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#ffffff">Scheduled</text>
+  <text x="120" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Content DB</text>
+  <text x="120" y="155" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">status = 'scheduled'</text>
+  
+  <line x1="190" y1="120" x2="230" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="210" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Query Due</text>
+  
+  <!-- Job Scheduler -->
+  <rect x="240" y="60" width="180" height="120" rx="8" fill="#f1f5f9" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="330" y="90" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#8b5cf6">Job Scheduler</text>
+  <text x="330" y="115" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Quartz / EventBridge</text>
+  <text x="330" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Check every minute</text>
+  <text x="330" y="155" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">SELECT * WHERE due</text>
+  
+  <line x1="420" y1="120" x2="460" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="440" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Trigger</text>
+  
+  <!-- Publishing Queue -->
+  <rect x="470" y="60" width="180" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="560" y="90" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#f59e0b">Publishing Queue</text>
+  <text x="560" y="115" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Queue due content</text>
+  <text x="560" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Handle backpressure</text>
+  <text x="560" y="155" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">FIFO processing</text>
+  
+  <line x1="650" y1="120" x2="690" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="670" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Process</text>
+  
+  <!-- Publish Action -->
+  <rect x="700" y="60" width="80" height="120" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="740" y="100" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#22c55e">Publish</text>
+  <text x="740" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Update status</text>
+  <text x="740" y="145" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Make live</text>
+  <text x="740" y="165" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Notify user</text>
+  
+  <!-- Retry Logic -->
+  <rect x="240" y="200" width="180" height="140" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="330" y="225" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#ef4444">Retry Logic</text>
+  
+  <rect x="260" y="240" width="140" height="30" rx="4" fill="#ef4444" opacity="0.3"/>
+  <text x="330" y="260" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Exponential Backoff</text>
+  
+  <rect x="260" y="275" width="140" height="25" rx="4" fill="#ef4444" opacity="0.2"/>
+  <text x="330" y="292" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">1min → 5min → 15min → 1hr</text>
+  
+  <rect x="260" y="305" width="140" height="25" rx="4" fill="#ef4444" opacity="0.2"/>
+  <text x="330" y="322" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Max 5 retries</text>
+  
+  <line x1="420" y1="270" x2="460" y2="270" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="440" y="260" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ef4444">After max retries</text>
+  
+  <!-- Dead Letter Queue -->
+  <rect x="470" y="200" width="180" height="140" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>
+  <text x="560" y="225" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#64748b">Dead Letter Queue</text>
+  
+  <rect x="490" y="240" width="140" height="35" rx="4" fill="#64748b" opacity="0.3"/>
+  <text x="560" y="262" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Failed Jobs</text>
+  <text x="560" y="275" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">After max retries</text>
+  
+  <rect x="490" y="285" width="140" height="25" rx="4" fill="#ef4444" opacity="0.3"/>
+  <text x="560" y="302" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">🚨 Alert Team</text>
+  
+  <rect x="490" y="315" width="140" height="25" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="560" y="332" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">🔧 Manual Intervention</text>
+  
+  <!-- Notification -->
+  <rect x="700" y="200" width="80" height="140" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="740" y="230" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#22c55e">Notify</text>
+  <text x="740" y="260" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Email/Push</text>
+  <text x="740" y="285" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">On Success</text>
+  <text x="740" y="310" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">On Failure</text>
+  <text x="740" y="335" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Log Event</text>
+  
+  <!-- Monitoring -->
+  <rect x="50" y="360" width="340" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="385" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Monitoring &amp; Alerting</text>
+  
+  <rect x="70" y="400" width="280" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="210" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Publishing success rate (target 99.9%+)</text>
+  
+  <rect x="70" y="435" width="280" height="30" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="210" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">🚨 Alert on failures (immediate)</text>
+  
+  <!-- Logging -->
+  <rect x="420" y="360" width="340" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="590" y="385" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Audit Logging</text>
+  
+  <rect x="440" y="400" width="300" height="25" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="417" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Scheduled: who, when, what time</text>
+  
+  <rect x="440" y="430" width="300" height="25" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="447" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Published: when, success/failure</text>
+  
+  <rect x="440" y="460" width="300" height="25" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="477" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Failed: error, retries, DLQ</text>
+
+</svg>

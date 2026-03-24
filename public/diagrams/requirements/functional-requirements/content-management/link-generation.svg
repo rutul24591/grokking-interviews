@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Link Generation &amp; Tracking</text>
+  
+  <!-- Original URL -->
+  <rect x="50" y="70" width="180" height="80" rx="8" fill="#3b82f6"/>
+  <text x="140" y="105" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#ffffff">Original URL</text>
+  <text x="140" y="130" text-anchor="middle" font-family="monospace" font-size="8" fill="#ffffff">example.com/article/</text>
+  <text x="140" y="145" text-anchor="middle" font-family="monospace" font-size="8" fill="#ffffff">system-design-cdn</text>
+  
+  <line x1="230" y1="110" x2="270" y2="110" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="250" y="100" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Shorten</text>
+  
+  <!-- URL Shortener -->
+  <rect x="280" y="70" width="180" height="80" rx="8" fill="#f1f5f9" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="370" y="100" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">URL Shortener</text>
+  <text x="370" y="125" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">abc123 → original_url</text>
+  <text x="370" y="145" text-anchor="middle" font-family="monospace" font-size="9" fill="#475569">Short: exm.pl/abc123</text>
+  
+  <line x1="460" y1="110" x2="500" y2="110" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="480" y="100" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Add UTM</text>
+  
+  <!-- UTM Parameters -->
+  <rect x="510" y="70" width="240" height="80" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="630" y="95" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">UTM Parameters</text>
+  
+  <rect x="530" y="110" width="200" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="630" y="130" text-anchor="middle" font-family="monospace" font-size="8" fill="#0f172a">?utm_source=twitter</text>
+  
+  <rect x="530" y="145" width="200" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="630" y="165" text-anchor="middle" font-family="monospace" font-size="8" fill="#0f172a">utm_medium=social</text>
+  
+  <line x1="750" y1="110" x2="750" y2="150" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Final Share URL -->
+  <rect x="660" y="160" width="180" height="60" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="750" y="185" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#22c55e">Final Share URL</text>
+  <text x="750" y="205" text-anchor="middle" font-family="monospace" font-size="7" fill="#475569">exm.pl/abc123?utm_source=...</text>
+  
+  <!-- Deep Linking -->
+  <rect x="50" y="180" width="340" height="150" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="205" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Deep Linking</text>
+  
+  <rect x="70" y="220" width="300" height="40" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="240" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">iOS Universal Links</text>
+  <text x="220" y="255" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">apple-app-site-association → Opens app</text>
+  
+  <rect x="70" y="265" width="300" height="40" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="285" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Android App Links</text>
+  <text x="220" y="300" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">assetlinks.json → Opens app</text>
+  
+  <rect x="70" y="310" width="300" height="35" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="220" y="332" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Fallback: Open web if app not installed</text>
+  
+  <!-- Open Graph Preview -->
+  <rect x="420" y="180" width="340" height="150" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="590" y="205" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f59e0b">Open Graph Preview</text>
+  
+  <rect x="440" y="220" width="300" height="100" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  
+  <!-- OG Image -->
+  <rect x="450" y="230" width="120" height="80" rx="4" fill="#e2e8f0"/>
+  <text x="510" y="270" text-anchor="middle" font-family="system-ui" font-size="8" fill="#64748b">og:image</text>
+  <text x="510" y="285" text-anchor="middle" font-family="system-ui" font-size="7" fill="#64748b">1200x630px</text>
+  
+  <!-- OG Title/Description -->
+  <text x="580" y="245" text-anchor="start" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Article Title Here</text>
+  <text x="580" y="265" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">This is the Open Graph</text>
+  <text x="580" y="280" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">description that appears</text>
+  <text x="580" y="295" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">when shared on social.</text>
+  <text x="580" y="310" text-anchor="start" font-family="system-ui" font-size="7" fill="#3b82f6">example.com/article/...</text>
+  
+  <!-- Testing Tools -->
+  <rect x="50" y="350" width="340" height="120" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="220" y="375" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#22c55e">Testing Tools</text>
+  
+  <rect x="70" y="390" width="280" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="210" y="410" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">🔍 Facebook Sharing Debugger</text>
+  
+  <rect x="70" y="425" width="280" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="210" y="445" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">🐦 Twitter Card Validator</text>
+  
+  <!-- Debug Process -->
+  <rect x="420" y="350" width="340" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="590" y="375" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Debug Process</text>
+  
+  <rect x="440" y="390" width="300" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="410" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">1. Enter URL in debugger</text>
+  
+  <rect x="440" y="425" width="300" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="445" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">2. Preview shows how it appears</text>
+  
+  <rect x="440" y="460" width="300" height="25" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="477" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">3. Fix issues, re-scrape to refresh cache</text>
+
+</svg>

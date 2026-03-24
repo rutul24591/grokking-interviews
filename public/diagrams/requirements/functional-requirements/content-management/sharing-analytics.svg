@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Sharing Analytics &amp; Attribution</text>
+  
+  <!-- Share Event Tracking -->
+  <rect x="50" y="70" width="220" height="180" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="160" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#3b82f6">Share Event Tracking</text>
+  
+  <rect x="70" y="115" width="180" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="160" y="135" text-anchor="middle" font-family="monospace" font-size="9" fill="#0f172a">share_id: uuid_v4()</text>
+  
+  <rect x="70" y="150" width="180" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="160" y="170" text-anchor="middle" font-family="monospace" font-size="9" fill="#0f172a">user_id: 12345</text>
+  
+  <rect x="70" y="185" width="180" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="160" y="205" text-anchor="middle" font-family="monospace" font-size="9" fill="#0f172a">platform: twitter</text>
+  
+  <rect x="70" y="220" width="180" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="160" y="240" text-anchor="middle" font-family="monospace" font-size="9" fill="#0f172a">content_id: abc123</text>
+  
+  <line x1="270" y1="160" x2="310" y2="160" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Referral Tracking -->
+  <rect x="320" y="70" width="220" height="180" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="430" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f59e0b">Referral Tracking</text>
+  
+  <rect x="340" y="115" width="180" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="430" y="135" text-anchor="middle" font-family="monospace" font-size="9" fill="#0f172a">utm_source=twitter</text>
+  
+  <rect x="340" y="150" width="180" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="430" y="170" text-anchor="middle" font-family="monospace" font-size="9" fill="#0f172a">utm_medium=social</text>
+  
+  <rect x="340" y="185" width="180" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="430" y="205" text-anchor="middle" font-family="monospace" font-size="9" fill="#0f172a">utm_campaign=post_123</text>
+  
+  <rect x="340" y="220" width="180" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="430" y="240" text-anchor="middle" font-family="monospace" font-size="9" fill="#0f172a">share_id=abc-xyz</text>
+  
+  <line x1="540" y1="160" x2="580" y2="160" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Attribution -->
+  <rect x="590" y="70" width="180" height="180" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="680" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#8b5cf6">Attribution</text>
+  
+  <rect x="610" y="115" width="140" height="35" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="680" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">User A shares</text>
+  <text x="680" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">share_id=A123</text>
+  
+  <rect x="610" y="155" width="140" height="35" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="680" y="175" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">User B clicks &amp; shares</text>
+  <text x="680" y="190" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">share_id=B456</text>
+  
+  <rect x="610" y="195" width="140" height="35" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="680" y="215" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">User C clicks → Signup</text>
+  <text x="680" y="230" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Attribute to A→B→C</text>
+  
+  <line x1="680" y1="250" x2="680" y2="290" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Viral Coefficient -->
+  <rect x="590" y="300" width="180" height="120" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="680" y="325" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#22c55e">Viral Coefficient</text>
+  
+  <rect x="610" y="340" width="140" height="35" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="680" y="362" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">k = invites sent × conversion</text>
+  
+  <rect x="610" y="380" width="140" height="35" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="680" y="402" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">k &gt; 1 = Viral growth</text>
+  
+  <!-- Share Counts Dashboard -->
+  <rect x="50" y="270" width="340" height="200" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="220" y="295" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#ef4444">Share Counts Dashboard</text>
+  
+  <rect x="70" y="310" width="300" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="332" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Total Shares: 1,234</text>
+  
+  <rect x="70" y="350" width="140" height="35" rx="4" fill="#1DA1F2" opacity="0.3"/>
+  <text x="140" y="372" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Twitter: 523</text>
+  
+  <rect x="230" y="350" width="140" height="35" rx="4" fill="#1877F2" opacity="0.3"/>
+  <text x="300" y="372" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Facebook: 412</text>
+  
+  <rect x="70" y="390" width="140" height="35" rx="4" fill="#0A66C2" opacity="0.3"/>
+  <text x="140" y="412" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">LinkedIn: 189</text>
+  
+  <rect x="230" y="390" width="140" height="35" rx="4" fill="#25D366" opacity="0.3"/>
+  <text x="300" y="412" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">WhatsApp: 110</text>
+  
+  <!-- Referral Traffic -->
+  <rect x="420" y="270" width="340" height="200" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="590" y="295" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Referral Traffic (Google Analytics)</text>
+  
+  <rect x="440" y="310" width="300" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="330" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Sessions from shares: 5,678</text>
+  
+  <rect x="440" y="345" width="300" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="365" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">utm_source breakdown: Twitter 40%, Facebook 35%...</text>
+  
+  <rect x="440" y="380" width="300" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="590" y="400" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Conversions from shares: 234 signups</text>
+  
+  <rect x="440" y="415" width="300" height="30" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="590" y="435" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Revenue attributed: $12,345</text>
+  
+  <rect x="440" y="450" width="300" height="25" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="467" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">ROI = Revenue / Sharing feature cost</text>
+
+</svg>

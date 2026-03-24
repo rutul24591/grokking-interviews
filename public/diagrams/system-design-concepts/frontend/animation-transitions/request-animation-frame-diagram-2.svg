@@ -1,0 +1,79 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Custom Animation Loop Architecture</text>
+
+  <!-- Loop structure -->
+  <rect x="250" y="60" width="400" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="85" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">requestAnimationFrame(loop)</text>
+
+  <line x1="450" y1="100" x2="450" y2="130" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Phase 1: Timing -->
+  <rect x="250" y="130" width="400" height="70" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="152" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">1. Compute Delta Time</text>
+  <text x="270" y="172" font-size="9" fill="#1a1822">deltaTime = currentTimestamp - previousTimestamp</text>
+  <text x="270" y="188" font-size="9" fill="#1a1822">deltaTime = Math.min(deltaTime, MAX_DELTA)  // clamp for bg tabs</text>
+
+  <line x1="450" y1="200" x2="450" y2="220" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Phase 2: Update -->
+  <rect x="250" y="220" width="400" height="70" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="242" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">2. Update State (Read Phase)</text>
+  <text x="270" y="262" font-size="9" fill="#1a1822">position += velocity × deltaTime  // time-based movement</text>
+  <text x="270" y="278" font-size="9" fill="#1a1822">opacity = lerp(startOpacity, endOpacity, progress)</text>
+
+  <line x1="450" y1="290" x2="450" y2="310" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Phase 3: Render -->
+  <rect x="250" y="310" width="400" height="60" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="332" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">3. Apply to DOM (Write Phase)</text>
+  <text x="270" y="352" font-size="9" fill="#1a1822">element.style.transform = translateX(position)px</text>
+  <text x="270" y="364" font-size="9" fill="#1a1822">element.style.opacity = opacity</text>
+
+  <line x1="450" y1="370" x2="450" y2="390" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Phase 4: Schedule -->
+  <rect x="250" y="390" width="400" height="50" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="412" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">4. Schedule Next Frame</text>
+  <text x="270" y="430" font-size="9" fill="#1a1822">rafId = requestAnimationFrame(loop)  // store for cancellation</text>
+
+  <!-- Loop back arrow -->
+  <path d="M650,415 L730,415 L730,85 L650,85" fill="none" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="740" y="250" text-anchor="middle" font-size="9" fill="#6d5bd0" transform="rotate(90, 740, 250)">next frame</text>
+
+  <!-- Cleanup box -->
+  <rect x="30" y="60" width="200" height="130" rx="8" fill="#ffffff" stroke="#cc3333" stroke-width="2"/>
+  <text x="130" y="82" text-anchor="middle" font-size="11" font-weight="600" fill="#cc3333">Cleanup (on unmount)</text>
+  <text x="45" y="105" font-size="9" fill="#1a1822">cancelAnimationFrame(rafId)</text>
+  <text x="45" y="125" font-size="9" fill="#1a1822">// Prevents:</text>
+  <text x="45" y="140" font-size="9" fill="#1a1822">• Memory leaks</text>
+  <text x="45" y="155" font-size="9" fill="#1a1822">• Stale DOM references</text>
+  <text x="45" y="170" font-size="9" fill="#1a1822">• Errors on removed els</text>
+
+  <!-- Delta time clamp box -->
+  <rect x="30" y="215" width="200" height="110" rx="8" fill="#ffffff" stroke="#FFB800" stroke-width="2"/>
+  <text x="130" y="237" text-anchor="middle" font-size="11" font-weight="600" fill="#FFB800">Delta Time Clamping</text>
+  <text x="45" y="258" font-size="9" fill="#1a1822">MAX_DELTA = 100ms</text>
+  <text x="45" y="278" font-size="9" fill="#1a1822">Prevents time jump when:</text>
+  <text x="45" y="293" font-size="9" fill="#1a1822">• Tab returns from bg</text>
+  <text x="45" y="308" font-size="9" fill="#1a1822">• Device wakes from sleep</text>
+  <text x="45" y="323" font-size="9" fill="#1a1822">• Long GC pause occurs</text>
+
+  <!-- Budget monitor -->
+  <rect x="30" y="350" width="200" height="100" rx="8" fill="#ffffff" stroke="#228B22" stroke-width="2"/>
+  <text x="130" y="372" text-anchor="middle" font-size="11" font-weight="600" fill="#228B22">Budget Monitor</text>
+  <text x="45" y="395" font-size="9" fill="#1a1822">frameTime = performance.now()</text>
+  <text x="45" y="410" font-size="9" fill="#1a1822">              - frameStart</text>
+  <text x="45" y="430" font-size="9" fill="#1a1822">if (frameTime &gt; 12ms)</text>
+  <text x="45" y="445" font-size="9" fill="#1a1822">  reduceQuality() // adaptive</text>
+
+  <!-- Key rules -->
+  <rect x="100" y="460" width="700" height="30" rx="6" fill="#6d5bd0"/>
+  <text x="450" y="480" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Key: Read ALL values first (phase 2), then Write ALL values (phase 3) — never interleave</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

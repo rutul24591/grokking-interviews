@@ -1,0 +1,98 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Animation Library Architecture Comparison</text>
+
+  <!-- GSAP -->
+  <rect x="30" y="55" width="270" height="425" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="30" y="55" width="270" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="165" y="80" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">GSAP (Imperative)</text>
+
+  <text x="45" y="115" font-size="10" font-weight="600" fill="#6d5bd0">Architecture</text>
+  <rect x="45" y="125" width="240" height="25" rx="3" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="165" y="142" text-anchor="middle" font-size="9" fill="#1a1822">JS Timeline → rAF loop → inline styles</text>
+  <rect x="45" y="155" width="240" height="25" rx="3" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="165" y="172" text-anchor="middle" font-size="9" fill="#1a1822">Main thread execution always</text>
+
+  <text x="45" y="205" font-size="10" font-weight="600" fill="#6d5bd0">Key Features</text>
+  <text x="45" y="222" font-size="9" fill="#1a1822">• Timeline with labels &amp; scrubbing</text>
+  <text x="45" y="237" font-size="9" fill="#1a1822">• ScrollTrigger for scroll-driven</text>
+  <text x="45" y="252" font-size="9" fill="#1a1822">• SVG morphing &amp; path animation</text>
+  <text x="45" y="267" font-size="9" fill="#1a1822">• Framework-agnostic</text>
+  <text x="45" y="282" font-size="9" fill="#1a1822">• Stagger, repeat, yoyo</text>
+
+  <text x="45" y="310" font-size="10" font-weight="600" fill="#6d5bd0">Bundle: ~25 KB core</text>
+  <text x="45" y="328" font-size="9" fill="#1a1822">+ ScrollTrigger: +8 KB</text>
+  <text x="45" y="343" font-size="9" fill="#1a1822">+ Draggable: +12 KB</text>
+  <text x="45" y="358" font-size="9" fill="#1a1822">+ MorphSVG: +10 KB</text>
+
+  <rect x="45" y="375" width="240" height="45" rx="4" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0"/>
+  <text x="165" y="393" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Best For</text>
+  <text x="165" y="410" text-anchor="middle" font-size="9" fill="#1a1822">Marketing sites, scroll sequences, SVG</text>
+
+  <rect x="45" y="430" width="240" height="35" rx="4" fill="#cc3333" opacity="0.1" stroke="#cc3333"/>
+  <text x="165" y="452" text-anchor="middle" font-size="9" fill="#cc3333">Needs manual cleanup in React (kill() on unmount)</text>
+
+  <!-- Framer Motion -->
+  <rect x="315" y="55" width="270" height="425" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="315" y="55" width="270" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="80" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">Framer Motion (Declarative)</text>
+
+  <text x="330" y="115" font-size="10" font-weight="600" fill="#6d5bd0">Architecture</text>
+  <rect x="330" y="125" width="240" height="25" rx="3" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="450" y="142" text-anchor="middle" font-size="9" fill="#1a1822">React props → motion values → styles</text>
+  <rect x="330" y="155" width="240" height="25" rx="3" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="450" y="172" text-anchor="middle" font-size="9" fill="#1a1822">Bypasses React re-renders for perf</text>
+
+  <text x="330" y="205" font-size="10" font-weight="600" fill="#6d5bd0">Key Features</text>
+  <text x="330" y="222" font-size="9" fill="#1a1822">• Spring physics first-class</text>
+  <text x="330" y="237" font-size="9" fill="#1a1822">• AnimatePresence (exit anims)</text>
+  <text x="330" y="252" font-size="9" fill="#1a1822">• Layout animations (FLIP)</text>
+  <text x="330" y="267" font-size="9" fill="#1a1822">• Gesture handlers built-in</text>
+  <text x="330" y="282" font-size="9" fill="#1a1822">• Variants for orchestration</text>
+
+  <text x="330" y="310" font-size="10" font-weight="600" fill="#6d5bd0">Bundle: ~35 KB tree-shaken</text>
+  <text x="330" y="328" font-size="9" fill="#1a1822">All features included</text>
+  <text x="330" y="343" font-size="9" fill="#1a1822">Tree-shaking removes unused</text>
+
+  <rect x="330" y="375" width="240" height="45" rx="4" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0"/>
+  <text x="450" y="393" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Best For</text>
+  <text x="450" y="410" text-anchor="middle" font-size="9" fill="#1a1822">React apps, component transitions, gestures</text>
+
+  <rect x="330" y="430" width="240" height="35" rx="4" fill="#cc3333" opacity="0.1" stroke="#cc3333"/>
+  <text x="450" y="452" text-anchor="middle" font-size="9" fill="#cc3333">React-only — cannot use outside React ecosystem</text>
+
+  <!-- Motion One -->
+  <rect x="600" y="55" width="270" height="425" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="600" y="55" width="270" height="40" rx="8" fill="#6d5bd0"/>
+  <text x="735" y="80" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">Motion One (Native)</text>
+
+  <text x="615" y="115" font-size="10" font-weight="600" fill="#6d5bd0">Architecture</text>
+  <rect x="615" y="125" width="240" height="25" rx="3" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="735" y="142" text-anchor="middle" font-size="9" fill="#1a1822">Thin wrapper → Web Animations API</text>
+  <rect x="615" y="155" width="240" height="25" rx="3" fill="#f3f1f8" stroke="#d7d1e6"/>
+  <text x="735" y="172" text-anchor="middle" font-size="9" fill="#1a1822">Compositor thread via WAAPI</text>
+
+  <text x="615" y="205" font-size="10" font-weight="600" fill="#6d5bd0">Key Features</text>
+  <text x="615" y="222" font-size="9" fill="#1a1822">• Spring generator function</text>
+  <text x="615" y="237" font-size="9" fill="#1a1822">• Stagger utility</text>
+  <text x="615" y="252" font-size="9" fill="#1a1822">• Timeline helper</text>
+  <text x="615" y="267" font-size="9" fill="#1a1822">• Framework-agnostic</text>
+  <text x="615" y="282" font-size="9" fill="#1a1822">• Compositor-thread execution</text>
+
+  <text x="615" y="310" font-size="10" font-weight="600" fill="#6d5bd0">Bundle: ~4 KB total</text>
+  <text x="615" y="328" font-size="9" fill="#1a1822">Delegates to native browser API</text>
+  <text x="615" y="343" font-size="9" fill="#1a1822">Smallest footprint possible</text>
+
+  <rect x="615" y="375" width="240" height="45" rx="4" fill="#6d5bd0" opacity="0.1" stroke="#6d5bd0"/>
+  <text x="735" y="393" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Best For</text>
+  <text x="735" y="410" text-anchor="middle" font-size="9" fill="#1a1822">Performance-critical, small bundles, simple anims</text>
+
+  <rect x="615" y="430" width="240" height="35" rx="4" fill="#cc3333" opacity="0.1" stroke="#cc3333"/>
+  <text x="735" y="452" text-anchor="middle" font-size="9" fill="#cc3333">Limited orchestration, no exit anim lifecycle</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

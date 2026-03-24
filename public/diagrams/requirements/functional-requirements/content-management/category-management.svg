@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Category Management Operations</text>
+  
+  <!-- CRUD -->
+  <rect x="50" y="70" width="220" height="200" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="160" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#3b82f6">CRUD Operations</text>
+  
+  <rect x="70" y="115" width="180" height="35" rx="4" fill="#22c55e" opacity="0.8"/>
+  <text x="160" y="137" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Create Category</text>
+  <text x="160" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Name, slug, parent</text>
+  
+  <rect x="70" y="155" width="180" height="35" rx="4" fill="#3b82f6" opacity="0.6"/>
+  <text x="160" y="177" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Read (View Hierarchy)</text>
+  <text x="160" y="190" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Tree view with counts</text>
+  
+  <rect x="70" y="195" width="180" height="35" rx="4" fill="#f59e0b" opacity="0.6"/>
+  <text x="160" y="217" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Update Category</text>
+  <text x="160" y="230" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Name, description, parent</text>
+  
+  <rect x="70" y="235" width="180" height="35" rx="4" fill="#ef4444" opacity="0.6"/>
+  <text x="160" y="257" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Delete Category</text>
+  <text x="160" y="270" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Handle orphaned content</text>
+  
+  <!-- Merging -->
+  <rect x="290" y="70" width="220" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="400" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f59e0b">Merging Duplicates</text>
+  
+  <rect x="310" y="115" width="180" height="40" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="400" y="135" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Identify Duplicates</text>
+  <text x="400" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Similar names, overlapping content</text>
+  
+  <rect x="310" y="165" width="180" height="40" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="400" y="185" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Create Merged Category</text>
+  <text x="400" y="200" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Combine metadata</text>
+  
+  <rect x="310" y="215" width="180" height="40" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="400" y="235" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Migrate Content</text>
+  <text x="400" y="250" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Update category assignments</text>
+  
+  <rect x="310" y="260" width="180" height="35" rx="4" fill="#f59e0b"/>
+  <text x="400" y="282" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Redirect Old URLs</text>
+  
+  <!-- Deprecation -->
+  <rect x="530" y="70" width="220" height="200" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="640" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#8b5cf6">Deprecation Flow</text>
+  
+  <rect x="550" y="115" width="180" height="35" rx="4" fill="#8b5cf6" opacity="0.8"/>
+  <text x="640" y="137" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Mark Deprecated</text>
+  
+  <rect x="550" y="155" width="180" height="35" rx="4" fill="#8b5cf6" opacity="0.6"/>
+  <text x="640" y="177" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Prevent New Assignments</text>
+  
+  <rect x="550" y="195" width="180" height="35" rx="4" fill="#8b5cf6" opacity="0.4"/>
+  <text x="640" y="217" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Migrate Existing Content</text>
+  
+  <rect x="550" y="235" width="180" height="35" rx="4" fill="#ef4444" opacity="0.3"/>
+  <text x="640" y="257" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Remove Category</text>
+  
+  <!-- Usage Tracking -->
+  <rect x="50" y="290" width="340" height="180" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="220" y="315" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#22c55e">Usage Tracking</text>
+  
+  <rect x="70" y="330" width="300" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="350" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Content count per category</text>
+  
+  <rect x="70" y="365" width="300" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="385" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Last used timestamp</text>
+  
+  <rect x="70" y="400" width="300" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="420" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Selection analytics (most/least used)</text>
+  
+  <rect x="70" y="435" width="300" height="30" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="220" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Identify unused categories for deprecation</text>
+  
+  <!-- Audit Log -->
+  <rect x="420" y="290" width="340" height="180" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="590" y="315" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#ef4444">Audit Log</text>
+  
+  <rect x="440" y="330" width="300" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="350" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Who changed what (user ID)</text>
+  
+  <rect x="440" y="365" width="300" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="385" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">When (timestamp)</text>
+  
+  <rect x="440" y="400" width="300" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="420" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">What changed (before/after)</text>
+  
+  <rect x="440" y="435" width="300" height="30" rx="4" fill="#ef4444" opacity="0.3"/>
+  <text x="590" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Compliance, debugging, accountability</text>
+
+</svg>

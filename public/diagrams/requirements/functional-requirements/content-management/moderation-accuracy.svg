@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Moderation Accuracy Trade-offs</text>
+  
+  <!-- Precision vs Recall Graph -->
+  <rect x="50" y="70" width="400" height="280" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="250" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#3b82f6">Precision vs Recall Trade-off</text>
+  
+  <!-- Graph axes -->
+  <line x1="100" y1="300" x2="400" y2="300" stroke="#475569" stroke-width="2"/>
+  <line x1="100" y1="300" x2="100" y2="120" stroke="#475569" stroke-width="2"/>
+  
+  <text x="250" y="325" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Threshold →</text>
+  <text x="80" y="210" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569" transform="rotate(-90, 80, 210)">Accuracy</text>
+  
+  <!-- Precision curve -->
+  <path d="M 100 280 Q 200 260 300 200 T 400 140" stroke="#22c55e" stroke-width="3" fill="none"/>
+  <text x="380" y="130" text-anchor="end" font-family="system-ui" font-size="10" font-weight="bold" fill="#22c55e">Precision</text>
+  
+  <!-- Recall curve -->
+  <path d="M 100 140 Q 200 180 300 240 T 400 280" stroke="#ef4444" stroke-width="3" fill="none"/>
+  <text x="380" y="290" text-anchor="end" font-family="system-ui" font-size="10" font-weight="bold" fill="#ef4444">Recall</text>
+  
+  <!-- Sweet spot -->
+  <circle cx="250" cy="210" r="8" fill="#f59e0b"/>
+  <text x="270" y="205" text-anchor="start" font-family="system-ui" font-size="9" font-weight="bold" fill="#f59e0b">Sweet Spot</text>
+  
+  <!-- Labels -->
+  <text x="120" y="150" text-anchor="start" font-family="system-ui" font-size="9" fill="#475569">Low Threshold</text>
+  <text x="360" y="270" text-anchor="end" font-family="system-ui" font-size="9" fill="#475569">High Threshold</text>
+  
+  <!-- False Positives/Negatives -->
+  <rect x="480" y="70" width="280" height="130" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="620" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#ef4444">Error Types</text>
+  
+  <rect x="500" y="115" width="240" height="35" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="620" y="137" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">False Positive (Type I)</text>
+  <text x="620" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Safe content removed (user frustration)</text>
+  
+  <rect x="500" y="155" width="240" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="620" y="177" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">False Negative (Type II)</text>
+  <text x="620" y="190" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Harmful content slips through (safety risk)</text>
+  
+  <!-- Policy-specific Thresholds -->
+  <rect x="50" y="370" width="340" height="110" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="395" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Policy-Specific Thresholds</text>
+  
+  <rect x="70" y="410" width="280" height="30" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="210" y="430" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Hate Speech/Violence: High Recall (catch all)</text>
+  
+  <rect x="70" y="445" width="280" height="30" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="210" y="465" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Spam: High Precision (don't remove legitimate)</text>
+  
+  <!-- Tuning Process -->
+  <rect x="420" y="220" width="340" height="260" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="590" y="245" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#22c55e">Threshold Tuning Process</text>
+  
+  <rect x="440" y="260" width="300" height="35" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="590" y="282" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">1. Set initial thresholds per policy</text>
+  
+  <rect x="440" y="300" width="300" height="35" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="590" y="322" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">2. Monitor precision, recall, FPR, FNR</text>
+  
+  <rect x="440" y="340" width="300" height="35" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="590" y="362" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">3. Adjust based on metrics + appeals</text>
+  
+  <rect x="440" y="380" width="300" height="35" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="590" y="402" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">4. Retrain models on false positives</text>
+  
+  <rect x="440" y="420" width="300" height="35" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="590" y="442" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">5. Repeat continuously (model drift)</text>
+  
+  <rect x="440" y="460" width="300" height="25" rx="4" fill="#22c55e"/>
+  <text x="590" y="477" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Target: Balance safety with user experience</text>
+
+</svg>

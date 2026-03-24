@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Animation State Machine</text>
+
+  <!-- Central states -->
+  <!-- Idle -->
+  <rect x="60" y="200" width="130" height="60" rx="30" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+  <text x="125" y="225" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">IDLE</text>
+  <text x="125" y="245" text-anchor="middle" font-size="10" fill="#6d5bd0">No animation</text>
+
+  <!-- Entering -->
+  <rect x="300" y="80" width="130" height="60" rx="30" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="365" y="105" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">ENTERING</text>
+  <text x="365" y="122" text-anchor="middle" font-size="10" fill="#ffffff">Mount anim</text>
+
+  <!-- Active -->
+  <rect x="530" y="200" width="130" height="60" rx="30" fill="#6d5bd0" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="595" y="225" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">ACTIVE</text>
+  <text x="595" y="245" text-anchor="middle" font-size="10" fill="#ffffff">Visible &amp; stable</text>
+
+  <!-- Exiting -->
+  <rect x="300" y="340" width="130" height="60" rx="30" fill="#6d5bd0" opacity="0.7" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="365" y="365" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">EXITING</text>
+  <text x="365" y="382" text-anchor="middle" font-size="10" fill="#ffffff">Unmount anim</text>
+
+  <!-- Interrupted (special state) -->
+  <rect x="710" y="120" width="140" height="55" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="780" y="143" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">INTERRUPTED</text>
+  <text x="780" y="162" text-anchor="middle" font-size="9" fill="#1a1822">Blend/cancel current</text>
+
+  <!-- Queued (special state) -->
+  <rect x="710" y="320" width="140" height="55" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="780" y="343" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">QUEUED</text>
+  <text x="780" y="362" text-anchor="middle" font-size="9" fill="#1a1822">Waiting in buffer</text>
+
+  <!-- Transitions: Idle → Entering -->
+  <path d="M190,210 Q245,120 295,110" fill="none" stroke="#6d5bd0" stroke-width="2" marker-end="url(#smArrow)"/>
+  <text x="215" y="145" font-size="10" fill="#1a1822" font-weight="600">trigger()</text>
+
+  <!-- Entering → Active -->
+  <path d="M430,120 Q490,150 530,210" fill="none" stroke="#6d5bd0" stroke-width="2" marker-end="url(#smArrow)"/>
+  <text x="505" y="145" font-size="10" fill="#1a1822" font-weight="600">onComplete</text>
+
+  <!-- Active → Exiting -->
+  <path d="M530,250 Q490,320 430,360" fill="none" stroke="#6d5bd0" stroke-width="2" marker-end="url(#smArrow)"/>
+  <text x="505" y="330" font-size="10" fill="#1a1822" font-weight="600">dismiss()</text>
+
+  <!-- Exiting → Idle -->
+  <path d="M300,370 Q245,340 190,250" fill="none" stroke="#6d5bd0" stroke-width="2" marker-end="url(#smArrow)"/>
+  <text x="205" y="340" font-size="10" fill="#1a1822" font-weight="600">onComplete</text>
+
+  <!-- Active → Interrupted -->
+  <path d="M660,215 L710,160" fill="none" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#smArrow)"/>
+  <text x="700" y="195" font-size="9" fill="#6d5bd0">new trigger</text>
+
+  <!-- Interrupted → Entering -->
+  <path d="M710,135 L435,110" fill="none" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#smArrow)"/>
+  <text x="570" y="100" font-size="9" fill="#6d5bd0">restart</text>
+
+  <!-- Active → Queued -->
+  <path d="M660,250 L710,335" fill="none" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#smArrow)"/>
+  <text x="700" y="295" font-size="9" fill="#6d5bd0">queue full</text>
+
+  <!-- Queued → Entering -->
+  <path d="M780,375 Q600,450 365,405" fill="none" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <path d="M365,405 Q200,420 200,300" fill="none" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <path d="M200,300 Q250,150 300,110" fill="none" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#smArrow)"/>
+  <text x="420" y="450" font-size="9" fill="#6d5bd0">dequeue → play next</text>
+
+  <!-- Legend -->
+  <rect x="30" y="450" width="840" height="40" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <line x1="50" y1="470" x2="90" y2="470" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="100" y="474" font-size="10" fill="#1a1822">Standard transition</text>
+  <line x1="250" y1="470" x2="290" y2="470" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="300" y="474" font-size="10" fill="#1a1822">Interrupt / queue path</text>
+  <rect x="470" y="462" width="16" height="16" rx="8" fill="#6d5bd0"/>
+  <text x="496" y="474" font-size="10" fill="#1a1822">Active state</text>
+  <rect x="610" y="462" width="16" height="16" rx="4" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="636" y="474" font-size="10" fill="#1a1822">Transient state</text>
+
+  <defs>
+    <marker id="smArrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6Z" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

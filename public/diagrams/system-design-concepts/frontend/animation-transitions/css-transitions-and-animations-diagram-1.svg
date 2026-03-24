@@ -1,0 +1,83 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">Browser Rendering Pipeline: Property Cost Hierarchy</text>
+
+  <!-- Pipeline stages header -->
+  <rect x="30" y="55" width="840" height="35" rx="6" fill="#6d5bd0"/>
+  <text x="450" y="78" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">Rendering Pipeline Stages (left to right = increasing cost per frame)</text>
+
+  <!-- Stage boxes -->
+  <rect x="30" y="100" width="130" height="50" rx="6" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="95" y="122" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Style</text>
+  <text x="95" y="140" text-anchor="middle" font-size="9" fill="#1a1822">Match selectors</text>
+
+  <line x1="160" y1="125" x2="190" y2="125" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="190" y="100" width="130" height="50" rx="6" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="255" y="122" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Layout</text>
+  <text x="255" y="140" text-anchor="middle" font-size="9" fill="#1a1822">Calculate geometry</text>
+
+  <line x1="320" y1="125" x2="350" y2="125" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="350" y="100" width="130" height="50" rx="6" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="415" y="122" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">Paint</text>
+  <text x="415" y="140" text-anchor="middle" font-size="9" fill="#1a1822">Rasterize pixels</text>
+
+  <line x1="480" y1="125" x2="510" y2="125" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="510" y="100" width="160" height="50" rx="6" fill="#6d5bd0"/>
+  <text x="590" y="122" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Composite</text>
+  <text x="590" y="140" text-anchor="middle" font-size="9" fill="#ffffff">Combine GPU layers</text>
+
+  <line x1="670" y1="125" x2="700" y2="125" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="700" y="100" width="170" height="50" rx="6" fill="#228B22"/>
+  <text x="785" y="122" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">Display</text>
+  <text x="785" y="140" text-anchor="middle" font-size="9" fill="#ffffff">Send to screen (vsync)</text>
+
+  <!-- Tier 1: Composite Only -->
+  <rect x="30" y="175" width="840" height="70" rx="6" fill="#228B22" opacity="0.1" stroke="#228B22" stroke-width="1.5"/>
+  <rect x="40" y="182" width="140" height="24" rx="4" fill="#228B22"/>
+  <text x="110" y="198" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Composite Only</text>
+  <text x="40" y="228" font-size="10" fill="#1a1822">Properties: <tspan font-weight="600">transform</tspan>, <tspan font-weight="600">opacity</tspan>, <tspan font-weight="600">filter</tspan>, <tspan font-weight="600">backdrop-filter</tspan></text>
+
+  <rect x="560" y="182" width="300" height="55" rx="4" fill="#ffffff" stroke="#228B22"/>
+  <text x="710" y="200" text-anchor="middle" font-size="10" font-weight="600" fill="#228B22">GPU Only — 0.1-0.5ms/frame</text>
+  <text x="570" y="218" font-size="9" fill="#1a1822">Compositor thread, independent of main thread.</text>
+  <text x="570" y="230" font-size="9" fill="#1a1822">60fps guaranteed even during heavy JS execution.</text>
+
+  <!-- Tier 2: Paint + Composite -->
+  <rect x="30" y="255" width="840" height="70" rx="6" fill="#FFB800" opacity="0.1" stroke="#FFB800" stroke-width="1.5"/>
+  <rect x="40" y="262" width="140" height="24" rx="4" fill="#FFB800"/>
+  <text x="110" y="278" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">Paint + Composite</text>
+  <text x="40" y="308" font-size="10" fill="#1a1822">Properties: <tspan font-weight="600">color</tspan>, <tspan font-weight="600">background</tspan>, <tspan font-weight="600">border-color</tspan>, <tspan font-weight="600">visibility</tspan>, <tspan font-weight="600">box-shadow</tspan> (static size)</text>
+
+  <rect x="560" y="262" width="300" height="55" rx="4" fill="#ffffff" stroke="#FFB800"/>
+  <text x="710" y="280" text-anchor="middle" font-size="10" font-weight="600" fill="#FFB800">Main Thread — 1-5ms/frame</text>
+  <text x="570" y="298" font-size="9" fill="#1a1822">Skips layout but re-rasterizes affected pixels.</text>
+  <text x="570" y="310" font-size="9" fill="#1a1822">Cost proportional to painted area size.</text>
+
+  <!-- Tier 3: Layout + Paint + Composite -->
+  <rect x="30" y="335" width="840" height="85" rx="6" fill="#cc3333" opacity="0.1" stroke="#cc3333" stroke-width="1.5"/>
+  <rect x="40" y="342" width="190" height="24" rx="4" fill="#cc3333"/>
+  <text x="135" y="358" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Layout + Paint + Composite</text>
+  <text x="40" y="388" font-size="10" fill="#1a1822">Properties: <tspan font-weight="600">width</tspan>, <tspan font-weight="600">height</tspan>, <tspan font-weight="600">padding</tspan>, <tspan font-weight="600">margin</tspan>, <tspan font-weight="600">top/left</tspan>, <tspan font-weight="600">font-size</tspan>, <tspan font-weight="600">border-width</tspan></text>
+  <text x="40" y="404" font-size="10" fill="#1a1822">Also: <tspan font-weight="600">display</tspan>, <tspan font-weight="600">position</tspan>, <tspan font-weight="600">float</tspan>, <tspan font-weight="600">overflow</tspan>, <tspan font-weight="600">flex properties</tspan>, <tspan font-weight="600">grid properties</tspan></text>
+
+  <rect x="560" y="342" width="300" height="68" rx="4" fill="#ffffff" stroke="#cc3333"/>
+  <text x="710" y="360" text-anchor="middle" font-size="10" font-weight="600" fill="#cc3333">Main Thread — 5-50ms+/frame</text>
+  <text x="570" y="378" font-size="9" fill="#1a1822">Full pipeline: recalculate geometry for affected</text>
+  <text x="570" y="390" font-size="9" fill="#1a1822">element + siblings + descendants, repaint, composite.</text>
+  <text x="570" y="402" font-size="9" fill="#1a1822">Cost multiplied by number of affected elements.</text>
+
+  <!-- Rule box -->
+  <rect x="30" y="435" width="840" height="50" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="457" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Golden Rule: Only animate transform and opacity for guaranteed 60fps</text>
+  <text x="450" y="475" text-anchor="middle" font-size="11" fill="#ffffff">Use transform: translate() for position, scale() for size, rotate() for rotation — never animate layout properties</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

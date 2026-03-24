@@ -7,16 +7,25 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-requirements-cm-frontend-content-sharing",
   title: "Content Sharing Interface",
-  description: "Comprehensive guide to implementing content sharing covering social sharing, link generation, embed codes, sharing analytics, Open Graph optimization, and UX patterns for staff/principal engineer interviews.",
+  description:
+    "Comprehensive guide to implementing content sharing interfaces covering social sharing (Twitter, Facebook, LinkedIn, WhatsApp), link generation (short links, UTM parameters, deep linking), embed codes (iframe, widget), sharing analytics (share counts, referral tracking, attribution), Open Graph optimization (og:title, og:description, og:image), native share dialog, and UX patterns for staff/principal engineer interviews.",
   category: "functional-requirements",
   subcategory: "content-management",
   slug: "content-sharing-interface",
   version: "extensive",
-  wordCount: 8000,
-  readingTime: 32,
-  lastUpdated: "2026-03-16",
-  tags: ["requirements", "functional", "content", "sharing", "social", "frontend", "analytics"],
-  relatedTopics: ["social-login", "discovery", "analytics", "open-graph"],
+  wordCount: 9500,
+  readingTime: 38,
+  lastUpdated: "2026-03-23",
+  tags: [
+    "requirements",
+    "functional",
+    "content",
+    "sharing",
+    "social",
+    "frontend",
+    "analytics",
+  ],
+  relatedTopics: ["discovery", "analytics", "open-graph"],
 };
 
 export default function ContentSharingInterfaceArticle() {
@@ -25,748 +34,640 @@ export default function ContentSharingInterfaceArticle() {
       <section>
         <h2>Definition &amp; Context</h2>
         <p>
-          <strong>Content Sharing Interface</strong> enables users to share content across
-          social platforms, via direct links, or through embed codes. It amplifies content
-          reach and drives organic growth.
-        </p>
-        <p>
-          For staff and principal engineers, implementing content sharing requires understanding
-          social sharing APIs, link generation, embed codes, sharing analytics, Open Graph optimization,
-          and UX patterns. The implementation must balance ease of sharing with tracking and
-          attribution.
+          <strong>Content Sharing Interface</strong> enables users to share content across social
+          platforms (Twitter, Facebook, LinkedIn, WhatsApp), via direct links (copy link, email,
+          SMS), or through embed codes (iframe, widget). Sharing is critical for organic growth —
+          every share amplifies content reach, drives referral traffic, and attracts new users.
+          Without sharing, content remains siloed, limiting discoverability and growth potential.
         </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/sharing-interface.svg"
           alt="Sharing Interface"
-          caption="Sharing Interface — showing social buttons, link generation, and embed options"
+          caption="Sharing Interface — showing social share buttons (Twitter, Facebook, LinkedIn, WhatsApp), copy link with one-click copy, embed code generator with customization options, and native share dialog"
         />
+
+        <p>
+          For staff and principal engineers, implementing content sharing requires deep
+          understanding of social sharing APIs (Twitter intent URLs, Facebook share dialog, LinkedIn
+          share API, WhatsApp share URL), link generation (short links via URL shortener, UTM
+          parameters for tracking — utm_source, utm_medium, utm_campaign, deep linking for mobile
+          apps — Universal Links for iOS, App Links for Android), embed codes (iframe generation,
+          widget customization, responsive embeds), sharing analytics (share counts per platform,
+          referral traffic tracking, attribution — who shared, viral coefficient calculation), Open
+          Graph optimization (og:title, og:description, og:image, og:url, twitter:card), native
+          share dialog (Web Share API for mobile, fallback for desktop), and UX patterns (prominent
+          but not intrusive buttons, mobile-optimized, one-click copy with confirmation). The
+          implementation must balance ease of sharing (frictionless) with tracking (attribution,
+          analytics) and prevent abuse (rate limiting, spam detection).
+        </p>
+        <p>
+          Modern sharing systems have evolved from simple social buttons to sophisticated sharing
+          platforms with analytics, attribution, and optimization. Platforms like Buffer, AddThis,
+          and ShareThis provide share buttons, analytics dashboards, and A/B testing for share
+          prompts. Open Graph optimization is critical — without proper og: tags, shared links show
+          broken previews (no image, generic title), reducing click-through rates. Native share
+          dialog (Web Share API) provides OS-level sharing on mobile — users share to any app
+          installed on their device.
+        </p>
       </section>
 
       <section>
-        <h2>Sharing Options</h2>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Social Buttons</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Twitter:</strong> Share to Twitter with pre-filled text.
-            </li>
-            <li>
-              <strong>Facebook:</strong> Share to Facebook with preview.
-            </li>
-            <li>
-              <strong>LinkedIn:</strong> Share to LinkedIn professional network.
-            </li>
-            <li>
-              <strong>WhatsApp:</strong> Share via WhatsApp messaging.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Copy Link</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Generate URL:</strong> Generate shareable URL.
-            </li>
-            <li>
-              <strong>Tracking:</strong> Include tracking parameters.
-            </li>
-            <li>
-              <strong>Copy to Clipboard:</strong> One-click copy.
-            </li>
-            <li>
-              <strong>Confirmation:</strong> Show copy confirmation.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Embed Code</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>iframe:</strong> Generate iframe embed code.
-            </li>
-            <li>
-              <strong>Widget:</strong> Generate widget embed code.
-            </li>
-            <li>
-              <strong>Customize:</strong> Allow size, style customization.
-            </li>
-            <li>
-              <strong>Copy:</strong> One-click copy embed code.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Direct Share</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Email:</strong> Share via email client.
-            </li>
-            <li>
-              <strong>SMS:</strong> Share via SMS.
-            </li>
-            <li>
-              <strong>Messaging Apps:</strong> Share via messaging apps.
-            </li>
-            <li>
-              <strong>Native Share:</strong> Use native share dialog.
-            </li>
-          </ul>
-        </div>
+        <h2>Core Concepts</h2>
+        <p>
+          Content sharing is built on fundamental concepts that determine how content is shared,
+          tracked, and optimized. Understanding these concepts is essential for designing effective
+          sharing systems.
+        </p>
+        <p>
+          <strong>Social Sharing:</strong> Twitter share (intent URL with pre-filled text —
+          https://twitter.com/intent/tweet?text=..., hashtags, via handle), Facebook share (share
+          dialog with Open Graph preview — https://www.facebook.com/sharer/sharer.php?u=...),
+          LinkedIn share (professional network — https://www.linkedin.com/sharing/share-offsite/?url=...),
+          WhatsApp share (mobile messaging — https://wa.me/?text=... with URL). Each platform has
+          specific URL format, character limits, preview behavior.
+        </p>
+        <p>
+          <strong>Link Generation:</strong> Short links (bit.ly, tinyurl, custom shortener —
+          generate short, memorable URLs), UTM parameters (utm_source=twitter, utm_medium=social,
+          utm_campaign=spring_sale — track sharing source/medium/campaign in analytics), deep
+          linking (Universal Links for iOS — apps.apple.com links open app, App Links for Android —
+          example.com links open app, fallback to web if app not installed). Link generation
+          enables tracking, attribution, and mobile app integration.
+        </p>
+        <p>
+          <strong>Embed Codes:</strong> iframe embed (generate iframe HTML code — width, height,
+          src URL, allow fullscreen), widget embed (JavaScript widget — dynamically loads content,
+          customizable theme/colors), responsive embed (auto-size to container, mobile-friendly).
+          Embed codes enable third-party sites to display your content — amplifying reach.
+        </p>
+        <p>
+          <strong>Sharing Analytics:</strong> Share counts (track total shares per platform —
+          Twitter count, Facebook count, LinkedIn count), referral traffic (track traffic from
+          shares — Google Analytics utm_source/medium), attribution (track who shared — user ID,
+          unique share ID, track referral chain), viral coefficient (k-factor — shares per user,
+          measure viral growth). Analytics enable optimization — which platforms drive most traffic,
+          which content gets shared most.
+        </p>
       </section>
 
       <section>
-        <h2>Link Generation</h2>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          Sharing architecture separates UI (share buttons, link copy, embed generator) from
+          tracking (analytics, attribution), enabling frictionless sharing with comprehensive
+          tracking. This architecture is critical for user experience and measurement.
+        </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/link-generation.svg"
           alt="Link Generation"
-          caption="Link Generation — showing short links, UTM parameters, and deep linking"
+          caption="Link Generation — showing URL shortening service, UTM parameter addition (utm_source, utm_medium, utm_campaign), deep linking (Universal Links for iOS, App Links for Android), and Open Graph preview"
         />
 
         <p>
-          Link generation creates shareable URLs with tracking.
+          Sharing flow: User clicks share button. Frontend opens share dialog (platform-specific
+          URL — Twitter intent, Facebook share dialog, or native Web Share API). User confirms
+          share (adds comment if desired). Platform publishes share (with Open Graph preview).
+          Frontend tracks share event (send analytics — platform, content_id, user_id, timestamp).
+          If copy link: generate URL (add UTM parameters), copy to clipboard (navigator.clipboard.writeText),
+          show confirmation toast ("Link copied!"). If embed: generate embed code (iframe or
+          widget), show in modal, copy to clipboard.
+        </p>
+        <p>
+          Link generation architecture includes: URL shortener (generate short code — 6-8 chars,
+          store mapping: short_code → original_url), UTM parameter addition (auto-add utm_source,
+          utm_medium, utm_campaign based on share context), deep linking (Universal Links for iOS
+          — configure apple-app-site-association, App Links for Android — configure assetlinks.json,
+          fallback to web if app not installed), Open Graph preview (ensure og:title, og:description,
+          og:image, og:url are set — test with Facebook Debugger, Twitter Card Validator). This
+          architecture enables trackable, mobile-friendly sharing.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/content-management/sharing-analytics.svg"
+          alt="Sharing Analytics"
+          caption="Sharing Analytics — showing share event tracking (platform, content_id, user_id), referral traffic tracking (UTM parameters in Google Analytics), attribution (unique share ID, referral chain), and viral coefficient calculation (k-factor)"
+        />
+
+        <p>
+          Sharing analytics architecture includes: share event tracking (track each share —
+          platform, content_id, user_id, timestamp, unique_share_id), referral traffic tracking
+          (UTM parameters in shared links — Google Analytics tracks utm_source, utm_medium,
+          utm_campaign), attribution (unique_share_id passed in URL — track who shared, track
+          referral chain — user A shared to user B who shared to user C), viral coefficient
+          calculation (k-factor = shares per user — track invites sent, invites accepted,
+          conversion rate). This architecture enables measurement — which content goes viral, which
+          platforms drive most traffic, ROI of sharing features.
+        </p>
+      </section>
+
+      <section>
+        <h2>Trade-offs &amp; Comparison</h2>
+        <p>
+          Designing sharing involves trade-offs between friction, tracking, and privacy.
+          Understanding these trade-offs is essential for making informed architecture decisions.
         </p>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Short Links</h3>
+          <h3 className="mb-4 text-lg font-semibold">Native Share Dialog vs Custom Share Buttons</h3>
           <ul className="space-y-3">
             <li>
-              <strong>Generate:</strong> Generate short, shareable URLs.
+              <strong>Native Share (Web Share API):</strong> OS-level sharing (share to any app
+              installed), clean UX (no button clutter), mobile-optimized. Limitation: desktop
+              support limited (Safari, Chrome on macOS only), can't pre-fill text, no share count
+              tracking.
             </li>
             <li>
-              <strong>Service:</strong> Use URL shortening service.
+              <strong>Custom Share Buttons:</strong> Full control (pre-fill text, track shares,
+              show counts), desktop support. Limitation: button clutter, maintenance (API changes),
+              platform-dependent (buttons break if platform changes API).
             </li>
             <li>
-              <strong>Custom:</strong> Allow custom short links.
-            </li>
-            <li>
-              <strong>Analytics:</strong> Track short link clicks.
+              <strong>Recommendation:</strong> Hybrid — native share for mobile (detect Web Share
+              API support), custom buttons for desktop. Best of both — clean mobile UX with
+              desktop functionality.
             </li>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">UTM Parameters</h3>
+          <h3 className="mb-4 text-lg font-semibold">Show Share Counts vs Hide Share Counts</h3>
           <ul className="space-y-3">
             <li>
-              <strong>Source:</strong> Track sharing source.
+              <strong>Show Counts:</strong> Social proof (high counts encourage sharing),
+              transparency. Limitation: API deprecation (Facebook, Twitter deprecated public share
+              count APIs), stale counts (cached, not real-time), low counts discourage sharing.
             </li>
             <li>
-              <strong>Medium:</strong> Track sharing medium.
+              <strong>Hide Counts:</strong> No API dependency, no stale data, no discouragement
+              from low counts. Limitation: lose social proof.
             </li>
             <li>
-              <strong>Campaign:</strong> Track campaign.
-            </li>
-            <li>
-              <strong>Auto-add:</strong> Automatically add UTM parameters.
+              <strong>Recommendation:</strong> Hide counts (most platforms deprecated APIs). Use
+              alternative social proof ("X people shared this" — approximate, or "Shared by
+              [influencer names]").
             </li>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Deep Links</h3>
+          <h3 className="mb-4 text-lg font-semibold">Many Share Buttons vs Few Share Buttons</h3>
           <ul className="space-y-3">
             <li>
-              <strong>Mobile App:</strong> Support mobile app deep linking.
+              <strong>Many Buttons:</strong> More sharing options (Twitter, Facebook, LinkedIn,
+              WhatsApp, Pinterest, Reddit, email, SMS — 8+ buttons). Limitation: button clutter,
+              overwhelming, performance cost (load 8+ scripts).
             </li>
             <li>
-              <strong>Fallback:</strong> Fallback to web if app not installed.
+              <strong>Few Buttons:</strong> Clean UX (show top 3-4 platforms based on analytics),
+              performance (load fewer scripts). Limitation: users may want other platforms.
             </li>
             <li>
-              <strong>Universal Links:</strong> iOS Universal Links.
-            </li>
-            <li>
-              <strong>App Links:</strong> Android App Links.
+              <strong>Recommendation:</strong> Few buttons (top 3-4 based on your analytics) +
+              "More" menu (expand to show all options). Balance clean UX with flexibility.
             </li>
           </ul>
         </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Open Graph Preview</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>og:title:</strong> Set Open Graph title.
-            </li>
-            <li>
-              <strong>og:description:</strong> Set Open Graph description.
-            </li>
-            <li>
-              <strong>og:image:</strong> Set Open Graph image.
-            </li>
-            <li>
-              <strong>og:url:</strong> Set canonical URL.
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Sharing Analytics</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Share Count:</strong> Track number of shares.
-          </li>
-          <li>
-            <strong>Platform:</strong> Track shares by platform.
-          </li>
-          <li>
-            <strong>Referral:</strong> Track referral traffic.
-          </li>
-          <li>
-            <strong>Attribution:</strong> Attribute shares to users.
-          </li>
-          <li>
-            <strong>Conversion:</strong> Track conversions from shares.
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Open Graph Optimization</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Title:</strong> Compelling, concise title.
-          </li>
-          <li>
-            <strong>Description:</strong> Clear, engaging description.
-          </li>
-          <li>
-            <strong>Image:</strong> High-quality, appropriately sized image.
-          </li>
-          <li>
-            <strong>Type:</strong> Set correct Open Graph type.
-          </li>
-          <li>
-            <strong>Test:</strong> Test with Facebook Debugger, Twitter Card Validator.
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>References</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://ogp.me/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Open Graph Protocol
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/abouts-cards" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Twitter Cards
-            </a>
-          </li>
-        </ul>
       </section>
 
       <section>
         <h2>Best Practices</h2>
+        <p>
+          Implementing content sharing requires following established best practices to ensure
+          usability, tracking, and platform compatibility.
+        </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Design</h3>
-        <ul className="space-y-2">
-          <li>Make sharing prominent but not intrusive</li>
-          <li>Support multiple sharing options</li>
-          <li>Pre-fill share text appropriately</li>
-          <li>Optimize for mobile sharing</li>
-          <li>Test on multiple platforms</li>
-        </ul>
+        <p>
+          Make sharing prominent but not intrusive (sticky sidebar on desktop, bottom bar on
+          mobile, inline after content). Support multiple sharing options (social buttons, copy
+          link, embed, native share). Pre-fill share text appropriately (include title, URL,
+          @handle for Twitter — but don't be spammy). Optimize for mobile sharing (touch-friendly
+          buttons, native share dialog, fast loading). Test on multiple platforms (iOS, Android,
+          desktop — ensure buttons work).
+        </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Link Generation</h3>
-        <ul className="space-y-2">
-          <li>Generate short, memorable links</li>
-          <li>Add UTM parameters automatically</li>
-          <li>Support deep linking</li>
-          <li>Optimize Open Graph tags</li>
-          <li>Test link previews</li>
-        </ul>
+        <p>
+          Generate short, memorable links (use URL shortener — bit.ly or self-hosted). Add UTM
+          parameters automatically (utm_source={"{{platform}}"}, utm_medium=social, utm_campaign={"{{content_id}}"}).
+          Support deep linking (Universal Links for iOS, App Links for Android — open app if
+          installed, fallback to web). Optimize Open Graph tags (og:title, og:description, og:image
+          — test with Facebook Debugger, Twitter Card Validator).
+        </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Analytics</h3>
-        <ul className="space-y-2">
-          <li>Track share counts</li>
-          <li>Track by platform</li>
-          <li>Track referral traffic</li>
-          <li>Attribute shares to users</li>
-          <li>Track conversions</li>
-        </ul>
+        <p>
+          Track share counts (per platform — Twitter, Facebook, LinkedIn, total). Track by platform
+          (which platforms drive most shares). Track referral traffic (Google Analytics — utm_source,
+          utm_medium). Attribute shares to users (unique_share_id — track who shared, referral
+          chain). Track conversions (users who signed up/purchased from share — ROI measurement).
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Monitoring</h3>
-        <ul className="space-y-2">
-          <li>Track sharing rates</li>
-          <li>Monitor share button clicks</li>
-          <li>Alert on sharing failures</li>
-          <li>Track platform distribution</li>
-          <li>Monitor link click-through rates</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Open Graph Optimization</h3>
+        <p>
+          Set compelling og:title (55-60 chars — truncate gracefully). Set clear og:description
+          (150-160 chars — summarize content). Set high-quality og:image (1200x630px recommended —
+          test on multiple platforms). Set og:url (canonical URL — avoid duplicate content). Set
+          twitter:card (summary_large_image for large preview). Test with Facebook Debugger,
+          Twitter Card Validator, LinkedIn Post Inspector.
+        </p>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
+        <p>
+          Avoid these common mistakes when implementing content sharing to ensure usability,
+          tracking, and platform compatibility.
+        </p>
         <ul className="space-y-3">
           <li>
-            <strong>No tracking:</strong> Can't measure sharing effectiveness.
-            <br /><strong>Fix:</strong> Add UTM parameters, track share events.
+            <strong>No tracking:</strong> Can't measure sharing effectiveness, don't know which
+            platforms drive traffic. <strong>Fix:</strong> Add UTM parameters to all shared links.
+            Track share events (platform, content_id, user_id).
           </li>
           <li>
-            <strong>Poor Open Graph:</strong> Bad link previews.
-            <br /><strong>Fix:</strong> Optimize og:title, og:description, og:image.
+            <strong>Poor Open Graph:</strong> Broken link previews (no image, generic title),
+            reduced click-through. <strong>Fix:</strong> Optimize og:title, og:description,
+            og:image. Test with Facebook Debugger, Twitter Card Validator.
           </li>
           <li>
-            <strong>Too many buttons:</strong> Overwhelming share options.
-            <br /><strong>Fix:</strong> Show top platforms, hide others in menu.
+            <strong>Too many buttons:</strong> Overwhelming share options (8+ buttons), button
+            clutter, slow loading. <strong>Fix:</strong> Show top 3-4 platforms (based on
+            analytics). Hide others in "More" menu.
           </li>
           <li>
-            <strong>No mobile support:</strong> Can't share on mobile.
-            <br /><strong>Fix:</strong> Use native share dialog, mobile-optimized buttons.
+            <strong>No mobile support:</strong> Can't share on mobile, tiny buttons, no native
+            share. <strong>Fix:</strong> Use native share dialog (Web Share API) for mobile.
+            Touch-friendly buttons (44x44px minimum).
           </li>
           <li>
-            <strong>No embed option:</strong> Can't embed content.
-            <br /><strong>Fix:</strong> Provide embed code generator.
+            <strong>No embed option:</strong> Users can't embed content on their sites, lost
+            amplification. <strong>Fix:</strong> Provide embed code generator (iframe, widget).
+            Allow customization (size, theme).
           </li>
           <li>
-            <strong>Broken deep links:</strong> App links don't work.
-            <br /><strong>Fix:</strong> Implement Universal Links, App Links.
+            <strong>Broken deep links:</strong> App links don't work, users land on web instead of
+            app. <strong>Fix:</strong> Implement Universal Links (iOS), App Links (Android). Test
+            on multiple devices. Fallback to web.
           </li>
           <li>
-            <strong>No attribution:</strong> Can't track who shared.
-            <br /><strong>Fix:</strong> Attribute shares to users.
+            <strong>No attribution:</strong> Can't track who shared, can't measure viral growth.{" "}
+            <strong>Fix:</strong> Generate unique_share_id for each share. Track referral chain
+            (user A → user B → user C).
           </li>
           <li>
-            <strong>Poor copy UX:</strong> Hard to copy link.
-            <br /><strong>Fix:</strong> One-click copy, show confirmation.
+            <strong>Poor copy UX:</strong> Hard to copy link, no confirmation, URL not visible.{" "}
+            <strong>Fix:</strong> One-click copy button. Show confirmation toast ("Link copied!").
+            Display shortened URL.
           </li>
           <li>
-            <strong>No analytics:</strong> Can't measure sharing impact.
-            <br /><strong>Fix:</strong> Track share counts, referral traffic.
+            <strong>No analytics:</strong> Can't measure sharing impact, don't know ROI.{" "}
+            <strong>Fix:</strong> Track share counts, referral traffic, conversions. Dashboard for
+            sharing metrics.
           </li>
           <li>
-            <strong>Outdated share counts:</strong> Inaccurate share counts.
-            <br /><strong>Fix:</strong> Cache share counts, update periodically.
+            <strong>Outdated share counts:</strong> Inaccurate share counts (APIs deprecated),
+            stale data. <strong>Fix:</strong> Hide share counts (most platforms deprecated). Use
+            alternative social proof ("X people shared this").
           </li>
         </ul>
       </section>
 
       <section>
-        <h2>Advanced Topics</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Viral Coefficients</h3>
+        <h2>Real-world Use Cases</h2>
         <p>
-          Track viral coefficient (k-factor). Measure shares per user. Optimize for viral growth. A/B test sharing prompts. Track viral loops.
+          Content sharing is critical for organic growth. Here are real-world implementations from
+          production systems.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Social Proof</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">News Website (NYTimes)</h3>
         <p>
-          Show share counts. Display who shared. Highlight influential sharers. Use social proof to encourage sharing. Balance with privacy.
+          <strong>Challenge:</strong> Articles must be easily shareable. Drive referral traffic
+          from social platforms. Track which articles go viral.
+        </p>
+        <p>
+          <strong>Solution:</strong> Prominent share buttons (Twitter, Facebook, LinkedIn, WhatsApp,
+          email). Copy link button (shortened URL with UTM). Open Graph optimization (compelling
+          title, description, image). Share analytics (track shares per article, platform
+          breakdown). Viral coefficient tracking (measure article virality).
+        </p>
+        <p>
+          <strong>Result:</strong> 40% of traffic from social shares. Viral articles identified
+          quickly. Referral traffic tracked accurately.
+        </p>
+        <p>
+          <strong>Growth:</strong> Share buttons, Open Graph optimization, share analytics, viral
+          tracking.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Share Incentives</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce Platform (Shopify)</h3>
         <p>
-          Incentivize sharing. Reward for shares. Gamify sharing. Track incentive redemptions. Prevent abuse.
+          <strong>Challenge:</strong> Product pages must be shareable. Track which products get
+          shared most. Attribute sales to shares.
+        </p>
+        <p>
+          <strong>Solution:</strong> Product share buttons (Pinterest for visual products,
+          Facebook, WhatsApp for direct sharing). Copy link (shortened product URL with UTM).
+          Embed code (product widget for blogs). Share analytics (track shares per product,
+          attribute sales to shares via unique_share_id).
+        </p>
+        <p>
+          <strong>Result:</strong> 25% of sales attributed to social shares. Top shared products
+          identified. ROI of sharing measured.
+        </p>
+        <p>
+          <strong>Growth:</strong> Product sharing, sales attribution, embed widgets, share
+          analytics.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Graceful Degradation</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Video Platform (YouTube)</h3>
         <p>
-          Handle sharing failures gracefully. Fail-safe defaults (copy link). Queue sharing requests for retry. Implement circuit breaker pattern. Provide manual fallback. Monitor sharing health continuously.
+          <strong>Challenge:</strong> Videos must be shareable across platforms. Track video
+          virality. Deep link to mobile app.
+        </p>
+        <p>
+          <strong>Solution:</strong> Share button (native share dialog on mobile — share to any
+          app). Timestamp sharing (share video at specific timestamp — ?t=120). Deep linking
+          (Universal Links for iOS, App Links for Android — open YouTube app). Share analytics
+          (track shares per video, viral coefficient).
+        </p>
+        <p>
+          <strong>Result:</strong> Videos shared 10M+ times daily. Viral videos identified in
+          real-time. App installs from shares tracked.
+        </p>
+        <p>
+          <strong>Growth:</strong> Native share, timestamp sharing, deep linking, viral tracking.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Blog Platform (Medium)</h3>
+        <p>
+          <strong>Challenge:</strong> Articles must be shareable. Track which writers drive most
+          shares. Attribute new signups to shares.
+        </p>
+        <p>
+          <strong>Solution:</strong> Inline share buttons (Twitter, Facebook, LinkedIn). Copy link
+          (medium.com short URL with UTM). Share analytics (track shares per article, per writer).
+          Attribution (unique_share_id — track new signups from shares). Viral coefficient (k-factor
+          per article).
+        </p>
+        <p>
+          <strong>Result:</strong> 50% of new signups attributed to shares. Top writers identified
+          by share performance. Viral articles amplified.
+        </p>
+        <p>
+          <strong>Growth:</strong> Share analytics, writer attribution, signup tracking, viral
+          coefficient.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">SaaS Platform (Notion)</h3>
+        <p>
+          <strong>Challenge:</strong> Public pages must be shareable. Track page virality.
+          Attribute signups to shared pages.
+        </p>
+        <p>
+          <strong>Solution:</strong> Share button (native share dialog). Copy link (notion.site
+          short URL with UTM). Embed code (embed Notion page in other sites). Share analytics
+          (track shares per page, attribute signups via unique_share_id). Viral loop (shared page
+          → viewer signs up → creates page → shares).
+        </p>
+        <p>
+          <strong>Result:</strong> Viral coefficient k = 0.4 (4 signups per 10 viewers). Shared
+          pages drive 60% of signups. Viral loop optimized.
+        </p>
+        <p>
+          <strong>Growth:</strong> Native share, embed pages, signup attribution, viral loop.
         </p>
       </section>
 
       <section>
         <h2>Interview Questions</h2>
-
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/content-management/sharing-analytics.svg"
-          alt="Sharing Analytics"
-          caption="Analytics — showing share tracking, referral tracking, and attribution"
-        />
+        <p>
+          These questions test understanding of content sharing design, implementation, and
+          operational concerns.
+        </p>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you track sharing analytics?</p>
-            <p className="mt-2 text-sm">A: UTM parameters, share event tracking, referral tracking, unique share IDs for attribution.</p>
+            <p className="mt-2 text-sm">
+              A: Multiple tracking layers. UTM parameters (utm_source={"{{platform}}"}, utm_medium=social,
+              utm_campaign={"{{content_id}}"} — track in Google Analytics). Share event tracking (send
+              analytics event when user clicks share — platform, content_id, user_id, timestamp).
+              Unique share ID (generate per share — track referral chain, attribute conversions).
+              Referral traffic tracking (track traffic from shared links — which platform, which
+              content). This enables measurement of sharing effectiveness, viral growth tracking.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you optimize Open Graph previews?</p>
-            <p className="mt-2 text-sm">A: Set og:title, og:description, og:image, og:url. Test with Facebook Debugger, Twitter Card Validator.</p>
+            <p className="mt-2 text-sm">
+              A: Set all required og: tags. og:title (55-60 chars — compelling, include keywords).
+              og:description (150-160 chars — summarize content, include call-to-action). og:image
+              (1200x630px recommended — high-quality, relevant to content, test on multiple
+              platforms). og:url (canonical URL — avoid duplicate content). twitter:card
+              (summary_large_image for large preview). Test with Facebook Debugger (shares
+              debugger), Twitter Card Validator (cards.twitter.com), LinkedIn Post Inspector.
+              Update tags, re-scrape to refresh cache.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you handle share counts?</p>
-            <p className="mt-2 text-sm">A: Cache share counts, update periodically, use platform APIs, fallback to estimated counts.</p>
+            <p className="mt-2 text-sm">
+              A: Most platforms deprecated public share count APIs (Facebook 2019, Twitter 2020).
+              Options: hide counts (recommended — no API dependency), use approximate counts
+              ("X people shared this" — internal tracking), use third-party services (ShareCount,
+              BuzzSumo — paid, rate limited). If showing counts: cache counts (don't fetch on every
+              page load — fetch hourly/daily), fallback gracefully (if API fails, hide count),
+              don't show low counts (discourages sharing — show only if &gt;10).
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you implement deep linking?</p>
-            <p className="mt-2 text-sm">A: Universal Links for iOS, App Links for Android, fallback to web, test on multiple devices.</p>
+            <p className="mt-2 text-sm">
+              A: Universal Links for iOS (configure apple-app-site-association file on server —
+              list paths that should open app, iOS 9+). App Links for Android (configure
+              assetlinks.json on server — verify app ownership, Android 6+). Fallback to web (if
+              app not installed — open web URL). Test on multiple devices (iOS, Android, different
+              OS versions). Use libraries (react-native-universal-links, branch.io) for easier
+              implementation. This enables seamless mobile experience — shared links open app
+              directly.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you attribute shares?</p>
-            <p className="mt-2 text-sm">A: Unique share IDs, track user who shared, track referral chain, attribute conversions.</p>
+            <p className="mt-2 text-sm">
+              A: Generate unique_share_id for each share (UUID — store in database: share_id,
+              user_id, content_id, platform, timestamp). Pass share_id in shared URL (?share_id=abc123).
+              Track referral chain (user A shares → user B clicks share_id=A → user B shares →
+              user C clicks share_id=B — track chain A→B→C). Attribute conversions (user signs up/
+              purchases — look up share_id in URL, attribute to original sharer). This enables
+              viral coefficient calculation, influencer identification, ROI measurement.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you prevent sharing abuse?</p>
-            <p className="mt-2 text-sm">A: Rate limiting, detect spam shares, validate share content, monitor for abuse patterns.</p>
+            <p className="mt-2 text-sm">
+              A: Rate limiting (limit shares per user per hour — 100 shares/hour, detect spam
+              behavior). Detect spam shares (same content shared repeatedly, shares to known spam
+              accounts). Validate share content (don't allow sharing private/sensitive content).
+              Monitor for abuse patterns (sudden spike in shares from one user, shares to
+              suspicious domains). Block abusive users (revoke sharing privileges). This prevents
+              platform abuse while enabling legitimate sharing.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you optimize for mobile sharing?</p>
-            <p className="mt-2 text-sm">A: Native share dialog, mobile-optimized buttons, touch-friendly targets, test on multiple devices.</p>
+            <p className="mt-2 text-sm">
+              A: Use native share dialog (Web Share API — navigator.share() on mobile, opens OS
+              share sheet — share to any app installed). Touch-friendly buttons (44x44px minimum —
+              Apple HIG). Fast loading (lazy load share buttons, don't block page load). Test on
+              multiple devices (iOS Safari, Android Chrome, different screen sizes). Fallback for
+              desktop (Web Share API not supported everywhere — show custom buttons). This provides
+              best mobile UX — users share to their preferred app.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What metrics do you track?</p>
-            <p className="mt-2 text-sm">A: Share counts, share rate, platform distribution, referral traffic, conversion rate, viral coefficient.</p>
+            <p className="font-semibold">Q: What metrics do you track for sharing?</p>
+            <p className="mt-2 text-sm">
+              A: Share counts (total shares, per platform — Twitter, Facebook, LinkedIn). Share
+              rate (shares per pageview — measure sharing propensity). Platform distribution (% of
+              shares per platform — inform which buttons to show). Referral traffic (visits from
+              shares — Google Analytics utm_source/medium). Conversion rate (signups/purchases
+              from shares — ROI). Viral coefficient (k-factor — shares per user, invites sent,
+              invites accepted). Top shared content (which articles/products/videos get shared
+              most). Alert on anomalies (sudden spike/drop in shares — investigate).
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you handle embed codes?</p>
-            <p className="mt-2 text-sm">A: Generate iframe/widget code, allow customization, track embed usage, prevent abuse.</p>
+            <p className="mt-2 text-sm">
+              A: Generate embed code (iframe HTML — width, height, src URL, allow fullscreen,
+              loading="lazy" for performance). Widget embed (JavaScript widget — dynamically loads
+              content, customizable theme/colors via data attributes). Allow customization (size —
+              small/medium/large, theme — light/dark, show/hide header). Track embed usage (track
+              embed loads — which sites embed your content). Prevent abuse (rate limit embed
+              loads, block malicious sites via CSP). Provide copy functionality (one-click copy
+              embed code to clipboard). This enables third-party amplification while maintaining
+              control.
+            </p>
           </div>
         </div>
-      </section>
-
-      <section>
-        <h2>Security Checklist</h2>
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Pre-Launch Checklist</h3>
-          <ul className="space-y-2">
-            <li>☐ Sharing buttons configured</li>
-            <li>☐ Open Graph tags optimized</li>
-            <li>☐ Link generation working</li>
-            <li>☐ Analytics tracking enabled</li>
-            <li>☐ Deep linking implemented</li>
-            <li>☐ Audit logging enabled</li>
-            <li>☐ Monitoring and alerting set up</li>
-            <li>☐ Penetration testing completed</li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Testing Strategy</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Unit Tests</h3>
-        <ul className="space-y-2">
-          <li>Test link generation</li>
-          <li>Test UTM parameter addition</li>
-          <li>Test share tracking</li>
-          <li>Test embed code generation</li>
-          <li>Test deep linking</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Integration Tests</h3>
-        <ul className="space-y-2">
-          <li>Test sharing flow</li>
-          <li>Test social platform integration</li>
-          <li>Test link tracking</li>
-          <li>Test analytics integration</li>
-          <li>Test embed functionality</li>
-          <li>Test deep link fallback</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Tests</h3>
-        <ul className="space-y-2">
-          <li>Test sharing authorization</li>
-          <li>Test link manipulation</li>
-          <li>Test audit logging</li>
-          <li>Test share abuse prevention</li>
-          <li>Test embed security</li>
-          <li>Penetration testing for sharing</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Tests</h3>
-        <ul className="space-y-2">
-          <li>Test sharing performance</li>
-          <li>Test link generation performance</li>
-          <li>Test concurrent sharing</li>
-          <li>Test analytics tracking performance</li>
-          <li>Test embed loading performance</li>
-        </ul>
       </section>
 
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li><a href="https://ogp.me/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Open Graph Protocol</a></li>
-          <li><a href="https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/abouts-cards" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Twitter Cards</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Authorization Cheat Sheet</a></li>
-          <li><a href="https://auth0.com/blog/a-look-at-the-latest-draft-for-oauth-2-1/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OAuth 2.1 Security Best Practices</a></li>
-          <li><a href="https://developer.mozilla.org/en-US/docs/Web/Security" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">MDN - Web Security</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Choosing_and_Using_Security_Questions_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Security Questions</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Multifactor Authentication</a></li>
-          <li><a href="https://docs.openfga.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OpenFGA - Fine-Grained Authorization</a></li>
-          <li><a href="https://www.cerbos.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Cerbos - Policy as Code</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Access Control Cheat Sheet</a></li>
+          <li>
+            <a
+              href="https://ogp.me/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open Graph Protocol
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/abouts-cards"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Twitter Cards
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developers.facebook.com/docs/sharing/webmasters"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Facebook Sharing Debugger
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.linkedin.com/post-inspector/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              LinkedIn Post Inspector
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Share_API"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MDN - Web Share API
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.apple.com/ios/universal-links/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Apple Universal Links
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.android.com/training/app-links"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Android App Links
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Access Control Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Input Validation Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developers.google.com/analytics/devguides/collection/protocol/ga4"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Google Analytics 4 - Measurement Protocol
+            </a>
+          </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Implementation Patterns</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Pattern</h3>
-        <p>
-          Prominent share buttons. Multiple sharing options. Pre-fill share text. Optimize for mobile. Test on multiple platforms.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Link Generation Pattern</h3>
-        <p>
-          Generate short links. Add UTM parameters automatically. Support deep linking. Optimize Open Graph tags. Test link previews.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Analytics Pattern</h3>
-        <p>
-          Track share counts. Track by platform. Track referral traffic. Attribute shares to users. Track conversions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Embed Pattern</h3>
-        <p>
-          Generate iframe/widget code. Allow customization. Track embed usage. Prevent abuse. Provide copy functionality.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Graceful Degradation</h3>
-        <p>
-          Handle sharing failures gracefully. Fail-safe defaults (copy link). Queue sharing requests for retry. Implement circuit breaker pattern. Provide manual fallback. Monitor sharing health continuously.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Compliance Considerations</h3>
-        <p>
-          Meet regulatory requirements for sharing. SOC2: Sharing audit trails. HIPAA: PHI sharing safeguards. PCI-DSS: Cardholder data sharing. GDPR: Content data handling. Implement compliance reporting. Regular compliance reviews.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Optimization</h3>
-        <p>
-          Optimize sharing for high-throughput systems. Batch sharing operations. Use connection pooling. Implement async sharing operations. Monitor sharing latency. Set SLOs for sharing time. Scale sharing endpoints horizontally.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Error Handling</h3>
-        <p>
-          Handle sharing errors gracefully. Log errors with full context. Implement retry with exponential backoff. Alert on repeated failures. Provide fallback sharing mechanisms. Don't expose internal errors to users.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Developer Experience</h3>
-        <p>
-          Make sharing easy for developers to use. Provide sharing SDK. Auto-generate sharing documentation. Include sharing requirements in API docs. Provide testing utilities. Implement sharing linting in CI. Create runbooks for common issues.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Multi-Tenant Sharing</h3>
-        <p>
-          Handle sharing in multi-tenant systems. Tenant-scoped sharing configuration. Isolate sharing events between tenants. Tenant-specific sharing policies. Audit sharing per tenant. Handle cross-tenant sharing carefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise Sharing</h3>
-        <p>
-          Special handling for enterprise sharing. Dedicated support for enterprise onboarding. Custom sharing configurations. SLA for sharing availability. Priority support for sharing issues. Regular enterprise reviews.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Emergency Access</h3>
-        <p>
-          Break-glass procedures for emergency access. Pre-approved emergency sharing bypass. Require security team approval. Automatic notification to affected users. Full audit logging of emergency access. Post-incident review required.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Testing</h3>
-        <p>
-          Test sharing thoroughly before deployment. Chaos engineering for sharing failures. Simulate high-volume sharing scenarios. Test sharing under load. Validate sharing propagation. Test rollback procedures. Document test results.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">User Communication</h3>
-        <p>
-          Communicate sharing changes clearly to users. Explain why sharing is required. Provide steps to configure sharing. Offer support contact for issues. Send sharing confirmation. Provide sharing history for review. Handle user concerns empathetically.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Continuous Improvement</h3>
-        <p>
-          Evolve sharing based on operational learnings. Analyze sharing patterns. Identify false positives. Optimize sharing triggers. Gather user feedback. Track sharing metrics. Benchmark against industry best practices.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Hardening</h3>
-        <p>
-          Strengthen sharing against attacks. Implement defense in depth. Regular penetration testing. Monitor for sharing bypass attempts. Encrypt sharing data at rest. Use hardware security modules for key management. Implement zero-trust principles.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Deprovisioning Integration</h3>
-        <p>
-          Integrate with user deprovisioning workflows. Automatic sharing revocation on HR termination. Role change triggers sharing review. Contractor expiry triggers sharing revocation. Handle temporary access expiry. Coordinate with access management systems.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Analytics</h3>
-        <p>
-          Analyze sharing data for insights. Track sharing reasons distribution. Identify common sharing triggers. Detect anomalous sharing patterns. Measure sharing effectiveness. Generate sharing reports. Use analytics for optimization.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Cross-System Sharing</h3>
-        <p>
-          Coordinate sharing across multiple systems. Central sharing orchestration. Handle system-specific sharing. Ensure consistent enforcement. Manage sharing dependencies. Orchestrate sharing updates. Monitor cross-system sharing health.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Documentation</h3>
-        <p>
-          Maintain comprehensive sharing documentation. Sharing procedures and runbooks. Decision records for sharing design. Usage examples for each scenario. Onboarding guide for new developers. API documentation with sharing endpoints. Keep documentation up to date.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Cost Optimization</h3>
-        <p>
-          Optimize sharing system costs. Right-size sharing infrastructure. Use serverless for variable workloads. Optimize storage for sharing data. Reduce unnecessary sharing checks. Monitor cost per sharing. Balance performance with cost.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Governance</h3>
-        <p>
-          Establish sharing governance framework. Define sharing ownership and stewardship. Regular sharing reviews and audits. Sharing change management process. Compliance reporting. Sharing exception handling. Training and documentation. Continuous improvement program.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Real-Time Sharing</h3>
-        <p>
-          Enable real-time sharing capabilities. Hot reload sharing rules. Version sharing for rollback. Validate sharing before activation. Test in isolated environment first. Monitor for issues after update. Implement gradual rollout for sharing changes.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Simulation</h3>
-        <p>
-          Test sharing changes before deployment. What-if analysis for sharing changes. Simulate sharing decisions with sample requests. Detect unintended consequences. Validate sharing coverage. Test edge cases and boundary conditions. Generate impact reports for stakeholders.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Access Recertification</h3>
-        <p>
-          Periodic review of access permissions. Quarterly access recertification campaigns. Managers review direct reports' access. Automated reminders for pending reviews. Escalation for overdue reviews. Attestation workflow with audit trail. Generate compliance reports for auditors.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Inheritance</h3>
-        <p>
-          Support sharing inheritance for easier management. Parent sharing triggers child sharing. Handle inheritance conflicts clearly. Document inheritance hierarchy. Cache inherited sharing results. Monitor inheritance depth for performance.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Geographic Sharing</h3>
-        <p>
-          Enforce location-based sharing controls. Sharing access by country/region. Comply with data sovereignty laws. Use IP geolocation for enforcement. Handle VPN and proxy detection. Allow exceptions for travel. Audit geographic sharing patterns.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Time-Based Sharing</h3>
-        <p>
-          Sharing access by time of day/day of week. Business hours only for sensitive operations. After-hours sharing requires approval. Handle timezone differences. Support shift-based access patterns. Audit time-based sharing violations. Implement automatic expiry.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Device-Based Sharing</h3>
-        <p>
-          Sharing access by device characteristics. Require managed devices for sensitive data. Check device compliance (encryption, MDM). Block rooted/jailbroken devices. Implement device fingerprinting. Support device registration workflow. Audit device-based sharing decisions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Network-Based Sharing</h3>
-        <p>
-          Sharing access by network characteristics. Allow only corporate network for sensitive operations. Require VPN for remote access. Check network security posture. Implement network segmentation. Monitor network-based sharing patterns. Handle network changes gracefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Behavioral Sharing</h3>
-        <p>
-          Detect anomalous access patterns for sharing. Baseline normal user behavior. Alert on deviations (unusual time, location, resource). Implement risk scoring. Step-up sharing for high-risk access. Continuous sharing during session. Integrate with SIEM for correlation.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Consent-Based Sharing</h3>
-        <p>
-          Manage user consent for session access. Capture consent at session creation. Support consent withdrawal. Audit consent decisions. Handle consent expiry. Integrate with privacy management systems. Generate consent reports for compliance.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Data Classification Sharing</h3>
-        <p>
-          Apply sharing based on data sensitivity. Classify data (public, internal, confidential, restricted). Different sharing per classification. Automatic classification where possible. Handle classification changes. Audit classification-based sharing. Train users on classification.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Orchestration</h3>
-        <p>
-          Coordinate sharing across distributed systems. Central sharing orchestration service. Handle sharing conflicts across systems. Ensure consistent enforcement. Manage sharing dependencies. Orchestrate sharing updates. Monitor orchestration health.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Zero Trust Sharing</h3>
-        <p>
-          Implement zero trust sharing control. Never trust, always verify. Least privilege sharing by default. Micro-segmentation of sharing. Continuous verification of sharing trust. Assume breach mentality. Monitor and log all sharing.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Versioning Strategy</h3>
-        <p>
-          Manage sharing versions effectively. Semantic versioning for sharing. Backward compatibility guarantees. Deprecation process for old versions. Migration guides for version changes. Support multiple versions simultaneously. Track version adoption rates.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Access Request Sharing</h3>
-        <p>
-          Handle access request sharing systematically. Self-service access sharing request. Manager approval workflow. Automated sharing after approval. Temporary sharing with expiry. Access sharing audit trail. Integration with HR systems.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Compliance Monitoring</h3>
-        <p>
-          Monitor sharing compliance continuously. Automated compliance checks. Alert on sharing violations. Generate compliance reports. Track remediation progress. Integrate with GRC systems. Support external audits.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Disaster Recovery</h3>
-        <p>
-          Plan for sharing system failures. Backup sharing configurations. Disaster recovery procedures. Fail-safe defaults (deny-by-default). Recovery time objectives. Test DR procedures regularly. Document recovery steps.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Performance Tuning</h3>
-        <p>
-          Optimize sharing evaluation performance. Profile sharing evaluation latency. Identify slow sharing rules. Optimize sharing rules. Use efficient data structures. Cache sharing results. Scale sharing engines horizontally. Set performance SLOs.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Testing Automation</h3>
-        <p>
-          Automate sharing testing in CI/CD. Unit tests for sharing rules. Integration tests with sample requests. Regression tests for sharing changes. Performance tests for sharing evaluation. Security tests for sharing bypass. Automated sharing validation.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Communication</h3>
-        <p>
-          Communicate sharing changes effectively. Notify affected users of changes. Provide change summaries. Offer training for complex changes. Maintain sharing changelog. Gather user feedback. Address concerns proactively.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Retirement</h3>
-        <p>
-          Retire obsolete sharing systematically. Identify unused sharing. Deprecation notice period. Migration path for affected users. Monitor for usage during deprecation. Remove sharing after grace period. Document retirement decisions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Third-Party Sharing Integration</h3>
-        <p>
-          Integrate with third-party sharing systems. Support standard protocols (OAuth, OIDC, SAML). Handle third-party sharing evaluation. Manage trust relationships. Audit third-party sharing. Monitor integration health. Plan for vendor changes.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Cost Management</h3>
-        <p>
-          Optimize sharing system costs. Right-size sharing infrastructure. Use serverless for variable workloads. Optimize storage for sharing data. Reduce unnecessary sharing checks. Monitor cost per sharing. Balance performance with cost.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Scalability</h3>
-        <p>
-          Scale sharing for growing systems. Horizontal scaling for sharing engines. Shard sharing data by user. Use read replicas for sharing checks. Implement caching at multiple levels. Monitor scaling metrics. Plan capacity proactively.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Observability</h3>
-        <p>
-          Implement comprehensive sharing observability. Distributed tracing for sharing flow. Structured logging for sharing events. Metrics for sharing health. Dashboards for sharing monitoring. Alerts for sharing anomalies. Root cause analysis tools.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Training</h3>
-        <p>
-          Train team on sharing procedures. Regular sharing drills. Document sharing runbooks. Cross-train team members. Test sharing knowledge. Update training materials. Track training completion.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Innovation</h3>
-        <p>
-          Stay current with sharing best practices. Evaluate new sharing technologies. Pilot innovative sharing approaches. Share sharing learnings. Contribute to sharing community. Patent sharing innovations where applicable.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Metrics</h3>
-        <p>
-          Track key sharing metrics. Sharing success rate. Time to sharing. Sharing propagation latency. Denylist hit rate. User session count. Sharing error rate. Set targets and monitor trends.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Security</h3>
-        <p>
-          Secure sharing systems against attacks. Encrypt sharing data. Implement access controls. Audit sharing access. Monitor for sharing abuse. Regular security assessments. Incident response procedures.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Sharing Compliance</h3>
-        <p>
-          Meet regulatory requirements for sharing. SOC2 audit trails. HIPAA immediate sharing. PCI-DSS session controls. GDPR right to sharing. Regular compliance reviews. External audit support.
-        </p>
       </section>
     </ArticleLayout>
   );

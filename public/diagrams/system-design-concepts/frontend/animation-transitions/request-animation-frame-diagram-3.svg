@@ -1,0 +1,77 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">setTimeout vs requestAnimationFrame Timing</text>
+
+  <!-- Vsync markers -->
+  <text x="30" y="72" font-size="9" font-weight="600" fill="#6d5bd0">Display Vsync (60Hz)</text>
+  <line x1="100" y1="80" x2="100" y2="400" stroke="#228B22" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="233" y1="80" x2="233" y2="400" stroke="#228B22" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="366" y1="80" x2="366" y2="400" stroke="#228B22" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="500" y1="80" x2="500" y2="400" stroke="#228B22" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="633" y1="80" x2="633" y2="400" stroke="#228B22" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="766" y1="80" x2="766" y2="400" stroke="#228B22" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="100" y="92" text-anchor="middle" font-size="7" fill="#228B22">0ms</text>
+  <text x="233" y="92" text-anchor="middle" font-size="7" fill="#228B22">16.67</text>
+  <text x="366" y="92" text-anchor="middle" font-size="7" fill="#228B22">33.33</text>
+  <text x="500" y="92" text-anchor="middle" font-size="7" fill="#228B22">50.00</text>
+  <text x="633" y="92" text-anchor="middle" font-size="7" fill="#228B22">66.67</text>
+  <text x="766" y="92" text-anchor="middle" font-size="7" fill="#228B22">83.33</text>
+
+  <!-- rAF row -->
+  <text x="30" y="130" font-size="10" font-weight="600" fill="#6d5bd0">rAF</text>
+  <line x1="80" y1="130" x2="800" y2="130" stroke="#d7d1e6" stroke-width="1"/>
+
+  <!-- rAF callbacks aligned to vsync -->
+  <rect x="90" y="115" width="20" height="30" rx="3" fill="#6d5bd0"/>
+  <rect x="223" y="115" width="20" height="30" rx="3" fill="#6d5bd0"/>
+  <rect x="356" y="115" width="20" height="30" rx="3" fill="#6d5bd0"/>
+  <rect x="490" y="115" width="20" height="30" rx="3" fill="#6d5bd0"/>
+  <rect x="623" y="115" width="20" height="30" rx="3" fill="#6d5bd0"/>
+  <rect x="756" y="115" width="20" height="30" rx="3" fill="#6d5bd0"/>
+
+  <text x="450" y="165" text-anchor="middle" font-size="9" fill="#228B22" font-weight="600">✓ Perfectly aligned to vsync — every frame captured</text>
+
+  <!-- setTimeout row -->
+  <text x="30" y="210" font-size="10" font-weight="600" fill="#cc3333">setTimeout</text>
+  <text x="30" y="222" font-size="8" fill="#cc3333">(16ms)</text>
+  <line x1="80" y1="210" x2="800" y2="210" stroke="#d7d1e6" stroke-width="1"/>
+
+  <!-- setTimeout callbacks - drifting -->
+  <rect x="90" y="195" width="20" height="30" rx="3" fill="#cc3333"/>
+  <rect x="216" y="195" width="20" height="30" rx="3" fill="#cc3333"/>
+  <text x="226" y="188" text-anchor="middle" font-size="7" fill="#cc3333">-1ms drift</text>
+  <rect x="340" y="195" width="20" height="30" rx="3" fill="#FFB800"/>
+  <text x="350" y="188" text-anchor="middle" font-size="7" fill="#FFB800">-3ms drift</text>
+  <rect x="470" y="195" width="20" height="30" rx="3" fill="#cc3333"/>
+  <text x="480" y="188" text-anchor="middle" font-size="7" fill="#cc3333">-5ms drift</text>
+  <rect x="510" y="195" width="20" height="30" rx="3" fill="#cc3333" opacity="0.3"/>
+  <text x="520" y="243" text-anchor="middle" font-size="7" fill="#cc3333">missed vsync!</text>
+  <rect x="640" y="195" width="20" height="30" rx="3" fill="#cc3333"/>
+
+  <text x="450" y="258" text-anchor="middle" font-size="9" fill="#cc3333" font-weight="600">✗ Drifts from vsync — periodic missed frames cause visible stutter</text>
+
+  <!-- Background behavior -->
+  <rect x="30" y="280" width="840" height="90" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="302" text-anchor="middle" font-size="13" font-weight="600" fill="#6d5bd0">Background Tab Behavior</text>
+
+  <rect x="50" y="315" width="380" height="40" rx="4" fill="#228B22" opacity="0.1" stroke="#228B22"/>
+  <text x="240" y="333" text-anchor="middle" font-size="10" font-weight="600" fill="#228B22">rAF: Paused or throttled to ~1fps</text>
+  <text x="240" y="349" text-anchor="middle" font-size="9" fill="#1a1822">Zero CPU usage — saves battery. Resumes on tab focus.</text>
+
+  <rect x="460" y="315" width="390" height="40" rx="4" fill="#cc3333" opacity="0.1" stroke="#cc3333"/>
+  <text x="655" y="333" text-anchor="middle" font-size="10" font-weight="600" fill="#cc3333">setTimeout: Throttled to 1fps minimum</text>
+  <text x="655" y="349" text-anchor="middle" font-size="9" fill="#1a1822">Still fires! Wastes CPU and battery in background.</text>
+
+  <!-- Summary -->
+  <rect x="30" y="385" width="840" height="100" rx="8" fill="#6d5bd0"/>
+  <text x="450" y="407" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Why rAF Wins</text>
+  <text x="80" y="430" font-size="10" fill="#ffffff">1. Vsync-synchronized — updates always captured in next paint (no tearing or missed frames)</text>
+  <text x="80" y="450" font-size="10" fill="#ffffff">2. Auto-paused in background — zero CPU waste when tab is not visible</text>
+  <text x="80" y="470" font-size="10" fill="#ffffff">3. Browser-optimized — batched, prioritized, and scheduled for optimal rendering throughput</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

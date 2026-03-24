@@ -1,0 +1,83 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1822">WAAPI Thread Architecture: Compositor vs Main Thread</text>
+
+  <!-- Main Thread -->
+  <rect x="30" y="60" width="410" height="230" rx="8" fill="#ffffff" stroke="#cc3333" stroke-width="2"/>
+  <text x="235" y="82" text-anchor="middle" font-size="13" font-weight="600" fill="#cc3333">Main Thread</text>
+
+  <rect x="50" y="95" width="180" height="35" rx="4" fill="#cc3333" opacity="0.15" stroke="#cc3333"/>
+  <text x="140" y="117" text-anchor="middle" font-size="10" fill="#1a1822">JavaScript Execution</text>
+
+  <rect x="240" y="95" width="180" height="35" rx="4" fill="#cc3333" opacity="0.15" stroke="#cc3333"/>
+  <text x="330" y="117" text-anchor="middle" font-size="10" fill="#1a1822">React Re-render</text>
+
+  <rect x="50" y="140" width="180" height="35" rx="4" fill="#cc3333" opacity="0.15" stroke="#cc3333"/>
+  <text x="140" y="162" text-anchor="middle" font-size="10" fill="#1a1822">JSON Parsing</text>
+
+  <rect x="240" y="140" width="180" height="35" rx="4" fill="#cc3333" opacity="0.15" stroke="#cc3333"/>
+  <text x="330" y="162" text-anchor="middle" font-size="10" fill="#1a1822">API Callbacks</text>
+
+  <rect x="50" y="190" width="370" height="45" rx="4" fill="#cc3333" opacity="0.3" stroke="#cc3333"/>
+  <text x="235" y="210" text-anchor="middle" font-size="11" font-weight="600" fill="#cc3333">Main thread blocked for 150ms</text>
+  <text x="235" y="226" text-anchor="middle" font-size="9" fill="#1a1822">Heavy computation, network callback, or GC pause</text>
+
+  <rect x="50" y="248" width="370" height="30" rx="4" fill="#cc3333"/>
+  <text x="235" y="268" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">rAF animations: DROPPED 9 FRAMES (150ms stall)</text>
+
+  <!-- Compositor Thread -->
+  <rect x="460" y="60" width="410" height="230" rx="8" fill="#ffffff" stroke="#228B22" stroke-width="2"/>
+  <text x="665" y="82" text-anchor="middle" font-size="13" font-weight="600" fill="#228B22">Compositor Thread (GPU)</text>
+
+  <!-- Smooth frames -->
+  <rect x="480" y="100" width="50" height="25" rx="3" fill="#228B22" opacity="0.6"/>
+  <rect x="535" y="100" width="50" height="25" rx="3" fill="#228B22" opacity="0.6"/>
+  <rect x="590" y="100" width="50" height="25" rx="3" fill="#228B22" opacity="0.6"/>
+  <rect x="645" y="100" width="50" height="25" rx="3" fill="#228B22" opacity="0.6"/>
+  <rect x="700" y="100" width="50" height="25" rx="3" fill="#228B22" opacity="0.6"/>
+  <rect x="755" y="100" width="50" height="25" rx="3" fill="#228B22" opacity="0.6"/>
+  <rect x="810" y="100" width="50" height="25" rx="3" fill="#228B22" opacity="0.6"/>
+
+  <rect x="480" y="130" width="50" height="25" rx="3" fill="#228B22" opacity="0.6"/>
+  <rect x="535" y="130" width="50" height="25" rx="3" fill="#228B22" opacity="0.6"/>
+  <rect x="590" y="130" width="50" height="25" rx="3" fill="#228B22" opacity="0.6"/>
+  <rect x="645" y="130" width="50" height="25" rx="3" fill="#228B22" opacity="0.6"/>
+  <rect x="700" y="130" width="50" height="25" rx="3" fill="#228B22" opacity="0.6"/>
+  <rect x="755" y="130" width="50" height="25" rx="3" fill="#228B22" opacity="0.6"/>
+  <rect x="810" y="130" width="50" height="25" rx="3" fill="#228B22" opacity="0.6"/>
+
+  <text x="665" y="180" text-anchor="middle" font-size="10" fill="#228B22">14 frames rendered at perfect 60fps</text>
+  <text x="665" y="196" text-anchor="middle" font-size="10" fill="#228B22">while main thread was blocked</text>
+
+  <rect x="480" y="210" width="370" height="30" rx="4" fill="#228B22" opacity="0.15" stroke="#228B22"/>
+  <text x="665" y="230" text-anchor="middle" font-size="10" fill="#228B22">Handles: transform, opacity, filter compositing</text>
+
+  <rect x="480" y="248" width="370" height="30" rx="4" fill="#228B22"/>
+  <text x="665" y="268" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">WAAPI animations: ZERO FRAMES DROPPED ✓</text>
+
+  <!-- Comparison -->
+  <rect x="30" y="310" width="840" height="175" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="332" text-anchor="middle" font-size="14" font-weight="600" fill="#6d5bd0">Performance Comparison During Main Thread Load</text>
+
+  <rect x="50" y="350" width="390" height="120" rx="6" fill="#cc3333" opacity="0.1" stroke="#cc3333"/>
+  <text x="245" y="370" text-anchor="middle" font-size="11" font-weight="600" fill="#cc3333">rAF-Based (GSAP, manual loops)</text>
+  <text x="60" y="392" font-size="9" fill="#1a1822">• Runs on main thread via requestAnimationFrame</text>
+  <text x="60" y="408" font-size="9" fill="#1a1822">• Blocked by JS execution, React renders, GC pauses</text>
+  <text x="60" y="424" font-size="9" fill="#1a1822">• Frame drops proportional to main thread congestion</text>
+  <text x="60" y="440" font-size="9" fill="#1a1822">• Must keep rAF callback under 10ms — difficult at scale</text>
+  <text x="60" y="460" font-size="9" fill="#cc3333" font-weight="600">Result: Jank during data loading, navigation, re-renders</text>
+
+  <rect x="460" y="350" width="390" height="120" rx="6" fill="#228B22" opacity="0.1" stroke="#228B22"/>
+  <text x="655" y="370" text-anchor="middle" font-size="11" font-weight="600" fill="#228B22">WAAPI / CSS (compositor-thread)</text>
+  <text x="470" y="392" font-size="9" fill="#1a1822">• Runs on compositor thread independently</text>
+  <text x="470" y="408" font-size="9" fill="#1a1822">• Unaffected by JS execution or React rendering</text>
+  <text x="470" y="424" font-size="9" fill="#1a1822">• 60fps guaranteed for transform/opacity/filter</text>
+  <text x="470" y="440" font-size="9" fill="#1a1822">• Zero JavaScript cost per animation frame</text>
+  <text x="470" y="460" font-size="9" fill="#228B22" font-weight="600">Result: Smooth animation even during heavy processing</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

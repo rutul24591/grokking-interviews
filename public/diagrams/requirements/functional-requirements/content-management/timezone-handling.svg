@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Timezone Handling Architecture</text>
+  
+  <!-- Browser Detection -->
+  <rect x="50" y="70" width="180" height="120" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="140" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#3b82f6">Browser Detection</text>
+  
+  <rect x="70" y="115" width="140" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="140" y="137" text-anchor="middle" font-family="monospace" font-size="9" fill="#0f172a">Intl.DateTimeFormat</text>
+  <text x="140" y="150" text-anchor="middle" font-family="monospace" font-size="8" fill="#475569">.resolvedOptions().timeZone</text>
+  
+  <rect x="70" y="155" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="140" y="175" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Returns: America/New_York</text>
+  
+  <line x1="230" y1="130" x2="270" y2="130" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="250" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Detect</text>
+  
+  <!-- UTC Storage -->
+  <rect x="280" y="70" width="180" height="120" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="370" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#22c55e">Database (UTC)</text>
+  
+  <rect x="300" y="115" width="140" height="35" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="370" y="137" text-anchor="middle" font-family="monospace" font-size="9" fill="#0f172a">scheduled_at_utc</text>
+  <text x="370" y="150" text-anchor="middle" font-family="monospace" font-size="8" fill="#475569">2026-03-17 14:00:00 UTC</text>
+  
+  <rect x="300" y="155" width="140" height="30" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="370" y="175" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">user_timezone: EST</text>
+  
+  <line x1="460" y1="130" x2="500" y2="130" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="480" y="120" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Store</text>
+  
+  <!-- Local Display -->
+  <rect x="510" y="70" width="180" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="600" y="95" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#f59e0b">UI Display (Local)</text>
+  
+  <rect x="530" y="115" width="140" height="35" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="600" y="137" text-anchor="middle" font-family="monospace" font-size="9" fill="#0f172a">Convert UTC → Local</text>
+  <text x="600" y="150" text-anchor="middle" font-family="monospace" font-size="8" fill="#475569">9:00 AM EST</text>
+  
+  <rect x="530" y="155" width="140" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="600" y="175" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">User sees local time</text>
+  
+  <line x1="600" y1="190" x2="600" y2="230" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="620" y="210" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">Display</text>
+  
+  <!-- DST Handling -->
+  <rect x="510" y="240" width="180" height="120" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="600" y="265" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#8b5cf6">DST Handling</text>
+  
+  <rect x="530" y="280" width="140" height="35" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="600" y="302" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">date-fns-tz / moment-timezone</text>
+  
+  <rect x="530" y="320" width="140" height="35" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="600" y="342" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Spring Forward: 2AM→3AM</text>
+  <text x="600" y="355" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Fall Back: 2AM occurs twice</text>
+  
+  <!-- Timezone Change Workflow -->
+  <rect x="50" y="240" width="440" height="240" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="270" y="265" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#ef4444">Timezone Change Workflow</text>
+  
+  <rect x="70" y="280" width="400" height="40" rx="4" fill="#ef4444" opacity="0.3"/>
+  <text x="270" y="302" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">User travels from New York to London</text>
+  <text x="270" y="317" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Browser detects: Europe/London (GMT+0)</text>
+  
+  <rect x="70" y="330" width="400" height="70" rx="4" fill="#ffffff" stroke="#ef4444" stroke-width="1"/>
+  <text x="270" y="352" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Dialog: "You've changed timezone"</text>
+  <text x="270" y="372" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Keep absolute time (9 AM EST = 2 PM GMT)?</text>
+  <text x="270" y="390" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Or adjust to local (9 AM GMT)?</text>
+  
+  <rect x="90" y="410" width="160" height="35" rx="4" fill="#ef4444"/>
+  <text x="170" y="432" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Keep Absolute (UTC)</text>
+  
+  <rect x="280" y="410" width="160" height="35" rx="4" fill="#22c55e"/>
+  <text x="360" y="432" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Adjust to Local</text>
+  
+  <!-- Best Practices -->
+  <rect x="510" y="380" width="240" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="630" y="405" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#22c55e">Best Practices</text>
+  
+  <rect x="530" y="420" width="200" height="25" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="630" y="437" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">✓ Always store in UTC</text>
+  
+  <rect x="530" y="450" width="200" height="25" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="630" y="467" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">✓ Display in user timezone</text>
+
+</svg>
