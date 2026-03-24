@@ -72,7 +72,7 @@ For each article:
 - Structure violations
 - Structure violations(order)
 - Check for placeholder svgs in article.
-
+- No code example or code blocks should be present in the article.
 - Suggestions:
 - Specific improvements
   </audit-output>
