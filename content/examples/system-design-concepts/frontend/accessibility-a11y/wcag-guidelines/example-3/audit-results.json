@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-03-24T00:00:00.000Z",
+  "findings": [
+    { "severity": "error", "ruleId": "form.label", "message": "Input missing label", "target": "email" },
+    { "severity": "error", "ruleId": "button.name", "message": "Button has no accessible name", "target": "icon-only" },
+    { "severity": "warn", "ruleId": "nav.skip-link", "message": "No skip link found", "target": "layout" }
+  ]
+}
+

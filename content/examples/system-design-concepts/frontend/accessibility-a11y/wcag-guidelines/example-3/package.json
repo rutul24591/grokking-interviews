@@ -1,0 +1,10 @@
+{
+  "name": "a11y-wcag-guidelines-example-3",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "node audit-gate.js"
+  }
+}
+

@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+body {
+  background: #070a13;
+  color: #e6e9f2;
+}
+
+.skip-target {
+  scroll-margin-top: 72px;
+}
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
