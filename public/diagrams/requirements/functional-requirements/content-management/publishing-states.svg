@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Publishing State Machine</text>
+  
+  <!-- Draft State -->
+  <rect x="50" y="70" width="150" height="100" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="125" y="105" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#3b82f6">Draft</text>
+  <text x="125" y="130" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Work in Progress</text>
+  <text x="125" y="145" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Visible: Author Only</text>
+  <text x="125" y="160" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Editable: Yes</text>
+  
+  <line x1="200" y1="120" x2="240" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="220" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Submit</text>
+  
+  <!-- Pending Review -->
+  <rect x="250" y="70" width="150" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="325" y="105" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#f59e0b">Pending Review</text>
+  <text x="325" y="130" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Submitted for Approval</text>
+  <text x="325" y="145" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Visible: Reviewer</text>
+  <text x="325" y="160" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Editable: No (Locked)</text>
+  
+  <line x1="400" y1="120" x2="440" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="420" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">Approve</text>
+  
+  <line x1="325" y1="170" x2="325" y2="210" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="345" y="190" text-anchor="start" font-family="system-ui" font-size="8" fill="#ef4444">Reject</text>
+  
+  <!-- Approved -->
+  <rect x="450" y="70" width="150" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="525" y="105" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#22c55e">Approved</text>
+  <text x="525" y="130" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Ready for Publication</text>
+  <text x="525" y="145" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Visible: Publisher</text>
+  <text x="525" y="160" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Editable: No</text>
+  
+  <line x1="600" y1="120" x2="640" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="620" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Schedule</text>
+  
+  <line x1="525" y1="170" x2="525" y2="210" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="545" y="190" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">Publish Now</text>
+  
+  <!-- Scheduled -->
+  <rect x="650" y="70" width="130" height="100" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="715" y="105" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#8b5cf6">Scheduled</text>
+  <text x="715" y="130" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Queued for Future</text>
+  <text x="715" y="145" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Publish Date Set</text>
+  <text x="715" y="160" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Auto-Publish</text>
+  
+  <line x1="715" y1="170" x2="715" y2="210" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="735" y="190" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">Auto-Publish</text>
+  
+  <!-- Published -->
+  <rect x="450" y="230" width="150" height="100" rx="8" fill="#22c55e" stroke="#22c55e" stroke-width="2"/>
+  <text x="525" y="265" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#ffffff">Published</text>
+  <text x="525" y="290" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Live Content</text>
+  <text x="525" y="305" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Visible: Public</text>
+  <text x="525" y="320" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Editable: No</text>
+  
+  <line x1="525" y1="330" x2="525" y2="370" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="545" y="350" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">Archive</text>
+  
+  <!-- Archived -->
+  <rect x="450" y="380" width="150" height="100" rx="8" fill="#64748b" stroke="#64748b" stroke-width="2"/>
+  <text x="525" y="415" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#ffffff">Archived</text>
+  <text x="525" y="440" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Retired Content</text>
+  <text x="525" y="455" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Visible: Internal</text>
+  <text x="525" y="470" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Restorable</text>
+  
+  <!-- Reject to Draft -->
+  <line x1="325" y1="210" x2="325" y2="250" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 325 250 L 325 300 L 125 300 L 125 170" stroke="#ef4444" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  <text x="200" y="290" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ef4444">Reject (with feedback)</text>
+  
+  <!-- Publish Now from Approved -->
+  <path d="M 525 170 L 525 230" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="380" width="340" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="405" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">State Properties</text>
+  
+  <rect x="70" y="420" width="140" height="25" rx="4" fill="#f1f5f9" stroke="#3b82f6" stroke-width="1"/>
+  <text x="140" y="437" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">Draft (Blue)</text>
+  
+  <rect x="230" y="420" width="140" height="25" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="300" y="437" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">Pending (Yellow)</text>
+  
+  <rect x="70" y="450" width="140" height="25" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="140" y="467" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">Approved (Green)</text>
+  
+  <rect x="230" y="450" width="140" height="25" rx="4" fill="#22c55e" stroke="#22c55e" stroke-width="1"/>
+  <text x="300" y="467" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Published (Dark Green)</text>
+
+</svg>

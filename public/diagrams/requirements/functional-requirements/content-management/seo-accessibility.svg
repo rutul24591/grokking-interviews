@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">SEO &amp; Accessibility Features</text>
+  
+  <!-- SEO Optimization -->
+  <rect x="50" y="70" width="340" height="200" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="220" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#3b82f6">SEO Optimization</text>
+  
+  <rect x="70" y="115" width="300" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="220" y="137" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Structured Data (schema.org Article)</text>
+  
+  <rect x="70" y="155" width="300" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="220" y="177" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Meta Tags (title, description, Open Graph)</text>
+  
+  <rect x="70" y="195" width="300" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="220" y="217" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Canonical URLs (prevent duplicate content)</text>
+  
+  <rect x="70" y="235" width="300" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="220" y="257" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Rich Snippets in Search Results</text>
+  
+  <!-- Core Web Vitals -->
+  <rect x="70" y="270" width="300" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="220" y="292" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Core Web Vitals (LCP, FID, CLS)</text>
+  
+  <line x1="390" y1="170" x2="430" y2="170" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Accessibility -->
+  <rect x="440" y="70" width="340" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="610" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f59e0b">Accessibility (WCAG 2.1)</text>
+  
+  <rect x="460" y="115" width="300" height="35" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="610" y="137" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Proper Heading Structure (H1, H2, H3)</text>
+  
+  <rect x="460" y="155" width="300" height="35" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="610" y="177" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Alt Text for Images</text>
+  
+  <rect x="460" y="195" width="300" height="35" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="610" y="217" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Keyboard Navigation (Tab, Enter, Escape)</text>
+  
+  <rect x="460" y="235" width="300" height="35" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="610" y="257" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Screen Reader Support (ARIA Labels)</text>
+  
+  <rect x="460" y="270" width="300" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="610" y="292" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Inclusive for Users with Disabilities</text>
+  
+  <line x1="610" y1="270" x2="610" y2="310" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Performance -->
+  <rect x="440" y="320" width="340" height="160" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="610" y="345" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#22c55e">Performance Optimization</text>
+  
+  <rect x="460" y="360" width="300" height="35" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="610" y="382" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Lazy Loading (Images, Videos)</text>
+  
+  <rect x="460" y="400" width="300" height="35" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="610" y="422" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Code Splitting (Reduce Bundle Size)</text>
+  
+  <rect x="460" y="440" width="300" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="610" y="462" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Fast Page Load (Low Bounce Rate)</text>
+  
+  <!-- Example Structured Data -->
+  <rect x="50" y="320" width="340" height="160" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="345" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Example: Structured Data</text>
+  
+  <rect x="70" y="360" width="300" height="100" rx="4" fill="#1e293b"/>
+  <text x="85" y="380" text-anchor="start" font-family="monospace" font-size="7" fill="#22c55e">{</text>
+  <text x="100" y="395" text-anchor="start" font-family="monospace" font-size="7" fill="#f1f5f9">"@type": "Article",</text>
+  <text x="100" y="410" text-anchor="start" font-family="monospace" font-size="7" fill="#f1f5f9">"headline": "Article Title",</text>
+  <text x="100" y="425" text-anchor="start" font-family="monospace" font-size="7" fill="#f1f5f9">"author": {"@type": "Person", ...},</text>
+  <text x="100" y="440" text-anchor="start" font-family="monospace" font-size="7" fill="#f1f5f9">"datePublished": "2024-01-15"</text>
+  <text x="85" y="455" text-anchor="start" font-family="monospace" font-size="7" fill="#22c55e">}</text>
+
+</svg>

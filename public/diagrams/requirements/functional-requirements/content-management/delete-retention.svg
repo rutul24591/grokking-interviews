@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Data Retention Policies</text>
+  
+  <!-- Retention by Content Type -->
+  <rect x="50" y="70" width="340" height="280" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="220" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#3b82f6">Retention by Content Type</text>
+  
+  <rect x="70" y="115" width="300" height="40" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="220" y="135" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">User Content: 30-90 days</text>
+  <text x="220" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Posts, comments, drafts</text>
+  
+  <rect x="70" y="165" width="300" height="40" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="220" y="185" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Financial Records: 7 years</text>
+  <text x="220" y="200" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Orders, invoices, payments</text>
+  
+  <rect x="70" y="215" width="300" height="40" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="220" y="235" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Healthcare Data: 6 years</text>
+  <text x="220" y="250" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Patient records (HIPAA)</text>
+  
+  <rect x="70" y="265" width="300" height="40" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="220" y="285" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Legal Documents: 10 years</text>
+  <text x="220" y="300" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Contracts, agreements</text>
+  
+  <rect x="70" y="315" width="300" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="220" y="337" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Configurable per content type</text>
+  
+  <line x1="390" y1="200" x2="430" y2="200" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Automated Cleanup -->
+  <rect x="440" y="70" width="340" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="610" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f59e0b">Automated Cleanup</text>
+  
+  <rect x="460" y="115" width="300" height="35" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="610" y="137" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Daily/Weekly Cleanup Job</text>
+  
+  <rect x="460" y="155" width="300" height="35" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="610" y="177" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Query: WHERE deleted_at &lt; NOW() - INTERVAL</text>
+  
+  <rect x="460" y="195" width="300" height="35" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="610" y="217" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Hard Delete: DELETE from table</text>
+  
+  <line x1="610" y1="210" x2="610" y2="250" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- GDPR Hard Delete -->
+  <rect x="440" y="260" width="340" height="140" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="610" y="285" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#22c55e">GDPR Hard Delete</text>
+  
+  <rect x="460" y="305" width="300" height="35" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="610" y="327" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Right to Erasure Request</text>
+  
+  <rect x="460" y="345" width="300" height="35" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="610" y="367" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Immediate Hard Delete (Override Retention)</text>
+  
+  <rect x="460" y="385" width="300" height="35" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="610" y="407" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Log for Compliance Audit</text>
+  
+  <!-- Storage Optimization -->
+  <rect x="50" y="370" width="340" height="110" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="395" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Storage Optimization</text>
+  
+  <rect x="70" y="410" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="140" y="430" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Partition Deleted</text>
+  
+  <rect x="230" y="410" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="300" y="430" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Archive Old Data</text>
+  
+  <rect x="70" y="445" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="140" y="465" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Cheaper Storage</text>
+  
+  <rect x="230" y="445" width="140" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="300" y="465" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">60-80% Cost Savings</text>
+
+</svg>

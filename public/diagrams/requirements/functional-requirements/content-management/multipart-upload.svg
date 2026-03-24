@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Multipart Upload Architecture</text>
+  
+  <!-- Original File -->
+  <rect x="50" y="70" width="150" height="100" rx="8" fill="#3b82f6"/>
+  <text x="125" y="110" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#ffffff">Original File</text>
+  <text x="125" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">50MB Video</text>
+  <text x="125" y="155" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Single File</text>
+  
+  <line x1="200" y1="120" x2="240" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="220" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">1. Chunk</text>
+  
+  <!-- Chunking -->
+  <rect x="250" y="60" width="180" height="120" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="340" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Chunking</text>
+  
+  <rect x="270" y="105" width="140" height="25" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="340" y="122" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">Chunk 1 (5MB)</text>
+  
+  <rect x="270" y="135" width="140" height="25" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="340" y="152" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">Chunk 2 (5MB)</text>
+  
+  <rect x="270" y="165" width="140" height="25" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="340" y="182" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">... Chunk 10 (5MB)</text>
+  
+  <line x1="430" y1="120" x2="470" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="450" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">2. Upload</text>
+  
+  <!-- Parallel Upload -->
+  <rect x="480" y="60" width="270" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="615" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#f59e0b">Parallel Upload</text>
+  
+  <rect x="500" y="105" width="70" height="25" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="535" y="122" text-anchor="middle" font-family="system-ui" font-size="7" fill="#0f172a">Chunk 1</text>
+  
+  <rect x="580" y="105" width="70" height="25" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="615" y="122" text-anchor="middle" font-family="system-ui" font-size="7" fill="#0f172a">Chunk 2</text>
+  
+  <rect x="660" y="105" width="70" height="25" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="695" y="122" text-anchor="middle" font-family="system-ui" font-size="7" fill="#0f172a">Chunk 3</text>
+  
+  <rect x="500" y="135" width="70" height="25" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="535" y="152" text-anchor="middle" font-family="system-ui" font-size="7" fill="#0f172a">Chunk 4</text>
+  
+  <rect x="580" y="135" width="70" height="25" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="615" y="152" text-anchor="middle" font-family="system-ui" font-size="7" fill="#0f172a">Chunk 5</text>
+  
+  <rect x="660" y="135" width="70" height="25" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="695" y="152" text-anchor="middle" font-family="system-ui" font-size="7" fill="#0f172a">Chunk 6</text>
+  
+  <text x="615" y="175" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">3-6 Concurrent Uploads</text>
+  
+  <line x1="750" y1="120" x2="750" y2="160" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Server Reassembly -->
+  <rect x="660" y="170" width="120" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="720" y="195" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Server</text>
+  <text x="720" y="220" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Reassemble</text>
+  <text x="720" y="235" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Validate</text>
+  <text x="720" y="250" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Store</text>
+  
+  <line x1="660" y1="220" x2="620" y2="220" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Progress Tracking -->
+  <rect x="480" y="170" width="170" height="100" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="565" y="195" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#8b5cf6">Progress</text>
+  
+  <rect x="500" y="210" width="130" height="20" rx="4" fill="#e2e8f0"/>
+  <rect x="500" y="210" width="91" height="20" rx="4" fill="#22c55e"/>
+  <text x="565" y="225" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">70%</text>
+  
+  <text x="565" y="245" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">5.2 MB/s</text>
+  <text x="565" y="260" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">~3s remaining</text>
+  
+  <line x1="480" y1="220" x2="440" y2="220" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Resumable -->
+  <rect x="250" y="170" width="180" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="340" y="195" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#f59e0b">Resumable</text>
+  
+  <rect x="270" y="210" width="140" height="25" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="340" y="227" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">✓ Chunk 1-7 Uploaded</text>
+  
+  <rect x="270" y="240" width="140" height="25" rx="4" fill="#ef4444" opacity="0.3"/>
+  <text x="340" y="257" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">✗ Chunk 8-10 Failed</text>
+  
+  <text x="340" y="265" text-anchor="middle" font-family="system-ui" font-size="7" fill="#475569">Resume from Chunk 8</text>
+  
+  <line x1="250" y1="220" x2="210" y2="220" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="230" y="210" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">Complete</text>
+  
+  <!-- Benefits -->
+  <rect x="50" y="170" width="120" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="110" y="195" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Benefits</text>
+  <text x="110" y="220" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Resume on Fail</text>
+  <text x="110" y="235" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Parallel Upload</text>
+  <text x="110" y="250" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Progress Tracking</text>
+  <text x="110" y="265" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Retry per Chunk</text>
+  
+  <!-- Chunk Size Options -->
+  <rect x="50" y="300" width="340" height="180" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="325" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Chunk Size Trade-offs</text>
+  
+  <rect x="70" y="340" width="140" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="140" y="362" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Small (1MB)</text>
+  <text x="140" y="375" text-anchor="middle" font-family="system-ui" font-size="7" fill="#475569">+ Granular Progress</text>
+  <text x="140" y="387" text-anchor="middle" font-family="system-ui" font-size="7" fill="#475569">- More Requests</text>
+  
+  <rect x="230" y="340" width="140" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="300" y="362" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Medium (5MB)</text>
+  <text x="300" y="375" text-anchor="middle" font-family="system-ui" font-size="7" fill="#475569">+ Balanced</text>
+  <text x="300" y="387" text-anchor="middle" font-family="system-ui" font-size="7" fill="#475569">+ Recommended</text>
+  
+  <rect x="70" y="385" width="140" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="140" y="407" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Large (10MB+)</text>
+  <text x="140" y="420" text-anchor="middle" font-family="system-ui" font-size="7" fill="#475569">+ Fewer Requests</text>
+  <text x="140" y="432" text-anchor="middle" font-family="system-ui" font-size="7" fill="#475569">- Coarse Progress</text>
+  
+  <rect x="230" y="385" width="140" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="300" y="407" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Adaptive</text>
+  <text x="300" y="420" text-anchor="middle" font-family="system-ui" font-size="7" fill="#475569">+ Network Based</text>
+  <text x="300" y="432" text-anchor="middle" font-family="system-ui" font-size="7" fill="#475569">+ Optimal</text>
+  
+  <!-- Retry Logic -->
+  <rect x="420" y="300" width="340" height="180" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="590" y="325" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Retry Logic</text>
+  
+  <rect x="440" y="340" width="300" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="360" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Attempt 1: Fail (Network Error)</text>
+  
+  <rect x="440" y="375" width="300" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="395" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Wait 1s (Exponential Backoff)</text>
+  
+  <rect x="440" y="410" width="300" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="430" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Attempt 2: Fail → Wait 2s</text>
+  
+  <rect x="440" y="445" width="300" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="590" y="465" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Attempt 3: Success (Max 5 Attempts)</text>
+
+</svg>

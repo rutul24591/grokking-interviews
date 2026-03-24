@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Media Upload Flow</text>
+  
+  <!-- File Selection -->
+  <rect x="50" y="70" width="150" height="100" rx="8" fill="#3b82f6"/>
+  <text x="125" y="110" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#ffffff">File Selection</text>
+  <text x="125" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Drag-Drop</text>
+  <text x="125" y="155" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">File Picker</text>
+  
+  <line x1="200" y1="120" x2="240" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="220" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">1. Validate</text>
+  
+  <!-- Client Validation -->
+  <rect x="250" y="60" width="180" height="120" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="340" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Client Validation</text>
+  
+  <rect x="270" y="105" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="340" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Magic Bytes Check</text>
+  
+  <rect x="270" y="140" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="340" y="160" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Size Limit Check</text>
+  
+  <rect x="270" y="175" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="340" y="195" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Dimension Check</text>
+  
+  <line x1="430" y1="120" x2="470" y2="120" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="450" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">✓ Valid</text>
+  
+  <line x1="340" y1="180" x2="340" y2="220" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="360" y="200" text-anchor="start" font-family="system-ui" font-size="8" fill="#ef4444">✗ Invalid</text>
+  
+  <!-- Optimization -->
+  <rect x="480" y="60" width="180" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="570" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#f59e0b">Optimization</text>
+  
+  <rect x="500" y="105" width="140" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="570" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Resize (if large)</text>
+  
+  <rect x="500" y="140" width="140" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="570" y="160" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Compress (80-85%)</text>
+  
+  <rect x="500" y="175" width="140" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="570" y="195" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Strip Metadata</text>
+  
+  <line x1="660" y1="120" x2="700" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="680" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">2. Upload</text>
+  
+  <!-- Multipart Upload -->
+  <rect x="710" y="60" width="70" height="120" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="745" y="90" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Upload</text>
+  <text x="745" y="115" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Multipart</text>
+  <text x="745" y="135" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Parallel</text>
+  <text x="745" y="155" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Resumable</text>
+  
+  <line x1="745" y1="180" x2="745" y2="220" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="765" y="200" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">3. Process</text>
+  
+  <!-- Server Processing -->
+  <rect x="710" y="230" width="70" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="745" y="255" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Server</text>
+  <text x="745" y="280" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Reassemble</text>
+  <text x="745" y="295" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Virus Scan</text>
+  <text x="745" y="310" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Store</text>
+  
+  <line x1="710" y1="280" x2="670" y2="280" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Notification -->
+  <rect x="480" y="230" width="180" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="570" y="255" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#22c55e">Complete</text>
+  <text x="570" y="280" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Notify User</text>
+  <text x="570" y="295" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Return URLs</text>
+  <text x="570" y="310" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Progress 100%</text>
+  
+  <line x1="480" y1="280" x2="440" y2="280" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Progress Tracking -->
+  <rect x="250" y="230" width="180" height="100" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="340" y="255" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Progress Tracking</text>
+  <text x="340" y="280" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Percentage %</text>
+  <text x="340" y="295" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Speed (MB/s)</text>
+  <text x="340" y="310" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Time Remaining</text>
+  
+  <line x1="250" y1="280" x2="210" y2="280" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="230" y="270" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">Complete</text>
+  
+  <!-- Error Handling -->
+  <rect x="50" y="230" width="120" height="100" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="110" y="260" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Error Handle</text>
+  <text x="110" y="285" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Retry Logic</text>
+  <text x="110" y="300" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Error Message</text>
+  <text x="110" y="315" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">User Notification</text>
+  
+  <!-- Upload Methods -->
+  <rect x="50" y="360" width="340" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="385" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Upload Methods</text>
+  
+  <rect x="70" y="400" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="140" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Single-Part (&lt;10MB)</text>
+  
+  <rect x="230" y="400" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="300" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Multipart (&gt;10MB)</text>
+  
+  <rect x="70" y="435" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="140" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Resumable Upload</text>
+  
+  <rect x="230" y="435" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="300" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Parallel Chunks</text>
+  
+  <!-- Validation Results -->
+  <rect x="420" y="360" width="340" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="590" y="385" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Validation Checks</text>
+  
+  <rect x="440" y="400" width="140" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="510" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ File Type (Magic)</text>
+  
+  <rect x="600" y="400" width="140" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="670" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Size Limit</text>
+  
+  <rect x="440" y="435" width="140" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="510" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Dimensions</text>
+  
+  <rect x="600" y="435" width="140" height="30" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="670" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✗ Virus Detected</text>
+
+</svg>

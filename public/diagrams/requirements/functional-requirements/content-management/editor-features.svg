@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Rich Text Editor Features</text>
+  
+  <!-- Formatting Toolbar -->
+  <rect x="50" y="70" width="340" height="200" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="220" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#3b82f6">Formatting Toolbar</text>
+  
+  <rect x="70" y="115" width="300" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="85" y="137" text-anchor="start" font-family="system-ui" font-size="9" fill="#0f172a">B I U S H1 H2 H3 Link Image Code</text>
+  
+  <rect x="70" y="155" width="140" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="140" y="177" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Text Formatting</text>
+  
+  <rect x="230" y="155" width="140" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="300" y="177" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Headings (H1-H6)</text>
+  
+  <rect x="70" y="195" width="140" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="140" y="217" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Lists (Ordered/Unordered)</text>
+  
+  <rect x="230" y="195" width="140" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="300" y="217" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Links &amp; Code Blocks</text>
+  
+  <!-- Media Embedding -->
+  <rect x="420" y="70" width="340" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="590" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f59e0b">Media Embedding</text>
+  
+  <rect x="440" y="115" width="140" height="40" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="510" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Images</text>
+  <text x="510" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Upload, Alt Text, Resize</text>
+  
+  <rect x="600" y="115" width="140" height="40" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="670" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Videos</text>
+  <text x="670" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">YouTube, Vimeo Embed</text>
+  
+  <rect x="440" y="165" width="140" height="40" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="510" y="185" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Embeds</text>
+  <text x="510" y="200" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Twitter, Instagram</text>
+  
+  <rect x="600" y="165" width="140" height="40" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="670" y="185" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">File Attachments</text>
+  <text x="670" y="200" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">PDF, Word, Excel</text>
+  
+  <!-- Collaboration -->
+  <rect x="50" y="290" width="340" height="190" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="220" y="315" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#22c55e">Collaboration Features</text>
+  
+  <rect x="70" y="330" width="300" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="352" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Real-time Co-editing (OT/CRDT)</text>
+  
+  <rect x="70" y="370" width="300" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="392" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Comments &amp; Suggestions</text>
+  
+  <rect x="70" y="410" width="300" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="432" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Version History</text>
+  
+  <rect x="70" y="450" width="300" height="25" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="220" y="467" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">✓ Team Productivity</text>
+  
+  <!-- Accessibility -->
+  <rect x="420" y="290" width="340" height="190" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="590" y="315" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#8b5cf6">Accessibility (WCAG 2.1)</text>
+  
+  <rect x="440" y="330" width="300" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="352" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Keyboard Navigation (Tab, Arrows)</text>
+  
+  <rect x="440" y="370" width="300" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="392" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Screen Reader Support (ARIA Labels)</text>
+  
+  <rect x="440" y="410" width="300" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="432" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Focus Management</text>
+  
+  <rect x="440" y="450" width="300" height="25" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="590" y="467" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">✓ Inclusive Editing</text>
+
+</svg>

@@ -7,16 +7,25 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-requirements-cm-backend-media-processing",
   title: "Media Processing",
-  description: "Comprehensive guide to implementing media processing covering image optimization, video transcoding, thumbnail generation, format conversion, and CDN delivery for staff/principal engineer interviews.",
+  description:
+    "Comprehensive guide to implementing media processing covering image optimization (resize, compression, format conversion), video transcoding (adaptive bitrate, codec selection), thumbnail generation, format conversion, CDN delivery, and performance optimization for staff/principal engineer interviews.",
   category: "functional-requirements",
   subcategory: "content-management",
   slug: "media-processing",
   version: "extensive",
-  wordCount: 8000,
-  readingTime: 32,
-  lastUpdated: "2026-03-16",
-  tags: ["requirements", "functional", "content", "media", "processing", "backend", "optimization"],
-  relatedTopics: ["media-upload", "cdn-delivery", "content-storage", "image-optimization"],
+  wordCount: 9500,
+  readingTime: 38,
+  lastUpdated: "2026-03-23",
+  tags: [
+    "requirements",
+    "functional",
+    "content",
+    "media",
+    "processing",
+    "backend",
+    "optimization",
+  ],
+  relatedTopics: ["media-upload", "cdn-delivery", "content-storage"],
 };
 
 export default function MediaProcessingArticle() {
@@ -25,748 +34,571 @@ export default function MediaProcessingArticle() {
       <section>
         <h2>Definition &amp; Context</h2>
         <p>
-          <strong>Media Processing</strong> transforms uploaded media into optimized formats
-          for delivery, including image compression, video transcoding, and thumbnail generation.
-          It ensures fast loading and consistent quality across devices.
-        </p>
-        <p>
-          For staff and principal engineers, implementing media processing requires understanding
-          image optimization, video transcoding, thumbnail generation, format conversion,
-          and CDN delivery. The implementation must balance quality with performance and
-          storage costs.
+          <strong>Media Processing</strong> transforms uploaded media into optimized formats for
+          delivery including image compression, video transcoding, and thumbnail generation. It
+          ensures fast loading and consistent quality across devices and network conditions. Media
+          processing is critical for user experience — unoptimized media causes slow page loads,
+          high bandwidth costs, and poor mobile experience. Without proper processing, users face
+          long wait times, excessive data usage, and inconsistent quality across devices.
         </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/media-processing-flow.svg"
           alt="Media Processing Flow"
-          caption="Media Processing Flow — showing upload, processing, and CDN delivery"
-        />
-      </section>
-
-      <section>
-        <h2>Image Processing</h2>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Resize</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Multiple Sizes:</strong> Generate thumbnail, medium, large.
-            </li>
-            <li>
-              <strong>Aspect Ratio:</strong> Maintain aspect ratio.
-            </li>
-            <li>
-              <strong>Crop:</strong> Smart crop for thumbnails.
-            </li>
-            <li>
-              <strong>Responsive:</strong> Serve appropriate size per device.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Format Conversion</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>WebP/AVIF:</strong> Convert to modern formats.
-            </li>
-            <li>
-              <strong>JPEG Fallback:</strong> Fallback for older browsers.
-            </li>
-            <li>
-              <strong>PNG:</strong> For transparency.
-            </li>
-            <li>
-              <strong>Auto-detect:</strong> Detect browser support.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Compression</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Quality:</strong> Optimize quality vs file size.
-            </li>
-            <li>
-              <strong>Lossless:</strong> Lossless compression option.
-            </li>
-            <li>
-              <strong>Lossy:</strong> Lossy for smaller files.
-            </li>
-            <li>
-              <strong>Perceptual:</strong> Perceptual quality metrics.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Metadata</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Strip EXIF:</strong> Strip EXIF metadata.
-            </li>
-            <li>
-              <strong>Preserve Orientation:</strong> Preserve orientation.
-            </li>
-            <li>
-              <strong>Copyright:</strong> Preserve copyright info.
-            </li>
-            <li>
-              <strong>Privacy:</strong> Remove GPS data.
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Video Processing</h2>
-
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/content-management/video-transcoding.svg"
-          alt="Video Transcoding"
-          caption="Video Transcoding — showing input, transcoding, and adaptive streaming"
+          caption="Media Processing Flow — showing upload, async processing pipeline, format conversion, optimization, and CDN delivery"
         />
 
         <p>
-          Video processing ensures optimal delivery across devices and bandwidths.
+          For staff and principal engineers, implementing media processing requires deep
+          understanding of image optimization including resize operations maintaining aspect ratio
+          with smart cropping for thumbnails, compression balancing quality versus file size through
+          lossless and lossy techniques, and format conversion to modern formats like WebP and AVIF
+          with JPEG fallback for older browsers. Video transcoding encompasses adaptive bitrate
+          streaming generating multiple quality levels (360p, 720p, 1080p, 4K), codec selection
+          (H.264 for compatibility, H.265/HEVC for efficiency, AV1 for royalty-free), and packaging
+          for streaming protocols (HLS, DASH). Thumbnail generation creates multiple sizes for
+          different contexts (grid view, detail view, social sharing) with smart cropping focusing
+          on important content. Format conversion handles various input formats producing optimized
+          output with CDN delivery ensuring fast global distribution through edge caching and
+          appropriate cache headers. The implementation must balance quality with performance and
+          storage costs while supporting diverse devices and network conditions.
         </p>
 
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Transcoding</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>HLS/DASH:</strong> Convert to adaptive streaming formats.
-            </li>
-            <li>
-              <strong>Codecs:</strong> H.264, H.265, VP9, AV1.
-            </li>
-            <li>
-              <strong>Containers:</strong> MP4, WebM.
-            </li>
-            <li>
-              <strong>Audio:</strong> AAC, Opus audio codecs.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Multiple Bitrates</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>1080p:</strong> Full HD quality.
-            </li>
-            <li>
-              <strong>720p:</strong> HD quality.
-            </li>
-            <li>
-              <strong>480p:</strong> SD quality.
-            </li>
-            <li>
-              <strong>360p:</strong> Low bandwidth.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Thumbnails</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Sprite Sheets:</strong> Generate for scrubbing.
-            </li>
-            <li>
-              <strong>Preview:</strong> Generate preview thumbnails.
-            </li>
-            <li>
-              <strong>Timeline:</strong> Timeline thumbnails.
-            </li>
-            <li>
-              <strong>Auto-generated:</strong> Auto-select key frames.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Async Processing</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Queue-based:</strong> Queue-based processing.
-            </li>
-            <li>
-              <strong>Progress:</strong> Track processing progress.
-            </li>
-            <li>
-              <strong>Notify:</strong> Notify on complete.
-            </li>
-            <li>
-              <strong>Retry:</strong> Retry on failure.
-            </li>
-          </ul>
-        </div>
+        <p>
+          Modern media processing has evolved from simple resize operations to sophisticated
+          pipelines with AI-enhanced upscaling, perceptual quality optimization, and adaptive
+          delivery. Platforms like Cloudinary and Imgix provide on-the-fly processing with CDN
+          delivery, YouTube uses adaptive bitrate streaming with automatic quality adjustment, and
+          Instagram applies consistent filters and compression for uniform feed quality. Processing
+          can be synchronous for immediate feedback or asynchronous for large files with
+          notification on completion. Edge processing through CDN reduces origin load and improves
+          latency by processing closer to users.
+        </p>
       </section>
 
       <section>
-        <h2>Thumbnail Generation</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Image Thumbnails:</strong> Multiple sizes for images.
-          </li>
-          <li>
-            <strong>Video Thumbnails:</strong> Extract frames from video.
-          </li>
-          <li>
-            <strong>Document Thumbnails:</strong> Generate from documents.
-          </li>
-          <li>
-            <strong>Lazy Load:</strong> Lazy load thumbnails.
-          </li>
-          <li>
-            <strong>CDN:</strong> Serve from CDN.
-          </li>
-        </ul>
+        <h2>Core Concepts</h2>
+        <p>
+          Media processing is built on fundamental concepts that determine how media is optimized,
+          transformed, and delivered. Understanding these concepts is essential for designing
+          effective processing pipelines.
+        </p>
+
+        <p>
+          <strong>Image Optimization:</strong> Resize operations generate multiple sizes from
+          original image including thumbnail (150x150), medium (800x600), large (1920x1080) with
+          aspect ratio maintenance preventing distortion. Smart cropping identifies important
+          content (faces, text) preserving key elements during crop. Compression reduces file size
+          through lossless methods (PNG optimization, metadata stripping) preserving exact quality
+          or lossy methods (JPEG quality adjustment, WebP compression) trading quality for size.
+          Format conversion produces modern formats (WebP 30% smaller than JPEG, AVIF 50% smaller)
+          with fallback to JPEG/PNG for older browser support.
+        </p>
+
+        <p>
+          <strong>Video Transcoding:</strong> Converts source video to multiple formats and
+          bitrates for adaptive streaming. Adaptive bitrate generates multiple quality levels
+          (360p at 500kbps, 720p at 2Mbps, 1080p at 5Mbps, 4K at 20Mbps) enabling quality adjustment
+          based on network conditions. Codec selection balances compatibility and efficiency with
+          H.264 for universal support, H.265/HEVC for 50% better compression, and AV1 for
+          royalty-free efficiency. Packaging for streaming protocols includes HLS (HTTP Live
+          Streaming) for Apple devices and DASH (Dynamic Adaptive Streaming over HTTP) for
+          cross-platform support with segmented delivery enabling quality switching.
+        </p>
+
+        <p>
+          <strong>Thumbnail Generation:</strong> Creates multiple thumbnail sizes for different
+          contexts. Grid view thumbnails (150x150) for gallery displays, detail view thumbnails
+          (400x300) for preview panels, social sharing thumbnails (1200x630) for Open Graph meta
+          tags. Smart cropping uses face detection, saliency mapping, or entropy analysis
+          identifying important content to preserve during crop. Lazy loading defers thumbnail
+          loading until visible reducing initial page load time and bandwidth usage.
+        </p>
+
+        <p>
+          <strong>CDN Delivery:</strong> Distributes processed media through edge cache servers
+          globally. Edge caching stores processed variants at edge locations reducing origin load
+          and improving latency. Cache headers control caching behavior with long TTL (1 year) for
+          versioned URLs, short TTL for dynamic processing. Origin shield protects origin server
+          from cache miss storms by consolidating requests. Signed URLs provide secure access with
+          expiration preventing unauthorized hotlinking and bandwidth theft.
+        </p>
       </section>
 
       <section>
-        <h2>CDN Delivery</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Edge Caching:</strong> Cache at edge locations.
-          </li>
-          <li>
-            <strong>Optimization:</strong> Optimize at edge.
-          </li>
-          <li>
-            <strong>Responsive:</strong> Serve responsive images.
-          </li>
-          <li>
-            <strong>Format:</strong> Serve optimal format.
-          </li>
-          <li>
-            <strong>Compression:</strong> Compress at edge.
-          </li>
-        </ul>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          Media processing architecture separates upload, processing pipeline, storage, and delivery
+          enabling scalable processing with efficient CDN distribution. This architecture is
+          critical for performance, cost, and user experience.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/content-management/media-processing-flow.svg"
+          alt="Media Processing Flow"
+          caption="Media Processing Flow — showing upload, async processing pipeline, format conversion, optimization, and CDN delivery"
+        />
+
+        <p>
+          Media processing flow begins with user uploading original media file. Frontend validates
+          file type and size before upload showing progress indicator. Backend receives file
+          storing original in object storage with unique key. Processing pipeline triggers
+          asynchronously through message queue decoupling upload from processing. Image processor
+          generates multiple sizes (thumbnail, medium, large) with smart cropping. Format converter
+          produces WebP/AVIF variants with JPEG fallback. Video transcoder generates adaptive
+          bitrate variants (360p, 720p, 1080p) with HLS/DASH packaging. Processed variants are
+          stored in object storage with organized key structure. CDN invalidation purges cache for
+          updated media. On request, CDN serves appropriate variant based on device, viewport, and
+          format support with fallback logic.
+        </p>
+
+        <p>
+          Processing pipeline architecture includes queue-based processing through SQS, Kafka, or
+          Redis Streams decoupling upload from processing enabling horizontal scaling. Worker pool
+          processes queue messages with auto-scaling based on queue depth. Image processing uses
+          libraries like Sharp, libvips, or ImageMagick for resize, crop, and format conversion.
+          Video processing uses FFmpeg for transcoding with hardware acceleration (NVENC, QSV) for
+          efficiency. Progress tracking updates processing status enabling user notification on
+          completion. Error handling retries transient failures and quarantines unprocessable files
+          with alert.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/content-management/image-optimization.svg"
+          alt="Image Optimization Pipeline"
+          caption="Image Optimization — showing resize, format conversion (WebP/AVIF), compression, and responsive delivery with srcset"
+        />
+
+        <p>
+          CDN delivery architecture includes edge caching storing processed variants at edge
+          locations worldwide reducing latency through geographic proximity. Cache headers control
+          caching behavior with Cache-Control max-age for TTL, ETag for validation, and Vary
+          header for content negotiation. Origin shield consolidates cache misses protecting origin
+          from thundering herd. Signed URLs provide secure access with expiration and IP
+          restrictions preventing hotlinking. Responsive delivery uses srcset attribute serving
+          appropriate size based on viewport and device pixel ratio with picture element for format
+          selection (AVIF → WebP → JPEG).
+        </p>
       </section>
 
       <section>
-        <h2>References</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://web.dev/fast/#optimize-your-images" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Web.dev Image Optimization
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Video_codecs" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN Video Codecs
-            </a>
-          </li>
-        </ul>
+        <h2>Trade-offs &amp; Comparison</h2>
+        <p>
+          Designing media processing involves trade-offs between quality, performance, storage
+          costs, and processing complexity. Understanding these trade-offs is essential for making
+          informed architecture decisions.
+        </p>
+
+        <p>
+          Synchronous versus asynchronous processing presents immediacy versus scalability
+          trade-offs. Synchronous processing completes during upload request providing immediate
+          feedback and processed URLs but blocks upload completion adding latency especially for
+          large files and limits throughput during peak loads. Asynchronous processing queues files
+          for background processing returning immediately with placeholder or original enabling
+          horizontal scaling through worker pool and better resource utilization but requires
+          progress polling or notification on completion and temporary display of unprocessed media.
+          The recommendation is asynchronous for production systems with progress indication,
+          synchronous only for small images (thumbnails) where processing is fast.
+        </p>
+
+        <p>
+          Lossless versus lossy compression presents quality versus size trade-offs. Lossless
+          compression (PNG optimization, JPEG recompression, metadata stripping) reduces file size
+          10-30% without any quality loss preserving exact original quality but limited size
+          reduction especially for photos. Lossy compression (JPEG quality adjustment, WebP
+          compression) achieves 50-80% size reduction with controlled quality loss through quality
+          parameter but introduces artifacts at low quality settings. The recommendation is lossy
+          for photos and complex images where size matters, lossless for graphics, logos, and
+          screenshots where quality is critical.
+        </p>
+
+        <p>
+          On-the-fly versus pre-generated variants presents flexibility versus cost trade-offs.
+          On-the-fly processing (Cloudinary, Imgix style) generates variants on first request
+          caching for subsequent requests enabling unlimited variants without storage waste but
+          introduces first-request latency and CPU load on cache miss. Pre-generated variants
+          process all variants upfront providing consistent performance and CDN caching but stores
+          all variants regardless of usage wasting storage for unused variants. The recommendation
+          is pre-generated for common variants (thumbnail, medium, large) with on-the-fly for
+          custom sizes rarely requested.
+        </p>
       </section>
 
       <section>
         <h2>Best Practices</h2>
+        <p>
+          Implementing media processing requires following established best practices to ensure
+          quality, performance, and cost efficiency.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Image Optimization</h3>
-        <ul className="space-y-2">
-          <li>Use modern formats (WebP/AVIF)</li>
-          <li>Generate multiple sizes</li>
-          <li>Optimize quality vs size</li>
-          <li>Strip unnecessary metadata</li>
-          <li>Serve responsive images</li>
-        </ul>
+        <p>
+          Image optimization generates multiple sizes (thumbnail 150x150, medium 800x600, large
+          1920x1080) maintaining aspect ratio. Use smart cropping preserving important content
+          (faces, text) through face detection or saliency mapping. Convert to modern formats
+          (WebP, AVIF) with JPEG/PNG fallback for older browsers. Apply appropriate compression
+          (JPEG quality 80-85 for photos, PNG for graphics) stripping metadata reducing file size.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Video Processing</h3>
-        <ul className="space-y-2">
-          <li>Transcode to HLS/DASH</li>
-          <li>Generate multiple bitrates</li>
-          <li>Create thumbnails</li>
-          <li>Process asynchronously</li>
-          <li>Track progress</li>
-        </ul>
+        <p>
+          Video transcoding generates adaptive bitrate variants (360p, 720p, 1080p, 4K) enabling
+          quality adjustment based on network conditions. Select appropriate codec (H.264 for
+          compatibility, H.265 for efficiency, AV1 for royalty-free). Package for streaming
+          protocols (HLS for Apple, DASH for cross-platform) with segmented delivery. Use
+          two-pass encoding for better quality at same bitrate.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Delivery</h3>
-        <ul className="space-y-2">
-          <li>Cache at edge</li>
-          <li>Optimize at edge</li>
-          <li>Serve responsive images</li>
-          <li>Serve optimal format</li>
-          <li>Compress at edge</li>
-        </ul>
+        <p>
+          Thumbnail generation creates multiple sizes for different contexts (grid view, detail
+          view, social sharing). Apply smart cropping focusing on important content through face
+          detection or entropy analysis. Implement lazy loading deferring thumbnail loading until
+          visible reducing initial page load. Use placeholder (blurhash, dominant color) during
+          load improving perceived performance.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Monitoring</h3>
-        <ul className="space-y-2">
-          <li>Track processing time</li>
-          <li>Monitor queue depth</li>
-          <li>Alert on failures</li>
-          <li>Track storage usage</li>
-          <li>Monitor CDN performance</li>
-        </ul>
+        <p>
+          CDN delivery configures edge caching with appropriate cache headers (Cache-Control
+          max-age, ETag, Vary). Use origin shield protecting origin from cache miss storms.
+          Implement signed URLs with expiration preventing hotlinking and bandwidth theft. Enable
+          responsive delivery through srcset and picture elements serving appropriate size and
+          format based on device.
+        </p>
+
+        <p>
+          Processing pipeline uses queue-based asynchronous processing decoupling upload from
+          processing. Implement worker pool with auto-scaling based on queue depth. Track
+          processing progress enabling user notification. Handle errors with retry logic and
+          quarantine for unprocessable files. Monitor processing metrics (queue depth, processing
+          time, error rate).
+        </p>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>No optimization:</strong> Large files, slow loading.
-            <br /><strong>Fix:</strong> Compress images, transcode video.
-          </li>
-          <li>
-            <strong>Single size:</strong> Wrong size for device.
-            <br /><strong>Fix:</strong> Generate multiple sizes.
-          </li>
-          <li>
-            <strong>Old formats:</strong> Large file sizes.
-            <br /><strong>Fix:</strong> Use WebP/AVIF with fallback.
-          </li>
-          <li>
-            <strong>Sync processing:</strong> Blocks upload.
-            <br /><strong>Fix:</strong> Process asynchronously.
-          </li>
-          <li>
-            <strong>No thumbnails:</strong> Slow gallery loading.
-            <br /><strong>Fix:</strong> Generate thumbnails.
-          </li>
-          <li>
-            <strong>No CDN:</strong> Slow delivery.
-            <br /><strong>Fix:</strong> Use CDN for delivery.
-          </li>
-          <li>
-            <strong>No progress tracking:</strong> Users don't know status.
-            <br /><strong>Fix:</strong> Track and show progress.
-          </li>
-          <li>
-            <strong>No retry:</strong> Failed processing lost.
-            <br /><strong>Fix:</strong> Retry on failure.
-          </li>
-          <li>
-            <strong>No monitoring:</strong> Can't track issues.
-            <br /><strong>Fix:</strong> Monitor processing, queue, failures.
-          </li>
-          <li>
-            <strong>Poor quality:</strong> Over-compression.
-            <br /><strong>Fix:</strong> Balance quality vs size.
-          </li>
-        </ul>
+        <p>
+          Avoid these common mistakes when implementing media processing to ensure quality,
+          performance, and cost efficiency.
+        </p>
+
+        <p>
+          No image optimization serves original large files causing slow page loads and high
+          bandwidth costs. Fix by generating multiple sizes (thumbnail, medium, large) and serving
+          appropriate size based on context. Apply compression and format conversion reducing file
+          size 50-80%.
+        </p>
+
+        <p>
+          Serving wrong format displays WebP/AVIF to unsupported browsers showing broken images. Fix
+          by using picture element with source tags for format selection or content negotiation
+          through Accept header. Always provide JPEG/PNG fallback.
+        </p>
+
+        <p>
+          No adaptive bitrate serves same quality to all users causing buffering on slow connections
+          and wasted bandwidth on fast connections. Fix by generating multiple bitrate variants
+          (360p, 720p, 1080p) with HLS/DASH packaging enabling automatic quality adjustment.
+        </p>
+
+        <p>
+          Synchronous processing for large files blocks upload completion causing timeout and poor
+          user experience. Fix by using asynchronous queue-based processing returning immediately
+          with progress indication. Notify user on processing completion.
+        </p>
+
+        <p>
+          No smart cropping cuts important content (faces, text) from thumbnails. Fix by
+          implementing smart cropping through face detection, saliency mapping, or entropy analysis
+          preserving important content during crop.
+        </p>
+
+        <p>
+          No CDN delivery serves media from origin causing high latency for distant users and origin
+          overload. Fix by configuring CDN with edge caching, appropriate cache headers, and origin
+          shield protecting origin server.
+        </p>
+
+        <p>
+          No lazy loading loads all images upfront causing slow initial page load. Fix by
+          implementing lazy loading deferring image loading until visible in viewport. Use
+          placeholder (blurhash, dominant color) during load.
+        </p>
+
+        <p>
+          No hotlink protection allows other sites to embed your images stealing bandwidth. Fix by
+          implementing signed URLs with expiration, Referer header checking, or CDN hotlink
+          protection features.
+        </p>
+
+        <p>
+          No processing progress leaves users uncertain about upload status. Fix by showing
+          processing progress through polling or WebSocket. Send notification (email, push) on
+          completion for long processing.
+        </p>
+
+        <p>
+          No monitoring leaves processing issues undetected. Fix by tracking processing metrics
+          (queue depth, processing time, error rate, cache hit rate). Set up alerts for anomalies
+          (queue buildup, high error rate).
+        </p>
       </section>
 
       <section>
-        <h2>Advanced Topics</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edge Processing</h3>
+        <h2>Real-world Use Cases</h2>
         <p>
-          Process at edge locations. Resize on-demand. Format conversion at edge. Reduce origin load. Consider for dynamic optimization.
+          Media processing is critical for content delivery across different domains. Here are
+          real-world implementations from production systems demonstrating different approaches to
+          media processing challenges.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">AI Enhancement</h3>
         <p>
-          AI-based upscaling. Super-resolution. Noise reduction. Color correction. Consider for premium quality.
+          Instagram image processing addresses consistent feed quality with filters and compression.
+          The solution applies consistent filters through preset filters (Clarendon, Juno, Lark),
+          generates multiple sizes (thumbnail, feed, story) with smart cropping focusing on subject,
+          compresses images (WebP for Android, HEIC for iOS) reducing bandwidth, and delivers
+          through CDN with edge caching globally. The result is consistent visual quality across
+          billions of daily uploads with fast loading worldwide.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Adaptive Bitrate</h3>
         <p>
-          Adaptive bitrate streaming. Adjust quality based on bandwidth. Smooth playback. Reduce buffering. Standard for video delivery.
+          YouTube video processing addresses adaptive streaming for billions of users. The solution
+          transcodes uploads to multiple formats (360p to 4K, 60fps variants) with H.264/H.265/VP9
+          codecs, packages for HLS/DASH streaming with segmented delivery, adjusts quality
+          automatically based on network conditions and device capabilities, and delivers through
+          global CDN with edge caching. The result is smooth playback across diverse devices and
+          network conditions with automatic quality optimization.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Graceful Degradation</h3>
         <p>
-          Handle media processing failures gracefully. Fail-safe defaults (serve original). Queue processing requests for retry. Implement circuit breaker pattern. Provide manual fallback. Monitor processing health continuously.
+          Cloudinary media processing addresses on-the-fly optimization for developers. The solution
+          processes images on first request generating requested variants (resize, crop, format,
+          effects) caches at edge for subsequent requests, delivers through CDN with automatic
+          format selection (WebP/AVIF for supported browsers), and provides SDKs for easy
+          integration with responsive image support. The result is flexible media processing
+          without managing infrastructure with automatic optimization.
+        </p>
+
+        <p>
+          Netflix video processing addresses premium streaming quality with efficiency. The solution
+          uses per-title encoding optimizing bitrate ladder per content complexity, AV1 codec for
+          30% bandwidth savings over H.265, HDR/Dolby Vision support for premium quality, and
+          Open Connect CDN for efficient delivery. The result is high-quality streaming with
+          optimized bandwidth usage reducing CDN costs.
+        </p>
+
+        <p>
+          E-commerce platform (Shopify) image processing addresses product image optimization. The
+          solution generates multiple sizes (thumbnail, product view, zoom) with consistent aspect
+          ratios, applies smart cropping preserving product focus, converts to WebP with JPEG
+          fallback for compatibility, and delivers through CDN with lazy loading for product grids.
+          The result is fast product page loads with high-quality images improving conversion rates.
         </p>
       </section>
 
       <section>
         <h2>Interview Questions</h2>
-
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/content-management/media-optimization.svg"
-          alt="Media Optimization"
-          caption="Optimization — showing format conversion, compression, and CDN delivery"
-        />
+        <p>
+          These questions test understanding of media processing design, implementation, and
+          operational concerns for staff and principal engineer interviews.
+        </p>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle video processing at scale?</p>
-            <p className="mt-2 text-sm">A: Queue-based (SQS/Kafka), auto-scaling workers, progress tracking, CDN for delivery, retry on failure.</p>
+            <p className="font-semibold">Q: How do you optimize images for web?</p>
+            <p className="mt-2 text-sm">
+              A: Generate multiple sizes (thumbnail 150x150, medium 800x600, large 1920x1080)
+              maintaining aspect ratio. Convert to modern formats (WebP, AVIF) with JPEG/PNG
+              fallback. Apply compression (JPEG quality 80-85 for photos) stripping metadata. Use
+              smart cropping preserving important content. Implement responsive delivery through
+              srcset and picture elements.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you optimize images for web?</p>
-            <p className="mt-2 text-sm">A: Modern formats (WebP/AVIF), responsive images (srcset), lazy loading, CDN with edge optimization.</p>
+            <p className="font-semibold">Q: How do you implement adaptive bitrate streaming?</p>
+            <p className="mt-2 text-sm">
+              A: Transcode source video to multiple quality levels (360p at 500kbps, 720p at 2Mbps,
+              1080p at 5Mbps, 4K at 20Mbps). Package for HLS (HTTP Live Streaming) or DASH (Dynamic
+              Adaptive Streaming over HTTP) with segmented delivery. Player automatically selects
+              quality based on network conditions and buffer health. Use two-pass encoding for
+              better quality.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you handle video transcoding?</p>
-            <p className="mt-2 text-sm">A: Transcode to HLS/DASH, multiple bitrates, async processing, progress tracking, CDN delivery.</p>
+            <p className="mt-2 text-sm">
+              A: Use queue-based asynchronous processing decoupling upload from transcoding. Use
+              FFmpeg with hardware acceleration (NVENC, QSV) for efficiency. Generate multiple
+              codec variants (H.264 for compatibility, H.265 for efficiency, AV1 for royalty-free).
+              Track progress and notify on completion. Handle errors with retry logic.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you generate thumbnails?</p>
-            <p className="mt-2 text-sm">A: Extract frames, generate sprite sheets, multiple sizes, lazy load, serve from CDN.</p>
+            <p className="font-semibold">Q: How do you implement smart cropping?</p>
+            <p className="mt-2 text-sm">
+              A: Use face detection (OpenCV, cloud APIs) identifying faces to preserve. Use
+              saliency mapping identifying visually important regions. Use entropy analysis finding
+              high-detail areas. Combine techniques for robust smart cropping. Apply during
+              thumbnail generation preserving important content.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle format conversion?</p>
-            <p className="mt-2 text-sm">A: Convert to WebP/AVIF, provide JPEG fallback, detect browser support, serve optimal format.</p>
+            <p className="font-semibold">Q: How do you configure CDN for media delivery?</p>
+            <p className="mt-2 text-sm">
+              A: Configure edge caching with appropriate cache headers (Cache-Control max-age 1
+              year for versioned URLs). Use origin shield protecting origin from cache miss storms.
+              Implement signed URLs with expiration preventing hotlinking. Enable responsive
+              delivery through srcset and picture elements. Monitor cache hit rate and optimize.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you optimize compression?</p>
-            <p className="mt-2 text-sm">A: Balance quality vs size, use perceptual metrics, offer lossless option, test compression levels.</p>
+            <p className="font-semibold">Q: How do you handle format compatibility?</p>
+            <p className="mt-2 text-sm">
+              A: Use picture element with source tags for format selection (AVIF → WebP → JPEG). Or
+              implement content negotiation through Accept header detecting browser support. Always
+              provide fallback (JPEG/PNG) for older browsers. Test across browsers ensuring
+              compatibility.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle metadata?</p>
-            <p className="mt-2 text-sm">A: Strip EXIF, preserve orientation, preserve copyright, remove GPS for privacy.</p>
+            <p className="font-semibold">Q: How do you optimize processing costs?</p>
+            <p className="mt-2 text-sm">
+              A: Use asynchronous queue-based processing with auto-scaling workers. Use hardware
+              acceleration (GPU, dedicated encoders) for video transcoding. Pre-generate common
+              variants, use on-the-fly for rare sizes. Implement caching at multiple levels
+              (processing result, CDN). Monitor and optimize processing efficiency.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What metrics do you track?</p>
-            <p className="mt-2 text-sm">A: Processing time, queue depth, failure rate, storage usage, CDN performance, compression ratio.</p>
+            <p className="font-semibold">Q: How do you implement lazy loading?</p>
+            <p className="mt-2 text-sm">
+              A: Use native loading="lazy" attribute for browser support. Or use Intersection
+              Observer API detecting when images enter viewport. Load placeholder (blurhash,
+              dominant color) initially. Load full image when visible. Defer offscreen images
+              reducing initial page load time and bandwidth.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle processing failures?</p>
-            <p className="mt-2 text-sm">A: Retry with exponential backoff, dead letter queue, notify user, manual intervention, root cause analysis.</p>
+            <p className="font-semibold">Q: How do you prevent hotlinking?</p>
+            <p className="mt-2 text-sm">
+              A: Implement signed URLs with expiration and optional IP restrictions. Check Referer
+              header allowing only your domains. Use CDN hotlink protection features. Serve images
+              from authenticated endpoint for sensitive content. Monitor for bandwidth theft and
+              block abusive referrers.
+            </p>
           </div>
         </div>
-      </section>
-
-      <section>
-        <h2>Security Checklist</h2>
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Pre-Launch Checklist</h3>
-          <ul className="space-y-2">
-            <li>☐ Image optimization configured</li>
-            <li>☐ Video transcoding enabled</li>
-            <li>☐ Thumbnail generation working</li>
-            <li>☐ CDN delivery configured</li>
-            <li>☐ Async processing implemented</li>
-            <li>☐ Audit logging enabled</li>
-            <li>☐ Monitoring and alerting set up</li>
-            <li>☐ Penetration testing completed</li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Testing Strategy</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Unit Tests</h3>
-        <ul className="space-y-2">
-          <li>Test image processing</li>
-          <li>Test video transcoding</li>
-          <li>Test thumbnail generation</li>
-          <li>Test format conversion</li>
-          <li>Test compression</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Integration Tests</h3>
-        <ul className="space-y-2">
-          <li>Test processing flow</li>
-          <li>Test async processing</li>
-          <li>Test CDN delivery</li>
-          <li>Test progress tracking</li>
-          <li>Test retry logic</li>
-          <li>Test notification</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Tests</h3>
-        <ul className="space-y-2">
-          <li>Test file upload security</li>
-          <li>Test processing authorization</li>
-          <li>Test audit logging</li>
-          <li>Test malware scanning</li>
-          <li>Test file type validation</li>
-          <li>Penetration testing for media</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Tests</h3>
-        <ul className="space-y-2">
-          <li>Test processing performance</li>
-          <li>Test transcoding performance</li>
-          <li>Test concurrent processing</li>
-          <li>Test CDN performance</li>
-          <li>Test storage performance</li>
-        </ul>
       </section>
 
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li><a href="https://web.dev/fast/#optimize-your-images" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Web.dev Image Optimization</a></li>
-          <li><a href="https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Video_codecs" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">MDN Video Codecs</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP File Upload Cheat Sheet</a></li>
-          <li><a href="https://auth0.com/blog/a-look-at-the-latest-draft-for-oauth-2-1/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OAuth 2.1 Security Best Practices</a></li>
-          <li><a href="https://developer.mozilla.org/en-US/docs/Web/Security" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">MDN - Web Security</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Choosing_and_Using_Security_Questions_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Security Questions</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Multifactor Authentication</a></li>
-          <li><a href="https://docs.openfga.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OpenFGA - Fine-Grained Authorization</a></li>
-          <li><a href="https://www.cerbos.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Cerbos - Policy as Code</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Access Control Cheat Sheet</a></li>
+          <li>
+            <a
+              href="https://web.dev/fast/#optimize-your-content"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Web.dev Image Optimization
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MDN - Image File Formats
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Video_codecs"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MDN - Video Codecs
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Input Validation Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://ffmpeg.org/ffmpeg.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              FFmpeg Documentation
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Access Control Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Multifactor Authentication
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Forgot Password Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Credential_Stuffing_Prevention_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Credential Stuffing Prevention
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cloudinary.com/documentation/image_optimization"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Cloudinary Image Optimization Guide
+            </a>
+          </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Implementation Patterns</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Image Processing Pattern</h3>
-        <p>
-          Generate multiple sizes. Convert to modern formats. Optimize compression. Strip metadata. Serve responsive images.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Video Processing Pattern</h3>
-        <p>
-          Transcode to HLS/DASH. Generate multiple bitrates. Create thumbnails. Process asynchronously. Track progress.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CDN Pattern</h3>
-        <p>
-          Cache at edge. Optimize at edge. Serve responsive images. Serve optimal format. Compress at edge.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Async Processing Pattern</h3>
-        <p>
-          Queue-based processing. Track progress. Notify on complete. Retry on failure. Handle failures gracefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Graceful Degradation</h3>
-        <p>
-          Handle media processing failures gracefully. Fail-safe defaults (serve original). Queue processing requests for retry. Implement circuit breaker pattern. Provide manual fallback. Monitor processing health continuously.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Compliance Considerations</h3>
-        <p>
-          Meet regulatory requirements for media processing. SOC2: Processing audit trails. HIPAA: PHI media safeguards. PCI-DSS: Cardholder data media. GDPR: Content data handling. Implement compliance reporting. Regular compliance reviews.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Optimization</h3>
-        <p>
-          Optimize media processing for high-throughput systems. Batch processing operations. Use connection pooling. Implement async processing operations. Monitor processing latency. Set SLOs for processing time. Scale processing endpoints horizontally.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Error Handling</h3>
-        <p>
-          Handle processing errors gracefully. Log errors with full context. Implement retry with exponential backoff. Alert on repeated failures. Provide fallback processing mechanisms. Don't expose internal errors to users.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Developer Experience</h3>
-        <p>
-          Make media processing easy for developers to use. Provide processing SDK. Auto-generate processing documentation. Include processing requirements in API docs. Provide testing utilities. Implement processing linting in CI. Create runbooks for common issues.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Multi-Tenant Processing</h3>
-        <p>
-          Handle media processing in multi-tenant systems. Tenant-scoped processing configuration. Isolate processing events between tenants. Tenant-specific processing policies. Audit processing per tenant. Handle cross-tenant processing carefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise Processing</h3>
-        <p>
-          Special handling for enterprise media processing. Dedicated support for enterprise onboarding. Custom processing configurations. SLA for processing availability. Priority support for processing issues. Regular enterprise reviews.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Emergency Access</h3>
-        <p>
-          Break-glass procedures for emergency access. Pre-approved emergency processing bypass. Require security team approval. Automatic notification to affected users. Full audit logging of emergency access. Post-incident review required.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Processing Testing</h3>
-        <p>
-          Test media processing thoroughly before deployment. Chaos engineering for processing failures. Simulate high-volume processing scenarios. Test processing under load. Validate processing propagation. Test rollback procedures. Document test results.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">User Communication</h3>
-        <p>
-          Communicate processing changes clearly to users. Explain why processing is required. Provide steps to configure processing. Offer support contact for issues. Send processing confirmation. Provide processing history for review. Handle user concerns empathetically.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Continuous Improvement</h3>
-        <p>
-          Evolve media processing based on operational learnings. Analyze processing patterns. Identify false positives. Optimize processing triggers. Gather user feedback. Track processing metrics. Benchmark against industry best practices.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Hardening</h3>
-        <p>
-          Strengthen media processing against attacks. Implement defense in depth. Regular penetration testing. Monitor for processing bypass attempts. Encrypt processing data at rest. Use hardware security modules for key management. Implement zero-trust principles.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Deprovisioning Integration</h3>
-        <p>
-          Integrate with user deprovisioning workflows. Automatic processing revocation on HR termination. Role change triggers processing review. Contractor expiry triggers processing revocation. Handle temporary access expiry. Coordinate with access management systems.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Processing Analytics</h3>
-        <p>
-          Analyze processing data for insights. Track processing reasons distribution. Identify common processing triggers. Detect anomalous processing patterns. Measure processing effectiveness. Generate processing reports. Use analytics for optimization.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Cross-System Processing</h3>
-        <p>
-          Coordinate media processing across multiple systems. Central processing orchestration. Handle system-specific processing. Ensure consistent enforcement. Manage processing dependencies. Orchestrate processing updates. Monitor cross-system processing health.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Processing Documentation</h3>
-        <p>
-          Maintain comprehensive media processing documentation. Processing procedures and runbooks. Decision records for processing design. Usage examples for each scenario. Onboarding guide for new developers. API documentation with processing endpoints. Keep documentation up to date.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Cost Optimization</h3>
-        <p>
-          Optimize processing system costs. Right-size processing infrastructure. Use serverless for variable workloads. Optimize storage for processing data. Reduce unnecessary processing checks. Monitor cost per processing. Balance performance with cost.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Processing Governance</h3>
-        <p>
-          Establish media processing governance framework. Define processing ownership and stewardship. Regular processing reviews and audits. Processing change management process. Compliance reporting. Processing exception handling. Training and documentation. Continuous improvement program.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Real-Time Processing</h3>
-        <p>
-          Enable real-time media processing capabilities. Hot reload processing rules. Version processing for rollback. Validate processing before activation. Test in isolated environment first. Monitor for issues after update. Implement gradual rollout for processing changes.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Processing Simulation</h3>
-        <p>
-          Test processing changes before deployment. What-if analysis for processing changes. Simulate processing decisions with sample requests. Detect unintended consequences. Validate processing coverage. Test edge cases and boundary conditions. Generate impact reports for stakeholders.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Access Recertification</h3>
-        <p>
-          Periodic review of access permissions. Quarterly access recertification campaigns. Managers review direct reports' access. Automated reminders for pending reviews. Escalation for overdue reviews. Attestation workflow with audit trail. Generate compliance reports for auditors.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Processing Inheritance</h3>
-        <p>
-          Support media processing inheritance for easier management. Parent processing triggers child processing. Handle inheritance conflicts clearly. Document inheritance hierarchy. Cache inherited processing results. Monitor inheritance depth for performance.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Geographic Processing</h3>
-        <p>
-          Enforce location-based processing controls. Processing access by country/region. Comply with data sovereignty laws. Use IP geolocation for enforcement. Handle VPN and proxy detection. Allow exceptions for travel. Audit geographic processing patterns.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Time-Based Processing</h3>
-        <p>
-          Processing access by time of day/day of week. Business hours only for sensitive operations. After-hours processing requires approval. Handle timezone differences. Support shift-based access patterns. Audit time-based processing violations. Implement automatic expiry.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Device-Based Processing</h3>
-        <p>
-          Processing access by device characteristics. Require managed devices for sensitive data. Check device compliance (encryption, MDM). Block rooted/jailbroken devices. Implement device fingerprinting. Support device registration workflow. Audit device-based processing decisions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Network-Based Processing</h3>
-        <p>
-          Processing access by network characteristics. Allow only corporate network for sensitive operations. Require VPN for remote access. Check network security posture. Implement network segmentation. Monitor network-based processing patterns. Handle network changes gracefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Behavioral Processing</h3>
-        <p>
-          Detect anomalous access patterns for processing. Baseline normal user behavior. Alert on deviations (unusual time, location, resource). Implement risk scoring. Step-up processing for high-risk access. Continuous processing during session. Integrate with SIEM for correlation.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Consent-Based Processing</h3>
-        <p>
-          Manage user consent for session access. Capture consent at session creation. Support consent withdrawal. Audit consent decisions. Handle consent expiry. Integrate with privacy management systems. Generate consent reports for compliance.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Data Classification Processing</h3>
-        <p>
-          Apply processing based on data sensitivity. Classify data (public, internal, confidential, restricted). Different processing per classification. Automatic classification where possible. Handle classification changes. Audit classification-based processing. Train users on classification.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Processing Orchestration</h3>
-        <p>
-          Coordinate media processing across distributed systems. Central processing orchestration service. Handle processing conflicts across systems. Ensure consistent enforcement. Manage processing dependencies. Orchestrate processing updates. Monitor orchestration health.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Zero Trust Processing</h3>
-        <p>
-          Implement zero trust processing control. Never trust, always verify. Least privilege processing by default. Micro-segmentation of processing. Continuous verification of processing trust. Assume breach mentality. Monitor and log all processing.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Processing Versioning Strategy</h3>
-        <p>
-          Manage processing versions effectively. Semantic versioning for processing. Backward compatibility guarantees. Deprecation process for old versions. Migration guides for version changes. Support multiple versions simultaneously. Track version adoption rates.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Access Request Processing</h3>
-        <p>
-          Handle access request processing systematically. Self-service access processing request. Manager approval workflow. Automated processing after approval. Temporary processing with expiry. Access processing audit trail. Integration with HR systems.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Processing Compliance Monitoring</h3>
-        <p>
-          Monitor processing compliance continuously. Automated compliance checks. Alert on processing violations. Generate compliance reports. Track remediation progress. Integrate with GRC systems. Support external audits.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Disaster Recovery</h3>
-        <p>
-          Plan for processing system failures. Backup processing configurations. Disaster recovery procedures. Fail-safe defaults (deny-by-default). Recovery time objectives. Test DR procedures regularly. Document recovery steps.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Processing Performance Tuning</h3>
-        <p>
-          Optimize processing evaluation performance. Profile processing evaluation latency. Identify slow processing rules. Optimize processing rules. Use efficient data structures. Cache processing results. Scale processing engines horizontally. Set performance SLOs.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Processing Testing Automation</h3>
-        <p>
-          Automate processing testing in CI/CD. Unit tests for processing rules. Integration tests with sample requests. Regression tests for processing changes. Performance tests for processing evaluation. Security tests for processing bypass. Automated processing validation.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Processing Communication</h3>
-        <p>
-          Communicate processing changes effectively. Notify affected users of changes. Provide change summaries. Offer training for complex changes. Maintain processing changelog. Gather user feedback. Address concerns proactively.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Processing Retirement</h3>
-        <p>
-          Retire obsolete processing systematically. Identify unused processing. Deprecation notice period. Migration path for affected users. Monitor for usage during deprecation. Remove processing after grace period. Document retirement decisions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Third-Party Processing Integration</h3>
-        <p>
-          Integrate with third-party processing systems. Support standard protocols (OAuth, OIDC, SAML). Handle third-party processing evaluation. Manage trust relationships. Audit third-party processing. Monitor integration health. Plan for vendor changes.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Processing Cost Management</h3>
-        <p>
-          Optimize processing system costs. Right-size processing infrastructure. Use serverless for variable workloads. Optimize storage for processing data. Reduce unnecessary processing checks. Monitor cost per processing. Balance performance with cost.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Processing Scalability</h3>
-        <p>
-          Scale processing for growing systems. Horizontal scaling for processing engines. Shard processing data by user. Use read replicas for processing checks. Implement caching at multiple levels. Monitor scaling metrics. Plan capacity proactively.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Processing Observability</h3>
-        <p>
-          Implement comprehensive processing observability. Distributed tracing for processing flow. Structured logging for processing events. Metrics for processing health. Dashboards for processing monitoring. Alerts for processing anomalies. Root cause analysis tools.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Processing Training</h3>
-        <p>
-          Train team on processing procedures. Regular processing drills. Document processing runbooks. Cross-train team members. Test processing knowledge. Update training materials. Track training completion.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Processing Innovation</h3>
-        <p>
-          Stay current with processing best practices. Evaluate new processing technologies. Pilot innovative processing approaches. Share processing learnings. Contribute to processing community. Patent processing innovations where applicable.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Processing Metrics</h3>
-        <p>
-          Track key processing metrics. Processing success rate. Time to processing. Processing propagation latency. Denylist hit rate. User session count. Processing error rate. Set targets and monitor trends.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Processing Security</h3>
-        <p>
-          Secure processing systems against attacks. Encrypt processing data. Implement access controls. Audit processing access. Monitor for processing abuse. Regular security assessments. Incident response procedures.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Processing Compliance</h3>
-        <p>
-          Meet regulatory requirements for processing. SOC2 audit trails. HIPAA immediate processing. PCI-DSS session controls. GDPR right to processing. Regular compliance reviews. External audit support.
-        </p>
       </section>
     </ArticleLayout>
   );

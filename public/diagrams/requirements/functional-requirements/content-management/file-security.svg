@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">File Security &amp; Virus Scanning</text>
+  
+  <!-- File Upload -->
+  <rect x="50" y="70" width="120" height="80" rx="8" fill="#3b82f6"/>
+  <text x="110" y="105" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#ffffff">User Upload</text>
+  <text x="110" y="130" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">File Selected</text>
+  
+  <line x1="170" y1="110" x2="210" y2="110" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="190" y="100" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">1. Validate</text>
+  
+  <!-- Type Validation -->
+  <rect x="220" y="60" width="180" height="120" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="310" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Type Validation</text>
+  
+  <rect x="240" y="105" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="310" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Magic Bytes Check</text>
+  
+  <rect x="240" y="140" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="310" y="160" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Size Limit Check</text>
+  
+  <line x1="400" y1="120" x2="440" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="420" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">2. Scan</text>
+  
+  <!-- Virus Scan -->
+  <rect x="450" y="60" width="180" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="540" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#f59e0b">Virus Scan</text>
+  
+  <rect x="470" y="105" width="140" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="540" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Async Scanning</text>
+  
+  <rect x="470" y="140" width="140" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="540" y="160" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Signature Database</text>
+  
+  <line x1="630" y1="120" x2="670" y2="120" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="650" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">✓ Clean</text>
+  
+  <line x1="540" y1="180" x2="540" y2="220" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="560" y="200" text-anchor="start" font-family="system-ui" font-size="8" fill="#ef4444">✗ Infected</text>
+  
+  <!-- Quarantine -->
+  <rect x="450" y="230" width="180" height="100" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="540" y="255" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#ef4444">Quarantine</text>
+  <text x="540" y="280" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Isolate File</text>
+  <text x="540" y="295" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Notify User</text>
+  <text x="540" y="310" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Delete After 7d</text>
+  
+  <line x1="630" y1="120" x2="670" y2="120" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Clean Storage -->
+  <rect x="680" y="60" width="100" height="120" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="730" y="90" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Clean Storage</text>
+  <text x="730" y="115" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Mark as Safe</text>
+  <text x="730" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Available Access</text>
+  <text x="730" y="155" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Notify User</text>
+  
+  <line x1="730" y1="180" x2="730" y2="220" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Encryption -->
+  <rect x="680" y="230" width="100" height="100" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="730" y="255" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Encryption</text>
+  <text x="730" y="280" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">At Rest (AES-256)</text>
+  <text x="730" y="295" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">In Transit (TLS)</text>
+  <text x="730" y="310" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Key Management</text>
+  
+  <!-- Threat Types -->
+  <rect x="50" y="270" width="340" height="210" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="220" y="295" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#ef4444">Malware Threat Types</text>
+  
+  <rect x="70" y="310" width="300" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="332" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Viruses/Trojans (.exe, .bat, .scr)</text>
+  
+  <rect x="70" y="350" width="300" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="372" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Ransomware (.locked, .encrypted)</text>
+  
+  <rect x="70" y="390" width="300" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="412" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Scripts (.js, .vbs, .ps1)</text>
+  
+  <rect x="70" y="430" width="300" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="452" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Macro-enabled Documents (.docm, .xlsm)</text>
+  
+  <rect x="70" y="470" width="300" height="25" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="220" y="487" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">✓ Block by Magic Bytes, Not Extension</text>
+  
+  <!-- Security Best Practices -->
+  <rect x="420" y="270" width="340" height="210" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="590" y="295" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Security Best Practices</text>
+  
+  <rect x="440" y="310" width="300" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="590" y="332" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Scan All Uploads (Async)</text>
+  
+  <rect x="440" y="350" width="300" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="590" y="372" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Validate by Magic Bytes</text>
+  
+  <rect x="440" y="390" width="300" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="590" y="412" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Encrypt at Rest &amp; In Transit</text>
+  
+  <rect x="440" y="430" width="300" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="590" y="452" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Quarantine Infected Files</text>
+  
+  <rect x="440" y="470" width="300" height="25" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="590" y="487" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">✗ Never Trust File Extension Alone</text>
+
+</svg>

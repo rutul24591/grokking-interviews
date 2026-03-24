@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Tag Usage Analytics</text>
+  
+  <!-- Usage Count -->
+  <rect x="50" y="70" width="220" height="180" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="160" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#3b82f6">Usage Count</text>
+  
+  <rect x="70" y="115" width="180" height="40" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="160" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Increment on Tag</text>
+  
+  <rect x="70" y="165" width="180" height="40" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="160" y="185" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Decrement on Untag</text>
+  
+  <rect x="70" y="215" width="180" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="160" y="237" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Track Per Tag</text>
+  
+  <line x1="270" y1="160" x2="310" y2="160" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Trending Tags -->
+  <rect x="320" y="70" width="220" height="180" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="430" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f59e0b">Trending Tags</text>
+  
+  <rect x="340" y="115" width="180" height="40" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="430" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Usage Velocity</text>
+  <text x="430" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Growth over time window</text>
+  
+  <rect x="340" y="165" width="180" height="40" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="430" y="185" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Emerging Topics</text>
+  <text x="430" y="200" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Rapidly growing tags</text>
+  
+  <rect x="340" y="215" width="180" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="430" y="237" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Identify Early</text>
+  
+  <line x1="540" y1="160" x2="580" y2="160" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Unused Tags -->
+  <rect x="590" y="70" width="180" height="180" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="680" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#22c55e">Unused Tags</text>
+  
+  <rect x="610" y="115" width="140" height="40" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="680" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">No Content &gt;90 days</text>
+  
+  <rect x="610" y="165" width="140" height="40" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="680" y="185" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Cleanup Candidates</text>
+  
+  <rect x="610" y="215" width="140" height="35" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="680" y="237" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Taxonomy Optimization</text>
+  
+  <line x1="680" y1="250" x2="680" y2="290" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Tag Co-occurrence -->
+  <rect x="590" y="300" width="180" height="120" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="680" y="325" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#8b5cf6">Co-occurrence</text>
+  
+  <rect x="610" y="340" width="140" height="35" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="680" y="362" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Tags Used Together</text>
+  
+  <rect x="610" y="380" width="140" height="35" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="680" y="402" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Tag Relationships</text>
+  
+  <!-- Usage Distribution -->
+  <rect x="50" y="300" width="340" height="180" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="325" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Usage Distribution</text>
+  
+  <rect x="70" y="340" width="300" height="50" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="360" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Top Tags: javascript (5000), react (3500), nodejs (2800)</text>
+  
+  <rect x="70" y="395" width="300" height="50" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="415" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">By Category: Frontend (45%), Backend (35%), Other (20%)</text>
+  
+  <rect x="70" y="450" width="300" height="25" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="220" y="467" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">✓ Inform Taxonomy Optimization</text>
+  
+  <!-- Tag Growth -->
+  <rect x="420" y="300" width="140" height="180" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="490" y="325" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Growth</text>
+  
+  <rect x="440" y="340" width="100" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="490" y="362" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">Usage Over Time</text>
+  
+  <rect x="440" y="380" width="100" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="490" y="402" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">Growth Rate</text>
+  
+  <rect x="440" y="420" width="100" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="490" y="442" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">Seasonal Patterns</text>
+  
+  <rect x="440" y="460" width="100" height="20" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="490" y="475" text-anchor="middle" font-family="system-ui" font-size="7" fill="#0f172a">Trend Analysis</text>
+
+</svg>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Soft Delete Flow</text>
+  
+  <!-- Active Record -->
+  <rect x="50" y="70" width="150" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="125" y="110" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#22c55e">Active Record</text>
+  <text x="125" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">deleted_at: NULL</text>
+  <text x="125" y="155" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Visible: Yes</text>
+  
+  <line x1="200" y1="120" x2="240" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="220" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">1. Delete</text>
+  
+  <!-- Soft Delete -->
+  <rect x="250" y="70" width="150" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="325" y="105" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#f59e0b">Soft Delete</text>
+  <text x="325" y="130" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">UPDATE deleted_at</text>
+  <text x="325" y="150" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">deleted_at: NOW()</text>
+  <text x="325" y="170" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Visible: No</text>
+  
+  <line x1="400" y1="120" x2="440" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="420" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">2. Store</text>
+  
+  <!-- Deleted State -->
+  <rect x="450" y="70" width="150" height="100" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="525" y="105" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#ef4444">Deleted State</text>
+  <text x="525" y="130" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">deleted_at: 2024-01-15</text>
+  <text x="525" y="150" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">In Trash/Recycle Bin</text>
+  <text x="525" y="170" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Retention: 30 days</text>
+  
+  <line x1="600" y1="120" x2="640" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="620" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">Recover</text>
+  
+  <line x1="525" y1="170" x2="525" y2="210" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="545" y="190" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">After Retention</text>
+  
+  <!-- Recovery -->
+  <rect x="650" y="70" width="130" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="715" y="105" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#22c55e">Recovery</text>
+  <text x="715" y="130" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Within 30 days</text>
+  <text x="715" y="150" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Set deleted_at NULL</text>
+  <text x="715" y="170" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Restore Record</text>
+  
+  <line x1="525" y1="210" x2="525" y2="250" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Hard Delete -->
+  <rect x="450" y="250" width="150" height="100" rx="8" fill="#64748b" stroke="#64748b" stroke-width="2"/>
+  <text x="525" y="285" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#ffffff">Hard Delete</text>
+  <text x="525" y="310" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">After Retention</text>
+  <text x="525" y="330" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">DELETE from DB</text>
+  <text x="525" y="350" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Permanent</text>
+  
+  <!-- Audit Trail -->
+  <rect x="50" y="250" width="340" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="275" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Audit Trail</text>
+  
+  <rect x="70" y="290" width="300" height="25" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="307" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">User: john@example.com</text>
+  
+  <rect x="70" y="320" width="300" height="25" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="337" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Action: Soft Delete</text>
+  
+  <rect x="70" y="350" width="300" height="25" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="367" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Timestamp: 2024-01-15 10:30:00</text>
+  
+  <!-- Retention Timeline -->
+  <rect x="420" y="370" width="340" height="110" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="590" y="395" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Retention Timeline</text>
+  
+  <line x1="440" y1="420" x2="740" y2="420" stroke="#475569" stroke-width="2"/>
+  <circle cx="440" cy="420" r="5" fill="#22c55e"/>
+  <text x="440" y="440" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Day 0</text>
+  <text x="440" y="455" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Deleted</text>
+  
+  <circle cx="590" cy="420" r="5" fill="#f59e0b"/>
+  <text x="590" y="440" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Day 15</text>
+  <text x="590" y="455" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Recovery Window</text>
+  
+  <circle cx="740" cy="420" r="5" fill="#ef4444"/>
+  <text x="740" y="440" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Day 30</text>
+  <text x="740" y="455" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Hard Delete</text>
+  
+  <rect x="440" y="420" width="150" height="5" fill="#22c55e"/>
+  <rect x="590" y="420" width="150" height="5" fill="#f59e0b"/>
+
+</svg>

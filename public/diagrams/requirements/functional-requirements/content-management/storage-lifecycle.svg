@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Storage Lifecycle &amp; Cost Optimization</text>
+  
+  <!-- Storage Tiers -->
+  <rect x="50" y="70" width="220" height="280" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="160" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#3b82f6">Storage Tiers</text>
+  
+  <rect x="70" y="115" width="180" height="50" rx="4" fill="#ef4444" opacity="0.3"/>
+  <text x="160" y="135" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Hot / Standard</text>
+  <text x="160" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">$0.023/GB, Low Access Cost</text>
+  <text x="160" y="165" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Frequently Accessed</text>
+  
+  <rect x="70" y="175" width="180" height="50" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="160" y="195" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Infrequent Access</text>
+  <text x="160" y="210" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">$0.0125/GB, Higher Access</text>
+  <text x="160" y="225" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Occasionally Accessed</text>
+  
+  <rect x="70" y="235" width="180" height="50" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="160" y="255" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#0f172a">Archive / Cold</text>
+  <text x="160" y="270" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">$0.004/GB, Retrieval Latency</text>
+  <text x="160" y="285" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Rarely Accessed</text>
+  
+  <line x1="270" y1="200" x2="310" y2="200" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Lifecycle Transitions -->
+  <rect x="320" y="70" width="220" height="280" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="430" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f59e0b">Lifecycle Transitions</text>
+  
+  <rect x="340" y="115" width="180" height="40" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="430" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Day 0: Upload to Standard</text>
+  
+  <rect x="340" y="165" width="180" height="40" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="430" y="185" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Day 30: → Infrequent Access</text>
+  
+  <rect x="340" y="215" width="180" height="40" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="430" y="235" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Day 90: → Archive</text>
+  
+  <rect x="340" y="265" width="180" height="40" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="430" y="285" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Day 365: Expire (Optional)</text>
+  
+  <rect x="340" y="315" width="180" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="430" y="337" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Automatic Transitions</text>
+  
+  <line x1="540" y1="200" x2="580" y2="200" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Cost Comparison -->
+  <rect x="590" y="70" width="180" height="280" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="680" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#22c55e">Cost Comparison</text>
+  
+  <rect x="610" y="115" width="140" height="40" rx="4" fill="#ef4444" opacity="0.3"/>
+  <text x="680" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Standard: 100%</text>
+  <text x="680" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">$0.023/GB</text>
+  
+  <rect x="610" y="165" width="140" height="40" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="680" y="185" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">IA: 54% of Standard</text>
+  <text x="680" y="200" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">$0.0125/GB</text>
+  
+  <rect x="610" y="215" width="140" height="40" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="680" y="235" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Archive: 17% of Standard</text>
+  <text x="680" y="250" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">$0.004/GB</text>
+  
+  <rect x="610" y="265" width="140" height="40" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="680" y="285" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">60-80% Savings</text>
+  <text x="680" y="300" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">with Lifecycle</text>
+  
+  <line x1="680" y1="350" x2="680" y2="390" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Intelligent Tiering -->
+  <rect x="590" y="400" width="180" height="80" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="680" y="425" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#8b5cf6">Intelligent Tiering</text>
+  <text x="680" y="450" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Auto Move Based on Access</text>
+  <text x="680" y="465" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">No Retrieval Fees</text>
+  
+  <!-- Access Patterns -->
+  <rect x="50" y="370" width="340" height="110" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="395" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Access Pattern Analysis</text>
+  
+  <rect x="70" y="410" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="140" y="430" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Hot: Daily Access</text>
+  
+  <rect x="230" y="410" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="300" y="430" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">IA: Monthly Access</text>
+  
+  <rect x="70" y="445" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="140" y="465" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Archive: Yearly Access</text>
+  
+  <rect x="230" y="445" width="140" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="300" y="465" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Analyze → Optimize</text>
+
+</svg>

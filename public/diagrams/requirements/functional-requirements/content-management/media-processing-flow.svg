@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Media Processing Pipeline</text>
+  
+  <!-- Upload -->
+  <rect x="50" y="70" width="120" height="80" rx="8" fill="#3b82f6"/>
+  <text x="110" y="105" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#ffffff">Upload</text>
+  <text x="110" y="130" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Original File</text>
+  
+  <line x1="170" y1="110" x2="210" y2="110" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="190" y="100" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">1. Queue</text>
+  
+  <!-- Processing Queue -->
+  <rect x="220" y="60" width="180" height="120" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="310" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Processing Queue</text>
+  
+  <rect x="240" y="105" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="310" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">SQS / Kafka</text>
+  
+  <rect x="240" y="140" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="310" y="160" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Async Processing</text>
+  
+  <line x1="400" y1="120" x2="440" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="420" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">2. Process</text>
+  
+  <!-- Image Processing -->
+  <rect x="450" y="60" width="180" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="540" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#f59e0b">Image Processing</text>
+  
+  <rect x="470" y="105" width="140" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="540" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Resize (Multiple)</text>
+  
+  <rect x="470" y="140" width="140" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="540" y="160" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Format (WebP/AVIF)</text>
+  
+  <line x1="630" y1="120" x2="670" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Video Processing -->
+  <rect x="450" y="200" width="180" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="540" y="230" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#f59e0b">Video Processing</text>
+  
+  <rect x="470" y="245" width="140" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="540" y="265" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Transcode (HLS/DASH)</text>
+  
+  <rect x="470" y="280" width="140" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="540" y="300" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Adaptive Bitrate</text>
+  
+  <line x1="670" y1="120" x2="670" y2="160" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Storage -->
+  <rect x="680" y="60" width="100" height="260" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="730" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#22c55e">Storage</text>
+  <text x="730" y="120" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">S3 / GCS</text>
+  <text x="730" y="145" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Original</text>
+  <text x="730" y="170" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Variants</text>
+  <text x="730" y="195" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Thumbnails</text>
+  <text x="730" y="220" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Video Segments</text>
+  <text x="730" y="245" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Manifest Files</text>
+  <text x="730" y="270" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Organized Keys</text>
+  
+  <line x1="680" y1="190" x2="640" y2="190" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="660" y="180" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">3. Deliver</text>
+  
+  <!-- CDN -->
+  <rect x="450" y="340" width="180" height="100" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="540" y="365" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#8b5cf6">CDN Delivery</text>
+  <text x="540" y="390" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Edge Caching</text>
+  <text x="540" y="405" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Cache Headers</text>
+  <text x="540" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Signed URLs</text>
+  
+  <line x1="450" y1="390" x2="410" y2="390" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- User Request -->
+  <rect x="220" y="340" width="180" height="100" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="310" y="365" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">User Request</text>
+  <text x="310" y="390" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Device Detection</text>
+  <text x="310" y="405" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Format Selection</text>
+  <text x="310" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Responsive Size</text>
+  
+  <line x1="220" y1="390" x2="180" y2="390" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="200" y="380" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">Complete</text>
+  
+  <!-- Notification -->
+  <rect x="50" y="340" width="120" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="110" y="370" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Complete</text>
+  <text x="110" y="395" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Notify User</text>
+  <text x="110" y="410" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">URLs Ready</text>
+  <text x="110" y="425" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Progress 100%</text>
+  
+  <!-- Processing Options -->
+  <rect x="50" y="200" width="340" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="225" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Processing Options</text>
+  
+  <rect x="70" y="240" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="140" y="260" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Resize &amp; Crop</text>
+  
+  <rect x="230" y="240" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="300" y="260" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Format Conversion</text>
+  
+  <rect x="70" y="275" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="140" y="295" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Compression</text>
+  
+  <rect x="230" y="275" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="300" y="295" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Watermark</text>
+  
+  <!-- Delivery Options -->
+  <rect x="420" y="200" width="340" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="590" y="225" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Delivery Options</text>
+  
+  <rect x="440" y="240" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="510" y="260" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Responsive Images</text>
+  
+  <rect x="600" y="240" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="670" y="260" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Adaptive Video</text>
+  
+  <rect x="440" y="275" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="510" y="295" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Lazy Loading</text>
+  
+  <rect x="600" y="275" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="670" y="295" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Signed URLs</text>
+
+</svg>

@@ -7,16 +7,25 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-requirements-cm-backend-search-indexing",
   title: "Search Indexing",
-  description: "Comprehensive guide to implementing search indexing covering index structure, incremental updates, search optimization, relevance tuning, distributed indexing, and scalability patterns for staff/principal engineer interviews.",
+  description:
+    "Comprehensive guide to implementing search indexing covering index structure (field configuration, analyzers, field boosts), incremental updates, search optimization, relevance tuning (BM25, boosting, synonyms), distributed indexing (sharding, replication), and scalability patterns for staff/principal engineer interviews.",
   category: "functional-requirements",
   subcategory: "content-management",
   slug: "search-indexing",
   version: "extensive",
-  wordCount: 8000,
-  readingTime: 32,
-  lastUpdated: "2026-03-16",
-  tags: ["requirements", "functional", "content", "search", "indexing", "backend", "elasticsearch"],
-  relatedTopics: ["discovery", "elasticsearch", "content-storage", "search-ranking"],
+  wordCount: 9500,
+  readingTime: 38,
+  lastUpdated: "2026-03-23",
+  tags: [
+    "requirements",
+    "functional",
+    "content",
+    "search",
+    "indexing",
+    "backend",
+    "elasticsearch",
+  ],
+  relatedTopics: ["discovery", "content-storage", "search-ranking"],
 };
 
 export default function SearchIndexingArticle() {
@@ -25,758 +34,561 @@ export default function SearchIndexingArticle() {
       <section>
         <h2>Definition &amp; Context</h2>
         <p>
-          <strong>Search Indexing</strong> creates and maintains search indexes for
-          content, enabling fast, relevant search results. It is critical for content
-          discovery and user experience.
-        </p>
-        <p>
-          For staff and principal engineers, implementing search indexing requires understanding
-          index structure, analyzers, incremental updates, relevance tuning, distributed indexing,
-          shard management, and search optimization. The implementation must balance index
-          freshness with system performance and search quality.
+          <strong>Search Indexing</strong> creates and maintains search indexes for content enabling
+          fast, relevant search results. It is critical for content discovery and user experience —
+          without proper indexing, search is slow returning irrelevant results causing user
+          frustration and abandonment. Search indexing transforms content into searchable structure
+          through analysis (tokenization, stemming, normalization) enabling full-text search with
+          relevance ranking.
         </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/search-indexing-flow.svg"
           alt="Search Indexing Flow"
-          caption="Indexing Flow — showing content ingestion, analysis, indexing, and search"
-        />
-      </section>
-
-      <section>
-        <h2>Index Structure</h2>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Field Configuration</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Title:</strong> High weight, analyzed for full-text search.
-            </li>
-            <li>
-              <strong>Body:</strong> Medium weight, analyzed with stemming.
-            </li>
-            <li>
-              <strong>Tags:</strong> Keyword field, exact match.
-            </li>
-            <li>
-              <strong>Author:</strong> Keyword or text field based on use case.
-            </li>
-            <li>
-              <strong>Category:</strong> Keyword field for faceted search.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Analyzers</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Tokenization:</strong> Split text into tokens (words).
-            </li>
-            <li>
-              <strong>Stemming:</strong> Reduce words to root form (running → run).
-            </li>
-            <li>
-              <strong>Normalization:</strong> Lowercase, remove punctuation.
-            </li>
-            <li>
-              <strong>Stop Words:</strong> Remove common words (the, a, an).
-            </li>
-            <li>
-              <strong>Synonyms:</strong> Expand queries with synonyms.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Field Boosts</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Title Boost:</strong> Title matches rank higher (boost 3x).
-            </li>
-            <li>
-              <strong>Freshness Boost:</strong> Recent content gets boost.
-            </li>
-            <li>
-              <strong>Popularity Boost:</strong> Popular content ranks higher.
-            </li>
-            <li>
-              <strong>Author Boost:</strong> Boost content from followed authors.
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Index Updates</h2>
-
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/content-management/index-update-strategies.svg"
-          alt="Index Update Strategies"
-          caption="Updates — comparing real-time, batch, and hybrid indexing approaches"
+          caption="Search Indexing Flow — showing content ingestion, analysis (tokenization, stemming), indexing, and search query processing"
         />
 
         <p>
-          Different strategies for keeping search index in sync with content.
+          For staff and principal engineers, implementing search indexing requires deep
+          understanding of index structure including field configuration (title, body, tags, author,
+          category) with appropriate field types (text for full-text, keyword for exact match),
+          analyzers (tokenization splitting text into tokens, stemming reducing words to root form,
+          normalization lowercase and punctuation removal, stop words removal, synonyms expansion),
+          and field boosts (title boost for higher ranking, freshness boost for recent content).
+          Incremental updates enable index updates without full reindex through document-level
+          operations and near real-time search. Search optimization encompasses query optimization
+          (filtering before scoring, caching frequent queries), relevance tuning through BM25
+          algorithm (term frequency, inverse document frequency, field length normalization),
+          boosting (field boost, function boost, decay functions), and synonyms (manual synonyms,
+          automatic synonym extraction). Distributed indexing encompasses sharding (horizontal
+          partitioning by document or hash), replication (copies for availability and read
+          scaling), and cluster management (coordinator nodes, data nodes, master nodes). The
+          implementation must balance index freshness with system performance and search quality.
         </p>
 
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Real-time Indexing</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Pattern:</strong> Index on publish/update immediately.
-            </li>
-            <li>
-              <strong>Use Case:</strong> Fresh content, low latency requirements.
-            </li>
-            <li>
-              <strong>Benefits:</strong> Immediate searchability, consistent results.
-            </li>
-            <li>
-              <strong>Considerations:</strong> Indexing load, potential lag under high write volume.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Batch Indexing</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Pattern:</strong> Periodic bulk indexing (every 5-15 minutes).
-            </li>
-            <li>
-              <strong>Use Case:</strong> Large content updates, cost optimization.
-            </li>
-            <li>
-              <strong>Benefits:</strong> Efficient bulk operations, reduced indexing load.
-            </li>
-            <li>
-              <strong>Considerations:</strong> Search lag, stale results during batch window.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Hybrid Approach</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Pattern:</strong> Real-time for new content, batch for updates.
-            </li>
-            <li>
-              <strong>Use Case:</strong> Balance freshness with efficiency.
-            </li>
-            <li>
-              <strong>Benefits:</strong> Best of both approaches.
-            </li>
-            <li>
-              <strong>Considerations:</strong> Complexity, dual pipeline management.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Reindexing</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Full Reindex:</strong> Rebuild entire index from scratch.
-            </li>
-            <li>
-              <strong>Use Case:</strong> Schema changes, index corruption, major updates.
-            </li>
-            <li>
-              <strong>Strategy:</strong> Blue-green indexing, zero-downtime reindex.
-            </li>
-            <li>
-              <strong>Considerations:</strong> Resource intensive, plan for capacity.
-            </li>
-          </ul>
-        </div>
+        <p>
+          Modern search indexing has evolved from simple keyword matching to sophisticated relevance
+          ranking with machine learning. Platforms like Elasticsearch provide distributed search
+          with BM25 ranking, Algolia provides typo-tolerant search with instant results, and Google
+          Search uses neural ranking with BERT for query understanding. Relevance tuning through
+          boosting, synonyms, and machine learning enables search results matching user intent
+          rather than just keyword matching.
+        </p>
       </section>
 
       <section>
-        <h2>Search Relevance</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>BM25:</strong> Standard scoring algorithm for text search.
-          </li>
-          <li>
-            <strong>Function Score:</strong> Combine relevance with business signals.
-          </li>
-          <li>
-            <strong>Personalization:</strong> Adjust ranking based on user preferences.
-          </li>
-          <li>
-            <strong>A/B Testing:</strong> Test ranking algorithms for improvement.
-          </li>
-          <li>
-            <strong>User Feedback:</strong> Use clicks, dwell time for ranking signals.
-          </li>
-        </ul>
+        <h2>Core Concepts</h2>
+        <p>
+          Search indexing is built on fundamental concepts that determine how content is analyzed,
+          indexed, and searched. Understanding these concepts is essential for designing effective
+          search systems.
+        </p>
+
+        <p>
+          <strong>Index Structure:</strong> Field configuration defines how each field is indexed
+          and searched. Title field uses text type with high weight for full-text search enabling
+          ranking boost for title matches. Body field uses text type with standard analyzer for
+          full-text search with stemming. Tags field uses keyword type for exact match enabling
+          faceted search. Author field uses keyword or text based on use case (keyword for exact
+          match, text for full-text). Category field uses keyword type for faceted search and
+          filtering. Field types determine analysis and search behavior.
+        </p>
+
+        <p>
+          <strong>Analyzers:</strong> Tokenization splits text into tokens (words) removing
+          punctuation and whitespace. Stemming reduces words to root form (running → run, jumps →
+          jump) enabling matching of word variations. Normalization converts to lowercase and
+          removes diacritics (café → cafe) enabling case-insensitive search. Stop words removal
+          removes common words (the, a, an) reducing index size and improving relevance. Synonyms
+          expansion expands queries with synonyms (car → automobile, vehicle) improving recall.
+        </p>
+
+        <p>
+          <strong>Relevance Tuning:</strong> BM25 algorithm ranks documents based on term frequency
+          (TF — how often term appears in document), inverse document frequency (IDF — how rare
+          term is across corpus), and field length normalization (shorter fields rank higher for
+          same term). Boosting increases relevance for specific fields (title boost 3x), functions
+          (popularity boost), or decay functions (freshness decay). Synonyms improve recall by
+          matching related terms (laptop → notebook, computer).
+        </p>
+
+        <p>
+          <strong>Distributed Indexing:</strong> Sharding partitions index horizontally across
+          nodes enabling horizontal scaling. Document-based sharding assigns documents to shards
+          through hash or range. Replication creates copies of shards for availability and read
+          scaling enabling parallel query execution. Cluster management coordinates indexing and
+          search through coordinator nodes (route queries), data nodes (store and search shards),
+          and master nodes (cluster state management).
+        </p>
       </section>
 
       <section>
-        <h2>Distributed Indexing</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Sharding:</strong> Split index across multiple nodes.
-          </li>
-          <li>
-            <strong>Replication:</strong> Replica shards for high availability.
-          </li>
-          <li>
-            <strong>Routing:</strong> Route queries to relevant shards.
-          </li>
-          <li>
-            <strong>Rebalancing:</strong> Automatic shard rebalancing on node changes.
-          </li>
-          <li>
-            <strong>Cluster Management:</strong> Monitor cluster health, add nodes as needed.
-          </li>
-        </ul>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          Search indexing architecture separates content ingestion, analysis, indexing, and search
+          query processing enabling modular implementation with clear boundaries. This architecture
+          is critical for search quality, performance, and scalability.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/content-management/search-indexing-flow.svg"
+          alt="Search Indexing Flow"
+          caption="Search Indexing Flow — showing content ingestion, analysis, indexing, and search query processing"
+        />
+
+        <p>
+          Indexing flow begins with content ingestion from database or message queue. Content is
+          analyzed through analyzer pipeline (tokenization, stemming, normalization, stop words
+          removal). Analyzed tokens are indexed with field information and document ID. Index is
+          optimized through segment merging and compression. For incremental updates, only changed
+          documents are reindexed enabling near real-time search. Search query processing begins
+          with query parsing (analyzing query through same analyzer as indexing). Query is executed
+          against index through inverted index lookup. Results are scored through BM25 algorithm
+          with boosting applied. Results are sorted by score and returned to user.
+        </p>
+
+        <p>
+          Index structure architecture includes inverted index mapping terms to documents containing
+          term enabling fast term lookup. Document store stores original document content for
+          retrieval. Field data enables sorting and aggregations on fields. Term dictionary stores
+          all unique terms with statistics (document frequency, total term frequency).
+        </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/content-management/relevance-tuning.svg"
+          alt="Relevance Tuning"
+          caption="Relevance Tuning — showing BM25 scoring, field boosting, synonyms, and freshness decay"
+        />
+
+        <p>
+          Relevance tuning architecture includes BM25 scoring calculating relevance based on term
+          frequency, inverse document frequency, and field length. Field boosting increases score
+          for matches in important fields (title boost 3x, body boost 1x). Function boosting
+          increases score based on document attributes (popularity, rating, views). Decay functions
+          reduce score based on distance from ideal (freshness decay reducing score for old
+          content). Synonyms expand query matching related terms improving recall.
+        </p>
       </section>
 
       <section>
-        <h2>Index Optimization</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Segment Merging:</strong> Merge small segments for efficiency.
-          </li>
-          <li>
-            <strong>Force Merge:</strong> Manual merge for read-heavy indexes.
-          </li>
-          <li>
-            <strong>Refresh Interval:</strong> Adjust based on freshness needs.
-          </li>
-          <li>
-            <strong>Document Routing:</strong> Co-locate related documents.
-          </li>
-          <li>
-            <strong>Index Lifecycle:</strong> Manage index size, rollover policies.
-          </li>
-        </ul>
-      </section>
+        <h2>Trade-offs &amp; Comparison</h2>
+        <p>
+          Designing search indexing involves trade-offs between index freshness, search quality,
+          performance, and resource usage. Understanding these trade-offs is essential for making
+          informed architecture decisions.
+        </p>
 
-      <section>
-        <h2>References</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Elasticsearch Documentation
-            </a>
-          </li>
-          <li>
-            <a href="https://lucene.apache.org/core/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Apache Lucene
-            </a>
-          </li>
-        </ul>
+        <p>
+          Full reindex versus incremental update presents completeness versus efficiency trade-offs.
+          Full reindex rebuilds entire index from scratch ensuring index consistency and cleaning
+          up stale data but is resource intensive requiring significant CPU and I/O, causes index
+          downtime during reindex, and is slow for large indices (hours to days). Incremental
+          update indexes only changed documents enabling near real-time search with minimal
+          resource usage but risks index drift over time requiring periodic full reindex and
+          complexity for handling deletes and updates. The recommendation is incremental update for
+          daily operations with periodic full reindex (weekly or monthly) for index health.
+        </p>
+
+        <p>
+          Exact match versus fuzzy match presents precision versus recall trade-offs. Exact match
+          requires exact term match providing high precision (results match query exactly) and fast
+          query execution but has low recall (misses typos and variations) and poor user experience
+          for typos. Fuzzy match allows approximate match through edit distance providing high
+          recall (finds results despite typos) and good user experience forgiving typos but has
+          lower precision (may return irrelevant results) and slower query execution. The
+          recommendation is exact match for structured fields (IDs, categories), fuzzy match for
+          text fields (title, body) with controlled fuzziness (max edit distance 2).
+        </p>
+
+        <p>
+          Single-node versus distributed index presents simplicity versus scalability trade-offs.
+          Single-node index runs on single server providing simple architecture with no coordination
+          overhead and low operational complexity but has limited capacity (single server limits),
+          no high availability (single point of failure), and limited read throughput. Distributed
+          index runs across multiple nodes through sharding and replication providing horizontal
+          scaling (add nodes for capacity), high availability (replicas survive node failure), and
+          high read throughput (parallel query execution) but has coordination overhead and
+          operational complexity. The recommendation is single-node for small indices (&lt;100GB,
+          low query volume), distributed for production search requiring scalability and
+          availability.
+        </p>
       </section>
 
       <section>
         <h2>Best Practices</h2>
+        <p>
+          Implementing search indexing requires following established best practices to ensure
+          search quality, performance, and scalability.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Index Design</h3>
-        <ul className="space-y-2">
-          <li>Design schema based on query patterns</li>
-          <li>Use appropriate field types (text, keyword, date)</li>
-          <li>Configure analyzers for language</li>
-          <li>Set up field boosts for relevance</li>
-          <li>Plan for index growth</li>
-        </ul>
+        <p>
+          Index structure configures appropriate field types (text for full-text, keyword for
+          exact match). Define custom analyzers for specific requirements (language-specific,
+          domain-specific). Configure field boosts for important fields (title boost 3x, body
+          boost 1x). Enable norms for field length normalization. Use doc_values for sorting and
+          aggregations.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Indexing Strategy</h3>
-        <ul className="space-y-2">
-          <li>Use event-driven indexing for real-time</li>
-          <li>Implement retry logic for failures</li>
-          <li>Monitor indexing lag</li>
-          <li>Plan for reindexing scenarios</li>
-          <li>Use bulk indexing for efficiency</li>
-        </ul>
+        <p>
+          Incremental updates enable near real-time search through document-level operations. Use
+          message queue (Kafka, SQS) for change data capture triggering index updates. Configure
+          refresh interval (1-5 seconds) balancing freshness with indexing overhead. Monitor index
+          lag ensuring index stays current. Schedule periodic full reindex for index health.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Search Optimization</h3>
-        <ul className="space-y-2">
-          <li>Tune relevance with A/B testing</li>
-          <li>Implement query suggestions</li>
-          <li>Use filters for faceted search</li>
-          <li>Cache frequent queries</li>
-          <li>Monitor search performance</li>
-        </ul>
+        <p>
+          Relevance tuning configures BM25 parameters (k1, b) for corpus characteristics. Apply
+          field boosting for important fields (title, tags). Use function boosting for document
+          attributes (popularity, rating). Configure decay functions for freshness (linear,
+          exponential, gaussian). Maintain synonym list (manual curation, automatic extraction).
+          Test relevance through A/B testing and user feedback.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Monitoring</h3>
-        <ul className="space-y-2">
-          <li>Track indexing latency</li>
-          <li>Monitor search query latency</li>
-          <li>Alert on indexing failures</li>
-          <li>Track search relevance metrics</li>
-          <li>Monitor cluster health</li>
-        </ul>
+        <p>
+          Distributed indexing configures appropriate shard count (20-50GB per shard) based on
+          corpus size. Configure replica count (1-2 replicas) for availability and read scaling.
+          Monitor shard health ensuring even distribution. Use index lifecycle management (ILM) for
+          time-series data transitioning old indices to cheaper storage.
+        </p>
+
+        <p>
+          Search optimization implements query caching for frequent queries reducing query latency.
+          Use filter context for non-scoring queries (filters, aggregations) enabling caching.
+          Optimize queries through profiling identifying slow queries. Use search timeouts
+          preventing runaway queries. Implement search-as-you-type with debouncing reducing query
+          volume.
+        </p>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>No analyzer config:</strong> Poor search quality.
-            <br /><strong>Fix:</strong> Configure analyzers for language, use stemming.
-          </li>
-          <li>
-            <strong>Wrong field types:</strong> Can't filter or sort properly.
-            <br /><strong>Fix:</strong> Use keyword for exact match, text for full-text.
-          </li>
-          <li>
-            <strong>No indexing lag monitoring:</strong> Stale results unnoticed.
-            <br /><strong>Fix:</strong> Monitor indexing lag, alert on thresholds.
-          </li>
-          <li>
-            <strong>Over-indexing:</strong> Too many fields indexed.
-            <br /><strong>Fix:</strong> Index only searchable fields, use _source for display.
-          </li>
-          <li>
-            <strong>No shard planning:</strong> Poor cluster performance.
-            <br /><strong>Fix:</strong> Plan shard count based on data size, query patterns.
-          </li>
-          <li>
-            <strong>Ignoring relevance:</strong> Poor search results.
-            <br /><strong>Fix:</strong> Tune boosts, test with real queries, A/B test.
-          </li>
-          <li>
-            <strong>No reindex strategy:</strong> Can't update schema.
-            <br /><strong>Fix:</strong> Plan blue-green reindexing, zero-downtime strategy.
-          </li>
-          <li>
-            <strong>Poor error handling:</strong> Lost documents on failure.
-            <br /><strong>Fix:</strong> Retry logic, dead letter queue, reconciliation.
-          </li>
-          <li>
-            <strong>No query optimization:</strong> Slow search performance.
-            <br /><strong>Fix:</strong> Use filters, cache queries, optimize query structure.
-          </li>
-          <li>
-            <strong>Ignoring user feedback:</strong> Can't improve relevance.
-            <br /><strong>Fix:</strong> Track clicks, dwell time, use for ranking signals.
-          </li>
-        </ul>
+        <p>
+          Avoid these common mistakes when implementing search indexing to ensure search quality,
+          performance, and scalability.
+        </p>
+
+        <p>
+          No analyzer configuration uses default analyzer missing optimization opportunities. Fix by
+          configuring custom analyzers for specific requirements. Use language-specific analyzers
+          for non-English content. Configure synonyms for domain-specific terms. Test analyzer
+          output through analyze API.
+        </p>
+
+        <p>
+          No relevance tuning returns irrelevant results frustrating users. Fix by configuring
+          field boosts for important fields (title, tags). Apply function boosting for popularity.
+          Configure decay functions for freshness. Maintain synonym list. Test relevance through
+          user feedback and A/B testing.
+        </p>
+
+        <p>
+          Full reindex for every change causes index downtime and resource exhaustion. Fix by
+          implementing incremental updates through message queue. Configure refresh interval
+          balancing freshness with overhead. Schedule periodic full reindex for index health.
+        </p>
+
+        <p>
+          No query optimization causes slow search and resource exhaustion. Fix by implementing
+          query caching for frequent queries. Use filter context for non-scoring queries enabling
+          caching. Profile queries identifying slow queries. Use search timeouts preventing runaway
+          queries.
+        </p>
+
+        <p>
+          Incorrect shard count causes uneven distribution and poor performance. Fix by sizing
+          shards appropriately (20-50GB per shard). Monitor shard health ensuring even distribution.
+          Use rollover indices for time-series data. Configure shard allocation awareness for
+          multi-datacenter deployments.
+        </p>
+
+        <p>
+          No index monitoring leaves issues undetected. Fix by monitoring index health (document
+          count, index size, shard distribution). Monitor query performance (latency, error rate).
+          Set up alerts for index lag, shard failures, and cluster health.
+        </p>
+
+        <p>
+          No synonym support misses relevant results. Fix by maintaining synonym list through
+          manual curation and automatic extraction. Configure synonym filters in analyzer. Test
+          synonym expansion through analyze API. Update synonyms based on search analytics.
+        </p>
+
+        <p>
+          No fuzzy matching frustrates users with typos. Fix by enabling fuzzy matching for text
+          fields. Configure appropriate fuzziness (auto or max edit distance 2). Use prefix length
+          to reduce false positives. Test fuzzy matching through search analytics.
+        </p>
+
+        <p>
+          No faceted search limits discovery capabilities. Fix by configuring keyword fields for
+          faceting. Enable doc_values for sorting and aggregations. Implement faceted search UI
+          enabling filtering by category, tags, author. Monitor facet usage optimizing facet
+          configuration.
+        </p>
+
+        <p>
+          No search analytics prevents relevance optimization. Fix by logging search queries and
+          clicks. Analyze search patterns identifying zero-result queries. Track click-through rate
+          measuring relevance. Use analytics for synonym discovery and relevance tuning.
+        </p>
       </section>
 
       <section>
-        <h2>Advanced Topics</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Custom Analyzers</h3>
+        <h2>Real-world Use Cases</h2>
         <p>
-          Build custom analyzers for domain-specific language. Combine tokenizers, filters. Handle special characters, abbreviations. Test with real queries.
+          Search indexing is critical for content discovery across different domains. Here are
+          real-world implementations from production systems demonstrating different approaches to
+          search challenges.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Synonym Management</h3>
         <p>
-          Maintain synonym lists for query expansion. Domain-specific synonyms. User-contributed synonyms. A/B test synonym impact on relevance.
+          E-commerce search (Amazon) addresses product discovery with faceted search. The solution
+          uses Elasticsearch with custom analyzers for product titles and descriptions, field
+          boosting for brand and title, faceted search for category, price range, ratings, synonym
+          expansion for product variations (TV → television, TV show), and personalization through
+          user behavior. The result is relevant product search enabling customers to find products
+          quickly with high conversion rate.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Personalized Search</h3>
         <p>
-          Adjust ranking based on user preferences. Consider user history, location, behavior. Balance personalization with diversity. Respect privacy preferences.
+          Content search (Medium) addresses article discovery with full-text search. The solution
+          uses Elasticsearch with standard analyzer for article content, field boosting for title
+          and tags, freshness decay for recent content, synonym expansion for topics (AI →
+          artificial intelligence, ML → machine learning), and author-based filtering. The result
+          is relevant article search enabling readers to discover content matching interests.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Graceful Degradation</h3>
         <p>
-          Handle indexing failures gracefully. Fail-safe defaults (serve cached results). Queue indexing requests for retry. Implement circuit breaker pattern. Provide manual fallback. Monitor indexing health continuously.
+          Code search (GitHub) addresses code discovery with code-specific indexing. The solution
+          uses custom analyzer for code (tokenizing on camelCase, snake_case), field boosting for
+          repository name and file path, language filtering, exact match for function and class
+          names, and fuzzy matching for typos. The result is relevant code search enabling
+          developers to find code quickly despite typos.
+        </p>
+
+        <p>
+          Enterprise search (Confluence) addresses document discovery across organization. The
+          solution uses Elasticsearch with custom analyzers for document content, field boosting
+          for title and labels, permission filtering (only show documents user can access),
+          faceted search for space, content type, author, and synonym expansion for enterprise
+          terminology. The result is relevant enterprise search enabling employees to find
+          documents quickly with proper access control.
+        </p>
+
+        <p>
+          Log search (Splunk) addresses log analysis with time-series indexing. The solution uses
+          time-based indices (daily indices), index lifecycle management transitioning old indices
+          to cheaper storage, field boosting for error levels and service names, aggregation for
+          log statistics, and real-time indexing for near real-time search. The result is fast log
+          search enabling operations teams to debug issues quickly.
         </p>
       </section>
 
       <section>
         <h2>Interview Questions</h2>
-
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/content-management/search-relevance.svg"
-          alt="Search Relevance Factors"
-          caption="Relevance — showing BM25, boosts, freshness, and personalization factors"
-        />
+        <p>
+          These questions test understanding of search indexing design, implementation, and
+          operational concerns for staff and principal engineer interviews.
+        </p>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle index consistency?</p>
-            <p className="mt-2 text-sm">A: Event-driven indexing (Kafka), retry on failure, periodic reconciliation, monitor lag. Use idempotent operations for safety.</p>
+            <p className="font-semibold">Q: How do you configure index structure?</p>
+            <p className="mt-2 text-sm">
+              A: Define field types (text for full-text, keyword for exact match). Configure
+              custom analyzers for specific requirements (language-specific, domain-specific).
+              Configure field boosts for important fields (title boost 3x, body boost 1x). Enable
+              norms for field length normalization. Use doc_values for sorting and aggregations.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you optimize search relevance?</p>
-            <p className="mt-2 text-sm">A: Field boosting, freshness boost, popularity signals, A/B test ranking algorithms, user feedback. Continuously tune based on metrics.</p>
+            <p className="font-semibold">Q: How do you implement incremental updates?</p>
+            <p className="mt-2 text-sm">
+              A: Use message queue (Kafka, SQS) for change data capture triggering index updates.
+              Index only changed documents through document-level operations. Configure refresh
+              interval (1-5 seconds) balancing freshness with indexing overhead. Monitor index lag
+              ensuring index stays current. Schedule periodic full reindex for index health.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What's your indexing strategy?</p>
-            <p className="mt-2 text-sm">A: Real-time for new content via events. Batch for bulk updates. Hybrid approach balances freshness with efficiency.</p>
+            <p className="font-semibold">Q: How do you tune search relevance?</p>
+            <p className="mt-2 text-sm">
+              A: Configure BM25 parameters (k1, b) for corpus characteristics. Apply field boosting
+              for important fields (title, tags). Use function boosting for document attributes
+              (popularity, rating). Configure decay functions for freshness (linear, exponential,
+              gaussian). Maintain synonym list (manual curation, automatic extraction). Test
+              relevance through A/B testing and user feedback.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle reindexing?</p>
-            <p className="mt-2 text-sm">A: Blue-green indexing. Create new index, reindex in background, switch alias when complete. Zero-downtime approach.</p>
+            <p className="font-semibold">Q: How do you implement distributed indexing?</p>
+            <p className="mt-2 text-sm">
+              A: Configure shard count based on corpus size (20-50GB per shard). Configure replica
+              count (1-2 replicas) for availability and read scaling. Monitor shard health ensuring
+              even distribution. Use index lifecycle management (ILM) for time-series data.
+              Configure shard allocation awareness for multi-datacenter deployments.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you scale search?</p>
-            <p className="mt-2 text-sm">A: Shard by document ID or date. Add replica shards for read scale. Use routing for efficient queries. Monitor and rebalance.</p>
+            <p className="font-semibold">Q: How do you optimize search queries?</p>
+            <p className="mt-2 text-sm">
+              A: Implement query caching for frequent queries reducing latency. Use filter context
+              for non-scoring queries (filters, aggregations) enabling caching. Profile queries
+              identifying slow queries. Use search timeouts preventing runaway queries. Implement
+              search-as-you-type with debouncing reducing query volume.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you handle synonyms?</p>
-            <p className="mt-2 text-sm">A: Synonym filter at query time. Maintain synonym lists. Domain-specific synonyms. Test impact on relevance.</p>
+            <p className="mt-2 text-sm">
+              A: Maintain synonym list through manual curation and automatic extraction. Configure
+              synonym filters in analyzer. Use synonym expansion at query time matching related
+              terms. Test synonym expansion through analyze API. Update synonyms based on search
+              analytics identifying zero-result queries.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you personalize search?</p>
-            <p className="mt-2 text-sm">A: Boost content based on user preferences. Consider history, location, behavior. Balance with diversity. Respect privacy.</p>
+            <p className="font-semibold">Q: How do you implement fuzzy matching?</p>
+            <p className="mt-2 text-sm">
+              A: Enable fuzzy matching for text fields through fuzziness parameter. Configure
+              appropriate fuzziness (auto or max edit distance 2). Use prefix length to reduce
+              false positives. Test fuzzy matching through search analytics. Balance recall
+              (finding results despite typos) with precision (avoiding irrelevant results).
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What metrics do you track?</p>
-            <p className="mt-2 text-sm">A: Indexing latency, search latency, click-through rate, zero-result rate, indexing failures. Alert on anomalies.</p>
+            <p className="font-semibold">Q: How do you implement faceted search?</p>
+            <p className="mt-2 text-sm">
+              A: Configure keyword fields for faceting (category, tags, author). Enable doc_values
+              for sorting and aggregations. Implement faceted search UI enabling filtering by
+              facets. Monitor facet usage optimizing facet configuration. Use aggregation queries
+              for facet counts.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle query suggestions?</p>
-            <p className="mt-2 text-sm">A: Completion suggester for autocomplete. Popular queries cache. Typo tolerance with fuzzy matching. Personalized suggestions.</p>
+            <p className="font-semibold">Q: How do you monitor search indexing?</p>
+            <p className="mt-2 text-sm">
+              A: Monitor index health (document count, index size, shard distribution). Monitor
+              query performance (latency, error rate, query volume). Set up alerts for index lag,
+              shard failures, and cluster health. Log search queries and clicks for analytics.
+              Track click-through rate measuring relevance.
+            </p>
           </div>
         </div>
-      </section>
-
-      <section>
-        <h2>Security Checklist</h2>
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Pre-Launch Checklist</h3>
-          <ul className="space-y-2">
-            <li>☐ Access control configured</li>
-            <li>☐ Index encryption enabled</li>
-            <li>☐ Query validation implemented</li>
-            <li>☐ Rate limiting configured</li>
-            <li>☐ Audit logging enabled</li>
-            <li>☐ Monitoring and alerting set up</li>
-            <li>☐ Backup strategy implemented</li>
-            <li>☐ Disaster recovery tested</li>
-            <li>☐ Penetration testing completed</li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Testing Strategy</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Unit Tests</h3>
-        <ul className="space-y-2">
-          <li>Test analyzer configuration</li>
-          <li>Test indexing logic</li>
-          <li>Test query parsing</li>
-          <li>Test relevance scoring</li>
-          <li>Test shard routing</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Integration Tests</h3>
-        <ul className="space-y-2">
-          <li>Test indexing flow</li>
-          <li>Test search queries</li>
-          <li>Test reindexing flow</li>
-          <li>Test cluster failover</li>
-          <li>Test backup/restore</li>
-          <li>Test monitoring integration</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Tests</h3>
-        <ul className="space-y-2">
-          <li>Test access control</li>
-          <li>Test query injection prevention</li>
-          <li>Test rate limiting</li>
-          <li>Test data isolation</li>
-          <li>Test audit logging</li>
-          <li>Penetration testing for search</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Tests</h3>
-        <ul className="space-y-2">
-          <li>Test indexing throughput</li>
-          <li>Test search latency</li>
-          <li>Test concurrent queries</li>
-          <li>Test cluster scaling</li>
-          <li>Test relevance accuracy</li>
-        </ul>
       </section>
 
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Elasticsearch Documentation</a></li>
-          <li><a href="https://lucene.apache.org/core/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Apache Lucene</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP IDOR Prevention</a></li>
-          <li><a href="https://auth0.com/blog/a-look-at-the-latest-draft-for-oauth-2-1/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OAuth 2.1 Security Best Practices</a></li>
-          <li><a href="https://developer.mozilla.org/en-US/docs/Web/Security" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">MDN - Web Security</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Choosing_and_Using_Security_Questions_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Security Questions</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Multifactor Authentication</a></li>
-          <li><a href="https://docs.openfga.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OpenFGA - Fine-Grained Authorization</a></li>
-          <li><a href="https://www.cerbos.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Cerbos - Policy as Code</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Authorization Cheat Sheet</a></li>
+          <li>
+            <a
+              href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Elasticsearch Documentation
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://lucene.apache.org/core/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Apache Lucene
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://en.wikipedia.org/wiki/Okapi_BM25"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              BM25 Algorithm (Wikipedia)
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Access Control Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Input Validation Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Multifactor Authentication
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Forgot Password Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Credential_Stuffing_Prevention_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Credential Stuffing Prevention
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Logging Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.algolia.com/doc/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Algolia Search Documentation
+            </a>
+          </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Implementation Patterns</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Event-Driven Indexing</h3>
-        <p>
-          Index content on publish/update events. Use message queue (Kafka) for reliability. Retry on failure. Monitor indexing lag. Ensure eventual consistency.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Blue-Green Reindexing</h3>
-        <p>
-          Create new index alongside old. Reindex in background. Switch alias when complete. Zero-downtime approach. Rollback capability.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Relevance Tuning</h3>
-        <p>
-          Configure field boosts. Add freshness, popularity signals. A/B test ranking algorithms. Use user feedback for improvement. Continuously monitor and tune.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Shard Management</h3>
-        <p>
-          Plan shard count based on data size. Use routing for efficient queries. Monitor shard balance. Rebalance as cluster grows. Consider time-based indices.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Graceful Degradation</h3>
-        <p>
-          Handle indexing failures gracefully. Fail-safe defaults (serve cached results). Queue indexing requests for retry. Implement circuit breaker pattern. Provide manual fallback. Monitor indexing health continuously.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Compliance Considerations</h3>
-        <p>
-          Meet regulatory requirements for indexing. SOC2: Indexing audit trails. HIPAA: PHI indexing safeguards. PCI-DSS: Cardholder data indexing. GDPR: Content data handling. Implement compliance reporting. Regular compliance reviews.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Optimization</h3>
-        <p>
-          Optimize indexing for high-throughput systems. Batch indexing operations. Use connection pooling. Implement async indexing operations. Monitor indexing latency. Set SLOs for indexing time. Scale indexing endpoints horizontally.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Error Handling</h3>
-        <p>
-          Handle indexing errors gracefully. Log errors with full context. Implement retry with exponential backoff. Alert on repeated failures. Provide fallback indexing mechanisms. Don't expose internal errors to users.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Developer Experience</h3>
-        <p>
-          Make indexing easy for developers to use. Provide indexing SDK. Auto-generate indexing documentation. Include indexing requirements in API docs. Provide testing utilities. Implement indexing linting in CI. Create runbooks for common issues.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Multi-Tenant Indexing</h3>
-        <p>
-          Handle indexing in multi-tenant systems. Tenant-scoped indexing configuration. Isolate indexing events between tenants. Tenant-specific indexing policies. Audit indexing per tenant. Handle cross-tenant indexing carefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise Indexing</h3>
-        <p>
-          Special handling for enterprise indexing. Dedicated support for enterprise onboarding. Custom indexing configurations. SLA for indexing availability. Priority support for indexing issues. Regular enterprise reviews.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Emergency Access</h3>
-        <p>
-          Break-glass procedures for emergency access. Pre-approved emergency indexing bypass. Require security team approval. Automatic notification to affected users. Full audit logging of emergency access. Post-incident review required.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Indexing Testing</h3>
-        <p>
-          Test indexing thoroughly before deployment. Chaos engineering for indexing failures. Simulate high-volume indexing scenarios. Test indexing under load. Validate indexing propagation. Test rollback procedures. Document test results.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">User Communication</h3>
-        <p>
-          Communicate indexing changes clearly to users. Explain why indexing is required. Provide steps to configure indexing. Offer support contact for issues. Send indexing confirmation. Provide indexing history for review. Handle user concerns empathetically.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Continuous Improvement</h3>
-        <p>
-          Evolve indexing based on operational learnings. Analyze indexing patterns. Identify false positives. Optimize indexing triggers. Gather user feedback. Track indexing metrics. Benchmark against industry best practices.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Hardening</h3>
-        <p>
-          Strengthen indexing against attacks. Implement defense in depth. Regular penetration testing. Monitor for indexing bypass attempts. Encrypt indexing data at rest. Use hardware security modules for key management. Implement zero-trust principles.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Deprovisioning Integration</h3>
-        <p>
-          Integrate with user deprovisioning workflows. Automatic indexing revocation on HR termination. Role change triggers indexing review. Contractor expiry triggers indexing revocation. Handle temporary access expiry. Coordinate with access management systems.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Indexing Analytics</h3>
-        <p>
-          Analyze indexing data for insights. Track indexing reasons distribution. Identify common indexing triggers. Detect anomalous indexing patterns. Measure indexing effectiveness. Generate indexing reports. Use analytics for optimization.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Cross-System Indexing</h3>
-        <p>
-          Coordinate indexing across multiple systems. Central indexing orchestration. Handle system-specific indexing. Ensure consistent enforcement. Manage indexing dependencies. Orchestrate indexing updates. Monitor cross-system indexing health.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Indexing Documentation</h3>
-        <p>
-          Maintain comprehensive indexing documentation. Indexing procedures and runbooks. Decision records for indexing design. Usage examples for each scenario. Onboarding guide for new developers. API documentation with indexing endpoints. Keep documentation up to date.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Cost Optimization</h3>
-        <p>
-          Optimize indexing system costs. Right-size indexing infrastructure. Use serverless for variable workloads. Optimize storage for indexing data. Reduce unnecessary indexing checks. Monitor cost per indexing. Balance performance with cost.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Indexing Governance</h3>
-        <p>
-          Establish indexing governance framework. Define indexing ownership and stewardship. Regular indexing reviews and audits. Indexing change management process. Compliance reporting. Indexing exception handling. Training and documentation. Continuous improvement program.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Real-Time Indexing</h3>
-        <p>
-          Enable real-time indexing capabilities. Hot reload indexing rules. Version indexing for rollback. Validate indexing before activation. Test in isolated environment first. Monitor for issues after update. Implement gradual rollout for indexing changes.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Indexing Simulation</h3>
-        <p>
-          Test indexing changes before deployment. What-if analysis for indexing changes. Simulate indexing decisions with sample requests. Detect unintended consequences. Validate indexing coverage. Test edge cases and boundary conditions. Generate impact reports for stakeholders.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Access Recertification</h3>
-        <p>
-          Periodic review of access permissions. Quarterly access recertification campaigns. Managers review direct reports' access. Automated reminders for pending reviews. Escalation for overdue reviews. Attestation workflow with audit trail. Generate compliance reports for auditors.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Indexing Inheritance</h3>
-        <p>
-          Support indexing inheritance for easier management. Parent indexing triggers child indexing. Handle inheritance conflicts clearly. Document inheritance hierarchy. Cache inherited indexing results. Monitor inheritance depth for performance.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Geographic Indexing</h3>
-        <p>
-          Enforce location-based indexing controls. Indexing access by country/region. Comply with data sovereignty laws. Use IP geolocation for enforcement. Handle VPN and proxy detection. Allow exceptions for travel. Audit geographic indexing patterns.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Time-Based Indexing</h3>
-        <p>
-          Indexing access by time of day/day of week. Business hours only for sensitive operations. After-hours indexing requires approval. Handle timezone differences. Support shift-based access patterns. Audit time-based indexing violations. Implement automatic expiry.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Device-Based Indexing</h3>
-        <p>
-          Indexing access by device characteristics. Require managed devices for sensitive data. Check device compliance (encryption, MDM). Block rooted/jailbroken devices. Implement device fingerprinting. Support device registration workflow. Audit device-based indexing decisions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Network-Based Indexing</h3>
-        <p>
-          Indexing access by network characteristics. Allow only corporate network for sensitive operations. Require VPN for remote access. Check network security posture. Implement network segmentation. Monitor network-based indexing patterns. Handle network changes gracefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Behavioral Indexing</h3>
-        <p>
-          Detect anomalous access patterns for indexing. Baseline normal user behavior. Alert on deviations (unusual time, location, resource). Implement risk scoring. Step-up indexing for high-risk access. Continuous indexing during session. Integrate with SIEM for correlation.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Consent-Based Indexing</h3>
-        <p>
-          Manage user consent for session access. Capture consent at session creation. Support consent withdrawal. Audit consent decisions. Handle consent expiry. Integrate with privacy management systems. Generate consent reports for compliance.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Data Classification Indexing</h3>
-        <p>
-          Apply indexing based on data sensitivity. Classify data (public, internal, confidential, restricted). Different indexing per classification. Automatic classification where possible. Handle classification changes. Audit classification-based indexing. Train users on classification.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Indexing Orchestration</h3>
-        <p>
-          Coordinate indexing across distributed systems. Central indexing orchestration service. Handle indexing conflicts across systems. Ensure consistent enforcement. Manage indexing dependencies. Orchestrate indexing updates. Monitor orchestration health.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Zero Trust Indexing</h3>
-        <p>
-          Implement zero trust indexing control. Never trust, always verify. Least privilege indexing by default. Micro-segmentation of indexing. Continuous verification of indexing trust. Assume breach mentality. Monitor and log all indexing.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Indexing Versioning Strategy</h3>
-        <p>
-          Manage indexing versions effectively. Semantic versioning for indexing. Backward compatibility guarantees. Deprecation process for old versions. Migration guides for version changes. Support multiple versions simultaneously. Track version adoption rates.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Access Request Indexing</h3>
-        <p>
-          Handle access request indexing systematically. Self-service access indexing request. Manager approval workflow. Automated indexing after approval. Temporary indexing with expiry. Access indexing audit trail. Integration with HR systems.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Indexing Compliance Monitoring</h3>
-        <p>
-          Monitor indexing compliance continuously. Automated compliance checks. Alert on indexing violations. Generate compliance reports. Track remediation progress. Integrate with GRC systems. Support external audits.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Disaster Recovery</h3>
-        <p>
-          Plan for indexing system failures. Backup indexing configurations. Disaster recovery procedures. Fail-safe defaults (deny-by-default). Recovery time objectives. Test DR procedures regularly. Document recovery steps.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Indexing Performance Tuning</h3>
-        <p>
-          Optimize indexing evaluation performance. Profile indexing evaluation latency. Identify slow indexing rules. Optimize indexing rules. Use efficient data structures. Cache indexing results. Scale indexing engines horizontally. Set performance SLOs.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Indexing Testing Automation</h3>
-        <p>
-          Automate indexing testing in CI/CD. Unit tests for indexing rules. Integration tests with sample requests. Regression tests for indexing changes. Performance tests for indexing evaluation. Security tests for indexing bypass. Automated indexing validation.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Indexing Communication</h3>
-        <p>
-          Communicate indexing changes effectively. Notify affected users of changes. Provide change summaries. Offer training for complex changes. Maintain indexing changelog. Gather user feedback. Address concerns proactively.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Indexing Retirement</h3>
-        <p>
-          Retire obsolete indexing systematically. Identify unused indexing. Deprecation notice period. Migration path for affected users. Monitor for usage during deprecation. Remove indexing after grace period. Document retirement decisions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Third-Party Indexing Integration</h3>
-        <p>
-          Integrate with third-party indexing systems. Support standard protocols (OAuth, OIDC, SAML). Handle third-party indexing evaluation. Manage trust relationships. Audit third-party indexing. Monitor integration health. Plan for vendor changes.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Indexing Cost Management</h3>
-        <p>
-          Optimize indexing system costs. Right-size indexing infrastructure. Use serverless for variable workloads. Optimize storage for indexing data. Reduce unnecessary indexing checks. Monitor cost per indexing. Balance performance with cost.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Indexing Scalability</h3>
-        <p>
-          Scale indexing for growing systems. Horizontal scaling for indexing engines. Shard indexing data by user. Use read replicas for indexing checks. Implement caching at multiple levels. Monitor scaling metrics. Plan capacity proactively.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Indexing Observability</h3>
-        <p>
-          Implement comprehensive indexing observability. Distributed tracing for indexing flow. Structured logging for indexing events. Metrics for indexing health. Dashboards for indexing monitoring. Alerts for indexing anomalies. Root cause analysis tools.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Indexing Training</h3>
-        <p>
-          Train team on indexing procedures. Regular indexing drills. Document indexing runbooks. Cross-train team members. Test indexing knowledge. Update training materials. Track training completion.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Indexing Innovation</h3>
-        <p>
-          Stay current with indexing best practices. Evaluate new indexing technologies. Pilot innovative indexing approaches. Share indexing learnings. Contribute to indexing community. Patent indexing innovations where applicable.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Indexing Metrics</h3>
-        <p>
-          Track key indexing metrics. Indexing success rate. Time to indexing. Indexing propagation latency. Denylist hit rate. User session count. Indexing error rate. Set targets and monitor trends.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Indexing Security</h3>
-        <p>
-          Secure indexing systems against attacks. Encrypt indexing data. Implement access controls. Audit indexing access. Monitor for indexing abuse. Regular security assessments. Incident response procedures.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Indexing Compliance</h3>
-        <p>
-          Meet regulatory requirements for indexing. SOC2 audit trails. HIPAA immediate indexing. PCI-DSS session controls. GDPR right to indexing. Regular compliance reviews. External audit support.
-        </p>
       </section>
     </ArticleLayout>
   );

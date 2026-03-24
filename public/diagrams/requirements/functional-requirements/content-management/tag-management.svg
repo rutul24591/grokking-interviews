@@ -1,97 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
   <rect width="800" height="500" fill="#ffffff"/>
   
-  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Tag Management Operations</text>
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Tag Management Lifecycle</text>
+  
+  <!-- Tag Creation -->
+  <rect x="50" y="70" width="150" height="100" rx="8" fill="#3b82f6"/>
+  <text x="125" y="110" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#ffffff">Tag Creation</text>
+  <text x="125" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">User Input</text>
+  <text x="125" y="155" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">System Suggestion</text>
+  
+  <line x1="200" y1="120" x2="240" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="220" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">1. Validate</text>
+  
+  <!-- Governance -->
+  <rect x="250" y="60" width="180" height="120" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="340" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Governance</text>
+  
+  <rect x="270" y="105" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="340" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Validation Rules</text>
+  
+  <rect x="270" y="140" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="340" y="160" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Approval Workflow</text>
+  
+  <line x1="430" y1="120" x2="470" y2="120" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="450" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">✓ Approved</text>
+  
+  <line x1="340" y1="180" x2="340" y2="220" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="360" y="200" text-anchor="start" font-family="system-ui" font-size="8" fill="#ef4444">✗ Rejected</text>
+  
+  <!-- Active Tag -->
+  <rect x="480" y="60" width="150" height="120" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="555" y="95" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#22c55e">Active Tag</text>
+  <text x="555" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Available for Use</text>
+  <text x="555" y="145" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Usage Tracked</text>
+  <text x="555" y="165" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Analytics Collected</text>
+  
+  <line x1="630" y1="120" x2="670" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="650" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#f59e0b">Duplicate</text>
+  
+  <line x1="555" y1="180" x2="555" y2="220" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="575" y="200" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">Unused</text>
   
   <!-- Tag Merging -->
-  <rect x="50" y="70" width="220" height="200" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
-  <text x="160" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#3b82f6">Tag Merging</text>
+  <rect x="680" y="60" width="100" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="730" y="95" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Tag Merging</text>
+  <text x="730" y="120" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Duplicate Detection</text>
+  <text x="730" y="140" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Merge Operation</text>
+  <text x="730" y="160" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">URL Redirect</text>
   
-  <rect x="70" y="115" width="180" height="40" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
-  <text x="160" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Duplicate Tags Found</text>
-  <text x="160" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">"react" (500 uses)</text>
-  <text x="160" y="165" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">"reactjs" (1200 uses)</text>
-  
-  <rect x="70" y="165" width="180" height="40" rx="4" fill="#3b82f6" opacity="0.3"/>
-  <text x="160" y="185" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Select Canonical Tag</text>
-  <text x="160" y="200" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">→ "reactjs"</text>
-  
-  <rect x="70" y="215" width="180" height="40" rx="4" fill="#22c55e" opacity="0.3"/>
-  <text x="160" y="235" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Migrate Content</text>
-  <text x="160" y="250" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">UPDATE content_tags</text>
-  
-  <rect x="70" y="260" width="180" height="35" rx="4" fill="#3b82f6"/>
-  <text x="160" y="282" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Delete Old Tag</text>
+  <line x1="730" y1="180" x2="730" y2="220" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
   
   <!-- Tag Deprecation -->
-  <rect x="290" y="70" width="220" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
-  <text x="400" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f59e0b">Tag Deprecation</text>
+  <rect x="680" y="230" width="100" height="100" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="730" y="255" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#8b5cf6">Deprecation</text>
+  <text x="730" y="280" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Mark Deprecated</text>
+  <text x="730" y="295" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Suggest Alternatives</text>
+  <text x="730" y="310" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Migrate Content</text>
   
-  <rect x="310" y="115" width="180" height="35" rx="4" fill="#f59e0b" opacity="0.8"/>
-  <text x="400" y="137" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Mark as Deprecated</text>
+  <line x1="680" y1="280" x2="640" y2="280" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
   
-  <rect x="310" y="155" width="180" height="35" rx="4" fill="#f59e0b" opacity="0.6"/>
-  <text x="400" y="177" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Prevent New Assignments</text>
+  <!-- Tag Deletion -->
+  <rect x="480" y="230" width="150" height="100" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="555" y="260" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#ef4444">Tag Deletion</text>
+  <text x="555" y="285" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Unused (90 days)</text>
+  <text x="555" y="305" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Validate References</text>
+  <text x="555" y="325" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Permanent Delete</text>
   
-  <rect x="310" y="195" width="180" height="35" rx="4" fill="#f59e0b" opacity="0.4"/>
-  <text x="400" y="217" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Suggest Alternative Tags</text>
-  
-  <rect x="310" y="235" width="180" height="35" rx="4" fill="#f59e0b" opacity="0.3"/>
-  <text x="400" y="257" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Migrate Existing Content</text>
-  
-  <rect x="310" y="275" width="180" height="35" rx="4" fill="#ef4444" opacity="0.3"/>
-  <text x="400" y="297" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Remove After Migration</text>
-  
-  <!-- Synonym Management -->
-  <rect x="530" y="70" width="220" height="200" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2"/>
-  <text x="640" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#8b5cf6">Synonym Management</text>
-  
-  <rect x="550" y="115" width="180" height="35" rx="4" fill="#8b5cf6" opacity="0.8"/>
-  <text x="640" y="137" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Define Synonyms</text>
-  
-  <rect x="550" y="155" width="180" height="35" rx="4" fill="#8b5cf6" opacity="0.6"/>
-  <text x="640" y="177" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">"react" = "reactjs"</text>
-  
-  <rect x="550" y="195" width="180" height="35" rx="4" fill="#8b5cf6" opacity="0.4"/>
-  <text x="640" y="217" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Normalize to Canonical</text>
-  
-  <rect x="550" y="235" width="180" height="35" rx="4" fill="#8b5cf6" opacity="0.3"/>
-  <text x="640" y="257" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Search Finds All</text>
-  
-  <rect x="550" y="275" width="180" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
-  <text x="640" y="297" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Unified tag experience</text>
+  <line x1="480" y1="280" x2="440" y2="280" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
   
   <!-- Usage Tracking -->
-  <rect x="50" y="290" width="340" height="180" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
-  <text x="220" y="315" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#22c55e">Usage Tracking</text>
+  <rect x="250" y="230" width="180" height="100" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="340" y="255" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#3b82f6">Usage Tracking</text>
+  <text x="340" y="280" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Usage Count</text>
+  <text x="340" y="295" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Trending Analysis</text>
+  <text x="340" y="310" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Unused Detection</text>
   
-  <rect x="70" y="330" width="300" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="220" y="352" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">usage_count per tag (increment/decrement)</text>
+  <line x1="250" y1="280" x2="210" y2="280" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="230" y="270" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">Analytics</text>
   
-  <rect x="70" y="370" width="300" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="220" y="392" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Track per content type (articles, products)</text>
+  <!-- Tag Analytics -->
+  <rect x="50" y="230" width="120" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="110" y="260" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Analytics</text>
+  <text x="110" y="285" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Co-occurrence</text>
+  <text x="110" y="300" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Distribution</text>
+  <text x="110" y="315" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Growth Analysis</text>
   
-  <rect x="70" y="410" width="300" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="220" y="432" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Historical usage (trending, declining tags)</text>
+  <!-- Taxonomy Types -->
+  <rect x="50" y="360" width="340" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="385" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Taxonomy Types</text>
   
-  <rect x="70" y="450" width="300" height="25" rx="4" fill="#22c55e" opacity="0.3"/>
-  <text x="220" y="467" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Identify unused tags for deprecation</text>
+  <rect x="70" y="400" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="140" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Hierarchical</text>
   
-  <!-- Admin Dashboard -->
-  <rect x="420" y="290" width="340" height="180" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
-  <text x="590" y="315" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#ef4444">Admin Dashboard</text>
+  <rect x="230" y="400" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="300" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Flat (Folksonomy)</text>
   
-  <rect x="440" y="330" width="300" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="590" y="352" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Top Tags (by usage count)</text>
+  <rect x="70" y="435" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="140" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Hybrid</text>
   
-  <rect x="440" y="370" width="300" height="35" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
-  <text x="590" y="392" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Unused Tags (0 content tagged)</text>
+  <rect x="230" y="435" width="140" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="300" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Choose Based on Needs</text>
   
-  <rect x="440" y="410" width="300" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="590" y="432" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Tag Growth Over Time</text>
+  <!-- Governance Workflows -->
+  <rect x="420" y="360" width="340" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="590" y="385" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Governance Workflows</text>
   
-  <rect x="440" y="450" width="300" height="25" rx="4" fill="#ef4444" opacity="0.3"/>
-  <text x="590" y="467" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">🚨 Alert: Sudden spike in tag creation</text>
+  <rect x="440" y="400" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="510" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Auto-create</text>
+  
+  <rect x="600" y="400" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="670" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Approval Required</text>
+  
+  <rect x="440" y="435" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="510" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Suggestion-based</text>
+  
+  <rect x="600" y="435" width="140" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="670" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Balance Flexibility</text>
 
 </svg>

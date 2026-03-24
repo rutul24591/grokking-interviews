@@ -7,16 +7,25 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-requirements-cm-frontend-view-content",
   title: "View Content Pages",
-  description: "Comprehensive guide to implementing content viewing interfaces covering rendering, pagination, related content, engagement features, reading progress, accessibility, and SEO patterns for staff/principal engineer interviews.",
+  description:
+    "Comprehensive guide to implementing content viewing interfaces covering content rendering (rich text, markdown, blocks), pagination strategies (infinite scroll, numbered pages), related content algorithms, engagement features (comments, shares, reactions), reading progress tracking, accessibility (WCAG compliance), SEO optimization (structured data, meta tags), and performance considerations for staff/principal engineer interviews.",
   category: "functional-requirements",
   subcategory: "content-management",
   slug: "view-content-pages",
   version: "extensive",
-  wordCount: 8000,
-  readingTime: 32,
-  lastUpdated: "2026-03-16",
-  tags: ["requirements", "functional", "content", "view", "rendering", "frontend", "seo"],
-  relatedTopics: ["discovery", "interaction-engagement", "seo", "content-lifecycle"],
+  wordCount: 9500,
+  readingTime: 38,
+  lastUpdated: "2026-03-23",
+  tags: [
+    "requirements",
+    "functional",
+    "content",
+    "view",
+    "rendering",
+    "frontend",
+    "seo",
+  ],
+  relatedTopics: ["discovery", "engagement", "seo"],
 };
 
 export default function ViewContentPagesArticle() {
@@ -25,798 +34,563 @@ export default function ViewContentPagesArticle() {
       <section>
         <h2>Definition &amp; Context</h2>
         <p>
-          <strong>View Content Pages</strong> is the primary interface for consuming
-          published content. It must provide optimal reading experience, engagement
-          features, and discovery of related content.
-        </p>
-        <p>
-          For staff and principal engineers, implementing view pages requires understanding
-          content rendering, pagination strategies, related content algorithms, engagement
-          tracking, reading progress, accessibility, SEO optimization, and performance
-          considerations. The implementation must balance content visibility with user
-          engagement and discovery.
+          <strong>View Content Pages</strong> is the primary interface for consuming published
+          content. It must provide optimal reading experience through proper typography, layout,
+          and media rendering, engagement features enabling user interaction (comments, shares,
+          reactions), and discovery of related content through recommendations. View pages are
+          critical for user experience — poor reading experience causes high bounce rates, while
+          well-designed view pages increase time on page, engagement, and return visits.
         </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/view-content-layout.svg"
           alt="View Content Layout"
-          caption="Content Layout — showing body, metadata, engagement, related content, and TOC"
-        />
-      </section>
-
-      <section>
-        <h2>Page Components</h2>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Content Body</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Rendering:</strong> Render content with proper formatting.
-              Support rich text, markdown, or blocks.
-            </li>
-            <li>
-              <strong>Typography:</strong> Readable fonts, line height, spacing.
-              Responsive text sizing.
-            </li>
-            <li>
-              <strong>Media:</strong> Images, videos, embeds with lazy loading.
-              Responsive sizing.
-            </li>
-            <li>
-              <strong>Code Blocks:</strong> Syntax highlighting, copy button.
-              Line numbers optional.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Metadata Display</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Author:</strong> Name, avatar, bio link. Multiple authors
-              supported.
-            </li>
-            <li>
-              <strong>Date:</strong> Published date, updated date. Relative time
-              ("2 days ago").
-            </li>
-            <li>
-              <strong>Category:</strong> Content category with link to category
-              page.
-            </li>
-            <li>
-              <strong>Tags:</strong> Tags with links to tag pages.
-            </li>
-            <li>
-              <strong>Reading Time:</strong> Estimated reading time based on
-              word count.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Engagement Features</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Like/React:</strong> Like button or reactions (👍, ❤️, 😂).
-              Show count.
-            </li>
-            <li>
-              <strong>Comments:</strong> Comment section with threading. Sort by
-              newest/top.
-            </li>
-            <li>
-              <strong>Share:</strong> Share to social media, copy link, email.
-            </li>
-            <li>
-              <strong>Bookmark:</strong> Save for later reading.
-            </li>
-            <li>
-              <strong>Follow Author:</strong> Follow button for author.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Related Content</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Algorithm:</strong> Based on tags, category, reading history.
-            </li>
-            <li>
-              <strong>Placement:</strong> Sidebar or bottom of content.
-            </li>
-            <li>
-              <strong>Display:</strong> Thumbnail, title, excerpt, date.
-            </li>
-            <li>
-              <strong>Personalization:</strong> Adjust based on user preferences.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Table of Contents</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Auto-Generate:</strong> Extract headings from content.
-            </li>
-            <li>
-              <strong>Sticky:</strong> Fixed position while scrolling.
-            </li>
-            <li>
-              <strong>Highlight:</strong> Highlight current section.
-            </li>
-            <li>
-              <strong>Smooth Scroll:</strong> Smooth scroll to section on click.
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Pagination Strategies</h2>
-
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/content-management/pagination-strategies.svg"
-          alt="Pagination Strategies"
-          caption="Pagination — comparing single page, multi-page, and infinite scroll"
+          caption="View Content Layout — showing content body, metadata display, engagement features, related content sidebar, and table of contents"
         />
 
         <p>
-          Different pagination strategies for different content types.
+          For staff and principal engineers, implementing view pages requires deep understanding of
+          content rendering including rich text rendering (HTML sanitization, XSS prevention),
+          markdown rendering (markdown to HTML conversion, syntax highlighting for code), and
+          block-based rendering (rendering block tree with proper styling). Pagination strategies
+          encompass infinite scroll (automatic loading of more content, ideal for feeds), numbered
+          pages (traditional pagination, ideal for articles and search results), and load more
+          button (manual trigger for more content). Related content algorithms include
+          content-based filtering (similar topics, tags, categories), collaborative filtering
+          (users who read this also read), and hybrid approaches combining both. Engagement features
+          encompass comments (threaded discussions, moderation), shares (social sharing, copy link),
+          reactions (likes, claps, emoji reactions), and bookmarks (save for later reading). Reading
+          progress tracking enables progress bar showing reading completion, estimated time
+          remaining, and scroll-based progress. Accessibility requires WCAG 2.1 compliance through
+          proper heading structure, alt text for images, keyboard navigation, and screen reader
+          support. SEO optimization encompasses structured data (schema.org markup), meta tags
+          (title, description, Open Graph), canonical URLs, and performance optimization (Core Web
+          Vitals). The implementation must balance content visibility with user engagement and
+          discovery while maintaining performance and accessibility.
         </p>
 
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Single Page</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Pattern:</strong> All content on one page.
-            </li>
-            <li>
-              <strong>Use Case:</strong> Short to medium content (under 3000 words).
-            </li>
-            <li>
-              <strong>Benefits:</strong> Simple, SEO-friendly, complete view.
-            </li>
-            <li>
-              <strong>Considerations:</strong> Page load time for long content.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Multi-Page</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Pattern:</strong> Split content into numbered pages.
-            </li>
-            <li>
-              <strong>Use Case:</strong> Long articles, tutorials, documentation.
-            </li>
-            <li>
-              <strong>Benefits:</strong> Faster initial load, progress tracking,
-              ad impressions.
-            </li>
-            <li>
-              <strong>Considerations:</strong> Navigation friction, SEO complexity.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Infinite Scroll</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Pattern:</strong> Load more content as user scrolls.
-            </li>
-            <li>
-              <strong>Use Case:</strong> Feeds, search results, galleries.
-            </li>
-            <li>
-              <strong>Benefits:</strong> Seamless experience, high engagement.
-            </li>
-            <li>
-              <strong>Considerations:</strong> Footer access, scroll position,
-              SEO challenges.
-            </li>
-          </ul>
-        </div>
+        <p>
+          Modern view pages have evolved from simple article display to sophisticated reading
+          experiences with personalized recommendations, interactive engagement, and accessibility
+          features. Platforms like Medium provide clean reading experience with claps and
+          highlights, Substack offers newsletter-style reading with comments, and news sites like
+          NYT provide related articles and multimedia integration. Performance optimization through
+          lazy loading, code splitting, and CDN delivery ensures fast page loads critical for user
+          retention and SEO ranking.
+        </p>
       </section>
 
       <section>
-        <h2>Reading Progress</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Progress Bar:</strong> Show reading progress at top of page.
-            Updates on scroll.
-          </li>
-          <li>
-            <strong>Time Remaining:</strong> Estimate time to finish based on
-            reading speed.
-          </li>
-          <li>
-            <strong>Section Progress:</strong> Show progress per section.
-          </li>
-          <li>
-            <strong>Resume Reading:</strong> Remember position for return visits.
-          </li>
-          <li>
-            <strong>Completion Tracking:</strong> Track when user finishes content.
-          </li>
-        </ul>
+        <h2>Core Concepts</h2>
+        <p>
+          View content pages are built on fundamental concepts that determine how content is
+          rendered, engaged with, and discovered. Understanding these concepts is essential for
+          designing effective reading experiences.
+        </p>
+
+        <p>
+          <strong>Content Rendering:</strong> Rich text rendering converts stored HTML to rendered
+          output through sanitization (XSS prevention through DOMPurify), CSS styling (typography,
+          spacing, responsive design), and media embedding (images, videos, embeds with lazy
+          loading). Markdown rendering converts markdown syntax to HTML through markdown parsers
+          (marked, markdown-it) with syntax highlighting for code blocks (highlight.js, Prism).
+          Block-based rendering renders block tree structure through component mapping (paragraph
+          block → Paragraph component, image block → Image component) enabling flexible layouts.
+        </p>
+
+        <p>
+          <strong>Pagination Strategies:</strong> Infinite scroll automatically loads more content
+          when user scrolls near bottom through intersection observer providing seamless browsing
+          ideal for feeds and social media but complicates bookmarking and footer access. Numbered
+          pages provides traditional pagination (page 1, 2, 3) enabling bookmarking and direct
+          navigation ideal for articles and search results but requires page reload or complex
+          state management. Load more button provides manual trigger for more content balancing
+          infinite scroll and numbered pages through explicit user action.
+        </p>
+
+        <p>
+          <strong>Related Content:</strong> Content-based filtering recommends content through
+          similar topics, tags, and categories providing explainable recommendations (similar
+          because same topic) but limited to content attributes. Collaborative filtering recommends
+          through user behavior (users who read this also read) providing serendipitous discovery
+          but requires sufficient user data and has cold start problem. Hybrid approaches combine
+          both through weighted scoring providing best of both explainability and serendipity.
+        </p>
+
+        <p>
+          <strong>Engagement Features:</strong> Comments enable threaded discussions through
+          nested comments, moderation (approval workflow, spam detection), and notifications
+          (reply notifications, mention notifications). Shares enable content distribution through
+          social sharing (Twitter, Facebook, LinkedIn share buttons), copy link (clipboard copy
+          with tracking), and email share (email client integration). Reactions enable quick
+          feedback through likes (binary like/unlike), claps (multiple claps showing appreciation
+          level), and emoji reactions (various emoji for different reactions). Bookmarks enable
+          save for later through user bookmarks (personal reading list) and reading queue
+          (ordered reading list).
+        </p>
       </section>
 
       <section>
-        <h2>Accessibility</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Semantic HTML:</strong> Proper heading hierarchy, landmarks,
-            ARIA labels.
-          </li>
-          <li>
-            <strong>Screen Reader:</strong> Alt text for images, readable content
-            structure.
-          </li>
-          <li>
-            <strong>Keyboard Navigation:</strong> Tab through interactive elements.
-            Skip links.
-          </li>
-          <li>
-            <strong>Color Contrast:</strong> Sufficient contrast for text.
-            Don't rely on color alone.
-          </li>
-          <li>
-            <strong>Font Size:</strong> Allow user to adjust font size. Respect
-            system preferences.
-          </li>
-        </ul>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          View content page architecture separates content rendering, engagement features, related
+          content, and SEO optimization enabling modular implementation with clear boundaries. This
+          architecture is critical for reading experience, engagement, and discoverability.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/content-management/view-content-layout.svg"
+          alt="View Content Layout"
+          caption="View Content Layout — showing content body, metadata display, engagement features, related content sidebar, and table of contents"
+        />
+
+        <p>
+          View page flow begins with URL routing matching content slug or ID. Backend fetches
+          content from database or cache including content body, metadata (author, date, category,
+          tags), and engagement data (comment count, reaction count). Content is rendered through
+          appropriate renderer (rich text, markdown, block-based) with sanitization and styling.
+          Metadata is displayed including author info (name, avatar, bio link), dates (published,
+          updated with relative time), category and tags (with links), and reading time estimate.
+          Engagement features are rendered including comments section, share buttons, reaction
+          buttons, and bookmark button. Related content is fetched through recommendation algorithm
+          and displayed in sidebar or below content. Reading progress is tracked through scroll
+          position updating progress bar. SEO metadata is rendered including title tag, meta
+          description, Open Graph tags, and structured data.
+        </p>
+
+        <p>
+          Content rendering architecture includes sanitizer (XSS prevention through DOMPurify
+          removing script tags and event handlers), renderer (converts content to HTML through
+          appropriate parser), and styler (applies typography and layout styles through CSS).
+          Media lazy loading defers image and video loading until visible through intersection
+          observer reducing initial page load. Code syntax highlighting applies language-specific
+          styling through highlight.js or Prism.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/content-management/related-content.svg"
+          alt="Related Content Algorithms"
+          caption="Related Content — showing content-based filtering, collaborative filtering, and hybrid recommendation approaches"
+        />
+
+        <p>
+          Related content architecture includes content-based filtering computing similarity through
+          topic modeling (LDA, TF-IDF), tag overlap (Jaccard similarity), and category matching.
+          Collaborative filtering computes similarity through user-item matrix (matrix
+          factorization, SVD) and user behavior (co-reading patterns). Hybrid approach combines
+          both through weighted scoring (content score × 0.6 + collaborative score × 0.4) providing
+          balanced recommendations. Caching stores related content results reducing computation
+          through Redis cache with TTL.
+        </p>
       </section>
 
       <section>
-        <h2>SEO Optimization</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>SSR/SSG:</strong> Server-side render or static generate for
-            crawlable content.
-          </li>
-          <li>
-            <strong>Meta Tags:</strong> Title, description, Open Graph, Twitter
-            cards.
-          </li>
-          <li>
-            <strong>Structured Data:</strong> Schema.org markup for articles.
-          </li>
-          <li>
-            <strong>Canonical URL:</strong> Prevent duplicate content issues.
-          </li>
-          <li>
-            <strong>Sitemap:</strong> Include in sitemap for discovery.
-          </li>
-        </ul>
-      </section>
+        <h2>Trade-offs &amp; Comparison</h2>
+        <p>
+          Designing view content pages involves trade-offs between reading experience, engagement,
+          performance, and complexity. Understanding these trade-offs is essential for making
+          informed architecture decisions.
+        </p>
 
-      <section>
-        <h2>References</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://developers.google.com/search/docs/beginner/seo-starter-guide" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Google SEO Starter Guide
-            </a>
-          </li>
-          <li>
-            <a href="https://www.w3.org/WAI/WCAG21/quickref/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              WCAG 2.1 Quick Reference
-            </a>
-          </li>
-        </ul>
+        <p>
+          Infinite scroll versus numbered pages presents seamless browsing versus navigation
+          trade-offs. Infinite scroll provides seamless content browsing without page reloads
+          keeping users engaged through continuous content flow but complicates bookmarking (URL
+          doesn't reflect position), footer access (footer pushed below viewport), and analytics
+          (hard to track page views). Numbered pages provides clear navigation through page numbers
+          enabling bookmarking, direct navigation, and accurate analytics but requires page reload
+          or complex state management interrupting reading flow. The recommendation is infinite
+          scroll for feeds and social media (engagement priority), numbered pages for articles and
+          search results (navigation priority), and load more button for balanced approach.
+        </p>
+
+        <p>
+          Content-based versus collaborative filtering presents explainability versus serendipity
+          trade-offs. Content-based filtering provides explainable recommendations (similar because
+          same topic, tags, category) working for new content (no user data required) and new users
+          (no history required) but limited to content attributes creating filter bubble.
+          Collaborative filtering provides serendipitous discovery (users who read this also read)
+          through user behavior patterns but requires sufficient user data (cold start problem for
+          new content and users) and less explainable. The recommendation is hybrid approach
+          combining both through weighted scoring providing explainability with serendipity.
+        </p>
+
+        <p>
+          Client-side rendering versus server-side rendering presents interactivity versus SEO
+          trade-offs. Client-side rendering (CSR) provides rich interactivity through JavaScript
+          frameworks (React, Vue) with fast subsequent navigation but poor SEO (search engines may
+          not execute JavaScript) and slow initial load (download JavaScript bundle). Server-side
+          rendering (SSR) provides excellent SEO (HTML rendered on server) and fast initial load
+          (HTML ready immediately) but slower subsequent navigation (full page reload) and server
+          load. The recommendation is SSR or static generation for content pages (SEO priority),
+          CSR for interactive applications (interactivity priority), and hybrid through
+          next-generation frameworks (Next.js, Nuxt) providing both.
+        </p>
       </section>
 
       <section>
         <h2>Best Practices</h2>
+        <p>
+          Implementing view content pages requires following established best practices to ensure
+          reading experience, engagement, accessibility, and SEO.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
-        <ul className="space-y-2">
-          <li>Provide clear, readable typography</li>
-          <li>Show reading progress indicator</li>
-          <li>Offer table of contents for long content</li>
-          <li>Enable easy sharing and bookmarking</li>
-          <li>Support dark mode for reading</li>
-        </ul>
+        <p>
+          Content rendering sanitizes HTML preventing XSS through DOMPurify. Applies typography
+          best practices (readable font size 16-18px, line height 1.6-1.8, line length 50-75
+          characters). Implements lazy loading for images and videos reducing initial page load.
+          Applies syntax highlighting for code blocks improving readability.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance</h3>
-        <ul className="space-y-2">
-          <li>Lazy load images and media</li>
-          <li>Cache rendered content at edge</li>
-          <li>Use progressive loading strategy</li>
-          <li>Optimize images for web</li>
-          <li>Minimize JavaScript bundle size</li>
-        </ul>
+        <p>
+          Engagement features implements comments with threading (nested replies), moderation
+          (approval workflow, spam detection), and notifications (reply, mention). Implements
+          shares through social buttons (Twitter, Facebook, LinkedIn), copy link (clipboard with
+          tracking), and email share. Implements reactions through likes, claps, or emoji
+          reactions. Implements bookmarks for save for later reading.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Engagement</h3>
-        <ul className="space-y-2">
-          <li>Show related content recommendations</li>
-          <li>Enable comments and discussions</li>
-          <li>Provide like/react functionality</li>
-          <li>Offer newsletter signup</li>
-          <li>Track reading completion</li>
-        </ul>
+        <p>
+          Related content implements hybrid recommendation combining content-based and collaborative
+          filtering. Caches related content results reducing computation. Displays related content
+          in sidebar or below content based on layout. Limits related content to 3-5 items
+          preventing choice paralysis.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Monitoring</h3>
-        <ul className="space-y-2">
-          <li>Track page views and unique visitors</li>
-          <li>Monitor reading completion rates</li>
-          <li>Track engagement metrics (likes, comments, shares)</li>
-          <li>Monitor page load performance</li>
-          <li>Track related content clicks</li>
-        </ul>
+        <p>
+          Reading progress implements scroll-based progress bar showing reading completion.
+          Displays estimated reading time based on word count (200-250 words per minute). Implements
+          time remaining estimate updating as user scrolls.
+        </p>
+
+        <p>
+          Accessibility implements WCAG 2.1 compliance through proper heading structure (H1 for
+          title, H2 for sections), alt text for images, keyboard navigation (Tab, Enter, Escape),
+          and screen reader support (ARIA labels). Implements focus management for interactive
+          elements. Tests with screen readers (NVDA, VoiceOver).
+        </p>
+
+        <p>
+          SEO optimization implements structured data (schema.org Article markup) enabling rich
+          snippets. Implements meta tags (title, description, Open Graph for social sharing).
+          Implements canonical URLs preventing duplicate content issues. Optimizes Core Web Vitals
+          (LCP, FID, CLS) through performance optimization.
+        </p>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Poor typography:</strong> Hard to read content.
-            <br /><strong>Fix:</strong> Use readable fonts, proper line height, spacing.
-          </li>
-          <li>
-            <strong>No progress indicator:</strong> Users don't know how much is left.
-            <br /><strong>Fix:</strong> Show reading progress bar, time remaining.
-          </li>
-          <li>
-            <strong>Slow page load:</strong> Users abandon before content loads.
-            <br /><strong>Fix:</strong> Lazy load, cache at edge, optimize images.
-          </li>
-          <li>
-            <strong>Poor accessibility:</strong> Content unusable for some users.
-            <br /><strong>Fix:</strong> Semantic HTML, ARIA labels, keyboard navigation.
-          </li>
-          <li>
-            <strong>No related content:</strong> Users leave after reading.
-            <br /><strong>Fix:</strong> Show relevant recommendations, keep users engaged.
-          </li>
-          <li>
-            <strong>Poor mobile experience:</strong> Content hard to read on mobile.
-            <br /><strong>Fix:</strong> Responsive design, touch-friendly controls.
-          </li>
-          <li>
-            <strong>Missing SEO:</strong> Content not discoverable via search.
-            <br /><strong>Fix:</strong> SSR/SSG, meta tags, structured data.
-          </li>
-          <li>
-            <strong>No engagement features:</strong> Users can't interact with content.
-            <br /><strong>Fix:</strong> Add like, comment, share, bookmark options.
-          </li>
-          <li>
-            <strong>Poor pagination:</strong> Confusing navigation between pages.
-            <br /><strong>Fix:</strong> Clear page numbers, next/prev buttons, progress.
-          </li>
-          <li>
-            <strong>No dark mode:</strong> Hard to read in low light.
-            <br /><strong>Fix:</strong> Support dark mode, respect system preferences.
-          </li>
-        </ul>
+        <p>
+          Avoid these common mistakes when implementing view content pages to ensure reading
+          experience, engagement, accessibility, and SEO.
+        </p>
+
+        <p>
+          No XSS sanitization allows malicious scripts in content. Fix by sanitizing all HTML
+          through DOMPurify before rendering. Remove script tags, event handlers, and javascript:
+          URLs. Validate and sanitize on server-side never trusting client-side.
+        </p>
+
+        <p>
+          Poor typography causes reading fatigue. Fix by using readable font size (16-18px for
+          body), appropriate line height (1.6-1.8), and optimal line length (50-75 characters).
+          Use high contrast text color. Provide sufficient whitespace.
+        </p>
+
+        <p>
+          No lazy loading causes slow initial page load. Fix by implementing lazy loading for
+          images and videos through intersection observer. Defer offscreen media loading. Use
+          placeholder images (blurhash, low-quality preview).
+        </p>
+
+        <p>
+          No related content limits content discovery. Fix by implementing related content through
+          hybrid recommendation. Cache results for performance. Display in sidebar or below content.
+        </p>
+
+        <p>
+          No reading progress frustrates long-form readers. Fix by implementing scroll-based
+          progress bar. Display estimated reading time. Update time remaining as user scrolls.
+        </p>
+
+        <p>
+          No accessibility excludes users with disabilities. Fix by implementing WCAG 2.1 compliance
+          through proper heading structure, alt text, keyboard navigation, and screen reader
+          support. Test with screen readers.
+        </p>
+
+        <p>
+          No SEO optimization limits content discoverability. Fix by implementing structured data
+          (schema.org), meta tags (title, description, Open Graph), and canonical URLs. Optimize
+          Core Web Vitals.
+        </p>
+
+        <p>
+          Infinite scroll without URL update prevents bookmarking. Fix by updating URL through
+          history API as user scrolls. Enable direct navigation to scroll position. Provide page
+          numbers as fallback.
+        </p>
+
+        <p>
+          No engagement features limits user interaction. Fix by implementing comments, shares,
+          reactions, and bookmarks. Moderate comments preventing spam. Track engagement analytics.
+        </p>
+
+        <p>
+          No performance optimization causes high bounce rates. Fix by optimizing images (compress,
+          responsive images), implementing code splitting, using CDN for static assets, and
+          minimizing JavaScript bundle size.
+        </p>
       </section>
 
       <section>
-        <h2>Advanced Topics</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Content Personalization</h3>
+        <h2>Real-world Use Cases</h2>
         <p>
-          Adjust content display based on user preferences. Font size, theme, reading mode. Personalize related content recommendations. Track reading history for suggestions.
+          View content pages are critical for content consumption across different domains. Here
+          are real-world implementations from production systems demonstrating different approaches
+          to viewing challenges.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Reading Analytics</h3>
         <p>
-          Track reading behavior: scroll depth, time spent, completion rate. Use analytics to improve content quality. Identify drop-off points. A/B test content layouts.
+          Medium article viewing addresses long-form reading with engagement. The solution uses
+          clean typography (optimized font, line height, line length), reading progress bar showing
+          completion percentage, claps for reactions (multiple claps showing appreciation),
+          highlights (user can highlight text), related articles through hybrid recommendation, and
+          comments with threading. The result is optimized reading experience with high engagement.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Content Amplification</h3>
         <p>
-          Enable easy sharing to social media. Generate social cards with Open Graph. Provide embed codes for external sites. Track share metrics.
+          Substack newsletter viewing addresses email-style reading with community. The solution
+          uses newsletter-style layout (email-like reading experience), comments section for
+          community discussion, share buttons for distribution, related posts through author and
+          topic, and subscription prompts. The result is newsletter reading experience with
+          community engagement.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Graceful Degradation</h3>
         <p>
-          Handle content loading failures gracefully. Fail-safe defaults (show cached version). Queue engagement actions for retry. Implement circuit breaker pattern. Provide manual refresh fallback. Monitor content health continuously.
+          New York Times article viewing addresses news reading with multimedia. The solution uses
+          responsive layout (optimized for all devices), multimedia integration (images, videos,
+          interactive graphics), related articles through topic and section, comments with
+          moderation, and share options. The result is comprehensive news reading experience with
+          multimedia enrichment.
+        </p>
+
+        <p>
+          Stack Overflow question viewing addresses technical Q&A reading. The solution uses
+          code-friendly layout (syntax highlighting, copy button), voting system (upvote/downvote),
+          answers sorted by votes, comments on questions and answers, and related questions through
+          tags. The result is technical Q&A reading experience optimized for code.
+        </p>
+
+        <p>
+          GitHub README viewing addresses documentation reading. The solution uses markdown
+          rendering (github-flavored markdown), syntax highlighting for code blocks, table of
+          contents for long READMEs, anchor links for sections, and related repositories. The
+          result is documentation reading experience optimized for technical content.
         </p>
       </section>
 
       <section>
         <h2>Interview Questions</h2>
-
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/content-management/content-rendering.svg"
-          alt="Content Rendering Options"
-          caption="Rendering — comparing SSR, SSG, CSR with trade-offs for content pages"
-        />
+        <p>
+          These questions test understanding of view content page design, implementation, and
+          operational concerns for staff and principal engineer interviews.
+        </p>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle content pagination?</p>
-            <p className="mt-2 text-sm">A: Split long content into pages, maintain reading flow, provide navigation, track reading progress. Consider single page for short content, multi-page for long, infinite scroll for feeds.</p>
+            <p className="font-semibold">Q: How do you render content safely?</p>
+            <p className="mt-2 text-sm">
+              A: Sanitize HTML through DOMPurify preventing XSS attacks. Remove script tags, event
+              handlers, and javascript: URLs. Validate and sanitize on server-side never trusting
+              client-side. Use content security policy (CSP) headers for additional protection.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you optimize content pages for SEO?</p>
-            <p className="mt-2 text-sm">A: SSR/SSG for crawlable content, meta tags (title, description), structured data (Schema.org), semantic HTML, fast loading, mobile-friendly design.</p>
+            <p className="font-semibold">Q: How do you implement pagination?</p>
+            <p className="mt-2 text-sm">
+              A: Choose strategy based on use case (infinite scroll for feeds, numbered pages for
+              articles). Implement through intersection observer (infinite scroll) or page
+              parameters (numbered pages). Update URL through history API enabling bookmarking.
+              Handle footer access for infinite scroll.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How do you implement related content?</p>
+            <p className="mt-2 text-sm">
+              A: Use hybrid recommendation combining content-based (topic, tags, category) and
+              collaborative filtering (user behavior). Cache results through Redis reducing
+              computation. Display 3-5 related items in sidebar or below content. Update
+              periodically through background job.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How do you implement engagement features?</p>
+            <p className="mt-2 text-sm">
+              A: Implement comments with threading (nested replies), moderation (approval, spam
+              detection), and notifications. Implement shares through social buttons, copy link,
+              and email. Implement reactions (likes, claps, emoji). Implement bookmarks for save
+              for later.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you implement reading progress?</p>
-            <p className="mt-2 text-sm">A: Track scroll position relative to content height. Show progress bar at top. Calculate time remaining based on reading speed. Store position for resume reading.</p>
+            <p className="mt-2 text-sm">
+              A: Track scroll position through scroll event listener. Calculate progress as
+              (scrollTop / (scrollHeight - clientHeight)) × 100. Display progress bar at top of
+              page. Calculate reading time as word count / 200-250 words per minute. Update time
+              remaining as user scrolls.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you lazy load content?</p>
-            <p className="mt-2 text-sm">A: Use Intersection Observer for images. Load comments and related content on demand. Progressive loading for large content. Show placeholders while loading.</p>
+            <p className="font-semibold">Q: How do you ensure accessibility?</p>
+            <p className="mt-2 text-sm">
+              A: Implement WCAG 2.1 compliance through proper heading structure (H1 for title, H2
+              for sections), alt text for images, keyboard navigation (Tab, Enter, Escape), and
+              screen reader support (ARIA labels). Test with screen readers (NVDA, VoiceOver).
+              Ensure sufficient color contrast.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you generate related content?</p>
-            <p className="mt-2 text-sm">A: Based on tags, category, author. Use collaborative filtering for personalization. Consider reading history. Show diverse content to avoid filter bubble.</p>
+            <p className="font-semibold">Q: How do you optimize for SEO?</p>
+            <p className="mt-2 text-sm">
+              A: Implement structured data (schema.org Article markup) enabling rich snippets.
+              Implement meta tags (title, description, Open Graph for social). Implement canonical
+              URLs preventing duplicate content. Optimize Core Web Vitals (LCP, FID, CLS) through
+              performance optimization.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you support accessibility?</p>
-            <p className="mt-2 text-sm">A: Semantic HTML, ARIA labels, alt text for images, keyboard navigation, sufficient color contrast, resizable fonts, screen reader testing.</p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you cache content pages?</p>
-            <p className="mt-2 text-sm">A: Cache at edge (CDN). Use stale-while-revalidate. Invalidate cache on content update. Cache user-specific content separately. Consider cache warming for popular content.</p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What metrics do you track for content pages?</p>
-            <p className="mt-2 text-sm">A: Page views, unique visitors, time on page, scroll depth, completion rate, engagement (likes, comments, shares), related content clicks. Alert on anomalies.</p>
+            <p className="font-semibold">Q: How do you optimize performance?</p>
+            <p className="mt-2 text-sm">
+              A: Optimize images through compression and responsive images. Implement lazy loading
+              for offscreen media. Implement code splitting reducing JavaScript bundle. Use CDN for
+              static assets. Minimize render-blocking resources. Monitor Core Web Vitals.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you handle content updates?</p>
-            <p className="mt-2 text-sm">A: Show "Updated" date. Notify subscribers of updates. Version content for reference. Maintain URL stability. Consider change summary for significant updates.</p>
+            <p className="mt-2 text-sm">
+              A: Invalidate cache on content update through cache key versioning or purge. Update
+              related content cache for affected content. Notify users through feed or notification
+              for followed content. Update search index for discoverability.
+            </p>
           </div>
         </div>
-      </section>
-
-      <section>
-        <h2>Security Checklist</h2>
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Pre-Launch Checklist</h3>
-          <ul className="space-y-2">
-            <li>☐ XSS prevention for rendered content</li>
-            <li>☐ Content sanitization implemented</li>
-            <li>☐ Access control for restricted content</li>
-            <li>☐ Rate limiting for engagement actions</li>
-            <li>☐ Privacy compliance (cookies, tracking)</li>
-            <li>☐ Accessibility compliance</li>
-            <li>☐ SEO optimization complete</li>
-            <li>☐ Performance benchmarks met</li>
-            <li>☐ Penetration testing completed</li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Testing Strategy</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Unit Tests</h3>
-        <ul className="space-y-2">
-          <li>Test content rendering</li>
-          <li>Test pagination logic</li>
-          <li>Test progress calculation</li>
-          <li>Test related content algorithm</li>
-          <li>Test engagement tracking</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Integration Tests</h3>
-        <ul className="space-y-2">
-          <li>Test page load flow</li>
-          <li>Test lazy loading</li>
-          <li>Test engagement actions</li>
-          <li>Test related content display</li>
-          <li>Test reading progress</li>
-          <li>Test cache invalidation</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Tests</h3>
-        <ul className="space-y-2">
-          <li>Test XSS prevention</li>
-          <li>Test content sanitization</li>
-          <li>Test access control</li>
-          <li>Test rate limiting</li>
-          <li>Test privacy compliance</li>
-          <li>Penetration testing for pages</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Tests</h3>
-        <ul className="space-y-2">
-          <li>Test page load time</li>
-          <li>Test lazy loading performance</li>
-          <li>Test rendering performance</li>
-          <li>Test concurrent page views</li>
-          <li>Test cache hit rate</li>
-        </ul>
       </section>
 
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li><a href="https://developers.google.com/search/docs/beginner/seo-starter-guide" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Google SEO Starter Guide</a></li>
-          <li><a href="https://www.w3.org/WAI/WCAG21/quickref/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">WCAG 2.1 Quick Reference</a></li>
-          <li><a href="https://web.dev/performance/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Web.dev Performance</a></li>
-          <li><a href="https://auth0.com/blog/a-look-at-the-latest-draft-for-oauth-2-1/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OAuth 2.1 Security Best Practices</a></li>
-          <li><a href="https://developer.mozilla.org/en-US/docs/Web/Security" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">MDN - Web Security</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Choosing_and_Using_Security_Questions_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Security Questions</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Multifactor Authentication</a></li>
-          <li><a href="https://docs.openfga.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OpenFGA - Fine-Grained Authorization</a></li>
-          <li><a href="https://www.cerbos.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Cerbos - Policy as Code</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Authorization Cheat Sheet</a></li>
+          <li>
+            <a
+              href="https://www.w3.org/WAI/WCAG21/quickref/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              WCAG 2.1 Accessibility Guidelines
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developers.google.com/search/docs/appearance/structured-data/article"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Google - Article Structured Data
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://web.dev/fast/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Web.dev - Performance Best Practices
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Input Validation Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/XSS_Filter_Evasion_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP XSS Filter Evasion Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Access Control Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Multifactor Authentication
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Forgot Password Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Credential_Stuffing_Prevention_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Credential Stuffing Prevention
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://github.com/cure53/DOMPurify"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              DOMPurify - HTML Sanitizer
+            </a>
+          </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Implementation Patterns</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Content Rendering Pattern</h3>
-        <p>
-          Choose rendering strategy based on content type. SSR for SEO-critical content. SSG for static content. CSR for dynamic content. Hybrid approach for best results.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Pagination Pattern</h3>
-        <p>
-          Single page for short content. Multi-page for long articles. Infinite scroll for feeds. Provide clear navigation. Track reading progress across pages.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Engagement Pattern</h3>
-        <p>
-          Like/react with count display. Comments with threading. Share to social media. Bookmark for later. Follow author. Track all engagement actions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Related Content Pattern</h3>
-        <p>
-          Algorithm based on tags, category, author. Personalize based on reading history. Show diverse content. Place in sidebar or bottom. Track click-through rate.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Graceful Degradation</h3>
-        <p>
-          Handle content loading failures gracefully. Fail-safe defaults (show cached version). Queue engagement actions for retry. Implement circuit breaker pattern. Provide manual refresh fallback. Monitor content health continuously.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Compliance Considerations</h3>
-        <p>
-          Meet regulatory requirements for content viewing. SOC2: View audit trails. HIPAA: PHI viewing safeguards. PCI-DSS: Cardholder data viewing. GDPR: Content data handling. Implement compliance reporting. Regular compliance reviews.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Optimization</h3>
-        <p>
-          Optimize viewing for high-throughput systems. Batch view operations. Use connection pooling. Implement async content loading. Monitor view latency. Set SLOs for view time. Scale view endpoints horizontally.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Error Handling</h3>
-        <p>
-          Handle view errors gracefully. Log errors with full context. Implement retry with exponential backoff. Alert on repeated failures. Provide fallback view mechanisms. Don't expose internal errors to users.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Developer Experience</h3>
-        <p>
-          Make viewing easy for developers to use. Provide view SDK. Auto-generate view documentation. Include view requirements in API docs. Provide testing utilities. Implement view linting in CI. Create runbooks for common issues.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Multi-Tenant View</h3>
-        <p>
-          Handle viewing in multi-tenant systems. Tenant-scoped view configuration. Isolate view events between tenants. Tenant-specific view policies. Audit view per tenant. Handle cross-tenant view carefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise View</h3>
-        <p>
-          Special handling for enterprise viewing. Dedicated support for enterprise onboarding. Custom view configurations. SLA for view availability. Priority support for view issues. Regular enterprise reviews.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Emergency Access</h3>
-        <p>
-          Break-glass procedures for emergency access. Pre-approved emergency view bypass. Require security team approval. Automatic notification to affected users. Full audit logging of emergency access. Post-incident review required.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">View Testing</h3>
-        <p>
-          Test viewing thoroughly before deployment. Chaos engineering for view failures. Simulate high-volume view scenarios. Test view under load. Validate view propagation. Test rollback procedures. Document test results.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">User Communication</h3>
-        <p>
-          Communicate view changes clearly to users. Explain why view is required. Provide steps to configure view. Offer support contact for issues. Send view confirmation. Provide view history for review. Handle user concerns empathetically.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Continuous Improvement</h3>
-        <p>
-          Evolve viewing based on operational learnings. Analyze view patterns. Identify false positives. Optimize view triggers. Gather user feedback. Track view metrics. Benchmark against industry best practices.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Hardening</h3>
-        <p>
-          Strengthen viewing against attacks. Implement defense in depth. Regular penetration testing. Monitor for view bypass attempts. Encrypt view data at rest. Use hardware security modules for key management. Implement zero-trust principles.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Deprovisioning Integration</h3>
-        <p>
-          Integrate with user deprovisioning workflows. Automatic view revocation on HR termination. Role change triggers view review. Contractor expiry triggers view revocation. Handle temporary access expiry. Coordinate with access management systems.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">View Analytics</h3>
-        <p>
-          Analyze view data for insights. Track view reasons distribution. Identify common view triggers. Detect anomalous view patterns. Measure view effectiveness. Generate view reports. Use analytics for optimization.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Cross-System View</h3>
-        <p>
-          Coordinate viewing across multiple systems. Central view orchestration. Handle system-specific view. Ensure consistent enforcement. Manage view dependencies. Orchestrate view updates. Monitor cross-system view health.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">View Documentation</h3>
-        <p>
-          Maintain comprehensive view documentation. View procedures and runbooks. Decision records for view design. Usage examples for each scenario. Onboarding guide for new developers. API documentation with view endpoints. Keep documentation up to date.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Cost Optimization</h3>
-        <p>
-          Optimize view system costs. Right-size view infrastructure. Use serverless for variable workloads. Optimize storage for view data. Reduce unnecessary view checks. Monitor cost per view. Balance performance with cost.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">View Governance</h3>
-        <p>
-          Establish view governance framework. Define view ownership and stewardship. Regular view reviews and audits. View change management process. Compliance reporting. View exception handling. Training and documentation. Continuous improvement program.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Real-Time View</h3>
-        <p>
-          Enable real-time viewing capabilities. Hot reload view rules. Version view for rollback. Validate view before activation. Test in isolated environment first. Monitor for issues after update. Implement gradual rollout for view changes.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">View Simulation</h3>
-        <p>
-          Test view changes before deployment. What-if analysis for view changes. Simulate view decisions with sample requests. Detect unintended consequences. Validate view coverage. Test edge cases and boundary conditions. Generate impact reports for stakeholders.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Access Recertification</h3>
-        <p>
-          Periodic review of access permissions. Quarterly access recertification campaigns. Managers review direct reports' access. Automated reminders for pending reviews. Escalation for overdue reviews. Attestation workflow with audit trail. Generate compliance reports for auditors.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">View Inheritance</h3>
-        <p>
-          Support view inheritance for easier management. Parent view triggers child view. Handle inheritance conflicts clearly. Document inheritance hierarchy. Cache inherited view results. Monitor inheritance depth for performance.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Geographic View</h3>
-        <p>
-          Enforce location-based view controls. View access by country/region. Comply with data sovereignty laws. Use IP geolocation for enforcement. Handle VPN and proxy detection. Allow exceptions for travel. Audit geographic view patterns.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Time-Based View</h3>
-        <p>
-          View access by time of day/day of week. Business hours only for sensitive operations. After-hours view requires approval. Handle timezone differences. Support shift-based access patterns. Audit time-based view violations. Implement automatic expiry.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Device-Based View</h3>
-        <p>
-          View access by device characteristics. Require managed devices for sensitive data. Check device compliance (encryption, MDM). Block rooted/jailbroken devices. Implement device fingerprinting. Support device registration workflow. Audit device-based view decisions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Network-Based View</h3>
-        <p>
-          View access by network characteristics. Allow only corporate network for sensitive operations. Require VPN for remote access. Check network security posture. Implement network segmentation. Monitor network-based view patterns. Handle network changes gracefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Behavioral View</h3>
-        <p>
-          Detect anomalous access patterns for view. Baseline normal user behavior. Alert on deviations (unusual time, location, resource). Implement risk scoring. Step-up view for high-risk access. Continuous view during session. Integrate with SIEM for correlation.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Consent-Based View</h3>
-        <p>
-          Manage user consent for session access. Capture consent at session creation. Support consent withdrawal. Audit consent decisions. Handle consent expiry. Integrate with privacy management systems. Generate consent reports for compliance.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Data Classification View</h3>
-        <p>
-          Apply view based on data sensitivity. Classify data (public, internal, confidential, restricted). Different view per classification. Automatic classification where possible. Handle classification changes. Audit classification-based view. Train users on classification.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">View Orchestration</h3>
-        <p>
-          Coordinate view across distributed systems. Central view orchestration service. Handle view conflicts across systems. Ensure consistent enforcement. Manage view dependencies. Orchestrate view updates. Monitor orchestration health.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Zero Trust View</h3>
-        <p>
-          Implement zero trust view control. Never trust, always verify. Least privilege view by default. Micro-segmentation of view. Continuous verification of view trust. Assume breach mentality. Monitor and log all view.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">View Versioning Strategy</h3>
-        <p>
-          Manage view versions effectively. Semantic versioning for view. Backward compatibility guarantees. Deprecation process for old versions. Migration guides for version changes. Support multiple versions simultaneously. Track version adoption rates.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Access Request View</h3>
-        <p>
-          Handle access request view systematically. Self-service access view request. Manager approval workflow. Automated view after approval. Temporary view with expiry. Access view audit trail. Integration with HR systems.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">View Compliance Monitoring</h3>
-        <p>
-          Monitor view compliance continuously. Automated compliance checks. Alert on view violations. Generate compliance reports. Track remediation progress. Integrate with GRC systems. Support external audits.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Disaster Recovery</h3>
-        <p>
-          Plan for view system failures. Backup view configurations. Disaster recovery procedures. Fail-safe defaults (deny-by-default). Recovery time objectives. Test DR procedures regularly. Document recovery steps.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">View Performance Tuning</h3>
-        <p>
-          Optimize view evaluation performance. Profile view evaluation latency. Identify slow view rules. Optimize view rules. Use efficient data structures. Cache view results. Scale view engines horizontally. Set performance SLOs.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">View Testing Automation</h3>
-        <p>
-          Automate view testing in CI/CD. Unit tests for view rules. Integration tests with sample requests. Regression tests for view changes. Performance tests for view evaluation. Security tests for view bypass. Automated view validation.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">View Communication</h3>
-        <p>
-          Communicate view changes effectively. Notify affected users of changes. Provide change summaries. Offer training for complex changes. Maintain view changelog. Gather user feedback. Address concerns proactively.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">View Retirement</h3>
-        <p>
-          Retire obsolete view systematically. Identify unused view. Deprecation notice period. Migration path for affected users. Monitor for usage during deprecation. Remove view after grace period. Document retirement decisions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Third-Party View Integration</h3>
-        <p>
-          Integrate with third-party view systems. Support standard protocols (OAuth, OIDC, SAML). Handle third-party view evaluation. Manage trust relationships. Audit third-party view. Monitor integration health. Plan for vendor changes.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">View Cost Management</h3>
-        <p>
-          Optimize view system costs. Right-size view infrastructure. Use serverless for variable workloads. Optimize storage for view data. Reduce unnecessary view checks. Monitor cost per view. Balance performance with cost.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">View Scalability</h3>
-        <p>
-          Scale view for growing systems. Horizontal scaling for view engines. Shard view data by user. Use read replicas for view checks. Implement caching at multiple levels. Monitor scaling metrics. Plan capacity proactively.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">View Observability</h3>
-        <p>
-          Implement comprehensive view observability. Distributed tracing for view flow. Structured logging for view events. Metrics for view health. Dashboards for view monitoring. Alerts for view anomalies. Root cause analysis tools.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">View Training</h3>
-        <p>
-          Train team on view procedures. Regular view drills. Document view runbooks. Cross-train team members. Test view knowledge. Update training materials. Track training completion.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">View Innovation</h3>
-        <p>
-          Stay current with view best practices. Evaluate new view technologies. Pilot innovative view approaches. Share view learnings. Contribute to view community. Patent view innovations where applicable.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">View Metrics</h3>
-        <p>
-          Track key view metrics. View success rate. Time to view. View propagation latency. Denylist hit rate. User session count. View error rate. Set targets and monitor trends.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">View Security</h3>
-        <p>
-          Secure view systems against attacks. Encrypt view data. Implement access controls. Audit view access. Monitor for view abuse. Regular security assessments. Incident response procedures.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">View Compliance</h3>
-        <p>
-          Meet regulatory requirements for view. SOC2 audit trails. HIPAA immediate view. PCI-DSS session controls. GDPR right to view. Regular compliance reviews. External audit support.
-        </p>
       </section>
     </ArticleLayout>
   );

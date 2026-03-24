@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Search Indexing Flow</text>
+  
+  <!-- Content Ingestion -->
+  <rect x="50" y="70" width="150" height="100" rx="8" fill="#3b82f6"/>
+  <text x="125" y="110" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#ffffff">Content</text>
+  <text x="125" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Database / Queue</text>
+  <text x="125" y="155" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Kafka, SQS</text>
+  
+  <line x1="200" y1="120" x2="240" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="220" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">1. Ingest</text>
+  
+  <!-- Analysis -->
+  <rect x="250" y="60" width="220" height="120" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="360" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Analysis Pipeline</text>
+  
+  <rect x="270" y="105" width="180" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="360" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Tokenization (Split into tokens)</text>
+  
+  <rect x="270" y="140" width="180" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="360" y="160" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Stemming (running → run)</text>
+  
+  <line x1="470" y1="120" x2="510" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="490" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">2. Index</text>
+  
+  <!-- Indexing -->
+  <rect x="520" y="60" width="230" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="635" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#f59e0b">Indexing</text>
+  
+  <rect x="540" y="105" width="190" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="635" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Inverted Index (Term → Docs)</text>
+  
+  <rect x="540" y="140" width="190" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="635" y="160" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Document Store (Doc ID → Content)</text>
+  
+  <line x1="635" y1="180" x2="635" y2="220" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Search Query -->
+  <rect x="50" y="240" width="150" height="100" rx="8" fill="#3b82f6"/>
+  <text x="125" y="280" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#ffffff">Search Query</text>
+  <text x="125" y="305" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">User Input</text>
+  <text x="125" y="325" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">"search query"</text>
+  
+  <line x1="200" y1="290" x2="240" y2="290" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="220" y="280" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">3. Parse</text>
+  
+  <!-- Query Processing -->
+  <rect x="250" y="230" width="220" height="120" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="360" y="260" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Query Processing</text>
+  
+  <rect x="270" y="275" width="180" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="360" y="295" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Query Analysis (Same as indexing)</text>
+  
+  <rect x="270" y="310" width="180" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="360" y="330" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Query Expansion (Synonyms)</text>
+  
+  <line x1="470" y1="290" x2="510" y2="290" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="490" y="280" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">4. Execute</text>
+  
+  <!-- Search Execution -->
+  <rect x="520" y="230" width="230" height="120" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="635" y="260" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#22c55e">Search Execution</text>
+  
+  <rect x="540" y="275" width="190" height="30" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="635" y="295" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Inverted Index Lookup</text>
+  
+  <rect x="540" y="310" width="190" height="30" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="635" y="330" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">BM25 Scoring + Boosting</text>
+  
+  <line x1="635" y1="350" x2="635" y2="390" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="655" y="370" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">5. Return</text>
+  
+  <!-- Search Results -->
+  <rect x="520" y="400" width="230" height="80" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="635" y="430" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#22c55e">Search Results</text>
+  <text x="635" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Sorted by Relevance Score</text>
+  <text x="635" y="470" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Top N Results</text>
+  
+  <!-- Incremental Update -->
+  <rect x="50" y="370" width="340" height="110" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="395" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Incremental Update</text>
+  
+  <rect x="70" y="410" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="140" y="430" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Change Data Capture</text>
+  
+  <rect x="230" y="410" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="300" y="430" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Document-level Update</text>
+  
+  <rect x="70" y="445" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="140" y="465" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Near Real-time Search</text>
+  
+  <rect x="230" y="445" width="140" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="300" y="465" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Refresh Interval 1-5s</text>
+
+</svg>

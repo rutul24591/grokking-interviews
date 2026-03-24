@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Rich Text Editor Types</text>
+  
+  <!-- WYSIWYG -->
+  <rect x="50" y="70" width="220" height="280" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="160" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#3b82f6">WYSIWYG Editor</text>
+  
+  <rect x="70" y="115" width="180" height="80" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <rect x="85" y="125" width="150" height="15" rx="2" fill="#3b82f6" opacity="0.2"/>
+  <text x="95" y="137" text-anchor="start" font-family="system-ui" font-size="9" fill="#0f172a">B I U H1 H2 Link</text>
+  <rect x="85" y="145" width="120" height="10" rx="2" fill="#3b82f6" opacity="0.1"/>
+  <rect x="85" y="160" width="140" height="10" rx="2" fill="#3b82f6" opacity="0.1"/>
+  <rect x="85" y="175" width="100" height="10" rx="2" fill="#3b82f6" opacity="0.3"/>
+  
+  <rect x="70" y="210" width="180" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="160" y="232" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Visual Editing</text>
+  
+  <rect x="70" y="250" width="180" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="160" y="272" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ No Syntax Knowledge</text>
+  
+  <rect x="70" y="290" width="180" height="35" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="160" y="312" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✗ HTML Output (Large)</text>
+  
+  <rect x="70" y="330" width="180" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="160" y="352" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Examples: TinyMCE, CKEditor</text>
+  
+  <!-- Markdown -->
+  <rect x="290" y="70" width="220" height="280" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="400" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f59e0b">Markdown Editor</text>
+  
+  <rect x="310" y="115" width="180" height="80" rx="4" fill="#1e293b"/>
+  <text x="325" y="130" text-anchor="start" font-family="monospace" font-size="8" fill="#22c55e"># Heading</text>
+  <text x="325" y="145" text-anchor="start" font-family="monospace" font-size="8" fill="#f1f5f9">This is **bold** text</text>
+  <text x="325" y="160" text-anchor="start" font-family="monospace" font-size="8" fill="#f1f5f9">This is *italic* text</text>
+  <text x="325" y="175" text-anchor="start" font-family="monospace" font-size="8" fill="#f59e0b">- List item 1</text>
+  <text x="325" y="190" text-anchor="start" font-family="monospace" font-size="8" fill="#f59e0b">- List item 2</text>
+  
+  <rect x="310" y="210" width="180" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="400" y="232" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Fast Typing</text>
+  
+  <rect x="310" y="250" width="180" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="400" y="272" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Version-Control Friendly</text>
+  
+  <rect x="310" y="290" width="180" height="35" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="400" y="312" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✗ Learning Curve</text>
+  
+  <rect x="310" y="330" width="180" height="35" rx="4" fill="#fef3c7" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="400" y="352" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Examples: Stack Overflow, GitHub</text>
+  
+  <!-- Block-Based -->
+  <rect x="530" y="70" width="220" height="280" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="640" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#8b5cf6">Block-Based Editor</text>
+  
+  <rect x="550" y="115" width="180" height="25" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="640" y="132" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">[Paragraph Block]</text>
+  
+  <rect x="550" y="145" width="180" height="25" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="640" y="162" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">[Heading Block]</text>
+  
+  <rect x="550" y="175" width="180" height="25" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="640" y="192" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">[Image Block]</text>
+  
+  <rect x="550" y="205" width="180" height="25" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="640" y="222" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">[Embed Block]</text>
+  
+  <rect x="550" y="235" width="180" height="25" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="640" y="252" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">[List Block]</text>
+  
+  <rect x="550" y="275" width="180" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="640" y="297" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Flexible Layout</text>
+  
+  <rect x="550" y="315" width="180" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="640" y="337" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Drag-Drop Reorder</text>
+  
+  <rect x="550" y="355" width="180" height="35" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="640" y="377" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✗ Complex Implementation</text>
+  
+  <rect x="550" y="395" width="180" height="35" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="640" y="417" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Examples: Notion, Gutenberg</text>
+  
+  <!-- Comparison Table -->
+  <rect x="50" y="370" width="700" height="110" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="400" y="395" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Editor Comparison</text>
+  
+  <rect x="70" y="410" width="200" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="170" y="430" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">WYSIWYG: Non-technical Users</text>
+  
+  <rect x="280" y="410" width="200" height="30" rx="4" fill="#fef3c7" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="380" y="430" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Markdown: Developers</text>
+  
+  <rect x="490" y="410" width="200" height="30" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="430" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Block-Based: Flexible Content</text>
+  
+  <rect x="70" y="445" width="620" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="380" y="465" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Choose Based on User Technical Level &amp; Content Complexity</text>
+
+</svg>

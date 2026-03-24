@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Related Content Algorithms</text>
+  
+  <!-- Content-Based Filtering -->
+  <rect x="50" y="70" width="340" height="200" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="220" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#3b82f6">Content-Based Filtering</text>
+  
+  <rect x="70" y="115" width="300" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="220" y="137" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Topic Modeling (LDA, TF-IDF)</text>
+  
+  <rect x="70" y="155" width="300" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="220" y="177" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Tag Overlap (Jaccard Similarity)</text>
+  
+  <rect x="70" y="195" width="300" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="220" y="217" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Category Matching</text>
+  
+  <rect x="70" y="235" width="300" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="220" y="257" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Explainable (similar because same topic)</text>
+  
+  <rect x="70" y="270" width="300" height="35" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="220" y="292" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✗ Filter Bubble (limited to content attributes)</text>
+  
+  <line x1="390" y1="170" x2="430" y2="170" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Collaborative Filtering -->
+  <rect x="440" y="70" width="340" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="610" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f59e0b">Collaborative Filtering</text>
+  
+  <rect x="460" y="115" width="300" height="35" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="610" y="137" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">User-Item Matrix (SVD, Matrix Factorization)</text>
+  
+  <rect x="460" y="155" width="300" height="35" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="610" y="177" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Co-reading Patterns</text>
+  
+  <rect x="460" y="195" width="300" height="35" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="610" y="217" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">"Users who read this also read..."</text>
+  
+  <rect x="460" y="235" width="300" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="610" y="257" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Serendipitous Discovery</text>
+  
+  <rect x="460" y="270" width="300" height="35" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="610" y="292" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✗ Cold Start Problem (needs user data)</text>
+  
+  <line x1="610" y1="270" x2="610" y2="310" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Hybrid Approach -->
+  <rect x="440" y="320" width="340" height="160" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="610" y="345" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#22c55e">Hybrid Approach (Recommended)</text>
+  
+  <rect x="460" y="360" width="300" height="35" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="610" y="382" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Weighted Scoring (Content × 0.6 + Collaborative × 0.4)</text>
+  
+  <rect x="460" y="400" width="300" height="35" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="610" y="422" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Cache Results (Redis with TTL)</text>
+  
+  <rect x="460" y="440" width="300" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="610" y="462" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Best of Both (Explainability + Serendipity)</text>
+  
+  <!-- Example -->
+  <rect x="50" y="320" width="340" height="160" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="345" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Example: Article about "React"</text>
+  
+  <rect x="70" y="360" width="300" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="382" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Content-Based: "Vue.js", "Angular" (same topic)</text>
+  
+  <rect x="70" y="400" width="300" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="422" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Collaborative: "Node.js Backend" (users also read)</text>
+  
+  <rect x="70" y="440" width="300" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="220" y="462" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Hybrid: Both with weighted scoring</text>
+
+</svg>

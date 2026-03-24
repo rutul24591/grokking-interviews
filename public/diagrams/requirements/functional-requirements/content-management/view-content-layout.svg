@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">View Content Page Layout</text>
+  
+  <!-- Header -->
+  <rect x="50" y="50" width="700" height="60" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="400" y="75" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Header (Logo, Navigation, Search)</text>
+  
+  <!-- Main Content Area -->
+  <rect x="50" y="120" width="500" height="360" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  
+  <!-- Content Metadata -->
+  <rect x="70" y="135" width="460" height="50" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="300" y="155" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Title: Article Title Here</text>
+  <text x="300" y="175" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">By Author Name • 2 days ago • 5 min read</text>
+  
+  <!-- Content Body -->
+  <rect x="70" y="195" width="460" height="200" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="85" y="215" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">Content body with paragraphs...</text>
+  <text x="85" y="235" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">Lorem ipsum dolor sit amet, consectetur</text>
+  <text x="85" y="255" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">adipiscing elit. Sed do eiusmod tempor</text>
+  <text x="85" y="275" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">incididunt ut labore et dolore magna.</text>
+  <text x="85" y="295" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">[More content continues...]</text>
+  <text x="85" y="315" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">[Images, videos, code blocks...]</text>
+  <text x="85" y="335" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">[More paragraphs...]</text>
+  <text x="85" y="355" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">[End of content]</text>
+  <text x="85" y="375" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">[End of article]</text>
+  
+  <!-- Engagement Features -->
+  <rect x="70" y="405" width="460" height="60" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="300" y="425" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Engagement Features</text>
+  <text x="150" y="450" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">👍 Like</text>
+  <text x="250" y="450" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">💬 Comment (24)</text>
+  <text x="350" y="450" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">🔗 Share</text>
+  <text x="450" y="450" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">🔖 Bookmark</text>
+  
+  <!-- Sidebar -->
+  <rect x="560" y="120" width="190" height="360" rx="4" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="655" y="145" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Sidebar</text>
+  
+  <!-- Table of Contents -->
+  <rect x="575" y="160" width="160" height="80" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="655" y="180" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#0f172a">Table of Contents</text>
+  <text x="590" y="200" text-anchor="start" font-family="system-ui" font-size="7" fill="#475569">• Introduction</text>
+  <text x="590" y="215" text-anchor="start" font-family="system-ui" font-size="7" fill="#475569">• Section 1</text>
+  <text x="590" y="230" text-anchor="start" font-family="system-ui" font-size="7" fill="#475569">• Section 2</text>
+  
+  <!-- Related Content -->
+  <rect x="575" y="250" width="160" height="100" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="655" y="270" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#0f172a">Related Articles</text>
+  <text x="590" y="290" text-anchor="start" font-family="system-ui" font-size="7" fill="#475569">• Similar Article 1</text>
+  <text x="590" y="305" text-anchor="start" font-family="system-ui" font-size="7" fill="#475569">• Similar Article 2</text>
+  <text x="590" y="320" text-anchor="start" font-family="system-ui" font-size="7" fill="#475569">• Similar Article 3</text>
+  
+  <!-- Author Info -->
+  <rect x="575" y="360" width="160" height="60" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="655" y="380" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="bold" fill="#0f172a">Author</text>
+  <text x="655" y="400" text-anchor="middle" font-family="system-ui" font-size="7" fill="#475569">Author Name</text>
+  <text x="655" y="415" text-anchor="middle" font-family="system-ui" font-size="6" fill="#475569">Bio snippet here...</text>
+  
+  <!-- Reading Progress -->
+  <rect x="50" y="490" width="700" height="5" rx="2" fill="#e2e8f0"/>
+  <rect x="50" y="490" width="280" height="5" rx="2" fill="#3b82f6"/>
+  <text x="730" y="495" text-anchor="end" font-family="system-ui" font-size="8" fill="#475569">40%</text>
+  
+  <!-- Labels -->
+  <text x="300" y="115" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#3b82f6">Main Content</text>
+  <text x="655" y="115" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#8b5cf6">Sidebar</text>
+
+</svg>
