@@ -178,11 +178,6 @@ export default function FormStateManagementConciseArticle() {
       </section>
 
       <section>
-        <h2>Implementation Examples</h2>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-      </section>
-
-      <section>
         <h2>Trade-offs & Comparisons</h2>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-left text-sm">
@@ -378,6 +373,54 @@ export default function FormStateManagementConciseArticle() {
         </div>
       </section>
 
+      {/* Section 9: Common Interview Questions */}
+      <section>
+        <h2>Common Interview Questions</h2>
+
+        <div className="mt-4 rounded-lg border border-theme bg-panel p-4">
+          <p className="font-semibold">Q: How does React Hook Form achieve better performance than Formik?</p>
+          <p className="mt-2 text-muted">
+            React Hook Form stores field values in a mutable ref object rather than React state. When a user
+            types, the value updates in the ref without triggering a re-render. Only components that explicitly
+            subscribe to a field via watch or useWatch re-render when that specific field changes. Formik, by
+            contrast, stores all form values in React context state. Any field change updates the context,
+            which triggers re-renders in every component consuming that context. Formik's FastField mitigates
+            this with shouldComponentUpdate, but it is opt-in and does not cover all consumption patterns. The
+            fundamental difference is ref-based mutation (RHF) vs state-based immutability (Formik).
+          </p>
+        </div>
+
+        <div className="mt-4 rounded-lg border border-theme bg-panel p-4">
+          <p className="font-semibold">Q: How would you architect a multi-step form wizard that persists state across steps and survives page refresh?</p>
+          <p className="mt-2 text-muted">
+            Create a single React Hook Form instance at the wizard container level and share it across steps via
+            FormProvider and useFormContext. Each step is a component that renders its fields and runs step-level
+            validation on "Next." Steps are shown/hidden via CSS (display: none) rather than
+            mounted/unmounted, preserving registered fields and their state. For refresh persistence, subscribe
+            to form value changes with watch and serialize to sessionStorage on a debounced interval. On mount,
+            check sessionStorage and call reset with the persisted values as defaults. On final submit, validate
+            all steps, submit the full payload, and clear the persisted draft. This architecture avoids losing
+            state on step transitions, survives accidental refreshes, and validates each step independently
+            while submitting atomically.
+          </p>
+        </div>
+
+        <div className="mt-4 rounded-lg border border-theme bg-panel p-4">
+          <p className="font-semibold">Q: When should you use controlled vs uncontrolled inputs, and when does it matter?</p>
+          <p className="mt-2 text-muted">
+            Use controlled inputs when you need real-time reactivity: conditional field visibility based on
+            another field's value, live formatting (phone numbers, currency), character-by-character validation
+            (password strength), or derived calculations. Use uncontrolled inputs for simple forms where you
+            only need values at submission time, or when integrating with non-React code that manages its own
+            DOM state. The choice matters most at scale: a controlled form with 50+ fields and no render
+            optimization will create visible input lag on mid-range devices. React Hook Form effectively makes
+            this decision for you by defaulting to uncontrolled (ref-based) while allowing controlled behavior
+            (watch) only where explicitly needed, giving you the best of both worlds.
+          </p>
+        </div>
+      </section>
+
+      {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
         <ul className="space-y-2">
@@ -409,55 +452,9 @@ export default function FormStateManagementConciseArticle() {
             <a href="https://web.dev/learn/forms" target="_blank" rel="noopener noreferrer" className="text-accent underline">
               web.dev: Learn Forms
             </a>{" "}
-            - Google{"'"}s guide to accessible, performant form design
+            - Google's guide to accessible, performant form design
           </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Common Interview Questions</h2>
-
-        <div className="mt-4 rounded-lg border border-theme bg-panel p-4">
-          <p className="font-semibold">Q: How does React Hook Form achieve better performance than Formik?</p>
-          <p className="mt-2 text-muted">
-            React Hook Form stores field values in a mutable ref object rather than React state. When a user
-            types, the value updates in the ref without triggering a re-render. Only components that explicitly
-            subscribe to a field via watch or useWatch re-render when that specific field changes. Formik, by
-            contrast, stores all form values in React context state. Any field change updates the context,
-            which triggers re-renders in every component consuming that context. Formik{"'"}s FastField mitigates
-            this with shouldComponentUpdate, but it is opt-in and does not cover all consumption patterns. The
-            fundamental difference is ref-based mutation (RHF) vs state-based immutability (Formik).
-          </p>
-        </div>
-
-        <div className="mt-4 rounded-lg border border-theme bg-panel p-4">
-          <p className="font-semibold">Q: How would you architect a multi-step form wizard that persists state across steps and survives page refresh?</p>
-          <p className="mt-2 text-muted">
-            Create a single React Hook Form instance at the wizard container level and share it across steps via
-            FormProvider and useFormContext. Each step is a component that renders its fields and runs step-level
-            validation on "Next." Steps are shown/hidden via CSS (display: none) rather than
-            mounted/unmounted, preserving registered fields and their state. For refresh persistence, subscribe
-            to form value changes with watch and serialize to sessionStorage on a debounced interval. On mount,
-            check sessionStorage and call reset with the persisted values as defaults. On final submit, validate
-            all steps, submit the full payload, and clear the persisted draft. This architecture avoids losing
-            state on step transitions, survives accidental refreshes, and validates each step independently
-            while submitting atomically.
-          </p>
-        </div>
-
-        <div className="mt-4 rounded-lg border border-theme bg-panel p-4">
-          <p className="font-semibold">Q: When should you use controlled vs uncontrolled inputs, and when does it matter?</p>
-          <p className="mt-2 text-muted">
-            Use controlled inputs when you need real-time reactivity: conditional field visibility based on
-            another field{"'"}s value, live formatting (phone numbers, currency), character-by-character validation
-            (password strength), or derived calculations. Use uncontrolled inputs for simple forms where you
-            only need values at submission time, or when integrating with non-React code that manages its own
-            DOM state. The choice matters most at scale: a controlled form with 50+ fields and no render
-            optimization will create visible input lag on mid-range devices. React Hook Form effectively makes
-            this decision for you by defaulting to uncontrolled (ref-based) while allowing controlled behavior
-            (watch) only where explicitly needed, giving you the best of both worlds.
-          </p>
-        </div>
       </section>
     </ArticleLayout>
   );

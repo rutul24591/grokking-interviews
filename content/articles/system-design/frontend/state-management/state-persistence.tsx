@@ -182,31 +182,6 @@ export default function StatePersistenceConciseArticle() {
       </section>
 
       <section>
-        <h2>Implementation Examples</h2>
-        <p>
-          The following examples demonstrate persistence patterns across common state management
-          libraries and storage backends.
-        </p>
-
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-3 font-semibold">Zustand with Persist Middleware and Versioned Migrations</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">IndexedDB Wrapper with Async Persistence</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">SSR-Safe Hydration with Cookie Fallback</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-        </div>
-      </section>
-
-      <section>
         <h2>Trade-offs & Comparisons</h2>
         <table className="w-full border-collapse">
           <thead>
@@ -433,37 +408,7 @@ export default function StatePersistenceConciseArticle() {
         </div>
       </section>
 
-      <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN - Web Storage API (localStorage & sessionStorage)
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN - IndexedDB API
-            </a>
-          </li>
-          <li>
-            <a href="https://docs.pmnd.rs/zustand/integrations/persisting-store-data" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Zustand Documentation - Persisting Store Data
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/articles/storage-for-the-web" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              web.dev - Storage for the Web
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/rt2zz/redux-persist" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Redux Persist - GitHub Repository
-            </a>
-          </li>
-        </ul>
-      </section>
-
+      {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -503,10 +448,42 @@ export default function StatePersistenceConciseArticle() {
               offline-first PWA that needs transactional writes. Use localStorage when data is small
               ({'&lt;'}1 MB), simple key-value (user preferences, feature flags), and synchronous access
               is acceptable. The async nature of IndexedDB adds complexity, so reach for it only when
-              localStorage&apos;s limitations are actually constraining your use case.
+              localStorage's limitations are actually constraining your use case.
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 10: References & Further Reading */}
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN - Web Storage API (localStorage & sessionStorage)
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN - IndexedDB API
+            </a>
+          </li>
+          <li>
+            <a href="https://docs.pmnd.rs/zustand/integrations/persisting-store-data" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Zustand Documentation - Persisting Store Data
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/storage-for-the-web" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              web.dev - Storage for the Web
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/rt2zz/redux-persist" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Redux Persist - GitHub Repository
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

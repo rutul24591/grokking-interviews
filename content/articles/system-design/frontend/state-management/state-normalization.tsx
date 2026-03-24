@@ -171,31 +171,6 @@ export default function StateNormalizationConciseArticle() {
       </section>
 
       <section>
-        <h2>Implementation Examples</h2>
-        <p>
-          The following examples demonstrate normalization with normalizr, Redux Toolkit's
-          createEntityAdapter, and a manual normalization approach for simpler use cases.
-        </p>
-
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-3 font-semibold">normalizr Schema Definition & Usage</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Redux Toolkit createEntityAdapter</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Memoized Denormalization Selectors</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-        </div>
-      </section>
-
-      <section>
         <h2>Trade-offs & Comparisons</h2>
         <table className="w-full border-collapse">
           <thead>
@@ -416,37 +391,7 @@ export default function StateNormalizationConciseArticle() {
         </div>
       </section>
 
-      <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://redux.js.org/usage/structuring-reducers/normalizing-state-shape" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Redux Documentation - Normalizing State Shape
-            </a>
-          </li>
-          <li>
-            <a href="https://redux-toolkit.js.org/api/createEntityAdapter" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Redux Toolkit - createEntityAdapter API Reference
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/paularmstrong/normalizr" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              normalizr - Normalize nested JSON according to a schema
-            </a>
-          </li>
-          <li>
-            <a href="https://www.apollographql.com/docs/react/caching/overview/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Apollo Client - Caching and Normalization Overview
-            </a>
-          </li>
-          <li>
-            <a href="https://kentcdodds.com/blog/application-state-management-with-react" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Kent C. Dodds - Application State Management with React
-            </a>
-          </li>
-        </ul>
-      </section>
-
+      {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -498,6 +443,38 @@ export default function StateNormalizationConciseArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 10: References & Further Reading */}
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://redux.js.org/usage/structuring-reducers/normalizing-state-shape" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Redux Documentation - Normalizing State Shape
+            </a>
+          </li>
+          <li>
+            <a href="https://redux-toolkit.js.org/api/createEntityAdapter" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Redux Toolkit - createEntityAdapter API Reference
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/paularmstrong/normalizr" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              normalizr - Normalize nested JSON according to a schema
+            </a>
+          </li>
+          <li>
+            <a href="https://www.apollographql.com/docs/react/caching/overview/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Apollo Client - Caching and Normalization Overview
+            </a>
+          </li>
+          <li>
+            <a href="https://kentcdodds.com/blog/application-state-management-with-react" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Kent C. Dodds - Application State Management with React
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

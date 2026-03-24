@@ -173,33 +173,6 @@ export default function StateSynchronizationConciseArticle() {
       </section>
 
       <section>
-        <h2>Implementation Examples</h2>
-        <p>The following examples demonstrate practical implementations of cross-tab synchronization:</p>
-
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-3 font-semibold">BroadcastChannel Auth Sync</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">localStorage Fallback with Debouncing</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Leader Election with Web Locks API</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Zustand Cross-Tab Middleware</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-        </div>
-      </section>
-
-      <section>
         <h2>Trade-offs & Comparisons</h2>
         <p>
           Choosing the right synchronization mechanism depends on payload requirements, browser support constraints,
@@ -417,37 +390,7 @@ export default function StateSynchronizationConciseArticle() {
         </div>
       </section>
 
-      <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN Web Docs - BroadcastChannel API
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Locks_API" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN Web Docs - Web Locks API
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/SharedWorker" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN Web Docs - SharedWorker
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/articles/broadcastchannel" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              web.dev - BroadcastChannel API Guide
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/nicknisi/zustand-cross-tab" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Zustand Cross-Tab State Synchronization Patterns
-            </a>
-          </li>
-        </ul>
-      </section>
-
+      {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -497,6 +440,38 @@ export default function StateSynchronizationConciseArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 10: References & Further Reading */}
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN Web Docs - BroadcastChannel API
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Locks_API" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN Web Docs - Web Locks API
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/SharedWorker" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN Web Docs - SharedWorker
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/broadcastchannel" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              web.dev - BroadcastChannel API Guide
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/nicknisi/zustand-cross-tab" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Zustand Cross-Tab State Synchronization Patterns
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

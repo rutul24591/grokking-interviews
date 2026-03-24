@@ -180,33 +180,6 @@ export default function DerivedStateConciseArticle() {
       </section>
 
       <section>
-        <h2>Implementation Examples</h2>
-        <p>These examples demonstrate derived state patterns across different state management approaches:</p>
-
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-3 font-semibold">useMemo for Expensive Derivations</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Reselect Composable Selectors (Redux)</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Zustand Derived Selectors with Shallow Equality</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">MobX Computed Properties</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-        </div>
-      </section>
-
-      <section>
         <h2>Trade-offs & Comparisons</h2>
         <table className="w-full border-collapse">
           <thead>
@@ -415,6 +388,55 @@ export default function DerivedStateConciseArticle() {
         </div>
       </section>
 
+      {/* Section 9: Common Interview Questions */}
+      <section>
+        <h2>Common Interview Questions</h2>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: What is derived state, and why should you avoid storing it in useState?</p>
+            <p className="mt-2 text-sm">
+              A: Derived state is any value that can be computed from other existing state. Storing it in useState
+              creates a second source of truth that must be kept in sync with the original state. This synchronization
+              is typically done via useEffect, which introduces an extra render cycle (the component renders with stale
+              derived state, then re-renders after the effect updates it). Worse, it creates a maintenance burden: every
+              place that updates the source state must also update the derived state, or the two will diverge. The
+              correct approach is to compute the value during render (as a const) or memoize it with useMemo if the
+              computation is expensive. This guarantees the derived value is always consistent with its source.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How does Reselect's memoization work, and when does a selector recompute?</p>
+            <p className="mt-2 text-sm">
+              A: Reselect's createSelector takes one or more input selectors and an output selector. On each call,
+              it runs the input selectors and compares their return values to the previously cached values using strict
+              referential equality (===). If all input selectors return the same references as the previous invocation,
+              the output selector is skipped and the cached result is returned. If any input selector returns a different
+              reference, the output selector runs with the new input values and its result is cached. This means Reselect
+              recomputes only when the specific slice of state it depends on actually changes—not when any state changes.
+              The key implication is that input selectors should return stable references; a selector that creates a new
+              array or object on every call will defeat memoization.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How do you decide between computing during render, useMemo, and Reselect?</p>
+            <p className="mt-2 text-sm">
+              A: The decision follows a progression based on cost and scope. For cheap computations (boolean checks,
+              string concatenation, filtering small arrays under ~100 items), compute as a plain variable during
+              render—no memoization needed. For expensive computations (sorting thousands of items, complex
+              transformations) within a single component, use useMemo with a correct dependency array. For derived
+              values needed by multiple components from a global store (Redux, Zustand), use Reselect or equivalent
+              memoized selectors—this ensures the computation runs once and the result is shared, and it provides
+              referential stability that prevents downstream re-renders. MobX computed is preferred when using MobX
+              because it handles dependency tracking automatically. The anti-pattern to avoid in all cases is storing
+              the derived value in separate state and syncing it manually.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
         <ul className="space-y-2">
@@ -444,53 +466,6 @@ export default function DerivedStateConciseArticle() {
             </a>
           </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Common Interview Questions</h2>
-        <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What is derived state, and why should you avoid storing it in useState?</p>
-            <p className="mt-2 text-sm">
-              A: Derived state is any value that can be computed from other existing state. Storing it in useState
-              creates a second source of truth that must be kept in sync with the original state. This synchronization
-              is typically done via useEffect, which introduces an extra render cycle (the component renders with stale
-              derived state, then re-renders after the effect updates it). Worse, it creates a maintenance burden: every
-              place that updates the source state must also update the derived state, or the two will diverge. The
-              correct approach is to compute the value during render (as a const) or memoize it with useMemo if the
-              computation is expensive. This guarantees the derived value is always consistent with its source.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How does Reselect{"'"}s memoization work, and when does a selector recompute?</p>
-            <p className="mt-2 text-sm">
-              A: Reselect{"'"}s createSelector takes one or more input selectors and an output selector. On each call,
-              it runs the input selectors and compares their return values to the previously cached values using strict
-              referential equality (===). If all input selectors return the same references as the previous invocation,
-              the output selector is skipped and the cached result is returned. If any input selector returns a different
-              reference, the output selector runs with the new input values and its result is cached. This means Reselect
-              recomputes only when the specific slice of state it depends on actually changes—not when any state changes.
-              The key implication is that input selectors should return stable references; a selector that creates a new
-              array or object on every call will defeat memoization.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you decide between computing during render, useMemo, and Reselect?</p>
-            <p className="mt-2 text-sm">
-              A: The decision follows a progression based on cost and scope. For cheap computations (boolean checks,
-              string concatenation, filtering small arrays under ~100 items), compute as a plain variable during
-              render—no memoization needed. For expensive computations (sorting thousands of items, complex
-              transformations) within a single component, use useMemo with a correct dependency array. For derived
-              values needed by multiple components from a global store (Redux, Zustand), use Reselect or equivalent
-              memoized selectors—this ensures the computation runs once and the result is shared, and it provides
-              referential stability that prevents downstream re-renders. MobX computed is preferred when using MobX
-              because it handles dependency tracking automatically. The anti-pattern to avoid in all cases is storing
-              the derived value in separate state and syncing it manually.
-            </p>
-          </div>
-        </div>
       </section>
     </ArticleLayout>
   );

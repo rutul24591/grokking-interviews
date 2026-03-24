@@ -240,14 +240,6 @@ export default function LocalComponentStateConciseArticle() {
         />
       </section>
 
-      {/* Section 4: Implementation Examples */}
-      <section>
-        <h2>Implementation Examples</h2>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">
-          Example code moved to the Example tab.
-        </div>
-      </section>
-
       {/* Section 5: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs &amp; Comparisons</h2>
@@ -587,75 +579,7 @@ export default function LocalComponentStateConciseArticle() {
         </div>
       </section>
 
-      {/* Section 9: References & Further Reading */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              className="text-accent hover:underline"
-              href="https://react.dev/learn/managing-state"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              React Documentation &mdash; Managing State
-            </a>{" "}
-            &mdash; Official guide covering when to use local vs. shared state,
-            principles of state structure, and lifting state up.
-          </li>
-          <li>
-            <a
-              className="text-accent hover:underline"
-              href="https://react.dev/reference/react/useReducer"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              React API Reference &mdash; useReducer
-            </a>{" "}
-            &mdash; Complete API documentation with examples of lazy
-            initialization and TypeScript usage.
-          </li>
-          <li>
-            <a
-              className="text-accent hover:underline"
-              href="https://kentcdodds.com/blog/state-colocation-will-make-your-react-app-faster"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Kent C. Dodds &mdash; State Colocation Will Make Your React
-              App Faster
-            </a>{" "}
-            &mdash; Detailed argument for colocation as a performance and
-            maintainability strategy.
-          </li>
-          <li>
-            <a
-              className="text-accent hover:underline"
-              href="https://overreacted.io/a-complete-guide-to-useeffect/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Dan Abramov &mdash; A Complete Guide to useEffect
-            </a>{" "}
-            &mdash; Deep exploration of closures, stale state, and how
-            effects interact with local state.
-          </li>
-          <li>
-            <a
-              className="text-accent hover:underline"
-              href="https://github.com/reactwg/react-18/discussions/21"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              React 18 Working Group &mdash; Automatic Batching
-            </a>{" "}
-            &mdash; RFC and discussion on the automatic batching behavior
-            introduced in React 18.
-          </li>
-        </ul>
-      </section>
-
-      {/* Section 10: Common Interview Questions */}
+      {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
 
@@ -730,6 +654,74 @@ export default function LocalComponentStateConciseArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 10: References & Further Reading */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a
+              className="text-accent hover:underline"
+              href="https://react.dev/learn/managing-state"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              React Documentation &mdash; Managing State
+            </a>{" "}
+            &mdash; Official guide covering when to use local vs. shared state,
+            principles of state structure, and lifting state up.
+          </li>
+          <li>
+            <a
+              className="text-accent hover:underline"
+              href="https://react.dev/reference/react/useReducer"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              React API Reference &mdash; useReducer
+            </a>{" "}
+            &mdash; Complete API documentation with examples of lazy
+            initialization and TypeScript usage.
+          </li>
+          <li>
+            <a
+              className="text-accent hover:underline"
+              href="https://kentcdodds.com/blog/state-colocation-will-make-your-react-app-faster"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Kent C. Dodds &mdash; State Colocation Will Make Your React
+              App Faster
+            </a>{" "}
+            &mdash; Detailed argument for colocation as a performance and
+            maintainability strategy.
+          </li>
+          <li>
+            <a
+              className="text-accent hover:underline"
+              href="https://overreacted.io/a-complete-guide-to-useeffect/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Dan Abramov &mdash; A Complete Guide to useEffect
+            </a>{" "}
+            &mdash; Deep exploration of closures, stale state, and how
+            effects interact with local state.
+          </li>
+          <li>
+            <a
+              className="text-accent hover:underline"
+              href="https://github.com/reactwg/react-18/discussions/21"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              React 18 Working Group &mdash; Automatic Batching
+            </a>{" "}
+            &mdash; RFC and discussion on the automatic batching behavior
+            introduced in React 18.
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

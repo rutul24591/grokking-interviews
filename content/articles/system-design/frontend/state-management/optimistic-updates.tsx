@@ -195,31 +195,6 @@ export default function OptimisticUpdatesConciseArticle() {
       </section>
 
       <section>
-        <h2>Implementation Examples</h2>
-        <p>
-          The following examples demonstrate optimistic update patterns using React Query and Apollo Client, covering
-          the snapshot-rollback lifecycle, cache manipulation, and error handling:
-        </p>
-
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-3 font-semibold">React Query Optimistic Mutation with Rollback</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Apollo Client Optimistic Response</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Custom Hook with Retry and Rollback</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-        </div>
-      </section>
-
-      <section>
         <h2>Trade-offs & Comparisons</h2>
         <p>
           Choosing between optimistic, pessimistic, and eventual consistency models depends on the nature of the
@@ -430,37 +405,7 @@ export default function OptimisticUpdatesConciseArticle() {
         </div>
       </section>
 
-      <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://tanstack.com/query/latest/docs/framework/react/guides/optimistic-updates" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              TanStack Query - Optimistic Updates Guide
-            </a>
-          </li>
-          <li>
-            <a href="https://www.apollographql.com/docs/react/performance/optimistic-ui/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Apollo Client - Optimistic UI Documentation
-            </a>
-          </li>
-          <li>
-            <a href="https://www.nngroup.com/articles/response-times-3-important-limits/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Nielsen Norman Group - Response Time Limits
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/articles/rail" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              web.dev - RAIL Performance Model
-            </a>
-          </li>
-          <li>
-            <a href="https://patterns.dev/react/optimistic-ui-pattern" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              patterns.dev - Optimistic UI Pattern
-            </a>
-          </li>
-        </ul>
-      </section>
-
+      {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -505,6 +450,38 @@ export default function OptimisticUpdatesConciseArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 10: References & Further Reading */}
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://tanstack.com/query/latest/docs/framework/react/guides/optimistic-updates" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              TanStack Query - Optimistic Updates Guide
+            </a>
+          </li>
+          <li>
+            <a href="https://www.apollographql.com/docs/react/performance/optimistic-ui/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Apollo Client - Optimistic UI Documentation
+            </a>
+          </li>
+          <li>
+            <a href="https://www.nngroup.com/articles/response-times-3-important-limits/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Nielsen Norman Group - Response Time Limits
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/rail" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              web.dev - RAIL Performance Model
+            </a>
+          </li>
+          <li>
+            <a href="https://patterns.dev/react/optimistic-ui-pattern" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              patterns.dev - Optimistic UI Pattern
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

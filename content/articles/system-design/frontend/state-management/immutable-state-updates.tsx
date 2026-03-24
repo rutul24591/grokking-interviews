@@ -175,33 +175,6 @@ export default function ImmutableStateUpdatesConciseArticle() {
       </section>
 
       <section>
-        <h2>Implementation Examples</h2>
-        <p>Below are common patterns for immutable state updates across different scenarios:</p>
-
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-3 font-semibold">Spread Operator Patterns (Shallow Updates)</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Immer produce() for Nested Updates</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Redux Toolkit createSlice with Built-in Immer</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Undo/Redo with Immutable History Stack</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-        </div>
-      </section>
-
-      <section>
         <h2>Trade-offs & Comparisons</h2>
         <table className="w-full border-collapse">
           <thead>
@@ -426,6 +399,56 @@ export default function ImmutableStateUpdatesConciseArticle() {
         </div>
       </section>
 
+      {/* Section 9: Common Interview Questions */}
+      <section>
+        <h2>Common Interview Questions</h2>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: Why does React require immutable state updates, and what happens if you mutate state directly?</p>
+            <p className="mt-2 text-sm">
+              A: React uses reference equality (===) to determine if state has changed. When you mutate an object
+              directly, its reference stays the same, so React's comparison returns true (no change detected)
+              and skips the re-render. The component continues displaying stale data. This is a deliberate design
+              choice: reference comparison is O(1) and enables React to efficiently skip unnecessary re-renders
+              across the entire component tree. Deep comparison would be O(n) per check and would negate React's
+              performance advantages. Additionally, immutable state enables time-travel debugging (each state is a
+              distinct snapshot), supports concurrent rendering (renders can read state without worrying about
+              mid-render mutations), and makes state changes traceable and predictable.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: What is structural sharing and why is it important for performance?</p>
+            <p className="mt-2 text-sm">
+              A: Structural sharing is the practice of reusing unchanged portions of a data structure when creating
+              an updated copy. When you update a leaf node in a state tree, only the nodes along the path from the
+              leaf to the root are copied — all other branches retain their original references. This means
+              an update to a single property in a state tree with thousands of nodes only allocates a handful of
+              new objects (O(depth) rather than O(n)). It also means React.memo components connected to unchanged
+              branches receive the same prop references and skip re-rendering entirely. Without structural sharing,
+              immutable updates would require deep cloning the entire state on every change, making immutability
+              impractical for large applications.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: Compare spread operator patterns with Immer for state updates. When would you choose one over the other?</p>
+            <p className="mt-2 text-sm">
+              A: Spread operators are native, zero-dependency, and fast for flat or one-level-deep state updates.
+              They are the right choice for simple component state like <code>{"{ ...state, loading: true }"}</code>.
+              However, spread becomes unwieldy and error-prone for deeply nested updates — updating a property
+              three levels deep requires spreading at every level, and forgetting one level silently drops sibling
+              properties. Immer solves this by letting you write <code>draft.users[id].settings.theme = "dark"</code> directly.
+              Immer adds ~5KB to your bundle and has a small Proxy overhead (~2-5x slower than spread per operation),
+              but the ergonomic and correctness benefits for complex state far outweigh the cost. The practical rule:
+              use spread for flat state, Immer for anything nested more than one level. If you are using Redux
+              Toolkit, Immer is already included — use it everywhere.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
         <ul className="space-y-2">
@@ -455,54 +478,6 @@ export default function ImmutableStateUpdatesConciseArticle() {
             </a>
           </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Common Interview Questions</h2>
-        <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Why does React require immutable state updates, and what happens if you mutate state directly?</p>
-            <p className="mt-2 text-sm">
-              A: React uses reference equality (===) to determine if state has changed. When you mutate an object
-              directly, its reference stays the same, so React&rsquo;s comparison returns true (no change detected)
-              and skips the re-render. The component continues displaying stale data. This is a deliberate design
-              choice: reference comparison is O(1) and enables React to efficiently skip unnecessary re-renders
-              across the entire component tree. Deep comparison would be O(n) per check and would negate React&rsquo;s
-              performance advantages. Additionally, immutable state enables time-travel debugging (each state is a
-              distinct snapshot), supports concurrent rendering (renders can read state without worrying about
-              mid-render mutations), and makes state changes traceable and predictable.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What is structural sharing and why is it important for performance?</p>
-            <p className="mt-2 text-sm">
-              A: Structural sharing is the practice of reusing unchanged portions of a data structure when creating
-              an updated copy. When you update a leaf node in a state tree, only the nodes along the path from the
-              leaf to the root are copied &mdash; all other branches retain their original references. This means
-              an update to a single property in a state tree with thousands of nodes only allocates a handful of
-              new objects (O(depth) rather than O(n)). It also means React.memo components connected to unchanged
-              branches receive the same prop references and skip re-rendering entirely. Without structural sharing,
-              immutable updates would require deep cloning the entire state on every change, making immutability
-              impractical for large applications.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Compare spread operator patterns with Immer for state updates. When would you choose one over the other?</p>
-            <p className="mt-2 text-sm">
-              A: Spread operators are native, zero-dependency, and fast for flat or one-level-deep state updates.
-              They are the right choice for simple component state like <code>{"{ ...state, loading: true }"}</code>.
-              However, spread becomes unwieldy and error-prone for deeply nested updates &mdash; updating a property
-              three levels deep requires spreading at every level, and forgetting one level silently drops sibling
-              properties. Immer solves this by letting you write <code>draft.users[id].settings.theme = &quot;dark&quot;</code> directly.
-              Immer adds ~5KB to your bundle and has a small Proxy overhead (~2-5x slower than spread per operation),
-              but the ergonomic and correctness benefits for complex state far outweigh the cost. The practical rule:
-              use spread for flat state, Immer for anything nested more than one level. If you are using Redux
-              Toolkit, Immer is already included &mdash; use it everywhere.
-            </p>
-          </div>
-        </div>
       </section>
     </ArticleLayout>
   );

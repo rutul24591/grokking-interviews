@@ -192,36 +192,6 @@ export default function ServerStateManagementConciseArticle() {
       </section>
 
       <section>
-        <h2>Implementation Examples</h2>
-        <p>
-          The following examples demonstrate key server state patterns including basic queries, mutations with
-          optimistic updates, cache invalidation, dependent queries, and infinite pagination:
-        </p>
-
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-3 font-semibold">React Query — Basic Query &amp; Mutation with Optimistic Update</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">SWR — Stale-While-Revalidate with Global Configuration</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Apollo Client — Normalized Cache with Type Policies</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Dependent Queries &amp; Prefetching Pattern</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-        </div>
-      </section>
-
-      <section>
         <h2>Trade-offs &amp; Comparisons</h2>
         <p>
           Each server state library makes different trade-offs. The right choice depends on your API protocol,
@@ -478,37 +448,7 @@ export default function ServerStateManagementConciseArticle() {
         </div>
       </section>
 
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://tanstack.com/query/latest/docs/react/overview" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              TanStack Query (React Query) Official Documentation
-            </a>
-          </li>
-          <li>
-            <a href="https://swr.vercel.app/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              SWR — React Hooks for Data Fetching (Vercel)
-            </a>
-          </li>
-          <li>
-            <a href="https://www.apollographql.com/docs/react/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Apollo Client Documentation — GraphQL Client for React
-            </a>
-          </li>
-          <li>
-            <a href="https://tkdodo.eu/blog/practical-react-query" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Practical React Query — TkDodo&apos;s Blog (community best practices)
-            </a>
-          </li>
-          <li>
-            <a href="https://redux-toolkit.js.org/rtk-query/overview" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              RTK Query Overview — Redux Toolkit Official Docs
-            </a>
-          </li>
-        </ul>
-      </section>
-
+      {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -575,6 +515,38 @@ export default function ServerStateManagementConciseArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 10: References & Further Reading */}
+      <section>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://tanstack.com/query/latest/docs/react/overview" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              TanStack Query (React Query) Official Documentation
+            </a>
+          </li>
+          <li>
+            <a href="https://swr.vercel.app/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              SWR — React Hooks for Data Fetching (Vercel)
+            </a>
+          </li>
+          <li>
+            <a href="https://www.apollographql.com/docs/react/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Apollo Client Documentation — GraphQL Client for React
+            </a>
+          </li>
+          <li>
+            <a href="https://tkdodo.eu/blog/practical-react-query" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Practical React Query — TkDodo&apos;s Blog (community best practices)
+            </a>
+          </li>
+          <li>
+            <a href="https://redux-toolkit.js.org/rtk-query/overview" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              RTK Query Overview — Redux Toolkit Official Docs
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

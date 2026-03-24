@@ -175,30 +175,6 @@ export default function UrlStateQueryParametersConciseArticle() {
       </section>
 
       <section>
-        <h2>Implementation Examples</h2>
-        <p>
-          Below are common patterns for integrating URL state into React applications:
-        </p>
-
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-3 font-semibold">Custom useQueryParams Hook</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Type-Safe URL State with nuqs</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Debounced Search with URL Sync</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-        </div>
-      </section>
-
-      <section>
         <h2>Trade-offs & Comparisons</h2>
         <p>
           Understanding when to use URL state requires comparing it against other state management options:
@@ -421,37 +397,7 @@ export default function UrlStateQueryParametersConciseArticle() {
         </div>
       </section>
 
-      <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/History_API" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN - History API (pushState, replaceState, popstate)
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN - URLSearchParams API Reference
-            </a>
-          </li>
-          <li>
-            <a href="https://nuqs.47ng.com/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              nuqs - Type-safe search params state management for React
-            </a>
-          </li>
-          <li>
-            <a href="https://nextjs.org/docs/app/api-reference/functions/use-search-params" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Next.js - useSearchParams Hook Documentation
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/articles/url-parts" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              web.dev - URL Parts and Their Purposes
-            </a>
-          </li>
-        </ul>
-      </section>
-
+      {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -494,6 +440,38 @@ export default function UrlStateQueryParametersConciseArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 10: References & Further Reading */}
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/History_API" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN - History API (pushState, replaceState, popstate)
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN - URLSearchParams API Reference
+            </a>
+          </li>
+          <li>
+            <a href="https://nuqs.47ng.com/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              nuqs - Type-safe search params state management for React
+            </a>
+          </li>
+          <li>
+            <a href="https://nextjs.org/docs/app/api-reference/functions/use-search-params" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Next.js - useSearchParams Hook Documentation
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/url-parts" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              web.dev - URL Parts and Their Purposes
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

@@ -199,11 +199,6 @@ export default function GlobalStateManagementConciseArticle() {
       </section>
 
       <section>
-        <h2>Implementation Examples</h2>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-      </section>
-
-      <section>
         <h2>Trade-offs & Comparisons</h2>
         <p>
           Selecting a state management solution requires weighing multiple dimensions. The following comparison
@@ -470,42 +465,7 @@ export default function GlobalStateManagementConciseArticle() {
         </div>
       </section>
 
-      <section>
-        <h2>References & Further Reading</h2>
-        <ul>
-          <li>
-            <a href="https://redux.js.org/tutorials/fundamentals/part-1-overview" target="_blank" rel="noopener noreferrer">
-              Redux Fundamentals — Official Tutorial
-            </a>{" "}
-            — Covers core concepts, data flow, and Redux Toolkit integration
-          </li>
-          <li>
-            <a href="https://docs.pmnd.rs/zustand/getting-started/introduction" target="_blank" rel="noopener noreferrer">
-              Zustand Documentation — Poimandres
-            </a>{" "}
-            — Getting started, recipes, middleware, and TypeScript patterns
-          </li>
-          <li>
-            <a href="https://recoiljs.org/docs/introduction/core-concepts" target="_blank" rel="noopener noreferrer">
-              Recoil Core Concepts — Meta Open Source
-            </a>{" "}
-            — Atoms, selectors, and the dependency graph model
-          </li>
-          <li>
-            <a href="https://jotai.org/docs/introduction" target="_blank" rel="noopener noreferrer">
-              Jotai Documentation — Primitive and Flexible State Management
-            </a>{" "}
-            — Atomic state model, derived atoms, and integration patterns
-          </li>
-          <li>
-            <a href="https://github.com/pmndrs/zustand/wiki/Comparison" target="_blank" rel="noopener noreferrer">
-              Zustand Wiki — Comparison with Other Libraries
-            </a>{" "}
-            — Detailed architectural and API comparison across state management solutions
-          </li>
-        </ul>
-      </section>
-
+      {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
 
@@ -513,10 +473,10 @@ export default function GlobalStateManagementConciseArticle() {
           <h3 className="mb-3 text-lg font-semibold">Q: When would you choose Zustand over Redux for a new project?</h3>
           <p>
             Choose Zustand when you need shared client state without the ceremony. Zustand excels in small-to-mid-sized
-            applications and even large apps that do not require Redux{"'"}s ecosystem (RTK Query, extensive middleware
+            applications and even large apps that do not require Redux's ecosystem (RTK Query, extensive middleware
             chains, established team patterns). Concrete decision points: (1) <strong>Bundle sensitivity</strong> — Zustand
-            is ~1KB vs Redux Toolkit{"'"}s ~11KB; in a micro-frontend or performance-critical widget, this matters.
-            (2) <strong>Team experience</strong> — Zustand{"'"}s API is learnable in 10 minutes; Redux requires understanding
+            is ~1KB vs Redux Toolkit's ~11KB; in a micro-frontend or performance-critical widget, this matters.
+            (2) <strong>Team experience</strong> — Zustand's API is learnable in 10 minutes; Redux requires understanding
             actions, reducers, selectors, middleware, and dispatch patterns. (3) <strong>No Provider requirement</strong> —
             Zustand stores work outside React (in utility modules, tests, or SSR contexts) without wrapping the app.
             (4) <strong>Flexibility</strong> — Zustand does not enforce a specific pattern; you can use plain setState,
@@ -524,7 +484,7 @@ export default function GlobalStateManagementConciseArticle() {
           </p>
           <p className="mt-2">
             Choose Redux when: the team already knows it, you need RTK Query for data fetching, you require time-travel
-            debugging across a complex action history, or you are building an enterprise application where Redux{"'"}s
+            debugging across a complex action history, or you are building an enterprise application where Redux's
             strict patterns enforce consistency across a large team.
           </p>
         </div>
@@ -565,7 +525,7 @@ export default function GlobalStateManagementConciseArticle() {
             <strong>Fine-grained reactivity matters</strong> — in data-heavy UIs like spreadsheets, editors, or
             dashboards where updating one cell should not touch others. (3) <strong>Code-splitting is a priority</strong>{" "}
             — atoms can be defined in feature modules and lazily loaded, whereas centralized stores require upfront
-            registration. (4) <strong>Concurrent Mode integration</strong> — Recoil was designed alongside React{"'"}s
+            registration. (4) <strong>Concurrent Mode integration</strong> — Recoil was designed alongside React's
             concurrent features and integrates naturally with Suspense for async atoms.
           </p>
           <p className="mt-2">
@@ -574,6 +534,43 @@ export default function GlobalStateManagementConciseArticle() {
             logging.
           </p>
         </div>
+      </section>
+
+      {/* Section 10: References & Further Reading */}
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul>
+          <li>
+            <a href="https://redux.js.org/tutorials/fundamentals/part-1-overview" target="_blank" rel="noopener noreferrer">
+              Redux Fundamentals — Official Tutorial
+            </a>{" "}
+            — Covers core concepts, data flow, and Redux Toolkit integration
+          </li>
+          <li>
+            <a href="https://docs.pmnd.rs/zustand/getting-started/introduction" target="_blank" rel="noopener noreferrer">
+              Zustand Documentation — Poimandres
+            </a>{" "}
+            — Getting started, recipes, middleware, and TypeScript patterns
+          </li>
+          <li>
+            <a href="https://recoiljs.org/docs/introduction/core-concepts" target="_blank" rel="noopener noreferrer">
+              Recoil Core Concepts — Meta Open Source
+            </a>{" "}
+            — Atoms, selectors, and the dependency graph model
+          </li>
+          <li>
+            <a href="https://jotai.org/docs/introduction" target="_blank" rel="noopener noreferrer">
+              Jotai Documentation — Primitive and Flexible State Management
+            </a>{" "}
+            — Atomic state model, derived atoms, and integration patterns
+          </li>
+          <li>
+            <a href="https://github.com/pmndrs/zustand/wiki/Comparison" target="_blank" rel="noopener noreferrer">
+              Zustand Wiki — Comparison with Other Libraries
+            </a>{" "}
+            — Detailed architectural and API comparison across state management solutions
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );
