@@ -681,6 +681,91 @@ export default function GracefulDegradationArticle() {
         </div>
       </section>
 
+      <section>
+        <h2>Security Considerations</h2>
+        <p>
+          Graceful Degradation introduces security considerations around maintaining security features across all degradation levels and ensuring fallbacks don't introduce vulnerabilities.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Graceful Degradation Security Patterns</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Security Feature Degradation:</strong> Security features must degrade gracefully. Mitigation: implement security at multiple layers, ensure fallbacks maintain security, validate all input server-side.
+            </li>
+            <li>
+              <strong>Fallback Security:</strong> Fallback mechanisms may have different security properties. Mitigation: validate fallback security properties, implement equivalent security measures, test fallback security thoroughly.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Performance Benchmarks</h2>
+        <p>
+          Graceful Degradation performance depends on fallback efficiency, feature detection overhead, and degradation strategy.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Metric</th>
+                <th className="p-2 text-left">Target</th>
+                <th className="p-2 text-left">Measurement</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Fallback Load Time</td>
+                <td className="p-2">&lt;2 seconds</td>
+                <td className="p-2">Lighthouse</td>
+              </tr>
+              <tr>
+                <td className="p-2">Feature Detection Time</td>
+                <td className="p-2">&lt;10ms</td>
+                <td className="p-2">Performance.now()</td>
+              </tr>
+              <tr>
+                <td className="p-2">Fallback Functionality</td>
+                <td className="p-2">100% core features</td>
+                <td className="p-2">Manual testing</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>Cost Analysis</h2>
+        <p>
+          Graceful Degradation has development costs but provides significant benefits for browser compatibility and user experience.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Initial Development:</strong> Building with GD from start: +15-25% development time.
+            </li>
+            <li>
+              <strong>Testing:</strong> Testing across browser versions: +25-40% testing time.
+            </li>
+            <li>
+              <strong>Maintenance:</strong> Well-structured GD code is easier to maintain. Estimate: 10-15% reduction in browser-specific bug fixes.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">When to Use Graceful Degradation</h3>
+          <p>
+            Use GD when: (1) you need to support older browsers, (2) you're enhancing existing modern code, (3) you serve users with varying browser capabilities. Avoid when: (1) you only target modern browsers, (2) the application requires modern features for core functionality.
+          </p>
+        </div>
+      </section>
+
       {/* Section 9: References & Further Reading */}
       <section>
         <h2>References &amp; Further Reading</h2>

@@ -32,7 +32,7 @@
   <text x="500" y="135" text-anchor="end" font-family="system-ui" font-size="9" fill="#475569">Mobile</text>
   
   <rect x="320" y="155" width="200" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
-  <text x="340" y="175" text-anchor="start" font-family="system-ui" font-size="9" fill="#0f172a">OS & Browser</text>
+  <text x="340" y="175" text-anchor="start" font-family="system-ui" font-size="9" fill="#0f172a">OS &amp; Browser</text>
   <text x="500" y="175" text-anchor="end" font-family="system-ui" font-size="9" fill="#475569">iOS 17 / Safari</text>
   
   <rect x="320" y="195" width="200" height="35" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>

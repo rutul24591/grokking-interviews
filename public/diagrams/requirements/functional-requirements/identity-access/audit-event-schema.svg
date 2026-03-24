@@ -1,7 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
   <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="240" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">audit event schema</text>
-  <text x="400" y="270" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Identity Access Diagram</text>
-  <text x="400" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Valid XML</text>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Audit Event Schema</text>
+  
+  <!-- Core Fields -->
+  <rect x="50" y="70" width="340" height="280" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="220" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#3b82f6">Core Event Fields</text>
+  
+  <rect x="70" y="115" width="300" height="35" rx="4" fill="#3b82f6" opacity="0.8"/>
+  <text x="85" y="137" text-anchor="start" font-family="monospace" font-size="10" fill="#ffffff">"timestamp": "2024-01-15T14:30:00Z"</text>
+  
+  <rect x="70" y="155" width="300" height="35" rx="4" fill="#3b82f6" opacity="0.6"/>
+  <text x="85" y="177" text-anchor="start" font-family="monospace" font-size="10" fill="#ffffff">"event_type": "login.success"</text>
+  
+  <rect x="70" y="195" width="300" height="35" rx="4" fill="#3b82f6" opacity="0.4"/>
+  <text x="85" y="217" text-anchor="start" font-family="monospace" font-size="10" fill="#ffffff">"user_id": "usr_123456"</text>
+  
+  <rect x="70" y="235" width="300" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="85" y="257" text-anchor="start" font-family="monospace" font-size="10" fill="#ffffff">"actor_id": "usr_123456"</text>
+  
+  <rect x="70" y="275" width="300" height="35" rx="4" fill="#3b82f6" opacity="0.2"/>
+  <text x="85" y="297" text-anchor="start" font-family="monospace" font-size="10" fill="#ffffff">"request_id": "req_abcdef"</text>
+  
+  <!-- Action Fields -->
+  <rect x="410" y="70" width="340" height="180" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="580" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f59e0b">Action Fields</text>
+  
+  <rect x="430" y="115" width="300" height="35" rx="4" fill="#f59e0b" opacity="0.8"/>
+  <text x="445" y="137" text-anchor="start" font-family="monospace" font-size="10" fill="#ffffff">"action": "authenticate"</text>
+  
+  <rect x="430" y="155" width="300" height="35" rx="4" fill="#f59e0b" opacity="0.6"/>
+  <text x="445" y="177" text-anchor="start" font-family="monospace" font-size="10" fill="#ffffff">"resource": "auth/login"</text>
+  
+  <rect x="430" y="195" width="300" height="35" rx="4" fill="#f59e0b" opacity="0.4"/>
+  <text x="445" y="217" text-anchor="start" font-family="monospace" font-size="10" fill="#ffffff">"outcome": "success"</text>
+  
+  <rect x="430" y="235" width="300" height="35" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="445" y="257" text-anchor="start" font-family="monospace" font-size="10" fill="#ffffff">"status_code": 200</text>
+  
+  <!-- Context Fields -->
+  <rect x="410" y="270" width="340" height="180" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="580" y="295" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#8b5cf6">Context Fields</text>
+  
+  <rect x="430" y="315" width="300" height="30" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="445" y="335" text-anchor="start" font-family="monospace" font-size="9" fill="#0f172a">"ip_address": "192.168.x.x"</text>
+  
+  <rect x="430" y="350" width="300" height="30" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="445" y="370" text-anchor="start" font-family="monospace" font-size="9" fill="#0f172a">"user_agent": "Mozilla/5.0..."</text>
+  
+  <rect x="430" y="385" width="300" height="30" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="445" y="405" text-anchor="start" font-family="monospace" font-size="9" fill="#0f172a">"device_fingerprint": "abc123"</text>
+  
+  <rect x="430" y="420" width="300" height="25" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="445" y="437" text-anchor="start" font-family="monospace" font-size="8" fill="#0f172a">"geolocation": {"city": "SF", "country": "US"}</text>
+  
+  <!-- Event Types -->
+  <rect x="50" y="370" width="340" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="395" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Event Categories</text>
+  
+  <rect x="70" y="410" width="140" height="25" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="140" y="427" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">🔐 Authentication</text>
+  
+  <rect x="220" y="410" width="140" height="25" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="290" y="427" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">👤 Account</text>
+  
+  <rect x="70" y="440" width="140" height="25" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="140" y="457" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">🔑 Authorization</text>
+  
+  <rect x="220" y="440" width="140" height="25" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="290" y="457" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">⚙️ Admin Actions</text>
+
 </svg>

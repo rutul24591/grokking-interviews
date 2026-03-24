@@ -392,6 +392,121 @@ export default function ModulePatternArticle() {
       </section>
 
       <section>
+        <h2>Security Considerations</h2>
+        <p>
+          Module Pattern introduces security considerations around encapsulation, private state protection, and the potential for information leakage through public APIs.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Module Security Patterns</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Private State Protection:</strong> Use closures or private fields (#field) to protect sensitive data. Mitigation: avoid exposing sensitive data through public APIs, use WeakMap for private data, implement access control on module methods.
+            </li>
+            <li>
+              <strong>API Surface Minimization:</strong> Expose only necessary public methods. Mitigation: use module pattern to encapsulate implementation details, document public API clearly, avoid leaking internal state.
+            </li>
+            <li>
+              <strong>Cross-Origin Module Security:</strong> Modules loaded from different origins can be exploited. Mitigation: use ES modules with strict CSP, validate module sources, avoid dynamic imports from untrusted sources.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Module Testing Security</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Encapsulation Testing:</strong> Test that private state is truly private. Verify that internal state cannot be accessed or modified from outside the module.
+            </li>
+            <li>
+              <strong>API Boundary Testing:</strong> Test all public API methods with invalid inputs. Verify that the module handles errors gracefully without leaking internal state.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Performance Benchmarks</h2>
+        <p>
+          Module Pattern performance depends on closure overhead, initialization strategy, and module bundling efficiency.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Metric</th>
+                <th className="p-2 text-left">Target</th>
+                <th className="p-2 text-left">Measurement</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Module Initialization</td>
+                <td className="p-2">&lt;1ms per module</td>
+                <td className="p-2">Performance.now()</td>
+              </tr>
+              <tr>
+                <td className="p-2">Closure Overhead</td>
+                <td className="p-2">&lt;0.01ms per access</td>
+                <td className="p-2">Performance.now()</td>
+              </tr>
+              <tr>
+                <td className="p-2">Bundle Size</td>
+                <td className="p-2">Depends on module</td>
+                <td className="p-2">Webpack Bundle Analyzer</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Module Implementation Comparison</h3>
+          <p>
+            Different module implementations have different performance characteristics:
+          </p>
+          <ul className="mt-3 space-y-2">
+            <li>
+              <strong>IIFE Modules:</strong> Initialization: ~0.1ms. Best for: legacy code, simple modules. Limitation: not tree-shakeable.
+            </li>
+            <li>
+              <strong>ES Modules:</strong> Initialization: ~0.01ms. Best for: modern applications, tree-shaking. Limitation: requires module bundler.
+            </li>
+            <li>
+              <strong>Dynamic Modules:</strong> Initialization: ~1-10ms (lazy). Best for: code splitting, lazy loading. Limitation: initial load latency.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Cost Analysis</h2>
+        <p>
+          Module Pattern has minimal direct costs but significant benefits for code organization and maintainability.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Implementation:</strong> ES modules: built into language. IIFE modules: &lt;1 day per module.
+            </li>
+            <li>
+              <strong>Maintenance:</strong> Well-encapsulated modules are easier to maintain. Estimate: 20-30% reduction in bug fixes for well-encapsulated code.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">When to Use Module Pattern</h3>
+          <p>
+            Use modules when: (1) you need encapsulation and information hiding, (2) you want to organize related code, (3) you need to avoid global namespace pollution. ES modules are preferred for all modern JavaScript code. IIFE modules only for legacy compatibility.
+          </p>
+        </div>
+      </section>
+
+      <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

@@ -7,16 +7,25 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-requirements-ia-frontend-account-settings",
   title: "Account Settings UI",
-  description: "Comprehensive guide to implementing account settings interfaces covering email changes, phone changes, account deletion, data export, and critical security flows for staff/principal engineer interviews.",
+  description:
+    "Comprehensive guide to implementing account settings interfaces covering email changes, phone changes, account deletion, data export (GDPR), password changes, and critical security flows with verification requirements for staff/principal engineer interviews.",
   category: "functional-requirements",
   subcategory: "identity-access",
   slug: "account-settings-ui",
   version: "extensive",
-  wordCount: 6500,
-  readingTime: 26,
-  lastUpdated: "2026-03-16",
-  tags: ["requirements", "functional", "identity", "account-settings", "security", "gdpr", "frontend"],
-  relatedTopics: ["profile-settings-ui", "security-settings", "password-reset", "data-portability"],
+  wordCount: 9500,
+  readingTime: 38,
+  lastUpdated: "2026-03-23",
+  tags: [
+    "requirements",
+    "functional",
+    "identity",
+    "account-settings",
+    "security",
+    "gdpr",
+    "frontend",
+  ],
+  relatedTopics: ["profile-settings-ui", "security-settings-ui", "password-reset"],
 };
 
 export default function AccountSettingsUIArticle() {
@@ -25,145 +34,180 @@ export default function AccountSettingsUIArticle() {
       <section>
         <h2>Definition &amp; Context</h2>
         <p>
-          <strong>Account Settings UI</strong> allows users to manage critical account
-          information including email, phone number, account deletion, and data export.
-          Unlike profile settings (public-facing), account settings control the
-          underlying account identity and have significant security implications.
+          <strong>Account Settings UI</strong> allows users to manage critical account information
+          including email, phone number, account deletion, and data export. Unlike profile settings
+          (public-facing), account settings control the underlying account identity and have
+          significant security implications. Account settings is where users make changes that
+          affect account security and data ownership.
         </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/account-settings-flow.svg"
           alt="Account Settings Flow"
-          caption="Account Settings Flow — showing settings management, privacy controls, and data export"
+          caption="Account Settings Flow — showing email change, phone change, account deletion, and data export flows"
         />
+
+        <p>
+          For staff and principal engineers, implementing account settings requires deep
+          understanding of security verification flows (password/MFA confirmation), email/phone
+          change processes (dual verification), account deletion (GDPR right to erasure), data
+          export (GDPR right to access/portability), and audit logging. The implementation must
+          provide clear UX while preventing unauthorized changes and complying with privacy
+          regulations.
+        </p>
+        <p>
+          Modern account settings has evolved from simple forms to comprehensive privacy dashboards
+          with GDPR compliance, data portability, and granular privacy controls. Organizations like
+          Google, Apple, and Microsoft provide comprehensive account settings — users can change
+          email/phone, download their data, delete their account, and manage privacy settings all
+          from one place.
+        </p>
+      </section>
+
+      <section>
+        <h2>Core Concepts</h2>
+        <p>
+          Account settings is built on fundamental concepts that determine how account changes are
+          made securely. Understanding these concepts is essential for designing effective account
+          settings UI.
+        </p>
+        <p>
+          <strong>Email Change Flow:</strong> Current email verification (require password or MFA
+          before changing — prevents unauthorized changes), new email input (validate format, check
+          not already registered), verification to both (send confirmation to old email as security
+          notice, send verification link to new email), pending state (email change pending until
+          new email verified — show in UI), rollback (allow canceling pending change from old email
+          link).
+        </p>
+        <p>
+          <strong>Phone Number Change:</strong> Similar to email change — verify current phone (SMS
+          code), enter new phone, send verification code to new phone, confirm code, update phone.
+          Phone changes often require additional verification (email + phone) due to account
+          recovery implications.
+        </p>
+        <p>
+          <strong>Account Deletion:</strong> GDPR right to erasure — users can request account
+          deletion. Verification required (password + MFA + email confirmation). Grace period (14-30
+          days — allow users to change mind). Data backup before deletion (for compliance). Soft
+          delete first (mark as deleted, anonymize data), hard delete after grace period.
+        </p>
+        <p>
+          <strong>Data Export:</strong> GDPR right to access/portability — users can download their
+          data. Export formats (JSON, CSV, PDF). Include all user data (profile, settings, content,
+          activity logs). Asynchronous generation (large exports take time). Email notification when
+          export ready. Secure download link (expires after 24-72 hours).
+        </p>
+      </section>
+
+      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          Account settings architecture separates settings UI from backend verification, enabling
+          secure changes with clear UX. This architecture is critical for preventing unauthorized
+          account changes.
+        </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/account-settings-gdpr.svg"
-          alt="Account Settings Gdpr"
-          caption="Account Settings GDPR — showing data access, portability, right to be forgotten"
+          alt="Account Settings GDPR"
+          caption="GDPR Compliance — showing data access, portability, right to erasure, and consent management"
         />
+
+        <p>
+          Email change flow: User navigates to account settings, clicks "Change Email". Frontend
+          shows current email verification (require password or MFA). User verifies. Frontend shows
+          new email input. User enters new email. Frontend validates format, checks availability.
+          User submits. Backend sends confirmation to old email (security notice), sends
+          verification link to new email. Email change status shows "Pending" until new email
+          verified. User clicks verification link in new email. Backend completes email change,
+          notifies user. Old email can cancel pending change via link in security notice.
+        </p>
+        <p>
+          Account deletion flow: User navigates to account settings, clicks "Delete Account".
+          Frontend shows warning (data loss, irreversible after grace period). User confirms.
+          Frontend shows verification (password + MFA + email confirmation). User completes
+          verification. Backend marks account as "pending deletion", starts grace period (14-30
+          days). User receives email confirmation with cancellation link. After grace period:
+          anonymize data, hard delete account, notify user (if possible).
+        </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/account-settings-security.svg"
           alt="Account Settings Security"
-          caption="Account Settings Security — showing password change, session management, and security alerts"
+          caption="Account Settings Security — showing verification requirements, audit logging, and security notifications"
         />
-      
+
         <p>
-          For staff and principal engineers, implementing account settings requires
-          understanding security verification flows, email/phone change processes,
-          account deletion (GDPR right to erasure), data export (GDPR right to
-          access), and audit logging. The implementation must provide clear UX while
-          preventing unauthorized changes.
+          Security architecture includes: verification requirements (password/MFA for sensitive
+          changes), dual verification for email/phone (verify both old and new), audit logging (log
+          all account changes), security notifications (email user of changes), grace periods (for
+          deletion — allow cancellation), rollback capability (cancel pending email change). This
+          architecture enables secure account management — unauthorized changes are prevented, users
+          are notified of changes.
         </p>
-
-        
-
-        
-
-        
       </section>
 
       <section>
-        <h2>Core Requirements</h2>
+        <h2>Trade-offs &amp; Comparison</h2>
         <p>
-          A production-ready account settings page must handle critical account changes securely.
+          Designing account settings involves trade-offs between security, usability, and
+          compliance. Understanding these trade-offs is essential for making informed architecture
+          decisions.
         </p>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Email Change Flow</h3>
+          <h3 className="mb-4 text-lg font-semibold">Single vs Dual Verification for Email Change</h3>
           <ul className="space-y-3">
             <li>
-              <strong>Current Email Verification:</strong> Require password or MFA
-              before changing email. Prevents unauthorized changes.
+              <strong>Single (verify new only):</strong> Simpler UX, faster change. Limitation:
+              attacker who gains access can change email, lock out legitimate user.
             </li>
             <li>
-              <strong>New Email Input:</strong> Validate format, check not already
-              registered.
+              <strong>Dual (verify old + new):</strong> More secure (old email gets notice, can
+              cancel). Limitation: more steps, user must access both emails.
             </li>
             <li>
-              <strong>Verification to Both:</strong> Send confirmation to old email
-              (security notice) and new email (verification link).
-            </li>
-            <li>
-              <strong>Pending State:</strong> Email change pending until new email
-              verified. Show in UI.
-            </li>
-            <li>
-              <strong>Rollback:</strong> Allow canceling pending change from old
-              email link.
+              <strong>Recommendation:</strong> Dual verification for email changes — security
+              outweighs convenience. Old email must be able to cancel pending change.
             </li>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Phone Number Change</h3>
+          <h3 className="mb-4 text-lg font-semibold">Immediate vs Grace Period Deletion</h3>
           <ul className="space-y-3">
             <li>
-              <strong>Verification:</strong> Require password/MFA before change.
+              <strong>Immediate:</strong> User request honored immediately. Limitation: no
+              recovery if accidental or malicious, compliance risk (some regulations require grace
+              period).
             </li>
             <li>
-              <strong>New Phone Verification:</strong> Send OTP to new number,
-              verify before updating.
+              <strong>Grace Period (14-30 days):</strong> User can change mind, recover from
+              accidental deletion, cancel unauthorized deletion. Limitation: data retained longer.
             </li>
             <li>
-              <strong>Security Notice:</strong> Send SMS to old number notifying
-              of change.
-            </li>
-            <li>
-              <strong>MFA Impact:</strong> If old number was MFA method, require
-              setting up new MFA.
+              <strong>Recommendation:</strong> Grace period (14-30 days) — allows recovery from
+              mistakes, required by some regulations. Send confirmation email with cancellation
+              link.
             </li>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Account Deletion</h3>
+          <h3 className="mb-4 text-lg font-semibold">Full vs Partial Data Export</h3>
           <ul className="space-y-3">
             <li>
-              <strong>Location:</strong> Settings → Account → Delete Account.
-              Not easily accessible (prevents accidental deletion).
+              <strong>Full Export:</strong> All user data in one download. Complete portability.
+              Limitation: large files, long generation time, may include sensitive data user didn't
+              intend to export.
             </li>
             <li>
-              <strong>Confirmation:</strong> Multiple confirmations required.
-              Type "DELETE" or email to confirm.
+              <strong>Partial Export:</strong> User selects what to export (profile, content,
+              settings). Smaller files, faster. Limitation: user may not know what data exists.
             </li>
             <li>
-              <strong>Impact Warning:</strong> Show what will be deleted (posts,
-              messages, data). Export option before deletion.
-            </li>
-            <li>
-              <strong>Cooling Period:</strong> 30-day grace period. Account
-              deactivated, can be restored. Permanent deletion after.
-            </li>
-            <li>
-              <strong>Subscription Cancellation:</strong> Cancel active
-              subscriptions before deletion.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Data Export</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Request Flow:</strong> Settings → Privacy → Download Data.
-              Select data categories.
-            </li>
-            <li>
-              <strong>Export Contents:</strong> Profile, posts, messages, photos,
-              settings, activity log.
-            </li>
-            <li>
-              <strong>Format:</strong> JSON (machine-readable) + HTML (human-readable).
-              ZIP for large exports.
-            </li>
-            <li>
-              <strong>Delivery:</strong> Email when ready (async processing). Secure
-              download link (24-72 hour expiry).
-            </li>
-            <li>
-              <strong>GDPR SLA:</strong> Provide within 30 days. Free of charge.
+              <strong>Recommendation:</strong> Both — full export for compliance, partial export
+              for convenience. Show data categories with size estimates.
             </li>
           </ul>
         </div>
@@ -171,202 +215,289 @@ export default function AccountSettingsUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <p>
+          Implementing account settings requires following established best practices to ensure
+          security, usability, and compliance.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <ul className="space-y-2">
-          <li>Require password/MFA for sensitive changes</li>
-          <li>Notify users of account changes</li>
-          <li>Log all account changes for audit</li>
-          <li>Implement rate limiting for changes</li>
-          <li>Use pending state for email changes</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Email Change</h3>
+        <p>
+          Require current email verification — password or MFA before changing. Send security
+          notice to old email — include cancellation link. Send verification link to new email —
+          must confirm ownership. Show pending state clearly — "Email change pending, check your
+          new email". Allow cancellation from old email — security measure. Expire pending change
+          after 7 days — prevent stale pending changes.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
-        <ul className="space-y-2">
-          <li>Clear confirmation flows</li>
-          <li>Show impact before deletion</li>
-          <li>Offer data export before deletion</li>
-          <li>Provide cooling period for deletion</li>
-          <li>Support account reactivation</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Phone Change</h3>
+        <p>
+          Require current phone verification — SMS code to current phone. Send verification code to
+          new phone — confirm ownership. Require additional verification — email + phone for phone
+          changes (due to account recovery implications). Show pending state — "Phone change
+          pending". Allow cancellation — from verified email.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">GDPR Compliance</h3>
-        <ul className="space-y-2">
-          <li>Support right to erasure (deletion)</li>
-          <li>Support right to access (export)</li>
-          <li>Provide deletion confirmation</li>
-          <li>Anonymize data where required</li>
-          <li>Document retention policies</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Account Deletion</h3>
+        <p>
+          Show clear warning — data loss, irreversible after grace period. Require strong
+          verification — password + MFA + email confirmation. Implement grace period — 14-30 days,
+          allow cancellation. Send confirmation email — with cancellation link. Anonymize data
+          first — then hard delete after grace period. Audit log deletion — for compliance.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Monitoring</h3>
-        <ul className="space-y-2">
-          <li>Track account change rates</li>
-          <li>Monitor deletion requests</li>
-          <li>Alert on unusual patterns</li>
-          <li>Track export request fulfillment</li>
-          <li>Monitor reactivation rates</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Data Export</h3>
+        <p>
+          Support multiple formats — JSON (machine-readable), CSV (spreadsheet), PDF (human-readable).
+          Asynchronous generation — large exports take time, don't block. Email notification — when
+          export ready. Secure download link — expires after 24-72 hours. Include all data —
+          profile, settings, content, activity logs. Show export size — before generation.
+        </p>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
+        <p>
+          Avoid these common mistakes when implementing account settings to ensure secure, usable,
+          and compliant account management.
+        </p>
         <ul className="space-y-3">
           <li>
-            <strong>No verification:</strong> Email changed without confirmation.
-            <br /><strong>Fix:</strong> Require password + MFA, verify new email.
+            <strong>No verification for email change:</strong> Attacker can change email, lock out
+            user. <strong>Fix:</strong> Require password/MFA verification. Send notice to old email
+            with cancellation link.
           </li>
           <li>
-            <strong>Immediate deletion:</strong> No recovery option.
-            <br /><strong>Fix:</strong> Use cooling period (30 days).
+            <strong>Immediate account deletion:</strong> No recovery from accidental or malicious
+            deletion. <strong>Fix:</strong> Implement grace period (14-30 days). Send confirmation
+            with cancellation link.
           </li>
           <li>
-            <strong>No export option:</strong> Users can't get their data.
-            <br /><strong>Fix:</strong> Provide data export before deletion.
+            <strong>No data export:</strong> GDPR violation, users can't access their data.{" "}
+            <strong>Fix:</strong> Implement data export (JSON, CSV, PDF). Asynchronous generation
+            for large exports.
           </li>
           <li>
-            <strong>Poor notifications:</strong> Users unaware of changes.
-            <br /><strong>Fix:</strong> Notify old and new email/phone.
+            <strong>Insecure download links:</strong> Export links don't expire, anyone can
+            download. <strong>Fix:</strong> Secure links with expiry (24-72 hours). Require
+            authentication to download.
           </li>
           <li>
-            <strong>No rollback:</strong> Can't cancel pending changes.
-            <br /><strong>Fix:</strong> Allow rollback from old email link.
+            <strong>No audit logging:</strong> Can't track who changed what, compliance violation.{" "}
+            <strong>Fix:</strong> Log all account changes (who, what, when, IP). Retain for
+            compliance period.
           </li>
           <li>
-            <strong>No rate limiting:</strong> Deletion requests abused.
-            <br /><strong>Fix:</strong> Rate limit (1/month per account).
+            <strong>No security notifications:</strong> Users unaware of account changes.{" "}
+            <strong>Fix:</strong> Email user of all sensitive changes (email, phone, password).
+            Include "Was this you?" link.
           </li>
           <li>
-            <strong>Poor subscription handling:</strong> Active subscriptions on deletion.
-            <br /><strong>Fix:</strong> Block deletion until subscriptions cancelled.
+            <strong>Complex deletion flow:</strong> Users can't find or complete deletion,
+            frustration. <strong>Fix:</strong> Clear deletion path, plain language warnings,
+            step-by-step process.
           </li>
           <li>
-            <strong>No audit logging:</strong> Can't track account changes.
-            <br /><strong>Fix:</strong> Log all changes with IP/timestamp.
+            <strong>Partial data export:</strong> Missing data categories, incomplete export.{" "}
+            <strong>Fix:</strong> Export all user data. Show data categories before export.
           </li>
           <li>
-            <strong>No reactivation:</strong> Can't restore deactivated account.
-            <br /><strong>Fix:</strong> Allow login to reactivate within time limit.
+            <strong>No pending state:</strong> Users don't know email/phone change is pending.{" "}
+            <strong>Fix:</strong> Show pending state clearly. Allow cancellation. Send reminders.
           </li>
           <li>
-            <strong>Poor UX for deletion:</strong> Too easy to delete accidentally.
-            <br /><strong>Fix:</strong> Multiple confirmations, type "DELETE".
+            <strong>No rollback:</strong> Can't cancel pending changes. <strong>Fix:</strong> Allow
+            cancellation from old email/phone. Show cancellation link prominently.
           </li>
         </ul>
       </section>
 
       <section>
-        <h2>Advanced Topics</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Email Change Security</h3>
+        <h2>Real-world Use Cases</h2>
         <p>
-          Secure email change process to prevent account takeover.
+          Account settings is critical for user control and compliance. Here are real-world
+          implementations from production systems.
         </p>
-        <ul className="space-y-2">
-          <li><strong>Verification:</strong> Require password/MFA before change.</li>
-          <li><strong>Double Verification:</strong> Verify both old and new email.</li>
-          <li><strong>Pending State:</strong> Email change pending until new email verified.</li>
-          <li><strong>Rollback:</strong> Allow canceling from old email link.</li>
-        </ul>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Account Deletion Flow</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Consumer Platform (Google)</h3>
         <p>
-          Safe account deletion with recovery option.
+          <strong>Challenge:</strong> Billions of users with varying technical knowledge. Need to
+          make account management accessible. GDPR compliance critical.
         </p>
-        <ul className="space-y-2">
-          <li><strong>Multiple Confirmations:</strong> Type "DELETE" or email to confirm.</li>
-          <li><strong>Cooling Period:</strong> 30-day grace period for recovery.</li>
-          <li><strong>Data Export:</strong> Offer export before deletion.</li>
-          <li><strong>Subscription Handling:</strong> Cancel subscriptions before deletion.</li>
-        </ul>
+        <p>
+          <strong>Solution:</strong> Comprehensive account dashboard. Email change with dual
+          verification. Data export (Google Takeout). Account deletion with grace period. Security
+          notifications for all changes.
+        </p>
+        <p>
+          <strong>Result:</strong> GDPR compliant. Users can manage accounts easily. Unauthorized
+          changes detected via notifications.
+        </p>
+        <p>
+          <strong>Security:</strong> Dual verification, security notifications, grace period.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Data Export</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SaaS (Salesforce)</h3>
         <p>
-          GDPR-compliant data export functionality.
+          <strong>Challenge:</strong> Enterprise customers require admin controls. Compliance needs
+          audit trails. Data retention policies.
         </p>
-        <ul className="space-y-2">
-          <li><strong>Async Processing:</strong> Generate export in background.</li>
-          <li><strong>Multiple Formats:</strong> JSON (machine-readable) + HTML (human-readable).</li>
-          <li><strong>Secure Delivery:</strong> Email with secure download link.</li>
-          <li><strong>Expiry:</strong> Link expires after 24-72 hours.</li>
-        </ul>
+        <p>
+          <strong>Solution:</strong> Admin account management (admins can manage user accounts).
+          Audit logging for all changes. Data retention policies (configurable). Export for
+          compliance.
+        </p>
+        <p>
+          <strong>Result:</strong> Passed SOC 2 audit. Admin control over user accounts. Compliance
+          requirements met.
+        </p>
+        <p>
+          <strong>Security:</strong> Admin controls, audit logging, retention policies.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Account Reactivation</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Banking Application (Chase)</h3>
         <p>
-          Allow users to reactivate deactivated accounts.
+          <strong>Challenge:</strong> FFIEC compliance requires strict account controls. High-security
+          needs for contact changes. Fraud prevention critical.
         </p>
-        <ul className="space-y-2">
-          <li><strong>Login to Reactivate:</strong> Simple login reactivates account.</li>
-          <li><strong>Time Limit:</strong> Reactivation available within 30 days.</li>
-          <li><strong>Data Preservation:</strong> All data preserved during deactivation.</li>
-          <li><strong>Notification:</strong> Notify user before permanent deletion.</li>
-        </ul>
+        <p>
+          <strong>Solution:</strong> Multi-factor verification for all changes. Phone changes
+          require branch visit or notarized form. Email changes require dual verification. Audit
+          logging for all changes.
+        </p>
+        <p>
+          <strong>Result:</strong> Passed FFIEC audit. Fraud reduced 90%. Account changes secured.
+        </p>
+        <p>
+          <strong>Security:</strong> Multi-factor verification, branch verification, audit logging.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Healthcare Platform (Epic)</h3>
+        <p>
+          <strong>Challenge:</strong> HIPAA compliance requires access controls. Account changes
+          affect PHI access. Audit trails required.
+        </p>
+        <p>
+          <strong>Solution:</strong> Account changes require verification. Audit logging for all
+          changes. Data export for patients (HIPAA right to access). Account deletion restricted
+          (retain PHI for compliance).
+        </p>
+        <p>
+          <strong>Result:</strong> Passed HIPAA audits. Patient data access enabled. PHI retained
+          for compliance.
+        </p>
+        <p>
+          <strong>Security:</strong> Verification, audit logging, PHI retention.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Social Platform (Twitter)</h3>
+        <p>
+          <strong>Challenge:</strong> Millions of users. Account hijacking common. Need to secure
+          account changes.
+        </p>
+        <p>
+          <strong>Solution:</strong> Email change with dual verification. Login verification for
+          sensitive changes. Security notifications for all changes. Account deactivation (30 days
+          before permanent deletion).
+        </p>
+        <p>
+          <strong>Result:</strong> Account hijacking reduced. Users notified of changes.
+          Deactivation allows recovery.
+        </p>
+        <p>
+          <strong>Security:</strong> Dual verification, login verification, security notifications.
+        </p>
       </section>
 
       <section>
         <h2>Interview Questions</h2>
+        <p>
+          These questions test understanding of account settings UI design, implementation, and
+          operational concerns.
+        </p>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle email changes securely?</p>
+            <p className="font-semibold">Q: How do you handle email change securely?</p>
             <p className="mt-2 text-sm">
-              A: Require password/MFA before change. Verify new email with confirmation link. Send security notice to old email. Keep email change pending until new email verified. Allow rollback from old email link. Log all changes for audit.
+              A: Require current email verification (password or MFA). Send security notice to old
+              email with cancellation link. Send verification link to new email. Show pending state
+              until new email verified. Allow cancellation from old email. Expire pending change
+              after 7 days.
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you implement account deletion?</p>
             <p className="mt-2 text-sm">
-              A: Multiple confirmations (type "DELETE"). Show impact warning (what will be deleted). Offer data export. 30-day cooling period (deactivated, can restore). Permanent deletion after cooling period. Cancel subscriptions before deletion.
+              A: Show clear warning (data loss, irreversible). Require strong verification (password
+              + MFA + email confirmation). Implement grace period (14-30 days). Send confirmation
+              email with cancellation link. Anonymize data first, then hard delete after grace
+              period. Audit log deletion.
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle data export for GDPR?</p>
+            <p className="font-semibold">Q: How do you handle data export (GDPR)?</p>
             <p className="mt-2 text-sm">
-              A: Async processing (generate in background). Multiple formats (JSON + HTML). Secure delivery (email with secure link). Link expiry (24-72 hours). Provide within 30 days (GDPR SLA). Free of charge.
+              A: Support multiple formats (JSON, CSV, PDF). Asynchronous generation for large
+              exports. Email notification when ready. Secure download link (expires 24-72 hours).
+              Include all user data (profile, settings, content, activity logs). Show export size
+              before generation.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How do you prevent unauthorized account changes?</p>
+            <p className="mt-2 text-sm">
+              A: Verification for all sensitive changes (password/MFA). Dual verification for
+              email/phone (verify old + new). Security notifications for all changes. Audit logging.
+              Allow rollback/cancellation. Grace periods for deletion.
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you handle phone number changes?</p>
             <p className="mt-2 text-sm">
-              A: Require password/MFA before change. Send OTP to new number, verify before updating. Send security notice to old number. If old number was MFA method, require setting up new MFA. Log all changes.
+              A: Require current phone verification (SMS code). Send verification code to new phone.
+              Require additional verification (email + phone — due to account recovery
+              implications). Show pending state. Allow cancellation from verified email.
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you prevent accidental account deletion?</p>
+            <p className="font-semibold">Q: How do you comply with GDPR right to erasure?</p>
             <p className="mt-2 text-sm">
-              A: Multiple confirmations (type "DELETE" or email). Show impact warning. Cooling period (30 days) for recovery. Not easily accessible (Settings → Account → Delete). Require password confirmation.
+              A: Allow account deletion request. Verify identity (password + MFA + email).
+              Implement grace period (14-30 days). Anonymize data (don't immediately hard delete).
+              Retain some data for compliance (financial records, fraud prevention). Document
+              retention policies.
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle active subscriptions on deletion?</p>
+            <p className="font-semibold">Q: How do you notify users of account changes?</p>
             <p className="mt-2 text-sm">
-              A: Block deletion until subscriptions cancelled. Provide cancellation flow inline. Prorate refund if applicable. Confirm cancellation before proceeding with deletion. Notify user of subscription status.
+              A: Email notification for all sensitive changes (email, phone, password). Include
+              change details (what changed, when, IP). Include "Was this you?" link (report
+              unauthorized). Provide quick actions (revert change, secure account).
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle account reactivation?</p>
+            <p className="font-semibold">Q: How do you handle pending email changes?</p>
             <p className="mt-2 text-sm">
-              A: Login to reactivate within cooling period (30 days). All data preserved during deactivation. Notify user before permanent deletion. Simple reactivation flow (just login). Clear communication about reactivation deadline.
+              A: Show pending state clearly in UI ("Email change pending, check your new email").
+              Allow cancellation from old email (security notice link). Send reminders (after 3
+              days, 6 days). Expire after 7 days. Log all pending changes for audit.
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: What metrics do you track for account settings?</p>
             <p className="mt-2 text-sm">
-              A: Email change rate, phone change rate, deletion request rate, export request rate, reactivation rate, export fulfillment time. Alert on anomalies (spike in deletion requests).
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle account settings on mobile?</p>
-            <p className="mt-2 text-sm">
-              A: Mobile-optimized layout, touch-friendly controls, clear confirmation dialogs, simplified deletion flow, easy access to export, clear privacy settings. Test on various screen sizes.
+              A: Email/phone change success rate, account deletion rate, data export requests,
+              verification failure rate, unauthorized change attempts. Set up alerts for anomalies —
+              high deletion rate (possible attack), high verification failures (UX issues).
             </p>
           </div>
         </div>
@@ -375,75 +506,106 @@ export default function AccountSettingsUIArticle() {
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li><a href="https://gdpr.eu/right-to-be-forgotten/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">GDPR Right to Erasure</a></li>
-          <li><a href="https://gdpr.eu/right-of-access/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">GDPR Right of Access</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Authentication Cheat Sheet</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Choosing_and_Using_Security_Questions_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Security Questions</a></li>
-          <li><a href="https://auth0.com/blog/a-look-at-the-latest-draft-for-oauth-2-1/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OAuth 2.1 Security Best Practices</a></li>
-          <li><a href="https://developer.mozilla.org/en-US/docs/Web/Security/Practical_security_guides/Authentication" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">MDN - Authentication Security</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Multifactor Authentication</a></li>
-          <li><a href="https://docs.openfga.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OpenFGA - Fine-Grained Authorization</a></li>
-          <li><a href="https://www.cerbos.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Cerbos - Policy as Code</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Access Control Cheat Sheet</a></li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Real-world Use Cases</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce Account Settings</h3>
-        <p>
-          Large e-commerce platform with 50M users managing account data and GDPR requests.
-        </p>
-        <ul className="space-y-2">
-          <li><strong>Challenge:</strong> GDPR data export requests (1000s/month). Account deletion with order history retention. Email change for order notifications.</li>
-          <li><strong>Solution:</strong> Self-service data export (JSON/PDF). Account deletion with order history anonymization. Email change with order notification transfer.</li>
-          <li><strong>Result:</strong> GDPR requests fulfilled in 24 hours (vs 30-day requirement). 90% self-service adoption. Customer satisfaction improved.</li>
-          <li><strong>Security:</strong> Identity verification for changes, data encryption, audit logging.</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Banking Account Settings</h3>
-        <p>
-          Online banking with strict security for account changes and closures.
-        </p>
-        <ul className="space-y-2">
-          <li><strong>Challenge:</strong> FFIEC requires verification for account changes. Account closure with balance transfer. Regulatory data retention.</li>
-          <li><strong>Solution:</strong> Multi-factor verification for changes. Account closure workflow with balance transfer. Data retention per regulations (7 years).</li>
-          <li><strong>Result:</strong> Passed regulatory audits. Zero unauthorized account changes. Customer trust maintained.</li>
-          <li><strong>Security:</strong> MFA for changes, balance verification, regulatory compliance.</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Social Media Account Settings</h3>
-        <p>
-          Social platform with 500M users, account deletion and data portability.
-        </p>
-        <ul className="space-y-2">
-          <li><strong>Challenge:</strong> High deletion requests (user sentiment). Data portability (GDPR). Memorialization for deceased users.</li>
-          <li><strong>Solution:</strong> Deletion with cooling period (30 days). Data export (photos, posts, messages). Memorialization option for family requests.</li>
-          <li><strong>Result:</strong> 40% deletion requests reversed during cooling period. GDPR compliance maintained. Family satisfaction with memorialization.</li>
-          <li><strong>Security:</strong> Identity verification, cooling period enforcement, memorialization verification.</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SaaS Account Settings</h3>
-        <p>
-          B2B SaaS with 10,000 enterprise customers, admin-managed accounts.
-        </p>
-        <ul className="space-y-2">
-          <li><strong>Challenge:</strong> Admin controls user accounts. User can't delete admin-managed accounts. Data export for compliance.</li>
-          <li><strong>Solution:</strong> Admin-only account deletion. User data export available. Account transfer between admins. Audit trail for admin actions.</li>
-          <li><strong>Result:</strong> Admin control maintained. Compliance requests fulfilled. Zero unauthorized deletions.</li>
-          <li><strong>Security:</strong> Admin verification, audit logging, data export controls.</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Gaming Platform Account Settings</h3>
-        <p>
-          Online gaming platform with virtual currency and item ownership.
-        </p>
-        <ul className="space-y-2">
-          <li><strong>Challenge:</strong> Account deletion with virtual currency. Item ownership transfer. Parental controls for minor accounts.</li>
-          <li><strong>Solution:</strong> Deletion with currency forfeiture warning. Item transfer before deletion. Parental approval for minor account changes.</li>
-          <li><strong>Result:</strong> Deletion requests reduced (users aware of loss). Parent satisfaction improved. Zero disputes post-deletion.</li>
-          <li><strong>Security:</strong> Parental verification, currency handling, item transfer validation.</li>
+          <li>
+            <a
+              href="https://gdpr.eu/article-17-right-to-erasure/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GDPR Article 17 - Right to Erasure
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://gdpr.eu/article-20-right-to-data-portability/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GDPR Article 20 - Right to Data Portability
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Authentication Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Session Management Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://auth0.com/blog/a-look-at-the-latest-draft-for-oauth-2-1/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OAuth 2.1 Security Best Practices
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/Security/Practical_security_guides/Authentication"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MDN - Authentication Security
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Multifactor Authentication
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Access Control Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Forgot Password Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Credential_Stuffing_Prevention_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Credential Stuffing Prevention
+            </a>
+          </li>
         </ul>
       </section>
     </ArticleLayout>

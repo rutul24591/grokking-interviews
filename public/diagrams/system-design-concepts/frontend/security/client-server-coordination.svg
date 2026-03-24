@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1000" height="550" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">Client-Server Rate Limiting Coordination</text>
+  <text x="500" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#475569">How client-side and server-side rate limiting work together</text>
+  
+  <!-- Client Side -->
+  <g transform="translate(50, 100)">
+    <rect x="0" y="0" width="400" height="200" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="200" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#2563eb">Client-Side (Browser)</text>
+    <line x1="20" y1="45" x2="380" y2="45" stroke="#3b82f6" stroke-width="1"/>
+    
+    <!-- Client Techniques -->
+    <text x="20" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="#1e40af">Techniques:</text>
+    <text x="30" y="92" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#1e40af">✓ Debouncing (300ms delay)</text>
+    <text x="30" y="114" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#1e40af">✓ Throttling (100ms interval)</text>
+    <text x="30" y="136" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#1e40af">✓ Token bucket (local quota)</text>
+    <text x="30" y="158" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#1e40af">✓ Request cancellation (AbortController)</text>
+    
+    <text x="200" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#2563eb">Purpose: UX + Reduce unnecessary requests</text>
+  </g>
+  
+  <!-- Server Side -->
+  <g transform="translate(550, 100)">
+    <rect x="0" y="0" width="400" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="200" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#d97706">Server-Side (API)</text>
+    <line x1="20" y1="45" x2="380" y2="45" stroke="#f59e0b" stroke-width="1"/>
+    
+    <!-- Server Techniques -->
+    <text x="20" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="#92400e">Techniques:</text>
+    <text x="30" y="92" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#92400e">✓ Token bucket (Redis)</text>
+    <text x="30" y="114" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#92400e">✓ Sliding window counter</text>
+    <text x="30" y="136" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#92400e">✓ Fixed window rate limiting</text>
+    <text x="30" y="158" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#92400e">✓ User-specific limits</text>
+    
+    <text x="200" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#d97706">Purpose: Security + Enforce limits</text>
+  </g>
+  
+  <!-- Arrow between Client and Server -->
+  <path d="M 450 200 L 550 200" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrowhead-gray)"/>
+  <text x="500" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">HTTP Requests</text>
+  <text x="500" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">+ Headers</text>
+  
+  <!-- Response Flow -->
+  <g transform="translate(50, 330)">
+    <rect x="0" y="0" width="900" height="180" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="450" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#475569">Server Response Headers</text>
+    <line x1="20" y1="45" x2="880" y2="45" stroke="#cbd5e1" stroke-width="1"/>
+    
+    <!-- Rate Limit Headers -->
+    <text x="40" y="75" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#475569">X-RateLimit-Limit:</text>
+    <text x="200" y="75" font-family="monospace" font-size="12" fill="#059669">100</text>
+    <text x="250" y="75" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#64748b">(max requests/hour)</text>
+    
+    <text x="40" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#475569">X-RateLimit-Remaining:</text>
+    <text x="240" y="100" font-family="monospace" font-size="12" fill="#059669">45</text>
+    <text x="280" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#64748b">(requests left)</text>
+    
+    <text x="40" y="125" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#475569">X-RateLimit-Reset:</text>
+    <text x="220" y="125" font-family="monospace" font-size="12" fill="#059669">1640000000</text>
+    <text x="340" y="125" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#64748b">(Unix timestamp)</text>
+    
+    <text x="40" y="150" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#475569">Retry-After:</text>
+    <text x="170" y="150" font-family="monospace" font-size="12" fill="#dc2626">60</text>
+    <text x="210" y="150" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#64748b">(seconds, on 429 response)</text>
+    
+    <!-- Client Action -->
+    <rect x="550" y="65" width="320" height="100" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+    <text x="710" y="90" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Client Updates State</text>
+    <text x="570" y="115" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#92400e">• Sync local quota with server</text>
+    <text x="570" y="135" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#92400e">• Disable UI when limit reached</text>
+    <text x="570" y="155" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#92400e">• Show countdown timer</text>
+  </g>
+  
+  <!-- Arrow Markers -->
+  <defs>
+    <marker id="arrowhead-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
+  
+  <!-- Key Insight Box -->
+  <g transform="translate(50, 530)">
+    <rect x="0" y="0" width="900" height="40" rx="6" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
+    <text x="450" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#16a34a">Best Practice: Client-side reduces unnecessary requests, Server-side enforces security limits. Always implement both!</text>
+  </g>
+</svg>

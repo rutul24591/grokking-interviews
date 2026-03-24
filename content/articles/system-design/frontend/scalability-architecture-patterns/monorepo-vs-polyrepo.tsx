@@ -457,11 +457,146 @@ export default function MonorepoVsPolyrepoArticle() {
         </ul>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-concepts/frontend/scalability-architecture-patterns/monorepo-vs-polyrepo-diagram-3.svg"
-        alt="Monorepo migration strategy showing 4-step process from polyrepo to monorepo with package consolidation and unified CI/CD"
-        caption="Migration path — step-by-step approach to consolidate multiple repositories into a monorepo with unified tooling"
-      />
+      <section>
+        <h2>Security Considerations</h2>
+        <p>
+          Monorepo and Polyrepo architectures introduce different security considerations around access control, dependency management, and supply chain security.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Monorepo Security</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Access Control:</strong> All developers have access to all code. Mitigation: implement CODEOWNERS for sensitive packages, use branch protection rules, audit all changes to security-critical code.
+            </li>
+            <li>
+              <strong>Dependency Management:</strong> Shared dependencies are deduplicated. Mitigation: use automated dependency updates (Dependabot, Renovate), pin exact versions, implement security scanning for all dependencies.
+            </li>
+            <li>
+              <strong>Supply Chain Security:</strong> Single source of truth reduces supply chain attacks. Mitigation: verify all external dependencies, use lockfiles, implement CI/CD security scanning.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Polyrepo Security</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Access Control:</strong> Fine-grained access per repository. Mitigation: implement organization-wide security policies, audit access across all repositories, use SSO for all repositories.
+            </li>
+            <li>
+              <strong>Dependency Management:</strong> Each repo manages its own dependencies. Mitigation: use shared dependency baselines, implement automated security scanning, coordinate security updates across repos.
+            </li>
+            <li>
+              <strong>Supply Chain Security:</strong> Multiple repositories increase attack surface. Mitigation: use private registries, verify package signatures, implement dependency allowlists.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Performance Benchmarks</h2>
+        <p>
+          Monorepo and Polyrepo performance depends on repository size, build tooling efficiency, and CI/CD infrastructure.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Metric</th>
+                <th className="p-2 text-left">Target</th>
+                <th className="p-2 text-left">Measurement</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Clone Time</td>
+                <td className="p-2">&lt;30 seconds</td>
+                <td className="p-2">git clone timing</td>
+              </tr>
+              <tr>
+                <td className="p-2">Build Time (Affected)</td>
+                <td className="p-2">&lt;5 minutes</td>
+                <td className="p-2">CI/CD metrics</td>
+              </tr>
+              <tr>
+                <td className="p-2">CI/CD Queue Time</td>
+                <td className="p-2">&lt;2 minutes</td>
+                <td className="p-2">CI/CD metrics</td>
+              </tr>
+              <tr>
+                <td className="p-2">Repository Size</td>
+                <td className="p-2">&lt;10GB (monorepo)</td>
+                <td className="p-2">git count-objects</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Build Tool Comparison</h3>
+          <p>
+            Different build tools have different performance characteristics for monorepos:
+          </p>
+          <ul className="mt-3 space-y-2">
+            <li>
+              <strong>Nx:</strong> Affected builds: ~1-3 minutes. Best for: large monorepos, TypeScript projects. Limitation: initial setup complexity.
+            </li>
+            <li>
+              <strong>Turborepo:</strong> Affected builds: ~1-2 minutes. Best for: React/Next.js monorepos. Limitation: less flexible than Nx.
+            </li>
+            <li>
+              <strong>Lerna:</strong> Affected builds: ~3-5 minutes. Best for: JavaScript package monorepos. Limitation: slower than Nx/Turborepo.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Cost Analysis</h2>
+        <p>
+          Monorepo and Polyrepo architectures have different cost profiles for infrastructure, tooling, and developer productivity.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Monorepo Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Infrastructure:</strong> Single large repository. Git hosting: $100-500/month for large repos. CI/CD: $500-2,000/month with affected builds.
+            </li>
+            <li>
+              <strong>Tooling:</strong> Nx Cloud, Turborepo Turbo: $0-500/month for remote caching.
+            </li>
+            <li>
+              <strong>Operations:</strong> 0.25-0.5 FTE for monorepo maintenance.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Polyrepo Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Infrastructure:</strong> Multiple repositories. Git hosting: $200-1,000/month for many repos. CI/CD: $1,000-5,000/month (duplicated pipelines).
+            </li>
+            <li>
+              <strong>Tooling:</strong> Per-repo tooling configuration. Estimate: 2-3x more configuration than monorepo.
+            </li>
+            <li>
+              <strong>Operations:</strong> 0.5-1 FTE for multi-repo coordination.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
+          <p>
+            Choose monorepo when: (1) you have 3+ teams sharing code, (2) you need atomic cross-package changes, (3) you have dedicated platform team. Choose polyrepo when: (1) teams need full autonomy, (2) packages have independent release cycles, (3) you lack monorepo expertise. For most startups with 3-10 teams, monorepo shows better ROI.
+          </p>
+        </div>
+      </section>
 
       <section>
         <h2>Common Interview Questions</h2>

@@ -443,6 +443,147 @@ export default function PluginArchitectureArticle() {
       </section>
 
       <section>
+        <h2>Security Considerations</h2>
+        <p>
+          Plugin Architecture introduces significant security considerations around code execution, sandboxing, and privilege escalation. Third-party plugins can introduce vulnerabilities if not properly isolated.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Plugin Security Patterns</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Sandboxing:</strong> Untrusted plugins must run in isolated environments. Mitigation: use iframes for UI plugins, Web Workers for computation, separate processes for Node.js plugins, implement strict CSP policies.
+            </li>
+            <li>
+              <strong>Capability-Based Security:</strong> Plugins should only have access to explicitly granted capabilities. Mitigation: implement capability manifest, validate plugin permissions, use principle of least privilege.
+            </li>
+            <li>
+              <strong>Code Signing:</strong> Verify plugin integrity before loading. Mitigation: sign plugins with cryptographic signatures, verify signatures before loading, use trusted plugin registries.
+            </li>
+            <li>
+              <strong>API Surface Minimization:</strong> Expose only necessary host APIs to plugins. Mitigation: document plugin API clearly, version plugin APIs, avoid exposing sensitive host functionality.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Plugin Testing Security</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Sandbox Escape Testing:</strong> Test that plugins cannot escape their sandbox. Verify that plugins cannot access host internals. Test iframe/Worker isolation.
+            </li>
+            <li>
+              <strong>Capability Testing:</strong> Test that plugins only have access to granted capabilities. Verify that privilege escalation attempts are rejected.
+            </li>
+            <li>
+              <strong>Input Validation Testing:</strong> Test plugin input validation. Verify that malformed plugin data is handled gracefully. Test boundary conditions.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Performance Benchmarks</h2>
+        <p>
+          Plugin Architecture performance depends on sandboxing overhead, plugin loading time, and inter-process communication costs.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Metric</th>
+                <th className="p-2 text-left">Target</th>
+                <th className="p-2 text-left">Measurement</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Plugin Load Time</td>
+                <td className="p-2">&lt;100ms per plugin</td>
+                <td className="p-2">Performance.now()</td>
+              </tr>
+              <tr>
+                <td className="p-2">Sandbox Overhead</td>
+                <td className="p-2">&lt;10% performance impact</td>
+                <td className="p-2">Benchmark comparison</td>
+              </tr>
+              <tr>
+                <td className="p-2">IPC Latency</td>
+                <td className="p-2">&lt;1ms per message</td>
+                <td className="p-2">Performance.now()</td>
+              </tr>
+              <tr>
+                <td className="p-2">Plugin Count</td>
+                <td className="p-2">&lt;100 active plugins</td>
+                <td className="p-2">Runtime monitoring</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Sandboxing Strategy Comparison</h3>
+          <p>
+            Different sandboxing strategies have different performance characteristics:
+          </p>
+          <ul className="mt-3 space-y-2">
+            <li>
+              <strong>Iframe Sandboxing:</strong> Overhead: ~10-50ms load time. Best for: UI plugins, untrusted code. Limitation: cross-origin communication overhead.
+            </li>
+            <li>
+              <strong>Web Worker Sandboxing:</strong> Overhead: ~5-20ms load time. Best for: computation plugins. Limitation: no DOM access.
+            </li>
+            <li>
+              <strong>Same-Context Sandboxing:</strong> Overhead: ~0.1ms. Best for: trusted plugins, first-party extensions. Limitation: no isolation from host.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Cost Analysis</h2>
+        <p>
+          Plugin Architecture has significant infrastructure and operational costs but enables ecosystem growth and third-party extensibility.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Plugin Registry:</strong> Hosting plugin marketplace, version management, download serving. Estimate: $500-2,000/month for moderate traffic.
+            </li>
+            <li>
+              <strong>Security Infrastructure:</strong> Code signing, vulnerability scanning, sandboxing infrastructure. Estimate: $1,000-5,000/month.
+            </li>
+            <li>
+              <strong>Developer Relations:</strong> Plugin SDK documentation, developer support, community management. Estimate: 1-2 FTE for active ecosystems.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Plugin SDK:</strong> Building comprehensive plugin SDK: 2-4 weeks for basic SDK, 2-3 months for mature SDK with documentation.
+            </li>
+            <li>
+              <strong>Plugin Review:</strong> Reviewing third-party plugins for security and quality. Estimate: 0.25-0.5 FTE for active marketplaces.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">When to Use Plugin Architecture</h3>
+          <p>
+            Use plugins when: (1) you need third-party extensibility, (2) you want to enable ecosystem growth, (3) you need to support custom integrations. Avoid when: (1) you have no third-party developers, (2) security requirements are too strict for third-party code, (3) the complexity outweighs the benefits.
+          </p>
+        </div>
+      </section>
+
+      <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

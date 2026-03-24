@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(do *)",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(grep *)",
+      "Bash(kill *)"
     ]
   },
   "$version": 3

@@ -549,56 +549,17 @@ export default function InputValidationSanitizationArticle() {
       </section>
 
       <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP Input Validation Cheat Sheet
-            </a>
-          </li>
-          <li>
-            <a href="https://cheatsheetseries.owasp.org/cheatsheets/XSS_Filter_Evasion_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP XSS Filter Evasion Cheat Sheet
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/cure53/DOMPurify" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              DOMPurify GitHub Repository
-            </a>
-          </li>
-          <li>
-            <a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP SQL Injection Prevention Cheat Sheet
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Sandboxing" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN Web Docs: HTML Sandboxing
-            </a>
-          </li>
-          <li>
-            <a href="https://portswigger.net/web-security" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              PortSwigger Web Security Academy
-            </a>
-          </li>
-          <li>
-            <a href="https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP File Upload Cheat Sheet
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/validatorjs/validator.js" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              validator.js - String Validation Library
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
         <h2>Architecture at Scale: Validation in Enterprise Systems</h2>
         <p>
           Enterprise-scale validation requires coordinated validation policies, consistent sanitization configurations, and centralized monitoring across multiple applications, services, and geographic regions. In microservices architectures, each service must validate input consistently while supporting different validation requirements.
         </p>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/security/validation-defense-layers.svg"
+          alt="Input Validation and Sanitization Layers showing Client-Side, Server-Side, Database, and Output Encoding with attack prevention table"
+          caption="Validation Defense Layers: Client (UX), Server (Security), Database (Integrity), Output (XSS Prevention). Each layer provides defense-in-depth."
+        />
+
         <p>
           <strong>Centralized Validation Service:</strong> Implement a centralized validation service that manages validation rules across all applications. Use schema validation (JSON Schema, Zod, Yup) for consistent validation. Document validation policies in security standards.
         </p>

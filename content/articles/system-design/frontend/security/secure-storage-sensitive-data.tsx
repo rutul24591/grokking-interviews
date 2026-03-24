@@ -192,6 +192,12 @@ export default function SecureStorageSensitiveDataArticle() {
           protection. However, encryption in the browser has fundamental limitations.
         </p>
 
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/security/secure-storage-comparison.svg"
+          alt="Secure Storage Options for Sensitive Data comparing localStorage, sessionStorage, HttpOnly Cookie, IndexedDB, In-Memory, and Secure Enclave"
+          caption="Storage Security Comparison: HttpOnly cookies are most secure for web tokens, Secure Enclave for mobile apps, never use localStorage for sensitive data."
+        />
+
         <h3 className="mt-8 mb-4 text-xl font-semibold">Web Crypto API</h3>
         <p>
           The Web Crypto API provides methods like <code className="text-sm">window.crypto.subtle.generateKey()</code> for generating AES-GCM keys with 256-bit length, <code className="text-sm">subtle.encrypt()</code> for encrypting data with a random IV, and <code className="text-sm">subtle.decrypt()</code> for decrypting. Encrypted data can be stored in IndexedDB. However, the fundamental question remains: where do you store the encryption key?

@@ -7,16 +7,25 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-requirements-ia-backend-password-hashing",
   title: "Password Hashing and Validation",
-  description: "Comprehensive guide to implementing password hashing covering algorithms (bcrypt, argon2), salting, validation patterns, breach detection, and security best practices for staff/principal engineer interviews.",
+  description:
+    "Comprehensive guide to implementing password hashing covering algorithms (Argon2id, bcrypt, scrypt, PBKDF2), salting, cost factors, timing-safe comparison, breach detection (Have I Been Pwned), password policies (NIST guidelines), and migration strategies for staff/principal engineer interviews.",
   category: "functional-requirements",
   subcategory: "identity-access",
   slug: "password-hashing-and-validation",
   version: "extensive",
-  wordCount: 7000,
-  readingTime: 28,
-  lastUpdated: "2026-03-16",
-  tags: ["requirements", "functional", "identity", "password", "hashing", "security", "backend"],
-  relatedTopics: ["user-registration-service", "authentication-service", "credential-rotation", "account-recovery"],
+  wordCount: 9500,
+  readingTime: 38,
+  lastUpdated: "2026-03-23",
+  tags: [
+    "requirements",
+    "functional",
+    "identity",
+    "password",
+    "hashing",
+    "security",
+    "backend",
+  ],
+  relatedTopics: ["user-registration-service", "authentication-service", "password-reset"],
 };
 
 export default function PasswordHashingArticle() {
@@ -25,803 +34,564 @@ export default function PasswordHashingArticle() {
       <section>
         <h2>Definition &amp; Context</h2>
         <p>
-          <strong>Password Hashing and Validation</strong> is the cryptographic process of 
-          securely storing and verifying user passwords. Hashing transforms passwords into 
-          irreversible representations, protecting user credentials even if the database is 
-          compromised.
+          <strong>Password Hashing and Validation</strong> is the cryptographic process of securely
+          storing and verifying user passwords. Hashing transforms passwords into irreversible
+          representations, protecting user credentials even if the database is compromised.
+          Password hashing is the last line of defense — if attackers breach your database, proper
+          hashing prevents them from obtaining plaintext passwords.
         </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/password-hashing-flow.svg"
           alt="Password Hashing Flow"
-          caption="Password Hashing Flow — showing registration and login flows with bcrypt/Argon2"
+          caption="Password Hashing Flow — showing registration flow (hash before storage) and login flow (hash + compare) with Argon2/bcrypt"
         />
+
+        <p>
+          For staff and principal engineers, implementing password hashing requires deep
+          understanding of hashing algorithms (Argon2id, bcrypt, scrypt, PBKDF2), salting (unique
+          salt per password), cost factors (work factor, memory, iterations), timing-safe
+          comparison (prevent timing attacks), breach detection (Have I Been Pwned API), password
+          policies (NIST guidelines — no composition rules), and migration strategies (rehashing on
+          login, algorithm upgrades). The implementation must balance security (strong hashing)
+          with performance (authentication latency).
+        </p>
+        <p>
+          Modern password hashing has evolved from simple MD5/SHA1 (broken, never use) to
+          adaptive hashing functions (Argon2, bcrypt) that are intentionally slow and
+          memory-hard to resist GPU/ASIC attacks. Organizations like Google, Facebook, and
+          Cloudflare use Argon2id (winner of Password Hashing Competition 2015) for new systems,
+          bcrypt for legacy systems, with automatic migration to stronger algorithms.
+        </p>
+      </section>
+
+      <section>
+        <h2>Core Concepts</h2>
+        <p>
+          Password hashing is built on fundamental concepts that determine how passwords are
+          secured. Understanding these concepts is essential for designing secure password systems.
+        </p>
+        <p>
+          <strong>Hashing Algorithms:</strong> Argon2id (recommended for new systems — memory-hard,
+          GPU/ASIC resistant, PHC winner 2015), bcrypt (industry standard — adaptive, wide
+          language support, cost factor 12-14), scrypt (memory-hard, alternative to Argon2),
+          PBKDF2 (NIST approved, but GPU-vulnerable — use only if required by compliance). Never
+          use MD5, SHA1, SHA256 alone (not designed for passwords, GPU-crackable).
+        </p>
+        <p>
+          <strong>Salting:</strong> Unique random value per password (128-bit minimum). Prevents
+          rainbow table attacks (pre-computed hash tables). Salt stored with hash (not secret).
+          Auto-generated by hashing library (don't generate manually). Salt ensures same password
+          produces different hashes.
+        </p>
+        <p>
+          <strong>Cost Factors:</strong> Argon2id (memory: 64MB, iterations: 3, parallelism: 4),
+          bcrypt (cost: 12-14 — exponential, cost 14 is 2x slower than 13), scrypt (N: 2^14, r: 8,
+          p: 1). Cost should be tuned so hashing takes 200-500ms — slow enough to resist brute
+          force, fast enough for UX.
+        </p>
+        <p>
+          <strong>Timing-Safe Comparison:</strong> Use constant-time comparison (crypto.timingSafeEqual
+          in Node.js) — prevent timing attacks (attackers measure response time to guess password).
+          Never use == or === for hash comparison. All hashing libraries provide timing-safe
+          verification.
+        </p>
+      </section>
+
+      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          Password hashing architecture separates hashing from validation, enabling secure storage
+          with efficient verification. This architecture is critical for protecting user
+          credentials.
+        </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/password-validation.svg"
           alt="Password Validation"
-          caption="Password Validation — showing rules, strength meter, blocked passwords, and NIST guidelines"
+          caption="Password Validation — showing NIST guidelines (min 8 chars, no composition rules), breach detection, strength meter, and blocked passwords"
         />
+
+        <p>
+          Registration flow: User submits password. Frontend validates format (min length,
+          real-time strength meter). Backend receives password. Backend validates (min 8 chars per
+          NIST, check breach database — Have I Been Pwned API). Backend generates salt
+          (auto-generated by hashing library). Backend hashes password (Argon2id with cost
+          factors). Backend stores hash + salt (never plaintext). Backend returns success.
+        </p>
+        <p>
+          Login flow: User submits password. Backend retrieves stored hash + salt. Backend hashes
+          submitted password with stored salt. Backend compares hashes (timing-safe comparison). If
+          match: authentication success. If mismatch: authentication failure. Optional: check if
+          rehash needed (algorithm upgrade, cost factor increase) — rehash on successful login.
+        </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/password-algorithms.svg"
           alt="Password Algorithms"
-          caption="Password Algorithms — comparing Argon2, bcrypt, scrypt, and PBKDF2"
+          caption="Password Algorithms Comparison — showing Argon2id (recommended), bcrypt (standard), scrypt (alternative), PBKDF2 (NIST approved) with security ratings and recommended settings"
         />
-      
+
         <p>
-          For staff and principal engineers, implementing password hashing requires 
-          understanding hashing algorithms (bcrypt, argon2, scrypt), salt generation, 
-          cost factors, timing-safe comparison, breach detection, and migration strategies 
-          for algorithm upgrades. The implementation must balance security (strong hashing)
-          with performance (authentication latency).
+          Migration architecture includes: algorithm detection (store algorithm identifier with
+          hash — "$argon2id$", "$2a$" for bcrypt), rehashing on login (if algorithm outdated or
+          cost too low, rehash with new algorithm/cost), gradual migration (users rehash on login,
+          no mass rehash required). This architecture enables algorithm upgrades without forcing
+          password resets.
         </p>
-
-        
-
-        
-
-        
       </section>
 
       <section>
-        <h2>Hashing Algorithms</h2>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">bcrypt (Industry Standard)</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Algorithm:</strong> Adaptive hash based on Blowfish cipher.
-            </li>
-            <li>
-              <strong>Cost Factor:</strong> Exponential work factor (2^cost). 
-              Recommended: 12-14.
-            </li>
-            <li>
-              <strong>Salt:</strong> Built-in 128-bit salt. Stored with hash.
-            </li>
-            <li>
-              <strong>Output:</strong> 60-character string ($2a$12$...).
-            </li>
-            <li>
-              <strong>Pros:</strong> Battle-tested, wide language support, GPU-resistant.
-            </li>
-            <li>
-              <strong>Cons:</strong> Memory-light (vulnerable to GPU attacks at scale).
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">argon2id (Recommended for New Systems)</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Algorithm:</strong> Memory-hard function, winner of Password 
-              Hashing Competition (2015).
-            </li>
-            <li>
-              <strong>Parameters:</strong> Memory (64MB+), iterations (3+), parallelism (4).
-            </li>
-            <li>
-              <strong>Salt:</strong> 128-bit salt. Stored with hash.
-            </li>
-            <li>
-              <strong>Pros:</strong> GPU-resistant, ASIC-resistant, memory-hard.
-            </li>
-            <li>
-              <strong>Cons:</strong> Newer (less battle-tested), complex tuning.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">scrypt</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Algorithm:</strong> Memory-hard function.
-            </li>
-            <li>
-              <strong>Parameters:</strong> N (CPU cost), r (block size), p (parallelism).
-            </li>
-            <li>
-              <strong>Pros:</strong> Memory-hard, GPU-resistant.
-            </li>
-            <li>
-              <strong>Cons:</strong> Complex parameters, less adoption than bcrypt.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Algorithms to Avoid</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>MD5, SHA1, SHA256:</strong> Too fast, vulnerable to brute force.
-            </li>
-            <li>
-              <strong>Unsalted Hashes:</strong> Rainbow table attacks.
-            </li>
-            <li>
-              <strong>Fast Hashes:</strong> Any hash not designed for passwords 
-              (designed for speed, not security).
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Implementation Patterns</h2>
-
-        
-
+        <h2>Trade-offs &amp; Comparison</h2>
         <p>
-          Proper implementation is critical for security.
+          Designing password hashing involves trade-offs between security, performance, and
+          compatibility. Understanding these trade-offs is essential for making informed
+          architecture decisions.
         </p>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Password Registration</h3>
+          <h3 className="mb-4 text-lg font-semibold">Argon2id vs bcrypt vs scrypt</h3>
           <ul className="space-y-3">
             <li>
-              <strong>Generate Salt:</strong> Automatic with bcrypt/argon2.
+              <strong>Argon2id:</strong> Memory-hard, GPU/ASIC resistant, PHC winner. Best
+              security. Limitation: newer, less language support.
             </li>
             <li>
-              <strong>Hash Password:</strong> Apply hash function with appropriate 
-              cost factor.
+              <strong>bcrypt:</strong> Industry standard, wide language support, battle-tested.
+              Good security. Limitation: not memory-hard (GPU-vulnerable at scale).
             </li>
             <li>
-              <strong>Store Hash:</strong> Store complete hash string (includes 
-              salt, cost, hash).
-            </li>
-            <li>
-              <strong>Discard Plaintext:</strong> Never log or store original 
-              password.
+              <strong>scrypt:</strong> Memory-hard, alternative to Argon2. Good security.
+              Limitation: less widely adopted, complex tuning.
             </li>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Password Validation</h3>
+          <h3 className="mb-4 text-lg font-semibold">High Cost vs Low Cost</h3>
           <ul className="space-y-3">
             <li>
-              <strong>Fetch Hash:</strong> Retrieve stored hash from database.
+              <strong>High Cost:</strong> Slower hashing (500ms+), more brute force resistance.
+              Limitation: higher latency, more CPU usage, DoS risk (attackers submit many
+              passwords).
             </li>
             <li>
-              <strong>Constant-Time Compare:</strong> Use crypto.timingSafeEqual 
-              or library function.
+              <strong>Low Cost:</strong> Faster hashing (50ms), better UX, lower CPU. Limitation:
+              less brute force resistance, GPUs can crack faster.
             </li>
             <li>
-              <strong>Timing Attack Prevention:</strong> Same time for match 
-              and mismatch.
-            </li>
-            <li>
-              <strong>Rate Limiting:</strong> Limit validation attempts per 
-              account/IP.
+              <strong>Recommendation:</strong> Target 200-500ms hashing time. Tune cost factors to
+              hit this range. Rate limit authentication endpoints (prevent DoS via hashing).
             </li>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Breach Detection</h3>
+          <h3 className="mb-4 text-lg font-semibold">Strict vs Lenient Password Policy</h3>
           <ul className="space-y-3">
             <li>
-              <strong>Have I Been Pwned:</strong> Check password against breached 
-              password database.
+              <strong>Strict:</strong> Uppercase, lowercase, number, symbol, 12+ chars. Strong
+              passwords. Limitation: user frustration, password reuse (users write down), support
+              tickets.
             </li>
             <li>
-              <strong>k-Anonymity:</strong> Send first 5 chars of SHA1 hash, 
-              receive matching suffixes.
+              <strong>Lenient (NIST):</strong> Min 8 chars, no composition rules, breach check.
+              Better UX, encourages long passwords. Limitation: some weak passwords allowed.
             </li>
             <li>
-              <strong>Warn User:</strong> If breached, require different password.
-            </li>
-            <li>
-              <strong>Prevent Reuse:</strong> Store hash of recent passwords, 
-              prevent reuse.
+              <strong>Recommendation:</strong> NIST guidelines — min 8 chars, no composition rules,
+              breach database check. Better security through usability.
             </li>
           </ul>
         </div>
-      </section>
-
-      <section>
-        <h2>Security Best Practices</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Unique Salt:</strong> Different salt per password. Automatic 
-            with bcrypt/argon2.
-          </li>
-          <li>
-            <strong>Appropriate Cost:</strong> Hash should take 200-500ms. Adjust 
-            cost factor as hardware improves.
-          </li>
-          <li>
-            <strong>Pepper:</strong> Optional server-side secret added before 
-            hashing. Stored separately from database.
-          </li>
-          <li>
-            <strong>Algorithm Migration:</strong> Re-hash on login if algorithm 
-            outdated. Gradual migration.
-          </li>
-          <li>
-            <strong>Secure Transmission:</strong> Password only over HTTPS. 
-            Client-side hashing optional (doesn't replace server-side).
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>References</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://pages.nist.gov/800-63-3/sp800-63b.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              NIST SP 800-63B - Digital Identity Guidelines
-            </a>
-          </li>
-          <li>
-            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP Password Storage Cheat Sheet
-            </a>
-          </li>
-        </ul>
       </section>
 
       <section>
         <h2>Best Practices</h2>
+        <p>
+          Implementing password hashing requires following established best practices to ensure
+          security, usability, and operational effectiveness.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <ul className="space-y-2">
-          <li>Use memory-hard algorithms (argon2id, bcrypt)</li>
-          <li>Set appropriate cost factors (bcrypt 12+, argon2id 64MB+)</li>
-          <li>Use unique salt per password (128-bit minimum)</li>
-          <li>Implement timing-safe comparison for validation</li>
-          <li>Check passwords against breach databases</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Algorithm Selection</h3>
+        <p>
+          Use Argon2id for new systems (memory-hard, GPU/ASIC resistant). Use bcrypt for legacy
+          systems (wide support, battle-tested). Never use MD5, SHA1, SHA256 alone (not designed
+          for passwords). Plan for algorithm migration (store algorithm identifier, rehash on
+          login).
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Cost Factor Tuning</h3>
+        <p>
+          Target 200-500ms hashing time — slow enough for security, fast enough for UX. Argon2id
+          (memory: 64MB, iterations: 3, parallelism: 4). Bcrypt (cost: 12-14 — tune based on
+          hardware). Re-evaluate cost annually (hardware improves, increase cost).
+        </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Password Policy</h3>
-        <ul className="space-y-2">
-          <li>Minimum length 12+ characters</li>
-          <li>No maximum length (support passphrases)</li>
-          <li>No composition requirements (uppercase, symbols)</li>
-          <li>Check against breached password lists</li>
-          <li>Allow password managers (no special character restrictions)</li>
-        </ul>
+        <p>
+          Follow NIST guidelines — minimum 8 characters, no composition rules (no required
+          uppercase, numbers, symbols). Check breach database (Have I Been Pwned API) — warn if
+          compromised. Allow long passwords (up to 64 chars — support password managers). No
+          password hints (security risk).
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Monitoring</h3>
-        <ul className="space-y-2">
-          <li>Track password validation latency</li>
-          <li>Monitor hashing performance</li>
-          <li>Alert on unusual validation patterns</li>
-          <li>Track breach detection hits</li>
-          <li>Monitor password upgrade rates</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Compliance</h3>
-        <ul className="space-y-2">
-          <li>Meet NIST password guidelines</li>
-          <li>Document hashing algorithms and parameters</li>
-          <li>Audit password storage practices</li>
-          <li>Support compliance reporting</li>
-          <li>Regular security reviews</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Migration Strategy</h3>
+        <p>
+          Store algorithm identifier with hash ("$argon2id$", "$2a$"). Rehash on successful login
+          (if algorithm outdated or cost too low). Gradual migration (no mass rehash required).
+          Set deadline for legacy algorithm (force password reset after deadline).
+        </p>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
+        <p>
+          Avoid these common mistakes when implementing password hashing to ensure secure password
+          storage.
+        </p>
         <ul className="space-y-3">
           <li>
-            <strong>Weak algorithms:</strong> Using MD5, SHA1, or SHA256 for passwords.
-            <br /><strong>Fix:</strong> Use bcrypt, argon2id, or scrypt.
+            <strong>Using MD5/SHA1:</strong> GPU-crackable in seconds, never use.{" "}
+            <strong>Fix:</strong> Use Argon2id or bcrypt. Never use general-purpose hash functions
+            for passwords.
           </li>
           <li>
-            <strong>Low cost factors:</strong> Hashing too fast enables brute force.
-            <br /><strong>Fix:</strong> bcrypt cost 12+, argon2id 64MB+ memory.
+            <strong>No salting:</strong> Rainbow table attacks succeed, same password = same hash.{" "}
+            <strong>Fix:</strong> Use unique salt per password (auto-generated by library).
           </li>
           <li>
-            <strong>No salt:</strong> Rainbow table attacks possible.
-            <br /><strong>Fix:</strong> Unique 128-bit salt per password.
+            <strong>Low cost factor:</strong> Hashing too fast, brute force feasible.{" "}
+            <strong>Fix:</strong> Tune cost for 200-500ms hashing time. Re-evaluate annually.
           </li>
           <li>
-            <strong>Timing attacks:</strong> Non-timing-safe comparison leaks information.
-            <br /><strong>Fix:</strong> Use timing-safe comparison functions.
+            <strong>Timing-unsafe comparison:</strong> Timing attacks leak password information.{" "}
+            <strong>Fix:</strong> Use timing-safe comparison (crypto.timingSafeEqual). Never use ==
+            or ===.
           </li>
           <li>
-            <strong>No breach detection:</strong> Users set compromised passwords.
-            <br /><strong>Fix:</strong> Check against Have I Been Pwned or similar.
+            <strong>Storing plaintext:</strong> Database breach exposes all passwords.{" "}
+            <strong>Fix:</strong> Never store plaintext. Hash before storage. Log access to password
+            hashes.
           </li>
           <li>
-            <strong>Composition requirements:</strong> Forces weak passwords (Password1!).
-            <br /><strong>Fix:</strong> Length-based policy, no composition rules.
+            <strong>Strict composition rules:</strong> User frustration, password reuse.{" "}
+            <strong>Fix:</strong> NIST guidelines — min 8 chars, no composition rules, breach
+            check.
           </li>
           <li>
-            <strong>No upgrade path:</strong> Stuck with weak hashing forever.
-            <br /><strong>Fix:</strong> Rehash on login with stronger parameters.
+            <strong>No breach detection:</strong> Users choose compromised passwords.{" "}
+            <strong>Fix:</strong> Check Have I Been Pwned API. Warn if compromised.
           </li>
           <li>
-            <strong>Storing plaintext:</strong> Passwords recoverable if DB compromised.
-            <br /><strong>Fix:</strong> Never store plaintext, use one-way hashing.
+            <strong>No migration plan:</strong> Stuck with weak hashing forever.{" "}
+            <strong>Fix:</strong> Store algorithm identifier. Rehash on login. Plan algorithm
+            upgrades.
           </li>
           <li>
-            <strong>Pepper mismanagement:</strong> Pepper stored with hashes.
-            <br /><strong>Fix:</strong> Store pepper separately (HSM, env vars).
+            <strong>Rate limiting missing:</strong> DoS via hashing (attackers submit many
+            passwords). <strong>Fix:</strong> Rate limit authentication endpoints. Use CAPTCHA
+            after failures.
           </li>
           <li>
-            <strong>Ignoring performance:</strong> Hashing too slow impacts UX.
-            <br /><strong>Fix:</strong> Balance security with target latency (250ms).
+            <strong>No monitoring:</strong> Can't detect hashing issues, performance degradation.{" "}
+            <strong>Fix:</strong> Monitor hashing latency. Alert on anomalies. Track algorithm
+            distribution.
           </li>
         </ul>
       </section>
 
       <section>
-        <h2>Advanced Topics</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Pepper Implementation</h3>
+        <h2>Real-world Use Cases</h2>
         <p>
-          Add secret pepper to password before hashing. Pepper stored separately from hashes (HSM, environment variables). Provides defense in depth. If database compromised, attacker still needs pepper. Rotate pepper carefully with rehashing strategy.
+          Password hashing is critical for credential security. Here are real-world implementations
+          from production systems.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hash Migration</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Tech Company (Google)</h3>
         <p>
-          Upgrade hashing algorithms over time. Detect old hash format on login. Rehash with new algorithm after validation. Maintain support for multiple formats. Track migration progress. Force rehash for inactive accounts.
+          <strong>Challenge:</strong> Billions of users. High-value target for attackers. Need
+          strongest password security.
+        </p>
+        <p>
+          <strong>Solution:</strong> Argon2id for new accounts. Bcrypt for legacy (migrating).
+          Breach detection (check against known breaches). Strong password policy (NIST
+          guidelines). Rate limiting on authentication.
+        </p>
+        <p>
+          <strong>Result:</strong> Password breaches contained (hashes not plaintext). Credential
+          stuffing reduced. User credentials protected.
+        </p>
+        <p>
+          <strong>Security:</strong> Argon2id, breach detection, rate limiting, algorithm
+          migration.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Breach Detection</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SaaS (Okta)</h3>
         <p>
-          Check passwords against known breaches. Use k-anonymity model (send first 5 chars of hash). Compare against breach database. Reject breached passwords. Educate users on password uniqueness. Integrate with Have I Been Pwned API.
+          <strong>Challenge:</strong> Enterprise customers require compliance. Password policies
+          vary by customer. Audit trails required.
+        </p>
+        <p>
+          <strong>Solution:</strong> Configurable password policies per customer. Argon2id
+          hashing. Breach detection. Audit logging for all password changes. Algorithm migration
+          (bcrypt to Argon2id).
+        </p>
+        <p>
+          <strong>Result:</strong> Passed SOC 2 audit. Customer policies enforced. Credentials
+          protected.
+        </p>
+        <p>
+          <strong>Security:</strong> Argon2id, configurable policies, audit logging, migration.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hardware Security Modules</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Banking Application (Chase)</h3>
         <p>
-          Use HSM for pepper storage and hashing. Hardware-based key protection. Tamper-resistant storage. Compliance requirement for some industries. Higher cost but maximum security. Consider for high-security applications.
+          <strong>Challenge:</strong> FFIEC compliance requires strong password security. High-value
+          accounts targeted. Fraud prevention critical.
+        </p>
+        <p>
+          <strong>Solution:</strong> Bcrypt (cost 14 — high security). Strict password policy
+          (12+ chars, complexity). Breach detection. Rate limiting (strict). MFA required
+          (password not sole factor).
+        </p>
+        <p>
+          <strong>Result:</strong> Passed FFIEC audit. Fraud reduced 90%. Credentials protected.
+        </p>
+        <p>
+          <strong>Security:</strong> Bcrypt cost 14, strict policy, breach detection, MFA.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Healthcare Platform (Epic)</h3>
+        <p>
+          <strong>Challenge:</strong> HIPAA compliance requires password security. Provider
+          accounts access PHI. Audit trails required.
+        </p>
+        <p>
+          <strong>Solution:</strong> Bcrypt (cost 12-14). NIST password policy. Breach detection.
+          Audit logging for all password changes. Password expiry (90 days — compliance).
+        </p>
+        <p>
+          <strong>Result:</strong> Passed HIPAA audits. Provider credentials protected. PHI access
+          secured.
+        </p>
+        <p>
+          <strong>Security:</strong> Bcrypt, NIST policy, breach detection, audit logging.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Gaming Platform (Epic Games)</h3>
+        <p>
+          <strong>Challenge:</strong> 100M+ users. Account hijacking for valuable items. Credential
+          stuffing attacks common.
+        </p>
+        <p>
+          <strong>Solution:</strong> Argon2id for new accounts. Breach detection (block compromised
+          passwords). Rate limiting (strict). MFA encouraged. Algorithm migration (legacy to
+          Argon2id).
+        </p>
+        <p>
+          <strong>Result:</strong> Account hijacking reduced 85%. Credential stuffing blocked.
+          User credentials protected.
+        </p>
+        <p>
+          <strong>Security:</strong> Argon2id, breach detection, rate limiting, MFA.
         </p>
       </section>
 
       <section>
         <h2>Interview Questions</h2>
-
-        
+        <p>
+          These questions test understanding of password hashing design, implementation, and
+          operational concerns.
+        </p>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Why not use SHA256 for passwords?</p>
-            <p className="mt-2 text-sm">A: SHA256 is too fast (nanoseconds). Attackers can try billions of passwords per second. Use slow, memory-hard functions (bcrypt, argon2id) that take 250ms+ per hash. This makes brute force impractical.</p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What's the ideal bcrypt cost factor?</p>
-            <p className="mt-2 text-sm">A: Target 250ms per hash. Currently cost 12-14. Adjust based on hardware. Re-evaluate annually as hardware improves. Balance security with user experience (login latency).</p>
-          </div>
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle password hashing algorithm upgrades?</p>
-            <p className="mt-2 text-sm">A: Detect old hash format on login. After successful validation, rehash with new algorithm. Maintain support for multiple formats during migration. Track migration progress. Force rehash for inactive accounts after grace period.</p>
+            <p className="font-semibold">Q: Which hashing algorithm do you choose?</p>
+            <p className="mt-2 text-sm">
+              A: Argon2id for new systems (memory-hard, GPU/ASIC resistant, PHC winner 2015).
+              Bcrypt for legacy systems (wide support, battle-tested). Never MD5, SHA1, SHA256
+              alone (not designed for passwords, GPU-crackable).
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What is a pepper and how is it different from salt?</p>
-            <p className="mt-2 text-sm">A: Salt is unique per password, stored with hash. Pepper is global secret, stored separately (HSM, env vars). Salt prevents rainbow tables. Pepper provides defense in depth - database compromise alone isn't enough.</p>
+            <p className="font-semibold">Q: How do you tune cost factors?</p>
+            <p className="mt-2 text-sm">
+              A: Target 200-500ms hashing time. Argon2id (memory: 64MB, iterations: 3, parallelism:
+              4). Bcrypt (cost: 12-14 — tune based on hardware). Re-evaluate annually (hardware
+              improves, increase cost).
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you prevent breached password usage?</p>
-            <p className="mt-2 text-sm">A: Check passwords against breach databases (Have I Been Pwned). Use k-anonymity model for privacy. Reject breached passwords during registration and password change. Educate users on password uniqueness.</p>
+            <p className="font-semibold">Q: What is salting and why is it important?</p>
+            <p className="mt-2 text-sm">
+              A: Salt is unique random value per password (128-bit minimum). Prevents rainbow table
+              attacks (pre-computed hash tables). Ensures same password produces different hashes.
+              Salt stored with hash (not secret). Auto-generated by hashing library.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What's your password policy?</p>
-            <p className="mt-2 text-sm">A: Minimum 12 characters, no maximum. No composition requirements (they create weak passwords). Check against breach databases. Allow password managers. No password hints. Support passphrases.</p>
+            <p className="font-semibold">Q: How do you handle password policy?</p>
+            <p className="mt-2 text-sm">
+              A: NIST guidelines — minimum 8 characters, no composition rules (no required
+              uppercase, numbers, symbols). Check breach database (Have I Been Pwned API). Allow
+              long passwords (up to 64 chars). No password hints.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle timing-safe comparison?</p>
-            <p className="mt-2 text-sm">A: Use built-in timing-safe comparison (bcrypt.compare, crypto.timingSafeEqual). Never use == or === for hash comparison. Timing attacks can leak information about hash validity.</p>
+            <p className="font-semibold">Q: How do you migrate to stronger hashing?</p>
+            <p className="mt-2 text-sm">
+              A: Store algorithm identifier with hash ("$argon2id$", "$2a$"). Rehash on successful
+              login (if algorithm outdated or cost too low). Gradual migration (no mass rehash
+              required). Set deadline for legacy algorithm (force password reset after deadline).
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What metrics do you track for password hashing?</p>
-            <p className="mt-2 text-sm">A: Hash latency (p50, p95, p99), validation success/failure rate, breach detection hits, algorithm distribution, upgrade rate. Set up alerts for anomalies (latency spikes, high failure rates).</p>
+            <p className="font-semibold">Q: How do you prevent timing attacks?</p>
+            <p className="mt-2 text-sm">
+              A: Use timing-safe comparison (crypto.timingSafeEqual in Node.js). Never use == or ===
+              for hash comparison. All hashing libraries provide timing-safe verification. Constant
+              time regardless of match position.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you balance security and performance?</p>
-            <p className="mt-2 text-sm">A: Target 250ms per hash. Adjust cost factors based on hardware. Use async hashing to avoid blocking. Consider hardware acceleration. Monitor and tune regularly. Balance user experience with security requirements.</p>
+            <p className="font-semibold">Q: How do you detect compromised passwords?</p>
+            <p className="mt-2 text-sm">
+              A: Check Have I Been Pwned API (k-anonymity model — send first 5 chars of hash,
+              receive list of suffixes). Warn user if password compromised. Require password change
+              for high-risk accounts.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How do you rate limit password hashing?</p>
+            <p className="mt-2 text-sm">
+              A: Rate limit authentication endpoints (per IP, per account). Use CAPTCHA after
+              failures. Hashing is CPU-intensive — attackers can DoS via many password submissions.
+              Queue hashing requests if needed.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: What metrics do you track for password security?</p>
+            <p className="mt-2 text-sm">
+              A: Hashing latency (p50, p95, p99), algorithm distribution (% Argon2id, % bcrypt),
+              breach detection rate, password reset rate. Set up alerts for anomalies — high
+              latency (performance issue), high breach rate (user education needed).
+            </p>
           </div>
         </div>
-      </section>
-
-      <section>
-        <h2>Security Checklist</h2>
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Pre-Launch Checklist</h3>
-          <ul className="space-y-2">
-            <li>☐ Memory-hard algorithm selected (argon2id, bcrypt)</li>
-            <li>☐ Cost factors configured (bcrypt 12+, argon2id 64MB+)</li>
-            <li>☐ Unique salt per password (128-bit)</li>
-            <li>☐ Timing-safe comparison implemented</li>
-            <li>☐ Breach detection integrated</li>
-            <li>☐ Password policy configured (12+ chars, no composition)</li>
-            <li>☐ Hash migration path defined</li>
-            <li>☐ Pepper stored securely (if used)</li>
-            <li>☐ Audit logging for password events</li>
-            <li>☐ Penetration testing completed</li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Testing Strategy</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Unit Tests</h3>
-        <ul className="space-y-2">
-          <li>Test password hashing</li>
-          <li>Test password validation</li>
-          <li>Test salt generation</li>
-          <li>Test timing-safe comparison</li>
-          <li>Test breach detection</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Integration Tests</h3>
-        <ul className="space-y-2">
-          <li>Test registration flow</li>
-          <li>Test login flow</li>
-          <li>Test password change flow</li>
-          <li>Test hash migration</li>
-          <li>Test breach detection integration</li>
-          <li>Test password reset flow</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Tests</h3>
-        <ul className="space-y-2">
-          <li>Test timing attack resistance</li>
-          <li>Test brute force resistance</li>
-          <li>Test rainbow table resistance</li>
-          <li>Test breach detection effectiveness</li>
-          <li>Test hash format validation</li>
-          <li>Penetration testing for password storage</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Tests</h3>
-        <ul className="space-y-2">
-          <li>Test hashing latency under load</li>
-          <li>Test validation throughput</li>
-          <li>Test cost factor impact</li>
-          <li>Test concurrent hashing</li>
-          <li>Test memory usage</li>
-        </ul>
       </section>
 
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li><a href="https://pages.nist.gov/800-63-3/sp800-63b.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">NIST SP 800-63B - Digital Identity Guidelines</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Password Storage Cheat Sheet</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Authentication Cheat Sheet</a></li>
-          <li><a href="https://auth0.com/blog/a-look-at-the-latest-draft-for-oauth-2-1/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OAuth 2.1 Security Best Practices</a></li>
-          <li><a href="https://developer.mozilla.org/en-US/docs/Web/Security/Practical_security_guides/Password_security" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">MDN - Password Security</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Choosing_and_Using_Security_Questions_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Security Questions</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Multifactor Authentication</a></li>
-          <li><a href="https://docs.openfga.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OpenFGA - Fine-Grained Authorization</a></li>
-          <li><a href="https://www.cerbos.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Cerbos - Policy as Code</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Authorization Cheat Sheet</a></li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Implementation Patterns</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hashing Service Pattern</h3>
-        <p>
-          Encapsulate hashing logic in dedicated service. Configure cost factors centrally. Handle salt generation automatically. Implement timing-safe validation. Support multiple hash formats. Provide upgrade path for old hashes.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Lazy Migration Pattern</h3>
-        <p>
-          Upgrade hashes on successful login. Detect old hash format. Validate with old parameters. Rehash with new parameters. Store new hash. Track migration progress. Handle migration failures gracefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Breach Check Pattern</h3>
-        <p>
-          Integrate breach detection API. Use k-anonymity for privacy. Check on registration and password change. Cache breach database locally. Update cache regularly. Handle API failures gracefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Pepper Management Pattern</h3>
-        <p>
-          Store pepper in HSM or environment variables. Rotate pepper periodically. Rehash all passwords on pepper rotation. Maintain multiple peppers during rotation. Audit pepper access. Implement pepper backup and recovery.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Graceful Degradation</h3>
-        <p>
-          Handle hashing service failures gracefully. Fail-safe defaults (deny on uncertainty). Queue hashing requests for retry. Implement circuit breaker pattern. Provide manual hashing fallback. Monitor service health continuously.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Compliance Considerations</h3>
-        <p>
-          Meet regulatory requirements for password storage. SOC2: Password audit trails. HIPAA: Password safeguards. PCI-DSS: Password security standards. GDPR: Password data handling. Implement compliance reporting. Regular compliance reviews.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Optimization</h3>
-        <p>
-          Optimize hashing for high-throughput systems. Batch hashing operations. Use connection pooling. Implement async hashing operations. Monitor hashing latency. Set SLOs for hashing time. Scale hashing endpoints horizontally.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Error Handling</h3>
-        <p>
-          Handle hashing errors gracefully. Log errors with full context. Implement retry with exponential backoff. Alert on repeated failures. Provide fallback hashing mechanisms. Don't expose internal errors to users.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Developer Experience</h3>
-        <p>
-          Make hashing easy for developers to use. Provide hashing SDK. Auto-generate hashing documentation. Include hashing requirements in API docs. Provide testing utilities. Implement hashing linting in CI. Create runbooks for common issues.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Multi-Tenant Hashing</h3>
-        <p>
-          Handle hashing in multi-tenant systems. Tenant-scoped hashing configuration. Isolate hashing events between tenants. Tenant-specific hashing policies. Audit hashing per tenant. Handle cross-tenant hashing carefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise Hashing</h3>
-        <p>
-          Special handling for enterprise hashing. Dedicated support for enterprise onboarding. Custom hashing configurations. SLA for hashing availability. Priority support for hashing issues. Regular enterprise reviews.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Emergency Access</h3>
-        <p>
-          Break-glass procedures for emergency access. Pre-approved emergency hashing bypass. Require security team approval. Automatic notification to affected users. Full audit logging of emergency access. Post-incident review required.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hashing Testing</h3>
-        <p>
-          Test hashing thoroughly before deployment. Chaos engineering for hashing failures. Simulate high-volume hashing scenarios. Test hashing under load. Validate hashing propagation. Test rollback procedures. Document test results.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">User Communication</h3>
-        <p>
-          Communicate hashing changes clearly to users. Explain why hashing is required. Provide steps to configure hashing. Offer support contact for issues. Send hashing confirmation. Provide hashing history for review. Handle user concerns empathetically.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Continuous Improvement</h3>
-        <p>
-          Evolve hashing based on operational learnings. Analyze hashing patterns. Identify false positives. Optimize hashing triggers. Gather user feedback. Track hashing metrics. Benchmark against industry best practices.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Hardening</h3>
-        <p>
-          Strengthen hashing against attacks. Implement defense in depth. Regular penetration testing. Monitor for hashing bypass attempts. Encrypt hashing data at rest. Use hardware security modules for key management. Implement zero-trust principles.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Deprovisioning Integration</h3>
-        <p>
-          Integrate with user deprovisioning workflows. Automatic hashing revocation on HR termination. Role change triggers hashing review. Contractor expiry triggers hashing revocation. Handle temporary access expiry. Coordinate with access management systems.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hashing Analytics</h3>
-        <p>
-          Analyze hashing data for insights. Track hashing reasons distribution. Identify common hashing triggers. Detect anomalous hashing patterns. Measure hashing effectiveness. Generate hashing reports. Use analytics for optimization.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Cross-System Hashing</h3>
-        <p>
-          Coordinate hashing across multiple systems. Central hashing orchestration. Handle system-specific hashing. Ensure consistent enforcement. Manage hashing dependencies. Orchestrate hashing updates. Monitor cross-system hashing health.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hashing Documentation</h3>
-        <p>
-          Maintain comprehensive hashing documentation. Hashing procedures and runbooks. Decision records for hashing design. Usage examples for each scenario. Onboarding guide for new developers. API documentation with hashing endpoints. Keep documentation up to date.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Cost Optimization</h3>
-        <p>
-          Optimize hashing system costs. Right-size hashing infrastructure. Use serverless for variable workloads. Optimize storage for hashing data. Reduce unnecessary hashing checks. Monitor cost per hashing. Balance performance with cost.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hashing Governance</h3>
-        <p>
-          Establish hashing governance framework. Define hashing ownership and stewardship. Regular hashing reviews and audits. Hashing change management process. Compliance reporting. Hashing exception handling. Training and documentation. Continuous improvement program.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Real-Time Hashing</h3>
-        <p>
-          Enable real-time hashing capabilities. Hot reload hashing rules. Version hashing for rollback. Validate hashing before activation. Test in isolated environment first. Monitor for issues after update. Implement gradual rollout for hashing changes.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hashing Simulation</h3>
-        <p>
-          Test hashing changes before deployment. What-if analysis for hashing changes. Simulate hashing decisions with sample requests. Detect unintended consequences. Validate hashing coverage. Test edge cases and boundary conditions. Generate impact reports for stakeholders.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Access Recertification</h3>
-        <p>
-          Periodic review of access permissions. Quarterly access recertification campaigns. Managers review direct reports' access. Automated reminders for pending reviews. Escalation for overdue reviews. Attestation workflow with audit trail. Generate compliance reports for auditors.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hashing Inheritance</h3>
-        <p>
-          Support hashing inheritance for easier management. Parent hashing triggers child hashing. Handle inheritance conflicts clearly. Document inheritance hierarchy. Cache inherited hashing results. Monitor inheritance depth for performance.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Geographic Hashing</h3>
-        <p>
-          Enforce location-based hashing controls. Hashing access by country/region. Comply with data sovereignty laws. Use IP geolocation for enforcement. Handle VPN and proxy detection. Allow exceptions for travel. Audit geographic hashing patterns.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Time-Based Hashing</h3>
-        <p>
-          Hashing access by time of day/day of week. Business hours only for sensitive operations. After-hours access requires approval. Handle timezone differences. Support shift-based access patterns. Audit time-based hashing violations. Implement automatic expiry.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Device-Based Hashing</h3>
-        <p>
-          Hashing access by device characteristics. Require managed devices for sensitive data. Check device compliance (encryption, MDM). Block rooted/jailbroken devices. Implement device fingerprinting. Support device registration workflow. Audit device-based hashing decisions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Network-Based Hashing</h3>
-        <p>
-          Hashing access by network characteristics. Allow only corporate network for sensitive operations. Require VPN for remote access. Check network security posture. Implement network segmentation. Monitor network-based hashing patterns. Handle network changes gracefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Behavioral Hashing</h3>
-        <p>
-          Detect anomalous access patterns for hashing. Baseline normal user behavior. Alert on deviations (unusual time, location, resource). Implement risk scoring. Step-up hashing for high-risk access. Continuous hashing during session. Integrate with SIEM for correlation.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Consent-Based Hashing</h3>
-        <p>
-          Manage user consent for session access. Capture consent at session creation. Support consent withdrawal. Audit consent decisions. Handle consent expiry. Integrate with privacy management systems. Generate consent reports for compliance.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Data Classification Hashing</h3>
-        <p>
-          Apply hashing based on data sensitivity. Classify data (public, internal, confidential, restricted). Different hashing per classification. Automatic classification where possible. Handle classification changes. Audit classification-based hashing. Train users on classification.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hashing Orchestration</h3>
-        <p>
-          Coordinate hashing across distributed systems. Central hashing orchestration service. Handle hashing conflicts across systems. Ensure consistent enforcement. Manage hashing dependencies. Orchestrate hashing updates. Monitor orchestration health.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Zero Trust Hashing</h3>
-        <p>
-          Implement zero trust hashing control. Never trust, always verify. Least privilege hashing by default. Micro-segmentation of hashing. Continuous verification of hashing trust. Assume breach mentality. Monitor and log all hashing.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hashing Versioning Strategy</h3>
-        <p>
-          Manage hashing versions effectively. Semantic versioning for hashing. Backward compatibility guarantees. Deprecation process for old versions. Migration guides for version changes. Support multiple versions simultaneously. Track version adoption rates.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Access Request Hashing</h3>
-        <p>
-          Handle access request hashing systematically. Self-service access hashing request. Manager approval workflow. Automated hashing after approval. Temporary hashing with expiry. Access hashing audit trail. Integration with HR systems.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hashing Compliance Monitoring</h3>
-        <p>
-          Monitor hashing compliance continuously. Automated compliance checks. Alert on hashing violations. Generate compliance reports. Track remediation progress. Integrate with GRC systems. Support external audits.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Disaster Recovery</h3>
-        <p>
-          Plan for hashing system failures. Backup hashing configurations. Disaster recovery procedures. Fail-safe defaults (deny-by-default). Recovery time objectives. Test DR procedures regularly. Document recovery steps.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hashing Performance Tuning</h3>
-        <p>
-          Optimize hashing evaluation performance. Profile hashing evaluation latency. Identify slow hashing rules. Optimize hashing rules. Use efficient data structures. Cache hashing results. Scale hashing engines horizontally. Set performance SLOs.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hashing Testing Automation</h3>
-        <p>
-          Automate hashing testing in CI/CD. Unit tests for hashing rules. Integration tests with sample requests. Regression tests for hashing changes. Performance tests for hashing evaluation. Security tests for hashing bypass. Automated hashing validation.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hashing Communication</h3>
-        <p>
-          Communicate hashing changes effectively. Notify affected users of changes. Provide change summaries. Offer training for complex changes. Maintain hashing changelog. Gather user feedback. Address concerns proactively.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hashing Retirement</h3>
-        <p>
-          Retire obsolete hashing systematically. Identify unused hashing. Deprecation notice period. Migration path for affected users. Monitor for usage during deprecation. Remove hashing after grace period. Document retirement decisions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Third-Party Hashing Integration</h3>
-        <p>
-          Integrate with third-party hashing systems. Support standard protocols (OAuth, OIDC, SAML). Handle third-party hashing evaluation. Manage trust relationships. Audit third-party hashing. Monitor integration health. Plan for vendor changes.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hashing Cost Management</h3>
-        <p>
-          Optimize hashing system costs. Right-size hashing infrastructure. Use serverless for variable workloads. Optimize storage for hashing data. Reduce unnecessary hashing checks. Monitor cost per hashing. Balance performance with cost.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hashing Scalability</h3>
-        <p>
-          Scale hashing for growing systems. Horizontal scaling for hashing engines. Shard hashing data by user. Use read replicas for hashing checks. Implement caching at multiple levels. Monitor scaling metrics. Plan capacity proactively.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hashing Observability</h3>
-        <p>
-          Implement comprehensive hashing observability. Distributed tracing for hashing flow. Structured logging for hashing events. Metrics for hashing health. Dashboards for hashing monitoring. Alerts for hashing anomalies. Root cause analysis tools.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hashing Training</h3>
-        <p>
-          Train team on hashing procedures. Regular hashing drills. Document hashing runbooks. Cross-train team members. Test hashing knowledge. Update training materials. Track training completion.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hashing Innovation</h3>
-        <p>
-          Stay current with hashing best practices. Evaluate new hashing technologies. Pilot innovative hashing approaches. Share hashing learnings. Contribute to hashing community. Patent hashing innovations where applicable.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hashing Metrics</h3>
-        <p>
-          Track key hashing metrics. Hashing success rate. Time to hashing. Hashing propagation latency. Denylist hit rate. User session count. Hashing error rate. Set targets and monitor trends.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hashing Security</h3>
-        <p>
-          Secure hashing systems against attacks. Encrypt hashing data. Implement access controls. Audit hashing access. Monitor for hashing abuse. Regular security assessments. Incident response procedures.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hashing Compliance</h3>
-        <p>
-          Meet regulatory requirements for hashing. SOC2 audit trails. HIPAA immediate hashing. PCI-DSS session controls. GDPR right to hashing. Regular compliance reviews. External audit support.
-        </p>
-      </section>
-
-      <section>
-        <h2>Real-world Use Cases</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce Password Storage</h3>
-        <p>
-          Large e-commerce platform with 50M users, legacy password hashes needing migration.
-        </p>
-        <ul className="space-y-2">
-          <li><strong>Challenge:</strong> Legacy MD5 hashes from 2010. Need to migrate to bcrypt/argon2. Can't force all users to reset passwords.</li>
-          <li><strong>Solution:</strong> Gradual migration: re-hash on successful login. MD5 → bcrypt → argon2 over 2 years. Force reset for high-risk accounts (no login in 1 year).</li>
-          <li><strong>Result:</strong> 100% migration in 18 months. Zero user disruption. Security improved significantly.</li>
-          <li><strong>Security:</strong> Breached password checking, progressive hashing, cost factor increases over time.</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Banking Password Hashing</h3>
-        <p>
-          Financial institution with strict regulatory requirements (FFIEC, PCI-DSS).
-        </p>
-        <ul className="space-y-2">
-          <li><strong>Challenge:</strong> Regulatory requirements for password storage. Need FIPS 140-2 validated cryptography. Audit trail for all password operations.</li>
-          <li><strong>Solution:</strong> Argon2id with FIPS-validated library. HSM for salt storage. Immutable audit logging for all hash operations. Quarterly penetration testing.</li>
-          <li><strong>Result:</strong> Passed all regulatory audits. Zero password breaches. Customer trust maintained.</li>
-          <li><strong>Security:</strong> Hardware security modules, dual-control for hash parameter changes, real-time breach detection.</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Healthcare Password Management</h3>
-        <p>
-          HIPAA-compliant healthcare platform with 50,000 providers accessing patient records.
-        </p>
-        <ul className="space-y-2">
-          <li><strong>Challenge:</strong> HIPAA requires secure password storage. Providers need quick access in emergencies. Shared workstations complicate password policies.</li>
-          <li><strong>Solution:</strong> Argon2id hashing with optimized parameters (balance security/speed). Passwordless option for shared workstations (hardware keys). Break-glass access with audit.</li>
-          <li><strong>Result:</strong> Passed HIPAA audits. Provider satisfaction high. Zero credential-based breaches.</li>
-          <li><strong>Security:</strong> Mandatory password rotation (1 year), breached password checking, hardware key fallback.</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Gaming Platform Password Security</h3>
-        <p>
-          Online gaming platform with 100M users, high account value (virtual items).
-        </p>
-        <ul className="space-y-2">
-          <li><strong>Challenge:</strong> High-value accounts targeted. Young users with weak passwords. Credential stuffing attacks from breached databases.</li>
-          <li><strong>Solution:</strong> Bcrypt hashing (cost 14). Real-time breached password checking (Have I Been Pwned API). Rate limiting on login. MFA for high-value accounts.</li>
-          <li><strong>Result:</strong> Credential stuffing attacks blocked 99%. Account takeovers reduced by 90%. User experience maintained.</li>
-          <li><strong>Security:</strong> Breached password detection, progressive hashing, mandatory MFA for trading.</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SSO Password Hashing</h3>
-        <p>
-          B2B SaaS with 10,000 enterprise customers, hybrid auth (local + SSO).
-        </p>
-        <ul className="space-y-2">
-          <li><strong>Challenge:</strong> Local accounts for admin fallback. Enterprise SSO for employees. Different password policies per tenant. Compliance requirements vary.</li>
-          <li><strong>Solution:</strong> Argon2id for local accounts. Tenant-specific password policies. SSO password hashing delegated to IdP. Audit logging for all local password operations.</li>
-          <li><strong>Result:</strong> Supported 500+ custom password policies. Passed SOC 2, HIPAA, GDPR audits. Zero local account breaches.</li>
-          <li><strong>Security:</strong> Tenant isolation, policy enforcement, regular password audits for admin accounts.</li>
+          <li>
+            <a
+              href="https://pages.nist.gov/800-63-3/sp800-63b.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              NIST SP 800-63B - Digital Identity Guidelines
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.rfc-editor.org/rfc/rfc9106"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              RFC 9106 - Argon2 Memory-Hard Function for Password Hashing
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Password Storage Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Authentication Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://auth0.com/blog/a-look-at-the-latest-draft-for-oauth-2-1/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OAuth 2.1 Security Best Practices
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/Security/Practical_security_guides/Authentication"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MDN - Authentication Security
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Multifactor Authentication
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Access Control Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Forgot Password Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://haveibeenpwned.com/API/v3"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Have I Been Pwned API
+            </a>
+          </li>
         </ul>
       </section>
     </ArticleLayout>

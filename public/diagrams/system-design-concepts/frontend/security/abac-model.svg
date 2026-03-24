@@ -1,6 +1,152 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
-  <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="250" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">Security Diagram</text>
-  <text x="400" y="280" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Valid XML</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 650" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1000" height="650" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">ABAC (Attribute-Based Access Control) Model</text>
+  <text x="500" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#475569">Access decisions based on attributes of subject, resource, action, and environment</text>
+  
+  <!-- Subject Attributes Box -->
+  <g transform="translate(50, 100)">
+    <rect x="0" y="0" width="220" height="180" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="110" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#2563eb">Subject Attributes</text>
+    
+    <line x1="20" y1="45" x2="200" y2="45" stroke="#3b82f6" stroke-width="1"/>
+    
+    <text x="30" y="68" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e40af">• User ID</text>
+    <text x="30" y="88" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e40af">• Role</text>
+    <text x="30" y="108" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e40af">• Department</text>
+    <text x="30" y="128" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e40af">• Clearance Level</text>
+    <text x="30" y="148" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e40af">• Location</text>
+    <text x="30" y="168" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e40af">• Time of Access</text>
+  </g>
+  
+  <!-- Resource Attributes Box -->
+  <g transform="translate(730, 100)">
+    <rect x="0" y="0" width="220" height="180" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="110" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#d97706">Resource Attributes</text>
+    
+    <line x1="20" y1="45" x2="200" y2="45" stroke="#f59e0b" stroke-width="1"/>
+    
+    <text x="30" y="68" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#92400e">• Resource ID</text>
+    <text x="30" y="88" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#92400e">• Classification</text>
+    <text x="30" y="108" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#92400e">• Owner</text>
+    <text x="30" y="128" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#92400e">• Sensitivity Level</text>
+    <text x="30" y="148" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#92400e">• Department</text>
+    <text x="30" y="168" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#92400e">• Tags</text>
+  </g>
+  
+  <!-- Action Attributes Box -->
+  <g transform="translate(50, 350)">
+    <rect x="0" y="0" width="220" height="140" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+    <text x="110" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#4f46e5">Action Attributes</text>
+    
+    <line x1="20" y1="45" x2="200" y2="45" stroke="#6366f1" stroke-width="1"/>
+    
+    <text x="30" y="68" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#3730a3">• Operation Type</text>
+    <text x="30" y="88" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#3730a3">• Request Time</text>
+    <text x="30" y="108" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#3730a3">• Request Context</text>
+    <text x="30" y="128" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#3730a3">• HTTP Method</text>
+  </g>
+  
+  <!-- Environment Attributes Box -->
+  <g transform="translate(730, 350)">
+    <rect x="0" y="0" width="220" height="140" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+    <text x="110" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#16a34a">Environment Attributes</text>
+    
+    <line x1="20" y1="45" x2="200" y2="45" stroke="#22c55e" stroke-width="1"/>
+    
+    <text x="30" y="68" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#15803d">• Current Time</text>
+    <text x="30" y="88" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#15803d">• Day of Week</text>
+    <text x="30" y="108" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#15803d">• IP Address</text>
+    <text x="30" y="128" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#15803d">• Device Type</text>
+  </g>
+  
+  <!-- Policy Decision Point (Center) -->
+  <g transform="translate(350, 250)">
+    <rect x="0" y="0" width="300" height="150" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"/>
+    <text x="150" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="#d97706">Policy Decision Point (PDP)</text>
+    
+    <line x1="20" y1="50" x2="280" y2="50" stroke="#f59e0b" stroke-width="2"/>
+    
+    <text x="150" y="75" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#92400e">Evaluates all attributes</text>
+    <text x="150" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#92400e">against access policies</text>
+    <text x="150" y="115" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#92400e">Returns: Allow / Deny</text>
+    
+    <!-- Policy Rules Icon -->
+    <rect x="115" y="125" width="70" height="20" rx="4" fill="#f59e0b" stroke="#d97706"/>
+    <text x="150" y="139" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="bold" fill="#ffffff">POLICIES</text>
+  </g>
+  
+  <!-- Arrows from attributes to PDP -->
+  <!-- Subject to PDP -->
+  <path d="M 270 190 L 340 270" stroke="#3b82f6" stroke-width="2" fill="none" marker-end="url(#arrowhead-blue)"/>
+  
+  <!-- Resource to PDP -->
+  <path d="M 730 190 L 660 270" stroke="#f59e0b" stroke-width="2" fill="none" marker-end="url(#arrowhead-orange)"/>
+  
+  <!-- Action to PDP -->
+  <path d="M 270 380 L 340 350" stroke="#6366f1" stroke-width="2" fill="none" marker-end="url(#arrowhead-indigo)"/>
+  
+  <!-- Environment to PDP -->
+  <path d="M 730 380 L 660 350" stroke="#22c55e" stroke-width="2" fill="none" marker-end="url(#arrowhead-green)"/>
+  
+  <!-- Access Request Flow -->
+  <g transform="translate(350, 480)">
+    <rect x="0" y="0" width="300" height="80" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>
+    <text x="150" y="28" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="#475569">Access Request</text>
+    <text x="150" y="50" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#64748b">User requests access to resource</text>
+    <text x="150" y="68" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#64748b">with specific action</text>
+  </g>
+  
+  <!-- Arrow from Access Request to PDP -->
+  <path d="M 500 480 L 500 410" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrowhead-gray)"/>
+  
+  <!-- Decision Output -->
+  <g transform="translate(350, 580)">
+    <rect x="0" y="0" width="140" height="50" rx="6" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+    <text x="70" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#16a34a">ALLOW</text>
+    <text x="70" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#15803d">Grant Access</text>
+  </g>
+  
+  <g transform="translate(510, 580)">
+    <rect x="0" y="0" width="140" height="50" rx="6" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+    <text x="70" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#dc2626">DENY</text>
+    <text x="70" y="40" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#991b1b">Reject Access</text>
+  </g>
+  
+  <!-- Arrow from PDP to Decisions -->
+  <path d="M 475 400 L 410 570" stroke="#22c55e" stroke-width="2" fill="none" marker-end="url(#arrowhead-green)"/>
+  <path d="M 525 400 L 590 570" stroke="#ef4444" stroke-width="2" fill="none" marker-end="url(#arrowhead-red)"/>
+  
+  <!-- Arrow Markers -->
+  <defs>
+    <marker id="arrowhead-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowhead-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrowhead-indigo" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+    <marker id="arrowhead-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
+  
+  <!-- Example Policy Box -->
+  <g transform="translate(50, 550)">
+    <rect x="0" y="0" width="280" height="80" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="140" y="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#475569">Example Policy</text>
+    <text x="10" y="42" font-family="monospace" font-size="10" fill="#64748b">IF subject.role = "Manager"</text>
+    <text x="10" y="57" font-family="monospace" font-size="10" fill="#64748b">AND resource.department = subject.department</text>
+    <text x="10" y="72" font-family="monospace" font-size="10" fill="#64748b">AND environment.time = business_hours</text>
+  </g>
 </svg>

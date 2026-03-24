@@ -926,52 +926,6 @@ export default function CSRFProtectionArticle() {
       </section>
 
       <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://owasp.org/www-community/attacks/csrf" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP CSRF Attack Documentation
-            </a>
-          </li>
-          <li>
-            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP CSRF Prevention Cheat Sheet
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN: SameSite Cookie Attribute
-            </a>
-          </li>
-          <li>
-            <a href="https://portswigger.net/web-security/csrf" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              PortSwigger CSRF Vulnerabilities
-            </a>
-          </li>
-          <li>
-            <a href="https://www.rfc-editor.org/rfc/rfc6265" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              RFC 6265: HTTP State Management Mechanism (Cookies)
-            </a>
-          </li>
-          <li>
-            <a href="https://www.rfc-editor.org/rfc/rfc6797" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              RFC 6797: HTTP Strict Transport Security (HSTS)
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/samesite-cookies-explained/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              web.dev: SameSite Cookies Explained
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/expressjs/csurf" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Express CSRF Middleware (csurf)
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
         <h2>Interview Questions & Answers</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -1048,6 +1002,52 @@ export default function CSRFProtectionArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://owasp.org/www-community/attacks/csrf" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OWASP CSRF Attack Documentation
+            </a>
+          </li>
+          <li>
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OWASP CSRF Prevention Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN: SameSite Cookie Attribute
+            </a>
+          </li>
+          <li>
+            <a href="https://portswigger.net/web-security/csrf" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              PortSwigger CSRF Vulnerabilities
+            </a>
+          </li>
+          <li>
+            <a href="https://www.rfc-editor.org/rfc/rfc6265" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              RFC 6265: HTTP State Management Mechanism (Cookies)
+            </a>
+          </li>
+          <li>
+            <a href="https://www.rfc-editor.org/rfc/rfc6797" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              RFC 6797: HTTP Strict Transport Security (HSTS)
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/samesite-cookies-explained/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              web.dev: SameSite Cookies Explained
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/expressjs/csurf" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Express CSRF Middleware (csurf)
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

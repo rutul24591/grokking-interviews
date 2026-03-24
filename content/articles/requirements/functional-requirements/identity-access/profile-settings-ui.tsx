@@ -7,16 +7,25 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-requirements-ia-frontend-profile-settings",
   title: "Profile Settings UI",
-  description: "Comprehensive guide to implementing profile settings interfaces covering editable fields, validation, optimistic updates, avatar management, privacy controls, and UX patterns for staff/principal engineer interviews.",
+  description:
+    "Comprehensive guide to implementing profile settings interfaces covering editable fields (display name, bio, avatar), validation, optimistic updates, image upload/cropping, privacy controls, concurrent modification handling, and UX patterns for staff/principal engineer interviews.",
   category: "functional-requirements",
   subcategory: "identity-access",
   slug: "profile-settings-ui",
   version: "extensive",
-  wordCount: 6000,
-  readingTime: 24,
-  lastUpdated: "2026-03-16",
-  tags: ["requirements", "functional", "identity", "profile", "settings", "frontend", "ux"],
-  relatedTopics: ["account-settings-ui", "security-settings", "privacy-controls", "content-management"],
+  wordCount: 9500,
+  readingTime: 38,
+  lastUpdated: "2026-03-23",
+  tags: [
+    "requirements",
+    "functional",
+    "identity",
+    "profile",
+    "settings",
+    "frontend",
+    "ux",
+  ],
+  relatedTopics: ["account-settings-ui", "security-settings-ui"],
 };
 
 export default function ProfileSettingsUIArticle() {
@@ -25,145 +34,172 @@ export default function ProfileSettingsUIArticle() {
       <section>
         <h2>Definition &amp; Context</h2>
         <p>
-          <strong>Profile Settings UI</strong> allows users to manage their public-facing
-          profile information including display name, bio, avatar, and other personal
-          details. It is one of the most frequently accessed settings pages and must
-          provide a seamless editing experience while maintaining data integrity.
+          <strong>Profile Settings UI</strong> allows users to manage their public-facing profile
+          information including display name, bio, avatar, and other personal details. It is one
+          of the most frequently accessed settings pages and must provide a seamless editing
+          experience while maintaining data integrity. Profile settings is often the first place
+          users go to personalize their account.
         </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/profile-settings-flow.svg"
           alt="Profile Settings Flow"
-          caption="Profile Settings Flow — showing profile update, avatar management, and privacy settings"
+          caption="Profile Settings Flow — showing profile edit, validation, optimistic update, avatar upload, and privacy settings"
         />
+
+        <p>
+          For staff and principal engineers, implementing profile settings requires deep
+          understanding of form design, validation, optimistic updates, image upload handling
+          (cropping, CDN delivery), concurrent modification (prevent overwrites), and privacy
+          controls. The implementation must balance ease of editing with data quality and abuse
+          prevention.
+        </p>
+        <p>
+          Modern profile settings has evolved from simple form submission to sophisticated editors
+          with real-time validation, optimistic updates, image cropping, and privacy controls.
+          Organizations like Twitter, LinkedIn, and GitHub provide comprehensive profile settings —
+          users can edit display name, username, bio, avatar, cover image, and control visibility
+          of each field.
+        </p>
+      </section>
+
+      <section>
+        <h2>Core Concepts</h2>
+        <p>
+          Profile settings is built on fundamental concepts that determine how profile data is
+          edited, validated, and saved. Understanding these concepts is essential for designing
+          effective profile settings UI.
+        </p>
+        <p>
+          <strong>Profile Fields:</strong> Display name (public name shown to other users —
+          editable, validated for length/profanity), username/handle (unique identifier — @mention
+          format, availability check), bio/about (short description — rich text or markdown,
+          character limit 160-500), avatar/profile photo (image upload with cropping, multiple
+          sizes generated), location (city, country — optional, privacy-aware), website/social
+          links (personal website, Twitter, LinkedIn — URL validation).
+        </p>
+        <p>
+          <strong>Validation:</strong> Real-time validation (on blur, not keystroke), server-side
+          validation (never trust client), profanity filter (block inappropriate content),
+          uniqueness check (username availability), length limits (min/max characters), format
+          validation (URL format for links).
+        </p>
+        <p>
+          <strong>Optimistic Updates:</strong> Update UI immediately (before server confirms),
+          rollback on failure (show error, revert changes), queue changes (if offline, sync when
+          online), conflict resolution (if concurrent edits, show merge UI).
+        </p>
+        <p>
+          <strong>Avatar Management:</strong> Image upload (drag-drop, file picker), cropping
+          (square aspect ratio for avatar), multiple sizes (thumbnail, medium, large — CDN
+          delivery), compression (reduce file size), format conversion (convert to WebP for
+          efficiency).
+        </p>
+      </section>
+
+      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          Profile settings architecture separates form handling from data persistence, enabling
+          optimistic updates with reliable saves. This architecture is critical for providing
+          responsive UX.
+        </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/profile-avatar-management.svg"
           alt="Profile Avatar Management"
-          caption="Profile Avatar Management — showing upload, cropping, and CDN delivery"
+          caption="Profile Avatar Management — showing upload flow, cropping, multiple size generation, CDN delivery, and caching"
         />
+
+        <p>
+          Profile edit flow: User navigates to profile settings. Frontend loads profile data (GET
+          /profile). User edits fields (real-time validation on blur). User clicks save. Frontend
+          updates UI immediately (optimistic update), sends save request (PUT /profile). Backend
+          validates, saves, returns updated profile. Frontend confirms save (toast notification).
+          On failure: rollback UI changes, show error message.
+        </p>
+        <p>
+          Avatar upload flow: User clicks avatar. Frontend shows file picker (or drag-drop). User
+          selects image. Frontend shows cropping UI (square aspect ratio). User crops, confirms.
+          Frontend uploads to CDN (multipart upload for large files). CDN generates multiple sizes
+          (thumbnail, medium, large). Frontend updates avatar with new URL. Backend updates profile
+          with new avatar URL.
+        </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/profile-privacy.svg"
           alt="Profile Privacy"
-          caption="Profile Privacy — showing visibility controls, data sharing, and GDPR compliance"
+          caption="Profile Privacy — showing field-level visibility controls, public/private profile, data sharing settings, and GDPR compliance"
         />
-      
+
         <p>
-          For staff and principal engineers, implementing profile settings requires
-          understanding form design, validation, optimistic updates, image upload
-          handling, concurrent modification, and privacy controls. The implementation
-          must balance ease of editing with data quality and abuse prevention.
+          Privacy architecture includes: field-level visibility (each field has visibility setting
+          — public, followers only, private), profile visibility (public/private profile), data
+          sharing settings (allow search engines to index profile), GDPR compliance (download
+          profile data, delete account). This architecture enables user control over privacy —
+          users decide what to share and with whom.
         </p>
-
-        
-
-        
-
-        
       </section>
 
       <section>
-        <h2>Core Requirements</h2>
+        <h2>Trade-offs &amp; Comparison</h2>
         <p>
-          A production-ready profile settings page must provide comprehensive profile management with clear UX.
+          Designing profile settings involves trade-offs between flexibility, simplicity, and data
+          quality. Understanding these trade-offs is essential for making informed architecture
+          decisions.
         </p>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Profile Fields</h3>
+          <h3 className="mb-4 text-lg font-semibold">Real-time vs Save Button</h3>
           <ul className="space-y-3">
             <li>
-              <strong>Display Name:</strong> Public name shown to other users.
-              Editable, validated (length, profanity filter).
+              <strong>Real-time (auto-save):</strong> Changes saved automatically, no explicit
+              save. Seamless UX. Limitation: users may not know changes saved, accidental changes
+              saved.
             </li>
             <li>
-              <strong>Username/Handle:</strong> Unique identifier. @mention
-              format. Availability check.
+              <strong>Save Button:</strong> Explicit save, users control when changes saved. Clear
+              state. Limitation: extra click, users may forget to save.
             </li>
             <li>
-              <strong>Bio/About:</strong> Short description. Rich text or
-              markdown. Character limit (160-500 chars).
-            </li>
-            <li>
-              <strong>Avatar/Profile Photo:</strong> Image upload with cropping.
-              Multiple sizes generated.
-            </li>
-            <li>
-              <strong>Location:</strong> City, country. Optional, privacy-aware.
-            </li>
-            <li>
-              <strong>Website/Social Links:</strong> Personal website, Twitter,
-              LinkedIn, etc. URL validation.
+              <strong>Recommendation:</strong> Hybrid — auto-save with "Save" button. Auto-save
+              after pause in typing, save button for explicit control. Show "Saving..." indicator.
             </li>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Field Validation</h3>
+          <h3 className="mb-4 text-lg font-semibold">Optimistic vs Pessimistic Updates</h3>
           <ul className="space-y-3">
             <li>
-              <strong>Real-time Validation:</strong> Check username availability
-              on blur. Show errors inline.
+              <strong>Optimistic:</strong> Update UI immediately, rollback on failure. Fast UX.
+              Limitation: complexity (rollback logic), confusing if frequent failures.
             </li>
             <li>
-              <strong>Length Limits:</strong> Min/max characters. Show counter
-              ("120/160").
+              <strong>Pessimistic:</strong> Wait for server confirmation before updating UI.
+              Reliable. Limitation: slow UX (wait for network).
             </li>
             <li>
-              <strong>Format Validation:</strong> URL format for websites, valid
-              username characters.
-            </li>
-            <li>
-              <strong>Profanity Filter:</strong> Block inappropriate names.
-              Warn or reject.
+              <strong>Recommendation:</strong> Optimistic for profile edits (failures rare).
+              Pessimistic for critical changes (username change — must confirm availability
+              first).
             </li>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Avatar Management</h3>
+          <h3 className="mb-4 text-lg font-semibold">Rich Text vs Plain Text Bio</h3>
           <ul className="space-y-3">
             <li>
-              <strong>Upload Flow:</strong> Click avatar → file picker → crop →
-              preview → save. Drag-and-drop support.
+              <strong>Rich Text:</strong> Formatting (bold, italic, links), expressive.
+              Limitation: complexity (XSS prevention), inconsistent rendering.
             </li>
             <li>
-              <strong>Cropping:</strong> Square crop for avatars. Zoom and pan
-              controls. Aspect ratio lock.
+              <strong>Plain Text:</strong> Simple, safe, consistent. Limitation: no formatting.
             </li>
             <li>
-              <strong>Validation:</strong> File type (image only), size limit
-              (5MB), dimensions (min 200x200).
-            </li>
-            <li>
-              <strong>Processing:</strong> Generate multiple sizes (thumbnail,
-              medium, large). Optimize file size.
-            </li>
-            <li>
-              <strong>Default Avatar:</strong> Generate initials or identicon
-              if no avatar uploaded.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Update Patterns</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Optimistic Updates:</strong> Update UI immediately, sync to server
-              in background.
-            </li>
-            <li>
-              <strong>Rollback:</strong> Revert on error, show error message.
-              Preserve user's changes.
-            </li>
-            <li>
-              <strong>Save Button:</strong> Enable save button on changes. Show
-              "Save" or auto-save indicator.
-            </li>
-            <li>
-              <strong>Auto-Save:</strong> Save on blur or after debounce (1-2
-              seconds).
+              <strong>Recommendation:</strong> Markdown — simple formatting (bold, italic, links)
+              with safe rendering. Best of both — expressive but safe.
             </li>
           </ul>
         </div>
@@ -171,202 +207,284 @@ export default function ProfileSettingsUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
-        <ul className="space-y-2">
-          <li>Clear field labels and help text</li>
-          <li>Real-time validation feedback</li>
-          <li>Optimistic updates for responsiveness</li>
-          <li>Clear save confirmation</li>
-          <li>Easy avatar upload and cropping</li>
-        </ul>
+        <p>
+          Implementing profile settings requires following established best practices to ensure
+          usability, data quality, and operational effectiveness.
+        </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Form Design</h3>
-        <ul className="space-y-2">
-          <li>Group related fields logically</li>
-          <li>Show character counters for text fields</li>
-          <li>Clear error messages</li>
-          <li>Auto-save for long forms</li>
-          <li>Handle concurrent edits gracefully</li>
-        </ul>
+        <p>
+          Use clear labels — above input fields (not placeholder-only). Show character count — for
+          fields with limits (bio: 0/160). Provide help text — explain requirements (username:
+          "Letters, numbers, underscores only"). Show validation errors inline — below field, not
+          at top of page. Preserve user input on error — don't clear fields.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Avatar Handling</h3>
-        <ul className="space-y-2">
-          <li>Support drag-and-drop upload</li>
-          <li>Provide cropping tools</li>
-          <li>Validate file type and size</li>
-          <li>Generate multiple sizes</li>
-          <li>Provide default avatar fallback</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Validation</h3>
+        <p>
+          Real-time validation on blur — not on every keystroke (annoying). Server-side validation
+          — never trust client. Profanity filter — block inappropriate content. Uniqueness check —
+          username availability (debounce API calls). Length limits — enforce min/max characters.
+          Format validation — URL format for links.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Privacy</h3>
-        <ul className="space-y-2">
-          <li>Field-level privacy controls</li>
-          <li>Show "view as" preview</li>
-          <li>Support search visibility options</li>
-          <li>Allow profile indexing control</li>
-          <li>Respect user privacy preferences</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Avatar Upload</h3>
+        <p>
+          Drag-drop support — in addition to file picker. Show cropping UI — square aspect ratio
+          for avatar. Generate multiple sizes — thumbnail (50x50), medium (200x200), large
+          (400x400). Compress images — reduce file size (WebP format). Show upload progress — for
+          large files.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Privacy Controls</h3>
+        <p>
+          Field-level visibility — each field has visibility setting (public, followers, private).
+          Profile visibility — public/private profile toggle. Data sharing settings — allow search
+          engines to index. GDPR compliance — download profile data, delete account. Clear privacy
+          labels — explain what each setting means.
+        </p>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
+        <p>
+          Avoid these common mistakes when implementing profile settings to ensure usable,
+          maintainable, and secure profile settings.
+        </p>
         <ul className="space-y-3">
           <li>
-            <strong>No validation:</strong> Invalid data accepted.
-            <br /><strong>Fix:</strong> Real-time validation, clear error messages.
+            <strong>No character count:</strong> Users don't know limit until error.{" "}
+            <strong>Fix:</strong> Show character count (0/160). Change color near limit
+            (yellow/red).
           </li>
           <li>
-            <strong>No optimistic updates:</strong> Slow perceived performance.
-            <br /><strong>Fix:</strong> Update UI immediately, sync in background.
+            <strong>Validation on keystroke:</strong> Annoying, shows errors while typing.{" "}
+            <strong>Fix:</strong> Validate on blur (when user leaves field). Show errors after
+            typing stops.
           </li>
           <li>
-            <strong>Poor avatar handling:</strong> Large files, wrong formats.
-            <br /><strong>Fix:</strong> Client-side compression, format validation.
+            <strong>No username availability check:</strong> Users submit, then learn username
+            taken. <strong>Fix:</strong> Real-time availability check (debounce API calls). Show
+            available/unavailable indicator.
           </li>
           <li>
-            <strong>No privacy controls:</strong> Users can't control visibility.
-            <br /><strong>Fix:</strong> Field-level privacy, "view as" preview.
+            <strong>No image cropping:</strong> Users upload rectangular images, avatar looks bad.{" "}
+            <strong>Fix:</strong> Show cropping UI (square aspect ratio). Preview before upload.
           </li>
           <li>
-            <strong>No conflict handling:</strong> Concurrent edits overwrite each other.
-            <br /><strong>Fix:</strong> Optimistic locking, version checking.
+            <strong>No upload progress:</strong> Users don't know if upload working.{" "}
+            <strong>Fix:</strong> Show progress bar for large files. Show "Uploading..." indicator.
           </li>
           <li>
-            <strong>Poor error handling:</strong> Lost changes on error.
-            <br /><strong>Fix:</strong> Preserve user's changes, show clear errors.
+            <strong>No optimistic update:</strong> Users wait for save confirmation.{" "}
+            <strong>Fix:</strong> Update UI immediately. Rollback on failure. Show "Saving..."
+            indicator.
           </li>
           <li>
-            <strong>No rate limiting:</strong> Username changes abused.
-            <br /><strong>Fix:</strong> Rate limit changes (once per 30 days).
+            <strong>No concurrent edit handling:</strong> Two tabs overwrite each other.{" "}
+            <strong>Fix:</strong> Use versioning (ETag). Detect conflicts, show merge UI.
           </li>
           <li>
-            <strong>No profanity filter:</strong> Inappropriate names accepted.
-            <br /><strong>Fix:</strong> Filter on save, warn or reject.
+            <strong>No profanity filter:</strong> Inappropriate content in profiles.{" "}
+            <strong>Fix:</strong> Server-side profanity filter. Block inappropriate content.
           </li>
           <li>
-            <strong>No username availability check:</strong> Conflicts on save.
-            <br /><strong>Fix:</strong> Real-time availability check on blur.
+            <strong>No privacy controls:</strong> All profile data public by default.{" "}
+            <strong>Fix:</strong> Field-level visibility settings. Default to private for sensitive
+            fields.
           </li>
           <li>
-            <strong>Poor mobile UX:</strong> Hard to edit on mobile.
-            <br /><strong>Fix:</strong> Mobile-optimized form, touch-friendly controls.
+            <strong>No avatar compression:</strong> Large images, slow loading. <strong>Fix:</strong>
+            Compress images (WebP format). Generate multiple sizes for different contexts.
           </li>
         </ul>
       </section>
 
       <section>
-        <h2>Advanced Topics</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Optimistic Updates</h3>
+        <h2>Real-world Use Cases</h2>
         <p>
-          Update UI immediately before server confirmation for responsive UX.
+          Profile settings is critical for user personalization. Here are real-world
+          implementations from production systems.
         </p>
-        <ul className="space-y-2">
-          <li><strong>Implementation:</strong> Update local state, send request, rollback on failure.</li>
-          <li><strong>Rollback:</strong> Preserve user's changes, show error, allow retry.</li>
-          <li><strong>Use Case:</strong> Simple field updates (name, bio). Not for critical changes.</li>
-          <li><strong>Benefits:</strong> Perceived instant response, better UX.</li>
-        </ul>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Avatar Processing</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Social Platform (Twitter)</h3>
         <p>
-          Process avatars for optimal display across devices.
+          <strong>Challenge:</strong> Millions of users editing profiles. Need fast, responsive
+          editing. Image upload at scale.
         </p>
-        <ul className="space-y-2">
-          <li><strong>Cropping:</strong> Square crop with zoom/pan controls.</li>
-          <li><strong>Compression:</strong> Optimize file size while maintaining quality.</li>
-          <li><strong>Sizes:</strong> Generate thumbnail, medium, large sizes.</li>
-          <li><strong>Formats:</strong> Convert to WebP for web, keep original.</li>
-        </ul>
+        <p>
+          <strong>Solution:</strong> Optimistic updates (UI updates immediately). Image cropping
+          for avatar/header. Multiple image sizes (CDN delivery). Real-time username availability.
+          Character count for bio (160 chars).
+        </p>
+        <p>
+          <strong>Result:</strong> Fast profile editing. High-quality avatars. Username conflicts
+          prevented.
+        </p>
+        <p>
+          <strong>UX:</strong> Optimistic updates, image cropping, character count.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Privacy Controls</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Professional Network (LinkedIn)</h3>
         <p>
-          Allow users to control profile visibility.
+          <strong>Challenge:</strong> Professional profiles with many fields. Data quality
+          important. Privacy controls critical.
         </p>
-        <ul className="space-y-2">
-          <li><strong>Field-Level:</strong> Control visibility per field (public, followers, only me).</li>
-          <li><strong>Preview:</strong> "View as public" to see public profile.</li>
-          <li><strong>Search:</strong> Control search engine indexing.</li>
-          <li><strong>Directory:</strong> Control visibility in user directory.</li>
-        </ul>
+        <p>
+          <strong>Solution:</strong> Section-by-section editing (experience, education, skills).
+          Rich text for descriptions. Field-level visibility controls. Profile completeness score
+          (encourage filling all fields).
+        </p>
+        <p>
+          <strong>Result:</strong> High-quality professional profiles. Users control privacy.
+          Profile completeness improved.
+        </p>
+        <p>
+          <strong>UX:</strong> Section editing, visibility controls, completeness score.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Concurrent Edits</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Developer Platform (GitHub)</h3>
         <p>
-          Handle multiple users editing same profile.
+          <strong>Challenge:</strong> Developer profiles with technical info. Markdown support for
+          bio. Privacy for email.
         </p>
-        <ul className="space-y-2">
-          <li><strong>Version Check:</strong> Include version in update request.</li>
-          <li><strong>Conflict Detection:</strong> Fail if version mismatch.</li>
-          <li><strong>Resolution:</strong> Show conflict, let user choose version.</li>
-          <li><strong>Auto-Merge:</strong> Merge non-conflicting changes automatically.</li>
-        </ul>
+        <p>
+          <strong>Solution:</strong> Markdown support for bio (rich formatting). Username
+          availability check. Email privacy (hide/show public email). Contribution graph (public
+          activity).
+        </p>
+        <p>
+          <strong>Result:</strong> Expressive developer profiles. Email privacy maintained.
+          Username conflicts prevented.
+        </p>
+        <p>
+          <strong>UX:</strong> Markdown, availability check, email privacy.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce Platform (Etsy)</h3>
+        <p>
+          <strong>Challenge:</strong> Seller profiles with shop info. Branding important. Trust
+          signals needed.
+        </p>
+        <p>
+          <strong>Solution:</strong> Shop banner upload. About section for seller story. Reviews
+          displayed on profile. Verified seller badge. Social links for external presence.
+        </p>
+        <p>
+          <strong>Result:</strong> Professional seller profiles. Trust signals for buyers. Seller
+          branding enabled.
+        </p>
+        <p>
+          <strong>UX:</strong> Banner upload, about section, trust badges.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Gaming Platform (Epic Games)</h3>
+        <p>
+          <strong>Challenge:</strong> Gamer profiles with gaming info. Avatar customization.
+          Privacy for minors.
+        </p>
+        <p>
+          <strong>Solution:</strong> Avatar customization (pre-made options). Display name (not
+          username — changeable). Privacy controls for minors (limited profile visibility). Gaming
+          stats display (optional).
+        </p>
+        <p>
+          <strong>Result:</strong> Customizable gamer profiles. Minor privacy protected. Display
+          name flexibility.
+        </p>
+        <p>
+          <strong>UX:</strong> Avatar customization, display name, privacy controls.
+        </p>
       </section>
 
       <section>
         <h2>Interview Questions</h2>
+        <p>
+          These questions test understanding of profile settings UI design, implementation, and
+          operational concerns.
+        </p>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle optimistic updates?</p>
+            <p className="font-semibold">Q: How do you handle real-time validation?</p>
             <p className="mt-2 text-sm">
-              A: Update UI immediately, send request to server. On success: done. On failure: rollback to previous state, show error, preserve user's changes, allow retry. Use for simple field updates, not critical changes.
+              A: Validate on blur (when user leaves field), not on every keystroke (annoying).
+              Debounce API calls (username availability — wait 300ms after typing stops). Show
+              validation errors inline (below field). Server-side validation (never trust client).
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How do you implement optimistic updates?</p>
+            <p className="mt-2 text-sm">
+              A: Update UI immediately (before server confirms). Send save request in background.
+              On success: confirm save (toast notification). On failure: rollback UI changes, show
+              error message ("Save failed, please try again"). Show "Saving..." indicator during
+              save.
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you handle avatar upload?</p>
             <p className="mt-2 text-sm">
-              A: Click avatar → file picker → crop → preview → save. Support drag-and-drop. Validate file type (image), size (5MB), dimensions (min 200x200). Generate multiple sizes (thumbnail, medium, large). Compress for web. Provide default avatar fallback.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle username changes?</p>
-            <p className="mt-2 text-sm">
-              A: Real-time availability check on blur. Rate limit changes (once per 30 days). Warn about impact (broken links, mentions). Optionally reserve old username for 30 days (redirect to new). Update all references to username.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle privacy controls?</p>
-            <p className="mt-2 text-sm">
-              A: Field-level privacy (public, followers, only me). "View as public" preview. Search visibility toggle. Profile indexing control. Respect privacy preferences across platform. Allow bulk privacy settings.
+              A: Drag-drop support + file picker. Show cropping UI (square aspect ratio). Generate
+              multiple sizes (thumbnail, medium, large). Compress images (WebP format). Show upload
+              progress. CDN delivery for images.
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you handle concurrent edits?</p>
             <p className="mt-2 text-sm">
-              A: Optimistic locking with version field. Include version in update request. Fail if version mismatch (409 Conflict). Show conflict UI with both versions. Let user choose which version to keep. Auto-merge non-conflicting changes.
+              A: Use versioning (ETag header). Include version in save request. Backend checks
+              version — if mismatch, return conflict (409). Frontend shows merge UI ("Someone else
+              edited this. Keep your changes or theirs?").
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you validate profile fields?</p>
+            <p className="font-semibold">Q: How do you implement privacy controls?</p>
             <p className="mt-2 text-sm">
-              A: Real-time validation on blur. Length limits with counter. Format validation (URL, username characters). Profanity filter. Username availability check. Clear error messages. Preserve valid input on error.
+              A: Field-level visibility (each field has dropdown: public, followers, private).
+              Profile visibility toggle (public/private profile). Data sharing settings (allow
+              search engines). Clear labels ("Who can see this?"). Default to private for sensitive
+              fields.
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle profile data export?</p>
+            <p className="font-semibold">Q: How do you prevent profanity in profiles?</p>
             <p className="mt-2 text-sm">
-              A: Include all profile fields, avatar images, change history. Machine-readable format (JSON) + human-readable (HTML). GDPR requirement—provide within 30 days of request. Allow downloading or emailing export.
+              A: Server-side profanity filter (block inappropriate content). Client-side warning
+              ("This may contain inappropriate content"). Allow appeals (false positives). Regular
+              filter updates (new terms).
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How do you handle username changes?</p>
+            <p className="mt-2 text-sm">
+              A: Real-time availability check (debounce API calls). Warn about impact ("Your old
+              username will be released"). Rate limit changes (once per 30 days). Redirect old
+              username to new profile (for a period).
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How do you optimize image delivery?</p>
+            <p className="mt-2 text-sm">
+              A: CDN for image delivery. Multiple sizes (serve appropriate size for context).
+              Compression (WebP format). Lazy loading (load images when visible). Cache headers
+              (long-term caching for avatars).
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: What metrics do you track for profile settings?</p>
             <p className="mt-2 text-sm">
-              A: Profile completion rate, field edit frequency, save success/failure rate, avatar upload rate, privacy setting distribution, username change rate. Set up alerts for anomalies (spike in validation errors).
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle profile deletion?</p>
-            <p className="mt-2 text-sm">
-              A: Confirmation dialog explaining impact. Grace period for recovery (30 days). Export data before deletion. Notify connected services. Handle orphaned content (posts, comments). Allow account reactivation during grace period.
+              A: Profile completion rate, avatar upload rate, save success/failure rate, validation
+              error rate, time to complete profile. Set up alerts for anomalies — high failure rate
+              (save issues), low completion rate (UX issues).
             </p>
           </div>
         </div>
@@ -375,75 +493,106 @@ export default function ProfileSettingsUIArticle() {
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li><a href="https://www.nngroup.com/articles/profile-pages/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">NN/g Profile Pages Best Practices</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Input Validation</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Authentication Cheat Sheet</a></li>
-          <li><a href="https://auth0.com/blog/a-look-at-the-latest-draft-for-oauth-2-1/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OAuth 2.1 Security Best Practices</a></li>
-          <li><a href="https://developer.mozilla.org/en-US/docs/Web/Security" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">MDN - Web Security</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Choosing_and_Using_Security_Questions_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Security Questions</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Multifactor Authentication</a></li>
-          <li><a href="https://docs.openfga.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OpenFGA - Fine-Grained Authorization</a></li>
-          <li><a href="https://www.cerbos.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Cerbos - Policy as Code</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Access Control Cheat Sheet</a></li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Real-world Use Cases</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Social Media Profile Settings</h3>
-        <p>
-          Social platform with 500M users managing public profiles and privacy settings.
-        </p>
-        <ul className="space-y-2">
-          <li><strong>Challenge:</strong> Users need to control profile visibility. Username changes affect mentions. Avatar moderation required. Privacy settings complexity.</li>
-          <li><strong>Solution:</strong> Granular privacy controls (public/friends/private). Username availability check. Avatar upload with AI moderation. Privacy preset templates.</li>
-          <li><strong>Result:</strong> 80% users completed profiles. Privacy complaints reduced by 70%. Avatar approval time under 1 minute.</li>
-          <li><strong>Security:</strong> Content moderation, username squatting prevention, privacy enforcement.</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise Profile Settings</h3>
-        <p>
-          B2B SaaS with 10,000 enterprise customers, employee directory integration.
-        </p>
-        <ul className="space-y-2">
-          <li><strong>Challenge:</strong> Profile data synced from HR system (Workday). Limited editable fields. Company branding per tenant. Directory visibility controls.</li>
-          <li><strong>Solution:</strong> Read-only fields from HR (name, title). Editable: avatar, bio, timezone. Tenant-specific branding. Directory opt-out option.</li>
-          <li><strong>Result:</strong> HR sync maintained. Employee satisfaction improved (some control). 90% directory participation.</li>
-          <li><strong>Security:</strong> HR data integrity, tenant isolation, directory access controls.</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Gaming Platform Profile</h3>
-        <p>
-          Online gaming platform with 100M users, gamertags, achievements display.
-        </p>
-        <ul className="space-y-2">
-          <li><strong>Challenge:</strong> Unique gamertags across platform. Achievement showcase. Offensive name prevention. Cross-platform profile sync.</li>
-          <li><strong>Solution:</strong> Gamertag uniqueness check. Achievement showcase builder. Profanity filter + report system. Cross-platform profile linking.</li>
-          <li><strong>Result:</strong> 95% unique gamertags. Offensive names reduced by 90%. Cross-platform profiles working.</li>
-          <li><strong>Security:</strong> Name moderation, impersonation prevention, report system.</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Healthcare Provider Profile</h3>
-        <p>
-          Telemedicine platform with 50,000 providers, credential verification.
-        </p>
-        <ul className="space-y-2">
-          <li><strong>Challenge:</strong> Medical credentials must be verified. Specialty display. Availability settings. HIPAA-compliant photo guidelines.</li>
-          <li><strong>Solution:</strong> Credential verification workflow (manual review). Specialty selection from approved list. Availability calendar. Professional photo requirements.</li>
-          <li><strong>Result:</strong> 100% verified credentials. Patient trust improved. Provider satisfaction high.</li>
-          <li><strong>Security:</strong> Credential verification, professional standards, HIPAA compliance.</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce Seller Profile</h3>
-        <p>
-          Multi-vendor marketplace with seller profiles and ratings.
-        </p>
-        <ul className="space-y-2">
-          <li><strong>Challenge:</strong> Seller verification required. Rating display. Business info accuracy. Fraud prevention.</li>
-          <li><strong>Solution:</strong> Seller verification (business license). Rating/review display. Business info validation. Fraud detection for profile changes.</li>
-          <li><strong>Result:</strong> Verified seller badges increased trust. Fraud reduced by 80%. Buyer confidence improved.</li>
-          <li><strong>Security:</strong> Seller verification, fraud detection, review integrity.</li>
+          <li>
+            <a
+              href="https://www.nngroup.com/articles/profile-pages/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Nielsen Norman Group - Profile Page Design
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Input Validation Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Authentication Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://auth0.com/blog/a-look-at-the-latest-draft-for-oauth-2-1/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OAuth 2.1 Security Best Practices
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/Security/Practical_security_guides/Authentication"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MDN - Authentication Security
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Multifactor Authentication
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Access Control Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Authorization Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Forgot Password Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Credential_Stuffing_Prevention_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Credential Stuffing Prevention
+            </a>
+          </li>
         </ul>
       </section>
     </ArticleLayout>

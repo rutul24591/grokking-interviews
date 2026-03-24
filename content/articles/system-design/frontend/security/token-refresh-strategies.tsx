@@ -122,6 +122,12 @@ export default function TokenRefreshStrategiesArticle() {
       <section>
         <h2>Refresh Patterns</h2>
 
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/security/refresh-strategies-comparison.svg"
+          alt="Token Refresh Strategies Comparison showing Silent Refresh, User Re-authentication, and Token Rotation with comparison table"
+          caption="Refresh Strategies Comparison: Silent refresh for best UX, re-authentication for high security, token rotation for theft detection."
+        />
+
         <h3 className="mt-8 mb-4 text-xl font-semibold">Pattern 1: Silent Refresh (Recommended)</h3>
         <p>
           Automatically refresh tokens before they expire, without user interaction. Implement a TokenManager class with a constructor that initializes refreshTimer and isRefreshing flag, a <code className="text-sm">startSilentRefresh(accessTokenExpiry)</code> method that sets a timer to refresh at 80% of token lifetime, an async <code className="text-sm">refreshToken()</code> method that fetches from /api/refresh with credentials included, handles the response, restarts the timer for the new token, and redirects to login on failure, and a <code className="text-sm">cleanup()</code> method that clears the timer on logout. Usage: create an instance and call <code className="text-sm">startSilentRefresh(900)</code> for 15 minutes.
@@ -439,37 +445,6 @@ export default function TokenRefreshStrategiesArticle() {
       </section>
 
       <section>
-        <h2>References and Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://datatracker.ietf.org/doc/html/rfc6749" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              RFC 6749: OAuth 2.0 Authorization Framework
-            </a>
-          </li>
-          <li>
-            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP Authentication Cheat Sheet
-            </a>
-          </li>
-          <li>
-            <a href="https://auth0.com/docs/tokens/refresh-tokens" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Auth0: Refresh Tokens
-            </a>
-          </li>
-          <li>
-            <a href="https://tools.ietf.org/html/rfc8693" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              RFC 8693: OAuth 2.0 Token Exchange
-            </a>
-          </li>
-          <li>
-            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP Session Management Cheat Sheet
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
         <h2>Interview Questions & Answers</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -543,6 +518,37 @@ export default function TokenRefreshStrategiesArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      <section>
+        <h2>References and Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://datatracker.ietf.org/doc/html/rfc6749" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              RFC 6749: OAuth 2.0 Authorization Framework
+            </a>
+          </li>
+          <li>
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OWASP Authentication Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a href="https://auth0.com/docs/tokens/refresh-tokens" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Auth0: Refresh Tokens
+            </a>
+          </li>
+          <li>
+            <a href="https://tools.ietf.org/html/rfc8693" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              RFC 8693: OAuth 2.0 Token Exchange
+            </a>
+          </li>
+          <li>
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OWASP Session Management Cheat Sheet
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

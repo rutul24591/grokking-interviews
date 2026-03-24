@@ -15,7 +15,7 @@
   <text x="160" y="177" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Screen Resolution</text>
   
   <rect x="70" y="195" width="180" height="35" rx="4" fill="#8b5cf6" opacity="0.4"/>
-  <text x="160" y="217" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Timezone & Language</text>
+  <text x="160" y="217" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Timezone &amp; Language</text>
   
   <rect x="70" y="235" width="180" height="35" rx="4" fill="#8b5cf6" opacity="0.3"/>
   <text x="160" y="257" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">WebGL Canvas Hash</text>

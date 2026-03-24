@@ -692,62 +692,6 @@ export default function AuthorizationRBACArticle() {
       </section>
 
       <section>
-        <h2>References and Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://csrc.nist.gov/projects/rbac"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              NIST RBAC Standard
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              OWASP Access Control Cheat Sheet
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.openpolicyagent.org/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Open Policy Agent (OPA)
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://casbin.org/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Casbin Authorization Library
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              OWASP IDOR Prevention Cheat Sheet
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
         <h2>Interview Questions & Answers</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -841,6 +785,62 @@ export default function AuthorizationRBACArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      <section>
+        <h2>References and Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a
+              href="https://csrc.nist.gov/projects/rbac"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              NIST RBAC Standard
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Access Control Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.openpolicyagent.org/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open Policy Agent (OPA)
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://casbin.org/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Casbin Authorization Library
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP IDOR Prevention Cheat Sheet
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

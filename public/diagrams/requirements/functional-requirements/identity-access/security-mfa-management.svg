@@ -7,7 +7,7 @@
   </defs>
   <rect width="800" height="500" fill="#ffffff"/>
   
-  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">MFA Management & Recovery</text>
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">MFA Management &amp; Recovery</text>
   
   <!-- Enrolled Methods -->
   <rect x="50" y="70" width="220" height="280" rx="8" fill="#f1f5f9" stroke="#22c55e" stroke-width="2"/>

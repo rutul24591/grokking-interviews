@@ -70,7 +70,7 @@
   <text x="540" y="345" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Large</text>
   
   <rect x="400" y="380" width="140" height="25" rx="4" fill="#3b82f6"/>
-  <text x="470" y="397" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Confirm & Save</text>
+  <text x="470" y="397" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Confirm &amp; Save</text>
   
   <line x1="380" y1="340" x2="330" y2="340" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
   

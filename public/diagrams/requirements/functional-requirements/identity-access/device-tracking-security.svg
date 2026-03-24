@@ -1,7 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
   <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="240" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">device tracking security</text>
-  <text x="400" y="270" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Identity Access Diagram</text>
-  <text x="400" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Valid XML</text>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Device Session Tracking Architecture</text>
+  
+  <!-- User Device -->
+  <rect x="50" y="80" width="120" height="80" rx="8" fill="#3b82f6"/>
+  <text x="110" y="115" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#ffffff">User Device</text>
+  <text x="110" y="140" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Browser/App</text>
+  
+  <line x1="170" y1="120" x2="210" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="190" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">1. Login</text>
+  
+  <!-- Auth Service -->
+  <rect x="220" y="60" width="180" height="120" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="310" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Auth Service</text>
+  
+  <rect x="240" y="105" width="140" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="310" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Authenticate User</text>
+  
+  <rect x="240" y="140" width="140" height="30" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="310" y="160" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Success</text>
+  
+  <line x1="400" y1="120" x2="440" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="420" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">2. Collect Device Info</text>
+  
+  <!-- Device Fingerprint -->
+  <rect x="450" y="60" width="180" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="540" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Device Fingerprint</text>
+  
+  <rect x="470" y="105" width="140" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="540" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">User Agent</text>
+  
+  <rect x="470" y="140" width="140" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="540" y="160" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Screen Resolution</text>
+  
+  <line x1="630" y1="120" x2="670" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="650" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">3. Create Hash</text>
+  
+  <!-- Device ID -->
+  <rect x="680" y="60" width="100" height="120" rx="8" fill="#f1f5f9" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="730" y="90" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Device ID</text>
+  <text x="730" y="115" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">SHA256 Hash</text>
+  <text x="730" y="140" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Unique Identifier</text>
+  <text x="730" y="160" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Store with Session</text>
+  
+  <line x1="730" y1="180" x2="730" y2="220" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="750" y="200" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">4. Store Session</text>
+  
+  <!-- Session Store -->
+  <rect x="680" y="230" width="100" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="730" y="260" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Session</text>
+  <text x="730" y="285" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Redis</text>
+  <text x="730" y="300" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Device ID</text>
+  <text x="730" y="315" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Location</text>
+  
+  <line x1="680" y1="280" x2="640" y2="280" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="660" y="270" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">5. Track Activity</text>
+  
+  <!-- Activity Tracking -->
+  <rect x="450" y="230" width="180" height="100" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="540" y="255" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Activity Tracking</text>
+  <text x="540" y="280" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Last Active Time</text>
+  <text x="540" y="295" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">IP Address</text>
+  <text x="540" y="310" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Location Updates</text>
+  
+  <line x1="450" y1="280" x2="410" y2="280" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="430" y="270" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">6. Detect Anomalies</text>
+  
+  <!-- Anomaly Detection -->
+  <rect x="220" y="230" width="180" height="100" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="310" y="255" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Anomaly Detection</text>
+  <text x="310" y="280" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">New Device Alert</text>
+  <text x="310" y="295" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Location Mismatch</text>
+  <text x="310" y="310" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Concurrent Sessions</text>
+  
+  <line x1="220" y1="280" x2="180" y2="280" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="200" y="270" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ef4444">7. Alert User</text>
+  
+  <!-- Security Alerts -->
+  <rect x="50" y="230" width="120" height="100" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="110" y="260" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Alert</text>
+  <text x="110" y="285" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Email/Push</text>
+  <text x="110" y="300" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">"Was this you?"</text>
+  <text x="110" y="315" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Revoke Option</text>
+  
+  <!-- Device Info Collected -->
+  <rect x="50" y="360" width="220" height="110" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="160" y="385" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Device Info Collected</text>
+  
+  <rect x="70" y="400" width="180" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="160" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">User Agent, Screen, Timezone</text>
+  
+  <rect x="70" y="435" width="180" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="160" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Fonts, WebGL, Canvas</text>
+  
+  <!-- Privacy Considerations -->
+  <rect x="290" y="360" width="220" height="110" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="400" y="385" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Privacy Considerations</text>
+  
+  <rect x="310" y="400" width="180" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="400" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Hash (not raw data)</text>
+  
+  <rect x="310" y="435" width="180" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="400" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ User can revoke sessions</text>
+  
+  <!-- Use Cases -->
+  <rect x="530" y="360" width="220" height="110" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="640" y="385" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="bold" fill="#0f172a">Use Cases</text>
+  
+  <rect x="550" y="400" width="180" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="640" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Session Management UI</text>
+  
+  <rect x="550" y="435" width="180" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="640" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Security Alerts</text>
+
 </svg>

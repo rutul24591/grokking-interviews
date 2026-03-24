@@ -380,6 +380,243 @@ export default function PublishSubscribePatternArticle() {
       </section>
 
       <section>
+        <h2>Security Considerations</h2>
+        <p>
+          Publish-Subscribe systems introduce unique security considerations around message authentication, authorization, and the potential for denial-of-service attacks through event flooding.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Message Authentication</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Event Injection:</strong> Attackers can publish malicious events to trigger unauthorized actions. Mitigation: implement event authentication (HMAC signatures), validate event schemas rigorously, use allowlists for event types, implement publisher authentication.
+            </li>
+            <li>
+              <strong>Event Tampering:</strong> Events in transit can be modified. Mitigation: use signed events, implement end-to-end encryption for sensitive events, validate event integrity at subscriber level.
+            </li>
+            <li>
+              <strong>Replay Attacks:</strong> Captured legitimate events can be replayed. Mitigation: include timestamps and nonces in events, implement event idempotency checks, maintain event logs to detect duplicates.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Authorization for Pub-Sub</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Publish Authorization:</strong> Not all publishers should publish to all topics. Mitigation: implement topic-based access control, validate publisher permissions before accepting events, use scoped API keys for publishers.
+            </li>
+            <li>
+              <strong>Subscribe Authorization:</strong> Not all subscribers should receive all events. Mitigation: implement subscription-level access control, filter events based on subscriber permissions, use separate channels for different security levels.
+            </li>
+            <li>
+              <strong>Event Data Leakage:</strong> Subscribers may receive sensitive data they shouldn't access. Mitigation: implement data minimization (only include necessary data in events), use field-level encryption for sensitive data, implement event filtering at broker level.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Denial of Service Prevention</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Event Flooding:</strong> Attackers can flood the broker with events to overwhelm subscribers. Mitigation: implement rate limiting per publisher, use backpressure mechanisms, implement circuit breakers for event processing.
+            </li>
+            <li>
+              <strong>Subscription Bombing:</strong> Creating excessive subscriptions can exhaust broker resources. Mitigation: limit subscriptions per subscriber, implement subscription quotas, monitor subscription growth patterns.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Testing Strategies</h2>
+        <p>
+          Testing Pub-Sub systems requires validating message routing, delivery guarantees, and the decoupled nature of publishers and subscribers.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Testing Pyramid for Pub-Sub</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Unit Tests (Base):</strong> Test publisher event emission logic. Test subscriber message handling. Mock the broker for isolated testing. Verify event schema validation.
+            </li>
+            <li>
+              <strong>Integration Tests (Middle):</strong> Test end-to-end message flow through actual broker. Verify message routing to correct subscribers. Test delivery guarantees (at-least-once, at-most-once).
+            </li>
+            <li>
+              <strong>Contract Tests (Middle):</strong> Verify event schemas match between publishers and subscribers. Use schema registry with compatibility checks. Run contract tests in CI for all publishers and subscribers.
+            </li>
+            <li>
+              <strong>Load Tests (Top):</strong> Test broker performance under load. Measure message throughput, latency, and subscriber lag. Verify backpressure mechanisms work correctly.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Message Delivery Testing</h3>
+          <p>
+            Testing message delivery guarantees is critical for Pub-Sub reliability:
+          </p>
+          <ol className="mt-3 space-y-2">
+            <li>
+              <strong>At-Least-Once Delivery:</strong> Test that messages are delivered at least once even with failures. Verify idempotency handles duplicates correctly.
+            </li>
+            <li>
+              <strong>Message Ordering:</strong> Test that messages are delivered in order (if ordering is guaranteed). Test ordering within partitions/topics.
+            </li>
+            <li>
+              <strong>Failure Recovery:</strong> Test subscriber crash recovery. Verify messages are redelivered after subscriber restart. Test dead letter queue handling.
+            </li>
+          </ol>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Broker Testing</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Topic Routing:</strong> Test that messages are routed to correct topics. Test wildcard subscriptions. Verify topic permissions work correctly.
+            </li>
+            <li>
+              <strong>Subscriber Management:</strong> Test subscriber registration and deregistration. Verify that unsubscribed subscribers don't receive messages.
+            </li>
+            <li>
+              <strong>Persistence Testing:</strong> If broker supports persistence, test message durability. Verify messages survive broker restarts.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Performance Benchmarks</h2>
+        <p>
+          Pub-Sub performance depends on broker efficiency, message throughput, and subscriber count. Understanding performance characteristics is essential for production systems.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Metric</th>
+                <th className="p-2 text-left">Target</th>
+                <th className="p-2 text-left">Measurement</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Message Throughput</td>
+                <td className="p-2">10,000+ msg/sec</td>
+                <td className="p-2">Broker metrics</td>
+              </tr>
+              <tr>
+                <td className="p-2">End-to-End Latency</td>
+                <td className="p-2">&lt;100ms (95th percentile)</td>
+                <td className="p-2">Distributed tracing</td>
+              </tr>
+              <tr>
+                <td className="p-2">Subscriber Lag</td>
+                <td className="p-2">&lt;100 messages</td>
+                <td className="p-2">Consumer offset tracking</td>
+              </tr>
+              <tr>
+                <td className="p-2">Message Queue Depth</td>
+                <td className="p-2">&lt;1,000 pending</td>
+                <td className="p-2">Queue monitoring</td>
+              </tr>
+              <tr>
+                <td className="p-2">Connection Count</td>
+                <td className="p-2">10,000+ concurrent</td>
+                <td className="p-2">Broker connection metrics</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Broker Performance Comparison</h3>
+          <p>
+            Different Pub-Sub implementations have different performance characteristics:
+          </p>
+          <ul className="mt-3 space-y-2">
+            <li>
+              <strong>Redis Pub/Sub:</strong> Throughput: 100,000+ msg/sec. Latency: &lt;1ms. Best for: in-memory, low-latency requirements. Limitation: no persistence, messages lost on restart.
+            </li>
+            <li>
+              <strong>Kafka:</strong> Throughput: 1,000,000+ msg/sec. Latency: 2-10ms. Best for: durable event sourcing, high throughput. Limitation: operational complexity, requires ZooKeeper.
+            </li>
+            <li>
+              <strong>RabbitMQ:</strong> Throughput: 50,000+ msg/sec. Latency: 1-5ms. Best for: complex routing, enterprise features. Limitation: lower throughput than Kafka.
+            </li>
+            <li>
+              <strong>Browser BroadcastChannel:</strong> Throughput: 1,000+ msg/sec. Latency: 5-20ms. Best for: cross-tab communication. Limitation: same-origin only, limited browser support.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Real-World Performance Data</h3>
+          <p>
+            Based on published case studies from organizations using Pub-Sub:
+          </p>
+          <ul className="mt-3 space-y-2">
+            <li>
+              <strong>Uber:</strong> Kafka-based event platform handles 1M+ messages/sec. Average end-to-end latency: &lt;100ms. Supports 10,000+ microservices.
+            </li>
+            <li>
+              <strong>Netflix:</strong> Event-driven architecture processes 100B+ events/day. Uses Kafka with custom stream processing. Peak throughput: 5M+ msg/sec.
+            </li>
+            <li>
+              <strong>Slack:</strong> Real-time messaging uses Pub-Sub for message delivery. Handles 10M+ concurrent connections. Message delivery latency: &lt;500ms (99th percentile).
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Cost Analysis</h2>
+        <p>
+          Pub-Sub systems have significant infrastructure and operational costs. Understanding the total cost of ownership is essential for justifying the architecture.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Managed Broker Services:</strong> AWS EventBridge ($1.00/million events), Google Pub/Sub ($0.40/million messages), Azure Service Bus ($0.05/hour + $0.01/million operations). For 100M events/month: $40-100/month.
+            </li>
+            <li>
+              <strong>Self-Hosted Kafka:</strong> Infrastructure: $500-2,000/month (3-5 node cluster). Operations: 0.5-1 FTE for maintenance. Total: $5,000-15,000/month including operations.
+            </li>
+            <li>
+              <strong>Self-Hosted RabbitMQ:</strong> Infrastructure: $200-500/month (smaller cluster). Operations: 0.25-0.5 FTE. Total: $2,500-7,500/month including operations.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Implementation Complexity:</strong> Pub-Sub adds architectural complexity. Estimate: 1-2 weeks for initial setup with proper error handling, retry logic, and monitoring.
+            </li>
+            <li>
+              <strong>Debugging Overhead:</strong> Debugging distributed event flows is more complex than synchronous calls. Requires distributed tracing. Estimate: 10-20% more debugging time.
+            </li>
+            <li>
+              <strong>Schema Management:</strong> Event schema evolution requires coordination. Schema registry maintenance: 0.1-0.2 FTE ongoing.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
+          <p>
+            Use managed services when: (1) you have &lt;10M events/month, (2) limited DevOps resources, (3) rapid prototyping needed. Self-host when: (1) you have &gt;100M events/month, (2) strict data residency requirements, (3) dedicated DevOps team available. For most startups, managed services show better ROI until scale justifies self-hosting.
+          </p>
+        </div>
+      </section>
+
+      <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
