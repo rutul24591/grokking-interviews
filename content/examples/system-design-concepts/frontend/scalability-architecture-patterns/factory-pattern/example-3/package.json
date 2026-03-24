@@ -1,0 +1,13 @@
+{
+  "name": "frontend-factory-example-3",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "node demo.js"
+  },
+  "dependencies": {
+    "zod": "^3.25.76"
+  }
+}
+

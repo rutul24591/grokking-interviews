@@ -1,0 +1,10 @@
+{
+  "name": "frontend-eda-example-1-server",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js"
+  }
+}
+

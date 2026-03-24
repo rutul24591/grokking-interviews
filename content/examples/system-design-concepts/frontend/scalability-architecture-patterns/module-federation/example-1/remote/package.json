@@ -1,0 +1,23 @@
+{
+  "name": "frontend-mf-remote-example-1",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "webpack serve --mode development --config webpack.config.cjs"
+  },
+  "dependencies": {
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7",
+    "@babel/preset-env": "^7",
+    "@babel/preset-react": "^7",
+    "babel-loader": "^9",
+    "html-webpack-plugin": "^5",
+    "webpack": "^5",
+    "webpack-cli": "^5",
+    "webpack-dev-server": "^5"
+  }
+}
+
