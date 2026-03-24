@@ -162,16 +162,6 @@ export default function FileSystemAccessApiConciseArticle() {
       </section>
 
       {/* ============================================================
-          SECTION 4: Implementation Examples
-          ============================================================ */}
-      <section>
-        <h2>Implementation Examples</h2>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">
-          Example code moved to the Example tab.
-        </div>
-      </section>
-
-      {/* ============================================================
           SECTION 5: Trade-offs Comparison
           ============================================================ */}
       <section>
@@ -392,9 +382,9 @@ export default function FileSystemAccessApiConciseArticle() {
           standard for complex offline-first web applications that outgrow IndexedDB&apos;s key-value model.
         </p>
 
-        <div className="mt-6 rounded-lg border-l-4 border-amber-500 bg-amber-50 p-4 dark:bg-amber-950/30">
-          <p className="font-semibold text-amber-800 dark:text-amber-200">When NOT to Use the File System Access API</p>
-          <ul className="mt-2 space-y-1 text-sm text-amber-700 dark:text-amber-300">
+        <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
+          <p className="font-semibold">When NOT to Use the File System Access API</p>
+          <ul className="mt-2 space-y-2 text-sm">
             <li>
               <strong>Simple file uploads</strong> — <code>{'<'}input type=&quot;file&quot;{'>'}</code> is sufficient,
               universally supported, and requires no feature detection.
@@ -416,127 +406,116 @@ export default function FileSystemAccessApiConciseArticle() {
       </section>
 
       {/* ============================================================
-          SECTION 9: References
+          SECTION 9: Common Interview Questions
           ============================================================ */}
       <section>
-        <h2>References</h2>
-        <ul>
-          <li>
-            <a
-              href="https://developer.mozilla.org/en-US/docs/Web/API/File_System_API"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              MDN Web Docs — File System API
-            </a>{" "}
-            — Comprehensive reference for all interfaces including OPFS.
-          </li>
-          <li>
-            <a
-              href="https://web.dev/articles/file-system-access"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              web.dev — The File System Access API: simplifying access to local files
-            </a>{" "}
-            — Google&apos;s guide with interactive demos and code samples.
-          </li>
-          <li>
-            <a
-              href="https://sqlite.org/wasm/doc/trunk/persistence.md"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              SQLite Wasm — Persistence via OPFS
-            </a>{" "}
-            — Official SQLite documentation on OPFS-backed persistence for the Wasm build.
-          </li>
-          <li>
-            <a
-              href="https://fs.spec.whatwg.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              WHATWG File System Standard
-            </a>{" "}
-            — The living specification for the File System API and Origin Private File System.
-          </li>
-          <li>
-            <a
-              href="https://web.dev/articles/origin-private-file-system"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              web.dev — Origin Private File System
-            </a>{" "}
-            — Deep dive into OPFS, sync access handles, and performance benchmarks.
-          </li>
-        </ul>
+        <h2>Common Interview Questions</h2>
+
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How would you architect a web-based code editor that supports opening, editing, and saving local project
+              directories — and what happens on browsers that don't support the File System Access picker APIs?
+            </p>
+            <p className="mt-2 text-sm">
+              On Chromium browsers, use showDirectoryPicker() to obtain a FileSystemDirectoryHandle for the project
+              root. Recursively iterate the directory with handle.entries() to build a file tree in memory. When the
+              user opens a file, call fileHandle.getFile() to read its contents into the editor buffer. On save, call
+              fileHandle.createWritable(), write the buffer, and close() to commit atomically. Store the directory
+              handle in IndexedDB so the user can reopen the project on the next visit (after re-granting permission
+              via a gesture). For Firefox and Safari, fall back to a virtual in-memory file system backed by IndexedDB
+              or OPFS. Users import a folder by selecting a zip or using input type="file" webkitdirectory (which is
+              widely supported for reading). Writes go to the virtual FS, and exports are offered as zip downloads.
+              The key architectural insight is to abstract the file system behind an interface — a FileSystemProvider
+              — so the editor code never directly calls browser APIs. This lets you swap implementations (native FS,
+              OPFS, IndexedDB, even a remote backend) without changing the editor core.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: Explain the difference between OPFS async methods and createSyncAccessHandle(). When would you choose
+              one over the other?
+            </p>
+            <p className="mt-2 text-sm">
+              OPFS async methods (getFile(), createWritable()) work on the main thread and return promises. They are
+              fine for occasional reads/writes of moderate-sized data. However, every await introduces microtask
+              scheduling overhead and you cannot perform random-access reads (seek to offset, read N bytes) without
+              reading the entire file into memory. createSyncAccessHandle() is available only in Web Workers and
+              provides synchronous read(buffer, options) and write(buffer, options) with byte-level offset control.
+              There is no promise overhead per operation — this matters enormously for workloads like SQLite, which
+              may issue thousands of small reads per query. The synchronous handle also exclusively locks the file,
+              preventing concurrent access. Use async methods for simple file I/O in the main thread. Use sync access
+              handles in workers for high-throughput, low-latency, random-access workloads.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What are the key security and privacy considerations when using the File System Access API?
+            </p>
+            <p className="mt-2 text-sm">
+              The File System Access API requires explicit user permission via a file picker dialog — sites cannot
+              silently access arbitrary files. Permissions are granular (read vs read-write) and can be revoked by
+              the user at any time. The API is only available in secure contexts (HTTPS). OPFS is origin-scoped,
+              preventing cross-origin data leakage. However, developers must still be careful: (1) Never store
+              sensitive data in OPFS without encryption — other tabs from the same origin can access it. (2) Always
+              request the minimum necessary permissions (read-only when possible). (3) Handle permission revocation
+              gracefully — the user may deny access on revisit. (4) Be aware that file handles stored in IndexedDB
+              can become stale if the user moves or deletes the file. (5) For cross-origin resources, use CORS and
+              avoid caching opaque responses.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: Compare OPFS with IndexedDB for storing large binary data. When would you choose each?
+            </p>
+            <p className="mt-2 text-sm">
+              OPFS excels at: large binary files (GB scale), random-access reads/writes via sync handles, file-like
+              semantics (paths, directories), and high-throughput sequential I/O. IndexedDB excels at: structured
+              data with indexes and queries, transactional guarantees, and widespread browser support. Choose OPFS
+              for: video/audio editing, SQLite databases, large asset caches, and any workload requiring byte-level
+              random access. Choose IndexedDB for: application state, user preferences, structured records with
+              secondary indexes, and when you need to support Firefox/Safari without OPFS. They often work together:
+              OPFS for large binaries, IndexedDB for metadata and indexes.
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* ============================================================
-          SECTION 10: Interview Questions
+          SECTION 10: References
           ============================================================ */}
       <section>
-        <h2>Interview Questions</h2>
-
-        <h3>
-          Q1: How would you architect a web-based code editor that supports opening, editing, and saving local project
-          directories — and what happens on browsers that don&apos;t support the File System Access picker APIs?
-        </h3>
-        <p>
-          On Chromium browsers, use <code>showDirectoryPicker()</code> to obtain a{" "}
-          <code>FileSystemDirectoryHandle</code> for the project root. Recursively iterate the directory with{" "}
-          <code>handle.entries()</code> to build a file tree in memory. When the user opens a file, call{" "}
-          <code>fileHandle.getFile()</code> to read its contents into the editor buffer. On save, call{" "}
-          <code>fileHandle.createWritable()</code>, write the buffer, and <code>close()</code> to commit atomically.
-          Store the directory handle in IndexedDB so the user can reopen the project on the next visit (after
-          re-granting permission via a gesture). For Firefox and Safari, fall back to a virtual in-memory file system
-          backed by IndexedDB or OPFS. Users import a folder by selecting a zip or using{" "}
-          <code>{'<'}input type=&quot;file&quot; webkitdirectory{'>'}</code> (which is widely supported for reading).
-          Writes go to the virtual FS, and exports are offered as zip downloads. The key architectural insight is to
-          abstract the file system behind an interface — a <code>FileSystemProvider</code> — so the editor code never
-          directly calls browser APIs. This lets you swap implementations (native FS, OPFS, IndexedDB, even a remote
-          backend) without changing the editor core.
-        </p>
-
-        <h3>
-          Q2: Explain the difference between OPFS async methods and <code>createSyncAccessHandle()</code>. When would
-          you choose one over the other?
-        </h3>
-        <p>
-          OPFS async methods (<code>getFile()</code>, <code>createWritable()</code>) work on the main thread and return
-          promises. They are fine for occasional reads/writes of moderate-sized data. However, every await introduces
-          microtask scheduling overhead and you cannot perform random-access reads (seek to offset, read N bytes)
-          without reading the entire file into memory.{" "}
-          <code>createSyncAccessHandle()</code> is available only in Web Workers and provides synchronous{" "}
-          <code>read(buffer, options)</code> and <code>write(buffer, options)</code> with byte-level offset control.
-          There is no promise overhead per operation — this matters enormously for workloads like SQLite, which may
-          issue thousands of small reads per query. The synchronous handle also exclusively locks the file, preventing
-          concurrent access — which is actually desirable for database engines that need exclusive write access. Choose
-          async methods for simple UI-driven file operations on the main thread. Choose sync handles whenever you need
-          high-throughput, low-latency, random-access I/O — and move that work to a dedicated Worker.
-        </p>
-
-        <h3>
-          Q3: A product team wants to build a browser-based Photoshop competitor that can open and save PSD files up
-          to 2 GB. What storage strategy would you recommend, and how would you handle the write-back flow?
-        </h3>
-        <p>
-          For files of this size, you need to avoid loading the entire file into main-thread memory. Use{" "}
-          <code>showOpenFilePicker()</code> to get a handle, then transfer that handle to a Web Worker via{" "}
-          <code>postMessage</code>. In the Worker, use <code>handle.getFile()</code> to obtain a <code>File</code>{" "}
-          object and read it in chunks using <code>file.slice(start, end).arrayBuffer()</code> — this keeps memory
-          usage bounded. For intermediate state (undo history, layer data), use OPFS as a scratch space: write layer
-          bitmaps to OPFS files using sync access handles in a Worker, which gives you fast random-access I/O without
-          holding everything in RAM. When the user saves, open a <code>FileSystemWritableFileStream</code> on the
-          original handle, stream the composed output in chunks, and <code>close()</code> to commit. The atomic
-          write-to-swap-file behavior means a crash mid-save won&apos;t corrupt the original. For browsers without
-          picker support, fall back to loading the file via <code>{'<'}input type=&quot;file&quot;{'>'}</code> and
-          saving via a download — but warn the user that the save experience will be degraded (no in-place overwrite).
-          The OPFS scratch space still works cross-browser, so undo/redo and layer persistence remain functional
-          regardless of picker availability.
-        </p>
+        <h2>References</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/File_System_API" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              MDN Web Docs — File System API
+            </a> — Comprehensive reference for all interfaces including OPFS.
+          </li>
+          <li>
+            <a href="https://web.dev/articles/file-system-access" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              web.dev — The File System Access API: simplifying access to local files
+            </a> — Google's guide with interactive demos and code samples.
+          </li>
+          <li>
+            <a href="https://sqlite.org/wasm/doc/trunk/persistence.md" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              SQLite Wasm — Persistence via OPFS
+            </a> — Official SQLite documentation on OPFS-backed persistence for the Wasm build.
+          </li>
+          <li>
+            <a href="https://fs.spec.whatwg.org/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              WHATWG File System Standard
+            </a> — The living specification for the File System API and Origin Private File System.
+          </li>
+          <li>
+            <a href="https://web.dev/articles/origin-private-file-system" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              web.dev — Origin Private File System
+            </a> — Deep dive into OPFS, sync access handles, and performance benchmarks.
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

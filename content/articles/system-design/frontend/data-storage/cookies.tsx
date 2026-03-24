@@ -232,11 +232,6 @@ export default function CookiesConciseArticle() {
       </section>
 
       <section>
-        <h2>Implementation Examples</h2>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-      </section>
-
-      <section>
         <h2>Trade-offs: Cookies vs. Other Storage Mechanisms</h2>
         <table className="w-full border-collapse text-sm">
           <thead>
@@ -492,6 +487,85 @@ export default function CookiesConciseArticle() {
         </div>
       </section>
 
+      {/* Section 9: Common Interview Questions */}
+      <section>
+        <h2>Common Interview Questions</h2>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How would you design a secure authentication system using cookies? Walk through the attributes you would set and why.
+            </p>
+            <p className="mt-2 text-sm">
+              A: I would store an opaque session ID (not the user data itself) in a cookie with the following
+              attributes: __Host-session={"<"}random_id{">"}; Secure; HttpOnly; SameSite=Lax; Path=/; Max-Age=86400.
+              The __Host- prefix locks the cookie to the exact host (no subdomain leakage) and enforces Secure
+              and Path=/. HttpOnly prevents XSS from stealing the token. SameSite=Lax prevents CSRF on
+              state-changing requests while allowing the cookie on top-level navigations (so login redirects work).
+              Secure ensures HTTPS-only transmission. The session ID maps to server-side state in Redis (with TTL
+              matching Max-Age), enabling instant revocation on logout or suspicious activity. For additional CSRF
+              protection on non-GET requests, I would implement a double-submit cookie pattern with a separate
+              non-HttpOnly CSRF token cookie, validated against a custom header.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: Explain the difference between SameSite Strict, Lax, and None. When would you use each?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Strict never sends the cookie on any cross-site request, including top-level navigations. If a
+              user clicks a link from an email to your banking site, the session cookie is not sent -- the user
+              appears logged out until they navigate within the site. This provides maximum CSRF protection but
+              harms UX. Use it for highly sensitive actions (banking, admin panels) where the logout-on-arrival
+              trade-off is acceptable. Lax sends the cookie on safe top-level navigations (GET requests from
+              cross-site links) but blocks it on cross-site subrequests (iframes, fetch, form POST). This is the
+              best default for most applications: users stay logged in when clicking links from external sources,
+              but CSRF via POST forms from other sites is blocked. None sends the cookie in all contexts,
+              including iframes, cross-origin fetch, and embedded widgets. It requires Secure. Use it only when
+              your service is legitimately embedded in third-party sites (payment widgets, federated login
+              iframes, embedded SaaS tools) and pair it with Partitioned to prevent cross-site tracking.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: A web application's cookies are 3 KB total. The page loads 40 subresources from the same domain.
+              What is the performance impact and how would you fix it?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Every one of those 40 requests includes the 3 KB cookie payload in the Cookie request header,
+              adding 120 KB of upload overhead per page load. On mobile connections with limited uplink bandwidth
+              (often 1-5 Mbps), this can add 200-500ms of latency. Three fixes, in order of impact: (1) Move static
+              assets to a separate cookieless domain (static.example.com) with no cookies set. This eliminates the
+              overhead for images, CSS, and JS. (2) Audit and reduce cookie size -- replace verbose JSON with opaque
+              session IDs, remove analytics cookies that can use localStorage, and delete expired experiment cookies.
+              (3) Use HTTP/2 header compression (HPACK), which compresses repeated headers across requests on the
+              same connection. The Cookie header, being identical across requests, compresses very efficiently -- but
+              this only helps on the wire, not on the server's header parsing cost. The cookieless domain approach
+              is the most effective and is standard practice at scale.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What are the security implications of setting Secure, HttpOnly, and SameSite attributes? When might
+              each be insufficient?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Secure ensures cookies are only sent over HTTPS, preventing network eavesdropping. However, it does
+              nothing against XSS or MITM at the TLS layer (e.g., compromised CA). HttpOnly prevents JavaScript access,
+              blocking XSS-based cookie theft. However, it does not prevent CSRF attacks or XSS that exfiltrates data
+              via other means (e.g., reading DOM content). SameSite restricts cross-site sending, mitigating CSRF.
+              However, SameSite=Lax still allows cookies on top-level navigations (some CSRF vectors remain), and
+              SameSite=None is explicitly for cross-site use. None of these attributes protect against server-side
+              vulnerabilities like session fixation or weak session ID generation. Defense in depth requires combining
+              these attributes with CSRF tokens, Content Security Policy, and secure session management on the server.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
         <ul className="space-y-2">
@@ -521,64 +595,6 @@ export default function CookiesConciseArticle() {
             </a>
           </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Common Interview Questions</h2>
-        <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you design a secure authentication system using cookies? Walk through the attributes you would set and why.</p>
-            <p className="mt-2 text-sm">
-              A: I would store an opaque session ID (not the user data itself) in a cookie with the following
-              attributes: <code>__Host-session={"<"}random_id{">"}; Secure; HttpOnly; SameSite=Lax; Path=/; Max-Age=86400</code>.{" "}
-              <code>__Host-</code> prefix locks the cookie to the exact host (no subdomain leakage) and
-              enforces <code>Secure</code> and <code>Path=/</code>. <code>HttpOnly</code> prevents XSS from
-              stealing the token. <code>SameSite=Lax</code> prevents CSRF on state-changing requests while
-              allowing the cookie on top-level navigations (so login redirects work). <code>Secure</code>{" "}
-              ensures HTTPS-only transmission. The session ID maps to server-side state in Redis (with TTL
-              matching <code>Max-Age</code>), enabling instant revocation on logout or suspicious activity.
-              For additional CSRF protection on non-GET requests, I would implement a double-submit cookie
-              pattern with a separate non-HttpOnly CSRF token cookie, validated against a custom header.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Explain the difference between SameSite Strict, Lax, and None. When would you use each?</p>
-            <p className="mt-2 text-sm">
-              A: <code>Strict</code> never sends the cookie on any cross-site request, including top-level
-              navigations. If a user clicks a link from an email to your banking site, the session cookie is
-              not sent -- the user appears logged out until they navigate within the site. This provides
-              maximum CSRF protection but harms UX. Use it for highly sensitive actions (banking,
-              admin panels) where the logout-on-arrival trade-off is acceptable.{" "}
-              <code>Lax</code> sends the cookie on safe top-level navigations (GET requests from cross-site
-              links) but blocks it on cross-site subrequests (iframes, fetch, form POST). This is the best
-              default for most applications: users stay logged in when clicking links from external sources,
-              but CSRF via POST forms from other sites is blocked.{" "}
-              <code>None</code> sends the cookie in all contexts, including iframes, cross-origin fetch, and
-              embedded widgets. It requires <code>Secure</code>. Use it only when your service is legitimately
-              embedded in third-party sites (payment widgets, federated login iframes, embedded SaaS tools)
-              and pair it with <code>Partitioned</code> to prevent cross-site tracking.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: A web application&rsquo;s cookies are 3 KB total. The page loads 40 subresources from the same domain. What is the performance impact and how would you fix it?</p>
-            <p className="mt-2 text-sm">
-              A: Every one of those 40 requests includes the 3 KB cookie payload in the <code>Cookie</code>{" "}
-              request header, adding 120 KB of <em>upload</em> overhead per page load. On mobile connections
-              with limited uplink bandwidth (often 1-5 Mbps), this can add 200-500ms of latency. Three fixes,
-              in order of impact: (1) Move static assets to a separate cookieless domain
-              (<code>static.example.com</code>) with no cookies set. This eliminates the overhead for images,
-              CSS, and JS. (2) Audit and reduce cookie size -- replace verbose JSON with opaque session IDs,
-              remove analytics cookies that can use <code>localStorage</code>, and delete expired experiment
-              cookies. (3) Use HTTP/2 header compression (HPACK), which compresses repeated headers across
-              requests on the same connection. The <code>Cookie</code> header, being identical across
-              requests, compresses very efficiently -- but this only helps on the wire, not on the server&rsquo;s
-              header parsing cost. The cookieless domain approach is the most effective and is standard
-              practice at scale.
-            </p>
-          </div>
-        </div>
       </section>
     </ArticleLayout>
   );

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="260" height="100" viewBox="0 0 260 100">
+  <rect width="260" height="100" rx="16" fill="#0b1020"/>
+  <rect x="18" y="18" width="64" height="64" rx="12" fill="#22c55e"/>
+  <text x="100" y="58" font-family="ui-sans-serif, system-ui" font-size="18" fill="#e6e9f2">Static Hosting</text>
+</svg>
+

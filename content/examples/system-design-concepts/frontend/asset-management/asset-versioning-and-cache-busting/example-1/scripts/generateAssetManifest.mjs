@@ -31,6 +31,7 @@ function hashBytes(buf) {
 }
 
 function main() {
+  fs.rmSync(OUTPUT_DIR, { recursive: true, force: true });
   ensureDir(OUTPUT_DIR);
   ensureDir(path.dirname(MANIFEST_PATH));
 
@@ -54,4 +55,3 @@ function main() {
 }
 
 main();
-

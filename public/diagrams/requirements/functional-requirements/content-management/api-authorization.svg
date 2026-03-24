@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">API Authorization Flow</text>
+  
+  <!-- Authentication -->
+  <rect x="50" y="70" width="220" height="150" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="160" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#3b82f6">Authentication</text>
+  
+  <rect x="70" y="115" width="180" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="160" y="137" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">JWT Token / API Key</text>
+  
+  <rect x="70" y="155" width="180" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="160" y="177" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Extract User Identity</text>
+  
+  <rect x="70" y="195" width="180" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="160" y="217" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">401 if Invalid/Expired</text>
+  
+  <line x1="270" y1="145" x2="310" y2="145" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- RBAC -->
+  <rect x="320" y="70" width="220" height="150" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="430" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f59e0b">Role-Based Access (RBAC)</text>
+  
+  <rect x="340" y="115" width="180" height="35" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="430" y="137" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Admin: All Operations</text>
+  
+  <rect x="340" y="155" width="180" height="35" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="430" y="177" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Editor: Create, Update, Read</text>
+  
+  <rect x="340" y="195" width="180" height="35" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="430" y="217" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Viewer: Read Only</text>
+  
+  <line x1="540" y1="145" x2="580" y2="145" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Resource Permissions -->
+  <rect x="590" y="70" width="180" height="150" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="680" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#22c55e">Resource Permissions</text>
+  
+  <rect x="610" y="115" width="140" height="35" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="680" y="137" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">User Owns Resource?</text>
+  
+  <rect x="610" y="155" width="140" height="35" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="680" y="177" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Shared with User?</text>
+  
+  <rect x="610" y="195" width="140" height="35" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="680" y="217" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">403 if No Access</text>
+  
+  <line x1="680" y1="220" x2="680" y2="260" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Policy Enforcement -->
+  <rect x="590" y="270" width="180" height="120" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="680" y="295" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#8b5cf6">Policy Enforcement</text>
+  
+  <rect x="610" y="310" width="140" height="35" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="680" y="332" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Dynamic Policies</text>
+  
+  <rect x="610" y="350" width="140" height="35" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="680" y="372" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">State-Based Rules</text>
+  
+  <!-- Audit Logging -->
+  <rect x="50" y="270" width="340" height="120" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="220" y="295" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#ef4444">Audit Logging</text>
+  
+  <rect x="70" y="310" width="300" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="330" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Log: User, Resource, Operation, Timestamp</text>
+  
+  <rect x="70" y="345" width="300" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="365" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Log: Access Granted/Denied</text>
+  
+  <rect x="70" y="380" width="300" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="400" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Compliance &amp; Debugging</text>
+  
+  <!-- Authorization Decision -->
+  <rect x="420" y="270" width="140" height="120" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="490" y="300" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#22c55e">Access</text>
+  <text x="490" y="330" text-anchor="middle" font-family="system-ui" font-size="10" fill="#475569">Granted</text>
+  <text x="490" y="360" text-anchor="middle" font-family="system-ui" font-size="10" fill="#475569">→ Execute</text>
+  <text x="490" y="380" text-anchor="middle" font-family="system-ui" font-size="10" fill="#475569">Operation</text>
+  
+  <rect x="590" y="410" width="180" height="70" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="680" y="435" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#ef4444">Access Denied</text>
+  <text x="680" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">403 Forbidden</text>
+  <text x="680" y="470" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Log Decision</text>
+
+</svg>

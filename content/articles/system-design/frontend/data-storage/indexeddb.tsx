@@ -199,31 +199,6 @@ export default function IndexedDBConciseArticle() {
       </section>
 
       {/* ============================================================
-          SECTION 4: Implementation Examples
-          ============================================================ */}
-      <section>
-        <h2>Implementation Examples</h2>
-        <p>Below are practical implementations demonstrating IndexedDB usage patterns:</p>
-
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-3 font-semibold">Raw IndexedDB API - Database Setup, Schema Migration, and CRUD</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Dexie.js - Declarative Schema and Fluent Queries</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Cursor-Based Pagination and Key Range Queries</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================
           SECTION 5: Trade-offs & Comparisons
           ============================================================ */}
       <section>
@@ -495,7 +470,89 @@ export default function IndexedDBConciseArticle() {
       </section>
 
       {/* ============================================================
-          SECTION 9: References & Further Reading
+          SECTION 9: Common Interview Questions
+          ============================================================ */}
+      <section>
+        <h2>Common Interview Questions</h2>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: Explain the IndexedDB transaction model. Why do transactions auto-commit, and what are the implications for async code?
+            </p>
+            <p className="mt-2 text-sm">
+              A: IndexedDB transactions auto-commit when all pending IDBRequest operations have completed and no new
+              requests are queued within the same microtask. This design ensures that transactions are as short-lived
+              as possible, minimizing lock contention. The critical implication is that you cannot perform non-IDB
+              async work (like fetch() or setTimeout) inside a transaction -- the browser will see no pending IDB
+              requests, assume the transaction is done, and commit or abort it before your async callback runs. This
+              means all data must be prepared before opening the transaction, and all IDB operations must be
+              synchronously queued within the transaction scope. In practice, this is the most common source of
+              IndexedDB bugs: developers write await fetch() inside a transaction expecting it to work like a SQL
+              transaction block, but the transaction closes during the network request. Dexie.js mitigates this by
+              maintaining an internal zone-tracking mechanism that keeps transactions alive across its own async
+              boundaries, but not across arbitrary async operations.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How would you handle schema migrations in a production IndexedDB application with millions of users?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Schema migrations happen inside the onupgradeneeded handler, which receives the old version number
+              and a versionchange transaction. The key pattern is a version switch: check the old version and apply
+              incremental changes (e.g., if upgrading from v1 to v3, apply v1-to-v2 changes then v2-to-v3 changes
+              sequentially). Critical rules: (1) Never delete data without a migration path -- if renaming a store,
+              create the new store, copy data via cursors, then delete the old one. (2) Keep migrations fast -- the
+              versionchange transaction holds an exclusive lock on the entire database, blocking all other connections
+              including other tabs. For large data migrations, create the new schema structure in onupgradeneeded but
+              defer data migration to a background task after the database opens normally. (3) Handle the blocked event
+              -- if other tabs have open connections, display a user-facing message asking them to close other tabs
+              and refresh. (4) With Dexie.js, use its declarative version(n).stores({}) API which automatically
+              generates the migration logic for adding/removing stores and indexes.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: You are designing a PWA that must work offline with 500,000 product records. How would you architect
+              the IndexedDB layer?
+            </p>
+            <p className="mt-2 text-sm">
+              A: The architecture has several layers: (1) Schema design: A "products" object store with keyPath: "id",
+              indexes only on fields used for filtering (category, price range, name prefix for search), and a "syncMeta"
+              store to track last sync timestamp and delta tokens. (2) Initial load: Fetch the full dataset as a
+              compressed NDJSON stream, parse incrementally, and use bulkPut() in batches of 5,000-10,000 records per
+              transaction to avoid memory spikes. Show progress to the user. (3) Delta sync: On subsequent loads, fetch
+              only changes since the last sync token. Apply inserts/updates/deletes in a single transaction. (4) Search:
+              Build a client-side inverted index in a separate object store for full-text search, or use a cursor-based
+              scan with a key range on a name index for prefix matching. (5) Memory management: Use cursors instead of
+              getAll() for any UI-facing queries. Virtualize list rendering. (6) Quota: Check navigator.storage.estimate()
+              before initial load, request persistent storage, and implement fallback to server-side search if storage is
+              insufficient. (7) Multi-tab: Use BroadcastChannel to notify other tabs when sync completes so they can
+              refresh their data views.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: Compare IndexedDB with localStorage. When would you choose one over the other?
+            </p>
+            <p className="mt-2 text-sm">
+              A: IndexedDB is ideal for: large datasets (MB to GB), structured data requiring indexes and queries,
+              binary data (Blobs, Files), high-frequency writes (async, non-blocking), and transactions. localStorage
+              is suitable for: small data (&lt;100KB), simple key-value access patterns, synchronous reads (e.g., theme
+              preferences on page load), and when you need data immediately available without async handling. The
+              practical heuristic: if you need JSON.stringify and the data fits comfortably in a single string,
+              localStorage is fine. If you are managing collections of records, need to search by secondary keys, or
+              store anything over a few hundred KB, use IndexedDB.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+          SECTION 10: References & Further Reading
           ============================================================ */}
       <section>
         <h2>References & Further Reading</h2>
@@ -526,69 +583,6 @@ export default function IndexedDBConciseArticle() {
             </a>
           </li>
         </ul>
-      </section>
-
-      {/* ============================================================
-          SECTION 10: Interview Questions
-          ============================================================ */}
-      <section>
-        <h2>Common Interview Questions</h2>
-        <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Explain the IndexedDB transaction model. Why do transactions auto-commit, and what are the implications for async code?</p>
-            <p className="mt-2 text-sm">
-              A: IndexedDB transactions auto-commit when all pending IDBRequest operations have completed and no new
-              requests are queued within the same microtask. This design ensures that transactions are as short-lived
-              as possible, minimizing lock contention. The critical implication is that you cannot perform non-IDB
-              async work (like <code>fetch()</code> or <code>setTimeout</code>) inside a transaction -- the browser
-              will see no pending IDB requests, assume the transaction is done, and commit or abort it before your
-              async callback runs. This means all data must be prepared before opening the transaction, and all IDB
-              operations must be synchronously queued within the transaction scope. In practice, this is the most
-              common source of IndexedDB bugs: developers write <code>await fetch()</code> inside a transaction
-              expecting it to work like a SQL transaction block, but the transaction closes during the network
-              request. Dexie.js mitigates this by maintaining an internal zone-tracking mechanism that keeps
-              transactions alive across its own async boundaries, but not across arbitrary async operations.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How would you handle schema migrations in a production IndexedDB application with millions of users?</p>
-            <p className="mt-2 text-sm">
-              A: Schema migrations happen inside the <code>onupgradeneeded</code> handler, which receives the old
-              version number and a <code>versionchange</code> transaction. The key pattern is a version switch:
-              check the old version and apply incremental changes (e.g., if upgrading from v1 to v3, apply v1-to-v2
-              changes then v2-to-v3 changes sequentially). Critical rules: (1) Never delete data without a migration
-              path -- if renaming a store, create the new store, copy data via cursors, then delete the old one.
-              (2) Keep migrations fast -- the <code>versionchange</code> transaction holds an exclusive lock on the
-              entire database, blocking all other connections including other tabs. For large data migrations, create
-              the new schema structure in <code>onupgradeneeded</code> but defer data migration to a background
-              task after the database opens normally. (3) Handle the <code>blocked</code> event -- if other tabs
-              have open connections, display a user-facing message asking them to close other tabs and refresh.
-              (4) With Dexie.js, use its declarative <code>version(n).stores({"{}"})</code> API which automatically
-              generates the migration logic for adding/removing stores and indexes.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: You are designing a PWA that must work offline with 500,000 product records. How would you architect the IndexedDB layer?</p>
-            <p className="mt-2 text-sm">
-              A: The architecture has several layers: (1) <strong>Schema design:</strong> A "products" object store
-              with <code>keyPath: "id"</code>, indexes only on fields used for filtering (category, price range,
-              name prefix for search), and a "syncMeta" store to track last sync timestamp and delta tokens.
-              (2) <strong>Initial load:</strong> Fetch the full dataset as a compressed NDJSON stream, parse
-              incrementally, and use <code>bulkPut()</code> in batches of 5,000-10,000 records per transaction to
-              avoid memory spikes. Show progress to the user. (3) <strong>Delta sync:</strong> On subsequent loads,
-              fetch only changes since the last sync token. Apply inserts/updates/deletes in a single transaction.
-              (4) <strong>Search:</strong> Build a client-side inverted index in a separate object store for
-              full-text search, or use a cursor-based scan with a key range on a name index for prefix matching.
-              (5) <strong>Memory management:</strong> Use cursors instead of <code>getAll()</code> for any
-              UI-facing queries. Virtualize list rendering. (6) <strong>Quota:</strong> Check
-              <code>navigator.storage.estimate()</code> before initial load, request persistent storage, and
-              implement fallback to server-side search if storage is insufficient. (7) <strong>Multi-tab:</strong>
-              Use BroadcastChannel to notify other tabs when sync completes so they can refresh their data views.
-            </p>
-          </div>
-        </div>
       </section>
     </ArticleLayout>
   );

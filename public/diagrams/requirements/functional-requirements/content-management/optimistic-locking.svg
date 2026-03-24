@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Optimistic Locking Flow</text>
+  
+  <!-- Client Read -->
+  <rect x="50" y="70" width="120" height="80" rx="8" fill="#3b82f6"/>
+  <text x="110" y="105" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#ffffff">Client</text>
+  <text x="110" y="130" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Read Resource</text>
+  
+  <line x1="170" y1="110" x2="210" y2="110" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="190" y="100" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">1. GET</text>
+  
+  <!-- Server Response -->
+  <rect x="220" y="60" width="180" height="120" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="310" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Server Response</text>
+  
+  <rect x="240" y="105" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="310" y="125" text-anchor="middle" font-family="monospace" font-size="8" fill="#0f172a">ETag: "v1"</text>
+  
+  <rect x="240" y="140" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="310" y="160" text-anchor="middle" font-family="monospace" font-size="8" fill="#0f172a">Content: {...}</text>
+  
+  <rect x="240" y="175" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="310" y="195" text-anchor="middle" font-family="monospace" font-size="8" fill="#0f172a">Version: 1</text>
+  
+  <line x1="400" y1="120" x2="440" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="420" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">2. Modify</text>
+  
+  <!-- Client Modifies -->
+  <rect x="450" y="60" width="120" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="510" y="95" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Client</text>
+  <text x="510" y="120" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Modifies Locally</text>
+  <text x="510" y="145" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Keeps ETag: v1</text>
+  <text x="510" y="170" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Prepares Update</text>
+  
+  <line x1="570" y1="120" x2="610" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="590" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">3. PUT</text>
+  
+  <!-- Server Check -->
+  <rect x="620" y="60" width="150" height="120" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="695" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#22c55e">Server Check</text>
+  
+  <rect x="640" y="105" width="110" height="30" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="695" y="125" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">Current: v1?</text>
+  
+  <rect x="640" y="140" width="110" height="30" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="695" y="160" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">If Match: Yes</text>
+  
+  <rect x="640" y="175" width="110" height="30" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="695" y="195" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">If Match: No</text>
+  
+  <line x1="695" y1="180" x2="695" y2="220" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="715" y="200" text-anchor="start" font-family="system-ui" font-size="8" fill="#22c55e">Match</text>
+  
+  <!-- Success Path -->
+  <rect x="620" y="230" width="150" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="695" y="255" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#22c55e">Success</text>
+  <text x="695" y="280" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Apply Update</text>
+  <text x="695" y="295" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Version: v1 → v2</text>
+  <text x="695" y="310" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">200 OK + ETag: v2</text>
+  
+  <line x1="620" y1="280" x2="580" y2="280" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="600" y="270" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Success</text>
+  
+  <!-- Conflict Path -->
+  <line x1="770" y1="120" x2="770" y2="220" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="790" y="170" text-anchor="start" font-family="system-ui" font-size="8" fill="#ef4444">No Match</text>
+  
+  <rect x="620" y="350" width="150" height="100" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="695" y="375" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#ef4444">Conflict</text>
+  <text x="695" y="400" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Current: v2</text>
+  <text x="695" y="415" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Request: v1</text>
+  <text x="695" y="430" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">409 Conflict</text>
+  
+  <line x1="620" y1="400" x2="580" y2="400" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="600" y="390" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ef4444">Conflict</text>
+  
+  <!-- Client Resolution -->
+  <rect x="450" y="350" width="120" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="510" y="380" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Client</text>
+  <text x="510" y="405" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Receives 409</text>
+  <text x="510" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Current: v2</text>
+  <text x="510" y="435" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Resolve Conflict</text>
+  
+  <!-- Resolution Options -->
+  <rect x="50" y="350" width="340" height="130" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="375" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Conflict Resolution</text>
+  
+  <rect x="70" y="390" width="300" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="410" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Reload current version (v2)</text>
+  
+  <rect x="70" y="425" width="300" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="445" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Reapply changes on top of v2</text>
+  
+  <rect x="70" y="460" width="300" height="25" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="477" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Submit update with If-Match: v2</text>
+
+</svg>

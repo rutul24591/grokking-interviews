@@ -161,14 +161,6 @@ export default function WebSQLConciseArticle() {
       </section>
 
       {/* ============================================================
-          SECTION 4: Implementation Examples
-          ============================================================ */}
-      <section>
-        <h2>Implementation Examples</h2>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-      </section>
-
-      {/* ============================================================
           SECTION 5: Trade-offs Table
           ============================================================ */}
       <section>
@@ -408,96 +400,125 @@ export default function WebSQLConciseArticle() {
       </section>
 
       {/* ============================================================
-          SECTION 9: References
+          SECTION 9: Common Interview Questions
+          ============================================================ */}
+      <section>
+        <h2>Common Interview Questions</h2>
+
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: Why was Web SQL deprecated despite being a useful API?
+            </p>
+            <p className="mt-2 text-sm">
+              Web SQL was deprecated because it failed the W3C's fundamental requirement for standardization:
+              multiple independent implementations. Every browser that shipped Web SQL embedded the same SQLite
+              library, meaning the specification was effectively "do what SQLite does" rather than a formal,
+              independently implementable standard. Mozilla refused to implement it for this reason, making it
+              impossible for the spec to advance. Additionally, embedding a full SQL engine in the browser created
+              a significant security attack surface, as demonstrated by the Magellan vulnerabilities that allowed
+              remote code execution through SQLite bugs exploitable via Web SQL. The deprecation was not about the
+              API being poorly designed; it was about the web platform needing standards that any browser engine
+              can implement independently, which a SQLite-dependent specification could never be. This is a key
+              distinction: technical quality and standardizability are different axes, and Web SQL scored well on
+              the first but failed on the second.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How does IndexedDB differ from Web SQL architecturally, and why did it succeed as a standard?
+            </p>
+            <p className="mt-2 text-sm">
+              IndexedDB and Web SQL took fundamentally different approaches to the same problem. Web SQL exposed a
+              high-level relational model with full SQL query capabilities, but this required embedding a specific
+              SQL engine (SQLite) in every browser. IndexedDB instead exposed a lower-level key-value store with
+              indexes, cursors, and key ranges. This lower-level API could be implemented by any browser using
+              whatever underlying storage engine it preferred: Chrome uses a LevelDB-based backend, Firefox uses a
+              custom B-tree implementation, and Safari ironically uses SQLite internally for its IndexedDB
+              implementation. The key difference is that IndexedDB's specification describes abstract behaviors
+              (how keys are compared, how indexes are maintained, how transactions isolate) rather than deferring to
+              a specific engine's behavior. This allowed each browser to build its own implementation, satisfying
+              the W3C requirement. The tradeoff was developer experience: IndexedDB's API is notoriously verbose
+              and unintuitive compared to SQL, which is why wrapper libraries like Dexie.js became essential. At
+              the architectural level, IndexedDB also supports storing structured data (via the structured clone
+              algorithm) including Blobs and Files, while Web SQL was limited to SQL data types.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How would you approach migrating a legacy application from Web SQL to IndexedDB?
+            </p>
+            <p className="mt-2 text-sm">
+              Migration from Web SQL to IndexedDB requires a phased approach. First, audit the existing Web SQL
+              usage: catalog all databases, tables, schemas, and query patterns. Map the relational schema to an
+              IndexedDB object store design, which often means denormalizing data since IndexedDB does not support
+              JOINs. Second, implement the IndexedDB layer using Dexie.js rather than raw IndexedDB to maintain
+              developer productivity. Define Dexie schemas that mirror the essential data structures, using compound
+              indexes to support the query patterns that SQL JOINs previously handled. Third, write a one-time
+              migration script that reads all data from Web SQL using executeSql, transforms it into the new object
+              store format, and writes it to IndexedDB in batched transactions. Include checksums and row count
+              verification to detect partial migrations. Fourth, implement a storage abstraction layer in the
+              application so that business logic does not directly reference either storage API. This layer should
+              detect which storage backend has data and route accordingly during the transition period. Fifth, after
+              confirming all users have migrated (via telemetry on the storage backend in use), remove the Web SQL
+              code path entirely. Throughout this process, pay special attention to transaction semantics: Web SQL
+              supported multi-statement transactions with automatic rollback, while IndexedDB transactions auto-commit
+              when the event loop is reached, which can cause subtle bugs if the migration does not account for this
+              behavioral difference.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What are the key differences between Web SQL and IndexedDB in terms of API design and use cases?
+            </p>
+            <p className="mt-2 text-sm">
+              Web SQL provided a relational model with SQL queries, transactions, and JOINs — familiar to developers
+              with database experience. It was synchronous within transactions (executeSql callbacks) but asynchronous
+              at the transaction level. IndexedDB provides a document/key-value store with indexes, cursors, and key
+              ranges — more like NoSQL. It is entirely asynchronous with explicit transactions. Web SQL was ideal for
+              complex queries with JOINs and aggregations. IndexedDB is ideal for structured document storage with
+              secondary indexes. Web SQL is deprecated and should not be used in new projects. IndexedDB is the
+              standard for large structured data storage in browsers, with widespread support and active development.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+          SECTION 10: References
           ============================================================ */}
       <section>
         <h2>References</h2>
         <ul className="space-y-2">
           <li>
-            <strong>W3C Web SQL Database Specification (Discontinued)</strong> — The original specification
-            document, now marked as no longer maintained. Essential reading for understanding exactly what
-            was specified and where the specification explicitly deferred to SQLite behavior.
+            <a href="https://www.w3.org/TR/webdatabase/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              W3C Web SQL Database Specification (Discontinued)
+            </a> — The original specification document, now marked as no longer maintained.
           </li>
           <li>
-            <strong>Chrome Platform Status: Web SQL Removal</strong> — Chrome&apos;s deprecation and removal
-            timeline, including the rationale for removing the API in Chrome 119 and the intent-to-remove
-            discussion from the Blink development mailing list.
+            <a href="https://chromestatus.com/feature/5641526022119424" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              Chrome Platform Status: Web SQL Removal
+            </a> — Chrome's deprecation and removal timeline.
           </li>
           <li>
-            <strong>MDN Web Docs: Web SQL Database</strong> — Mozilla&apos;s documentation explicitly noting
-            the deprecated status and recommending IndexedDB as the replacement, with links to migration
-            guides and compatibility data.
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_SQL_API" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              MDN Web Docs: Web SQL Database
+            </a> — Mozilla's documentation with deprecated status and migration guides.
           </li>
           <li>
-            <strong>Dexie.js Documentation</strong> — The most widely used IndexedDB wrapper library.
-            Its migration guides and API reference are essential resources for teams moving from Web SQL
-            to IndexedDB.
+            <a href="https://dexie.org/" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              Dexie.js Documentation
+            </a> — The most widely used IndexedDB wrapper library.
           </li>
           <li>
-            <strong>SQLite in Browsers: Security Implications (Magellan Vulnerabilities)</strong> —
-            Tencent Blade Team&apos;s disclosure of SQLite vulnerabilities exploitable through Web SQL,
-            demonstrating the security risks of embedding a SQL engine in the browser.
+            <a href="https://www.tencent.com/en-us/blog/1563" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              SQLite in Browsers: Security Implications (Magellan Vulnerabilities)
+            </a> — Tencent Blade Team's disclosure of SQLite vulnerabilities.
           </li>
         </ul>
-      </section>
-
-      {/* ============================================================
-          SECTION 10: Interview Questions
-          ============================================================ */}
-      <section>
-        <h2>Interview Questions</h2>
-
-        <h3>Q1: Why was Web SQL deprecated despite being a useful API?</h3>
-        <p>
-          Web SQL was deprecated because it failed the W3C&apos;s fundamental requirement for standardization:
-          multiple independent implementations. Every browser that shipped Web SQL embedded the same SQLite
-          library, meaning the specification was effectively &quot;do what SQLite does&quot; rather than a
-          formal, independently implementable standard. Mozilla refused to implement it for this reason,
-          making it impossible for the spec to advance. Additionally, embedding a full SQL engine in the browser
-          created a significant security attack surface, as demonstrated by the Magellan vulnerabilities that
-          allowed remote code execution through SQLite bugs exploitable via Web SQL. The deprecation was not
-          about the API being poorly designed; it was about the web platform needing standards that any browser
-          engine can implement independently, which a SQLite-dependent specification could never be. This is a
-          key distinction: technical quality and standardizability are different axes, and Web SQL scored well
-          on the first but failed on the second.
-        </p>
-
-        <h3>Q2: How does IndexedDB differ from Web SQL architecturally, and why did it succeed as a standard?</h3>
-        <p>
-          IndexedDB and Web SQL took fundamentally different approaches to the same problem. Web SQL exposed a
-          high-level relational model with full SQL query capabilities, but this required embedding a specific
-          SQL engine (SQLite) in every browser. IndexedDB instead exposed a lower-level key-value store with
-          indexes, cursors, and key ranges. This lower-level API could be implemented by any browser using
-          whatever underlying storage engine it preferred: Chrome uses a LevelDB-based backend, Firefox uses a
-          custom B-tree implementation, and Safari ironically uses SQLite internally for its IndexedDB
-          implementation. The key difference is that IndexedDB&apos;s specification describes abstract behaviors
-          (how keys are compared, how indexes are maintained, how transactions isolate) rather than deferring to
-          a specific engine&apos;s behavior. This allowed each browser to build its own implementation,
-          satisfying the W3C requirement. The tradeoff was developer experience: IndexedDB&apos;s API is
-          notoriously verbose and unintuitive compared to SQL, which is why wrapper libraries like Dexie.js
-          became essential. At the architectural level, IndexedDB also supports storing structured data (via
-          the structured clone algorithm) including Blobs and Files, while Web SQL was limited to SQL data types.
-        </p>
-
-        <h3>Q3: How would you approach migrating a legacy application from Web SQL to IndexedDB?</h3>
-        <p>
-          Migration from Web SQL to IndexedDB requires a phased approach. First, audit the existing Web SQL
-          usage: catalog all databases, tables, schemas, and query patterns. Map the relational schema to an
-          IndexedDB object store design, which often means denormalizing data since IndexedDB does not support
-          JOINs. Second, implement the IndexedDB layer using Dexie.js rather than raw IndexedDB to maintain
-          developer productivity. Define Dexie schemas that mirror the essential data structures, using compound
-          indexes to support the query patterns that SQL JOINs previously handled. Third, write a one-time
-          migration script that reads all data from Web SQL using executeSql, transforms it into the new object
-          store format, and writes it to IndexedDB in batched transactions. Include checksums and row count
-          verification to detect partial migrations. Fourth, implement a storage abstraction layer in the
-          application so that business logic does not directly reference either storage API. This layer should
-          detect which storage backend has data and route accordingly during the transition period. Fifth, after
-          confirming all users have migrated (via telemetry on the storage backend in use), remove the Web SQL
-          code path entirely. Throughout this process, pay special attention to transaction semantics: Web SQL
-          supported multi-statement transactions with automatic rollback, while IndexedDB transactions auto-commit
-          when the event loop is reached, which can cause subtle bugs if the migration does not account for this
-          behavioral difference.
-        </p>
       </section>
     </ArticleLayout>
   );

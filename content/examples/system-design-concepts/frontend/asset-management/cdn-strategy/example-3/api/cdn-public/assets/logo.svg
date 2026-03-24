@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="96" viewBox="0 0 240 96">
+  <rect width="240" height="96" rx="16" fill="#0b1020"/>
+  <circle cx="48" cy="48" r="18" fill="#a78bfa"/>
+  <text x="84" y="56" font-family="ui-sans-serif, system-ui" font-size="18" fill="#e6e9f2">Failover</text>
+</svg>
+

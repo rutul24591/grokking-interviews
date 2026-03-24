@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="96" viewBox="0 0 240 96">
+  <rect width="240" height="96" rx="16" fill="#0b1020"/>
+  <path d="M32 66 L48 30 L64 66 Z" fill="#60a5fa"/>
+  <text x="86" y="56" font-family="ui-sans-serif, system-ui" font-size="18" fill="#e6e9f2">CDN Origin</text>
+</svg>
+

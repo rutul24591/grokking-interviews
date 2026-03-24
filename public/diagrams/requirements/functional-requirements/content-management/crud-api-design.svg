@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">CRUD API Request Flow</text>
+  
+  <!-- Client Request -->
+  <rect x="50" y="70" width="120" height="80" rx="8" fill="#3b82f6"/>
+  <text x="110" y="105" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#ffffff">Client</text>
+  <text x="110" y="130" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">HTTP Request</text>
+  
+  <line x1="170" y1="110" x2="210" y2="110" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="190" y="100" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">1. Route</text>
+  
+  <!-- Routing -->
+  <rect x="220" y="60" width="120" height="120" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="280" y="90" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Routing</text>
+  <text x="280" y="115" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Match URL + Method</text>
+  <text x="280" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">POST /content</text>
+  <text x="280" y="155" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">GET /content/{id}</text>
+  <text x="280" y="175" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">PUT/PATCH /content/{id}</text>
+  
+  <line x1="340" y1="120" x2="380" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="360" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">2. Auth</text>
+  
+  <!-- Authentication -->
+  <rect x="390" y="60" width="120" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="450" y="90" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Auth</text>
+  <text x="450" y="115" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">JWT / API Key</text>
+  <text x="450" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Extract User ID</text>
+  <text x="450" y="155" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">401 if invalid</text>
+  
+  <line x1="510" y1="120" x2="550" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="530" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">3. Validate</text>
+  
+  <!-- Validation -->
+  <rect x="560" y="60" width="120" height="120" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="620" y="90" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Validate</text>
+  <text x="620" y="115" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Schema Check</text>
+  <text x="620" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Length Limits</text>
+  <text x="620" y="155" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Sanitization</text>
+  <text x="620" y="175" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">400 if invalid</text>
+  
+  <line x1="620" y1="180" x2="620" y2="220" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="640" y="200" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">4. Authorize</text>
+  
+  <!-- Authorization -->
+  <rect x="560" y="230" width="120" height="100" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="620" y="255" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Authorize</text>
+  <text x="620" y="280" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">RBAC Check</text>
+  <text x="620" y="295" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Resource Permission</text>
+  <text x="620" y="310" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">403 if denied</text>
+  
+  <line x1="560" y1="280" x2="520" y2="280" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="540" y="270" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">5. Execute</text>
+  
+  <!-- Business Logic -->
+  <rect x="390" y="230" width="120" height="100" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="450" y="255" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Business</text>
+  <text x="450" y="280" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Create: Validate</text>
+  <text x="450" y="295" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Read: Access Control</text>
+  <text x="450" y="310" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Update: Optimistic Lock</text>
+  <text x="450" y="325" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Delete: Soft Delete</text>
+  
+  <line x1="390" y1="280" x2="350" y2="280" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Data Access -->
+  <rect x="220" y="230" width="120" height="100" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="280" y="255" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Data Access</text>
+  <text x="280" y="280" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Connection Pool</text>
+  <text x="280" y="295" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Parameterized SQL</text>
+  <text x="280" y="310" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Query Optimization</text>
+  
+  <line x1="220" y1="280" x2="180" y2="280" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="200" y="270" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">6. Response</text>
+  
+  <!-- Response -->
+  <rect x="50" y="230" width="120" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="110" y="260" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Response</text>
+  <text x="110" y="285" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">200/201/204</text>
+  <text x="110" y="300" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">JSON Envelope</text>
+  <text x="110" y="315" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Rate Limit Headers</text>
+  
+  <!-- HTTP Methods -->
+  <rect x="50" y="360" width="340" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="385" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">HTTP Methods &amp; Status Codes</text>
+  
+  <rect x="70" y="400" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="140" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">POST → 201 Created</text>
+  
+  <rect x="230" y="400" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="300" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">GET → 200 OK</text>
+  
+  <rect x="70" y="435" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="140" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">PUT/PATCH → 200 OK</text>
+  
+  <rect x="230" y="435" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="300" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">DELETE → 204 No Content</text>
+  
+  <!-- Error Codes -->
+  <rect x="420" y="360" width="340" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="590" y="385" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Error Status Codes</text>
+  
+  <rect x="440" y="400" width="140" height="30" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="510" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">400 Bad Request</text>
+  
+  <rect x="600" y="400" width="140" height="30" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="670" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">401 Unauthorized</text>
+  
+  <rect x="440" y="435" width="140" height="30" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="510" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">403 Forbidden</text>
+  
+  <rect x="600" y="435" width="140" height="30" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="670" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">409 Conflict</text>
+
+</svg>

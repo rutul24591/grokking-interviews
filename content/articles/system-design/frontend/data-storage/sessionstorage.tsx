@@ -162,11 +162,6 @@ export default function SessionStorageConciseArticle() {
       </section>
 
       <section>
-        <h2>Implementation Examples</h2>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-      </section>
-
-      <section>
         <h2>Trade-offs</h2>
         <p>
           Choosing the right client-side storage mechanism is a core architectural decision. The following comparison
@@ -391,9 +386,9 @@ export default function SessionStorageConciseArticle() {
           the full page navigation to the authorization server and back.
         </p>
 
-        <div className="mt-6 rounded-lg border-l-4 border-orange-500 bg-orange-50 p-4 dark:bg-orange-950/20">
-          <p className="font-semibold text-orange-700 dark:text-orange-400">When NOT to use sessionStorage</p>
-          <ul className="mt-2 space-y-1 text-sm">
+        <div className="mt-6 rounded-lg border border-theme bg-panel-soft p-6">
+          <p className="font-semibold">When NOT to use sessionStorage</p>
+          <ul className="mt-2 space-y-2 text-sm">
             <li>
               <strong>User preferences</strong> (theme, language): These must persist across sessions and tabs.
               Use localStorage.
@@ -410,104 +405,109 @@ export default function SessionStorageConciseArticle() {
               BroadcastChannel for more complex coordination.
             </li>
             <li>
-              <strong>Large datasets ({'>'}1 MB)</strong>: Synchronous API blocks the main thread. Use IndexedDB.
+              <strong>Large datasets (&gt;1 MB)</strong>: Synchronous API blocks the main thread. Use IndexedDB.
             </li>
           </ul>
         </div>
       </section>
 
+      {/* Section 9: Common Interview Questions */}
       <section>
-        <h2>References</h2>
-        <ul className="space-y-1">
-          <li>
-            <strong>HTML Living Standard -- Web Storage:</strong>{" "}
-            <a href="https://html.spec.whatwg.org/multipage/webstorage.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline dark:text-blue-400">
-              html.spec.whatwg.org/multipage/webstorage.html
-            </a>{" "}
-            -- The normative specification defining sessionStorage behavior, including tab duplication and crash recovery semantics.
-          </li>
-          <li>
-            <strong>MDN Web Docs -- Window.sessionStorage:</strong>{" "}
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline dark:text-blue-400">
-              developer.mozilla.org
-            </a>{" "}
-            -- Practical reference with browser compatibility tables and usage examples.
-          </li>
-          <li>
-            <strong>OWASP -- HTML5 Security Cheat Sheet:</strong>{" "}
-            <a href="https://cheatsheetseries.owasp.org/cheatsheets/HTML5_Security_Cheat_Sheet.html" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline dark:text-blue-400">
-              cheatsheetseries.owasp.org
-            </a>{" "}
-            -- Security considerations for Web Storage, including XSS exposure and recommended mitigations.
-          </li>
-          <li>
-            <strong>web.dev -- Storage for the Web:</strong>{" "}
-            <a href="https://web.dev/storage-for-the-web/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline dark:text-blue-400">
-              web.dev/storage-for-the-web
-            </a>{" "}
-            -- Google's comparison of client-side storage options with quota details and best practice guidance.
-          </li>
-          <li>
-            <strong>RFC 6265 -- HTTP State Management Mechanism:</strong>{" "}
-            <a href="https://www.rfc-editor.org/rfc/rfc6265" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline dark:text-blue-400">
-              rfc-editor.org/rfc/rfc6265
-            </a>{" "}
-            -- Cookie specification, useful for understanding the trade-offs between cookies and Web Storage.
-          </li>
-        </ul>
+        <h2>Common Interview Questions</h2>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: A user opens your checkout flow in two tabs simultaneously. How do you ensure the checkout
+              state in each tab is independent without cross-contamination?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Store the checkout wizard state (current step, selected items, shipping details) in
+              sessionStorage rather than localStorage or a global store. Because sessionStorage is scoped
+              to the tab, each tab automatically gets its own isolated state. The user can progress through
+              checkout independently in both tabs. On tab close, the abandoned checkout state is automatically
+              cleaned up. For duplicate-tab scenarios, detect by storing a unique tab ID in sessionStorage
+              and validate against server-side session. Use idempotency keys stored in each tab's sessionStorage
+              to prevent order conflicts.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: Your security team reports that CSRF tokens stored in sessionStorage were replayed from a
+              duplicated tab. How do you mitigate this?
+            </p>
+            <p className="mt-2 text-sm">
+              A: The root cause is that duplicate-tab copies sessionStorage, including the CSRF token. Two
+              mitigations work together: (1) Server-side token binding -- bind the CSRF token to a server-side
+              session identifier and validate on each request. Once consumed, invalidate it. (2) Token rotation
+              -- after each mutating request, the server returns a new CSRF token, and the client replaces the
+              old one. The duplicated tab's old token becomes invalid. For defense in depth, also check Origin
+              and Referer headers. sessionStorage provides tab isolation but not uniqueness guarantees.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: You need to persist form state across page refreshes but also need the data accessible in a
+              service worker for background sync. Can sessionStorage solve this?
+            </p>
+            <p className="mt-2 text-sm">
+              A: No. Service workers run in a separate execution context without access to the Storage API
+              (neither sessionStorage nor localStorage). The correct approach is IndexedDB, which is accessible
+              from both window contexts and service workers. Store the form state in IndexedDB using a key that
+              includes a session identifier (e.g., a UUID generated on page load and stored in sessionStorage).
+              Implement a cleanup routine to scan IndexedDB for entries whose session IDs do not match any
+              active tab (tracked via BroadcastChannel heartbeat or clients.matchAll() API).
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: Compare sessionStorage, localStorage, cookies, and IndexedDB for different use cases. When
+              would you choose each?
+            </p>
+            <p className="mt-2 text-sm">
+              A: sessionStorage: tab-scoped, cleared on tab close (5-10MB) -- wizard state, form drafts,
+              temporary filters. localStorage: persistent across sessions (5-10MB), no server transmission --
+              theme preferences, feature flags. Cookies: small (4KB), sent with requests, HttpOnly option --
+              auth tokens, session IDs. IndexedDB: large structured storage (50MB+), async, complex queries --
+              offline-first apps, large datasets, binary data. Choose based on: persistence needs, size
+              requirements, server access needs, and query complexity.
+            </p>
+          </div>
+        </div>
       </section>
 
+      {/* Section 10: References */}
       <section>
-        <h2>Interview Questions</h2>
-
-        <h3 className="mt-4 font-semibold">
-          Q1: A user opens your checkout flow in two tabs simultaneously. Each tab has its own cart. How do you ensure
-          the checkout state in each tab is independent without cross-contamination?
-        </h3>
-        <p>
-          <strong>Answer:</strong> Store the checkout wizard state (current step, selected items, shipping details) in
-          sessionStorage rather than localStorage or a global store. Because sessionStorage is scoped to the tab, each
-          tab automatically gets its own isolated state. The user can progress through checkout independently in both
-          tabs. On tab close, the abandoned checkout state is automatically cleaned up. The key nuance is handling the
-          duplicate-tab scenario: if the user duplicates a tab mid-checkout, the new tab inherits a snapshot of the
-          checkout state. You should detect this (e.g., by storing a unique tab ID in sessionStorage and checking it
-          against a server-side session) and either continue from the snapshot or start fresh, depending on business
-          requirements. Server-side, you must ensure that submitting the order in one tab does not conflict with the
-          other -- use idempotency keys stored in each tab's sessionStorage.
-        </p>
-
-        <h3 className="mt-4 font-semibold">
-          Q2: Your security team reports that CSRF tokens stored in sessionStorage were replayed from a duplicated tab.
-          How do you mitigate this?
-        </h3>
-        <p>
-          <strong>Answer:</strong> The root cause is that duplicate-tab copies sessionStorage, including the CSRF token.
-          Two mitigations work together: (1) <strong>Server-side token binding</strong> -- bind the CSRF token to a
-          server-side session identifier and validate that the token is still valid and unused on each request. Once a
-          token is consumed, invalidate it. (2) <strong>Token rotation</strong> -- after each mutating request, the
-          server returns a new CSRF token in the response, and the client writes it to sessionStorage, replacing the old
-          one. The duplicated tab still has the old token, which is now invalid. For defense in depth, also check the{" "}
-          <code>Origin</code> and <code>Referer</code> headers. The broader lesson is that sessionStorage provides
-          tab isolation but not uniqueness guarantees -- duplicate-tab breaks any assumption of single-use within a
-          browsing context lineage.
-        </p>
-
-        <h3 className="mt-4 font-semibold">
-          Q3: You need to persist form state across page refreshes but also need the data accessible in a service worker
-          for background sync. Can sessionStorage solve this? What would you use instead?
-        </h3>
-        <p>
-          <strong>Answer:</strong> sessionStorage cannot solve this. Service workers run in a separate execution context
-          without access to the Storage API (neither sessionStorage nor localStorage). The correct approach is{" "}
-          <strong>IndexedDB</strong>, which is accessible from both window contexts and service workers. Store the form
-          state in IndexedDB using a key that includes a session identifier (e.g., a UUID generated on page load and
-          stored in sessionStorage). The service worker reads from IndexedDB for background sync. To maintain the
-          "session-scoped" cleanup behavior that sessionStorage provides for free, implement a cleanup routine: on page
-          load, scan IndexedDB for entries whose session IDs do not match any active tab (tracked via a{" "}
-          <code>BroadcastChannel</code> heartbeat or the <code>clients.matchAll()</code> API in the service worker). This
-          gives you the best of both worlds: session-scoped semantics with worker accessibility and async, non-blocking
-          I/O.
-        </p>
+        <h2>References</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://html.spec.whatwg.org/multipage/webstorage.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              HTML Living Standard -- Web Storage
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN Web Docs -- Window.sessionStorage
+            </a>
+          </li>
+          <li>
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/HTML5_Security_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OWASP -- HTML5 Security Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/storage-for-the-web/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              web.dev -- Storage for the Web
+            </a>
+          </li>
+          <li>
+            <a href="https://www.rfc-editor.org/rfc/rfc6265" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              RFC 6265 -- HTTP State Management Mechanism
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

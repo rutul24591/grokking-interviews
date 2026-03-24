@@ -215,35 +215,6 @@ export default function CacheApiConciseArticle() {
       </section>
 
       <section>
-        <h2>Implementation Examples</h2>
-        <p>
-          Below are practical implementations covering precaching, runtime caching, and cache management patterns:
-        </p>
-
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-3 font-semibold">Precaching During Service Worker Install</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Runtime Caching with Cache First Strategy</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Cache Cleanup During Activate</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Using Cache API from the Window Context</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-        </div>
-      </section>
-
-      <section>
         <h2>Trade-offs & Comparisons</h2>
         <p>
           Choosing the right storage mechanism depends on what you are caching, how much control you need, and
@@ -505,6 +476,85 @@ export default function CacheApiConciseArticle() {
         </div>
       </section>
 
+      {/* Section 9: Common Interview Questions */}
+      <section>
+        <h2>Common Interview Questions</h2>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How does the Cache API differ from the browser's HTTP cache, and when would you use one over the
+              other?
+            </p>
+            <p className="mt-2 text-sm">
+              A: The HTTP cache is automatic and header-driven: the browser manages it based on Cache-Control,
+              ETag, and Last-Modified headers. You cannot programmatically add, remove, or inspect entries. The
+              Cache API is entirely manual and code-driven: you decide what to cache, when to evict, and how to
+              match requests. The HTTP cache sits below the Cache API in the stack. When a Service Worker makes
+              a fetch() call, that request still passes through the HTTP cache before reaching the network. Use
+              the HTTP cache for standard CDN behavior and automatic browser caching. Use the Cache API when you
+              need offline support, deterministic precaching, or custom invalidation logic that cannot be expressed
+              with HTTP headers alone. In production, they complement each other: HTTP caching handles edge/CDN
+              efficiency, while the Cache API handles on-device offline resilience.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: Explain the risks of caching opaque responses and how you would mitigate them in a production
+              application.
+            </p>
+            <p className="mt-2 text-sm">
+              A: Opaque responses come from cross-origin requests made without CORS. They have status 0, empty
+              headers, and inaccessible bodies. The risks are threefold: (1) Size inflation - browsers pad each
+              opaque response to ~7MB of reported quota, so caching 100 entries could report 700MB and trigger
+              origin eviction. (2) Silent errors - you cannot inspect the status code, so a 500 error looks
+              identical to a 200 success; you may cache and serve error responses indefinitely. (3) Security -
+              the padding exists to prevent timing attacks that infer response sizes. Mitigation: configure CORS
+              on the origin server wherever possible to get non-opaque responses. Where CORS is not feasible
+              (third-party CDNs), implement a strict maximum entry count for opaque caches (e.g., 50 entries),
+              use a dedicated named cache for opaque resources to isolate quota impact, and implement periodic
+              full-cache rotation rather than per-entry eviction.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: Design a cache management strategy for a PWA that serves 500 pages of content offline. How do
+              you handle updates, storage limits, and cache invalidation?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Use a tiered approach with separate named caches: (1) App shell cache (versioned, e.g.,
+              'shell-v12') precached during install containing the HTML template, critical CSS, and core JS.
+              Rotated atomically on each deployment via the activate event. (2) Content cache (e.g., 'content-v1')
+              populated at runtime using a stale-while-revalidate strategy as users browse pages. Implement a
+              custom expiration layer using IndexedDB to store timestamps per URL and evict entries older than
+              7 days during periodic maintenance. Set a maximum of 500 entries; when exceeded, evict
+              least-recently-used entries. (3) Image cache with a strict cap of 200 entries and LRU eviction.
+              Monitor total quota usage via navigator.storage.estimate() and trigger aggressive eviction when
+              usage exceeds 70%. Request persistent storage to prevent browser-initiated eviction. For updates,
+              use a versioned SW script that triggers a new install cycle; the new SW can selectively migrate
+              still-valid content cache entries rather than re-downloading all 500 pages.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What are the key differences between the Cache API and IndexedDB? When would you use each?
+            </p>
+            <p className="mt-2 text-sm">
+              A: The Cache API is designed for HTTP request/response pairs: keys are Request objects (or URLs),
+              values are Response objects. It's ideal for caching network responses, precaching app shells, and
+              offline support. IndexedDB is a full NoSQL database: keys can be any structured data, values can
+              be any structured cloneable data (objects, arrays, Blobs, Files). Use the Cache API for caching
+              fetch responses and Service Worker offline patterns. Use IndexedDB for structured application data,
+              complex queries, and non-HTTP data storage. They often work together: Cache API for static assets
+              and HTML, IndexedDB for user data and application state.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 10: References & Further Reading */}
       <section>
         <h2>References & Further Reading</h2>
         <ul className="space-y-2">
@@ -534,71 +584,6 @@ export default function CacheApiConciseArticle() {
             </a>
           </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Common Interview Questions</h2>
-        <div className="space-y-4">
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: How does the Cache API differ from the browser's HTTP cache, and when would you use one over the
-              other?
-            </p>
-            <p className="mt-2 text-sm">
-              A: The HTTP cache is automatic and header-driven: the browser manages it based on{" "}
-              <code>Cache-Control</code>, <code>ETag</code>, and <code>Last-Modified</code> headers. You cannot
-              programmatically add, remove, or inspect entries. The Cache API is entirely manual and code-driven:
-              you decide what to cache, when to evict, and how to match requests. The HTTP cache sits{" "}
-              <em>below</em> the Cache API in the stack. When a Service Worker makes a <code>fetch()</code> call,
-              that request still passes through the HTTP cache before reaching the network. Use the HTTP cache
-              for standard CDN behavior and automatic browser caching. Use the Cache API when you need offline
-              support, deterministic precaching, or custom invalidation logic that cannot be expressed with HTTP
-              headers alone. In production, they complement each other: HTTP caching handles edge/CDN efficiency,
-              while the Cache API handles on-device offline resilience.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: Explain the risks of caching opaque responses and how you would mitigate them in a production
-              application.
-            </p>
-            <p className="mt-2 text-sm">
-              A: Opaque responses come from cross-origin requests made without CORS. They have status 0, empty
-              headers, and inaccessible bodies. The risks are threefold: (1) <strong>Size inflation</strong> -
-              browsers pad each opaque response to ~7MB of reported quota, so caching 100 entries could report
-              700MB and trigger origin eviction. (2) <strong>Silent errors</strong> - you cannot inspect the
-              status code, so a 500 error looks identical to a 200 success; you may cache and serve error
-              responses indefinitely. (3) <strong>Security</strong> - the padding exists to prevent timing
-              attacks that infer response sizes. Mitigation: configure CORS on the origin server wherever
-              possible to get non-opaque responses. Where CORS is not feasible (third-party CDNs), implement
-              a strict maximum entry count for opaque caches (e.g., 50 entries), use a dedicated named cache
-              for opaque resources to isolate quota impact, and implement periodic full-cache rotation rather
-              than per-entry eviction.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">
-              Q: Design a cache management strategy for a PWA that serves 500 pages of content offline. How do
-              you handle updates, storage limits, and cache invalidation?
-            </p>
-            <p className="mt-2 text-sm">
-              A: Use a tiered approach with separate named caches: (1) <strong>App shell cache</strong>{" "}
-              (versioned, e.g., <code>'shell-v12'</code>) precached during install containing the HTML template,
-              critical CSS, and core JS. Rotated atomically on each deployment via the activate event. (2){" "}
-              <strong>Content cache</strong> (e.g., <code>'content-v1'</code>) populated at runtime using a
-              stale-while-revalidate strategy as users browse pages. Implement a custom expiration layer using
-              IndexedDB to store timestamps per URL and evict entries older than 7 days during periodic
-              maintenance. Set a maximum of 500 entries; when exceeded, evict least-recently-used entries. (3){" "}
-              <strong>Image cache</strong> with a strict cap of 200 entries and LRU eviction. Monitor total
-              quota usage via <code>navigator.storage.estimate()</code> and trigger aggressive eviction when
-              usage exceeds 70%. Request persistent storage to prevent browser-initiated eviction. For updates,
-              use a versioned SW script that triggers a new install cycle; the new SW can selectively migrate
-              still-valid content cache entries rather than re-downloading all 500 pages.
-            </p>
-          </div>
-        </div>
       </section>
     </ArticleLayout>
   );

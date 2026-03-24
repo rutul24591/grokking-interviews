@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+body {
+  background: #070a13;
+  color: #e6e9f2;
+}
+
+.app-font {
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+.code-font-enabled code {
+  font-family: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
