@@ -176,103 +176,6 @@ export default function ApplicationCacheConciseArticle() {
       </section>
 
       <section>
-        <h2>Implementation Examples</h2>
-        <p>
-          Below are the key components of an AppCache implementation. Note that these are historical examples &mdash;
-          this API should not be used in new projects.
-        </p>
-
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-3 font-semibold">Cache Manifest File (app.appcache)</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm">
-              <pre className="whitespace-pre-wrap font-mono text-xs leading-relaxed">
-{`CACHE MANIFEST
-# Version 2026-03-13-v1 (change this comment to trigger update)
-
-# Explicitly cached resources
-CACHE:
-/index.html
-/css/app.css
-/js/app.js
-/images/logo.png
-/fonts/inter.woff2
-
-# Always fetch from network
-NETWORK:
-/api/
-/analytics/
-*
-
-# Fallback pages for offline
-FALLBACK:
-/ /offline.html
-/images/ /images/placeholder.png`}
-              </pre>
-            </div>
-            <p className="mt-3 text-sm text-muted">
-              The version comment is a common pattern: since AppCache checks for byte-level changes in the manifest,
-              changing a comment forces a full re-download of all cached resources. There was no way to invalidate
-              individual resources.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">HTML Manifest Attribute</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm">
-              <pre className="whitespace-pre-wrap font-mono text-xs leading-relaxed">
-{`<!-- This single attribute opts the page into AppCache --&gt;
-<!-- WARNING: This page will be cached as a "master entry" --&gt;
-<html manifest="app.appcache">
-<head>
-  <title>My App</title>
-</head>
-<body>
-  <div id="app"></div>
-  <script src="/js/app.js"></script>
-</body>
-</html>`}
-              </pre>
-            </div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">JavaScript Update Handling</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm">
-              <pre className="whitespace-pre-wrap font-mono text-xs leading-relaxed">
-{`// The best workaround for the double-reload problem
-window.applicationCache.addEventListener('updateready', () =&gt; {
-  if (window.applicationCache.status === window.applicationCache.UPDATEREADY) {
-    // Swap to the new cache version
-    window.applicationCache.swapCache();
-    // Force reload to load resources from the new cache
-    if (confirm('A new version is available. Reload now?')) {
-      window.location.reload();
-    }
-  }
-});
-
-// Programmatically check for updates (e.g., on a timer)
-setInterval(() =&gt; {
-  try {
-    window.applicationCache.update();
-  } catch (e) {
-    // Handle cases where AppCache is not available
-    console.warn('AppCache update check failed:', e);
-  }
-}, 60 * 60 * 1000); // Check every hour`}
-              </pre>
-            </div>
-            <p className="mt-3 text-sm text-muted">
-              Even with this workaround, the user was still seeing the old version on the current page load.
-              The <code>swapCache()</code> call only affected future subresource loads, and the full page HTML
-              still required a reload to reflect changes.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section>
         <h2>Trade-offs & Comparisons</h2>
         <p>
           The comparison between AppCache and Service Workers is central to understanding why the migration happened
@@ -523,37 +426,7 @@ setInterval(() =&gt; {
         </div>
       </section>
 
-      <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://alistapart.com/article/application-cache-is-a-douchebag/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Application Cache is a Douchebag - Jake Archibald (A List Apart)
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/applicationCache" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN: Window.applicationCache (Deprecated)
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/service-worker-lifecycle/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              The Service Worker Lifecycle - web.dev
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.chrome.com/blog/appcache-removal/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Preparing for AppCache Removal - Chrome Developers Blog
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.chrome.com/docs/workbox/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Workbox: Production-Ready Service Worker Libraries - Google
-            </a>
-          </li>
-        </ul>
-      </section>
-
+      {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -611,6 +484,38 @@ setInterval(() =&gt; {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 10: References & Further Reading */}
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://alistapart.com/article/application-cache-is-a-douchebag/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Application Cache is a Douchebag - Jake Archibald (A List Apart)
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/applicationCache" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN: Window.applicationCache (Deprecated)
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/service-worker-lifecycle/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              The Service Worker Lifecycle - web.dev
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.chrome.com/blog/appcache-removal/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Preparing for AppCache Removal - Chrome Developers Blog
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.chrome.com/docs/workbox/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Workbox: Production-Ready Service Worker Libraries - Google
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

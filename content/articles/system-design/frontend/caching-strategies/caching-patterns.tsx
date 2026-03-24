@@ -221,26 +221,6 @@ export default function CachingPatternsConciseArticle() {
       </section>
 
       <section>
-        <h2>Implementation Examples</h2>
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-3 font-semibold">Workbox Service Worker Configuration</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Custom Cache-First with Refresh (Advanced Pattern)</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Network-First with Timeout and Background Sync</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-        </div>
-      </section>
-
-      <section>
         <h2>Trade-offs & Comparisons</h2>
         <table className="w-full border-collapse text-sm">
           <thead>
@@ -466,37 +446,7 @@ export default function CachingPatternsConciseArticle() {
         </div>
       </section>
 
-      <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://developer.chrome.com/docs/workbox/modules/workbox-strategies/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Workbox Strategies Module - Chrome Developers
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/articles/offline-cookbook" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              The Offline Cookbook - Jake Archibald (web.dev)
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/articles/service-worker-caching-and-http-caching" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Service Worker Caching and HTTP Caching - web.dev
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Cache" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Cache API - MDN Web Docs
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/articles/storage-for-the-web" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Storage for the Web (Quota, Eviction) - web.dev
-            </a>
-          </li>
-        </ul>
-      </section>
-
+      {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -541,6 +491,38 @@ export default function CachingPatternsConciseArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 10: References & Further Reading */}
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://developer.chrome.com/docs/workbox/modules/workbox-strategies/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Workbox Strategies Module - Chrome Developers
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/offline-cookbook" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              The Offline Cookbook - Jake Archibald (web.dev)
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/service-worker-caching-and-http-caching" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Service Worker Caching and HTTP Caching - web.dev
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Cache" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Cache API - MDN Web Docs
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/storage-for-the-web" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Storage for the Web (Quota, Eviction) - web.dev
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

@@ -150,28 +150,6 @@ export default function IndexedDBCachingConciseArticle() {
       </section>
 
       <section>
-        <h2>Implementation Examples</h2>
-        <p>Below are practical implementations demonstrating IndexedDB usage patterns:</p>
-
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-3 font-semibold">Raw IndexedDB API - Database Setup and CRUD</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Dexie.js - Simplified Database Operations</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Offline Sync Queue Implementation</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-        </div>
-      </section>
-
-      <section>
         <h2>Trade-offs & Comparisons</h2>
         <p>Understanding when to use IndexedDB requires comparing it against other client-side storage mechanisms:</p>
         <table className="w-full border-collapse">
@@ -412,37 +390,7 @@ export default function IndexedDBCachingConciseArticle() {
         </div>
       </section>
 
-      <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN Web Docs - IndexedDB API
-            </a>
-          </li>
-          <li>
-            <a href="https://dexie.org/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Dexie.js - A Minimalistic Wrapper for IndexedDB
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/articles/indexeddb" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              web.dev - Working with IndexedDB
-            </a>
-          </li>
-          <li>
-            <a href="https://www.w3.org/TR/IndexedDB-3/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              W3C - Indexed Database API 3.0 Specification
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/nicolo-ribaudo/idb" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              idb - A tiny Promise-based IndexedDB wrapper by Jake Archibald
-            </a>
-          </li>
-        </ul>
-      </section>
-
+      {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -489,6 +437,38 @@ export default function IndexedDBCachingConciseArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 10: References & Further Reading */}
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN Web Docs - IndexedDB API
+            </a>
+          </li>
+          <li>
+            <a href="https://dexie.org/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Dexie.js - A Minimalistic Wrapper for IndexedDB
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/indexeddb" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              web.dev - Working with IndexedDB
+            </a>
+          </li>
+          <li>
+            <a href="https://www.w3.org/TR/IndexedDB-3/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              W3C - Indexed Database API 3.0 Specification
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/nicolo-ribaudo/idb" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              idb - A tiny Promise-based IndexedDB wrapper by Jake Archibald
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

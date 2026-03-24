@@ -248,140 +248,6 @@ curl -X POST "https://api.fastly.com/service/{id}/purge/product-123" \\
         </ol>
       </section>
 
-      {/* Section 4: Implementation Examples */}
-      <section>
-        <h2>Implementation Examples</h2>
-
-        <h3 className="mt-4 font-semibold">Next.js with Vercel Edge Caching</h3>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`// app/api/products/route.ts
-// Vercel automatically caches at edge when you set these headers
-
-import { NextResponse } from 'next/server';
-
-export async function GET(request: Request) {
-  const products = await fetchProductsFromDB();
-
-  return NextResponse.json(products, {
-    headers: {
-      // CDN caches for 60 seconds, browser for 0 seconds
-      'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
-      // Tag for granular invalidation
-      'Cache-Tag': 'products, homepage',
-    },
-  });
-}
-
-// On-demand revalidation when data changes
-// app/api/revalidate/route.ts
-export async function POST(request: Request) {
-  const { tag } = await request.json();
-  // Purge all cached responses tagged with this value
-  revalidateTag(tag);
-  return NextResponse.json({ revalidated: true });
-}`}</code>
-        </pre>
-
-        <h3 className="mt-6 font-semibold">Cloudflare Workers: Cache API</h3>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`// Cloudflare Worker with custom caching logic
-export default {
-  async fetch(request: Request, env: any, ctx: ExecutionContext) {
-    const cacheUrl = new URL(request.url);
-    const cacheKey = new Request(cacheUrl.toString(), request);
-    const cache = caches.default;
-
-    // Check edge cache first
-    let response = await cache.match(cacheKey);
-
-    if (!response) {
-      // Cache miss - fetch from origin
-      response = await fetch(request);
-
-      // Only cache successful responses
-      if (response.ok) {
-        response = new Response(response.body, response);
-        response.headers.set('Cache-Control', 'public, s-maxage=3600');
-
-        // Store in edge cache (non-blocking)
-        ctx.waitUntil(cache.put(cacheKey, response.clone()));
-      }
-    }
-
-    return response;
-  },
-};`}</code>
-        </pre>
-
-        <h3 className="mt-6 font-semibold">AWS CloudFront with Custom Cache Policy</h3>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`// CDK: Define a CloudFront distribution with custom cache behavior
-import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
-import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
-
-const cachePolicy = new cloudfront.CachePolicy(this, 'ApiCachePolicy', {
-  cachePolicyName: 'api-cache-policy',
-  defaultTtl: Duration.minutes(5),
-  maxTtl: Duration.hours(24),
-  minTtl: Duration.seconds(0),
-  // Include these in the cache key
-  queryStringBehavior: cloudfront.CacheQueryStringBehavior.allowList(
-    'page', 'limit', 'sort'  // Only these query params affect caching
-  ),
-  headerBehavior: cloudfront.CacheHeaderBehavior.allowList(
-    'Accept', 'Accept-Encoding'  // Vary by content negotiation
-  ),
-  cookieBehavior: cloudfront.CacheCookieBehavior.none(),
-  enableAcceptEncodingGzip: true,
-  enableAcceptEncodingBrotli: true,
-});
-
-const distribution = new cloudfront.Distribution(this, 'CDN', {
-  defaultBehavior: {
-    origin: new origins.HttpOrigin('api.example.com'),
-    cachePolicy,
-    originRequestPolicy: cloudfront.OriginRequestPolicy.ALL_VIEWER,
-    viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-  },
-});`}</code>
-        </pre>
-
-        <h3 className="mt-6 font-semibold">Static Asset Fingerprinting</h3>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`// next.config.js — content-hashed filenames for immutable caching
-// Next.js does this automatically for JS/CSS chunks:
-// /_next/static/chunks/app-layout-abc123.js
-
-// For custom static assets, use a build step:
-// styles.css → styles.a1b2c3d4.css
-
-// Set headers for fingerprinted assets
-// Vercel: vercel.json
-{
-  "headers": [
-    {
-      "source": "/_next/static/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    },
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, s-maxage=60, stale-while-revalidate=600"
-        }
-      ]
-    }
-  ]
-}`}</code>
-        </pre>
-      </section>
-
       {/* Section 5: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs & Comparisons</h2>
@@ -626,44 +492,7 @@ const distribution = new cloudfront.Distribution(this, 'CDN', {
         </div>
       </section>
 
-      {/* Section 9: References & Further Reading */}
-      <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching" className="text-purple-600 underline dark:text-purple-400" target="_blank" rel="noopener noreferrer">
-              MDN: HTTP Caching
-            </a>
-            {" "} &mdash; Comprehensive guide to HTTP cache headers and semantics.
-          </li>
-          <li>
-            <a href="https://developers.cloudflare.com/cache/" className="text-purple-600 underline dark:text-purple-400" target="_blank" rel="noopener noreferrer">
-              Cloudflare Cache Documentation
-            </a>
-            {" "} &mdash; Cache rules, cache keys, tiered caching, and Workers cache API.
-          </li>
-          <li>
-            <a href="https://docs.fastly.com/en/guides/purging" className="text-purple-600 underline dark:text-purple-400" target="_blank" rel="noopener noreferrer">
-              Fastly Purging Documentation
-            </a>
-            {" "} &mdash; Surrogate keys, instant purge, and soft purge strategies.
-          </li>
-          <li>
-            <a href="https://web.dev/articles/love-your-cache" className="text-purple-600 underline dark:text-purple-400" target="_blank" rel="noopener noreferrer">
-              web.dev: Love Your Cache
-            </a>
-            {" "} &mdash; Google's guide to modern caching strategies for web apps.
-          </li>
-          <li>
-            <a href="https://www.rfc-editor.org/rfc/rfc9111" className="text-purple-600 underline dark:text-purple-400" target="_blank" rel="noopener noreferrer">
-              RFC 9111: HTTP Caching
-            </a>
-            {" "} &mdash; The HTTP caching specification (updated from RFC 7234).
-          </li>
-        </ul>
-      </section>
-
-      {/* Section 10: Common Interview Questions */}
+      {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
 
@@ -724,31 +553,47 @@ const distribution = new cloudfront.Distribution(this, 'CDN', {
               <p>
                 <strong>1. Browser cache:</strong> Open DevTools, check the Network tab. If the response
                 shows <code>(from disk cache)</code>, the browser is serving a cached copy. Hard refresh (Ctrl+Shift+R)
-                to bypass. Check the <code>max-age</code> or <code>Expires</code> header on the original response to
-                understand why the browser cached it.
-              </p>
-              <p>
-                <strong>2. CDN cache:</strong> Check the CDN-specific cache status header
-                (<code>cf-cache-status</code> for Cloudflare, <code>x-cache</code> for CloudFront,
-                <code>x-served-by</code> for Fastly). If it says HIT, the CDN is serving stale content. Purge the
-                specific URL or tag via the CDN's API or dashboard.
-              </p>
-              <p>
-                <strong>3. Origin shield:</strong> Even after edge purge, the shield may still have a cached copy. Some
-                CDNs require purging both layers. Check if the CDN propagation has completed (Cloudflare takes ~30s,
-                CloudFront takes 1-2 minutes).
-              </p>
-              <p>
-                <strong>4. Build artifact:</strong> Verify that the deployment actually succeeded and the new code is
-                being served by the origin. Curl the origin directly (bypassing CDN) to confirm.
-              </p>
-              <p>
-                <strong>Prevention:</strong> Use content-hashed filenames for static assets so new deploys create new
-                URLs that bypass all caching entirely.
               </p>
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Section 10: References & Further Reading */}
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching" className="text-purple-600 underline dark:text-purple-400" target="_blank" rel="noopener noreferrer">
+              MDN: HTTP Caching
+            </a>
+            {" "} &mdash; Comprehensive guide to HTTP cache headers and semantics.
+          </li>
+          <li>
+            <a href="https://developers.cloudflare.com/cache/" className="text-purple-600 underline dark:text-purple-400" target="_blank" rel="noopener noreferrer">
+              Cloudflare Cache Documentation
+            </a>
+            {" "} &mdash; Cache rules, cache keys, tiered caching, and Workers cache API.
+          </li>
+          <li>
+            <a href="https://docs.fastly.com/en/guides/purging" className="text-purple-600 underline dark:text-purple-400" target="_blank" rel="noopener noreferrer">
+              Fastly Purging Documentation
+            </a>
+            {" "} &mdash; Surrogate keys, instant purge, and soft purge strategies.
+          </li>
+          <li>
+            <a href="https://web.dev/articles/love-your-cache" className="text-purple-600 underline dark:text-purple-400" target="_blank" rel="noopener noreferrer">
+              web.dev: Love Your Cache
+            </a>
+            {" "} &mdash; Google's guide to modern caching strategies for web apps.
+          </li>
+          <li>
+            <a href="https://www.rfc-editor.org/rfc/rfc9111" className="text-purple-600 underline dark:text-purple-400" target="_blank" rel="noopener noreferrer">
+              RFC 9111: HTTP Caching
+            </a>
+            {" "} &mdash; The HTTP caching specification (updated from RFC 7234).
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

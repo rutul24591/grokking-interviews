@@ -238,31 +238,6 @@ export default function ServiceWorkerCachingConciseArticle() {
       </section>
 
       <section>
-        <h2>Implementation Examples</h2>
-        <p>
-          Below are practical implementations covering Service Worker registration, precaching, and runtime
-          caching strategies:
-        </p>
-
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-3 font-semibold">Service Worker Registration & Lifecycle</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Cache Strategies Implementation</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Workbox Configuration</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-        </div>
-      </section>
-
-      <section>
         <h2>Trade-offs & Comparisons</h2>
         <p>
           Understanding how Service Worker caching compares to other browser storage and caching mechanisms is
@@ -518,37 +493,7 @@ export default function ServiceWorkerCachingConciseArticle() {
         </div>
       </section>
 
-      <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://web.dev/learn/pwa/service-workers" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Learn PWA: Service Workers - web.dev
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Service Worker API - MDN Web Docs
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.chrome.com/docs/workbox" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Workbox: Production-Ready Service Worker Libraries - Chrome Developers
-            </a>
-          </li>
-          <li>
-            <a href="https://jakearchibald.com/2014/offline-cookbook/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              The Offline Cookbook - Jake Archibald
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/articles/service-worker-lifecycle" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              The Service Worker Lifecycle - web.dev
-            </a>
-          </li>
-        </ul>
-      </section>
-
+      {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -610,6 +555,38 @@ export default function ServiceWorkerCachingConciseArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 10: References & Further Reading */}
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://web.dev/learn/pwa/service-workers" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Learn PWA: Service Workers - web.dev
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Service Worker API - MDN Web Docs
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.chrome.com/docs/workbox" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Workbox: Production-Ready Service Worker Libraries - Chrome Developers
+            </a>
+          </li>
+          <li>
+            <a href="https://jakearchibald.com/2014/offline-cookbook/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              The Offline Cookbook - Jake Archibald
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/service-worker-lifecycle" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              The Service Worker Lifecycle - web.dev
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

@@ -182,26 +182,6 @@ export default function StaleWhileRevalidateConciseArticle() {
       </section>
 
       <section>
-        <h2>Implementation Examples</h2>
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-3 font-semibold">HTTP Header Implementation</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Vercel SWR with React</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">TanStack Query (React Query) with Optimistic Updates</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-        </div>
-      </section>
-
-      <section>
         <h2>Trade-offs & Comparisons</h2>
         <p>
           Understanding how SWR compares to other caching strategies is essential for making informed architectural
@@ -428,37 +408,7 @@ export default function StaleWhileRevalidateConciseArticle() {
         </div>
       </section>
 
-      <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://datatracker.ietf.org/doc/html/rfc5861" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              RFC 5861 - HTTP Cache-Control Extensions for Stale Content
-            </a>
-          </li>
-          <li>
-            <a href="https://swr.vercel.app/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Vercel SWR - React Hooks for Data Fetching
-            </a>
-          </li>
-          <li>
-            <a href="https://tanstack.com/query/latest" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              TanStack Query (React Query) - Powerful Asynchronous State Management
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/stale-while-revalidate/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              web.dev - Keeping Things Fresh with stale-while-revalidate
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN - Cache-Control Header Reference
-            </a>
-          </li>
-        </ul>
-      </section>
-
+      {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -509,6 +459,38 @@ export default function StaleWhileRevalidateConciseArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 10: References & Further Reading */}
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://datatracker.ietf.org/doc/html/rfc5861" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              RFC 5861 - HTTP Cache-Control Extensions for Stale Content
+            </a>
+          </li>
+          <li>
+            <a href="https://swr.vercel.app/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Vercel SWR - React Hooks for Data Fetching
+            </a>
+          </li>
+          <li>
+            <a href="https://tanstack.com/query/latest" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              TanStack Query (React Query) - Powerful Asynchronous State Management
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/stale-while-revalidate/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              web.dev - Keeping Things Fresh with stale-while-revalidate
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN - Cache-Control Header Reference
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

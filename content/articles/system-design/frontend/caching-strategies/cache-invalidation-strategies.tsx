@@ -227,33 +227,6 @@ export default function CacheInvalidationStrategiesConciseArticle() {
       </section>
 
       <section>
-        <h2>Implementation Examples</h2>
-        <p>Below are practical implementation patterns for different invalidation strategies:</p>
-
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-3 font-semibold">TTL-Based with Stale-While-Revalidate (React Query)</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Event-Driven Invalidation via WebSocket</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Tag-Based CDN Purge (Server-Side)</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Versioned Cache Keys with Service Worker</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-        </div>
-      </section>
-
-      <section>
         <h2>Trade-offs & Comparisons</h2>
         <table className="w-full border-collapse">
           <thead>
@@ -473,37 +446,7 @@ export default function CacheInvalidationStrategiesConciseArticle() {
         </div>
       </section>
 
-      <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN Web Docs - HTTP Caching
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/articles/http-cache" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              web.dev - Prevent unnecessary network requests with the HTTP Cache
-            </a>
-          </li>
-          <li>
-            <a href="https://docs.fastly.com/en/guides/purging" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Fastly Documentation - Purging (Surrogate Keys & Tag-Based Invalidation)
-            </a>
-          </li>
-          <li>
-            <a href="https://tanstack.com/query/latest/docs/framework/react/guides/invalidations-from-mutations" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              TanStack Query - Invalidations from Mutations
-            </a>
-          </li>
-          <li>
-            <a href="https://datatracker.ietf.org/doc/html/rfc9111" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              RFC 9111 - HTTP Caching (IETF Standard)
-            </a>
-          </li>
-        </ul>
-      </section>
-
+      {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -554,6 +497,38 @@ export default function CacheInvalidationStrategiesConciseArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 10: References & Further Reading */}
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN Web Docs - HTTP Caching
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/articles/http-cache" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              web.dev - Prevent unnecessary network requests with the HTTP Cache
+            </a>
+          </li>
+          <li>
+            <a href="https://docs.fastly.com/en/guides/purging" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Fastly Documentation - Purging (Surrogate Keys & Tag-Based Invalidation)
+            </a>
+          </li>
+          <li>
+            <a href="https://tanstack.com/query/latest/docs/framework/react/guides/invalidations-from-mutations" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              TanStack Query - Invalidations from Mutations
+            </a>
+          </li>
+          <li>
+            <a href="https://datatracker.ietf.org/doc/html/rfc9111" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              RFC 9111 - HTTP Caching (IETF Standard)
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

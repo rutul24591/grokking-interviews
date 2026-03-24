@@ -287,14 +287,6 @@ export default function BrowserCachingConciseArticle() {
         </p>
       </section>
 
-      {/* Section 4: Implementation Examples */}
-      <section>
-        <h2>Implementation Examples</h2>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">
-          Example code moved to the Example tab.
-        </div>
-      </section>
-
       {/* Section 5: Trade-offs & Comparisons */}
       <section>
         <h2>Trade-offs & Comparisons</h2>
@@ -564,39 +556,7 @@ export default function BrowserCachingConciseArticle() {
         </div>
       </section>
 
-      {/* Section 9: References & Further Reading */}
-      <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://www.rfc-editor.org/rfc/rfc9111" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              RFC 9111 - HTTP Caching (June 2022)
-            </a> - The authoritative specification for HTTP caching semantics, replacing RFC 7234
-          </li>
-          <li>
-            <a href="https://web.dev/articles/http-cache" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              web.dev - Prevent unnecessary network requests with the HTTP Cache
-            </a> - Google&apos;s comprehensive guide to HTTP caching with practical examples
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN Web Docs - HTTP Caching
-            </a> - Mozilla&apos;s reference documentation covering all cache-related headers and behaviors
-          </li>
-          <li>
-            <a href="https://csswizardry.com/2019/03/cache-control-for-civilians/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Cache-Control for Civilians - Harry Roberts
-            </a> - An accessible, in-depth explanation of Cache-Control directives and their interactions
-          </li>
-          <li>
-            <a href="https://jakearchibald.com/2016/caching-best-practices/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Caching Best Practices & max-age Gotchas - Jake Archibald
-            </a> - Classic article on common caching mistakes and the immutable pattern
-          </li>
-        </ul>
-      </section>
-
-      {/* Section 10: Common Interview Questions */}
+      {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
 
@@ -665,6 +625,38 @@ export default function BrowserCachingConciseArticle() {
             becomes more important since you cannot assume they are cached.
           </p>
         </div>
+      </section>
+
+      {/* Section 10: References & Further Reading */}
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://www.rfc-editor.org/rfc/rfc9111" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              RFC 9111 - HTTP Caching (June 2022)
+            </a> - The authoritative specification for HTTP caching semantics, replacing RFC 7234
+          </li>
+          <li>
+            <a href="https://web.dev/articles/http-cache" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              web.dev - Prevent unnecessary network requests with the HTTP Cache
+            </a> - Google&apos;s comprehensive guide to HTTP caching with practical examples
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN Web Docs - HTTP Caching
+            </a> - Mozilla&apos;s reference documentation covering all cache-related headers and behaviors
+          </li>
+          <li>
+            <a href="https://csswizardry.com/2019/03/cache-control-for-civilians/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Cache-Control for Civilians - Harry Roberts
+            </a> - An accessible, in-depth explanation of Cache-Control directives and their interactions
+          </li>
+          <li>
+            <a href="https://jakearchibald.com/2016/caching-best-practices/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Caching Best Practices & max-age Gotchas - Jake Archibald
+            </a> - Classic article on common caching mistakes and the immutable pattern
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

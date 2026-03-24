@@ -155,33 +155,6 @@ export default function MemoryCachingConciseArticle() {
       </section>
 
       <section>
-        <h2>Implementation Examples</h2>
-        <p>Here are key implementation patterns for in-memory caching:</p>
-
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-3 font-semibold">Custom LRU Cache with TTL</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">React Query Configuration</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">SWR with Custom Cache Provider</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">Manual Request Deduplication</h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-          </div>
-        </div>
-      </section>
-
-      <section>
         <h2>Trade-offs & Comparisons</h2>
         <table className="w-full border-collapse">
           <thead>
@@ -429,37 +402,7 @@ export default function MemoryCachingConciseArticle() {
         </div>
       </section>
 
-      <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://tanstack.com/query/latest/docs/framework/react/overview" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              TanStack Query (React Query) Documentation - Official Guide
-            </a>
-          </li>
-          <li>
-            <a href="https://swr.vercel.app/docs/getting-started" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              SWR Documentation - React Hooks for Data Fetching
-            </a>
-          </li>
-          <li>
-            <a href="https://www.apollographql.com/docs/react/caching/overview" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Apollo Client Caching - Normalized Cache Architecture
-            </a>
-          </li>
-          <li>
-            <a href="https://tkdodo.eu/blog/practical-react-query" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Practical React Query - TkDodo's Blog (Community Best Practices)
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.chrome.com/docs/devtools/memory/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Chrome DevTools Memory Panel - Debugging Memory Issues
-            </a>
-          </li>
-        </ul>
-      </section>
-
+      {/* Section 9: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
@@ -504,6 +447,38 @@ export default function MemoryCachingConciseArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Section 10: References & Further Reading */}
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://tanstack.com/query/latest/docs/framework/react/overview" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              TanStack Query (React Query) Documentation - Official Guide
+            </a>
+          </li>
+          <li>
+            <a href="https://swr.vercel.app/docs/getting-started" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              SWR Documentation - React Hooks for Data Fetching
+            </a>
+          </li>
+          <li>
+            <a href="https://www.apollographql.com/docs/react/caching/overview" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Apollo Client Caching - Normalized Cache Architecture
+            </a>
+          </li>
+          <li>
+            <a href="https://tkdodo.eu/blog/practical-react-query" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Practical React Query - TkDodo's Blog (Community Best Practices)
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.chrome.com/docs/devtools/memory/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Chrome DevTools Memory Panel - Debugging Memory Issues
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );
