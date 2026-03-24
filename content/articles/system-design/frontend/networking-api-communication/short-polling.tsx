@@ -526,6 +526,202 @@ export default function ShortPollingConciseArticle() {
       </section>
 
       <section>
+        <h2>Security Considerations</h2>
+        <p>
+          Short polling has security considerations around abuse prevention.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Rate Limiting</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>The Risk:</strong> Polling endpoints are vulnerable to abuse.
+            </li>
+            <li>
+              <strong>Mitigation:</strong> Implement per-user rate limiting based on
+              expected polling interval.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Authentication</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Token-Based Auth:</strong> Authenticate each polling request.
+            </li>
+            <li>
+              <strong>Per-Resource Authorization:</strong> Authorize each poll based
+              on user permissions.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Performance Benchmarks</h2>
+        <p>
+          Understanding short polling performance characteristics.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Industry Performance Data</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Metric</th>
+                <th className="p-2 text-left">Target</th>
+                <th className="p-2 text-left">Industry Average</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Request Latency</td>
+                <td className="p-2">&lt;100ms</td>
+                <td className="p-2">50-200ms</td>
+              </tr>
+              <tr>
+                <td className="p-2">304 Response Rate</td>
+                <td className="p-2">&gt;90%</td>
+                <td className="p-2">80-95%</td>
+              </tr>
+              <tr>
+                <td className="p-2">Data Freshness</td>
+                <td className="p-2">≤ polling interval</td>
+                <td className="p-2">5-30 seconds</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Real-World Benchmarks</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>GitHub Status:</strong> 30s polling interval with CDN caching.
+            </li>
+            <li>
+              <strong>Twitter (early):</strong> Used polling before switching to push.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Cost Analysis</h2>
+        <p>
+          Short polling has predictable costs but can become expensive at scale.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Server Resources:</strong> For 100K users at 10s interval:
+              600,000 requests/minute.
+            </li>
+            <li>
+              <strong>CDN Costs:</strong> CDN caching reduces origin load.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Initial Implementation:</strong> 1-2 weeks for basic polling.
+            </li>
+            <li>
+              <strong>Ongoing Maintenance:</strong> 5% of engineering time.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
+          <p>
+            Use short polling when: update frequency is low (&lt;1/minute), user count
+            is moderate, simplicity is priority. Use SSE when: you need sub-5s latency.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Decision Framework: When to Use Short Polling</h2>
+        <p>
+          Use this decision framework to evaluate whether short polling is appropriate.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Decision Tree</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Is update frequency &lt;1/minute?</strong>
+              <ul>
+                <li>Yes → Short polling is efficient</li>
+                <li>No → Consider SSE or WebSockets</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Is 5-30s latency acceptable?</strong>
+              <ul>
+                <li>Yes → Short polling works</li>
+                <li>No → Need push-based solution</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Is simplicity a priority?</strong>
+              <ul>
+                <li>Yes → Short polling is simplest</li>
+                <li>No → SSE/WebSocket complexity may be justified</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Alternative Comparison</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Approach</th>
+                <th className="p-2 text-left">Latency</th>
+                <th className="p-2 text-left">Server Load</th>
+                <th className="p-2 text-left">Complexity</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Short Polling</td>
+                <td className="p-2">5-30s</td>
+                <td className="p-2">High</td>
+                <td className="p-2">Lowest</td>
+              </tr>
+              <tr>
+                <td className="p-2">Long Polling</td>
+                <td className="p-2">&lt;5s</td>
+                <td className="p-2">Medium</td>
+                <td className="p-2">Low</td>
+              </tr>
+              <tr>
+                <td className="p-2">SSE</td>
+                <td className="p-2">&lt;1s</td>
+                <td className="p-2">Low</td>
+                <td className="p-2">Low</td>
+              </tr>
+              <tr>
+                <td className="p-2">WebSocket</td>
+                <td className="p-2">&lt;100ms</td>
+                <td className="p-2">Low</td>
+                <td className="p-2">High</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

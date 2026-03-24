@@ -580,6 +580,194 @@ export default function CircuitBreakerPatternConciseArticle() {
       </section>
 
       <section>
+        <h2>Security Considerations</h2>
+        <p>
+          Circuit breakers introduce security considerations around fallback validation.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Fallback Security</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>The Risk:</strong> Fallback data may be stale or incomplete.
+            </li>
+            <li>
+              <strong>Mitigation:</strong> Label fallback data as "cached" or "unavailable".
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">State Management</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Circuit State Exposure:</strong> Don't expose detailed circuit state to users.
+            </li>
+            <li>
+              <strong>State Tampering:</strong> Validate state on load if storing in localStorage.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Performance Benchmarks</h2>
+        <p>
+          Understanding circuit breaker performance characteristics.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Industry Performance Data</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Metric</th>
+                <th className="p-2 text-left">Target</th>
+                <th className="p-2 text-left">Industry Average</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Failure Detection Time</td>
+                <td className="p-2">&lt;30 seconds</td>
+                <td className="p-2">20-60 seconds</td>
+              </tr>
+              <tr>
+                <td className="p-2">Recovery Time</td>
+                <td className="p-2">&lt;60 seconds</td>
+                <td className="p-2">30-120 seconds</td>
+              </tr>
+              <tr>
+                <td className="p-2">False Positive Rate</td>
+                <td className="p-2">&lt;5%</td>
+                <td className="p-2">2-10%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Real-World Benchmarks</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Netflix Hystrix:</strong> Trip time: 30 seconds. Recovery: 60 seconds.
+            </li>
+            <li>
+              <strong>AWS SDK:</strong> Default: 5 failures in 30 seconds triggers open.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Cost Analysis</h2>
+        <p>
+          Circuit breakers have development and infrastructure costs.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Monitoring:</strong> $100-500/month for monitoring at scale.
+            </li>
+            <li>
+              <strong>Fallback Infrastructure:</strong> Cache servers or backup APIs.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Initial Implementation:</strong> 1-2 weeks for production-ready circuit breaker.
+            </li>
+            <li>
+              <strong>Fallback Development:</strong> 1-2 days per endpoint.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
+          <p>
+            Use circuit breakers when: multiple service dependencies, cascading failures would be
+            catastrophic. Use simple retry when: failures are transient, single dependency.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Decision Framework: When to Use Circuit Breakers</h2>
+        <p>
+          Use this decision framework to evaluate whether circuit breakers are appropriate.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Decision Tree</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Do you have multiple service dependencies?</strong>
+              <ul>
+                <li>Yes → Circuit breaker is valuable</li>
+                <li>No → Consider simple retry</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Can you provide meaningful fallbacks?</strong>
+              <ul>
+                <li>Yes → Circuit breaker with fallback</li>
+                <li>No → Circuit breaker with fail-fast</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Would cascading failures be catastrophic?</strong>
+              <ul>
+                <li>Yes → Circuit breaker is critical</li>
+                <li>No → Retry may be sufficient</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Resilience Pattern Comparison</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Pattern</th>
+                <th className="p-2 text-left">Failure Type</th>
+                <th className="p-2 text-left">Protection Level</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Retry</td>
+                <td className="p-2">Transient failures</td>
+                <td className="p-2">Individual requests</td>
+              </tr>
+              <tr>
+                <td className="p-2">Circuit Breaker</td>
+                <td className="p-2">Sustained failures</td>
+                <td className="p-2">System-level</td>
+              </tr>
+              <tr>
+                <td className="p-2">Timeout</td>
+                <td className="p-2">Slow responses</td>
+                <td className="p-2">Individual requests</td>
+              </tr>
+              <tr>
+                <td className="p-2">Bulkhead</td>
+                <td className="p-2">Resource exhaustion</td>
+                <td className="p-2">Resource isolation</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

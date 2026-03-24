@@ -578,6 +578,352 @@ export default function RequestQueuingConciseArticle() {
       </section>
 
       <section>
+        <h2>Security Considerations</h2>
+        <p>
+          Request queuing introduces security considerations around queue management and data persistence.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Queue Management Security</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Queue Exhaustion:</strong> Attackers could flood the queue
+              with requests to exhaust memory or cause denial of service.
+            </li>
+            <li>
+              <strong>Mitigation:</strong> Implement queue size limits per user
+              and global limits. Drop oldest requests when limit exceeded.
+            </li>
+            <li>
+              <strong>Implementation:</strong> Return 429 Too Many Requests when
+              queue is full. Implement per-user queue quotas.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Offline Queue Security</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Stored Data:</strong> Queued requests in IndexedDB may
+              contain sensitive data (tokens, PII).
+            </li>
+            <li>
+              <strong>Mitigation:</strong> Encrypt sensitive queued data.
+              Implement TTL for queued requests (auto-delete after N hours).
+            </li>
+            <li>
+              <strong>Implementation:</strong> Use Web Crypto API for encryption.
+              Don't queue sensitive operations (password changes, payments) offline.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Priority Manipulation</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>The Risk:</strong> If priority is client-controlled,
+              attackers could mark all requests as high priority.
+            </li>
+            <li>
+              <strong>Mitigation:</strong> Validate priority on server-side.
+              Don't trust client-provided priority for rate limiting decisions.
+            </li>
+            <li>
+              <strong>Implementation:</strong> Map client priorities to server
+              priorities with validation. Log priority mismatches for abuse detection.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Replay Attack Prevention</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Offline Replay:</strong> Queued mutations replayed on
+              reconnect could be captured and replayed by attackers.
+            </li>
+            <li>
+              <strong>Mitigation:</strong> Use idempotency keys for all queued
+              mutations. Include timestamps and validate server-side.
+            </li>
+            <li>
+              <strong>Implementation:</strong> Generate UUID-based idempotency
+              keys. Server rejects requests older than N minutes.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Performance Benchmarks</h2>
+        <p>
+          Understanding request queuing performance characteristics is essential for tuning queue parameters.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Industry Performance Data</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Metric</th>
+                <th className="p-2 text-left">Target</th>
+                <th className="p-2 text-left">Industry Average</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Queue Processing Rate</td>
+                <td className="p-2">&gt;100 req/sec</td>
+                <td className="p-2">50-500 req/sec</td>
+              </tr>
+              <tr>
+                <td className="p-2">Queue Latency (p95)</td>
+                <td className="p-2">&lt;500ms</td>
+                <td className="p-2">100-1000ms</td>
+              </tr>
+              <tr>
+                <td className="p-2">Offline Queue Size</td>
+                <td className="p-2">&lt;100 requests</td>
+                <td className="p-2">10-50 requests</td>
+              </tr>
+              <tr>
+                <td className="p-2">Replay Success Rate</td>
+                <td className="p-2">&gt;90%</td>
+                <td className="p-2">80-95%</td>
+              </tr>
+              <tr>
+                <td className="p-2">Queue Memory Usage</td>
+                <td className="p-2">&lt;10MB</td>
+                <td className="p-2">1-50MB</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Real-World Benchmarks</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Gmail Offline:</strong> Queues email sends when offline.
+              Replay success rate: ~95%. Average queue size: 5-10 emails.
+            </li>
+            <li>
+              <strong>Google Docs:</strong> Queues edits during connectivity
+              issues. Sync latency: &lt;1 second when reconnected.
+            </li>
+            <li>
+              <strong>Mobile Apps:</strong> Background sync queues for offline
+              actions. Typical queue processing: 10-50 requests per session.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Diagnosing Performance Issues</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Queue Buildup:</strong> If queue size grows continuously,
+              check dispatch rate vs enqueue rate. Increase concurrency limit.
+            </li>
+            <li>
+              <strong>High Latency:</strong> If queue latency &gt;1 second,
+              reduce queue depth or increase processing parallelism.
+            </li>
+            <li>
+              <strong>Replay Failures:</strong> If replay success rate &lt;80%,
+              check idempotency implementation and server-side handling.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Cost Analysis</h2>
+        <p>
+          Request queuing has infrastructure and development costs that must be weighed against reliability benefits.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Storage Costs:</strong> IndexedDB storage for offline
+              queues. Typically negligible (&lt;1MB per user). Browser quotas
+              apply (usually 50MB+ per origin).
+            </li>
+            <li>
+              <strong>Server Load:</strong> Queued replay can cause traffic
+              spikes when users reconnect. Implement rate limiting on replay.
+            </li>
+            <li>
+              <strong>Idempotency Storage:</strong> Server must store idempotency
+              keys for replay deduplication. Redis storage: ~$50-200/month.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Initial Implementation:</strong> 2-3 weeks for production-ready
+              request queuing with offline support, retry logic, and monitoring.
+            </li>
+            <li>
+              <strong>Server-Side Changes:</strong> Idempotency support, replay
+              handling, conflict resolution. Estimate: 1-2 weeks per API.
+            </li>
+            <li>
+              <strong>Testing Overhead:</strong> Testing offline scenarios,
+              reconnection, and conflict resolution. +30-40% testing time.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">When NOT to Use Request Queuing (Cost Perspective)</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Simple Applications:</strong> For apps with &lt;10
+              concurrent requests, browser's native handling is sufficient.
+            </li>
+            <li>
+              <strong>Real-Time Only:</strong> If your app requires real-time
+              connectivity (WebSocket/SSE), queuing adds complexity without benefit.
+            </li>
+            <li>
+              <strong>Read-Only Apps:</strong> If your app has no mutations,
+              request queuing is unnecessary.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
+          <p>
+            Use request queuing when: (1) offline support is a core requirement,
+            (2) users experience frequent connectivity issues (mobile, emerging
+            markets), (3) mutations must be reliable (form submissions, payments).
+            Use simple retry when: (1) offline is rare, (2) mutations are
+            idempotent and low-stakes. Use no queuing when: (1) read-only app,
+            (2) real-time connectivity required, (3) simple internal tools.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Decision Framework: When to Use Request Queuing</h2>
+        <p>
+          Request queuing is not always the right solution. Use this decision framework to evaluate whether
+          queuing is appropriate for your use case.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Decision Tree</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Do you need offline support?</strong>
+              <ul>
+                <li>Yes → Request queuing is essential</li>
+                <li>No → Evaluate other factors</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Do users experience connectivity issues?</strong>
+              <ul>
+                <li>Yes → Queuing improves reliability</li>
+                <li>No → May not be necessary</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Are mutations critical (payments, forms)?</strong>
+              <ul>
+                <li>Yes → Queuing prevents data loss</li>
+                <li>No → Simple retry may suffice</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Do you have &gt;10 concurrent requests?</strong>
+              <ul>
+                <li>Yes → Priority queuing helps manage concurrency</li>
+                <li>No → Browser handling is sufficient</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Request Management Strategy Comparison</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Strategy</th>
+                <th className="p-2 text-left">Offline Support</th>
+                <th className="p-2 text-left">Priority Control</th>
+                <th className="p-2 text-left">Complexity</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">No Management</td>
+                <td className="p-2">❌ None</td>
+                <td className="p-2">❌ None</td>
+                <td className="p-2">✅ Lowest</td>
+              </tr>
+              <tr>
+                <td className="p-2">Browser Native</td>
+                <td className="p-2">❌ None</td>
+                <td className="p-2">⚠️ Limited</td>
+                <td className="p-2">✅ None</td>
+              </tr>
+              <tr>
+                <td className="p-2">Priority Queue</td>
+                <td className="p-2">❌ None</td>
+                <td className="p-2">✅ Full control</td>
+                <td className="p-2">⚠️ Medium</td>
+              </tr>
+              <tr>
+                <td className="p-2">Offline Queue</td>
+                <td className="p-2">✅ Full support</td>
+                <td className="p-2">⚠️ Limited</td>
+                <td className="p-2">⚠️ Medium-High</td>
+              </tr>
+              <tr>
+                <td className="p-2">Full Queuing</td>
+                <td className="p-2">✅ Full support</td>
+                <td className="p-2">✅ Full control</td>
+                <td className="p-2">❌ High</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Organizational Readiness Checklist</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Idempotency Support:</strong> Does your API support
+              idempotency keys for safe replay?
+            </li>
+            <li>
+              <strong>Conflict Resolution:</strong> Do you have strategies for
+              handling merge conflicts on replay?
+            </li>
+            <li>
+              <strong>Monitoring:</strong> Can you track queue sizes, replay
+              success rates, and offline duration?
+            </li>
+            <li>
+              <strong>Testing:</strong> Can you test offline scenarios and
+              reconnection behavior?
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

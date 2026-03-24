@@ -599,6 +599,199 @@ export default function RestApiDesignConciseArticle() {
       </section>
 
       <section>
+        <h2>Security Considerations</h2>
+        <p>
+          REST APIs have well-established security patterns.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Authentication</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Token-Based Auth:</strong> Use JWT or opaque tokens in Authorization header.
+            </li>
+            <li>
+              <strong>Token Storage:</strong> Store tokens in HttpOnly cookies or in-memory.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Rate Limiting</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Per-User Rate Limits:</strong> Implement rate limiting based on user ID or API key.
+            </li>
+            <li>
+              <strong>Response Headers:</strong> Return X-RateLimit headers for client self-regulation.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Performance Benchmarks</h2>
+        <p>
+          Understanding REST API performance characteristics.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Industry Performance Data</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Metric</th>
+                <th className="p-2 text-left">Target</th>
+                <th className="p-2 text-left">Industry Average</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">API Latency (p95)</td>
+                <td className="p-2">&lt;200ms</td>
+                <td className="p-2">100-300ms</td>
+              </tr>
+              <tr>
+                <td className="p-2">Throughput</td>
+                <td className="p-2">1,000+ req/sec</td>
+                <td className="p-2">500-5,000 req/sec</td>
+              </tr>
+              <tr>
+                <td className="p-2">Cache Hit Rate</td>
+                <td className="p-2">&gt;80%</td>
+                <td className="p-2">60-90%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Real-World Benchmarks</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>GitHub API:</strong> Billions of requests/month with aggressive caching.
+            </li>
+            <li>
+              <strong>Stripe API:</strong> Sub-100ms p99 latency globally.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Cost Analysis</h2>
+        <p>
+          REST APIs have predictable cost characteristics.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>API Gateway:</strong> AWS API Gateway: $3.50/million requests.
+            </li>
+            <li>
+              <strong>Caching Layer:</strong> Redis: $200-1,000/month.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Initial Implementation:</strong> 2-4 weeks for well-designed REST API.
+            </li>
+            <li>
+              <strong>API Versioning:</strong> 5-10% of engineering time for version management.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
+          <p>
+            Use REST when: resources have stable shapes, HTTP caching is critical, simplicity matters.
+            Use GraphQL when: multiple clients need different data views, reducing round trips is critical.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Decision Framework: When to Use REST</h2>
+        <p>
+          Use this decision framework to evaluate whether REST is appropriate.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Decision Tree</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Do you need HTTP-level caching (CDN, browser)?</strong>
+              <ul>
+                <li>Yes → REST is the best choice</li>
+                <li>No → GraphQL or gRPC may be better</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Are your resources well-defined and stable?</strong>
+              <ul>
+                <li>Yes → REST's fixed endpoints work well</li>
+                <li>No → GraphQL's flexible queries may help</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Is the API public-facing?</strong>
+              <ul>
+                <li>Yes → REST's universal understanding is valuable</li>
+                <li>No → Internal APIs can use any style</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Alternative Comparison</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Approach</th>
+                <th className="p-2 text-left">Caching</th>
+                <th className="p-2 text-left">Flexibility</th>
+                <th className="p-2 text-left">Complexity</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">REST</td>
+                <td className="p-2">HTTP-native</td>
+                <td className="p-2">Fixed endpoints</td>
+                <td className="p-2">Low-Medium</td>
+              </tr>
+              <tr>
+                <td className="p-2">GraphQL</td>
+                <td className="p-2">Application-level</td>
+                <td className="p-2">Client-controlled</td>
+                <td className="p-2">High</td>
+              </tr>
+              <tr>
+                <td className="p-2">gRPC</td>
+                <td className="p-2">No HTTP caching</td>
+                <td className="p-2">Protobuf schema</td>
+                <td className="p-2">High</td>
+              </tr>
+              <tr>
+                <td className="p-2">tRPC</td>
+                <td className="p-2">Application-level</td>
+                <td className="p-2">TypeScript-only</td>
+                <td className="p-2">Medium</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

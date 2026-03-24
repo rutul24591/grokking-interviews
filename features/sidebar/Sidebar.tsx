@@ -167,16 +167,6 @@ export function Sidebar({ domains }: SidebarProps) {
         </div>
       </motion.aside>
 
-      {/* Mobile Toggle */}
-      <button
-        type="button"
-        onClick={() => setMobileOpen(!isMobileOpen)}
-        className="fixed bottom-4 left-4 z-50 flex items-center gap-2 rounded-full border border-theme bg-panel px-4 py-2 shadow-lg lg:hidden"
-        aria-label="Toggle navigation menu"
-      >
-        <span>{isMobileOpen ? "✕" : "☰"}</span>
-        <span className="text-sm font-medium">Menu</span>
-      </button>
     </>
   );
 }

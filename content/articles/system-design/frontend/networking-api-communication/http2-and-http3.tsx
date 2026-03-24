@@ -555,6 +555,193 @@ export default function Http2AndHttp3ConciseArticle() {
       </section>
 
       <section>
+        <h2>Security Considerations</h2>
+        <p>
+          HTTP/2 and HTTP/3 introduce unique security considerations.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">TLS Requirements</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>HTTP/2:</strong> All major browsers require TLS for HTTP/2.
+            </li>
+            <li>
+              <strong>HTTP/3:</strong> QUIC integrates TLS 1.3 directly (mandatory).
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">DDoS Amplification</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>The Risk:</strong> HTTP/2 multiplexing can be abused for DDoS.
+            </li>
+            <li>
+              <strong>Mitigation:</strong> Implement connection limits and rate limiting.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Performance Benchmarks</h2>
+        <p>
+          Understanding HTTP/2 and HTTP/3 performance characteristics.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Industry Performance Data</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Metric</th>
+                <th className="p-2 text-left">HTTP/1.1</th>
+                <th className="p-2 text-left">HTTP/2</th>
+                <th className="p-2 text-left">HTTP/3</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Page Load Time</td>
+                <td className="p-2">Baseline</td>
+                <td className="p-2">10-30% faster</td>
+                <td className="p-2">15-40% faster</td>
+              </tr>
+              <tr>
+                <td className="p-2">Connection Setup</td>
+                <td className="p-2">2-3 RTTs</td>
+                <td className="p-2">1-2 RTTs</td>
+                <td className="p-2">0-1 RTTs</td>
+              </tr>
+              <tr>
+                <td className="p-2">Mobile Performance</td>
+                <td className="p-2">Baseline</td>
+                <td className="p-2">20-40% faster</td>
+                <td className="p-2">30-60% faster</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Real-World Benchmarks</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Cloudflare:</strong> HTTP/3 reduces page load by 15-20% on average.
+            </li>
+            <li>
+              <strong>Facebook:</strong> HTTP/2 reduced mobile load time by 15%.
+            </li>
+            <li>
+              <strong>Google:</strong> QUIC reduced YouTube rebuffering by 30%.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Cost Analysis</h2>
+        <p>
+          HTTP/2 and HTTP/3 have infrastructure implications.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Server Resources:</strong> HTTP/2 requires 10-20% more memory.
+            </li>
+            <li>
+              <strong>CDN Costs:</strong> Most CDNs support HTTP/2 at no extra cost.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>HTTP/2:</strong> 1-2 days (server/CDN configuration).
+            </li>
+            <li>
+              <strong>HTTP/3:</strong> 1-2 weeks (newer server software).
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
+          <p>
+            Use HTTP/2 when: you want immediate performance gains. Use HTTP/3 when:
+            mobile users are significant, users experience packet loss.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Decision Framework: When to Use HTTP/2 vs HTTP/3</h2>
+        <p>
+          Use this decision framework to evaluate which protocols to enable.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Decision Tree</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Does your CDN/server support HTTP/2?</strong>
+              <ul>
+                <li>Yes → Enable HTTP/2</li>
+                <li>No → Upgrade infrastructure</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Is &gt;30% of traffic mobile?</strong>
+              <ul>
+                <li>Yes → HTTP/3 provides significant gains</li>
+                <li>No → HTTP/2 may be sufficient</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Protocol Comparison</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Feature</th>
+                <th className="p-2 text-left">HTTP/1.1</th>
+                <th className="p-2 text-left">HTTP/2</th>
+                <th className="p-2 text-left">HTTP/3</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Multiplexing</td>
+                <td className="p-2">No</td>
+                <td className="p-2">Yes</td>
+                <td className="p-2">Yes</td>
+              </tr>
+              <tr>
+                <td className="p-2">Connection Migration</td>
+                <td className="p-2">No</td>
+                <td className="p-2">No</td>
+                <td className="p-2">Yes</td>
+              </tr>
+              <tr>
+                <td className="p-2">Browser Support</td>
+                <td className="p-2">100%</td>
+                <td className="p-2">95%+</td>
+                <td className="p-2">70%+</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

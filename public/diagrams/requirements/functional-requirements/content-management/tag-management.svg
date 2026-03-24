@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Tag Management Operations</text>
+  
+  <!-- Tag Merging -->
+  <rect x="50" y="70" width="220" height="200" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="160" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#3b82f6">Tag Merging</text>
+  
+  <rect x="70" y="115" width="180" height="40" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="160" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Duplicate Tags Found</text>
+  <text x="160" y="150" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">"react" (500 uses)</text>
+  <text x="160" y="165" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">"reactjs" (1200 uses)</text>
+  
+  <rect x="70" y="165" width="180" height="40" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="160" y="185" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Select Canonical Tag</text>
+  <text x="160" y="200" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">→ "reactjs"</text>
+  
+  <rect x="70" y="215" width="180" height="40" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="160" y="235" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Migrate Content</text>
+  <text x="160" y="250" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">UPDATE content_tags</text>
+  
+  <rect x="70" y="260" width="180" height="35" rx="4" fill="#3b82f6"/>
+  <text x="160" y="282" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Delete Old Tag</text>
+  
+  <!-- Tag Deprecation -->
+  <rect x="290" y="70" width="220" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="400" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f59e0b">Tag Deprecation</text>
+  
+  <rect x="310" y="115" width="180" height="35" rx="4" fill="#f59e0b" opacity="0.8"/>
+  <text x="400" y="137" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Mark as Deprecated</text>
+  
+  <rect x="310" y="155" width="180" height="35" rx="4" fill="#f59e0b" opacity="0.6"/>
+  <text x="400" y="177" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Prevent New Assignments</text>
+  
+  <rect x="310" y="195" width="180" height="35" rx="4" fill="#f59e0b" opacity="0.4"/>
+  <text x="400" y="217" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Suggest Alternative Tags</text>
+  
+  <rect x="310" y="235" width="180" height="35" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="400" y="257" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Migrate Existing Content</text>
+  
+  <rect x="310" y="275" width="180" height="35" rx="4" fill="#ef4444" opacity="0.3"/>
+  <text x="400" y="297" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Remove After Migration</text>
+  
+  <!-- Synonym Management -->
+  <rect x="530" y="70" width="220" height="200" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="640" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#8b5cf6">Synonym Management</text>
+  
+  <rect x="550" y="115" width="180" height="35" rx="4" fill="#8b5cf6" opacity="0.8"/>
+  <text x="640" y="137" text-anchor="middle" font-family="system-ui" font-size="10" fill="#ffffff">Define Synonyms</text>
+  
+  <rect x="550" y="155" width="180" height="35" rx="4" fill="#8b5cf6" opacity="0.6"/>
+  <text x="640" y="177" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">"react" = "reactjs"</text>
+  
+  <rect x="550" y="195" width="180" height="35" rx="4" fill="#8b5cf6" opacity="0.4"/>
+  <text x="640" y="217" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Normalize to Canonical</text>
+  
+  <rect x="550" y="235" width="180" height="35" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="640" y="257" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Search Finds All</text>
+  
+  <rect x="550" y="275" width="180" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="640" y="297" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Unified tag experience</text>
+  
+  <!-- Usage Tracking -->
+  <rect x="50" y="290" width="340" height="180" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="220" y="315" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#22c55e">Usage Tracking</text>
+  
+  <rect x="70" y="330" width="300" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="352" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">usage_count per tag (increment/decrement)</text>
+  
+  <rect x="70" y="370" width="300" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="392" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Track per content type (articles, products)</text>
+  
+  <rect x="70" y="410" width="300" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="432" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Historical usage (trending, declining tags)</text>
+  
+  <rect x="70" y="450" width="300" height="25" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="220" y="467" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Identify unused tags for deprecation</text>
+  
+  <!-- Admin Dashboard -->
+  <rect x="420" y="290" width="340" height="180" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="590" y="315" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#ef4444">Admin Dashboard</text>
+  
+  <rect x="440" y="330" width="300" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="352" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Top Tags (by usage count)</text>
+  
+  <rect x="440" y="370" width="300" height="35" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="590" y="392" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Unused Tags (0 content tagged)</text>
+  
+  <rect x="440" y="410" width="300" height="35" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="432" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Tag Growth Over Time</text>
+  
+  <rect x="440" y="450" width="300" height="25" rx="4" fill="#ef4444" opacity="0.3"/>
+  <text x="590" y="467" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">🚨 Alert: Sudden spike in tag creation</text>
+
+</svg>

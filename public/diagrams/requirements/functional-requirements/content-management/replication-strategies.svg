@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Replication Strategies Comparison</text>
+  
+  <!-- Leader-Follower -->
+  <rect x="50" y="70" width="220" height="280" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="160" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#3b82f6">Leader-Follower</text>
+  
+  <rect x="70" y="115" width="180" height="50" rx="4" fill="#3b82f6"/>
+  <text x="160" y="140" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="bold" fill="#ffffff">Leader (Primary)</text>
+  <text x="160" y="160" text-anchor="middle" font-family="system-ui" font-size="8" fill="#ffffff">Accepts Writes</text>
+  
+  <line x1="160" y1="165" x2="160" y2="190" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="175" y="180" text-anchor="start" font-family="system-ui" font-size="7" fill="#475569">WAL Replication</text>
+  
+  <rect x="70" y="195" width="180" height="40" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="160" y="217" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Follower 1 (Read Replica)</text>
+  <text x="160" y="232" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Reads Only</text>
+  
+  <line x1="160" y1="235" x2="160" y2="260" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="70" y="265" width="180" height="40" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="160" y="287" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Follower 2 (Read Replica)</text>
+  <text x="160" y="302" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Reads Only</text>
+  
+  <rect x="70" y="315" width="180" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="160" y="337" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Read scaling</text>
+  
+  <rect x="70" y="355" width="180" height="35" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="160" y="377" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✗ Single point of failure (leader)</text>
+  
+  <!-- Multi-Leader -->
+  <rect x="290" y="70" width="220" height="280" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="400" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f59e0b">Multi-Leader</text>
+  
+  <rect x="310" y="115" width="180" height="40" rx="4" fill="#f59e0b" opacity="0.8"/>
+  <text x="400" y="137" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Leader 1 (Region US)</text>
+  <text x="400" y="152" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Accepts Writes</text>
+  
+  <line x1="320" y1="155" x2="350" y2="175" stroke="#475569" stroke-width="2" stroke-dasharray="4"/>
+  <line x1="480" y1="155" x2="450" y2="175" stroke="#475569" stroke-width="2" stroke-dasharray="4"/>
+  
+  <rect x="310" y="180" width="180" height="40" rx="4" fill="#f59e0b" opacity="0.8"/>
+  <text x="400" y="202" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Leader 2 (Region EU)</text>
+  <text x="400" y="217" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Accepts Writes</text>
+  
+  <line x1="400" y1="220" x2="400" y2="245" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <rect x="310" y="250" width="180" height="40" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="400" y="272" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Followers (Read Replicas)</text>
+  <text x="400" y="287" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Replicate from both leaders</text>
+  
+  <rect x="310" y="315" width="180" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="400" y="337" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Multi-region, low latency</text>
+  
+  <rect x="310" y="355" width="180" height="35" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="400" y="377" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✗ Conflict resolution needed</text>
+  
+  <!-- Leaderless (Dynamo) -->
+  <rect x="530" y="70" width="220" height="280" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="640" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#8b5cf6">Leaderless (Dynamo-style)</text>
+  
+  <rect x="550" y="115" width="80" height="80" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="590" y="145" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Node A</text>
+  <text x="590" y="165" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Accepts Writes</text>
+  <text x="590" y="185" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Quorum: W=2, R=2</text>
+  
+  <rect x="680" y="115" width="80" height="80" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="720" y="145" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Node B</text>
+  <text x="720" y="165" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Accepts Writes</text>
+  <text x="720" y="185" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Replicates to C</text>
+  
+  <line x1="590" y1="195" x2="620" y2="225" stroke="#475569" stroke-width="2" stroke-dasharray="4"/>
+  <line x1="720" y1="195" x2="690" y2="225" stroke="#475569" stroke-width="2" stroke-dasharray="4"/>
+  
+  <rect x="550" y="230" width="200" height="60" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="650" y="255" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Node C (Coordinator)</text>
+  <text x="650" y="275" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Replicates from A &amp; B</text>
+  <text x="650" y="290" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Eventual consistency</text>
+  
+  <rect x="550" y="315" width="180" height="35" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="640" y="337" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ High availability</text>
+  
+  <rect x="550" y="355" width="180" height="35" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="640" y="377" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✗ Eventual consistency</text>
+  
+  <!-- Comparison Table -->
+  <rect x="50" y="370" width="700" height="110" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="400" y="395" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Comparison</text>
+  
+  <rect x="70" y="410" width="200" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="170" y="430" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Leader-Follower</text>
+  
+  <rect x="280" y="410" width="200" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="380" y="430" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Multi-Leader</text>
+  
+  <rect x="490" y="410" width="200" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="430" text-anchor="middle" font-family="system-ui" font-size="10" fill="#0f172a">Leaderless</text>
+  
+  <rect x="70" y="445" width="200" height="25" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="170" y="462" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Strong consistency</text>
+  
+  <rect x="280" y="445" width="200" height="25" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="380" y="462" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Eventual consistency</text>
+  
+  <rect x="490" y="445" width="200" height="25" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="462" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Eventual consistency</text>
+
+</svg>

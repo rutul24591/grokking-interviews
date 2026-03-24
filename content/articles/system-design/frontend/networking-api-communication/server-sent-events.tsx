@@ -237,15 +237,6 @@ export default function ServerSentEventsConciseArticle() {
       </section>
 
       <section>
-        <h2>Implementation Examples</h2>
-        <p>
-          Implementing SSE involves both a server that writes the event stream
-          and a client that consumes it. Code examples are available in the
-          Example toggle.
-        </p>
-      </section>
-
-      <section>
         <h2>Trade-offs & Comparisons</h2>
         <table className="w-full border-collapse">
           <thead>

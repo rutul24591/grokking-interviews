@@ -584,6 +584,187 @@ export default function LongPollingConciseArticle() {
       </section>
 
       <section>
+        <h2>Security Considerations</h2>
+        <p>
+          Long polling has unique security considerations due to held connections.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Connection Exhaustion</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>The Risk:</strong> Attackers can open many connections to exhaust server limits.
+            </li>
+            <li>
+              <strong>Mitigation:</strong> Implement per-IP connection limits.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Authentication</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Token-Based Auth:</strong> Authenticate each long polling request.
+            </li>
+            <li>
+              <strong>Token Expiration:</strong> Handle token expiration during held connections.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Performance Benchmarks</h2>
+        <p>
+          Understanding long polling performance characteristics.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Industry Performance Data</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Metric</th>
+                <th className="p-2 text-left">Target</th>
+                <th className="p-2 text-left">Industry Average</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Event Delivery Latency</td>
+                <td className="p-2">&lt;1s</td>
+                <td className="p-2">100-500ms</td>
+              </tr>
+              <tr>
+                <td className="p-2">Connections per Server</td>
+                <td className="p-2">10,000+</td>
+                <td className="p-2">5,000-50,000</td>
+              </tr>
+              <tr>
+                <td className="p-2">Reconnection Rate</td>
+                <td className="p-2">&lt;10%</td>
+                <td className="p-2">5-15%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Real-World Benchmarks</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Socket.IO:</strong> Handles 100K+ concurrent long polling connections.
+            </li>
+            <li>
+              <strong>CometD:</strong> Scales to millions of concurrent connections.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Cost Analysis</h2>
+        <p>
+          Long polling has moderate infrastructure costs.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Server Resources:</strong> For 100K connections: ~2-5GB RAM.
+            </li>
+            <li>
+              <strong>Pub/Sub Backbone:</strong> Redis Pub/Sub: $200-1,000/month.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Initial Implementation:</strong> 2-3 weeks for production-ready infrastructure.
+            </li>
+            <li>
+              <strong>Ongoing Maintenance:</strong> 10% of engineering time.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
+          <p>
+            Use long polling when: low-latency updates needed, SSE infrastructure too complex.
+            Use SSE when: you need same push semantics with cleaner API.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Decision Framework: When to Use Long Polling</h2>
+        <p>
+          Use this decision framework to evaluate whether long polling is appropriate.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Decision Tree</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Do you need server-to-client push?</strong>
+              <ul>
+                <li>Yes → Long polling, SSE, or WebSocket</li>
+                <li>No → Short polling or REST</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Is SSE supported in target browsers?</strong>
+              <ul>
+                <li>Yes → SSE is simpler</li>
+                <li>No → Long polling with fallback</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Alternative Comparison</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Approach</th>
+                <th className="p-2 text-left">Latency</th>
+                <th className="p-2 text-left">Complexity</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Long Polling</td>
+                <td className="p-2">&lt;1s</td>
+                <td className="p-2">Medium</td>
+              </tr>
+              <tr>
+                <td className="p-2">SSE</td>
+                <td className="p-2">&lt;1s</td>
+                <td className="p-2">Low</td>
+              </tr>
+              <tr>
+                <td className="p-2">WebSocket</td>
+                <td className="p-2">&lt;100ms</td>
+                <td className="p-2">High</td>
+              </tr>
+              <tr>
+                <td className="p-2">Short Polling</td>
+                <td className="p-2">5-30s</td>
+                <td className="p-2">Lowest</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

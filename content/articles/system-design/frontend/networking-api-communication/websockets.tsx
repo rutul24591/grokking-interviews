@@ -245,43 +245,6 @@ export default function WebSocketsConciseArticle() {
       </section>
 
       <section>
-        <h2>Implementation Examples</h2>
-        <p>
-          WebSocket implementation spans both client-side browser API and
-          server-side handling:
-        </p>
-
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-3 font-semibold">
-              Browser WebSocket API with Reconnection
-            </h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">
-              Example code moved to the Example tab.
-            </div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">
-              React Custom Hook for WebSocket
-            </h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">
-              Example code moved to the Example tab.
-            </div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold">
-              Node.js WebSocket Server (ws library)
-            </h3>
-            <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">
-              Example code moved to the Example tab.
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section>
         <h2>Trade-offs & Comparisons</h2>
         <table className="w-full border-collapse">
           <thead>
@@ -602,6 +565,236 @@ export default function WebSocketsConciseArticle() {
               <strong>HTTP multipart</strong> with progress events
             </li>
           </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Security Considerations</h2>
+        <p>
+          WebSockets introduce unique security considerations due to their persistent, bidirectional nature.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Origin Validation</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>The Risk:</strong> Without origin validation, any website can open a WebSocket to your
+              server and perform actions on behalf of authenticated users.
+            </li>
+            <li>
+              <strong>Mitigation:</strong> Validate the <code>Origin</code> header during the handshake.
+              Reject connections from untrusted origins.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Message Validation</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>The Risk:</strong> WebSocket messages bypass standard HTTP middleware.
+            </li>
+            <li>
+              <strong>Mitigation:</strong> Validate all incoming messages against a schema.
+              Sanitize user input before processing or broadcasting.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Authentication</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Authentication:</strong> Authenticate during handshake using cookies
+              or token in URL query parameter.
+            </li>
+            <li>
+              <strong>Authorization:</strong> Authorize each message based on the
+              authenticated user's permissions.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Data Protection</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Encryption:</strong> Always use <code>wss://</code> (WebSocket over TLS).
+            </li>
+            <li>
+              <strong>Sensitive Data:</strong> Avoid sending PII or authentication tokens
+              over WebSocket unless encrypted.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Performance Benchmarks</h2>
+        <p>
+          Understanding WebSocket performance characteristics is essential for capacity planning.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Industry Performance Data</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Metric</th>
+                <th className="p-2 text-left">Target</th>
+                <th className="p-2 text-left">Industry Average</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Connection Latency</td>
+                <td className="p-2">&lt;100ms</td>
+                <td className="p-2">50-150ms</td>
+              </tr>
+              <tr>
+                <td className="p-2">Message Latency</td>
+                <td className="p-2">&lt;10ms</td>
+                <td className="p-2">1-10ms</td>
+              </tr>
+              <tr>
+                <td className="p-2">Connections per Server</td>
+                <td className="p-2">10,000+</td>
+                <td className="p-2">5,000-50,000</td>
+              </tr>
+              <tr>
+                <td className="p-2">Reconnection Rate</td>
+                <td className="p-2">&lt;5%</td>
+                <td className="p-2">2-10%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Scalability Benchmarks</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Discord:</strong> 7M+ concurrent WebSocket connections, 14M messages/minute.
+            </li>
+            <li>
+              <strong>Slack:</strong> Millions of concurrent connections across data centers.
+            </li>
+            <li>
+              <strong>Figma:</strong> Sub-100ms latency for 100+ concurrent editors.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Cost Analysis</h2>
+        <p>
+          WebSocket infrastructure has distinct cost characteristics.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Server Resources:</strong> ~1-10KB per connection. For 100K connections:
+              ~1-10GB RAM.
+            </li>
+            <li>
+              <strong>Pub/Sub Backbone:</strong> Redis Cluster: $500-2,000/month.
+            </li>
+            <li>
+              <strong>Load Balancer:</strong> WebSocket-aware LB required. AWS ALB: ~$0.0225/hour.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Initial Implementation:</strong> 2-4 weeks for production-ready infrastructure.
+            </li>
+            <li>
+              <strong>Ongoing Maintenance:</strong> 10-20% of engineering time.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
+          <p>
+            Use WebSockets when: (1) bidirectional real-time communication is required,
+            (2) sub-second latency is critical. Use SSE when: server-to-client only.
+            Use HTTP polling when: updates are infrequent.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Decision Framework: When to Use WebSockets</h2>
+        <p>
+          Use this decision framework to evaluate whether WebSockets are appropriate.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Decision Tree</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Do you need bidirectional communication?</strong>
+              <ul>
+                <li>Yes → WebSocket is a strong candidate</li>
+                <li>No → SSE may be simpler</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Is sub-100ms latency critical?</strong>
+              <ul>
+                <li>Yes → WebSocket provides lowest latency</li>
+                <li>No → SSE or polling may work</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Can your infrastructure handle long-lived connections?</strong>
+              <ul>
+                <li>Yes → Proceed with WebSocket</li>
+                <li>No → Consider SSE with fallback</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Alternative Comparison</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Approach</th>
+                <th className="p-2 text-left">Direction</th>
+                <th className="p-2 text-left">Latency</th>
+                <th className="p-2 text-left">Complexity</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">WebSocket</td>
+                <td className="p-2">Bidirectional</td>
+                <td className="p-2">&lt;10ms</td>
+                <td className="p-2">High</td>
+              </tr>
+              <tr>
+                <td className="p-2">SSE</td>
+                <td className="p-2">Server→Client</td>
+                <td className="p-2">&lt;50ms</td>
+                <td className="p-2">Low</td>
+              </tr>
+              <tr>
+                <td className="p-2">Long Polling</td>
+                <td className="p-2">Server→Client</td>
+                <td className="p-2">100-500ms</td>
+                <td className="p-2">Low</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 

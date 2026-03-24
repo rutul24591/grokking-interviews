@@ -558,6 +558,353 @@ export default function RequestBatchingConciseArticle() {
       </section>
 
       <section>
+        <h2>Security Considerations</h2>
+        <p>
+          Request batching introduces security considerations around batch validation and data isolation.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Batch Validation</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>The Risk:</strong> Batching multiple operations in one request can bypass
+              per-operation rate limits and validation.
+            </li>
+            <li>
+              <strong>Mitigation:</strong> Validate each operation in the batch individually.
+              Apply rate limits at both batch level and individual operation level.
+            </li>
+            <li>
+              <strong>Implementation:</strong> Return per-operation status codes in batch
+              response. Don't fail entire batch for single operation failure.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Data Isolation</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Multi-Tenant Isolation:</strong> Ensure batched requests from different
+              users are never combined. Batch only within a single user session.
+            </li>
+            <li>
+              <strong>Authorization:</strong> Validate authorization for each operation in the
+              batch. Don't assume batch-level auth covers all operations.
+            </li>
+            <li>
+              <strong>Audit Logging:</strong> Log each operation in the batch separately for
+              audit trails. Don't log only the batch as a single operation.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Payload Size Limits</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>DoS Prevention:</strong> Attackers could send large batches to exhaust
+              server memory or processing capacity.
+            </li>
+            <li>
+              <strong>Mitigation:</strong> Implement batch size limits (max operations per
+              batch) and payload size limits (max total bytes).
+            </li>
+            <li>
+              <strong>Implementation:</strong> Return 413 Payload Too Large for oversized
+              batches. Document limits in API documentation.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Idempotency</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Retry Safety:</strong> Batch retries can cause duplicate operations if
+              some operations succeeded before failure.
+            </li>
+            <li>
+              <strong>Mitigation:</strong> Use idempotency keys for each operation in the
+              batch. Support partial success responses.
+            </li>
+            <li>
+              <strong>Implementation:</strong> Include operation ID in each batch item.
+              Return per-operation status with IDs.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Performance Benchmarks</h2>
+        <p>
+          Understanding request batching performance characteristics is essential for tuning batch parameters.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Industry Performance Data</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Metric</th>
+                <th className="p-2 text-left">Target</th>
+                <th className="p-2 text-left">Industry Average</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Batch Size</td>
+                <td className="p-2">10-100 operations</td>
+                <td className="p-2">5-50 operations</td>
+              </tr>
+              <tr>
+                <td className="p-2">Batch Window</td>
+                <td className="p-2">10-50ms</td>
+                <td className="p-2">10-100ms</td>
+              </tr>
+              <tr>
+                <td className="p-2">Request Reduction</td>
+                <td className="p-2">&gt;50%</td>
+                <td className="p-2">40-80%</td>
+              </tr>
+              <tr>
+                <td className="p-2">Added Latency</td>
+                <td className="p-2">&lt;50ms</td>
+                <td className="p-2">10-100ms</td>
+              </tr>
+              <tr>
+                <td className="p-2">Batch Success Rate</td>
+                <td className="p-2">&gt;95%</td>
+                <td className="p-2">90-98%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Real-World Benchmarks</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>GraphQL DataLoader:</strong> Reduces N+1 queries to single batch query.
+              Typical reduction: 10-100x fewer database queries per request.
+            </li>
+            <li>
+              <strong>Apollo BatchLink:</strong> Batches multiple GraphQL queries into single
+              HTTP request. Reduces HTTP requests by 60-80% in typical apps.
+            </li>
+            <li>
+              <strong>Google Batch API:</strong> Supports up to 100 operations per batch.
+              Reduces API quota usage and network overhead significantly.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Diagnosing Performance Issues</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Small Batch Sizes:</strong> If average batch size &lt;5, reduce batch
+              window or increase trigger threshold.
+            </li>
+            <li>
+              <strong>High Latency:</strong> If added latency &gt;100ms, reduce batch window
+              or implement priority-aware batching.
+            </li>
+            <li>
+              <strong>Batch Timeouts:</strong> If batches frequently timeout, reduce batch
+              size or optimize server-side batch processing.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Cost Analysis</h2>
+        <p>
+          Request batching has infrastructure and development costs that must be weighed against efficiency benefits.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Server Processing:</strong> Batch processing requires more memory and
+              CPU per request but fewer total requests. Net effect: 20-40% reduction in
+              infrastructure costs for high-traffic APIs.
+            </li>
+            <li>
+              <strong>Network Costs:</strong> Reduced HTTP requests mean lower network
+              overhead (headers, TLS handshakes). CDN egress costs may increase slightly
+              due to larger payloads.
+            </li>
+            <li>
+              <strong>Database Costs:</strong> Batched database queries reduce connection
+              overhead and can leverage bulk operations. 30-50% reduction in database
+              load for N+1 heavy workloads.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Initial Implementation:</strong> 1-2 weeks for production-ready
+              batching with proper error handling, cancellation, and monitoring.
+            </li>
+            <li>
+              <strong>Server-Side Changes:</strong> Backend must support batch endpoints
+              or batch processing. Estimate: 1-2 weeks per API.
+            </li>
+            <li>
+              <strong>Testing Overhead:</strong> Testing batch behavior requires load
+              testing and edge case validation. +20-30% testing time.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">When NOT to Use Batching (Cost Perspective)</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Low Traffic:</strong> For &lt;100 requests/minute, batching overhead
+              may not justify the benefits.
+            </li>
+            <li>
+              <strong>HTTP/2 Already Deployed:</strong> HTTP/2 multiplexing reduces the
+              benefit of client-side batching. Measure before adding complexity.
+            </li>
+            <li>
+              <strong>Real-Time Requirements:</strong> For sub-50ms latency requirements,
+              batching adds unacceptable delay.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
+          <p>
+            Use request batching when: (1) you have N+1 query problems, (2) high request
+            volume (&gt;1000/minute), (3) GraphQL or similar query language, (4) backend
+            supports batch operations. Use individual requests when: (1) low traffic,
+            (2) HTTP/2 with multiplexing is sufficient, (3) real-time latency is critical.
+            Consider HTTP/2 when: you want multiplexing without batching complexity.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Decision Framework: When to Use Request Batching</h2>
+        <p>
+          Request batching is not always the right solution. Use this decision framework to evaluate whether
+          batching is appropriate for your use case.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Decision Tree</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Do you have N+1 query patterns?</strong>
+              <ul>
+                <li>Yes → Batching is highly beneficial</li>
+                <li>No → Evaluate other factors</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Is request volume &gt;1000/minute?</strong>
+              <ul>
+                <li>Yes → Batching reduces infrastructure costs</li>
+                <li>No → May not justify complexity</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Does backend support batch operations?</strong>
+              <ul>
+                <li>Yes → Proceed with batching</li>
+                <li>No → Requires backend changes first</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Is latency tolerance &gt;50ms?</strong>
+              <ul>
+                <li>Yes → Batching window is acceptable</li>
+                <li>No → Consider HTTP/2 multiplexing instead</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Optimization Strategy Comparison</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Strategy</th>
+                <th className="p-2 text-left">Request Reduction</th>
+                <th className="p-2 text-left">Added Latency</th>
+                <th className="p-2 text-left">Complexity</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">No Optimization</td>
+                <td className="p-2">❌ None</td>
+                <td className="p-2">✅ None</td>
+                <td className="p-2">✅ Lowest</td>
+              </tr>
+              <tr>
+                <td className="p-2">HTTP/2 Multiplexing</td>
+                <td className="p-2">⚠️ Moderate</td>
+                <td className="p-2">✅ None</td>
+                <td className="p-2">✅ Low (infra change)</td>
+              </tr>
+              <tr>
+                <td className="p-2">Client-Side Batching</td>
+                <td className="p-2">✅ High (60-80%)</td>
+                <td className="p-2">⚠️ 10-100ms</td>
+                <td className="p-2">⚠️ Medium</td>
+              </tr>
+              <tr>
+                <td className="p-2">DataLoader Pattern</td>
+                <td className="p-2">✅ Very High (90%+)</td>
+                <td className="p-2">⚠️ 10-50ms</td>
+                <td className="p-2">⚠️ Medium</td>
+              </tr>
+              <tr>
+                <td className="p-2">GraphQL</td>
+                <td className="p-2">✅ High</td>
+                <td className="p-2">⚠️ Variable</td>
+                <td className="p-2">❌ High</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Organizational Readiness Checklist</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Backend Support:</strong> Does your API support batch operations or
+              can you add batch endpoints?
+            </li>
+            <li>
+              <strong>Monitoring:</strong> Can you track batch sizes, success rates, and
+              latency impact?
+            </li>
+            <li>
+              <strong>Error Handling:</strong> Do you have per-operation error handling
+              for partial batch failures?
+            </li>
+            <li>
+              <strong>Load Testing:</strong> Can you test batch behavior under production
+              load patterns?
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

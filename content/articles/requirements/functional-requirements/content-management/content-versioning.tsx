@@ -7,16 +7,25 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-requirements-cm-backend-content-versioning",
   title: "Content Versioning",
-  description: "Comprehensive guide to implementing content versioning covering snapshot vs diff, version history, rollback patterns, branching, merge conflicts, and audit trails for staff/principal engineer interviews.",
+  description:
+    "Comprehensive guide to implementing content versioning covering versioning strategies (full snapshots, diff-based, hybrid), version history (view, compare, restore), rollback patterns (point-in-time recovery, undo/redo), branching and merging (collaborative editing, conflict resolution), audit trails (who changed what when), and storage optimization for staff/principal engineer interviews.",
   category: "functional-requirements",
   subcategory: "content-management",
   slug: "content-versioning",
   version: "extensive",
-  wordCount: 8000,
-  readingTime: 32,
-  lastUpdated: "2026-03-16",
-  tags: ["requirements", "functional", "content", "versioning", "history", "backend", "audit"],
-  relatedTopics: ["draft-saving", "edit-content-ui", "content-lifecycle", "audit-logging"],
+  wordCount: 9500,
+  readingTime: 38,
+  lastUpdated: "2026-03-23",
+  tags: [
+    "requirements",
+    "functional",
+    "content",
+    "versioning",
+    "history",
+    "backend",
+    "audit",
+  ],
+  relatedTopics: ["draft-saving", "edit-content-ui", "content-lifecycle"],
 };
 
 export default function ContentVersioningArticle() {
@@ -26,748 +35,643 @@ export default function ContentVersioningArticle() {
         <h2>Definition &amp; Context</h2>
         <p>
           <strong>Content Versioning</strong> maintains a history of content changes, enabling
-          users to view past versions, compare changes, and restore previous states. It is
-          essential for collaboration, audit trails, and recovery from mistakes.
-        </p>
-        <p>
-          For staff and principal engineers, implementing versioning requires understanding
-          versioning strategies, snapshot vs diff storage, version history, rollback patterns,
-          branching, merge conflicts, and audit trails. The implementation must balance storage
-          efficiency with restore performance and user experience.
+          users to view past versions, compare changes, and restore previous states. Versioning is
+          critical for collaboration (multiple editors working on same content), audit trails
+          (compliance — who changed what when), and recovery from mistakes (rollback to known good
+          state). Without versioning, content changes are lost, mistakes can't be undone, and
+          compliance requirements can't be met.
         </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/versioning-strategies.svg"
           alt="Versioning Strategies"
-          caption="Versioning Strategies — showing snapshots, diffs, and hybrid approaches"
-        />
-      </section>
-
-      <section>
-        <h2>Versioning Strategies</h2>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Full Snapshots</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Storage:</strong> Store complete content per version.
-            </li>
-            <li>
-              <strong>Restore:</strong> Fast restore, just load snapshot.
-            </li>
-            <li>
-              <strong>Comparison:</strong> Easy to compare versions.
-            </li>
-            <li>
-              <strong>Use Case:</strong> Small to medium content, frequent restores.
-            </li>
-            <li>
-              <strong>Considerations:</strong> More storage, especially for large content.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Diff-based</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Storage:</strong> Store only changes (deltas) between versions.
-            </li>
-            <li>
-              <strong>Restore:</strong> Reconstruct by applying diffs sequentially.
-            </li>
-            <li>
-              <strong>Comparison:</strong> Built-in diff information.
-            </li>
-            <li>
-              <strong>Use Case:</strong> Large content, storage-constrained environments.
-            </li>
-            <li>
-              <strong>Considerations:</strong> Complex restore, need base version.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Hybrid</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Storage:</strong> Full snapshot every N versions, diffs in between.
-            </li>
-            <li>
-              <strong>Restore:</strong> Load nearest snapshot, apply diffs.
-            </li>
-            <li>
-              <strong>Balance:</strong> Storage efficiency with restore performance.
-            </li>
-            <li>
-              <strong>Use Case:</strong> Large content with frequent changes.
-            </li>
-            <li>
-              <strong>Considerations:</strong> More complex implementation.
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Version Metadata</h2>
-
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/content-management/version-metadata.svg"
-          alt="Version Metadata"
-          caption="Version Metadata — showing author, timestamp, change summary, and version number"
+          caption="Versioning Strategies — showing full snapshots (store complete content per version), diff-based (store only changes), and hybrid approach (snapshot every N versions with diffs in between)"
         />
 
         <p>
-          Version metadata provides context for each version.
+          For staff and principal engineers, implementing versioning requires deep understanding of
+          versioning strategies (full snapshots — store complete content per version, diff-based —
+          store only changes/deltas between versions, hybrid — snapshot every N versions with diffs
+          in between), version history (view past versions, compare versions — side-by-side diff
+          view, restore previous versions — point-in-time recovery), rollback patterns (undo/redo
+          — command pattern, point-in-time recovery — restore to any timestamp, branch and merge —
+          parallel editing with conflict resolution), branching and merging (collaborative editing
+          — multiple editors on same content, conflict resolution — manual or automatic merge,
+          three-way merge — base version + two changes), audit trails (who changed what when —
+          user_id, timestamp, change description, compliance reporting). The implementation must
+          balance storage efficiency (diff-based uses less storage) with restore performance
+          (snapshots restore faster) and user experience (fast version history, clear diff view).
+        </p>
+        <p>
+          Modern versioning systems have evolved from simple snapshots to sophisticated version
+          control with branching, merging, and conflict resolution. Platforms like Git (code
+          versioning), Google Docs (collaborative editing), and WordPress (post revisions) use
+          different strategies based on use case. Git uses diff-based storage (efficient for code),
+          Google Docs uses operational transforms (real-time collaboration), WordPress uses full
+          snapshots (simple, fast restore). Choice depends on content type, collaboration needs,
+          and storage constraints.
+        </p>
+      </section>
+
+      <section>
+        <h2>Core Concepts</h2>
+        <p>
+          Content versioning is built on fundamental concepts that determine how versions are
+          stored, compared, and restored. Understanding these concepts is essential for designing
+          effective versioning systems.
+        </p>
+        <p>
+          <strong>Versioning Strategies:</strong> Full snapshots (store complete content per
+          version — version 1: full content, version 2: full content — simple, fast restore, but
+          storage inefficient for large content), diff-based (store only changes/deltas — version 1:
+          full content, version 2: diff from v1 — storage efficient, but restore requires applying
+          diffs sequentially), hybrid (snapshot every N versions — version 1, 5, 10 are full
+          snapshots, versions 2-4, 6-9 are diffs — balances storage efficiency with restore
+          performance). Choose based on content size, version frequency, restore performance needs.
+        </p>
+        <p>
+          <strong>Version History:</strong> View past versions (list all versions with metadata —
+          version number, timestamp, author, change description), compare versions (side-by-side
+          diff view — highlight additions in green, deletions in red, modifications in yellow),
+          restore previous versions (point-in-time recovery — restore content to any previous
+          version, create new version with restored content — don't overwrite history). Version
+          history enables users to track changes, understand evolution, recover from mistakes.
+        </p>
+        <p>
+          <strong>Rollback Patterns:</strong> Undo/redo (command pattern — each edit is a command
+          with undo operation, maintain undo/redo stack — Ctrl+Z/Ctrl+Y), point-in-time recovery
+          (restore to any timestamp — SELECT content FROM history WHERE content_id = ? AND
+          timestamp &lt;= ? ORDER BY timestamp DESC LIMIT 1), branch and merge (parallel editing —
+          create branch from base version, edit independently, merge changes back — detect
+          conflicts, resolve manually or automatically). Rollback enables recovery from mistakes,
+          experimentation without risk.
+        </p>
+        <p>
+          <strong>Audit Trails:</strong> Track who changed what when (user_id — who made change,
+          timestamp — when changed, version_number — which version, change_description — what
+          changed — optional but helpful, IP address — for security/compliance). Compliance
+          reporting (generate reports for auditors — show all changes in date range, who made them,
+          what changed). Audit trails are critical for compliance (SOC 2, HIPAA, GDPR — require
+          tracking data changes), security (detect unauthorized changes), debugging (understand how
+          content evolved).
+        </p>
+      </section>
+
+      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          Versioning architecture separates version storage (snapshots, diffs) from version
+          management (history, restore, rollback), enabling flexible versioning with efficient
+          storage. This architecture is critical for performance and scalability.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/content-management/version-history.svg"
+          alt="Version History"
+          caption="Version History — showing version list with metadata (version number, timestamp, author), side-by-side diff view (additions in green, deletions in red), and restore functionality"
+        />
+
+        <p>
+          Versioning flow: User edits content. User clicks "Save" (or auto-save triggers). Backend
+          creates new version (INSERT INTO content_versions (content_id, version_number, body,
+          author_id, change_description) VALUES (...)). Backend stores version (full snapshot or
+          diff based on strategy). Backend updates current content (UPDATE content SET
+          current_version_id = new_version_id WHERE id = ?). User views version history (SELECT *
+          FROM content_versions WHERE content_id = ? ORDER BY version_number DESC). User compares
+          versions (load two versions, compute diff — or load pre-computed diff). User restores
+          version (create new version with restored content — don't overwrite history, maintain
+          audit trail).
+        </p>
+        <p>
+          Version history architecture includes: version list (query versions with metadata —
+          version_number, created_at, author_id, change_description, size), side-by-side diff view
+          (load two versions, compute diff — Myers diff algorithm, highlight additions/deletions/
+          modifications), restore functionality (create new version with restored content — version
+          N+1 = content from version N-2, maintain continuous history). This architecture enables
+          users to track changes, understand evolution, recover from mistakes.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/content-management/versioning-audit.svg"
+          alt="Versioning Audit Trail"
+          caption="Audit Trail — showing who changed what when (user_id, timestamp, version_number, change_description), compliance reporting, and security monitoring"
+        />
+
+        <p>
+          Audit trail architecture includes: change tracking (log every change — user_id, timestamp,
+          version_number, change_description, IP address, user agent), compliance reporting
+          (generate reports for auditors — filter by date range, user, content type — export to
+          PDF/CSV), security monitoring (detect unauthorized changes — alert on changes outside
+          business hours, from unknown IPs, by unauthorized users). This architecture enables
+          compliance (SOC 2, HIPAA, GDPR), security (detect unauthorized changes), debugging
+          (understand content evolution).
+        </p>
+      </section>
+
+      <section>
+        <h2>Trade-offs &amp; Comparison</h2>
+        <p>
+          Designing versioning involves trade-offs between storage efficiency, restore performance,
+          and complexity. Understanding these trade-offs is essential for making informed
+          architecture decisions.
         </p>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Author Information</h3>
+          <h3 className="mb-4 text-lg font-semibold">Full Snapshots vs Diff-based vs Hybrid</h3>
           <ul className="space-y-3">
             <li>
-              <strong>Who:</strong> User ID of person who made change.
+              <strong>Full Snapshots:</strong> Store complete content per version. Simple
+              implementation, fast restore (load one record), easy comparison. Limitation: storage
+              inefficient (10 versions of 1MB content = 10MB storage).
             </li>
             <li>
-              <strong>Display:</strong> Show author name in version history.
+              <strong>Diff-based:</strong> Store only changes between versions. Storage efficient
+              (10 versions of 1MB content with small changes = ~2MB storage). Limitation: complex
+              restore (apply diffs sequentially), slow for old versions (many diffs to apply).
             </li>
             <li>
-              <strong>Attribution:</strong> Credit for changes.
+              <strong>Hybrid:</strong> Snapshot every N versions (e.g., every 5th version is full
+              snapshot, others are diffs). Balances storage efficiency with restore performance.
+              Limitation: more complex implementation.
             </li>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Timestamp</h3>
+          <h3 className="mb-4 text-lg font-semibold">Manual Versioning vs Auto-Versioning</h3>
           <ul className="space-y-3">
             <li>
-              <strong>When:</strong> Exact time version was created.
+              <strong>Manual:</strong> User explicitly creates versions (click "Save Version").
+              User control (create versions at meaningful points), fewer versions (storage
+              efficient). Limitation: users forget to save versions, lose work.
             </li>
             <li>
-              <strong>Format:</strong> ISO 8601 with timezone.
+              <strong>Auto-Versioning:</strong> System automatically creates versions (every edit,
+              every N minutes). No lost work (every change saved), comprehensive history.
+              Limitation: many versions (storage cost), versions at arbitrary points (less
+              meaningful).
             </li>
             <li>
-              <strong>Display:</strong> Relative time ("2 hours ago").
+              <strong>Recommendation:</strong> Hybrid — auto-save drafts (every 30 seconds — no
+              lost work), manual versions (user creates named versions at milestones — "Initial
+              draft", "After review", "Final"). Best of both — safety with meaningful versions.
             </li>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Change Summary</h3>
+          <h3 className="mb-4 text-lg font-semibold">Keep All Versions vs Version Limits</h3>
           <ul className="space-y-3">
             <li>
-              <strong>Description:</strong> User-provided or auto-generated.
+              <strong>Keep All:</strong> Retain all versions forever. Complete history (never lose
+              any version), audit trail (compliance). Limitation: storage grows unbounded, slow
+              version history (thousands of versions).
             </li>
             <li>
-              <strong>Prompt:</strong> Ask user for change description.
+              <strong>Version Limits:</strong> Keep last N versions (e.g., last 100), or versions
+              from last N days (e.g., 30 days). Storage bounded, fast version history. Limitation:
+              old versions lost (can't restore very old versions).
             </li>
             <li>
-              <strong>Auto:</strong> Generate from diff analysis.
+              <strong>Recommendation:</strong> Tiered — keep all versions for 30 days (recent
+              history), keep weekly snapshots for 1 year (medium history), keep monthly snapshots
+              forever (long-term history). Balance completeness with storage.
             </li>
           </ul>
         </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Version Number</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Sequential:</strong> 1, 2, 3, 4...
-            </li>
-            <li>
-              <strong>Semantic:</strong> Major.minor.patch (1.0.0, 1.0.1).
-            </li>
-            <li>
-              <strong>Display:</strong> Show in version history.
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Version History UI</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Timeline View:</strong> Chronological list of versions.
-          </li>
-          <li>
-            <strong>Version Comparison:</strong> Side-by-side or inline diff.
-          </li>
-          <li>
-            <strong>Restore:</strong> One-click restore to previous version.
-          </li>
-          <li>
-            <strong>Download:</strong> Download specific version.
-          </li>
-          <li>
-            <strong>Filter:</strong> Filter by author, date range.
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Rollback Patterns</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Direct Restore:</strong> Create new version from old snapshot.
-          </li>
-          <li>
-            <strong>Revert Changes:</strong> Apply inverse of changes.
-          </li>
-          <li>
-            <strong>Branch and Merge:</strong> Branch from old version, merge.
-          </li>
-          <li>
-            <strong>Audit:</strong> Log all rollback operations.
-          </li>
-          <li>
-            <strong>Confirmation:</strong> Confirm before rollback.
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Branching &amp; Merging</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Branches:</strong> Parallel version lines for experimentation.
-          </li>
-          <li>
-            <strong>Merge:</strong> Combine branches back to main.
-          </li>
-          <li>
-            <strong>Conflicts:</strong> Detect and resolve merge conflicts.
-          </li>
-          <li>
-            <strong>Review:</strong> Review changes before merge.
-          </li>
-          <li>
-            <strong>Approval:</strong> Require approval for merge.
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>References</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Git Revision Selection
-            </a>
-          </li>
-          <li>
-            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP Logging Cheat Sheet
-            </a>
-          </li>
-        </ul>
       </section>
 
       <section>
         <h2>Best Practices</h2>
+        <p>
+          Implementing content versioning requires following established best practices to ensure
+          storage efficiency, restore performance, and user experience.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Version Management</h3>
-        <ul className="space-y-2">
-          <li>Keep last 50 versions or 90 days</li>
-          <li>Archive older versions to cold storage</li>
-          <li>Use meaningful version numbers</li>
-          <li>Prompt for change descriptions</li>
-          <li>Auto-generate summaries when possible</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Strategy</h3>
+        <p>
+          Choose based on content size (small content &lt;1MB — full snapshots, large content &gt;1MB
+          — diff-based or hybrid). Consider version frequency (frequent versions — diff-based to
+          save storage, infrequent versions — snapshots for simplicity). Balance storage efficiency
+          with restore performance (hybrid for best balance). Compress versions (gzip version
+          content — 50-80% reduction for text content).
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Storage Efficiency</h3>
-        <ul className="space-y-2">
-          <li>Use diff-based storage for large content</li>
-          <li>Implement hybrid approach for balance</li>
-          <li>Compress version data</li>
-          <li>Clean up orphaned versions</li>
-          <li>Monitor storage growth</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Version History</h3>
+        <p>
+          List versions with metadata (version_number, created_at, author_id, change_description,
+          size). Enable side-by-side diff view (highlight additions in green, deletions in red,
+          modifications in yellow). Enable restore (create new version with restored content —
+          don't overwrite history, maintain continuous version chain). Paginate version history
+          (show 20 versions per page — don't load thousands at once).
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
-        <ul className="space-y-2">
-          <li>Provide clear version history</li>
-          <li>Show diff highlights</li>
-          <li>Enable easy restore</li>
-          <li>Support version comparison</li>
-          <li>Allow version download</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Rollback Patterns</h3>
+        <p>
+          Undo/redo (command pattern — each edit is a command with undo operation, maintain
+          undo/redo stack — Ctrl+Z/Ctrl+Y). Point-in-time recovery (restore to any timestamp —
+          SELECT content FROM history WHERE content_id = ? AND timestamp &lt;= ? ORDER BY timestamp
+          DESC LIMIT 1). Branch and merge (parallel editing — create branch from base version, edit
+          independently, merge changes back — detect conflicts, resolve manually or automatically).
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Monitoring</h3>
-        <ul className="space-y-2">
-          <li>Track version creation rate</li>
-          <li>Monitor storage usage</li>
-          <li>Alert on version anomalies</li>
-          <li>Track restore operations</li>
-          <li>Monitor merge conflicts</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Audit Trails</h3>
+        <p>
+          Track every change (user_id — who made change, timestamp — when changed, version_number
+          — which version, change_description — what changed, IP address — for security). Enable
+          compliance reporting (generate reports for auditors — filter by date range, user, content
+          type — export to PDF/CSV). Monitor for security (alert on unauthorized changes — changes
+          outside business hours, from unknown IPs, by unauthorized users).
+        </p>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
+        <p>
+          Avoid these common mistakes when implementing content versioning to ensure storage
+          efficiency, restore performance, and user experience.
+        </p>
         <ul className="space-y-3">
           <li>
-            <strong>No version limit:</strong> Storage grows unbounded.
-            <br /><strong>Fix:</strong> Set version limit, archive old versions.
+            <strong>Only storing current version:</strong> No history, can't rollback, no audit
+            trail. <strong>Fix:</strong> Store all versions (or at least last N versions). Maintain
+            version history table.
           </li>
           <li>
-            <strong>Full snapshots only:</strong> High storage costs.
-            <br /><strong>Fix:</strong> Use diff-based or hybrid storage.
+            <strong>Full snapshots for large content:</strong> Storage inefficient (10 versions of
+            100MB = 1GB). <strong>Fix:</strong> Use diff-based or hybrid strategy for large
+            content. Compress versions.
           </li>
           <li>
-            <strong>No change summary:</strong> Can't understand version purpose.
-            <br /><strong>Fix:</strong> Prompt for change description.
+            <strong>No version metadata:</strong> Users don't know what changed, who changed, when.{" "}
+            <strong>Fix:</strong> Store metadata (author_id, timestamp, change_description). Show
+            in version history.
           </li>
           <li>
-            <strong>Hard restore:</strong> Difficult to restore versions.
-            <br /><strong>Fix:</strong> One-click restore with confirmation.
+            <strong>Overwriting on restore:</strong> Restoring version overwrites history.{" "}
+            <strong>Fix:</strong> Create new version with restored content. Maintain continuous
+            version chain.
           </li>
           <li>
-            <strong>No conflict detection:</strong> Merge conflicts lost.
-            <br /><strong>Fix:</strong> Detect and resolve conflicts.
+            <strong>No diff view:</strong> Users can't see what changed between versions.{" "}
+            <strong>Fix:</strong> Implement side-by-side diff view. Highlight additions/deletions.
           </li>
           <li>
-            <strong>No audit trail:</strong> Can't track who changed what.
-            <br /><strong>Fix:</strong> Log all version operations.
+            <strong>Unbounded version storage:</strong> Storage grows forever, slows down.{" "}
+            <strong>Fix:</strong> Implement version limits (last 100 versions, or 30 days). Tiered
+            retention (all for 30 days, weekly for 1 year, monthly forever).
           </li>
           <li>
-            <strong>Slow comparison:</strong> Version comparison too slow.
-            <br /><strong>Fix:</strong> Optimize diff algorithm, cache results.
+            <strong>No audit trail:</strong> Can't track who changed what, compliance violation.{" "}
+            <strong>Fix:</strong> Log every change (user_id, timestamp, version_number, IP
+            address). Enable compliance reporting.
           </li>
           <li>
-            <strong>No branching:</strong> Can't experiment safely.
-            <br /><strong>Fix:</strong> Implement branching support.
+            <strong>Slow version restore:</strong> Applying many diffs is slow.{" "}
+            <strong>Fix:</strong> Use hybrid strategy (snapshot every N versions). Cache restored
+            versions.
           </li>
           <li>
-            <strong>Poor UI:</strong> Version history hard to navigate.
-            <br /><strong>Fix:</strong> Clear timeline view, filtering.
+            <strong>No conflict resolution:</strong> Collaborative editing causes conflicts.{" "}
+            <strong>Fix:</strong> Implement three-way merge. Detect conflicts, prompt user to
+            resolve.
           </li>
           <li>
-            <strong>No notifications:</strong> Users unaware of version changes.
-            <br /><strong>Fix:</strong> Notify on significant version changes.
+            <strong>No compression:</strong> Versions stored uncompressed, wasteful.{" "}
+            <strong>Fix:</strong> Compress version content (gzip — 50-80% reduction for text).
+            Decompress on restore.
           </li>
         </ul>
       </section>
 
       <section>
-        <h2>Advanced Topics</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Merge Conflict Resolution</h3>
+        <h2>Real-world Use Cases</h2>
         <p>
-          Detect conflicting changes automatically. Show conflicts to user. Provide merge tools. Allow manual resolution. Track resolution decisions.
+          Content versioning is critical for collaboration, compliance, and recovery. Here are
+          real-world implementations from production systems.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Version Compression</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Code Versioning (Git)</h3>
         <p>
-          Compress version data for storage efficiency. Use gzip or specialized compression. Balance compression ratio with restore speed. Consider content-aware compression.
+          <strong>Challenge:</strong> Code changes must be tracked. Multiple developers on same
+          codebase. Branching for features. Merge conflicts.
+        </p>
+        <p>
+          <strong>Solution:</strong> Diff-based storage (store deltas — efficient for code).
+          Branching (create branch from base — develop features independently). Merging (merge
+          changes back — three-way merge, detect conflicts). Conflict resolution (manual — user
+          resolves conflicts). Commit history (audit trail — who, when, what, why — commit
+          message).
+        </p>
+        <p>
+          <strong>Result:</strong> Collaborative development enabled. Changes tracked. Mistakes
+          recoverable (revert commits). Compliance (audit trail of all changes).
+        </p>
+        <p>
+          <strong>Architecture:</strong> Diff-based storage, branching/merging, conflict
+          resolution, commit history.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Version Tagging</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Document Collaboration (Google Docs)</h3>
         <p>
-          Tag important versions (milestones, releases). Search versions by tag. Filter by tags. Protect tagged versions from auto-cleanup.
+          <strong>Challenge:</strong> Real-time collaborative editing. Multiple users editing same
+          document. No lost edits. Version history.
+        </p>
+        <p>
+          <strong>Solution:</strong> Operational transforms (real-time sync — merge edits from
+          multiple users). Auto-save (every few seconds — no lost work). Version history (named
+          versions — user can name versions, auto-named versions — "Edited 2 hours ago"). Restore
+          (restore to any previous version — creates new version).
+        </p>
+        <p>
+          <strong>Result:</strong> Real-time collaboration seamless. No lost edits. Version history
+          comprehensive. Restore from mistakes.
+        </p>
+        <p>
+          <strong>Architecture:</strong> Operational transforms, auto-save, version history,
+          restore.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Graceful Degradation</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">CMS Platform (WordPress)</h3>
         <p>
-          Handle versioning failures gracefully. Fail-safe defaults (keep current version). Queue versioning requests for retry. Implement circuit breaker pattern. Provide manual fallback. Monitor versioning health continuously.
+          <strong>Challenge:</strong> Post revisions. Authors edit posts multiple times. Recover
+          from mistakes. Compare versions.
+        </p>
+        <p>
+          <strong>Solution:</strong> Full snapshots (store complete post content per revision —
+          simple, fast restore). Auto-save (every 60 seconds — prevent data loss). Revision list
+          (show all revisions with timestamp, author). Compare revisions (side-by-side diff —
+          highlight changes). Restore (restore to any revision — creates new revision).
+        </p>
+        <p>
+          <strong>Result:</strong> Authors can experiment (restore if don't like changes). Data
+          loss prevented (auto-save). Revision history comprehensive.
+        </p>
+        <p>
+          <strong>Architecture:</strong> Full snapshots, auto-save, revision list, compare,
+          restore.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Legal Documents (DocuSign)</h3>
+        <p>
+          <strong>Challenge:</strong> Legal documents require version tracking. Compliance (audit
+          trail of all changes). Multiple parties review/edit. Tamper-proof history.
+        </p>
+        <p>
+          <strong>Solution:</strong> Full snapshots (store complete document per version —
+          tamper-proof). Audit trail (who changed what when — user_id, timestamp, IP address,
+          change description). Digital signatures (sign specific version — signature invalid if
+          document changes). Compliance reporting (export audit trail for auditors — PDF/CSV).
+        </p>
+        <p>
+          <strong>Result:</strong> Compliance met (audit trail). Tamper-proof history (can't
+          modify old versions). Legal validity (digital signatures).
+        </p>
+        <p>
+          <strong>Architecture:</strong> Full snapshots, audit trail, digital signatures,
+          compliance reporting.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Wiki Platform (Confluence)</h3>
+        <p>
+          <strong>Challenge:</strong> Wiki pages edited by multiple users. Track changes. Compare
+          versions. Restore if needed.
+        </p>
+        <p>
+          <strong>Solution:</strong> Hybrid versioning (snapshot every 10 versions, diffs in
+          between — balance storage with performance). Version history (list all versions with
+          author, timestamp, comment). Compare versions (side-by-side diff — highlight
+          additions/deletions). Restore (restore to any version — creates new version). Watch
+          pages (notify on changes — track who changed what).
+        </p>
+        <p>
+          <strong>Result:</strong> Collaborative editing enabled. Changes tracked. Mistakes
+          recoverable. Compliance (audit trail).
+        </p>
+        <p>
+          <strong>Architecture:</strong> Hybrid versioning, version history, compare, restore,
+          notifications.
         </p>
       </section>
 
       <section>
         <h2>Interview Questions</h2>
-
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/content-management/version-comparison.svg"
-          alt="Version Comparison"
-          caption="Comparison — showing side-by-side and inline diff views"
-        />
+        <p>
+          These questions test understanding of content versioning design, implementation, and
+          operational concerns.
+        </p>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How many versions should you keep?</p>
-            <p className="mt-2 text-sm">A: Last 50 versions or 90 days. Configurable per content type. Archive older versions to cold storage.</p>
+            <p className="font-semibold">Q: How do you choose between snapshots and diffs?</p>
+            <p className="mt-2 text-sm">
+              A: Based on content size and version frequency. Small content (&lt;1MB) — full
+              snapshots (simple, fast restore). Large content (&gt;1MB) — diff-based (storage
+              efficient) or hybrid (balance). Frequent versions — diff-based to save storage.
+              Infrequent versions — snapshots for simplicity. Consider restore performance
+              (snapshots faster) vs storage cost (diffs cheaper).
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you implement version comparison?</p>
-            <p className="mt-2 text-sm">A: Diff algorithm (Myers diff for text), highlight additions/deletions, side-by-side or inline view.</p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Snapshot vs diff storage?</p>
-            <p className="mt-2 text-sm">A: Snapshots: fast restore, more storage. Diffs: less storage, complex restore. Hybrid: balance both.</p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle merge conflicts?</p>
-            <p className="mt-2 text-sm">A: Detect conflicts automatically. Show conflicts to user. Provide merge tools. Allow manual resolution.</p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you optimize version storage?</p>
-            <p className="mt-2 text-sm">A: Diff-based storage, compression, hybrid approach, archive old versions, clean up orphaned versions.</p>
+            <p className="font-semibold">Q: How do you implement version history?</p>
+            <p className="mt-2 text-sm">
+              A: Version table (content_id, version_number, body, author_id, created_at,
+              change_description). Query versions (SELECT * FROM content_versions WHERE content_id =
+              ? ORDER BY version_number DESC). Show metadata (version number, timestamp, author,
+              change description, size). Enable compare (load two versions, compute diff — highlight
+              additions/deletions). Enable restore (create new version with restored content —
+              don't overwrite history).
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you implement rollback?</p>
-            <p className="mt-2 text-sm">A: Create new version from old snapshot. Log rollback operation. Confirm before rollback. Audit all rollbacks.</p>
+            <p className="mt-2 text-sm">
+              A: Point-in-time recovery (SELECT content FROM history WHERE content_id = ? AND
+              timestamp &lt;= ? ORDER BY timestamp DESC LIMIT 1 — restore to any timestamp).
+              Undo/redo (command pattern — each edit is a command with undo operation, maintain
+              undo/redo stack). Branch and merge (create branch from base, edit independently,
+              merge back — detect conflicts, resolve). Always create new version on restore (don't
+              overwrite history).
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle branching?</p>
-            <p className="mt-2 text-sm">A: Create branch from version. Track branch lineage. Merge back to main. Resolve conflicts on merge.</p>
+            <p className="font-semibold">Q: How do you handle merge conflicts?</p>
+            <p className="mt-2 text-sm">
+              A: Three-way merge (base version + two changes — automatically merge non-conflicting
+              changes). Detect conflicts (same lines edited differently — mark as conflict). Prompt
+              user to resolve (show conflicting sections — user chooses which to keep, or manually
+              edit). Auto-resolve simple conflicts (whitespace, formatting — no user intervention
+              needed). Log conflicts (audit trail — who resolved, how).
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What metrics do you track?</p>
-            <p className="mt-2 text-sm">A: Version creation rate, storage usage, restore operations, merge conflicts, version retention compliance.</p>
+            <p className="font-semibold">Q: How do you implement audit trails?</p>
+            <p className="mt-2 text-sm">
+              A: Log every change (user_id — who made change, timestamp — when, version_number —
+              which version, change_description — what changed, IP address — for security). Store
+              in separate audit table (content_id, user_id, timestamp, action, old_value,
+              new_value). Enable compliance reporting (filter by date range, user, content — export
+              to PDF/CSV). Monitor for security (alert on unauthorized changes — outside business
+              hours, unknown IPs).
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you ensure version integrity?</p>
-            <p className="mt-2 text-sm">A: Hash each version. Verify hash on restore. Log all version operations. Audit version changes.</p>
+            <p className="font-semibold">Q: How do you optimize version storage?</p>
+            <p className="mt-2 text-sm">
+              A: Compression (gzip version content — 50-80% reduction for text). Diff-based storage
+              (store only changes — not full content). Hybrid strategy (snapshot every N versions —
+              balance storage with restore performance). Version limits (keep last 100 versions, or
+              30 days — bound storage). Tiered retention (all for 30 days, weekly for 1 year,
+              monthly forever — long-term history without unbounded growth).
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How do you implement real-time collaboration?</p>
+            <p className="mt-2 text-sm">
+              A: Operational transforms (OT — transform edits from multiple users — merge
+              conflicts automatically). CRDTs (Conflict-free Replicated Data Types — mathematical
+              approach to conflict-free merging). WebSocket sync (real-time — push edits to other
+              users immediately). Auto-save (every few seconds — no lost work). Version history
+              (named versions — user can name versions, auto-named — "Edited 2 hours ago").
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How do you handle version limits?</p>
+            <p className="mt-2 text-sm">
+              A: Keep last N versions (DELETE FROM content_versions WHERE content_id = ? AND
+              version_number &lt; (SELECT MAX(version_number) FROM content_versions WHERE content_id
+              = ?) - 100 — keep last 100). Or keep versions from last N days (DELETE FROM
+              content_versions WHERE created_at &lt; NOW() - INTERVAL '30 days' — keep 30 days).
+              Tiered retention (all for 30 days, weekly snapshots for 1 year, monthly forever —
+              balance completeness with storage).
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How do you implement diff view?</p>
+            <p className="mt-2 text-sm">
+              A: Myers diff algorithm (compute diff between two versions — identify additions,
+              deletions, modifications). Side-by-side view (left: old version, right: new version —
+              highlight additions in green, deletions in red, modifications in yellow). Inline diff
+              (single view — show changes inline with markers). Pre-compute diffs (store diff in
+              database — faster load, more storage). Compute on-demand (compute when user requests
+              — less storage, slower).
+            </p>
           </div>
         </div>
-      </section>
-
-      <section>
-        <h2>Security Checklist</h2>
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Pre-Launch Checklist</h3>
-          <ul className="space-y-2">
-            <li>☐ Version access control configured</li>
-            <li>☐ Version integrity verification</li>
-            <li>☐ Audit logging enabled</li>
-            <li>☐ Version retention policy defined</li>
-            <li>☐ Rollback authorization</li>
-            <li>☐ Merge conflict handling</li>
-            <li>☐ Version encryption at rest</li>
-            <li>☐ Monitoring and alerting set up</li>
-            <li>☐ Penetration testing completed</li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Testing Strategy</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Unit Tests</h3>
-        <ul className="space-y-2">
-          <li>Test version creation</li>
-          <li>Test diff algorithm</li>
-          <li>Test version restore</li>
-          <li>Test merge logic</li>
-          <li>Test conflict detection</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Integration Tests</h3>
-        <ul className="space-y-2">
-          <li>Test versioning flow</li>
-          <li>Test version comparison</li>
-          <li>Test rollback flow</li>
-          <li>Test branching flow</li>
-          <li>Test merge flow</li>
-          <li>Test retention cleanup</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Tests</h3>
-        <ul className="space-y-2">
-          <li>Test version access control</li>
-          <li>Test version integrity</li>
-          <li>Test audit logging</li>
-          <li>Test rollback authorization</li>
-          <li>Test version tampering</li>
-          <li>Penetration testing for versioning</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Tests</h3>
-        <ul className="space-y-2">
-          <li>Test version creation latency</li>
-          <li>Test version restore performance</li>
-          <li>Test diff performance</li>
-          <li>Test storage efficiency</li>
-          <li>Test concurrent versioning</li>
-        </ul>
       </section>
 
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li><a href="https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Git Revision Selection</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Logging Cheat Sheet</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Authorization Cheat Sheet</a></li>
-          <li><a href="https://auth0.com/blog/a-look-at-the-latest-draft-for-oauth-2-1/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OAuth 2.1 Security Best Practices</a></li>
-          <li><a href="https://developer.mozilla.org/en-US/docs/Web/Security" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">MDN - Web Security</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Choosing_and_Using_Security_Questions_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Security Questions</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Multifactor Authentication</a></li>
-          <li><a href="https://docs.openfga.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OpenFGA - Fine-Grained Authorization</a></li>
-          <li><a href="https://www.cerbos.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Cerbos - Policy as Code</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Access Control Cheat Sheet</a></li>
+          <li>
+            <a
+              href="https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Git Versioning Internals
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://en.wikipedia.org/wiki/Operational_transformation"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Operational Transformation (Google Docs)
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Logging Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://auth0.com/blog/a-look-at-the-latest-draft-for-oauth-2-1/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OAuth 2.1 Security Best Practices
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/Security"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MDN - Web Security
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Multifactor Authentication
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Access Control Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Authorization Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Forgot Password Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Credential_Stuffing_Prevention_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Credential Stuffing Prevention
+            </a>
+          </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Implementation Patterns</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Snapshot Pattern</h3>
-        <p>
-          Store complete content per version. Fast restore. Simple implementation. More storage. Use for small to medium content.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Diff Pattern</h3>
-        <p>
-          Store only changes between versions. Less storage. Complex restore. Use diff algorithm. Reconstruct by applying diffs.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Hybrid Pattern</h3>
-        <p>
-          Full snapshot every N versions. Diffs in between. Balance storage and performance. Load nearest snapshot, apply diffs.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Branching Pattern</h3>
-        <p>
-          Create branch from version. Track branch lineage. Merge back to main. Resolve conflicts on merge. Require approval for merge.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Graceful Degradation</h3>
-        <p>
-          Handle versioning failures gracefully. Fail-safe defaults (keep current version). Queue versioning requests for retry. Implement circuit breaker pattern. Provide manual fallback. Monitor versioning health continuously.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Compliance Considerations</h3>
-        <p>
-          Meet regulatory requirements for versioning. SOC2: Versioning audit trails. HIPAA: PHI versioning safeguards. PCI-DSS: Cardholder data versioning. GDPR: Content data handling. Implement compliance reporting. Regular compliance reviews.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Optimization</h3>
-        <p>
-          Optimize versioning for high-throughput systems. Batch versioning operations. Use connection pooling. Implement async versioning operations. Monitor versioning latency. Set SLOs for versioning time. Scale versioning endpoints horizontally.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Error Handling</h3>
-        <p>
-          Handle versioning errors gracefully. Log errors with full context. Implement retry with exponential backoff. Alert on repeated failures. Provide fallback versioning mechanisms. Don't expose internal errors to users.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Developer Experience</h3>
-        <p>
-          Make versioning easy for developers to use. Provide versioning SDK. Auto-generate versioning documentation. Include versioning requirements in API docs. Provide testing utilities. Implement versioning linting in CI. Create runbooks for common issues.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Multi-Tenant Versioning</h3>
-        <p>
-          Handle versioning in multi-tenant systems. Tenant-scoped versioning configuration. Isolate versioning events between tenants. Tenant-specific versioning policies. Audit versioning per tenant. Handle cross-tenant versioning carefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise Versioning</h3>
-        <p>
-          Special handling for enterprise versioning. Dedicated support for enterprise onboarding. Custom versioning configurations. SLA for versioning availability. Priority support for versioning issues. Regular enterprise reviews.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Emergency Access</h3>
-        <p>
-          Break-glass procedures for emergency access. Pre-approved emergency versioning bypass. Require security team approval. Automatic notification to affected users. Full audit logging of emergency access. Post-incident review required.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Testing</h3>
-        <p>
-          Test versioning thoroughly before deployment. Chaos engineering for versioning failures. Simulate high-volume versioning scenarios. Test versioning under load. Validate versioning propagation. Test rollback procedures. Document test results.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">User Communication</h3>
-        <p>
-          Communicate versioning changes clearly to users. Explain why versioning is required. Provide steps to configure versioning. Offer support contact for issues. Send versioning confirmation. Provide versioning history for review. Handle user concerns empathetically.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Continuous Improvement</h3>
-        <p>
-          Evolve versioning based on operational learnings. Analyze versioning patterns. Identify false positives. Optimize versioning triggers. Gather user feedback. Track versioning metrics. Benchmark against industry best practices.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Hardening</h3>
-        <p>
-          Strengthen versioning against attacks. Implement defense in depth. Regular penetration testing. Monitor for versioning bypass attempts. Encrypt versioning data at rest. Use hardware security modules for key management. Implement zero-trust principles.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Deprovisioning Integration</h3>
-        <p>
-          Integrate with user deprovisioning workflows. Automatic versioning revocation on HR termination. Role change triggers versioning review. Contractor expiry triggers versioning revocation. Handle temporary access expiry. Coordinate with access management systems.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Analytics</h3>
-        <p>
-          Analyze versioning data for insights. Track versioning reasons distribution. Identify common versioning triggers. Detect anomalous versioning patterns. Measure versioning effectiveness. Generate versioning reports. Use analytics for optimization.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Cross-System Versioning</h3>
-        <p>
-          Coordinate versioning across multiple systems. Central versioning orchestration. Handle system-specific versioning. Ensure consistent enforcement. Manage versioning dependencies. Orchestrate versioning updates. Monitor cross-system versioning health.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Documentation</h3>
-        <p>
-          Maintain comprehensive versioning documentation. Versioning procedures and runbooks. Decision records for versioning design. Usage examples for each scenario. Onboarding guide for new developers. API documentation with versioning endpoints. Keep documentation up to date.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Cost Optimization</h3>
-        <p>
-          Optimize versioning system costs. Right-size versioning infrastructure. Use serverless for variable workloads. Optimize storage for versioning data. Reduce unnecessary versioning checks. Monitor cost per versioning. Balance performance with cost.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Governance</h3>
-        <p>
-          Establish versioning governance framework. Define versioning ownership and stewardship. Regular versioning reviews and audits. Versioning change management process. Compliance reporting. Versioning exception handling. Training and documentation. Continuous improvement program.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Real-Time Versioning</h3>
-        <p>
-          Enable real-time versioning capabilities. Hot reload versioning rules. Version versioning for rollback. Validate versioning before activation. Test in isolated environment first. Monitor for issues after update. Implement gradual rollout for versioning changes.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Simulation</h3>
-        <p>
-          Test versioning changes before deployment. What-if analysis for versioning changes. Simulate versioning decisions with sample requests. Detect unintended consequences. Validate versioning coverage. Test edge cases and boundary conditions. Generate impact reports for stakeholders.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Access Recertification</h3>
-        <p>
-          Periodic review of access permissions. Quarterly access recertification campaigns. Managers review direct reports' access. Automated reminders for pending reviews. Escalation for overdue reviews. Attestation workflow with audit trail. Generate compliance reports for auditors.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Inheritance</h3>
-        <p>
-          Support versioning inheritance for easier management. Parent versioning triggers child versioning. Handle inheritance conflicts clearly. Document inheritance hierarchy. Cache inherited versioning results. Monitor inheritance depth for performance.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Geographic Versioning</h3>
-        <p>
-          Enforce location-based versioning controls. Versioning access by country/region. Comply with data sovereignty laws. Use IP geolocation for enforcement. Handle VPN and proxy detection. Allow exceptions for travel. Audit geographic versioning patterns.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Time-Based Versioning</h3>
-        <p>
-          Versioning access by time of day/day of week. Business hours only for sensitive operations. After-hours versioning requires approval. Handle timezone differences. Support shift-based access patterns. Audit time-based versioning violations. Implement automatic expiry.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Device-Based Versioning</h3>
-        <p>
-          Versioning access by device characteristics. Require managed devices for sensitive data. Check device compliance (encryption, MDM). Block rooted/jailbroken devices. Implement device fingerprinting. Support device registration workflow. Audit device-based versioning decisions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Network-Based Versioning</h3>
-        <p>
-          Versioning access by network characteristics. Allow only corporate network for sensitive operations. Require VPN for remote access. Check network security posture. Implement network segmentation. Monitor network-based versioning patterns. Handle network changes gracefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Behavioral Versioning</h3>
-        <p>
-          Detect anomalous access patterns for versioning. Baseline normal user behavior. Alert on deviations (unusual time, location, resource). Implement risk scoring. Step-up versioning for high-risk access. Continuous versioning during session. Integrate with SIEM for correlation.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Consent-Based Versioning</h3>
-        <p>
-          Manage user consent for session access. Capture consent at session creation. Support consent withdrawal. Audit consent decisions. Handle consent expiry. Integrate with privacy management systems. Generate consent reports for compliance.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Data Classification Versioning</h3>
-        <p>
-          Apply versioning based on data sensitivity. Classify data (public, internal, confidential, restricted). Different versioning per classification. Automatic classification where possible. Handle classification changes. Audit classification-based versioning. Train users on classification.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Orchestration</h3>
-        <p>
-          Coordinate versioning across distributed systems. Central versioning orchestration service. Handle versioning conflicts across systems. Ensure consistent enforcement. Manage versioning dependencies. Orchestrate versioning updates. Monitor orchestration health.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Zero Trust Versioning</h3>
-        <p>
-          Implement zero trust versioning control. Never trust, always verify. Least privilege versioning by default. Micro-segmentation of versioning. Continuous verification of versioning trust. Assume breach mentality. Monitor and log all versioning.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Versioning Strategy</h3>
-        <p>
-          Manage versioning versions effectively. Semantic versioning for versioning. Backward compatibility guarantees. Deprecation process for old versions. Migration guides for version changes. Support multiple versions simultaneously. Track version adoption rates.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Access Request Versioning</h3>
-        <p>
-          Handle access request versioning systematically. Self-service access versioning request. Manager approval workflow. Automated versioning after approval. Temporary versioning with expiry. Access versioning audit trail. Integration with HR systems.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Compliance Monitoring</h3>
-        <p>
-          Monitor versioning compliance continuously. Automated compliance checks. Alert on versioning violations. Generate compliance reports. Track remediation progress. Integrate with GRC systems. Support external audits.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Disaster Recovery</h3>
-        <p>
-          Plan for versioning system failures. Backup versioning configurations. Disaster recovery procedures. Fail-safe defaults (deny-by-default). Recovery time objectives. Test DR procedures regularly. Document recovery steps.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Performance Tuning</h3>
-        <p>
-          Optimize versioning evaluation performance. Profile versioning evaluation latency. Identify slow versioning rules. Optimize versioning rules. Use efficient data structures. Cache versioning results. Scale versioning engines horizontally. Set performance SLOs.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Testing Automation</h3>
-        <p>
-          Automate versioning testing in CI/CD. Unit tests for versioning rules. Integration tests with sample requests. Regression tests for versioning changes. Performance tests for versioning evaluation. Security tests for versioning bypass. Automated versioning validation.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Communication</h3>
-        <p>
-          Communicate versioning changes effectively. Notify affected users of changes. Provide change summaries. Offer training for complex changes. Maintain versioning changelog. Gather user feedback. Address concerns proactively.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Retirement</h3>
-        <p>
-          Retire obsolete versioning systematically. Identify unused versioning. Deprecation notice period. Migration path for affected users. Monitor for usage during deprecation. Remove versioning after grace period. Document retirement decisions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Third-Party Versioning Integration</h3>
-        <p>
-          Integrate with third-party versioning systems. Support standard protocols (OAuth, OIDC, SAML). Handle third-party versioning evaluation. Manage trust relationships. Audit third-party versioning. Monitor integration health. Plan for vendor changes.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Cost Management</h3>
-        <p>
-          Optimize versioning system costs. Right-size versioning infrastructure. Use serverless for variable workloads. Optimize storage for versioning data. Reduce unnecessary versioning checks. Monitor cost per versioning. Balance performance with cost.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Scalability</h3>
-        <p>
-          Scale versioning for growing systems. Horizontal scaling for versioning engines. Shard versioning data by user. Use read replicas for versioning checks. Implement caching at multiple levels. Monitor scaling metrics. Plan capacity proactively.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Observability</h3>
-        <p>
-          Implement comprehensive versioning observability. Distributed tracing for versioning flow. Structured logging for versioning events. Metrics for versioning health. Dashboards for versioning monitoring. Alerts for versioning anomalies. Root cause analysis tools.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Training</h3>
-        <p>
-          Train team on versioning procedures. Regular versioning drills. Document versioning runbooks. Cross-train team members. Test versioning knowledge. Update training materials. Track training completion.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Innovation</h3>
-        <p>
-          Stay current with versioning best practices. Evaluate new versioning technologies. Pilot innovative versioning approaches. Share versioning learnings. Contribute to versioning community. Patent versioning innovations where applicable.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Metrics</h3>
-        <p>
-          Track key versioning metrics. Versioning success rate. Time to versioning. Versioning propagation latency. Denylist hit rate. User session count. Versioning error rate. Set targets and monitor trends.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Security</h3>
-        <p>
-          Secure versioning systems against attacks. Encrypt versioning data. Implement access controls. Audit versioning access. Monitor for versioning abuse. Regular security assessments. Incident response procedures.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Compliance</h3>
-        <p>
-          Meet regulatory requirements for versioning. SOC2 audit trails. HIPAA immediate versioning. PCI-DSS session controls. GDPR right to versioning. Regular compliance reviews. External audit support.
-        </p>
       </section>
     </ArticleLayout>
   );

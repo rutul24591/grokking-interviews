@@ -532,6 +532,194 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
       </section>
 
       <section>
+        <h2>Security Considerations</h2>
+        <p>
+          Retry logic introduces security considerations around abuse prevention.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Retry Abuse Prevention</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>The Risk:</strong> Attackers can exploit retry logic to amplify attacks.
+            </li>
+            <li>
+              <strong>Mitigation:</strong> Implement retry budgets at the client level.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Authentication</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Token Expiration:</strong> Handle 401 by refreshing tokens, not retrying.
+            </li>
+            <li>
+              <strong>Idempotency:</strong> Use idempotency keys for mutating operations.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Performance Benchmarks</h2>
+        <p>
+          Understanding retry performance characteristics.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Industry Performance Data</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Metric</th>
+                <th className="p-2 text-left">Target</th>
+                <th className="p-2 text-left">Industry Average</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Retry Success Rate</td>
+                <td className="p-2">&gt;80%</td>
+                <td className="p-2">70-90%</td>
+              </tr>
+              <tr>
+                <td className="p-2">Average Retry Count</td>
+                <td className="p-2">&lt;2</td>
+                <td className="p-2">1-3 retries</td>
+              </tr>
+              <tr>
+                <td className="p-2">Retry Overhead</td>
+                <td className="p-2">&lt;10%</td>
+                <td className="p-2">5-15%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Real-World Benchmarks</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Stripe:</strong> Retry success rate ~85% for transient failures.
+            </li>
+            <li>
+              <strong>AWS SDK:</strong> Default: 3 retries with exponential backoff.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Cost Analysis</h2>
+        <p>
+          Retry logic has infrastructure and development costs.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Increased Request Volume:</strong> Retries add 5-15% to total volume.
+            </li>
+            <li>
+              <strong>Server Load:</strong> Retries during issues amplify load.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Initial Implementation:</strong> 1-2 weeks for production-ready retry logic.
+            </li>
+            <li>
+              <strong>Testing Overhead:</strong> +20-30% testing time.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">ROI Decision Framework</h3>
+          <p>
+            Use aggressive retries when: transient failures are common, user experience depends
+            on success. Use conservative retries when: failures are usually permanent.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Decision Framework: When to Use Retry Logic</h2>
+        <p>
+          Use this decision framework to evaluate whether retries are appropriate.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Decision Tree</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Is the failure transient (5xx, timeout)?</strong>
+              <ul>
+                <li>Yes → Retry is appropriate</li>
+                <li>No → Don't retry (4xx errors)</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Is the operation idempotent?</strong>
+              <ul>
+                <li>Yes → Safe to retry</li>
+                <li>No → Use idempotency keys</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Is latency critical?</strong>
+              <ul>
+                <li>Yes → Minimal retries with short backoff</li>
+                <li>No → Aggressive retries with exponential backoff</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Retry Strategy Comparison</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Strategy</th>
+                <th className="p-2 text-left">Success Rate</th>
+                <th className="p-2 text-left">Server Load</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">No Retry</td>
+                <td className="p-2">Low</td>
+                <td className="p-2">Lowest</td>
+              </tr>
+              <tr>
+                <td className="p-2">Fixed Delay</td>
+                <td className="p-2">Medium</td>
+                <td className="p-2">High (thundering herd)</td>
+              </tr>
+              <tr>
+                <td className="p-2">Exponential Backoff</td>
+                <td className="p-2">High</td>
+                <td className="p-2">Medium</td>
+              </tr>
+              <tr>
+                <td className="p-2">Exponential + Jitter</td>
+                <td className="p-2">High</td>
+                <td className="p-2">Low</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

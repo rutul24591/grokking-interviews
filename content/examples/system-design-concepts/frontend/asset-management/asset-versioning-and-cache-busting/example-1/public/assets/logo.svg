@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="90" viewBox="0 0 220 90">
+  <rect width="220" height="90" rx="14" fill="#0b1020"/>
+  <circle cx="46" cy="45" r="18" fill="#60a5fa"/>
+  <path d="M46 29 L58 55 L34 55 Z" fill="#0b1020"/>
+  <text x="78" y="52" font-family="ui-sans-serif, system-ui" font-size="18" fill="#e6e9f2">Hash &amp; Cache</text>
+</svg>
+

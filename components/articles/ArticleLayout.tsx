@@ -1,6 +1,13 @@
 "use client";
 
-import { type ReactNode, useMemo, useState, useEffect } from "react";
+import {
+  type ReactNode,
+  useMemo,
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+} from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { MoveLeft } from "lucide-react";
@@ -30,6 +37,26 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
     segments.pop();
     return segments.join("/");
   }, [pathname]);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
+  useEffect(() => {
+    // The scroll container is the closest ancestor with overflow-y-auto (ContentArea's <main>)
+    const scrollContainer = containerRef.current?.closest("main");
+    if (!scrollContainer) return;
+
+    const handleScroll = () => {
+      setShowBackToTop(scrollContainer.scrollTop > 400);
+    };
+    scrollContainer.addEventListener("scroll", handleScroll, { passive: true });
+    return () => scrollContainer.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = useCallback(() => {
+    const scrollContainer = containerRef.current?.closest("main");
+    scrollContainer?.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   const [view, setView] = useArticleViewMode();
   const hasExamples = useMemo(() => examples.length > 0, [examples]);
   const [activeExampleId, setActiveExampleId] = useState(examples[0]?.id ?? "");
@@ -71,7 +98,7 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
   }, [examples, resolvedActiveExampleId]);
 
   return (
-    <div className="min-h-screen bg-theme">
+    <div ref={containerRef} className="min-h-screen bg-theme">
       <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Article Header */}
         <header className="mb-8 border-b border-theme pb-6">
@@ -193,6 +220,33 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
           )}
         </footer>
       </div>
+
+      {/* Back to Top Button */}
+      <button
+        type="button"
+        onClick={scrollToTop}
+        aria-label="Back to top"
+        className={classNames(
+          "fixed bottom-6 right-6/12 z-50 cursor-pointer flex h-14 w-14 items-center justify-center rounded-full border border-theme bg-panel shadow-soft-theme transition-all duration-300 hover:bg-accent hover:text-white",
+          showBackToTop
+            ? "translate-y-0 opacity-100"
+            : "pointer-events-none translate-y-4 opacity-0",
+        )}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#ec4699"
+          strokeWidth="4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="m18 15-6-6-6 6" />
+        </svg>
+      </button>
     </div>
   );
 }

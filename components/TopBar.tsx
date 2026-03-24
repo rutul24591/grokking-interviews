@@ -1,13 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "@/features/theme/ThemeToggle";
 import { NetworkStatus } from "@/features/network-status/NetworkStatus";
 import { SupportModal } from "@/components/SupportModal";
+import { useSidebarStore } from "@/features/sidebar/sidebar.store";
 import { classNames } from "@/lib/classNames";
 
 export function TopBar() {
   const [isSupportModalOpen, setIsSupportModalOpen] = useState(false);
+  const { isMobileOpen, setMobileOpen } = useSidebarStore();
 
   return (
     <>
@@ -15,6 +18,17 @@ export function TopBar() {
         <div className="flex h-16 items-center justify-between px-4 lg:px-6">
           {/* Left: Logo / Platform Name */}
           <div className="flex items-center gap-3">
+            {/* Mobile sidebar toggle */}
+            <button
+              type="button"
+              onClick={() => setMobileOpen(!isMobileOpen)}
+              className="flex items-center justify-center rounded-lg p-1.5 text-muted transition hover:bg-panel-hover hover:text-heading lg:hidden cursor-pointer"
+              aria-label={
+                isMobileOpen ? "Close navigation menu" : "Open navigation menu"
+              }
+            >
+              {isMobileOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent shadow-soft-theme">
               <span className="text-lg font-bold text-white">IP</span>
             </div>

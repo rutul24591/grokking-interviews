@@ -7,16 +7,25 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-requirements-cm-frontend-create-content",
   title: "Create Content UI",
-  description: "Comprehensive guide to implementing content creation interfaces covering editors, media upload, drafts, content validation, auto-save, templates, and UX patterns for staff/principal engineer interviews.",
+  description:
+    "Comprehensive guide to implementing content creation interfaces covering editor types (WYSIWYG, Markdown, block), editor architecture, media upload (drag-drop, progress, validation), draft management (auto-save, local storage, sync), content validation (real-time, policy, quality), templates, and UX patterns for staff/principal engineer interviews.",
   category: "functional-requirements",
   subcategory: "content-management",
   slug: "create-content-ui",
   version: "extensive",
-  wordCount: 8000,
-  readingTime: 32,
-  lastUpdated: "2026-03-16",
-  tags: ["requirements", "functional", "content", "create", "frontend", "editor", "drafts"],
-  relatedTopics: ["edit-content-ui", "rich-text-editor", "media-upload", "content-validation"],
+  wordCount: 9500,
+  readingTime: 38,
+  lastUpdated: "2026-03-23",
+  tags: [
+    "requirements",
+    "functional",
+    "content",
+    "create",
+    "frontend",
+    "editor",
+    "drafts",
+  ],
+  relatedTopics: ["edit-content-ui", "rich-text-editor", "media-upload"],
 };
 
 export default function CreateContentUIArticle() {
@@ -26,755 +35,642 @@ export default function CreateContentUIArticle() {
         <h2>Definition &amp; Context</h2>
         <p>
           <strong>Create Content UI</strong> is the primary interface for users to generate new
-          content on the platform. It must provide an intuitive, powerful editing experience
-          while enforcing content policies and guiding users toward quality submissions.
-        </p>
-        <p>
-          For staff and principal engineers, implementing create UI requires understanding
-          editor architecture, media handling, draft management, content validation,
-          auto-save patterns, templates, and the psychological aspects of content creation
-          (writer's block, motivation, completion). The implementation must balance
-          creative freedom with content quality and policy compliance.
+          content on the platform. It must provide an intuitive, powerful editing experience while
+          enforcing content policies and guiding users toward quality submissions. The create UI is
+          often the first meaningful interaction users have with a platform — a poor experience
+          leads to abandonment, while a great experience encourages creation and retention. Create
+          UI encompasses the editor (WYSIWYG, Markdown, block), media upload (images, videos,
+          attachments), draft management (auto-save, local storage, sync), content validation
+          (real-time feedback, policy enforcement, quality checks), and templates (pre-filled
+          structures for common content types).
         </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/create-content-flow.svg"
           alt="Create Content Flow"
-          caption="Create Flow — showing editor, media upload, validation, draft, and publish"
-        />
-      </section>
-
-      <section>
-        <h2>Editor Types</h2>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Rich Text Editor (WYSIWYG)</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Description:</strong> What You See Is What You Get. Visual editing
-              with formatting toolbar.
-            </li>
-            <li>
-              <strong>Use Cases:</strong> Blog posts, articles, documents, emails.
-            </li>
-            <li>
-              <strong>Examples:</strong> TinyMCE, CKEditor, Quill, Draft.js, Slate.
-            </li>
-            <li>
-              <strong>Benefits:</strong> User-friendly, no markup knowledge required,
-              immediate visual feedback.
-            </li>
-            <li>
-              <strong>Considerations:</strong> HTML sanitization, cross-browser compatibility,
-              mobile support, accessibility.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Markdown Editor</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Description:</strong> Plain text with markdown syntax. Preview pane
-              shows rendered output.
-            </li>
-            <li>
-              <strong>Use Cases:</strong> Technical documentation, README, developer content.
-            </li>
-            <li>
-              <strong>Examples:</strong> Stack Overflow, GitHub, Reddit, Notion.
-            </li>
-            <li>
-              <strong>Benefits:</strong> Fast typing, version-control friendly, portable.
-            </li>
-            <li>
-              <strong>Considerations:</strong> Learning curve, preview sync, syntax highlighting.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Block Editor</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Description:</strong> Content as modular blocks (paragraph, image, embed).
-            </li>
-            <li>
-              <strong>Use Cases:</strong> Modern content creation, flexible layouts.
-            </li>
-            <li>
-              <strong>Examples:</strong> Gutenberg (WordPress), Notion, Craft.
-            </li>
-            <li>
-              <strong>Benefits:</strong> Flexible layouts, reusable blocks, structured content.
-            </li>
-            <li>
-              <strong>Considerations:</strong> Complexity, learning curve, block management.
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Media Upload</h2>
-
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/content-management/media-upload.svg"
-          alt="Media Upload Flow"
-          caption="Media Upload — showing drag-drop, progress, validation, and embedding"
+          caption="Create Content Flow — showing editor selection (WYSIWYG, Markdown, block), media upload (drag-drop, progress, validation), draft auto-save, content validation (real-time feedback), and publish workflow"
         />
 
         <p>
-          Media upload enables users to add images, videos, and files to content.
+          For staff and principal engineers, implementing create UI requires deep understanding of
+          editor architecture (WYSIWYG — TinyMCE, CKEditor, Quill for visual editing, Markdown —
+          for developer/technical content, Block — Gutenberg, Notion-style for modular content),
+          media handling (drag-drop upload, progress indicators, client-side validation, image
+          optimization before upload), draft management (auto-save every 30 seconds, local storage
+          for offline editing, sync when online, conflict resolution), content validation
+          (real-time feedback — character count, required fields, policy checks, quality scoring),
+          templates (pre-filled structures for common content types — blog post, product listing,
+          job posting), and the psychological aspects of content creation (writer's block —
+          provide prompts, motivation — show progress, completion — clear publish flow). The
+          implementation must balance creative freedom (flexible editing) with content quality
+          (validation, guidance) and policy compliance (enforce rules without frustrating users).
+        </p>
+        <p>
+          Modern create UIs have evolved from simple text areas to sophisticated editing
+          experiences with real-time collaboration, AI assistance, and rich media support.
+          Platforms like Medium, Notion, and Substack provide distraction-free editors with
+          auto-save, rich formatting, and seamless publishing. Editor choice depends on audience
+          (technical users prefer Markdown, general users prefer WYSIWYG), content type (articles
+          vs documentation vs social posts), and platform goals (speed vs flexibility).
+        </p>
+      </section>
+
+      <section>
+        <h2>Core Concepts</h2>
+        <p>
+          Content creation is built on fundamental concepts that determine how users create, edit,
+          and publish content. Understanding these concepts is essential for designing effective
+          create interfaces.
+        </p>
+        <p>
+          <strong>Editor Types:</strong> WYSIWYG (What You See Is What You Get — visual editing
+          with formatting toolbar, immediate visual feedback, user-friendly for non-technical users
+          — TinyMCE, CKEditor, Quill), Markdown (plain text with markdown syntax — fast typing,
+          version-control friendly, popular with developers — Stack Overflow, GitHub, Reddit),
+          Block (content as modular blocks — paragraph, image, embed blocks, flexible layout,
+          Notion-style — Gutenberg, Notion, Craft). Choose based on audience and content type.
+        </p>
+        <p>
+          <strong>Media Upload:</strong> Drag-drop (drag files to upload area — intuitive, fast),
+          file picker (click to open file dialog — standard fallback), progress indicators (show
+          upload progress per file — percentage, time remaining), client-side validation (validate
+          file type by magic bytes, size limits, dimensions before upload — reject early, save
+          bandwidth), image optimization (resize, compress before upload — reduce upload time,
+          storage). Media upload must be fast, reliable, and forgiving (retry on failure).
+        </p>
+        <p>
+          <strong>Draft Management:</strong> Auto-save (every 30 seconds — no lost work, save on
+          blur, before unload), local storage (save to IndexedDB/LocalStorage — works offline,
+          sync when online), sync (when online, sync local drafts to server — handle conflicts if
+          edited from multiple devices), version history (save drafts as versions — restore any
+          draft, compare drafts). Draft management prevents data loss and enables offline editing.
+        </p>
+        <p>
+          <strong>Content Validation:</strong> Real-time feedback (character count — "50/5000
+          characters", required fields — highlight missing fields as user types, word count,
+          reading time), policy checks (prohibited content — scan as user types, warn before
+          publish, spam detection — detect patterns), quality scoring (readability score,
+          completeness — "Add a cover image to improve engagement", suggestions — "Add tags for
+          better discovery"). Validation guides users to quality content without blocking creation.
+        </p>
+      </section>
+
+      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          Create UI architecture separates editor (content input), media upload (file handling),
+          draft management (auto-save, sync), and validation (real-time feedback), enabling
+          modular, maintainable implementation. This architecture is critical for user experience
+          and reliability.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/content-management/editor-architecture.svg"
+          alt="Editor Architecture"
+          caption="Editor Architecture — showing WYSIWYG editor (TinyMCE, CKEditor), Markdown editor (with preview), Block editor (modular blocks), and shared services (auto-save, validation, media upload)"
+        />
+
+        <p>
+          Create flow: User clicks "Create". User selects content type (blog post, product, job —
+          or default). Editor loads (WYSIWYG, Markdown, or Block based on user preference/content
+          type). User types content (editor handles formatting, media embeds). Media upload (user
+          drrops image — client validates, uploads, inserts into content). Auto-save (every 30
+          seconds — save to local storage, sync to server when online). Real-time validation
+          (character count updates, required fields highlight, policy checks run in background).
+          User clicks "Publish" (or "Save Draft"). Final validation (block if critical issues —
+          empty title, policy violation). Content published (or saved as draft).
+        </p>
+        <p>
+          Editor architecture includes: editor core (content editable area — handle input,
+          selection, cursor), toolbar (formatting buttons — bold, italic, headings, lists — apply
+          to selection), media handler (insert image/video — upload, embed, resize), plugin system
+          (extend functionality — embeds, mentions, tables — modular architecture). Shared services
+          (auto-save — saves all editor types, validation — shared rules, media upload — shared
+          service). This architecture enables consistent editing experience across content types.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/content-management/draft-management.svg"
+          alt="Draft Management"
+          caption="Draft Management — showing auto-save (every 30 seconds), local storage (offline editing), sync (when online), conflict resolution (multiple devices), and version history"
+        />
+
+        <p>
+          Draft management architecture includes: auto-save (timer-based — every 30 seconds,
+          event-based — on blur, before unload, after significant changes), local storage
+          (IndexedDB for large drafts, LocalStorage for small — store content, metadata,
+          timestamp), sync (when online — push local drafts to server, pull server drafts — handle
+          conflicts with last-write-wins or prompt user), version history (save periodic snapshots
+          — every 5 minutes, on publish — enable restore, compare). This architecture ensures no
+          lost work, offline editing, and seamless multi-device experience.
+        </p>
+      </section>
+
+      <section>
+        <h2>Trade-offs &amp; Comparison</h2>
+        <p>
+          Designing create UI involves trade-offs between flexibility, ease of use, and control.
+          Understanding these trade-offs is essential for making informed architecture decisions.
         </p>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Upload Methods</h3>
+          <h3 className="mb-4 text-lg font-semibold">WYSIWYG vs Markdown vs Block Editor</h3>
           <ul className="space-y-3">
             <li>
-              <strong>Drag &amp; Drop:</strong> Drag files directly into editor. Visual
-              feedback on hover.
+              <strong>WYSIWYG:</strong> Visual editing (what you see is what you get),
+              user-friendly (no markup knowledge), immediate feedback. Limitation: HTML bloat
+              (extra markup), cross-browser issues (different rendering), harder to version control.
             </li>
             <li>
-              <strong>File Picker:</strong> Click to open system file dialog.
+              <strong>Markdown:</strong> Plain text (fast typing, clean), version-control friendly
+              (diffs are clean), portable (any text editor). Limitation: learning curve (syntax to
+              learn), no visual feedback (need preview pane), less discoverable (users don't know
+              syntax).
             </li>
             <li>
-              <strong>Clipboard:</strong> Paste images directly from clipboard.
-            </li>
-            <li>
-              <strong>URL Import:</strong> Paste image URL to embed.
+              <strong>Block:</strong> Modular (content as blocks — flexible), visual (see layout as
+              you build), structured (enforces consistency). Limitation: complex implementation,
+              learning curve (block concepts), may feel restrictive.
             </li>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Upload Features</h3>
+          <h3 className="mb-4 text-lg font-semibold">Auto-Save Frequency: Frequent vs Infrequent</h3>
           <ul className="space-y-3">
             <li>
-              <strong>Progress Indicator:</strong> Show upload progress per file.
+              <strong>Frequent (every 10-30 seconds):</strong> No lost work (minimal data loss),
+              users feel safe. Limitation: more server requests (cost, load), may be distracting
+              (save indicator flashes often).
             </li>
             <li>
-              <strong>Preview:</strong> Show thumbnail before upload completes.
+              <strong>Infrequent (every 2-5 minutes):</strong> Fewer server requests (lower cost),
+              less distracting. Limitation: more data loss (up to 5 minutes), users anxious.
             </li>
             <li>
-              <strong>Validation:</strong> Check file type, size, dimensions.
-            </li>
-            <li>
-              <strong>Retry:</strong> Retry failed uploads automatically.
-            </li>
-            <li>
-              <strong>Compression:</strong> Compress images before upload.
+              <strong>Recommendation:</strong> Hybrid — local auto-save every 10 seconds (no
+              server cost), server sync every 30 seconds (balance safety with cost). Show save
+              status ("Saved 5 seconds ago" — reassure users).
             </li>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Embed Options</h3>
+          <h3 className="mb-4 text-lg font-semibold">Real-time vs Post-Validation</h3>
           <ul className="space-y-3">
             <li>
-              <strong>Inline:</strong> Image embedded in content flow.
+              <strong>Real-time:</strong> Feedback as user types (catch issues early, guide user),
+              prevents frustration (fix before publish). Limitation: can be distracting (errors
+              flash as user types), performance cost (validate on every keystroke).
             </li>
             <li>
-              <strong>Caption:</strong> Add caption below image.
+              <strong>Post-Validation:</strong> Validate on publish (no distraction, better
+              performance). Limitation: user frustrated (errors at end, must fix all at once), may
+              abandon if too many errors.
             </li>
             <li>
-              <strong>Alignment:</strong> Left, center, right alignment.
-            </li>
-            <li>
-              <strong>Size:</strong> Thumbnail, medium, large, original.
-            </li>
-            <li>
-              <strong>Alt Text:</strong> Accessibility description.
+              <strong>Recommendation:</strong> Hybrid — real-time for non-blocking (character
+              count, word count, reading time), post-validation for blocking (policy checks,
+              required fields — warn as user types, block on publish). Best of both — guidance
+              without distraction.
             </li>
           </ul>
         </div>
-      </section>
-
-      <section>
-        <h2>Draft Management</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Auto-Save:</strong> Save every 30-60 seconds. Debounced to prevent
-            excessive saves.
-          </li>
-          <li>
-            <strong>Manual Save:</strong> Explicit save button for user control.
-          </li>
-          <li>
-            <strong>Draft List:</strong> Show all drafts with preview, last edited.
-          </li>
-          <li>
-            <strong>Resume Editing:</strong> Return to draft where left off.
-          </li>
-          <li>
-            <strong>Draft Expiry:</strong> Auto-delete old drafts (30-90 days).
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Content Validation</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Required Fields:</strong> Title, body, category. Show indicators.
-          </li>
-          <li>
-            <strong>Character Count:</strong> Show min/max (e.g., "150/5000").
-          </li>
-          <li>
-            <strong>Quality Checks:</strong> Readability score, grammar suggestions.
-          </li>
-          <li>
-            <strong>Policy Compliance:</strong> Check against content guidelines.
-          </li>
-          <li>
-            <strong>Real-time Feedback:</strong> Show validation as user types.
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Templates</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Pre-built Templates:</strong> Blog post, announcement, tutorial.
-          </li>
-          <li>
-            <strong>Custom Templates:</strong> User can save own templates.
-          </li>
-          <li>
-            <strong>Template Preview:</strong> Show template structure before use.
-          </li>
-          <li>
-            <strong>Template Variables:</strong> Placeholders for user to fill.
-          </li>
-          <li>
-            <strong>Category Templates:</strong> Different templates per content type.
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>References</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://www.nngroup.com/articles/form-design-progress/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              NN/g Form Design Progress
-            </a>
-          </li>
-          <li>
-            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP Input Validation
-            </a>
-          </li>
-        </ul>
       </section>
 
       <section>
         <h2>Best Practices</h2>
+        <p>
+          Implementing create content UI requires following established best practices to ensure
+          usability, reliability, and content quality.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
-        <ul className="space-y-2">
-          <li>Provide clear publishing workflow</li>
-          <li>Show save indicators (Saving..., Saved)</li>
-          <li>Offer templates for common content types</li>
-          <li>Support keyboard shortcuts</li>
-          <li>Provide content preview before publish</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Editor Selection</h3>
+        <p>
+          Choose based on audience (technical users — Markdown, general users — WYSIWYG, structured
+          content — Block). Support multiple editors (let users choose preference — remember for
+          next time). Provide toolbar customization (users hide unused buttons — reduce clutter).
+          Ensure accessibility (keyboard navigation, screen reader support, high contrast mode).
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Content Quality</h3>
-        <ul className="space-y-2">
-          <li>Validate required fields before publish</li>
-          <li>Show character/word count</li>
-          <li>Offer grammar and spell check</li>
-          <li>Check against content guidelines</li>
-          <li>Provide readability suggestions</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Media Upload</h3>
+        <p>
+          Drag-drop support (intuitive — drag files to upload area, visual feedback on drag over).
+          Progress indicators (per-file progress — percentage, time remaining, overall progress for
+          multiple files). Client-side validation (validate file type by magic bytes, size limits,
+          image dimensions — reject before upload). Image optimization (resize large images,
+          compress — reduce upload time, storage). Retry on failure (automatic retry — exponential
+          backoff, resume interrupted uploads).
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Media Handling</h3>
-        <ul className="space-y-2">
-          <li>Support drag-and-drop upload</li>
-          <li>Show upload progress</li>
-          <li>Validate file types and sizes</li>
-          <li>Compress images automatically</li>
-          <li>Provide alt text for accessibility</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Draft Management</h3>
+        <p>
+          Auto-save every 30 seconds (timer-based — save even if user doesn't click save). Local
+          storage (save to IndexedDB — works offline, large capacity). Sync when online (push local
+          drafts to server, pull server drafts — handle conflicts). Show save status ("Saved 5
+          seconds ago", "Saving...", "Offline — saved locally" — reassure users). Version history
+          (save periodic snapshots — enable restore, compare versions).
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Monitoring</h3>
-        <ul className="space-y-2">
-          <li>Track content creation rates</li>
-          <li>Monitor auto-save success/failure</li>
-          <li>Alert on validation failures</li>
-          <li>Track template usage</li>
-          <li>Monitor media upload metrics</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Content Validation</h3>
+        <p>
+          Real-time feedback (character count — "50/5000 characters", word count, reading time —
+          "3 min read"). Required fields (highlight as user types — red border, helper text).
+          Policy checks (scan as user types — warn before publish, don't block creation). Quality
+          scoring (readability score, completeness — "Add a cover image to improve engagement",
+          suggestions — "Add tags for better discovery"). Clear error messages ("Title is required
+          — please add a title", not "Validation failed").
+        </p>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
+        <p>
+          Avoid these common mistakes when implementing create content UI to ensure usability,
+          reliability, and content quality.
+        </p>
         <ul className="space-y-3">
           <li>
-            <strong>No auto-save:</strong> Users lose work on crashes.
-            <br /><strong>Fix:</strong> Implement debounced auto-save with offline support.
+            <strong>No auto-save:</strong> Users lose work (browser crash, accidental close),
+            frustration, abandonment. <strong>Fix:</strong> Auto-save every 30 seconds. Save to
+            local storage. Sync to server.
           </li>
           <li>
-            <strong>Poor validation:</strong> Users submit incomplete content.
-            <br /><strong>Fix:</strong> Real-time validation, clear error messages.
+            <strong>No draft recovery:</strong> Users can't recover lost drafts.{" "}
+            <strong>Fix:</strong> Store drafts locally. Show "Recover draft?" on return. List
+            drafts for selection.
           </li>
           <li>
-            <strong>No draft recovery:</strong> Can't resume interrupted work.
-            <br /><strong>Fix:</strong> Auto-save drafts, show draft list.
+            <strong>Slow media upload:</strong> No progress indicator, users don't know status.{" "}
+            <strong>Fix:</strong> Show progress per file. Enable retry. Optimize images before
+            upload.
           </li>
           <li>
-            <strong>Media upload failures:</strong> No feedback on upload issues.
-            <br /><strong>Fix:</strong> Show progress, retry failed uploads.
+            <strong>No client-side validation:</strong> Server rejects after long wait, user
+            frustrated. <strong>Fix:</strong> Validate client-side first (file type, size). Show
+            errors immediately.
           </li>
           <li>
-            <strong>No templates:</strong> Users start from blank page.
-            <br /><strong>Fix:</strong> Provide templates for common content types.
+            <strong>Blocking validation:</strong> Can't continue typing, errors block creation.{" "}
+            <strong>Fix:</strong> Warn as user types, block only on publish. Non-blocking feedback.
           </li>
           <li>
-            <strong>Poor mobile support:</strong> Editor unusable on mobile.
-            <br /><strong>Fix:</strong> Responsive design, touch-friendly controls.
+            <strong>No offline support:</strong> Can't create without internet.{" "}
+            <strong>Fix:</strong> Save to local storage. Queue sync for when online. Show offline
+            status.
           </li>
           <li>
-            <strong>No preview:</strong> Users don't know how content will look.
-            <br /><strong>Fix:</strong> Provide live preview or preview mode.
+            <strong>Poor mobile editor:</strong> Keyboard covers editor, hard to format.{" "}
+            <strong>Fix:</strong> Mobile-optimized editor. Sticky toolbar. Responsive layout.
           </li>
           <li>
-            <strong>Missing shortcuts:</strong> Slow content creation.
-            <br /><strong>Fix:</strong> Support keyboard shortcuts (Ctrl+B, Ctrl+S).
+            <strong>No templates:</strong> Users don't know where to start. <strong>Fix:</strong>
+            Provide templates (blog post, product, job). Pre-filled structures.
           </li>
           <li>
-            <strong>No unsaved warning:</strong> Users lose work navigating away.
-            <br /><strong>Fix:</strong> Warn before leaving with unsaved changes.
+            <strong>No accessibility:</strong> Keyboard users can't navigate, screen readers fail.{" "}
+            <strong>Fix:</strong> Keyboard navigation. ARIA labels. Screen reader testing.
           </li>
           <li>
-            <strong>Poor accessibility:</strong> Editor unusable for screen readers.
-            <br /><strong>Fix:</strong> ARIA labels, keyboard navigation, screen reader support.
+            <strong>No save status:</strong> Users don't know if saved. <strong>Fix:</strong> Show
+            "Saved 5 seconds ago", "Saving...", "Offline". Reassure users.
           </li>
         </ul>
       </section>
 
       <section>
-        <h2>Advanced Topics</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Offline Support</h3>
+        <h2>Real-world Use Cases</h2>
         <p>
-          Support content creation without connection. Store drafts in IndexedDB. Queue for sync when reconnected. Handle conflicts with server version. Use service workers for offline detection.
+          Create content UI is critical for user engagement. Here are real-world implementations
+          from production systems.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Collaborative Creation</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Blogging Platform (Medium)</h3>
         <p>
-          Multiple users create content together. Real-time sync with OT/CRDTs. Show co-author presence. Handle conflicts gracefully. Support comments and suggestions.
+          <strong>Challenge:</strong> Distraction-free writing. Rich formatting. Image embeds.
+          Auto-save. Publishing flow.
+        </p>
+        <p>
+          <strong>Solution:</strong> Minimalist editor (focus on content — hide UI until needed).
+          Rich text formatting (bold, italic, headings — via slash commands). Image embeds (drag-drop,
+          captions, full-width options). Auto-save (every few seconds — "Saved" indicator).
+          Publishing flow (preview, add tags, choose license — then publish).
+        </p>
+        <p>
+          <strong>Result:</strong> Writing experience praised (distraction-free). No lost drafts
+          (auto-save). High-quality content (publishing flow encourages review).
+        </p>
+        <p>
+          <strong>UX:</strong> Minimalist editor, slash commands, drag-drop images, auto-save,
+          publishing flow.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Content Templates</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Documentation Platform (Notion)</h3>
         <p>
-          Pre-built templates for common content types. Custom templates saved by users. Template variables for user input. Category-specific templates. Template preview before use.
+          <strong>Challenge:</strong> Block-based editing. Rich embeds. Collaboration. Templates.
+        </p>
+        <p>
+          <strong>Solution:</strong> Block editor (each paragraph is a block — drag to reorder,
+          transform blocks). Rich embeds (type "/" to embed — code, image, video, database).
+          Collaboration (real-time editing — see others' cursors, comments). Templates (pre-built
+          structures — meeting notes, project plan, wiki). Auto-save (every change saved
+          instantly).
+        </p>
+        <p>
+          <strong>Result:</strong> Flexible content creation (blocks enable any layout).
+          Collaboration seamless. Templates accelerate creation.
+        </p>
+        <p>
+          <strong>UX:</strong> Block editor, slash commands, real-time collaboration, templates,
+          instant auto-save.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Graceful Degradation</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Q&A Platform (Stack Overflow)</h3>
         <p>
-          Handle creation failures gracefully. Fail-safe defaults (keep content on error). Queue save requests for retry. Implement circuit breaker pattern. Provide manual save fallback. Monitor creation health continuously.
+          <strong>Challenge:</strong> Technical content (code blocks, formatting). Markdown editor.
+          Quality guidance. Preview.
+        </p>
+        <p>
+          <strong>Solution:</strong> Markdown editor (technical users prefer — fast, clean).
+          Live preview (side-by-side — see rendered output). Code blocks (syntax highlighting,
+          language selection). Quality guidance (character minimum, title guidance, tag
+          suggestions). Draft auto-save (recover if browser crashes).
+        </p>
+        <p>
+          <strong>Result:</strong> High-quality technical content (Markdown, code blocks). Quality
+          guidance improves posts. No lost drafts.
+        </p>
+        <p>
+          <strong>UX:</strong> Markdown editor, live preview, code highlighting, quality guidance,
+          draft recovery.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce Platform (Shopify)</h3>
+        <p>
+          <strong>Challenge:</strong> Product creation. Multiple images. Variants. SEO fields.
+          Templates.
+        </p>
+        <p>
+          <strong>Solution:</strong> Structured form (title, description, price, inventory —
+          organized sections). Media upload (multiple images — drag-drop, reorder, edit). Variants
+          (size, color — generate combinations). SEO fields (meta title, description — preview how
+          appears in search). Templates (product type templates — pre-filled fields).
+        </p>
+        <p>
+          <strong>Result:</strong> Product creation streamlined. High-quality listings (structured
+          fields, SEO guidance). No lost data (auto-save).
+        </p>
+        <p>
+          <strong>UX:</strong> Structured form, drag-drop media, variant generator, SEO preview,
+          templates.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Newsletter Platform (Substack)</h3>
+        <p>
+          <strong>Challenge:</strong> Newsletter creation. Rich formatting. Email preview.
+          Scheduling. Subscribers preview.
+        </p>
+        <p>
+          <strong>Solution:</strong> Rich text editor (familiar — like email, Word). Email preview
+          (see how appears in inbox — desktop, mobile). Scheduling (write now, send later —
+          timezone-aware). Subscriber preview (see how appears to free vs paid subscribers).
+          Auto-save (every few seconds — draft recovery).
+        </p>
+        <p>
+          <strong>Result:</strong> Newsletter creation easy (familiar editor). Email rendering
+          verified (preview). Scheduling enables planning.
+        </p>
+        <p>
+          <strong>UX:</strong> Rich text editor, email preview, scheduling, subscriber preview,
+          auto-save.
         </p>
       </section>
 
       <section>
         <h2>Interview Questions</h2>
-
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/content-management/editor-comparison.svg"
-          alt="Editor Comparison"
-          caption="Editors — comparing WYSIWYG, Markdown, and Block editors with trade-offs"
-        />
+        <p>
+          These questions test understanding of create content UI design, implementation, and
+          operational concerns.
+        </p>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle auto-save conflicts?</p>
-            <p className="mt-2 text-sm">A: Use optimistic locking with version numbers. If conflict, show user both versions and let them choose. Auto-merge non-conflicting changes.</p>
+            <p className="font-semibold">Q: How do you choose between WYSIWYG, Markdown, and Block
+            editor?</p>
+            <p className="mt-2 text-sm">
+              A: Based on audience and content type. Technical users (developers, engineers) —
+              Markdown (fast, clean, version-control friendly). General users (bloggers, writers) —
+              WYSIWYG (visual, no markup learning). Structured content (products, job postings) —
+              Block or structured form (enforces consistency). Support multiple (let users choose
+              preference — remember for next time). Consider content type (articles — WYSIWYG,
+              documentation — Markdown, landing pages — Block).
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you support offline content creation?</p>
-            <p className="mt-2 text-sm">A: Store drafts in IndexedDB, queue for sync when online, handle conflicts on reconnect. Use service workers for offline detection.</p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What editor do you choose?</p>
-            <p className="mt-2 text-sm">A: Depends on use case. WYSIWYG for general users. Markdown for technical content. Block editor for flexible layouts. Consider accessibility, mobile, bundle size.</p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you validate content?</p>
-            <p className="mt-2 text-sm">A: Real-time validation as user types. Check required fields, character limits, content policies. Show inline errors. Block publish until valid.</p>
+            <p className="font-semibold">Q: How do you implement auto-save?</p>
+            <p className="mt-2 text-sm">
+              A: Timer-based (every 30 seconds — setInterval, save content to server). Event-based
+              (on blur, before unload — save if content changed). Local storage (save to IndexedDB
+              — works offline, large capacity). Sync when online (push local drafts to server —
+              handle conflicts with last-write-wins or prompt user). Show save status ("Saved 5
+              seconds ago", "Saving...", "Offline — saved locally" — reassure users). Debounce
+              saves (wait 1 second after typing stops — don't save on every keystroke).
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you handle media upload?</p>
-            <p className="mt-2 text-sm">A: Drag-drop, file picker, clipboard paste. Show progress, validate file type/size, compress images, retry failed uploads, provide alt text.</p>
+            <p className="mt-2 text-sm">
+              A: Drag-drop (drag files to upload area — visual feedback on drag over, drop to
+              upload). File picker (click to open dialog — standard fallback). Progress indicators
+              (per-file progress — percentage, time remaining, overall progress for multiple
+              files). Client-side validation (validate file type by magic bytes — not extension,
+              size limits, image dimensions — reject before upload). Image optimization (resize
+              large images, compress — reduce upload time, storage). Retry on failure (automatic
+              retry — exponential backoff, resume interrupted uploads).
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you prevent data loss?</p>
-            <p className="mt-2 text-sm">A: Auto-save every 30-60 seconds. Warn before navigating away with unsaved changes. Store drafts locally. Offer draft recovery.</p>
+            <p className="font-semibold">Q: How do you implement real-time validation?</p>
+            <p className="mt-2 text-sm">
+              A: Character count (update on every keystroke — "50/5000 characters"). Required
+              fields (highlight as user types — red border, helper text — "Title is required").
+              Word count, reading time (calculate as user types — "3 min read"). Policy checks
+              (scan as user types — warn before publish, don't block creation). Quality scoring
+              (readability score, completeness — "Add a cover image to improve engagement",
+              suggestions — "Add tags for better discovery"). Debounce heavy validation (run
+              expensive checks 1 second after typing stops — don't block input).
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What templates do you provide?</p>
-            <p className="mt-2 text-sm">A: Pre-built templates for common types (blog, announcement, tutorial). Custom templates users can save. Template variables for input. Category-specific templates.</p>
+            <p className="font-semibold">Q: How do you handle offline editing?</p>
+            <p className="mt-2 text-sm">
+              A: Detect offline (navigator.onLine — false when offline). Save to local storage
+              (IndexedDB — large capacity, works offline). Queue sync (when online — push local
+              drafts to server, pull server drafts). Show offline status ("Offline — saved
+              locally" — reassure users). Handle conflicts (if edited from multiple devices —
+              last-write-wins or prompt user to choose). Enable full editing (all features work
+              offline — sync when back online).
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What metrics do you track for creation?</p>
-            <p className="mt-2 text-sm">A: Content creation rate, completion rate, auto-save success, validation failures, template usage, media upload metrics. Alert on anomalies.</p>
+            <p className="font-semibold">Q: How do you implement templates?</p>
+            <p className="mt-2 text-sm">
+              A: Template library (pre-built structures — blog post, product listing, job posting —
+              user selects). Pre-filled fields (title placeholder, body structure, suggested tags).
+              Customizable (user edits template content — make it their own). Category templates
+              (different templates per content type — blog vs product vs job). Template preview
+              (show how template looks — before selecting). Save user templates (users create
+              custom templates — reuse later).
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you support accessibility?</p>
-            <p className="mt-2 text-sm">A: ARIA labels for toolbar. Keyboard navigation. Screen reader announcements. Alt text for images. High contrast mode. Focus management.</p>
+            <p className="font-semibold">Q: How do you ensure editor accessibility?</p>
+            <p className="mt-2 text-sm">
+              A: Keyboard navigation (Tab through toolbar buttons, Enter to activate, Escape to
+              close dropdowns). ARIA labels (describe buttons — "Bold button", "Insert image" —
+              for screen readers). Focus management (focus returns to editor after toolbar action).
+              High contrast mode (toolbar visible in high contrast). Screen reader testing (test
+              with NVDA, VoiceOver — ensure usable). Skip links (skip to content — bypass toolbar
+              for keyboard users).
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How do you handle draft conflicts?</p>
+            <p className="mt-2 text-sm">
+              A: Detect conflicts (local draft timestamp vs server draft timestamp — if server
+              newer, conflict). Last-write-wins (automatically use latest version — simple, but
+              may lose work). Prompt user (show both versions — let user choose which to keep, or
+              merge manually). Three-way merge (base version + local changes + server changes —
+              automatically merge non-conflicting, prompt for conflicts). Show diff (highlight
+              differences — user sees what changed, decides).
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How do you optimize editor performance?</p>
+            <p className="mt-2 text-sm">
+              A: Lazy load editor (don't load until user clicks create — reduce initial bundle).
+              Virtualize long content (render only visible portion — for very long documents).
+              Debounce heavy operations (validation, auto-save — wait after typing stops). Use
+              efficient data structures (content as tree — efficient updates). Code split editor
+              (load editor code separately — main app loads faster). Memoize expensive calculations
+              (word count, reading time — cache until content changes).
+            </p>
           </div>
         </div>
-      </section>
-
-      <section>
-        <h2>Security Checklist</h2>
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Pre-Launch Checklist</h3>
-          <ul className="space-y-2">
-            <li>☐ HTML sanitization implemented</li>
-            <li>☐ Auto-save with offline support</li>
-            <li>☐ Draft management working</li>
-            <li>☐ Content validation enabled</li>
-            <li>☐ Media upload secured</li>
-            <li>☐ Templates configured</li>
-            <li>☐ Unsaved changes warning</li>
-            <li>☐ Accessibility compliance</li>
-            <li>☐ Penetration testing completed</li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Testing Strategy</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Unit Tests</h3>
-        <ul className="space-y-2">
-          <li>Test editor initialization</li>
-          <li>Test save logic</li>
-          <li>Test validation logic</li>
-          <li>Test media upload</li>
-          <li>Test draft management</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Integration Tests</h3>
-        <ul className="space-y-2">
-          <li>Test create flow end-to-end</li>
-          <li>Test auto-save flow</li>
-          <li>Test media upload flow</li>
-          <li>Test draft recovery</li>
-          <li>Test template usage</li>
-          <li>Test offline sync</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Tests</h3>
-        <ul className="space-y-2">
-          <li>Test XSS prevention</li>
-          <li>Test HTML sanitization</li>
-          <li>Test file upload security</li>
-          <li>Test content policy enforcement</li>
-          <li>Test input validation</li>
-          <li>Penetration testing for editor</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Tests</h3>
-        <ul className="space-y-2">
-          <li>Test input latency</li>
-          <li>Test auto-save performance</li>
-          <li>Test media upload performance</li>
-          <li>Test large content handling</li>
-          <li>Test concurrent creation</li>
-        </ul>
       </section>
 
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li><a href="https://www.nngroup.com/articles/form-design-progress/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">NN/g Form Design Progress</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Input Validation</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP File Upload</a></li>
-          <li><a href="https://auth0.com/blog/a-look-at-the-latest-draft-for-oauth-2-1/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OAuth 2.1 Security Best Practices</a></li>
-          <li><a href="https://developer.mozilla.org/en-US/docs/Web/Security/Practical_security_guides/Input_Validation" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">MDN - Input Validation</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Choosing_and_Using_Security_Questions_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Security Questions</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Multifactor Authentication</a></li>
-          <li><a href="https://docs.openfga.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OpenFGA - Fine-Grained Authorization</a></li>
-          <li><a href="https://www.cerbos.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Cerbos - Policy as Code</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Authorization Cheat Sheet</a></li>
+          <li>
+            <a
+              href="https://www.smashingmagazine.com/2021/06/building-accessible-rich-text-editors/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Building Accessible Rich Text Editors
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              WAI-ARIA Toolbar Pattern
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Input Validation Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MDN - IndexedDB API
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/API/Storage_API"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MDN - Storage API (LocalStorage)
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Access Control Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Authorization Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Multifactor Authentication
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Forgot Password Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Credential_Stuffing_Prevention_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Credential Stuffing Prevention
+            </a>
+          </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Implementation Patterns</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Editor Pattern</h3>
-        <p>
-          Choose editor based on use case. WYSIWYG for general users. Markdown for technical content. Block editor for flexible layouts. Implement toolbar, formatting, shortcuts. Support accessibility.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Auto-Save Pattern</h3>
-        <p>
-          Debounced save (30-60 seconds). Manual save option. Store drafts locally. Show save indicators. Handle save failures gracefully. Support offline queuing.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Media Upload Pattern</h3>
-        <p>
-          Drag-drop, file picker, clipboard paste. Show progress. Validate file type/size. Compress images. Retry failed uploads. Provide alt text for accessibility.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Validation Pattern</h3>
-        <p>
-          Real-time validation as user types. Check required fields, limits, policies. Show inline errors. Block publish until valid. Provide suggestions for improvement.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Graceful Degradation</h3>
-        <p>
-          Handle creation failures gracefully. Fail-safe defaults (keep content on error). Queue save requests for retry. Implement circuit breaker pattern. Provide manual save fallback. Monitor creation health continuously.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Compliance Considerations</h3>
-        <p>
-          Meet regulatory requirements for content creation. SOC2: Creation audit trails. HIPAA: PHI creation safeguards. PCI-DSS: Cardholder data creation. GDPR: Content data handling. Implement compliance reporting. Regular compliance reviews.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Optimization</h3>
-        <p>
-          Optimize creation for high-throughput systems. Batch creation operations. Use connection pooling. Implement async save operations. Monitor creation latency. Set SLOs for creation time. Scale creation endpoints horizontally.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Error Handling</h3>
-        <p>
-          Handle creation errors gracefully. Log errors with full context. Implement retry with exponential backoff. Alert on repeated failures. Provide fallback creation mechanisms. Don't expose internal errors to users.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Developer Experience</h3>
-        <p>
-          Make creation easy for developers to use. Provide creation SDK. Auto-generate creation documentation. Include creation requirements in API docs. Provide testing utilities. Implement creation linting in CI. Create runbooks for common issues.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Multi-Tenant Creation</h3>
-        <p>
-          Handle creation in multi-tenant systems. Tenant-scoped creation configuration. Isolate creation events between tenants. Tenant-specific creation policies. Audit creation per tenant. Handle cross-tenant creation carefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise Creation</h3>
-        <p>
-          Special handling for enterprise creation. Dedicated support for enterprise onboarding. Custom creation configurations. SLA for creation availability. Priority support for creation issues. Regular enterprise reviews.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Emergency Access</h3>
-        <p>
-          Break-glass procedures for emergency access. Pre-approved emergency creation bypass. Require security team approval. Automatic notification to affected users. Full audit logging of emergency access. Post-incident review required.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Creation Testing</h3>
-        <p>
-          Test creation thoroughly before deployment. Chaos engineering for creation failures. Simulate high-volume creation scenarios. Test creation under load. Validate creation propagation. Test rollback procedures. Document test results.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">User Communication</h3>
-        <p>
-          Communicate creation changes clearly to users. Explain why creation is required. Provide steps to configure creation. Offer support contact for issues. Send creation confirmation. Provide creation history for review. Handle user concerns empathetically.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Continuous Improvement</h3>
-        <p>
-          Evolve creation based on operational learnings. Analyze creation patterns. Identify false positives. Optimize creation triggers. Gather user feedback. Track creation metrics. Benchmark against industry best practices.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Hardening</h3>
-        <p>
-          Strengthen creation against attacks. Implement defense in depth. Regular penetration testing. Monitor for creation bypass attempts. Encrypt creation data at rest. Use hardware security modules for key management. Implement zero-trust principles.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Deprovisioning Integration</h3>
-        <p>
-          Integrate with user deprovisioning workflows. Automatic creation revocation on HR termination. Role change triggers creation review. Contractor expiry triggers creation revocation. Handle temporary access expiry. Coordinate with access management systems.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Creation Analytics</h3>
-        <p>
-          Analyze creation data for insights. Track creation reasons distribution. Identify common creation triggers. Detect anomalous creation patterns. Measure creation effectiveness. Generate creation reports. Use analytics for optimization.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Cross-System Creation</h3>
-        <p>
-          Coordinate creation across multiple systems. Central creation orchestration. Handle system-specific creation. Ensure consistent enforcement. Manage creation dependencies. Orchestrate creation updates. Monitor cross-system creation health.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Creation Documentation</h3>
-        <p>
-          Maintain comprehensive creation documentation. Creation procedures and runbooks. Decision records for creation design. Usage examples for each scenario. Onboarding guide for new developers. API documentation with creation endpoints. Keep documentation up to date.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Cost Optimization</h3>
-        <p>
-          Optimize creation system costs. Right-size creation infrastructure. Use serverless for variable workloads. Optimize storage for creation data. Reduce unnecessary creation checks. Monitor cost per creation. Balance performance with cost.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Creation Governance</h3>
-        <p>
-          Establish creation governance framework. Define creation ownership and stewardship. Regular creation reviews and audits. Creation change management process. Compliance reporting. Creation exception handling. Training and documentation. Continuous improvement program.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Real-Time Creation</h3>
-        <p>
-          Enable real-time creation capabilities. Hot reload creation rules. Version creation for rollback. Validate creation before activation. Test in isolated environment first. Monitor for issues after update. Implement gradual rollout for creation changes.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Creation Simulation</h3>
-        <p>
-          Test creation changes before deployment. What-if analysis for creation changes. Simulate creation decisions with sample requests. Detect unintended consequences. Validate creation coverage. Test edge cases and boundary conditions. Generate impact reports for stakeholders.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Access Recertification</h3>
-        <p>
-          Periodic review of access permissions. Quarterly access recertification campaigns. Managers review direct reports' access. Automated reminders for pending reviews. Escalation for overdue reviews. Attestation workflow with audit trail. Generate compliance reports for auditors.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Creation Inheritance</h3>
-        <p>
-          Support creation inheritance for easier management. Parent creation triggers child creation. Handle inheritance conflicts clearly. Document inheritance hierarchy. Cache inherited creation results. Monitor inheritance depth for performance.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Geographic Creation</h3>
-        <p>
-          Enforce location-based creation controls. Creation access by country/region. Comply with data sovereignty laws. Use IP geolocation for enforcement. Handle VPN and proxy detection. Allow exceptions for travel. Audit geographic creation patterns.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Time-Based Creation</h3>
-        <p>
-          Creation access by time of day/day of week. Business hours only for sensitive operations. After-hours creation requires approval. Handle timezone differences. Support shift-based access patterns. Audit time-based creation violations. Implement automatic expiry.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Device-Based Creation</h3>
-        <p>
-          Creation access by device characteristics. Require managed devices for sensitive data. Check device compliance (encryption, MDM). Block rooted/jailbroken devices. Implement device fingerprinting. Support device registration workflow. Audit device-based creation decisions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Network-Based Creation</h3>
-        <p>
-          Creation access by network characteristics. Allow only corporate network for sensitive operations. Require VPN for remote access. Check network security posture. Implement network segmentation. Monitor network-based creation patterns. Handle network changes gracefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Behavioral Creation</h3>
-        <p>
-          Detect anomalous access patterns for creation. Baseline normal user behavior. Alert on deviations (unusual time, location, resource). Implement risk scoring. Step-up creation for high-risk access. Continuous creation during session. Integrate with SIEM for correlation.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Consent-Based Creation</h3>
-        <p>
-          Manage user consent for session access. Capture consent at session creation. Support consent withdrawal. Audit consent decisions. Handle consent expiry. Integrate with privacy management systems. Generate consent reports for compliance.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Data Classification Creation</h3>
-        <p>
-          Apply creation based on data sensitivity. Classify data (public, internal, confidential, restricted). Different creation per classification. Automatic classification where possible. Handle classification changes. Audit classification-based creation. Train users on classification.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Creation Orchestration</h3>
-        <p>
-          Coordinate creation across distributed systems. Central creation orchestration service. Handle creation conflicts across systems. Ensure consistent enforcement. Manage creation dependencies. Orchestrate creation updates. Monitor orchestration health.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Zero Trust Creation</h3>
-        <p>
-          Implement zero trust creation control. Never trust, always verify. Least privilege creation by default. Micro-segmentation of creation. Continuous verification of creation trust. Assume breach mentality. Monitor and log all creation.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Creation Versioning Strategy</h3>
-        <p>
-          Manage creation versions effectively. Semantic versioning for creation. Backward compatibility guarantees. Deprecation process for old versions. Migration guides for version changes. Support multiple versions simultaneously. Track version adoption rates.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Access Request Creation</h3>
-        <p>
-          Handle access request creation systematically. Self-service access creation request. Manager approval workflow. Automated creation after approval. Temporary creation with expiry. Access creation audit trail. Integration with HR systems.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Creation Compliance Monitoring</h3>
-        <p>
-          Monitor creation compliance continuously. Automated compliance checks. Alert on creation violations. Generate compliance reports. Track remediation progress. Integrate with GRC systems. Support external audits.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Disaster Recovery</h3>
-        <p>
-          Plan for creation system failures. Backup creation configurations. Disaster recovery procedures. Fail-safe defaults (deny-by-default). Recovery time objectives. Test DR procedures regularly. Document recovery steps.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Creation Performance Tuning</h3>
-        <p>
-          Optimize creation evaluation performance. Profile creation evaluation latency. Identify slow creation rules. Optimize creation rules. Use efficient data structures. Cache creation results. Scale creation engines horizontally. Set performance SLOs.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Creation Testing Automation</h3>
-        <p>
-          Automate creation testing in CI/CD. Unit tests for creation rules. Integration tests with sample requests. Regression tests for creation changes. Performance tests for creation evaluation. Security tests for creation bypass. Automated creation validation.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Creation Communication</h3>
-        <p>
-          Communicate creation changes effectively. Notify affected users of changes. Provide change summaries. Offer training for complex changes. Maintain creation changelog. Gather user feedback. Address concerns proactively.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Creation Retirement</h3>
-        <p>
-          Retire obsolete creation systematically. Identify unused creation. Deprecation notice period. Migration path for affected users. Monitor for usage during deprecation. Remove creation after grace period. Document retirement decisions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Third-Party Creation Integration</h3>
-        <p>
-          Integrate with third-party creation systems. Support standard protocols (OAuth, OIDC, SAML). Handle third-party creation evaluation. Manage trust relationships. Audit third-party creation. Monitor integration health. Plan for vendor changes.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Creation Cost Management</h3>
-        <p>
-          Optimize creation system costs. Right-size creation infrastructure. Use serverless for variable workloads. Optimize storage for creation data. Reduce unnecessary creation checks. Monitor cost per creation. Balance performance with cost.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Creation Scalability</h3>
-        <p>
-          Scale creation for growing systems. Horizontal scaling for creation engines. Shard creation data by user. Use read replicas for creation checks. Implement caching at multiple levels. Monitor scaling metrics. Plan capacity proactively.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Creation Observability</h3>
-        <p>
-          Implement comprehensive creation observability. Distributed tracing for creation flow. Structured logging for creation events. Metrics for creation health. Dashboards for creation monitoring. Alerts for creation anomalies. Root cause analysis tools.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Creation Training</h3>
-        <p>
-          Train team on creation procedures. Regular creation drills. Document creation runbooks. Cross-train team members. Test creation knowledge. Update training materials. Track training completion.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Creation Innovation</h3>
-        <p>
-          Stay current with creation best practices. Evaluate new creation technologies. Pilot innovative creation approaches. Share creation learnings. Contribute to creation community. Patent creation innovations where applicable.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Creation Metrics</h3>
-        <p>
-          Track key creation metrics. Creation success rate. Time to creation. Creation propagation latency. Denylist hit rate. User session count. Creation error rate. Set targets and monitor trends.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Creation Security</h3>
-        <p>
-          Secure creation systems against attacks. Encrypt creation data. Implement access controls. Audit creation access. Monitor for creation abuse. Regular security assessments. Incident response procedures.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Creation Compliance</h3>
-        <p>
-          Meet regulatory requirements for creation. SOC2 audit trails. HIPAA immediate creation. PCI-DSS session controls. GDPR right to creation. Regular compliance reviews. External audit support.
-        </p>
       </section>
     </ArticleLayout>
   );
