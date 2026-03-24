@@ -7,16 +7,25 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-requirements-cm-frontend-edit-content",
   title: "Edit Content UI",
-  description: "Comprehensive guide to implementing content editing interfaces covering version control, change tracking, collaborative editing, conflict resolution, auto-save, and UX patterns for staff/principal engineer interviews.",
+  description:
+    "Comprehensive guide to implementing content editing interfaces covering editor types, version management, change tracking, collaborative editing, conflict resolution, auto-save patterns, and UX patterns for staff/principal engineer interviews.",
   category: "functional-requirements",
   subcategory: "content-management",
   slug: "edit-content-ui",
   version: "extensive",
-  wordCount: 8000,
-  readingTime: 32,
-  lastUpdated: "2026-03-16",
-  tags: ["requirements", "functional", "content", "edit", "frontend", "versioning", "collaboration"],
-  relatedTopics: ["create-content-ui", "versioning", "collaborative-editing", "content-lifecycle"],
+  wordCount: 9500,
+  readingTime: 38,
+  lastUpdated: "2026-03-23",
+  tags: [
+    "requirements",
+    "functional",
+    "content",
+    "edit",
+    "frontend",
+    "versioning",
+    "collaboration",
+  ],
+  relatedTopics: ["create-content-ui", "content-versioning", "collaborative-editing"],
 };
 
 export default function EditContentUIArticle() {
@@ -26,773 +35,598 @@ export default function EditContentUIArticle() {
         <h2>Definition &amp; Context</h2>
         <p>
           <strong>Edit Content UI</strong> allows users to modify existing content while maintaining
-          version history, tracking changes, and preventing conflicts with concurrent editors.
-          It encompasses rich text editing, version control, change tracking, collaborative editing,
-          and auto-save functionality.
-        </p>
-        <p>
-          For staff and principal engineers, implementing edit UI requires understanding
-          editor architecture, version management, conflict resolution strategies, real-time
-          collaboration (OT/CRDTs), auto-save patterns, and the psychological aspects of
-          editing (user confidence, change visibility). The implementation must balance
+          version history, tracking changes, and preventing conflicts with concurrent editors. Edit
+          UI is distinct from create UI — it loads existing content with full version metadata,
+          shows comprehensive version history, enables detailed change tracking with audit trails,
+          and handles collaborative editing with real-time synchronization. The edit UI must balance
           editing flexibility with content integrity and collaboration support.
         </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/content-management/edit-content-flow.svg"
           alt="Edit Content Flow"
-          caption="Edit Flow — showing load, edit, version, save, and conflict resolution"
-        />
-      </section>
-
-      <section>
-        <h2>Editor Types</h2>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Rich Text Editor (WYSIWYG)</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Description:</strong> What You See Is What You Get. Visual editing
-              with formatting toolbar.
-            </li>
-            <li>
-              <strong>Use Cases:</strong> Blog posts, documents, emails, comments with
-              formatting.
-            </li>
-            <li>
-              <strong>Examples:</strong> TinyMCE, CKEditor, Quill, Draft.js, Slate.
-            </li>
-            <li>
-              <strong>Benefits:</strong> User-friendly, no markup knowledge required,
-              immediate visual feedback.
-            </li>
-            <li>
-              <strong>Considerations:</strong> HTML sanitization, cross-browser compatibility,
-              mobile support, accessibility.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Markdown Editor</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Description:</strong> Plain text with markdown syntax. Preview pane
-              shows rendered output.
-            </li>
-            <li>
-              <strong>Use Cases:</strong> Technical documentation, README files, developer
-              content, forums.
-            </li>
-            <li>
-              <strong>Examples:</strong> Stack Overflow, GitHub, Reddit, Notion.
-            </li>
-            <li>
-              <strong>Benefits:</strong> Fast typing, version-control friendly, portable,
-              no vendor lock-in.
-            </li>
-            <li>
-              <strong>Considerations:</strong> Learning curve for non-technical users,
-              preview sync, syntax highlighting.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Code Editor</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Description:</strong> Specialized for code with syntax highlighting,
-              autocomplete, linting.
-            </li>
-            <li>
-              <strong>Use Cases:</strong> Code snippets, configuration files, scripts,
-              technical content.
-            </li>
-            <li>
-              <strong>Examples:</strong> Monaco (VS Code), CodeMirror, Ace.
-            </li>
-            <li>
-              <strong>Benefits:</strong> Language support, error detection, IntelliSense,
-              keyboard shortcuts.
-            </li>
-            <li>
-              <strong>Considerations:</strong> Performance with large files, language
-              detection, security (code execution).
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Version Management</h2>
-
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/content-management/version-history.svg"
-          alt="Version History"
-          caption="Version History — showing version tree, diff view, and restore options"
+          caption="Edit Content Flow — showing load existing content, edit with change tracking, version management, collaborative editing, conflict resolution, and save with auto-save"
         />
 
         <p>
-          Version management tracks content changes over time, enabling recovery and audit.
+          For staff and principal engineers, implementing edit UI requires deep understanding of
+          editor architecture with version management integration, change tracking with visual diff
+          rendering, collaborative editing with operational transforms or CRDTs for conflict-free
+          merging, conflict resolution strategies for concurrent edits, auto-save patterns with
+          offline support, and the psychological aspects of editing including user confidence
+          through save status visibility and non-destructive editing patterns. The implementation
+          must balance editing flexibility with content integrity and collaboration support while
+          maintaining performance and accessibility.
         </p>
 
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Auto-Versioning</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Pattern:</strong> Create version on each save or at intervals.
-            </li>
-            <li>
-              <strong>Use Case:</strong> Documents with frequent edits, collaborative content.
-            </li>
-            <li>
-              <strong>Benefits:</strong> No user action required, comprehensive history.
-            </li>
-            <li>
-              <strong>Considerations:</strong> Storage costs, version proliferation,
-              need for cleanup.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Manual Versioning</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Pattern:</strong> User explicitly creates version with comment.
-            </li>
-            <li>
-              <strong>Use Case:</strong> Major milestones, significant changes, formal
-              documents.
-            </li>
-            <li>
-              <strong>Benefits:</strong> Meaningful versions, user control, reduced storage.
-            </li>
-            <li>
-              <strong>Considerations:</strong> Relies on user discipline, may miss
-              intermediate states.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Version Comparison</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Pattern:</strong> Side-by-side or inline diff view.
-            </li>
-            <li>
-              <strong>Features:</strong> Highlight additions, deletions, modifications.
-            </li>
-            <li>
-              <strong>Use Case:</strong> Review changes before accepting, audit trail.
-            </li>
-            <li>
-              <strong>Considerations:</strong> Performance for large diffs, merge conflict
-              display.
-            </li>
-          </ul>
-        </div>
+        <p>
+          Modern edit UIs have evolved from simple text areas to sophisticated collaborative
+          editing experiences with real-time sync, comprehensive change tracking, and full version
+          history. Platforms like Google Docs pioneered real-time collaboration with operational
+          transforms, Notion introduced block-based editing with real-time sync, and GitHub
+          established code editing with full version control integration. Editor choice depends on
+          content type, collaboration needs ranging from single user to real-time multi-user
+          editing, and version requirements from simple history to full version control with
+          branching and merging capabilities.
+        </p>
       </section>
 
       <section>
-        <h2>Change Tracking</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Track Changes:</strong> Highlight modifications in real-time. Show
-            additions (green), deletions (red), modifications (yellow).
-          </li>
-          <li>
-            <strong>Suggestions Mode:</strong> Changes appear as suggestions. Author can
-            accept or reject each change.
-          </li>
-          <li>
-            <strong>Comment Threads:</strong> Attach comments to specific content. Resolve
-            threads when addressed.
-          </li>
-          <li>
-            <strong>Author Attribution:</strong> Show who made each change. Color-code by
-            author for collaboration.
-          </li>
-          <li>
-            <strong>Change Summary:</strong> Summarize changes ("Added 3 paragraphs, deleted
-            1 section").
-          </li>
-        </ul>
+        <h2>Core Concepts</h2>
+        <p>
+          Content editing is built on fundamental concepts that determine how users modify, track,
+          and collaborate on content effectively. Understanding these concepts is essential for
+          designing edit interfaces that balance flexibility with integrity.
+        </p>
+
+        <p>
+          <strong>Editor Architecture:</strong> The editor forms the foundation of edit UI with
+          three primary types serving different user needs. WYSIWYG editors like TinyMCE and
+          CKEditor provide visual editing with immediate formatting feedback ideal for non-technical
+          users creating articles and documents. Markdown editors popular with developers offer fast
+          typing with version-control friendly plain text output used by platforms like Stack
+          Overflow and GitHub. Block editors like Gutenberg and Notion treat content as modular
+          blocks that can be rearranged and transformed enabling flexible layout creation. Edit UI
+          typically uses the same editor type as create UI for consistency but adds version
+          management and change tracking capabilities.
+        </p>
+
+        <p>
+          <strong>Version Management:</strong> Every edit operation creates a new version rather
+          than overwriting existing content. Loading existing content includes full version metadata
+          with version number, author identity, and timestamp. Version comparison uses diff
+          algorithms like Myers diff to compute and visualize changes between any two versions with
+          additions highlighted in green, deletions in red, and modifications in yellow. Version
+          restore creates a new version with content from a previous version while maintaining the
+          continuous version chain never overwriting history. This approach enables users to track
+          content evolution over time, understand what changed and why, and recover from mistakes
+          without losing any version history.
+        </p>
+
+        <p>
+          <strong>Change Tracking:</strong> Visual diff highlighting shows changes as users edit or
+          when comparing versions providing immediate feedback on modifications. The undo/redo
+          system uses the command pattern where each edit operation is a command with a
+          corresponding undo operation maintaining a stack that persists across auto-save cycles.
+          Edit history tracks comprehensive metadata including user identity, timestamp, version
+          number, and change description creating an audit trail essential for compliance
+          requirements in regulated industries. Change tracking provides transparency so users see
+          what changed, accountability showing who changed it, and recoverability enabling mistake
+          correction.
+        </p>
+
+        <p>
+          <strong>Collaborative Editing:</strong> Real-time synchronization via WebSocket pushes
+          edits to other users immediately with sub-100ms latency creating the feeling of
+          simultaneous editing. Presence indicators show who is currently editing with avatars,
+          named cursors, and selection highlights so users see where others are working. Operational
+          transforms used by Google Docs transform concurrent edits to maintain consistency across
+          all clients while CRDTs provide mathematical guarantees of eventual consistency through
+          conflict-free replicated data types. Conflict resolution detects when the same section is
+          edited concurrently, merges automatically when changes are non-conflicting in different
+          sections, and prompts users to resolve conflicts when the same lines are changed
+          differently.
+        </p>
       </section>
 
       <section>
-        <h2>Collaborative Editing</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Real-Time Sync:</strong> Multiple editors see each other's changes
-            instantly. Operational transforms or CRDTs.
-          </li>
-          <li>
-            <strong>Cursor Presence:</strong> Show other editors' cursors with names.
-            Color-coded for identification.
-          </li>
-          <li>
-            <strong>Conflict Resolution:</strong> Handle simultaneous edits to same content.
-            Merge automatically or prompt user.
-          </li>
-          <li>
-            <strong>Locking:</strong> Optional section locking to prevent conflicts.
-            Coarse-grained (document) or fine-grained (paragraph).
-          </li>
-          <li>
-            <strong>Activity Feed:</strong> Show who's editing, what changed, when.
-          </li>
-        </ul>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          Edit UI architecture separates editor, version management, change tracking, and
+          collaboration into modular components enabling maintainable implementation with clear
+          boundaries. This architecture is critical for user experience, reliability, and the
+          ability to evolve features independently.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/content-management/edit-content-flow.svg"
+          alt="Edit Content Flow"
+          caption="Edit Content Flow — showing load existing content, edit with change tracking, version management, collaborative editing, conflict resolution, and save with auto-save"
+        />
+
+        <p>
+          The edit flow begins when a user clicks Edit on existing content. The backend loads
+          content from the database including full version metadata with version number, author
+          identity, and timestamp. The editor loads based on content type and user preference
+          supporting WYSIWYG, Markdown, or Block editors. As the user edits content, change tracking
+          highlights modifications with additions in green and deletions in red. Auto-save runs
+          every thirty seconds saving to local storage for offline support and syncing to the
+          server when online. In collaborative scenarios, presence indicators show other active
+          editors, edits synchronize in real-time via WebSocket, and conflicts are handled with
+          operational transforms or CRDTs. When the user clicks Save or auto-save triggers, the
+          backend creates a new version in the content_versions table without overwriting history,
+          maintains the continuous version chain, and notifies collaborators of the save event.
+          Users can view version history at any time to compare versions or restore previous states.
+        </p>
+
+        <p>
+          Version management architecture provides load operations fetching specific versions by
+          version number or timestamp, compare operations loading two versions and computing diff
+          with the Myers diff algorithm to highlight additions, deletions, and modifications, and
+          restore operations creating new versions with restored content while maintaining the
+          continuous version chain. This architecture enables users to track content evolution over
+          time, understand what changed between versions, and recover from mistakes without losing
+          any version history.
+        </p>
+
+        <ArticleImage
+          src="/diagrams/requirements/functional-requirements/content-management/collaborative-editing.svg"
+          alt="Collaborative Editing"
+          caption="Collaborative Editing — showing real-time sync, presence indicators, OT/CRDTs for conflict-free merging, and conflict resolution"
+        />
+
+        <p>
+          Collaborative editing architecture establishes WebSocket connections on edit open to push
+          edits to the server, broadcast to other editors, and receive edits from others with
+          sub-100ms latency creating instant synchronization. Presence indicators send heartbeats
+          every five seconds to show active editors with avatars, cursors displaying names, and
+          selection highlights showing where others are editing. Operational transforms transform
+          concurrent edits to maintain consistency across all clients while CRDTs provide
+          mathematical guarantees of eventual consistency. Conflict resolution detects conflicts
+          when the same section is edited concurrently, merges automatically when changes are in
+          different sections, and prompts users to resolve conflicts when the same lines are changed
+          differently. This architecture enables seamless real-time collaboration without conflicts
+          or data loss.
+        </p>
       </section>
 
       <section>
-        <h2>Auto-Save</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>Debounced Save:</strong> Save after user stops typing (1-2 seconds).
-            Prevents excessive saves.
-          </li>
-          <li>
-            <strong>Periodic Save:</strong> Save at fixed intervals (30 seconds). Backup
-            against crashes.
-          </li>
-          <li>
-            <strong>Blur Save:</strong> Save when editor loses focus. Ensures no data loss.
-          </li>
-          <li>
-            <strong>Offline Support:</strong> Queue saves when offline. Sync when connection
-            restored.
-          </li>
-          <li>
-            <strong>Save Indicators:</strong> Show "Saving...", "Saved", "Unsaved changes".
-            Build user confidence.
-          </li>
-        </ul>
-      </section>
+        <h2>Trade-offs &amp; Comparison</h2>
+        <p>
+          Designing edit UI involves fundamental trade-offs between flexibility, control, and
+          collaboration that shape the user experience and system architecture. Understanding these
+          trade-offs is essential for making informed architecture decisions aligned with product
+          requirements.
+        </p>
 
-      <section>
-        <h2>References</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://www.nngroup.com/articles/undo-redo/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              NN/g Undo and Redo
-            </a>
-          </li>
-          <li>
-            <a href="https://en.wikipedia.org/wiki/Operational_transformation" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Operational Transformation
-            </a>
-          </li>
-        </ul>
+        <p>
+          Real-time collaboration as implemented by Google Docs shows others edits immediately with
+          sub-100ms latency enabling multiple users to edit simultaneously with operational
+          transforms or CRDTs handling conflicts automatically. This approach provides the most
+          collaborative experience but requires complex implementation with WebSocket infrastructure
+          and operational transform or CRDT logic plus higher infrastructure costs for persistent
+          connections. Async collaboration as used by GitHub enables users to edit independently
+          and merge changes later through pull requests with explicit conflict resolution. This
+          approach is simpler to implement and works well for code review workflows but edits are
+          not immediate and users do not see changes until merge occurs with conflicts resolved
+          manually. The recommendation is real-time for documents like articles and notes where
+          users expect Google Docs-like experiences, async for code with pull requests and explicit
+          review processes, and hybrid for wikis with real-time editing but async review before
+          publishing.
+        </p>
+
+        <p>
+          Locking edit as used in checkout/checkin systems has users lock content before editing
+          preventing others from editing, enabling exclusive editing, and requiring checkin to
+          release the lock. This approach prevents conflicts entirely but blocks other users from
+          collaborating and forgotten locks can leave content locked indefinitely preventing any
+          edits. Non-locking edit allows anyone to edit with concurrent edits detected and resolved
+          through merge or user prompts. This approach enables collaboration but requires conflict
+          resolution logic and users may encounter conflicts requiring manual resolution. The
+          recommendation is non-locking for most content like articles and wikis to enable
+          collaboration, locking for sensitive content like legal documents and financial records to
+          prevent conflicting edits, and showing presence indicators to warn users when others are
+          editing the same content.
+        </p>
+
+        <p>
+          Track changes mode shows all changes with additions in green and deletions in red,
+          enables users to accept or reject individual changes, and maintains full audit trails of
+          all modifications. This approach provides complete transparency and is essential for
+          review workflows but creates visually cluttered interfaces when many changes exist and
+          requires a review workflow for accepting or rejecting changes. Clean edit mode shows only
+          current content with changes saved silently without visual indicators. This approach
+          provides a clean reading experience but users cannot see what changed and there is no
+          review workflow for managing changes. The recommendation is track changes for review
+          workflows in legal documents and published content where changes require approval, clean
+          edit for personal editing in notes and drafts where users edit freely, and hybrid
+          approaches that track changes internally for version diff while showing clean edit by
+          default with a toggle to see changes.
+        </p>
       </section>
 
       <section>
         <h2>Best Practices</h2>
+        <p>
+          Implementing edit content UI requires following established best practices to ensure
+          usability, version integrity, and collaboration support while maintaining performance and
+          accessibility.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
-        <ul className="space-y-2">
-          <li>Provide clear save indicators (Saving..., Saved, Unsaved)</li>
-          <li>Show version history with meaningful labels</li>
-          <li>Highlight changes with color coding</li>
-          <li>Offer undo/redo with visual feedback</li>
-          <li>Support keyboard shortcuts for common actions</li>
-        </ul>
+        <p>
+          Editor selection should match the create UI editor for consistency so if content was
+          created with WYSIWYG it should be edited with WYSIWYG. Support multiple editors and let
+          users choose their preference remembering it for next time. Ensure feature parity so the
+          edit UI has the same formatting options as create UI. Preserve formatting when loading
+          content so styles are not lost on load.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Content Integrity</h3>
-        <ul className="space-y-2">
-          <li>Auto-save frequently to prevent data loss</li>
-          <li>Maintain comprehensive version history</li>
-          <li>Handle conflicts gracefully with merge options</li>
-          <li>Validate content before save</li>
-          <li>Sanitize HTML/rich text input</li>
-        </ul>
+        <p>
+          Version management should show version info including version number, author, and
+          timestamp displayed as Version 5 by John 2 hours ago. Enable compare with side-by-side
+          diff highlighting additions in green and deletions in red. Enable restore to create new
+          versions with restored content without overwriting history. Provide version history
+          listing all versions with pagination if many exist showing metadata including author,
+          timestamp, and change description.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Collaboration</h3>
-        <ul className="space-y-2">
-          <li>Show real-time presence of other editors</li>
-          <li>Implement conflict resolution strategies</li>
-          <li>Provide comment and suggestion modes</li>
-          <li>Track changes by author</li>
-          <li>Support @mentions for collaboration</li>
-        </ul>
+        <p>
+          Change tracking should provide visual diff highlighting changes as users edit with subtle
+          highlights or showing diff on save. Implement full undo/redo stacks with Ctrl+Z and
+          Ctrl+Y support that maintain across auto-save cycles. Track edit history with user
+          identity, timestamp, and change description to enable audit and compliance. Show save
+          status with messages like Saved 5 seconds ago, Saving, or Offline saved locally to
+          reassure users their work is safe.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Monitoring</h3>
-        <ul className="space-y-2">
-          <li>Track edit frequency and duration</li>
-          <li>Monitor auto-save success/failure rates</li>
-          <li>Alert on collaboration conflicts</li>
-          <li>Track version storage usage</li>
-          <li>Monitor editor performance metrics</li>
-        </ul>
+        <p>
+          Collaborative editing should show presence indicators with avatars, cursors with names,
+          and selection highlights so users see where others are editing. Implement real-time sync
+          via WebSocket pushing edits immediately with sub-100ms latency so it feels instant.
+          Provide conflict resolution detecting conflicts when the same section is edited, merging
+          automatically if non-conflicting, and prompting users if conflicting. Enable comments on
+          changes with inline comments to discuss specific changes before accepting.
+        </p>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
-        <ul className="space-y-3">
-          <li>
-            <strong>No auto-save:</strong> Users lose work on crashes.
-            <br /><strong>Fix:</strong> Implement debounced auto-save with offline support.
-          </li>
-          <li>
-            <strong>Poor conflict handling:</strong> Overwrites other editors' changes.
-            <br /><strong>Fix:</strong> Use OT/CRDTs or prompt for merge on conflict.
-          </li>
-          <li>
-            <strong>No version history:</strong> Can't recover previous versions.
-            <br /><strong>Fix:</strong> Auto-version on save, provide restore option.
-          </li>
-          <li>
-            <strong>Missing save indicators:</strong> Users don't know if saved.
-            <br /><strong>Fix:</strong> Show "Saving...", "Saved", "Unsaved changes".
-          </li>
-          <li>
-            <strong>No undo/redo:</strong> Can't recover from mistakes.
-            <br /><strong>Fix:</strong> Implement command pattern with history stack.
-          </li>
-          <li>
-            <strong>Poor mobile support:</strong> Editor unusable on mobile.
-            <br /><strong>Fix:</strong> Responsive design, touch-friendly controls.
-          </li>
-          <li>
-            <strong>No HTML sanitization:</strong> XSS vulnerabilities.
-            <br /><strong>Fix:</strong> Sanitize all rich text input before save.
-          </li>
-          <li>
-            <strong>Version proliferation:</strong> Too many versions consume storage.
-            <br /><strong>Fix:</strong> Implement version cleanup, retention policies.
-          </li>
-          <li>
-            <strong>No change tracking:</strong> Can't see what changed.
-            <br /><strong>Fix:</strong> Highlight modifications, show diff view.
-          </li>
-          <li>
-            <strong>Poor accessibility:</strong> Editor unusable for screen readers.
-            <br /><strong>Fix:</strong> ARIA labels, keyboard navigation, screen reader support.
-          </li>
-        </ul>
+        <p>
+          Avoid these common mistakes when implementing edit content UI to ensure usability, version
+          integrity, and collaboration support while maintaining user trust and data safety.
+        </p>
+
+        <p>
+          Missing version history prevents users from seeing what changed or restoring previous
+          versions. Fix this by saving versions on every edit, showing comprehensive version
+          history, and enabling compare and restore operations. Overwriting on save destroys history
+          and prevents recovery. Fix this by creating new versions on save, maintaining continuous
+          version chains, and never overwriting existing versions.
+        </p>
+
+        <p>
+          Missing change tracking leaves users unaware of what changed during their session. Fix
+          this by highlighting changes as users edit, showing diff on save, and enabling undo/redo
+          operations. Missing collaborative editing prevents users from editing together. Fix this
+          with real-time sync via WebSocket, presence indicators showing who is editing, and
+          conflict handling with operational transforms or CRDTs.
+        </p>
+
+        <p>
+          Locking without timeout allows users to lock content and forget leaving it locked
+          indefinitely. Fix this with auto-release locks after thirty minutes, showing lock status
+          visibly, and allowing admin override. Missing conflict resolution causes concurrent edits
+          to cause data loss. Fix this by detecting conflicts, merging automatically if
+          non-conflicting, and prompting users if conflicting changes require manual resolution.
+        </p>
+
+        <p>
+          Missing auto-save causes users to lose work from browser crashes or accidental closes.
+          Fix this with auto-save every thirty seconds, local storage for offline support, and
+          server sync when online. Missing save status leaves users uncertain if their work is
+          saved. Fix this by showing Saved 5 seconds ago, Saving, or Offline status messages to
+          reassure users. Poor mobile editors have keyboards covering the editing area making edits
+          difficult. Fix this with mobile-optimized editors, sticky toolbars, and responsive
+          layouts. Missing accessibility prevents keyboard users from navigating. Fix this with
+          keyboard navigation, ARIA labels, and screen reader testing.
+        </p>
       </section>
 
       <section>
-        <h2>Advanced Topics</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Operational Transformation</h3>
+        <h2>Real-world Use Cases</h2>
         <p>
-          OT enables real-time collaboration by transforming operations. When multiple users edit simultaneously, OT ensures consistency. Used by Google Docs. Complex to implement correctly. Consider libraries like ShareDB.
+          Edit content UI is critical for content maintenance across different domains. Here are
+          real-world implementations from production systems demonstrating different approaches to
+          editing challenges.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">CRDTs</h3>
         <p>
-          Conflict-free Replicated Data Types enable collaboration without central server. Each replica converges to same state. Simpler than OT for some use cases. Used by Figma, Notion. Consider libraries like Yjs, Automerge.
+          Document collaboration at Google Docs addresses real-time collaborative editing with
+          multiple users on the same document, no lost edits, and comprehensive version history.
+          The solution uses real-time sync via WebSocket so edits appear instantly for all users,
+          presence indicators with cursors showing names so users see where others are editing,
+          operational transforms to merge concurrent edits without conflicts, version history with
+          named versions users can name or auto-named like Edited 2 hours ago, and suggesting mode
+          for track changes where users accept or reject suggestions. The result is seamless
+          collaboration with multiple users editing simultaneously, no lost edits from real-time
+          sync plus auto-save, comprehensive version history, and suggesting mode enabling review
+          workflows.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Offline Editing</h3>
         <p>
-          Support editing without connection. Queue changes locally. Sync when reconnected. Handle conflicts with server version. Use service workers, IndexedDB for storage.
+          Code editing at GitHub addresses code editing with version control, multiple
+          contributors, review before merge, and conflict resolution. The solution uses branch
+          editing so edits happen in branches not affecting main, pull requests to propose changes
+          with review before merge, inline comments to discuss specific lines, conflict detection
+          prompting users to resolve conflicting changes, and full git history with every commit
+          tracked and revert capability. The result is collaborative code editing with multiple
+          contributors, review workflow with changes reviewed before merge, complete version history
+          from git, and explicitly resolved conflicts.
         </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Graceful Degradation</h3>
         <p>
-          Handle editor failures gracefully. Fail-safe defaults (keep content on error). Queue save requests for retry. Implement circuit breaker pattern. Provide manual save fallback. Monitor editor health continuously.
+          Wiki editing at Confluence addresses wiki pages edited by multiple users with change
+          tracking, version comparison, and restore capability. The solution uses rich text editors
+          for familiar WYSIWYG editing, version history listing all versions with author timestamp
+          and comment, version comparison with side-by-side diff highlighting changes, restore to
+          any version creating new versions, and watch pages notifying on changes tracking who
+          changed what. The result is collaborative wiki editing with tracked changes, recoverable
+          mistakes through restore, and compliance from audit trails of all changes.
+        </p>
+
+        <p>
+          Note taking at Notion addresses block-based editing, real-time collaboration, version
+          history, and templates. The solution uses block editors where each paragraph is a block
+          that can be dragged to reorder and transformed, real-time sync so edits appear instantly
+          for collaborators, version history with page history to restore any previous version,
+          templates with pre-built structures for meeting notes and project plans, and comments as
+          inline comments on blocks to discuss before finalizing. The result is flexible editing
+          with blocks enabling any layout, seamless collaboration, version history enabling
+          recovery, and templates accelerating creation.
+        </p>
+
+        <p>
+          Legal documents at DocuSign address version tracking, compliance audit trails, multiple
+          parties reviewing and editing, and tamper-proof history. The solution uses track changes
+          showing all additions and deletions with parties accepting or rejecting, version history
+          with full audit trails of who changed what when, digital signatures on specific versions
+          where signatures become invalid if documents change, compliance reporting exporting audit
+          trails for auditors in PDF or CSV, and locking documents during review to prevent
+          conflicting edits. The result is compliance met with audit trails, tamper-proof history
+          preventing modification of signed versions, legal validity from digital signatures, and
+          review workflows for accepting or rejecting changes.
         </p>
       </section>
 
       <section>
         <h2>Interview Questions</h2>
-
-        <ArticleImage
-          src="/diagrams/requirements/functional-requirements/content-management/editor-architecture.svg"
-          alt="Editor Architecture"
-          caption="Architecture — comparing WYSIWYG, Markdown, and Code editors with trade-offs"
-        />
+        <p>
+          These questions test understanding of edit content UI design, implementation, and
+          operational concerns for staff and principal engineer interviews.
+        </p>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle concurrent edits?</p>
-            <p className="mt-2 text-sm">A: Operational transforms (OT) or CRDTs for real-time collaboration. Or optimistic locking with conflict resolution UI. Show other editors' cursors, merge changes automatically or prompt user.</p>
+            <p className="font-semibold">Q: How do you implement version management?</p>
+            <p className="mt-2 text-sm">
+              A: Load version by fetching specific version by version number or timestamp (SELECT *
+              FROM content_versions WHERE content_id = ? AND version_number = ?). Compare versions
+              by loading two versions and computing diff with Myers diff algorithm highlighting
+              additions in green, deletions in red, and modifications in yellow. Restore version by
+              creating new version with restored content (INSERT INTO content_versions with version
+              number as MAX(version_number) + 1), maintaining continuous version chain without
+              overwriting history.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you implement undo/redo?</p>
-            <p className="mt-2 text-sm">A: Command pattern with history stack. Store inverse operations for undo. Limit stack size for memory. Support keyboard shortcuts (Ctrl+Z, Ctrl+Y).</p>
+            <p className="font-semibold">Q: How do you implement change tracking?</p>
+            <p className="mt-2 text-sm">
+              A: Visual diff highlights changes as users edit by storing original content on load,
+              comparing current with original, and highlighting differences. Undo/redo uses command
+              pattern where each edit is a command with undo operation, maintaining undo/redo stack
+              (push on edit, pop on undo/redo). Edit history tracks every change with user identity,
+              timestamp, version number, and change description storing in audit table for
+              compliance.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What's your auto-save strategy?</p>
-            <p className="mt-2 text-sm">A: Debounced save (1-2 seconds after typing stops). Periodic backup (30 seconds). Save on blur. Offline queue with sync. Show save indicators for user confidence.</p>
+            <p className="font-semibold">Q: How do you implement real-time collaboration?</p>
+            <p className="mt-2 text-sm">
+              A: WebSocket connection connects on edit open, pushing edits to server, broadcasting
+              to other editors, and receiving edits from others with sub-100ms latency. Presence
+              indicators show who is editing by sending heartbeat every 5 seconds, showing
+              avatars/cursors with names, and highlighting selections. Operational transforms
+              transform concurrent edits to maintain consistency (if user A inserts at position 5,
+              user B inserts at position 10, transform user B edit to position 11). Conflict
+              resolution detects conflicts when same section is edited concurrently, merging
+              automatically if non-conflicting (different sections), and prompting user if
+              conflicting (same lines changed differently).
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle version history?</p>
-            <p className="mt-2 text-sm">A: Auto-version on each save or at intervals. Store version metadata (author, timestamp, comment). Provide diff view and restore option. Implement cleanup for old versions.</p>
+            <p className="font-semibold">Q: How do you handle edit conflicts?</p>
+            <p className="mt-2 text-sm">
+              A: Detect conflicts by comparing timestamps (if server version newer than loaded
+              version, conflict exists). Last-write-wins automatically uses latest version (simple,
+              but may lose work). Three-way merge uses base version plus local changes plus server
+              changes, automatically merging non-conflicting changes and prompting for conflicts.
+              Prompt user by showing both versions with side-by-side diff, letting user choose which
+              to keep or manually merge. Log conflicts with audit trail of who resolved and how for
+              compliance.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you sanitize rich text input?</p>
-            <p className="mt-2 text-sm">A: Use libraries like DOMPurify, sanitize-html. Whitelist allowed tags/attributes. Remove scripts, event handlers. Validate on both client and server.</p>
+            <p className="font-semibold">Q: How do you implement auto-save for edit?</p>
+            <p className="mt-2 text-sm">
+              A: Timer-based every 30 seconds (setInterval) to save content to server. Event-based
+              on blur and before unload, saving if content changed. Local storage saves to IndexedDB
+              (works offline, large capacity). Sync when online pushes local edits to server,
+              handling conflicts with last-write-wins or prompting user. Show save status ("Saved 5
+              seconds ago", "Saving...", "Offline — saved locally") to reassure users. Debounce
+              saves (wait 1 second after typing stops) to avoid saving on every keystroke.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What editor do you choose?</p>
-            <p className="mt-2 text-sm">A: Depends on use case. WYSIWYG for general users (TinyMCE, Quill). Markdown for technical content. Code editor for code (Monaco, CodeMirror). Consider accessibility, mobile support, bundle size.</p>
+            <p className="font-semibold">Q: How do you implement locking?</p>
+            <p className="mt-2 text-sm">
+              A: Acquire lock atomically (UPDATE content SET locked_by = ? WHERE id = ? AND locked_by
+              IS NULL, returns success/failure). Show lock status displaying who locked with
+              timestamp and countdown to auto-release. Auto-release after timeout of 30 minutes
+              (UPDATE content SET locked_by = NULL WHERE locked_by = ? AND locked_at &lt; NOW() -
+              INTERVAL '30 minutes'). Admin override allows admin to release others' locks with
+              audit log of who released. Prevent edit if locked by other user by showing message,
+              disabling edit, and offering to notify lock holder.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle large documents?</p>
-            <p className="mt-2 text-sm">A: Virtual scrolling for rendering. Lazy load content. Chunk saves. Use efficient data structures. Consider pagination or sections for very large documents.</p>
+            <p className="font-semibold">Q: How do you implement suggesting mode?</p>
+            <p className="mt-2 text-sm">
+              A: Toggle mode switches between edit and suggest with user choosing. In suggest mode,
+              edits create suggestions (not direct changes), highlighting suggestions in different
+              color (yellow for pending). Store suggestions in separate table (content_id,
+              suggestion_id, original_text, suggested_text, author_id, status: pending/accepted/
+              rejected). Accept or reject by user with permission (accepting applies suggestion,
+              rejecting discards suggestion). Notify author when suggestion accepted/rejected with
+              email or push notification.
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: What metrics do you track for editing?</p>
-            <p className="mt-2 text-sm">A: Edit frequency, session duration, auto-save success rate, conflict rate, version storage usage, editor performance (input latency). Alert on anomalies.</p>
+            <p className="font-semibold">Q: How do you ensure edit UI accessibility?</p>
+            <p className="mt-2 text-sm">
+              A: Keyboard navigation enables Tab through toolbar buttons, Enter to activate, Escape
+              to close dropdowns, and Ctrl+Z for undo. ARIA labels describe buttons ("Bold button",
+              "Insert image") for screen readers. Focus management returns focus to editor after
+              toolbar action. High contrast mode makes toolbar visible in high contrast. Screen
+              reader testing with NVDA and VoiceOver ensures usability. Announce changes so screen
+              reader announces when content changes ("Content saved", "Conflict detected").
+            </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you support accessibility?</p>
-            <p className="mt-2 text-sm">A: ARIA labels for toolbar buttons. Keyboard navigation for all actions. Screen reader announcements for changes. High contrast mode. Focus management.</p>
+            <p className="font-semibold">Q: How do you optimize edit UI performance?</p>
+            <p className="mt-2 text-sm">
+              A: Lazy load editor (not loading until user clicks edit) to reduce initial bundle.
+              Virtualize long content (render only visible portion) for very long documents. Debounce
+              heavy operations (diff computation, auto-save) waiting after typing stops. Incremental
+              diff computes diff only for changed sections, not entire document. Code split editor
+              (load editor code separately) so main app loads faster. Memoize expensive calculations
+              (diff, word count) caching until content changes.
+            </p>
           </div>
         </div>
-      </section>
-
-      <section>
-        <h2>Security Checklist</h2>
-        <div className="my-6 rounded-lg border border-theme bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Pre-Launch Checklist</h3>
-          <ul className="space-y-2">
-            <li>☐ HTML sanitization implemented</li>
-            <li>☐ Auto-save with offline support</li>
-            <li>☐ Version history with restore</li>
-            <li>☐ Conflict resolution strategy</li>
-            <li>☐ Change tracking enabled</li>
-            <li>☐ Save indicators implemented</li>
-            <li>☐ Undo/redo functionality</li>
-            <li>☐ Accessibility compliance</li>
-            <li>☐ Penetration testing completed</li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Testing Strategy</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Unit Tests</h3>
-        <ul className="space-y-2">
-          <li>Test editor initialization</li>
-          <li>Test save logic</li>
-          <li>Test version creation</li>
-          <li>Test conflict resolution</li>
-          <li>Test undo/redo logic</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Integration Tests</h3>
-        <ul className="space-y-2">
-          <li>Test edit flow end-to-end</li>
-          <li>Test auto-save flow</li>
-          <li>Test version restore flow</li>
-          <li>Test collaborative editing</li>
-          <li>Test offline sync flow</li>
-          <li>Test conflict resolution flow</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Tests</h3>
-        <ul className="space-y-2">
-          <li>Test XSS prevention</li>
-          <li>Test HTML sanitization</li>
-          <li>Test unauthorized edit prevention</li>
-          <li>Test version access control</li>
-          <li>Test input validation</li>
-          <li>Penetration testing for editor</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Tests</h3>
-        <ul className="space-y-2">
-          <li>Test input latency</li>
-          <li>Test large document handling</li>
-          <li>Test auto-save performance</li>
-          <li>Test concurrent editing</li>
-          <li>Test version storage impact</li>
-        </ul>
       </section>
 
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li><a href="https://www.nngroup.com/articles/undo-redo/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">NN/g Undo and Redo</a></li>
-          <li><a href="https://en.wikipedia.org/wiki/Operational_transformation" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Operational Transformation</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Input Validation</a></li>
-          <li><a href="https://auth0.com/blog/a-look-at-the-latest-draft-for-oauth-2-1/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OAuth 2.1 Security Best Practices</a></li>
-          <li><a href="https://developer.mozilla.org/en-US/docs/Web/Security/Practical_security_guides/Input_Validation" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">MDN - Input Validation</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Choosing_and_Using_Security_Questions_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Security Questions</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Multifactor Authentication</a></li>
-          <li><a href="https://docs.openfga.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OpenFGA - Fine-Grained Authorization</a></li>
-          <li><a href="https://www.cerbos.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Cerbos - Policy as Code</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Authorization Cheat Sheet</a></li>
+          <li>
+            <a
+              href="https://www.smashingmagazine.com/2021/06/building-accessible-rich-text-editors/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Building Accessible Rich Text Editors
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://en.wikipedia.org/wiki/Operational_transformation"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Operational Transformation (Google Docs)
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Input Validation Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MDN - WebSockets API
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/API/Storage_API"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MDN - Storage API
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Access Control Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Multifactor Authentication
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Forgot Password Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Credential_Stuffing_Prevention_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Credential Stuffing Prevention
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Logging Cheat Sheet
+            </a>
+          </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Implementation Patterns</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Editor Pattern</h3>
-        <p>
-          Choose editor based on use case. WYSIWYG for general users. Markdown for technical content. Code editor for code. Implement toolbar, formatting, keyboard shortcuts. Support accessibility.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Auto-Save Pattern</h3>
-        <p>
-          Debounced save (1-2 seconds). Periodic backup (30 seconds). Save on blur. Offline queue with sync. Show save indicators. Handle save failures gracefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Version Pattern</h3>
-        <p>
-          Auto-version on save or intervals. Store metadata (author, timestamp, comment). Provide diff view. Support restore operation. Implement cleanup for old versions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Collaboration Pattern</h3>
-        <p>
-          Real-time sync with OT/CRDTs. Show cursor presence. Handle conflicts automatically or prompt. Track changes by author. Support comments and suggestions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Graceful Degradation</h3>
-        <p>
-          Handle editor failures gracefully. Fail-safe defaults (keep content on error). Queue save requests for retry. Implement circuit breaker pattern. Provide manual save fallback. Monitor editor health continuously.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Compliance Considerations</h3>
-        <p>
-          Meet regulatory requirements for content editing. SOC2: Edit audit trails. HIPAA: PHI editing safeguards. PCI-DSS: Cardholder data editing. GDPR: Content data handling. Implement compliance reporting. Regular compliance reviews.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Performance Optimization</h3>
-        <p>
-          Optimize editing for high-throughput systems. Batch edit operations. Use connection pooling. Implement async save operations. Monitor edit latency. Set SLOs for edit time. Scale edit endpoints horizontally.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Error Handling</h3>
-        <p>
-          Handle edit errors gracefully. Log errors with full context. Implement retry with exponential backoff. Alert on repeated failures. Provide fallback edit mechanisms. Don't expose internal errors to users.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Developer Experience</h3>
-        <p>
-          Make editing easy for developers to use. Provide edit SDK. Auto-generate edit documentation. Include edit requirements in API docs. Provide testing utilities. Implement edit linting in CI. Create runbooks for common issues.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Multi-Tenant Edit</h3>
-        <p>
-          Handle editing in multi-tenant systems. Tenant-scoped edit configuration. Isolate edit events between tenants. Tenant-specific edit policies. Audit edit per tenant. Handle cross-tenant edit carefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise Edit</h3>
-        <p>
-          Special handling for enterprise editing. Dedicated support for enterprise onboarding. Custom edit configurations. SLA for edit availability. Priority support for edit issues. Regular enterprise reviews.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Emergency Access</h3>
-        <p>
-          Break-glass procedures for emergency access. Pre-approved emergency edit bypass. Require security team approval. Automatic notification to affected users. Full audit logging of emergency access. Post-incident review required.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edit Testing</h3>
-        <p>
-          Test editing thoroughly before deployment. Chaos engineering for edit failures. Simulate high-volume edit scenarios. Test edit under load. Validate edit propagation. Test rollback procedures. Document test results.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">User Communication</h3>
-        <p>
-          Communicate edit changes clearly to users. Explain why edit is required. Provide steps to configure edit. Offer support contact for issues. Send edit confirmation. Provide edit history for review. Handle user concerns empathetically.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Continuous Improvement</h3>
-        <p>
-          Evolve editing based on operational learnings. Analyze edit patterns. Identify false positives. Optimize edit triggers. Gather user feedback. Track edit metrics. Benchmark against industry best practices.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Security Hardening</h3>
-        <p>
-          Strengthen editing against attacks. Implement defense in depth. Regular penetration testing. Monitor for edit bypass attempts. Encrypt edit data at rest. Use hardware security modules for key management. Implement zero-trust principles.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Deprovisioning Integration</h3>
-        <p>
-          Integrate with user deprovisioning workflows. Automatic edit revocation on HR termination. Role change triggers edit review. Contractor expiry triggers edit revocation. Handle temporary access expiry. Coordinate with access management systems.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edit Analytics</h3>
-        <p>
-          Analyze edit data for insights. Track edit reasons distribution. Identify common edit triggers. Detect anomalous edit patterns. Measure edit effectiveness. Generate edit reports. Use analytics for optimization.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Cross-System Edit</h3>
-        <p>
-          Coordinate editing across multiple systems. Central edit orchestration. Handle system-specific edit. Ensure consistent enforcement. Manage edit dependencies. Orchestrate edit updates. Monitor cross-system edit health.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edit Documentation</h3>
-        <p>
-          Maintain comprehensive edit documentation. Edit procedures and runbooks. Decision records for edit design. Usage examples for each scenario. Onboarding guide for new developers. API documentation with edit endpoints. Keep documentation up to date.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Cost Optimization</h3>
-        <p>
-          Optimize edit system costs. Right-size edit infrastructure. Use serverless for variable workloads. Optimize storage for edit data. Reduce unnecessary edit checks. Monitor cost per edit. Balance performance with cost.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edit Governance</h3>
-        <p>
-          Establish edit governance framework. Define edit ownership and stewardship. Regular edit reviews and audits. Edit change management process. Compliance reporting. Edit exception handling. Training and documentation. Continuous improvement program.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Real-Time Edit</h3>
-        <p>
-          Enable real-time editing capabilities. Hot reload edit rules. Version edit for rollback. Validate edit before activation. Test in isolated environment first. Monitor for issues after update. Implement gradual rollout for edit changes.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edit Simulation</h3>
-        <p>
-          Test edit changes before deployment. What-if analysis for edit changes. Simulate edit decisions with sample requests. Detect unintended consequences. Validate edit coverage. Test edge cases and boundary conditions. Generate impact reports for stakeholders.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Access Recertification</h3>
-        <p>
-          Periodic review of access permissions. Quarterly access recertification campaigns. Managers review direct reports' access. Automated reminders for pending reviews. Escalation for overdue reviews. Attestation workflow with audit trail. Generate compliance reports for auditors.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edit Inheritance</h3>
-        <p>
-          Support edit inheritance for easier management. Parent edit triggers child edit. Handle inheritance conflicts clearly. Document inheritance hierarchy. Cache inherited edit results. Monitor inheritance depth for performance.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Geographic Edit</h3>
-        <p>
-          Enforce location-based edit controls. Edit access by country/region. Comply with data sovereignty laws. Use IP geolocation for enforcement. Handle VPN and proxy detection. Allow exceptions for travel. Audit geographic edit patterns.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Time-Based Edit</h3>
-        <p>
-          Edit access by time of day/day of week. Business hours only for sensitive operations. After-hours edit requires approval. Handle timezone differences. Support shift-based access patterns. Audit time-based edit violations. Implement automatic expiry.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Device-Based Edit</h3>
-        <p>
-          Edit access by device characteristics. Require managed devices for sensitive data. Check device compliance (encryption, MDM). Block rooted/jailbroken devices. Implement device fingerprinting. Support device registration workflow. Audit device-based edit decisions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Network-Based Edit</h3>
-        <p>
-          Edit access by network characteristics. Allow only corporate network for sensitive operations. Require VPN for remote access. Check network security posture. Implement network segmentation. Monitor network-based edit patterns. Handle network changes gracefully.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Behavioral Edit</h3>
-        <p>
-          Detect anomalous access patterns for edit. Baseline normal user behavior. Alert on deviations (unusual time, location, resource). Implement risk scoring. Step-up edit for high-risk access. Continuous edit during session. Integrate with SIEM for correlation.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Consent-Based Edit</h3>
-        <p>
-          Manage user consent for session access. Capture consent at session creation. Support consent withdrawal. Audit consent decisions. Handle consent expiry. Integrate with privacy management systems. Generate consent reports for compliance.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Data Classification Edit</h3>
-        <p>
-          Apply edit based on data sensitivity. Classify data (public, internal, confidential, restricted). Different edit per classification. Automatic classification where possible. Handle classification changes. Audit classification-based edit. Train users on classification.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edit Orchestration</h3>
-        <p>
-          Coordinate edit across distributed systems. Central edit orchestration service. Handle edit conflicts across systems. Ensure consistent enforcement. Manage edit dependencies. Orchestrate edit updates. Monitor orchestration health.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Zero Trust Edit</h3>
-        <p>
-          Implement zero trust edit control. Never trust, always verify. Least privilege edit by default. Micro-segmentation of edit. Continuous verification of edit trust. Assume breach mentality. Monitor and log all edit.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edit Versioning Strategy</h3>
-        <p>
-          Manage edit versions effectively. Semantic versioning for edit. Backward compatibility guarantees. Deprecation process for old versions. Migration guides for version changes. Support multiple versions simultaneously. Track version adoption rates.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Access Request Edit</h3>
-        <p>
-          Handle access request edit systematically. Self-service access edit request. Manager approval workflow. Automated edit after approval. Temporary edit with expiry. Access edit audit trail. Integration with HR systems.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edit Compliance Monitoring</h3>
-        <p>
-          Monitor edit compliance continuously. Automated compliance checks. Alert on edit violations. Generate compliance reports. Track remediation progress. Integrate with GRC systems. Support external audits.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Disaster Recovery</h3>
-        <p>
-          Plan for edit system failures. Backup edit configurations. Disaster recovery procedures. Fail-safe defaults (deny-by-default). Recovery time objectives. Test DR procedures regularly. Document recovery steps.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edit Performance Tuning</h3>
-        <p>
-          Optimize edit evaluation performance. Profile edit evaluation latency. Identify slow edit rules. Optimize edit rules. Use efficient data structures. Cache edit results. Scale edit engines horizontally. Set performance SLOs.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edit Testing Automation</h3>
-        <p>
-          Automate edit testing in CI/CD. Unit tests for edit rules. Integration tests with sample requests. Regression tests for edit changes. Performance tests for edit evaluation. Security tests for edit bypass. Automated edit validation.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edit Communication</h3>
-        <p>
-          Communicate edit changes effectively. Notify affected users of changes. Provide change summaries. Offer training for complex changes. Maintain edit changelog. Gather user feedback. Address concerns proactively.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edit Retirement</h3>
-        <p>
-          Retire obsolete edit systematically. Identify unused edit. Deprecation notice period. Migration path for affected users. Monitor for usage during deprecation. Remove edit after grace period. Document retirement decisions.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Third-Party Edit Integration</h3>
-        <p>
-          Integrate with third-party edit systems. Support standard protocols (OAuth, OIDC, SAML). Handle third-party edit evaluation. Manage trust relationships. Audit third-party edit. Monitor integration health. Plan for vendor changes.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edit Cost Management</h3>
-        <p>
-          Optimize edit system costs. Right-size edit infrastructure. Use serverless for variable workloads. Optimize storage for edit data. Reduce unnecessary edit checks. Monitor cost per edit. Balance performance with cost.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edit Scalability</h3>
-        <p>
-          Scale edit for growing systems. Horizontal scaling for edit engines. Shard edit data by user. Use read replicas for edit checks. Implement caching at multiple levels. Monitor scaling metrics. Plan capacity proactively.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edit Observability</h3>
-        <p>
-          Implement comprehensive edit observability. Distributed tracing for edit flow. Structured logging for edit events. Metrics for edit health. Dashboards for edit monitoring. Alerts for edit anomalies. Root cause analysis tools.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edit Training</h3>
-        <p>
-          Train team on edit procedures. Regular edit drills. Document edit runbooks. Cross-train team members. Test edit knowledge. Update training materials. Track training completion.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edit Innovation</h3>
-        <p>
-          Stay current with edit best practices. Evaluate new edit technologies. Pilot innovative edit approaches. Share edit learnings. Contribute to edit community. Patent edit innovations where applicable.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edit Metrics</h3>
-        <p>
-          Track key edit metrics. Edit success rate. Time to edit. Edit propagation latency. Denylist hit rate. User session count. Edit error rate. Set targets and monitor trends.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edit Security</h3>
-        <p>
-          Secure edit systems against attacks. Encrypt edit data. Implement access controls. Audit edit access. Monitor for edit abuse. Regular security assessments. Incident response procedures.
-        </p>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Edit Compliance</h3>
-        <p>
-          Meet regulatory requirements for edit. SOC2 audit trails. HIPAA immediate edit. PCI-DSS session controls. GDPR right to edit. Regular compliance reviews. External audit support.
-        </p>
       </section>
     </ArticleLayout>
   );

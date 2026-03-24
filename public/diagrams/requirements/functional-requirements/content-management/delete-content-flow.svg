@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="800" height="500" fill="#ffffff"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Delete Content Flow</text>
+  
+  <!-- User Clicks Delete -->
+  <rect x="50" y="70" width="120" height="80" rx="8" fill="#3b82f6"/>
+  <text x="110" y="105" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#ffffff">User Clicks</text>
+  <text x="110" y="130" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">"Delete"</text>
+  
+  <line x1="170" y1="110" x2="210" y2="110" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="190" y="100" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">1. Confirm</text>
+  
+  <!-- Confirmation Dialog -->
+  <rect x="220" y="60" width="180" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="310" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#f59e0b">Confirmation</text>
+  
+  <rect x="240" y="105" width="140" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="310" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Warning Message</text>
+  
+  <rect x="240" y="140" width="140" height="30" rx="4" fill="#ef4444" opacity="0.3"/>
+  <text x="310" y="160" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Delete / Cancel</text>
+  
+  <line x1="400" y1="120" x2="440" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="420" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">2. Validate</text>
+  
+  <!-- Permission Check -->
+  <rect x="450" y="60" width="180" height="120" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="540" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Permission Check</text>
+  
+  <rect x="470" y="105" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="540" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">User Owns Content?</text>
+  
+  <rect x="470" y="140" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="540" y="160" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Has Delete Permission?</text>
+  
+  <line x1="630" y1="120" x2="670" y2="120" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="650" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">✓ Allowed</text>
+  
+  <!-- Dependency Check -->
+  <rect x="680" y="60" width="100" height="120" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="730" y="90" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Dependencies</text>
+  <text x="730" y="115" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Check Related</text>
+  <text x="730" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Cascade Options</text>
+  <text x="730" y="155" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Delete/Reassign</text>
+  
+  <line x1="730" y1="180" x2="730" y2="220" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="750" y="200" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">3. Delete</text>
+  
+  <!-- Soft Delete -->
+  <rect x="680" y="230" width="100" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="730" y="255" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Soft Delete</text>
+  <text x="730" y="280" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Set deleted_at</text>
+  <text x="730" y="295" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Move to Trash</text>
+  <text x="730" y="310" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Start Retention</text>
+  
+  <line x1="680" y1="280" x2="640" y2="280" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Recovery Period -->
+  <rect x="450" y="230" width="180" height="100" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="540" y="255" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#8b5cf6">Recovery Period</text>
+  <text x="540" y="280" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">30-90 Days</text>
+  <text x="540" y="295" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">User Can Restore</text>
+  <text x="540" y="310" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">From Trash</text>
+  
+  <line x1="450" y1="280" x2="410" y2="280" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Permanent Delete -->
+  <rect x="220" y="230" width="180" height="100" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="310" y="255" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#ef4444">Permanent Delete</text>
+  <text x="310" y="280" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">After Retention</text>
+  <text x="310" y="295" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Cleanup Job</text>
+  <text x="310" y="310" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Remove from DB</text>
+  
+  <line x1="220" y1="280" x2="180" y2="280" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="200" y="270" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">Complete</text>
+  
+  <!-- Notification -->
+  <rect x="50" y="230" width="120" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="110" y="260" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Notify User</text>
+  <text x="110" y="285" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Deletion Confirm</text>
+  <text x="110" y="300" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Recovery Deadline</text>
+  <text x="110" y="315" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">Trash Location</text>
+  
+  <!-- Delete Types -->
+  <rect x="50" y="360" width="340" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="385" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Deletion Types</text>
+  
+  <rect x="70" y="400" width="140" height="30" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="140" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Soft Delete (Default)</text>
+  
+  <rect x="230" y="400" width="140" height="30" rx="4" fill="#ef4444" stroke="#ef4444" stroke-width="1"/>
+  <text x="300" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Hard Delete (GDPR)</text>
+  
+  <rect x="70" y="435" width="140" height="30" rx="4" fill="#f59e0b" stroke="#f59e0b" stroke-width="1"/>
+  <text x="140" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Delayed Delete</text>
+  
+  <rect x="230" y="435" width="140" height="30" rx="4" fill="#8b5cf6" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="300" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Cascade Delete</text>
+  
+  <!-- Recovery Options -->
+  <rect x="420" y="360" width="340" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="590" y="385" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Recovery Options</text>
+  
+  <rect x="440" y="400" width="140" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="510" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Restore from Trash</text>
+  
+  <rect x="600" y="400" width="140" height="30" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="670" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Permanent Delete</text>
+  
+  <rect x="440" y="435" width="140" height="30" rx="4" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="510" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Auto-Delete After 30d</text>
+  
+  <rect x="600" y="435" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="670" y="455" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Email Reminder</text>
+
+</svg>
