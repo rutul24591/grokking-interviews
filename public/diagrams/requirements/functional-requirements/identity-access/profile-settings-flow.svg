@@ -75,7 +75,7 @@
   <rect x="420" y="270" width="180" height="80" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
   <text x="510" y="300" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">✓ Profile Updated</text>
   <text x="510" y="325" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Changes saved successfully</text>
-  <text x="510" y="340" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Avatar processed & uploaded</text>
+  <text x="510" y="340" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Avatar processed &amp; uploaded</text>
   
   <line x1="420" y1="310" x2="370" y2="310" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
   

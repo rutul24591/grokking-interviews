@@ -876,52 +876,6 @@ export default function HTTPSTLSArticle() {
       </section>
 
       <section>
-        <h2>References and Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Transport_Layer_Security" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN Web Docs: TLS
-            </a>
-          </li>
-          <li>
-            <a href="https://datatracker.ietf.org/doc/html/rfc8446" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              RFC 8446: TLS 1.3 Specification
-            </a>
-          </li>
-          <li>
-            <a href="https://www.ssllabs.com/ssltest/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              SSL Labs Server Test
-            </a>
-          </li>
-          <li>
-            <a href="https://wiki.mozilla.org/Security/Server_Side_TLS" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Mozilla TLS Configuration Generator
-            </a>
-          </li>
-          <li>
-            <a href="https://letsencrypt.org/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Let&apos;s Encrypt - Free TLS Certificates
-            </a>
-          </li>
-          <li>
-            <a href="https://www.certificate-transparency.org/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Certificate Transparency
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/drwetter/testssl.sh" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              testssl.sh - TLS Testing Tool
-            </a>
-          </li>
-          <li>
-            <a href="https://observatory.mozilla.org/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Mozilla Observatory - Security Scanning
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
         <h2>Interview Questions & Answers</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -992,6 +946,52 @@ export default function HTTPSTLSArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      <section>
+        <h2>References and Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Transport_Layer_Security" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN Web Docs: TLS
+            </a>
+          </li>
+          <li>
+            <a href="https://datatracker.ietf.org/doc/html/rfc8446" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              RFC 8446: TLS 1.3 Specification
+            </a>
+          </li>
+          <li>
+            <a href="https://www.ssllabs.com/ssltest/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              SSL Labs Server Test
+            </a>
+          </li>
+          <li>
+            <a href="https://wiki.mozilla.org/Security/Server_Side_TLS" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Mozilla TLS Configuration Generator
+            </a>
+          </li>
+          <li>
+            <a href="https://letsencrypt.org/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Let&apos;s Encrypt - Free TLS Certificates
+            </a>
+          </li>
+          <li>
+            <a href="https://www.certificate-transparency.org/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Certificate Transparency
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/drwetter/testssl.sh" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              testssl.sh - TLS Testing Tool
+            </a>
+          </li>
+          <li>
+            <a href="https://observatory.mozilla.org/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Mozilla Observatory - Security Scanning
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

@@ -1,7 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
   <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="240" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">session scalability</text>
-  <text x="400" y="270" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Identity Access Diagram</text>
-  <text x="400" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Valid XML</text>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Session Scalability Architecture</text>
+  
+  <!-- Load Balancer -->
+  <rect x="50" y="70" width="140" height="60" rx="8" fill="#3b82f6"/>
+  <text x="120" y="95" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#ffffff">Load Balancer</text>
+  <text x="120" y="115" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Global/Regional</text>
+  
+  <line x1="190" y1="100" x2="230" y2="100" stroke="#475569" stroke-width="2"/>
+  
+  <!-- App Servers -->
+  <rect x="240" y="60" width="180" height="180" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="330" y="90" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">App Servers</text>
+  
+  <rect x="260" y="105" width="140" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="330" y="127" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Server 1 (Stateless)</text>
+  
+  <rect x="260" y="145" width="140" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="330" y="167" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Server 2 (Stateless)</text>
+  
+  <rect x="260" y="185" width="140" height="35" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="330" y="207" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Server N (Auto-scale)</text>
+  
+  <line x1="420" y1="150" x2="460" y2="150" stroke="#475569" stroke-width="2"/>
+  
+  <!-- Redis Cluster -->
+  <rect x="470" y="60" width="180" height="180" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="560" y="90" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Redis Cluster</text>
+  
+  <rect x="490" y="105" width="140" height="35" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="560" y="127" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Shard 1 (Sessions)</text>
+  
+  <rect x="490" y="145" width="140" height="35" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="560" y="167" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Shard 2 (Sessions)</text>
+  
+  <rect x="490" y="185" width="140" height="35" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="560" y="207" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Shard N (Horizontal)</text>
+  
+  <line x1="650" y1="150" x2="690" y2="150" stroke="#475569" stroke-width="2"/>
+  
+  <!-- Cross-Region -->
+  <rect x="700" y="60" width="80" height="180" rx="8" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="740" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Region 2</text>
+  <text x="740" y="115" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Async Replication</text>
+  <text x="740" y="140" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Eventual Consistency</text>
+  <text x="740" y="165" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">HA Failover</text>
+  
+  <!-- Database -->
+  <rect x="470" y="270" width="180" height="80" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="560" y="295" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Database</text>
+  <text x="560" y="320" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Session Audit</text>
+  <text x="560" y="335" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Async Write</text>
+  
+  <line x1="560" y1="240" x2="560" y2="270" stroke="#475569" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="580" y="255" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">Async</text>
+  
+  <!-- Key Metrics -->
+  <rect x="50" y="270" width="200" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="150" y="295" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Performance</text>
+  
+  <rect x="70" y="310" width="160" height="25" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="150" y="327" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Sub-1ms lookup</text>
+  
+  <rect x="70" y="340" width="160" height="25" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="150" y="357" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Horizontal scaling</text>
+  
+  <!-- Benefits -->
+  <rect x="270" y="270" width="180" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="360" y="295" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Benefits</text>
+  
+  <rect x="290" y="310" width="140" height="25" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="360" y="327" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ Stateless apps</text>
+  
+  <rect x="290" y="340" width="140" height="25" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="360" y="357" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ No sticky sessions</text>
+  
+  <!-- Session Sharding -->
+  <rect x="470" y="370" width="280" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="610" y="395" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Session Sharding Strategy</text>
+  
+  <rect x="490" y="410" width="120" height="25" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="550" y="427" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Hash session_id</text>
+  
+  <rect x="620" y="410" width="120" height="25" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="680" y="427" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Distribute evenly</text>
+
 </svg>

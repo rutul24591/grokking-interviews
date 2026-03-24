@@ -351,6 +351,141 @@ export default function FeatureFlagsToggleArticle() {
       </section>
 
       <section>
+        <h2>Security Considerations</h2>
+        <p>
+          Feature Flags introduce security considerations around access control, flag exposure, and the potential for feature flags to bypass security controls.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Feature Flag Security Patterns</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Flag Access Control:</strong> Not all users should have access to all flags. Mitigation: implement role-based flag access, validate flag permissions server-side, audit flag changes.
+            </li>
+            <li>
+              <strong>Client-Side Flag Security:</strong> Client-side flags are exposed to users. Mitigation: never use client-side flags for security features, validate all flag-based behavior server-side, use server-side evaluation for sensitive features.
+            </li>
+            <li>
+              <strong>Flag Injection Prevention:</strong> Attackers may try to manipulate flag values. Mitigation: sign flag configurations, validate flag values, use secure flag delivery mechanisms.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Feature Flag Testing Security</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Access Control Testing:</strong> Test that flag access control is enforced. Verify unauthorized flag access is rejected. Test with different user roles.
+            </li>
+            <li>
+              <strong>Server-Side Validation:</strong> Test that server-side validation cannot be bypassed by client-side flag manipulation. Verify security features work regardless of client flags.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Performance Benchmarks</h2>
+        <p>
+          Feature Flag performance depends on evaluation strategy, flag delivery mechanism, and caching effectiveness.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Metric</th>
+                <th className="p-2 text-left">Target</th>
+                <th className="p-2 text-left">Measurement</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Flag Evaluation Time</td>
+                <td className="p-2">&lt;0.1ms per flag</td>
+                <td className="p-2">Performance.now()</td>
+              </tr>
+              <tr>
+                <td className="p-2">Flag Fetch Latency</td>
+                <td className="p-2">&lt;50ms (cached)</td>
+                <td className="p-2">Network timing</td>
+              </tr>
+              <tr>
+                <td className="p-2">Cache Hit Rate</td>
+                <td className="p-2">&gt;95% for flags</td>
+                <td className="p-2">SDK metrics</td>
+              </tr>
+              <tr>
+                <td className="p-2">Flag Count</td>
+                <td className="p-2">&lt;1,000 active flags</td>
+                <td className="p-2">Runtime monitoring</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Flag Evaluation Strategy Comparison</h3>
+          <p>
+            Different flag evaluation strategies have different performance characteristics:
+          </p>
+          <ul className="mt-3 space-y-2">
+            <li>
+              <strong>Client-Side Evaluation:</strong> Latency: ~0.01ms. Best for: UI flags, fast rendering. Limitation: flags exposed to users.
+            </li>
+            <li>
+              <strong>Server-Side Evaluation:</strong> Latency: ~1-10ms. Best for: security features, access control. Limitation: network round trip.
+            </li>
+            <li>
+              <strong>Hybrid Evaluation:</strong> Latency: ~0.01ms (cached). Best for: production systems. Limitation: implementation complexity.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Cost Analysis</h2>
+        <p>
+          Feature Flag systems have infrastructure costs but provide significant value through risk reduction and deployment velocity.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>SaaS Solutions:</strong> LaunchDarkly: $35-200/month per team. Unleash Cloud: $49-199/month. Flagsmith: $29-99/month.
+            </li>
+            <li>
+              <strong>Self-Hosted:</strong> Infrastructure: $100-500/month. Operations: 0.1-0.2 FTE for maintenance.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">ROI from Feature Flags</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Risk Reduction:</strong> Gradual rollouts reduce production incidents. Estimate: 30-50% reduction in deployment-related incidents.
+            </li>
+            <li>
+              <strong>Faster Deployments:</strong> Deploy behind flags, enable gradually. Estimate: 2-3x faster deployment cycles.
+            </li>
+            <li>
+              <strong>A/B Testing:</strong> Built-in experimentation capability. Estimate: $100K-500K/year value from data-driven decisions.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">When to Use Feature Flags</h3>
+          <p>
+            Use feature flags when: (1) you need gradual rollouts, (2) you want to decouple deployment from release, (3) you need A/B testing capability. Avoid when: (1) you have very simple deployment needs, (2) you lack flag management discipline (flag debt accumulates quickly).
+          </p>
+        </div>
+      </section>
+
+      <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

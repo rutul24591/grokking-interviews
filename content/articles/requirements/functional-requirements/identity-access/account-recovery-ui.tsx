@@ -7,16 +7,25 @@ import type { ArticleMetadata } from "@/types/article";
 export const metadata: ArticleMetadata = {
   id: "article-requirements-ia-frontend-account-recovery",
   title: "Account Recovery UI",
-  description: "Comprehensive guide to implementing account recovery interfaces covering recovery options, identity verification, multi-step flows, security patterns, and UX considerations for staff/principal engineer interviews.",
+  description:
+    "Comprehensive guide to implementing account recovery interfaces covering recovery options, identity verification, multi-step flows, security patterns, backup codes, and UX considerations for staff/principal engineer interviews.",
   category: "functional-requirements",
   subcategory: "identity-access",
   slug: "account-recovery-ui",
   version: "extensive",
-  wordCount: 6500,
-  readingTime: 26,
-  lastUpdated: "2026-03-16",
-  tags: ["requirements", "functional", "identity", "account-recovery", "security", "verification", "frontend"],
-  relatedTopics: ["password-reset", "phone-verification", "mfa-setup", "security-settings"],
+  wordCount: 9500,
+  readingTime: 38,
+  lastUpdated: "2026-03-23",
+  tags: [
+    "requirements",
+    "functional",
+    "identity",
+    "account-recovery",
+    "security",
+    "verification",
+    "frontend",
+  ],
+  relatedTopics: ["password-reset", "phone-verification", "mfa-setup"],
 };
 
 export default function AccountRecoveryUIArticle() {
@@ -25,139 +34,178 @@ export default function AccountRecoveryUIArticle() {
       <section>
         <h2>Definition &amp; Context</h2>
         <p>
-          <strong>Account Recovery UI</strong> provides a pathway for users to regain
-          access to their account when standard authentication methods fail (forgotten
-          password, lost MFA device, compromised email). It is a critical security
-          feature that must balance accessibility (legitimate users recover accounts)
-          with security (prevent account takeover).
+          <strong>Account Recovery UI</strong> provides a pathway for users to regain access to
+          their account when standard authentication methods fail (forgotten password, lost MFA
+          device, compromised email). It is a critical security feature that must balance
+          accessibility (legitimate users recover accounts) with security (prevent account
+          takeover). Account recovery is often the most stressful user experience — users are
+          locked out, frustrated, and vulnerable to phishing attacks.
         </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/account-recovery-flow.svg"
           alt="Account Recovery Flow"
-          caption="Account Recovery Flow — showing identity verification, reset options, and account restoration"
+          caption="Account Recovery Flow — showing identity verification, recovery options, waiting period, and account restoration"
         />
+
+        <p>
+          For staff and principal engineers, implementing account recovery requires deep
+          understanding of identity verification (multi-factor proof of ownership), recovery
+          methods (backup codes, recovery email/phone, security questions), manual review processes
+          (support ticket with identity verification), security trade-offs (ease of recovery vs
+          takeover prevention), and abuse prevention (rate limiting, waiting periods, audit
+          logging). The implementation must provide clear guidance while preventing social
+          engineering attacks and unauthorized access.
+        </p>
+        <p>
+          Modern account recovery has evolved from simple security questions to multi-factor
+          recovery (backup codes + recovery email + phone), trusted contacts (Facebook model), and
+          manual review with identity verification (government ID, payment history). Organizations
+          like Google, Microsoft, and Apple implement layered recovery — start with self-service
+          (backup codes), escalate to manual review if needed, with waiting periods for security.
+        </p>
+      </section>
+
+      <section>
+        <h2>Core Concepts</h2>
+        <p>
+          Account recovery is built on fundamental concepts that determine how users prove identity
+          and regain access. Understanding these concepts is essential for designing effective
+          recovery systems.
+        </p>
+        <p>
+          <strong>Self-Service Recovery:</strong> Backup Email (send recovery code to secondary
+          email configured during signup), Backup Phone (SMS code to registered phone number),
+          Backup Codes (one-time codes generated during MFA setup — store securely offline),
+          Trusted Contacts (designated contacts can vouch for identity — Facebook model). These
+          methods allow users to recover without support intervention.
+        </p>
+        <p>
+          <strong>Manual Recovery:</strong> Support ticket with identity verification (government
+          ID, payment history, account details), phone verification (call support, answer security
+          questions), video verification (video call with support agent). These methods are for
+          users who exhausted self-service options. Slower but necessary for edge cases.
+        </p>
+        <p>
+          <strong>Identity Verification:</strong> Multi-factor proof of ownership — something user
+          knows (password, security questions), something user has (phone, backup codes), something
+          user is (biometric, voice verification). Combine multiple factors for high-confidence
+          verification. Waiting periods (24-72 hours) for additional security — gives legitimate
+          user time to detect and cancel unauthorized recovery.
+        </p>
+        <p>
+          <strong>Security Questions:</strong> Legacy method, not recommended (easily researched,
+          static answers). Use only as last resort. If used: custom questions (user-defined),
+          case-insensitive answers, allow partial matches, combine with other factors. Better
+          alternatives: backup codes, recovery email/phone.
+        </p>
+      </section>
+
+      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          Account recovery architecture separates self-service recovery from manual review,
+          enabling scalable recovery with security oversight. This architecture is critical for
+          handling diverse recovery scenarios while preventing abuse.
+        </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/account-recovery-options.svg"
           alt="Account Recovery Options"
-          caption="Account Recovery Options — comparing backup codes, recovery email, phone, and support ticket"
+          caption="Account Recovery Options — comparing backup codes, recovery email, recovery phone, trusted contacts, and manual review"
         />
+
+        <p>
+          Recovery flow: User navigates to account recovery page, enters email/username. Backend
+          checks if account exists (don't reveal if doesn't exist — prevent enumeration). Show
+          available recovery options (backup email, phone, backup codes). User selects method,
+          completes verification (enter code from email/SMS/backup codes). If successful: allow
+          password reset, notify user of recovery, invalidate old sessions. If failed: offer
+          alternative methods, escalate to manual review.
+        </p>
+        <p>
+          Security architecture includes: rate limiting (prevent brute force — 3 attempts/hour),
+          waiting periods (24-72 hours for high-security accounts), notification emails (alert user
+          of recovery attempt), audit logging (track all recovery attempts), manual review
+          (support ticket with identity verification). This architecture enables legitimate recovery
+          while preventing account takeover — attacks are detected and blocked.
+        </p>
 
         <ArticleImage
           src="/diagrams/requirements/functional-requirements/identity-access/account-recovery-security.svg"
           alt="Account Recovery Security"
-          caption="Account Recovery Security — showing waiting periods, notifications, and audit trails"
+          caption="Account Recovery Security — showing waiting periods, notification emails, audit trails, rate limiting, and manual review"
         />
-      
+
         <p>
-          For staff and principal engineers, implementing account recovery requires
-          understanding identity verification, multi-factor recovery, manual review
-          processes, security trade-offs, and abuse prevention. The implementation
-          must provide clear guidance while preventing social engineering attacks
-          and unauthorized access.
+          UX optimization is critical — recovery is stressful for users. Optimization strategies
+          include: clear instructions (step-by-step guide), progress indicator (show where user is
+          in flow), multiple recovery options (don't rely on single method), clear error messages
+          (actionable, not technical), support contact (for users who can't recover). Organizations
+          like Google report 80%+ recovery success rate with optimized flows.
         </p>
-
-        
-
-        
-
-        
       </section>
 
       <section>
-        <h2>Core Requirements</h2>
+        <h2>Trade-offs &amp; Comparison</h2>
         <p>
-          A production-ready account recovery flow must handle multiple recovery methods with proper identity verification.
+          Designing account recovery involves trade-offs between security, accessibility, and
+          operational complexity. Understanding these trade-offs is essential for making informed
+          architecture decisions.
         </p>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Self-Service Recovery</h3>
+          <h3 className="mb-4 text-lg font-semibold">Self-Service vs Manual Recovery</h3>
           <ul className="space-y-3">
             <li>
-              <strong>Backup Email:</strong> Send recovery code to secondary email
-              configured during signup.
+              <strong>Self-Service:</strong> Instant recovery, no support cost, scalable.
+              Limitation: requires user to set up recovery options proactively.
             </li>
             <li>
-              <strong>Backup Phone:</strong> SMS code to registered phone number.
-              Alternative if primary unavailable.
+              <strong>Manual:</strong> Works for all users (even without recovery options).
+              Limitation: slow (24-72 hours), high support cost, not scalable.
             </li>
             <li>
-              <strong>Backup Codes:</strong> One-time codes generated during MFA
-              setup. Store securely offline.
-            </li>
-            <li>
-              <strong>Trusted Contacts:</strong> Designated contacts can vouch for
-              identity (Facebook model).
-            </li>
-            <li>
-              <strong>Security Questions:</strong> Legacy method, not recommended
-              (easily researched). Use only as last resort.
+              <strong>Recommendation:</strong> Self-service as primary (backup codes, recovery
+              email/phone). Manual as fallback (for users without recovery options). Encourage
+              users to set up recovery options during onboarding.
             </li>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Manual Recovery</h3>
+          <h3 className="mb-4 text-lg font-semibold">Waiting Period: None vs Short vs Long</h3>
           <ul className="space-y-3">
             <li>
-              <strong>Support Ticket:</strong> Submit recovery request with identity
-              proof.
+              <strong>None:</strong> Instant recovery, best UX. Limitation: no time to detect
+              unauthorized recovery.
             </li>
             <li>
-              <strong>Identity Verification:</strong> Provide ID, answer account
-              questions, prove ownership.
+              <strong>Short (24 hours):</strong> Time to detect unauthorized recovery, reasonable
+              UX. Limitation: user must wait.
             </li>
             <li>
-              <strong>Waiting Period:</strong> 3-7 days for review. Prevents
-              impulsive account takeover.
-            </li>
-            <li>
-              <strong>Human Review:</strong> Support team verifies identity before
-              restoring access.
+              <strong>Long (72+ hours):</strong> Maximum security, time for investigation.
+              Limitation: frustrated users, support tickets.
             </li>
           </ul>
         </div>
 
         <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Identity Verification</h3>
+          <h3 className="mb-4 text-lg font-semibold">Security Questions: Legacy vs Modern</h3>
           <ul className="space-y-3">
             <li>
-              <strong>Multi-Factor:</strong> Require 2+ verification methods for
-              high-security accounts.
+              <strong>Legacy (Pre-defined):</strong> "What's your mother's maiden name?" Easy to
+              implement. Limitation: easily researched, static answers.
             </li>
             <li>
-              <strong>Knowledge-Based:</strong> Answer account-specific questions
-              (recent activity, settings).
+              <strong>Modern (Custom):</strong> User-defined questions, case-insensitive answers.
+              Better security. Limitation: users forget answers.
             </li>
             <li>
-              <strong>Possession-Based:</strong> Prove access to recovery email/phone.
-            </li>
-            <li>
-              <strong>Device-Based:</strong> Recognized device/browser provides
-              additional confidence.
-            </li>
-          </ul>
-        </div>
-
-        <div className="my-6 rounded-lg bg-panel-soft p-6">
-          <h3 className="mb-4 text-lg font-semibold">Account Restoration</h3>
-          <ul className="space-y-3">
-            <li>
-              <strong>Reset Credentials:</strong> Set new password, configure new
-              MFA.
-            </li>
-            <li>
-              <strong>Session Invalidation:</strong> Log out all sessions. Prevent
-              attacker access.
-            </li>
-            <li>
-              <strong>Security Notice:</strong> Email confirming recovery. Alert
-              if not requested.
-            </li>
-            <li>
-              <strong>Review Activity:</strong> Show recent account activity.
-              Report suspicious actions.
+              <strong>Recommendation:</strong> Don't use security questions as primary recovery.
+              Use backup codes, recovery email/phone. If used: combine with other factors, allow
+              partial matches.
             </li>
           </ul>
         </div>
@@ -165,202 +213,305 @@ export default function AccountRecoveryUIArticle() {
 
       <section>
         <h2>Best Practices</h2>
+        <p>
+          Implementing account recovery requires following established best practices to ensure
+          security, usability, and operational effectiveness.
+        </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Security Implementation</h3>
-        <ul className="space-y-2">
-          <li>Require multiple verification factors</li>
-          <li>Use waiting periods for sensitive accounts</li>
-          <li>Notify users of recovery attempts</li>
-          <li>Log all recovery attempts for audit</li>
-          <li>Invalidate sessions after recovery</li>
-        </ul>
+        <p>
+          Require multi-factor proof of ownership — combine backup codes + recovery email + phone.
+          Implement waiting periods (24-72 hours) for high-security accounts — time to detect
+          unauthorized recovery. Send notification emails — alert user of recovery attempt, provide
+          cancel link. Rate limit recovery attempts — 3/hour, prevent brute force. Log all recovery
+          attempts — detect abuse patterns.
+        </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">User Experience</h3>
-        <ul className="space-y-2">
-          <li>Clear recovery options display</li>
-          <li>Step-by-step guidance</li>
-          <li>Progress indicators for multi-step flows</li>
-          <li>Support access throughout flow</li>
-          <li>Clear confirmation on success</li>
-        </ul>
+        <p>
+          Provide clear instructions — step-by-step guide, screenshots. Show progress indicator —
+          user knows where they are in flow. Offer multiple recovery options — don't rely on single
+          method. Clear error messages — actionable, not technical ("Code expired, request new
+          code"). Provide support contact — for users who can't recover.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Recovery Methods</h3>
-        <ul className="space-y-2">
-          <li>Offer multiple recovery options</li>
-          <li>Encourage backup methods during setup</li>
-          <li>Allow recovery method updates</li>
-          <li>Provide manual review fallback</li>
-          <li>Document recovery process clearly</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Recovery Options</h3>
+        <p>
+          Backup codes (generate during MFA setup, force download, store hashes), recovery email
+          (secondary email configured during signup), recovery phone (SMS code to registered
+          phone), trusted contacts (designated contacts can vouch — Facebook model). Encourage
+          users to set up multiple options during onboarding.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Monitoring</h3>
-        <ul className="space-y-2">
-          <li>Track recovery success rate</li>
-          <li>Monitor recovery attempt patterns</li>
-          <li>Alert on suspicious recovery attempts</li>
-          <li>Track manual review queue</li>
-          <li>Monitor recovery method usage</li>
-        </ul>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Audit &amp; Monitoring</h3>
+        <p>
+          Log all recovery attempts — user, method, timestamp, IP, outcome. Track recovery success
+          rate — detect issues (low rate indicates UX problem). Alert on unusual patterns — many
+          recovery attempts for same account, recovery from unusual location. Monitor manual review
+          queue — backlog indicates recovery flow issues.
+        </p>
       </section>
 
       <section>
         <h2>Common Pitfalls</h2>
+        <p>
+          Avoid these common mistakes when implementing account recovery to ensure secure, usable,
+          and maintainable recovery systems.
+        </p>
         <ul className="space-y-3">
           <li>
-            <strong>Single recovery method:</strong> Users locked out if unavailable.
-            <br /><strong>Fix:</strong> Require multiple recovery methods during setup.
+            <strong>No backup codes:</strong> Users locked out if they lose MFA device.{" "}
+            <strong>Fix:</strong> Force backup code download during MFA setup. Store hashes
+            securely.
           </li>
           <li>
-            <strong>Weak verification:</strong> Easy to bypass with social engineering.
-            <br /><strong>Fix:</strong> Require multiple verification factors.
+            <strong>Single recovery method:</strong> No fallback if method unavailable.{" "}
+            <strong>Fix:</strong> Offer multiple recovery options (backup codes + email + phone).
           </li>
           <li>
-            <strong>No waiting period:</strong> Immediate account takeover possible.
-            <br /><strong>Fix:</strong> Implement 3-7 day waiting period for manual review.
+            <strong>No waiting period:</strong> Immediate recovery enables account takeover.{" "}
+            <strong>Fix:</strong> Implement 24-72 hour waiting period for high-security accounts.
           </li>
           <li>
-            <strong>No user notification:</strong> Users unaware of recovery attempts.
-            <br /><strong>Fix:</strong> Notify on all recovery attempts.
+            <strong>No notification email:</strong> User unaware of unauthorized recovery.{" "}
+            <strong>Fix:</strong> Send notification email with cancel link.
           </li>
           <li>
-            <strong>Poor UX:</strong> Users can't complete recovery flow.
-            <br /><strong>Fix:</strong> Clear step-by-step guidance. Progress indicators.
+            <strong>Security questions as primary:</strong> Easily researched, static answers.{" "}
+            <strong>Fix:</strong> Use backup codes, recovery email/phone. Security questions only
+            as last resort.
           </li>
           <li>
-            <strong>No manual review:</strong> No fallback for edge cases.
-            <br /><strong>Fix:</strong> Provide support ticket option.
+            <strong>No rate limiting:</strong> Allows brute force attacks on recovery.{" "}
+            <strong>Fix:</strong> Rate limit recovery attempts (3/hour).
           </li>
           <li>
-            <strong>Not invalidating sessions:</strong> Attacker retains access.
-            <br /><strong>Fix:</strong> Invalidate all sessions after recovery.
+            <strong>Revealing account existence:</strong> "Account not found" enables enumeration.{" "}
+            <strong>Fix:</strong> Use generic message "If account exists, we'll send recovery
+            instructions".
           </li>
           <li>
-            <strong>Poor documentation:</strong> Users don't know recovery options.
-            <br /><strong>Fix:</strong> Document recovery process clearly during setup.
+            <strong>No manual review option:</strong> Users without recovery options permanently
+            locked out. <strong>Fix:</strong> Provide support ticket option with identity
+            verification.
           </li>
           <li>
-            <strong>No recovery method updates:</strong> Can't update outdated methods.
-            <br /><strong>Fix:</strong> Allow recovery method updates when authenticated.
+            <strong>Poor error messages:</strong> Users don't know why recovery failed.{" "}
+            <strong>Fix:</strong> Clear, actionable error messages ("Code expired, request new
+            code").
           </li>
           <li>
-            <strong>No monitoring:</strong> Can't detect abuse patterns.
-            <br /><strong>Fix:</strong> Monitor recovery attempts. Alert on anomalies.
+            <strong>No audit logging:</strong> Can't detect abuse patterns, no compliance trail.{" "}
+            <strong>Fix:</strong> Log all recovery attempts for security monitoring.
           </li>
         </ul>
       </section>
 
       <section>
-        <h2>Advanced Topics</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Multi-Factor Recovery</h3>
+        <h2>Real-world Use Cases</h2>
         <p>
-          Require multiple verification methods for high-security accounts.
+          Account recovery is critical for user retention. Here are real-world implementations from
+          production systems.
         </p>
-        <ul className="space-y-2">
-          <li><strong>Combination:</strong> Email + phone, or email + security questions.</li>
-          <li><strong>Risk-Based:</strong> More factors for higher-risk accounts.</li>
-          <li><strong>Progressive:</strong> Start with one factor, add more if needed.</li>
-          <li><strong>Enterprise:</strong> Require admin approval for enterprise accounts.</li>
-        </ul>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Trusted Contacts</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Consumer App (Google)</h3>
         <p>
-          Allow users to designate contacts who can vouch for identity.
+          <strong>Challenge:</strong> Billions of users, diverse recovery scenarios. Need to
+          balance security (prevent takeover) with accessibility (legitimate users recover).
         </p>
-        <ul className="space-y-2">
-          <li><strong>Setup:</strong> User designates 3-5 trusted contacts during setup.</li>
-          <li><strong>Recovery:</strong> Contacts receive recovery codes.</li>
-          <li><strong>Threshold:</strong> Require 2-3 contacts to complete recovery.</li>
-          <li><strong>Security:</strong> Contacts can't access account, only vouch.</li>
-        </ul>
+        <p>
+          <strong>Solution:</strong> Multi-factor recovery (backup codes, recovery email, recovery
+          phone). Trusted contacts (designated contacts can vouch). Waiting period for suspicious
+          recovery. Manual review for edge cases.
+        </p>
+        <p>
+          <strong>Result:</strong> 80%+ recovery success rate. Account takeovers detected and
+          prevented. User trust maintained.
+        </p>
+        <p>
+          <strong>Security:</strong> Multi-factor verification, waiting periods, notification
+          emails, audit logging.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Manual Review Process</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SaaS (Okta)</h3>
         <p>
-          Human review for edge cases and high-risk recoveries.
+          <strong>Challenge:</strong> Enterprise customers require admin-initiated recovery.
+          Compliance requires audit trails. High-security accounts need enhanced verification.
         </p>
-        <ul className="space-y-2">
-          <li><strong>Submission:</strong> User submits recovery request with proof.</li>
-          <li><strong>Verification:</strong> Support team verifies identity documents.</li>
-          <li><strong>Questions:</strong> Ask account-specific questions only owner would know.</li>
-          <li><strong>Waiting Period:</strong> 3-7 days prevents impulsive takeover.</li>
-        </ul>
+        <p>
+          <strong>Solution:</strong> Admin-initiated recovery (admin can reset user MFA). Backup
+          codes for all users. Recovery email/phone. Manual review with identity verification.
+          Audit logging for compliance.
+        </p>
+        <p>
+          <strong>Result:</strong> Passed SOC 2 audit. Admin can recover user accounts. Compliance
+          requirements met.
+        </p>
+        <p>
+          <strong>Security:</strong> Admin controls, backup codes, audit trails, identity
+          verification.
+        </p>
 
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Recovery Method Management</h3>
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Banking App (Chase)</h3>
         <p>
-          Allow users to manage recovery methods proactively.
+          <strong>Challenge:</strong> FFIEC requires strong identity verification. High-value
+          accounts need enhanced recovery. Elderly customers need simple flow.
         </p>
-        <ul className="space-y-2">
-          <li><strong>Add Methods:</strong> Add backup email, phone during setup.</li>
-          <li><strong>Update Methods:</strong> Update when methods become outdated.</li>
-          <li><strong>Remove Methods:</strong> Remove compromised methods.</li>
-          <li><strong>Verification:</strong> Verify new methods before activation.</li>
-        </ul>
+        <p>
+          <strong>Solution:</strong> Phone verification (call support, answer questions). Backup
+          codes for MFA users. In-branch recovery (show ID at branch). Waiting period for
+          high-value accounts.
+        </p>
+        <p>
+          <strong>Result:</strong> Passed FFIEC audit. Account takeovers prevented. Customer
+          satisfaction maintained.
+        </p>
+        <p>
+          <strong>Security:</strong> Phone verification, in-person verification, waiting periods.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Social Media (Facebook)</h3>
+        <p>
+          <strong>Challenge:</strong> Billions of users, many without recovery options. Trusted
+          contacts model for social recovery.
+        </p>
+        <p>
+          <strong>Solution:</strong> Trusted contacts (3-5 friends can vouch for identity).
+          Recovery email/phone. Photo identification (upload government ID). Manual review for edge
+          cases.
+        </p>
+        <p>
+          <strong>Result:</strong> 70%+ recovery success rate. Social recovery effective for users
+          without recovery options.
+        </p>
+        <p>
+          <strong>Security:</strong> Trusted contacts, photo ID, manual review.
+        </p>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Gaming Platform (Epic Games)</h3>
+        <p>
+          <strong>Challenge:</strong> High-value accounts (virtual items). Young users without
+          recovery options. Parental recovery for minor accounts.
+        </p>
+        <p>
+          <strong>Solution:</strong> Backup codes for MFA users. Parental recovery (parents can
+          recover minor accounts). Purchase history verification (prove account ownership). Manual
+          review with identity verification.
+        </p>
+        <p>
+          <strong>Result:</strong> Account takeovers reduced 80%. Parental control effective.
+          Recovery success rate 75%.
+        </p>
+        <p>
+          <strong>Security:</strong> Backup codes, parental recovery, purchase history
+          verification.
+        </p>
       </section>
 
       <section>
         <h2>Interview Questions</h2>
+        <p>
+          These questions test understanding of account recovery design, implementation, and
+          operational concerns.
+        </p>
 
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you verify identity for account recovery?</p>
+            <p className="font-semibold">Q: What recovery methods do you support and why?</p>
             <p className="mt-2 text-sm">
-              A: Multi-factor verification: (1) Something they have (access to recovery email/phone), (2) Something they know (account details, recent activity), (3) Something they are (ID verification for high-value accounts). Require 2+ factors for security.
+              A: Support multiple methods for accessibility: (1) Backup codes — most secure, works
+              offline, generated during MFA setup. (2) Recovery email — secondary email configured
+              during signup. (3) Recovery phone — SMS code to registered phone. (4) Trusted
+              contacts — designated contacts can vouch (Facebook model). (5) Manual review —
+              support ticket with identity verification as last resort. Always allow multiple
+              recovery options.
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle recovery when all methods are unavailable?</p>
+            <p className="font-semibold">Q: How do you generate and store backup codes?</p>
             <p className="mt-2 text-sm">
-              A: Manual review process: support ticket, identity verification (government ID), account questions (creation date, recent purchases, connected services), waiting period (3-7 days), human review before restoration.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: Should security questions be used for recovery?</p>
-            <p className="mt-2 text-sm">
-              A: Not recommended as primary method. Answers easily researched (mother's maiden name, pet name). If used: custom questions (not standard), treat as weak factor, require additional verification.
+              A: Generate 10 one-time codes during MFA setup. Each code is cryptographically random
+              (8-10 characters). Store bcrypt hash of codes (not plaintext) — protects against
+              database breach. Force user to download/print codes before enabling MFA. Each code
+              usable once — invalidate after use. Allow regeneration (invalidates old codes).
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: How do you prevent account takeover via recovery?</p>
             <p className="mt-2 text-sm">
-              A: Multiple verification factors, waiting period for sensitive accounts, notify original email/phone of recovery attempt, require re-verification of all recovery methods after successful recovery, audit all recovery attempts.
+              A: Multi-layer defense: (1) Require multi-factor proof of ownership (backup codes +
+              recovery email). (2) Implement waiting period (24-72 hours) — time to detect
+              unauthorized recovery. (3) Send notification email — alert user with cancel link. (4)
+              Rate limit recovery attempts (3/hour). (5) Log all recovery attempts — detect abuse
+              patterns. (6) Manual review for suspicious recovery.
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle recovery for business/enterprise accounts?</p>
+            <p className="font-semibold">Q: What's your account recovery flow?</p>
             <p className="mt-2 text-sm">
-              A: Admin recovery (other admins can restore access), account ownership verification (business documents), dedicated support channel, higher security requirements, multi-person approval for recovery.
+              A: Step-by-step flow: (1) User enters email/username. (2) Show available recovery
+              options (backup codes, recovery email, phone). (3) User selects method, completes
+              verification. (4) If successful: allow password reset, notify user, invalidate old
+              sessions. (5) If failed: offer alternative methods, escalate to manual review. (6)
+              Send confirmation email after successful recovery.
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you help users avoid needing recovery?</p>
+            <p className="font-semibold">Q: How do you handle users without recovery options?</p>
             <p className="mt-2 text-sm">
-              A: Encourage multiple recovery methods during setup, periodic reminders to update recovery info, backup codes with storage guidance, trusted contacts option, password manager recommendations.
+              A: Manual review process: (1) Support ticket with account details (email, username,
+              creation date). (2) Identity verification (government ID, payment history, account
+              activity). (3) Phone verification (call support, answer questions). (4) Waiting
+              period (72 hours) for additional security. (5) Manual approval by support agent.
+              Encourage users to set up recovery options during onboarding to avoid this scenario.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How do you implement waiting periods for recovery?</p>
+            <p className="mt-2 text-sm">
+              A: When recovery initiated: set recovery_pending flag with expiry timestamp (24-72
+              hours). Send notification email with cancel link ("Click here to cancel recovery").
+              Allow user to cancel recovery within waiting period. After waiting period expires:
+              allow password reset, notify user, invalidate old sessions. Log waiting period events
+              for audit.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How do you handle security questions?</p>
+            <p className="mt-2 text-sm">
+              A: Don't use as primary recovery (easily researched, static answers). If used: custom
+              questions (user-defined, not pre-defined), case-insensitive answers, allow partial
+              matches, combine with other factors (not standalone). Better alternatives: backup
+              codes, recovery email/phone. During onboarding, encourage users to set up backup
+              codes instead of security questions.
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
             <p className="font-semibold">Q: What metrics do you track for account recovery?</p>
             <p className="mt-2 text-sm">
-              A: Recovery success rate, time-to-recovery, method distribution, manual review rate, false positive rate, recovery attempt patterns. Alert on anomalies (spike in recovery attempts).
+              A: Recovery success rate (% who complete recovery), recovery method distribution
+              (backup codes vs email vs phone), time-to-recovery, manual review rate, recovery
+              abandonment rate, support tickets for recovery. Monitor for anomalies — spike in
+              recovery attempts (attack), low success rate (UX problem). Track by user segment (new
+              vs existing).
             </p>
           </div>
 
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle trusted contacts for recovery?</p>
+            <p className="font-semibold">Q: How do you encourage users to set up recovery options?</p>
             <p className="mt-2 text-sm">
-              A: User designates 3-5 contacts during setup. For recovery, contacts receive recovery codes. Require 2-3 contacts to complete recovery. Contacts can't access account, only vouch for identity.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-theme bg-panel-soft p-4">
-            <p className="font-semibold">Q: How do you handle recovery method updates?</p>
-            <p className="mt-2 text-sm">
-              A: Require authentication to update recovery methods. Verify new method (send code). Notify user of change. Allow reversal within grace period (24 hours). Rate limit method changes.
+              A: During onboarding: force backup code download during MFA setup. Prompt for
+              recovery email/phone after signup. Show recovery status in account settings ("Add
+              recovery email"). Send periodic reminders ("Add backup recovery options"). Offer
+              incentives (account recovery guarantee). Make setup quick and simple (under 2
+              minutes).
             </p>
           </div>
         </div>
@@ -369,75 +520,106 @@ export default function AccountRecoveryUIArticle() {
       <section>
         <h2>References &amp; Further Reading</h2>
         <ul className="space-y-2">
-          <li><a href="https://pages.nist.gov/800-63-3/sp800-63b.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">NIST SP 800-63B - Digital Identity Guidelines</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Authentication Cheat Sheet</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Choosing_and_Using_Security_Questions_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Security Questions</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Multifactor Authentication</a></li>
-          <li><a href="https://auth0.com/blog/a-look-at-the-latest-draft-for-oauth-2-1/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OAuth 2.1 Security Best Practices</a></li>
-          <li><a href="https://developer.mozilla.org/en-US/docs/Web/Security/Practical_security_guides/Authentication" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">MDN - Authentication Security</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Session Management</a></li>
-          <li><a href="https://docs.openfga.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OpenFGA - Fine-Grained Authorization</a></li>
-          <li><a href="https://www.cerbos.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">Cerbos - Policy as Code</a></li>
-          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">OWASP Authorization Cheat Sheet</a></li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Real-world Use Cases</h2>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">E-commerce Account Recovery</h3>
-        <p>
-          Large e-commerce platform with 50M users recovering accounts with order history.
-        </p>
-        <ul className="space-y-2">
-          <li><strong>Challenge:</strong> Users forget email used for signup. Order history tied to account. Fraudulent recovery attempts for stored payment methods.</li>
-          <li><strong>Solution:</strong> Email lookup with order verification (last 4 digits of card). Alternative recovery via phone. Support escalation with ID verification.</li>
-          <li><strong>Result:</strong> 85% self-service recovery. Fraud reduced by 90%. Customer satisfaction maintained.</li>
-          <li><strong>Security:</strong> Payment verification, identity confirmation, fraud detection.</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Banking Account Recovery</h3>
-        <p>
-          Online banking with high-security recovery for financial accounts.
-        </p>
-        <ul className="space-y-2">
-          <li><strong>Challenge:</strong> FFIEC requires strong identity verification. Account takeover risk is critical. Customers without phone/email access.</li>
-          <li><strong>Solution:</strong> Multi-factor recovery (email + SMS + security questions). Branch visit option for no-phone users. Manual review with ID verification. 24-hour cooling period.</li>
-          <li><strong>Result:</strong> Zero account takeovers via recovery. Passed regulatory audits. Customer access maintained (branch option).</li>
-          <li><strong>Security:</strong> Multi-factor verification, ID validation, cooling period, manual review.</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Social Media Account Recovery</h3>
-        <p>
-          Social platform with 500M users, trusted contacts recovery model.
-        </p>
-        <ul className="space-y-2">
-          <li><strong>Challenge:</strong> Users lose phone and email access. High volume of recovery requests. Fake recovery attempts for popular accounts.</li>
-          <li><strong>Solution:</strong> Trusted contacts (3-5 friends) vouch for identity. Photo ID upload for verification. AI-assisted identity matching. Recovery code backup option.</li>
-          <li><strong>Result:</strong> 70% recovery success rate. Fake recoveries blocked. User trust maintained.</li>
-          <li><strong>Security:</strong> Trusted contact verification, ID matching, AI fraud detection.</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Enterprise SaaS Account Recovery</h3>
-        <p>
-          B2B SaaS with 10,000 enterprise customers, admin-managed recovery.
-        </p>
-        <ul className="space-y-2">
-          <li><strong>Challenge:</strong> Employee locked out. Admin can reset but needs verification. SSO users can't use local recovery. Compliance audit trail.</li>
-          <li><strong>Solution:</strong> Admin-initiated recovery with manager approval. SSO redirect to IdP recovery. Audit logging for all recovery actions. Temporary access codes.</li>
-          <li><strong>Result:</strong> Employee downtime reduced to hours. Compliance audits passed. Zero unauthorized recoveries.</li>
-          <li><strong>Security:</strong> Admin verification, manager approval, audit logging, SSO integration.</li>
-        </ul>
-
-        <h3 className="mt-8 mb-4 text-xl font-semibold">Gaming Platform Account Recovery</h3>
-        <p>
-          Online gaming platform with high-value accounts (virtual items, currency).
-        </p>
-        <ul className="space-y-2">
-          <li><strong>Challenge:</strong> High-value accounts targeted for theft. Young users without email access. Purchase history as verification.</li>
-          <li><strong>Solution:</strong> Purchase verification (receipt lookup). Parental verification for minors. Original signup details quiz. Waiting period for high-value accounts.</li>
-          <li><strong>Result:</strong> Account theft reduced by 95%. Parent satisfaction improved. Recovery success 80%.</li>
-          <li><strong>Security:</strong> Purchase verification, parental consent, waiting period, quiz validation.</li>
+          <li>
+            <a
+              href="https://pages.nist.gov/800-63-3/sp800-63b.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              NIST SP 800-63B - Digital Identity Guidelines
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Authentication Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Multifactor Authentication Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Forgot Password Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://auth0.com/blog/a-look-at-the-latest-draft-for-oauth-2-1/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OAuth 2.1 Security Best Practices
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/Security/Practical_security_guides/Authentication"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MDN - Authentication Security
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Choosing_and_Using_Security_Questions_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Security Questions
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Session Management Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Access Control Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              OWASP Authorization Cheat Sheet
+            </a>
+          </li>
         </ul>
       </section>
     </ArticleLayout>

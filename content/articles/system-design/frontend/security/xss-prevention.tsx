@@ -948,52 +948,6 @@ export default function XSSPreventionArticle() {
       </section>
 
       <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://owasp.org/www-community/attacks/xss/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP XSS Attack Documentation
-            </a>
-          </li>
-          <li>
-            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP XSS Prevention Cheat Sheet
-            </a>
-          </li>
-          <li>
-            <a href="https://cheatsheetseries.owasp.org/cheatsheets/DOM_based_XSS_Prevention_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP DOM-based XSS Prevention Cheat Sheet
-            </a>
-          </li>
-          <li>
-            <a href="https://content-security-policy.com/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Content Security Policy Guide
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/cure53/DOMPurify" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              DOMPurify GitHub Repository
-            </a>
-          </li>
-          <li>
-            <a href="https://portswigger.net/web-security/cross-site-scripting" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              PortSwigger XSS Vulnerabilities
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Types_of_attacks#cross-site_scripting_xss" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN Web Security: XSS
-            </a>
-          </li>
-          <li>
-            <a href="https://www.google.com/about/appsecurity/learning-center/xss/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Google App Security: XSS
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
         <h2>Interview Questions & Answers</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -1072,6 +1026,52 @@ export default function XSSPreventionArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://owasp.org/www-community/attacks/xss/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OWASP XSS Attack Documentation
+            </a>
+          </li>
+          <li>
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OWASP XSS Prevention Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/DOM_based_XSS_Prevention_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OWASP DOM-based XSS Prevention Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a href="https://content-security-policy.com/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Content Security Policy Guide
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/cure53/DOMPurify" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              DOMPurify GitHub Repository
+            </a>
+          </li>
+          <li>
+            <a href="https://portswigger.net/web-security/cross-site-scripting" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              PortSwigger XSS Vulnerabilities
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Types_of_attacks#cross-site_scripting_xss" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN Web Security: XSS
+            </a>
+          </li>
+          <li>
+            <a href="https://www.google.com/about/appsecurity/learning-center/xss/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Google App Security: XSS
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

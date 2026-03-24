@@ -722,52 +722,6 @@ export default function SecureCookieAttributesArticle() {
       </section>
 
       <section>
-        <h2>References and Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN Web Docs: HTTP Cookies
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN Web Docs: Set-Cookie Header
-            </a>
-          </li>
-          <li>
-            <a href="https://owasp.org/www-community/controls/SecureCookieAttribute" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP Secure Cookie Attribute
-            </a>
-          </li>
-          <li>
-            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP Session Management Cheat Sheet
-            </a>
-          </li>
-          <li>
-            <a href="https://datatracker.ietf.org/doc/html/rfc6265" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              RFC 6265: HTTP State Management Mechanism
-            </a>
-          </li>
-          <li>
-            <a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-rfc6265bis-03" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              RFC 6265bis (Draft): Updated Cookie Specification
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/samesite-cookies-explained/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              web.dev: SameSite Cookies Explained
-            </a>
-          </li>
-          <li>
-            <a href="https://portswigger.net/web-security/session-management" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              PortSwigger: Session Management Vulnerabilities
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
         <h2>Interview Questions & Answers</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -838,6 +792,52 @@ export default function SecureCookieAttributesArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      <section>
+        <h2>References and Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN Web Docs: HTTP Cookies
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN Web Docs: Set-Cookie Header
+            </a>
+          </li>
+          <li>
+            <a href="https://owasp.org/www-community/controls/SecureCookieAttribute" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OWASP Secure Cookie Attribute
+            </a>
+          </li>
+          <li>
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OWASP Session Management Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a href="https://datatracker.ietf.org/doc/html/rfc6265" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              RFC 6265: HTTP State Management Mechanism
+            </a>
+          </li>
+          <li>
+            <a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-rfc6265bis-03" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              RFC 6265bis (Draft): Updated Cookie Specification
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/samesite-cookies-explained/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              web.dev: SameSite Cookies Explained
+            </a>
+          </li>
+          <li>
+            <a href="https://portswigger.net/web-security/session-management" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              PortSwigger: Session Management Vulnerabilities
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

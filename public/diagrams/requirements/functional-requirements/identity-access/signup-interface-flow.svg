@@ -1,7 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
   <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="250" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">Signup Interface Flow</text>
-  <text x="400" y="280" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Identity Access Diagram</text>
-  <text x="400" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Valid XML</text>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Signup Interface Flow</text>
+  
+  <!-- User Input -->
+  <rect x="50" y="80" width="120" height="80" rx="8" fill="#3b82f6"/>
+  <text x="110" y="115" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#ffffff">User</text>
+  <text x="110" y="140" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Enter Details</text>
+  
+  <line x1="170" y1="120" x2="210" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="190" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">1. Submit</text>
+  
+  <!-- Form Validation -->
+  <rect x="220" y="60" width="180" height="120" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="310" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Form Validation</text>
+  
+  <rect x="240" y="105" width="140" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="310" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Email Format</text>
+  
+  <rect x="240" y="140" width="140" height="30" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="310" y="160" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Password Strength</text>
+  
+  <line x1="400" y1="120" x2="440" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="420" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">2. Validate</text>
+  
+  <!-- Bot Check -->
+  <rect x="450" y="60" width="180" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="540" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Bot Prevention</text>
+  
+  <rect x="470" y="105" width="140" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="540" y="125" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">reCAPTCHA v3</text>
+  
+  <rect x="470" y="140" width="140" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="540" y="160" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Rate Limit Check</text>
+  
+  <line x1="630" y1="120" x2="670" y2="120" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="650" y="110" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">3. Check</text>
+  
+  <!-- Account Creation -->
+  <rect x="680" y="60" width="100" height="120" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="730" y="90" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Create</text>
+  <text x="730" y="115" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Account</text>
+  <text x="730" y="140" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Unverified</text>
+  <text x="730" y="160" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">State</text>
+  
+  <line x1="730" y1="180" x2="730" y2="220" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="750" y="200" text-anchor="start" font-family="system-ui" font-size="8" fill="#475569">4. Send Email</text>
+  
+  <!-- Email Verification -->
+  <rect x="680" y="230" width="100" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="730" y="260" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Verify</text>
+  <text x="730" y="285" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Click Link</text>
+  <text x="730" y="305" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">24h Expiry</text>
+  
+  <line x1="680" y1="280" x2="640" y2="280" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="660" y="270" text-anchor="middle" font-family="system-ui" font-size="8" fill="#475569">5. Confirm</text>
+  
+  <!-- Account Activated -->
+  <rect x="450" y="230" width="180" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="540" y="260" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Account Activated</text>
+  <text x="540" y="285" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Email Verified</text>
+  <text x="540" y="305" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Session Created</text>
+  
+  <line x1="450" y1="280" x2="410" y2="280" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="430" y="270" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">6. Redirect</text>
+  
+  <!-- Dashboard -->
+  <rect x="220" y="230" width="180" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="310" y="260" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#0f172a">Dashboard</text>
+  <text x="310" y="285" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Welcome!</text>
+  <text x="310" y="305" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Complete Profile</text>
+  
+  <line x1="220" y1="280" x2="180" y2="280" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="200" y="270" text-anchor="middle" font-family="system-ui" font-size="8" fill="#22c55e">7. Onboard</text>
+  
+  <!-- User Success -->
+  <rect x="50" y="230" width="120" height="100" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="110" y="260" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#0f172a">Success</text>
+  <text x="110" y="285" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Account Ready</text>
+  <text x="110" y="305" text-anchor="middle" font-family="system-ui" font-size="9" fill="#475569">Full Access</text>
+  
+  <!-- Social Signup Alternative -->
+  <rect x="50" y="360" width="340" height="110" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="220" y="385" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Alternative: Social Signup</text>
+  
+  <rect x="70" y="400" width="80" height="35" rx="4" fill="#4285f4"/>
+  <text x="110" y="422" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Google</text>
+  
+  <rect x="160" y="400" width="80" height="35" rx="4" fill="#000000"/>
+  <text x="200" y="422" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Apple</text>
+  
+  <rect x="250" y="400" width="80" height="35" rx="4" fill="#1877f2"/>
+  <text x="290" y="422" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">Facebook</text>
+  
+  <rect x="330" y="400" width="50" height="35" rx="4" fill="#333333"/>
+  <text x="355" y="422" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ffffff">GitHub</text>
+  
+  <!-- Progressive Profiling -->
+  <rect x="420" y="360" width="340" height="110" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="590" y="385" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Progressive Profiling</text>
+  
+  <rect x="440" y="400" width="140" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="510" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Post-Signup:</text>
+  
+  <rect x="590" y="400" width="160" height="30" rx="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="670" y="420" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">Name, Phone, Preferences</text>
+
 </svg>

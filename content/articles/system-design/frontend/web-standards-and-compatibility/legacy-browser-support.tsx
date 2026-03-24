@@ -555,6 +555,115 @@ export default function LegacyBrowserSupportArticle() {
         </p>
       </section>
 
+      <section>
+        <h2>Security Considerations</h2>
+        <p>
+          Legacy Browser Support introduces security considerations around
+          supporting browsers with known vulnerabilities and ensuring security
+          features degrade gracefully.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">
+            Legacy Browser Security Patterns
+          </h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Known Vulnerabilities:</strong> Legacy browsers have
+              unpatched security vulnerabilities. Mitigation: implement
+              server-side security measures, use Content Security Policy,
+              implement feature detection to avoid vulnerable features.
+            </li>
+            <li>
+              <strong>Graceful Security Degradation:</strong> Security features
+              must work across all supported browsers. Mitigation: implement
+              security at multiple layers, ensure fallbacks maintain security,
+              test security across all supported browsers.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Performance Benchmarks</h2>
+        <p>
+          Legacy Browser Support performance depends on polyfill overhead,
+          fallback efficiency, and feature detection cost.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">
+            Performance Metrics to Track
+          </h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Metric</th>
+                <th className="p-2 text-left">Target</th>
+                <th className="p-2 text-left">Measurement</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Legacy Load Time</td>
+                <td className="p-2">&lt;3 seconds</td>
+                <td className="p-2">Lighthouse</td>
+              </tr>
+              <tr>
+                <td className="p-2">Polyfill Overhead</td>
+                <td className="p-2">&lt;100KB</td>
+                <td className="p-2">Bundle analysis</td>
+              </tr>
+              <tr>
+                <td className="p-2">Legacy Functionality</td>
+                <td className="p-2">100% core features</td>
+                <td className="p-2">Manual testing</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>Cost Analysis</h2>
+        <p>
+          Legacy Browser Support has significant development and maintenance
+          costs but may be necessary for certain user bases.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Initial Development:</strong> Supporting legacy browsers:
+              +30-50% development time.
+            </li>
+            <li>
+              <strong>Testing:</strong> Testing across legacy browsers: +40-60%
+              testing time.
+            </li>
+            <li>
+              <strong>Maintenance:</strong> Legacy browser support requires
+              ongoing maintenance. Estimate: 20-30% of development time for
+              legacy support.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">
+            When to Support Legacy Browsers
+          </h3>
+          <p>
+            Support legacy browsers when: (1) analytics show significant legacy
+            browser usage (&lt; 5%), (2) you serve enterprise/government users
+            with locked browsers, (3) you serve users in regions with older
+            browser prevalence. Avoid when: (1) legacy usage is &lt;1%, (2) the
+            cost outweighs the benefit, (3) you can encourage browser upgrades.
+          </p>
+        </div>
+      </section>
+
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>

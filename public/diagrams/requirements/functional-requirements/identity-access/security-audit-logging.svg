@@ -1,7 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569"/>
+    </marker>
+  </defs>
   <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="240" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">security audit logging</text>
-  <text x="400" y="270" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Identity Access Diagram</text>
-  <text x="400" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#475569">Valid XML</text>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#0f172a">Security Audit Logging Architecture</text>
+  
+  <!-- Event Sources -->
+  <rect x="50" y="70" width="180" height="180" rx="8" fill="#f1f5f9" stroke="#3b82f6" stroke-width="2"/>
+  <text x="140" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#3b82f6">Event Sources</text>
+  
+  <rect x="70" y="115" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="140" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">🔐 Authentication</text>
+  
+  <rect x="70" y="150" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="140" y="170" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">👤 Account Events</text>
+  
+  <rect x="70" y="185" width="140" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="140" y="205" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">🔑 Authorization</text>
+  
+  <rect x="70" y="220" width="140" height="20" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="140" y="235" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">+ Privileged Actions</text>
+  
+  <line x1="230" y1="160" x2="270" y2="160" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Event Capture -->
+  <rect x="280" y="70" width="180" height="180" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="370" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#f59e0b">Event Capture</text>
+  
+  <rect x="300" y="115" width="140" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="370" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">📝 Standardized Schema</text>
+  
+  <rect x="300" y="150" width="140" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="370" y="170" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">📤 Publish to Kafka</text>
+  
+  <rect x="300" y="185" width="140" height="30" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="370" y="205" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">🏷️ Enrich Context</text>
+  
+  <rect x="300" y="220" width="140" height="20" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="370" y="235" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">✅ Schema Validation</text>
+  
+  <line x1="460" y1="160" x2="500" y2="160" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Immutable Storage -->
+  <rect x="510" y="70" width="180" height="180" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="600" y="95" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#22c55e">Immutable Storage</text>
+  
+  <rect x="530" y="115" width="140" height="30" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="600" y="135" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">📦 S3 Object Lock</text>
+  
+  <rect x="530" y="150" width="140" height="30" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="600" y="170" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">🔒 Encryption (AES-256)</text>
+  
+  <rect x="530" y="185" width="140" height="30" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="600" y="205" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">📅 Retention Policies</text>
+  
+  <rect x="530" y="220" width="140" height="20" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="600" y="235" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">🔗 Hash Chain</text>
+  
+  <line x1="600" y1="250" x2="600" y2="290" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Analysis & Alerting -->
+  <rect x="510" y="300" width="180" height="150" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="600" y="325" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#ef4444">Analysis &amp; Alerting</text>
+  
+  <rect x="530" y="340" width="140" height="30" rx="4" fill="#ef4444" opacity="0.3"/>
+  <text x="600" y="360" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">🔍 SIEM (Splunk)</text>
+  
+  <rect x="530" y="375" width="140" height="30" rx="4" fill="#ef4444" opacity="0.3"/>
+  <text x="600" y="395" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">🚨 Real-time Alerts</text>
+  
+  <rect x="530" y="410" width="140" height="30" rx="4" fill="#ef4444" opacity="0.3"/>
+  <text x="600" y="430" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">🤖 ML Anomaly Detection</text>
+  
+  <!-- Storage Tiers -->
+  <rect x="50" y="300" width="220" height="150" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="160" y="325" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Storage Tiers</text>
+  
+  <rect x="70" y="340" width="180" height="30" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="160" y="360" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">🔥 Hot: Elasticsearch (30d)</text>
+  
+  <rect x="70" y="375" width="180" height="30" rx="4" fill="#8b5cf6" opacity="0.3"/>
+  <text x="160" y="395" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">🌡️ Warm: S3 (1 year)</text>
+  
+  <rect x="70" y="410" width="180" height="30" rx="4" fill="#64748b" opacity="0.3"/>
+  <text x="160" y="430" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">🧊 Cold: Glacier (7 years)</text>
+  
+  <!-- Compliance -->
+  <rect x="290" y="300" width="200" height="150" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="390" y="325" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#0f172a">Compliance</text>
+  
+  <rect x="310" y="340" width="160" height="25" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="390" y="357" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ SOC 2</text>
+  
+  <rect x="310" y="370" width="160" height="25" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="390" y="387" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ HIPAA (6 years)</text>
+  
+  <rect x="310" y="400" width="160" height="25" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="390" y="417" text-anchor="middle" font-family="system-ui" font-size="9" fill="#0f172a">✓ GDPR</text>
+  
+  <rect x="310" y="430" width="160" height="20" rx="4" fill="#22c55e" opacity="0.3"/>
+  <text x="390" y="445" text-anchor="middle" font-family="system-ui" font-size="8" fill="#0f172a">✓ PCI-DSS (1 year)</text>
+
 </svg>

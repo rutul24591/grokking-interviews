@@ -260,6 +260,12 @@ export default function ClickjackingPreventionArticle() {
           While not as reliable as HTTP headers, it provides defense in depth.
         </p>
 
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/security/clickjacking-prevention.svg"
+          alt="Clickjacking Prevention Techniques showing X-Frame-Options, CSP frame-ancestors, and JavaScript Frame Busting with defense layers"
+          caption="Clickjacking Prevention: Use CSP frame-ancestors as primary, X-Frame-Options as fallback, frame busting as client-side backup."
+        />
+
         <h3 className="mt-8 mb-4 text-xl font-semibold">JavaScript Frame Busting</h3>
         <p>
           Basic frame busting checks if <code className="text-sm">window.top !== window.self</code> and redirects to <code className="text-sm">window.self.location</code>. A more robust approach handles multiple frame levels with a try-catch block that clears the body and shows an alert if it can't access the top window (cross-origin). Modern approach combines frame busting with CSP frame-ancestors for best protection.

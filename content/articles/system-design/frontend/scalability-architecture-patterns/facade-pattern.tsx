@@ -297,6 +297,121 @@ export default function FacadePatternArticle() {
       </section>
 
       <section>
+        <h2>Security Considerations</h2>
+        <p>
+          Facade Pattern introduces security considerations around access control, input validation, and the potential for facades to hide security-critical operations.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Facade Security Patterns</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Access Control:</strong> Facades should enforce access control for all underlying operations. Mitigation: validate caller permissions, implement role-based access control, audit all facade method calls.
+            </li>
+            <li>
+              <strong>Input Validation:</strong> Facades must validate all input before passing to subsystems. Mitigation: implement strict input validation, use TypeScript for type safety, validate at facade boundary.
+            </li>
+            <li>
+              <strong>Audit Logging:</strong> All facade operations should be logged for security auditing. Mitigation: implement comprehensive logging, include caller identity in logs, log all errors and exceptions.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Facade Testing Security</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Access Control Testing:</strong> Test that facade enforces access control correctly. Verify unauthorized calls are rejected. Test with different user roles.
+            </li>
+            <li>
+              <strong>Input Validation Testing:</strong> Test facade resistance to injection attacks. Verify invalid inputs are rejected. Test boundary conditions.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Performance Benchmarks</h2>
+        <p>
+          Facade Pattern performance depends on facade overhead, subsystem call efficiency, and caching effectiveness.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Metric</th>
+                <th className="p-2 text-left">Target</th>
+                <th className="p-2 text-left">Measurement</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Facade Overhead</td>
+                <td className="p-2">&lt;0.1ms per call</td>
+                <td className="p-2">Performance.now()</td>
+              </tr>
+              <tr>
+                <td className="p-2">Subsystem Call Time</td>
+                <td className="p-2">Depends on subsystem</td>
+                <td className="p-2">Distributed tracing</td>
+              </tr>
+              <tr>
+                <td className="p-2">Cache Hit Rate</td>
+                <td className="p-2">&gt;80% for reads</td>
+                <td className="p-2">Cache metrics</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Facade Implementation Comparison</h3>
+          <p>
+            Different facade implementations have different performance characteristics:
+          </p>
+          <ul className="mt-3 space-y-2">
+            <li>
+              <strong>Thin Facade:</strong> Overhead: ~0.01ms. Best for: simple APIs, minimal abstraction. Limitation: limited functionality.
+            </li>
+            <li>
+              <strong>Caching Facade:</strong> Overhead: ~0.05ms (with cache hits). Best for: read-heavy workloads. Limitation: cache invalidation complexity.
+            </li>
+            <li>
+              <strong>Batching Facade:</strong> Overhead: ~0.1ms. Best for: reducing round trips, batching operations. Limitation: increased latency for individual operations.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Cost Analysis</h2>
+        <p>
+          Facade Pattern has minimal direct costs but significant benefits for code maintainability and API stability.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Implementation:</strong> Simple facades: 1-2 days. Complex facades with caching/batching: 3-5 days.
+            </li>
+            <li>
+              <strong>Maintenance:</strong> Facades reduce coupling, making subsystem changes easier. Estimate: 20-30% reduction in change propagation.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">When to Use Facade Pattern</h3>
+          <p>
+            Use facades when: (1) you need to simplify complex subsystem APIs, (2) you want to decouple clients from subsystem implementations, (3) you need to add cross-cutting concerns (logging, caching, access control). Avoid when: (1) subsystem is already simple, (2) direct access is required for performance, (3) you need full subsystem functionality without abstraction.
+          </p>
+        </div>
+      </section>
+
+      <section>
         <h2>Common Interview Questions</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">

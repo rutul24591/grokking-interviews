@@ -905,52 +905,6 @@ export default function ContentSecurityPolicyArticle() {
       </section>
 
       <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN Web Docs: Content Security Policy
-            </a>
-          </li>
-          <li>
-            <a href="https://content-security-policy.com/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Content Security Policy Guide
-            </a>
-          </li>
-          <li>
-            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP CSP Cheat Sheet
-            </a>
-          </li>
-          <li>
-            <a href="https://www.w3.org/TR/CSP3/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              W3C CSP Level 3 Specification
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/strict-csp/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              web.dev: Strict Content Security Policy
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/csp-evaluator/csp-evaluator" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              CSP Evaluator Tool (Google)
-            </a>
-          </li>
-          <li>
-            <a href="https://report-uri.com/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Report URI - CSP Reporting and Analysis
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.chrome.com/docs/extensions/mv3/manifest/content_security_policy/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Chrome Extensions CSP Documentation
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
         <h2>Interview Questions & Answers</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -1026,6 +980,52 @@ export default function ContentSecurityPolicyArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      <section>
+        <h2>References & Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN Web Docs: Content Security Policy
+            </a>
+          </li>
+          <li>
+            <a href="https://content-security-policy.com/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Content Security Policy Guide
+            </a>
+          </li>
+          <li>
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OWASP CSP Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a href="https://www.w3.org/TR/CSP3/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              W3C CSP Level 3 Specification
+            </a>
+          </li>
+          <li>
+            <a href="https://web.dev/strict-csp/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              web.dev: Strict Content Security Policy
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/csp-evaluator/csp-evaluator" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              CSP Evaluator Tool (Google)
+            </a>
+          </li>
+          <li>
+            <a href="https://report-uri.com/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Report URI - CSP Reporting and Analysis
+            </a>
+          </li>
+          <li>
+            <a href="https://developer.chrome.com/docs/extensions/mv3/manifest/content_security_policy/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Chrome Extensions CSP Documentation
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

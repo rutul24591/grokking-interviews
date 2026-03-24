@@ -749,52 +749,6 @@ export default function AuthenticationPatternsArticle() {
       </section>
 
       <section>
-        <h2>References and Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://oauth.net/2/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OAuth 2.0 Specification
-            </a>
-          </li>
-          <li>
-            <a href="https://openid.net/connect/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OpenID Connect Specification
-            </a>
-          </li>
-          <li>
-            <a href="https://jwt.io/introduction" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              JWT.io Introduction
-            </a>
-          </li>
-          <li>
-            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP Authentication Cheat Sheet
-            </a>
-          </li>
-          <li>
-            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP Session Management Cheat Sheet
-            </a>
-          </li>
-          <li>
-            <a href="https://datatracker.ietf.org/doc/html/rfc6749" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              RFC 6749: OAuth 2.0 Authorization Framework
-            </a>
-          </li>
-          <li>
-            <a href="https://auth0.com/docs" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Auth0 Documentation
-            </a>
-          </li>
-          <li>
-            <a href="https://next-auth.js.org/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              NextAuth.js Documentation
-            </a>
-          </li>
-        </ul>
-      </section>
-
-      <section>
         <h2>Interview Questions & Answers</h2>
         <div className="space-y-4">
           <div className="rounded-lg border border-theme bg-panel-soft p-4">
@@ -864,6 +818,52 @@ export default function AuthenticationPatternsArticle() {
             </p>
           </div>
         </div>
+      </section>
+
+      <section>
+        <h2>References and Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a href="https://oauth.net/2/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OAuth 2.0 Specification
+            </a>
+          </li>
+          <li>
+            <a href="https://openid.net/connect/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OpenID Connect Specification
+            </a>
+          </li>
+          <li>
+            <a href="https://jwt.io/introduction" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              JWT.io Introduction
+            </a>
+          </li>
+          <li>
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OWASP Authentication Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              OWASP Session Management Cheat Sheet
+            </a>
+          </li>
+          <li>
+            <a href="https://datatracker.ietf.org/doc/html/rfc6749" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              RFC 6749: OAuth 2.0 Authorization Framework
+            </a>
+          </li>
+          <li>
+            <a href="https://auth0.com/docs" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Auth0 Documentation
+            </a>
+          </li>
+          <li>
+            <a href="https://next-auth.js.org/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              NextAuth.js Documentation
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

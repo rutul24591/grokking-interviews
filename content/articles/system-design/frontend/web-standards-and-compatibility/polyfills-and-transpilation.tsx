@@ -535,6 +535,88 @@ export default function PolyfillsAndTranspilationArticle() {
         </p>
       </section>
 
+      <section>
+        <h2>Security Considerations</h2>
+        <p>
+          Polyfills and Transpilation introduce security considerations around third-party code execution, polyfill supply chain security, and ensuring transpiled code maintains security properties.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Polyfill Security Patterns</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Polyfill Supply Chain:</strong> Third-party polyfills can introduce vulnerabilities. Mitigation: use trusted polyfill sources (polyfill.io, core-js), pin exact versions, audit polyfill code, implement Content Security Policy.
+            </li>
+            <li>
+              <strong>Transpilation Security:</strong> Transpiled code must maintain security properties. Mitigation: test transpiled output for security issues, validate that security-critical code isn't weakened by transpilation.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Performance Benchmarks</h2>
+        <p>
+          Polyfills and Transpilation performance depends on polyfill size, transpilation overhead, and loading strategy.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Metric</th>
+                <th className="p-2 text-left">Target</th>
+                <th className="p-2 text-left">Measurement</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Polyfill Size</td>
+                <td className="p-2">&lt;50KB gzipped</td>
+                <td className="p-2">Webpack Bundle Analyzer</td>
+              </tr>
+              <tr>
+                <td className="p-2">Transpilation Overhead</td>
+                <td className="p-2">&lt;10% bundle increase</td>
+                <td className="p-2">Bundle comparison</td>
+              </tr>
+              <tr>
+                <td className="p-2">Runtime Polyfill Cost</td>
+                <td className="p-2">&lt;1ms per polyfill</td>
+                <td className="p-2">Performance.now()</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>Cost Analysis</h2>
+        <p>
+          Polyfills and Transpilation have infrastructure and development costs but provide significant benefits for browser compatibility.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Infrastructure Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Polyfill Services:</strong> polyfill.io: $0-200/month depending on traffic. Self-hosted polyfills: $0 hosting cost.
+            </li>
+            <li>
+              <strong>Build Infrastructure:</strong> Transpilation adds to build time. Estimate: +10-20% build time for transpilation.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">When to Use Polyfills and Transpilation</h3>
+          <p>
+            Use polyfills when: (1) you need to support older browsers, (2) you want to use modern JavaScript features, (3) you serve users with varying browser capabilities. Use transpilation when: (1) you need to support ES5 browsers, (2) you want to use modern syntax.
+          </p>
+        </div>
+      </section>
+
       {/* Section 8: Common Interview Questions */}
       <section>
         <h2>Common Interview Questions</h2>

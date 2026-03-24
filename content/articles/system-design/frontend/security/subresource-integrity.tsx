@@ -114,6 +114,12 @@ export default function SubresourceIntegrityArticle() {
           You need to generate cryptographic hashes for your resources. There are several approaches.
         </p>
 
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/security/sri-workflow.svg"
+          alt="Subresource Integrity Workflow showing Build Process, CDN, Browser Verification, and Outcomes"
+          caption="SRI Workflow: Build generates hash, CDN serves resource, browser verifies hash, allows or blocks based on match."
+        />
+
         <h3 className="mt-8 mb-4 text-xl font-semibold">Online Tools</h3>
         <p>
           Online tools like SRIGen (srihash.org) allow you to paste your resource URL or content and get the integrity attribute back. For example, a script tag with integrity <code className="text-sm">sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC</code> and <code className="text-sm">crossorigin="anonymous"</code>. <strong>Warning:</strong> Only use online tools for public resources. Never paste private or sensitive code into online generators.
@@ -425,42 +431,6 @@ export default function SubresourceIntegrityArticle() {
           <li>CSP to restrict embed sources</li>
           <li>Subresource Integrity for widget libraries</li>
           <li>Regular audit of third-party scripts</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://w3c.github.io/webappsec-subresource-integrity/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              W3C Subresource Integrity Specification
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN Web Docs: Subresource Integrity
-            </a>
-          </li>
-          <li>
-            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Third_Party_Javascript_Management_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP Third-Party JavaScript Management Cheat Sheet
-            </a>
-          </li>
-          <li>
-            <a href="https://www.srihash.org/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              SRI Hash Generator (srihash.org)
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/webpack-contrib/webpack-subresource-integrity" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              webpack-subresource-integrity Plugin
-            </a>
-          </li>
-          <li>
-            <a href="https://web.dev/subresource-integrity/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              web.dev: Subresource Integrity
-            </a>
-          </li>
         </ul>
       </section>
 

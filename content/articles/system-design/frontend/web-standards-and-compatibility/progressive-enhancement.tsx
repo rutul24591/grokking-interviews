@@ -547,6 +547,132 @@ export default function ProgressiveEnhancementArticle() {
         </div>
       </section>
 
+      <section>
+        <h2>Security Considerations</h2>
+        <p>
+          Progressive Enhancement introduces security considerations around feature detection, graceful degradation of security features, and ensuring baseline security across all enhancement levels.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Progressive Enhancement Security Patterns</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Baseline Security:</strong> Security features must work at the baseline level. Mitigation: implement security at the HTML/CSS layer, ensure JavaScript enhancements don't bypass security, validate all input server-side regardless of client-side validation.
+            </li>
+            <li>
+              <strong>Feature Detection Security:</strong> Feature detection can leak information about user's browser. Mitigation: use standardized feature detection libraries, avoid fingerprinting via feature detection, implement server-side feature detection where possible.
+            </li>
+            <li>
+              <strong>Graceful Security Degradation:</strong> Enhanced features may have additional security requirements. Mitigation: validate capabilities server-side, implement fallback security measures, ensure baseline security is never compromised.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Performance Benchmarks</h2>
+        <p>
+          Progressive Enhancement performance depends on baseline efficiency, enhancement loading strategy, and feature detection overhead.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Performance Metrics to Track</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Metric</th>
+                <th className="p-2 text-left">Target</th>
+                <th className="p-2 text-left">Measurement</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Baseline Load Time</td>
+                <td className="p-2">&lt;1 second</td>
+                <td className="p-2">Lighthouse, WebPageTest</td>
+              </tr>
+              <tr>
+                <td className="p-2">Enhancement Load Time</td>
+                <td className="p-2">&lt;3 seconds</td>
+                <td className="p-2">Performance.now()</td>
+              </tr>
+              <tr>
+                <td className="p-2">Feature Detection Time</td>
+                <td className="p-2">&lt;10ms</td>
+                <td className="p-2">Performance.now()</td>
+              </tr>
+              <tr>
+                <td className="p-2">Baseline Functionality</td>
+                <td className="p-2">100% core features</td>
+                <td className="p-2">Manual testing</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Enhancement Strategy Comparison</h3>
+          <p>
+            Different enhancement strategies have different performance characteristics:
+          </p>
+          <ul className="mt-3 space-y-2">
+            <li>
+              <strong>CSS Enhancements:</strong> Load time: ~10-50ms. Best for: visual enhancements, layout improvements. Limitation: requires CSS support.
+            </li>
+            <li>
+              <strong>JavaScript Enhancements:</strong> Load time: ~100-500ms. Best for: interactive features, complex functionality. Limitation: requires JavaScript support.
+            </li>
+            <li>
+              <strong>Progressive Images:</strong> Load time: ~50-200ms. Best for: image-heavy pages. Limitation: requires modern image format support.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Cost Analysis</h2>
+        <p>
+          Progressive Enhancement has development costs but provides significant benefits for accessibility, SEO, and resilience.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Development Costs</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Initial Development:</strong> Building with PE from start: +20-30% development time. Retrofitting PE to existing code: +50-100% refactoring time.
+            </li>
+            <li>
+              <strong>Testing:</strong> Testing across enhancement levels: +30-50% testing time. Automated testing can reduce this overhead.
+            </li>
+            <li>
+              <strong>Maintenance:</strong> Well-structured PE code is easier to maintain. Estimate: 10-20% reduction in bug fixes.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">ROI from Progressive Enhancement</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Accessibility:</strong> Built-in accessibility reduces legal risk. Estimate: $50K-150K savings in potential legal fees.
+            </li>
+            <li>
+              <strong>SEO Benefits:</strong> Search engines can crawl baseline content. Estimate: 10-30% improvement in organic traffic.
+            </li>
+            <li>
+              <strong>Resilience:</strong> Site works when JavaScript fails. Estimate: 5-10% of users benefit from baseline functionality.
+            </li>
+          </ul>
+        </div>
+
+        <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
+          <h3 className="mb-3 font-semibold">When to Use Progressive Enhancement</h3>
+          <p>
+            Use PE when: (1) you need maximum accessibility, (2) SEO is critical, (3) you serve users with varying browser capabilities. Avoid when: (1) you're building internal tools with known browser requirements, (2) the application requires modern features for core functionality.
+          </p>
+        </div>
+      </section>
+
       {/* Section 9: References & Further Reading */}
       <section>
         <h2>References &amp; Further Reading</h2>

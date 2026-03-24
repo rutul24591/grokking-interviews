@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1000" height="600" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">Token Refresh Strategies Comparison</text>
+  <text x="500" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#475569">Silent refresh vs User re-authentication vs Token rotation</text>
+  
+  <!-- Silent Refresh Column -->
+  <g transform="translate(50, 100)">
+    <rect x="0" y="0" width="280" height="240" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="140" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#2563eb">Silent Refresh</text>
+    <line x1="20" y1="45" x2="260" y2="45" stroke="#3b82f6" stroke-width="1"/>
+    
+    <!-- Flow diagram -->
+    <rect x="20" y="60" width="240" height="100" fill="#ffffff" stroke="#3b82f6" rx="4"/>
+    <text x="140" y="80" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#64748b">Access Token Expires</text>
+    <path d="M 140 90 L 140 110" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="140" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#64748b">Use Refresh Token</text>
+    <path d="M 140 135 L 140 155" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="140" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#2563eb">New Access Token</text>
+    
+    <text x="20" y="185" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#1e40af">Pros:</text>
+    <text x="30" y="200" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#1e40af">✓ Seamless UX</text>
+    <text x="30" y="215" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#1e40af">✓ No user interruption</text>
+    <text x="30" y="230" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#1e40af">✓ Automatic</text>
+  </g>
+  
+  <!-- User Re-authentication Column -->
+  <g transform="translate(360, 100)">
+    <rect x="0" y="0" width="280" height="240" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="140" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#d97706">User Re-authentication</text>
+    <line x1="20" y1="45" x2="260" y2="45" stroke="#f59e0b" stroke-width="1"/>
+    
+    <!-- Flow diagram -->
+    <rect x="20" y="60" width="240" height="100" fill="#ffffff" stroke="#f59e0b" rx="4"/>
+    <text x="140" y="80" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#64748b">All Tokens Expired</text>
+    <path d="M 140 90 L 140 110" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="140" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#64748b">Redirect to Login</text>
+    <path d="M 140 135 L 140 155" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="140" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#d97706">User Enters Credentials</text>
+    
+    <text x="20" y="185" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#92400e">Use Cases:</text>
+    <text x="30" y="200" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">• Security-sensitive apps</text>
+    <text x="30" y="215" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">• After long inactivity</text>
+    <text x="30" y="230" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#92400e">• Password changes</text>
+  </g>
+  
+  <!-- Token Rotation Column -->
+  <g transform="translate(670, 100)">
+    <rect x="0" y="0" width="280" height="240" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+    <text x="140" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#16a34a">Refresh Token Rotation</text>
+    <line x1="20" y1="45" x2="260" y2="45" stroke="#22c55e" stroke-width="1"/>
+    
+    <!-- Flow diagram -->
+    <rect x="20" y="60" width="240" height="100" fill="#ffffff" stroke="#22c55e" rx="4"/>
+    <text x="140" y="80" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#64748b">Use Refresh Token</text>
+    <path d="M 140 90 L 140 110" stroke="#22c55e" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="140" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#64748b">Invalidate Old Token</text>
+    <path d="M 140 135 L 140 155" stroke="#22c55e" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="140" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#16a34a">Issue New Refresh Token</text>
+    
+    <text x="20" y="185" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#15803d">Benefits:</text>
+    <text x="30" y="200" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#15803d">✓ Detect token theft</text>
+    <text x="30" y="215" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#15803d">✓ Limit token lifetime</text>
+    <text x="30" y="230" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#15803d">✓ Reuse detection</text>
+  </g>
+  
+  <!-- Comparison Table -->
+  <g transform="translate(50, 370)">
+    <rect x="0" y="0" width="900" height="180" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="450" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#475569">Strategy Comparison</text>
+    
+    <!-- Table Header -->
+    <rect x="20" y="45" width="860" height="35" fill="#e2e8f0" stroke="#cbd5e1" rx="4"/>
+    <text x="200" y="68" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#475569">Strategy</text>
+    <text x="400" y="68" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#475569">Security</text>
+    <text x="600" y="68" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#475569">User Experience</text>
+    <text x="800" y="68" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#475569">Best For</text>
+    
+    <!-- Row 1 -->
+    <rect x="20" y="85" width="860" height="35" fill="#ffffff" stroke="#cbd5e1"/>
+    <text x="200" y="107" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#2563eb">Silent Refresh</text>
+    <text x="400" y="107" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Medium</text>
+    <text x="600" y="107" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Excellent</text>
+    <text x="800" y="107" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Most web apps</text>
+    
+    <!-- Row 2 -->
+    <rect x="20" y="125" width="860" height="35" fill="#ffffff" stroke="#cbd5e1"/>
+    <text x="200" y="147" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#d97706">Re-authentication</text>
+    <text x="400" y="147" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">High</text>
+    <text x="600" y="147" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Poor</text>
+    <text x="800" y="147" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Banking, healthcare</text>
+    
+    <!-- Row 3 -->
+    <rect x="20" y="165" width="860" height="35" fill="#ffffff" stroke="#cbd5e1"/>
+    <text x="200" y="187" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#16a34a">Token Rotation</text>
+    <text x="400" y="187" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Highest</text>
+    <text x="600" y="187" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Good</text>
+    <text x="800" y="187" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">High-security apps</text>
+  </g>
+  
+  <!-- Arrow Marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0f172a"/>
+    </marker>
+  </defs>
+  
+  <!-- Key Insight Box -->
+  <g transform="translate(50, 570)">
+    <rect x="0" y="0" width="900" height="50" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+    <text x="450" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Best Practice</text>
+    <text x="450" y="38" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#92400e">Combine silent refresh with token rotation for optimal security and UX. Use re-authentication for sensitive operations.</text>
+  </g>
+</svg>

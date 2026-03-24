@@ -182,6 +182,12 @@ export default function ClientSideRateLimitingArticle() {
           source of truth; client-side is a courtesy layer.
         </p>
 
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/security/client-server-coordination.svg"
+          alt="Client-Server Rate Limiting Coordination showing browser techniques, server techniques, and response headers"
+          caption="Client-Server Coordination: Client-side reduces unnecessary requests, Server-side enforces security limits with coordinated response headers."
+        />
+
         <h3 className="mt-8 mb-4 text-xl font-semibold">Handling 429 Rate Limit Responses</h3>
         <p>
           Implement an ApiClient class with constructor initializing rateLimitReset and rateLimitRemaining to null. The async <code className="text-sm">request(url, options)</code> method checks if rateLimitReset is set and current time is before it, throws a RateLimitError with wait time if so. Otherwise it fetches, parses rate limit headers (X-RateLimit-Remaining, X-RateLimit-Reset), and if status is 429, reads the Retry-After header or calculates wait time, and calls <code className="text-sm">notifyRateLimit(waitTime)</code> to update the UI.
@@ -305,37 +311,6 @@ export default function ClientSideRateLimitingArticle() {
           <li>
             <strong>Memory leaks:</strong> Not clearing timeouts, intervals, or abort controllers causes
             memory leaks.
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>References & Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AbortController" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN Web Docs: AbortController
-            </a>
-          </li>
-          <li>
-            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Rate_Limiting_Cheat_Sheet.html" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              OWASP Rate Limiting Cheat Sheet
-            </a>
-          </li>
-          <li>
-            <a href="https://www.rfc-editor.org/rfc/rfc6585#section-4" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              RFC 6585: 429 Too Many Requests Status Code
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/nfriedly/request-rate-limiter" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Request Rate Limiter (npm package)
-            </a>
-          </li>
-          <li>
-            <a href="https://css-tricks.com/debouncing-throttling-explained-and-exemplified/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              CSS-Tricks: Debouncing and Throttling Explained
-            </a>
           </li>
         </ul>
       </section>

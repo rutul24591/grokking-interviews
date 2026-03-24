@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" fill="none" stroke="#0f172a" stroke-width="2">
+  <!-- Background -->
+  <rect width="1000" height="600" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">Clickjacking Prevention Techniques</text>
+  <text x="500" y="58" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#475569">X-Frame-Options, CSP frame-ancestors, and frame busting</text>
+  
+  <!-- X-Frame-Options Box -->
+  <g transform="translate(50, 100)">
+    <rect x="0" y="0" width="280" height="180" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="140" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#2563eb">X-Frame-Options</text>
+    <line x1="20" y1="45" x2="260" y2="45" stroke="#3b82f6" stroke-width="1"/>
+    
+    <text x="20" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#1e40af">Legacy HTTP Header</text>
+    
+    <rect x="20" y="85" width="240" height="85" fill="#ffffff" stroke="#3b82f6" rx="4"/>
+    <text x="30" y="105" font-family="monospace" font-size="10" fill="#1e40af">X-Frame-Options: DENY</text>
+    <text x="30" y="125" font-family="monospace" font-size="10" fill="#1e40af">X-Frame-Options: SAMEORIGIN</text>
+    <text x="30" y="145" font-family="monospace" font-size="10" fill="#1e40af">X-Frame-Options: ALLOW-FROM uri</text>
+    
+    <text x="20" y="185" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#1e40af">✓ Supported in all browsers</text>
+    <text x="20" y="205" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#1e40af">✗ Deprecated (use CSP instead)</text>
+  </g>
+  
+  <!-- CSP frame-ancestors Box -->
+  <g transform="translate(360, 100)">
+    <rect x="0" y="0" width="280" height="180" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+    <text x="140" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#16a34a">CSP frame-ancestors</text>
+    <line x1="20" y1="45" x2="260" y2="45" stroke="#22c55e" stroke-width="1"/>
+    
+    <text x="20" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#15803d">Modern CSP Directive</text>
+    
+    <rect x="20" y="85" width="240" height="85" fill="#ffffff" stroke="#22c55e" rx="4"/>
+    <text x="30" y="105" font-family="monospace" font-size="10" fill="#15803d">frame-ancestors 'none'</text>
+    <text x="30" y="125" font-family="monospace" font-size="10" fill="#15803d">frame-ancestors 'self'</text>
+    <text x="30" y="145" font-family="monospace" font-size="10" fill="#15803d">frame-ancestors 'self' https://trusted.com</text>
+    
+    <text x="20" y="185" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#15803d">✓ More flexible than X-Frame-Options</text>
+    <text x="20" y="205" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#15803d">✓ Multiple allowed origins</text>
+  </g>
+  
+  <!-- Frame Busting Box -->
+  <g transform="translate(670, 100)">
+    <rect x="0" y="0" width="280" height="180" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="140" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#d97706">JavaScript Frame Busting</text>
+    <line x1="20" y1="45" x2="260" y2="45" stroke="#f59e0b" stroke-width="1"/>
+    
+    <text x="20" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#92400e">Client-Side Protection</text>
+    
+    <rect x="20" y="85" width="240" height="85" fill="#ffffff" stroke="#f59e0b" rx="4"/>
+    <text x="30" y="105" font-family="monospace" font-size="9" fill="#92400e">if (window.top !== window.self) {'{'}</text>
+    <text x="40" y="120" font-family="monospace" font-size="9" fill="#92400e">// Break out of frame</text>
+    <text x="40" y="135" font-family="monospace" font-size="9" fill="#92400e">window.top.location =</text>
+    <text x="40" y="150" font-family="monospace" font-size="9" fill="#92400e">window.self.location;</text>
+    <text x="30" y="165" font-family="monospace" font-size="9" fill="#92400e">{'}'}</text>
+    
+    <text x="20" y="185" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#92400e">✓ Works without server config</text>
+    <text x="20" y="205" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#92400e">✗ Can be bypassed (sandbox)</text>
+  </g>
+  
+  <!-- Defense Layers Diagram -->
+  <g transform="translate(50, 310)">
+    <rect x="0" y="0" width="900" height="200" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="450" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="#475569">Defense-in-Depth Strategy</text>
+    <line x1="20" y1="45" x2="880" y2="45" stroke="#cbd5e1" stroke-width="1"/>
+    
+    <!-- Layer 1 -->
+    <rect x="40" y="70" width="250" height="120" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="165" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#d97706">Layer 1: CSP</text>
+    <text x="50" y="115" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#92400e">Primary defense</text>
+    <text x="50" y="135" font-family="monospace" font-size="10" fill="#92400e">frame-ancestors 'none'</text>
+    <text x="50" y="155" font-family="monospace" font-size="10" fill="#92400e">frame-ancestors 'self'</text>
+    <text x="50" y="175" font-family="monospace" font-size="10" fill="#92400e">frame-ancestors 'self' https://trusted.com</text>
+    
+    <!-- Layer 2 -->
+    <rect x="325" y="70" width="250" height="120" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="450" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#2563eb">Layer 2: X-Frame-Options</text>
+    <text x="335" y="115" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#1e40af">Legacy fallback</text>
+    <text x="335" y="135" font-family="monospace" font-size="10" fill="#1e40af">X-Frame-Options: DENY</text>
+    <text x="335" y="155" font-family="monospace" font-size="10" fill="#1e40af">X-Frame-Options: SAMEORIGIN</text>
+    <text x="335" y="175" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#1e40af">For older browsers</text>
+    
+    <!-- Layer 3 -->
+    <rect x="610" y="70" width="250" height="120" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="735" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#d97706">Layer 3: Frame Busting</text>
+    <text x="620" y="115" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#92400e">Client-side backup</text>
+    <text x="620" y="135" font-family="monospace" font-size="10" fill="#92400e">if (top !== self) {'{'}</text>
+    <text x="620" y="155" font-family="monospace" font-size="10" fill="#92400e">top.location = self.location</text>
+    <text x="620" y="175" font-family="monospace" font-size="10" fill="#92400e">{'}'}</text>
+  </g>
+  
+  <!-- Arrow between layers -->
+  <path d="M 290 380 L 315 380" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 575 380 L 600 380" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Arrow Marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
+  
+  <!-- Key Insight Box -->
+  <g transform="translate(50, 530)">
+    <rect x="0" y="0" width="900" height="50" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+    <text x="450" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Best Practice</text>
+    <text x="450" y="38" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#92400e">Use CSP frame-ancestors as primary defense, X-Frame-Options as fallback for legacy browsers, and frame busting as client-side backup. Layer defenses for maximum protection.</text>
+  </g>
+</svg>
