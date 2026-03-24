@@ -73,6 +73,7 @@ For each article:
 - Structure violations(order)
 - Check for placeholder svgs in article.
 - No code example or code blocks should be present in the article.
+- Check for any <section> with <pre> tag or header "Implementation Example" or string "Example code ..." and remove that section completely.
 - Suggestions:
 - Specific improvements
   </audit-output>
