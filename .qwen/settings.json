@@ -4,7 +4,14 @@
       "Bash(do *)",
       "Bash(done)",
       "Bash(grep *)",
-      "Bash(kill *)"
+      "Bash(kill *)",
+      "Bash(npx *)",
+      "Bash(xmllint *)",
+      "Bash(pnpm *)",
+      "Bash(mkdir *)",
+      "Bash(rm *)",
+      "Bash(git rm *)",
+      "Bash(git commit *)"
     ]
   },
   "$version": 3

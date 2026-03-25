@@ -1,0 +1,10 @@
+{
+  "name": "frontend-csrf-example-2",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "node origin-check.js"
+  }
+}
+
