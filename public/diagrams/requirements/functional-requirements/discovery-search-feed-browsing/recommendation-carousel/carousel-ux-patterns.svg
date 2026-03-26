@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Carousel UX Patterns</text>
+  
+  <!-- Horizontal Scroll (Top Left) -->
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Horizontal Scroll</text>
+  
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Scroll container -->
+  <rect x="55" y="125" width="150" height="85" rx="2" class="accent-box" stroke-width="1"/>
+  
+  <!-- Items with partial next -->
+  <rect x="65" y="135" width="50" height="65" rx="2" class="highlight-box" stroke-width="1.5"/>
+  <text x="90" y="165" text-anchor="middle" font-size="7" class="text-primary">Item 1</text>
+  
+  <rect x="120" y="135" width="50" height="65" rx="2" class="box-base" stroke-width="1"/>
+  <text x="145" y="165" text-anchor="middle" font-size="7" class="text-primary">Item 2</text>
+  
+  <rect x="175" y="135" width="25" height="65" rx="2" class="box-base" stroke-width="1" opacity="0.5"/>
+  <text x="187" y="165" text-anchor="middle" font-size="6" class="text-secondary">3</text>
+  
+  <text x="130" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Native gesture</text>
+  <text x="130" y="260" text-anchor="middle" font-size="9" class="text-secondary">Show partial next</text>
+  
+  <!-- Arrow Navigation (Top Center) -->
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Arrow Navigation</text>
+  
+  <rect x="280" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Carousel with arrows -->
+  <rect x="310" y="135" width="120" height="65" rx="2" class="accent-box" stroke-width="1"/>
+  
+  <!-- Left arrow -->
+  <circle cx="295" cy="167" r="12" class="highlight-box" stroke-width="1.5"/>
+  <text x="295" y="172" text-anchor="middle" font-size="10" class="text-primary">◀</text>
+  
+  <!-- Right arrow -->
+  <circle cx="445" cy="167" r="12" class="highlight-box" stroke-width="1.5"/>
+  <text x="445" y="172" text-anchor="middle" font-size="10" class="text-primary">▶</text>
+  
+  <text x="370" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Precise control</text>
+  <text x="370" y="260" text-anchor="middle" font-size="9" class="text-secondary">Desktop friendly</text>
+  
+  <!-- Reason Labels (Top Right) -->
+  <rect x="500" y="70" width="240" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Reason Labels</text>
+  
+  <rect x="520" y="110" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Label examples -->
+  <rect x="535" y="125" width="170" height="22" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="550" y="140" font-size="8" class="text-primary">Because you watched</text>
+  
+  <rect x="535" y="152" width="170" height="22" rx="2" class="box-base" stroke-width="1"/>
+  <text x="550" y="167" font-size="8" class="text-primary">Trending in Action</text>
+  
+  <rect x="535" y="179" width="170" height="22" rx="2" class="box-base" stroke-width="1"/>
+  <text x="550" y="194" font-size="8" class="text-primary">Similar to Inception</text>
+  
+  <rect x="535" y="206" width="170" height="22" rx="2" class="box-base" stroke-width="1"/>
+  <text x="550" y="221" font-size="8" class="text-primary">New Releases</text>
+  
+  <text x="620" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Transparency</text>
+  <text x="620" y="260" text-anchor="middle" font-size="9" class="text-secondary">Builds trust</text>
+  
+  <!-- Item Sizing (Bottom Left) -->
+  <rect x="20" y="260" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Item Sizing</text>
+  
+  <rect x="40" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Desktop sizing -->
+  <text x="55" y="320" font-size="9" font-weight="bold" class="text-primary">Desktop:</text>
+  <rect x="55" y="330" width="70" height="50" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="90" y="355" text-anchor="middle" font-size="7" class="text-primary">200-300px</text>
+  <text x="140" y="345" font-size="8" class="text-secondary">5-8 visible</text>
+  
+  <!-- Mobile sizing -->
+  <text x="55" y="395" font-size="9" font-weight="bold" class="text-primary">Mobile:</text>
+  <rect x="55" y="405" width="50" height="35" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="80" y="425" text-anchor="middle" font-size="6" class="text-primary">150-200px</text>
+  <text x="140" y="415" font-size="8" class="text-secondary">2-4 visible</text>
+  <text x="140" y="430" font-size="8" class="text-secondary">Partial next</text>
+  
+  <text x="170" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Responsive</text>
+  
+  <!-- Scroll Indicators (Bottom Center) -->
+  <rect x="340" y="260" width="320" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Scroll Indicators</text>
+  
+  <rect x="360" y="300" width="280" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Dots indicator -->
+  <text x="375" y="320" font-size="9" font-weight="bold" class="text-primary">Dots:</text>
+  <circle cx="430" cy="317" r="4" class="highlight-green"/>
+  <circle cx="445" cy="317" r="4" class="box-base" stroke-width="1"/>
+  <circle cx="460" cy="317" r="4" class="box-base" stroke-width="1"/>
+  <circle cx="475" cy="317" r="4" class="box-base" stroke-width="1"/>
+  <text x="500" y="320" font-size="8" class="text-secondary">Short carousels</text>
+  
+  <!-- Progress bar -->
+  <text x="375" y="350" font-size="9" font-weight="bold" class="text-primary">Progress:</text>
+  <rect x="450" y="342" width="100" height="6" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="450" y="342" width="40" height="6" rx="3" class="highlight-green"/>
+  <text x="500" y="350" font-size="8" class="text-secondary">Position indicator</text>
+  
+  <!-- Partial item -->
+  <text x="375" y="380" font-size="9" font-weight="bold" class="text-primary">Partial Next:</text>
+  <rect x="470" y="367" width="60" height="25" rx="2" class="accent-box" stroke-width="1"/>
+  <rect x="535" y="367" width="20" height="25" rx="2" class="box-base" stroke-width="1" opacity="0.5"/>
+  <text x="500" y="380" font-size="8" class="text-secondary">Best indicator</text>
+  
+  <text x="500" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Discoverability</text>
+  
+  <!-- Loading States (Bottom Right) -->
+  <rect x="680" y="260" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="830" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Loading States</text>
+  
+  <rect x="700" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Skeleton loader -->
+  <text x="715" y="320" font-size="9" font-weight="bold" class="text-primary">Skeleton:</text>
+  <rect x="715" y="330" width="50" height="35" rx="2" class="box-base" stroke-width="1">
+    <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite"/>
+  </rect>
+  <rect x="770" y="330" width="50" height="35" rx="2" class="box-base" stroke-width="1">
+    <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite" begin="0.2s"/>
+  </rect>
+  <rect x="825" y="330" width="50" height="35" rx="2" class="box-base" stroke-width="1">
+    <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite" begin="0.4s"/>
+  </rect>
+  <text x="830" y="380" text-anchor="middle" font-size="8" class="text-secondary">Prevents layout shift</text>
+  
+  <!-- Spinner -->
+  <text x="715" y="400" font-size="9" font-weight="bold" class="text-primary">Spinner:</text>
+  <circle cx="750" cy="410" r="10" class="highlight-box" stroke-width="2" fill="none">
+    <animateTransform attributeName="transform" type="rotate" from="0 750 410" to="360 750 410" dur="1s" repeatCount="indefinite"/>
+  </circle>
+  <text x="830" y="415" text-anchor="middle" font-size="8" class="text-secondary">Initial load</text>
+  
+  <text x="830" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Perceived perf</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

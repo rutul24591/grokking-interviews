@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="500" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Trending Computation Architecture</text>
+  
+  <!-- Engagement Events (Top Left) -->
+  <rect x="20" y="70" width="180" height="100" rx="5" class="box-base" stroke-width="2"/>
+  <text x="110" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Engagement Events</text>
+  
+  <rect x="40" y="110" width="140" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="55" y="130" font-size="9" class="text-primary">• Likes</text>
+  <text x="55" y="148" font-size="9" class="text-primary">• Shares</text>
+  
+  <rect x="40" y="160" width="140" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="55" y="180" font-size="9" class="text-primary">• Comments</text>
+  <text x="55" y="198" font-size="9" class="text-primary">• Views</text>
+  
+  <!-- Arrow to Kafka -->
+  <line x1="200" y1="120" x2="240" y2="120" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Kafka Stream (Top Center Left) -->
+  <rect x="240" y="70" width="180" height="100" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="330" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Kafka Stream</text>
+  
+  <rect x="260" y="110" width="140" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="275" y="130" font-size="9" class="text-primary">engagement_events</text>
+  <text x="275" y="148" font-size="9" class="text-secondary">1M+ events/sec</text>
+  
+  <!-- Arrow to Stream Processing -->
+  <line x1="420" y1="120" x2="460" y2="120" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Stream Processing (Top Center) -->
+  <rect x="460" y="70" width="200" height="100" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="560" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Stream Processing</text>
+  
+  <rect x="480" y="110" width="160" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="495" y="130" font-size="9" class="text-primary">Flink / Spark</text>
+  <text x="495" y="148" font-size="9" class="text-secondary">Sliding windows</text>
+  
+  <!-- Arrow to Windowing -->
+  <line x1="660" y1="120" x2="700" y2="120" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Windowing (Top Center Right) -->
+  <rect x="700" y="70" width="180" height="100" rx="5" class="box-base" stroke-width="2"/>
+  <text x="790" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Sliding Windows</text>
+  
+  <rect x="720" y="110" width="140" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="735" y="130" font-size="9" class="text-primary">1h, 6h, 24h</text>
+  <text x="735" y="148" font-size="9" class="text-secondary">Update every 5 min</text>
+  
+  <!-- Arrow down to Score -->
+  <line x1="790" y1="170" x2="790" y2="210" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Score Computation (Middle Right) -->
+  <rect x="680" y="210" width="220" height="120" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="790" y="235" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Score Computation</text>
+  
+  <rect x="700" y="250" width="180" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="715" y="270" font-size="9" class="text-primary" font-family="monospace">score = velocity ×</text>
+  <text x="715" y="288" font-size="9" class="text-primary" font-family="monospace">log(volume) / decay</text>
+  <text x="715" y="306" font-size="9" class="highlight-green">Per geo segment</text>
+  
+  <!-- Arrow to Top-K -->
+  <line x1="680" y1="270" x2="640" y2="270" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Top-K Selection (Middle Center) -->
+  <rect x="460" y="210" width="180" height="120" rx="5" class="box-base" stroke-width="2"/>
+  <text x="550" y="235" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Top-K Selection</text>
+  
+  <rect x="480" y="250" width="140" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="495" y="270" font-size="9" class="text-primary">Select top 50-100</text>
+  <text x="495" y="288" font-size="9" class="text-primary">Per category</text>
+  <text x="495" y="306" font-size="9" class="text-secondary">Per location</text>
+  
+  <!-- Arrow to Cache -->
+  <line x1="460" y1="270" x2="420" y2="270" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Redis Cache (Middle Left) -->
+  <rect x="240" y="210" width="180" height="120" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="330" y="235" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Redis Cache</text>
+  
+  <rect x="260" y="250" width="140" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="275" y="270" font-size="9" class="text-primary" font-family="monospace">Sorted Sets</text>
+  <text x="275" y="288" font-size="9" class="text-secondary">TTL: 15 min</text>
+  <text x="275" y="306" font-size="9" class="highlight-green">&lt;10ms access</text>
+  
+  <!-- Arrow to API -->
+  <line x1="240" y1="270" x2="200" y2="270" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Trending API (Far Left Middle) -->
+  <rect x="20" y="210" width="180" height="120" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="110" y="235" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Trending API</text>
+  
+  <rect x="40" y="250" width="140" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="55" y="270" font-size="9" class="text-secondary">GET /trending</text>
+  <text x="55" y="288" font-size="9" class="text-secondary">?country=US</text>
+  <text x="55" y="306" font-size="9" class="highlight-green">&lt;50ms latency</text>
+  
+  <!-- Batch Recompute (Bottom Left) -->
+  <rect x="20" y="350" width="300" height="130" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="375" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Batch Recompute</text>
+  
+  <rect x="40" y="390" width="260" height="75" rx="3" class="box-base" stroke-width="1"/>
+  <text x="55" y="410" font-size="9" class="text-primary">• Full recomputation</text>
+  <text x="55" y="428" font-size="9" class="text-primary">• Every 1-2 hours</text>
+  <text x="55" y="446" font-size="9" class="text-primary">• Corrects drift</text>
+  <text x="180" y="410" font-size="9" class="highlight-purple">~30 min runtime</text>
+  
+  <!-- Incremental Update (Bottom Center) -->
+  <rect x="340" y="350" width="320" height="130" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="375" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Incremental Updates</text>
+  
+  <rect x="360" y="390" width="280" height="75" rx="3" class="box-base" stroke-width="1"/>
+  <text x="375" y="410" font-size="9" class="text-primary">• Every 5-15 minutes</text>
+  <text x="375" y="428" font-size="9" class="text-primary">• Only changed items</text>
+  <text x="375" y="446" font-size="9" class="text-primary">• Low latency update</text>
+  <text x="550" y="410" font-size="9" class="highlight-green">~2 min runtime</text>
+  
+  <!-- Geographic Segmentation (Bottom Right) -->
+  <rect x="680" y="350" width="300" height="130" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="830" y="375" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Geographic Segments</text>
+  
+  <rect x="700" y="390" width="260" height="75" rx="3" class="box-base" stroke-width="1"/>
+  <text x="715" y="410" font-size="9" class="text-primary">• Country-level (default)</text>
+  <text x="715" y="428" font-size="9" class="text-primary">• Region/State</text>
+  <text x="715" y="446" font-size="9" class="text-primary">• City-level (optional)</text>
+  <text x="850" y="410" font-size="9" class="highlight-purple">100-200 countries</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

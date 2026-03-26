@@ -1,0 +1,167 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Mobile Navigation Patterns</text>
+  
+  <!-- Off-Canvas Drawer (Top Left) -->
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Off-Canvas Drawer</text>
+  
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Phone mock with drawer -->
+  <rect x="55" y="125" width="150" height="85" rx="3" class="accent-box" stroke-width="1"/>
+  
+  <!-- Drawer sliding in -->
+  <rect x="55" y="125" width="100" height="85" rx="3" class="highlight-box" stroke-width="1.5"/>
+  <text x="70" y="145" font-size="8" font-weight="bold" class="text-primary">☰ Menu</text>
+  <text x="70" y="165" font-size="7" class="text-primary">• Electronics</text>
+  <text x="70" y="180" font-size="7" class="text-primary">• Fashion</text>
+  <text x="70" y="195" font-size="7" class="text-primary">• Home</text>
+  
+  <!-- Main content area -->
+  <rect x="155" y="125" width="50" height="85" rx="2" class="box-base" stroke-width="1"/>
+  <text x="180" y="165" text-anchor="middle" font-size="7" class="text-secondary">Content</text>
+  
+  <text x="130" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Maximizes content</text>
+  <text x="130" y="260" text-anchor="middle" font-size="9" class="text-secondary">Standard pattern</text>
+  
+  <!-- Accordion (Top Center) -->
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Accordion</text>
+  
+  <rect x="280" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Accordion items -->
+  <rect x="295" y="125" width="150" height="25" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="310" y="142" font-size="8" class="text-primary">▼ Electronics</text>
+  
+  <rect x="310" y="153" width="135" height="20" rx="1" class="box-base" stroke-width="1"/>
+  <text x="325" y="167" font-size="7" class="text-primary">Phones</text>
+  
+  <rect x="310" y="176" width="135" height="20" rx="1" class="box-base" stroke-width="1"/>
+  <text x="325" y="190" font-size="7" class="text-primary">Laptops</text>
+  
+  <rect x="295" y="199" width="150" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="310" y="216" font-size="8" class="text-primary">▶ Fashion</text>
+  
+  <text x="370" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ One level at a time</text>
+  <text x="370" y="260" text-anchor="middle" font-size="9" class="text-secondary">Prevents overwhelm</text>
+  
+  <!-- Bottom Navigation (Top Right) -->
+  <rect x="500" y="70" width="240" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Bottom Navigation</text>
+  
+  <rect x="520" y="110" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Phone mock -->
+  <rect x="535" y="125" width="170" height="85" rx="2" class="accent-box" stroke-width="1"/>
+  
+  <!-- Content area -->
+  <rect x="545" y="135" width="150" height="50" rx="1" class="box-base" stroke-width="1"/>
+  <text x="620" y="160" text-anchor="middle" font-size="7" class="text-secondary">Content Area</text>
+  
+  <!-- Bottom nav bar -->
+  <rect x="545" y="190" width="150" height="20" rx="2" class="highlight-box" stroke-width="1.5"/>
+  <text x="560" y="204" font-size="7" class="text-primary">🏠</text>
+  <text x="580" y="204" font-size="7" class="text-primary">📂</text>
+  <text x="600" y="204" font-size="7" class="text-primary">🔍</text>
+  <text x="620" y="204" font-size="7" class="text-primary">👤</text>
+  <text x="640" y="204" font-size="7" class="text-primary">⚙️</text>
+  
+  <text x="620" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Quick access</text>
+  <text x="620" y="260" text-anchor="middle" font-size="9" class="text-secondary">Top 5 categories</text>
+  
+  <!-- Gesture Support (Bottom Left) -->
+  <rect x="20" y="260" width="300" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="170" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Gesture Support</text>
+  
+  <rect x="40" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Gesture examples -->
+  <rect x="55" y="315" width="110" height="40" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="110" y="335" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Swipe Right</text>
+  <text x="110" y="350" text-anchor="middle" font-size="7" class="text-secondary">Open drawer</text>
+  
+  <rect x="175" y="315" width="110" height="40" rx="2" class="box-base" stroke-width="1"/>
+  <text x="230" y="335" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Swipe Left</text>
+  <text x="230" y="350" text-anchor="middle" font-size="7" class="text-secondary">Close drawer</text>
+  
+  <rect x="55" y="365" width="230" height="40" rx="2" class="box-base" stroke-width="1"/>
+  <text x="170" y="385" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Pull Down</text>
+  <text x="170" y="400" text-anchor="middle" font-size="7" class="text-secondary">Refresh category content</text>
+  
+  <text x="170" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Intuitive interaction</text>
+  
+  <!-- Touch Targets (Bottom Center) -->
+  <rect x="340" y="260" width="320" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="500" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Touch Targets</text>
+  
+  <rect x="360" y="300" width="280" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Touch target examples -->
+  <rect x="375" y="315" width="120" height="44" rx="2" class="accent-box" stroke-width="1.5"/>
+  <text x="435" y="340" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">44px min</text>
+  <text x="435" y="355" text-anchor="middle" font-size="7" class="highlight-green">✓ Accessible</text>
+  
+  <rect x="505" y="315" width="120" height="30" rx="2" class="box-base" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="565" y="333" text-anchor="middle" font-size="7" class="text-secondary">30px</text>
+  <text x="565" y="348" text-anchor="middle" font-size="7" class="highlight-red">⚠ Too small</text>
+  
+  <text x="500" y="385" text-anchor="middle" font-size="9" class="text-primary">WCAG requirement:</text>
+  <text x="500" y="405" text-anchor="middle" font-size="8" class="text-secondary">Minimum 44×44px tap target</text>
+  
+  <!-- Comparison (Bottom Right) -->
+  <rect x="680" y="260" width="300" height="170" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="830" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Pattern Comparison</text>
+  
+  <rect x="700" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Comparison rows -->
+  <text x="715" y="325" font-size="9" class="text-primary">Off-Canvas:</text>
+  <text x="800" y="325" font-size="8" class="highlight-green">Most common</text>
+  
+  <text x="715" y="345" font-size="9" class="text-primary">Accordion:</text>
+  <text x="800" y="345" font-size="8" class="highlight-green">Deep hierarchies</text>
+  
+  <text x="715" y="365" font-size="9" class="text-primary">Bottom Nav:</text>
+  <text x="800" y="365" font-size="8" class="highlight-purple">Top categories</text>
+  
+  <text x="715" y="390" font-size="9" font-weight="bold" class="text-primary">Best Practice:</text>
+  <text x="715" y="410" font-size="8" class="text-secondary">Combine patterns:</text>
+  <text x="715" y="425" font-size="8" class="text-secondary">Drawer + Bottom Nav</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

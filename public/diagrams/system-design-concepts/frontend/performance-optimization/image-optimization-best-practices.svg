@@ -1,0 +1,107 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: var(--bg-primary, #ffffff); }
+      .card { fill: var(--bg-panel, #f8fafc); }
+      .text { fill: var(--text-primary, #1e293b); }
+      .text-muted { fill: var(--text-muted, #64748b); }
+      .border { stroke: var(--border-color, #e2e8f0); }
+      .accent { fill: var(--accent-color, #3b82f6); }
+      .success { fill: var(--success-color, #22c55e); }
+      .warning { fill: var(--warning-color, #f59e0b); }
+      .danger { fill: var(--danger-color, #ef4444); }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect class="bg" width="800" height="500" rx="8"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" class="text" font-size="18" font-weight="bold">Image Optimization Best Practices</text>
+  
+  <!-- Format Selection Column -->
+  <rect x="40" y="70" width="220" height="180" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="150" y="100" text-anchor="middle" class="text" font-size="14" font-weight="bold">Format Selection</text>
+  
+  <line x1="60" y1="115" x2="240" y2="115" class="border" stroke-width="1"/>
+  
+  <text x="60" y="140" class="success" font-size="11">✓ AVIF for photos</text>
+  <text x="60" y="160" class="text-muted" font-size="9">Best compression (40-50%)</text>
+  
+  <text x="60" y="185" class="success" font-size="11">✓ WebP as default</text>
+  <text x="60" y="205" class="text-muted" font-size="9">97% support, fast encode</text>
+  
+  <text x="60" y="230" class="success" font-size="11">✓ PNG for transparency</text>
+  <text x="60" y="250" class="text-muted" font-size="9">Sharp edges, logos</text>
+  
+  <!-- Size Optimization Column -->
+  <rect x="290" y="70" width="220" height="180" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="400" y="100" text-anchor="middle" class="text" font-size="14" font-weight="bold">Size Optimization</text>
+  
+  <line x1="310" y1="115" x2="490" y2="115" class="border" stroke-width="1"/>
+  
+  <text x="310" y="140" class="success" font-size="11">✓ Serve exact dimensions</text>
+  <text x="310" y="160" class="text-muted" font-size="9">Generate 4-5 sizes</text>
+  
+  <text x="310" y="185" class="success" font-size="11">✓ Set sizes attribute</text>
+  <text x="310" y="205" class="text-muted" font-size="9">Describe layout to browser</text>
+  
+  <text x="310" y="230" class="success" font-size="11">✓ Compress aggressively</text>
+  <text x="310" y="250" class="text-muted" font-size="9">Quality 75-80 (40-60% smaller)</text>
+  
+  <!-- Loading Strategy Column -->
+  <rect x="540" y="70" width="220" height="180" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="650" y="100" text-anchor="middle" class="text" font-size="14" font-weight="bold">Loading Strategy</text>
+  
+  <line x1="560" y1="115" x2="740" y2="115" class="border" stroke-width="1"/>
+  
+  <text x="560" y="140" class="danger" font-size="11">✗ Never lazy-load LCP</text>
+  <text x="560" y="160" class="text-muted" font-size="9">Use fetchPriority="high"</text>
+  
+  <text x="560" y="185" class="success" font-size="11">✓ Lazy load below-fold</text>
+  <text x="560" y="205" class="text-muted" font-size="9">loading="lazy" attribute</text>
+  
+  <text x="560" y="230" class="success" font-size="11">✓ Use blur placeholders</text>
+  <text x="560" y="250" class="text-muted" font-size="9">20x15px base64 thumbnails</text>
+  
+  <!-- CLS Prevention Column -->
+  <rect x="40" y="280" width="220" height="140" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="150" y="310" text-anchor="middle" class="text" font-size="14" font-weight="bold">CLS Prevention</text>
+  
+  <line x1="60" y1="325" x2="240" y2="325" class="border" stroke-width="1"/>
+  
+  <text x="60" y="350" class="success" font-size="11">✓ Set width/height</text>
+  <text x="60" y="370" class="text-muted" font-size="9">Reserves aspect ratio space</text>
+  
+  <text x="60" y="395" class="success" font-size="11">✓ Use aspect-ratio CSS</text>
+  <text x="60" y="415" class="text-muted" font-size="9">For responsive images</text>
+  
+  <!-- Cache Headers Column -->
+  <rect x="290" y="280" width="220" height="140" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="400" y="310" text-anchor="middle" class="text" font-size="14" font-weight="bold">Cache Headers</text>
+  
+  <line x1="310" y1="325" x2="490" y2="325" class="border" stroke-width="1"/>
+  
+  <text x="310" y="350" class="success" font-size="11">✓ Aggressive caching</text>
+  <text x="310" y="370" class="text-muted" font-size="9">max-age=31536000</text>
+  
+  <text x="310" y="395" class="success" font-size="11">✓ Content-hashed URLs</text>
+  <text x="310" y="415" class="text-muted" font-size="9">immutable flag</text>
+  
+  <!-- CDN Column -->
+  <rect x="540" y="280" width="220" height="140" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="650" y="310" text-anchor="middle" class="text" font-size="14" font-weight="bold">CDN Usage</text>
+  
+  <line x1="560" y1="325" x2="740" y2="325" class="border" stroke-width="1"/>
+  
+  <text x="560" y="350" class="success" font-size="11">✓ Use image CDN</text>
+  <text x="560" y="370" class="text-muted" font-size="9">Cloudinary, Imgix, Cloudflare</text>
+  
+  <text x="560" y="395" class="success" font-size="11">✓ Edge caching</text>
+  <text x="560" y="415" class="text-muted" font-size="9">Global delivery, low latency</text>
+  
+  <!-- Key Insight -->
+  <rect x="180" y="435" width="440" height="50" class="card" rx="6" stroke="var(--accent-color, #3b82f6)" stroke-width="2"/>
+  <text x="400" y="460" text-anchor="middle" class="accent" font-size="12" font-weight="bold">Key Insight: Format + Size + Loading Strategy = 60-80% weight reduction</text>
+  <text x="400" y="480" text-anchor="middle" class="text-muted" font-size="10">AVIF/WebP (40-50%) + Responsive sizes (30-40%) + Lazy loading (20-30%)</text>
+</svg>

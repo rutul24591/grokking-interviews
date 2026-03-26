@@ -1,0 +1,70 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <rect fill="#ffffff" width="800" height="500" rx="8"/>
+  <text x="400" y="35" text-anchor="middle" fill="#1e293b" font-size="18" font-weight="bold">Bundle Optimization Strategies</text>
+  
+  <!-- Analysis Column -->
+  <rect x="40" y="70" width="220" height="140" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="150" y="100" text-anchor="middle" fill="#1e293b" font-size="13" font-weight="bold">Analysis</text>
+  <line x1="60" y1="115" x2="240" y2="115" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="60" y="140" fill="#22c55e" font-size="11">Run analyzer every build</text>
+  <text x="60" y="160" fill="#64748b" font-size="9">webpack-bundle-analyzer</text>
+  <text x="60" y="185" fill="#22c55e" font-size="11">Track trends over time</text>
+  <text x="60" y="205" fill="#64748b" font-size="9">Store size reports</text>
+  
+  <!-- Budgets Column -->
+  <rect x="290" y="70" width="220" height="140" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="400" y="100" text-anchor="middle" fill="#1e293b" font-size="13" font-weight="bold">Budgets</text>
+  <line x1="310" y1="115" x2="490" y2="115" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="310" y="140" fill="#22c55e" font-size="11">Set realistic budgets</text>
+  <text x="310" y="160" fill="#64748b" font-size="9">Current or -20%</text>
+  <text x="310" y="185" fill="#22c55e" font-size="11">Enforce in CI/CD</text>
+  <text x="310" y="205" fill="#64748b" font-size="9">bundlewatch, Lighthouse CI</text>
+  
+  <!-- Code Organization Column -->
+  <rect x="540" y="70" width="220" height="140" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="650" y="100" text-anchor="middle" fill="#1e293b" font-size="13" font-weight="bold">Code Organization</text>
+  <line x1="560" y1="115" x2="740" y2="115" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="560" y="140" fill="#22c55e" font-size="11">Route-based splitting</text>
+  <text x="560" y="160" fill="#64748b" font-size="9">React.lazy, Next.js</text>
+  <text x="560" y="185" fill="#22c55e" font-size="11">Lazy-load heavy components</text>
+  <text x="560" y="205" fill="#64748b" font-size="9">Charts, maps, editors</text>
+  
+  <!-- Dependencies Column -->
+  <rect x="40" y="240" width="220" height="140" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="150" y="270" text-anchor="middle" fill="#1e293b" font-size="13" font-weight="bold">Dependencies</text>
+  <line x1="60" y1="285" x2="240" y2="285" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="60" y="310" fill="#22c55e" font-size="11">Audit quarterly</text>
+  <text x="60" y="330" fill="#64748b" font-size="9">Remove unused deps</text>
+  <text x="60" y="355" fill="#22c55e" font-size="11">Check size before install</text>
+  <text x="60" y="375" fill="#64748b" font-size="9">BundlePhobia</text>
+  
+  <!-- Monitoring Column -->
+  <rect x="290" y="240" width="220" height="140" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="400" y="270" text-anchor="middle" fill="#1e293b" font-size="13" font-weight="bold">Monitoring</text>
+  <line x1="310" y1="285" x2="490" y2="285" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="310" y="310" fill="#22c55e" font-size="11">Track production sizes</text>
+  <text x="310" y="330" fill="#64748b" font-size="9">RUM, download times</text>
+  <text x="310" y="355" fill="#22c55e" font-size="11">Alert on degradation</text>
+  <text x="310" y="375" fill="#64748b" font-size="9">Performance monitoring</text>
+  
+  <!-- Review Column -->
+  <rect x="540" y="240" width="220" height="140" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="650" y="270" text-anchor="middle" fill="#1e293b" font-size="13" font-weight="bold">Code Review</text>
+  <line x1="560" y1="285" x2="740" y2="285" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="560" y="310" fill="#22c55e" font-size="11">Include bundle impact</text>
+  <text x="560" y="330" fill="#64748b" font-size="9">Review size changes</text>
+  <text x="560" y="355" fill="#22c55e" font-size="11">Require justification</text>
+  <text x="560" y="375" fill="#64748b" font-size="9">For budget exceptions</text>
+  
+  <!-- Expected Results -->
+  <rect x="40" y="400" width="340" height="80" fill="#f8fafc" rx="6" stroke="#22c55e" stroke-width="2"/>
+  <text x="210" y="430" text-anchor="middle" fill="#22c55e" font-size="13" font-weight="bold">Expected Results</text>
+  <text x="210" y="455" text-anchor="middle" fill="#64748b" font-size="11">Bundle reduction: 50-80%</text>
+  <text x="210" y="475" text-anchor="middle" fill="#64748b" font-size="11">Initial load: 60-70% faster</text>
+  
+  <!-- Key Practices -->
+  <rect x="420" y="400" width="340" height="80" fill="#f8fafc" rx="6" stroke="#3b82f6" stroke-width="2"/>
+  <text x="590" y="430" text-anchor="middle" fill="#3b82f6" font-size="13" font-weight="bold">Key Practices</text>
+  <text x="590" y="455" text-anchor="middle" fill="#64748b" font-size="11">Automate enforcement</text>
+  <text x="590" y="475" text-anchor="middle" fill="#64748b" font-size="11">Measure before optimizing</text>
+</svg>

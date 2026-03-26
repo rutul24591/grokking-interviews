@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="500" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Explore Page Architecture</text>
+  
+  <!-- Content Sources (Top) -->
+  <rect x="20" y="70" width="960" height="120" rx="5" class="box-base" stroke-width="2"/>
+  <text x="500" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Content Sources</text>
+  
+  <!-- Trending Service -->
+  <rect x="50" y="110" width="180" height="65" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="140" y="135" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Trending Service</text>
+  <text x="140" y="155" text-anchor="middle" font-size="9" class="text-secondary">Real-time velocity</text>
+  <text x="140" y="170" text-anchor="middle" font-size="9" class="text-secondary">Top 50 topics</text>
+  
+  <!-- Curation CMS -->
+  <rect x="250" y="110" width="180" height="65" rx="3" class="box-base" stroke-width="1.5"/>
+  <text x="340" y="135" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Curation CMS</text>
+  <text x="340" y="155" text-anchor="middle" font-size="9" class="text-secondary">Editor collections</text>
+  <text x="340" y="170" text-anchor="middle" font-size="9" class="text-secondary">Scheduled launches</text>
+  
+  <!-- Recommendation Service -->
+  <rect x="450" y="110" width="180" height="65" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="540" y="135" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Recommendation Service</text>
+  <text x="540" y="155" text-anchor="middle" font-size="9" class="text-secondary">Collaborative filtering</text>
+  <text x="540" y="170" text-anchor="middle" font-size="9" class="text-secondary">Personalized recs</text>
+  
+  <!-- Topic Graph -->
+  <rect x="650" y="110" width="180" height="65" rx="3" class="box-base" stroke-width="1.5"/>
+  <text x="740" y="135" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Topic Graph</text>
+  <text x="740" y="155" text-anchor="middle" font-size="9" class="text-secondary">Topic relationships</text>
+  <text x="740" y="170" text-anchor="middle" font-size="9" class="text-secondary">Related topics</text>
+  
+  <!-- Arrow to Ranking Pipeline -->
+  <line x1="500" y1="190" x2="500" y2="230" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Ranking Pipeline (Center) -->
+  <rect x="200" y="230" width="600" height="140" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="500" y="255" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Ranking Pipeline</text>
+  
+  <!-- Step 1: Candidate Generation -->
+  <rect x="230" y="270" width="100" height="80" rx="3" class="box-base" stroke-width="1"/>
+  <text x="280" y="295" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">1. Candidates</text>
+  <text x="280" y="315" text-anchor="middle" font-size="9" class="text-secondary">~500 total</text>
+  <text x="280" y="335" text-anchor="middle" font-size="9" class="text-secondary">Merge sources</text>
+  
+  <!-- Arrow -->
+  <line x1="330" y1="310" x2="350" y2="310" class="arrow" stroke-width="2"/>
+  
+  <!-- Step 2: Scoring -->
+  <rect x="350" y="270" width="100" height="80" rx="3" class="box-base" stroke-width="1"/>
+  <text x="400" y="295" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">2. Scoring</text>
+  <text x="400" y="315" text-anchor="middle" font-size="9" class="text-secondary">ML model</text>
+  <text x="400" y="335" text-anchor="middle" font-size="9" class="text-secondary">Relevance score</text>
+  
+  <!-- Arrow -->
+  <line x1="450" y1="310" x2="470" y2="310" class="arrow" stroke-width="2"/>
+  
+  <!-- Step 3: Re-Ranking -->
+  <rect x="470" y="270" width="100" height="80" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="520" y="295" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">3. Re-Rank</text>
+  <text x="520" y="315" text-anchor="middle" font-size="9" class="text-secondary">Diversity</text>
+  <text x="520" y="335" text-anchor="middle" font-size="9" class="text-secondary">Business rules</text>
+  
+  <!-- Arrow -->
+  <line x1="570" y1="310" x2="590" y2="310" class="arrow" stroke-width="2"/>
+  
+  <!-- Step 4: Section Assignment -->
+  <rect x="590" y="270" width="100" height="80" rx="3" class="box-base" stroke-width="1"/>
+  <text x="640" y="295" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">4. Sections</text>
+  <text x="640" y="315" text-anchor="middle" font-size="9" class="text-secondary">Assign to</text>
+  <text x="640" y="335" text-anchor="middle" font-size="9" class="text-secondary">explore sections</text>
+  
+  <!-- Arrow to Display -->
+  <line x1="500" y1="370" x2="500" y2="410" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Display Sections (Bottom) -->
+  <rect x="20" y="410" width="960" height="70" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="500" y="435" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Explore Page Display</text>
+  
+  <!-- Section 1 -->
+  <rect x="50" y="445" width="120" height="25" rx="3" class="box-base" stroke-width="1"/>
+  <text x="110" y="462" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Trending</text>
+  
+  <!-- Section 2 -->
+  <rect x="180" y="445" width="120" height="25" rx="3" class="box-base" stroke-width="1"/>
+  <text x="240" y="462" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">For You</text>
+  
+  <!-- Section 3 -->
+  <rect x="310" y="445" width="120" height="25" rx="3" class="box-base" stroke-width="1"/>
+  <text x="370" y="462" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Collections</text>
+  
+  <!-- Section 4 -->
+  <rect x="440" y="445" width="120" height="25" rx="3" class="box-base" stroke-width="1"/>
+  <text x="500" y="462" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Topics to Follow</text>
+  
+  <!-- Section 5 -->
+  <rect x="570" y="445" width="120" height="25" rx="3" class="box-base" stroke-width="1"/>
+  <text x="630" y="462" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">New &amp; Noteworthy</text>
+  
+  <!-- Section 6 -->
+  <rect x="700" y="445" width="120" height="25" rx="3" class="box-base" stroke-width="1"/>
+  <text x="760" y="462" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Because You Followed</text>
+  
+  <!-- User Context (Left Side) -->
+  <rect x="20" y="230" width="160" height="140" rx="5" class="box-base" stroke-width="2"/>
+  <text x="100" y="255" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">User Context</text>
+  
+  <rect x="40" y="270" width="120" height="85" rx="3" class="box-base" stroke-width="1"/>
+  <text x="55" y="290" font-size="9" class="text-primary">• Followed topics</text>
+  <text x="55" y="308" font-size="9" class="text-primary">• Engagement history</text>
+  <text x="55" y="326" font-size="9" class="text-primary">• Location</text>
+  <text x="55" y="344" font-size="9" class="text-primary">• Device type</text>
+  
+  <!-- Real-time Updates (Right Side) -->
+  <rect x="820" y="230" width="160" height="140" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="900" y="255" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Real-time Updates</text>
+  
+  <rect x="840" y="270" width="120" height="85" rx="3" class="box-base" stroke-width="1"/>
+  <text x="855" y="290" font-size="9" class="text-primary">• Trending refresh</text>
+  <text x="855" y="308" font-size="9" class="text-primary">Every 5-15 min</text>
+  <text x="855" y="326" font-size="9" class="text-primary">• Personalization</text>
+  <text x="855" y="344" font-size="9" class="text-primary">Real-time updates</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

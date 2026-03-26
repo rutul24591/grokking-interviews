@@ -1,0 +1,106 @@
+<svg viewBox="0 0 900 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Minification Best Practices</title>
+  <desc id="desc">Comprehensive checklist for minification including bundler configuration, source maps, CSS/HTML minification, and monitoring strategies</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="700" fill="#ffffff" rx="8"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" fill="#1e293b" font-size="18" font-weight="bold">Minification Best Practices</text>
+  <text x="450" y="55" text-anchor="middle" fill="#64748b" font-size="12">Bundler Config, Source Maps, CSS/HTML, and Monitoring</text>
+  
+  <!-- Bundler Configuration Section -->
+  <rect x="30" y="80" width="400" height="180" fill="#f0fdf4" rx="6" stroke="#22c55e" stroke-width="2"/>
+  <text x="230" y="110" text-anchor="middle" fill="#16a34a" font-size="14" font-weight="bold">1. Bundler Configuration</text>
+  
+  <!-- Bundler Config Items -->
+  <rect x="50" y="125" width="360" height="125" fill="#ffffff" rx="4" stroke="#e2e8f0" stroke-width="1"/>
+  
+  <text x="70" y="150" fill="#1e293b" font-size="11" font-weight="bold">✓ Enable in Production Only</text>
+  <text x="70" y="168" fill="#64748b" font-size="10">webpack: optimization.minimize: true (production)</text>
+  <text x="70" y="183" fill="#64748b" font-size="10">vite: build.minify: true</text>
+  
+  <text x="70" y="205" fill="#1e293b" font-size="11" font-weight="bold">✓ Configure Terser/Esbuild</text>
+  <text x="70" y="223" fill="#64748b" font-size="10">Terser: compress: { drop_console: true }</text>
+  <text x="70" y="238" fill="#64748b" font-size="10">mangle: { reserved: ['externalAPI'] }</text>
+  
+  <!-- Source Maps Section -->
+  <rect x="470" y="80" width="400" height="180" fill="#eff6ff" rx="6" stroke="#3b82f6" stroke-width="2"/>
+  <text x="670" y="110" text-anchor="middle" fill="#2563eb" font-size="14" font-weight="bold">2. Source Maps Strategy</text>
+  
+  <!-- Source Maps Items -->
+  <rect x="490" y="125" width="360" height="125" fill="#ffffff" rx="4" stroke="#e2e8f0" stroke-width="1"/>
+  
+  <text x="510" y="150" fill="#1e293b" font-size="11" font-weight="bold">✓ Generate Source Maps</text>
+  <text x="510" y="168" fill="#64748b" font-size="10">webpack: devtool: 'source-map' or 'hidden-source-map'</text>
+  <text x="510" y="183" fill="#64748b" font-size="10">vite: build.sourcemap: true</text>
+  
+  <text x="510" y="205" fill="#1e293b" font-size="11" font-weight="bold">✓ Secure Source Maps</text>
+  <text x="510" y="223" fill="#64748b" font-size="10">Don't deploy .map to production CDN</text>
+  <text x="510" y="238" fill="#64748b" font-size="10">Upload to Sentry/Datadog privately</text>
+  
+  <!-- CSS Minification Section -->
+  <rect x="30" y="280" width="400" height="180" fill="#fef3c7" rx="6" stroke="#f59e0b" stroke-width="2"/>
+  <text x="230" y="310" text-anchor="middle" fill="#d97706" font-size="14" font-weight="bold">3. CSS &amp; HTML Minification</text>
+  
+  <!-- CSS Minification Items -->
+  <rect x="50" y="325" width="360" height="125" fill="#ffffff" rx="4" stroke="#e2e8f0" stroke-width="1"/>
+  
+  <text x="70" y="350" fill="#1e293b" font-size="11" font-weight="bold">✓ CSS Minification</text>
+  <text x="70" y="368" fill="#64748b" font-size="10">cssnano, lightningcss, esbuild --minify</text>
+  <text x="70" y="383" fill="#64748b" font-size="10">Remove comments, whitespace, unused rules</text>
+  
+  <text x="70" y="405" fill="#1e293b" font-size="11" font-weight="bold">✓ HTML Minification</text>
+  <text x="70" y="423" fill="#64748b" font-size="10">html-minifier-terser: collapseWhitespace</text>
+  <text x="70" y="438" fill="#64748b" font-size="10">removeComments, minifyCSS, minifyJS</text>
+  
+  <!-- Monitoring Section -->
+  <rect x="470" y="280" width="400" height="180" fill="#f3e8ff" rx="6" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="670" y="310" text-anchor="middle" fill="#7c3aed" font-size="14" font-weight="bold">4. Monitoring &amp; Validation</text>
+  
+  <!-- Monitoring Items -->
+  <rect x="490" y="325" width="360" height="125" fill="#ffffff" rx="4" stroke="#e2e8f0" stroke-width="1"/>
+  
+  <text x="510" y="350" fill="#1e293b" font-size="11" font-weight="bold">✓ Track Minification Ratio</text>
+  <text x="510" y="368" fill="#64748b" font-size="10">Expected: 30-60% reduction for JS</text>
+  <text x="510" y="383" fill="#64748b" font-size="10">Alert on significant deviations</text>
+  
+  <text x="510" y="405" fill="#1e293b" font-size="11" font-weight="bold">✓ Test After Changes</text>
+  <text x="510" y="423" fill="#64748b" font-size="10">E2E tests after enabling mangling</text>
+  <text x="510" y="438" fill="#64748b" font-size="10">Verify external API access works</text>
+  
+  <!-- File Type Comparison -->
+  <rect x="30" y="480" width="840" height="100" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="450" y="505" text-anchor="middle" fill="#1e293b" font-size="14" font-weight="bold">Minification by File Type</text>
+  
+  <!-- JS Minification -->
+  <rect x="60" y="520" width="200" height="50" fill="#f0fdf4" rx="4" stroke="#22c55e" stroke-width="1"/>
+  <text x="160" y="540" text-anchor="middle" fill="#16a34a" font-size="11" font-weight="bold">JavaScript</text>
+  <text x="160" y="558" text-anchor="middle" fill="#64748b" font-size="9">Terser, Esbuild (30-60% reduction)</text>
+  
+  <!-- CSS Minification -->
+  <rect x="280" y="520" width="200" height="50" fill="#eff6ff" rx="4" stroke="#3b82f6" stroke-width="1"/>
+  <text x="380" y="540" text-anchor="middle" fill="#2563eb" font-size="11" font-weight="bold">CSS</text>
+  <text x="380" y="558" text-anchor="middle" fill="#64748b" font-size="9">cssnano, lightningcss (20-40%)</text>
+  
+  <!-- HTML Minification -->
+  <rect x="500" y="520" width="200" height="50" fill="#fef3c7" rx="4" stroke="#f59e0b" stroke-width="1"/>
+  <text x="600" y="540" text-anchor="middle" fill="#d97706" font-size="11" font-weight="bold">HTML</text>
+  <text x="600" y="558" text-anchor="middle" fill="#64748b" font-size="9">html-minifier-terser (10-30%)</text>
+  
+  <!-- JSON Minification -->
+  <rect x="720" y="520" width="130" height="50" fill="#f3e8ff" rx="4" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="785" y="540" text-anchor="middle" fill="#7c3aed" font-size="11" font-weight="bold">JSON</text>
+  <text x="785" y="558" text-anchor="middle" fill="#64748b" font-size="9">Whitespace removal</text>
+  
+  <!-- Common Pitfalls -->
+  <rect x="30" y="600" width="840" height="85" fill="#fef2f2" rx="6" stroke="#ef4444" stroke-width="1"/>
+  <text x="450" y="625" text-anchor="middle" fill="#dc2626" font-size="14" font-weight="bold">Common Pitfalls to Avoid</text>
+  
+  <!-- Pitfall Items -->
+  <text x="60" y="645" fill="#dc2626" font-size="10">✗ Mangling breaking external APIs (use reserved option)</text>
+  <text x="300" y="645" fill="#dc2626" font-size="10">✗ Deploying .map files publicly (upload privately to error tools)</text>
+  <text x="580" y="645" fill="#dc2626" font-size="10">✗ Minifying in development (slows builds, hard to debug)</text>
+  <text x="60" y="665" fill="#dc2626" font-size="10">✗ Not generating source maps (impossible to debug production)</text>
+  <text x="380" y="665" fill="#dc2626" font-size="10">✗ Aggressive tree-shaking removing used code (test thoroughly)</text>
+</svg>

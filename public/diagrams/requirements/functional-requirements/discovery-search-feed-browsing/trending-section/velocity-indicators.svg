@@ -1,0 +1,195 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      .highlight-red { fill: #f56565; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Velocity Indicators Comparison</text>
+  
+  <!-- Arrow + Percentage (Top Left) -->
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Arrow + Percentage</text>
+  
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Example trend items -->
+  <rect x="55" y="125" width="150" height="25" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="70" y="142" font-size="9" class="highlight-green">↑</text>
+  <text x="85" y="142" font-size="9" class="highlight-green">50%</text>
+  <text x="120" y="142" font-size="9" class="text-primary">#TrendingTopic</text>
+  
+  <rect x="55" y="155" width="150" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="70" y="172" font-size="9" class="highlight-red">↓</text>
+  <text x="85" y="172" font-size="9" class="highlight-red">10%</text>
+  <text x="120" y="172" font-size="9" class="text-primary">#StableTopic</text>
+  
+  <rect x="55" y="185" width="150" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="70" y="202" font-size="9" class="text-secondary">→</text>
+  <text x="85" y="202" font-size="9" class="text-secondary">0%</text>
+  <text x="120" y="202" font-size="9" class="text-primary">#StableTopic2</text>
+  
+  <text x="130" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Precise</text>
+  <text x="130" y="260" text-anchor="middle" font-size="9" class="text-secondary">Most common approach</text>
+  
+  <!-- Color Coding (Top Center) -->
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Color Coding</text>
+  
+  <rect x="280" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Example trend items with color -->
+  <rect x="295" y="125" width="150" height="25" rx="2" class="box-base" stroke-width="2" stroke="#48bb78"/>
+  <text x="310" y="142" font-size="9" fill="#48bb78" font-weight="bold">Rising</text>
+  <text x="370" y="142" font-size="9" class="text-primary">#HotTopic</text>
+  
+  <rect x="295" y="155" width="150" height="25" rx="2" class="box-base" stroke-width="2" stroke="#a0aec0"/>
+  <text x="310" y="172" font-size="9" fill="#a0aec0" font-weight="bold">Stable</text>
+  <text x="370" y="172" font-size="9" class="text-primary">#NormalTopic</text>
+  
+  <rect x="295" y="185" width="150" height="25" rx="2" class="box-base" stroke-width="2" stroke="#f56565"/>
+  <text x="310" y="202" font-size="9" fill="#f56565" font-weight="bold">Falling</text>
+  <text x="370" y="202" font-size="9" class="text-primary">#DyingTopic</text>
+  
+  <text x="370" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Quick scan</text>
+  <text x="370" y="260" text-anchor="middle" font-size="9" class="highlight-red">⚠ Colorblind issues</text>
+  
+  <!-- Sparkline (Top Right) -->
+  <rect x="500" y="70" width="240" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Sparkline Chart</text>
+  
+  <rect x="520" y="110" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Mini charts -->
+  <rect x="535" y="125" width="170" height="30" rx="2" class="box-base" stroke-width="1"/>
+  <polyline points="540,140 560,135 580,130 600,125 620,120 640,115 660,110 680,105 700,100" fill="none" class="highlight-green" stroke-width="2"/>
+  <text x="620" y="142" text-anchor="middle" font-size="8" class="highlight-green">↑ Strong rise</text>
+  
+  <rect x="535" y="160" width="170" height="30" rx="2" class="box-base" stroke-width="1"/>
+  <polyline points="540,175 560,175 580,173 600,175 620,177 640,175 660,173 680,175 700,175" fill="none" class="text-secondary" stroke-width="2"/>
+  <text x="620" y="177" text-anchor="middle" font-size="8" class="text-secondary">→ Stable</text>
+  
+  <rect x="535" y="195" width="170" height="30" rx="2" class="box-base" stroke-width="1"/>
+  <polyline points="540,200 560,205 580,210 600,215 620,218 640,220 660,222 680,223 700,225" fill="none" class="highlight-red" stroke-width="2"/>
+  <text x="620" y="212" text-anchor="middle" font-size="8" class="highlight-red">↓ Declining</text>
+  
+  <text x="620" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Shows trajectory</text>
+  <text x="620" y="260" text-anchor="middle" font-size="9" class="highlight-purple">⚠ More space needed</text>
+  
+  <!-- Badges (Bottom Left) -->
+  <rect x="20" y="260" width="220" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="130" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Badges/Labels</text>
+  
+  <rect x="40" y="300" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Badge examples -->
+  <rect x="55" y="315" width="60" height="22" rx="11" class="highlight-red" stroke-width="1"/>
+  <text x="85" y="330" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">🔥 Hot</text>
+  
+  <rect x="130" y="315" width="70" height="22" rx="11" class="highlight-green" stroke-width="1"/>
+  <text x="165" y="330" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">⬆️ Rising</text>
+  
+  <rect x="55" y="345" width="70" height="22" rx="11" class="highlight-blue" stroke-width="1"/>
+  <text x="90" y="360" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">🆕 New</text>
+  
+  <rect x="140" y="345" width="60" height="22" rx="11" class="box-base" stroke-width="1"/>
+  <text x="170" y="360" text-anchor="middle" font-size="8" class="text-secondary">Stable</text>
+  
+  <text x="130" y="395" text-anchor="middle" font-size="9" class="highlight-green">✓ Friendly</text>
+  <text x="130" y="410" text-anchor="middle" font-size="9" class="highlight-purple">⚠ Less precise</text>
+  
+  <!-- Hybrid Approach (Bottom Center) -->
+  <rect x="260" y="260" width="240" height="170" rx="5" class="accent-box" stroke-width="3"/>
+  <text x="380" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Hybrid (Recommended)</text>
+  
+  <rect x="280" y="300" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Hybrid examples -->
+  <rect x="295" y="315" width="170" height="28" rx="2" class="accent-box" stroke-width="1.5"/>
+  <text x="310" y="333" font-size="9" class="highlight-green">↑ 47%</text>
+  <text x="360" y="333" font-size="8" fill="#ed8936" font-weight="bold">Hot</text>
+  <text x="400" y="333" font-size="9" class="text-primary">#Trending</text>
+  
+  <rect x="295" y="350" width="170" height="28" rx="2" class="box-base" stroke-width="1"/>
+  <text x="310" y="368" font-size="9" class="highlight-green">↑ 12%</text>
+  <text x="360" y="368" font-size="8" class="text-secondary">Rising</text>
+  <text x="410" y="368" font-size="9" class="text-primary">#Rising</text>
+  
+  <rect x="295" y="385" width="170" height="28" rx="2" class="box-base" stroke-width="1"/>
+  <text x="310" y="403" font-size="9" class="text-secondary">→ 0%</text>
+  <text x="360" y="403" font-size="8" class="text-secondary">Stable</text>
+  <text x="410" y="403" font-size="9" class="text-primary">#Stable</text>
+  
+  <text x="380" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Precise + intuitive</text>
+  
+  <!-- Comparison Table (Bottom Right) -->
+  <rect x="520" y="260" width="460" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="750" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Approach Comparison</text>
+  
+  <rect x="540" y="300" width="420" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Header -->
+  <text x="555" y="320" font-size="9" font-weight="bold" class="text-primary">Approach</text>
+  <text x="680" y="320" font-size="9" font-weight="bold" class="text-primary">Precision</text>
+  <text x="780" y="320" font-size="9" font-weight="bold" class="text-primary">Space</text>
+  <text x="880" y="320" font-size="9" font-weight="bold" class="text-primary">Best For</text>
+  
+  <!-- Row 1 -->
+  <line x1="550" y1="330" x2="950" y2="330" class="arrow" stroke-width="1"/>
+  <text x="555" y="345" font-size="8" class="text-primary">Arrow + %</text>
+  <text x="680" y="345" font-size="8" class="highlight-green">High</text>
+  <text x="780" y="345" font-size="8" class="highlight-green">Compact</text>
+  <text x="880" y="345" font-size="8" class="text-secondary">Most platforms</text>
+  
+  <!-- Row 2 -->
+  <line x1="550" y1="355" x2="950" y2="355" class="arrow" stroke-width="1"/>
+  <text x="555" y="370" font-size="8" class="text-primary">Color</text>
+  <text x="680" y="370" font-size="8" class="highlight-purple">Medium</text>
+  <text x="780" y="370" font-size="8" class="highlight-green">Compact</text>
+  <text x="880" y="370" font-size="8" class="text-secondary">Supplement only</text>
+  
+  <!-- Row 3 -->
+  <line x1="550" y1="380" x2="950" y2="380" class="arrow" stroke-width="1"/>
+  <text x="555" y="395" font-size="8" class="text-primary">Sparkline</text>
+  <text x="680" y="395" font-size="8" class="highlight-green">Highest</text>
+  <text x="780" y="395" font-size="8" class="highlight-red">Large</text>
+  <text x="880" y="395" font-size="8" class="text-secondary">Finance, data</text>
+  
+  <!-- Row 4 -->
+  <line x1="550" y1="405" x2="950" y2="405" class="arrow" stroke-width="1"/>
+  <text x="555" y="420" font-size="8" class="text-primary">Badges</text>
+  <text x="680" y="420" font-size="8" class="highlight-purple">Low</text>
+  <text x="780" y="420" font-size="8" class="highlight-green">Compact</text>
+  <text x="880" y="420" font-size="8" class="text-secondary">Casual platforms</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,175 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Sort Options UI</text>
+  
+  <!-- Sort Dropdown (Top Left) -->
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Sort Dropdown</text>
+  
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Dropdown closed -->
+  <rect x="55" y="125" width="150" height="35" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="70" y="147" font-size="9" class="text-primary">Sort by:</text>
+  <text x="130" y="147" font-size="9" font-weight="bold" class="text-primary">Relevance</text>
+  <text x="185" y="147" text-anchor="end" font-size="10" class="text-secondary">▼</text>
+  
+  <!-- Dropdown open -->
+  <rect x="55" y="165" width="150" height="55" rx="2" class="box-base" stroke-width="1"/>
+  <rect x="55" y="165" width="150" height="18" rx="1" class="highlight-box" stroke-width="1"/>
+  <text x="70" y="177" font-size="8" font-weight="bold" class="text-primary">Relevance</text>
+  <text x="70" y="195" font-size="8" class="text-primary">Price: Low→High</text>
+  <text x="70" y="213" font-size="8" class="text-primary">Price: High→Low</text>
+  
+  <text x="130" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Compact</text>
+  <text x="130" y="260" text-anchor="middle" font-size="9" class="text-secondary">Most common pattern</text>
+  
+  <!-- Sort Buttons (Top Center) -->
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Sort Buttons</text>
+  
+  <rect x="280" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Button group -->
+  <rect x="295" y="125" width="70" height="28" rx="3" class="highlight-box" stroke-width="1.5"/>
+  <text x="330" y="143" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Relevance</text>
+  
+  <rect x="370" y="125" width="70" height="28" rx="3" class="box-base" stroke-width="1"/>
+  <text x="405" y="143" text-anchor="middle" font-size="8" class="text-primary">Price</text>
+  
+  <rect x="295" y="158" width="70" height="28" rx="3" class="box-base" stroke-width="1"/>
+  <text x="330" y="176" text-anchor="middle" font-size="8" class="text-primary">Rating</text>
+  
+  <rect x="370" y="158" width="70" height="28" rx="3" class="box-base" stroke-width="1"/>
+  <text x="405" y="176" text-anchor="middle" font-size="8" class="text-primary">Newest</text>
+  
+  <text x="370" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ All visible</text>
+  <text x="370" y="260" text-anchor="middle" font-size="9" class="highlight-purple">⚠ Takes space</text>
+  
+  <!-- Direction Toggle (Top Right) -->
+  <rect x="500" y="70" width="240" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Direction Toggle</text>
+  
+  <rect x="520" y="110" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Sort + toggle combo -->
+  <rect x="535" y="125" width="170" height="35" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="550" y="147" font-size="9" class="text-primary">Price</text>
+  <text x="685" y="147" text-anchor="end" font-size="10" class="highlight-green">↓</text>
+  
+  <!-- Toggle buttons -->
+  <rect x="535" y="165" width="80" height="25" rx="2" class="highlight-box" stroke-width="1.5"/>
+  <text x="575" y="182" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Low→High</text>
+  
+  <rect x="625" y="165" width="80" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="665" y="182" text-anchor="middle" font-size="8" class="text-primary">High→Low</text>
+  
+  <!-- Arrow indicator -->
+  <text x="620" y="215" text-anchor="middle" font-size="14" class="highlight-green">↑↓</text>
+  <text x="620" y="235" text-anchor="middle" font-size="9" class="text-secondary">Click to toggle</text>
+  
+  <text x="620" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Flexible</text>
+  <text x="620" y="260" text-anchor="middle" font-size="9" class="text-secondary">Best practice</text>
+  
+  <!-- Active Sort Display (Bottom Left) -->
+  <rect x="20" y="260" width="300" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="170" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Active Sort Display</text>
+  
+  <rect x="40" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Sort badge -->
+  <rect x="55" y="315" width="230" height="35" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="70" y="337" font-size="9" class="text-primary">Sorting by:</text>
+  <text x="145" y="337" font-size="9" font-weight="bold" class="text-primary">Price: Low to High</text>
+  <text x="265" y="337" text-anchor="end" font-size="10" class="highlight-green">✕</text>
+  
+  <!-- Result count -->
+  <text x="55" y="370" font-size="9" class="text-secondary">Showing 1-20 of 123 products</text>
+  
+  <!-- Change sort link -->
+  <text x="55" y="395" font-size="9" class="highlight-purple">Change sort order →</text>
+  
+  <text x="170" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Clear indication</text>
+  
+  <!-- Sort Icons (Bottom Center) -->
+  <rect x="340" y="260" width="320" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="500" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Sort Icons</text>
+  
+  <rect x="360" y="300" width="280" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Icon examples -->
+  <rect x="375" y="315" width="60" height="40" rx="2" class="accent-box" stroke-width="1.5"/>
+  <text x="405" y="335" text-anchor="middle" font-size="12" class="text-primary">A→Z</text>
+  <text x="405" y="350" text-anchor="middle" font-size="7" class="text-secondary">Name</text>
+  
+  <rect x="445" y="315" width="60" height="40" rx="2" class="box-base" stroke-width="1"/>
+  <text x="475" y="335" text-anchor="middle" font-size="12" class="text-primary">$↓</text>
+  <text x="475" y="350" text-anchor="middle" font-size="7" class="text-secondary">Price</text>
+  
+  <rect x="515" y="315" width="60" height="40" rx="2" class="box-base" stroke-width="1"/>
+  <text x="545" y="335" text-anchor="middle" font-size="12" class="text-primary">★</text>
+  <text x="545" y="350" text-anchor="middle" font-size="7" class="text-secondary">Rating</text>
+  
+  <rect x="585" y="315" width="60" height="40" rx="2" class="box-base" stroke-width="1"/>
+  <text x="615" y="335" text-anchor="middle" font-size="12" class="text-primary">📅</text>
+  <text x="615" y="350" text-anchor="middle" font-size="7" class="text-secondary">Date</text>
+  
+  <text x="500" y="385" text-anchor="middle" font-size="9" class="text-primary">Icon + Label combination</text>
+  <text x="500" y="405" text-anchor="middle" font-size="9" class="highlight-green">✓ Quick recognition</text>
+  
+  <!-- Comparison (Bottom Right) -->
+  <rect x="680" y="260" width="300" height="170" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="830" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Sort Pattern Comparison</text>
+  
+  <rect x="700" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="715" y="325" font-size="9" class="text-primary">Dropdown:</text>
+  <text x="780" y="325" font-size="8" class="highlight-green">Compact</text>
+  <text x="850" y="325" font-size="8" class="text-secondary">Most common</text>
+  
+  <text x="715" y="345" font-size="9" class="text-primary">Buttons:</text>
+  <text x="780" y="345" font-size="8" class="highlight-green">All visible</text>
+  <text x="850" y="345" font-size="8" class="text-secondary">Few options</text>
+  
+  <text x="715" y="365" font-size="9" class="text-primary">Toggle:</text>
+  <text x="780" y="365" font-size="8" class="highlight-green">Flexible</text>
+  <text x="850" y="365" font-size="8" class="text-secondary">Best practice</text>
+  
+  <text x="715" y="390" font-size="9" font-weight="bold" class="text-primary">Recommendation:</text>
+  <text x="715" y="410" font-size="8" class="text-secondary">Dropdown + toggle direction</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

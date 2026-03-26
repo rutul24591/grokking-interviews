@@ -1,0 +1,186 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="500" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Query Processing Pipeline</text>
+  
+  <!-- Raw Query (Top Left) -->
+  <rect x="20" y="70" width="140" height="80" rx="5" class="box-base" stroke-width="2"/>
+  <text x="90" y="100" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Raw Query</text>
+  <text x="90" y="125" text-anchor="middle" font-size="10" class="text-secondary" font-family="monospace">"best running</text>
+  <text x="90" y="145" text-anchor="middle" font-size="10" class="text-secondary" font-family="monospace">shoes for marthon"</text>
+  
+  <!-- Arrow to Tokenization -->
+  <line x1="160" y1="110" x2="200" y2="110" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Tokenization (Top Center Left) -->
+  <rect x="200" y="70" width="140" height="80" rx="5" class="box-base" stroke-width="2"/>
+  <text x="270" y="95" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Tokenization</text>
+  <text x="270" y="120" text-anchor="middle" font-size="9" class="text-secondary">Split into terms</text>
+  <text x="270" y="140" text-anchor="middle" font-size="9" class="text-secondary" font-family="monospace">[best, running,</text>
+  <text x="270" y="155" text-anchor="middle" font-size="9" class="text-secondary" font-family="monospace">shoes, for, marthon]</text>
+  
+  <!-- Arrow to Normalization -->
+  <line x1="340" y1="110" x2="380" y2="110" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Normalization (Top Center) -->
+  <rect x="380" y="70" width="140" height="80" rx="5" class="box-base" stroke-width="2"/>
+  <text x="450" y="95" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Normalization</text>
+  <text x="450" y="120" text-anchor="middle" font-size="9" class="text-secondary">Lowercase, stem</text>
+  <text x="450" y="140" text-anchor="middle" font-size="9" class="text-secondary" font-family="monospace">[best, run,</text>
+  <text x="450" y="155" text-anchor="middle" font-size="9" class="text-secondary" font-family="monospace">shoe, for, marthon]</text>
+  
+  <!-- Arrow to Spelling -->
+  <line x1="520" y1="110" x2="560" y2="110" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Spelling Correction (Top Center Right) -->
+  <rect x="560" y="70" width="140" height="80" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="630" y="95" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Spelling</text>
+  <text x="630" y="120" text-anchor="middle" font-size="9" class="text-secondary">Fix typos</text>
+  <text x="630" y="140" text-anchor="middle" font-size="9" class="highlight-green" font-family="monospace">marthon → marathon</text>
+  
+  <!-- Arrow to Expansion -->
+  <line x1="700" y1="110" x2="740" y2="110" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Query Expansion (Top Right) -->
+  <rect x="740" y="70" width="140" height="80" rx="5" class="box-base" stroke-width="2"/>
+  <text x="810" y="95" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Expansion</text>
+  <text x="810" y="120" text-anchor="middle" font-size="9" class="text-secondary">Add synonyms</text>
+  <text x="810" y="140" text-anchor="middle" font-size="9" class="text-secondary" font-family="monospace">run OR running</text>
+  <text x="810" y="155" text-anchor="middle" font-size="9" class="text-secondary" font-family="monospace">shoe OR shoes</text>
+  
+  <!-- Arrow down to Intent -->
+  <line x1="810" y1="150" x2="810" y2="190" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Intent Detection (Middle Right) -->
+  <rect x="740" y="190" width="140" height="80" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="810" y="215" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Intent</text>
+  <text x="810" y="240" text-anchor="middle" font-size="9" class="text-secondary">Classify query</text>
+  <text x="810" y="260" text-anchor="middle" font-size="9" class="highlight-purple">Commercial: buy shoes</text>
+  
+  <!-- Arrow to Rewriting -->
+  <line x1="740" y1="230" x2="700" y2="230" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Query Rewriting (Middle Center) -->
+  <rect x="560" y="190" width="140" height="80" rx="5" class="box-base" stroke-width="2"/>
+  <text x="630" y="215" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Rewriting</text>
+  <text x="630" y="240" text-anchor="middle" font-size="9" class="text-secondary">Convert to DSL</text>
+  <text x="630" y="260" text-anchor="middle" font-size="9" class="text-secondary">Optimize for execution</text>
+  
+  <!-- Arrow to Execution -->
+  <line x1="560" y1="230" x2="520" y2="230" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Query Execution (Middle Left) -->
+  <rect x="380" y="190" width="140" height="80" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="450" y="215" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Execution</text>
+  <text x="450" y="240" text-anchor="middle" font-size="9" class="text-secondary">Search engine</text>
+  <text x="450" y="260" text-anchor="middle" font-size="9" class="highlight-green">&lt;100ms target</text>
+  
+  <!-- Arrow to Results -->
+  <line x1="380" y1="230" x2="340" y2="230" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Results (Far Left Middle) -->
+  <rect x="200" y="190" width="140" height="80" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="270" y="215" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Results</text>
+  <text x="270" y="240" text-anchor="middle" font-size="9" class="text-secondary">Ranked list</text>
+  <text x="270" y="260" text-anchor="middle" font-size="9" class="text-secondary">10-50 items</text>
+  
+  <!-- Example Flow (Bottom Left) -->
+  <rect x="20" y="300" width="460" height="180" rx="5" class="box-base" stroke-width="2"/>
+  <text x="250" y="325" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Example: "best running shoes for marthon"</text>
+  
+  <rect x="40" y="340" width="420" height="125" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="55" y="365" font-size="10" font-weight="bold" class="text-primary">1. Tokenize:</text>
+  <text x="150" y="365" font-size="9" class="text-secondary" font-family="monospace">[best, running, shoes, for, marthon]</text>
+  
+  <text x="55" y="390" font-size="10" font-weight="bold" class="text-primary">2. Normalize:</text>
+  <text x="150" y="390" font-size="9" class="text-secondary" font-family="monospace">[best, run, shoe, for, marthon]</text>
+  
+  <text x="55" y="415" font-size="10" font-weight="bold" class="text-primary">3. Correct:</text>
+  <text x="150" y="415" font-size="9" class="highlight-green" font-family="monospace">marthon → marathon (95% confidence)</text>
+  
+  <text x="55" y="440" font-size="10" font-weight="bold" class="text-primary">4. Expand:</text>
+  <text x="150" y="440" font-size="9" class="text-secondary" font-family="monospace">(run OR running) AND (shoe OR shoes)</text>
+  
+  <text x="280" y="365" font-size="10" font-weight="bold" class="text-primary">5. Intent:</text>
+  <text x="350" y="365" font-size="9" class="highlight-purple">Commercial</text>
+  
+  <text x="280" y="390" font-size="10" font-weight="bold" class="text-primary">6. Execute:</text>
+  <text x="350" y="390" font-size="9" class="text-secondary">Search index</text>
+  
+  <text x="280" y="415" font-size="10" font-weight="bold" class="text-primary">7. Results:</text>
+  <text x="350" y="415" font-size="9" class="highlight-green">42 products found</text>
+  
+  <!-- Processing Time (Bottom Center) -->
+  <rect x="500" y="300" width="240" height="180" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="620" y="325" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Processing Time</text>
+  
+  <rect x="520" y="340" width="200" height="125" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="535" y="365" font-size="9" class="text-primary">Tokenization:</text>
+  <text x="650" y="365" font-size="9" class="text-secondary">&lt;1ms</text>
+  <rect x="680" y="360" width="30" height="8" rx="1" class="highlight-green"/>
+  
+  <text x="535" y="385" font-size="9" class="text-primary">Normalization:</text>
+  <text x="650" y="385" font-size="9" class="text-secondary">&lt;1ms</text>
+  <rect x="680" y="380" width="30" height="8" rx="1" class="highlight-green"/>
+  
+  <text x="535" y="405" font-size="9" class="text-primary">Spelling:</text>
+  <text x="650" y="405" font-size="9" class="text-secondary">5-20ms</text>
+  <rect x="680" y="400" width="50" height="8" rx="1" class="highlight-purple"/>
+  
+  <text x="535" y="425" font-size="9" class="text-primary">Expansion:</text>
+  <text x="650" y="425" font-size="9" class="text-secondary">2-10ms</text>
+  <rect x="680" y="420" width="40" height="8" rx="1" class="highlight-blue"/>
+  
+  <text x="535" y="445" font-size="9" class="text-primary">Total:</text>
+  <text x="650" y="445" font-size="9" class="highlight-green">&lt;50ms</text>
+  <rect x="680" y="440" width="60" height="8" rx="1" class="highlight-green"/>
+  
+  <!-- Cache Hit (Bottom Right) -->
+  <rect x="760" y="300" width="220" height="180" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="870" y="325" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Cache Optimization</text>
+  
+  <rect x="780" y="340" width="180" height="125" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="795" y="365" font-size="9" font-weight="bold" class="text-primary">Query Cache:</text>
+  <text x="795" y="385" font-size="8" class="text-secondary">Key: Normalized query hash</text>
+  <text x="795" y="400" font-size="8" class="text-secondary">TTL: 5-30 minutes</text>
+  <text x="795" y="415" font-size="8" class="highlight-green">Hit rate: 30-50%</text>
+  
+  <text x="795" y="440" font-size="9" class="highlight-green">Cache hit: &lt;10ms</text>
+  <text x="795" y="455" font-size="9" class="highlight-purple">Cache miss: 50-100ms</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

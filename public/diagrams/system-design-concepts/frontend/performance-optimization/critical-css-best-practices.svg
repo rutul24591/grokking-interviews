@@ -1,0 +1,63 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <rect fill="#ffffff" width="800" height="500" rx="8"/>
+  <text x="400" y="35" text-anchor="middle" fill="#1e293b" font-size="18" font-weight="bold">Critical CSS Best Practices</text>
+  
+  <!-- Extraction Column -->
+  <rect x="40" y="70" width="220" height="140" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="150" y="100" text-anchor="middle" fill="#1e293b" font-size="13" font-weight="bold">Extraction</text>
+  <line x1="60" y1="115" x2="240" y2="115" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="60" y="140" fill="#22c55e" font-size="11">Automate with tools</text>
+  <text x="60" y="160" fill="#64748b" font-size="9">Penthouse, critical, Critters</text>
+  <text x="60" y="185" fill="#22c55e" font-size="11">Per template, not per URL</text>
+  <text x="60" y="205" fill="#64748b" font-size="9">Reuse across similar pages</text>
+  
+  <!-- Delivery Column -->
+  <rect x="290" y="70" width="220" height="140" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="400" y="100" text-anchor="middle" fill="#1e293b" font-size="13" font-weight="bold">Delivery</text>
+  <line x1="310" y1="115" x2="490" y2="115" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="310" y="140" fill="#22c55e" font-size="11">Inline in HTML head</text>
+  <text x="310" y="160" fill="#64748b" font-size="9">style tag, no extra request</text>
+  <text x="310" y="185" fill="#22c55e" font-size="11">Preload non-critical</text>
+  <text x="310" y="205" fill="#64748b" font-size="9">rel="preload" with onload</text>
+  
+  <!-- Maintenance Column -->
+  <rect x="540" y="70" width="220" height="140" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="650" y="100" text-anchor="middle" fill="#1e293b" font-size="13" font-weight="bold">Maintenance</text>
+  <line x1="560" y1="115" x2="740" y2="115" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="560" y="140" fill="#22c55e" font-size="11">Re-extract on CSS changes</text>
+  <text x="560" y="160" fill="#64748b" font-size="9">Automate in build pipeline</text>
+  <text x="560" y="185" fill="#22c55e" font-size="11">Monitor critical CSS size</text>
+  <text x="560" y="205" fill="#64748b" font-size="9">Budget: 15-30KB</text>
+  
+  <!-- Size Guidelines -->
+  <rect x="40" y="240" width="340" height="120" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="210" y="270" text-anchor="middle" fill="#1e293b" font-size="13" font-weight="bold">Size Guidelines</text>
+  <text x="60" y="300" fill="#1e293b" font-size="11" font-weight="bold">Simple pages:</text>
+  <text x="180" y="300" fill="#22c55e" font-size="11">5-15KB</text>
+  <text x="60" y="325" fill="#1e293b" font-size="11" font-weight="bold">Complex layouts:</text>
+  <text x="200" y="325" fill="#22c55e" font-size="11">15-30KB</text>
+  <text x="60" y="350" fill="#ef4444" font-size="11" font-weight="bold">Over 30KB:</text>
+  <text x="160" y="350" fill="#64748b" font-size="10">Review CSS organization</text>
+  
+  <!-- Viewport Considerations -->
+  <rect x="420" y="240" width="340" height="120" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="270" text-anchor="middle" fill="#1e293b" font-size="13" font-weight="bold">Viewport Considerations</text>
+  <text x="440" y="300" fill="#1e293b" font-size="11" font-weight="bold">Mobile:</text>
+  <text x="510" y="300" fill="#64748b" font-size="10">Different above-fold content</text>
+  <text x="440" y="325" fill="#1e293b" font-size="11" font-weight="bold">Tablet:</text>
+  <text x="510" y="325" fill="#64748b" font-size="10">Intermediate breakpoints</text>
+  <text x="440" y="350" fill="#1e293b" font-size="11" font-weight="bold">Desktop:</text>
+  <text x="510" y="350" fill="#64748b" font-size="10">Larger viewport, more content</text>
+  
+  <!-- Expected Results -->
+  <rect x="40" y="380" width="340" height="90" fill="#f8fafc" rx="6" stroke="#22c55e" stroke-width="2"/>
+  <text x="210" y="410" text-anchor="middle" fill="#22c55e" font-size="13" font-weight="bold">Expected Results</text>
+  <text x="210" y="435" text-anchor="middle" fill="#64748b" font-size="11">FCP improvement: 40-60%</text>
+  <text x="210" y="455" text-anchor="middle" fill="#64748b" font-size="11">LCP improvement: 30-50%</text>
+  
+  <!-- Key Practices -->
+  <rect x="420" y="380" width="340" height="90" fill="#f8fafc" rx="6" stroke="#3b82f6" stroke-width="2"/>
+  <text x="590" y="410" text-anchor="middle" fill="#3b82f6" font-size="13" font-weight="bold">Key Practices</text>
+  <text x="590" y="435" text-anchor="middle" fill="#64748b" font-size="11">Include reset/normalize CSS</text>
+  <text x="590" y="455" text-anchor="middle" fill="#64748b" font-size="11">Test on slow networks (3G)</text>
+</svg>

@@ -1,0 +1,43 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="500" rx="10" fill="#F8F9FC"/>
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">
+    Chat Widget Integration (Architecture)
+  </text>
+
+  <defs>
+    <marker id="arrowCW1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
+    </marker>
+  </defs>
+
+  <rect x="60" y="85" width="780" height="360" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+
+  <rect x="95" y="125" width="270" height="95" rx="12" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <text x="230" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Host App</text>
+  <text x="230" y="178" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">adapter boundary</text>
+  <text x="230" y="198" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">on-demand load</text>
+
+  <rect x="405" y="125" width="225" height="95" rx="12" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="517.5" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Chat Widget</text>
+  <text x="517.5" y="178" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">3P script/iframe</text>
+  <text x="517.5" y="198" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">separate domain</text>
+
+  <rect x="660" y="125" width="180" height="95" rx="12" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+  <text x="750" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Vendor Service</text>
+  <text x="750" y="178" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">agents + storage</text>
+  <text x="750" y="198" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">outage domain</text>
+
+  <line x1="365" y1="172" x2="405" y2="172" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrowCW1)"/>
+  <text x="385" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748B">load</text>
+
+  <line x1="630" y1="172" x2="660" y2="172" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrowCW1)"/>
+  <text x="645" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748B">connect</text>
+
+  <rect x="95" y="260" width="745" height="150" rx="12" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
+  <text x="467.5" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Controls</text>
+  <text x="120" y="320" font-family="system-ui, sans-serif" font-size="11" fill="#334155">• minimal identity contract (allowlisted fields)</text>
+  <text x="120" y="343" font-family="system-ui, sans-serif" font-size="11" fill="#334155">• consent gating and policy enforcement</text>
+  <text x="120" y="366" font-family="system-ui, sans-serif" font-size="11" fill="#334155">• budgets + monitoring (errors, long tasks, domains)</text>
+  <text x="120" y="389" font-family="system-ui, sans-serif" font-size="11" fill="#334155">• kill switch and fallback support UX</text>
+</svg>
+

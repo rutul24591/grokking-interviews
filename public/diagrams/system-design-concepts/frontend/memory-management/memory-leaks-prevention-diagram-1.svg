@@ -1,0 +1,47 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="500" rx="10" fill="#F8F9FC"/>
+
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">
+    Common Frontend Leak Sources (Architecture Map)
+  </text>
+
+  <rect x="60" y="80" width="780" height="360" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+
+  <text x="95" y="112" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Root-like retainers</text>
+
+  <rect x="95" y="135" width="240" height="110" rx="12" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <text x="215" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Caches / Registries</text>
+  <text x="215" y="188" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">unbounded maps</text>
+  <text x="215" y="208" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">missing eviction</text>
+  <text x="215" y="228" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">debug singletons</text>
+
+  <rect x="365" y="135" width="240" height="110" rx="12" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="485" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Event Listeners</text>
+  <text x="485" y="188" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">not detached</text>
+  <text x="485" y="208" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">closure captures state</text>
+  <text x="485" y="228" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">delegation missing</text>
+
+  <rect x="635" y="135" width="180" height="110" rx="12" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
+  <text x="725" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Timers</text>
+  <text x="725" y="188" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">intervals keep firing</text>
+  <text x="725" y="208" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">poll loops persist</text>
+  <text x="725" y="228" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">retry storms</text>
+
+  <rect x="95" y="270" width="290" height="135" rx="12" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+  <text x="240" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Observers / Streams</text>
+  <text x="240" y="324" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">Resize, Intersection, Mutation</text>
+  <text x="240" y="346" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">store subscriptions</text>
+  <text x="240" y="368" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">websocket listeners</text>
+  <text x="240" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">not cleaned up</text>
+
+  <rect x="415" y="270" width="400" height="135" rx="12" fill="#F1F5F9" stroke="#94A3B8" stroke-width="2"/>
+  <text x="615" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Detached DOM Retention</text>
+  <text x="615" y="324" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">DOM nodes removed from document</text>
+  <text x="615" y="346" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">still referenced by JS closures</text>
+  <text x="615" y="368" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">or event registries</text>
+
+  <text x="450" y="468" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748B">
+    Principle: leaks are unintended reference chains. Fix the reference and/or bound the structure.
+  </text>
+</svg>
+

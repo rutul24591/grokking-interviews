@@ -1,0 +1,52 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="500" rx="10" fill="#F8F9FC"/>
+
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">
+    Third-Party Script Governance (Scaling Guardrails)
+  </text>
+
+  <defs>
+    <marker id="arrowSLS3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
+    </marker>
+  </defs>
+
+  <rect x="60" y="85" width="780" height="360" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+
+  <rect x="95" y="125" width="180" height="80" rx="12" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <text x="185" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Inventory</text>
+  <text x="185" y="178" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#334155">owner • tier</text>
+  <text x="185" y="196" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#334155">data access</text>
+
+  <line x1="275" y1="165" x2="320" y2="165" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrowSLS3)"/>
+
+  <rect x="320" y="125" width="200" height="80" rx="12" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="420" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Security &amp; Privacy</text>
+  <text x="420" y="178" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#334155">CSP • consent</text>
+  <text x="420" y="196" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#334155">PII boundaries</text>
+
+  <line x1="520" y1="165" x2="565" y2="165" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrowSLS3)"/>
+
+  <rect x="565" y="125" width="240" height="80" rx="12" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+  <text x="685" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Performance Budgets</text>
+  <text x="685" y="178" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#334155">CPU • long tasks</text>
+  <text x="685" y="196" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#334155">network domains</text>
+
+  <line x1="450" y1="205" x2="450" y2="245" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrowSLS3)"/>
+
+  <rect x="95" y="250" width="710" height="90" rx="12" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
+  <text x="450" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Rollout &amp; Reversibility</text>
+  <text x="450" y="303" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">cohort rollout • server-driven flags • instant kill switch</text>
+  <text x="450" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">fallback behavior required for non-critical scripts</text>
+
+  <line x1="450" y1="340" x2="450" y2="378" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrowSLS3)"/>
+
+  <rect x="95" y="380" width="710" height="55" rx="12" fill="#F1F5F9" stroke="#94A3B8" stroke-width="2"/>
+  <text x="450" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Monitoring &amp; Correlation</text>
+  <text x="450" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#334155">error spikes • long tasks • route regressions tied to script changes</text>
+
+  <text x="450" y="472" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">
+    Outcome: fewer regressions, faster incident response, and predictable performance as scripts and teams scale.
+  </text>
+</svg>
+

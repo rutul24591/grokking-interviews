@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="500" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Ranking Optimization Loop</text>
+  
+  <!-- Center Circle (Continuous Loop) -->
+  <circle cx="500" cy="250" r="180" class="accent-box" stroke-width="2" fill="none" stroke-dasharray="10,5"/>
+  
+  <!-- Arrow indicators for loop -->
+  <path d="M 500 70 Q 680 70 680 250" class="arrow" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 680 250 Q 680 430 500 430" class="arrow" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 500 430 Q 320 430 320 250" class="arrow" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 320 250 Q 320 70 500 70" class="arrow" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 1: Analyze (Top) -->
+  <rect x="420" y="40" width="160" height="60" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="500" y="65" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">1. Analyze</text>
+  <text x="500" y="85" text-anchor="middle" font-size="9" class="text-secondary">Review metrics</text>
+  
+  <!-- Step 2: Hypothesize (Right) -->
+  <rect x="690" y="220" width="160" height="60" rx="5" class="box-base" stroke-width="2"/>
+  <text x="770" y="245" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">2. Hypothesize</text>
+  <text x="770" y="265" text-anchor="middle" font-size="9" class="text-secondary">Formulate improvement</text>
+  
+  <!-- Step 3: Implement (Bottom) -->
+  <rect x="420" y="440" width="160" height="60" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="500" y="465" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">3. Implement</text>
+  <text x="500" y="485" text-anchor="middle" font-size="9" class="text-secondary">Engineer features</text>
+  
+  <!-- Step 4: Test (Left) -->
+  <rect x="150" y="220" width="160" height="60" rx="5" class="box-base" stroke-width="2"/>
+  <text x="230" y="245" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">4. Test</text>
+  <text x="230" y="265" text-anchor="middle" font-size="9" class="text-secondary">A/B test</text>
+  
+  <!-- Step 5: Deploy (Center) -->
+  <circle cx="500" cy="250" r="50" class="highlight-box" stroke-width="3"/>
+  <text x="500" y="245" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">5. Deploy</text>
+  <text x="500" y="265" text-anchor="middle" font-size="9" class="text-secondary">Roll out</text>
+  
+  <!-- Detail Boxes -->
+  
+  <!-- Analyze Detail (Top Left) -->
+  <rect x="20" y="70" width="280" height="130" rx="5" class="box-base" stroke-width="2"/>
+  <text x="160" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Analyze Details</text>
+  
+  <rect x="40" y="110" width="240" height="75" rx="3" class="box-base" stroke-width="1"/>
+  <text x="55" y="130" font-size="9" class="text-primary">• Review dashboards</text>
+  <text x="55" y="148" font-size="9" class="text-primary">• Query log analysis</text>
+  <text x="55" y="166" font-size="9" class="text-primary">• User feedback</text>
+  <text x="55" y="184" font-size="9" class="highlight-purple">Identify: Low CTR queries,</text>
+  <text x="55" y="200" font-size="9" class="highlight-purple">poor retention segments</text>
+  
+  <!-- Hypothesize Detail (Top Right) -->
+  <rect x="700" y="70" width="280" height="130" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="840" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Hypothesize Details</text>
+  
+  <rect x="720" y="110" width="240" height="75" rx="3" class="box-base" stroke-width="1"/>
+  <text x="735" y="130" font-size="9" class="text-primary">Example hypotheses:</text>
+  <text x="735" y="150" font-size="8" class="highlight-green">"Adding freshness feature</text>
+  <text x="735" y="165" font-size="8" class="highlight-green">improves news CTR"</text>
+  <text x="735" y="180" font-size="8" class="highlight-purple">"Personalization improves</text>
+  <text x="735" y="195" font-size="8" class="highlight-purple">returning user retention"</text>
+  
+  <!-- Implement Detail (Bottom Left) -->
+  <rect x="20" y="350" width="280" height="130" rx="5" class="box-base" stroke-width="2"/>
+  <text x="160" y="375" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Implement Details</text>
+  
+  <rect x="40" y="390" width="240" height="75" rx="3" class="box-base" stroke-width="1"/>
+  <text x="55" y="410" font-size="9" class="text-primary">• Engineer new features</text>
+  <text x="55" y="428" font-size="9" class="text-primary">• Train ranking model</text>
+  <text x="55" y="446" font-size="9" class="text-primary">• Set up A/B test</text>
+  <text x="55" y="464" font-size="9" class="highlight-green">Validate offline metrics</text>
+  
+  <!-- Test Detail (Bottom Right) -->
+  <rect x="700" y="350" width="280" height="130" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="840" y="375" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Test Details</text>
+  
+  <rect x="720" y="390" width="240" height="75" rx="3" class="box-base" stroke-width="1"/>
+  <text x="735" y="410" font-size="9" class="text-primary">• Monitor primary metrics</text>
+  <text x="735" y="428" font-size="9" class="text-primary">• Track guardrail metrics</text>
+  <text x="735" y="446" font-size="9" class="text-primary">• Check significance</text>
+  <text x="735" y="464" font-size="9" class="highlight-purple">Duration: 1-2 weeks</text>
+  
+  <!-- Cycle Time (Center Bottom) -->
+  <rect x="350" y="300" width="300" height="60" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="500" y="325" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Typical Cycle Time</text>
+  <text x="500" y="345" text-anchor="middle" font-size="10" class="text-secondary">Analyze (1-2 days) → Hypothesize (1 day)</text>
+  <text x="500" y="365" text-anchor="middle" font-size="10" class="text-secondary">→ Implement (3-5 days) → Test (1-2 weeks)</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

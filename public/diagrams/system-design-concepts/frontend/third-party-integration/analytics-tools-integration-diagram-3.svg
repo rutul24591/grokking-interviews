@@ -1,0 +1,43 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="500" rx="10" fill="#F8F9FC"/>
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">
+    Analytics Governance (Scaling Strategy)
+  </text>
+
+  <defs>
+    <marker id="arrowAN3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
+    </marker>
+  </defs>
+
+  <rect x="60" y="85" width="780" height="360" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+
+  <rect x="95" y="125" width="220" height="90" rx="12" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <text x="205" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Schema Ownership</text>
+  <text x="205" y="178" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#334155">review changes</text>
+  <text x="205" y="196" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#334155">version semantics</text>
+
+  <line x1="315" y1="170" x2="355" y2="170" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrowAN3)"/>
+
+  <rect x="355" y="125" width="240" height="90" rx="12" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="475" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Validation</text>
+  <text x="475" y="178" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#334155">allowlists</text>
+  <text x="475" y="196" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#334155">drop invalid</text>
+
+  <line x1="595" y1="170" x2="635" y2="170" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrowAN3)"/>
+
+  <rect x="635" y="125" width="205" height="90" rx="12" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+  <text x="737.5" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Monitoring</text>
+  <text x="737.5" y="178" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#334155">volume + drift</text>
+  <text x="737.5" y="196" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#334155">alerts</text>
+
+  <line x1="450" y1="215" x2="450" y2="255" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrowAN3)"/>
+
+  <rect x="95" y="260" width="745" height="150" rx="12" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
+  <text x="467.5" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Operational controls</text>
+  <text x="120" y="320" font-family="system-ui, sans-serif" font-size="11" fill="#334155">• budgets for overhead and privacy risk</text>
+  <text x="120" y="343" font-family="system-ui, sans-serif" font-size="11" fill="#334155">• cohort rollout and rollback for SDK changes</text>
+  <text x="120" y="366" font-family="system-ui, sans-serif" font-size="11" fill="#334155">• kill switch to disable sending</text>
+  <text x="120" y="389" font-family="system-ui, sans-serif" font-size="11" fill="#334155">• audit trail for instrumentation changes</text>
+</svg>
+

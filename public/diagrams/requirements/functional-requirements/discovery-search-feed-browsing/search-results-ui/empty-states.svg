@@ -1,0 +1,174 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      .highlight-red { fill: #f56565; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Empty States Design</text>
+  
+  <!-- 0 Results (Top Left) -->
+  <rect x="20" y="70" width="300" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="170" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">0 Results State</text>
+  
+  <rect x="40" y="110" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Empty state content -->
+  <text x="170" y="135" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">No results found</text>
+  <text x="170" y="155" text-anchor="middle" font-size="9" class="text-secondary">We couldn't find anything for "xyzabc123"</text>
+  
+  <!-- Suggestions -->
+  <rect x="55" y="170" width="230" height="45" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="70" y="185" font-size="8" font-weight="bold" class="text-primary">Try:</text>
+  <text x="70" y="200" font-size="8" class="text-primary">• Check spelling</text>
+  <text x="150" y="200" font-size="8" class="text-primary">• Remove filters</text>
+  
+  <text x="170" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Clear message</text>
+  <text x="170" y="260" text-anchor="middle" font-size="9" class="text-secondary">Actionable suggestions</text>
+  
+  <!-- Did You Mean (Top Right) -->
+  <rect x="340" y="70" width="320" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Did You Mean</text>
+  
+  <rect x="360" y="110" width="280" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Correction suggestion -->
+  <text x="500" y="135" text-anchor="middle" font-size="10" class="text-secondary">Did you mean:</text>
+  <rect x="420" y="145" width="160" height="30" rx="3" class="highlight-box" stroke-width="1.5"/>
+  <text x="500" y="165" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">"wireless charger"</text>
+  <text x="565" y="165" text-anchor="start" font-size="10" class="highlight-green">→</text>
+  
+  <!-- Show results for original -->
+  <text x="500" y="195" text-anchor="middle" font-size="8" class="text-secondary">Showing results for "xyzabc123"</text>
+  <text x="500" y="210" text-anchor="middle" font-size="8" class="highlight-purple">3 results found</text>
+  
+  <text x="500" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Spelling correction</text>
+  <text x="500" y="260" text-anchor="middle" font-size="9" class="text-secondary">Show both options</text>
+  
+  <!-- Few Results (Bottom Left) -->
+  <rect x="20" y="260" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Few Results State</text>
+  
+  <rect x="40" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Scarcity indicator -->
+  <text x="170" y="320" text-anchor="middle" font-size="10" class="highlight-purple">Only 3 results</text>
+  
+  <!-- Results shown -->
+  <rect x="55" y="335" width="230" height="25" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="70" y="352" font-size="8" font-weight="bold" class="text-primary">Result 1</text>
+  
+  <rect x="55" y="365" width="230" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="70" y="382" font-size="8" font-weight="bold" class="text-primary">Result 2</text>
+  
+  <rect x="55" y="395" width="230" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="70" y="412" font-size="8" font-weight="bold" class="text-primary">Result 3</text>
+  
+  <text x="170" y="445" text-anchor="middle" font-size="9" class="highlight-purple">⚠ Indicate scarcity</text>
+  <text x="170" y="460" text-anchor="middle" font-size="9" class="text-secondary">Suggest related searches</text>
+  
+  <!-- Related Searches (Bottom Right) -->
+  <rect x="340" y="260" width="640" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="660" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Related Searches and Popular Content</text>
+  
+  <rect x="360" y="300" width="600" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Related searches -->
+  <text x="375" y="320" font-size="9" font-weight="bold" class="text-primary">Related Searches:</text>
+  <rect x="375" y="330" width="100" height="22" rx="3" class="highlight-box" stroke-width="1"/>
+  <text x="425" y="345" text-anchor="middle" font-size="7" class="text-primary">phone cases</text>
+  
+  <rect x="485" y="330" width="100" height="22" rx="3" class="box-base" stroke-width="1"/>
+  <text x="535" y="345" text-anchor="middle" font-size="7" class="text-primary">chargers</text>
+  
+  <rect x="595" y="330" width="100" height="22" rx="3" class="box-base" stroke-width="1"/>
+  <text x="645" y="345" text-anchor="middle" font-size="7" class="text-primary">accessories</text>
+  
+  <!-- Popular content -->
+  <text x="375" y="370" font-size="9" font-weight="bold" class="text-primary">Popular Now:</text>
+  <rect x="375" y="380" width="180" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="390" y="397" font-size="7" font-weight="bold" class="text-primary">🔥 Wireless Earbuds</text>
+  <text x="530" y="397" text-anchor="end" font-size="7" class="highlight-green">1.2K views</text>
+  
+  <rect x="375" y="410" width="180" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="390" y="427" font-size="7" font-weight="bold" class="text-primary">🔥 Phone Stand</text>
+  <text x="530" y="427" text-anchor="end" font-size="7" class="highlight-green">890 views</text>
+  
+  <text x="660" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Keep users engaged</text>
+  
+  <!-- Empty State Checklist (Far Right) -->
+  <rect x="700" y="70" width="280" height="360" rx="5" class="box-base" stroke-width="2"/>
+  <text x="840" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Empty State Checklist</text>
+  
+  <rect x="720" y="110" width="240" height="305" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Checklist items -->
+  <text x="735" y="135" font-size="9" class="highlight-green">✓</text>
+  <text x="755" y="135" font-size="8" class="text-primary">Clear message ("No results")</text>
+  
+  <text x="735" y="155" font-size="9" class="highlight-green">✓</text>
+  <text x="755" y="155" font-size="8" class="text-primary">Show original query</text>
+  
+  <text x="735" y="175" font-size="9" class="highlight-green">✓</text>
+  <text x="755" y="175" font-size="8" class="text-primary">Actionable suggestions</text>
+  
+  <text x="735" y="195" font-size="9" class="highlight-green">✓</text>
+  <text x="755" y="195" font-size="8" class="text-primary">Spelling correction</text>
+  
+  <text x="735" y="215" font-size="9" class="highlight-green">✓</text>
+  <text x="755" y="215" font-size="8" class="text-primary">Remove filters option</text>
+  
+  <text x="735" y="235" font-size="9" class="highlight-green">✓</text>
+  <text x="755" y="235" font-size="8" class="text-primary">Related searches</text>
+  
+  <text x="735" y="255" font-size="9" class="highlight-green">✓</text>
+  <text x="755" y="255" font-size="8" class="text-primary">Popular/trending content</text>
+  
+  <text x="735" y="275" font-size="9" class="highlight-green">✓</text>
+  <text x="755" y="275" font-size="8" class="text-primary">Search box (try again)</text>
+  
+  <text x="735" y="295" font-size="9" class="highlight-purple">⚠</text>
+  <text x="755" y="295" font-size="8" class="text-primary">Avoid: Blank page</text>
+  
+  <text x="735" y="315" font-size="9" class="highlight-purple">⚠</text>
+  <text x="755" y="315" font-size="8" class="text-primary">Avoid: Generic "error"</text>
+  
+  <text x="735" y="335" font-size="9" class="highlight-purple">⚠</text>
+  <text x="755" y="335" font-size="8" class="text-primary">Avoid: Blaming user</text>
+  
+  <!-- Visual example -->
+  <rect x="735" y="355" width="210" height="50" rx="2" class="highlight-box" stroke-width="1.5"/>
+  <text x="840" y="375" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Good Empty State</text>
+  <text x="840" y="395" text-anchor="middle" font-size="7" class="text-secondary">Message + Suggestions + Content</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

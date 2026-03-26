@@ -1,0 +1,130 @@
+<svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Business Impact of Code Splitting</title>
+  <desc id="desc">Before and after comparison showing how code splitting reduces bundle size, improves Time to Interactive, and increases conversion rates</desc>
+  
+  <!-- Background -->
+  <rect width="900" height="600" fill="#ffffff" rx="8"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" fill="#1e293b" font-size="18" font-weight="bold">Business Impact of Code Splitting</text>
+  <text x="450" y="55" text-anchor="middle" fill="#64748b" font-size="12">Before vs After Comparison</text>
+  
+  <!-- BEFORE Section -->
+  <rect x="30" y="80" width="400" height="240" fill="#fef2f2" rx="6" stroke="#ef4444" stroke-width="2"/>
+  <text x="230" y="110" text-anchor="middle" fill="#dc2626" font-size="16" font-weight="bold">BEFORE: Monolithic Bundle</text>
+  
+  <!-- Bundle Size Before -->
+  <rect x="50" y="130" width="160" height="100" fill="#ffffff" rx="4" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="130" y="155" text-anchor="middle" fill="#1e293b" font-size="12" font-weight="bold">Bundle Size</text>
+  <text x="130" y="185" text-anchor="middle" fill="#dc2626" font-size="24" font-weight="bold">2.4 MB</text>
+  <text x="130" y="205" text-anchor="middle" fill="#64748b" font-size="9">Full app download</text>
+  <text x="130" y="218" text-anchor="middle" fill="#64748b" font-size="9">on first load</text>
+  
+  <!-- TTI Before -->
+  <rect x="230" y="130" width="160" height="100" fill="#ffffff" rx="4" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="310" y="155" text-anchor="middle" fill="#1e293b" font-size="12" font-weight="bold">Time to Interactive</text>
+  <text x="310" y="185" text-anchor="middle" fill="#dc2626" font-size="24" font-weight="bold">8.5s</text>
+  <text x="310" y="205" text-anchor="middle" fill="#64748b" font-size="9">3G network</text>
+  <text x="310" y="218" text-anchor="middle" fill="#64748b" font-size="9">slow parsing</text>
+  
+  <!-- Conversion Rate Before -->
+  <rect x="50" y="245" width="160" height="60" fill="#ffffff" rx="4" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="130" y="270" text-anchor="middle" fill="#1e293b" font-size="11" font-weight="bold">Conversion Rate</text>
+  <text x="130" y="290" text-anchor="middle" fill="#f59e0b" font-size="18" font-weight="bold">2.1%</text>
+  
+  <!-- Bounce Rate Before -->
+  <rect x="230" y="245" width="160" height="60" fill="#ffffff" rx="4" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="310" y="270" text-anchor="middle" fill="#1e293b" font-size="11" font-weight="bold">Bounce Rate</text>
+  <text x="310" y="290" text-anchor="middle" fill="#dc2626" font-size="18" font-weight="bold">58%</text>
+  
+  <!-- Arrow Separator -->
+  <line x1="440" y1="200" x2="460" y2="200" stroke="#64748b" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="450" y="195" text-anchor="middle" fill="#64748b" font-size="10">vs</text>
+  
+  <!-- AFTER Section -->
+  <rect x="470" y="80" width="400" height="240" fill="#f0fdf4" rx="6" stroke="#22c55e" stroke-width="2"/>
+  <text x="670" y="110" text-anchor="middle" fill="#16a34a" font-size="16" font-weight="bold">AFTER: Code Splitting</text>
+  
+  <!-- Bundle Size After -->
+  <rect x="490" y="130" width="160" height="100" fill="#ffffff" rx="4" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="570" y="155" text-anchor="middle" fill="#1e293b" font-size="12" font-weight="bold">Bundle Size</text>
+  <text x="570" y="185" text-anchor="middle" fill="#22c55e" font-size="24" font-weight="bold">450 KB</text>
+  <text x="570" y="205" text-anchor="middle" fill="#64748b" font-size="9">Initial chunk only</text>
+  <text x="570" y="218" text-anchor="middle" fill="#64748b" font-size="9">~80% smaller</text>
+  
+  <!-- TTI After -->
+  <rect x="670" y="130" width="160" height="100" fill="#ffffff" rx="4" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="750" y="155" text-anchor="middle" fill="#1e293b" font-size="12" font-weight="bold">Time to Interactive</text>
+  <text x="750" y="185" text-anchor="middle" fill="#22c55e" font-size="24" font-weight="bold">2.8s</text>
+  <text x="750" y="205" text-anchor="middle" fill="#64748b" font-size="9">3G network</text>
+  <text x="750" y="218" text-anchor="middle" fill="#64748b" font-size="9">fast parsing</text>
+  
+  <!-- Conversion Rate After -->
+  <rect x="490" y="245" width="160" height="60" fill="#ffffff" rx="4" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="570" y="270" text-anchor="middle" fill="#1e293b" font-size="11" font-weight="bold">Conversion Rate</text>
+  <text x="570" y="290" text-anchor="middle" fill="#22c55e" font-size="18" font-weight="bold">3.4%</text>
+  <text x="570" y="302" text-anchor="middle" fill="#22c55e" font-size="9" font-weight="bold">+62%</text>
+  
+  <!-- Bounce Rate After -->
+  <rect x="670" y="245" width="160" height="60" fill="#ffffff" rx="4" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="750" y="270" text-anchor="middle" fill="#1e293b" font-size="11" font-weight="bold">Bounce Rate</text>
+  <text x="750" y="290" text-anchor="middle" fill="#22c55e" font-size="18" font-weight="bold">31%</text>
+  <text x="750" y="302" text-anchor="middle" fill="#22c55e" font-size="9" font-weight="bold">-47%</text>
+  
+  <!-- Loading Timeline Comparison -->
+  <rect x="30" y="340" width="840" height="140" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="450" y="365" text-anchor="middle" fill="#1e293b" font-size="14" font-weight="bold">Loading Timeline Comparison (3G Network)</text>
+  
+  <!-- Before Timeline -->
+  <text x="100" y="395" fill="#dc2626" font-size="11" font-weight="bold">BEFORE:</text>
+  <rect x="160" y="380" width="520" height="30" fill="#fecaca" rx="3"/>
+  <text x="420" y="400" text-anchor="middle" fill="#dc2626" font-size="10" font-weight="bold">8.5s to Interactive</text>
+  
+  <!-- Before phases -->
+  <rect x="160" y="380" width="260" height="30" fill="#fca5a5" rx="3"/>
+  <text x="290" y="400" text-anchor="middle" fill="#991b1b" font-size="9">Download (2.4MB)</text>
+  <rect x="420" y="380" width="260" height="30" fill="#f87171" rx="3"/>
+  <text x="550" y="400" text-anchor="middle" fill="#991b1b" font-size="9">Parse &amp; Execute</text>
+  
+  <!-- After Timeline -->
+  <text x="100" y="445" fill="#22c55e" font-size="11" font-weight="bold">AFTER:</text>
+  <rect x="160" y="430" width="195" height="30" fill="#bbf7d0" rx="3"/>
+  <text x="257" y="450" text-anchor="middle" fill="#16a34a" font-size="10" font-weight="bold">2.8s</text>
+  
+  <!-- After phases -->
+  <rect x="160" y="430" width="95" height="30" fill="#86efac" rx="3"/>
+  <text x="207" y="450" text-anchor="middle" fill="#166534" font-size="9">Initial (450KB)</text>
+  <rect x="255" y="430" width="100" height="30" fill="#4ade80" rx="3"/>
+  <text x="305" y="450" text-anchor="middle" fill="#166534" font-size="9">Lazy chunks</text>
+  
+  <!-- Time markers -->
+  <line x1="160" y1="470" x2="680" y2="470" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="160" y="485" text-anchor="middle" fill="#64748b" font-size="9">0s</text>
+  <text x="257" y="485" text-anchor="middle" fill="#22c55e" font-size="9" font-weight="bold">2.8s</text>
+  <text x="420" y="485" text-anchor="middle" fill="#dc2626" font-size="9" font-weight="bold">8.5s</text>
+  <text x="680" y="485" text-anchor="middle" fill="#64748b" font-size="9">10s</text>
+  
+  <!-- Key Metrics Summary -->
+  <rect x="30" y="500" width="840" height="85" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="450" y="525" text-anchor="middle" fill="#1e293b" font-size="14" font-weight="bold">Key Business Metrics Improvement</text>
+  
+  <!-- Metric 1 -->
+  <rect x="60" y="540" width="170" height="35" fill="#ffffff" rx="4" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="145" y="555" text-anchor="middle" fill="#64748b" font-size="9">Bundle Size</text>
+  <text x="145" y="570" text-anchor="middle" fill="#22c55e" font-size="14" font-weight="bold">-81%</text>
+  
+  <!-- Metric 2 -->
+  <rect x="250" y="540" width="170" height="35" fill="#ffffff" rx="4" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="335" y="555" text-anchor="middle" fill="#64748b" font-size="9">Time to Interactive</text>
+  <text x="335" y="570" text-anchor="middle" fill="#22c55e" font-size="14" font-weight="bold">-67%</text>
+  
+  <!-- Metric 3 -->
+  <rect x="440" y="540" width="170" height="35" fill="#ffffff" rx="4" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="525" y="555" text-anchor="middle" fill="#64748b" font-size="9">Conversion Rate</text>
+  <text x="525" y="570" text-anchor="middle" fill="#22c55e" font-size="14" font-weight="bold">+62%</text>
+  
+  <!-- Metric 4 -->
+  <rect x="630" y="540" width="170" height="35" fill="#ffffff" rx="4" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="715" y="555" text-anchor="middle" fill="#64748b" font-size="9">Bounce Rate</text>
+  <text x="715" y="570" text-anchor="middle" fill="#22c55e" font-size="14" font-weight="bold">-47%</text>
+</svg>

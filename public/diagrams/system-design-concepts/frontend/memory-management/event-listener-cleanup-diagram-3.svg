@@ -1,0 +1,36 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="500" rx="10" fill="#F8F9FC"/>
+
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">
+    Scaling Strategy: Listener Hygiene Guardrails
+  </text>
+
+  <defs>
+    <marker id="arrowEL3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
+    </marker>
+  </defs>
+
+  <rect x="70" y="85" width="760" height="365" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+
+  <rect x="110" y="120" width="680" height="85" rx="12" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+  <text x="450" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Patterns</text>
+  <text x="450" y="172" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">ownership by scope • delegation defaults • teardown utilities</text>
+
+  <line x1="450" y1="205" x2="450" y2="235" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrowEL3)"/>
+
+  <rect x="110" y="240" width="680" height="85" rx="12" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <text x="450" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Review Checklist</text>
+  <text x="450" y="292" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">new listener? lifetime? teardown? frequency? capture size?</text>
+
+  <line x1="450" y1="325" x2="450" y2="355" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrowEL3)"/>
+
+  <rect x="110" y="360" width="680" height="75" rx="12" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="450" y="388" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Regression Tests</text>
+  <text x="450" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">repeat navigation soak • stable baseline • alert on drift</text>
+
+  <text x="450" y="472" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748B">
+    Outcome: fewer listener leaks, lower retention surface, and predictable long-session behavior.
+  </text>
+</svg>
+

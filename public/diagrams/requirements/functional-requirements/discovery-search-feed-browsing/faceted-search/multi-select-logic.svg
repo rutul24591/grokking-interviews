@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Multi-Select Facet Logic</text>
+  
+  <!-- OR Within Facet (Left) -->
+  <rect x="20" y="70" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">OR Within Same Facet</text>
+  
+  <!-- Visual -->
+  <rect x="40" y="110" width="260" height="110" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Brand facet with multi-select -->
+  <text x="55" y="135" font-size="10" font-weight="bold" class="text-primary">Brand:</text>
+  <rect x="110" y="125" width="80" height="20" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="150" y="139" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">✓ Nike</text>
+  
+  <rect x="200" y="125" width="80" height="20" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="240" y="139" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">✓ Adidas</text>
+  
+  <text x="55" y="165" font-size="9" class="text-secondary">☐ Puma (45)</text>
+  <text x="55" y="185" font-size="9" class="text-secondary">☐ Reebok (23)</text>
+  <text x="55" y="205" font-size="9" class="text-secondary">☐ Under Armour (18)</text>
+  
+  <!-- Logic explanation -->
+  <rect x="40" y="245" width="260" height="40" rx="3" class="highlight-box" stroke-width="1"/>
+  <text x="170" y="270" text-anchor="middle" font-size="10" class="text-primary">Query: brand:(Nike OR Adidas)</text>
+  <text x="170" y="290" text-anchor="middle" font-size="9" class="highlight-green">Shows items from EITHER brand</text>
+  
+  <!-- AND Across Facets (Center) -->
+  <rect x="340" y="70" width="320" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">AND Across Different Facets</text>
+  
+  <!-- Multiple facets -->
+  <rect x="360" y="110" width="280" height="110" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="375" y="135" font-size="10" font-weight="bold" class="text-primary">Brand:</text>
+  <rect x="430" y="125" width="70" height="20" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="465" y="139" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">✓ Nike</text>
+  
+  <text x="375" y="165" font-size="10" font-weight="bold" class="text-primary">Price:</text>
+  <rect x="430" y="155" width="90" height="20" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="475" y="169" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">$50-$100</text>
+  
+  <text x="375" y="195" font-size="10" font-weight="bold" class="text-primary">Size:</text>
+  <rect x="430" y="185" width="50" height="20" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="455" y="199" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">10</text>
+  
+  <!-- Logic explanation -->
+  <rect x="360" y="245" width="260" height="40" rx="3" class="highlight-box" stroke-width="1"/>
+  <text x="490" y="270" text-anchor="middle" font-size="10" class="text-primary">Query: brand:Nike AND price:50-100 AND size:10</text>
+  <text x="490" y="290" text-anchor="middle" font-size="9" class="highlight-green">ALL conditions must match</text>
+  
+  <!-- Facet Count Updates (Right) -->
+  <rect x="680" y="70" width="300" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="830" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Facet Count Updates</text>
+  
+  <!-- Before selection -->
+  <rect x="700" y="110" width="260" height="75" rx="3" class="box-base" stroke-width="1"/>
+  <text x="830" y="135" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Before Selection</text>
+  <text x="720" y="155" font-size="9" class="text-secondary">Nike (156) · Adidas (89)</text>
+  <text x="720" y="170" font-size="9" class="text-secondary">Puma (45) · All active</text>
+  
+  <!-- Arrow -->
+  <line x1="830" y1="185" x2="830" y2="210" class="arrow" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- After selection -->
+  <rect x="700" y="210" width="260" height="75" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="830" y="235" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">After Selecting Nike</text>
+  <text x="720" y="255" font-size="9" class="highlight-green">Nike (156) ✓ selected</text>
+  <text x="720" y="270" font-size="9" class="highlight-red">Adidas (0) — disabled</text>
+  <text x="720" y="285" font-size="9" class="text-secondary">Puma (45) — still active</text>
+  
+  <!-- Venn Diagram (Bottom Left) -->
+  <rect x="20" y="260" width="460" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="250" y="285" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">OR Logic Visualization</text>
+  
+  <!-- Venn circles -->
+  <circle cx="150" cy="350" r="60" class="accent-box" stroke-width="2" fill-opacity="0.3"/>
+  <text x="150" y="335" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Nike</text>
+  <text x="150" y="355" text-anchor="middle" font-size="9" class="text-secondary">156 items</text>
+  
+  <circle cx="210" cy="350" r="60" class="highlight-box" stroke-width="2" fill-opacity="0.3"/>
+  <text x="210" y="335" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Adidas</text>
+  <text x="210" y="355" text-anchor="middle" font-size="9" class="text-secondary">89 items</text>
+  
+  <!-- Overlap -->
+  <text x="180" y="365" text-anchor="middle" font-size="9" class="highlight-purple">Union = 245 items</text>
+  <text x="80" y="405" font-size="9" class="highlight-green">✓ Items from EITHER brand</text>
+  
+  <!-- AND Logic (Bottom Center) -->
+  <rect x="500" y="260" width="240" height="170" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="620" y="285" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">AND Logic</text>
+  
+  <!-- Intersection -->
+  <circle cx="580" cy="350" r="50" class="accent-box" stroke-width="2" fill-opacity="0.3"/>
+  <text x="580" y="345" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Nike</text>
+  
+  <circle cx="660" cy="350" r="50" class="highlight-box" stroke-width="2" fill-opacity="0.3"/>
+  <text x="660" y="345" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">$50-100</text>
+  
+  <!-- Intersection label -->
+  <rect x="595" y="340" width="50" height="20" rx="2" class="highlight-green" stroke-width="1.5"/>
+  <text x="620" y="354" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">89 items</text>
+  
+  <text x="530" y="405" font-size="9" class="highlight-green">✓ ONLY items matching ALL</text>
+  
+  <!-- Query Examples (Bottom Right) -->
+  <rect x="760" y="260" width="220" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="870" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Query Examples</text>
+  
+  <rect x="780" y="300" width="180" height="55" rx="3" class="box-base" stroke-width="1"/>
+  <text x="870" y="320" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">OR Query:</text>
+  <text x="870" y="340" text-anchor="middle" font-size="8" class="text-secondary" font-family="monospace">brand:(nike OR adidas)</text>
+  
+  <rect x="780" y="365" width="180" height="55" rx="3" class="box-base" stroke-width="1"/>
+  <text x="870" y="385" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">AND Query:</text>
+  <text x="870" y="405" text-anchor="middle" font-size="8" class="text-secondary" font-family="monospace">brand:nike AND price:50-100</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

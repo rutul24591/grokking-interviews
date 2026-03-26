@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Explore Page Sections Layout</text>
+  
+  <!-- Mobile Layout (Left) -->
+  <rect x="20" y="70" width="300" height="360" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Mobile Layout</text>
+  
+  <!-- Mobile sections stacked vertically -->
+  <rect x="40" y="110" width="260" height="45" rx="3" class="accent-box" stroke-width="1"/>
+  <text x="170" y="137" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Trending Topics</text>
+  
+  <rect x="40" y="160" width="260" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="170" y="187" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">For You</text>
+  
+  <rect x="40" y="210" width="260" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="170" y="237" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Curated Collections</text>
+  
+  <rect x="40" y="260" width="260" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="170" y="287" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Topics to Follow</text>
+  
+  <rect x="40" y="310" width="260" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="170" y="337" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">New &amp; Noteworthy</text>
+  
+  <rect x="40" y="355" width="260" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="170" y="382" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Because You Followed</text>
+  
+  <text x="170" y="445" text-anchor="middle" font-size="9" class="text-secondary">Vertical scroll, lazy load</text>
+  
+  <!-- Desktop Layout (Right) -->
+  <rect x="340" y="70" width="640" height="360" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="660" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Desktop Layout</text>
+  
+  <!-- Top row: Trending -->
+  <rect x="360" y="110" width="600" height="60" rx="3" class="highlight-box" stroke-width="1.5"/>
+  <text x="660" y="135" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Trending Topics (Full Width)</text>
+  <text x="660" y="155" text-anchor="middle" font-size="9" class="text-secondary">10 topics with engagement counts</text>
+  
+  <!-- Two column layout -->
+  <!-- Left column: For You + Collections -->
+  <rect x="360" y="180" width="380" height="230" rx="3" class="box-base" stroke-width="1"/>
+  <text x="550" y="205" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Main Content</text>
+  
+  <rect x="375" y="220" width="350" height="80" rx="2" class="box-base" stroke-width="1"/>
+  <text x="550" y="245" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">For You</text>
+  <text x="550" y="265" text-anchor="middle" font-size="9" class="text-secondary">6-8 personalized recommendations</text>
+  <text x="550" y="285" text-anchor="middle" font-size="9" class="text-secondary">Grid layout, 2 columns</text>
+  
+  <rect x="375" y="310" width="350" height="80" rx="2" class="box-base" stroke-width="1"/>
+  <text x="550" y="335" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Curated Collections</text>
+  <text x="550" y="355" text-anchor="middle" font-size="9" class="text-secondary">Editor picks, themed collections</text>
+  <text x="550" y="375" text-anchor="middle" font-size="9" class="text-secondary">Horizontal scroll</text>
+  
+  <!-- Right column: Sidebar -->
+  <rect x="760" y="180" width="200" height="230" rx="3" class="box-base" stroke-width="1"/>
+  <text x="860" y="205" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Sidebar</text>
+  
+  <rect x="775" y="220" width="170" height="65" rx="2" class="box-base" stroke-width="1"/>
+  <text x="860" y="245" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Topics to Follow</text>
+  <text x="860" y="265" text-anchor="middle" font-size="8" class="text-secondary">5 suggestions</text>
+  <text x="860" y="280" text-anchor="middle" font-size="8" class="text-secondary">Follow button each</text>
+  
+  <rect x="775" y="295" width="170" height="65" rx="2" class="box-base" stroke-width="1"/>
+  <text x="860" y="320" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">New &amp; Noteworthy</text>
+  <text x="860" y="340" text-anchor="middle" font-size="8" class="text-secondary">Emerging creators</text>
+  <text x="860" y="355" text-anchor="middle" font-size="8" class="text-secondary">Fresh content</text>
+  
+  <!-- Bottom row: Because You Followed -->
+  <rect x="360" y="420" width="600" height="40" rx="3" class="box-base" stroke-width="1"/>
+  <text x="660" y="445" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Because You Followed (Full Width)</text>
+  
+  <!-- Section Details (Bottom) -->
+  <rect x="20" y="450" width="300" height="80" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="170" y="475" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Section Allocation</text>
+  
+  <text x="50" y="500" font-size="9" class="text-primary">Trending: 30%</text>
+  <text x="50" y="515" font-size="9" class="text-primary">Personalized: 40%</text>
+  
+  <text x="180" y="500" font-size="9" class="text-primary">Curated: 20%</text>
+  <text x="180" y="515" font-size="9" class="text-primary">Discovery: 10%</text>
+  
+  <!-- Performance Metrics (Bottom Center) -->
+  <rect x="340" y="450" width="320" height="80" rx="5" class="box-base" stroke-width="2"/>
+  <text x="500" y="475" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Performance Targets</text>
+  
+  <text x="370" y="500" font-size="9" class="text-primary">Page load: &lt;2s</text>
+  <text x="370" y="515" font-size="9" class="text-primary">Lazy load: Below fold</text>
+  
+  <text x="550" y="500" font-size="9" class="text-primary">Image optimization: WebP</text>
+  <text x="550" y="515" font-size="9" class="text-primary">Cache: 5 min TTL</text>
+  
+  <!-- Engagement Metrics (Bottom Right) -->
+  <rect x="680" y="450" width="300" height="80" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="830" y="475" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Success Metrics</text>
+  
+  <text x="710" y="500" font-size="9" class="text-primary">Time on explore</text>
+  <text x="710" y="515" font-size="9" class="text-primary">Follows driven</text>
+  
+  <text x="850" y="500" font-size="9" class="text-primary">Engagement rate</text>
+  <text x="850" y="515" font-size="9" class="text-primary">Return rate</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

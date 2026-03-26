@@ -1,0 +1,201 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Personalization Strategies</text>
+  
+  <!-- History-based (Top Left) -->
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">History-based</text>
+  
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- User history flow -->
+  <rect x="55" y="125" width="150" height="25" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="130" y="142" text-anchor="middle" font-size="8" class="text-primary">Watch History</text>
+  
+  <line x1="130" y1="150" x2="130" y2="170" class="arrow" stroke-width="1.5"/>
+  
+  <rect x="55" y="175" width="150" height="25" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="130" y="192" text-anchor="middle" font-size="8" class="text-primary">Recommendations</text>
+  
+  <text x="130" y="220" text-anchor="middle" font-size="8" class="text-secondary">"Because you watched"</text>
+  
+  <text x="130" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Most common</text>
+  <text x="130" y="260" text-anchor="middle" font-size="9" class="text-secondary">Requires user data</text>
+  
+  <!-- Similarity-based (Top Center) -->
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Similarity-based</text>
+  
+  <rect x="280" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Content similarity -->
+  <rect x="295" y="125" width="70" height="50" rx="2" class="box-base" stroke-width="1"/>
+  <text x="330" y="145" text-anchor="middle" font-size="7" class="text-primary">Item A</text>
+  <text x="330" y="165" text-anchor="middle" font-size="7" class="text-secondary">Sci-fi</text>
+  
+  <line x1="365" y1="150" x2="385" y2="150" class="arrow" stroke-width="1.5"/>
+  <text x="375" y="145" text-anchor="middle" font-size="7" class="highlight-blue">Similar</text>
+  
+  <rect x="395" y="125" width="70" height="50" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="430" y="145" text-anchor="middle" font-size="7" class="text-primary">Item B</text>
+  <text x="430" y="165" text-anchor="middle" font-size="7" class="text-secondary">Sci-fi</text>
+  
+  <text x="370" y="200" text-anchor="middle" font-size="8" class="text-secondary">"Similar to X"</text>
+  
+  <text x="370" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Content-based</text>
+  <text x="370" y="260" text-anchor="middle" font-size="9" class="text-secondary">No history needed</text>
+  
+  <!-- Social (Top Right) -->
+  <rect x="500" y="70" width="240" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Social Proof</text>
+  
+  <rect x="520" y="110" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Network graph -->
+  <circle cx="580" cy="150" r="20" class="accent-box" stroke-width="1.5"/>
+  <text x="580" y="155" text-anchor="middle" font-size="7" class="text-primary">You</text>
+  
+  <circle cx="640" cy="135" r="15" class="box-base" stroke-width="1"/>
+  <text x="640" y="138" text-anchor="middle" font-size="6" class="text-secondary">Friend 1</text>
+  
+  <circle cx="660" cy="165" r="15" class="box-base" stroke-width="1"/>
+  <text x="660" y="168" text-anchor="middle" font-size="6" class="text-secondary">Friend 2</text>
+  
+  <circle cx="620" cy="185" r="15" class="box-base" stroke-width="1"/>
+  <text x="620" y="188" text-anchor="middle" font-size="6" class="text-secondary">Friend 3</text>
+  
+  <line x1="595" y1="145" x2="625" y2="140" class="arrow" stroke-width="1"/>
+  <line x1="595" y1="155" x2="645" y2="165" class="arrow" stroke-width="1"/>
+  <line x1="590" y1="165" x2="615" y2="175" class="arrow" stroke-width="1"/>
+  
+  <text x="620" y="220" text-anchor="middle" font-size="8" class="text-secondary">"Trending in network"</text>
+  
+  <text x="620" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Social influence</text>
+  <text x="620" y="260" text-anchor="middle" font-size="9" class="text-secondary">Requires network</text>
+  
+  <!-- Temporal (Bottom Left) -->
+  <rect x="20" y="260" width="300" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="170" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Temporal/Freshness</text>
+  
+  <rect x="40" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Timeline -->
+  <line x1="55" y1="340" x2="285" y2="340" class="arrow" stroke-width="2"/>
+  <text x="55" y="335" font-size="7" class="text-secondary">Old</text>
+  <text x="270" y="335" font-size="7" class="text-secondary">New</text>
+  
+  <!-- Items on timeline -->
+  <rect x="80" y="325" width="30" height="30" rx="2" class="box-base" stroke-width="1" opacity="0.5"/>
+  <text x="95" y="345" text-anchor="middle" font-size="6" class="text-secondary">Week 1</text>
+  
+  <rect x="130" y="325" width="30" height="30" rx="2" class="box-base" stroke-width="1" opacity="0.7"/>
+  <text x="145" y="345" text-anchor="middle" font-size="6" class="text-secondary">Week 2</text>
+  
+  <rect x="180" y="325" width="30" height="30" rx="2" class="accent-box" stroke-width="1.5"/>
+  <text x="195" y="345" text-anchor="middle" font-size="6" class="text-primary">Week 3</text>
+  
+  <rect x="230" y="325" width="30" height="30" rx="2" class="highlight-box" stroke-width="2"/>
+  <text x="245" y="345" text-anchor="middle" font-size="6" font-weight="bold" class="text-primary">New</text>
+  
+  <text x="170" y="380" text-anchor="middle" font-size="8" class="text-secondary">"New Releases", "Just Added"</text>
+  
+  <text x="170" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Freshness boost</text>
+  
+  <!-- Hybrid Approach (Bottom Center) -->
+  <rect x="340" y="260" width="320" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Hybrid (Production)</text>
+  
+  <rect x="360" y="300" width="280" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Weight combination -->
+  <text x="375" y="320" font-size="9" font-weight="bold" class="text-primary">Score =</text>
+  
+  <rect x="430" y="310" width="60" height="20" rx="2" class="box-base" stroke-width="1"/>
+  <text x="460" y="324" text-anchor="middle" font-size="7" class="text-primary">0.4×History</text>
+  
+  <rect x="500" y="310" width="60" height="20" rx="2" class="box-base" stroke-width="1"/>
+  <text x="530" y="324" text-anchor="middle" font-size="7" class="text-primary">0.3×Similar</text>
+  
+  <rect x="570" y="310" width="60" height="20" rx="2" class="box-base" stroke-width="1"/>
+  <text x="600" y="324" text-anchor="middle" font-size="7" class="text-primary">0.2×Social</text>
+  
+  <rect x="430" y="335" width="60" height="20" rx="2" class="box-base" stroke-width="1"/>
+  <text x="460" y="349" text-anchor="middle" font-size="7" class="text-primary">0.1×Fresh</text>
+  
+  <!-- Result -->
+  <line x1="500" y1="360" x2="500" y2="380" class="arrow" stroke-width="1.5"/>
+  <rect x="440" y="385" width="120" height="25" rx="3" class="highlight-box" stroke-width="1.5"/>
+  <text x="500" y="402" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Final Score</text>
+  
+  <text x="500" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Best of all</text>
+  
+  <!-- Comparison Table (Bottom Right) -->
+  <rect x="680" y="260" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="830" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Strategy Comparison</text>
+  
+  <rect x="700" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Header -->
+  <text x="715" y="320" font-size="8" font-weight="bold" class="text-primary">Strategy</text>
+  <text x="820" y="320" font-size="8" font-weight="bold" class="text-primary">Data Need</text>
+  <text x="920" y="320" font-size="8" font-weight="bold" class="text-primary">Use Case</text>
+  
+  <!-- Row 1 -->
+  <line x1="710" y1="330" x2="950" y2="330" class="arrow" stroke-width="1"/>
+  <text x="715" y="345" font-size="7" class="text-primary">History</text>
+  <text x="820" y="345" font-size="7" class="highlight-green">User history</text>
+  <text x="920" y="345" font-size="7" class="text-secondary">Personalized</text>
+  
+  <!-- Row 2 -->
+  <line x1="710" y1="355" x2="950" y2="355" class="arrow" stroke-width="1"/>
+  <text x="715" y="370" font-size="7" class="text-primary">Similar</text>
+  <text x="820" y="370" font-size="7" class="highlight-blue">Content</text>
+  <text x="920" y="370" font-size="7" class="text-secondary">Cold start</text>
+  
+  <!-- Row 3 -->
+  <line x1="710" y1="380" x2="950" y2="380" class="arrow" stroke-width="1"/>
+  <text x="715" y="395" font-size="7" class="text-primary">Social</text>
+  <text x="820" y="395" font-size="7" class="highlight-purple">Network</text>
+  <text x="920" y="395" font-size="7" class="text-secondary">Social platforms</text>
+  
+  <!-- Row 4 -->
+  <line x1="710" y1="405" x2="950" y2="405" class="arrow" stroke-width="1"/>
+  <text x="715" y="420" font-size="7" class="text-primary">Hybrid</text>
+  <text x="820" y="420" font-size="7" class="highlight-green">All above</text>
+  <text x="920" y="420" font-size="7" class="text-secondary">Production</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,60 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="500" rx="10" fill="#F8F9FC"/>
+
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">
+    Scaling Strategy: Memory Regression Prevention
+  </text>
+
+  <defs>
+    <marker id="arrowM3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
+    </marker>
+  </defs>
+
+  <!-- Top row -->
+  <rect x="70" y="90" width="220" height="95" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="180" y="122" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Baseline Budget</text>
+  <text x="180" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">per route / session</text>
+  <text x="180" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">growth thresholds</text>
+
+  <line x1="290" y1="138" x2="340" y2="138" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrowM3)"/>
+
+  <rect x="340" y="90" width="240" height="95" rx="12" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <text x="460" y="122" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">CI Soak Flow</text>
+  <text x="460" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">repeat navigation</text>
+  <text x="460" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">measure trend</text>
+
+  <line x1="580" y1="138" x2="630" y2="138" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrowM3)"/>
+
+  <rect x="630" y="90" width="200" height="95" rx="12" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+  <text x="730" y="122" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Release Gate</text>
+  <text x="730" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">fail on drift</text>
+  <text x="730" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">block rollout</text>
+
+  <!-- Bottom: layered signals -->
+  <rect x="70" y="230" width="760" height="210" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="95" y="260" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Layered signals (lowest cost → highest detail)</text>
+
+  <rect x="110" y="285" width="210" height="120" rx="12" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="215" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Prod Detection</text>
+  <text x="215" y="337" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">session duration</text>
+  <text x="215" y="357" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">route-level risk</text>
+  <text x="215" y="377" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">user lag signals</text>
+
+  <rect x="350" y="285" width="240" height="120" rx="12" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <text x="470" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Lab Attribution</text>
+  <text x="470" y="337" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">heap snapshots</text>
+  <text x="470" y="357" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">retainer chains</text>
+  <text x="470" y="377" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">timeline shape</text>
+
+  <rect x="620" y="285" width="190" height="120" rx="12" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
+  <text x="715" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Guardrails</text>
+  <text x="715" y="337" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">caps and TTL</text>
+  <text x="715" y="357" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">teardown rules</text>
+  <text x="715" y="377" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">review checklist</text>
+
+  <text x="450" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748B">
+    Goal: prevent long-session degradation and keep memory behavior predictable as features scale.
+  </text>
+</svg>
+

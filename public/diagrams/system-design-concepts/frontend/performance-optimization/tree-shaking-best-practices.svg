@@ -1,0 +1,94 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: var(--bg-primary, #ffffff); }
+      .card { fill: var(--bg-panel, #f8fafc); }
+      .text { fill: var(--text-primary, #1e293b); }
+      .text-muted { fill: var(--text-muted, #64748b); }
+      .border { stroke: var(--border-color, #e2e8f0); }
+      .accent { fill: var(--accent-color, #3b82f6); }
+      .success { fill: var(--success-color, #22c55e); }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect class="bg" width="800" height="500" rx="8"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" class="text" font-size="18" font-weight="bold">Tree Shaking Best Practices</text>
+  
+  <!-- Application Code Column -->
+  <rect x="40" y="70" width="220" height="160" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="150" y="100" text-anchor="middle" class="text" font-size="13" font-weight="bold">Application Code</text>
+  
+  <line x1="60" y1="115" x2="240" y2="115" class="border" stroke-width="1"/>
+  
+  <text x="60" y="140" class="success" font-size="11">Use ES modules</text>
+  <text x="60" y="160" class="text-muted" font-size="9">import/export only</text>
+  
+  <text x="60" y="185" class="success" font-size="11">Named imports</text>
+  <text x="60" y="205" class="text-muted" font-size="9">import { specific }</text>
+  
+  <text x="60" y="230" class="success" font-size="11">Production builds</text>
+  <text x="60" y="250" class="text-muted" font-size="9">Tree shaking disabled in dev</text>
+  
+  <!-- Library Development Column -->
+  <rect x="290" y="70" width="220" height="160" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="400" y="100" text-anchor="middle" class="text" font-size="13" font-weight="bold">Library Development</text>
+  
+  <line x1="310" y1="115" x2="490" y2="115" class="border" stroke-width="1"/>
+  
+  <text x="310" y="140" class="success" font-size="11">sideEffects flag</text>
+  <text x="310" y="160" class="text-muted" font-size="9">false or selective list</text>
+  
+  <text x="310" y="185" class="success" font-size="11">ES module build</text>
+  <text x="310" y="205" class="text-muted" font-size="9">module field in package.json</text>
+  
+  <text x="310" y="230" class="success" font-size="11">PURE annotations</text>
+  <text x="310" y="250" class="text-muted" font-size="9">/*#__PURE__*/</text>
+  
+  <!-- Bundler Config Column -->
+  <rect x="540" y="70" width="220" height="160" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="650" y="100" text-anchor="middle" class="text" font-size="13" font-weight="bold">Bundler Config</text>
+  
+  <line x1="560" y1="115" x2="740" y2="115" class="border" stroke-width="1"/>
+  
+  <text x="560" y="140" class="success" font-size="11">usedExports: true</text>
+  <text x="560" y="160" class="text-muted" font-size="9">Webpack option</text>
+  
+  <text x="560" y="185" class="success" font-size="11">mode: production</text>
+  <text x="560" y="205" class="text-muted" font-size="9">Enables tree shaking</text>
+  
+  <text x="560" y="230" class="success" font-size="11">Terser config</text>
+  <text x="560" y="250" class="text-muted" font-size="9">dead_code: true</text>
+  
+  <!-- Verification Column -->
+  <rect x="40" y="260" width="340" height="100" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="210" y="290" text-anchor="middle" class="text" font-size="13" font-weight="bold">Verification</text>
+  
+  <line x1="60" y1="305" x2="360" y2="305" class="border" stroke-width="1"/>
+  
+  <text x="60" y="330" class="success" font-size="11">Bundle analyzer</text>
+  <text x="60" y="350" class="text-muted" font-size="9">webpack-bundle-analyzer</text>
+  
+  <text x="200" y="330" class="success" font-size="11">Compare sizes</text>
+  <text x="200" y="350" class="text-muted" font-size="9">With/without tree shaking</text>
+  
+  <!-- Expected Results Column -->
+  <rect x="420" y="260" width="340" height="100" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="590" y="290" text-anchor="middle" class="text" font-size="13" font-weight="bold">Expected Results</text>
+  
+  <line x1="440" y1="305" x2="740" y2="305" class="border" stroke-width="1"/>
+  
+  <text x="440" y="330" class="success" font-size="11">Bundle reduction: 30-70%</text>
+  <text x="440" y="350" class="text-muted" font-size="9">Depends on unused code</text>
+  
+  <text x="440" y="370" class="text" font-size="11">Verify unused exports removed</text>
+  <text x="440" y="390" class="text-muted" font-size="9">Check bundle composition</text>
+  
+  <!-- Key Insight -->
+  <rect x="180" y="380" width="440" height="100" class="card" rx="6" stroke="var(--accent-color, #3b82f6)" stroke-width="2"/>
+  <text x="400" y="410" text-anchor="middle" class="accent" font-size="12" font-weight="bold">Best Practice Summary</text>
+  <text x="400" y="435" text-anchor="middle" class="text-muted" font-size="10">ES modules + sideEffects flag + production mode + verification</text>
+  <text x="400" y="455" text-anchor="middle" class="text-muted" font-size="10">Expected bundle reduction: 30-70% depending on unused code</text>
+</svg>

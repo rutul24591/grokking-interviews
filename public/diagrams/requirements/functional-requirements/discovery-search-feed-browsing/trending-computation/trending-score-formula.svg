@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      .highlight-red { fill: #f56565; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Trending Score Formula Components</text>
+  
+  <!-- Velocity (Top Left) -->
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Velocity</text>
+  
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <text x="55" y="135" font-size="10" class="text-primary">Engagements per hour:</text>
+  <text x="55" y="160" font-size="9" class="text-secondary" font-family="monospace">velocity = engagements / time_window</text>
+  <text x="55" y="190" font-size="9" class="text-primary">Example:</text>
+  <text x="55" y="210" font-size="9" class="highlight-green">1000 engagements / 2h = 500/h</text>
+  
+  <text x="130" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Captures momentum</text>
+  
+  <!-- Arrow to Formula -->
+  <line x1="240" y1="155" x2="280" y2="155" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Volume (Top Center) -->
+  <rect x="280" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="390" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Volume (Log Scale)</text>
+  
+  <rect x="300" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <text x="315" y="135" font-size="10" class="text-primary">Log prevents runaway:</text>
+  <text x="315" y="160" font-size="9" class="text-secondary" font-family="monospace">log₁₀(1000) = 3</text>
+  <text x="315" y="180" font-size="9" class="text-secondary" font-family="monospace">log₁₀(10000) = 4</text>
+  <text x="315" y="200" font-size="9" class="text-secondary">10x engagements = 1.33x score</text>
+  
+  <text x="390" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Fair comparison</text>
+  
+  <!-- Arrow to Formula -->
+  <line x1="500" y1="155" x2="540" y2="155" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Time Decay (Top Right) -->
+  <rect x="540" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="650" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Time Decay</text>
+  
+  <rect x="560" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <text x="575" y="135" font-size="10" class="text-primary">Older = lower score:</text>
+  <text x="575" y="160" font-size="9" class="text-secondary" font-family="monospace">decay = e^(-λ×age)</text>
+  <text x="575" y="185" font-size="9" class="text-secondary">Half-life: 30min-6h</text>
+  <text x="575" y="205" font-size="9" class="highlight-purple">λ = ln(2)/half_life</text>
+  
+  <text x="650" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Freshness boost</text>
+  
+  <!-- Combined Formula (Center) -->
+  <rect x="280" y="260" width="480" height="100" rx="5" class="highlight-box" stroke-width="3"/>
+  <text x="520" y="290" text-anchor="middle" font-size="16" font-weight="bold" class="text-primary">Combined Trending Score</text>
+  
+  <rect x="300" y="305" width="440" height="40" rx="3" class="box-base" stroke-width="1.5"/>
+  <text x="520" y="330" text-anchor="middle" font-size="12" class="text-primary" font-family="monospace">trending_score = velocity × log₁₀(volume) / (time_decay + 1)</text>
+  
+  <!-- Geographic Segmentation (Bottom Left) -->
+  <rect x="20" y="380" width="300" height="100" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="405" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Geographic Segmentation</text>
+  
+  <rect x="40" y="420" width="260" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="55" y="440" font-size="9" class="text-primary">Compute separately per country/region</text>
+  <text x="55" y="458" font-size="9" class="highlight-purple">trend:US, trend:UK, trend:IN...</text>
+  
+  <!-- Category Segmentation (Bottom Center) -->
+  <rect x="340" y="380" width="320" height="100" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="500" y="405" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Category Segmentation</text>
+  
+  <rect x="360" y="420" width="280" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="375" y="440" font-size="9" class="text-primary">Separate trending per category (News, Sports, Tech)</text>
+  <text x="375" y="458" font-size="9" class="highlight-purple">Ensures topic diversity</text>
+  
+  <!-- Score Update Frequency (Bottom Right) -->
+  <rect x="680" y="380" width="300" height="100" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="830" y="405" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Update Frequency</text>
+  
+  <rect x="700" y="420" width="260" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="715" y="440" font-size="9" class="text-primary">Recompute every 5-15 minutes</text>
+  <text x="715" y="458" font-size="9" class="highlight-green">Balance freshness vs compute</text>
+  
+  <!-- Example Calculation (Far Bottom) -->
+  <rect x="20" y="500" width="960" height="80" rx="5" class="box-base" stroke-width="2"/>
+  <text x="500" y="525" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Example Calculation</text>
+  
+  <rect x="40" y="540" width="920" height="30" rx="3" class="box-base" stroke-width="1"/>
+  <text x="500" y="560" text-anchor="middle" font-size="10" class="text-secondary" font-family="monospace">Post A: 500 engagements/hour, 1000 total, 2h old → score = 500 × 3 / (0.5 + 1) = 1000</text>
+  
+  <rect x="40" y="575" width="920" height="30" rx="3" class="box-base" stroke-width="1"/>
+  <text x="500" y="595" text-anchor="middle" font-size="10" class="text-secondary" font-family="monospace">Post B: 200 engagements/hour, 5000 total, 0.5h old → score = 200 × 3.7 / (0.9 + 1) = 389</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,70 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: var(--bg-primary, #ffffff); }
+      .card { fill: var(--bg-panel, #f8fafc); }
+      .text { fill: var(--text-primary, #1e293b); }
+      .text-muted { fill: var(--text-muted, #64748b); }
+      .border { stroke: var(--border-color, #e2e8f0); }
+      .accent { fill: var(--accent-color, #3b82f6); }
+      .success { fill: var(--success-color, #22c55e); }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect class="bg" width="800" height="500" rx="8"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" class="text" font-size="18" font-weight="bold">Business Impact of Tree Shaking</text>
+  
+  <!-- E-commerce Case Study -->
+  <rect x="40" y="70" width="340" height="180" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="210" y="100" text-anchor="middle" class="text" font-size="14" font-weight="bold">E-commerce: Lodash Tree Shaking</text>
+  
+  <text x="60" y="130" class="text-muted" font-size="11">Named imports from lodash-es:</text>
+  <text x="60" y="155" class="success" font-size="12" font-weight="bold">Bundle size: -70KB</text>
+  <text x="60" y="175" class="success" font-size="12" font-weight="bold">Mobile load time: -300ms</text>
+  
+  <text x="60" y="210" class="text" font-size="10" font-weight="bold">What they did:</text>
+  <text x="60" y="225" class="text-muted" font-size="9">Switched to lodash-es with named imports</text>
+  <text x="60" y="240" class="text-muted" font-size="9">Configured Webpack tree shaking</text>
+  
+  <!-- Component Library Case Study -->
+  <rect x="420" y="70" width="340" height="180" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="590" y="100" text-anchor="middle" class="text" font-size="14" font-weight="bold">Component Library: sideEffects</text>
+  
+  <text x="440" y="130" class="text-muted" font-size="11">Proper sideEffects configuration:</text>
+  <text x="440" y="155" class="success" font-size="12" font-weight="bold">Consumer bundles: -40%</text>
+  <text x="440" y="175" class="success" font-size="12" font-weight="bold">Library adoption: Increased</text>
+  
+  <text x="440" y="210" class="text" font-size="10" font-weight="bold">What they did:</text>
+  <text x="440" y="225" class="text-muted" font-size="9">Set sideEffects: false in package.json</text>
+  <text x="440" y="240" class="text-muted" font-size="9">Provided deep imports for components</text>
+  
+  <!-- SaaS Case Study -->
+  <rect x="40" y="280" width="340" height="180" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="210" y="310" text-anchor="middle" class="text" font-size="14" font-weight="bold">SaaS: Icon Library Optimization</text>
+  
+  <text x="60" y="340" class="text-muted" font-size="11">Tree-shakeable icon imports:</text>
+  <text x="60" y="365" class="success" font-size="12" font-weight="bold">Icon bundle: 500KB → 50KB</text>
+  <text x="60" y="385" class="success" font-size="12" font-weight="bold">FCP: -400ms</text>
+  
+  <text x="60" y="420" class="text" font-size="10" font-weight="bold">What they did:</text>
+  <text x="60" y="435" class="text-muted" font-size="9">Individual icon imports instead of full library</text>
+  
+  <!-- Open Source Case Study -->
+  <rect x="420" y="280" width="340" height="180" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="590" y="310" text-anchor="middle" class="text" font-size="14" font-weight="bold">Open Source: Dual Package</text>
+  
+  <text x="440" y="340" class="text-muted" font-size="11">ESM + CommonJS builds:</text>
+  <text x="440" y="365" class="success" font-size="12" font-weight="bold">ESM build: Tree-shakeable</text>
+  <text x="440" y="385" class="success" font-size="12" font-weight="bold">Library usage: +60%</text>
+  
+  <text x="440" y="420" class="text" font-size="10" font-weight="bold">What they did:</text>
+  <text x="440" y="435" class="text-muted" font-size="9">module field for ESM, main for CommonJS</text>
+  <text x="440" y="450" class="text-muted" font-size="9">sideEffects: false for ESM build</text>
+  
+  <!-- Key Insight -->
+  <rect x="180" y="470" width="440" height="25" class="card" rx="4" stroke="var(--accent-color, #3b82f6)" stroke-width="2"/>
+  <text x="400" y="488" text-anchor="middle" class="accent" font-size="11" font-weight="bold">Tree shaking reduces bundle sizes 30-70% → faster loads, better UX</text>
+</svg>

@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Feature Engineering Pipeline</text>
+  
+  <!-- Data Sources (Top Left) -->
+  <rect x="20" y="70" width="180" height="120" rx="5" class="box-base" stroke-width="2"/>
+  <text x="110" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Data Sources</text>
+  
+  <rect x="40" y="110" width="140" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="55" y="130" font-size="9" class="text-primary">• Click logs</text>
+  <text x="55" y="148" font-size="9" class="text-primary">• Impression logs</text>
+  <text x="55" y="166" font-size="9" class="text-primary">• User profiles</text>
+  
+  <!-- Arrow to Feature Computation -->
+  <line x1="200" y1="130" x2="240" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Batch Features (Top Center Left) -->
+  <rect x="240" y="70" width="200" height="120" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="340" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Batch Features</text>
+  
+  <rect x="260" y="110" width="160" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="275" y="130" font-size="9" class="text-primary">• User aggregates</text>
+  <text x="275" y="148" font-size="9" class="text-primary">• Item statistics</text>
+  <text x="275" y="166" font-size="9" class="text-primary">• Computed hourly/daily</text>
+  
+  <text x="340" y="200" text-anchor="middle" font-size="9" class="highlight-purple">Stored in Feature Store</text>
+  
+  <!-- Arrow to Real-time -->
+  <line x1="440" y1="130" x2="480" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Real-time Features (Top Center Right) -->
+  <rect x="480" y="70" width="200" height="120" rx="5" class="box-base" stroke-width="2"/>
+  <text x="580" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Real-time Features</text>
+  
+  <rect x="500" y="110" width="160" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="515" y="130" font-size="9" class="text-primary">• Session context</text>
+  <text x="515" y="148" font-size="9" class="text-primary">• Current location</text>
+  <text x="515" y="166" font-size="9" class="text-primary">• Computed at query</text>
+  
+  <text x="580" y="200" text-anchor="middle" font-size="9" class="highlight-green">&lt;10ms latency</text>
+  
+  <!-- Arrow to Feature Combination -->
+  <line x1="680" y1="130" x2="720" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Feature Combination (Top Right) -->
+  <rect x="720" y="70" width="260" height="120" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="850" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Feature Combination</text>
+  
+  <rect x="740" y="110" width="220" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="755" y="130" font-size="9" class="text-primary">• Concatenate batch + real-time</text>
+  <text x="755" y="148" font-size="9" class="text-primary">• Apply normalization</text>
+  <text x="755" y="166" font-size="9" class="text-primary">• Handle missing values</text>
+  
+  <!-- Arrow down to Model -->
+  <line x1="850" y1="190" x2="850" y2="230" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Ranking Model (Middle Right) -->
+  <rect x="720" y="230" width="260" height="100" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="850" y="260" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Ranking Model</text>
+  
+  <rect x="740" y="275" width="220" height="40" rx="3" class="box-base" stroke-width="1"/>
+  <text x="850" y="295" text-anchor="middle" font-size="9" class="text-secondary">XGBoost / LambdaMART / DNN</text>
+  <text x="850" y="315" text-anchor="middle" font-size="9" class="highlight-green">Output: Relevance Score</text>
+  
+  <!-- Feature Store (Bottom Left) -->
+  <rect x="20" y="230" width="300" height="200" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="260" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Feature Store</text>
+  
+  <rect x="40" y="275" width="260" height="140" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="55" y="300" font-size="10" font-weight="bold" class="text-primary">Batch Features:</text>
+  <text x="55" y="320" font-size="9" class="text-secondary">• 30-day click count</text>
+  <text x="55" y="338" font-size="9" class="text-secondary">• Average rating</text>
+  <text x="55" y="356" font-size="9" class="text-secondary">• Content quality score</text>
+  
+  <text x="180" y="300" font-size="10" font-weight="bold" class="text-primary">Real-time:</text>
+  <text x="180" y="320" font-size="9" class="text-secondary">• Session length</text>
+  <text x="180" y="338" font-size="9" class="text-secondary">• Time on page</text>
+  <text x="180" y="356" font-size="9" class="text-secondary">• Current device</text>
+  
+  <text x="170" y="395" text-anchor="middle" font-size="9" class="highlight-green">✓ Centralized feature registry</text>
+  <text x="170" y="415" text-anchor="middle" font-size="9" class="highlight-purple">✓ Feature reuse across models</text>
+  
+  <!-- Feature Validation (Bottom Center) -->
+  <rect x="340" y="230" width="360" height="200" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="520" y="260" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Feature Validation</text>
+  
+  <rect x="360" y="275" width="320" height="140" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="375" y="300" font-size="10" font-weight="bold" class="text-primary">Distribution Checks:</text>
+  <text x="375" y="320" font-size="9" class="text-secondary">• Mean, std, min, max</text>
+  <text x="375" y="338" font-size="9" class="text-secondary">• Null rate &lt; 5%</text>
+  <text x="375" y="356" font-size="9" class="text-secondary">• Out-of-range values</text>
+  
+  <text x="550" y="300" font-size="10" font-weight="bold" class="text-primary">Drift Detection:</text>
+  <text x="550" y="320" font-size="9" class="text-secondary">• KS test (p &lt; 0.01 → alert)</text>
+  <text x="550" y="338" font-size="9" class="text-secondary">• Population Stability Index</text>
+  
+  <text x="520" y="385" text-anchor="middle" font-size="9" class="highlight-red">⚠ Alert on anomalies</text>
+  <text x="520" y="405" text-anchor="middle" font-size="9" class="highlight-green">✓ Automated validation</text>
+  
+  <!-- Example Features (Bottom Right) -->
+  <rect x="720" y="350" width="260" height="80" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="850" y="375" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Example Feature Vector</text>
+  
+  <rect x="740" y="390" width="220" height="30" rx="3" class="box-base" stroke-width="1"/>
+  <text x="850" y="410" text-anchor="middle" font-size="8" class="text-secondary" font-family="monospace">[0.85, 0.23, 15, 0.67, ...]</text>
+  <text x="850" y="435" text-anchor="middle" font-size="9" class="text-secondary">100-500 features typical</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,47 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="500" rx="10" fill="#F8F9FC"/>
+
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">
+    Scaling Strategy: Keep DOM and JS Retention Bounded
+  </text>
+
+  <defs>
+    <marker id="arrowDOM3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
+    </marker>
+  </defs>
+
+  <rect x="70" y="80" width="760" height="360" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+
+  <rect x="110" y="120" width="220" height="120" rx="12" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+  <text x="220" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Bound DOM Size</text>
+  <text x="220" y="172" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">virtualize lists</text>
+  <text x="220" y="192" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">avoid huge trees</text>
+  <text x="220" y="212" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">prune hidden UI</text>
+
+  <line x1="330" y1="180" x2="380" y2="180" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrowDOM3)"/>
+
+  <rect x="380" y="120" width="240" height="120" rx="12" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <text x="500" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Scope References</text>
+  <text x="500" y="172" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">view-level lifetimes</text>
+  <text x="500" y="192" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">avoid global element caches</text>
+  <text x="500" y="212" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">prefer IDs</text>
+
+  <line x1="620" y1="180" x2="670" y2="180" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrowDOM3)"/>
+
+  <rect x="670" y="120" width="160" height="120" rx="12" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="750" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Enforce Cleanup</text>
+  <text x="750" y="172" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">detach observers</text>
+  <text x="750" y="192" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">remove listeners</text>
+  <text x="750" y="212" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">cancel work</text>
+
+  <rect x="110" y="275" width="720" height="140" rx="12" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
+  <text x="470" y="307" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Operational guardrail</text>
+  <text x="470" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">Add long-session soak tests and memory budgets for navigation-heavy flows</text>
+  <text x="470" y="352" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">Detect rising baselines and detached DOM accumulation early</text>
+
+  <text x="450" y="468" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748B">
+    Principle: keep DOM cardinality and DOM references bounded, and validate stability via repeated navigation.
+  </text>
+</svg>
+

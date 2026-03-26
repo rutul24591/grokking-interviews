@@ -1,0 +1,103 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: var(--bg-primary, #ffffff); }
+      .card { fill: var(--bg-panel, #f8fafc); }
+      .text { fill: var(--text-primary, #1e293b); }
+      .text-muted { fill: var(--text-muted, #64748b); }
+      .border { stroke: var(--border-color, #e2e8f0); }
+      .accent { fill: var(--accent-color, #3b82f6); }
+      .arrow { stroke: var(--accent-color, #3b82f6); stroke-width: 2; fill: none; }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect class="bg" width="800" height="500" rx="8"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" class="text" font-size="18" font-weight="bold">Web Vitals in the Rendering Pipeline</text>
+  
+  <!-- Pipeline Flow -->
+  <rect x="40" y="70" width="100" height="60" class="card" rx="4" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="90" y="95" text-anchor="middle" class="text" font-size="11" font-weight="bold">HTML Parse</text>
+  <text x="90" y="110" text-anchor="middle" class="text-muted" font-size="9">DOM Tree</text>
+  
+  <path class="arrow" d="M140 100 L170 100"/>
+  <polygon points="170,100 165,97 165,103" class="accent"/>
+  
+  <rect x="170" y="70" width="100" height="60" class="card" rx="4" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="220" y="95" text-anchor="middle" class="text" font-size="11" font-weight="bold">CSS Parse</text>
+  <text x="220" y="110" text-anchor="middle" class="text-muted" font-size="9">CSSOM Tree</text>
+  
+  <path class="arrow" d="M270 100 L300 100"/>
+  <polygon points="300,100 295,97 295,103" class="accent"/>
+  
+  <rect x="300" y="70" width="100" height="60" class="card" rx="4" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="350" y="95" text-anchor="middle" class="text" font-size="11" font-weight="bold">JS Execute</text>
+  <text x="350" y="110" text-anchor="middle" class="text-muted" font-size="9">DOM Manipulation</text>
+  
+  <path class="arrow" d="M400 100 L430 100"/>
+  <polygon points="430,100 425,97 425,103" class="accent"/>
+  
+  <rect x="430" y="70" width="100" height="60" class="card" rx="4" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="480" y="95" text-anchor="middle" class="text" font-size="11" font-weight="bold">Layout</text>
+  <text x="480" y="110" text-anchor="middle" class="text-muted" font-size="9">Calculate Positions</text>
+  
+  <path class="arrow" d="M530 100 L560 100"/>
+  <polygon points="560,100 555,97 555,103" class="accent"/>
+  
+  <rect x="560" y="70" width="100" height="60" class="card" rx="4" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="610" y="95" text-anchor="middle" class="text" font-size="11" font-weight="bold">Paint</text>
+  <text x="610" y="110" text-anchor="middle" class="text-muted" font-size="9">Fill Pixels</text>
+  
+  <path class="arrow" d="M660 100 L690 100"/>
+  <polygon points="690,100 685,97 685,103" class="accent"/>
+  
+  <rect x="690" y="70" width="70" height="60" class="card" rx="4" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="725" y="95" text-anchor="middle" class="text" font-size="11" font-weight="bold">Composite</text>
+  <text x="725" y="110" text-anchor="middle" class="text-muted" font-size="9">Final Frame</text>
+  
+  <!-- LCP Marker -->
+  <rect x="540" y="150" width="140" height="70" class="card" rx="4" stroke="var(--accent-color, #3b82f6)" stroke-width="2"/>
+  <text x="610" y="175" text-anchor="middle" class="accent" font-size="13" font-weight="bold">LCP</text>
+  <text x="610" y="195" text-anchor="middle" class="text-muted" font-size="10">Measured during Paint</text>
+  <text x="610" y="210" text-anchor="middle" class="text" font-size="9">Largest element rendered</text>
+  <path class="arrow" d="M610 150 L610 135"/>
+  <polygon points="610,135 607,140 613,140" class="accent"/>
+  
+  <!-- INP Marker -->
+  <rect x="280" y="240" width="140" height="70" class="card" rx="4" stroke="var(--accent-color, #3b82f6)" stroke-width="2"/>
+  <text x="350" y="265" text-anchor="middle" class="accent" font-size="13" font-weight="bold">INP</text>
+  <text x="350" y="285" text-anchor="middle" class="text-muted" font-size="10">Measured during Interaction</text>
+  <text x="350" y="300" text-anchor="middle" class="text" font-size="9">Click → Next Paint latency</text>
+  <path class="arrow" d="M350 240 L350 135"/>
+  <polygon points="350,135 347,140 353,140" class="accent"/>
+  
+  <!-- CLS Marker -->
+  <rect x="410" y="240" width="140" height="70" class="card" rx="4" stroke="var(--accent-color, #3b82f6)" stroke-width="2"/>
+  <text x="480" y="265" text-anchor="middle" class="accent" font-size="13" font-weight="bold">CLS</text>
+  <text x="480" y="285" text-anchor="middle" class="text-muted" font-size="10">Measured during Layout</text>
+  <text x="480" y="300" text-anchor="middle" class="text" font-size="9">Sum of layout shifts</text>
+  <path class="arrow" d="M480 240 L480 135"/>
+  <polygon points="480,135 477,140 483,140" class="accent"/>
+  
+  <!-- User Interaction -->
+  <rect x="40" y="350" width="200" height="100" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="140" y="375" text-anchor="middle" class="text" font-size="13" font-weight="bold">User Interaction</text>
+  <text x="140" y="395" text-anchor="middle" class="text-muted" font-size="10">Click, Tap, or Key Press</text>
+  <text x="140" y="415" text-anchor="middle" class="text" font-size="10">Triggers:</text>
+  <text x="140" y="430" text-anchor="middle" class="text-muted" font-size="9">• Event Handler (JS)</text>
+  <text x="140" y="445" text-anchor="middle" class="text-muted" font-size="9">• Layout Recalculation</text>
+  
+  <path class="arrow" d="M240 400 L270 400 L270 275 L340 275"/>
+  <polygon points="340,275 335,272 335,278" class="accent"/>
+  
+  <!-- Lab vs Field -->
+  <rect x="560" y="350" width="200" height="100" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="660" y="375" text-anchor="middle" class="text" font-size="13" font-weight="bold">Measurement Types</text>
+  <text x="660" y="395" text-anchor="middle" class="text" font-size="10">Lab Data:</text>
+  <text x="660" y="410" text-anchor="middle" class="text-muted" font-size="9">• Lighthouse, DevTools</text>
+  <text x="660" y="425" text-anchor="middle" class="text-muted" font-size="9">• Controlled environment</text>
+  <text x="660" y="440" text-anchor="middle" class="text" font-size="10">Field Data:</text>
+  <text x="660" y="455" text-anchor="middle" class="text-muted" font-size="9">• CrUX, RUM, Real users</text>
+</svg>

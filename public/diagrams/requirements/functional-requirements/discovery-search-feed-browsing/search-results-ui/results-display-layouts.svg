@@ -1,0 +1,193 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="500" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Search Results Display Layouts</text>
+  
+  <!-- List View (Top Left) -->
+  <rect x="20" y="70" width="220" height="200" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">List View</text>
+  
+  <rect x="40" y="110" width="180" height="145" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Result items -->
+  <rect x="55" y="125" width="150" height="35" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="70" y="140" font-size="8" font-weight="bold" class="text-primary">Result Title 1</text>
+  <text x="70" y="155" font-size="7" class="text-secondary">Snippet text here...</text>
+  
+  <rect x="55" y="165" width="150" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="70" y="180" font-size="8" font-weight="bold" class="text-primary">Result Title 2</text>
+  <text x="70" y="195" font-size="7" class="text-secondary">Snippet text here...</text>
+  
+  <rect x="55" y="205" width="150" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="70" y="220" font-size="8" font-weight="bold" class="text-primary">Result Title 3</text>
+  <text x="70" y="235" font-size="7" class="text-secondary">Snippet text here...</text>
+  
+  <text x="130" y="285" text-anchor="middle" font-size="9" class="highlight-green">✓ Most info per result</text>
+  <text x="130" y="300" text-anchor="middle" font-size="9" class="text-secondary">Best for: Documents</text>
+  
+  <!-- Grid View (Top Center) -->
+  <rect x="260" y="70" width="220" height="200" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Grid View</text>
+  
+  <rect x="280" y="110" width="180" height="145" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Grid items -->
+  <rect x="295" y="125" width="70" height="55" rx="2" class="box-base" stroke-width="1"/>
+  <rect x="295" y="125" width="70" height="35" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="330" y="145" text-anchor="middle" font-size="7" class="text-primary">Image</text>
+  <text x="330" y="170" text-anchor="middle" font-size="7" class="text-primary">Title</text>
+  
+  <rect x="375" y="125" width="70" height="55" rx="2" class="box-base" stroke-width="1"/>
+  <rect x="375" y="125" width="70" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="410" y="145" text-anchor="middle" font-size="7" class="text-primary">Image</text>
+  <text x="410" y="170" text-anchor="middle" font-size="7" class="text-primary">Title</text>
+  
+  <rect x="295" y="185" width="70" height="55" rx="2" class="box-base" stroke-width="1"/>
+  <rect x="295" y="185" width="70" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="330" y="205" text-anchor="middle" font-size="7" class="text-primary">Image</text>
+  <text x="330" y="230" text-anchor="middle" font-size="7" class="text-primary">Title</text>
+  
+  <rect x="375" y="185" width="70" height="55" rx="2" class="box-base" stroke-width="1"/>
+  <rect x="375" y="185" width="70" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="410" y="205" text-anchor="middle" font-size="7" class="text-primary">Image</text>
+  <text x="410" y="230" text-anchor="middle" font-size="7" class="text-primary">Title</text>
+  
+  <text x="370" y="285" text-anchor="middle" font-size="9" class="highlight-green">✓ More visible</text>
+  <text x="370" y="300" text-anchor="middle" font-size="9" class="text-secondary">Best for: Products</text>
+  
+  <!-- Table View (Top Right) -->
+  <rect x="500" y="70" width="240" height="200" rx="5" class="box-base" stroke-width="2"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Table View</text>
+  
+  <rect x="520" y="110" width="200" height="145" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Table header -->
+  <rect x="535" y="125" width="170" height="20" rx="1" class="accent-box" stroke-width="1"/>
+  <text x="550" y="138" font-size="7" font-weight="bold" class="text-primary">Name</text>
+  <text x="620" y="138" font-size="7" font-weight="bold" class="text-primary">Date</text>
+  <text x="680" y="138" font-size="7" font-weight="bold" class="text-primary">Type</text>
+  
+  <!-- Table rows -->
+  <rect x="535" y="148" width="170" height="18" rx="1" class="box-base" stroke-width="1"/>
+  <text x="550" y="160" font-size="6" class="text-primary">Item 1</text>
+  <text x="620" y="160" font-size="6" class="text-primary">Jan 1</text>
+  <text x="680" y="160" font-size="6" class="text-primary">Doc</text>
+  
+  <rect x="535" y="168" width="170" height="18" rx="1" class="box-base" stroke-width="1"/>
+  <text x="550" y="180" font-size="6" class="text-primary">Item 2</text>
+  <text x="620" y="180" font-size="6" class="text-primary">Jan 2</text>
+  <text x="680" y="180" font-size="6" class="text-primary">Doc</text>
+  
+  <rect x="535" y="188" width="170" height="18" rx="1" class="box-base" stroke-width="1"/>
+  <text x="550" y="200" font-size="6" class="text-primary">Item 3</text>
+  <text x="620" y="200" font-size="6" class="text-primary">Jan 3</text>
+  <text x="680" y="200" font-size="6" class="text-primary">Doc</text>
+  
+  <rect x="535" y="208" width="170" height="18" rx="1" class="box-base" stroke-width="1"/>
+  <text x="550" y="220" font-size="6" class="text-primary">Item 4</text>
+  <text x="620" y="220" font-size="6" class="text-primary">Jan 4</text>
+  <text x="680" y="220" font-size="6" class="text-primary">Doc</text>
+  
+  <text x="620" y="285" text-anchor="middle" font-size="9" class="highlight-green">✓ Structured data</text>
+  <text x="620" y="300" text-anchor="middle" font-size="9" class="text-secondary">Best for: Comparisons</text>
+  
+  <!-- Rich Cards (Bottom Left) -->
+  <rect x="20" y="290" width="300" height="190" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="170" y="315" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Rich Cards</text>
+  
+  <rect x="40" y="330" width="260" height="135" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Rich card example -->
+  <rect x="55" y="345" width="230" height="50" rx="2" class="accent-box" stroke-width="1"/>
+  <rect x="70" y="355" width="35" height="30" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="87" y="372" text-anchor="middle" font-size="6" class="text-primary">Img</text>
+  <text x="115" y="360" font-size="8" font-weight="bold" class="text-primary">Product Title</text>
+  <text x="115" y="375" font-size="7" class="text-secondary">$99.99</text>
+  <text x="160" y="375" font-size="7" class="highlight-green">★★★★☆</text>
+  <text x="260" y="375" text-anchor="end" font-size="7" class="highlight-blue">Prime</text>
+  
+  <!-- Another rich card -->
+  <rect x="55" y="400" width="230" height="50" rx="2" class="box-base" stroke-width="1"/>
+  <rect x="70" y="410" width="35" height="30" rx="2" class="box-base" stroke-width="1"/>
+  <text x="87" y="427" text-anchor="middle" font-size="6" class="text-primary">Img</text>
+  <text x="115" y="415" font-size="8" font-weight="bold" class="text-primary">Recipe Title</text>
+  <text x="115" y="430" font-size="7" class="text-secondary">30 min | 4 servings</text>
+  <text x="260" y="430" text-anchor="end" font-size="7" class="highlight-green">★★★★★</text>
+  
+  <text x="170" y="495" text-anchor="middle" font-size="9" class="highlight-green">✓ Rich snippets</text>
+  <text x="170" y="510" text-anchor="middle" font-size="9" class="text-secondary">Best for: Products, recipes</text>
+  
+  <!-- Comparison Table (Bottom Right) -->
+  <rect x="340" y="290" width="640" height="190" rx="5" class="box-base" stroke-width="2"/>
+  <text x="660" y="315" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Layout Comparison</text>
+  
+  <rect x="360" y="330" width="600" height="135" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Header -->
+  <text x="375" y="350" font-size="9" font-weight="bold" class="text-primary">Layout</text>
+  <text x="500" y="350" font-size="9" font-weight="bold" class="text-primary">Info Density</text>
+  <text x="620" y="350" font-size="9" font-weight="bold" class="text-primary">Visual</text>
+  <text x="750" y="350" font-size="9" font-weight="bold" class="text-primary">Best For</text>
+  
+  <!-- Row 1 -->
+  <line x1="370" y1="360" x2="950" y2="360" class="arrow" stroke-width="1"/>
+  <text x="375" y="375" font-size="8" class="text-primary">List</text>
+  <text x="500" y="375" font-size="8" class="highlight-green">High</text>
+  <text x="620" y="375" font-size="8" class="highlight-purple">Low</text>
+  <text x="750" y="375" font-size="8" class="text-secondary">Documents, articles</text>
+  
+  <!-- Row 2 -->
+  <line x1="370" y1="385" x2="950" y2="385" class="arrow" stroke-width="1"/>
+  <text x="375" y="400" font-size="8" class="text-primary">Grid</text>
+  <text x="500" y="400" font-size="8" class="highlight-purple">Medium</text>
+  <text x="620" y="400" font-size="8" class="highlight-green">High</text>
+  <text x="750" y="400" font-size="8" class="text-secondary">Products, images</text>
+  
+  <!-- Row 3 -->
+  <line x1="370" y1="410" x2="950" y2="410" class="arrow" stroke-width="1"/>
+  <text x="375" y="425" font-size="8" class="text-primary">Table</text>
+  <text x="500" y="425" font-size="8" class="highlight-green">Highest</text>
+  <text x="620" y="425" font-size="8" class="highlight-purple">Low</text>
+  <text x="750" y="425" font-size="8" class="text-secondary">Comparisons, data</text>
+  
+  <!-- Row 4 -->
+  <line x1="370" y1="435" x2="950" y2="435" class="arrow" stroke-width="1"/>
+  <text x="375" y="450" font-size="8" class="text-primary">Rich Cards</text>
+  <text x="500" y="450" font-size="8" class="highlight-purple">Medium</text>
+  <text x="620" y="450" font-size="8" class="highlight-green">High</text>
+  <text x="750" y="450" font-size="8" class="text-secondary">E-commerce, recipes</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

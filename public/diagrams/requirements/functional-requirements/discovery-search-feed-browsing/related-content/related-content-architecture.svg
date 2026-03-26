@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="500" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Related Content Architecture</text>
+  
+  <!-- Content Items (Top Left) -->
+  <rect x="20" y="70" width="180" height="120" rx="5" class="box-base" stroke-width="2"/>
+  <text x="110" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Content Items</text>
+  
+  <rect x="40" y="110" width="140" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="55" y="130" font-size="9" class="text-primary">• Article A</text>
+  <text x="55" y="148" font-size="9" class="text-primary">• Video B</text>
+  <text x="55" y="166" font-size="9" class="text-primary">• Product C</text>
+  
+  <!-- Arrow to Feature Extraction -->
+  <line x1="200" y1="130" x2="240" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Feature Extraction (Top Center Left) -->
+  <rect x="240" y="70" width="200" height="120" rx="5" class="box-base" stroke-width="2"/>
+  <text x="340" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Feature Extraction</text>
+  
+  <rect x="260" y="110" width="160" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="275" y="130" font-size="9" class="text-primary">• Tags/Categories</text>
+  <text x="275" y="148" font-size="9" class="text-primary">• Embeddings (BERT)</text>
+  <text x="275" y="166" font-size="9" class="text-primary">• Metadata</text>
+  
+  <!-- Arrow to Similarity -->
+  <line x1="440" y1="130" x2="480" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Similarity Computation (Top Center) -->
+  <rect x="480" y="70" width="200" height="120" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="580" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Similarity Matrix</text>
+  
+  <rect x="500" y="110" width="160" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="515" y="130" font-size="9" class="text-primary">• Cosine similarity</text>
+  <text x="515" y="148" font-size="9" class="text-primary">• Co-engagement</text>
+  <text x="515" y="166" font-size="9" class="text-primary">• Pairwise scores</text>
+  
+  <!-- Arrow to Top-K -->
+  <line x1="680" y1="130" x2="720" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Top-K Selection (Top Center Right) -->
+  <rect x="720" y="70" width="200" height="120" rx="5" class="box-base" stroke-width="2"/>
+  <text x="820" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Top-K Selection</text>
+  
+  <rect x="740" y="110" width="160" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="755" y="130" font-size="9" class="text-primary">• Select top 20-50</text>
+  <text x="755" y="148" font-size="9" class="text-primary">• Per item</text>
+  <text x="755" y="166" font-size="9" class="text-primary">• Store in cache</text>
+  
+  <!-- Arrow to Cache -->
+  <line x1="820" y1="190" x2="820" y2="230" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Related Content Cache (Middle Right) -->
+  <rect x="700" y="230" width="240" height="120" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="820" y="255" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Related Content Cache</text>
+  
+  <rect x="720" y="270" width="200" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="735" y="290" font-size="9" class="text-primary" font-family="monospace">Key: content_id</text>
+  <text x="735" y="308" font-size="9" class="text-primary" font-family="monospace">Value: [rel1, rel2...]</text>
+  <text x="735" y="326" font-size="9" class="highlight-green">TTL: 1 hour</text>
+  
+  <!-- Arrow to API -->
+  <line x1="700" y1="290" x2="660" y2="290" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Related Content API (Middle Center) -->
+  <rect x="480" y="230" width="180" height="120" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="570" y="255" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Related API</text>
+  
+  <rect x="500" y="270" width="140" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="570" y="290" text-anchor="middle" font-size="9" class="text-secondary">GET /related/{id}</text>
+  <text x="570" y="308" text-anchor="middle" font-size="9" class="highlight-green">&lt;50ms latency</text>
+  <text x="570" y="326" text-anchor="middle" font-size="9" class="text-secondary">Returns top 10</text>
+  
+  <!-- Arrow to Display -->
+  <line x1="480" y1="290" x2="440" y2="290" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Display (Middle Left) -->
+  <rect x="240" y="230" width="200" height="120" rx="5" class="box-base" stroke-width="2"/>
+  <text x="340" y="255" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Display</text>
+  
+  <rect x="260" y="270" width="160" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="275" y="290" font-size="9" class="text-primary">• Sidebar (desktop)</text>
+  <text x="275" y="308" font-size="9" class="text-primary">• Below content</text>
+  <text x="275" y="326" font-size="9" class="text-primary">• Horizontal scroll</text>
+  
+  <!-- Batch Job (Bottom Left) -->
+  <rect x="20" y="370" width="300" height="110" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="395" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Batch Job (Hourly)</text>
+  
+  <rect x="40" y="410" width="260" height="55" rx="3" class="box-base" stroke-width="1"/>
+  <text x="55" y="430" font-size="9" class="text-primary">• Recompute all related</text>
+  <text x="55" y="448" font-size="9" class="text-primary">• Update cache</text>
+  <text x="180" y="430" font-size="9" class="highlight-purple">~30 min runtime</text>
+  
+  <!-- Incremental Update (Bottom Center) -->
+  <rect x="340" y="370" width="320" height="110" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="395" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Incremental Updates</text>
+  
+  <rect x="360" y="410" width="280" height="55" rx="3" class="box-base" stroke-width="1"/>
+  <text x="375" y="430" font-size="9" class="text-primary">• New content published</text>
+  <text x="375" y="448" font-size="9" class="text-primary">• High-engagement content</text>
+  <text x="550" y="430" font-size="9" class="highlight-green">&lt;15 min freshness</text>
+  
+  <!-- Invalidation (Bottom Right) -->
+  <rect x="680" y="370" width="300" height="110" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="830" y="395" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Cache Invalidation</text>
+  
+  <rect x="700" y="410" width="260" height="55" rx="3" class="box-base" stroke-width="1"/>
+  <text x="715" y="430" font-size="9" class="text-primary">• Content updated</text>
+  <text x="715" y="448" font-size="9" class="text-primary">• Event-driven (Kafka)</text>
+  <text x="850" y="430" font-size="9" class="highlight-purple">Invalidate key</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

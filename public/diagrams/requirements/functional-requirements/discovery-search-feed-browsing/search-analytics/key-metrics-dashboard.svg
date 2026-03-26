@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      .highlight-red { fill: #f56565; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Key Metrics Dashboard</text>
+  
+  <!-- Search Volume (Top Left) -->
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Search Volume</text>
+  
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Volume chart -->
+  <text x="55" y="130" font-size="9" font-weight="bold" class="text-primary">Searches/Day</text>
+  <text x="55" y="150" font-size="14" class="highlight-green">12,450</text>
+  <text x="55" y="170" font-size="8" class="highlight-green">↑ 15% vs last week</text>
+  
+  <!-- Mini chart -->
+  <polyline points="60,200 80,195 100,185 120,190 140,175 160,180 180,165 200,170" fill="none" class="highlight-blue" stroke-width="2"/>
+  <text x="130" y="220" text-anchor="middle" font-size="7" class="text-secondary">Last 7 days</text>
+  
+  <text x="130" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Baseline metric</text>
+  
+  <!-- CTR (Top Center) -->
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Click-Through Rate</text>
+  
+  <rect x="280" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="295" y="130" font-size="9" font-weight="bold" class="text-primary">Overall CTR</text>
+  <text x="295" y="150" font-size="14" class="highlight-green">42.5%</text>
+  <text x="295" y="170" font-size="8" class="highlight-green">Target: &gt;40%</text>
+  
+  <!-- CTR by position -->
+  <text x="295" y="195" font-size="8" font-weight="bold" class="text-primary">By Position:</text>
+  <text x="295" y="210" font-size="7" class="text-secondary">Pos 1: 35% | Pos 2: 22%</text>
+  <text x="295" y="225" font-size="7" class="text-secondary">Pos 3: 15% | Pos 4+: 8%</text>
+  
+  <text x="370" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Quality indicator</text>
+  
+  <!-- Zero Results (Top Right) -->
+  <rect x="500" y="70" width="240" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Zero-Result Rate</text>
+  
+  <rect x="520" y="110" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="535" y="130" font-size="9" font-weight="bold" class="text-primary">Zero Results</text>
+  <text x="535" y="150" font-size="14" class="highlight-red">8.2%</text>
+  <text x="535" y="170" font-size="8" class="highlight-red">⚠ Target: &lt;5%</text>
+  
+  <!-- Top zero queries -->
+  <text x="535" y="195" font-size="8" font-weight="bold" class="text-primary">Top Zero Queries:</text>
+  <text x="535" y="210" font-size="7" class="text-secondary">1. "wireless charger" (234)</text>
+  <text x="535" y="225" font-size="7" class="text-secondary">2. "usb-c hub" (189)</text>
+  
+  <text x="620" y="245" text-anchor="middle" font-size="9" class="highlight-red">⚠ Content gaps</text>
+  
+  <!-- Exit Rate (Bottom Left) -->
+  <rect x="20" y="260" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Exit Rate</text>
+  
+  <rect x="40" y="300" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="55" y="320" font-size="9" font-weight="bold" class="text-primary">Post-Search Exit</text>
+  <text x="55" y="340" font-size="14" class="highlight-purple">25.3%</text>
+  <text x="55" y="360" font-size="8" class="highlight-purple">Target: &lt;20%</text>
+  
+  <!-- Exit by query type -->
+  <text x="55" y="385" font-size="8" font-weight="bold" class="text-primary">By Query Type:</text>
+  <text x="55" y="400" font-size="7" class="text-secondary">Navigational: 12%</text>
+  <text x="55" y="415" font-size="7" class="text-secondary">Informational: 28%</text>
+  
+  <text x="130" y="445" text-anchor="middle" font-size="9" class="highlight-purple">⚠ Search failure</text>
+  
+  <!-- Query Refinement (Bottom Center) -->
+  <rect x="260" y="260" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Query Refinement</text>
+  
+  <rect x="280" y="300" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="295" y="320" font-size="9" font-weight="bold" class="text-primary">Refinement Rate</text>
+  <text x="295" y="340" font-size="14" class="highlight-blue">18.5%</text>
+  <text x="295" y="360" font-size="8" class="highlight-blue">Target: &lt;15%</text>
+  
+  <!-- Common refinements -->
+  <text x="295" y="385" font-size="8" font-weight="bold" class="text-primary">Common Patterns:</text>
+  <text x="295" y="400" font-size="7" class="text-secondary">"laptop" → "laptop 16gb"</text>
+  <text x="295" y="415" font-size="7" class="text-secondary">"phone" → "phone case"</text>
+  
+  <text x="370" y="445" text-anchor="middle" font-size="9" class="highlight-blue">⚠ Poor initial results</text>
+  
+  <!-- Time to Click (Bottom Right) -->
+  <rect x="500" y="260" width="240" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="620" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Time to Click</text>
+  
+  <rect x="520" y="300" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="535" y="320" font-size="9" font-weight="bold" class="text-primary">Avg Time to Click</text>
+  <text x="535" y="340" font-size="14" class="highlight-green">4.2s</text>
+  <text x="535" y="360" font-size="8" class="highlight-green">Target: &lt;5s</text>
+  
+  <!-- Distribution -->
+  <text x="535" y="385" font-size="8" font-weight="bold" class="text-primary">Distribution:</text>
+  <text x="535" y="400" font-size="7" class="text-secondary">&lt;2s: 35% | 2-5s: 40%</text>
+  <text x="535" y="415" font-size="7" class="text-secondary">5-10s: 20% | &gt;10s: 5%</text>
+  
+  <text x="620" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Findability</text>
+  
+  <!-- Trend Arrow (Far Right) -->
+  <rect x="760" y="70" width="220" height="360" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="870" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">7-Day Trends</text>
+  
+  <rect x="780" y="110" width="180" height="305" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Trend chart -->
+  <text x="795" y="135" font-size="8" font-weight="bold" class="text-primary">Volume Trend</text>
+  <polyline points="800,200 820,195 840,180 860,185 880,170 900,175 920,160 940,155" fill="none" class="highlight-green" stroke-width="2"/>
+  <text x="870" y="220" text-anchor="middle" font-size="7" class="highlight-green">↑ Increasing</text>
+  
+  <text x="795" y="245" font-size="8" font-weight="bold" class="text-primary">CTR Trend</text>
+  <polyline points="800,280 820,275 840,285 860,280 880,270 900,275 920,265 940,260" fill="none" class="highlight-blue" stroke-width="2"/>
+  <text x="870" y="300" text-anchor="middle" font-size="7" class="highlight-blue">→ Stable</text>
+  
+  <text x="795" y="325" font-size="8" font-weight="bold" class="text-primary">Zero Results</text>
+  <polyline points="800,360 820,355 840,340 860,345 880,330 900,335 920,320 940,315" fill="none" class="highlight-red" stroke-width="2"/>
+  <text x="870" y="380" text-anchor="middle" font-size="7" class="highlight-red">⚠ Increasing</text>
+  
+  <text x="870" y="405" text-anchor="middle" font-size="8" class="text-secondary">Last 7 days</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

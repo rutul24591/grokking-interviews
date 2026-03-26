@@ -1,0 +1,112 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: var(--bg-primary, #ffffff); }
+      .card { fill: var(--bg-panel, #f8fafc); }
+      .text { fill: var(--text-primary, #1e293b); }
+      .text-muted { fill: var(--text-muted, #64748b); }
+      .border { stroke: var(--border-color, #e2e8f0); }
+      .accent { fill: var(--accent-color, #3b82f6); }
+      .arrow { stroke: var(--accent-color, #3b82f6); stroke-width: 2; fill: none; }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect class="bg" width="800" height="500" rx="8"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" class="text" font-size="18" font-weight="bold">Image CDN Architecture</text>
+  
+  <!-- Origin Storage -->
+  <rect x="40" y="70" width="180" height="100" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="130" y="100" text-anchor="middle" class="text" font-size="14" font-weight="bold">Origin Storage</text>
+  <text x="130" y="125" text-anchor="middle" class="text-muted" font-size="10">• Master images</text>
+  <text x="130" y="140" text-anchor="middle" class="text-muted" font-size="10">• S3, GCS, Azure Blob</text>
+  <text x="130" y="155" text-anchor="middle" class="text-muted" font-size="10">• One file per image</text>
+  
+  <!-- Arrow to CDN -->
+  <path class="arrow" d="M220 120 L280 120"/>
+  <polygon points="280,120 275,117 275,123" class="accent"/>
+  
+  <!-- CDN Edge Network -->
+  <rect x="280" y="70" width="240" height="180" class="card" rx="6" stroke="var(--accent-color, #3b82f6)" stroke-width="2"/>
+  <text x="400" y="100" text-anchor="middle" class="accent" font-size="14" font-weight="bold">CDN Edge Network</text>
+  
+  <!-- Edge Node 1 -->
+  <rect x="300" y="115" width="200" height="50" class="card" rx="4" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="400" y="140" text-anchor="middle" class="text" font-size="11" font-weight="bold">Edge Node (US-East)</text>
+  <text x="400" y="155" text-anchor="middle" class="text-muted" font-size="9">Cache: transformed variants</text>
+  
+  <!-- Edge Node 2 -->
+  <rect x="300" y="175" width="200" height="50" class="card" rx="4" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="400" y="200" text-anchor="middle" class="text" font-size="11" font-weight="bold">Edge Node (EU-West)</text>
+  <text x="400" y="215" text-anchor="middle" class="text-muted" font-size="9">Cache: transformed variants</text>
+  
+  <!-- Edge Node 3 -->
+  <rect x="300" y="235" width="200" height="50" class="card" rx="4" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="400" y="260" text-anchor="middle" class="text" font-size="11" font-weight="bold">Edge Node (AP-South)</text>
+  <text x="400" y="275" text-anchor="middle" class="text-muted" font-size="9">Cache: transformed variants</text>
+  
+  <!-- Arrow to Users -->
+  <path class="arrow" d="M520 170 L580 170"/>
+  <polygon points="580,170 575,167 575,173" class="accent"/>
+  
+  <!-- Users -->
+  <rect x="580" y="70" width="180" height="100" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="670" y="100" text-anchor="middle" class="text" font-size="14" font-weight="bold">End Users</text>
+  <text x="670" y="125" text-anchor="middle" class="text-muted" font-size="10">• Browser requests</text>
+  <text x="670" y="140" text-anchor="middle" class="text-muted" font-size="10">• Accept header</text>
+  <text x="670" y="155" text-anchor="middle" class="text-muted" font-size="10">• Viewport size</text>
+  
+  <!-- Transformation Flow -->
+  <rect x="40" y="220" width="720" height="140" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="400" y="250" text-anchor="middle" class="text" font-size="14" font-weight="bold">On-Demand Transformation Flow</text>
+  
+  <!-- Step 1 -->
+  <circle cx="100" cy="295" r="20" class="accent"/>
+  <text x="100" y="300" text-anchor="middle" class="text" font-size="14" font-weight="bold" fill="white">1</text>
+  <text x="130" y="295" class="text" font-size="11" font-weight="bold">Request: /image.jpg?w=800&amp;f=webp</text>
+  <text x="130" y="315" class="text-muted" font-size="9">URL params specify transform</text>
+  
+  <!-- Arrow -->
+  <path class="arrow" d="M300 295 L330 295"/>
+  
+  <!-- Step 2 -->
+  <circle cx="360" cy="295" r="20" class="accent"/>
+  <text x="360" y="300" text-anchor="middle" class="text" font-size="14" font-weight="bold" fill="white">2</text>
+  <text x="390" y="295" class="text" font-size="11" font-weight="bold">Cache Miss?</text>
+  <text x="390" y="315" class="text-muted" font-size="9">Fetch from origin, transform</text>
+  
+  <!-- Arrow -->
+  <path class="arrow" d="M520 295 L550 295"/>
+  
+  <!-- Step 3 -->
+  <circle cx="580" cy="295" r="20" class="accent"/>
+  <text x="580" y="300" text-anchor="middle" class="text" font-size="14" font-weight="bold" fill="white">3</text>
+  <text x="610" y="295" class="text" font-size="11" font-weight="bold">Cache at Edge</text>
+  <text x="610" y="315" class="text-muted" font-size="9">Store for future requests</text>
+  
+  <!-- Arrow -->
+  <path class="arrow" d="M100 335 L100 360 L680 360 L680 335"/>
+  <polygon points="680,335 677,340 683,340" class="accent"/>
+  
+  <!-- Step 4 -->
+  <circle cx="680" cy="315" r="20" class="success"/>
+  <text x="680" y="320" text-anchor="middle" class="text" font-size="14" font-weight="bold" fill="white">4</text>
+  <text x="520" y="355" class="text" font-size="11" font-weight="bold">Subsequent requests: Cache HIT</text>
+  <text x="520" y="375" class="text-muted" font-size="9">Serve from edge cache (fast)</text>
+  
+  <!-- Format Negotiation -->
+  <rect x="40" y="380" width="340" height="90" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="210" y="410" text-anchor="middle" class="text" font-size="13" font-weight="bold">Automatic Format Negotiation</text>
+  <text x="60" y="435" class="text-muted" font-size="10">Browser sends: Accept: image/webp, image/avif</text>
+  <text x="60" y="455" class="text" font-size="10">CDN serves: Best supported format</text>
+  <text x="60" y="470" class="text-muted" font-size="9">AVIF → WebP → JPEG fallback chain</text>
+  
+  <!-- URL Parameters -->
+  <rect x="420" y="380" width="340" height="90" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="590" y="410" text-anchor="middle" class="text" font-size="13" font-weight="bold">Common URL Parameters</text>
+  <text x="440" y="435" class="text-muted" font-size="10">w=800 (width), h=600 (height)</text>
+  <text x="440" y="455" class="text-muted" font-size="10">f=webp (format), q=75 (quality)</text>
+  <text x="440" y="470" class="text-muted" font-size="10">fit=crop (crop mode), face=center (focus)</text>
+</svg>

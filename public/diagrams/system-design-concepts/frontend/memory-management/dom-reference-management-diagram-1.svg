@@ -1,0 +1,56 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="500" rx="10" fill="#F8F9FC"/>
+
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">
+    Detached DOM Leak: Retainer Chain (Architecture)
+  </text>
+
+  <defs>
+    <marker id="arrowDOM1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
+    </marker>
+  </defs>
+
+  <!-- Boxes -->
+  <rect x="70" y="90" width="280" height="110" rx="12" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="210" y="122" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Long-lived Root</text>
+  <text x="210" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">global registry</text>
+  <text x="210" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">subscription list</text>
+
+  <rect x="400" y="90" width="240" height="110" rx="12" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <text x="520" y="122" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Callback / Closure</text>
+  <text x="520" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">captures state</text>
+  <text x="520" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">captures DOM handle</text>
+
+  <rect x="690" y="90" width="160" height="110" rx="12" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+  <text x="770" y="122" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">DOM Node</text>
+  <text x="770" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">removed from</text>
+  <text x="770" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">document</text>
+
+  <line x1="350" y1="145" x2="400" y2="145" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrowDOM1)"/>
+  <line x1="640" y1="145" x2="690" y2="145" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrowDOM1)"/>
+
+  <!-- Bottom: consequence -->
+  <rect x="70" y="245" width="780" height="185" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="95" y="275" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Consequence</text>
+
+  <rect x="95" y="295" width="240" height="105" rx="12" fill="#F1F5F9" stroke="#94A3B8" stroke-width="2"/>
+  <text x="215" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Detached Subtree</text>
+  <text x="215" y="348" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">many nodes retained</text>
+  <text x="215" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">styles/layout state</text>
+
+  <rect x="355" y="295" width="240" height="105" rx="12" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
+  <text x="475" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Higher GC Cost</text>
+  <text x="475" y="348" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">more scanning</text>
+  <text x="475" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">longer pauses</text>
+
+  <rect x="615" y="295" width="235" height="105" rx="12" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <text x="732.5" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">User Impact</text>
+  <text x="732.5" y="348" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">jank over time</text>
+  <text x="732.5" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">tab pressure</text>
+
+  <text x="450" y="468" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748B">
+    Fix = break the retaining reference chain and enforce cleanup at unmount/navigation boundaries.
+  </text>
+</svg>
+

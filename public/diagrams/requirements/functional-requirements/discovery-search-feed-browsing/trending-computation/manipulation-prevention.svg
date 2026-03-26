@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      .highlight-red { fill: #f56565; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Manipulation Prevention</text>
+  
+  <!-- Bot Detection (Top Left) -->
+  <rect x="20" y="70" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Bot Detection</text>
+  
+  <rect x="40" y="110" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="55" y="135" font-size="10" class="text-primary">Detect suspicious patterns:</text>
+  <text x="55" y="155" font-size="9" class="text-secondary">• New accounts (&lt;7 days)</text>
+  <text x="55" y="175" font-size="9" class="text-secondary">• High velocity (100+ actions/hour)</text>
+  <text x="55" y="195" font-size="9" class="text-secondary">• Same IP addresses</text>
+  <text x="55" y="215" font-size="9" class="text-secondary">• No profile info</text>
+  
+  <text x="170" y="245" text-anchor="middle" font-size="9" class="highlight-red">⚠ Downweight bot engagements</text>
+  
+  <!-- Arrow to Weighting -->
+  <line x1="320" y1="155" x2="360" y2="155" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- User Quality Weighting (Top Center) -->
+  <rect x="360" y="70" width="300" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="510" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">User Quality Weighting</text>
+  
+  <rect x="380" y="110" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="395" y="135" font-size="10" class="text-primary">Weight by user attributes:</text>
+  <text x="395" y="155" font-size="9" class="text-secondary">• Verified: 2.0x</text>
+  <text x="395" y="175" font-size="9" class="text-secondary">• Account age (&gt;1 year): 1.5x</text>
+  <text x="395" y="195" font-size="9" class="text-secondary">• Past engagement quality: 1.2x</text>
+  <text x="395" y="215" font-size="9" class="text-secondary">• New/unverified: 0.5x</text>
+  
+  <text x="510" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Bots count less</text>
+  
+  <!-- Arrow to Coordination -->
+  <line x1="660" y1="155" x2="700" y2="155" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Coordination Detection (Top Right) -->
+  <rect x="700" y="70" width="280" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="840" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Coordination Detection</text>
+  
+  <rect x="720" y="110" width="240" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="735" y="135" font-size="10" class="text-primary">Detect coordinated action:</text>
+  <text x="735" y="155" font-size="9" class="text-secondary">• Same timing (within seconds)</text>
+  <text x="735" y="175" font-size="9" class="text-secondary">• Same content shared</text>
+  <text x="735" y="195" font-size="9" class="text-secondary">• Network analysis</text>
+  <text x="735" y="215" font-size="9" class="text-secondary">• Graph clustering</text>
+  
+  <text x="840" y="245" text-anchor="middle" font-size="9" class="highlight-red">⚠ Flag coordinated campaigns</text>
+  
+  <!-- Arrows down to Human Review -->
+  <line x1="170" y1="240" x2="170" y2="280" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  <line x1="510" y1="240" x2="510" y2="280" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  <line x1="840" y1="240" x2="840" y2="280" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Human Review (Bottom Center) -->
+  <rect x="350" y="280" width="320" height="150" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="510" y="310" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Human Review</text>
+  
+  <rect x="370" y="325" width="280" height="90" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="385" y="350" font-size="10" font-weight="bold" class="text-primary">Top 10 Trends Review:</text>
+  <text x="385" y="370" font-size="9" class="text-secondary">• Verify authenticity</text>
+  <text x="385" y="388" font-size="9" class="text-secondary">• Check for misinformation</text>
+  <text x="385" y="406" font-size="9" class="text-secondary">• Approve/reject before display</text>
+  
+  <text x="510" y="440" text-anchor="middle" font-size="9" class="highlight-green">✓ Final safeguard</text>
+  
+  <!-- Anomaly Detection (Bottom Left) -->
+  <rect x="20" y="280" width="310" height="150" rx="5" class="box-base" stroke-width="2"/>
+  <text x="175" y="310" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Velocity Anomaly Detection</text>
+  
+  <rect x="40" y="325" width="270" height="90" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="55" y="350" font-size="9" font-weight="bold" class="text-primary">Alert on unusual spikes:</text>
+  <text x="55" y="370" font-size="8" class="text-secondary">• 10x normal velocity</text>
+  <text x="55" y="388" font-size="8" class="text-secondary">• From new accounts only</text>
+  <text x="55" y="406" font-size="8" class="text-secondary">• Single geographic source</text>
+  
+  <text x="175" y="440" text-anchor="middle" font-size="9" class="highlight-purple">Auto-flag for review</text>
+  
+  <!-- Engagement Quality (Bottom Right) -->
+  <rect x="690" y="280" width="290" height="150" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="835" y="310" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Engagement Quality</text>
+  
+  <rect x="710" y="325" width="250" height="90" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="725" y="350" font-size="9" font-weight="bold" class="text-primary">Weight by engagement type:</text>
+  <text x="725" y="370" font-size="8" class="text-secondary">• Comment: 3x (high effort)</text>
+  <text x="725" y="388" font-size="8" class="text-secondary">• Share: 2x (endorsement)</text>
+  <text x="725" y="406" font-size="8" class="text-secondary">• Like: 1x (low effort)</text>
+  <text x="725" y="424" font-size="8" class="text-secondary">• View: 0.1x (passive)</text>
+  
+  <text x="835" y="440" text-anchor="middle" font-size="9" class="highlight-green">✓ Quality over quantity</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,197 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Filter Types UI Patterns</text>
+  
+  <!-- Checkboxes (Top Left) -->
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Checkboxes</text>
+  
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Checkbox items -->
+  <rect x="55" y="125" width="150" height="22" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="70" y="140" font-size="9" class="highlight-green">✓</text>
+  <text x="85" y="140" font-size="9" class="text-primary">Electronics</text>
+  <text x="180" y="140" text-anchor="end" font-size="8" class="text-secondary">123</text>
+  
+  <rect x="55" y="150" width="150" height="22" rx="2" class="box-base" stroke-width="1"/>
+  <text x="70" y="165" font-size="9" class="text-secondary">○</text>
+  <text x="85" y="165" font-size="9" class="text-primary">Fashion</text>
+  <text x="180" y="165" text-anchor="end" font-size="8" class="text-secondary">89</text>
+  
+  <rect x="55" y="175" width="150" height="22" rx="2" class="box-base" stroke-width="1"/>
+  <text x="70" y="190" font-size="9" class="text-secondary">○</text>
+  <text x="85" y="190" font-size="9" class="text-primary">Home</text>
+  <text x="180" y="190" text-anchor="end" font-size="8" class="text-secondary">45</text>
+  
+  <text x="130" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Multi-select</text>
+  <text x="130" y="260" text-anchor="middle" font-size="9" class="text-secondary">Most common pattern</text>
+  
+  <!-- Sliders (Top Center) -->
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Range Sliders</text>
+  
+  <rect x="280" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Price slider -->
+  <text x="295" y="130" font-size="9" font-weight="bold" class="text-primary">Price Range</text>
+  
+  <!-- Slider track -->
+  <line x1="295" y1="150" x2="445" y2="150" class="highlight-blue" stroke-width="4"/>
+  
+  <!-- Slider handles -->
+  <circle cx="325" cy="150" r="8" class="highlight-box" stroke-width="2"/>
+  <text x="325" y="175" text-anchor="middle" font-size="8" class="text-primary">$50</text>
+  
+  <circle cx="415" cy="150" r="8" class="highlight-box" stroke-width="2"/>
+  <text x="415" y="175" text-anchor="middle" font-size="8" class="text-primary">$500</text>
+  
+  <!-- Histogram bars -->
+  <rect x="295" y="190" width="20" height="25" rx="1" class="box-base" stroke-width="1"/>
+  <rect x="320" y="180" width="20" height="35" rx="1" class="accent-box" stroke-width="1"/>
+  <rect x="345" y="170" width="20" height="45" rx="1" class="accent-box" stroke-width="1"/>
+  <rect x="370" y="185" width="20" height="30" rx="1" class="box-base" stroke-width="1"/>
+  <rect x="395" y="200" width="20" height="15" rx="1" class="box-base" stroke-width="1"/>
+  
+  <text x="370" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Visual distribution</text>
+  <text x="370" y="260" text-anchor="middle" font-size="9" class="text-secondary">Dual-handle for min/max</text>
+  
+  <!-- Date Range (Top Right) -->
+  <rect x="500" y="70" width="240" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Date Range</text>
+  
+  <rect x="520" y="110" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Preset ranges -->
+  <rect x="535" y="125" width="170" height="22" rx="2" class="box-base" stroke-width="1"/>
+  <text x="550" y="140" font-size="8" class="text-primary">Last 24 hours</text>
+  
+  <rect x="535" y="150" width="170" height="22" rx="2" class="accent-box" stroke-width="1.5"/>
+  <text x="550" y="165" font-size="8" font-weight="bold" class="text-primary">Last 7 days</text>
+  <text x="685" y="165" font-size="8" class="highlight-green">✓</text>
+  
+  <rect x="535" y="175" width="170" height="22" rx="2" class="box-base" stroke-width="1"/>
+  <text x="550" y="190" font-size="8" class="text-primary">Last 30 days</text>
+  
+  <!-- Custom date picker -->
+  <rect x="535" y="200" width="170" height="22" rx="2" class="box-base" stroke-width="1"/>
+  <text x="550" y="215" font-size="8" class="text-secondary">📅 Custom range...</text>
+  
+  <text x="620" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Preset options</text>
+  <text x="620" y="260" text-anchor="middle" font-size="9" class="text-secondary">Custom date picker</text>
+  
+  <!-- Dropdowns (Bottom Left) -->
+  <rect x="20" y="260" width="220" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="130" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Dropdowns</text>
+  
+  <rect x="40" y="300" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Dropdown closed -->
+  <rect x="55" y="315" width="150" height="30" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="70" y="335" font-size="9" class="text-primary">Condition</text>
+  <text x="185" y="335" text-anchor="end" font-size="10" class="text-secondary">▼</text>
+  
+  <!-- Dropdown open -->
+  <rect x="55" y="350" width="150" height="55" rx="2" class="box-base" stroke-width="1"/>
+  <rect x="55" y="350" width="150" height="18" rx="1" class="highlight-box" stroke-width="1"/>
+  <text x="70" y="362" font-size="8" font-weight="bold" class="text-primary">Any</text>
+  <text x="70" y="380" font-size="8" class="text-primary">New only</text>
+  <text x="70" y="398" font-size="8" class="text-primary">Used only</text>
+  
+  <text x="130" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Space efficient</text>
+  <text x="130" y="460" text-anchor="middle" font-size="9" class="highlight-purple">⚠ Less discoverable</text>
+  
+  <!-- Toggle Switches (Bottom Center) -->
+  <rect x="260" y="260" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="370" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Toggle Switches</text>
+  
+  <rect x="280" y="300" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Toggle on -->
+  <rect x="295" y="315" width="150" height="28" rx="14" class="highlight-green" stroke-width="1"/>
+  <circle cx="431" cy="329" r="10" class="bg-base" stroke-width="1"/>
+  <text x="310" y="333" font-size="8" font-weight="bold" class="text-primary">In Stock</text>
+  
+  <!-- Toggle off -->
+  <rect x="295" y="350" width="150" height="28" rx="14" class="box-base" stroke-width="1"/>
+  <circle cx="309" cy="364" r="10" class="bg-base" stroke-width="1"/>
+  <text x="310" y="368" font-size="8" class="text-primary">Free Shipping</text>
+  
+  <text x="370" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Clear on/off</text>
+  <text x="370" y="460" text-anchor="middle" font-size="9" class="text-secondary">Binary filters only</text>
+  
+  <!-- Comparison Table (Bottom Right) -->
+  <rect x="500" y="260" width="480" height="170" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="740" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Filter Type Comparison</text>
+  
+  <rect x="520" y="300" width="440" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Header -->
+  <text x="535" y="320" font-size="9" font-weight="bold" class="text-primary">Type</text>
+  <text x="650" y="320" font-size="9" font-weight="bold" class="text-primary">Selection</text>
+  <text x="760" y="320" font-size="9" font-weight="bold" class="text-primary">Space</text>
+  <text x="880" y="320" font-size="9" font-weight="bold" class="text-primary">Best For</text>
+  
+  <!-- Row 1 -->
+  <line x1="530" y1="330" x2="950" y2="330" class="arrow" stroke-width="1"/>
+  <text x="535" y="345" font-size="8" class="text-primary">Checkboxes</text>
+  <text x="650" y="345" font-size="8" class="highlight-green">Multi</text>
+  <text x="760" y="345" font-size="8" class="highlight-red">High</text>
+  <text x="880" y="345" font-size="8" class="text-secondary">Categories, tags</text>
+  
+  <!-- Row 2 -->
+  <line x1="530" y1="355" x2="950" y2="355" class="arrow" stroke-width="1"/>
+  <text x="535" y="370" font-size="8" class="text-primary">Sliders</text>
+  <text x="650" y="370" font-size="8" class="highlight-green">Range</text>
+  <text x="760" y="370" font-size="8" class="highlight-purple">Medium</text>
+  <text x="880" y="370" font-size="8" class="text-secondary">Price, rating</text>
+  
+  <!-- Row 3 -->
+  <line x1="530" y1="380" x2="950" y2="380" class="arrow" stroke-width="1"/>
+  <text x="535" y="395" font-size="8" class="text-primary">Dropdowns</text>
+  <text x="650" y="395" font-size="8" class="highlight-blue">Single</text>
+  <text x="760" y="395" font-size="8" class="highlight-green">Low</text>
+  <text x="880" y="395" font-size="8" class="text-secondary">Many options</text>
+  
+  <!-- Row 4 -->
+  <line x1="530" y1="405" x2="950" y2="405" class="arrow" stroke-width="1"/>
+  <text x="535" y="420" font-size="8" class="text-primary">Toggles</text>
+  <text x="650" y="420" font-size="8" class="highlight-blue">Binary</text>
+  <text x="760" y="420" font-size="8" class="highlight-green">Low</text>
+  <text x="880" y="420" font-size="8" class="text-secondary">Yes/No filters</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

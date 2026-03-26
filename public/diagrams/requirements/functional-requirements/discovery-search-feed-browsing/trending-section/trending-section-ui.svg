@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      .highlight-red { fill: #f56565; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="500" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Trending Section UI Architecture</text>
+  
+  <!-- Trending API (Top Left) -->
+  <rect x="20" y="70" width="180" height="100" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="110" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Trending API</text>
+  
+  <rect x="40" y="110" width="140" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="55" y="130" font-size="9" class="text-secondary">GET /trending</text>
+  <text x="55" y="148" font-size="9" class="text-secondary">?location=US</text>
+  
+  <!-- Arrow to Frontend -->
+  <line x1="200" y1="120" x2="240" y2="120" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Frontend State (Top Center Left) -->
+  <rect x="240" y="70" width="200" height="100" rx="5" class="box-base" stroke-width="2"/>
+  <text x="340" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Frontend State</text>
+  
+  <rect x="260" y="110" width="160" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="275" y="130" font-size="9" class="text-primary">• trends[]</text>
+  <text x="275" y="148" font-size="9" class="text-primary">• loading</text>
+  
+  <!-- Arrow to Components -->
+  <line x1="440" y1="120" x2="480" y2="120" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- UI Components (Top Center) -->
+  <rect x="480" y="70" width="240" height="100" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="600" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">UI Components</text>
+  
+  <rect x="500" y="110" width="200" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="515" y="130" font-size="9" class="text-primary">• Filter Bar</text>
+  <text x="515" y="148" font-size="9" class="text-primary">• Trend List</text>
+  
+  <!-- Arrow to Display -->
+  <line x1="720" y1="120" x2="760" y2="120" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Trend Display (Top Right) -->
+  <rect x="760" y="70" width="220" height="100" rx="5" class="box-base" stroke-width="2"/>
+  <text x="870" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Trend Display</text>
+  
+  <rect x="780" y="110" width="180" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="795" y="130" font-size="9" class="text-primary">• Rank, Title</text>
+  <text x="795" y="148" font-size="9" class="text-primary">• Velocity, Engagement</text>
+  
+  <!-- Arrow down to Updates -->
+  <line x1="870" y1="170" x2="870" y2="210" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Real-time Updates (Middle Right) -->
+  <rect x="760" y="210" width="220" height="120" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="870" y="235" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Real-time Updates</text>
+  
+  <rect x="780" y="250" width="180" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="795" y="270" font-size="9" class="text-primary">• WebSocket/Polling</text>
+  <text x="795" y="288" font-size="9" class="text-primary">• Every 5-15 min</text>
+  <text x="795" y="306" font-size="9" class="highlight-green">Diff + animate</text>
+  
+  <!-- Arrow to Filter -->
+  <line x1="760" y1="270" x2="720" y2="270" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Filtering (Middle Center) -->
+  <rect x="480" y="210" width="240" height="120" rx="5" class="box-base" stroke-width="2"/>
+  <text x="600" y="235" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Filtering</text>
+  
+  <rect x="500" y="250" width="200" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="515" y="270" font-size="9" class="text-primary">• Location picker</text>
+  <text x="515" y="288" font-size="9" class="text-primary">• Category tabs</text>
+  <text x="515" y="306" font-size="9" class="highlight-purple">Updates query params</text>
+  
+  <!-- Arrow to Performance -->
+  <line x1="480" y1="270" x2="440" y2="270" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Performance (Middle Left) -->
+  <rect x="240" y="210" width="200" height="120" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="340" y="235" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Performance</text>
+  
+  <rect x="260" y="250" width="160" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="275" y="270" font-size="9" class="text-primary">• Virtual scrolling</text>
+  <text x="275" y="288" font-size="9" class="text-primary">• React.memo</text>
+  <text x="275" y="306" font-size="9" class="highlight-green">&lt;100ms updates</text>
+  
+  <!-- Mobile Layout (Bottom Left) -->
+  <rect x="20" y="350" width="300" height="130" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="375" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Mobile Layout</text>
+  
+  <rect x="40" y="390" width="260" height="75" rx="3" class="box-base" stroke-width="1"/>
+  <text x="55" y="410" font-size="9" class="text-primary">• Horizontal scroll tabs</text>
+  <text x="55" y="428" font-size="9" class="text-primary">• Large touch targets (44px)</text>
+  <text x="55" y="446" font-size="9" class="text-primary">• Pull-to-refresh</text>
+  <text x="180" y="410" font-size="9" class="highlight-purple">70%+ traffic</text>
+  
+  <!-- Desktop Layout (Bottom Center) -->
+  <rect x="340" y="350" width="320" height="130" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="375" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Desktop Layout</text>
+  
+  <rect x="360" y="390" width="280" height="75" rx="3" class="box-base" stroke-width="1"/>
+  <text x="375" y="410" font-size="9" class="text-primary">• Sidebar or dedicated page</text>
+  <text x="375" y="428" font-size="9" class="text-primary">• 10-20 trends visible</text>
+  <text x="375" y="446" font-size="9" class="text-primary">• Hover previews</text>
+  <text x="550" y="410" font-size="9" class="highlight-green">More info density</text>
+  
+  <!-- Accessibility (Bottom Right) -->
+  <rect x="680" y="350" width="300" height="130" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="830" y="375" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Accessibility</text>
+  
+  <rect x="700" y="390" width="260" height="75" rx="3" class="box-base" stroke-width="1"/>
+  <text x="715" y="410" font-size="9" class="text-primary">• &lt;ol&gt; for ranked list</text>
+  <text x="715" y="428" font-size="9" class="text-primary">• ARIA labels</text>
+  <text x="715" y="446" font-size="9" class="text-primary">• Keyboard navigation</text>
+  <text x="850" y="410" font-size="9" class="highlight-green">WCAG AA compliant</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

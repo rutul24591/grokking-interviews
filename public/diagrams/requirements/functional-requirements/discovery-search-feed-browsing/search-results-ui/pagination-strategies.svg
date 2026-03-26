@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Pagination Strategies</text>
+  
+  <!-- Page Numbers (Top Left) -->
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Page Numbers</text>
+  
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Pagination controls -->
+  <rect x="55" y="125" width="150" height="30" rx="3" class="accent-box" stroke-width="1"/>
+  <text x="70" y="145" font-size="9" class="text-primary">◀ Prev</text>
+  <text x="130" y="145" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">1</text>
+  <text x="155" y="145" font-size="9" class="text-primary">2</text>
+  <text x="180" y="145" font-size="9" class="text-secondary">3</text>
+  <text x="195" y="145" font-size="9" class="text-secondary">...</text>
+  <text x="70" y="145" text-anchor="end" font-size="9" class="text-primary">Next ▶</text>
+  
+  <text x="130" y="175" text-anchor="middle" font-size="8" class="text-secondary">Showing 1-10 of 123</text>
+  
+  <text x="130" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Clear position</text>
+  <text x="130" y="260" text-anchor="middle" font-size="9" class="text-secondary">Best for: Known-item</text>
+  
+  <!-- Infinite Scroll (Top Center) -->
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Infinite Scroll</text>
+  
+  <rect x="280" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Scroll indicator -->
+  <rect x="295" y="125" width="150" height="85" rx="2" class="box-base" stroke-width="1"/>
+  
+  <!-- Result items fading out -->
+  <rect x="310" y="135" width="120" height="20" rx="1" class="accent-box" stroke-width="1"/>
+  <rect x="310" y="160" width="120" height="20" rx="1" class="box-base" stroke-width="1"/>
+  <rect x="310" y="185" width="120" height="20" rx="1" class="box-base" stroke-width="0.5" opacity="0.7"/>
+  
+  <!-- Loading indicator at bottom -->
+  <rect x="340" y="215" width="60" height="15" rx="7" class="highlight-box" stroke-width="1"/>
+  <text x="370" y="225" text-anchor="middle" font-size="7" class="text-primary">Loading...</text>
+  
+  <text x="370" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Seamless</text>
+  <text x="370" y="260" text-anchor="middle" font-size="9" class="highlight-purple">⚠ Footer inaccessible</text>
+  
+  <!-- Load More Button (Top Right) -->
+  <rect x="500" y="70" width="240" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Load More Button</text>
+  
+  <rect x="520" y="110" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Results with button -->
+  <rect x="535" y="125" width="170" height="60" rx="2" class="box-base" stroke-width="1"/>
+  <rect x="550" y="135" width="140" height="15" rx="1" class="accent-box" stroke-width="1"/>
+  <rect x="550" y="155" width="140" height="15" rx="1" class="box-base" stroke-width="1"/>
+  
+  <!-- Load More button -->
+  <rect x="560" y="200" width="120" height="35" rx="17" class="accent-box" stroke-width="2"/>
+  <text x="620" y="222" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Load More</text>
+  
+  <text x="620" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ User control</text>
+  <text x="620" y="260" text-anchor="middle" font-size="9" class="highlight-green">✓ Best practice</text>
+  
+  <!-- Cursor-based (Bottom Left) -->
+  <rect x="20" y="260" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Cursor-based Pagination</text>
+  
+  <rect x="40" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Cursor flow -->
+  <text x="55" y="320" font-size="9" font-weight="bold" class="text-primary">How it works:</text>
+  <text x="55" y="340" font-size="8" class="text-secondary">1. Fetch first page</text>
+  <text x="55" y="355" font-size="8" class="text-secondary">2. Get cursor from response</text>
+  <text x="55" y="370" font-size="8" class="text-secondary">3. Pass cursor for next page</text>
+  
+  <!-- Cursor example -->
+  <rect x="55" y="385" width="230" height="20" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="70" y="398" font-size="7" class="text-secondary">cursor: "eyJpZCI6MTIzfQ=="</text>
+  
+  <text x="170" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ No duplicates</text>
+  <text x="170" y="460" text-anchor="middle" font-size="9" class="text-secondary">Best for: Dynamic content</text>
+  
+  <!-- Comparison Table (Bottom Right) -->
+  <rect x="340" y="260" width="640" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="660" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Strategy Comparison</text>
+  
+  <rect x="360" y="300" width="600" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Header -->
+  <text x="375" y="320" font-size="9" font-weight="bold" class="text-primary">Strategy</text>
+  <text x="500" y="320" font-size="9" font-weight="bold" class="text-primary">UX</text>
+  <text x="620" y="320" font-size="9" font-weight="bold" class="text-primary">Tech</text>
+  <text x="750" y="320" font-size="9" font-weight="bold" class="text-primary">Best For</text>
+  
+  <!-- Row 1 -->
+  <line x1="370" y1="330" x2="950" y2="330" class="arrow" stroke-width="1"/>
+  <text x="375" y="345" font-size="8" class="text-primary">Page Numbers</text>
+  <text x="500" y="345" font-size="8" class="highlight-green">Clear position</text>
+  <text x="620" y="345" font-size="8" class="highlight-green">Simple</text>
+  <text x="750" y="345" font-size="8" class="text-secondary">Known-item search</text>
+  
+  <!-- Row 2 -->
+  <line x1="370" y1="355" x2="950" y2="355" class="arrow" stroke-width="1"/>
+  <text x="375" y="370" font-size="8" class="text-primary">Infinite Scroll</text>
+  <text x="500" y="370" font-size="8" class="highlight-green">Seamless</text>
+  <text x="620" y="370" font-size="8" class="highlight-purple">Memory risk</text>
+  <text x="750" y="370" font-size="8" class="text-secondary">Feeds, exploration</text>
+  
+  <!-- Row 3 -->
+  <line x1="370" y1="380" x2="950" y2="380" class="arrow" stroke-width="1"/>
+  <text x="375" y="395" font-size="8" class="text-primary">Load More</text>
+  <text x="500" y="395" font-size="8" class="highlight-green">User control</text>
+  <text x="620" y="395" font-size="8" class="highlight-green">Best</text>
+  <text x="750" y="395" font-size="8" class="text-secondary">Most use cases</text>
+  
+  <!-- Row 4 -->
+  <line x1="370" y1="405" x2="950" y2="405" class="arrow" stroke-width="1"/>
+  <text x="375" y="420" font-size="8" class="text-primary">Cursor-based</text>
+  <text x="500" y="420" font-size="8" class="highlight-green">No duplicates</text>
+  <text x="620" y="420" font-size="8" class="highlight-green">Robust</text>
+  <text x="750" y="420" font-size="8" class="text-secondary">Real-time content</text>
+  
+  <!-- Recommendation (Far Bottom) -->
+  <rect x="20" y="450" width="960" height="60" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="500" y="475" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Recommendation: Load More Button + Cursor-based Pagination</text>
+  <text x="500" y="495" text-anchor="middle" font-size="9" class="text-secondary">Combines user control with technical robustness</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

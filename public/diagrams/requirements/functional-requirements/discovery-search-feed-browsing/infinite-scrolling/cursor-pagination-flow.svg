@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Cursor-based Pagination Flow</text>
+  
+  <!-- Initial Load (Top Left) -->
+  <rect x="20" y="70" width="200" height="120" rx="5" class="box-base" stroke-width="2"/>
+  <text x="120" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Initial Load</text>
+  
+  <rect x="40" y="110" width="160" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="120" y="135" text-anchor="middle" font-size="10" class="text-secondary">API: GET /feed?limit=20</text>
+  <text x="120" y="155" text-anchor="middle" font-size="10" class="text-secondary">Response: 20 items</text>
+  <text x="120" y="175" text-anchor="middle" font-size="10" class="highlight-green">cursor: "abc123"</text>
+  
+  <!-- Arrow to Page 2 -->
+  <line x1="220" y1="130" x2="260" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Page 2 Request (Top Center) -->
+  <rect x="260" y="70" width="220" height="120" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Page 2 Request</text>
+  
+  <rect x="280" y="110" width="180" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="370" y="135" text-anchor="middle" font-size="10" class="text-secondary">GET /feed?cursor=abc123</text>
+  <text x="370" y="155" text-anchor="middle" font-size="10" class="text-secondary">Server finds position</text>
+  <text x="370" y="175" text-anchor="middle" font-size="10" class="highlight-green">Returns next 20 items</text>
+  
+  <!-- Arrow to Page 3 -->
+  <line x1="480" y1="130" x2="520" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Page 3 Request (Top Right) -->
+  <rect x="520" y="70" width="200" height="120" rx="5" class="box-base" stroke-width="2"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Page 3 Request</text>
+  
+  <rect x="540" y="110" width="160" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="620" y="135" text-anchor="middle" font-size="10" class="text-secondary">GET /feed?cursor=xyz789</text>
+  <text x="620" y="155" text-anchor="middle" font-size="10" class="text-secondary">Returns next 20 items</text>
+  <text x="620" y="175" text-anchor="middle" font-size="10" class="highlight-purple">cursor: "def456"</text>
+  
+  <!-- Cursor Chain (Middle) -->
+  <rect x="20" y="210" width="700" height="100" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="370" y="235" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Cursor Chain (Immutable Position)</text>
+  
+  <!-- Cursor visualization -->
+  <text x="60" y="265" font-size="10" class="text-primary">Initial:</text>
+  <rect x="120" y="255" width="80" height="20" rx="3" class="box-base" stroke-width="1"/>
+  <text x="160" y="269" text-anchor="middle" font-size="9" class="text-primary" font-family="monospace">null</text>
+  
+  <line x1="200" y1="265" x2="220" y2="265" class="arrow" stroke-width="1.5"/>
+  
+  <text x="240" y="265" font-size="10" class="text-primary">Page 1:</text>
+  <rect x="300" y="255" width="80" height="20" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="340" y="269" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary" font-family="monospace">abc123</text>
+  
+  <line x1="380" y1="265" x2="400" y2="265" class="arrow" stroke-width="1.5"/>
+  
+  <text x="420" y="265" font-size="10" class="text-primary">Page 2:</text>
+  <rect x="480" y="255" width="80" height="20" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="520" y="269" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary" font-family="monospace">xyz789</text>
+  
+  <line x1="560" y1="265" x2="580" y2="265" class="arrow" stroke-width="1.5"/>
+  
+  <text x="600" y="265" font-size="10" class="text-primary">Page 3:</text>
+  <rect x="660" y="255" width="80" height="20" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="700" y="269" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary" font-family="monospace">def456</text>
+  
+  <text x="370" y="300" text-anchor="middle" font-size="10" class="highlight-green">Each cursor points to exact position in dataset</text>
+  
+  <!-- Offset vs Cursor Comparison (Bottom Left) -->
+  <rect x="20" y="330" width="460" height="150" rx="5" class="box-base" stroke-width="2"/>
+  <text x="250" y="355" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Offset vs Cursor Comparison</text>
+  
+  <!-- Offset Problem -->
+  <rect x="40" y="370" width="420" height="95" rx="3" class="box-base" stroke-width="1"/>
+  <text x="250" y="390" text-anchor="middle" font-size="11" font-weight="bold" class="highlight-red">Offset Problem (page=2)</text>
+  
+  <text x="60" y="415" font-size="9" class="text-secondary">Initial: Items [1-20], [21-40], [41-60]</text>
+  <text x="60" y="435" font-size="9" class="text-secondary">New post added at position 5</text>
+  <text x="60" y="455" font-size="9" class="highlight-red">Page 2 now shows: [22-41] — Item 21 missing, duplicate possible!</text>
+  
+  <!-- Cursor Solution -->
+  <rect x="500" y="370" width="480" height="95" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="740" y="390" text-anchor="middle" font-size="11" font-weight="bold" class="highlight-green">Cursor Solution (cursor=abc)</text>
+  
+  <text x="520" y="415" font-size="9" class="text-secondary">Initial: Items [..., abc, ...]</text>
+  <text x="520" y="435" font-size="9" class="text-secondary">New post added anywhere</text>
+  <text x="520" y="455" font-size="9" class="highlight-green">Next page: Still starts after 'abc' — No duplicates, no gaps!</text>
+  
+  <!-- Key Benefits (Bottom Right) -->
+  <rect x="740" y="210" width="240" height="100" rx="5" class="box-base" stroke-width="2"/>
+  <text x="860" y="235" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Key Benefits</text>
+  
+  <text x="770" y="260" font-size="10" class="text-primary">✓</text>
+  <text x="785" y="260" font-size="10" class="text-secondary">Immune to data changes</text>
+  
+  <text x="770" y="280" font-size="10" class="text-primary">✓</text>
+  <text x="785" y="280" font-size="10" class="text-secondary">No duplicates or gaps</text>
+  
+  <text x="770" y="300" font-size="10" class="text-primary">✓</text>
+  <text x="785" y="300" font-size="10" class="text-secondary">Works with real-time data</text>
+  
+  <!-- Cursor Types -->
+  <rect x="740" y="330" width="240" height="100" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="860" y="355" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Cursor Types</text>
+  
+  <text x="760" y="380" font-size="9" class="text-primary">• Opaque:</text>
+  <text x="820" y="380" font-size="9" class="text-secondary">"eyJpZCI6MTIzfQ=="</text>
+  
+  <text x="760" y="400" font-size="9" class="text-primary">• Key-based:</text>
+  <text x="830" y="400" font-size="9" class="text-secondary">"after=12345"</text>
+  
+  <text x="760" y="420" font-size="9" class="text-primary">• Timestamp:</text>
+  <text x="830" y="420" font-size="9" class="text-secondary">"since=1711234567"</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

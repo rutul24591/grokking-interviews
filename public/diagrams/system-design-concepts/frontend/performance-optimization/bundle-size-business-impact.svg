@@ -1,0 +1,49 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <rect fill="#ffffff" width="800" height="500" rx="8"/>
+  <text x="400" y="35" text-anchor="middle" fill="#1e293b" font-size="18" font-weight="bold">Business Impact of Bundle Optimization</text>
+  
+  <!-- E-commerce Case Study -->
+  <rect x="40" y="70" width="340" height="180" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="210" y="100" text-anchor="middle" fill="#1e293b" font-size="14" font-weight="bold">E-commerce: 2MB to 500KB</text>
+  <text x="60" y="130" fill="#64748b" font-size="11">Systematic optimization:</text>
+  <text x="60" y="155" fill="#22c55e" font-size="12" font-weight="bold">Bundle: 2MB -&gt; 500KB</text>
+  <text x="60" y="175" fill="#22c55e" font-size="12" font-weight="bold">Conversion: +15%</text>
+  <text x="60" y="195" fill="#22c55e" font-size="12" font-weight="bold">Bounce rate: -20%</text>
+  <text x="60" y="225" fill="#1e293b" font-size="10" font-weight="bold">What they did:</text>
+  <text x="60" y="240" fill="#64748b" font-size="9">Replaced moment.js with date-fns</text>
+  <text x="60" y="255" fill="#64748b" font-size="9">Route-based code splitting</text>
+  
+  <!-- SaaS Case Study -->
+  <rect x="420" y="70" width="340" height="180" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="100" text-anchor="middle" fill="#1e293b" font-size="14" font-weight="bold">SaaS: Performance Budgets</text>
+  <text x="440" y="130" fill="#64748b" font-size="11">Budget implementation:</text>
+  <text x="440" y="155" fill="#22c55e" font-size="12" font-weight="bold">Size variance: -80%</text>
+  <text x="440" y="175" fill="#22c55e" font-size="12" font-weight="bold">No surprise regressions</text>
+  <text x="440" y="210" fill="#1e293b" font-size="10" font-weight="bold">What they did:</text>
+  <text x="440" y="225" fill="#64748b" font-size="9">200KB gzipped budget</text>
+  <text x="440" y="240" fill="#64748b" font-size="9">bundlewatch in CI/CD</text>
+  
+  <!-- News/Media Case Study -->
+  <rect x="40" y="280" width="340" height="180" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="210" y="310" text-anchor="middle" fill="#1e293b" font-size="14" font-weight="bold">News/Media: Third-Party Audit</text>
+  <text x="60" y="340" fill="#64748b" font-size="11">Third-party optimization:</text>
+  <text x="60" y="365" fill="#22c55e" font-size="12" font-weight="bold">Third-party JS: -60%</text>
+  <text x="60" y="385" fill="#22c55e" font-size="12" font-weight="bold">Page load: -2s</text>
+  <text x="60" y="420" fill="#1e293b" font-size="10" font-weight="bold">What they did:</text>
+  <text x="60" y="435" fill="#64748b" font-size="9">Audited all third-party scripts</text>
+  <text x="60" y="450" fill="#64748b" font-size="9">Lazy-loaded social widgets</text>
+  
+  <!-- Startup Case Study -->
+  <rect x="420" y="280" width="340" height="180" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="310" text-anchor="middle" fill="#1e293b" font-size="14" font-weight="bold">Startup: Build-Time Monitoring</text>
+  <text x="440" y="340" fill="#64748b" font-size="11">From day one monitoring:</text>
+  <text x="440" y="365" fill="#22c55e" font-size="12" font-weight="bold">Bundle stable at scale</text>
+  <text x="440" y="385" fill="#22c55e" font-size="12" font-weight="bold">Features doubled, size stable</text>
+  <text x="440" y="420" fill="#1e293b" font-size="10" font-weight="bold">What they did:</text>
+  <text x="440" y="435" fill="#64748b" font-size="9">Analyzer in CI from start</text>
+  <text x="440" y="450" fill="#64748b" font-size="9">Size reports to Slack</text>
+  
+  <!-- Key Insight -->
+  <rect x="180" y="470" width="440" height="25" fill="#f8fafc" rx="4" stroke="#3b82f6" stroke-width="2"/>
+  <text x="400" y="488" text-anchor="middle" fill="#3b82f6" font-size="11" font-weight="bold">Bundle optimization reduces sizes 50-80% -&gt; faster loads, better conversions</text>
+</svg>

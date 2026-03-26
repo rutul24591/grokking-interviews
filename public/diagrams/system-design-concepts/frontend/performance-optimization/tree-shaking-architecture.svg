@@ -1,0 +1,81 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: var(--bg-primary, #ffffff); }
+      .card { fill: var(--bg-panel, #f8fafc); }
+      .text { fill: var(--text-primary, #1e293b); }
+      .text-muted { fill: var(--text-muted, #64748b); }
+      .border { stroke: var(--border-color, #e2e8f0); }
+      .accent { fill: var(--accent-color, #3b82f6); }
+      .success { fill: var(--success-color, #22c55e); }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect class="bg" width="800" height="500" rx="8"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" class="text" font-size="18" font-weight="bold">Tree Shaking Architecture</text>
+  
+  <!-- Bundler Layer -->
+  <rect x="40" y="70" width="340" height="140" class="card" rx="6" stroke="var(--accent-color, #3b82f6)" stroke-width="2"/>
+  <text x="210" y="100" text-anchor="middle" class="accent" font-size="14" font-weight="bold">Bundler Layer</text>
+  
+  <text x="60" y="130" class="text" font-size="11" font-weight="bold">Webpack / Rollup / Vite</text>
+  <text x="60" y="155" class="text-muted" font-size="10">• Static analysis of ES modules</text>
+  <text x="60" y="175" class="text-muted" font-size="10">• Mark used exports</text>
+  <text x="60" y="195" class="text-muted" font-size="10">• Generate bundle with used code only</text>
+  
+  <text x="60" y="220" class="success" font-size="10">Reduction: 30-50%</text>
+  
+  <!-- Minifier Layer -->
+  <rect x="420" y="70" width="340" height="140" class="card" rx="6" stroke="var(--accent-color, #3b82f6)" stroke-width="2"/>
+  <text x="590" y="100" text-anchor="middle" class="accent" font-size="14" font-weight="bold">Minifier Layer</text>
+  
+  <text x="440" y="130" class="text" font-size="11" font-weight="bold">Terser / esbuild</text>
+  <text x="440" y="155" class="text-muted" font-size="10">• Dead code elimination</text>
+  <text x="440" y="175" class="text-muted" font-size="10">• Remove unreachable code</text>
+  <text x="440" y="195" class="text-muted" font-size="10">• Pure function annotation</text>
+  
+  <text x="440" y="220" class="success" font-size="10">Additional: 10-20%</text>
+  
+  <!-- Configuration Layer -->
+  <rect x="40" y="240" width="720" height="100" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="400" y="270" text-anchor="middle" class="text" font-size="14" font-weight="bold">Configuration Layer</text>
+  
+  <text x="80" y="300" class="text" font-size="11" font-weight="bold">package.json:</text>
+  <text x="80" y="320" class="text-muted" font-size="10">sideEffects: false (or selective list)</text>
+  
+  <text x="300" y="300" class="text" font-size="11" font-weight="bold">Webpack:</text>
+  <text x="300" y="320" class="text-muted" font-size="10">usedExports: true, production mode</text>
+  
+  <text x="520" y="300" class="text" font-size="11" font-weight="bold">Terser:</text>
+  <text x="520" y="320" class="text-muted" font-size="10">dead_code: true, pure_funcs</text>
+  
+  <!-- Flow Diagram -->
+  <rect x="40" y="370" width="720" height="100" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="400" y="395" text-anchor="middle" class="text" font-size="14" font-weight="bold">Tree Shaking Flow</text>
+  
+  <rect x="60" y="410" width="100" height="40" class="card" rx="4" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="110" y="435" text-anchor="middle" class="text" font-size="10" font-weight="bold">Source</text>
+  
+  <path d="M160 430 L190 430" stroke="var(--accent-color, #3b82f6)" stroke-width="2"/>
+  <polygon points="190,430 185,427 185,433" class="accent"/>
+  
+  <rect x="190" y="410" width="100" height="40" class="card" rx="4" stroke="var(--accent-color, #3b82f6)" stroke-width="2"/>
+  <text x="240" y="435" text-anchor="middle" class="accent" font-size="10" font-weight="bold">Bundler</text>
+  
+  <path d="M290 430 L320 430" stroke="var(--accent-color, #3b82f6)" stroke-width="2"/>
+  <polygon points="320,430 315,427 315,433" class="accent"/>
+  
+  <rect x="320" y="410" width="100" height="40" class="card" rx="4" stroke="var(--accent-color, #3b82f6)" stroke-width="2"/>
+  <text x="370" y="435" text-anchor="middle" class="accent" font-size="10" font-weight="bold">Minifier</text>
+  
+  <path d="M420 430 L450 430" stroke="var(--accent-color, #3b82f6)" stroke-width="2"/>
+  <polygon points="450,430 445,427 445,433" class="accent"/>
+  
+  <rect x="450" y="410" width="100" height="40" class="card" rx="4" stroke="var(--success-color, #22c55e)" stroke-width="2"/>
+  <text x="500" y="435" text-anchor="middle" class="success" font-size="10" font-weight="bold">Bundle</text>
+  
+  <text x="580" y="435" class="success" font-size="11" font-weight="bold">Total Reduction: 40-70%</text>
+</svg>

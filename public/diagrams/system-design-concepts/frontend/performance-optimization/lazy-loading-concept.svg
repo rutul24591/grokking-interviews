@@ -1,0 +1,94 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: var(--bg-primary, #ffffff); }
+      .card { fill: var(--bg-panel, #f8fafc); }
+      .text { fill: var(--text-primary, #1e293b); }
+      .text-muted { fill: var(--text-muted, #64748b); }
+      .border { stroke: var(--border-color, #e2e8f0); }
+      .accent { fill: var(--accent-color, #3b82f6); }
+      .success { fill: var(--success-color, #22c55e); }
+      .danger { fill: var(--danger-color, #ef4444); }
+      .arrow { stroke: var(--accent-color, #3b82f6); stroke-width: 2; fill: none; }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect class="bg" width="800" height="500" rx="8"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" class="text" font-size="18" font-weight="bold">Lazy Loading Concept</text>
+  
+  <!-- Eager Loading Column -->
+  <rect x="40" y="70" width="340" height="200" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="210" y="100" text-anchor="middle" class="text" font-size="15" font-weight="bold">Eager Loading (Default)</text>
+  
+  <!-- Eager Timeline -->
+  <rect x="60" y="120" width="280" height="40" class="card" rx="4" stroke="var(--danger-color, #ef4444)" stroke-width="2"/>
+  <text x="200" y="145" text-anchor="middle" class="text" font-size="12" font-weight="bold">All resources load at once</text>
+  
+  <rect x="60" y="170" width="280" height="30" class="card" rx="4" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="200" y="190" text-anchor="middle" class="text-muted" font-size="10">Above-fold images</text>
+  
+  <rect x="60" y="205" width="280" height="30" class="card" rx="4" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="200" y="225" text-anchor="middle" class="text-muted" font-size="10">Below-fold images (wasted bandwidth)</text>
+  
+  <rect x="60" y="240" width="280" height="30" class="card" rx="4" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="200" y="260" text-anchor="middle" class="text-muted" font-size="10">JavaScript bundles</text>
+  
+  <text x="210" y="290" text-anchor="middle" class="danger" font-size="12" font-weight="bold">✗ Slow initial render</text>
+  <text x="210" y="310" text-anchor="middle" class="danger" font-size="12" font-weight="bold">✗ Wasted bandwidth</text>
+  <text x="210" y="330" text-anchor="middle" class="danger" font-size="12" font-weight="bold">✗ Poor LCP</text>
+  
+  <!-- Lazy Loading Column -->
+  <rect x="420" y="70" width="340" height="200" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="590" y="100" text-anchor="middle" class="text" font-size="15" font-weight="bold">Lazy Loading</text>
+  
+  <!-- Lazy Timeline -->
+  <rect x="440" y="120" width="280" height="40" class="card" rx="4" stroke="var(--success-color, #22c55e)" stroke-width="2"/>
+  <text x="580" y="145" text-anchor="middle" class="text" font-size="12" font-weight="bold">Critical resources first</text>
+  
+  <rect x="440" y="170" width="280" height="30" class="card" rx="4" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="580" y="190" text-anchor="middle" class="text-muted" font-size="10">Above-fold images (eager)</text>
+  
+  <rect x="440" y="205" width="280" height="30" class="card" rx="4" stroke="var(--border-color, #e2e8f0)" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="580" y="225" text-anchor="middle" class="text-muted" font-size="10">Below-fold images (load on scroll)</text>
+  
+  <rect x="440" y="240" width="280" height="30" class="card" rx="4" stroke="var(--border-color, #e2e8f0)" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="580" y="260" text-anchor="middle" class="text-muted" font-size="10">Lazy components (load when needed)</text>
+  
+  <text x="590" y="290" text-anchor="middle" class="success" font-size="12" font-weight="bold">✓ Fast initial render</text>
+  <text x="590" y="310" text-anchor="middle" class="success" font-size="12" font-weight="bold">✓ Bandwidth savings</text>
+  <text x="590" y="330" text-anchor="middle" class="success" font-size="12" font-weight="bold">✓ Better LCP</text>
+  
+  <!-- Scroll Trigger Diagram -->
+  <rect x="40" y="300" width="720" height="170" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="400" y="330" text-anchor="middle" class="text" font-size="14" font-weight="bold">How Lazy Loading Works</text>
+  
+  <!-- Viewport Box -->
+  <rect x="100" y="350" width="200" height="100" class="card" rx="4" stroke="var(--accent-color, #3b82f6)" stroke-width="2"/>
+  <text x="200" y="380" text-anchor="middle" class="text" font-size="12" font-weight="bold">Browser Viewport</text>
+  <text x="200" y="400" text-anchor="middle" class="text-muted" font-size="10">(Visible area)</text>
+  
+  <!-- Trigger Zone -->
+  <rect x="80" y="340" width="240" height="120" class="card" rx="4" stroke="var(--accent-color, #3b82f6)" stroke-width="1" stroke-dasharray="5,5" fill="none"/>
+  <text x="340" y="400" class="text-muted" font-size="10">Trigger zone</text>
+  <text x="340" y="415" class="text-muted" font-size="10">(rootMargin: 200px)</text>
+  
+  <!-- Image States -->
+  <circle cx="200" cy="460" r="8" class="success"/>
+  <text x="200" y="480" text-anchor="middle" class="text-muted" font-size="9">In viewport → Load</text>
+  
+  <circle cx="280" cy="460" r="8" class="accent"/>
+  <text x="280" y="480" text-anchor="middle" class="text-muted" font-size="9">In trigger zone → Start loading</text>
+  
+  <circle cx="380" cy="460" r="8" class="border" stroke-width="2"/>
+  <text x="380" y="480" text-anchor="middle" class="text-muted" font-size="9">Outside → Wait</text>
+  
+  <!-- Arrow showing scroll -->
+  <path class="arrow" d="M500 400 L500 450"/>
+  <polygon points="500,450 497,445 503,445" class="accent"/>
+  <text x="520" y="430" class="text-muted" font-size="10">User scrolls</text>
+  <text x="520" y="450" class="text-muted" font-size="10">Images enter trigger zone</text>
+  <text x="520" y="470" class="text-muted" font-size="10">Browser starts loading</text>
+</svg>

@@ -1,0 +1,94 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: var(--bg-primary, #ffffff); }
+      .card { fill: var(--bg-panel, #f8fafc); }
+      .text { fill: var(--text-primary, #1e293b); }
+      .text-muted { fill: var(--text-muted, #64748b); }
+      .border { stroke: var(--border-color, #e2e8f0); }
+      .accent { fill: var(--accent-color, #3b82f6); }
+      .success { fill: var(--success-color, #22c55e); }
+      .warning { fill: var(--warning-color, #f59e0b); }
+      .danger { fill: var(--danger-color, #ef4444); }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect class="bg" width="800" height="500" rx="8"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" class="text" font-size="18" font-weight="bold">Web Vitals Optimization Strategies</text>
+  
+  <!-- LCP Column -->
+  <rect x="40" y="70" width="220" height="380" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="150" y="100" text-anchor="middle" class="text" font-size="15" font-weight="bold">LCP Optimization</text>
+  <text x="150" y="120" text-anchor="middle" class="text-muted" font-size="10">Loading Performance</text>
+  
+  <line x1="60" y1="135" x2="240" y2="135" class="border" stroke-width="1"/>
+  
+  <text x="60" y="155" class="text" font-size="11" font-weight="bold">High Impact:</text>
+  <text x="70" y="175" class="success" font-size="10">✓ Preload LCP image</text>
+  <text x="70" y="190" class="success" font-size="10">✓ SSR / Static generation</text>
+  <text x="70" y="205" class="success" font-size="10">✓ Reduce TTFB (CDN)</text>
+  
+  <text x="60" y="230" class="text" font-size="11" font-weight="bold">Medium Impact:</text>
+  <text x="70" y="250" class="warning" font-size="10">• Modern image formats</text>
+  <text x="70" y="265" class="warning" font-size="10">• Eliminate render-blocking</text>
+  <text x="70" y="280" class="warning" font-size="10">• Optimize CSS delivery</text>
+  
+  <text x="60" y="305" class="text" font-size="11" font-weight="bold">Avoid:</text>
+  <text x="70" y="325" class="danger" font-size="10">✗ Lazy-load LCP element</text>
+  <text x="70" y="340" class="danger" font-size="10">✗ Large uncompressed images</text>
+  <text x="70" y="355" class="danger" font-size="10">✗ Client-side rendering</text>
+  
+  <!-- INP Column -->
+  <rect x="290" y="70" width="220" height="380" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="400" y="100" text-anchor="middle" class="text" font-size="15" font-weight="bold">INP Optimization</text>
+  <text x="400" y="120" text-anchor="middle" class="text-muted" font-size="10">Interactivity</text>
+  
+  <line x1="310" y1="135" x2="490" y2="135" class="border" stroke-width="1"/>
+  
+  <text x="310" y="155" class="text" font-size="11" font-weight="bold">High Impact:</text>
+  <text x="320" y="175" class="success" font-size="10">✓ Break up long tasks</text>
+  <text x="320" y="190" class="success" font-size="10">✓ Reduce JS bundle size</text>
+  <text x="320" y="205" class="success" font-size="10">✓ Use startTransition</text>
+  
+  <text x="310" y="230" class="text" font-size="11" font-weight="bold">Medium Impact:</text>
+  <text x="320" y="250" class="warning" font-size="10">• Web Workers for heavy work</text>
+  <text x="320" y="265" class="warning" font-size="10">• Event delegation</text>
+  <text x="320" y="280" class="warning" font-size="10">• Optimize React renders</text>
+  
+  <text x="310" y="305" class="text" font-size="11" font-weight="bold">Avoid:</text>
+  <text x="320" y="325" class="danger" font-size="10">✗ Long tasks (&gt;50ms)</text>
+  <text x="320" y="340" class="danger" font-size="10">✗ Forced synchronous layouts</text>
+  <text x="320" y="355" class="danger" font-size="10">✗ Blocking main thread</text>
+  
+  <!-- CLS Column -->
+  <rect x="540" y="70" width="220" height="380" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="650" y="100" text-anchor="middle" class="text" font-size="15" font-weight="bold">CLS Optimization</text>
+  <text x="650" y="120" text-anchor="middle" class="text-muted" font-size="10">Visual Stability</text>
+  
+  <line x1="560" y1="135" x2="740" y2="135" class="border" stroke-width="1"/>
+  
+  <text x="560" y="155" class="text" font-size="11" font-weight="bold">High Impact:</text>
+  <text x="570" y="175" class="success" font-size="10">✓ Set image dimensions</text>
+  <text x="570" y="190" class="success" font-size="10">✓ Reserve ad/embed space</text>
+  <text x="570" y="205" class="success" font-size="10">✓ Use aspect-ratio CSS</text>
+  
+  <text x="560" y="230" class="text" font-size="11" font-weight="bold">Medium Impact:</text>
+  <text x="570" y="250" class="warning" font-size="10">• Font-display: optional</text>
+  <text x="570" y="265" class="warning" font-size="10">• Skeleton screens</text>
+  <text x="570" y="280" class="warning" font-size="10">• Transform animations</text>
+  
+  <text x="560" y="305" class="text" font-size="11" font-weight="bold">Avoid:</text>
+  <text x="570" y="325" class="danger" font-size="10">✗ Images without dimensions</text>
+  <text x="570" y="340" class="danger" font-size="10">✗ Late-loaded content above fold</text>
+  <text x="570" y="355" class="danger" font-size="10">✗ Font swap without fallback</text>
+  
+  <!-- Priority Legend -->
+  <rect x="40" y="460" width="720" height="30" class="card" rx="4" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="100" y="480" class="text" font-size="10" font-weight="bold">Priority:</text>
+  <text x="180" y="480" class="success" font-size="10">✓ High Impact</text>
+  <text x="320" y="480" class="warning" font-size="10">• Medium Impact</text>
+  <text x="500" y="480" class="danger" font-size="10">✗ Avoid (hurts metrics)</text>
+</svg>

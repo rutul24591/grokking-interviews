@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Query Optimization Strategies</text>
+  
+  <!-- Filter vs Query Context (Top Left) -->
+  <rect x="20" y="70" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Filter vs Query Context</text>
+  
+  <!-- Query Context -->
+  <rect x="40" y="110" width="130" height="115" rx="3" class="highlight-box" stroke-width="1.5"/>
+  <text x="105" y="135" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Query Context</text>
+  
+  <text x="55" y="155" font-size="9" class="text-secondary">• Computes _score</text>
+  <text x="55" y="175" font-size="9" class="text-secondary">• Results ordered</text>
+  <text x="55" y="195" font-size="9" class="highlight-red">⚠ NOT cached</text>
+  <text x="55" y="215" font-size="9" class="text-secondary">Use for: Full-text</text>
+  
+  <!-- Arrow -->
+  <line x1="170" y1="170" x2="190" y2="170" class="arrow" stroke-width="2"/>
+  
+  <!-- Filter Context -->
+  <rect x="190" y="110" width="130" height="115" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="255" y="135" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Filter Context</text>
+  
+  <text x="205" y="155" font-size="9" class="text-secondary">• Binary match</text>
+  <text x="205" y="175" font-size="9" class="text-secondary">• No scoring</text>
+  <text x="205" y="195" font-size="9" class="highlight-green">✓ Cached</text>
+  <text x="205" y="215" font-size="9" class="text-secondary">Use for: Structured</text>
+  
+  <text x="170" y="245" text-anchor="middle" font-size="9" class="highlight-green">Filter: 10x faster than query</text>
+  
+  <!-- Caching Strategies (Top Center) -->
+  <rect x="340" y="70" width="320" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Caching Strategies</text>
+  
+  <!-- Query Cache -->
+  <rect x="360" y="110" width="135" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <text x="428" y="135" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Query Cache</text>
+  
+  <text x="375" y="155" font-size="9" class="text-secondary">Stores query + results</text>
+  <text x="375" y="175" font-size="9" class="text-secondary">Shared across shards</text>
+  <text x="375" y="195" font-size="9" class="text-secondary">Size: 10% heap</text>
+  <text x="375" y="215" font-size="9" class="highlight-green">✓ Filter queries cached</text>
+  
+  <!-- Request Cache -->
+  <rect x="505" y="110" width="135" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <text x="572" y="135" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Request Cache</text>
+  
+  <text x="520" y="155" font-size="9" class="text-secondary">Per-shard cache</text>
+  <text x="520" y="175" font-size="9" class="text-secondary">Aggregation results</text>
+  <text x="520" y="195" font-size="9" class="text-secondary">Size: 1% heap</text>
+  <text x="520" y="215" font-size="9" class="highlight-green">✓ size=0 queries</text>
+  
+  <text x="500" y="245" text-anchor="middle" font-size="9" class="highlight-green">Cache hit: &lt;10ms vs 100ms+</text>
+  
+  <!-- Performance Comparison (Top Right) -->
+  <rect x="680" y="70" width="300" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="830" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Performance Impact</text>
+  
+  <!-- Bar chart -->
+  <text x="720" y="125" font-size="9" class="text-secondary">Unoptimized:</text>
+  <rect x="800" y="115" width="150" height="15" rx="2" class="highlight-red"/>
+  <text x="960" y="125" font-size="9" class="text-secondary">500ms</text>
+  
+  <text x="720" y="150" font-size="9" class="text-secondary">+ Filter context:</text>
+  <rect x="800" y="140" width="100" height="15" rx="2" class="highlight-purple"/>
+  <text x="910" y="150" font-size="9" class="text-secondary">100ms</text>
+  
+  <text x="720" y="175" font-size="9" class="text-secondary">+ Caching:</text>
+  <rect x="800" y="165" width="50" height="15" rx="2" class="highlight-blue"/>
+  <text x="860" y="175" font-size="9" class="text-secondary">20ms</text>
+  
+  <text x="720" y="200" font-size="9" class="text-secondary">All optimizations:</text>
+  <rect x="800" y="190" width="30" height="15" rx="2" class="highlight-green"/>
+  <text x="840" y="200" font-size="9" class="text-secondary">5ms</text>
+  
+  <text x="830" y="230" text-anchor="middle" font-size="9" class="highlight-green">100x improvement possible</text>
+  
+  <!-- Common Optimizations (Bottom Left) -->
+  <rect x="20" y="260" width="460" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="250" y="285" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Common Optimizations</text>
+  
+  <rect x="40" y="300" width="420" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="55" y="325" font-size="10" font-weight="bold" class="text-primary">1. Use bool filter clause:</text>
+  <text x="55" y="345" font-size="8" class="text-secondary" font-family="monospace">"filter": [{"term": {"status": "active"}}]</text>
+  
+  <text x="55" y="370" font-size="10" font-weight="bold" class="text-primary">2. Limit _source fields:</text>
+  <text x="55" y="390" font-size="8" class="text-secondary" font-family="monospace">"_source": ["title", "price"]</text>
+  
+  <text x="250" y="325" font-size="10" font-weight="bold" class="text-primary">3. Avoid leading wildcard:</text>
+  <text x="250" y="345" font-size="8" class="text-secondary">❌ *term (full scan)</text>
+  <text x="250" y="360" font-size="8" class="text-secondary">✓ term* (uses index)</text>
+  
+  <text x="250" y="385" font-size="10" font-weight="bold" class="text-primary">4. Use search_after:</text>
+  <text x="250" y="405" font-size="8" class="text-secondary">For deep pagination (&gt;10000)</text>
+  
+  <!-- Anti-Patterns (Bottom Center) -->
+  <rect x="500" y="260" width="240" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="620" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Anti-Patterns to Avoid</text>
+  
+  <rect x="520" y="300" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="535" y="325" font-size="9" class="highlight-red">⚠ Deep pagination:</text>
+  <text x="535" y="340" font-size="8" class="text-secondary">from=10000, size=100</text>
+  
+  <text x="535" y="360" font-size="9" class="highlight-red">⚠ Leading wildcard:</text>
+  <text x="535" y="375" font-size="8" class="text-secondary">*search (forces scan)</text>
+  
+  <text x="535" y="390" font-size="9" class="highlight-red">⚠ Script queries:</text>
+  <text x="535" y="405" font-size="8" class="text-secondary">Very slow, not cached</text>
+  
+  <!-- Monitoring (Bottom Right) -->
+  <rect x="760" y="260" width="220" height="170" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="870" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Monitoring</text>
+  
+  <rect x="780" y="300" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="795" y="325" font-size="9" font-weight="bold" class="text-primary">Slow Query Log:</text>
+  <text x="795" y="345" font-size="8" class="text-secondary">Log queries &gt; threshold</text>
+  <text x="795" y="360" font-size="8" class="text-secondary">Default: 5s (query), 10s (fetch)</text>
+  
+  <text x="795" y="385" font-size="9" font-weight="bold" class="text-primary">Hot Threads API:</text>
+  <text x="795" y="405" font-size="8" class="text-secondary">Identify CPU bottlenecks</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

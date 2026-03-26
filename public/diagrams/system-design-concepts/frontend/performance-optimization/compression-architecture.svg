@@ -1,0 +1,70 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: var(--bg-primary, #ffffff); }
+      .card { fill: var(--bg-panel, #f8fafc); }
+      .text { fill: var(--text-primary, #1e293b); }
+      .text-muted { fill: var(--text-muted, #64748b); }
+      .border { stroke: var(--border-color, #e2e8f0); }
+      .accent { fill: var(--accent-color, #3b82f6); }
+      .success { fill: var(--success-color, #22c55e); }
+      .arrow { stroke: var(--accent-color, #3b82f6); stroke-width: 2; fill: none; }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect class="bg" width="800" height="500" rx="8"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" class="text" font-size="18" font-weight="bold">Compression Architecture</text>
+  
+  <!-- Dynamic Compression Flow -->
+  <rect x="40" y="70" width="340" height="180" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="210" y="100" text-anchor="middle" class="text" font-size="14" font-weight="bold">Dynamic Compression</text>
+  
+  <text x="60" y="130" class="text" font-size="11" font-weight="bold">Flow:</text>
+  <text x="60" y="150" class="text-muted" font-size="10">1. Request with Accept-Encoding</text>
+  <text x="60" y="170" class="text-muted" font-size="10">2. Server compresses on-the-fly</text>
+  <text x="60" y="190" class="text-muted" font-size="10">3. Response with Content-Encoding</text>
+  
+  <text x="60" y="220" class="text" font-size="11" font-weight="bold">Use Cases:</text>
+  <text x="60" y="240" class="text-muted" font-size="10">API responses, SSR HTML</text>
+  
+  <text x="60" y="270" class="success" font-size="10">Pro: No build step needed</text>
+  <text x="60" y="290" class="warning" font-size="10">Con: CPU cost per request</text>
+  
+  <!-- Pre-Compression Flow -->
+  <rect x="420" y="70" width="340" height="180" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="590" y="100" text-anchor="middle" class="text" font-size="14" font-weight="bold">Pre-Compression (Build-Time)</text>
+  
+  <text x="440" y="130" class="text" font-size="11" font-weight="bold">Flow:</text>
+  <text x="440" y="150" class="text-muted" font-size="10">1. Build generates .gz and .br files</text>
+  <text x="440" y="170" class="text-muted" font-size="10">2. Deploy all versions to server/CDN</text>
+  <text x="440" y="190" class="text-muted" font-size="10">3. Server serves matching version</text>
+  
+  <text x="440" y="220" class="text" font-size="11" font-weight="bold">Use Cases:</text>
+  <text x="440" y="240" class="text-muted" font-size="10">Static assets (JS, CSS)</text>
+  
+  <text x="440" y="270" class="success" font-size="10">Pro: Zero runtime CPU cost</text>
+  <text x="440" y="290" class="success" font-size="10">Pro: Maximum compression levels</text>
+  
+  <!-- CDN Compression -->
+  <rect x="40" y="280" width="720" height="100" class="card" rx="6" stroke="var(--accent-color, #3b82f6)" stroke-width="2"/>
+  <text x="400" y="310" text-anchor="middle" class="accent" font-size="14" font-weight="bold">CDN Compression (Edge)</text>
+  
+  <text x="80" y="335" class="text-muted" font-size="10">Cloudflare, Vercel, CloudFront compress automatically</text>
+  <text x="80" y="355" class="text-muted" font-size="10">Compressed versions cached at edge locations</text>
+  <text x="80" y="375" class="success" font-size="10">Pro: No configuration needed, global delivery</text>
+  
+  <!-- What to Compress -->
+  <rect x="40" y="400" width="340" height="80" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="210" y="425" text-anchor="middle" class="text" font-size="12" font-weight="bold">Always Compress</text>
+  <text x="60" y="450" class="success" font-size="10">JavaScript, CSS, HTML, JSON, XML, SVG</text>
+  <text x="60" y="470" class="success" font-size="10">Files &gt; 1KB</text>
+  
+  <!-- What NOT to Compress -->
+  <rect x="420" y="400" width="340" height="80" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="590" y="425" text-anchor="middle" class="text" font-size="12" font-weight="bold">Never Compress</text>
+  <text x="440" y="450" class="warning" font-size="10">Images (JPEG, PNG, WebP, AVIF)</text>
+  <text x="440" y="470" class="warning" font-size="10">Videos, WOFF2 fonts, Archives (ZIP)</text>
+</svg>

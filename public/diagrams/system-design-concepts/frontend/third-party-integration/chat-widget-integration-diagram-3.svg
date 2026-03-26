@@ -1,0 +1,36 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="500" rx="10" fill="#F8F9FC"/>
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">
+    Chat Integration Guardrails (Scaling Strategy)
+  </text>
+
+  <defs>
+    <marker id="arrowCW3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
+    </marker>
+  </defs>
+
+  <rect x="60" y="85" width="780" height="360" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+
+  <rect x="95" y="125" width="710" height="80" rx="12" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <text x="450" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Adapter Boundary</text>
+  <text x="450" y="178" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">one place for init • identity • teardown • fallback</text>
+
+  <line x1="450" y1="205" x2="450" y2="245" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrowCW3)"/>
+
+  <rect x="95" y="250" width="710" height="90" rx="12" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="450" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Policy &amp; Budgets</text>
+  <text x="450" y="303" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">consent gating • minimal identity • CPU/memory budgets</text>
+  <text x="450" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">avoid repeated init on SPA navigation</text>
+
+  <line x1="450" y1="340" x2="450" y2="378" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrowCW3)"/>
+
+  <rect x="95" y="380" width="350" height="55" rx="12" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+  <text x="270" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Monitoring</text>
+  <text x="270" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#334155">errors • long tasks</text>
+
+  <rect x="455" y="380" width="350" height="55" rx="12" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
+  <text x="630" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Kill Switch</text>
+  <text x="630" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#334155">disable quickly • fallback support</text>
+</svg>
+

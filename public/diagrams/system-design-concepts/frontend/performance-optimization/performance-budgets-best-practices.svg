@@ -1,0 +1,69 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <rect fill="#ffffff" width="800" height="500" rx="8"/>
+  <text x="400" y="35" text-anchor="middle" fill="#1e293b" font-size="18" font-weight="bold">Performance Budgets Best Practices</text>
+  
+  <!-- Setting Column -->
+  <rect x="40" y="70" width="220" height="140" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="150" y="100" text-anchor="middle" fill="#1e293b" font-size="13" font-weight="bold">Setting Budgets</text>
+  <line x1="60" y1="115" x2="240" y2="115" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="60" y="140" fill="#22c55e" font-size="11">Start with RUM data</text>
+  <text x="60" y="160" fill="#64748b" font-size="9">Current or -10%</text>
+  <text x="60" y="185" fill="#22c55e" font-size="11">Include all resource types</text>
+  <text x="60" y="205" fill="#64748b" font-size="9">JS, CSS, images, fonts</text>
+  
+  <!-- Enforcing Column -->
+  <rect x="290" y="70" width="220" height="140" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="400" y="100" text-anchor="middle" fill="#1e293b" font-size="13" font-weight="bold">Enforcing Budgets</text>
+  <line x1="310" y1="115" x2="490" y2="115" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="310" y="140" fill="#22c55e" font-size="11">Automate in CI/CD</text>
+  <text x="310" y="160" fill="#64748b" font-size="9">Lighthouse CI, bundlewatch</text>
+  <text x="310" y="185" fill="#22c55e" font-size="11">Fail builds on violation</text>
+  <text x="310" y="205" fill="#64748b" font-size="9">No manual enforcement</text>
+  
+  <!-- Maintaining Column -->
+  <rect x="540" y="70" width="220" height="140" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="650" y="100" text-anchor="middle" fill="#1e293b" font-size="13" font-weight="bold">Maintaining Budgets</text>
+  <line x1="560" y1="115" x2="740" y2="115" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="560" y="140" fill="#22c55e" font-size="11">Review quarterly</text>
+  <text x="560" y="160" fill="#64748b" font-size="9">Tighten by 10%</text>
+  <text x="560" y="185" fill="#22c55e" font-size="11">Celebrate wins</text>
+  <text x="560" y="205" fill="#64748b" font-size="9">Team culture building</text>
+  
+  <!-- Budget Guidelines -->
+  <rect x="40" y="240" width="340" height="140" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="210" y="270" text-anchor="middle" fill="#1e293b" font-size="13" font-weight="bold">Recommended Budget Guidelines</text>
+  
+  <text x="60" y="300" fill="#1e293b" font-size="11" font-weight="bold">JavaScript (gzipped)</text>
+  <text x="280" y="300" text-anchor="end" fill="#64748b" font-size="10">Initial: 150-200KB</text>
+  <text x="60" y="320" fill="#1e293b" font-size="11" font-weight="bold">CSS (gzipped)</text>
+  <text x="280" y="320" text-anchor="end" fill="#64748b" font-size="10">Under 50KB</text>
+  <text x="60" y="340" fill="#1e293b" font-size="11" font-weight="bold">LCP</text>
+  <text x="280" y="340" text-anchor="end" fill="#64748b" font-size="10">Under 2.5s</text>
+  <text x="60" y="360" fill="#1e293b" font-size="11" font-weight="bold">TBT</text>
+  <text x="280" y="360" text-anchor="end" fill="#64748b" font-size="10">Under 200ms</text>
+  
+  <!-- Exception Process -->
+  <rect x="420" y="240" width="340" height="140" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="590" y="270" text-anchor="middle" fill="#1e293b" font-size="13" font-weight="bold">Exception Process</text>
+  
+  <text x="440" y="300" fill="#1e293b" font-size="11" font-weight="bold">1. Written justification</text>
+  <text x="440" y="320" fill="#64748b" font-size="10">Business case required</text>
+  <text x="440" y="340" fill="#1e293b" font-size="11" font-weight="bold">2. Tech debt ticket</text>
+  <text x="440" y="360" fill="#64748b" font-size="10">Plan to address later</text>
+  <text x="650" y="300" fill="#1e293b" font-size="11" font-weight="bold">3. Expiration date</text>
+  <text x="650" y="320" fill="#64748b" font-size="10">Temporary exception</text>
+  <text x="650" y="340" fill="#1e293b" font-size="11" font-weight="bold">4. Track patterns</text>
+  <text x="650" y="360" fill="#64748b" font-size="10">Identify systemic issues</text>
+  
+  <!-- Expected Results -->
+  <rect x="40" y="400" width="340" height="80" fill="#f8fafc" rx="6" stroke="#22c55e" stroke-width="2"/>
+  <text x="210" y="430" text-anchor="middle" fill="#22c55e" font-size="13" font-weight="bold">Expected Results</text>
+  <text x="210" y="455" text-anchor="middle" fill="#64748b" font-size="11">Prevent performance degradation</text>
+  <text x="210" y="475" text-anchor="middle" fill="#64748b" font-size="11">Continuous improvement culture</text>
+  
+  <!-- Key Practices -->
+  <rect x="420" y="400" width="340" height="80" fill="#f8fafc" rx="6" stroke="#3b82f6" stroke-width="2"/>
+  <text x="590" y="430" text-anchor="middle" fill="#3b82f6" font-size="13" font-weight="bold">Key Practices</text>
+  <text x="590" y="455" text-anchor="middle" fill="#64748b" font-size="11">Automate enforcement</text>
+  <text x="590" y="475" text-anchor="middle" fill="#64748b" font-size="11">Start realistic, tighten gradually</text>
+</svg>

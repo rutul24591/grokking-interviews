@@ -1,0 +1,165 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="500" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Infinite Scroll Trigger Mechanisms</text>
+  
+  <!-- Scroll Event Listener (Left) -->
+  <rect x="20" y="70" width="300" height="200" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Scroll Event Listener</text>
+  
+  <!-- Scroll container -->
+  <rect x="40" y="110" width="260" height="140" rx="3" class="box-base" stroke-width="1"/>
+  <text x="170" y="135" text-anchor="middle" font-size="11" class="text-secondary">Scroll Container</text>
+  
+  <!-- Scroll position indicator -->
+  <line x1="290" y1="120" x2="290" y2="240" class="arrow" stroke-width="2"/>
+  <circle cx="290" cy="200" r="5" class="highlight-purple"/>
+  <text x="305" y="205" font-size="9" class="text-secondary">scrollY</text>
+  
+  <!-- Calculation -->
+  <rect x="40" y="160" width="220" height="40" rx="3" class="accent-box" stroke-width="1"/>
+  <text x="150" y="180" text-anchor="middle" font-size="9" class="text-primary" font-family="monospace">distance = scrollHeight -</text>
+  <text x="150" y="195" text-anchor="middle" font-size="9" class="text-primary" font-family="monospace">(scrollTop + clientHeight)</text>
+  
+  <!-- Threshold check -->
+  <text x="50" y="230" font-size="10" class="highlight-green">✓ if distance &lt; threshold (300px)</text>
+  <text x="50" y="250" font-size="9" class="text-secondary">⚠ Requires debouncing (fires frequently)</text>
+  
+  <!-- Arrow to Comparison -->
+  <line x1="320" y1="170" x2="360" y2="170" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Intersection Observer (Right) -->
+  <rect x="360" y="70" width="300" height="200" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="510" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Intersection Observer</text>
+  
+  <!-- Scroll container with sentinel -->
+  <rect x="380" y="110" width="260" height="140" rx="3" class="box-base" stroke-width="1"/>
+  <text x="510" y="135" text-anchor="middle" font-size="11" class="text-secondary">Scroll Container</text>
+  
+  <!-- Sentinel element at bottom -->
+  <rect x="390" y="230" width="240" height="15" rx="2" class="highlight-box" stroke-width="1.5"/>
+  <text x="510" y="241" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Sentinel Element</text>
+  
+  <!-- Observer detection -->
+  <rect x="380" y="160" width="260" height="40" rx="3" class="highlight-box" stroke-width="1"/>
+  <text x="510" y="180" text-anchor="middle" font-size="10" class="text-primary" font-family="monospace">observer.observe(sentinel)</text>
+  <text x="510" y="195" text-anchor="middle" font-size="9" class="text-secondary">Callback when visible</text>
+  
+  <!-- Benefits -->
+  <text x="390" y="260" font-size="10" class="highlight-green">✓ Efficient (no scroll events)</text>
+  <text x="390" y="280" font-size="10" class="highlight-green">✓ No debouncing needed</text>
+  
+  <!-- Arrow to Code -->
+  <line x1="660" y1="170" x2="700" y2="170" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Implementation Code (Far Right) -->
+  <rect x="700" y="70" width="280" height="200" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="840" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Implementation</text>
+  
+  <!-- Scroll Event Code -->
+  <rect x="720" y="110" width="240" height="70" rx="3" class="box-base" stroke-width="1"/>
+  <text x="735" y="130" font-size="9" font-weight="bold" class="text-primary">// Scroll Event Approach</text>
+  <text x="735" y="148" font-size="8" class="text-secondary" font-family="monospace">window.addEventListener('scroll', () =></text>
+  <text x="735" y="162" font-size="8" class="text-secondary" font-family="monospace">{(</text>
+  <text x="750" y="176" font-size="8" class="text-secondary" font-family="monospace">const dist = scrollHeight - scrollTop - clientHeight;</text>
+  <text x="750" y="190" font-size="8" class="text-secondary" font-family="monospace">if (dist &lt; 300) loadMore();</text>
+  <text x="735" y="204" font-size="8" class="text-secondary" font-family="monospace">}, { signal: abortController.signal });</text>
+  
+  <!-- Intersection Observer Code -->
+  <rect x="720" y="190" width="240" height="70" rx="3" class="accent-box" stroke-width="1"/>
+  <text x="735" y="210" font-size="9" font-weight="bold" class="text-primary">// Intersection Observer</text>
+  <text x="735" y="228" font-size="8" class="text-secondary" font-family="monospace">const observer = new IntersectionObserver(</text>
+  <text x="735" y="242" font-size="8" class="text-secondary" font-family="monospace">(entries) =&gt; entries[0].isIntersecting &amp;&amp; loadMore()</text>
+  <text x="735" y="256" font-size="8" class="text-secondary" font-family="monospace">);</text>
+  <text x="735" y="270" font-size="8" class="text-secondary" font-family="monospace">observer.observe(sentinelRef.current);</text>
+  
+  <!-- Threshold Comparison (Bottom Left) -->
+  <rect x="20" y="290" width="460" height="190" rx="5" class="box-base" stroke-width="2"/>
+  <text x="250" y="320" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Threshold Distance Comparison</text>
+  
+  <!-- Small Threshold -->
+  <rect x="50" y="340" width="120" height="120" rx="3" class="box-base" stroke-width="1.5"/>
+  <text x="110" y="365" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Small</text>
+  <text x="110" y="385" text-anchor="middle" font-size="10" class="highlight-purple">100-200px</text>
+  
+  <!-- Visual representation -->
+  <rect x="60" y="400" width="100" height="50" rx="2" class="box-base" stroke-width="1"/>
+  <rect x="60" y="440" width="100" height="8" rx="1" class="highlight-box"/>
+  <text x="110" y="475" text-anchor="middle" font-size="8" class="text-secondary">Risk: Visible loading</text>
+  
+  <!-- Medium Threshold -->
+  <rect x="190" y="340" width="120" height="120" rx="3" class="accent-box" stroke-width="2"/>
+  <text x="250" y="365" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Medium</text>
+  <text x="250" y="385" text-anchor="middle" font-size="10" class="highlight-green">300-500px</text>
+  
+  <!-- Visual representation -->
+  <rect x="200" y="400" width="100" height="50" rx="2" class="box-base" stroke-width="1"/>
+  <rect x="200" y="425" width="100" height="8" rx="1" class="highlight-box"/>
+  <text x="250" y="455" text-anchor="middle" font-size="9" class="highlight-green">✓ Recommended</text>
+  <text x="250" y="475" text-anchor="middle" font-size="8" class="text-secondary">Balanced approach</text>
+  
+  <!-- Large Threshold -->
+  <rect x="330" y="340" width="120" height="120" rx="3" class="box-base" stroke-width="1.5"/>
+  <text x="390" y="365" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Large</text>
+  <text x="390" y="385" text-anchor="middle" font-size="10" class="highlight-purple">600-1000px</text>
+  
+  <!-- Visual representation -->
+  <rect x="340" y="400" width="100" height="50" rx="2" class="box-base" stroke-width="1"/>
+  <rect x="340" y="410" width="100" height="8" rx="1" class="highlight-box"/>
+  <text x="390" y="475" text-anchor="middle" font-size="8" class="text-secondary">Risk: Wasted bandwidth</text>
+  
+  <!-- Performance Comparison (Bottom Right) -->
+  <rect x="500" y="290" width="480" height="190" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="740" y="320" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Performance Comparison</text>
+  
+  <text x="540" y="350" font-size="11" font-weight="bold" class="text-primary">Scroll Event:</text>
+  <text x="540" y="370" font-size="10" class="text-secondary">• Fires 60+ times/second</text>
+  <text x="540" y="390" font-size="10" class="text-secondary">• Requires debounce/throttle</text>
+  <text x="540" y="410" font-size="10" class="highlight-purple">~100-200ms delay added</text>
+  
+  <text x="540" y="440" font-size="11" font-weight="bold" class="text-primary">Intersection Observer:</text>
+  <text x="540" y="460" font-size="10" class="text-secondary">• Fires only when visible</text>
+  <text x="540" y="480" font-size="10" class="text-secondary">• No debouncing needed</text>
+  <text x="540" y="500" font-size="10" class="highlight-green">Native browser optimization</text>
+  
+  <text x="780" y="370" font-size="10" class="text-secondary">Browser Support:</text>
+  <text x="780" y="390" font-size="10" class="highlight-green">✓ 90%+ (all modern)</text>
+  <text x="780" y="410" font-size="10" class="text-secondary">Fallback: scroll event</text>
+  
+  <text x="780" y="450" font-size="10" font-weight="bold" class="text-primary">Recommendation:</text>
+  <text x="780" y="470" font-size="9" class="text-secondary">Use Intersection Observer</text>
+  <text x="780" y="485" font-size="9" class="text-secondary">with scroll event fallback</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

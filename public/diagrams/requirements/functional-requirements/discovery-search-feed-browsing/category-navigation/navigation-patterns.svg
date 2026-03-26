@@ -1,0 +1,189 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="500" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Category Navigation Patterns</text>
+  
+  <!-- Sidebar Tree (Top Left) -->
+  <rect x="20" y="70" width="220" height="200" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Sidebar Tree</text>
+  
+  <rect x="40" y="110" width="180" height="145" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Tree items -->
+  <rect x="55" y="125" width="150" height="25" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="70" y="142" font-size="9" class="text-primary">▶</text>
+  <text x="85" y="142" font-size="9" font-weight="bold" class="text-primary">Electronics</text>
+  
+  <rect x="70" y="155" width="135" height="22" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="85" y="170" font-size="8" class="text-primary">▼</text>
+  <text x="100" y="170" font-size="8" class="text-primary">Phones</text>
+  
+  <rect x="85" y="180" width="120" height="20" rx="2" class="box-base" stroke-width="1"/>
+  <text x="100" y="194" font-size="7" class="text-secondary">Smartphones</text>
+  
+  <rect x="85" y="203" width="120" height="20" rx="2" class="box-base" stroke-width="1"/>
+  <text x="100" y="217" font-size="7" class="text-secondary">Accessories</text>
+  
+  <rect x="55" y="228" width="150" height="22" rx="2" class="box-base" stroke-width="1"/>
+  <text x="70" y="243" font-size="8" class="text-primary">▶</text>
+  <text x="85" y="243" font-size="8" class="text-primary">Computers</text>
+  
+  <text x="130" y="285" text-anchor="middle" font-size="9" class="highlight-green">✓ Always visible</text>
+  <text x="130" y="300" text-anchor="middle" font-size="9" class="text-secondary">Best for: Docs, admin</text>
+  
+  <!-- Mega Menu (Top Center) -->
+  <rect x="260" y="70" width="480" height="200" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Mega Menu</text>
+  
+  <rect x="280" y="110" width="440" height="145" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Top categories -->
+  <rect x="295" y="125" width="80" height="25" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="335" y="142" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Electronics</text>
+  
+  <rect x="385" y="125" width="70" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="420" y="142" text-anchor="middle" font-size="8" class="text-primary">Fashion</text>
+  
+  <rect x="465" y="125" width="60" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="495" y="142" text-anchor="middle" font-size="8" class="text-primary">Home</text>
+  
+  <rect x="535" y="125" width="60" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="565" y="142" text-anchor="middle" font-size="8" class="text-primary">Sports</text>
+  
+  <rect x="605" y="125" width="100" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="655" y="142" text-anchor="middle" font-size="8" class="text-primary">See All →</text>
+  
+  <!-- Subcategories grid -->
+  <rect x="295" y="160" width="420" height="80" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="310" y="180" font-size="9" font-weight="bold" class="text-primary">Popular:</text>
+  <text x="310" y="200" font-size="8" class="text-secondary">• Phones • Laptops • Cameras</text>
+  <text x="310" y="215" font-size="8" class="text-secondary">• Tablets • Accessories</text>
+  
+  <text x="500" y="285" text-anchor="middle" font-size="9" class="highlight-green">✓ All options visible</text>
+  <text x="500" y="300" text-anchor="middle" font-size="9" class="text-secondary">Best for: E-commerce</text>
+  
+  <!-- Breadcrumbs (Top Right) -->
+  <rect x="760" y="70" width="220" height="200" rx="5" class="box-base" stroke-width="2"/>
+  <text x="870" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Breadcrumbs</text>
+  
+  <rect x="780" y="110" width="180" height="145" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Breadcrumb trail -->
+  <rect x="795" y="125" width="150" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="810" y="142" font-size="8" class="text-primary">Home</text>
+  <text x="850" y="142" font-size="8" class="text-secondary">/</text>
+  <text x="865" y="142" font-size="8" class="text-primary">Electronics</text>
+  
+  <rect x="795" y="155" width="150" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="810" y="172" font-size="8" class="text-secondary">Home /</text>
+  <text x="865" y="172" font-size="8" class="text-primary">Electronics</text>
+  <text x="920" y="172" font-size="8" class="text-secondary">/</text>
+  
+  <rect x="795" y="185" width="150" height="25" rx="2" class="accent-box" stroke-width="1.5"/>
+  <text x="810" y="202" font-size="8" class="text-secondary">Home / Electronics /</text>
+  <text x="910" y="202" font-size="8" font-weight="bold" class="text-primary">Phones</text>
+  
+  <text x="870" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Shows context</text>
+  <text x="870" y="260" text-anchor="middle" font-size="9" class="text-secondary">Use with other patterns</text>
+  
+  <!-- Card Grid (Bottom Left) -->
+  <rect x="20" y="290" width="300" height="190" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="170" y="315" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Card Grid</text>
+  
+  <rect x="40" y="330" width="260" height="135" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Category cards -->
+  <rect x="55" y="345" width="110" height="50" rx="3" class="accent-box" stroke-width="1"/>
+  <text x="110" y="365" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">📱 Phones</text>
+  <text x="110" y="385" text-anchor="middle" font-size="8" class="text-secondary">123 items</text>
+  
+  <rect x="175" y="345" width="110" height="50" rx="3" class="box-base" stroke-width="1"/>
+  <text x="230" y="365" text-anchor="middle" font-size="9" class="text-primary">💻 Laptops</text>
+  <text x="230" y="385" text-anchor="middle" font-size="8" class="text-secondary">89 items</text>
+  
+  <rect x="55" y="400" width="110" height="50" rx="3" class="box-base" stroke-width="1"/>
+  <text x="110" y="420" text-anchor="middle" font-size="9" class="text-primary">📷 Cameras</text>
+  <text x="110" y="440" text-anchor="middle" font-size="8" class="text-secondary">45 items</text>
+  
+  <rect x="175" y="400" width="110" height="50" rx="3" class="box-base" stroke-width="1"/>
+  <text x="230" y="420" text-anchor="middle" font-size="9" class="text-primary">🎧 Audio</text>
+  <text x="230" y="440" text-anchor="middle" font-size="8" class="text-secondary">67 items</text>
+  
+  <text x="170" y="495" text-anchor="middle" font-size="9" class="highlight-green">✓ Visual</text>
+  <text x="210" y="495" text-anchor="middle" font-size="9" class="highlight-green">engaging</text>
+  <text x="170" y="510" text-anchor="middle" font-size="9" class="text-secondary">Best for: Landing pages</text>
+  
+  <!-- Comparison Table (Bottom Right) -->
+  <rect x="340" y="290" width="640" height="190" rx="5" class="box-base" stroke-width="2"/>
+  <text x="660" y="315" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Pattern Comparison</text>
+  
+  <rect x="360" y="330" width="600" height="135" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Header -->
+  <text x="375" y="350" font-size="9" font-weight="bold" class="text-primary">Pattern</text>
+  <text x="500" y="350" font-size="9" font-weight="bold" class="text-primary">Space</text>
+  <text x="600" y="350" font-size="9" font-weight="bold" class="text-primary">Visibility</text>
+  <text x="720" y="350" font-size="9" font-weight="bold" class="text-primary">Best For</text>
+  
+  <!-- Row 1 -->
+  <line x1="370" y1="360" x2="950" y2="360" class="arrow" stroke-width="1"/>
+  <text x="375" y="375" font-size="8" class="text-primary">Sidebar</text>
+  <text x="500" y="375" font-size="8" class="highlight-red">High (horizontal)</text>
+  <text x="600" y="375" font-size="8" class="highlight-green">Always</text>
+  <text x="720" y="375" font-size="8" class="text-secondary">Docs, admin</text>
+  
+  <!-- Row 2 -->
+  <line x1="370" y1="385" x2="950" y2="385" class="arrow" stroke-width="1"/>
+  <text x="375" y="400" font-size="8" class="text-primary">Mega Menu</text>
+  <text x="500" y="400" font-size="8" class="highlight-green">Low (dropdown)</text>
+  <text x="600" y="400" font-size="8" class="highlight-purple">On hover</text>
+  <text x="720" y="400" font-size="8" class="text-secondary">E-commerce</text>
+  
+  <!-- Row 3 -->
+  <line x1="370" y1="410" x2="950" y2="410" class="arrow" stroke-width="1"/>
+  <text x="375" y="425" font-size="8" class="text-primary">Breadcrumbs</text>
+  <text x="500" y="425" font-size="8" class="highlight-green">Minimal</text>
+  <text x="600" y="425" font-size="8" class="highlight-green">Always</text>
+  <text x="720" y="425" font-size="8" class="text-secondary">Supplement</text>
+  
+  <!-- Row 4 -->
+  <line x1="370" y1="435" x2="950" y2="435" class="arrow" stroke-width="1"/>
+  <text x="375" y="450" font-size="8" class="text-primary">Card Grid</text>
+  <text x="500" y="450" font-size="8" class="highlight-red">High (vertical)</text>
+  <text x="600" y="450" font-size="8" class="highlight-green">Always</text>
+  <text x="720" y="450" font-size="8" class="text-secondary">Landing pages</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

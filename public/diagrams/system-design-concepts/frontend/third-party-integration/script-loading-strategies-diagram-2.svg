@@ -1,0 +1,57 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="500" rx="10" fill="#F8F9FC"/>
+
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">
+    Script Loading: Critical Path Timeline (Performance)
+  </text>
+
+  <!-- Timeline container -->
+  <rect x="70" y="90" width="760" height="340" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+
+  <!-- Lane labels -->
+  <text x="105" y="135" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Network</text>
+  <text x="105" y="230" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Main thread</text>
+  <text x="105" y="325" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">User</text>
+
+  <!-- Network blocks -->
+  <rect x="190" y="115" width="210" height="45" rx="10" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+  <text x="295" y="143" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827">App bundles</text>
+
+  <rect x="420" y="115" width="170" height="45" rx="10" fill="#F1F5F9" stroke="#94A3B8" stroke-width="2"/>
+  <text x="505" y="143" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827">Third-party</text>
+
+  <!-- Main thread blocks -->
+  <rect x="190" y="210" width="240" height="55" rx="10" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <text x="310" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827">Hydrate + render</text>
+
+  <rect x="450" y="210" width="140" height="55" rx="10" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="520" y="234" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827">3P execute</text>
+  <text x="520" y="252" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#334155">risk: long task</text>
+
+  <rect x="610" y="210" width="180" height="55" rx="10" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
+  <text x="700" y="234" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827">Deferred work</text>
+  <text x="700" y="252" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#334155">idle / after input</text>
+
+  <!-- User lane -->
+  <rect x="190" y="305" width="240" height="55" rx="10" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+  <text x="310" y="338" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827">Content visible</text>
+
+  <rect x="450" y="305" width="340" height="55" rx="10" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
+  <text x="620" y="328" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827">Interaction window</text>
+  <text x="620" y="348" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#334155">avoid long tasks here</text>
+
+  <!-- Markers -->
+  <line x1="190" y1="175" x2="190" y2="385" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="190" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748B">Start</text>
+
+  <line x1="430" y1="175" x2="430" y2="385" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="430" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748B">FCP</text>
+
+  <line x1="600" y1="175" x2="600" y2="385" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="600" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748B">TTI</text>
+
+  <text x="450" y="468" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">
+    Rule of thumb: third-party should not compete with hydration or block the interaction window; move it after interactivity or idle.
+  </text>
+</svg>
+

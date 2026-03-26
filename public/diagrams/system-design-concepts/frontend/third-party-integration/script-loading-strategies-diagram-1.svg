@@ -1,0 +1,61 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="500" rx="10" fill="#F8F9FC"/>
+
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">
+    Controlled Third-Party Script Loading (Architecture)
+  </text>
+
+  <defs>
+    <marker id="arrowSLS1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
+    </marker>
+  </defs>
+
+  <!-- Browser -->
+  <rect x="60" y="85" width="380" height="340" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="90" y="115" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Browser (User Device)</text>
+
+  <rect x="95" y="140" width="310" height="90" rx="12" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <text x="250" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">App Shell + Critical UX</text>
+  <text x="250" y="194" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">render, hydrate, input ready</text>
+  <text x="250" y="214" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">protected from third-party</text>
+
+  <rect x="95" y="250" width="310" height="80" rx="12" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="250" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Script Loader</text>
+  <text x="250" y="303" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">tiers + milestones + consent</text>
+
+  <rect x="95" y="345" width="310" height="65" rx="12" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
+  <text x="250" y="372" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Policy &amp; Guardrails</text>
+  <text x="250" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">CSP allowlist • monitoring • kill switch</text>
+
+  <!-- Network / Vendors -->
+  <rect x="485" y="85" width="355" height="340" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="515" y="115" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Network / Vendors</text>
+
+  <rect x="520" y="140" width="285" height="85" rx="12" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+  <text x="662.5" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">First-party Origin</text>
+  <text x="662.5" y="194" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">app bundles • configs</text>
+  <text x="662.5" y="214" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">server-driven flags</text>
+
+  <rect x="520" y="245" width="285" height="85" rx="12" fill="#F1F5F9" stroke="#94A3B8" stroke-width="2"/>
+  <text x="662.5" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Third-party CDNs</text>
+  <text x="662.5" y="299" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">analytics • chat • tags</text>
+  <text x="662.5" y="319" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">separate failure domain</text>
+
+  <rect x="520" y="350" width="285" height="60" rx="12" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
+  <text x="662.5" y="377" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Observability</text>
+  <text x="662.5" y="398" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">errors • long tasks • domains</text>
+
+  <!-- Arrows -->
+  <line x1="405" y1="290" x2="520" y2="290" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrowSLS1)"/>
+  <text x="462" y="278" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748B">load late</text>
+
+  <line x1="405" y1="185" x2="520" y2="185" stroke="#10B981" stroke-width="2.5" marker-end="url(#arrowSLS1)"/>
+  <text x="462" y="173" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#065F46">critical</text>
+
+  <rect x="60" y="442" width="780" height="38" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="450" y="466" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">
+    Principle: protect the critical path; gate third-party load by tier, consent, and budgets; keep an operational kill switch.
+  </text>
+</svg>
+

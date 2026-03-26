@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Personalization Strategies</text>
+  
+  <!-- Interest-based (Top Left) -->
+  <rect x="20" y="70" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Interest-based</text>
+  
+  <rect x="40" y="110" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="55" y="135" font-size="10" class="text-primary">Build user profile from:</text>
+  <text x="55" y="155" font-size="9" class="text-secondary">• Followed topics/accounts</text>
+  <text x="55" y="175" font-size="9" class="text-secondary">• Liked/shared content</text>
+  <text x="55" y="195" font-size="9" class="text-secondary">• Watch time</text>
+  <text x="55" y="215" font-size="9" class="text-secondary">• Search queries</text>
+  
+  <text x="170" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Explicit signals</text>
+  
+  <!-- Arrow to Combination -->
+  <line x1="320" y1="155" x2="360" y2="155" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Collaborative Filtering (Top Center) -->
+  <rect x="360" y="70" width="300" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="510" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Collaborative Filtering</text>
+  
+  <rect x="380" y="110" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="395" y="135" font-size="10" class="text-primary">Find similar users:</text>
+  <text x="395" y="155" font-size="9" class="text-secondary">• Users who followed X also followed Y</text>
+  <text x="395" y="175" font-size="9" class="text-secondary">• Matrix factorization (SVD, ALS)</text>
+  <text x="395" y="195" font-size="9" class="text-secondary">• k-NN for user similarity</text>
+  <text x="395" y="215" font-size="9" class="text-secondary">• Recommend what similar users liked</text>
+  
+  <text x="510" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ "Users like you also..."</text>
+  
+  <!-- Arrow to Combination -->
+  <line x1="660" y1="155" x2="700" y2="155" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Content-based (Top Right) -->
+  <rect x="700" y="70" width="280" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="840" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Content-based</text>
+  
+  <rect x="720" y="110" width="240" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="735" y="135" font-size="10" class="text-primary">Similar to engaged content:</text>
+  <text x="735" y="155" font-size="9" class="text-secondary">• Content embeddings</text>
+  <text x="735" y="175" font-size="9" class="text-secondary">• Tag/category matching</text>
+  <text x="735" y="195" font-size="9" class="text-secondary">• TF-IDF similarity</text>
+  <text x="735" y="215" font-size="9" class="text-secondary">• Visual similarity (images)</text>
+  
+  <text x="840" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ "Because you liked X"</text>
+  
+  <!-- Arrows down to Hybrid -->
+  <line x1="170" y1="240" x2="170" y2="280" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  <line x1="510" y1="240" x2="510" y2="280" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  <line x1="840" y1="240" x2="840" y2="280" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Hybrid Combination (Bottom Center) -->
+  <rect x="350" y="280" width="320" height="150" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="510" y="310" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Hybrid Combination</text>
+  
+  <rect x="370" y="325" width="280" height="90" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="385" y="350" font-size="10" font-weight="bold" class="text-primary">Weighted Combination:</text>
+  <text x="385" y="370" font-size="9" class="text-secondary" font-family="monospace">Score = 0.4×Interest + 0.35×Collab + 0.25×Content</text>
+  
+  <text x="385" y="395" font-size="10" font-weight="bold" class="text-primary">Diversity Boost:</text>
+  <text x="385" y="415" font-size="9" class="highlight-purple">+0.1 for underrepresented topics</text>
+  
+  <!-- User Profile Detail (Bottom Left) -->
+  <rect x="20" y="280" width="310" height="150" rx="5" class="box-base" stroke-width="2"/>
+  <text x="175" y="310" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">User Interest Profile</text>
+  
+  <rect x="40" y="325" width="270" height="90" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="55" y="350" font-size="9" font-weight="bold" class="text-primary">Topic Weights:</text>
+  <text x="55" y="370" font-size="8" class="text-secondary">Technology: 0.85</text>
+  <text x="55" y="385" font-size="8" class="text-secondary">Science: 0.62</text>
+  <text x="55" y="400" font-size="8" class="text-secondary">Business: 0.45</text>
+  
+  <text x="180" y="370" font-size="8" class="text-secondary">Sports: 0.23</text>
+  <text x="180" y="385" font-size="8" class="text-secondary">Entertainment: 0.18</text>
+  <text x="180" y="400" font-size="8" class="text-secondary">Politics: 0.12</text>
+  
+  <!-- Real-time Update (Bottom Right) -->
+  <rect x="690" y="280" width="290" height="150" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="835" y="310" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Real-time Updates</text>
+  
+  <rect x="710" y="325" width="250" height="90" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="725" y="350" font-size="9" font-weight="bold" class="text-primary">Update on engagement:</text>
+  <text x="725" y="370" font-size="8" class="text-secondary">• Follow topic → boost weight</text>
+  <text x="725" y="385" font-size="8" class="text-secondary">• Like content → boost topic</text>
+  <text x="725" y="400" font-size="8" class="text-secondary">• Long watch → positive signal</text>
+  
+  <text x="835" y="440" text-anchor="middle" font-size="9" class="highlight-green">Profile updates in &lt;100ms</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

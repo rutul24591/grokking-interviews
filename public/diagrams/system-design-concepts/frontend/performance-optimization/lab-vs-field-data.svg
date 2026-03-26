@@ -1,0 +1,90 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: var(--bg-primary, #ffffff); }
+      .card { fill: var(--bg-panel, #f8fafc); }
+      .text { fill: var(--text-primary, #1e293b); }
+      .text-muted { fill: var(--text-muted, #64748b); }
+      .border { stroke: var(--border-color, #e2e8f0); }
+      .accent { fill: var(--accent-color, #3b82f6); }
+      .success { fill: var(--success-color, #22c55e); }
+      .warning { fill: var(--warning-color, #f59e0b); }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect class="bg" width="800" height="500" rx="8"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" class="text" font-size="18" font-weight="bold">Lab Data vs Field Data</text>
+  
+  <!-- Lab Data Column -->
+  <rect x="40" y="70" width="340" height="380" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="210" y="100" text-anchor="middle" class="text" font-size="16" font-weight="bold">Lab Data</text>
+  <text x="210" y="120" text-anchor="middle" class="text-muted" font-size="11">Controlled Testing Environment</text>
+  
+  <line x1="80" y1="135" x2="340" y2="135" class="border" stroke-width="1"/>
+  
+  <!-- Lab Data Items -->
+  <rect x="80" y="150" width="260" height="45" class="card" rx="4" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="210" y="170" text-anchor="middle" class="text" font-size="12" font-weight="bold">Lighthouse</text>
+  <text x="210" y="185" text-anchor="middle" class="text-muted" font-size="9">Automated audits, CI/CD integration</text>
+  
+  <rect x="80" y="205" width="260" height="45" class="card" rx="4" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="210" y="225" text-anchor="middle" class="text" font-size="12" font-weight="bold">Chrome DevTools</text>
+  <text x="210" y="240" text-anchor="middle" class="text-muted" font-size="9">Performance panel, throttling</text>
+  
+  <rect x="80" y="260" width="260" height="45" class="card" rx="4" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="210" y="280" text-anchor="middle" class="text" font-size="12" font-weight="bold">WebPageTest</text>
+  <text x="210" y="295" text-anchor="middle" class="text-muted" font-size="9">Multi-location testing</text>
+  
+  <!-- Lab Characteristics -->
+  <text x="80" y="335" class="text" font-size="11" font-weight="bold">Characteristics:</text>
+  <text x="90" y="355" class="text-muted" font-size="10">• Reproducible (same conditions)</text>
+  <text x="90" y="375" class="text-muted" font-size="10">• Controlled environment</text>
+  <text x="90" y="395" class="text-muted" font-size="10">• Single page load</text>
+  <text x="90" y="415" class="text-muted" font-size="10">• Limited INP measurement</text>
+  
+  <text x="80" y="440" class="text" font-size="11" font-weight="bold">Use For:</text>
+  <text x="90" y="460" class="success" font-size="10">✓ Debugging &amp; development</text>
+  <text x="90" y="475" class="success" font-size="10">✓ CI/CD gates</text>
+  
+  <!-- Field Data Column -->
+  <rect x="420" y="70" width="340" height="380" class="card" rx="6" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="590" y="100" text-anchor="middle" class="text" font-size="16" font-weight="bold">Field Data (RUM)</text>
+  <text x="590" y="120" text-anchor="middle" class="text-muted" font-size="11">Real User Monitoring</text>
+  
+  <line x1="460" y1="135" x2="720" y2="135" class="border" stroke-width="1"/>
+  
+  <!-- Field Data Items -->
+  <rect x="460" y="150" width="260" height="45" class="card" rx="4" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="590" y="170" text-anchor="middle" class="text" font-size="12" font-weight="bold">Chrome UX Report (CrUX)</text>
+  <text x="590" y="185" text-anchor="middle" class="text-muted" font-size="9">Google's field data, SEO ranking</text>
+  
+  <rect x="460" y="205" width="260" height="45" class="card" rx="4" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="590" y="225" text-anchor="middle" class="text" font-size="12" font-weight="bold">web-vitals Library</text>
+  <text x="590" y="240" text-anchor="middle" class="text-muted" font-size="9">Custom analytics integration</text>
+  
+  <rect x="460" y="260" width="260" height="45" class="card" rx="4" stroke="var(--border-color, #e2e8f0)" stroke-width="1"/>
+  <text x="590" y="280" text-anchor="middle" class="text" font-size="12" font-weight="bold">RUM Providers</text>
+  <text x="590" y="295" text-anchor="middle" class="text-muted" font-size="9">SpeedCurve, Calibre, etc.</text>
+  
+  <!-- Field Characteristics -->
+  <text x="460" y="335" class="text" font-size="11" font-weight="bold">Characteristics:</text>
+  <text x="470" y="355" class="text-muted" font-size="10">• Real users, devices, networks</text>
+  <text x="470" y="375" class="text-muted" font-size="10">• Thousands of page loads</text>
+  <text x="470" y="395" class="text-muted" font-size="10">• Full INP measurement</text>
+  <text x="470" y="415" class="text-muted" font-size="10">• 75th percentile thresholds</text>
+  
+  <text x="460" y="440" class="text" font-size="11" font-weight="bold">Use For:</text>
+  <text x="470" y="460" class="success" font-size="10">✓ SEO ranking</text>
+  <text x="470" y="475" class="success" font-size="10">✓ Real-world monitoring</text>
+  
+  <!-- Comparison Arrows -->
+  <path d="M380 200 L420 200" class="border" stroke-width="2" stroke-dasharray="5,5"/>
+  <path d="M380 300 L420 300" class="border" stroke-width="2" stroke-dasharray="5,5"/>
+  
+  <!-- Key Insight Box -->
+  <rect x="180" y="465" width="440" height="30" class="card" rx="4" stroke="var(--accent-color, #3b82f6)" stroke-width="2"/>
+  <text x="400" y="485" text-anchor="middle" class="accent" font-size="11" font-weight="bold">Use both: Lab for debugging, Field for SEO &amp; real-world impact</text>
+</svg>

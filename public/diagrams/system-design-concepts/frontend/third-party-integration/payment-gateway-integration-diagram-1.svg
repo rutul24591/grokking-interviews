@@ -1,0 +1,47 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="500" rx="10" fill="#F8F9FC"/>
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">
+    Payment Gateway Integration (Architecture)
+  </text>
+
+  <defs>
+    <marker id="arrowPG1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
+    </marker>
+  </defs>
+
+  <rect x="60" y="85" width="780" height="360" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+
+  <rect x="95" y="125" width="210" height="95" rx="12" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <text x="200" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Browser</text>
+  <text x="200" y="178" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">checkout UI</text>
+  <text x="200" y="198" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">challenge flows</text>
+
+  <rect x="345" y="125" width="250" height="95" rx="12" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+  <text x="470" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Merchant Backend</text>
+  <text x="470" y="178" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">price validation</text>
+  <text x="470" y="198" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">idempotency</text>
+
+  <rect x="635" y="125" width="205" height="95" rx="12" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="737.5" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">PSP</text>
+  <text x="737.5" y="178" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">tokenization</text>
+  <text x="737.5" y="198" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">auth + capture</text>
+
+  <line x1="305" y1="172" x2="345" y2="172" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrowPG1)"/>
+  <text x="325" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748B">create intent</text>
+
+  <line x1="595" y1="172" x2="635" y2="172" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrowPG1)"/>
+  <text x="615" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748B">server API</text>
+
+  <rect x="95" y="260" width="745" height="150" rx="12" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
+  <text x="467.5" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">
+    Webhooks converge final state
+  </text>
+  <text x="120" y="320" font-family="system-ui, sans-serif" font-size="11" fill="#334155">• Browser can disappear; backend remains authoritative</text>
+  <text x="120" y="343" font-family="system-ui, sans-serif" font-size="11" fill="#334155">• PSP retries delivery; backend verifies and applies idempotency</text>
+  <text x="120" y="366" font-family="system-ui, sans-serif" font-size="11" fill="#334155">• Client queries backend status to finalize UX</text>
+
+  <line x1="737.5" y1="220" x2="470" y2="260" stroke="#F59E0B" stroke-width="2.5" marker-end="url(#arrowPG1)"/>
+  <text x="610" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#92400E">webhook events</text>
+</svg>
+

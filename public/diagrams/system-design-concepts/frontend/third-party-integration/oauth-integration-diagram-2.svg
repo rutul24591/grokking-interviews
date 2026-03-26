@@ -1,0 +1,30 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="500" rx="10" fill="#F8F9FC"/>
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">
+    OAuth Design Trade-offs (Tokens &amp; Sessions)
+  </text>
+
+  <rect x="70" y="85" width="760" height="360" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+
+  <rect x="110" y="130" width="320" height="140" rx="14" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <text x="270" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Browser-held tokens</text>
+  <text x="270" y="184" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">simpler architecture</text>
+  <text x="270" y="206" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">risk: XSS impact</text>
+  <text x="270" y="228" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">storage constraints</text>
+
+  <rect x="470" y="130" width="320" height="140" rx="14" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+  <text x="630" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Backend-assisted session</text>
+  <text x="630" y="184" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">tokens off the browser</text>
+  <text x="630" y="206" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">central refresh &amp; rotation</text>
+  <text x="630" y="228" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">cost: infra + state</text>
+
+  <rect x="110" y="305" width="680" height="110" rx="14" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
+  <text x="450" y="337" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Common staff-level principle</text>
+  <text x="450" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">
+    Choose the model based on threat and privilege: higher privilege → reduce browser token exposure.
+  </text>
+  <text x="450" y="384" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">
+    Pair with strict redirect validation, PKCE, and clear failure UX.
+  </text>
+</svg>
+

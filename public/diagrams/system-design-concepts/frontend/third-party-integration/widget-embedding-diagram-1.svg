@@ -1,0 +1,56 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="500" rx="10" fill="#F8F9FC"/>
+
+  <text x="450" y="38" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">
+    Widget Embedding Models (Isolation Boundary)
+  </text>
+
+  <defs>
+    <marker id="arrowWE1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
+    </marker>
+  </defs>
+
+  <!-- Host app -->
+  <rect x="60" y="85" width="360" height="340" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="90" y="115" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Host App (Your Origin)</text>
+
+  <rect x="95" y="140" width="290" height="90" rx="12" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="240" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">In-page Script Widget</text>
+  <text x="240" y="194" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">runs in host context</text>
+  <text x="240" y="214" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">max power, max risk</text>
+
+  <rect x="95" y="250" width="290" height="90" rx="12" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <text x="240" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Adapter Boundary</text>
+  <text x="240" y="304" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">init • config • fallback</text>
+  <text x="240" y="324" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">kill switch + telemetry</text>
+
+  <rect x="95" y="355" width="290" height="60" rx="12" fill="#FFF7ED" stroke="#F59E0B" stroke-width="2"/>
+  <text x="240" y="382" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Policy</text>
+  <text x="240" y="402" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#334155">CSP • consent gating</text>
+
+  <!-- Widget iframe -->
+  <rect x="470" y="85" width="370" height="340" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="500" y="115" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Widget (Separate Document)</text>
+
+  <rect x="505" y="160" width="300" height="110" rx="12" fill="#ECFDF5" stroke="#10B981" stroke-width="2"/>
+  <text x="655" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Iframe Widget</text>
+  <text x="655" y="214" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">cross-origin boundary</text>
+  <text x="655" y="234" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">sandbox constraints</text>
+  <text x="655" y="254" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">explicit messaging</text>
+
+  <rect x="505" y="290" width="300" height="90" rx="12" fill="#F1F5F9" stroke="#94A3B8" stroke-width="2"/>
+  <text x="655" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Communication</text>
+  <text x="655" y="344" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">message contract</text>
+  <text x="655" y="364" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">origin checks</text>
+
+  <!-- Arrows -->
+  <line x1="385" y1="295" x2="505" y2="335" stroke="#64748B" stroke-width="2.5" marker-end="url(#arrowWE1)"/>
+  <text x="445" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748B">messages</text>
+
+  <rect x="60" y="442" width="780" height="38" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+  <text x="450" y="466" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#334155">
+    Principle: choose the embedding model based on required privileges; use isolation (iframe) when possible and keep the host contract explicit.
+  </text>
+</svg>
+

@@ -1,0 +1,176 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      .highlight-red { fill: #f56565; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Query Expansion Strategies</text>
+  
+  <!-- No Expansion (Top Left) -->
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">No Expansion</text>
+  
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="55" y="135" font-size="10" class="text-primary">Original query only:</text>
+  <text x="55" y="160" font-size="9" class="text-secondary" font-family="monospace">"laptop"</text>
+  
+  <text x="130" y="195" text-anchor="middle" font-size="9" class="highlight-green">✓ High precision</text>
+  <text x="130" y="215" text-anchor="middle" font-size="9" class="highlight-red">⚠ Low recall</text>
+  <text x="130" y="235" text-anchor="middle" font-size="9" class="text-secondary">Miss: notebook, MacBook</text>
+  
+  <text x="130" y="260" text-anchor="middle" font-size="9" class="text-secondary">Best for: Expert users</text>
+  
+  <!-- Synonym Expansion (Top Center) -->
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Synonym Expansion</text>
+  
+  <rect x="280" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="295" y="135" font-size="10" class="text-primary">Add synonyms:</text>
+  <text x="295" y="160" font-size="9" class="text-secondary" font-family="monospace">"laptop OR notebook</text>
+  <text x="295" y="175" font-size="9" class="text-secondary" font-family="monospace">OR MacBook"</text>
+  
+  <text x="370" y="205" text-anchor="middle" font-size="9" class="highlight-green">✓ Balanced precision/recall</text>
+  <text x="370" y="225" text-anchor="middle" font-size="9" class="text-secondary">2-3 synonyms per term</text>
+  
+  <text x="370" y="255" text-anchor="middle" font-size="9" class="highlight-green">Most common approach</text>
+  
+  <!-- Related Terms (Top Right) -->
+  <rect x="500" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="610" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Related Terms</text>
+  
+  <rect x="520" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="535" y="135" font-size="10" class="text-primary">Add semantically related:</text>
+  <text x="535" y="160" font-size="9" class="text-secondary" font-family="monospace">"laptop OR computer</text>
+  <text x="535" y="175" font-size="9" class="text-secondary" font-family="monospace">OR PC OR notebook"</text>
+  
+  <text x="610" y="205" text-anchor="middle" font-size="9" class="highlight-purple">✓ Higher recall</text>
+  <text x="610" y="225" text-anchor="middle" font-size="9" class="highlight-purple">⚠ Lower precision</text>
+  
+  <text x="610" y="255" text-anchor="middle" font-size="9" class="text-secondary">Use word embeddings</text>
+  
+  <!-- Automatic Query Expansion (Bottom Left) -->
+  <rect x="20" y="260" width="300" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="170" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Automatic Query Expansion (AQE)</text>
+  
+  <rect x="40" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="55" y="325" font-size="10" class="text-primary">Process:</text>
+  <text x="55" y="345" font-size="9" class="text-secondary">1. Run initial query</text>
+  <text x="55" y="365" font-size="9" class="text-secondary">2. Extract terms from top results</text>
+  <text x="55" y="385" font-size="9" class="text-secondary">3. Add top related terms</text>
+  <text x="55" y="405" font-size="9" class="text-secondary">4. Re-run expanded query</text>
+  
+  <text x="170" y="440" text-anchor="middle" font-size="9" class="highlight-red">⚠ Risk: Query drift</text>
+  
+  <!-- Precision/Recall Trade-off (Bottom Center) -->
+  <rect x="340" y="260" width="320" height="170" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="500" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Precision/Recall Trade-off</text>
+  
+  <!-- Graph -->
+  <rect x="360" y="300" width="280" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Axes -->
+  <line x1="380" y1="395" x2="620" y2="395" class="arrow" stroke-width="2"/>
+  <line x1="380" y1="395" x2="380" y2="320" class="arrow" stroke-width="2"/>
+  
+  <text x="625" y="400" font-size="9" class="text-secondary">Expansion →</text>
+  <text x="365" y="315" font-size="9" class="text-secondary">↑</text>
+  
+  <!-- Precision curve (decreasing) -->
+  <path d="M 380 330 Q 500 350 620 380" class="highlight-red" stroke-width="2" fill="none"/>
+  <text x="580" y="345" font-size="8" class="highlight-red">Precision</text>
+  
+  <!-- Recall curve (increasing) -->
+  <path d="M 380 380 Q 500 360 620 330" class="highlight-blue" stroke-width="2" fill="none"/>
+  <text x="580" y="370" font-size="8" class="highlight-blue">Recall</text>
+  
+  <!-- Sweet spot -->
+  <circle cx="500" cy="355" r="5" class="highlight-green"/>
+  <text x="500" y="375" text-anchor="middle" font-size="8" class="highlight-green">Optimal</text>
+  
+  <!-- Best Practices (Bottom Right) -->
+  <rect x="680" y="260" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="830" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Best Practices</text>
+  
+  <rect x="700" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="715" y="325" font-size="9" class="text-primary">1. Limit expansion (max 10 terms)</text>
+  <text x="715" y="345" font-size="9" class="text-primary">2. Weight original terms higher</text>
+  <text x="715" y="365" font-size="9" class="text-primary">3. Use query-independent scoring</text>
+  <text x="715" y="385" font-size="9" class="text-primary">4. Allow user to disable</text>
+  <text x="715" y="405" font-size="9" class="text-primary">5. Monitor precision/recall</text>
+  
+  <!-- Synonym Sources (Far Bottom) -->
+  <rect x="20" y="450" width="300" height="80" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="475" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Synonym Sources</text>
+  
+  <text x="50" y="500" font-size="9" class="text-primary">• WordNet:</text>
+  <text x="120" y="500" font-size="9" class="text-secondary">General English</text>
+  
+  <text x="50" y="520" font-size="9" class="text-primary">• Query logs:</text>
+  <text x="130" y="520" font-size="9" class="highlight-green">Most valuable</text>
+  
+  <text x="180" y="500" font-size="9" class="text-primary">• Domain thesaurus:</text>
+  <text x="280" y="500" font-size="9" class="text-secondary">Industry-specific</text>
+  
+  <text x="180" y="520" font-size="9" class="text-primary">• User feedback:</text>
+  <text x="270" y="520" font-size="9" class="highlight-purple">Click data</text>
+  
+  <!-- Expansion Impact (Center Bottom) -->
+  <rect x="340" y="450" width="320" height="80" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="500" y="475" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Expansion Impact</text>
+  
+  <text x="370" y="500" font-size="9" class="text-primary">No expansion:</text>
+  <text x="460" y="500" font-size="9" class="text-secondary">Precision 80%, Recall 40%</text>
+  
+  <text x="370" y="520" font-size="9" class="text-primary">Moderate (2-3 synonyms):</text>
+  <text x="540" y="520" font-size="9" class="highlight-green">Precision 75%, Recall 70%</text>
+  
+  <text x="570" y="500" font-size="9" class="text-primary">Aggressive:</text>
+  <text x="650" y="500" font-size="9" class="highlight-purple">Precision 50%, Recall 90%</text>
+  
+  <!-- Query Drift Warning (Right Bottom) -->
+  <rect x="680" y="450" width="300" height="80" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="830" y="475" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Query Drift Warning</text>
+  
+  <text x="710" y="500" font-size="9" class="highlight-red">⚠ Too much expansion</text>
+  <text x="710" y="520" font-size="9" class="text-secondary">Original intent lost</text>
+  
+  <text x="850" y="500" font-size="9" class="text-primary">Solution:</text>
+  <text x="850" y="520" font-size="9" class="highlight-green">Limit + weight original</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>
