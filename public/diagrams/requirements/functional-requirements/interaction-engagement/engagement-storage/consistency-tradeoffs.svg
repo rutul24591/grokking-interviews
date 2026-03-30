@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="1000" height="450" class="bg-base"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Consistency Trade-offs</text>
+  
+  <!-- Strong Consistency -->
+  <rect x="30" y="70" width="280" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Strong Consistency</text>
+  
+  <rect x="50" y="110" width="240" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <rect x="70" y="125" width="200" height="35" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="170" y="147" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Always accurate</text>
+  
+  <text x="70" y="175" font-size="9" class="text-primary">• Synchronous writes</text>
+  <text x="70" y="190" font-size="9" class="text-primary">• Read-after-write guaranteed</text>
+  <text x="70" y="205" font-size="9" class="highlight-red">⚠ Higher latency</text>
+  <text x="70" y="220" font-size="9" class="text-primary">Best for: User's own state</text>
+  
+  <!-- Eventual Consistency -->
+  <rect x="330" y="70" width="280" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="470" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Eventual Consistency</text>
+  
+  <rect x="350" y="110" width="240" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <rect x="370" y="125" width="200" height="35" rx="2" class="highlight-blue" stroke-width="1"/>
+  <text x="470" y="147" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">May lag seconds</text>
+  
+  <text x="370" y="175" font-size="9" class="text-primary">• Async writes</text>
+  <text x="370" y="190" font-size="9" class="text-primary">• High availability</text>
+  <text x="370" y="205" font-size="9" class="highlight-green">✓ Low latency</text>
+  <text x="370" y="220" font-size="9" class="text-primary">Best for: Public counts</text>
+  
+  <!-- Causal Consistency -->
+  <rect x="630" y="70" width="340" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="800" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Causal Consistency (Hybrid)</text>
+  
+  <rect x="650" y="110" width="300" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <rect x="670" y="125" width="260" height="35" rx="2" class="highlight-purple" stroke-width="1"/>
+  <text x="800" y="147" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Read-your-writes</text>
+  
+  <text x="670" y="175" font-size="9" class="text-primary">• User sees own writes immediately</text>
+  <text x="670" y="190" font-size="9" class="text-primary">• Others see eventual</text>
+  <text x="670" y="205" font-size="9" class="highlight-green">✓ Best of both worlds</text>
+  <text x="670" y="220" font-size="9" class="text-primary">Recommended approach</text>
+  
+  <!-- Use Case Matrix -->
+  <rect x="30" y="260" width="460" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="260" y="285" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Consistency by Use Case</text>
+  
+  <rect x="50" y="300" width="420" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <rect x="70" y="315" width="380" height="30" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="100" y="335" text-anchor="start" font-size="9" class="text-primary">Did I like this?</text>
+  <text x="420" y="335" text-anchor="end" font-size="8" class="text-secondary">Strong</text>
+  
+  <rect x="70" y="350" width="380" height="30" rx="2" class="highlight-blue" stroke-width="1"/>
+  <text x="100" y="370" text-anchor="start" font-size="9" class="text-primary">Public like count</text>
+  <text x="420" y="370" text-anchor="end" font-size="8" class="text-secondary">Eventual</text>
+  
+  <rect x="70" y="385" width="380" height="30" rx="2" class="highlight-purple" stroke-width="1"/>
+  <text x="100" y="405" text-anchor="start" font-size="9" class="text-primary">My comment history</text>
+  <text x="420" y="405" text-anchor="end" font-size="8" class="text-secondary">Causal</text>
+  
+  <!-- Latency Comparison -->
+  <rect x="510" y="260" width="460" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="740" y="285" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Latency Comparison</text>
+  
+  <rect x="530" y="300" width="420" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Bar chart -->
+  <rect x="550" y="320" width="100" height="30" rx="2" class="highlight-red" stroke-width="1"/>
+  <text x="600" y="340" text-anchor="middle" font-size="8" class="text-primary">Strong</text>
+  <text x="660" y="340" text-anchor="start" font-size="8" class="text-secondary">50-100ms</text>
+  
+  <rect x="550" y="355" width="60" height="30" rx="2" class="highlight-blue" stroke-width="1"/>
+  <text x="580" y="375" text-anchor="middle" font-size="8" class="text-primary">Eventual</text>
+  <text x="660" y="375" text-anchor="start" font-size="8" class="text-secondary">10-30ms</text>
+  
+  <rect x="550" y="390" width="80" height="30" rx="2" class="highlight-purple" stroke-width="1"/>
+  <text x="590" y="410" text-anchor="middle" font-size="8" class="text-primary">Causal</text>
+  <text x="660" y="410" text-anchor="start" font-size="8" class="text-secondary">20-50ms</text>
+  
+  <text x="750" y="340" font-size="9" font-weight="bold" class="text-primary">Latency</text>
+  <text x="750" y="375" font-size="9" font-weight="bold" class="text-primary">Availability</text>
+  <text x="750" y="410" font-size="9" font-weight="bold" class="text-primary">Balance</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

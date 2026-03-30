@@ -1,6 +1,123 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
-  <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="250" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">service-dependency-map.svg</text>
-  <text x="400" y="280" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Valid XML SVG</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">Service Dependency Map</text>
+  
+  <!-- Service Layers -->
+  <rect x="30" y="70" width="840" height="120" rx="5" class="box-base" stroke-width="2"/>
+  <text x="450" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Frontend Layer</text>
+  
+  <rect x="100" y="110" width="140" height="65" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="170" y="135" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Web App</text>
+  <text x="170" y="155" text-anchor="middle" font-size="8" class="text-secondary">React/Vue</text>
+  <text x="170" y="170" text-anchor="middle" font-size="8" class="text-secondary">Port: 3000</text>
+  
+  <rect x="260" y="110" width="140" height="65" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="330" y="135" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Mobile App</text>
+  <text x="330" y="155" text-anchor="middle" font-size="8" class="text-secondary">iOS/Android</text>
+  <text x="330" y="170" text-anchor="middle" font-size="8" class="text-secondary">HTTPS</text>
+  
+  <rect x="420" y="110" width="140" height="65" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="490" y="135" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Admin Portal</text>
+  <text x="490" y="155" text-anchor="middle" font-size="8" class="text-secondary">Internal</text>
+  <text x="490" y="170" text-anchor="middle" font-size="8" class="text-secondary">SSO Required</text>
+  
+  <rect x="580" y="110" width="140" height="65" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="650" y="135" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">CDN</text>
+  <text x="650" y="155" text-anchor="middle" font-size="8" class="text-secondary">CloudFront</text>
+  <text x="650" y="170" text-anchor="middle" font-size="8" class="text-secondary">Edge Cache</text>
+  
+  <!-- API Gateway Layer -->
+  <rect x="30" y="210" width="840" height="120" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="450" y="235" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">API Gateway Layer</text>
+  
+  <rect x="350" y="250" width="200" height="65" rx="3" class="highlight-box" stroke-width="1.5"/>
+  <text x="450" y="275" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">API Gateway</text>
+  <text x="450" y="295" text-anchor="middle" font-size="8" class="text-secondary">Kong/AWS APIGW</text>
+  <text x="450" y="310" text-anchor="middle" font-size="8" class="text-secondary">Rate Limiting, Auth</text>
+  
+  <!-- Backend Services Layer -->
+  <rect x="30" y="350" width="840" height="120" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="450" y="375" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Backend Services Layer</text>
+  
+  <rect x="60" y="390" width="120" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="120" y="415" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Auth Service</text>
+  <text x="120" y="435" text-anchor="middle" font-size="8" class="text-secondary">JWT, OAuth</text>
+  <text x="120" y="450" text-anchor="middle" font-size="8" class="text-secondary">Port: 8001</text>
+  
+  <rect x="200" y="390" width="120" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="260" y="415" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">User Service</text>
+  <text x="260" y="435" text-anchor="middle" font-size="8" class="text-secondary">PostgreSQL</text>
+  <text x="260" y="450" text-anchor="middle" font-size="8" class="text-secondary">Port: 8002</text>
+  
+  <rect x="340" y="390" width="120" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="400" y="415" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Order Service</text>
+  <text x="400" y="435" text-anchor="middle" font-size="8" class="text-secondary">MongoDB</text>
+  <text x="400" y="450" text-anchor="middle" font-size="8" class="text-secondary">Port: 8003</text>
+  
+  <rect x="480" y="390" width="120" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="540" y="415" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Payment Service</text>
+  <text x="540" y="435" text-anchor="middle" font-size="8" class="text-secondary">Stripe API</text>
+  <text x="540" y="450" text-anchor="middle" font-size="8" class="text-secondary">Port: 8004</text>
+  
+  <rect x="620" y="390" width="120" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="680" y="415" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Notification</text>
+  <text x="680" y="435" text-anchor="middle" font-size="8" class="text-secondary">SNS/SES</text>
+  <text x="680" y="450" text-anchor="middle" font-size="8" class="text-secondary">Port: 8005</text>
+  
+  <rect x="760" y="390" width="120" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="820" y="415" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Analytics</text>
+  <text x="820" y="435" text-anchor="middle" font-size="8" class="text-secondary">ClickHouse</text>
+  <text x="820" y="450" text-anchor="middle" font-size="8" class="text-secondary">Port: 8006</text>
+  
+  <!-- Data Layer -->
+  <rect x="30" y="490" width="840" height="80" rx="5" class="highlight-purple" stroke-width="2"/>
+  <text x="450" y="515" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Data Layer</text>
+  
+  <rect x="100" y="530" width="100" height="30" rx="2" class="box-base" stroke-width="1"/>
+  <text x="150" y="550" text-anchor="middle" font-size="8" class="text-primary">PostgreSQL</text>
+  
+  <rect x="220" y="530" width="100" height="30" rx="2" class="box-base" stroke-width="1"/>
+  <text x="270" y="550" text-anchor="middle" font-size="8" class="text-primary">MongoDB</text>
+  
+  <rect x="340" y="530" width="100" height="30" rx="2" class="box-base" stroke-width="1"/>
+  <text x="390" y="550" text-anchor="middle" font-size="8" class="text-primary">Redis Cache</text>
+  
+  <rect x="460" y="530" width="100" height="30" rx="2" class="box-base" stroke-width="1"/>
+  <text x="510" y="550" text-anchor="middle" font-size="8" class="text-primary">Elasticsearch</text>
+  
+  <rect x="580" y="530" width="100" height="30" rx="2" class="box-base" stroke-width="1"/>
+  <text x="630" y="550" text-anchor="middle" font-size="8" class="text-primary">S3 Storage</text>
+  
+  <rect x="700" y="530" width="100" height="30" rx="2" class="box-base" stroke-width="1"/>
+  <text x="750" y="550" text-anchor="middle" font-size="8" class="text-primary">Kafka</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
 </svg>

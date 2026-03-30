@@ -1,6 +1,114 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
-  <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="250" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">Diagram</text>
-  <text x="400" y="280" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Valid XML</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">Responsive Images Implementation</text>
+  
+  <!-- Srcset Approach -->
+  <rect x="30" y="70" width="400" height="200" rx="5" class="box-base" stroke-width="2"/>
+  <text x="230" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Srcset Approach</text>
+  
+  <rect x="50" y="110" width="360" height="145" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="70" y="130" font-size="9" font-weight="bold" class="text-primary">Width Descriptors (w):</text>
+  <rect x="70" y="140" width="320" height="35" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="230" y="162" text-anchor="middle" font-size="8" class="text-primary">image-400.jpg 400w, image-800.jpg 800w, image-1200.jpg 1200w</text>
+  
+  <text x="70" y="190" font-size="9" font-weight="bold" class="text-primary">Sizes Attribute:</text>
+  <rect x="70" y="200" width="320" height="35" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="230" y="222" text-anchor="middle" font-size="8" class="text-primary">(max-width: 600px) 400px, (max-width: 1000px) 800px, 1200px</text>
+  
+  <text x="70" y="245" font-size="9" class="highlight-green">✓ Browser chooses optimal image</text>
+  
+  <!-- Picture Element -->
+  <rect x="450" y="70" width="420" height="200" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="660" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Picture Element Approach</text>
+  
+  <rect x="470" y="110" width="380" height="145" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="490" y="130" font-size="9" font-weight="bold" class="text-primary">Format Switching:</text>
+  <rect x="490" y="140" width="340" height="50" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="660" y="155" text-anchor="middle" font-size="8" class="text-primary">&lt;source type="image/avif" srcset="image.avif"&gt;</text>
+  <text x="660" y="175" text-anchor="middle" font-size="8" class="text-primary">&lt;source type="image/webp" srcset="image.webp"&gt;</text>
+  
+  <text x="490" y="205" font-size="9" font-weight="bold" class="text-primary">Art Direction:</text>
+  <rect x="490" y="215" width="340" height="35" rx="2" class="highlight-purple" stroke-width="1"/>
+  <text x="660" y="237" text-anchor="middle" font-size="8" class="text-primary">Different crops for different viewports</text>
+  
+  <text x="490" y="245" font-size="9" class="highlight-green">✓ Format + art direction control</text>
+  
+  <!-- Delivery Flow -->
+  <rect x="30" y="290" width="840" height="180" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="450" y="315" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Image Delivery Flow</text>
+  
+  <rect x="50" y="330" width="150" height="125" rx="3" class="box-base" stroke-width="1.5"/>
+  <text x="125" y="355" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">1. Upload</text>
+  <rect x="70" y="370" width="110" height="70" rx="2" class="box-base" stroke-width="1"/>
+  <text x="125" y="390" text-anchor="middle" font-size="8" class="text-primary">• Original image</text>
+  <text x="125" y="405" text-anchor="middle" font-size="8" class="text-primary">• Metadata extraction</text>
+  <text x="125" y="420" text-anchor="middle" font-size="8" class="text-primary">• Store in S3</text>
+  <text x="125" y="435" text-anchor="middle" font-size="8" class="text-primary">• Trigger processing</text>
+  
+  <line x1="200" y1="390" x2="230" y2="390" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="230" y="330" width="150" height="125" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="305" y="355" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">2. Processing</text>
+  <rect x="250" y="370" width="110" height="70" rx="2" class="box-base" stroke-width="1"/>
+  <text x="305" y="390" text-anchor="middle" font-size="8" class="text-primary">• Generate variants</text>
+  <text x="305" y="405" text-anchor="middle" font-size="8" class="text-primary">• Convert formats</text>
+  <text x="305" y="420" text-anchor="middle" font-size="8" class="text-primary">• Optimize quality</text>
+  <text x="305" y="435" text-anchor="middle" font-size="8" class="text-primary">• Generate srcset</text>
+  
+  <line x1="380" y1="390" x2="410" y2="390" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="410" y="330" width="150" height="125" rx="3" class="highlight-box" stroke-width="1.5"/>
+  <text x="485" y="355" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">3. CDN Cache</text>
+  <rect x="430" y="370" width="110" height="70" rx="2" class="box-base" stroke-width="1"/>
+  <text x="485" y="390" text-anchor="middle" font-size="8" class="text-primary">• Edge distribution</text>
+  <text x="485" y="405" text-anchor="middle" font-size="8" class="text-primary">• Cache headers</text>
+  <text x="485" y="420" text-anchor="middle" font-size="8" class="text-primary">• Invalidation</text>
+  <text x="485" y="435" text-anchor="middle" font-size="8" class="text-primary">• Geo-routing</text>
+  
+  <line x1="560" y1="390" x2="590" y2="390" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="590" y="330" width="150" height="125" rx="3" class="highlight-purple" stroke-width="1.5"/>
+  <text x="665" y="355" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">4. Delivery</text>
+  <rect x="610" y="370" width="110" height="70" rx="2" class="box-base" stroke-width="1"/>
+  <text x="665" y="390" text-anchor="middle" font-size="8" class="text-primary">• Browser request</text>
+  <text x="665" y="405" text-anchor="middle" font-size="8" class="text-primary">• Device detection</text>
+  <text x="665" y="420" text-anchor="middle" font-size="8" class="text-primary">• Serve optimal</text>
+  <text x="665" y="435" text-anchor="middle" font-size="8" class="text-primary">• Track metrics</text>
+  
+  <line x1="740" y1="390" x2="770" y2="390" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="770" y="330" width="80" height="125" rx="3" class="highlight-green" stroke-width="1.5"/>
+  <text x="810" y="390" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">5. Monitor</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
 </svg>

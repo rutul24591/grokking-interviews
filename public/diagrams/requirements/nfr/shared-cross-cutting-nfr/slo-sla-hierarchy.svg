@@ -1,6 +1,81 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
-  <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="250" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">slo-sla-hierarchy.svg</text>
-  <text x="400" y="280" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Valid XML SVG</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">SLO SLA Hierarchy</text>
+  
+  <!-- Hierarchy Pyramid -->
+  <rect x="30" y="70" width="400" height="400" rx="5" class="box-base" stroke-width="2"/>
+  <text x="230" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Reliability Hierarchy</text>
+  
+  <!-- SLA Layer (Top) -->
+  <polygon points="130,120 330,120 280,180 180,180" class="highlight-red" stroke-width="2"/>
+  <text x="230" y="155" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">SLA</text>
+  <text x="230" y="175" text-anchor="middle" font-size="9" class="text-primary">External Contract</text>
+  
+  <!-- SLO Layer (Middle) -->
+  <polygon points="100,190 360,190 280,280 180,280" class="highlight-blue" stroke-width="2"/>
+  <text x="230" y="240" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">SLO</text>
+  <text x="230" y="260" text-anchor="middle" font-size="9" class="text-primary">Internal Target</text>
+  
+  <!-- SLI Layer (Bottom) -->
+  <polygon points="70,290 390,290 280,420 180,420" class="highlight-green" stroke-width="2"/>
+  <text x="230" y="360" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">SLI</text>
+  <text x="230" y="380" text-anchor="middle" font-size="9" class="text-primary">Actual Measurement</text>
+  
+  <!-- SLA Details -->
+  <rect x="450" y="70" width="420" height="120" rx="5" class="highlight-red" stroke-width="2"/>
+  <text x="660" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">SLA (Service Level Agreement)</text>
+  <rect x="470" y="110" width="380" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="485" y="130" font-size="9" class="text-primary">• External contract with customers</text>
+  <text x="485" y="145" font-size="9" class="text-primary">• Financial penalties for breach</text>
+  <text x="485" y="160" font-size="9" class="text-primary">• Less strict than SLO (buffer)</text>
+  <text x="485" y="175" font-size="9" class="text-primary">• Example: 99.9% uptime = ~9hr/year downtime</text>
+  
+  <!-- SLO Details -->
+  <rect x="450" y="200" width="420" height="140" rx="5" class="highlight-blue" stroke-width="2"/>
+  <text x="660" y="225" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">SLO (Service Level Objective)</text>
+  <rect x="470" y="240" width="380" height="85" rx="3" class="box-base" stroke-width="1"/>
+  <text x="485" y="260" font-size="9" class="text-primary">• Internal reliability target</text>
+  <text x="485" y="275" font-size="9" class="text-primary">• More strict than SLA (10x error budget)</text>
+  <text x="485" y="290" font-size="9" class="text-primary">• Drives engineering priorities</text>
+  <text x="485" y="305" font-size="9" class="text-primary">• Example: 99.99% target for 99.9% SLA</text>
+  <text x="485" y="320" font-size="9" class="text-primary">• Measured over rolling window (28 days)</text>
+  
+  <!-- SLI Details -->
+  <rect x="450" y="350" width="420" height="120" rx="5" class="highlight-green" stroke-width="2"/>
+  <text x="660" y="375" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">SLI (Service Level Indicator)</text>
+  <rect x="470" y="390" width="380" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="485" y="410" font-size="9" class="text-primary">• Actual measured metric</text>
+  <text x="485" y="425" font-size="9" class="text-primary">• Examples: latency, error rate, throughput</text>
+  <text x="485" y="440" font-size="9" class="text-primary">• Collected via monitoring systems</text>
+  <text x="485" y="455" font-size="9" class="text-primary">• Compared against SLO target</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
 </svg>

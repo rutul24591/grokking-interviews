@@ -1,6 +1,124 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
-  <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="250" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">security-incident-classification.svg</text>
-  <text x="400" y="280" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Valid XML SVG</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">Security Incident Classification</text>
+  
+  <!-- Severity Levels -->
+  <rect x="30" y="70" width="840" height="180" rx="5" class="box-base" stroke-width="2"/>
+  <text x="450" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Incident Severity Levels</text>
+  
+  <rect x="50" y="110" width="190" height="125" rx="3" class="highlight-red" stroke-width="2"/>
+  <text x="145" y="135" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">P0 - Critical</text>
+  <rect x="70" y="150" width="150" height="70" rx="2" class="box-base" stroke-width="1"/>
+  <text x="145" y="170" text-anchor="middle" font-size="8" class="text-primary">• Data breach</text>
+  <text x="145" y="185" text-anchor="middle" font-size="8" class="text-primary">• Service down</text>
+  <text x="145" y="200" text-anchor="middle" font-size="8" class="text-primary">• Response: &lt;15min</text>
+  <text x="145" y="215" text-anchor="middle" font-size="8" class="text-primary">• All hands on deck</text>
+  
+  <rect x="255" y="110" width="190" height="125" rx="3" class="highlight-orange" stroke-width="2"/>
+  <text x="350" y="135" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">P1 - High</text>
+  <rect x="275" y="150" width="150" height="70" rx="2" class="box-base" stroke-width="1"/>
+  <text x="350" y="170" text-anchor="middle" font-size="8" class="text-primary">• Partial outage</text>
+  <text x="350" y="185" text-anchor="middle" font-size="8" class="text-primary">• Security vulnerability</text>
+  <text x="350" y="200" text-anchor="middle" font-size="8" class="text-primary">• Response: &lt;1hr</text>
+  <text x="350" y="215" text-anchor="middle" font-size="8" class="text-primary">• On-call engineer</text>
+  
+  <rect x="460" y="110" width="190" height="125" rx="3" class="highlight-blue" stroke-width="2"/>
+  <text x="555" y="135" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">P2 - Medium</text>
+  <rect x="480" y="150" width="150" height="70" rx="2" class="box-base" stroke-width="1"/>
+  <text x="555" y="170" text-anchor="middle" font-size="8" class="text-primary">• Degraded performance</text>
+  <text x="555" y="185" text-anchor="middle" font-size="8" class="text-primary">• Non-critical bug</text>
+  <text x="555" y="200" text-anchor="middle" font-size="8" class="text-primary">• Response: &lt;4hr</text>
+  <text x="555" y="215" text-anchor="middle" font-size="8" class="text-primary">• Next business day</text>
+  
+  <rect x="665" y="110" width="190" height="125" rx="3" class="highlight-purple" stroke-width="2"/>
+  <text x="760" y="135" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">P3 - Low</text>
+  <rect x="685" y="150" width="150" height="70" rx="2" class="box-base" stroke-width="1"/>
+  <text x="760" y="170" text-anchor="middle" font-size="8" class="text-primary">• Minor issue</text>
+  <text x="760" y="185" text-anchor="middle" font-size="8" class="text-primary">• Feature request</text>
+  <text x="760" y="200" text-anchor="middle" font-size="8" class="text-primary">• Response: &lt;24hr</text>
+  <text x="760" y="215" text-anchor="middle" font-size="8" class="text-primary">• Scheduled fix</text>
+  
+  <!-- Response Workflow -->
+  <rect x="30" y="270" width="840" height="200" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="450" y="295" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Incident Response Workflow</text>
+  
+  <rect x="50" y="310" width="150" height="145" rx="3" class="box-base" stroke-width="1.5"/>
+  <text x="125" y="335" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">1. Detection</text>
+  <rect x="70" y="350" width="110" height="90" rx="2" class="box-base" stroke-width="1"/>
+  <text x="125" y="370" text-anchor="middle" font-size="8" class="text-primary">• Monitoring alerts</text>
+  <text x="125" y="385" text-anchor="middle" font-size="8" class="text-primary">• User reports</text>
+  <text x="125" y="400" text-anchor="middle" font-size="8" class="text-primary">• Automated scans</text>
+  <text x="125" y="415" text-anchor="middle" font-size="8" class="text-primary">• Security team</text>
+  <text x="125" y="430" text-anchor="middle" font-size="8" class="text-primary">• Log analysis</text>
+  <text x="125" y="445" text-anchor="middle" font-size="8" class="highlight-green">✓ Early detection</text>
+  
+  <rect x="215" y="310" width="150" height="145" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="290" y="335" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">2. Triage</text>
+  <rect x="235" y="350" width="110" height="90" rx="2" class="box-base" stroke-width="1"/>
+  <text x="290" y="370" text-anchor="middle" font-size="8" class="text-primary">• Assess severity</text>
+  <text x="290" y="385" text-anchor="middle" font-size="8" class="text-primary">• Classify P0-P3</text>
+  <text x="290" y="400" text-anchor="middle" font-size="8" class="text-primary">• Assign owner</text>
+  <text x="290" y="415" text-anchor="middle" font-size="8" class="text-primary">• Notify stakeholders</text>
+  <text x="290" y="430" text-anchor="middle" font-size="8" class="text-primary">• Open incident ticket</text>
+  <text x="290" y="445" text-anchor="middle" font-size="8" class="highlight-green">✓ Proper routing</text>
+  
+  <rect x="380" y="310" width="150" height="145" rx="3" class="highlight-box" stroke-width="1.5"/>
+  <text x="455" y="335" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">3. Containment</text>
+  <rect x="400" y="350" width="110" height="90" rx="2" class="box-base" stroke-width="1"/>
+  <text x="455" y="370" text-anchor="middle" font-size="8" class="text-primary">• Isolate affected</text>
+  <text x="455" y="385" text-anchor="middle" font-size="8" class="text-primary">• Stop the bleeding</text>
+  <text x="455" y="400" text-anchor="middle" font-size="8" class="text-primary">• Preserve evidence</text>
+  <text x="455" y="415" text-anchor="middle" font-size="8" class="text-primary">• Activate backup</text>
+  <text x="455" y="430" text-anchor="middle" font-size="8" class="text-primary">• Communication plan</text>
+  <text x="455" y="445" text-anchor="middle" font-size="8" class="highlight-green">✓ Limit damage</text>
+  
+  <rect x="545" y="310" width="150" height="145" rx="3" class="highlight-purple" stroke-width="1.5"/>
+  <text x="620" y="335" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">4. Resolution</text>
+  <rect x="565" y="350" width="110" height="90" rx="2" class="box-base" stroke-width="1"/>
+  <text x="620" y="370" text-anchor="middle" font-size="8" class="text-primary">• Fix root cause</text>
+  <text x="620" y="385" text-anchor="middle" font-size="8" class="text-primary">• Verify fix</text>
+  <text x="620" y="400" text-anchor="middle" font-size="8" class="text-primary">• Restore service</text>
+  <text x="620" y="415" text-anchor="middle" font-size="8" class="text-primary">• Monitor stability</text>
+  <text x="620" y="430" text-anchor="middle" font-size="8" class="text-primary">• Update status</text>
+  <text x="620" y="445" text-anchor="middle" font-size="8" class="highlight-green">✓ Service restored</text>
+  
+  <rect x="710" y="310" width="150" height="145" rx="3" class="highlight-green" stroke-width="1.5"/>
+  <text x="785" y="335" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">5. Post-Mortem</text>
+  <rect x="730" y="350" width="110" height="90" rx="2" class="box-base" stroke-width="1"/>
+  <text x="785" y="370" text-anchor="middle" font-size="8" class="text-primary">• Root cause analysis</text>
+  <text x="785" y="385" text-anchor="middle" font-size="8" class="text-primary">• Timeline doc</text>
+  <text x="785" y="400" text-anchor="middle" font-size="8" class="text-primary">• Action items</text>
+  <text x="785" y="415" text-anchor="middle" font-size="8" class="text-primary">• Prevention plan</text>
+  <text x="785" y="430" text-anchor="middle" font-size="8" class="text-primary">• Share learnings</text>
+  <text x="785" y="445" text-anchor="middle" font-size="8" class="highlight-green">✓ Prevent recurrence</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
 </svg>

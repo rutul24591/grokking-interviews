@@ -1,6 +1,99 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
-  <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="250" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">kill-switch-rollback.svg</text>
-  <text x="400" y="280" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Valid XML SVG</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">Kill Switch and Rollback</text>
+  
+  <!-- Kill Switch Flow -->
+  <rect x="30" y="70" width="400" height="400" rx="5" class="box-base" stroke-width="2"/>
+  <text x="230" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Kill Switch Activation Flow</text>
+  
+  <rect x="50" y="110" width="360" height="60" rx="3" class="highlight-red" stroke-width="2"/>
+  <text x="230" y="135" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Trigger Conditions</text>
+  <text x="230" y="155" text-anchor="middle" font-size="9" class="text-primary">Error spike, latency spike, data corruption</text>
+  
+  <line x1="230" y1="170" x2="230" y2="190" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="50" y="190" width="360" height="60" rx="3" class="highlight-orange" stroke-width="1.5"/>
+  <text x="230" y="215" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Alert &amp; Notification</text>
+  <text x="230" y="235" text-anchor="middle" font-size="9" class="text-primary">On-call paged, Slack alert, dashboard</text>
+  
+  <line x1="230" y1="250" x2="230" y2="270" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="50" y="270" width="360" height="60" rx="3" class="highlight-purple" stroke-width="1.5"/>
+  <text x="230" y="295" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Decision Point</text>
+  <text x="230" y="315" text-anchor="middle" font-size="9" class="text-primary">Assess severity, choose response</text>
+  
+  <line x1="230" y1="330" x2="230" y2="350" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="50" y="350" width="360" height="60" rx="3" class="highlight-blue" stroke-width="1.5"/>
+  <text x="230" y="375" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Execute Kill Switch</text>
+  <text x="230" y="395" text-anchor="middle" font-size="9" class="text-primary">Disable feature, route traffic, rollback</text>
+  
+  <line x1="230" y1="410" x2="230" y2="430" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="50" y="430" width="360" height="30" rx="3" class="highlight-green" stroke-width="1"/>
+  <text x="230" y="450" text-anchor="middle" font-size="9" class="text-primary">Service stabilized, post-mortem scheduled</text>
+  
+  <!-- Rollback Strategies -->
+  <rect x="450" y="70" width="420" height="180" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="660" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Rollback Strategies</text>
+  
+  <rect x="470" y="110" width="380" height="50" rx="3" class="box-base" stroke-width="1"/>
+  <text x="660" y="130" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Blue-Green Rollback</text>
+  <text x="660" y="150" text-anchor="middle" font-size="9" class="text-primary">Switch traffic back to previous version instantly</text>
+  
+  <rect x="470" y="165" width="380" height="50" rx="3" class="box-base" stroke-width="1"/>
+  <text x="660" y="185" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Canary Rollback</text>
+  <text x="660" y="205" text-anchor="middle" font-size="9" class="text-primary">Gradually shift traffic back, monitor metrics</text>
+  
+  <rect x="470" y="220" width="380" height="50" rx="3" class="box-base" stroke-width="1"/>
+  <text x="660" y="240" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Feature Flag Rollback</text>
+  <text x="660" y="260" text-anchor="middle" font-size="9" class="text-primary">Disable feature flag, no deployment needed</text>
+  
+  <!-- Recovery Process -->
+  <rect x="450" y="270" width="420" height="200" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="660" y="295" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Post-Incident Recovery</text>
+  
+  <rect x="470" y="310" width="380" height="145" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="485" y="330" font-size="9" font-weight="bold" class="text-primary">1. Stabilize (0-1hr)</text>
+  <text x="500" y="345" font-size="8" class="text-primary">• Confirm service health</text>
+  <text x="500" y="358" font-size="8" class="text-primary">• Monitor error rates</text>
+  
+  <text x="485" y="375" font-size="9" font-weight="bold" class="text-primary">2. Investigate (1-4hr)</text>
+  <text x="500" y="390" font-size="8" class="text-primary">• Root cause analysis</text>
+  <text x="500" y="403" font-size="8" class="text-primary">• Timeline documentation</text>
+  
+  <text x="485" y="420" font-size="9" font-weight="bold" class="text-primary">3. Remediate (4-24hr)</text>
+  <text x="500" y="435" font-size="8" class="text-primary">• Fix implementation</text>
+  <text x="500" y="448" font-size="8" class="text-primary">• Testing and validation</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
 </svg>

@@ -112,30 +112,14 @@ export default function CrossBrowserCompatibilityArticle() {
         </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Detection Patterns</h3>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-panel-soft p-4 text-sm">
-          <code>{`// Good: Feature detection
-if ('fetch' in window) {
-  // Use fetch API
-} else {
-  // Fallback to XMLHttpRequest
-}
-
-// Bad: Browser detection
-if (navigator.userAgent.includes('Chrome')) {
-  // Fragile and error-prone
-}`}</code>
-        </pre>
+        <p>
+          Use feature detection instead of browser detection. Check if a feature exists in the window object before using it. For example, check if 'fetch' is in window before using the fetch API. If not available, fallback to XMLHttpRequest. Browser detection using userAgent strings is fragile and error-prone because user agents can be spoofed and new browser versions constantly change the strings.
+        </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Modernizr</h3>
         <p>
-          Library for feature detection. Adds classes to{" "}
-          <code>&lt;html&gt;</code>:
+          Modernizr is a library for feature detection. It adds classes to the html element indicating which features are supported (like flexbox, cssgrid) and which are not (like no-webp). This allows you to style based on feature support directly in CSS.
         </p>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-panel-soft p-4 text-sm">
-          <code>{`<html class="flexbox cssgrid no-webp">
-  <!-- Style based on support -->
-</html>`}</code>
-        </pre>
       </section>
 
       <section>

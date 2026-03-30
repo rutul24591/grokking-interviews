@@ -265,28 +265,10 @@ export default function ProgressiveEnhancementArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">CSS Feature Queries (@supports)</h3>
         <p>
-          CSS provides native feature detection via <code>@supports</code>:
+          CSS provides native feature detection via @supports rule. This allows conditional CSS based on browser feature support. For example, you can use CSS Grid with a flexbox fallback for browsers that don't support Grid. The @supports rule checks if a CSS property is supported before applying styles.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-{`/* Use CSS Grid if supported */
-@supports (display: grid) {
-  .container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* Fallback for non-grid browsers */
-@supports not (display: grid) {
-  .container {
-    display: flex;
-    flex-wrap: wrap;
-  }
-}`}
-        </pre>
         <p>
-          <strong>Advantages:</strong> No JavaScript required, works even if JS fails to load, clean separation
-          of concerns.
+          <strong>Advantages:</strong> No JavaScript required, works even if JS fails to load, clean separation of concerns.
         </p>
         <p>
           <strong>Limitations:</strong> Cannot detect JavaScript APIs, limited to CSS properties.
@@ -309,14 +291,8 @@ export default function ProgressiveEnhancementArticle() {
           </li>
         </ul>
         <p>
-          <strong>Dynamic polyfill loading:</strong>
+          <strong>Dynamic polyfill loading:</strong> Load polyfills conditionally using dynamic imports. Check if a feature exists before loading the polyfill. For example, only load the fetch polyfill if the fetch API is not available in the browser.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-{`// Load polyfill only if needed
-if (!('fetch' in window)) {
-  await import('./fetch-polyfill.js');
-}`}
-        </pre>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/advanced-topics/feature-detection-strategies.svg"
@@ -334,90 +310,43 @@ if (!('fetch' in window)) {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Navigation</h3>
         <p>
-          <strong>Baseline:</strong> Standard HTML links and unordered lists. Works without CSS or JavaScript.
+          <strong>Baseline:</strong> Standard HTML links and unordered lists. Works without CSS or JavaScript. Users can navigate using semantic nav elements with anchor tags.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-{`<nav>
-  <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="/products">Products</a></li>
-    <li><a href="/about">About</a></li>
-  </ul>
-</nav>`}
-        </pre>
         <p>
-          <strong>Enhanced:</strong> CSS for horizontal layout, hover states, dropdown menus. JavaScript for
-          mobile hamburger menu, smooth scrolling, active state highlighting.
+          <strong>Enhanced:</strong> CSS for horizontal layout, hover states, dropdown menus. JavaScript for mobile hamburger menu, smooth scrolling, active state highlighting.
         </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Forms</h3>
         <p>
-          <strong>Baseline:</strong> Semantic form elements with proper labels. Server-side validation. Full
-          page reload on submit.
-        </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-{`<form action="/api/login" method="POST">
-  <label for="email">Email</label>
-  <input type="email" id="email" name="email" required>
-  
-  <label for="password">Password</label>
-  <input type="password" id="password" name="password" required>
-  
-  <button type="submit">Sign In</button>
-</form>`}
-        </pre>
-        <p>
-          <strong>Enhanced:</strong> Client-side validation with immediate feedback. AJAX submission without
-          page reload. Password strength meter. Auto-focus on error fields.
+          <strong>Baseline:</strong> Semantic form elements with proper labels. Server-side validation. Full page reload on submit. Use proper input types (email, password) for native browser validation.
         </p>
         <p>
-          <strong>Key principle:</strong> The form must work without JavaScript. Enhancements should improve
-          the experience, not enable core functionality.
+          <strong>Enhanced:</strong> Client-side validation with immediate feedback. AJAX submission without page reload. Password strength meter. Auto-focus on error fields.
+        </p>
+        <p>
+          <strong>Key principle:</strong> The form must work without JavaScript. Enhancements should improve the experience, not enable core functionality.
         </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Images and Media</h3>
         <p>
-          <strong>Baseline:</strong> Standard <code>{`<img>`}</code> with <code>alt</code> text. Browser loads
-          the specified source.
+          <strong>Baseline:</strong> Standard img element with alt text. Browser loads the specified source. Always provide meaningful alt text for accessibility.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-{`<img src="image.jpg" alt="Product photo" width="400" height="300">`}
-        </pre>
         <p>
-          <strong>Enhanced:</strong> Responsive images with <code>{`<picture>`}</code>, lazy loading, modern
-          formats (WebP, AVIF), blur-up placeholders.
+          <strong>Enhanced:</strong> Responsive images with picture element, lazy loading, modern formats (WebP, AVIF), blur-up placeholders.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-{`<picture>
-  <source srcset="image.avif" type="image/avif">
-  <source srcset="image.webp" type="image/webp">
-  <img src="image.jpg" alt="Product photo" loading="lazy" width="400" height="300">
-</picture>`}
-        </pre>
         <p>
-          <strong>Key principle:</strong> Always provide a fallback. The last <code>{`<source>`}</code> or the
-          <code>{`<img>`}</code> src is the fallback for browsers that don&apos;t support modern formats.
+          <strong>Key principle:</strong> Always provide a fallback. The last source or the img src is the fallback for browsers that don't support modern formats.
         </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Interactive Components</h3>
         <p>
-          <strong>Baseline:</strong> Use native HTML elements for interactivity. Buttons submit forms or trigger
-          links. Details/summary for accordions. Select for dropdowns.
-        </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-{`/* Accordion without JavaScript */
-<details>
-  <summary>Section Title</summary>
-  <p>Expanded content goes here.</p>
-</details>`}
-        </pre>
-        <p>
-          <strong>Enhanced:</strong> Custom JavaScript components with animations, keyboard navigation, ARIA
-          attributes for screen readers.
+          <strong>Baseline:</strong> Use native HTML elements for interactivity. Buttons submit forms or trigger links. Details/summary for accordions. Select for dropdowns. These elements work without JavaScript.
         </p>
         <p>
-          <strong>Key principle:</strong> If you replace a native element (like <code>{`<select>`}</code>) with
-          a custom component, ensure the custom version provides equivalent functionality and accessibility.
+          <strong>Enhanced:</strong> Custom JavaScript components with animations, keyboard navigation, ARIA attributes for screen readers.
+        </p>
+        <p>
+          <strong>Key principle:</strong> If you replace a native element (like select) with a custom component, ensure the custom version provides equivalent functionality and accessibility.
         </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Data Loading</h3>

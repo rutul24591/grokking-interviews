@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="1000" height="450" class="bg-base"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Counter Sharding for Viral Content</text>
+  
+  <!-- Single Counter Problem -->
+  <rect x="30" y="70" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="180" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Single Counter Problem</text>
+  
+  <rect x="50" y="110" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <rect x="70" y="125" width="220" height="40" rx="2" class="highlight-red" stroke-width="2"/>
+  <text x="180" y="147" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Redis: content:123:likes</text>
+  <text x="180" y="162" text-anchor="middle" font-size="8" class="text-secondary">Single key bottleneck</text>
+  
+  <text x="70" y="185" font-size="9" class="text-primary">• Max ~10K ops/sec per key</text>
+  <text x="70" y="200" font-size="9" class="highlight-red">⚠ Viral content exceeds limit</text>
+  <text x="70" y="215" font-size="9" class="highlight-red">⚠ Single point of failure</text>
+  
+  <!-- Sharded Solution -->
+  <rect x="350" y="70" width="300" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Sharded Solution</text>
+  
+  <rect x="370" y="110" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <rect x="390" y="125" width="100" height="35" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="440" y="147" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Shard 0</text>
+  
+  <rect x="500" y="125" width="100" height="35" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="550" y="147" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Shard 1</text>
+  
+  <rect x="390" y="165" width="100" height="35" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="440" y="187" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Shard 2</text>
+  
+  <rect x="500" y="165" width="100" height="35" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="550" y="187" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Shard N</text>
+  
+  <text x="370" y="215" font-size="9" class="highlight-green">✓ 10x capacity per shard</text>
+  <text x="370" y="230" font-size="9" class="highlight-green">✓ Distributed load</text>
+  
+  <!-- Hash Function -->
+  <rect x="670" y="70" width="300" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="820" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Shard Assignment</text>
+  
+  <rect x="690" y="110" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <rect x="710" y="125" width="220" height="40" rx="2" class="highlight-blue" stroke-width="1"/>
+  <text x="820" y="147" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">shard = hash(user_id) % 10</text>
+  
+  <text x="710" y="185" font-size="9" class="text-primary">• Same user → same shard</text>
+  <text x="710" y="200" font-size="9" class="text-primary">• Even distribution</text>
+  <text x="710" y="215" font-size="9" class="text-primary">• Prevents double-counting</text>
+  
+  <!-- Aggregation Logic -->
+  <rect x="30" y="260" width="460" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="260" y="285" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Read Aggregation</text>
+  
+  <rect x="50" y="300" width="420" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <rect x="70" y="315" width="380" height="30" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="260" y="335" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Step 1: Read all shards</text>
+  <text x="420" y="335" text-anchor="end" font-size="8" class="text-secondary">MGET shard0-shard9</text>
+  
+  <line x1="260" y1="345" x2="260" y2="360" class="arrow" stroke-width="1.5"/>
+  
+  <rect x="70" y="360" width="380" height="30" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="260" y="380" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Step 2: Sum values</text>
+  <text x="420" y="380" text-anchor="end" font-size="8" class="text-secondary">total = sum(shard_values)</text>
+  
+  <line x1="260" y1="390" x2="260" y2="405" class="arrow" stroke-width="1.5"/>
+  
+  <rect x="70" y="405" width="380" height="30" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="260" y="425" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Step 3: Return total</text>
+  <text x="420" y="425" text-anchor="end" font-size="8" class="text-secondary">Display to user</text>
+  
+  <!-- Viral Detection -->
+  <rect x="510" y="260" width="460" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="740" y="285" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Viral Detection and Auto-Sharding</text>
+  
+  <rect x="530" y="300" width="420" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <rect x="550" y="315" width="380" height="30" rx="2" class="highlight-purple" stroke-width="1"/>
+  <text x="740" y="335" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Monitor: interactions/minute</text>
+  
+  <line x1="740" y1="345" x2="740" y2="360" class="arrow" stroke-width="1.5"/>
+  
+  <rect x="550" y="360" width="380" height="30" rx="2" class="highlight-red" stroke-width="1"/>
+  <text x="740" y="380" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Threshold: {'>'}1000/min</text>
+  <text x="900" y="380" text-anchor="end" font-size="8" class="text-secondary">Trigger sharding</text>
+  
+  <line x1="740" y1="390" x2="740" y2="405" class="arrow" stroke-width="1.5"/>
+  
+  <rect x="550" y="405" width="380" height="30" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="740" y="425" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Action: Create shards, migrate</text>
+  <text x="900" y="425" text-anchor="end" font-size="8" class="text-secondary">Automatic scaling</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

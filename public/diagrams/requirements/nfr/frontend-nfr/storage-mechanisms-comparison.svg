@@ -72,7 +72,7 @@
   <text x="65" y="330" font-size="9" class="text-primary">• Large storage (GB)</text>
   <text x="65" y="345" font-size="9" class="text-primary">• Async API</text>
   <text x="65" y="360" font-size="9" class="text-primary">• Structured data</text>
-  <text x="65" y="375" font-size="9" class="text-primary">• Indexes & queries</text>
+  <text x="65" y="375" font-size="9" class="text-primary">• Indexes and queries</text>
   <text x="65" y="390" font-size="9" class="text-primary">• Transactions</text>
   <text x="65" y="405" font-size="9" class="highlight-green">✓ Large data</text>
   <text x="65" y="420" font-size="9" class="highlight-green">✓ Complex queries</text>

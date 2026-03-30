@@ -141,31 +141,10 @@ export default function MediaOptimizationArticle() {
         </p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">srcset Attribute</h3>
-        <p>Provide multiple resolutions, browser chooses optimal:</p>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-panel-soft p-4 text-sm">
-          <code>{`<img 
-  src="image-800.jpg"
-  srcset="image-400.jpg 400w,
-          image-800.jpg 800w,
-          image-1200.jpg 1200w"
-  sizes="(max-width: 600px) 400px,
-         (max-width: 1000px) 800px,
-         1200px"
-  alt="Description"
-/>`}</code>
-        </pre>
+        <p>Provide multiple resolutions and let the browser choose the optimal one. Specify image sources with width descriptors (400w, 800w, 1200w) and use sizes attribute to tell the browser which size to use at different viewport widths.</p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">picture Element</h3>
-        <p>Art direction and format switching:</p>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-panel-soft p-4 text-sm">
-          <code>{`<picture>
-  <source type="image/avif" 
-          srcset="image.avif" />
-  <source type="image/webp" 
-          srcset="image.webp" />
-  <img src="image.jpg" alt="Description" />
-</picture>`}</code>
-        </pre>
+        <p>Use the picture element for art direction and format switching. Specify multiple source elements with different types (avif, webp) and the browser will use the first format it supports. Always include a fallback img element.</p>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/media-responsive-images.svg"
@@ -176,24 +155,13 @@ export default function MediaOptimizationArticle() {
 
       <section>
         <h2>Lazy Loading</h2>
-        <p>Defer loading images until they&apos;re near the viewport.</p>
+        <p>Defer loading images until they're near the viewport.</p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Native Lazy Loading</h3>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-panel-soft p-4 text-sm">
-          <code>{`<img src="image.jpg" loading="lazy" alt="..." />`}</code>
-        </pre>
-        <p>Browser support: 85%+. Simple, no JavaScript required.</p>
+        <p>Use the loading="lazy" attribute on img elements. Browser support is 85%+. This is simple and requires no JavaScript.</p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">
-          Intersection Observer
-        </h3>
-        <p>For more control (blur-up, fade-in, placeholders):</p>
-        <ul className="space-y-2">
-          <li>Load low-quality placeholder first</li>
-          <li>Observe when element enters viewport</li>
-          <li>Load full image</li>
-          <li>Fade in when loaded</li>
-        </ul>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">Intersection Observer</h3>
+        <p>For more control (blur-up, fade-in, placeholders), use Intersection Observer API. Load low-quality placeholder first, observe when element enters viewport, load full image, and fade in when loaded.</p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           Progressive Image Loading

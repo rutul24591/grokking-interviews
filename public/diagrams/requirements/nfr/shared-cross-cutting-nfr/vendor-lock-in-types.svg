@@ -24,7 +24,7 @@
     </style>
   </defs>
   <rect width="900" height="500" class="bg-base"/>
-  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">Vendor Lock-in Types & Mitigation</text>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">Vendor Lock-in Types and Mitigation</text>
   
   <!-- Lock-in Types -->
   <rect x="30" y="70" width="270" height="180" rx="5" class="box-base" stroke-width="2"/>

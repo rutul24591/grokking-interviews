@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="1000" height="450" class="bg-base"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Real-time Count Updates</text>
+  
+  <!-- Optimistic Update Flow -->
+  <rect x="30" y="70" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="180" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Optimistic Update Flow</text>
+  
+  <rect x="50" y="110" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <rect x="70" y="125" width="220" height="35" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="180" y="147" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">1. User Clicks Like</text>
+  
+  <line x1="180" y1="160" x2="180" y2="175" class="arrow" stroke-width="1.5"/>
+  
+  <rect x="70" y="175" width="220" height="35" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="180" y="197" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">2. Update UI Immediately</text>
+  <text x="180" y="212" text-anchor="middle" font-size="8" class="text-secondary">Fill heart, increment count</text>
+  
+  <line x1="180" y1="210" x2="180" y2="225" class="arrow" stroke-width="1.5"/>
+  
+  <rect x="70" y="225" width="220" height="35" rx="2" class="highlight-blue" stroke-width="1"/>
+  <text x="180" y="247" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">3. API Call (async)</text>
+  <text x="180" y="262" text-anchor="middle" font-size="8" class="text-secondary">Fire and forget</text>
+  
+  <!-- WebSocket Updates -->
+  <rect x="350" y="70" width="300" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">WebSocket Updates</text>
+  
+  <rect x="370" y="110" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <rect x="390" y="125" width="220" height="35" rx="2" class="highlight-purple" stroke-width="1"/>
+  <text x="500" y="147" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Client Subscribes</text>
+  <text x="500" y="162" text-anchor="middle" font-size="8" class="text-secondary">ws://api/content/:id/updates</text>
+  
+  <line x1="500" y1="160" x2="500" y2="175" class="arrow" stroke-width="1.5"/>
+  
+  <rect x="390" y="175" width="220" height="35" rx="2" class="highlight-blue" stroke-width="1"/>
+  <text x="500" y="197" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Server Pushes Update</text>
+  <text x="500" y="212" text-anchor="middle" font-size="8" class="text-secondary">New count: 1,248</text>
+  
+  <line x1="500" y1="210" x2="500" y2="225" class="arrow" stroke-width="1.5"/>
+  
+  <rect x="390" y="225" width="220" height="35" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="500" y="247" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Client Updates Display</text>
+  <text x="500" y="262" text-anchor="middle" font-size="8" class="text-secondary">Smooth animation</text>
+  
+  <!-- Reconciliation -->
+  <rect x="670" y="70" width="300" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="820" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Reconciliation</text>
+  
+  <rect x="690" y="110" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <rect x="710" y="125" width="220" height="35" rx="2" class="highlight-red" stroke-width="1"/>
+  <text x="820" y="147" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Periodic Sync</text>
+  <text x="820" y="162" text-anchor="middle" font-size="8" class="text-secondary">Every 30-60 seconds</text>
+  
+  <line x1="820" y1="160" x2="820" y2="175" class="arrow" stroke-width="1.5"/>
+  
+  <rect x="710" y="175" width="220" height="35" rx="2" class="highlight-blue" stroke-width="1"/>
+  <text x="820" y="197" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Compare Counts</text>
+  <text x="820" y="212" text-anchor="middle" font-size="8" class="text-secondary">Client vs Server</text>
+  
+  <line x1="820" y1="210" x2="820" y2="225" class="arrow" stroke-width="1.5"/>
+  
+  <rect x="710" y="225" width="220" height="35" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="820" y="247" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Correct Drift</text>
+  <text x="820" y="262" text-anchor="middle" font-size="8" class="text-secondary">Update if different</text>
+  
+  <!-- Update Strategies Comparison -->
+  <rect x="30" y="260" width="460" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="260" y="285" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Update Strategy Comparison</text>
+  
+  <rect x="50" y="300" width="420" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="70" y="320" font-size="9" font-weight="bold" class="text-primary">Strategy</text>
+  <text x="200" y="320" font-size="9" font-weight="bold" class="text-primary">Latency</text>
+  <text x="320" y="320" font-size="9" font-weight="bold" class="text-primary">Accuracy</text>
+  <text x="420" y="320" font-size="9" font-weight="bold" class="text-primary">Cost</text>
+  
+  <line x1="60" y1="330" x2="460" y2="330" class="arrow" stroke-width="1"/>
+  <text x="70" y="345" font-size="8" class="text-primary">WebSocket</text>
+  <text x="200" y="345" font-size="8" class="highlight-green">&lt;100ms</text>
+  <text x="320" y="345" font-size="8" class="highlight-green">High</text>
+  <text x="420" y="345" font-size="8" class="highlight-red">High</text>
+  
+  <line x1="60" y1="355" x2="460" y2="355" class="arrow" stroke-width="1"/>
+  <text x="70" y="370" font-size="8" class="text-primary">Polling</text>
+  <text x="200" y="370" font-size="8" class="highlight-blue">30-60s</text>
+  <text x="320" y="370" font-size="8" class="highlight-green">High</text>
+  <text x="420" y="370" font-size="8" class="highlight-green">Low</text>
+  
+  <line x1="60" y1="380" x2="460" y2="380" class="arrow" stroke-width="1"/>
+  <text x="70" y="395" font-size="8" class="text-primary">On-view</text>
+  <text x="200" y="395" font-size="8" class="highlight-purple">Variable</text>
+  <text x="320" y="395" font-size="8" class="highlight-blue">Medium</text>
+  <text x="420" y="395" font-size="8" class="highlight-green">Lowest</text>
+  
+  <!-- Fallback Chain -->
+  <rect x="510" y="260" width="460" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="740" y="285" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Fallback Chain</text>
+  
+  <rect x="530" y="300" width="420" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <rect x="550" y="315" width="380" height="30" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="740" y="335" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">1. WebSocket (preferred)</text>
+  <text x="850" y="335" text-anchor="end" font-size="8" class="text-secondary">Real-time</text>
+  
+  <line x1="740" y1="345" x2="740" y2="355" class="arrow" stroke-width="1"/>
+  
+  <rect x="550" y="355" width="380" height="30" rx="2" class="highlight-blue" stroke-width="1"/>
+  <text x="740" y="375" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">2. Polling (fallback)</text>
+  <text x="850" y="375" text-anchor="end" font-size="8" class="text-secondary">30-60s interval</text>
+  
+  <line x1="740" y1="385" x2="740" y2="395" class="arrow" stroke-width="1"/>
+  
+  <rect x="550" y="395" width="380" height="30" rx="2" class="highlight-purple" stroke-width="1"/>
+  <text x="740" y="415" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">3. On-view only (last resort)</text>
+  <text x="850" y="415" text-anchor="end" font-size="8" class="text-secondary">No updates</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

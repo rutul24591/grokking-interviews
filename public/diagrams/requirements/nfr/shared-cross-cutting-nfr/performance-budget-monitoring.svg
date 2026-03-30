@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">Performance Budget Monitoring</text>
+  
+  <!-- Monitoring Pipeline -->
+  <rect x="30" y="70" width="840" height="120" rx="5" class="box-base" stroke-width="2"/>
+  
+  <rect x="50" y="90" width="150" height="80" rx="3" class="box-base" stroke-width="1.5"/>
+  <text x="125" y="115" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">1. Collect</text>
+  <rect x="70" y="130" width="110" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="125" y="147" text-anchor="middle" font-size="8" class="text-primary">RUM + Synthetic</text>
+  
+  <line x1="200" y1="130" x2="230" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="230" y="90" width="150" height="80" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="305" y="115" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">2. Aggregate</text>
+  <rect x="250" y="130" width="110" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="305" y="147" text-anchor="middle" font-size="8" class="text-primary">p75, p95, p99</text>
+  
+  <line x1="380" y1="130" x2="410" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="410" y="90" width="150" height="80" rx="3" class="highlight-box" stroke-width="1.5"/>
+  <text x="485" y="115" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">3. Analyze</text>
+  <rect x="430" y="130" width="110" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="485" y="147" text-anchor="middle" font-size="8" class="text-primary">Trend detection</text>
+  
+  <line x1="560" y1="130" x2="590" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="590" y="90" width="150" height="80" rx="3" class="highlight-purple" stroke-width="1.5"/>
+  <text x="665" y="115" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">4. Alert</text>
+  <rect x="610" y="130" width="110" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="665" y="147" text-anchor="middle" font-size="8" class="text-primary">Threshold breach</text>
+  
+  <line x1="740" y1="130" x2="770" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="770" y="90" width="80" height="80" rx="3" class="highlight-green" stroke-width="1.5"/>
+  <text x="810" y="130" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">5. Act</text>
+  
+  <!-- Alert Tiers -->
+  <rect x="30" y="210" width="840" height="140" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="450" y="235" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Alert Tiers &amp; Response</text>
+  
+  <rect x="50" y="250" width="190" height="85" rx="3" class="box-base" stroke-width="1"/>
+  <text x="145" y="270" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Warning (Yellow)</text>
+  <rect x="70" y="285" width="150" height="35" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="145" y="305" text-anchor="middle" font-size="8" class="text-primary">Budget: 80-100%</text>
+  <text x="145" y="320" text-anchor="middle" font-size="8" class="text-primary">Action: Review next sprint</text>
+  <text x="145" y="335" text-anchor="middle" font-size="8" class="highlight-purple">⚠ Track trend</text>
+  
+  <rect x="255" y="250" width="190" height="85" rx="3" class="highlight-box" stroke-width="1"/>
+  <text x="350" y="270" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Critical (Orange)</text>
+  <rect x="275" y="285" width="150" height="35" rx="2" class="highlight-red" stroke-width="1"/>
+  <text x="350" y="305" text-anchor="middle" font-size="8" class="text-primary">Budget: 100-120%</text>
+  <text x="350" y="320" text-anchor="middle" font-size="8" class="text-primary">Action: Fix before release</text>
+  <text x="350" y="335" text-anchor="middle" font-size="8" class="highlight-red">⚠ Block release</text>
+  
+  <rect x="460" y="250" width="190" height="85" rx="3" class="highlight-red" stroke-width="1"/>
+  <text x="555" y="270" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Emergency (Red)</text>
+  <rect x="480" y="285" width="150" height="35" rx="2" class="highlight-red" stroke-width="1"/>
+  <text x="555" y="305" text-anchor="middle" font-size="8" class="text-primary">Budget: &gt;120%</text>
+  <text x="555" y="320" text-anchor="middle" font-size="8" class="text-primary">Action: Immediate fix</text>
+  <text x="555" y="335" text-anchor="middle" font-size="8" class="highlight-red">🚨 Page on-call</text>
+  
+  <rect x="665" y="250" width="190" height="85" rx="3" class="highlight-green" stroke-width="1"/>
+  <text x="760" y="270" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Healthy (Green)</text>
+  <rect x="685" y="285" width="150" height="35" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="760" y="305" text-anchor="middle" font-size="8" class="text-primary">Budget: &lt;80%</text>
+  <text x="760" y="320" text-anchor="middle" font-size="8" class="text-primary">Action: Maintain</text>
+  <text x="760" y="335" text-anchor="middle" font-size="8" class="highlight-green">✓ On track</text>
+  
+  <!-- Dashboard Components -->
+  <rect x="30" y="370" width="840" height="100" rx="5" class="box-base" stroke-width="2"/>
+  <text x="450" y="395" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Dashboard Components</text>
+  
+  <rect x="50" y="410" width="190" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="145" y="430" text-anchor="middle" font-size="9" class="text-primary">Budget vs Actual trends</text>
+  <text x="145" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Historical view</text>
+  
+  <rect x="255" y="410" width="190" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="350" y="430" text-anchor="middle" font-size="9" class="text-primary">Budget health by page</text>
+  <text x="350" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Granular view</text>
+  
+  <rect x="460" y="410" width="190" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="555" y="430" text-anchor="middle" font-size="9" class="text-primary">Violation history</text>
+  <text x="555" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Pattern detection</text>
+  
+  <rect x="665" y="410" width="190" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="760" y="430" text-anchor="middle" font-size="9" class="text-primary">Team scorecards</text>
+  <text x="760" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Accountability</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

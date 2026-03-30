@@ -1,6 +1,112 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
-  <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="250" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">resource-allocation.svg</text>
-  <text x="400" y="280" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Valid XML SVG</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">Resource Allocation Strategy</text>
+  
+  <!-- Resource Types -->
+  <rect x="30" y="70" width="270" height="200" rx="5" class="box-base" stroke-width="2"/>
+  <text x="165" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Compute Resources</text>
+  
+  <rect x="50" y="110" width="230" height="50" rx="3" class="accent-box" stroke-width="1"/>
+  <text x="165" y="130" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">CPU Allocation</text>
+  <text x="165" y="150" text-anchor="middle" font-size="8" class="text-primary">vCPU cores, CPU shares</text>
+  
+  <rect x="50" y="165" width="230" height="50" rx="3" class="highlight-box" stroke-width="1"/>
+  <text x="165" y="185" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Memory</text>
+  <text x="165" y="205" text-anchor="middle" font-size="8" class="text-primary">RAM allocation, limits</text>
+  
+  <rect x="50" y="220" width="230" height="50" rx="3" class="highlight-purple" stroke-width="1"/>
+  <text x="165" y="240" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">GPU (if needed)</text>
+  <text x="165" y="260" text-anchor="middle" font-size="8" class="text-primary">ML workloads, rendering</text>
+  
+  <!-- Storage Resources -->
+  <rect x="315" y="70" width="270" height="200" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="450" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Storage Resources</text>
+  
+  <rect x="335" y="110" width="230" height="50" rx="3" class="box-base" stroke-width="1"/>
+  <text x="450" y="130" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Block Storage</text>
+  <text x="450" y="150" text-anchor="middle" font-size="8" class="text-primary">EBS volumes, SSD</text>
+  
+  <rect x="335" y="165" width="230" height="50" rx="3" class="box-base" stroke-width="1"/>
+  <text x="450" y="185" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Object Storage</text>
+  <text x="450" y="205" text-anchor="middle" font-size="8" class="text-primary">S3 buckets, blobs</text>
+  
+  <rect x="335" y="220" width="230" height="50" rx="3" class="box-base" stroke-width="1"/>
+  <text x="450" y="240" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Database Storage</text>
+  <text x="450" y="260" text-anchor="middle" font-size="8" class="text-primary">Provisioned IOPS</text>
+  
+  <!-- Network Resources -->
+  <rect x="600" y="70" width="270" height="200" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="735" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Network Resources</text>
+  
+  <rect x="620" y="110" width="230" height="50" rx="3" class="box-base" stroke-width="1"/>
+  <text x="735" y="130" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Bandwidth</text>
+  <text x="735" y="150" text-anchor="middle" font-size="8" class="text-primary">Egress limits, throttling</text>
+  
+  <rect x="620" y="165" width="230" height="50" rx="3" class="box-base" stroke-width="1"/>
+  <text x="735" y="185" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">IP Addresses</text>
+  <text x="735" y="205" text-anchor="middle" font-size="8" class="text-primary">Public IPs, NAT</text>
+  
+  <rect x="620" y="220" width="230" height="50" rx="3" class="box-base" stroke-width="1"/>
+  <text x="735" y="240" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Load Balancers</text>
+  <text x="735" y="260" text-anchor="middle" font-size="8" class="text-primary">ALB, NLB capacity</text>
+  
+  <!-- Allocation Strategies -->
+  <rect x="30" y="290" width="410" height="180" rx="5" class="box-base" stroke-width="2"/>
+  <text x="235" y="315" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Allocation Strategies</text>
+  
+  <rect x="50" y="330" width="370" height="50" rx="3" class="highlight-green" stroke-width="1"/>
+  <text x="235" y="350" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Static Allocation</text>
+  <text x="235" y="370" text-anchor="middle" font-size="8" class="text-primary">Fixed resources, predictable workloads, simple management</text>
+  
+  <rect x="50" y="385" width="370" height="50" rx="3" class="highlight-blue" stroke-width="1"/>
+  <text x="235" y="405" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Dynamic Allocation</text>
+  <text x="235" y="425" text-anchor="middle" font-size="8" class="text-primary">Auto-scaling, variable workloads, cost optimization</text>
+  
+  <rect x="50" y="440" width="370" height="25" rx="3" class="highlight-purple" stroke-width="1"/>
+  <text x="235" y="458" text-anchor="middle" font-size="9" class="text-primary">Hybrid: Base capacity + auto-scaling for spikes</text>
+  
+  <!-- Optimization Goals -->
+  <rect x="460" y="290" width="410" height="180" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="665" y="315" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Optimization Goals</text>
+  
+  <rect x="480" y="330" width="370" height="50" rx="3" class="box-base" stroke-width="1"/>
+  <text x="665" y="350" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Cost Optimization</text>
+  <text x="665" y="370" text-anchor="middle" font-size="8" class="text-primary">Right-size instances, use spot instances, reserved capacity</text>
+  
+  <rect x="480" y="385" width="370" height="50" rx="3" class="box-base" stroke-width="1"/>
+  <text x="665" y="405" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Performance</text>
+  <text x="665" y="425" text-anchor="middle" font-size="8" class="text-primary">Low latency, high throughput, consistent performance</text>
+  
+  <rect x="480" y="440" width="370" height="25" rx="3" class="highlight-green" stroke-width="1"/>
+  <text x="665" y="458" text-anchor="middle" font-size="9" class="text-primary">Balance: Meet SLOs at minimum cost</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
 </svg>

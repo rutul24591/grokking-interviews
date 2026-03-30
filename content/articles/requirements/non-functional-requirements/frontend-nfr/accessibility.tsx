@@ -268,31 +268,22 @@ export default function AccessibilityArticle() {
 
       <section>
         <h2>ARIA (Accessible Rich Internet Applications)</h2>
-        <p>ARIA adds semantics when HTML isn&apos;t sufficient.</p>
+        <p>ARIA adds semantics when HTML isn't sufficient.</p>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">ARIA Roles</h3>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-panel-soft p-4 text-sm">
-          <code>{`<div role="alert">Error message</div>
-<div role="dialog" aria-modal="true">Modal</div>
-<nav aria-label="Main navigation">`}</code>
-        </pre>
+        <p>
+          Use ARIA roles to define the purpose of elements. Common roles include alert for error messages, dialog for modals with aria-modal set to true, and navigation with aria-label for main navigation regions.
+        </p>
 
-        <h3 className="mt-6 mb-3 text-lg font-semibold">
-          ARIA States & Properties
-        </h3>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-panel-soft p-4 text-sm">
-          <code>{`<button aria-expanded="false" aria-controls="menu">
-  Menu
-</button>
-<input aria-invalid="true" aria-describedby="error-msg">`}</code>
-        </pre>
+        <h3 className="mt-6 mb-3 text-lg font-semibold">ARIA States and Properties</h3>
+        <p>
+          ARIA states and properties provide dynamic information. Use aria-expanded to indicate if a collapsible element is open or closed, aria-controls to reference the controlled element, and aria-invalid with aria-describedby for form validation errors.
+        </p>
 
         <div className="my-6 rounded-lg border border-accent/30 bg-accent/10 p-6">
           <h3 className="mb-3 font-semibold">First Rule of ARIA</h3>
           <p>
-            Don&apos;t use ARIA if you can use native HTML. ARIA is a
-            supplement, not a replacement. Native elements have built-in
-            accessibility; ARIA requires manual implementation.
+            Don't use ARIA if you can use native HTML. ARIA is a supplement, not a replacement. Native elements have built-in accessibility; ARIA requires manual implementation.
           </p>
         </div>
       </section>

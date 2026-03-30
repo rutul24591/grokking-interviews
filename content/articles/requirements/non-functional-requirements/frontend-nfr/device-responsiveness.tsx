@@ -106,20 +106,9 @@ export default function DeviceResponsivenessArticle() {
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">CSS Architecture</h3>
-        <pre className="my-4 overflow-x-auto rounded-lg bg-panel-soft p-4 text-sm">
-          <code>{`/* Base styles (mobile) */
-.container { padding: 1rem; }
-
-/* Tablet and up */
-@media (min-width: 768px) {
-  .container { padding: 2rem; }
-}
-
-/* Desktop and up */
-@media (min-width: 1024px) {
-  .container { padding: 3rem; max-width: 1200px; }
-}`}</code>
-        </pre>
+        <p>
+          Write base styles for mobile without media queries. Use min-width media queries for larger screens. Start with small padding and progressively increase for larger screens. Add max-width constraints for desktop to prevent content from becoming too wide. This approach ensures the CSS is organized from smallest to largest breakpoints.
+        </p>
 
         <ArticleImage
           src="/diagrams/requirements/nfr/frontend-nfr/mobile-first-approach.svg"

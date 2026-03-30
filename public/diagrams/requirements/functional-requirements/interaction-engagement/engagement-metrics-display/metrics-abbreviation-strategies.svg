@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="1000" height="450" class="bg-base"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Metrics Abbreviation Strategies</text>
+  
+  <!-- Threshold Rules -->
+  <rect x="30" y="70" width="280" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Threshold Rules</text>
+  
+  <rect x="50" y="110" width="240" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <rect x="70" y="125" width="200" height="30" rx="2" class="box-base" stroke-width="1"/>
+  <text x="170" y="145" text-anchor="middle" font-size="9" class="text-primary">&lt; 1,000: Show exact</text>
+  <text x="250" y="145" text-anchor="end" font-size="8" class="text-secondary">1,247</text>
+  
+  <rect x="70" y="160" width="200" height="30" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="170" y="180" text-anchor="middle" font-size="9" class="text-primary">≥ 1,000: K suffix</text>
+  <text x="250" y="180" text-anchor="end" font-size="8" class="text-secondary">1.2K</text>
+  
+  <rect x="70" y="195" width="200" height="30" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="170" y="215" text-anchor="middle" font-size="9" class="text-primary">≥ 1,000,000: M suffix</text>
+  <text x="250" y="215" text-anchor="end" font-size="8" class="text-secondary">1.2M</text>
+  
+  <!-- Precision Rules -->
+  <rect x="330" y="70" width="280" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="470" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Precision Rules</text>
+  
+  <rect x="350" y="110" width="240" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <rect x="370" y="125" width="200" height="30" rx="2" class="box-base" stroke-width="1"/>
+  <text x="470" y="145" text-anchor="middle" font-size="9" class="text-primary">One decimal place</text>
+  <text x="550" y="145" text-anchor="end" font-size="8" class="text-secondary">1.2K not 1.23K</text>
+  
+  <rect x="370" y="160" width="200" height="30" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="470" y="180" text-anchor="middle" font-size="9" class="text-primary">Round down for display</text>
+  <text x="550" y="180" text-anchor="end" font-size="8" class="text-secondary">1,247 → 1.2K</text>
+  
+  <rect x="370" y="195" width="200" height="30" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="470" y="215" text-anchor="middle" font-size="9" class="text-primary">Exact on hover</text>
+  <text x="550" y="215" text-anchor="end" font-size="8" class="text-secondary">title="1247"</text>
+  
+  <!-- Localization -->
+  <rect x="630" y="70" width="340" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="800" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Localization Examples</text>
+  
+  <rect x="650" y="110" width="300" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <rect x="670" y="125" width="260" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="685" y="142" font-size="8" class="text-primary">US/UK:</text>
+  <text x="750" y="142" font-size="8" class="text-secondary">1.2K, 1.2M, 1.2B</text>
+  
+  <rect x="670" y="155" width="260" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="685" y="172" font-size="8" class="text-primary">EU:</text>
+  <text x="750" y="172" font-size="8" class="text-secondary">1,2K, 1,2M (comma decimal)</text>
+  
+  <rect x="670" y="185" width="260" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="685" y="202" font-size="8" class="text-primary">India:</text>
+  <text x="750" y="202" font-size="8" class="text-secondary">12.5L (lakh), 1.2Cr (crore)</text>
+  
+  <rect x="670" y="215" width="260" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="685" y="232" font-size="8" class="text-primary">Japan:</text>
+  <text x="750" y="232" font-size="8" class="text-secondary">1.2K, 120 万，12 億</text>
+  
+  <!-- Display Examples -->
+  <rect x="30" y="260" width="460" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="260" y="285" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Display Examples</text>
+  
+  <rect x="50" y="300" width="420" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <rect x="70" y="315" width="180" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="160" y="337" text-anchor="middle" font-size="10" class="text-primary">Exact: 1,247</text>
+  <text x="320" y="337" text-anchor="middle" font-size="10" class="highlight-green">Small counts</text>
+  
+  <rect x="270" y="315" width="180" height="35" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="360" y="337" text-anchor="middle" font-size="10" class="text-primary">Abbrev: 1.2K</text>
+  <text x="360" y="337" text-anchor="middle" font-size="8" class="text-secondary" dx="40">1K+</text>
+  
+  <rect x="70" y="360" width="180" height="35" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="160" y="382" text-anchor="middle" font-size="10" class="text-primary">Millions: 3.5M</text>
+  <text x="320" y="382" text-anchor="middle" font-size="10" class="highlight-green">Viral content</text>
+  
+  <rect x="270" y="360" width="180" height="35" rx="2" class="highlight-purple" stroke-width="1"/>
+  <text x="360" y="382" text-anchor="middle" font-size="10" class="text-primary">Billions: 1.2B</text>
+  <text x="360" y="382" text-anchor="middle" font-size="8" class="text-secondary" dx="40">Rare</text>
+  
+  <!-- Implementation Logic -->
+  <rect x="510" y="260" width="460" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="740" y="285" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Implementation Logic</text>
+  
+  <rect x="530" y="300" width="420" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <rect x="550" y="315" width="380" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="565" y="332" font-size="8" class="text-primary">if (count {'>'}= 1B) return (count/1B).toFixed(1) + 'B'</text>
+  
+  <rect x="550" y="345" width="380" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="565" y="362" font-size="8" class="text-primary">else if (count {'>'}= 1M) return (count/1M).toFixed(1) + 'M'</text>
+  
+  <rect x="550" y="375" width="380" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="565" y="392" font-size="8" class="text-primary">else if (count {'>'}= 1K) return (count/1K).toFixed(1) + 'K'</text>
+  
+  <rect x="550" y="405" width="380" height="25" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="565" y="422" font-size="8" class="text-primary">else return count.toLocaleString()</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

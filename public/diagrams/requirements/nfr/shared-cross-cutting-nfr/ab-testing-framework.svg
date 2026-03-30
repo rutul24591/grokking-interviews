@@ -1,6 +1,119 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
-  <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="250" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">ab-testing-framework.svg</text>
-  <text x="400" y="280" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Valid XML SVG</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">A/B Testing Framework</text>
+  
+  <!-- Experiment Flow -->
+  <rect x="30" y="70" width="840" height="150" rx="5" class="box-base" stroke-width="2"/>
+  
+  <rect x="50" y="90" width="150" height="110" rx="3" class="box-base" stroke-width="1.5"/>
+  <text x="125" y="115" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">1. Hypothesis</text>
+  <rect x="70" y="130" width="110" height="55" rx="2" class="box-base" stroke-width="1"/>
+  <text x="125" y="150" text-anchor="middle" font-size="8" class="text-primary">• Define goal</text>
+  <text x="125" y="165" text-anchor="middle" font-size="8" class="text-primary">• Success metric</text>
+  <text x="125" y="180" text-anchor="middle" font-size="8" class="text-primary">• Expected impact</text>
+  <text x="125" y="195" text-anchor="middle" font-size="8" class="highlight-green">✓ Clear objective</text>
+  
+  <line x1="200" y1="145" x2="230" y2="145" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="230" y="90" width="150" height="110" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="305" y="115" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">2. Configuration</text>
+  <rect x="250" y="130" width="110" height="55" rx="2" class="box-base" stroke-width="1"/>
+  <text x="305" y="150" text-anchor="middle" font-size="8" class="text-primary">• Variant A/B</text>
+  <text x="305" y="165" text-anchor="middle" font-size="8" class="text-primary">• Traffic split</text>
+  <text x="305" y="180" text-anchor="middle" font-size="8" class="text-primary">• Target audience</text>
+  <text x="305" y="195" text-anchor="middle" font-size="8" class="highlight-green">✓ Experiment setup</text>
+  
+  <line x1="380" y1="145" x2="410" y2="145" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="410" y="90" width="150" height="110" rx="3" class="highlight-box" stroke-width="1.5"/>
+  <text x="485" y="115" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">3. Randomization</text>
+  <rect x="430" y="130" width="110" height="55" rx="2" class="box-base" stroke-width="1"/>
+  <text x="485" y="150" text-anchor="middle" font-size="8" class="text-primary">• User assignment</text>
+  <text x="485" y="165" text-anchor="middle" font-size="8" class="text-primary">• Consistent hash</text>
+  <text x="485" y="180" text-anchor="middle" font-size="8" class="text-primary">• Sticky sessions</text>
+  <text x="485" y="195" text-anchor="middle" font-size="8" class="highlight-green">✓ Fair distribution</text>
+  
+  <line x1="560" y1="145" x2="590" y2="145" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="590" y="90" width="150" height="110" rx="3" class="highlight-purple" stroke-width="1.5"/>
+  <text x="665" y="115" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">4. Data Collection</text>
+  <rect x="610" y="130" width="110" height="55" rx="2" class="box-base" stroke-width="1"/>
+  <text x="665" y="150" text-anchor="middle" font-size="8" class="text-primary">• Event tracking</text>
+  <text x="665" y="165" text-anchor="middle" font-size="8" class="text-primary">• Metric capture</text>
+  <text x="665" y="180" text-anchor="middle" font-size="8" class="text-primary">• Variant logging</text>
+  <text x="665" y="195" text-anchor="middle" font-size="8" class="highlight-green">✓ Raw data</text>
+  
+  <line x1="740" y1="145" x2="770" y2="145" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="770" y="90" width="80" height="110" rx="3" class="highlight-green" stroke-width="1.5"/>
+  <text x="810" y="145" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">5. Analysis</text>
+  
+  <!-- Statistical Analysis -->
+  <rect x="30" y="240" width="410" height="230" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="235" y="265" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Statistical Analysis</text>
+  
+  <rect x="50" y="280" width="370" height="175" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="70" y="300" font-size="9" font-weight="bold" class="text-primary">Significance Testing:</text>
+  <text x="85" y="315" font-size="8" class="text-primary">• P-value &lt; 0.05 = statistically significant</text>
+  <text x="85" y="330" font-size="8" class="text-primary">• Confidence interval for effect size</text>
+  <text x="85" y="345" font-size="8" class="text-primary">• Power analysis for sample size</text>
+  
+  <text x="70" y="365" font-size="9" font-weight="bold" class="text-primary">Key Metrics:</text>
+  <text x="85" y="380" font-size="8" class="text-primary">• Conversion rate (primary)</text>
+  <text x="85" y="395" font-size="8" class="text-primary">• Click-through rate</text>
+  <text x="85" y="410" font-size="8" class="text-primary">• Time on page</text>
+  <text x="85" y="425" font-size="8" class="text-primary">• Bounce rate</text>
+  
+  <text x="70" y="445" font-size="9" font-weight="bold" class="highlight-green">✓ Data-driven decisions</text>
+  
+  <!-- Decision Framework -->
+  <rect x="460" y="240" width="410" height="230" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="665" y="265" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Decision Framework</text>
+  
+  <rect x="480" y="280" width="370" height="175" rx="3" class="box-base" stroke-width="1"/>
+  
+  <rect x="500" y="300" width="330" height="40" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="665" y="315" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Variant B Wins</text>
+  <text x="665" y="330" text-anchor="middle" font-size="8" class="text-primary">Statistically significant improvement → Roll out to 100%</text>
+  
+  <rect x="500" y="345" width="330" height="40" rx="2" class="highlight-purple" stroke-width="1"/>
+  <text x="665" y="360" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">No Significant Difference</text>
+  <text x="665" y="375" text-anchor="middle" font-size="8" class="text-primary">Inconclusive → Iterate or sunset experiment</text>
+  
+  <rect x="500" y="390" width="330" height="40" rx="2" class="highlight-red" stroke-width="1"/>
+  <text x="665" y="405" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Variant B Loses</text>
+  <text x="665" y="420" text-anchor="middle" font-size="8" class="text-primary">Negative impact → Revert to Variant A</text>
+  
+  <text x="665" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Clear decision criteria</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
 </svg>

@@ -1,6 +1,105 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
-  <rect width="800" height="500" fill="#ffffff"/>
-  <text x="400" y="250" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#0f172a">slo-error-budget-policy.svg</text>
-  <text x="400" y="280" text-anchor="middle" font-family="system-ui" font-size="12" fill="#475569">Valid XML SVG</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">SLO Error Budget Policy</text>
+  
+  <!-- Error Budget Concept -->
+  <rect x="30" y="70" width="400" height="200" rx="5" class="box-base" stroke-width="2"/>
+  <text x="230" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Error Budget Calculation</text>
+  
+  <rect x="50" y="110" width="360" height="145" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="70" y="130" font-size="9" font-weight="bold" class="text-primary">Formula:</text>
+  <rect x="70" y="140" width="320" height="35" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="230" y="162" text-anchor="middle" font-size="10" class="text-primary">Error Budget = 1 - SLO Target</text>
+  
+  <text x="70" y="190" font-size="9" font-weight="bold" class="text-primary">Example (99.9% SLO):</text>
+  <text x="85" y="205" font-size="8" class="text-primary">• Budget = 1 - 0.999 = 0.001 (0.1%)</text>
+  <text x="85" y="220" font-size="8" class="text-primary">• Over 30 days = 43.2 minutes downtime</text>
+  <text x="85" y="235" font-size="8" class="text-primary">• Over 365 days = 8.76 hours downtime</text>
+  
+  <!-- Budget Consumption -->
+  <rect x="450" y="70" width="420" height="200" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="660" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Budget Consumption Tracking</text>
+  
+  <rect x="470" y="110" width="380" height="145" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Budget bar -->
+  <rect x="490" y="130" width="340" height="30" rx="2" class="highlight-green" stroke-width="1"/>
+  <rect x="490" y="130" width="100" height="30" rx="2" class="highlight-red" stroke-width="1"/>
+  <text x="660" y="150" text-anchor="middle" font-size="9" class="text-primary">30% consumed, 70% remaining</text>
+  
+  <text x="490" y="180" font-size="8" class="text-primary">• Measured over rolling window (28 days)</text>
+  <text x="490" y="195" font-size="8" class="text-primary">• Updated in real-time from SLIs</text>
+  <text x="490" y="210" font-size="8" class="text-primary">• Alerts at 50%, 75%, 90%, 100%</text>
+  <text x="490" y="225" font-size="8" class="text-primary">• Dashboard shows trend over time</text>
+  
+  <!-- Policy Actions -->
+  <rect x="30" y="290" width="840" height="180" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="450" y="315" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Policy Actions by Budget Level</text>
+  
+  <rect x="50" y="330" width="190" height="125" rx="3" class="highlight-green" stroke-width="1"/>
+  <text x="145" y="355" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">&gt;50% Remaining</text>
+  <rect x="70" y="365" width="150" height="75" rx="2" class="box-base" stroke-width="1"/>
+  <text x="145" y="385" text-anchor="middle" font-size="8" class="text-primary">• Normal operations</text>
+  <text x="145" y="400" text-anchor="middle" font-size="8" class="text-primary">• All releases approved</text>
+  <text x="145" y="415" text-anchor="middle" font-size="8" class="text-primary">• Standard monitoring</text>
+  <text x="145" y="430" text-anchor="middle" font-size="8" class="text-primary">• Feature development OK</text>
+  <text x="145" y="445" text-anchor="middle" font-size="8" class="highlight-green">✓ Green zone</text>
+  
+  <rect x="255" y="330" width="190" height="125" rx="3" class="highlight-blue" stroke-width="1"/>
+  <text x="350" y="355" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">25-50% Remaining</text>
+  <rect x="275" y="365" width="150" height="75" rx="2" class="box-base" stroke-width="1"/>
+  <text x="350" y="385" text-anchor="middle" font-size="8" class="text-primary">• Increased scrutiny</text>
+  <text x="350" y="400" text-anchor="middle" font-size="8" class="text-primary">• On-call notification</text>
+  <text x="350" y="415" text-anchor="middle" font-size="8" class="text-primary">• Review recent changes</text>
+  <text x="350" y="430" text-anchor="middle" font-size="8" class="text-primary">• Consider slowing releases</text>
+  <text x="350" y="445" text-anchor="middle" font-size="8" class="highlight-blue">⚠ Yellow zone</text>
+  
+  <rect x="460" y="330" width="190" height="125" rx="3" class="highlight-orange" stroke-width="1"/>
+  <text x="555" y="355" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">10-25% Remaining</text>
+  <rect x="480" y="365" width="150" height="75" rx="2" class="box-base" stroke-width="1"/>
+  <text x="555" y="385" text-anchor="middle" font-size="8" class="text-primary">• Release freeze</text>
+  <text x="555" y="400" text-anchor="middle" font-size="8" class="text-primary">• Incident review</text>
+  <text x="555" y="415" text-anchor="middle" font-size="8" class="text-primary">• Reliability focus</text>
+  <text x="555" y="430" text-anchor="middle" font-size="8" class="text-primary">• Executive notification</text>
+  <text x="555" y="445" text-anchor="middle" font-size="8" class="highlight-orange">⚠ Orange zone</text>
+  
+  <rect x="665" y="330" width="190" height="125" rx="3" class="highlight-red" stroke-width="1"/>
+  <text x="760" y="355" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">&lt;10% Remaining</text>
+  <rect x="685" y="365" width="150" height="75" rx="2" class="box-base" stroke-width="1"/>
+  <text x="760" y="385" text-anchor="middle" font-size="8" class="text-primary">• Emergency freeze</text>
+  <text x="760" y="400" text-anchor="middle" font-size="8" class="text-primary">• All-hands incident</text>
+  <text x="760" y="415" text-anchor="middle" font-size="8" class="text-primary">• Customer communication</text>
+  <text x="760" y="430" text-anchor="middle" font-size="8" class="text-primary">• Post-mortem required</text>
+  <text x="760" y="445" text-anchor="middle" font-size="8" class="highlight-red">🚨 Red zone</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
 </svg>
