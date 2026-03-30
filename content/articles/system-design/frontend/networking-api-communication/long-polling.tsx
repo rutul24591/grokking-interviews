@@ -5,16 +5,16 @@ import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
-  id: "article-frontend-long-polling-concise",
+  id: "article-frontend-long-polling",
   title: "Long Polling",
   description:
     "Deep dive into long polling covering held HTTP connections, timeout management, ordering guarantees, server implementation patterns, and comparison with WebSockets and SSE.",
   category: "frontend",
   subcategory: "networking-api-communication",
   slug: "long-polling",
-  wordCount: 3200,
-  readingTime: 13,
-  lastUpdated: "2026-03-14",
+  wordCount: 6000,
+  readingTime: 24,
+  lastUpdated: "2026-03-30",
   tags: [
     "frontend",
     "long-polling",
@@ -835,9 +835,74 @@ export default function LongPollingConciseArticle() {
               the browser connection limit. Monitor connection counts, memory
               usage, and event delivery latency per instance. At this scale,
               consider whether SSE or WebSockets might be more efficient, as
-              long polling's reconnection overhead becomes significant at 1M
+              long polling&apos;s reconnection overhead becomes significant at 1M
               connections (approximately 30K reconnections per second just from
               timeouts).
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What is connection draining and why is it important for long
+              polling deployments?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Connection draining is the process of gracefully shutting down
+              held connections during deployments. Without it, a server restart
+              abruptly closes all held connections, causing all clients to
+              reconnect simultaneously (thundering herd). With draining: (1)
+              Signal the server to stop accepting new connections. (2) Send a
+              &quot;reconnect&quot; message to all connected clients, prompting
+              them to reconnect to a different instance. (3) Wait for all
+              connections to close (or timeout after 30s). (4) Shut down the
+              server. This ensures zero-downtime deployments and prevents the
+              reconnection storm from overwhelming remaining instances. Load
+              balancers like AWS ALB support connection draining natively; for
+              custom implementations, use a message broker to broadcast the
+              drain signal to all clients.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you handle the thundering herd problem in long polling?
+            </p>
+            <p className="mt-2 text-sm">
+              A: The thundering herd occurs when many clients reconnect
+              simultaneously after a server restart or network event,
+              overwhelming the server. Mitigation strategies: (1) Add jitter to
+              reconnection delays — instead of reconnecting immediately, each
+              client waits a random time between 0-2 seconds. (2) Implement
+              exponential backoff on repeated failures — 1s, 2s, 4s, 8s with
+              jitter. (3) Use connection draining (above) to stagger
+              reconnections during deployments. (4) Rate limit reconnections per
+              IP/user at the load balancer level. (5) Use a &quot;reconnect
+              after&quot; timestamp in the response to spread reconnections over
+              time. The key insight is that without jitter, all clients that
+              disconnected at the same time will reconnect at the same time,
+              creating a spike that can crash the recovering server.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: When would you choose long polling over Server-Sent Events
+              (SSE)?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Long polling and SSE both provide server-to-client push, but
+              SSE is generally preferable when available. Choose long polling
+              over SSE when: (1) You need to support IE11 or very old browsers
+              (SSE is not supported). (2) Your infrastructure has proxies that
+              buffer HTTP responses, breaking SSE&apos;s streaming (long polling
+              works because each response is complete). (3) You need custom
+              request headers on each poll (SSE has limited header support). (4)
+              You need fine-grained control over reconnection timing (SSE has
+              built-in reconnection that is harder to customize). In modern
+              applications with HTTP/2 and modern browsers, SSE is the better
+              choice due to simpler implementation, automatic reconnection, and
+              Last-Event-ID resume semantics. Long polling is now primarily a
+              fallback transport in libraries like Socket.IO.
             </p>
           </div>
         </div>

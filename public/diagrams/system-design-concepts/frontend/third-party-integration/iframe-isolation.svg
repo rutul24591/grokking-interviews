@@ -1,0 +1,110 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Iframe Isolation and Security Boundaries</text>
+  
+  <!-- Left: Without Isolation -->
+  <rect x="50" y="80" width="400" height="450" rx="12" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#991b1b">Without Iframe Isolation</text>
+  
+  <!-- Main app area -->
+  <rect x="70" y="135" width="360" height="380" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="250" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b">Main Application</text>
+  
+  <!-- App content -->
+  <rect x="90" y="180" width="150" height="80" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="165" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e40af">App State</text>
+  <text x="165" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1e3a8a">User data</text>
+  <text x="165" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1e3a8a">Tokens</text>
+  
+  <!-- Third party script (dangerous) -->
+  <rect x="260" y="180" width="150" height="80" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="335" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#991b1b">Third-Party Script</text>
+  <text x="335" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7f1d1d">Full DOM access</text>
+  <text x="335" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7f1d1d">Cookie access</text>
+  
+  <!-- Arrows showing dangerous access -->
+  <path d="M 240 220 Q 250 220, 260 220" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#dangerArrow)"/>
+  <defs>
+    <marker id="dangerArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
+  <text x="250" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#ef4444">reads</text>
+  
+  <!-- Local storage access -->
+  <rect x="90" y="280" width="150" height="60" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="165" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#92400e">localStorage</text>
+  <text x="165" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">Session data</text>
+  
+  <!-- Cookie access -->
+  <rect x="260" y="280" width="150" height="60" rx="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+  <text x="335" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#475569">Cookies</text>
+  <text x="335" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Auth tokens</text>
+  
+  <!-- Dangerous arrows -->
+  <path d="M 335 260 Q 335 270, 335 280" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#dangerArrow)"/>
+  <path d="M 200 260 Q 200 270, 200 280" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#dangerArrow)"/>
+  
+  <!-- Risk label -->
+  <rect x="90" y="360" width="320" height="50" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="250" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#991b1b">⚠ Security Risk: Full Access</text>
+  <text x="250" y="402" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7f1d1d">Script can access all app data, cookies, and storage</text>
+  
+  <!-- Right: With Iframe Isolation -->
+  <rect x="470" y="80" width="380" height="450" rx="12" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">With Iframe Isolation</text>
+  
+  <!-- Main app area -->
+  <rect x="490" y="135" width="180" height="380" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="580" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b">Main App</text>
+  
+  <!-- App content -->
+  <rect x="510" y="180" width="140" height="70" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="580" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#065f46">App State</text>
+  <text x="580" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">Protected</text>
+  <text x="580" y="240" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">✓ Isolated</text>
+  
+  <!-- Iframe boundary -->
+  <rect x="510" y="270" width="140" height="120" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="580" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#92400e">&lt;iframe&gt;</text>
+  <text x="580" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">sandbox attribute</text>
+  <text x="580" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">Separate origin</text>
+  <text x="580" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">No direct access</text>
+  
+  <!-- Third party inside iframe -->
+  <rect x="525" y="310" width="110" height="60" rx="4" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="580" y="335" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#3730a3">Third-Party</text>
+  <text x="580" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#4338ca">Contained</text>
+  
+  <!-- postMessage communication -->
+  <rect x="690" y="180" width="140" height="100" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="760" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#1e40af">postMessage</text>
+  <text x="760" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1e3a8a">Controlled</text>
+  <text x="760" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1e3a8a">communication</text>
+  <text x="760" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1e3a8a">✓ Validated</text>
+  
+  <!-- Communication arrows -->
+  <path d="M 650 230 Q 670 230, 690 230" fill="none" stroke="#3b82f6" stroke-width="2" marker-end="url(#safeArrow)"/>
+  <defs>
+    <marker id="safeArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+  </defs>
+  <text x="670" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#3b82f6">send</text>
+  
+  <path d="M 690 260 Q 670 260, 650 260" fill="none" stroke="#10b981" stroke-width="2" marker-end="url(#safeArrow2)"/>
+  <defs>
+    <marker id="safeArrow2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+  </defs>
+  <text x="670" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#10b981">receive</text>
+  
+  <!-- Security label -->
+  <rect x="490" y="430" width="340" height="50" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="660" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#065f46">✓ Security: Isolated + Controlled</text>
+  <text x="660" y="472" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">Iframe sandbox + postMessage for safe communication</text>
+</svg>

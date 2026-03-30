@@ -5,16 +5,16 @@ import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
-  id: "article-frontend-circuit-breaker-concise",
+  id: "article-frontend-circuit-breaker-pattern",
   title: "Circuit Breaker Pattern",
   description:
     "Deep dive into the circuit breaker pattern for frontend applications covering state machine (closed/open/half-open), failure thresholds, fallback strategies, and protecting UX during backend outages.",
   category: "frontend",
   subcategory: "networking-api-communication",
   slug: "circuit-breaker-pattern",
-  wordCount: 3200,
-  readingTime: 13,
-  lastUpdated: "2026-03-14",
+  wordCount: 6000,
+  readingTime: 24,
+  lastUpdated: "2026-03-30",
   tags: [
     "frontend",
     "circuit-breaker",
@@ -824,6 +824,66 @@ export default function CircuitBreakerPatternConciseArticle() {
               fail, report to the circuit breaker. When the circuit opens, skip
               retries entirely. This prevents retry amplification during outages
               while still recovering from transient glitches silently.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you handle circuit breaker state synchronization across
+              browser tabs?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Use the BroadcastChannel API to share circuit breaker state
+              across tabs. When a breaker trips in one tab, broadcast the state
+              change (endpoint, state, timestamp) to all other tabs. Each tab
+              updates its local breaker state accordingly. This prevents the
+              scenario where Tab A trips the breaker but Tabs B, C, D continue
+              hammering the failing endpoint. For persistence across page
+              reloads, store breaker state in localStorage with a TTL. The
+              BroadcastChannel approach is lightweight and requires no
+              server-side changes. For more complex scenarios, use a
+              SharedWorker to centralize breaker state management.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What are appropriate fallback strategies for different types of
+              endpoints?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Fallback strategies depend on endpoint criticality and data
+              characteristics. For read endpoints: return cached data (last
+              successful response), return stale data with a freshness warning,
+              or return default/empty data (empty recommendation list). For
+              write endpoints: queue the operation for later retry, return a
+              user-facing message to retry later, or degrade gracefully (save
+              locally, sync when available). For auth endpoints: no fallback —
+              fail explicitly and redirect to login. For search endpoints:
+              return cached results, switch to client-side filtering, or reduce
+              result scope. The key is to design fallbacks during development,
+              not as an afterthought during incidents.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you prevent circuit breaker thrashing (rapid state
+              transitions)?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Thrashing occurs when the failure threshold is too low and the
+              recovery timeout is too short, causing rapid Closed→Open→Half-Open→Closed→Open
+              cycles. Prevent thrashing by: (1) Using a sliding window for
+              failure counting instead of consecutive failures — this smooths
+              out brief spikes. (2) Setting a minimum time in each state — e.g.,
+              the breaker must stay Closed for at least 60 seconds before
+              tripping again. (3) Using adaptive recovery timeouts — increase
+              the timeout after each consecutive trip (similar to exponential
+              backoff). (4) Requiring multiple successes in Half-Open before
+              closing (e.g., 3 consecutive successes). (5) Monitoring state
+              change frequency and alerting when it exceeds a threshold. The
+              goal is stable state transitions, not oscillation.
             </p>
           </div>
         </div>

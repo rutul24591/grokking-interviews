@@ -1,0 +1,97 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Chat Widget Isolation Patterns</text>
+  
+  <!-- Left: Without Isolation -->
+  <rect x="50" y="80" width="400" height="450" rx="12" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#991b1b">Without Isolation</text>
+  
+  <!-- Main app -->
+  <rect x="70" y="135" width="360" height="380" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="250" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b">Main Application</text>
+  
+  <!-- App state -->
+  <rect x="90" y="190" width="150" height="70" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="165" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e40af">App State</text>
+  <text x="165" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1e3a8a">User data</text>
+  <text x="165" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1e3a8a">Auth tokens</text>
+  
+  <!-- Chat widget (injected) -->
+  <rect x="260" y="190" width="150" height="100" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="335" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#991b1b">Chat Widget</text>
+  <text x="335" y="240" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7f1d1d">Same DOM</text>
+  <text x="335" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7f1d1d">Same JS context</text>
+  <text x="335" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7f1d1d">Full access</text>
+  
+  <!-- Dangerous arrows -->
+  <path d="M 240 225 Q 250 225, 260 225" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#dangerArrow)"/>
+  <defs>
+    <marker id="dangerArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
+  <text x="250" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#ef4444">reads</text>
+  
+  <!-- Risk label -->
+  <rect x="90" y="320" width="300" height="60" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="240" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#991b1b">⚠ Security &amp; Performance Risks</text>
+  <text x="240" y="365" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7f1d1d">CSS conflicts, JS conflicts, data access</text>
+  
+  <!-- Right: With Iframe Isolation -->
+  <rect x="470" y="80" width="380" height="450" rx="12" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">With Iframe Isolation</text>
+  
+  <!-- Main app -->
+  <rect x="490" y="135" width="180" height="380" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="580" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b">Main App</text>
+  
+  <!-- App state (protected) -->
+  <rect x="510" y="190" width="140" height="70" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="580" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#065f46">App State</text>
+  <text x="580" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">✓ Protected</text>
+  <text x="580" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">✓ Isolated</text>
+  
+  <!-- Iframe boundary -->
+  <rect x="690" y="135" width="140" height="380" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="760" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#92400e">&lt;iframe&gt;</text>
+  
+  <!-- Chat widget inside iframe -->
+  <rect x="705" y="190" width="110" height="100" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="760" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#3730a3">Chat Widget</text>
+  <text x="760" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4338ca">Separate context</text>
+  <text x="760" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4338ca">No direct access</text>
+  <text x="760" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4338ca">Sandboxed</text>
+  
+  <!-- postMessage communication -->
+  <rect x="590" y="340" width="140" height="70" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="660" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e40af">postMessage</text>
+  <text x="660" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1e3a8a">Controlled</text>
+  <text x="660" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1e3a8a">communication</text>
+  
+  <!-- Communication arrows -->
+  <path d="M 670 300 Q 670 320, 670 340" fill="none" stroke="#3b82f6" stroke-width="2" marker-end="url(#commArrow1)"/>
+  <defs>
+    <marker id="commArrow1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+  </defs>
+  
+  <path d="M 750 340 Q 750 320, 750 300" fill="none" stroke="#10b981" stroke-width="2" marker-end="url(#commArrow2)"/>
+  <defs>
+    <marker id="commArrow2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+  </defs>
+  
+  <!-- Benefits label -->
+  <rect x="490" y="430" width="340" height="60" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="660" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#065f46">✓ Benefits: CSS isolation, JS isolation, Security</text>
+  <text x="660" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">Widget cannot access app data directly</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="540" width="800" height="30" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Recommendation: Use iframe for third-party widgets | Communicate via postMessage with origin validation</text>
+</svg>

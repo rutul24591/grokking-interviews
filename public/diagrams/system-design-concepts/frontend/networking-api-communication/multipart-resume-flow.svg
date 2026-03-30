@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none" role="img" aria-labelledby="multipartResumeTitle multipartResumeDesc">
+  <title id="multipartResumeTitle">Multipart Upload Resume Flow</title>
+  <desc id="multipartResumeDesc">Diagram showing how uploads resume after failure by querying uploaded chunks and re-uploading only missing ones</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="450" fill="var(--background, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="var(--text, #1a1a1a)">Upload Resume After Failure</text>
+  
+  <!-- Left: Failed Upload State -->
+  <rect x="30" y="70" width="350" height="170" rx="8" fill="var(--bg-primary, #f5f5f5)" stroke="var(--border, #e0e0e0)" stroke-width="2"/>
+  <text x="205" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--text, #1a1a1a)">Failed Upload State</text>
+  
+  <!-- Chunks status -->
+  <rect x="60" y="120" width="290" height="35" rx="4" fill="var(--success, #22c55e)" stroke="var(--success, #22c55e)" stroke-width="1"/>
+  <text x="205" y="143" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="white">Chunk 1 ✓ Uploaded</text>
+  
+  <rect x="60" y="160" width="290" height="35" rx="4" fill="var(--success, #22c55e)" stroke="var(--success, #22c55e)" stroke-width="1"/>
+  <text x="205" y="183" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="white">Chunk 2 ✓ Uploaded</text>
+  
+  <rect x="60" y="200" width="290" height="35" rx="4" fill="var(--error, #ef4444)" stroke="var(--error, #ef4444)" stroke-width="1"/>
+  <text x="205" y="223" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="white">Chunk 3 ✗ Failed</text>
+  
+  <!-- Arrow -->
+  <path d="M380 155 L420 155" stroke="var(--accent, #3b82f6)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="400" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="var(--text-muted, #666666)">Recovery</text>
+  
+  <!-- Right: Resume Process -->
+  <rect x="420" y="70" width="350" height="170" rx="8" fill="var(--bg-primary, #f5f5f5)" stroke="var(--border, #e0e0e0)" stroke-width="2"/>
+  <text x="595" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--text, #1a1a1a)">Resume Process</text>
+  
+  <!-- Step 1 -->
+  <rect x="450" y="120" width="290" height="35" rx="4" fill="var(--bg-secondary, #ffffff)" stroke="var(--border, #e0e0e0)" stroke-width="1.5"/>
+  <text x="595" y="143" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="var(--text, #1a1a1a)">1. Query Uploaded Chunks</text>
+  
+  <!-- Step 2 -->
+  <rect x="450" y="160" width="290" height="35" rx="4" fill="var(--bg-secondary, #ffffff)" stroke="var(--border, #e0e0e0)" stroke-width="1.5"/>
+  <text x="595" y="183" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="var(--text, #1a1a1a)">2. Identify Missing: [3,4,5...]</text>
+  
+  <!-- Step 3 -->
+  <rect x="450" y="200" width="290" height="35" rx="4" fill="var(--accent, #3b82f6)" stroke="var(--accent, #3b82f6)" stroke-width="1.5"/>
+  <text x="595" y="223" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="white">3. Re-upload Only Missing</text>
+  
+  <!-- Bottom: Completed -->
+  <rect x="30" y="270" width="740" height="150" rx="8" fill="var(--bg-primary, #f5f5f5)" stroke="var(--border, #e0e0e0)" stroke-width="2"/>
+  <text x="400" y="300" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--text, #1a1a1a)">After Resume: All Chunks Uploaded</text>
+  
+  <!-- All chunks complete -->
+  <rect x="60" y="320" width="130" height="35" rx="4" fill="var(--success, #22c55e)" stroke="var(--success, #22c55e)" stroke-width="1"/>
+  <text x="125" y="343" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="white">Chunk 1 ✓</text>
+  
+  <rect x="200" y="320" width="130" height="35" rx="4" fill="var(--success, #22c55e)" stroke="var(--success, #22c55e)" stroke-width="1"/>
+  <text x="265" y="343" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="white">Chunk 2 ✓</text>
+  
+  <rect x="340" y="320" width="130" height="35" rx="4" fill="var(--success, #22c55e)" stroke="var(--success, #22c55e)" stroke-width="1"/>
+  <text x="400" y="343" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="white">Chunk 3 ✓</text>
+  
+  <rect x="480" y="320" width="130" height="35" rx="4" fill="var(--success, #22c55e)" stroke="var(--success, #22c55e)" stroke-width="1"/>
+  <text x="545" y="343" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="white">Chunk 4 ✓</text>
+  
+  <rect x="620" y="320" width="130" height="35" rx="4" fill="var(--success, #22c55e)" stroke="var(--success, #22c55e)" stroke-width="1"/>
+  <text x="685" y="343" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="white">Chunk 5 ✓</text>
+  
+  <!-- Complete button -->
+  <rect x="325" y="375" width="150" height="40" rx="6" fill="var(--success, #22c55e)" stroke="var(--success, #22c55e)" stroke-width="1.5"/>
+  <text x="400" y="400" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="white">Complete Upload</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--accent, #3b82f6)"/>
+    </marker>
+  </defs>
+</svg>

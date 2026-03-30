@@ -1,0 +1,130 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Payment Gateway Integration Flow</text>
+  
+  <!-- Customer -->
+  <rect x="50" y="80" width="150" height="450" rx="12" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="125" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e40af">Customer</text>
+  <text x="125" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#1e3a8a">(Browser)</text>
+  
+  <!-- Your Frontend -->
+  <rect x="220" y="80" width="150" height="450" rx="12" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="295" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#3730a3">Your Frontend</text>
+  <text x="295" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#4338ca">(SPA)</text>
+  
+  <!-- Your Backend -->
+  <rect x="390" y="80" width="150" height="450" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="465" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Your Backend</text>
+  <text x="465" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#78350f">(API)</text>
+  
+  <!-- Payment Gateway -->
+  <rect x="560" y="80" width="150" height="450" rx="12" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="635" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#065f46">Payment Gateway</text>
+  <text x="635" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#047857">(Stripe/PayPal)</text>
+  
+  <!-- Bank -->
+  <rect x="730" y="80" width="120" height="450" rx="12" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+  <text x="790" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#475569">Issuing Bank</text>
+  
+  <!-- Step 1: Checkout -->
+  <path d="M 150 200 L 200 200" fill="none" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrow1)"/>
+  <defs>
+    <marker id="arrow1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+  </defs>
+  <text x="175" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#3b82f6" font-weight="600">1. Checkout</text>
+  
+  <!-- Step 2: Create Payment Intent -->
+  <path d="M 315 200 L 370 200" fill="none" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow2)"/>
+  <defs>
+    <marker id="arrow2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+  </defs>
+  <text x="342" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6366f1" font-weight="600">2. Create Intent</text>
+  
+  <!-- Step 3: Client Secret -->
+  <path d="M 370 230 L 315 230" fill="none" stroke="#10b981" stroke-width="2" marker-end="url(#arrow3)"/>
+  <defs>
+    <marker id="arrow3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+  </defs>
+  <text x="342" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#10b981" font-weight="600">3. Client Secret</text>
+  
+  <!-- Step 4: Card Entry -->
+  <rect x="225" y="270" width="140" height="80" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="295" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#1e293b">4. Card Entry</text>
+  <text x="295" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Elements.js / iframe</text>
+  <text x="295" y="335" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">PCI scope reduced</text>
+  
+  <!-- Step 5: Tokenize -->
+  <path d="M 370 310 L 540 310" fill="none" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow4)"/>
+  <defs>
+    <marker id="arrow4" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+  </defs>
+  <text x="455" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6366f1" font-weight="600">5. Tokenize</text>
+  
+  <!-- Step 6: Confirm Payment -->
+  <path d="M 370 350 L 540 350" fill="none" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow5)"/>
+  <defs>
+    <marker id="arrow5" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+  </defs>
+  <text x="455" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#6366f1" font-weight="600">6. Confirm</text>
+  
+  <!-- Step 7: 3DS Check -->
+  <path d="M 560 200 L 710 200" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow6)"/>
+  <defs>
+    <marker id="arrow6" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+  <text x="635" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#f59e0b" font-weight="600">7. 3DS Check</text>
+  
+  <!-- Step 8: Challenge -->
+  <path d="M 710 230 L 710 280" fill="none" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow7)"/>
+  <defs>
+    <marker id="arrow7" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+  
+  <!-- 3DS Challenge Modal -->
+  <rect x="655" y="280" width="110" height="70" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="710" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#92400e">3DS Challenge</text>
+  <text x="710" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#78350f">OTP / Biometric</text>
+  <text x="710" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#78350f">Bank verification</text>
+  
+  <!-- Step 9: Authorization -->
+  <path d="M 710 350 L 710 400" fill="none" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow8)"/>
+  <defs>
+    <marker id="arrow8" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+  
+  <!-- Step 10: Result -->
+  <path d="M 560 400 L 370 400" fill="none" stroke="#10b981" stroke-width="2" marker-end="url(#arrow9)"/>
+  <defs>
+    <marker id="arrow9" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+  </defs>
+  <text x="465" y="420" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#10b981" font-weight="600">10. Result</text>
+  
+  <!-- PCI Scope Note -->
+  <rect x="50" y="540" width="400" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="250" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#92400e" font-weight="600">PCI Scope: SAQ-A (lowest) with Elements/iframe</text>
+  
+  <!-- Webhook Note -->
+  <rect x="470" y="540" width="380" height="30" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="660" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569" font-weight="600">Webhooks: Async confirmation for fulfillment</text>
+</svg>

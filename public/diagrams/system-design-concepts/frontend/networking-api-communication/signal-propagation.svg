@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none" role="img" aria-labelledby="signalPropagationTitle signalPropagationDesc">
+  <title id="signalPropagationTitle">AbortController Signal Propagation Diagram</title>
+  <desc id="signalPropagationDesc">Diagram showing how abort signal propagates from React component through hook to API client to fetch, enabling cancellation at each layer</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="450" fill="var(--background, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="var(--text, #1a1a1a)">AbortController Signal Propagation</text>
+  
+  <!-- Component Layer -->
+  <rect x="50" y="70" width="170" height="340" rx="8" fill="var(--bg-primary, #f5f5f5)" stroke="var(--border, #e0e0e0)" stroke-width="2"/>
+  <text x="135" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="var(--text, #1a1a1a)">Component</text>
+  
+  <!-- Controller creation -->
+  <rect x="65" y="120" width="140" height="50" rx="6" fill="var(--accent, #3b82f6)" stroke="var(--accent, #3b82f6)" stroke-width="1.5"/>
+  <text x="135" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="white">Create Controller</text>
+  <text x="135" y="162" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">new AbortController()</text>
+  
+  <!-- Signal output -->
+  <rect x="65" y="190" width="140" height="40" rx="4" fill="var(--bg-secondary, #ffffff)" stroke="var(--border, #e0e0e0)" stroke-width="1.5"/>
+  <text x="135" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="var(--text, #1a1a1a)">signal</text>
+  <text x="135" y="225" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Pass to hook</text>
+  
+  <!-- Arrow to Hook -->
+  <path d="M220 210 L260 210" stroke="var(--accent, #3b82f6)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="240" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">signal</text>
+  
+  <!-- Hook Layer -->
+  <rect x="260" y="70" width="170" height="340" rx="8" fill="var(--bg-primary, #f5f5f5)" stroke="var(--border, #e0e0e0)" stroke-width="2"/>
+  <text x="345" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="var(--text, #1a1a1a)">Custom Hook</text>
+  
+  <!-- Hook receives signal -->
+  <rect x="275" y="120" width="140" height="40" rx="4" fill="var(--bg-secondary, #ffffff)" stroke="var(--border, #e0e0e0)" stroke-width="1.5"/>
+  <text x="345" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="var(--text, #1a1a1a)">Receive signal</text>
+  <text x="345" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">from component</text>
+  
+  <!-- Hook passes to API -->
+  <rect x="275" y="180" width="140" height="50" rx="6" fill="var(--accent, #3b82f6)" stroke="var(--accent, #3b82f6)" stroke-width="1.5"/>
+  <text x="345" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="white">Forward signal</text>
+  <text x="345" y="222" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">to API client</text>
+  
+  <!-- Arrow to API Client -->
+  <path d="M430 210 L470 210" stroke="var(--accent, #3b82f6)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="450" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">signal</text>
+  
+  <!-- API Client Layer -->
+  <rect x="470" y="70" width="170" height="340" rx="8" fill="var(--bg-primary, #f5f5f5)" stroke="var(--border, #e0e0e0)" stroke-width="2"/>
+  <text x="555" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="var(--text, #1a1a1a)">API Client</text>
+  
+  <!-- API receives signal -->
+  <rect x="485" y="120" width="140" height="40" rx="4" fill="var(--bg-secondary, #ffffff)" stroke="var(--border, #e0e0e0)" stroke-width="1.5"/>
+  <text x="555" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="var(--text, #1a1a1a)">Receive signal</text>
+  <text x="555" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">from hook</text>
+  
+  <!-- API passes to fetch -->
+  <rect x="485" y="180" width="140" height="50" rx="6" fill="var(--accent, #3b82f6)" stroke="var(--accent, #3b82f6)" stroke-width="1.5"/>
+  <text x="555" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="white">Pass to fetch</text>
+  <text x="555" y="222" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">options.signal</text>
+  
+  <!-- Arrow to Fetch -->
+  <path d="M640 210 L680 210" stroke="var(--accent, #3b82f6)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="660" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">signal</text>
+  
+  <!-- Fetch Layer -->
+  <rect x="680" y="70" width="90" height="340" rx="8" fill="var(--bg-primary, #f5f5f5)" stroke="var(--border, #e0e0e0)" stroke-width="2"/>
+  <text x="725" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="var(--text, #1a1a1a)">fetch()</text>
+  
+  <!-- Fetch receives signal -->
+  <rect x="690" y="120" width="70" height="60" rx="4" fill="var(--bg-secondary, #ffffff)" stroke="var(--border, #e0e0e0)" stroke-width="1.5"/>
+  <text x="725" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="var(--text, #1a1a1a)">Receives</text>
+  <text x="725" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="var(--text, #1a1a1a)">signal</text>
+  <text x="725" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="var(--text-muted, #666666)">in options</text>
+  
+  <!-- Abort flow (reverse arrow) -->
+  <path d="M135 280 L135 350 L680 350 L680 280" stroke="var(--error, #ef4444)" stroke-width="2" stroke-dasharray="6" marker-end="url(#arrowheadRed)"/>
+  <text x="400" y="375" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="var(--error, #ef4444)">abort() call propagates and cancels request</text>
+  
+  <!-- Abort button -->
+  <rect x="85" y="280" width="100" height="35" rx="6" fill="var(--error, #ef4444)" stroke="var(--error, #ef4444)" stroke-width="1.5"/>
+  <text x="135" y="302" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="white">controller.abort()</text>
+  
+  <!-- Cleanup note -->
+  <rect x="50" y="400" width="700" height="35" rx="4" fill="var(--bg-secondary, #ffffff)" stroke="var(--border, #e0e0e0)" stroke-width="1"/>
+  <text x="400" y="422" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="var(--text, #1a1a1a)">Key: Each layer must accept and forward the signal. If any layer breaks the chain, cancellation will not reach fetch.</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--accent, #3b82f6)"/>
+    </marker>
+    <marker id="arrowheadRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--error, #ef4444)"/>
+    </marker>
+  </defs>
+</svg>

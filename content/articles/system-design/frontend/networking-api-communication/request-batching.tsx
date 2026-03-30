@@ -5,16 +5,16 @@ import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
-  id: "article-frontend-request-batching-concise",
+  id: "article-frontend-request-batching",
   title: "Request Batching",
   description:
     "Comprehensive guide to request batching covering time-window batching, size-based batching, DataLoader pattern, GraphQL batch queries, and reducing network overhead in frontend applications.",
   category: "frontend",
   subcategory: "networking-api-communication",
   slug: "request-batching",
-  wordCount: 3200,
-  readingTime: 13,
-  lastUpdated: "2026-03-14",
+  wordCount: 6000,
+  readingTime: 24,
+  lastUpdated: "2026-03-30",
   tags: [
     "frontend",
     "batching",
@@ -967,6 +967,68 @@ export default function RequestBatchingConciseArticle() {
               into React via a custom hook (useBatchedFetch) or by wrapping the
               fetch function at the API client layer. Ensure the scheduler is
               scoped to the application instance and handles cleanup on unmount.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you handle partial failures in batch requests?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Batch endpoints should return an array of results where each
+              result includes both the data and a status (success/failure with
+              error details). The client iterates results and resolves/rejects
+              each original Promise individually. For example, if a batch of 5
+              requests has 3 successes and 2 failures, 3 Promises resolve with
+              data and 2 reject with specific error messages. The server should
+              use HTTP 207 Multi-Status or HTTP 200 with per-item status codes.
+              Client-side, implement retry logic for failed items with
+              idempotency keys to prevent duplicates. For critical operations,
+              consider falling back to individual requests for failed items
+              rather than failing the entire batch.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What is the difference between request batching and request
+              deduplication?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Batching combines multiple different requests into one network
+              call to reduce overhead. Deduplication prevents multiple identical
+              requests from being sent at all. Example: if components A and B
+              both request /users/123, deduplication ensures only one request is
+              sent and both components share the response. Batching would
+              combine /users/123 and /users/456 into one batch request. They are
+              complementary: DataLoader implements both — it deduplicates
+              identical keys within a batch and batches multiple keys into one
+              database query. React Query and SWR implement deduplication
+              automatically via query keys; batching requires additional
+              infrastructure (BatchHttpLink for GraphQL, custom batch endpoints
+              for REST).
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How does HTTP/2 multiplexing affect the need for request
+              batching?
+            </p>
+            <p className="mt-2 text-sm">
+              A: HTTP/2 multiplexing reduces but doesn't eliminate the need for
+              batching. Multiplexing allows many concurrent requests over one
+              connection, eliminating connection limits and reducing per-request
+              latency. However, batching still provides benefits: (1) Reduced
+              header overhead — one set of headers for N requests instead of N
+              sets. (2) Server-side efficiency — one authentication check, one
+              database transaction, one response serialization instead of N. (3)
+              Atomic operations — batch requests can be processed
+              transactionally. (4) Rate limiting — one batch counts as one
+              request against rate limits. The optimal strategy combines both:
+              use HTTP/2 for general requests and batching for high-volume,
+              related operations (dashboard widgets, analytics events, bulk
+              updates).
             </p>
           </div>
         </div>

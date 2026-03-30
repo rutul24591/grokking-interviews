@@ -1,0 +1,126 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">OAuth 2.0 Authorization Code Flow with PKCE</text>
+  
+  <!-- Actors -->
+  <rect x="50" y="80" width="200" height="450" rx="12" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="150" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e40af">User's Browser</text>
+  <text x="150" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#1e3a8a">(SPA Frontend)</text>
+  
+  <rect x="350" y="80" width="200" height="450" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Authorization Server</text>
+  <text x="450" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#78350f">(Identity Provider)</text>
+  
+  <rect x="650" y="80" width="200" height="450" rx="12" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="750" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#065f46">Your Backend API</text>
+  <text x="750" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#047857">(Resource Server)</text>
+  
+  <!-- Step 1: Generate PKCE -->
+  <rect x="70" y="160" width="160" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="150" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">1. Generate PKCE</text>
+  <text x="150" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">code_verifier (random)</text>
+  <text x="150" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">code_challenge = SHA256</text>
+  
+  <!-- Arrow to Auth Server -->
+  <path d="M 230 195 L 330 195" fill="none" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrow1)"/>
+  <defs>
+    <marker id="arrow1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+  </defs>
+  <text x="280" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#3b82f6" font-weight="600">2. Auth Request</text>
+  
+  <!-- Step 2: Auth Request -->
+  <rect x="370" y="160" width="160" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="450" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">2. Receive Request</text>
+  <text x="450" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Validate client_id</text>
+  <text x="450" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Store code_challenge</text>
+  
+  <!-- Step 3: User Login -->
+  <path d="M 450 230 L 450 280" fill="none" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow2)"/>
+  <defs>
+    <marker id="arrow2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+  <text x="520" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#f59e0b" font-weight="600">3. User Login</text>
+  
+  <rect x="370" y="280" width="160" height="70" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="450" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">3. User Authentication</text>
+  <text x="450" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">Login form</text>
+  <text x="450" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">MFA (if enabled)</text>
+  
+  <!-- Step 4: Authorization Code -->
+  <path d="M 370 315 L 230 315" fill="none" stroke="#10b981" stroke-width="2" marker-end="url(#arrow3)"/>
+  <defs>
+    <marker id="arrow3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+  </defs>
+  <text x="300" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#10b981" font-weight="600">4. Auth Code</text>
+  
+  <rect x="70" y="280" width="160" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="150" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">4. Receive Code</text>
+  <text x="150" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">authorization_code</text>
+  <text x="150" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">via redirect_uri</text>
+  
+  <!-- Step 5: Token Request -->
+  <path d="M 230 400 L 330 400" fill="none" stroke="#8b5cf6" stroke-width="2" marker-end="url(#arrow4)"/>
+  <defs>
+    <marker id="arrow4" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8b5cf6"/>
+    </marker>
+  </defs>
+  <text x="280" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#8b5cf6" font-weight="600">5. Token Request</text>
+  
+  <rect x="70" y="365" width="160" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="150" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">5. Send Token Request</text>
+  <text x="150" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">code + code_verifier</text>
+  <text x="150" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">POST /oauth/token</text>
+  
+  <!-- Step 6: Verify PKCE -->
+  <rect x="370" y="365" width="160" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="450" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">6. Verify PKCE</text>
+  <text x="450" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">SHA256(code_verifier)</text>
+  <text x="450" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">== code_challenge?</text>
+  
+  <!-- Step 7: Tokens -->
+  <path d="M 370 400 L 230 400" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow5)"/>
+  <defs>
+    <marker id="arrow5" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444"/>
+    </marker>
+  </defs>
+  <text x="300" y="420" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#ef4444" font-weight="600">7. Tokens</text>
+  
+  <rect x="70" y="465" width="160" height="55" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="150" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#991b1b">7. Receive Tokens</text>
+  <text x="150" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7f1d1d">access_token + id_token</text>
+  
+  <!-- Access Protected Resource -->
+  <path d="M 230 492 L 630 492" fill="none" stroke="#10b981" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow6)"/>
+  <defs>
+    <marker id="arrow6" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+  </defs>
+  <text x="430" y="482" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#10b981" font-weight="600">8. API Call with access_token</text>
+  
+  <!-- PKCE Note -->
+  <rect x="550" y="160" width="300" height="120" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="700" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b">Why PKCE?</text>
+  <text x="700" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Prevents authorization code</text>
+  <text x="700" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">interception attacks</text>
+  <text x="700" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Even if code is intercepted,</text>
+  <text x="700" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">attacker lacks code_verifier</text>
+  
+  <!-- Bottom security notes -->
+  <rect x="50" y="540" width="400" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="250" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#92400e" font-weight="600">⚠ Never store tokens in localStorage</text>
+  
+  <rect x="470" y="540" width="380" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="660" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#92400e" font-weight="600">⚠ Use httpOnly cookies or memory</text>
+</svg>

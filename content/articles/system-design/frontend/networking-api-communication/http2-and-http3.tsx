@@ -5,16 +5,16 @@ import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
-  id: "article-frontend-http2-and-http3-concise",
+  id: "article-frontend-http2-and-http3",
   title: "HTTP/2 and HTTP/3",
   description:
     "Deep dive into HTTP/2 and HTTP/3 from the frontend perspective covering multiplexing, server push, header compression, QUIC protocol, and how these impact frontend performance optimization strategies.",
   category: "frontend",
   subcategory: "networking-api-communication",
   slug: "http2-and-http3",
-  wordCount: 3200,
-  readingTime: 13,
-  lastUpdated: "2026-03-14",
+  wordCount: 6000,
+  readingTime: 24,
+  lastUpdated: "2026-03-30",
   tags: [
     "frontend",
     "HTTP/2",
@@ -813,6 +813,73 @@ export default function Http2AndHttp3ConciseArticle() {
               handle this automatically. The key insight is that HTTP/2 changed
               the optimal bundle count from 1 to roughly 5-15 per page, not from
               1 to 200.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you enable HTTP/3 on your infrastructure?
+            </p>
+            <p className="mt-2 text-sm">
+              A: HTTP/3 requires server and CDN support. For CDNs (Cloudflare,
+              Fastly, AWS CloudFront), enable HTTP/3 in the dashboard — they
+              handle the QUIC implementation. For self-hosted, use nginx with
+              the quic module, Caddy (native HTTP/3 support), or Apache with
+              mod_http3. The server must advertise HTTP/3 via the Alt-Svc
+              header: <code>Alt-Svc: h3=":443"; ma=86400</code>. Browsers
+              discover this on the first HTTP/2 request and upgrade subsequent
+              requests to HTTP/3. Ensure UDP port 443 is open (HTTP/3 uses UDP,
+              not TCP). Monitor the percentage of requests using HTTP/3 via
+              PerformanceResourceTiming.nextHopProtocol. Note that HTTP/3
+              benefits are most pronounced on high-latency, lossy networks; on
+              stable broadband, HTTP/2 performs similarly.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What is 103 Early Hints and how does it relate to HTTP/2?
+            </p>
+            <p className="mt-2 text-sm">
+              A: 103 Early Hints is an HTTP status code that allows the server
+              to send response headers before the final response is ready. While
+              the server is generating the HTML (querying databases, rendering
+              templates), it can send a 103 response with Link headers pointing
+              to critical assets (CSS, fonts, above-the-fold images). The
+              browser starts fetching these assets immediately, overlapping
+              asset download with server processing. This is particularly
+              powerful for dynamic pages where server processing takes 500ms-2s.
+              HTTP/2 multiplexing makes Early Hints more effective because the
+              browser can fetch hinted assets on the same connection without
+              blocking. Implementation: in nginx, use
+              <code>proxy_early_hints on</code>; in Node.js, use
+              <code>response.writeEarlyHints()</code>. Early Hints replaced
+              Server Push as the preferred preloading mechanism after Chrome
+              removed Server Push support in 2022.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How does HTTP/2 prioritization work and why does it matter?
+            </p>
+            <p className="mt-2 text-sm">
+              A: HTTP/2 allows clients to assign priority weights (1-256) and
+              dependencies to streams, telling the server which resources to
+              send first. The original spec used weighted dependency trees, but
+              this was complex and inconsistently implemented. The newer
+              Extensible Priorities (RFC 9218) uses urgency levels (0-7, lower
+              is more urgent) and an incremental flag. Browsers automatically
+              assign priorities: HTML gets urgency 0, CSS urgency 1, scripts
+              urgency 2-3, images urgency 4-7. Developers can override with the
+              fetchpriority attribute (<code>&lt;img fetchpriority="high"&gt;</code>)
+              or the Priority header in fetch requests. Proper prioritization
+              ensures critical resources (CSS for render, above-the-fold images)
+              arrive before non-critical ones (analytics scripts, below-the-fold
+              images), improving perceived performance. However, server
+              implementations vary; some ignore priorities entirely, so
+              prioritization should complement, not replace, other optimization
+              techniques.
             </p>
           </div>
         </div>

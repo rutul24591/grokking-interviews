@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none" role="img" aria-labelledby="httpStreamingTitle httpStreamingDesc">
+  <title id="httpStreamingTitle">HTTP Streaming Architecture</title>
+  <desc id="httpStreamingDesc">Diagram showing client maintaining persistent connection, server pushing chunks progressively, client processing incrementally with backpressure handling</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="450" fill="var(--background, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="var(--text, #1a1a1a)">HTTP Streaming Architecture</text>
+  
+  <!-- Client -->
+  <rect x="50" y="80" width="300" height="320" rx="8" fill="var(--bg-primary, #f5f5f5)" stroke="var(--border, #e0e0e0)" stroke-width="2"/>
+  <text x="200" y="110" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--text, #1a1a1a)">Client Application</text>
+  
+  <!-- Fetch API -->
+  <rect x="80" y="130" width="240" height="45" rx="6" fill="var(--bg-secondary, #ffffff)" stroke="var(--border, #e0e0e0)" stroke-width="1.5"/>
+  <text x="200" y="158" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="var(--text, #1a1a1a)">fetch() with ReadableStream</text>
+  
+  <!-- Stream Reader -->
+  <rect x="80" y="190" width="240" height="45" rx="6" fill="var(--accent, #3b82f6)" stroke="var(--accent, #3b82f6)" stroke-width="1.5"/>
+  <text x="200" y="218" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="white">Stream Reader</text>
+  
+  <!-- Processing -->
+  <rect x="80" y="250" width="240" height="45" rx="6" fill="var(--bg-secondary, #ffffff)" stroke="var(--border, #e0e0e0)" stroke-width="1.5"/>
+  <text x="200" y="278" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="var(--text, #1a1a1a)">Incremental Processing</text>
+  
+  <!-- UI Update -->
+  <rect x="80" y="310" width="240" height="45" rx="6" fill="var(--success, #22c55e)" stroke="var(--success, #22c55e)" stroke-width="1.5"/>
+  <text x="200" y="338" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="white">Progressive UI Update</text>
+  
+  <!-- Persistent Connection -->
+  <rect x="370" y="180" width="60" height="120" rx="30" fill="var(--bg-primary, #f5f5f5)" stroke="var(--accent, #3b82f6)" stroke-width="3" stroke-dasharray="8"/>
+  <text x="400" y="245" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="var(--accent, #3b82f6)">Persistent</text>
+  <text x="400" y="260" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="var(--accent, #3b82f6)">Connection</text>
+  
+  <!-- Server -->
+  <rect x="450" y="80" width="300" height="320" rx="8" fill="var(--bg-primary, #f5f5f5)" stroke="var(--border, #e0e0e0)" stroke-width="2"/>
+  <text x="600" y="110" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--text, #1a1a1a)">Server</text>
+  
+  <!-- Data Source -->
+  <rect x="480" y="130" width="240" height="45" rx="6" fill="var(--bg-secondary, #ffffff)" stroke="var(--border, #e0e0e0)" stroke-width="1.5"/>
+  <text x="600" y="158" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="var(--text, #1a1a1a)">Data Source</text>
+  
+  <!-- Chunk Generator -->
+  <rect x="480" y="190" width="240" height="45" rx="6" fill="var(--accent, #3b82f6)" stroke="var(--accent, #3b82f6)" stroke-width="1.5"/>
+  <text x="600" y="218" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="white">Chunk Generator</text>
+  
+  <!-- Transfer-Encoding -->
+  <rect x="480" y="250" width="240" height="45" rx="6" fill="var(--bg-secondary, #ffffff)" stroke="var(--border, #e0e0e0)" stroke-width="1.5"/>
+  <text x="600" y="278" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="var(--text, #1a1a1a)">Transfer-Encoding: chunked</text>
+  
+  <!-- Backpressure -->
+  <rect x="480" y="310" width="240" height="45" rx="6" fill="var(--bg-secondary, #ffffff)" stroke="var(--border, #e0e0e0)" stroke-width="1.5"/>
+  <text x="600" y="338" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="var(--text, #1a1a1a)">Backpressure Handling</text>
+  
+  <!-- Flow arrows -->
+  <path d="M350 215 L370 215" stroke="var(--accent, #3b82f6)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <path d="M430 215 L450 215" stroke="var(--accent, #3b82f6)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Backpressure arrow (reverse) -->
+  <path d="M370 245 L350 245" stroke="var(--text-muted, #666666)" stroke-width="2" stroke-dasharray="4" marker-end="url(#arrowheadSmall)"/>
+  <text x="360" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">Backpressure</text>
+  
+  <!-- Key features -->
+  <rect x="50" y="410" width="700" height="30" rx="4" fill="var(--bg-secondary, #ffffff)" stroke="var(--border, #e0e0e0)" stroke-width="1"/>
+  <text x="400" y="430" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="var(--text, #1a1a1a)">Key Features: Persistent connection • Chunked transfer • Incremental processing • Backpressure support</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--accent, #3b82f6)"/>
+    </marker>
+    <marker id="arrowheadSmall" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
+      <polygon points="0 0, 6 2, 0 4" fill="var(--text-muted, #666666)"/>
+    </marker>
+  </defs>
+</svg>

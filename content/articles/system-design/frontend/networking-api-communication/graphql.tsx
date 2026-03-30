@@ -5,16 +5,16 @@ import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
-  id: "article-frontend-graphql-concise",
+  id: "article-frontend-graphql",
   title: "GraphQL",
   description:
     "Deep dive into GraphQL from the frontend perspective covering schema design, queries, mutations, subscriptions, caching with Apollo/urql, fragments, and performance optimization.",
   category: "frontend",
   subcategory: "networking-api-communication",
   slug: "graphql",
-  wordCount: 3200,
-  readingTime: 13,
-  lastUpdated: "2026-03-14",
+  wordCount: 6000,
+  readingTime: 24,
+  lastUpdated: "2026-03-30",
   tags: [
     "frontend",
     "GraphQL",
@@ -1052,6 +1052,72 @@ export default function GraphQLConciseArticle() {
               third-party) need different views of the same data, the data model
               has deep relationships, or reducing round trips is critical for
               performance.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you handle GraphQL subscriptions at scale?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Subscriptions use WebSocket connections (graphql-ws protocol)
+              to push real-time updates. At scale, the challenge is that
+              WebSocket connections are stateful and pinned to a specific
+              server. When an event occurs, you need to notify only the servers
+              holding connections for affected users. The solution is a pub/sub
+              backend (Redis Pub/Sub, NATS, Kafka): when an event occurs,
+              publish it to a topic (e.g., &quot;user:123:notifications&quot;).
+              Each GraphQL server subscribes to relevant topics and forwards
+              events to connected clients. For connection management, implement
+              heartbeat/ping-pong to detect zombie connections, set connection
+      timeouts, and use connection limits per user. Consider using a managed
+      service (Ably, Pusher) for subscription infrastructure to avoid
+      operational complexity.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you handle file uploads in GraphQL?
+            </p>
+            <p className="mt-2 text-sm">
+              A: GraphQL doesn't natively support file uploads in the spec. The
+              community standard is the graphql-multipart-request spec: files
+              are sent as multipart/form-data alongside the GraphQL query in a
+              single POST. The server extracts files and passes them to
+              resolvers via context. Libraries like
+              <code>graphql-upload</code> (Apollo) or
+              <code>nexus-prisma</code> with upload scalars handle this.
+              Alternative approaches: (1) Upload files via a separate REST
+              endpoint, get a URL back, then pass the URL to a GraphQL mutation
+              -- this separates concerns and leverages REST's native multipart
+              support. (2) Use base64 encoding for small files directly in the
+              mutation arguments -- simple but inefficient for large files. For
+              production systems, the REST upload + GraphQL reference pattern is
+              most common because it cleanly separates file handling from
+              business logic.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you version a GraphQL API?
+            </p>
+            <p className="mt-2 text-sm">
+              A: GraphQL discourages versioning in favor of schema evolution.
+              Instead of /v1 and /v2 endpoints, you deprecate fields gradually:
+              mark a field as <code>@deprecated(reason: &quot;Use newUser
+              field&quot;)</code>, keep both fields during a transition period
+              (6-12 months), monitor usage via schema analytics, and remove the
+              deprecated field once usage drops to zero. For breaking changes
+              that cannot be deprecated (type changes, argument removals),
+              introduce a new field with a different name (user vs newUser,
+              getUser vs getUserV2). Use schema stitching or federation to
+              gradually migrate between major schema versions. The key advantage
+              over REST is that GraphQL clients specify exactly which fields
+              they need, so adding new fields never breaks existing clients.
+              Versioning is only needed for truly breaking changes, which should
+              be rare with careful schema design.
             </p>
           </div>
         </div>

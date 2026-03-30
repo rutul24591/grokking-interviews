@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none" role="img" aria-labelledby="webrtcMeshTitle webrtcMeshDesc">
+  <title id="webrtcMeshTitle">WebRTC Mesh vs SFU Architecture</title>
+  <desc id="webrtcMeshDesc">Comparison diagram showing mesh topology with direct P2P connections between all peers vs SFU routing all streams through a central server</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="450" fill="var(--background, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="var(--text, #1a1a1a)">Mesh vs SFU Architecture</text>
+  
+  <!-- Mesh Topology (Left) -->
+  <rect x="30" y="70" width="350" height="340" rx="8" fill="var(--bg-primary, #f5f5f5)" stroke="var(--border, #e0e0e0)" stroke-width="2"/>
+  <text x="205" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--text, #1a1a1a)">Mesh Topology (P2P)</text>
+  
+  <!-- Mesh peers -->
+  <circle cx="80" cy="180" r="30" fill="var(--accent, #3b82f6)" stroke="var(--accent, #3b82f6)" stroke-width="2"/>
+  <text x="80" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="white">A</text>
+  
+  <circle cx="330" cy="180" r="30" fill="var(--accent, #3b82f6)" stroke="var(--accent, #3b82f6)" stroke-width="2"/>
+  <text x="330" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="white">B</text>
+  
+  <circle cx="205" cy="350" r="30" fill="var(--accent, #3b82f6)" stroke="var(--accent, #3b82f6)" stroke-width="2"/>
+  <text x="205" y="355" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="white">C</text>
+  
+  <!-- Mesh connections (full mesh) -->
+  <path d="M105 190 L180 340" stroke="var(--accent, #3b82f6)" stroke-width="2" stroke-dasharray="4"/>
+  <path d="M305 190 L230 340" stroke="var(--accent, #3b82f6)" stroke-width="2" stroke-dasharray="4"/>
+  <path d="M110 180 L300 180" stroke="var(--accent, #3b82f6)" stroke-width="2" stroke-dasharray="4"/>
+  
+  <text x="205" y="400" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="var(--text, #1a1a1a)">Connections: N×(N-1)/2 = 3</text>
+  <text x="205" y="420" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Each peer sends N-1 streams</text>
+  
+  <!-- SFU Topology (Right) -->
+  <rect x="420" y="70" width="350" height="340" rx="8" fill="var(--bg-primary, #f5f5f5)" stroke="var(--border, #e0e0e0)" stroke-width="2"/>
+  <text x="595" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--text, #1a1a1a)">SFU Topology</text>
+  
+  <!-- SFU Server -->
+  <rect x="535" y="150" width="120" height="50" rx="6" fill="var(--success, #22c55e)" stroke="var(--success, #22c55e)" stroke-width="2"/>
+  <text x="595" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="white">SFU Server</text>
+  <text x="595" y="192" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">(Selective Forwarding)</text>
+  
+  <!-- SFU peers -->
+  <circle cx="470" cy="280" r="30" fill="var(--accent, #3b82f6)" stroke="var(--accent, #3b82f6)" stroke-width="2"/>
+  <text x="470" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="white">A</text>
+  
+  <circle cx="720" cy="280" r="30" fill="var(--accent, #3b82f6)" stroke="var(--accent, #3b82f6)" stroke-width="2"/>
+  <text x="720" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="white">B</text>
+  
+  <circle cx="595" cy="380" r="30" fill="var(--accent, #3b82f6)" stroke="var(--accent, #3b82f6)" stroke-width="2"/>
+  <text x="595" y="385" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="white">C</text>
+  
+  <!-- SFU connections (star topology) -->
+  <path d="M485 260 L550 200" stroke="var(--accent, #3b82f6)" stroke-width="2"/>
+  <path d="M705 260 L640 200" stroke="var(--accent, #3b82f6)" stroke-width="2"/>
+  <path d="M595 350 L595 200" stroke="var(--accent, #3b82f6)" stroke-width="2"/>
+  
+  <!-- Arrows showing direction -->
+  <path d="M490 255 L545 205" stroke="var(--accent, #3b82f6)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <path d="M550 210 L495 265" stroke="var(--accent, #3b82f6)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <text x="595" y="430" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="var(--text, #1a1a1a)">Connections: N = 3</text>
+  <text x="595" y="450" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">Each peer sends 1, receives N-1</text>
+  
+  <!-- Comparison table at bottom -->
+  <rect x="30" y="420" width="740" height="25" rx="4" fill="var(--bg-secondary, #ffffff)" stroke="var(--border, #e0e0e0)" stroke-width="1"/>
+  <text x="150" y="437" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text, #1a1a1a)">Mesh: Best for 2-5 participants</text>
+  <text x="400" y="437" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text, #1a1a1a)">SFU: Best for 5+ participants</text>
+  <text x="650" y="437" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text, #1a1a1a)">SFU requires server infrastructure</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--accent, #3b82f6)"/>
+    </marker>
+  </defs>
+</svg>

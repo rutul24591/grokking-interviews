@@ -5,16 +5,16 @@ import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
-  id: "article-frontend-short-polling-concise",
+  id: "article-frontend-short-polling",
   title: "Short Polling",
   description:
     "Comprehensive guide to short polling covering interval-based HTTP requests, polling optimization, adaptive intervals, and when short polling is the pragmatic choice over WebSockets.",
   category: "frontend",
   subcategory: "networking-api-communication",
   slug: "short-polling",
-  wordCount: 3200,
-  readingTime: 13,
-  lastUpdated: "2026-03-14",
+  wordCount: 6000,
+  readingTime: 24,
+  lastUpdated: "2026-03-30",
   tags: ["frontend", "polling", "HTTP", "real-time", "setInterval", "adaptive"],
   relatedTopics: [
     "long-polling",
@@ -783,6 +783,69 @@ export default function ShortPollingConciseArticle() {
               naturally absorbs network latency: if the interval is 5 seconds
               and the request takes 1 second, the effective period is 6 seconds,
               which is self-regulating under load.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you handle polling when the user switches to a
+              background tab?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Use the Page Visibility API (document.hidden and the
+              visibilitychange event). When the tab becomes hidden, pause
+              polling or increase the interval significantly (e.g., from 5s to
+              60s). When the tab becomes visible again, resume normal polling
+              and optionally trigger an immediate refresh to show fresh data.
+              This saves battery on mobile devices, reduces unnecessary server
+              load, and respects user attention. For critical real-time data
+              (trading, monitoring), you may still poll in the background but
+              at a reduced frequency. Also listen to the blur/focus events as a
+              fallback for older browsers.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What are the cost implications of short polling vs alternatives
+              at scale?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Short polling has predictable, linear costs: N users × (1 /
+              interval) = requests per second. For 100K users at 10s intervals,
+              that&apos;s 10K RPS continuously. With conditional requests (304
+              responses), bandwidth is low but request processing cost remains.
+              Long polling reduces request count (only one request per data
+              update) but holds connections open, consuming server memory and
+              file descriptors. SSE is similar to long polling but with better
+              protocol support. WebSocket has the highest initial cost
+              (connection setup, infrastructure for stateful connections) but
+              lowest marginal cost per message. For low-frequency updates
+              (&lt;1/minute), short polling is often cheapest. For high-frequency
+              (&gt;1/second), WebSocket or SSE is more cost-effective. The
+              break-even point is typically around 1 update per 5-10 seconds.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you prevent race conditions when polling multiple
+              related endpoints?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Race conditions occur when endpoint A returns before endpoint
+              B, but A&apos;s data depends on B&apos;s state. Solutions: (1)
+              Sequential polling — poll endpoints in dependency order, waiting
+              for each to complete before starting the next. This increases
+              total latency but guarantees order. (2) Version tokens — each
+              response includes a version number; only apply updates if the
+              version is newer than the current state. (3) Batch endpoint —
+              combine related endpoints into a single request that returns
+              consistent, atomic data. (4) Request deduplication — use a library
+              like React Query or SWR that automatically deduplicates and
+              coordinates requests. For dashboards with many widgets, approach
+              (4) is most scalable: each widget declares its data needs, and the
+              library batches and deduplicates automatically.
             </p>
           </div>
         </div>

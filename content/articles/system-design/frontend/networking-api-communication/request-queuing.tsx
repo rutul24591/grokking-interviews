@@ -5,16 +5,16 @@ import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
-  id: "article-frontend-request-queuing-concise",
+  id: "article-frontend-request-queuing",
   title: "Request Queuing",
   description:
     "Deep dive into client-side request queuing covering priority queues, concurrency limits, offline queuing, sequential processing, and managing network request lifecycle in frontend applications.",
   category: "frontend",
   subcategory: "networking-api-communication",
   slug: "request-queuing",
-  wordCount: 3200,
-  readingTime: 13,
-  lastUpdated: "2026-03-14",
+  wordCount: 6000,
+  readingTime: 24,
+  lastUpdated: "2026-03-30",
   tags: [
     "frontend",
     "queue",
@@ -993,6 +993,70 @@ export default function RequestQueuingConciseArticle() {
               replayed entries from IndexedDB. Use the Background Sync API in a
               service worker for automatic replay even if the user has closed
               the tab.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you handle request cancellation in a queued system?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Each queued request should have an associated AbortController.
+              For pending (not yet dispatched) requests, cancellation simply
+              removes the request from the queue and rejects its Promise with an
+              abort error. For in-flight requests, call controller.abort() which
+              propagates the signal to fetch(), causing the request to terminate
+              and the Promise to reject. The queue should expose a cancel()
+              method that accepts a request ID or a filter function. For
+              React-based applications, integrate with useEffect cleanup: return
+              a function that cancels all requests associated with that
+              component. Libraries like React Query and SWR handle this
+              automatically by tying request lifecycle to component mount state.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What is backpressure and how do you handle it in a request
+              queue?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Backpressure occurs when the rate of incoming requests exceeds
+              the rate at which the queue can process them, causing the queue to
+              grow unbounded. This consumes memory and increases latency for all
+              queued requests. Handle backpressure by: (1) Setting a maximum
+              queue size and rejecting new requests when full (fail-fast). (2)
+              Implementing priority-based dropping — when the queue is full,
+              drop low-priority requests to make room for high-priority ones.
+              (3) Signaling the application layer to slow down — disable
+              prefetching, show loading states, or debounce user input. (4)
+              Monitoring queue depth and alerting when it exceeds thresholds.
+              (5) Using adaptive concurrency — reduce the concurrency limit when
+              queue depth grows, allowing the queue to drain faster. The key is
+              to treat backpressure as a first-class concern, not an edge case.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you test request queuing behavior?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Testing request queuing requires simulating timing-dependent
+              scenarios. Use mocked timers (jest.useFakeTimers()) to control
+              request dispatch timing. Mock the network layer to simulate slow
+              responses, failures, and rate limits. Test scenarios: (1)
+              Concurrency limit — dispatch 10 requests, verify only N are
+              in-flight at once. (2) Priority ordering — dispatch requests in
+              mixed priority order, verify they are dispatched in priority
+              order. (3) Cancellation — dispatch requests, cancel some before
+              dispatch, verify they never hit the network. (4) Offline queuing
+              — simulate offline state, queue mutations, simulate online, verify
+              replay. (5) Starvation prevention — flood with high-priority
+              requests, verify low-priority requests eventually get dispatched.
+              Use integration tests with real browser environments (Playwright,
+              Cypress) to verify end-to-end behavior including network tab
+              inspection.
             </p>
           </div>
         </div>

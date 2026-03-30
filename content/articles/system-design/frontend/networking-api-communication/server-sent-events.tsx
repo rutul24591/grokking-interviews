@@ -5,16 +5,16 @@ import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
-  id: "article-frontend-server-sent-events-concise",
+  id: "article-frontend-server-sent-events",
   title: "Server-Sent Events (SSE)",
   description:
     "Deep dive into Server-Sent Events covering EventSource API, auto-reconnection, event types, Last-Event-ID, streaming over HTTP/2, and comparison with WebSockets.",
   category: "frontend",
   subcategory: "networking-api-communication",
   slug: "server-sent-events",
-  wordCount: 3200,
-  readingTime: 13,
-  lastUpdated: "2026-03-14",
+  wordCount: 6000,
+  readingTime: 24,
+  lastUpdated: "2026-03-30",
   tags: ["frontend", "SSE", "EventSource", "streaming", "real-time", "HTTP"],
   relatedTopics: [
     "websockets",
@@ -1010,6 +1010,70 @@ export default function ServerSentEventsConciseArticle() {
               extreme scale, consider edge SSE: terminate connections at CDN
               edge nodes (Cloudflare Workers, Lambda@Edge) to reduce round-trip
               latency and distribute connection load geographically.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you handle authentication for SSE endpoints?
+            </p>
+            <p className="mt-2 text-sm">
+              A: SSE supports standard HTTP authentication mechanisms. For
+              cookie-based auth, set <code>withCredentials: true</code> on the
+              EventSource (note: requires custom EventSource polyfill as native
+              EventSource doesn&apos;t support this). For token-based auth,
+              pass the token in a query parameter
+              (<code>?token=xyz</code>) — this is secure over HTTPS and works
+              with native EventSource. Alternatively, use the Authorization
+              header with a custom EventSource implementation. On the server,
+              validate the token/cookie before establishing the stream.
+              Important: once the connection is established, the auth is not
+              re-validated on reconnection unless you implement custom logic.
+              For high-security applications, use short-lived tokens and
+              implement server-side session invalidation that closes active
+              connections when a user logs out.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What are the limitations of SSE and when should you not use it?
+            </p>
+            <p className="mt-2 text-sm">
+              A: SSE has several limitations: (1) Unidirectional only —
+              server-to-client. For bidirectional needs, pair with HTTP POST or
+              use WebSocket. (2) Text-only — binary data must be Base64-encoded
+              (33% overhead). For binary streaming, use WebSocket or fetch with
+              ReadableStream. (3) HTTP/1.1 connection limits — browsers limit 6
+              connections per origin, so multiple SSE streams exhaust slots.
+              Mitigate with HTTP/2 multiplexing or separate subdomains. (4)
+              Limited browser support in older browsers (no IE, requires
+              polyfill). (5) No built-in compression — rely on HTTP-level
+              compression. Do not use SSE for: file transfers, real-time gaming,
+              collaborative editing with frequent client-to-server updates, or
+              scenarios requiring sub-50ms round-trip latency.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you implement custom event types in SSE?
+            </p>
+            <p className="mt-2 text-sm">
+              A: SSE supports named event types via the <code>event:</code>
+              field. The server sends: <code>event: userJoined</code> followed
+              by <code>data: (user info)</code>. On the client, register listeners
+              with <code>addEventListener(&apos;userJoined&apos;, handler)</code>
+              instead of the default <code>onmessage</code>. This enables
+              multiplexing multiple event types over a single connection.
+              Example use case: a notification feed with events like
+              &quot;newMessage&quot;, &quot;userTyping&quot;,
+              &quot;readReceipt&quot;. Each event type has its own handler,
+              keeping logic separated. The server can also send comments
+              (<code>: heartbeat</code>) that don&apos;t trigger any event —
+              useful for keep-alive. Named events are a powerful alternative to
+              embedding a <code>type</code> field in the JSON payload and
+              dispatching manually.
             </p>
           </div>
         </div>

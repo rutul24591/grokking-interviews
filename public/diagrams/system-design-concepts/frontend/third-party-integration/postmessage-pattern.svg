@@ -1,0 +1,93 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">postMessage Communication Pattern</text>
+  
+  <!-- Parent App -->
+  <rect x="50" y="80" width="350" height="450" rx="12" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="225" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e40af">Parent Application</text>
+  
+  <!-- Iframe -->
+  <rect x="500" y="80" width="350" height="450" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="675" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Iframe (Third-Party)</text>
+  
+  <!-- Parent: Send Message -->
+  <rect x="70" y="140" width="310" height="100" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="225" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b">1. Send Message to Iframe</text>
+  
+  <rect x="85" y="180" width="280" height="50" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="225" y="200" text-anchor="middle" font-family="monospace" font-size="9" fill="#22c55e">iframe.contentWindow.postMessage(</text>
+  <text x="225" y="218" text-anchor="middle" font-family="monospace" font-size="9" fill="#e2e8f0">  { message: "requestData" },</text>
+  <text x="225" y="236" text-anchor="middle" font-family="monospace" font-size="9" fill="#e2e8f0">  "https://trusted-origin.com"</text>
+  <text x="225" y="254" text-anchor="middle" font-family="monospace" font-size="9" fill="#22c55e">);</text>
+  
+  <!-- Arrow to iframe -->
+  <line x1="400" y1="190" x2="480" y2="190" stroke="#3b82f6" stroke-width="3" marker-end="url(#parentArrow)"/>
+  <defs>
+    <marker id="parentArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+  </defs>
+  <text x="440" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#3b82f6" font-weight="600">postMessage</text>
+  
+  <!-- Iframe: Receive -->
+  <rect x="520" y="140" width="310" height="100" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="675" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b">2. Receive &amp; Validate</text>
+  
+  <rect x="535" y="180" width="280" height="50" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="675" y="200" text-anchor="middle" font-family="monospace" font-size="9" fill="#f59e0b">window.addEventListener('message', </text>
+  <text x="675" y="218" text-anchor="middle" font-family="monospace" font-size="9" fill="#e2e8f0">  (event) =&gt; {</text>
+  <text x="675" y="236" text-anchor="middle" font-family="monospace" font-size="9" fill="#22c55e">if (event.origin === "https://parent.com")</text>
+  <text x="675" y="254" text-anchor="middle" font-family="monospace" font-size="9" fill="#e2e8f0">  process(event.data);</text>
+  <text x="675" y="272" text-anchor="middle" font-family="monospace" font-size="9" fill="#f59e0b">});</text>
+  
+  <!-- Arrow down in iframe -->
+  <line x1="675" y1="240" x2="675" y2="280" stroke="#f59e0b" stroke-width="2" marker-end="url(#iframeArrow)"/>
+  <defs>
+    <marker id="iframeArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+  
+  <!-- Iframe: Process -->
+  <rect x="520" y="280" width="310" height="80" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="675" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b">3. Process Request</text>
+  <text x="675" y="335" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Execute widget logic</text>
+  <text x="675" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Prepare response data</text>
+  
+  <!-- Arrow back to parent -->
+  <line x1="480" y1="360" x2="400" y2="360" stroke="#10b981" stroke-width="3" marker-end="url(#responseArrow)"/>
+  <defs>
+    <marker id="responseArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+  </defs>
+  <text x="440" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#10b981" font-weight="600">response</text>
+  
+  <!-- Iframe: Send Response -->
+  <rect x="520" y="380" width="310" height="80" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="675" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b">4. Send Response</text>
+  
+  <rect x="535" y="420" width="280" height="35" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="675" y="435" text-anchor="middle" font-family="monospace" font-size="9" fill="#10b981">event.source.postMessage(response, event.origin);</text>
+  
+  <!-- Parent: Receive Response -->
+  <rect x="70" y="320" width="310" height="100" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="225" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b">5. Receive &amp; Validate Response</text>
+  
+  <rect x="85" y="360" width="280" height="50" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="225" y="380" text-anchor="middle" font-family="monospace" font-size="9" fill="#3b82f6">window.addEventListener('message', </text>
+  <text x="225" y="398" text-anchor="middle" font-family="monospace" font-size="9" fill="#e2e8f0">  (event) =&gt; {</text>
+  <text x="225" y="416" text-anchor="middle" font-family="monospace" font-size="9" fill="#22c55e">if (event.origin === "https://iframe.com")</text>
+  <text x="225" y="434" text-anchor="middle" font-family="monospace" font-size="9" fill="#e2e8f0">  handleResponse(event.data);</text>
+  <text x="225" y="452" text-anchor="middle" font-family="monospace" font-size="9" fill="#3b82f6">});</text>
+  
+  <!-- Security notes -->
+  <rect x="50" y="540" width="400" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="250" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#92400e" font-weight="600">⚠ Always validate event.origin</text>
+  
+  <rect x="470" y="540" width="380" height="30" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="660" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#92400e" font-weight="600">⚠ Never use "*" as targetOrigin</text>
+</svg>

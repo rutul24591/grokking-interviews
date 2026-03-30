@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none" role="img" aria-labelledby="chunkedTransferTitle chunkedTransferDesc">
+  <title id="chunkedTransferTitle">Chunked Transfer Encoding Flow</title>
+  <desc id="chunkedTransferDesc">Diagram showing how server sends data in chunks progressively and client processes each chunk as it arrives</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="450" fill="var(--background, #ffffff)"/>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="var(--text, #1a1a1a)">Chunked Transfer Encoding Flow</text>
+  
+  <!-- Server -->
+  <rect x="50" y="80" width="280" height="320" rx="8" fill="var(--bg-primary, #f5f5f5)" stroke="var(--border, #e0e0e0)" stroke-width="2"/>
+  <text x="190" y="110" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--text, #1a1a1a)">Server</text>
+  
+  <!-- Data source -->
+  <rect x="80" y="130" width="220" height="50" rx="6" fill="var(--bg-secondary, #ffffff)" stroke="var(--border, #e0e0e0)" stroke-width="1.5"/>
+  <text x="190" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="var(--text, #1a1a1a)">Data Source</text>
+  <text x="190" y="178" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="var(--text-muted, #666666)">(Database, Stream, File)</text>
+  
+  <!-- Chunking -->
+  <rect x="80" y="200" width="220" height="50" rx="6" fill="var(--accent, #3b82f6)" stroke="var(--accent, #3b82f6)" stroke-width="1.5"/>
+  <text x="190" y="230" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="white">Split into Chunks</text>
+  
+  <!-- Chunks visualization -->
+  <rect x="90" y="265" width="45" height="30" rx="3" fill="var(--bg-secondary, #ffffff)" stroke="var(--border, #e0e0e0)" stroke-width="1"/>
+  <text x="112" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text, #1a1a1a)">Chunk 1</text>
+  
+  <rect x="145" y="265" width="45" height="30" rx="3" fill="var(--bg-secondary, #ffffff)" stroke="var(--border, #e0e0e0)" stroke-width="1"/>
+  <text x="167" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text, #1a1a1a)">Chunk 2</text>
+  
+  <rect x="200" y="265" width="45" height="30" rx="3" fill="var(--bg-secondary, #ffffff)" stroke="var(--border, #e0e0e0)" stroke-width="1"/>
+  <text x="222" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text, #1a1a1a)">Chunk 3</text>
+  
+  <rect x="255" y="265" width="45" height="30" rx="3" fill="var(--bg-secondary, #ffffff)" stroke="var(--border, #e0e0e0)" stroke-width="1"/>
+  <text x="277" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="var(--text-muted, #666666)">...</text>
+  
+  <!-- Network -->
+  <rect x="350" y="80" width="100" height="320" rx="8" fill="var(--bg-primary, #f5f5f5)" stroke="var(--border, #e0e0e0)" stroke-width="2"/>
+  <text x="400" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--text, #1a1a1a)">Network</text>
+  <text x="400" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="var(--text-muted, #666666)">(HTTP Stream)</text>
+  
+  <!-- Arrows from server to network -->
+  <path d="M330 275 L350 275" stroke="var(--accent, #3b82f6)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Client -->
+  <rect x="470" y="80" width="280" height="320" rx="8" fill="var(--bg-primary, #f5f5f5)" stroke="var(--border, #e0e0e0)" stroke-width="2"/>
+  <text x="610" y="110" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="var(--text, #1a1a1a)">Client</text>
+  
+  <!-- ReadableStream -->
+  <rect x="500" y="130" width="220" height="50" rx="6" fill="var(--bg-secondary, #ffffff)" stroke="var(--border, #e0e0e0)" stroke-width="1.5"/>
+  <text x="610" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="var(--text, #1a1a1a)">ReadableStream</text>
+  
+  <!-- Processing -->
+  <rect x="500" y="200" width="220" height="50" rx="6" fill="var(--accent, #3b82f6)" stroke="var(--accent, #3b82f6)" stroke-width="1.5"/>
+  <text x="610" y="230" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="white">Process Incrementally</text>
+  
+  <!-- Output -->
+  <rect x="500" y="270" width="220" height="50" rx="6" fill="var(--success, #22c55e)" stroke="var(--success, #22c55e)" stroke-width="1.5"/>
+  <text x="610" y="300" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="white">Progressive UI Update</text>
+  
+  <!-- Arrow from network to client -->
+  <path d="M450 275 L470 275" stroke="var(--accent, #3b82f6)" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Key benefits callout -->
+  <rect x="50" y="410" width="700" height="30" rx="4" fill="var(--bg-secondary, #ffffff)" stroke="var(--border, #e0e0e0)" stroke-width="1"/>
+  <text x="400" y="430" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="var(--text, #1a1a1a)">Benefits: No buffering delay • Lower memory usage • Progressive rendering • Works with large responses</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="var(--accent, #3b82f6)"/>
+    </marker>
+  </defs>
+</svg>

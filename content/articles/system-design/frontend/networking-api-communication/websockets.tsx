@@ -5,16 +5,16 @@ import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
-  id: "article-frontend-websockets-concise",
+  id: "article-frontend-websockets",
   title: "WebSockets",
   description:
     "Comprehensive guide to WebSockets covering the handshake, full-duplex communication, heartbeat/ping-pong, reconnection strategies, scaling challenges, and comparison with SSE and polling.",
   category: "frontend",
   subcategory: "networking-api-communication",
   slug: "websockets",
-  wordCount: 3200,
-  readingTime: 13,
-  lastUpdated: "2026-03-14",
+  wordCount: 6000,
+  readingTime: 24,
+  lastUpdated: "2026-03-30",
   tags: [
     "frontend",
     "WebSocket",
@@ -862,6 +862,65 @@ export default function WebSocketsConciseArticle() {
               compatibility. In practice, most applications use WebSocket for
               bidirectional and SSE for unidirectional, with long polling only
               as a fallback in Socket.IO-style libraries.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you handle reconnection after a WebSocket disconnects?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Implement exponential backoff with jitter to prevent thundering
+              herd. Start with a 1-second delay, then 2s, 4s, 8s, up to a
+              maximum of 30-60 seconds. Add random jitter (0-50% of the delay)
+              to spread reconnection attempts. Store a sequence ID or timestamp
+              of the last received message; on reconnection, send this to the
+              server so it can replay any missed messages. For mobile
+              applications, also listen to network status events (online/offline)
+              and trigger reconnection when connectivity is restored. Use a
+              library like Socket.IO or reconnecting-websocket that handles
+              this automatically, but understand the underlying mechanism for
+              debugging production issues.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you secure WebSocket connections?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Use <code>wss://</code> (WebSocket Secure) which tunnels
+              WebSocket over TLS, encrypting all frames. Authenticate during
+              the handshake: pass a JWT token in a query parameter
+              (<code>?token=xyz</code>) or cookie, validate it before upgrading
+              the connection. Never authenticate per-message — it wastes
+              bandwidth. Implement origin validation on the server to prevent
+              cross-site WebSocket hijacking (check the Origin header against
+              an allowlist). For sensitive applications, implement message-level
+              encryption on top of TLS. Rate limit connections per user/IP to
+              prevent DoS. Finally, implement heartbeat/ping-pong to detect and
+              close zombie connections that consume server resources.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What is the difference between Socket.IO and native WebSocket?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Native WebSocket is a low-level protocol (RFC 6455) providing
+              raw bidirectional messaging. Socket.IO is a higher-level library
+              built on top of WebSocket with additional features: automatic
+              reconnection with backoff, multiplexing (multiple logical channels
+              over one connection), rooms/namespaces for pub/sub grouping,
+              acknowledgments (callback-based message delivery confirmation),
+              and fallback to long-polling when WebSocket is unavailable. The
+              trade-off is that Socket.IO uses its own protocol on top of
+              WebSocket, making it incompatible with native WebSocket clients.
+              Use native WebSocket when you need interoperability with
+              non-JavaScript clients or want full control. Use Socket.IO when
+              you want batteries-included reconnection, rooms, and fallback
+              handling without building it yourself.
             </p>
           </div>
         </div>

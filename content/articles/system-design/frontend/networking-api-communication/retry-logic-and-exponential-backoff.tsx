@@ -5,16 +5,16 @@ import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
-  id: "article-frontend-retry-logic-concise",
+  id: "article-frontend-retry-logic-and-exponential-backoff",
   title: "Retry Logic and Exponential Backoff",
   description:
     "Comprehensive guide to retry strategies covering exponential backoff, jitter, idempotency requirements, retry budgets, and building resilient frontend applications that gracefully handle transient failures.",
   category: "frontend",
   subcategory: "networking-api-communication",
   slug: "retry-logic-and-exponential-backoff",
-  wordCount: 3200,
-  readingTime: 13,
-  lastUpdated: "2026-03-14",
+  wordCount: 6000,
+  readingTime: 24,
+  lastUpdated: "2026-03-30",
   tags: [
     "frontend",
     "retry",
@@ -771,6 +771,63 @@ export default function RetryLogicAndExponentialBackoffConciseArticle() {
               system-level protection that per-request max retries cannot
               provide because they do not account for aggregate behavior across
               all clients.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you handle retry for non-idempotent operations like POST?
+            </p>
+            <p className="mt-2 text-sm">
+              A: For non-idempotent operations, use idempotency keys. Generate a
+              unique UUID per user action (not per request attempt) and include
+              it in an Idempotency-Key header. The server stores this key with
+              the operation result. If the same key is received again (due to
+              retry), the server returns the cached result instead of
+              re-executing. This ensures exactly-once semantics even with
+              multiple retries. Generate the key when the user initiates the
+              action (e.g., clicks "Pay"), not when the HTTP request fires, so
+              all retry attempts share the same key. For operations where
+              idempotency keys are not supported, limit retries to 1-2 attempts
+              and alert on repeated failures for manual investigation.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you integrate retry logic with circuit breakers?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Retry and circuit breaker are complementary: retry handles
+              transient failures, circuit breaker handles sustained outages. The
+              layering is: circuit breaker wraps retry. First check circuit
+              state — if open, fail fast without retry. If closed, proceed to
+              retry logic. On each retry failure, report to the circuit breaker.
+              When failures exceed the threshold, the circuit opens, preventing
+              further retries. This prevents wasting retry budget on endpoints
+              known to be down. When the circuit half-opens, allow one probe
+              request through; if it succeeds, close the circuit and resume
+              normal retry behavior. Libraries like opossum and resilience4j
+              implement this pattern.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: What is the difference between retry and refresh token retry?
+            </p>
+            <p className="mt-2 text-sm">
+              A: Standard retry re-sends the same request after a delay. Refresh
+              token retry is specific to 401 Unauthorized responses: when a
+              request fails with 401, the client refreshes the auth token
+              (using a refresh token or re-authentication), then retries the
+              original request with the new token. This is not blind retry — it
+              changes the request (new Authorization header) before retrying.
+              Implement this in an Axios/fetch interceptor: on 401, trigger
+              token refresh (with mutex to prevent thundering herd if multiple
+              requests fail simultaneously), then clone and retry the original
+              request with the new token. Limit to one retry per 401 to prevent
+              infinite loops if the refresh itself fails.
             </p>
           </div>
         </div>

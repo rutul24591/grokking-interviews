@@ -1,0 +1,85 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Third-Party Script Loading Timeline</text>
+  
+  <!-- Browser loading timeline -->
+  <rect x="50" y="80" width="800" height="200" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Script Loading Sequence</text>
+  
+  <!-- Time axis -->
+  <line x1="70" y1="250" x2="830" y2="250" stroke="#64748b" stroke-width="2"/>
+  <text x="840" y="255" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">Time →</text>
+  
+  <!-- HTML Parse -->
+  <rect x="70" y="140" width="120" height="50" rx="6" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="130" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e40af">HTML Parse</text>
+  <text x="130" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1e3a8a">0-100ms</text>
+  
+  <!-- Arrow -->
+  <line x1="190" y1="165" x2="210" y2="165" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
+  
+  <!-- Script Fetch -->
+  <rect x="215" y="140" width="120" height="50" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="275" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Script Fetch</text>
+  <text x="275" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">100-300ms</text>
+  
+  <!-- Arrow -->
+  <line x1="335" y1="165" x2="355" y2="165" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Script Execute -->
+  <rect x="360" y="140" width="120" height="50" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="420" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#991b1b">Script Execute</text>
+  <text x="420" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7f1d1d">300-500ms</text>
+  
+  <!-- Arrow -->
+  <line x1="480" y1="165" x2="500" y2="165" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- DOM Ready -->
+  <rect x="505" y="140" width="120" height="50" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="565" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#065f46">DOM Ready</text>
+  <text x="565" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">500-700ms</text>
+  
+  <!-- Arrow -->
+  <line x1="625" y1="165" x2="645" y2="165" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Page Interactive -->
+  <rect x="650" y="140" width="150" height="50" rx="6" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="725" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#3730a3">Page Interactive</text>
+  <text x="725" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4338ca">700ms+</text>
+  
+  <!-- Script type comparison -->
+  <rect x="50" y="310" width="800" height="220" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="450" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Script Loading Strategies Comparison</text>
+  
+  <!-- Regular Script -->
+  <rect x="70" y="360" width="240" height="150" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="190" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#991b1b">&lt;script src="..."&gt;</text>
+  <text x="190" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7f1d1d">• Blocks HTML parsing</text>
+  <text x="190" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7f1d1d">• Executes immediately</text>
+  <text x="190" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7f1d1d">• Order preserved</text>
+  <text x="190" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#dc2626">❌ Blocks rendering</text>
+  
+  <!-- Defer Script -->
+  <rect x="330" y="360" width="240" height="150" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="450" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#166534">&lt;script defer&gt;</text>
+  <text x="450" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Downloads in parallel</text>
+  <text x="450" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Executes after HTML parse</text>
+  <text x="450" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">• Order preserved</text>
+  <text x="450" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">✅ Best for app scripts</text>
+  
+  <!-- Async Script -->
+  <rect x="590" y="360" width="240" height="150" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="710" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#92400e">&lt;script async&gt;</text>
+  <text x="710" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">• Downloads in parallel</text>
+  <text x="710" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">• Executes when ready</text>
+  <text x="710" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">• Order NOT preserved</text>
+  <text x="710" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#d97706">⚠ Best for independent</text>
+</svg>

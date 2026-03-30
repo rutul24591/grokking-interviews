@@ -1,0 +1,80 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">OAuth Token Storage Comparison</text>
+  
+  <!-- localStorage -->
+  <rect x="50" y="80" width="250" height="450" rx="12" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="175" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#991b1b">localStorage</text>
+  <text x="175" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#7f1d1d">❌ NOT RECOMMENDED</text>
+  
+  <line x1="70" y1="150" x2="280" y2="150" stroke="#ef4444" stroke-width="1.5"/>
+  
+  <text x="175" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#991b1b">Pros:</text>
+  <text x="175" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7f1d1d">• Easy to implement</text>
+  <text x="175" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7f1d1d">• Direct JavaScript access</text>
+  
+  <text x="175" y="240" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#991b1b">Cons:</text>
+  <text x="175" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7f1d1d">• XSS can steal tokens</text>
+  <text x="175" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7f1d1d">• No httpOnly protection</text>
+  <text x="175" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7f1d1d">• Persists across sessions</text>
+  
+  <rect x="70" y="310" width="210" height="80" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="1"/>
+  <text x="175" y="335" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#991b1b">Risk: HIGH</text>
+  <text x="175" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7f1d1d">Any XSS vulnerability =</text>
+  <text x="175" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7f1d1d">full account compromise</text>
+  
+  <text x="175" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#dc2626">Avoid for tokens</text>
+  
+  <!-- httpOnly Cookie -->
+  <rect x="325" y="80" width="250" height="450" rx="12" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">httpOnly Cookie</text>
+  <text x="450" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#047857">✓ RECOMMENDED</text>
+  
+  <line x1="345" y1="150" x2="555" y2="150" stroke="#22c55e" stroke-width="1.5"/>
+  
+  <text x="450" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#166534">Pros:</text>
+  <text x="450" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">• XSS cannot access token</text>
+  <text x="450" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">• Automatic with requests</text>
+  <text x="450" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">• Secure + SameSite options</text>
+  
+  <text x="450" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#166534">Cons:</text>
+  <text x="450" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">• CSRF protection needed</text>
+  <text x="450" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">• Cross-subdomain complexity</text>
+  
+  <rect x="345" y="310" width="210" height="80" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1"/>
+  <text x="450" y="335" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#065f46">Risk: LOW</text>
+  <text x="450" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">XSS cannot steal token</text>
+  <text x="450" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#047857">CSRF mitigated with SameSite</text>
+  
+  <text x="450" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#16a34a">Best for access tokens</text>
+  
+  <!-- Memory (JavaScript Variable) -->
+  <rect x="600" y="80" width="250" height="450" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="725" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Memory (Variable)</text>
+  <text x="725" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#78350f">⚠ CONDITIONAL</text>
+  
+  <line x1="620" y1="150" x2="830" y2="150" stroke="#f59e0b" stroke-width="1.5"/>
+  
+  <text x="725" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Pros:</text>
+  <text x="725" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">• Cleared on page refresh</text>
+  <text x="725" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">• XSS cannot persist access</text>
+  
+  <text x="725" y="240" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Cons:</text>
+  <text x="725" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">• Lost on refresh (UX impact)</text>
+  <text x="725" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">• Still vulnerable to XSS</text>
+  <text x="725" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">• Silent auth needed</text>
+  
+  <rect x="620" y="310" width="210" height="80" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="725" y="335" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#92400e">Risk: MEDIUM</text>
+  <text x="725" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">XSS can use token</text>
+  <text x="725" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">but not persist access</text>
+  
+  <text x="725" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#d97706">Good with refresh tokens</text>
+  
+  <!-- Bottom recommendation -->
+  <rect x="50" y="540" width="800" height="30" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Recommended: httpOnly cookies for access tokens + refresh token rotation with detection</text>
+</svg>

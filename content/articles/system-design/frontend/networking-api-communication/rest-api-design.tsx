@@ -5,16 +5,16 @@ import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
-  id: "article-frontend-rest-api-design-concise",
+  id: "article-frontend-rest-api-design",
   title: "REST API Design",
   description:
     "Comprehensive guide to RESTful API design from the frontend perspective covering resource modeling, HTTP methods, status codes, HATEOAS, pagination, versioning, and API consumption patterns.",
   category: "frontend",
   subcategory: "networking-api-communication",
   slug: "rest-api-design",
-  wordCount: 3200,
-  readingTime: 13,
-  lastUpdated: "2026-03-14",
+  wordCount: 6000,
+  readingTime: 24,
+  lastUpdated: "2026-03-30",
   tags: [
     "frontend",
     "REST",
@@ -868,6 +868,76 @@ export default function RestApiDesignConciseArticle() {
               (unnecessary complexity) or sticking with REST when every page
               requires 5+ waterfall requests to assemble its data (performance
               penalty).
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you handle API versioning in a production system?
+            </p>
+            <p className="mt-2 text-sm">
+              A: There are three main approaches, each with trade-offs. URL path
+              versioning (/v1/users, /v2/users) is the most common and visible:
+              it is easy to implement, route, and debug, but it duplicates
+              endpoints and clutters URLs. Header versioning (Accept:
+              application/vnd.api+json;version=2) keeps URLs clean but is harder
+              to test in browsers and less visible in logs. Date-based
+              versioning (Stripe-Model: 2024-06-20) is the most sophisticated:
+              clients pin to a date, and the server handles compatibility
+              transformations internally, decoupling deployment cadence from
+              breaking changes. For most applications, URL path versioning is
+              the pragmatic choice. Reserve date-based versioning for platform
+              APIs where backward compatibility windows are measured in years.
+              Critical: always document the deprecation timeline (e.g., &quot;v1
+              deprecated on 2024-01-01, sunset on 2024-07-01&quot;), return
+              Deprecation headers in responses, and monitor usage of deprecated
+              versions to proactively reach out to remaining consumers before
+              sunset.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How do you ensure idempotency for POST requests?
+            </p>
+            <p className="mt-2 text-sm">
+              A: POST is not idempotent by definition, but many operations
+              (payments, order creation, user registration) must be retry-safe.
+              The solution is idempotency keys: the client generates a unique
+              UUID per user action (not per request attempt) and includes it in
+              an Idempotency-Key header. The server stores this key with the
+              operation result. If the same key is received again (due to
+              network retry), the server returns the cached result instead of
+              re-executing the operation. Critical implementation details: the
+              key must be scoped per user/resource (user A cannot replay user
+              B&apos;s key), the cache must have a TTL (typically 24 hours to 7
+              days), and the key should be validated before processing begins
+              (not after) to prevent partial side effects. On the frontend,
+              generate the idempotency key when the user initiates the action
+              (e.g., clicks &quot;Pay&quot;), not when the HTTP request fires,
+              so all retry attempts share the same key.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">
+              Q: How would you handle a scenario where the API response shape
+              changes frequently?
+            </p>
+            <p className="mt-2 text-sm">
+              A: This is a sign of poor API contract discipline. Short-term,
+              implement an adapter/translation layer in your API client that
+              maps the volatile API response to a stable internal domain model.
+              This isolates the rest of your application from API changes.
+              Long-term, advocate for contract-first API design: define the API
+              in OpenAPI/Swagger before implementation, generate TypeScript types
+              from the spec, and enforce that breaking changes require a major
+              version bump. Use tools like openapi-typescript or orval to
+              auto-generate typed API clients, so type errors surface
+              immediately when the API changes. If the backend team cannot
+              commit to stability, consider introducing a BFF (Backend for
+              Frontend) layer that you control, which translates the unstable
+              upstream API into a stable contract for your frontend.
             </p>
           </div>
         </div>
