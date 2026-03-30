@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="clientGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2563eb;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="apiGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="moderationGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="databaseGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="displayGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ec4899;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#db2777;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="500" fill="url(#bgGradient)"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Review Architecture</text>
+  
+  <!-- Client Form Box -->
+  <rect x="50" y="60" width="180" height="100" rx="8" fill="url(#clientGradient)"/>
+  <text x="140" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Client Form</text>
+  <text x="140" y="115" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Star Rating Input</text>
+  <text x="140" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Review Text</text>
+  <text x="140" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Photo Upload</text>
+  
+  <!-- API Validation Box -->
+  <rect x="280" y="60" width="180" height="100" rx="8" fill="url(#apiGradient)"/>
+  <text x="370" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">API Layer</text>
+  <text x="370" y="115" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Validate Rating</text>
+  <text x="370" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Rate Limiting</text>
+  <text x="370" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Idempotency Check</text>
+  
+  <!-- Moderation Pipeline Box -->
+  <rect x="510" y="60" width="180" height="100" rx="8" fill="url(#moderationGradient)"/>
+  <text x="600" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Moderation</text>
+  <text x="600" y="115" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Auto-Filter</text>
+  <text x="600" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">ML Classification</text>
+  <text x="600" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Human Review</text>
+  
+  <!-- Database Storage Box -->
+  <rect x="740" y="60" width="180" height="100" rx="8" fill="url(#databaseGradient)"/>
+  <text x="830" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Database</text>
+  <text x="830" y="115" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Reviews Table</text>
+  <text x="830" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Photos Table</text>
+  <text x="830" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Helpfulness Votes</text>
+  
+  <!-- Display Optimization Box -->
+  <rect x="50" y="220" width="200" height="120" rx="8" fill="url(#displayGradient)"/>
+  <text x="150" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Display Layer</text>
+  <text x="150" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Rating Distribution</text>
+  <text x="150" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Review Sorting</text>
+  <text x="150" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Helpfulness Votes</text>
+  <text x="150" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Verified Badges</text>
+  
+  <!-- Cache Box -->
+  <rect x="300" y="220" width="160" height="80" rx="8" fill="#6366f1"/>
+  <text x="380" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Redis Cache</text>
+  <text x="380" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Average Rating</text>
+  <text x="380" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Review Counts</text>
+  
+  <!-- Analytics Box -->
+  <rect x="510" y="220" width="180" height="80" rx="8" fill="#14b8a6"/>
+  <text x="600" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Analytics</text>
+  <text x="600" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Engagement Metrics</text>
+  <text x="600" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Trend Analysis</text>
+  
+  <!-- Notification Box -->
+  <rect x="740" y="220" width="180" height="80" rx="8" fill="#f97316"/>
+  <text x="830" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Notifications</text>
+  <text x="830" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Review Received</text>
+  <text x="830" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Helpful Votes</text>
+  
+  <!-- Arrows -->
+  <path d="M 230 110 L 275 110" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 460 110 L 505 110" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 690 110 L 735 110" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Downward arrows -->
+  <path d="M 140 165 L 140 215" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 370 165 L 370 215" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 600 165 L 600 215" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 830 165 L 830 215" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
+  
+  <!-- Flow labels -->
+  <text x="252" y="105" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#64748b">Submit</text>
+  <text x="482" y="105" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#64748b">Validate</text>
+  <text x="712" y="105" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#64748b">Moderate</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="380" width="900" height="100" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="405" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#1e293b">Data Flow</text>
+  
+  <circle cx="100" cy="430" r="8" fill="#3b82f6"/>
+  <text x="120" y="435" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">User submits review with rating and photos</text>
+  
+  <circle cx="400" cy="430" r="8" fill="#8b5cf6"/>
+  <text x="420" y="435" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">API validates and checks rate limits</text>
+  
+  <circle cx="700" cy="430" r="8" fill="#f59e0b"/>
+  <text x="720" y="435" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Auto-moderation + human review queue</text>
+  
+  <circle cx="100" cy="460" r="8" fill="#10b981"/>
+  <text x="120" y="465" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Store in database with verified badge</text>
+  
+  <circle cx="450" cy="460" r="8" fill="#ec4899"/>
+  <text x="470" y="465" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Display with sorting and helpfulness votes</text>
+</svg>

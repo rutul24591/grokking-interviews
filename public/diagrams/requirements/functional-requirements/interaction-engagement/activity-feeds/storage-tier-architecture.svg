@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="bgGrad12" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#bgGrad12)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Storage Tier Architecture</text>
+  
+  <!-- Hot Storage -->
+  <rect x="50" y="70" width="250" height="140" rx="8" fill="#ef4444"/>
+  <text x="175" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="white">Hot Storage (Redis)</text>
+  <text x="175" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Recent Activities</text>
+  <text x="175" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Last 7-30 days</text>
+  <text x="175" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Sub-10ms latency</text>
+  <text x="175" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Use: Active feed retrieval</text>
+  
+  <!-- Warm Storage -->
+  <rect x="375" y="70" width="250" height="140" rx="8" fill="#f59e0b"/>
+  <text x="500" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="white">Warm Storage (Cassandra)</text>
+  <text x="500" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Historical Activities</text>
+  <text x="500" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">30 days - 1 year</text>
+  <text x="500" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">50-100ms latency</text>
+  <text x="500" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Use: Pagination, search</text>
+  
+  <!-- Cold Storage -->
+  <rect x="700" y="70" width="250" height="140" rx="8" fill="#64748b"/>
+  <text x="825" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="white">Cold Storage (S3)</text>
+  <text x="825" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Archive</text>
+  <text x="825" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">1+ years</text>
+  <text x="825" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Seconds latency</text>
+  <text x="825" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Use: Compliance, analytics</text>
+  
+  <!-- Data Flow -->
+  <rect x="100" y="250" width="250" height="120" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="225" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Data Lifecycle</text>
+  <text x="225" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">New Activity → Hot (Redis)</text>
+  <text x="225" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">After 30 days → Warm (Cassandra)</text>
+  <text x="225" y="345" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">After 1 year → Cold (S3)</text>
+  
+  <!-- Access Patterns -->
+  <rect x="400" y="250" width="250" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="525" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Access Patterns</text>
+  <text x="525" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Hot: 90% of reads</text>
+  <text x="525" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Warm: 9% of reads</text>
+  <text x="525" y="345" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Cold: 1% of reads</text>
+  
+  <!-- Cost Comparison -->
+  <rect x="700" y="250" width="250" height="120" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="825" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#065f46">Relative Cost/GB</text>
+  <text x="825" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Hot: $$$ (Memory)</text>
+  <text x="825" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Warm: $$ (SSD)</text>
+  <text x="825" y="345" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Cold: $ (Object)</text>
+  
+  <!-- Arrows between tiers -->
+  <path d="M 300 140 L 370 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="370,140 360,135 360,145" fill="#64748b"/>
+  <text x="335" y="130" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Age&gt;30d</text>
+  
+  <path d="M 625 140 L 695 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="695,140 685,135 685,145" fill="#64748b"/>
+  <text x="660" y="130" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Age&gt;1y</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="400" width="900" height="40" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="425" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Multi-tier storage optimizes cost and performance - recent data fast, old data cheap</text>
+</svg>

@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="bgGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" fill="url(#bgGradient2)"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Moderation Workflow</text>
+  
+  <!-- Submission Box -->
+  <rect x="50" y="70" width="160" height="80" rx="8" fill="#3b82f6"/>
+  <text x="130" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Review Submit</text>
+  <text x="130" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Rating + Text + Photos</text>
+  
+  <!-- Auto Filter Box -->
+  <rect x="260" y="70" width="160" height="80" rx="8" fill="#8b5cf6"/>
+  <text x="340" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Auto Filter</text>
+  <text x="340" y="120" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Keyword Detection</text>
+  <text x="340" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">ML Classification</text>
+  
+  <!-- Decision Diamond -->
+  <polygon points="510,110 560,110 590,135 560,160 510,160" fill="#f59e0b"/>
+  <text x="550" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">Flagged?</text>
+  
+  <!-- Approved Path -->
+  <rect x="650" y="70" width="140" height="60" rx="8" fill="#10b981"/>
+  <text x="720" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">Approved</text>
+  <text x="720" y="115" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Publish Immediately</text>
+  
+  <!-- Human Review Box -->
+  <rect x="650" y="160" width="140" height="80" rx="8" fill="#ef4444"/>
+  <text x="720" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">Human Review</text>
+  <text x="720" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Moderator Queue</text>
+  <text x="720" y="225" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Approve/Reject</text>
+  
+  <!-- Published Box -->
+  <rect x="840" y="115" width="130" height="60" rx="8" fill="#06b6d4"/>
+  <text x="905" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">Published</text>
+  <text x="905" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Visible to Users</text>
+  
+  <!-- Rejected Box -->
+  <rect x="840" y="190" width="130" height="60" rx="8" fill="#64748b"/>
+  <text x="905" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">Rejected</text>
+  <text x="905" y="235" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Not Published</text>
+  
+  <!-- User Reports Box -->
+  <rect x="50" y="220" width="160" height="70" rx="8" fill="#f97316"/>
+  <text x="130" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">User Reports</text>
+  <text x="130" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Flag as Inappropriate</text>
+  
+  <!-- Report Queue -->
+  <rect x="260" y="220" width="160" height="70" rx="8" fill="#ec4899"/>
+  <text x="340" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Report Queue</text>
+  <text x="340" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Priority by Reports</text>
+  
+  <!-- Enforcement Actions -->
+  <rect x="510" y="220" width="180" height="100" rx="8" fill="#7c3aed"/>
+  <text x="600" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Enforcement</text>
+  <text x="600" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Remove Review</text>
+  <text x="600" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• User Warning</text>
+  <text x="600" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Account Suspension</text>
+  
+  <!-- Arrows -->
+  <path d="M 210 110 L 255 110" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="255,110 245,105 245,115" fill="#64748b"/>
+  
+  <path d="M 420 110 L 505 110" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="505,110 495,105 495,115" fill="#64748b"/>
+  
+  <path d="M 590 135 L 645 135" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="645,135 635,130 635,140" fill="#64748b"/>
+  <text x="615" y="130" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#22c55e">No</text>
+  
+  <path d="M 560 160 L 560 180 L 645 180" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="645,180 635,175 635,185" fill="#64748b"/>
+  <text x="575" y="175" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#ef4444">Yes</text>
+  
+  <path d="M 790 100 L 835 100 L 835 145" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="835,145 830,135 840,135" fill="#64748b"/>
+  
+  <path d="M 790 200 L 835 200 L 835 220" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="835,220 830,210 840,210" fill="#64748b"/>
+  
+  <path d="M 720 240 L 720 270 L 600 270 L 600 325" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  
+  <path d="M 210 255 L 255 255" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="255,255 245,250 245,260" fill="#64748b"/>
+  
+  <path d="M 420 255 L 505 255" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="505,255 495,250 495,260" fill="#64748b"/>
+  
+  <path d="M 690 270 L 835 270 L 835 255" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="835,255 830,245 840,245" fill="#64748b"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="350" width="900" height="80" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="375" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#1e293b">Moderation Flow Explanation</text>
+  
+  <circle cx="100" cy="400" r="8" fill="#8b5cf6"/>
+  <text x="120" y="405" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Auto-filter checks keywords and ML classification</text>
+  
+  <circle cx="450" cy="400" r="8" fill="#f59e0b"/>
+  <text x="470" y="405" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Flagged reviews go to human moderator queue</text>
+  
+  <circle cx="750" cy="400" r="8" fill="#ef4444"/>
+  <text x="770" y="405" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Human reviewers approve or reject content</text>
+  
+  <circle cx="100" cy="420" r="8" fill="#f97316"/>
+  <text x="120" y="425" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">User reports trigger additional review</text>
+</svg>

@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="bgGrad7" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#bgGrad7)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Reaction Display Aggregation</text>
+  
+  <!-- Individual Reactions -->
+  <rect x="30" y="70" width="160" height="140" rx="8" fill="#ec4899"/>
+  <text x="110" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Individual</text>
+  <text x="110" y="120" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" fill="white">❤️ 234</text>
+  <text x="110" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" fill="white">😂 89</text>
+  <text x="110" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" fill="white">😮 45</text>
+  <text x="110" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" fill="white">😢 12</text>
+  
+  <!-- Aggregation -->
+  <rect x="240" y="70" width="180" height="140" rx="8" fill="#8b5cf6"/>
+  <text x="330" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Aggregation</text>
+  <text x="330" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Sum All Types:</text>
+  <text x="330" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="bold" fill="white">380 Total</text>
+  <text x="330" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Redis INCR per type</text>
+  <text x="330" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Shard if viral</text>
+  
+  <!-- Social Proof -->
+  <rect x="470" y="70" width="220" height="140" rx="8" fill="#10b981"/>
+  <text x="580" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Social Proof Display</text>
+  <text x="580" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">"John Smith and"</text>
+  <text x="580" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">"49 others loved this"</text>
+  <text x="580" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Show first 2-3 names</text>
+  <text x="580" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Privacy-respecting</text>
+  
+  <!-- Breakdown Modal -->
+  <rect x="740" y="70" width="200" height="140" rx="8" fill="#f59e0b"/>
+  <text x="840" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Breakdown Modal</text>
+  <text x="840" y="120" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="white">❤️ 234 Love</text>
+  <text x="840" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="white">😂 89 Haha</text>
+  <text x="840" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="white">😮 45 Wow</text>
+  <text x="840" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="white">😢 12 Sad</text>
+  <text x="840" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">On tap/hover</text>
+  
+  <!-- Display Examples -->
+  <rect x="100" y="260" width="380" height="80" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="290" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#3730a3">Compact Display (Mobile)</text>
+  <text x="290" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" fill="#475569">❤️😂😮 380</text>
+  <text x="290" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#64748b">Show top 3 emoji + count</text>
+  
+  <rect x="520" y="260" width="380" height="80" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="710" y="285" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Expanded Display (Desktop)</text>
+  <text x="710" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="#475569">❤️ 234 · 😂 89 · 😮 45 · 😢 12</text>
+  <text x="710" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#64748b">Show all reaction types</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="370" width="900" height="60" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="395" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#1e293b">Display Strategy</text>
+  
+  <circle cx="100" cy="415" r="8" fill="#ec4899"/>
+  <text x="120" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Store each reaction type separately</text>
+  
+  <circle cx="380" cy="415" r="8" fill="#8b5cf6"/>
+  <text x="400" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Aggregate for total count display</text>
+  
+  <circle cx="650" cy="415" r="8" fill="#10b981"/>
+  <text x="670" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Show names for social proof</text>
+  
+  <circle cx="880" cy="415" r="8" fill="#f59e0b"/>
+  <text x="900" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Full breakdown on interaction</text>
+</svg>

@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="bgGrad16" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#bgGrad16)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Consistency Trade-offs</text>
+  
+  <!-- Strong Consistency -->
+  <rect x="50" y="70" width="270" height="150" rx="8" fill="#3b82f6"/>
+  <text x="185" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="white">Strong Consistency</text>
+  <text x="185" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">All clients see same count</text>
+  <text x="185" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">simultaneously</text>
+  <text x="185" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">Pros:</text>
+  <text x="185" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">• Accurate counts always</text>
+  <text x="185" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">• No confusion</text>
+  <text x="185" y="225" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">Cons:</text>
+  <text x="185" y="240" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">• High latency (coordination)</text>
+  <text x="185" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">• Lower availability</text>
+  
+  <!-- Eventual Consistency -->
+  <rect x="365" y="70" width="270" height="150" rx="8" fill="#8b5cf6"/>
+  <text x="500" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="white">Eventual Consistency</text>
+  <text x="500" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Counts may diverge briefly</text>
+  <text x="500" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Converge within seconds</text>
+  <text x="500" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">Pros:</text>
+  <text x="500" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">• Low latency (no coordination)</text>
+  <text x="500" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">• High availability</text>
+  <text x="500" y="225" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">Cons:</text>
+  <text x="500" y="240" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">• Temporary count confusion</text>
+  <text x="500" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">• Refresh may show different</text>
+  
+  <!-- Read-Your-Writes -->
+  <rect x="680" y="70" width="270" height="150" rx="8" fill="#10b981"/>
+  <text x="815" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="bold" fill="white">Read-Your-Writes</text>
+  <text x="815" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">User sees own actions</text>
+  <text x="815" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">immediately</text>
+  <text x="815" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">Pros:</text>
+  <text x="815" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">• Personal consistency</text>
+  <text x="815" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">• No global coordination cost</text>
+  <text x="815" y="225" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">Cons:</text>
+  <text x="815" y="240" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">• Implementation complexity</text>
+  <text x="815" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">• Track pending actions</text>
+  
+  <!-- Use Case Recommendations -->
+  <rect x="80" y="260" width="280" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="220" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Strong: Financial Transactions</text>
+  <text x="220" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Payment processing</text>
+  <text x="220" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Inventory management</text>
+  <text x="220" y="345" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Vote counting (official)</text>
+  <text x="220" y="360" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• NOT for social engagement</text>
+  
+  <rect x="400" y="260" width="280" height="140" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="540" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#065f46">Eventual: Social Engagement</text>
+  <text x="540" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Like counts (recommended)</text>
+  <text x="540" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Comment counts</text>
+  <text x="540" y="345" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Follower counts</text>
+  <text x="540" y="360" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Users tolerate slight delay</text>
+  
+  <rect x="720" y="260" width="200" height="140" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="820" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Read-Your-Writes: Best</text>
+  <text x="820" y="315" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• User's own like state</text>
+  <text x="820" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Personal feed state</text>
+  <text x="820" y="345" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Optimistic UI updates</text>
+  <text x="820" y="360" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Recommended approach</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="420" width="900" height="25" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="440" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="#1e293b">Recommendation: Use eventual consistency for public counts, read-your-writes for user's own state</text>
+</svg>

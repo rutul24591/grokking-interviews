@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="bgGrad19" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#bgGrad19)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Fraud Detection Layers</text>
+  
+  <!-- Layer 1: Rule-based -->
+  <rect x="50" y="70" width="200" height="110" rx="8" fill="#3b82f6"/>
+  <text x="150" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Layer 1: Rule-based</text>
+  <text x="150" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Velocity Checks</text>
+  <text x="150" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Rate Limits</text>
+  <text x="150" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">IP Blacklists</text>
+  <text x="150" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Known Bad Devices</text>
+  
+  <!-- Layer 2: Anomaly Detection -->
+  <rect x="300" y="70" width="200" height="110" rx="8" fill="#8b5cf6"/>
+  <text x="400" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Layer 2: Anomaly Detection</text>
+  <text x="400" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Z-Score Analysis</text>
+  <text x="400" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Isolation Forests</text>
+  <text x="400" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Statistical Outliers</text>
+  <text x="400" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Behavior Patterns</text>
+  
+  <!-- Layer 3: Graph Analysis -->
+  <rect x="550" y="70" width="200" height="110" rx="8" fill="#f59e0b"/>
+  <text x="650" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Layer 3: Graph Analysis</text>
+  <text x="650" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Community Detection</text>
+  <text x="650" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Engagement Rings</text>
+  <text x="650" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Network Clusters</text>
+  <text x="650" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Relationship Graphs</text>
+  
+  <!-- Layer 4: ML Scoring -->
+  <rect x="800" y="70" width="150" height="110" rx="8" fill="#ef4444"/>
+  <text x="875" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Layer 4: ML</text>
+  <text x="875" y="120" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Fraud Probability</text>
+  <text x="875" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Model Scoring</text>
+  <text x="875" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Continuous Learning</text>
+  <text x="875" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Feature Engineering</text>
+  
+  <!-- Fraud Indicators -->
+  <rect x="50" y="220" width="220" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="160" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#92400e">Fraud Indicators</text>
+  <text x="160" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">• 100+ events/minute</text>
+  <text x="160" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">• Same IP addresses</text>
+  <text x="160" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">• Regular intervals</text>
+  <text x="160" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">• No sleep patterns</text>
+  <text x="160" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">• Generic content</text>
+  
+  <!-- Enforcement Actions -->
+  <rect x="320" y="220" width="220" height="120" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="430" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#991b1b">Enforcement Actions</text>
+  <text x="430" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">• Exclude from Counts</text>
+  <text x="430" y="290" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">• Flag for Review</text>
+  <text x="430" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">• Account Warning</text>
+  <text x="430" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">• Account Suspension</text>
+  <text x="430" y="335" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">• Legal Action</text>
+  
+  <!-- Output -->
+  <rect x="590" y="220" width="360" height="120" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="770" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#065f46">Clean Engagement Data</text>
+  <text x="770" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Fraud-free metrics for:</text>
+  <text x="640" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Trending Algorithms</text>
+  <text x="770" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Feed Ranking</text>
+  <text x="900" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Analytics</text>
+  <text x="640" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Creator Dashboards</text>
+  <text x="770" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Ad Targeting</text>
+  <text x="900" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="#475569">Business Intelligence</text>
+  
+  <!-- Arrows between layers -->
+  <path d="M 250 125 L 295 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="295,125 285,120 285,130" fill="#64748b"/>
+  
+  <path d="M 500 125 L 545 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="545,125 535,120 535,130" fill="#64748b"/>
+  
+  <path d="M 750 125 L 795 125" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="795,125 785,120 785,130" fill="#64748b"/>
+  
+  <!-- Down arrows -->
+  <path d="M 160 180 L 160 215" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 430 180 L 430 215" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 770 180 L 770 215" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="370" width="900" height="60" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="395" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#1e293b">Defense in Depth: Rules → Anomaly Detection → Graph Analysis → ML Scoring → Clean Data</text>
+</svg>

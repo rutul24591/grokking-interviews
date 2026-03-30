@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="bgGrad15" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#bgGrad15)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Rate Limiting Architecture</text>
+  
+  <!-- Token Bucket -->
+  <rect x="50" y="70" width="260" height="140" rx="8" fill="#3b82f6"/>
+  <text x="180" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Token Bucket Algorithm</text>
+  <text x="180" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Bucket Capacity: N tokens</text>
+  <text x="180" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Refill Rate: R tokens/sec</text>
+  <text x="180" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Each request: -1 token</text>
+  <text x="180" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Empty bucket → 429 Reject</text>
+  
+  <!-- Sliding Window -->
+  <rect x="370" y="70" width="260" height="140" rx="8" fill="#8b5cf6"/>
+  <text x="500" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Sliding Window Log</text>
+  <text x="500" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Redis Sorted Set</text>
+  <text x="500" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Member: timestamp</text>
+  <text x="500" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">ZREMRANGEBYSCORE (cleanup)</text>
+  <text x="500" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">ZCARD > limit → 429 Reject</text>
+  
+  <!-- Distributed -->
+  <rect x="690" y="70" width="260" height="140" rx="8" fill="#f59e0b"/>
+  <text x="820" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Distributed Rate Limiting</text>
+  <text x="820" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Redis Cluster</text>
+  <text x="820" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Lua Script (atomic)</text>
+  <text x="820" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Consistent Hashing</text>
+  <text x="820" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Multi-region sync</text>
+  
+  <!-- Rate Limit Tiers -->
+  <rect x="100" y="250" width="240" height="120" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="220" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#3730a3">Rate Limit Tiers</text>
+  <text x="220" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Likes: 100-200/min</text>
+  <text x="220" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Comments: 20-50/min</text>
+  <text x="220" y="345" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• Follows: 50-100/hour</text>
+  <text x="220" y="365" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">• New Accounts: 50% lower</text>
+  
+  <!-- Response Headers -->
+  <rect x="380" y="250" width="240" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="500" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#92400e">Response Headers</text>
+  <text x="500" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">X-RateLimit-Limit: 100</text>
+  <text x="500" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">X-RateLimit-Remaining: 45</text>
+  <text x="500" y="345" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">X-RateLimit-Reset: 1679875200</text>
+  <text x="500" y="365" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Retry-After: 60 (on 429)</text>
+  
+  <!-- Enforcement -->
+  <rect x="660" y="250" width="240" height="120" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="780" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#065f46">Enforcement</text>
+  <text x="780" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">429 Too Many Requests</text>
+  <text x="780" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Exponential Backoff</text>
+  <text x="780" y="345" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">IP Ban (repeat offenders)</text>
+  <text x="780" y="365" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Account Review (abuse)</text>
+  
+  <!-- Arrows -->
+  <path d="M 310 140 L 365 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="365,140 355,135 355,145" fill="#64748b"/>
+  
+  <path d="M 630 140 L 685 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="685,140 675,135 675,145" fill="#64748b"/>
+  
+  <!-- Legend -->
+  <rect x="50" y="400" width="900" height="40" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="425" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#1e293b">Multi-layer rate limiting protects API from abuse while allowing legitimate high-volume users</text>
+</svg>

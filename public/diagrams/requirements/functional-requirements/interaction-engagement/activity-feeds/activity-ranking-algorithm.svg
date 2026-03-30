@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="bgGrad11" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#bgGrad11)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Activity Ranking Algorithm</text>
+  
+  <!-- Score Components -->
+  <rect x="30" y="70" width="200" height="140" rx="8" fill="#3b82f6"/>
+  <text x="130" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Recency Score</text>
+  <text x="130" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Time Decay Function</text>
+  <text x="130" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">score = 1 / (t + 1)^gravity</text>
+  <text x="130" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Half-life: 1-6 hours</text>
+  <text x="130" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Weight: 0.4</text>
+  
+  <rect x="260" y="70" width="200" height="140" rx="8" fill="#8b5cf6"/>
+  <text x="360" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Affinity Score</text>
+  <text x="360" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Relationship Strength</text>
+  <text x="360" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Interaction Frequency</text>
+  <text x="360" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Recency of Interaction</text>
+  <text x="360" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Connection Type</text>
+  <text x="360" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Weight: 0.4</text>
+  
+  <rect x="490" y="70" width="200" height="140" rx="8" fill="#f59e0b"/>
+  <text x="590" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Importance Score</text>
+  <text x="590" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Activity Type Weight</text>
+  <text x="590" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Mention: 1.0</text>
+  <text x="590" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Comment: 0.7</text>
+  <text x="590" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">• Like: 0.3</text>
+  <text x="590" y="200" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Weight: 0.2</text>
+  
+  <!-- Final Score -->
+  <rect x="720" y="70" width="250" height="140" rx="8" fill="#10b981"/>
+  <text x="845" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="bold" fill="white">Final Score</text>
+  <text x="845" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Final = 0.4×recency</text>
+  <text x="845" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">+ 0.4×affinity</text>
+  <text x="845" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">+ 0.2×importance</text>
+  <text x="845" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="white">Sorted by score descending</text>
+  
+  <!-- Diversity Injection -->
+  <rect x="100" y="250" width="380" height="90" rx="8" fill="#ec4899"/>
+  <text x="290" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Diversity Injection</text>
+  <text x="290" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Prevent feed monotony:</text>
+  <text x="150" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">• Max 3 activities from same user in top 20</text>
+  <text x="430" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">• Min 5 different activity types in top 50</text>
+  
+  <!-- ML Ranking -->
+  <rect x="520" y="250" width="380" height="90" rx="8" fill="#6366f1"/>
+  <text x="710" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">ML Ranking (Advanced)</text>
+  <text x="710" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Personalized ranking model:</text>
+  <text x="570" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">• Trained on engagement data</text>
+  <text x="710" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">• Predicts click probability</text>
+  <text x="850" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" fill="white">• Continuous learning</text>
+  
+  <!-- Output Feed -->
+  <rect x="300" y="370" width="400" height="60" rx="8" fill="#06b6d4"/>
+  <text x="500" y="395" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Ranked Feed Output</text>
+  <text x="500" y="415" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Activity 1 (score: 0.95) → Activity 2 (score: 0.87) → Activity 3 (score: 0.82) → ...</text>
+  
+  <!-- Arrows -->
+  <path d="M 230 140 L 255 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="255,140 245,135 245,145" fill="#64748b"/>
+  
+  <path d="M 460 140 L 485 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="485,140 475,135 475,145" fill="#64748b"/>
+  
+  <path d="M 690 140 L 715 140" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="715,140 705,135 705,145" fill="#64748b"/>
+  
+  <path d="M 845 210 L 845 245" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  
+  <path d="M 480 340 L 480 365 L 500 365 L 500 365" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 710 340 L 710 365 L 500 365" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+</svg>

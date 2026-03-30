@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <linearGradient id="bgGrad14" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1000" height="450" fill="url(#bgGrad14)"/>
+  <text x="500" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="bold" fill="#1e293b">Idempotency Flow</text>
+  
+  <!-- Client -->
+  <rect x="50" y="70" width="150" height="100" rx="8" fill="#3b82f6"/>
+  <text x="125" y="110" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Client</text>
+  <text x="125" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Generate UUID</text>
+  <text x="125" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Idempotency-Key</text>
+  
+  <!-- API Server -->
+  <rect x="280" y="70" width="180" height="100" rx="8" fill="#8b5cf6"/>
+  <text x="370" y="105" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">API Server</text>
+  <text x="370" y="130" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Check Idempotency</text>
+  <text x="370" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Key in Redis</text>
+  <text x="370" y="160" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">24h TTL</text>
+  
+  <!-- Decision -->
+  <polygon points="570,120 630,120 660,145 630,170 570,170" fill="#f59e0b"/>
+  <text x="615" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="bold" fill="white">Key Exists?</text>
+  
+  <!-- Return Cached -->
+  <rect x="740" y="80" width="180" height="80" rx="8" fill="#10b981"/>
+  <text x="830" y="110" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">Return Cached</text>
+  <text x="830" y="135" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">No Re-processing</text>
+  <text x="830" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Same Response</text>
+  
+  <!-- Process New -->
+  <rect x="740" y="190" width="180" height="80" rx="8" fill="#ec4899"/>
+  <text x="830" y="220" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="white">Process Request</text>
+  <text x="830" y="245" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Execute Operation</text>
+  <text x="830" y="260" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Store Result</text>
+  
+  <!-- Redis Cache -->
+  <rect x="280" y="220" width="180" height="100" rx="8" fill="#ef4444"/>
+  <text x="370" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Redis Cache</text>
+  <text x="370" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Key: idempotency_key</text>
+  <text x="370" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Value: response JSON</text>
+  <text x="370" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">TTL: 24 hours</text>
+  
+  <!-- Database -->
+  <rect x="520" y="220" width="180" height="100" rx="8" fill="#10b981"/>
+  <text x="610" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="white">Database</text>
+  <text x="610" y="280" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Unique Constraint</text>
+  <text x="610" y="295" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">(user_id, content_id)</text>
+  <text x="610" y="310" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="white">Upsert Operation</text>
+  
+  <!-- Arrows -->
+  <path d="M 200 120 L 275 120" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="275,120 265,115 265,125" fill="#64748b"/>
+  <text x="237" y="110" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">POST + Key</text>
+  
+  <path d="M 460 120 L 565 120" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="565,120 555,115 555,125" fill="#64748b"/>
+  
+  <path d="M 660 145 L 735 145" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="735,145 725,140 725,150" fill="#64748b"/>
+  <text x="697" y="135" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#22c55e">Yes</text>
+  
+  <path d="M 630 170 L 630 210 L 735 210" stroke="#64748b" stroke-width="2" fill="none"/>
+  <polygon points="735,210 725,205 725,215" fill="#64748b"/>
+  <text x="645" y="205" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#ef4444">No</text>
+  
+  <!-- Cache arrows -->
+  <path d="M 370 170 L 370 215" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <path d="M 610 170 L 610 215" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  
+  <!-- Response arrows -->
+  <path d="M 920 120 L 950 120 L 950 120" stroke="#64748b" stroke-width="2" fill="none"/>
+  <text x="935" y="110" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Response</text>
+  
+  <path d="M 920 230 L 950 230 L 950 120 L 125 120" stroke="#64748b" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+  <text x="935" y="220" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="#475569">Response</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="350" width="900" height="80" rx="8" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="500" y="375" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="bold" fill="#1e293b">Idempotency ensures network retries don't create duplicate interactions</text>
+  
+  <circle cx="100" cy="400" r="8" fill="#3b82f6"/>
+  <text x="120" y="405" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Client generates unique key per request</text>
+  
+  <circle cx="400" cy="400" r="8" fill="#8b5cf6"/>
+  <text x="420" y="405" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">Server checks Redis for existing key</text>
+  
+  <circle cx="700" cy="400" r="8" fill="#f59e0b"/>
+  <text x="720" y="405" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">If exists: return cached, skip processing</text>
+  
+  <circle cx="150" cy="420" r="8" fill="#ec4899"/>
+  <text x="170" y="425" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#475569">If new: process, store result with 24h TTL</text>
+</svg>
