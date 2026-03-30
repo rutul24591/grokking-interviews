@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-labelledby="codeSplittingFlowTitle codeSplittingFlowDesc">
+  <title id="codeSplittingFlowTitle">Code Splitting Request Flow</title>
+  <desc id="codeSplittingFlowDesc">Diagram showing how code splitting works with dynamic imports and chunk loading during navigation</desc>
+  
+  <defs>
+    <linearGradient id="flowBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fafafa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f1f5f9;stop-opacity:1" />
+    </linearGradient>
+    <marker id="flowArrow" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto">
+      <path d="M0,0 L12,5 L0,10 L2,5 Z" fill="#475569" />
+    </marker>
+  </defs>
+  
+  <rect width="800" height="450" fill="url(#flowBg)" />
+  
+  <text x="400" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#1e293b">Code Splitting: Navigation Flow</text>
+  
+  <!-- Step 1: Initial Page Load -->
+  <g transform="translate(50, 60)">
+    <rect x="0" y="0" width="140" height="80" rx="6" fill="#ffffff" stroke="#3b82f6" stroke-width="2" />
+    <text x="70" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#1e293b">1. Initial Load</text>
+    <text x="70" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">User visits homepage</text>
+    <text x="70" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#64748b">Downloads: main.js + vendor.js</text>
+  </g>
+  
+  <!-- Arrow -->
+  <line x1="190" y1="100" x2="230" y2="100" stroke="#475569" stroke-width="2" marker-end="url(#flowArrow)" />
+  
+  <!-- Step 2: User Clicks Navigation -->
+  <g transform="translate(240, 60)">
+    <rect x="0" y="0" width="140" height="80" rx="6" fill="#ffffff" stroke="#f59e0b" stroke-width="2" />
+    <text x="70" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#1e293b">2. User Action</text>
+    <text x="70" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Clicks "Dashboard" link</text>
+    <text x="70" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#64748b">Router intercepts navigation</text>
+  </g>
+  
+  <!-- Arrow -->
+  <line x1="380" y1="100" x2="420" y2="100" stroke="#475569" stroke-width="2" marker-end="url(#flowArrow)" />
+  
+  <!-- Step 3: Dynamic Import Triggered -->
+  <g transform="translate(430, 60)">
+    <rect x="0" y="0" width="140" height="80" rx="6" fill="#ffffff" stroke="#8b5cf6" stroke-width="2" />
+    <text x="70" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#1e293b">3. Dynamic Import</text>
+    <text x="70" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">import() triggered</text>
+    <text x="70" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#64748b">Browser fetches dashboard.chunk.js</text>
+  </g>
+  
+  <!-- Arrow down -->
+  <line x1="500" y1="140" x2="500" y2="180" stroke="#475569" stroke-width="2" marker-end="url(#flowArrow)" />
+  
+  <!-- Step 4: Chunk Loaded & Executed -->
+  <g transform="translate(430, 185)">
+    <rect x="0" y="0" width="140" height="80" rx="6" fill="#ffffff" stroke="#22c55e" stroke-width="2" />
+    <text x="70" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#1e293b">4. Chunk Executed</text>
+    <text x="70" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Module parsed &amp; executed</text>
+    <text x="70" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#64748b">Dashboard component renders</text>
+  </g>
+  
+  <!-- Arrow left -->
+  <line x1="430" y1="225" x2="390" y2="225" stroke="#475569" stroke-width="2" marker-end="url(#flowArrow)" />
+  
+  <!-- Step 5: User Sees Dashboard -->
+  <g transform="translate(240, 185)">
+    <rect x="0" y="0" width="140" height="80" rx="6" fill="#ffffff" stroke="#22c55e" stroke-width="2" />
+    <text x="70" y="25" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#1e293b">5. Page Rendered</text>
+    <text x="70" y="45" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Dashboard visible</text>
+    <text x="70" y="60" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#64748b">Settings chunk still unloaded</text>
+  </g>
+  
+  <!-- Bottom Section: Chunk Status -->
+  <rect x="50" y="300" width="700" height="120" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" />
+  <text x="400" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Chunk Loading Status After Navigation</text>
+  
+  <!-- Chunk Status Boxes -->
+  <rect x="80" y="345" width="120" height="55" rx="4" fill="#22c55e" opacity="0.9" />
+  <text x="140" y="365" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">main.js</text>
+  <text x="140" y="382" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#ffffff">✓ Loaded (Initial)</text>
+  
+  <rect x="220" y="345" width="120" height="55" rx="4" fill="#3b82f6" opacity="0.9" />
+  <text x="280" y="365" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">vendor.js</text>
+  <text x="280" y="382" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#ffffff">✓ Loaded (Initial)</text>
+  
+  <rect x="360" y="345" width="120" height="55" rx="4" fill="#f59e0b" opacity="0.9" />
+  <text x="420" y="365" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">dashboard.js</text>
+  <text x="420" y="382" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#ffffff">✓ Loaded (On Nav)</text>
+  
+  <rect x="500" y="345" width="120" height="55" rx="4" fill="#94a3b8" opacity="0.7" />
+  <text x="560" y="365" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">settings.js</text>
+  <text x="560" y="382" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#ffffff">○ Not Yet Loaded</text>
+  
+  <rect x="640" y="345" width="100" height="55" rx="4" fill="#94a3b8" opacity="0.7" />
+  <text x="690" y="365" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">profile.js</text>
+  <text x="690" y="382" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#ffffff">○ Not Yet Loaded</text>
+</svg>

@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 520" role="img" aria-labelledby="lazyLoadingTypesTitle lazyLoadingTypesDesc">
+  <title id="lazyLoadingTypesTitle">Lazy Loading Types Diagram</title>
+  <desc id="lazyLoadingTypesDesc">Visual comparison of three lazy loading types: images, components, and routes with their trigger mechanisms</desc>
+  
+  <defs>
+    <linearGradient id="lazyBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+    <filter id="cardShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="3" stdDeviation="4" flood-opacity="0.12" />
+    </filter>
+  </defs>
+  
+  <rect width="850" height="520" fill="url(#lazyBg)" />
+  
+  <text x="425" y="38" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1e293b">Lazy Loading: Three Primary Targets</text>
+  
+  <!-- Images Column (Left) -->
+  <g transform="translate(25, 70)">
+    <rect x="0" y="0" width="260" height="420" rx="10" fill="#ffffff" stroke="#3b82f6" stroke-width="2" filter="url(#cardShadow)" />
+    <rect x="0" y="0" width="260" height="55" rx="10" fill="#3b82f6" />
+    <text x="130" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#ffffff">📷 Images</text>
+    
+    <!-- Image lazy loading visualization -->
+    <rect x="20" y="75" width="220" height="140" rx="6" fill="#f1f5f9" stroke="#cbd5e1" />
+    <rect x="30" y="85" width="200" height="100" rx="4" fill="#e2e8f0" />
+    <text x="130" y="145" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="500" fill="#64748b">Below-fold images</text>
+    <text x="130" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#64748b">loading="lazy"</text>
+    
+    <text x="20" y="245" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#1e293b">Trigger:</text>
+    <text x="20" y="270" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">Image enters viewport</text>
+    <text x="20" y="295" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">(200px threshold)</text>
+    
+    <text x="20" y="335" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#1e293b">Methods:</text>
+    <text x="20" y="360" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">• Native loading="lazy"</text>
+    <text x="20" y="385" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">• Intersection Observer</text>
+    <text x="20" y="410" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">• Blur-up placeholders</text>
+  </g>
+  
+  <!-- Components Column (Center) -->
+  <g transform="translate(295, 70)">
+    <rect x="0" y="0" width="260" height="420" rx="10" fill="#ffffff" stroke="#8b5cf6" stroke-width="2" filter="url(#cardShadow)" />
+    <rect x="0" y="0" width="260" height="55" rx="10" fill="#8b5cf6" />
+    <text x="130" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#ffffff">🧩 Components</text>
+    
+    <!-- Component lazy loading visualization -->
+    <rect x="20" y="75" width="220" height="140" rx="6" fill="#f1f5f9" stroke="#cbd5e1" />
+    <rect x="40" y="90" width="180" height="35" rx="4" fill="#e2e8f0" />
+    <rect x="40" y="135" width="180" height="35" rx="4" fill="#e2e8f0" />
+    <rect x="40" y="180" width="180" height="25" rx="4" fill="#a78bfa" opacity="0.5" />
+    <text x="130" y="197" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#6d28d9">Loading...</text>
+    
+    <text x="20" y="245" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#1e293b">Trigger:</text>
+    <text x="20" y="270" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">User interaction or</text>
+    <text x="20" y="295" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">scroll into view</text>
+    
+    <text x="20" y="335" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#1e293b">Methods:</text>
+    <text x="20" y="360" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">• React.lazy + Suspense</text>
+    <text x="20" y="385" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">• Dynamic import()</text>
+    <text x="20" y="410" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">• Skeleton fallbacks</text>
+  </g>
+  
+  <!-- Routes Column (Right) -->
+  <g transform="translate(565, 70)">
+    <rect x="0" y="0" width="260" height="420" rx="10" fill="#ffffff" stroke="#22c55e" stroke-width="2" filter="url(#cardShadow)" />
+    <rect x="0" y="0" width="260" height="55" rx="10" fill="#22c55e" />
+    <text x="130" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#ffffff">🛣️ Routes</text>
+    
+    <!-- Route lazy loading visualization -->
+    <rect x="20" y="75" width="220" height="140" rx="6" fill="#f1f5f9" stroke="#cbd5e1" />
+    <circle cx="60" cy="120" r="15" fill="#e2e8f0" />
+    <text x="60" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="#64748b">Home</text>
+    <circle cx="130" cy="120" r="15" fill="#e2e8f0" />
+    <text x="130" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="#64748b">Dashboard</text>
+    <circle cx="200" cy="120" r="15" fill="#86efac" stroke="#22c55e" stroke-width="2" />
+    <text x="200" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="#166534">Settings</text>
+    <text x="130" y="195" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#166534">Loading route chunk...</text>
+    
+    <text x="20" y="245" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#1e293b">Trigger:</text>
+    <text x="20" y="270" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">Navigation to route</text>
+    <text x="20" y="295" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">(URL change)</text>
+    
+    <text x="20" y="335" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#1e293b">Methods:</text>
+    <text x="20" y="360" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">• React Router + lazy()</text>
+    <text x="20" y="385" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">• Next.js automatic</text>
+    <text x="20" y="410" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#475569">• Page transition states</text>
+  </g>
+  
+  <!-- Bottom Summary -->
+  <rect x="25" y="500" width="800" height="15" rx="3" fill="#f1f5f9" />
+  <text x="425" y="511" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#64748b">Key Principle: Defer loading until needed — reduces initial bundle by 50-80%</text>
+</svg>

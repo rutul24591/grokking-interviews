@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 450" role="img" aria-labelledby="responsiveImagesTitle responsiveImagesDesc">
+  <title id="responsiveImagesTitle">Responsive Images with srcset</title>
+  <desc id="responsiveImagesDesc">Diagram showing how srcset and sizes work together to serve appropriate image sizes</desc>
+  
+  <defs>
+    <linearGradient id="responsiveBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fafafa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f1f5f9;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="850" height="450" fill="url(#responsiveBg)" />
+  
+  <text x="425" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#1e293b">Responsive Images: srcset + sizes</text>
+  
+  <!-- Device Views -->
+  <g transform="translate(50, 70)">
+    <!-- Mobile -->
+    <rect x="0" y="0" width="100" height="180" rx="6" fill="#ffffff" stroke="#3b82f6" stroke-width="2" />
+    <rect x="10" y="10" width="80" height="140" rx="3" fill="#dbeafe" />
+    <text x="50" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e40af">Mobile</text>
+    <text x="50" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#64748b">375px × 2x = 750px</text>
+    <text x="50" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#16a34a">Serves: 800w</text>
+  </g>
+  
+  <!-- Tablet -->
+  <g transform="translate(200, 70)">
+    <rect x="0" y="0" width="140" height="180" rx="6" fill="#ffffff" stroke="#8b5cf6" stroke-width="2" />
+    <rect x="10" y="10" width="120" height="140" rx="3" fill="#ede9fe" />
+    <text x="70" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#6d28d9">Tablet</text>
+    <text x="70" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#64748b">768px × 2x = 1536px</text>
+    <text x="70" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#16a34a">Serves: 1600w</text>
+  </g>
+  
+  <!-- Desktop -->
+  <g transform="translate(390, 70)">
+    <rect x="0" y="0" width="180" height="180" rx="6" fill="#ffffff" stroke="#22c55e" stroke-width="2" />
+    <rect x="10" y="10" width="160" height="140" rx="3" fill="#dcfce7" />
+    <text x="90" y="170" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#166534">Desktop</text>
+    <text x="90" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#64748b">1280px × 1x = 1280px</text>
+    <text x="90" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#16a34a">Serves: 1600w</text>
+  </g>
+  
+  <!-- Image Sources -->
+  <g transform="translate(620, 70)">
+    <rect x="0" y="0" width="180" height="200" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" />
+    <text x="90" y="30" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Available Sizes</text>
+    
+    <rect x="15" y="50" width="150" height="30" rx="4" fill="#f1f5f9" />
+    <text x="90" y="70" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">400w (20 KB)</text>
+    
+    <rect x="15" y="90" width="150" height="30" rx="4" fill="#dbeafe" />
+    <text x="90" y="110" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#1e40af">800w (60 KB)</text>
+    
+    <rect x="15" y="130" width="150" height="30" rx="4" fill="#ede9fe" />
+    <text x="90" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#6d28d9">1200w (120 KB)</text>
+    
+    <rect x="15" y="170" width="150" height="30" rx="4" fill="#dcfce7" />
+    <text x="90" y="190" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" fill="#166534">1600w (200 KB)</text>
+  </g>
+  
+  <!-- Code Example (Bottom) -->
+  <rect x="50" y="290" width="750" height="140" rx="8" fill="#1e293b" />
+  <text x="80" y="320" font-family="monospace" font-size="12" font-weight="500" fill="#22c55e">&lt;img</text>
+  <text x="80" y="345" font-family="monospace" font-size="12" font-weight="400" fill="#ffffff">  src=&quot;/image-800.jpg&quot;</text>
+  <text x="80" y="370" font-family="monospace" font-size="12" font-weight="400" fill="#ffffff">  srcset=&quot;/image-400.jpg 400w,</text>
+  <text x="100" y="395" font-family="monospace" font-size="12" font-weight="400" fill="#ffffff">           /image-800.jpg 800w,</text>
+  <text x="100" y="420" font-family="monospace" font-size="12" font-weight="400" fill="#ffffff">           /image-1200.jpg 1200w&quot;</text>
+  <text x="80" y="445" font-family="monospace" font-size="12" font-weight="400" fill="#ffffff">  sizes=&quot;(max-width: 640px) 100vw,</text>
+  <text x="100" y="470" font-family="monospace" font-size="12" font-weight="400" fill="#ffffff">         (max-width: 1024px) 50vw,</text>
+  <text x="100" y="495" font-family="monospace" font-size="12" font-weight="400" fill="#ffffff">         33vw&quot;</text>
+  <text x="80" y="520" font-family="monospace" font-size="12" font-weight="500" fill="#22c55e">/&gt;</text>
+  
+  <text x="425" y="320" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#94a3b8">Browser calculates: display width × device pixel ratio</text>
+  <text x="425" y="345" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#94a3b8">Then picks smallest image ≥ calculated width</text>
+</svg>

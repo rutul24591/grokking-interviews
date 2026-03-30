@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 480" role="img" aria-labelledby="imageFormatsTitle imageFormatsDesc">
+  <title id="imageFormatsTitle">Image Format Comparison</title>
+  <desc id="imageFormatsDesc">Comparison of image formats showing compression ratios and browser support</desc>
+  
+  <defs>
+    <linearGradient id="formatsBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="850" height="480" fill="url(#formatsBg)" />
+  
+  <text x="425" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1e293b">Image Format Comparison</text>
+  
+  <!-- JPEG -->
+  <g transform="translate(40, 70)">
+    <rect x="0" y="0" width="170" height="180" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" />
+    <rect x="0" y="0" width="170" height="40" rx="8" fill="#f1f5f9" />
+    <text x="85" y="27" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#1e293b">JPEG</text>
+    
+    <text x="15" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Size vs Original:</text>
+    <text x="15" y="95" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Baseline (100%)</text>
+    
+    <text x="15" y="125" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Browser Support:</text>
+    <text x="15" y="150" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">100%</text>
+    
+    <text x="15" y="180" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Best For:</text>
+    <text x="15" y="205" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Photos (fallback)</text>
+    
+    <rect x="15" y="225" width="140" height="8" rx="4" fill="#cbd5e1" />
+    <rect x="15" y="225" width="140" height="8" rx="4" fill="#22c55e" />
+    <text x="85" y="245" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#475569">Universal Support</text>
+  </g>
+  
+  <!-- WebP -->
+  <g transform="translate(225, 70)">
+    <rect x="0" y="0" width="170" height="180" rx="8" fill="#ffffff" stroke="#22c55e" stroke-width="2" />
+    <rect x="0" y="0" width="170" height="40" rx="8" fill="#f0fdf4" />
+    <text x="85" y="27" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#16a34a">WebP</text>
+    
+    <text x="15" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Size vs JPEG:</text>
+    <text x="15" y="95" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">25-35% smaller</text>
+    
+    <text x="15" y="125" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Browser Support:</text>
+    <text x="15" y="150" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">~97%</text>
+    
+    <text x="15" y="180" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Best For:</text>
+    <text x="15" y="205" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Photos (production)</text>
+    
+    <rect x="15" y="225" width="140" height="8" rx="4" fill="#cbd5e1" />
+    <rect x="15" y="225" width="135" height="8" rx="4" fill="#22c55e" />
+    <text x="85" y="245" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#475569">97% Support</text>
+  </g>
+  
+  <!-- AVIF -->
+  <g transform="translate(410, 70)">
+    <rect x="0" y="0" width="170" height="180" rx="8" fill="#ffffff" stroke="#8b5cf6" stroke-width="2" />
+    <rect x="0" y="0" width="170" height="40" rx="8" fill="#ede9fe" />
+    <text x="85" y="27" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#7c3aed">AVIF</text>
+    
+    <text x="15" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Size vs JPEG:</text>
+    <text x="15" y="95" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">40-50% smaller</text>
+    
+    <text x="15" y="125" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Browser Support:</text>
+    <text x="15" y="150" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">~92%</text>
+    
+    <text x="15" y="180" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Best For:</text>
+    <text x="15" y="205" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Best compression</text>
+    
+    <rect x="15" y="225" width="140" height="8" rx="4" fill="#cbd5e1" />
+    <rect x="15" y="225" width="129" height="8" rx="4" fill="#8b5cf6" />
+    <text x="85" y="245" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#475569">92% Support</text>
+  </g>
+  
+  <!-- PNG -->
+  <g transform="translate(595, 70)">
+    <rect x="0" y="0" width="170" height="180" rx="8" fill="#ffffff" stroke="#3b82f6" stroke-width="2" />
+    <rect x="0" y="0" width="170" height="40" rx="8" fill="#dbeafe" />
+    <text x="85" y="27" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#1d4ed8">PNG</text>
+    
+    <text x="15" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Size vs JPEG:</text>
+    <text x="15" y="95" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">2-5x larger</text>
+    
+    <text x="15" y="125" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Browser Support:</text>
+    <text x="15" y="150" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">100%</text>
+    
+    <text x="15" y="180" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Best For:</text>
+    <text x="15" y="205" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Transparency, icons</text>
+    
+    <rect x="15" y="225" width="140" height="8" rx="4" fill="#cbd5e1" />
+    <rect x="15" y="225" width="140" height="8" rx="4" fill="#3b82f6" />
+    <text x="85" y="245" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#475569">Universal Support</text>
+  </g>
+  
+  <!-- SVG -->
+  <g transform="translate(780, 70)">
+    <rect x="0" y="0" width="50" height="180" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2" />
+    <rect x="0" y="0" width="50" height="40" rx="8" fill="#fef3c7" />
+    <text x="25" y="27" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#92400e">SVG</text>
+    
+    <text x="8" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="#1e293b">Vector</text>
+    <text x="25" y="95" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">100%</text>
+    <text x="25" y="125" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Icons</text>
+    <text x="25" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Logos</text>
+    <text x="25" y="175" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">100%</text>
+  </g>
+  
+  <!-- Recommendation Table (Bottom) -->
+  <rect x="40" y="270" width="770" height="190" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" />
+  <text x="425" y="300" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#1e293b">Format Selection Guide</text>
+  
+  <!-- Table rows -->
+  <rect x="60" y="315" width="730" height="35" rx="4" fill="#f8fafc" stroke="#e2e8f0" />
+  <text x="200" y="338" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#1e293b">Use Case</text>
+  <text x="400" y="338" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#1e293b">Recommended Format</text>
+  <text x="650" y="338" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#1e293b">Fallback</text>
+  
+  <text x="200" y="375" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Photographs</text>
+  <text x="400" y="375" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#16a34a">AVIF → WebP</text>
+  <text x="650" y="375" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">JPEG</text>
+  
+  <text x="200" y="405" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Images with transparency</text>
+  <text x="400" y="405" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#16a34a">WebP → AVIF</text>
+  <text x="650" y="405" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">PNG</text>
+  
+  <text x="200" y="435" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Icons, logos, illustrations</text>
+  <text x="400" y="435" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#16a34a">SVG</text>
+  <text x="650" y="435" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">PNG (if needed)</text>
+  
+  <text x="200" y="465" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Animated images</text>
+  <text x="400" y="465" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#16a34a">Animated WebP / AVIF</text>
+  <text x="650" y="465" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">GIF</text>
+</svg>

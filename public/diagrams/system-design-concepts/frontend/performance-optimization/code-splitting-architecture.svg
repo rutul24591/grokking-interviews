@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="codeSplittingArchTitle codeSplittingArchDesc">
+  <title id="codeSplittingArchTitle">Code Splitting Architecture Diagram</title>
+  <desc id="codeSplittingArchDesc">Comparison of traditional bundling vs code splitting showing how chunks are loaded on demand</desc>
+  
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="bundleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="chunkGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16a34a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="vendorGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2563eb;stop-opacity:1" />
+    </linearGradient>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
+    </marker>
+  </defs>
+  
+  <rect width="800" height="500" fill="url(#bgGradient)" />
+  
+  <text x="400" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1e293b">Traditional Bundling vs Code Splitting</text>
+  
+  <!-- Traditional Approach (Left) -->
+  <rect x="40" y="60" width="320" height="200" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" />
+  <text x="200" y="90" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#1e293b">Traditional Bundle</text>
+  
+  <rect x="80" y="110" width="240" height="120" rx="4" fill="url(#bundleGrad)" />
+  <text x="200" y="165" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Single Bundle.js</text>
+  <text x="200" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#ffffff">~1.5 MB (All Routes)</text>
+  <text x="200" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#fef08a">User downloads ALL code upfront</text>
+  
+  <!-- Code Splitting Approach (Right) -->
+  <rect x="440" y="60" width="320" height="200" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" />
+  <text x="600" y="90" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#1e293b">Code Splitting</text>
+  
+  <rect x="480" y="110" width="100" height="50" rx="4" fill="url(#chunkGrad)" />
+  <text x="530" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">Main</text>
+  <text x="530" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#ffffff">~50 KB</text>
+  
+  <rect x="620" y="110" width="100" height="50" rx="4" fill="url(#vendorGrad)" />
+  <text x="670" y="140" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">Vendor</text>
+  <text x="670" y="155" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#ffffff">~200 KB</text>
+  
+  <rect x="480" y="180" width="100" height="50" rx="4" fill="#f59e0b" />
+  <text x="530" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">Dashboard</text>
+  <text x="530" y="225" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#ffffff">~80 KB</text>
+  
+  <rect x="620" y="180" width="100" height="50" rx="4" fill="#8b5cf6" />
+  <text x="670" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">Settings</text>
+  <text x="670" y="225" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#ffffff">~60 KB</text>
+  
+  <text x="600" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#16a34a">Load chunks on demand</text>
+  
+  <!-- User Browser (Bottom) -->
+  <rect x="250" y="300" width="300" height="120" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" />
+  <text x="400" y="325" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#1e293b">User Browser</text>
+  
+  <rect x="280" y="340" width="240" height="60" rx="4" fill="#f1f5f9" stroke="#94a3b8" />
+  <text x="400" y="365" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#475569">Initial Load: ~250 KB</text>
+  <text x="400" y="385" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#64748b">Dashboard: +80 KB (on navigation)</text>
+  
+  <!-- Arrows -->
+  <line x1="200" y1="260" x2="200" y2="290" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)" />
+  <line x1="600" y1="260" x2="600" y2="290" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)" />
+  
+  <!-- Comparison Labels -->
+  <text x="200" y="450" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#dc2626">Slow Initial Load (10-30s on 3G)</text>
+  <text x="600" y="450" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#16a34a">Fast Initial Load (2-5s on 3G)</text>
+  <text x="200" y="475" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#64748b">Wasted bandwidth for unused routes</text>
+  <text x="600" y="475" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#64748b">Efficient bandwidth usage</text>
+</svg>

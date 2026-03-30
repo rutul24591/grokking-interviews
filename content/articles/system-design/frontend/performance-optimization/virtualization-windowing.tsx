@@ -1,478 +1,878 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
-  id: "article-frontend-virtualization-windowing-concise",
+  id: "article-frontend-virtualization-windowing",
   title: "Virtualization/Windowing (for Long Lists)",
-  description: "Quick overview of list virtualization techniques for rendering large datasets efficiently in React applications.",
+  description: "Comprehensive guide to list virtualization techniques for rendering large datasets efficiently, covering windowing algorithms, library options, and performance optimization strategies.",
   category: "frontend",
   subcategory: "performance-optimization",
   slug: "virtualization-windowing",
-  version: "concise",
-  wordCount: 2800,
-  readingTime: 12,
-  lastUpdated: "2026-03-09",
-  tags: ["frontend", "performance", "virtualization", "windowing", "react-window", "react-virtual", "infinite-scroll"],
-  relatedTopics: ["lazy-loading", "web-vitals", "bundle-size-optimization"],
+  wordCount: 6100,
+  readingTime: 25,
+  lastUpdated: "2026-03-30",
+  tags: ["frontend", "performance", "virtualization", "windowing", "react-window", "react-virtual", "infinite-scroll", "large-lists"],
+  relatedTopics: ["lazy-loading", "web-vitals", "bundle-size-optimization", "memoization-and-react-memo"],
 };
 
-export default function VirtualizationWindowingConciseArticle() {
+export default function VirtualizationWindowingArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      {/* ============================================================
+          SECTION 1: Definition & Context
+          ============================================================ */}
       <section>
-        <h2>Quick Overview</h2>
+        <h2>Definition & Context</h2>
         <p>
-          <strong>Virtualization</strong> (also called <strong>windowing</strong>) is a rendering technique that only
-          mounts DOM elements for the items currently visible in the viewport, plus a small buffer zone above and
-          below. Instead of rendering 10,000 list items and creating 10,000 DOM nodes, a virtualized list might
-          only render 20-30 nodes at any given time — regardless of the total dataset size.
+          <strong>Virtualization</strong> (also called <strong>windowing</strong>) is a rendering optimization 
+          technique that only mounts DOM elements for the items currently visible in the viewport, plus a 
+          small buffer zone above and below. Instead of rendering 10,000 list items and creating 10,000 DOM 
+          nodes, a virtualized list might only render 20-30 nodes at any given time — regardless of the total 
+          dataset size.
         </p>
         <p>
-          The technique works by calculating which items are visible based on the scroll position and container
-          dimensions, then positioning only those items within a container whose total height matches what the
-          full list would occupy. As the user scrolls, items that leave the viewport are unmounted and recycled
-          for newly visible items.
+          The technique works by calculating which items are visible based on the scroll position and 
+          container dimensions, then positioning only those items within a container whose total height 
+          matches what the full list would occupy. As the user scrolls, items that leave the viewport are 
+          unmounted and recycled for newly visible items. This recycling is why the technique is called 
+          &quot;virtualization&quot; — items appear to exist in the DOM, but they&apos;re actually being 
+          dynamically created and destroyed as needed.
         </p>
-      </section>
 
-      <section>
-        <h2>The DOM Bottleneck</h2>
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/performance-optimization/virtualization-concept.svg"
+          alt="Diagram comparing non-virtualized list (10000 DOM nodes) vs virtualized list (20-30 DOM nodes) with viewport highlighting"
+          caption="Virtualization reduces thousands of DOM nodes to just the visible items plus a small buffer"
+        />
+
         <p>
-          Every DOM node consumes memory and contributes to layout, paint, and composite costs. Rendering
-          thousands of nodes creates compounding performance problems:
+          The performance impact of virtualization is dramatic:
         </p>
         <ul className="space-y-2">
           <li>
-            <strong>Memory:</strong> Each DOM node uses ~0.5-1KB of memory. 10,000 rows with nested elements
-            can consume 50-100MB of browser memory.
+            <strong>Initial Render:</strong> Rendering 10,000 DOM nodes takes 2-5 seconds, during which 
+            the main thread is blocked and the page is unresponsive. Virtualization reduces this to 5-15ms.
           </li>
           <li>
-            <strong>Initial Render:</strong> Creating 10,000 DOM nodes takes 2-5 seconds, during which the
-            main thread is blocked and the page is unresponsive.
+            <strong>Memory Usage:</strong> Each DOM node uses ~0.5-1KB of memory. 10,000 rows with nested 
+            elements can consume 50-100MB of browser memory. Virtualization keeps memory usage under 5MB.
           </li>
           <li>
-            <strong>Layout Thrashing:</strong> Any style change triggers layout recalculation across all nodes.
-            The browser must measure and position every element.
+            <strong>Scroll Performance:</strong> Non-virtualized lists scroll at 15-30fps with visible 
+            stuttering. Virtualized lists maintain 55-60fps smooth scrolling.
           </li>
           <li>
-            <strong>Scroll Jank:</strong> The browser struggles to maintain 60fps when painting thousands of
-            elements during scroll, causing visible stuttering.
+            <strong>Time to Interactive:</strong> Non-virtualized lists take 3-8 seconds to become 
+            interactive. Virtualized lists are interactive in under 100ms.
           </li>
         </ul>
 
-        <h3 className="mt-4 font-semibold">Performance Comparison</h3>
+        <p>
+          Virtualization is essential for any application that displays large datasets:
+        </p>
+        <ul className="space-y-2">
+          <li>
+            <strong>Data Tables:</strong> Admin dashboards, financial applications, analytics platforms 
+            often display thousands of rows.
+          </li>
+          <li>
+            <strong>Search Results:</strong> E-commerce sites, job boards, and content platforms can 
+            return tens of thousands of results.
+          </li>
+          <li>
+            <strong>Message Threads:</strong> Chat applications, email clients, and comment sections 
+            can have thousands of messages.
+          </li>
+          <li>
+            <strong>Logs and Monitoring:</strong> DevOps tools display continuous streams of log data 
+            that can grow indefinitely.
+          </li>
+        </ul>
+
+        <p>
+          In system design interviews, virtualization demonstrates understanding of the DOM bottleneck, 
+          rendering performance, memory management, and the trade-offs between rendering completeness 
+          and runtime efficiency. It&apos;s a practical technique that shows you&apos;ve dealt with 
+          real-world scale.
+        </p>
+      </section>
+
+      {/* ============================================================
+          SECTION 2: Core Concepts
+          ============================================================ */}
+      <section>
+        <h2>Core Concepts</h2>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/performance-optimization/virtualization-scroll-mechanics.svg"
+          alt="Diagram showing virtualization scroll mechanics with outer container, inner container, visible items, and overscan buffer"
+          caption="Virtualization anatomy: outer container scrolls, inner container sets height, visible items are positioned absolutely"
+        />
+
+        <h3>The DOM Bottleneck</h3>
+        <p>
+          To understand why virtualization is necessary, you need to understand the performance 
+          characteristics of the DOM:
+        </p>
+        <ul className="space-y-2">
+          <li>
+            <strong>Memory Cost:</strong> Each DOM node consumes memory for the node object itself, 
+            plus any associated event listeners, styles, and layout information. A simple &lt;div&gt; 
+            with text content uses ~0.5KB. A list item with nested elements (avatar, text, metadata, 
+            actions) can easily exceed 2KB.
+          </li>
+          <li>
+            <strong>Initial Render Cost:</strong> Creating DOM nodes is expensive. The browser must 
+            parse HTML, create node objects, calculate styles, compute layout, and paint pixels. For 
+            10,000 nodes, this takes 2-5 seconds on mid-tier devices.
+          </li>
+          <li>
+            <strong>Layout Cost:</strong> Any style change triggers layout recalculation. With thousands 
+            of nodes, a single setState can cause the browser to recalculate layout for the entire tree, 
+            blocking the main thread for hundreds of milliseconds.
+          </li>
+          <li>
+            <strong>Paint Cost:</strong> During scroll, the browser must repaint visible content. With 
+            thousands of elements, maintaining 60fps (16.67ms per frame) becomes impossible.
+          </li>
+        </ul>
+
+        <h3>How Windowing Works</h3>
+        <p>
+          The core virtualization algorithm is straightforward:
+        </p>
+        <ol className="space-y-2">
+          <li>
+            <strong>Calculate Visible Range:</strong> Given the scroll offset, container height, and 
+            item size, calculate which items are visible. For fixed-height items: 
+            <code>startIndex = floor(scrollTop / itemHeight)</code> and 
+            <code>endIndex = ceil((scrollTop + containerHeight) / itemHeight)</code>.
+          </li>
+          <li>
+            <strong>Add Overscan Buffer:</strong> Render extra items above and below the visible range 
+            (typically 3-5 items in each direction) to prevent flicker during fast scrolling.
+          </li>
+          <li>
+            <strong>Position Items:</strong> Absolutely position each visible item at its calculated 
+            offset within a tall inner container. The inner container&apos;s height equals the total 
+            height of all items combined.
+          </li>
+          <li>
+            <strong>Recycle on Scroll:</strong> As the user scrolls, items that leave the viewport are 
+            unmounted. Newly visible items are mounted. The DOM node count stays constant.
+          </li>
+        </ol>
+
+        <h3>Fixed-Height vs. Variable-Height Items</h3>
+        <p>
+          Virtualization is simplest when all items have the same height, but real-world lists often 
+          have variable heights:
+        </p>
+        <ul className="space-y-2">
+          <li>
+            <strong>Fixed-Height:</strong> All items have the same known height (e.g., 48px per row). 
+            Calculation is O(1): visible indices are derived directly from scroll position. This is 
+            the fastest and most reliable approach.
+          </li>
+          <li>
+            <strong>Variable-Height (Known):</strong> Item heights vary but are known ahead of time 
+            (e.g., from API response). The virtualizer maintains a position map and uses binary search 
+            to find visible items. Slightly more complex but still efficient.
+          </li>
+          <li>
+            <strong>Variable-Height (Dynamic):</strong> Item heights aren&apos;t known until rendered 
+            (e.g., user-generated content with varying text length). The virtualizer must measure items 
+            after render and update position estimates. This can cause scroll position jumps if not 
+            handled carefully.
+          </li>
+        </ul>
+
+        <h3>Overscan and Buffer Zones</h3>
+        <p>
+          <strong>Overscan</strong> is the number of extra items rendered above and below the visible 
+          viewport. Without overscan, fast scrolling would reveal blank spaces as new items load. With 
+          overscan, there&apos;s a buffer of pre-rendered items ready to display.
+        </p>
+        <p>
+          Choosing the right overscan value is a trade-off:
+        </p>
+        <ul className="space-y-2">
+          <li>
+            <strong>Too small (0-2 items):</strong> Users may see blank spaces during fast scrolling 
+            as new items haven&apos;t rendered yet.
+          </li>
+          <li>
+            <strong>Optimal (3-5 items):</strong> Provides smooth scrolling without excessive DOM nodes. 
+            Works well for most use cases.
+          </li>
+          <li>
+            <strong>Too large (10+ items):</strong> Reduces the benefit of virtualization by rendering 
+            more items than necessary.
+          </li>
+        </ul>
+
+        <h3>Virtualization vs. Infinite Scroll</h3>
+        <p>
+          Virtualization and infinite scroll are complementary but distinct patterns:
+        </p>
+        <ul className="space-y-2">
+          <li>
+            <strong>Virtualization</strong> keeps the DOM small by only rendering visible items. The 
+            full dataset is already loaded; only the rendering is deferred.
+          </li>
+          <li>
+            <strong>Infinite Scroll</strong> loads data incrementally as the user scrolls. The dataset 
+            grows over time, and without virtualization, the DOM would grow indefinitely.
+          </li>
+          <li>
+            <strong>Combined:</strong> For datasets too large to load at once (millions of records), 
+            combine virtualization with infinite scroll. Virtualization keeps the DOM small while 
+            infinite scroll fetches data in pages.
+          </li>
+        </ul>
+      </section>
+
+      {/* ============================================================
+          SECTION 3: Architecture & Flow
+          ============================================================ */}
+      <section>
+        <h2>Architecture & Flow</h2>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/performance-optimization/virtualization-overscan.svg"
+          alt="Diagram showing overscan buffer zones above and below viewport with items being mounted/unmounted during scroll"
+          caption="Overscan buffers prevent blank spaces during fast scrolling by pre-rendering items outside the viewport"
+        />
+
+        <h3>Virtualization Component Architecture</h3>
+        <p>
+          A virtualized list consists of several layers:
+        </p>
+
+        <h4>Outer Container</h4>
+        <p>
+          A scrollable element with <code>overflow: auto</code> and a fixed height. This is what the 
+          user actually scrolls. The outer container&apos;s scroll events trigger recalculation of 
+          visible items.
+        </p>
+
+        <h4>Inner Container</h4>
+        <p>
+          A tall element whose height equals the total height of all items combined. For 10,000 items 
+          at 48px each, the inner container is 480,000px tall. This creates the correct scrollbar size 
+          and scroll range. The inner container uses <code>position: relative</code> to establish a 
+          positioning context for visible items.
+        </p>
+
+        <h4>Visible Items</h4>
+        <p>
+          Absolutely positioned elements placed at their calculated offsets within the inner container. 
+          Only items in the visible range plus overscan are rendered. Each item uses 
+          <code>position: absolute</code> with <code>top</code> set to its calculated offset.
+        </p>
+
+        <h4>Item Renderer</h4>
+        <p>
+          A function or component that renders individual items. The renderer receives the item index 
+          and style (for positioning) as props. For optimal performance, item renderers should be 
+          memoized to prevent unnecessary re-renders.
+        </p>
+
+        <h3>Scroll Event Flow</h3>
+        <p>
+          The scroll event flow in a virtualized list:
+        </p>
+        <ol className="space-y-2">
+          <li>
+            <strong>User Scrolls:</strong> The browser fires a scroll event on the outer container.
+          </li>
+          <li>
+            <strong>Calculate Visible Range:</strong> The virtualizer reads the new scrollTop value 
+            and calculates which items are now visible.
+          </li>
+          <li>
+            <strong>Update State:</strong> The virtualizer updates its internal state with the new 
+            visible range. This triggers a re-render.
+          </li>
+          <li>
+            <strong>Render Visible Items:</strong> React renders only the visible items plus overscan. 
+            Items that left the viewport are unmounted; newly visible items are mounted.
+          </li>
+          <li>
+            <strong>Position Items:</strong> Each visible item is absolutely positioned at its 
+            calculated offset.
+          </li>
+        </ol>
+
+        <h3>Performance Optimization Techniques</h3>
+        <p>
+          Several techniques optimize virtualization performance:
+        </p>
+        <ul className="space-y-2">
+          <li>
+            <strong>Passive Event Listeners:</strong> Scroll listeners should use 
+            <code>{'{ passive: true }'}</code> to avoid blocking scrolling. This tells the browser 
+            the handler won&apos;t call <code>preventDefault()</code>.
+          </li>
+          <li>
+            <strong>RequestAnimationFrame:</strong> For very fast scrolling, consider batching 
+            visible range updates with requestAnimationFrame to avoid rendering on every scroll event.
+          </li>
+          <li>
+            <strong>Item Memoization:</strong> Individual list items should be memoized with 
+            React.memo to prevent re-rendering when their data hasn&apos;t changed.
+          </li>
+          <li>
+            <strong>Stable Keys:</strong> Use stable, unique keys for list items (not array indices). 
+            This allows React to reuse DOM nodes when items are recycled.
+          </li>
+          <li>
+            <strong>Avoid Inline Functions:</strong> Don&apos;t pass inline functions as props to 
+            item renderers. This creates new function references on every render, breaking memoization.
+          </li>
+        </ul>
+      </section>
+
+      {/* ============================================================
+          SECTION 4: Trade-offs & Comparison
+          ============================================================ */}
+      <section>
+        <h2>Trade-offs & Comparison</h2>
+
+        <h3>Library Comparison</h3>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-sm">
             <thead>
-              <tr className="border-b border-theme">
-                <th className="p-3 text-left">Metric</th>
-                <th className="p-3 text-left">10K DOM Nodes</th>
-                <th className="p-3 text-left">Virtualized (20 nodes)</th>
+              <tr className="border-b-2 border-theme">
+                <th className="p-3 text-left">Library</th>
+                <th className="p-3 text-left">Size</th>
+                <th className="p-3 text-left">Type</th>
+                <th className="p-3 text-left">Dynamic Height</th>
+                <th className="p-3 text-left">Best For</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-theme">
               <tr>
-                <td className="p-3">Initial Render</td>
-                <td className="p-3">2,000-5,000ms</td>
-                <td className="p-3">5-15ms</td>
+                <td className="p-3 font-medium">react-window</td>
+                <td className="p-3">6KB gzipped</td>
+                <td className="p-3">Components</td>
+                <td className="p-3">Yes (VariableSizeList)</td>
+                <td className="p-3">Most use cases, lightweight</td>
               </tr>
               <tr>
-                <td className="p-3">Memory Usage</td>
-                <td className="p-3">50-100MB</td>
-                <td className="p-3">2-5MB</td>
+                <td className="p-3 font-medium">@tanstack/react-virtual</td>
+                <td className="p-3">5KB gzipped</td>
+                <td className="p-3">Headless hook</td>
+                <td className="p-3">Yes</td>
+                <td className="p-3">Custom layouts, maximum flexibility</td>
               </tr>
               <tr>
-                <td className="p-3">Scroll FPS</td>
-                <td className="p-3">15-30fps</td>
-                <td className="p-3">55-60fps</td>
+                <td className="p-3 font-medium">react-virtuoso</td>
+                <td className="p-3">15KB gzipped</td>
+                <td className="p-3">Components</td>
+                <td className="p-3">Automatic</td>
+                <td className="p-3">Dynamic heights, grouped lists</td>
               </tr>
               <tr>
-                <td className="p-3">DOM Nodes</td>
-                <td className="p-3">10,000+</td>
-                <td className="p-3">20-40</td>
-              </tr>
-              <tr>
-                <td className="p-3">Time to Interactive</td>
-                <td className="p-3">3-8 seconds</td>
-                <td className="p-3">{'&lt;'}100ms</td>
+                <td className="p-3 font-medium">react-virtualized</td>
+                <td className="p-3">23KB gzipped</td>
+                <td className="p-3">Components</td>
+                <td className="p-3">Yes</td>
+                <td className="p-3">Legacy projects (deprecated)</td>
               </tr>
             </tbody>
           </table>
         </div>
-      </section>
 
-      <section>
-        <h2>How Windowing Works</h2>
+        <h3>Virtualization vs. CSS Containment</h3>
         <p>
-          The core algorithm is straightforward: given the scroll offset, container height, and item sizes,
-          calculate which items are visible and render only those. A virtualized list consists of:
+          For moderately sized lists (100-500 items), CSS <code>content-visibility: auto</code> can 
+          provide similar benefits without JavaScript:
         </p>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b-2 border-theme">
+                <th className="p-3 text-left">Aspect</th>
+                <th className="p-3 text-left">Virtualization</th>
+                <th className="p-3 text-left">CSS Containment</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-3 font-medium">DOM Nodes</td>
+                <td className="p-3">Only visible (20-30)</td>
+                <td className="p-3">All items rendered</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">Browser Support</td>
+                <td className="p-3">All browsers</td>
+                <td className="p-3">Chrome 85+, Edge 85+, Firefox 90+</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">Implementation</td>
+                <td className="p-3">JavaScript library</td>
+                <td className="p-3">Single CSS property</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">Best For</td>
+                <td className="p-3">1000+ items</td>
+                <td className="p-3">100-500 items</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>When NOT to Virtualize</h3>
         <ul className="space-y-2">
           <li>
-            <strong>Outer Container:</strong> A scrollable element with <code>overflow: auto</code> and a fixed
-            height. This is what the user actually scrolls.
+            <strong>Small Lists (&lt;100 items):</strong> The DOM can handle a few hundred simple 
+            elements without performance issues. The complexity of virtualization isn&apos;t justified.
           </li>
           <li>
-            <strong>Inner Container:</strong> A tall element whose height equals the total height of all items
-            combined. This creates the correct scrollbar size and scroll range.
+            <strong>SEO-Critical Content:</strong> Virtualized items not in the DOM are invisible to 
+            crawlers. If search engines need to index all items, virtualization hides content.
           </li>
           <li>
-            <strong>Visible Items:</strong> Absolutely positioned elements placed at their calculated offsets
-            within the inner container. Only items in the visible range plus a buffer zone are rendered.
-          </li>
-          <li>
-            <strong>Overscan:</strong> Extra items rendered above and below the visible area to prevent flicker
-            during fast scrolling. Typically 3-5 items in each direction.
-          </li>
-        </ul>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`// Pseudocode: core windowing calculation
-function getVisibleRange(scrollTop, containerHeight, itemHeight, totalItems) {
-  const startIndex = Math.floor(scrollTop / itemHeight);
-  const endIndex = Math.min(
-    totalItems - 1,
-    Math.ceil((scrollTop + containerHeight) / itemHeight)
-  );
-
-  // Add overscan buffer
-  const overscan = 5;
-  return {
-    start: Math.max(0, startIndex - overscan),
-    end: Math.min(totalItems - 1, endIndex + overscan),
-  };
-}`}</code>
-        </pre>
-      </section>
-
-      <section>
-        <h2>Library Options</h2>
-
-        <h3 className="mt-4 font-semibold">react-window</h3>
-        <p>
-          Lightweight (6KB gzipped) successor to react-virtualized. Provides four core components:
-          <code>FixedSizeList</code>, <code>VariableSizeList</code>, <code>FixedSizeGrid</code>, and
-          <code>VariableSizeGrid</code>.
-        </p>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`import { FixedSizeList } from 'react-window';
-
-function UserList({ users }) {
-  const Row = ({ index, style }) =&gt; (
-    <div style={style} className="flex items-center px-4 border-b">
-      <img src={users[index].avatar} className="w-8 h-8 rounded-full mr-3" />
-      <span>{users[index].name}</span>
-    </div>
-  );
-
-  return (
-    <FixedSizeList
-      height={600}
-      width="100%"
-      itemCount={users.length}
-      itemSize={48}
-    >
-      {Row}
-    </FixedSizeList>
-  );
-}
-
-// Variable size rows — you must provide a function that returns each item's height
-import { VariableSizeList } from 'react-window';
-
-function MessageList({ messages }) {
-  const getItemSize = (index) =&gt; messages[index].isExpanded ? 120 : 48;
-
-  const Row = ({ index, style }) =&gt; (
-    <div style={style} className="p-3 border-b">
-      <p className="font-medium">{messages[index].sender}</p>
-      <p>{messages[index].text}</p>
-    </div>
-  );
-
-  return (
-    <VariableSizeList
-      height={600}
-      width="100%"
-      itemCount={messages.length}
-      itemSize={getItemSize}
-    >
-      {Row}
-    </VariableSizeList>
-  );
-}`}</code>
-        </pre>
-
-        <h3 className="mt-6 font-semibold">@tanstack/react-virtual</h3>
-        <p>
-          A headless virtualization hook — it calculates positioning but leaves rendering entirely to you. This
-          gives maximum flexibility for custom layouts and styling.
-        </p>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`import { useVirtualizer } from '@tanstack/react-virtual';
-import { useRef } from 'react';
-
-function VirtualList({ items }) {
-  const parentRef = useRef(null);
-
-  const virtualizer = useVirtualizer({
-    count: items.length,
-    getScrollElement: () =&gt; parentRef.current,
-    estimateSize: () =&gt; 48,
-    overscan: 5,
-  });
-
-  return (
-    <div ref={parentRef} style={{ height: 600, overflow: 'auto' }}>
-      <div
-        style={{
-          height: virtualizer.getTotalSize(),
-          width: '100%',
-          position: 'relative',
-        }}
-      >
-        {virtualizer.getVirtualItems().map((virtualRow) =&gt; (
-          <div
-            key={virtualRow.key}
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: virtualRow.size,
-              transform: \`translateY(\${virtualRow.start}px)\`,
-            }}
-          >
-            {items[virtualRow.index].name}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}`}</code>
-        </pre>
-
-        <h3 className="mt-6 font-semibold">react-virtuoso</h3>
-        <p>
-          Higher-level component with automatic height measurement, grouped lists, sticky headers, and
-          built-in infinite scrolling support. Larger bundle (~15KB gzipped) but requires less manual setup.
-        </p>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`import { Virtuoso, GroupedVirtuoso } from 'react-virtuoso';
-
-// Simple list — handles dynamic heights automatically
-function AutoHeightList({ items }) {
-  return (
-    <Virtuoso
-      style={{ height: 600 }}
-      totalCount={items.length}
-      itemContent={(index) => (
-        <div className="p-4 border-b">
-          <h3>{items[index].title}</h3>
-          <p>{items[index].description}</p>
-        </div>
-      )}
-    /&gt;
-  );
-}
-
-// Grouped list with sticky headers
-function GroupedContactList({ groups, contacts }) {
-  return (
-    <GroupedVirtuoso
-      style={{ height: 600 }}
-      groupCounts={groups.map((g) => g.count)}
-      groupContent={(index) =&gt; (
-        <div className="bg-gray-100 p-2 font-bold sticky top-0">
-          {groups[index].label}
-        </div>
-      )}
-      itemContent={(index) =&gt; (
-        <div className="p-3 border-b">{contacts[index].name}</div>
-      )}
-    /&gt;
-  );
-}`}</code>
-        </pre>
-      </section>
-
-      <section>
-        <h2>Infinite Scroll with Virtualization</h2>
-        <p>
-          Virtualization and infinite scroll are complementary patterns. Virtualization keeps the DOM small,
-          while infinite scroll loads data incrementally. Together they enable smooth browsing of datasets
-          with millions of records.
-        </p>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`import { useVirtualizer } from '@tanstack/react-virtual';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { useRef, useEffect } from 'react';
-
-function InfiniteVirtualList() {
-  const parentRef = useRef(null);
-
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery({
-      queryKey: ['items'],
-      queryFn: ({ pageParam = 0 }) =&gt; fetchItems(pageParam),
-      getNextPageParam: (lastPage) =&gt; lastPage.nextCursor,
-    });
-
-  const allItems = data?.pages.flatMap((p) =&gt; p.items) ?? [];
-
-  const virtualizer = useVirtualizer({
-    count: hasNextPage ? allItems.length + 1 : allItems.length,
-    getScrollElement: () =&gt; parentRef.current,
-    estimateSize: () =&gt; 60,
-    overscan: 5,
-  });
-
-  // Fetch next page when approaching the end
-  useEffect(() =&gt; {
-    const lastItem = virtualizer.getVirtualItems().at(-1);
-    if (!lastItem) return;
-    if (lastItem.index &gt;= allItems.length - 1 && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [virtualizer.getVirtualItems(), hasNextPage, isFetchingNextPage]);
-
-  return (
-    <div ref={parentRef} style={{ height: 600, overflow: 'auto' }}>
-      <div style={{ height: virtualizer.getTotalSize(), position: 'relative' }}>
-        {virtualizer.getVirtualItems().map((vRow) =&gt; (
-          <div
-            key={vRow.key}
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              transform: \`translateY(\${vRow.start}px)\`,
-            }}
-          >
-            {vRow.index &lt; allItems.length
-              ? allItems[vRow.index].name
-              : 'Loading...'}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}`}</code>
-        </pre>
-      </section>
-
-      <section>
-        <h2>When NOT to Virtualize</h2>
-        <p>
-          Virtualization adds complexity. There are cases where it is unnecessary or even counterproductive:
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Small lists ({'&lt;'}100 items):</strong> The DOM can handle a few hundred simple elements
-            without any performance issues. The overhead of virtualization isn't justified.
-          </li>
-          <li>
-            <strong>SEO-critical content:</strong> Virtualized items not in the DOM are invisible to crawlers.
-            If search engines need to index all items, virtualization hides content.
-          </li>
-          <li>
-            <strong>CSS <code>content-visibility: auto</code>:</strong> Modern browsers support native rendering
-            optimization via CSS containment. For moderately sized lists (100-500 items), this can provide
-            sufficient performance without JavaScript-based virtualization.
-          </li>
-          <li>
-            <strong>Print layouts:</strong> Virtualized lists only render visible items, so printing
+            <strong>Print Layouts:</strong> Virtualized lists only render visible items, so printing 
             produces incomplete output. You need a separate non-virtualized view for printing.
           </li>
           <li>
-            <strong>Cmd+F search:</strong> Browser find-in-page cannot locate text in unmounted items.
+            <strong>Browser Find-in-Page:</strong> Ctrl+F/Cmd+F cannot locate text in unmounted items. 
             If text search across all items is critical, consider alternatives.
           </li>
+          <li>
+            <strong>Simple Static Lists:</strong> For static content that doesn&apos;t change, server 
+            rendering with pagination may be simpler and more accessible.
+          </li>
         </ul>
       </section>
 
+      {/* ============================================================
+          SECTION 5: Best Practices
+          ============================================================ */}
       <section>
-        <h2>Accessibility Considerations</h2>
-        <ul className="space-y-2">
-          <li>
-            Use proper ARIA roles: <code>role="listbox"</code> or <code>role="grid"</code> on the container
-            with <code>aria-rowcount</code> set to the total item count.
-          </li>
-          <li>
-            Set <code>aria-rowindex</code> on each visible row so screen readers know the item's position
-            within the full list.
-          </li>
-          <li>
-            Ensure keyboard navigation works: arrow keys should scroll the container and shift focus to
-            newly visible items rather than jumping to the end of the DOM.
-          </li>
-          <li>
-            Announce dynamic loading status with <code>aria-live="polite"</code> regions when fetching
-            additional pages in infinite scroll scenarios.
-          </li>
+        <h2>Best Practices</h2>
+
+        <h3>Choose the Right Library</h3>
+        <p>
+          For most React applications:
+        </p>
+        <ul className="space-y-1">
+          <li>• <strong>react-window:</strong> Best for fixed-height or known variable-height lists. 
+            Lightweight, well-maintained, good documentation.</li>
+          <li>• <strong>@tanstack/react-virtual:</strong> Best for custom layouts or when you need 
+            maximum control. Headless approach gives you full rendering control.</li>
+          <li>• <strong>react-virtuoso:</strong> Best for dynamic heights without manual measurement. 
+            Higher-level API with built-in infinite scroll support.</li>
+        </ul>
+
+        <h3>Use Fixed Heights When Possible</h3>
+        <p>
+          Fixed-height items are significantly simpler and more performant:
+        </p>
+        <ul className="space-y-1">
+          <li>• O(1) calculation for visible range</li>
+          <li>• No measurement overhead</li>
+          <li>• No scroll position jumps</li>
+          <li>• More predictable behavior</li>
+        </ul>
+        <p>
+          If items must vary in height, consider constraining them to a small set of known heights 
+          (e.g., 48px for single-line, 80px for multi-line).
+        </p>
+
+        <h3>Memoize Item Renderers</h3>
+        <p>
+          Wrap item renderers in React.memo to prevent unnecessary re-renders:
+        </p>
+        <ul className="space-y-1">
+          <li>• Use stable keys (not array indices)</li>
+          <li>• Avoid inline functions as props</li>
+          <li>• Memoize any callbacks passed to items</li>
+          <li>• Use useCallback for event handlers</li>
+        </ul>
+
+        <h3>Implement Proper Accessibility</h3>
+        <p>
+          Virtualized lists require ARIA attributes for screen readers:
+        </p>
+        <ul className="space-y-1">
+          <li>• Use <code>role=&quot;listbox&quot;</code> or <code>role=&quot;grid&quot;</code> on 
+            the container</li>
+          <li>• Set <code>aria-rowcount</code> to the total item count (not just visible)</li>
+          <li>• Set <code>aria-rowindex</code> on each visible row</li>
+          <li>• Ensure keyboard navigation works (arrow keys should scroll and shift focus)</li>
+          <li>• Use <code>aria-live=&quot;polite&quot;</code> for infinite scroll loading status</li>
+        </ul>
+
+        <h3>Combine with Infinite Scroll Carefully</h3>
+        <p>
+          When combining virtualization with infinite scroll:
+        </p>
+        <ul className="space-y-1">
+          <li>• Trigger fetch when approaching the end (e.g., when last visible item index is within 
+            100 of total)</li>
+          <li>• Show loading indicator as a virtualized item at the end</li>
+          <li>• Handle empty states and error states as virtualized items</li>
+          <li>• Consider using react-query or SWR for data fetching with built-in caching</li>
+        </ul>
+
+        <h3>Test on Real Devices</h3>
+        <p>
+          Virtualization performance varies significantly by device:
+        </p>
+        <ul className="space-y-1">
+          <li>• Test on low-end mobile devices (not just high-end dev machines)</li>
+          <li>• Test with realistic data sizes (10,000+ items)</li>
+          <li>• Measure scroll FPS using Chrome DevTools Performance panel</li>
+          <li>• Monitor memory usage during extended scrolling sessions</li>
         </ul>
       </section>
 
+      {/* ============================================================
+          SECTION 6: Common Pitfalls
+          ============================================================ */}
       <section>
-        <h2>Interview Talking Points</h2>
-        <ul className="space-y-2">
-          <li>
-            Virtualization solves the DOM bottleneck by only rendering visible items, reducing thousands of
-            DOM nodes to a few dozen regardless of dataset size.
-          </li>
-          <li>
-            The core algorithm calculates visible indices from scroll position and container height, then
-            absolutely positions those items within a tall inner container.
-          </li>
-          <li>
-            <code>@tanstack/react-virtual</code> is headless and flexible; <code>react-window</code> is
-            lightweight with ready-made components; <code>react-virtuoso</code> handles dynamic heights
-            and grouped lists out of the box.
-          </li>
-          <li>
-            Combine virtualization with infinite scroll for datasets too large to load at once — virtualization
-            keeps the DOM small while infinite queries fetch data incrementally.
-          </li>
-          <li>
-            Don't virtualize small lists ({'&lt;'}100 items) — the complexity isn't worth it, and CSS
-            <code>content-visibility</code> may suffice for moderate lists.
-          </li>
-          <li>
-            Accessibility requires ARIA attributes (<code>aria-rowcount</code>, <code>aria-rowindex</code>)
-            and keyboard navigation support since screen readers can't see unmounted items.
-          </li>
-        </ul>
+        <h2>Common Pitfalls</h2>
+
+        <h3>Virtualizing Small Lists</h3>
+        <p>
+          Virtualization adds complexity. For lists under 100 items, the performance benefit is 
+          negligible and may not justify the overhead.
+        </p>
+        <p>
+          <strong>Solution:</strong> Profile first. If the list renders in under 100ms and scrolls 
+          smoothly, skip virtualization.
+        </p>
+
+        <h3>Not Setting Explicit Heights</h3>
+        <p>
+          Virtualization requires knowing item heights to calculate positions. Without explicit 
+          heights, the virtualizer can&apos;t position items correctly.
+        </p>
+        <p>
+          <strong>Solution:</strong> Use FixedSizeList when possible. For variable heights, use 
+          VariableSizeList and provide a function to estimate heights, or use a library that 
+          auto-measures (react-virtuoso).
+        </p>
+
+        <h3>Using Array Indices as Keys</h3>
+        <p>
+          Using array indices as React keys breaks item recycling. When items are reordered or 
+          filtered, React will re-render items unnecessarily.
+        </p>
+        <p>
+          <strong>Solution:</strong> Use stable, unique IDs as keys (e.g., <code>user.id</code>, 
+          <code>product.sku</code>).
+        </p>
+
+        <h3>Not Handling Empty States</h3>
+        <p>
+          Virtualized lists with zero items render nothing, which can be confusing. Users may think 
+          the list is still loading.
+        </p>
+        <p>
+          <strong>Solution:</strong> Render an empty state component when the dataset is empty. 
+          Many libraries support this via a custom renderer or by conditionally rendering outside 
+          the virtualizer.
+        </p>
+
+        <h3>Ignoring Scroll Restoration</h3>
+        <p>
+          When navigating back to a virtualized list, the scroll position resets to the top. Users 
+          lose their place.
+        </p>
+        <p>
+          <strong>Solution:</strong> Save scroll position to session storage or URL state. Restore 
+          on navigation back. Some libraries (react-virtuoso) support this out of the box.
+        </p>
+
+        <h3>Not Handling Dynamic Content</h3>
+        <p>
+          If item content changes after initial render (e.g., expanded rows, lazy-loaded images), 
+          the virtualizer may not recalculate heights correctly.
+        </p>
+        <p>
+          <strong>Solution:</strong> For variable-height lists, call the virtualizer&apos;s 
+          <code>resetAfterIndex()</code> or <code>measure()</code> method when content changes.
+        </p>
       </section>
 
+      {/* ============================================================
+          SECTION 7: Real-World Use Cases
+          ============================================================ */}
+      <section>
+        <h2>Real-World Use Cases</h2>
+
+        <h3>E-Commerce: Product Search Results</h3>
+        <p>
+          An e-commerce site&apos;s search results page displayed up to 10,000 products. Without 
+          virtualization, the page took 8 seconds to render and was unresponsive during scroll.
+        </p>
+        <p>
+          <strong>Implementation:</strong> Used react-window FixedSizeList with 80px item height. 
+          Implemented infinite scroll with react-query for data fetching.
+        </p>
+        <p>
+          <strong>Results:</strong> Initial render: 8s → 50ms. Scroll FPS: 20fps → 60fps. Mobile 
+          bounce rate decreased 18%.
+        </p>
+
+        <h3>SaaS Dashboard: Data Tables</h3>
+        <p>
+          A B2B SaaS dashboard displayed transaction history with up to 50,000 rows. Users complained 
+          about slow loading and janky scrolling.
+        </p>
+        <p>
+          <strong>Implementation:</strong> Used @tanstack/react-virtual for custom table layout. 
+          Implemented server-side pagination with client-side virtualization.
+        </p>
+        <p>
+          <strong>Results:</strong> Memory usage: 200MB → 8MB. Time to interactive: 12s → 200ms. 
+          User satisfaction scores increased 35%.
+        </p>
+
+        <h3>Chat Application: Message Threads</h3>
+        <p>
+          A chat application needed to display message threads with thousands of messages. Loading 
+          all messages crashed mobile devices.
+        </p>
+        <p>
+          <strong>Implementation:</strong> Combined virtualization with infinite scroll. Messages 
+          loaded in pages of 50, virtualized for smooth scrolling. Implemented bidirectional 
+          scrolling (older messages load at top).
+        </p>
+        <p>
+          <strong>Results:</strong> App no longer crashes on mobile. Scroll performance smooth at 
+          60fps. Memory usage stable regardless of thread length.
+        </p>
+
+        <h3>Analytics Platform: Log Viewer</h3>
+        <p>
+          A DevOps analytics platform needed to display continuous streams of log data. Logs could 
+          grow indefinitely during a session.
+        </p>
+        <p>
+          <strong>Implementation:</strong> Used react-virtuoso with automatic height measurement. 
+          Implemented log buffering (keep last 10,000 logs in memory, discard older). Auto-scroll 
+          to bottom when new logs arrive.
+        </p>
+        <p>
+          <strong>Results:</strong> Memory usage capped at 50MB regardless of log volume. Real-time 
+          log streaming at 100+ logs/second without performance degradation.
+        </p>
+      </section>
+
+      {/* ============================================================
+          SECTION 8: Interview Questions & Answers
+          ============================================================ */}
+      <section>
+        <h2>Interview Questions & Answers</h2>
+
+        <div className="space-y-6">
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 1: What problem does virtualization solve?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <p className="mb-3">
+              Virtualization solves the DOM bottleneck when rendering large lists. The DOM is expensive: 
+              each node consumes memory (~0.5-1KB), and creating thousands of nodes blocks the main thread 
+              for seconds. Virtualization only renders visible items (20-30 nodes) instead of the full 
+              dataset (10,000+ nodes).
+            </p>
+            <p className="mb-3">
+              The performance impact is dramatic: initial render drops from 2-5 seconds to 5-15ms, memory 
+              usage drops from 50-100MB to 2-5MB, and scroll performance improves from 15-30fps to 55-60fps.
+            </p>
+            <p>
+              Virtualization is essential for data tables, search results, message threads, and log 
+              viewers — any UI that displays large datasets.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 2: How does virtualization work under the hood?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <p className="mb-3">Virtualization works through these steps:</p>
+            <ul className="space-y-2 mb-3">
+              <li>
+                <strong>Outer Container:</strong> A scrollable element with fixed height and 
+                <code>overflow: auto</code>.
+              </li>
+              <li>
+                <strong>Inner Container:</strong> A tall element whose height equals total items × 
+                item height. This creates the correct scrollbar size.
+              </li>
+              <li>
+                <strong>Visible Range Calculation:</strong> On scroll, calculate which items are 
+                visible: <code>startIndex = floor(scrollTop / itemHeight)</code>, 
+                <code>endIndex = ceil((scrollTop + containerHeight) / itemHeight)</code>.
+              </li>
+              <li>
+                <strong>Render Visible Items:</strong> Only render items in the visible range plus 
+                overscan buffer (3-5 items above/below). Position them absolutely within the inner 
+                container.
+              </li>
+              <li>
+                <strong>Recycle on Scroll:</strong> As items leave the viewport, they&apos;re 
+                unmounted. Newly visible items are mounted. DOM node count stays constant.
+              </li>
+            </ul>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 3: What are the trade-offs between react-window, @tanstack/react-virtual, and react-virtuoso?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <ul className="space-y-2 mb-3">
+              <li>
+                <strong>react-window (6KB):</strong> Provides ready-made components (FixedSizeList, 
+                VariableSizeList). Best for most use cases. Lightweight, well-documented. Requires 
+                manual height specification for variable items.
+              </li>
+              <li>
+                <strong>@tanstack/react-virtual (5KB):</strong> Headless hook approach. Calculates 
+                positioning but leaves rendering to you. Maximum flexibility for custom layouts. 
+                Steeper learning curve.
+              </li>
+              <li>
+                <strong>react-virtuoso (15KB):</strong> Higher-level component with automatic height 
+                measurement. Built-in support for grouped lists, sticky headers, and infinite scroll. 
+                Larger bundle but less setup.
+              </li>
+            </ul>
+            <p>
+              Choose react-window for simplicity, @tanstack/react-virtual for custom layouts, and 
+              react-virtuoso for dynamic heights without manual measurement.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 4: How do you handle variable-height items?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <p className="mb-3">There are three approaches:</p>
+            <ul className="space-y-2 mb-3">
+              <li>
+                <strong>Known Heights:</strong> If heights are known ahead of time (from API), use 
+                VariableSizeList and provide a function that returns each item&apos;s height. The 
+                virtualizer maintains a position map for O(log n) lookup.
+              </li>
+              <li>
+                <strong>Dynamic Measurement:</strong> If heights aren&apos;t known until render, use 
+                a library that auto-measures (react-virtuoso) or implement measurement yourself: 
+                render items off-screen, measure with ResizeObserver, cache heights, then position 
+                correctly.
+              </li>
+              <li>
+                <strong>Constrained Heights:</strong> Design items to have a small set of known 
+                heights (e.g., 48px single-line, 80px multi-line). This simplifies calculation 
+                while allowing some variation.
+              </li>
+            </ul>
+            <p>
+              Fixed heights are always preferable when possible — they&apos;re simpler and more 
+              performant.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 5: How do you combine virtualization with infinite scroll?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <p className="mb-3">
+              Virtualization and infinite scroll are complementary: virtualization keeps the DOM small, 
+              infinite scroll loads data incrementally.
+            </p>
+            <ul className="space-y-2 mb-3">
+              <li>
+                <strong>Trigger Point:</strong> Fetch next page when approaching the end (e.g., when 
+                last visible item index is within 100 of total loaded items).
+              </li>
+              <li>
+                <strong>Loading State:</strong> Render a loading indicator as a virtualized item at 
+                the end of the list.
+              </li>
+              <li>
+                <strong>Data Management:</strong> Use react-query or SWR for data fetching with 
+                built-in caching and deduplication.
+              </li>
+              <li>
+                <strong>Scroll Position:</strong> When new items load at the end, maintain scroll 
+                position. When items load at the top (bidirectional scroll), adjust scroll offset 
+                to prevent jump.
+              </li>
+            </ul>
+            <p>
+              Together, they enable smooth browsing of datasets with millions of records.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 6: What accessibility considerations are important for virtualized lists?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <ul className="space-y-2 mb-3">
+              <li>
+                <strong>ARIA Roles:</strong> Use <code>role=&quot;listbox&quot;</code> or 
+                <code>role=&quot;grid&quot;</code> on the container.
+              </li>
+              <li>
+                <strong>Row Count:</strong> Set <code>aria-rowcount</code> to the total item count 
+                (not just visible items) so screen readers know the full list size.
+              </li>
+              <li>
+                <strong>Row Index:</strong> Set <code>aria-rowindex</code> on each visible row so 
+                screen readers can announce position (&quot;item 523 of 10,000&quot;).
+              </li>
+              <li>
+                <strong>Keyboard Navigation:</strong> Arrow keys should scroll the container and 
+                shift focus to newly visible items. Don&apos;t rely on native browser behavior 
+                since most items aren&apos;t in the DOM.
+              </li>
+              <li>
+                <strong>Loading Announcements:</strong> Use <code>aria-live=&quot;polite&quot;</code> 
+                regions to announce when new items load during infinite scroll.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+          SECTION 9: References
+          ============================================================ */}
       <section>
         <h2>References & Further Reading</h2>
         <ul className="space-y-2">
           <li>
-            <a href="https://tanstack.com/virtual/latest" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+            <a href="https://tanstack.com/virtual/latest" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               TanStack Virtual Documentation
-            </a> — Official docs for @tanstack/react-virtual
+            </a> — Official docs for @tanstack/react-virtual with examples and API reference.
           </li>
           <li>
-            <a href="https://react-window.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+            <a href="https://react-window.vercel.app/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               react-window Examples
-            </a> — Interactive examples and API reference
+            </a> — Interactive examples and API reference for react-window.
           </li>
           <li>
-            <a href="https://virtuoso.dev/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+            <a href="https://virtuoso.dev/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               React Virtuoso Documentation
-            </a> — Guides for dynamic heights, grouped lists, and infinite scroll
+            </a> — Guides for dynamic heights, grouped lists, and infinite scroll.
           </li>
           <li>
-            <a href="https://web.dev/virtualize-long-lists-react-window/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+            <a href="https://web.dev/virtualize-long-lists-react-window/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               web.dev: Virtualize Long Lists
-            </a> — Google's guide on list virtualization for web performance
+            </a> — Google&apos;s guide on list virtualization for web performance.
           </li>
           <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+            <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
               MDN: content-visibility
-            </a> — CSS-based alternative to JavaScript virtualization
+            </a> — CSS-based alternative to JavaScript virtualization for moderate lists.
+          </li>
+          <li>
+            <a href="https://www.w3.org/WAI/ARIA/apg/patterns/listbox/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              WAI-ARIA Listbox Pattern
+            </a> — Accessibility guidelines for listbox implementations.
           </li>
         </ul>
       </section>

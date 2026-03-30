@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 420" role="img" aria-labelledby="webVitalsOptimizationTitle webVitalsOptimizationDesc">
+  <title id="webVitalsOptimizationTitle">Web Vitals Optimization Strategies</title>
+  <desc id="webVitalsOptimizationDesc">Diagram showing specific optimization techniques for each Core Web Vital metric</desc>
+  
+  <defs>
+    <linearGradient id="strategiesBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fafafa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="850" height="420" fill="url(#strategiesBg)" />
+  
+  <text x="425" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#1e293b">Web Vitals: Optimization Strategies by Metric</text>
+  
+  <!-- LCP Strategies (Left) -->
+  <rect x="30" y="70" width="250" height="320" rx="8" fill="#ffffff" stroke="#22c55e" stroke-width="2" />
+  <rect x="30" y="70" width="250" height="45" rx="8" fill="#f0fdf4" />
+  <text x="155" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#16a34a">LCP Optimization</text>
+  
+  <circle cx="50" cy="145" r="8" fill="#22c55e" />
+  <text x="50" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ffffff">1</text>
+  <text x="70" y="150" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Optimize LCP image</text>
+  <text x="70" y="170" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#64748b">WebP/AVIF, srcset, quality 75-85</text>
+  
+  <circle cx="50" cy="205" r="8" fill="#22c55e" />
+  <text x="50" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ffffff">2</text>
+  <text x="70" y="210" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Preload LCP image</text>
+  <text x="70" y="230" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#64748b">link rel="preload" as="image"</text>
+  
+  <circle cx="50" cy="265" r="8" fill="#22c55e" />
+  <text x="50" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ffffff">3</text>
+  <text x="70" y="270" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Use SSR/SSG</text>
+  <text x="70" y="290" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#64748b">HTML contains LCP element</text>
+  
+  <circle cx="50" cy="325" r="8" fill="#22c55e" />
+  <text x="50" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ffffff">4</text>
+  <text x="70" y="330" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Reduce TTFB</text>
+  <text x="70" y="350" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#64748b">CDN, edge caching, optimize backend</text>
+  
+  <!-- INP Strategies (Center) -->
+  <rect x="300" y="70" width="250" height="320" rx="8" fill="#ffffff" stroke="#8b5cf6" stroke-width="2" />
+  <rect x="300" y="70" width="250" height="45" rx="8" fill="#ede9fe" />
+  <text x="425" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#7c3aed">INP Optimization</text>
+  
+  <circle cx="320" cy="145" r="8" fill="#8b5cf6" />
+  <text x="320" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ffffff">1</text>
+  <text x="340" y="150" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Break up long tasks</text>
+  <text x="340" y="170" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#64748b">scheduler.yield(), setTimeout</text>
+  
+  <circle cx="320" cy="205" r="8" fill="#8b5cf6" />
+  <text x="320" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ffffff">2</text>
+  <text x="340" y="210" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Reduce JavaScript</text>
+  <text x="340" y="230" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#64748b">Code split, remove unused code</text>
+  
+  <circle cx="320" cy="265" r="8" fill="#8b5cf6" />
+  <text x="320" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ffffff">3</text>
+  <text x="340" y="270" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Use Web Workers</text>
+  <text x="340" y="290" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#64748b">Offload heavy computation</text>
+  
+  <circle cx="320" cy="325" r="8" fill="#8b5cf6" />
+  <text x="320" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ffffff">4</text>
+  <text x="340" y="330" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Optimize event handlers</text>
+  <text x="340" y="350" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#64748b">Debounce, throttle, passive listeners</text>
+  
+  <!-- CLS Strategies (Right) -->
+  <rect x="570" y="70" width="250" height="320" rx="8" fill="#ffffff" stroke="#3b82f6" stroke-width="2" />
+  <rect x="570" y="70" width="250" height="45" rx="8" fill="#dbeafe" />
+  <text x="695" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#1d4ed8">CLS Optimization</text>
+  
+  <circle cx="590" cy="145" r="8" fill="#3b82f6" />
+  <text x="590" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ffffff">1</text>
+  <text x="610" y="150" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Set image dimensions</text>
+  <text x="610" y="170" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#64748b">width, height, aspect-ratio</text>
+  
+  <circle cx="590" cy="205" r="8" fill="#3b82f6" />
+  <text x="590" y="210" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ffffff">2</text>
+  <text x="610" y="210" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Reserve ad space</text>
+  <text x="610" y="230" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#64748b">min-height containers</text>
+  
+  <circle cx="590" cy="265" r="8" fill="#3b82f6" />
+  <text x="590" y="270" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ffffff">3</text>
+  <text x="610" y="270" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Font display swap</text>
+  <text x="610" y="290" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#64748b">font-display: optional/swap</text>
+  
+  <circle cx="590" cy="325" r="8" fill="#3b82f6" />
+  <text x="590" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ffffff">4</text>
+  <text x="610" y="330" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Avoid late CSS</text>
+  <text x="610" y="350" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#64748b">Inline critical CSS, async load rest</text>
+  
+  <!-- Bottom summary -->
+  <rect x="30" y="400" width="790" height="15" rx="3" fill="#f1f5f9" />
+  <text x="425" y="411" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#64748b">Target: LCP ≤2.5s | INP ≤200ms | CLS ≤0.1 (75th percentile)</text>
+</svg>

@@ -1,278 +1,826 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
-  id: "article-frontend-web-vitals-concise",
+  id: "article-frontend-web-vitals",
   title: "Web Vitals (LCP, FID, CLS, TTFB, INP)",
-  description: "Quick overview of Core Web Vitals and key performance metrics for frontend optimization.",
+  description: "Comprehensive guide to Core Web Vitals and key performance metrics for measuring and optimizing real user experience.",
   category: "frontend",
   subcategory: "performance-optimization",
   slug: "web-vitals",
-  version: "concise",
-  wordCount: 3000,
-  readingTime: 12,
-  lastUpdated: "2026-03-09",
-  tags: ["frontend", "performance", "web-vitals", "LCP", "CLS", "INP", "TTFB", "Core Web Vitals"],
-  relatedTopics: ["image-optimization", "critical-css", "code-splitting"],
+  wordCount: 6300,
+  readingTime: 26,
+  lastUpdated: "2026-03-30",
+  tags: ["frontend", "performance", "web-vitals", "LCP", "CLS", "INP", "TTFB", "Core Web Vitals", "metrics"],
+  relatedTopics: ["image-optimization", "critical-css", "code-splitting", "performance-budgets"],
 };
 
-export default function WebVitalsConciseArticle() {
+export default function WebVitalsArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      {/* ============================================================
+          SECTION 1: Definition & Context
+          ============================================================ */}
       <section>
-        <h2>Quick Overview</h2>
+        <h2>Definition & Context</h2>
         <p>
-          <strong>Web Vitals</strong> are a set of metrics defined by Google that quantify real-world user experience
-          on the web. The subset called <strong>Core Web Vitals</strong> — currently LCP, INP, and CLS — directly
-          affects Google search ranking and represents the three pillars of user experience: loading, interactivity,
-          and visual stability.
+          <strong>Web Vitals</strong> are a set of metrics defined by Google that quantify real-world user 
+          experience on the web. The subset called <strong>Core Web Vitals</strong> — currently LCP, INP, 
+          and CLS — directly affects Google search ranking and represents the three pillars of user 
+          experience: loading, interactivity, and visual stability.
         </p>
         <p>
-          These metrics replaced subjective performance assessments with measurable, user-centric data. Instead of
-          asking "is this page fast?", you measure exactly how long users wait to see content (LCP), how responsive
-          the page feels when clicked (INP), and how much the layout jumps around during load (CLS).
+          These metrics replaced subjective performance assessments (&quot;is this page fast?&quot;) with 
+          measurable, user-centric data. Instead of guessing, you can now measure exactly:
         </p>
-      </section>
-
-      <section>
-        <h2>The Core Web Vitals</h2>
-
-        <h3 className="mt-4 font-semibold">LCP — Largest Contentful Paint</h3>
-        <p>
-          <strong>What:</strong> Time until the largest visible element (image, video, or text block) finishes
-          rendering in the viewport.
-        </p>
-        <table className="w-full border-collapse mt-2 mb-4">
-          <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>Good</strong></td>
-              <td className="p-3">≤ 2.5 seconds</td>
-            </tr>
-            <tr>
-              <td className="p-3"><strong>Needs Improvement</strong></td>
-              <td className="p-3">2.5 – 4.0 seconds</td>
-            </tr>
-            <tr>
-              <td className="p-3"><strong>Poor</strong></td>
-              <td className="p-3">&gt; 4.0 seconds</td>
-            </tr>
-          </tbody>
-        </table>
-        <p><strong>Common LCP elements:</strong> Hero images, video thumbnails, large text headings, banner images.</p>
-        <p><strong>How to improve:</strong></p>
-        <ul className="space-y-1">
-          <li>Preload the LCP image with <code>fetchPriority="high"</code></li>
-          <li>Use modern image formats (WebP/AVIF) and responsive srcset</li>
-          <li>Eliminate render-blocking CSS and JS</li>
-          <li>Use a CDN to reduce TTFB</li>
-          <li>Don't lazy-load the LCP element</li>
-        </ul>
-
-        <h3 className="mt-6 font-semibold">INP — Interaction to Next Paint</h3>
-        <p>
-          <strong>What:</strong> The latency of the worst interaction (click, tap, keyboard) throughout the page's
-          lifetime. Replaced FID (First Input Delay) in March 2024 as a Core Web Vital because INP measures
-          <em>all</em> interactions, not just the first.
-        </p>
-        <table className="w-full border-collapse mt-2 mb-4">
-          <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>Good</strong></td>
-              <td className="p-3">≤ 200 milliseconds</td>
-            </tr>
-            <tr>
-              <td className="p-3"><strong>Needs Improvement</strong></td>
-              <td className="p-3">200 – 500 milliseconds</td>
-            </tr>
-            <tr>
-              <td className="p-3"><strong>Poor</strong></td>
-              <td className="p-3">&gt; 500 milliseconds</td>
-            </tr>
-          </tbody>
-        </table>
-        <p><strong>How to improve:</strong></p>
-        <ul className="space-y-1">
-          <li>Break up long tasks (&gt;50ms) with <code>scheduler.yield()</code> or <code>setTimeout</code></li>
-          <li>Use <code>startTransition</code> for non-urgent state updates</li>
-          <li>Reduce JavaScript bundle size and execution time</li>
-          <li>Move heavy computation to Web Workers</li>
-          <li>Avoid forced synchronous layouts (reading layout, then writing, then reading again)</li>
-        </ul>
-
-        <h3 className="mt-6 font-semibold">CLS — Cumulative Layout Shift</h3>
-        <p>
-          <strong>What:</strong> The sum of all unexpected layout shift scores during the page's lifetime. A layout
-          shift occurs when a visible element moves position between two frames without user interaction.
-        </p>
-        <table className="w-full border-collapse mt-2 mb-4">
-          <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>Good</strong></td>
-              <td className="p-3">≤ 0.1</td>
-            </tr>
-            <tr>
-              <td className="p-3"><strong>Needs Improvement</strong></td>
-              <td className="p-3">0.1 – 0.25</td>
-            </tr>
-            <tr>
-              <td className="p-3"><strong>Poor</strong></td>
-              <td className="p-3">&gt; 0.25</td>
-            </tr>
-          </tbody>
-        </table>
-        <p><strong>Common CLS causes:</strong></p>
-        <ul className="space-y-1">
-          <li>Images without width/height attributes</li>
-          <li>Ads, embeds, or iframes without reserved space</li>
-          <li>Dynamically injected content (banners, cookie notices)</li>
-          <li>Web fonts causing FOUT (Flash of Unstyled Text)</li>
-          <li>Late-loading CSS that changes element sizes</li>
-        </ul>
-        <p className="mt-2"><strong>How to improve:</strong></p>
-        <ul className="space-y-1">
-          <li>Always set <code>width</code> and <code>height</code> on images and videos</li>
-          <li>Use CSS <code>aspect-ratio</code> for responsive containers</li>
-          <li>Reserve space for dynamic content with min-height</li>
-          <li>Use <code>font-display: optional</code> or <code>font-display: swap</code> with size-adjust</li>
-          <li>Transform animations instead of layout properties (top/left/width/height)</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Additional Important Metrics</h2>
-
-        <h3 className="mt-4 font-semibold">TTFB — Time to First Byte</h3>
-        <p>
-          Time from the browser's request until the first byte of the response arrives. Measures server
-          responsiveness plus network latency. Target: <strong>≤ 800ms</strong>.
-        </p>
-        <p><strong>Improve with:</strong> CDN, server-side caching, faster backends, HTTP/2, edge computing.</p>
-
-        <h3 className="mt-4 font-semibold">FCP — First Contentful Paint</h3>
-        <p>
-          Time until the first text or image is painted. Measures how quickly the user sees <em>something</em>.
-          Target: <strong>≤ 1.8s</strong>.
-        </p>
-
-        <h3 className="mt-4 font-semibold">TBT — Total Blocking Time</h3>
-        <p>
-          Sum of all "blocking time" from long tasks (tasks &gt; 50ms) between FCP and TTI. A long task of 200ms
-          contributes 150ms of blocking time. Target: <strong>≤ 200ms</strong>.
-        </p>
-
-        <h3 className="mt-4 font-semibold">TTI — Time to Interactive</h3>
-        <p>
-          Time until the page is fully interactive (responds to input within 50ms). No longer a Core Web Vital
-          but still useful for diagnosing JavaScript-heavy pages.
-        </p>
-      </section>
-
-      <section>
-        <h2>Measuring Web Vitals</h2>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`// === web-vitals library (Google's official package) ===
-// pnpm add web-vitals
-import { onLCP, onINP, onCLS, onFCP, onTTFB } from 'web-vitals';
-
-function sendToAnalytics(metric) {
-  const body = JSON.stringify({
-    name: metric.name,
-    value: metric.value,
-    rating: metric.rating,  // 'good' | 'needs-improvement' | 'poor'
-    delta: metric.delta,
-    id: metric.id,
-    navigationType: metric.navigationType,
-  });
-
-  // Use sendBeacon for reliability (fires even during page unload)
-  navigator.sendBeacon('/api/analytics/vitals', body);
-}
-
-onLCP(sendToAnalytics);
-onINP(sendToAnalytics);
-onCLS(sendToAnalytics);
-onFCP(sendToAnalytics);
-onTTFB(sendToAnalytics);
-
-// === Chrome DevTools ===
-// Performance tab → record → see LCP, CLS, INP annotations
-// Lighthouse tab → run audit → see Core Web Vitals scores
-
-// === Chrome UX Report (CrUX) ===
-// Real user data from Chrome browsers (field data)
-// Available via PageSpeed Insights, Search Console, BigQuery`}</code>
-        </pre>
-      </section>
-
-      <section>
-        <h2>Lab vs Field Data</h2>
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Aspect</th>
-              <th className="p-3 text-left">Lab Data</th>
-              <th className="p-3 text-left">Field Data (RUM)</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>Source</strong></td>
-              <td className="p-3">Lighthouse, DevTools, WebPageTest</td>
-              <td className="p-3">CrUX, web-vitals library, RUM providers</td>
-            </tr>
-            <tr>
-              <td className="p-3"><strong>Environment</strong></td>
-              <td className="p-3">Controlled (simulated device/network)</td>
-              <td className="p-3">Real users, real devices, real networks</td>
-            </tr>
-            <tr>
-              <td className="p-3"><strong>Reproducible</strong></td>
-              <td className="p-3">Yes (same conditions = same result)</td>
-              <td className="p-3">No (varies by user, device, network)</td>
-            </tr>
-            <tr>
-              <td className="p-3"><strong>INP</strong></td>
-              <td className="p-3">Not measurable (needs real interactions)</td>
-              <td className="p-3">Measured from actual user clicks/taps</td>
-            </tr>
-            <tr>
-              <td className="p-3"><strong>Use for</strong></td>
-              <td className="p-3">Debugging, CI/CD gates, development</td>
-              <td className="p-3">SEO ranking, real-world impact, monitoring</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <section>
-        <h2>Interview Talking Points</h2>
         <ul className="space-y-2">
           <li>
-            Core Web Vitals are three metrics: <strong>LCP</strong> (loading — ≤2.5s), <strong>INP</strong>
-            (interactivity — ≤200ms), <strong>CLS</strong> (stability — ≤0.1). They directly affect Google
-            search ranking.
+            How long users wait to see meaningful content (LCP — Largest Contentful Paint)
           </li>
           <li>
-            INP replaced FID in March 2024 because it measures the latency of <em>all</em> interactions, not just
-            the first one. A page could pass FID but fail INP if later interactions are slow.
+            How responsive the page feels when clicked (INP — Interaction to Next Paint)
           </li>
           <li>
-            LCP is usually an image — optimize with modern formats (AVIF/WebP), preload with <code>fetchPriority="high"</code>,
-            and never lazy-load it.
+            How much the layout jumps around during load (CLS — Cumulative Layout Shift)
+          </li>
+        </ul>
+        <p>
+          The business impact of Web Vitals optimization is well-documented:
+        </p>
+        <ul className="space-y-2">
+          <li>
+            <strong>Google:</strong> Pages that pass Core Web Vitals have 24% lower bounce rates on average.
           </li>
           <li>
-            CLS is caused by missing dimensions on images, late-loaded content, and font swapping. Fix with explicit
-            width/height, aspect-ratio, and <code>font-display: optional</code>.
+            <strong>BBC:</strong> For every additional second of load time, they lost 10% of users.
           </li>
           <li>
-            Lab data (Lighthouse) is for debugging; field data (CrUX/RUM) is what Google uses for ranking. Both
-            are needed — lab for development, field for monitoring real users.
+            <strong>Financial Times:</strong> Optimizing Web Vitals increased user satisfaction by 15%.
           </li>
           <li>
-            INP improvement strategies: break long tasks with yield points, use <code>startTransition</code> for
-            non-urgent updates, move computation to Web Workers, reduce JS bundle size.
+            <strong>Vodafone:</strong> Improving LCP by 31% increased sales by 8%.
+          </li>
+        </ul>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/performance-optimization/web-vitals-business-impact.svg"
+          alt="Chart showing correlation between Web Vitals optimization and business metrics including bounce rate, conversion, and user satisfaction improvements"
+          caption="Business impact: Web Vitals optimization correlates with significant improvements in key metrics"
+        />
+
+        <p>
+          Core Web Vitals became an official Google ranking signal in May 2021 (the &quot;Page Experience
+          Update&quot;). While content quality remains the primary ranking factor, Web Vitals can be a
+          tiebreaker between similar pages — and poor performance can noticeably impact organic traffic.
+        </p>
+        <p>
+          In system design interviews, Web Vitals demonstrates understanding of user-centric performance 
+          measurement, the browser rendering pipeline, and the connection between technical metrics and 
+          business outcomes.
+        </p>
+      </section>
+
+      {/* ============================================================
+          SECTION 2: Core Concepts
+          ============================================================ */}
+      <section>
+        <h2>Core Concepts</h2>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/performance-optimization/web-vitals-overview.svg"
+          alt="Diagram showing three Core Web Vitals cards: LCP for loading (≤2.5s good), INP for interactivity (≤200ms good), and CLS for visual stability (≤0.1 good)"
+          caption="The three Core Web Vitals: LCP (loading), INP (interactivity), and CLS (visual stability) with their performance thresholds"
+        />
+
+        <h3>The Three Core Web Vitals</h3>
+        <p>
+          As of 2024, the Core Web Vitals consist of three metrics:
+        </p>
+
+        <h4>LCP — Largest Contentful Paint</h4>
+        <p>
+          <strong>What it measures:</strong> The time from when the page starts loading to when the largest 
+          content element in the viewport becomes visible.
+        </p>
+        <p>
+          <strong>Thresholds:</strong>
+        </p>
+        <ul className="space-y-1">
+          <li>• <strong>Good:</strong> ≤ 2.5 seconds</li>
+          <li>• <strong>Needs Improvement:</strong> 2.5 – 4.0 seconds</li>
+          <li>• <strong>Poor:</strong> &gt; 4.0 seconds</li>
+        </ul>
+        <p>
+          <strong>Common LCP elements:</strong> Hero images, video thumbnails, large text headings, banner 
+          images. The LCP element is typically the first meaningful content users care about.
+        </p>
+
+        <h4>INP — Interaction to Next Paint</h4>
+        <p>
+          <strong>What it measures:</strong> The latency of the worst interaction (click, tap, keyboard) 
+          throughout the page&apos;s lifetime. INP replaced FID (First Input Delay) in March 2024 because 
+          INP measures <em>all</em> interactions, not just the first.
+        </p>
+        <p>
+          <strong>Thresholds:</strong>
+        </p>
+        <ul className="space-y-1">
+          <li>• <strong>Good:</strong> ≤ 200 milliseconds</li>
+          <li>• <strong>Needs Improvement:</strong> 200 – 500 milliseconds</li>
+          <li>• <strong>Poor:</strong> &gt; 500 milliseconds</li>
+        </ul>
+        <p>
+          <strong>What counts as an interaction:</strong> Clicks on buttons, taps on touchscreens, keyboard 
+          input (typing, pressing Enter), and some touch gestures. Scrolling and pinch-zoom are excluded.
+        </p>
+
+        <h4>CLS — Cumulative Layout Shift</h4>
+        <p>
+          <strong>What it measures:</strong> The sum of all unexpected layout shift scores during the 
+          page&apos;s lifetime. A layout shift occurs when a visible element moves position between two 
+          frames without user interaction.
+        </p>
+        <p>
+          <strong>Thresholds:</strong>
+        </p>
+        <ul className="space-y-1">
+          <li>• <strong>Good:</strong> ≤ 0.1</li>
+          <li>• <strong>Needs Improvement:</strong> 0.1 – 0.25</li>
+          <li>• <strong>Poor:</strong> &gt; 0.25</li>
+        </ul>
+        <p>
+          <strong>Common CLS causes:</strong> Images without dimensions, ads/embeds without reserved space, 
+          dynamically injected content (banners, cookie notices), web fonts causing FOUT, late-loading CSS.
+        </p>
+
+        <h3>Additional Important Metrics</h3>
+        <p>
+          While not part of Core Web Vitals, these metrics are still important for comprehensive performance 
+          analysis:
+        </p>
+
+        <h4>TTFB — Time to First Byte</h4>
+        <p>
+          Time from the browser&apos;s request until the first byte of the response arrives. Measures server 
+          responsiveness plus network latency.
+        </p>
+        <ul className="space-y-1">
+          <li>• <strong>Target:</strong> ≤ 800ms</li>
+          <li>• <strong>Improve with:</strong> CDN, server-side caching, faster backends, HTTP/2, edge computing</li>
+        </ul>
+
+        <h4>FCP — First Contentful Paint</h4>
+        <p>
+          Time until the first text or image is painted. Measures how quickly the user sees <em>something</em>.
+        </p>
+        <ul className="space-y-1">
+          <li>• <strong>Target:</strong> ≤ 1.8s</li>
+          <li>• <strong>Improve with:</strong> Critical CSS, eliminate render-blocking resources, optimize LCP</li>
+        </ul>
+
+        <h4>TBT — Total Blocking Time</h4>
+        <p>
+          Sum of all &quot;blocking time&quot; from long tasks (tasks &gt; 50ms) between FCP and TTI. A long 
+          task of 200ms contributes 150ms of blocking time.
+        </p>
+        <ul className="space-y-1">
+          <li>• <strong>Target:</strong> ≤ 200ms</li>
+          <li>• <strong>Improve with:</strong> Code splitting, reduce JavaScript, break up long tasks</li>
+        </ul>
+
+        <h4>TTI — Time to Interactive</h4>
+        <p>
+          Time until the page is fully interactive (responds to input within 50ms). No longer a Core Web 
+          Vital but still useful for diagnosing JavaScript-heavy pages.
+        </p>
+        <ul className="space-y-1">
+          <li>• <strong>Target:</strong> ≤ 3.8s</li>
+          <li>• <strong>Improve with:</strong> Reduce JavaScript, code splitting, optimize execution time</li>
+        </ul>
+      </section>
+
+      {/* ============================================================
+          SECTION 3: Architecture & Flow
+          ============================================================ */}
+      <section>
+        <h2>Architecture & Flow</h2>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/performance-optimization/web-vitals-optimization.svg"
+          alt="Diagram showing specific optimization techniques for each Core Web Vital: LCP, INP, and CLS with four strategies each"
+          caption="Optimization strategies: specific techniques for improving each Core Web Vital metric"
+        />
+
+        <h3>How Web Vitals Are Measured</h3>
+        <p>
+          Web Vitals can be measured using two complementary approaches:
+        </p>
+
+        <h4>Lab Data (Synthetic Monitoring)</h4>
+        <p>
+          Lab data is collected in a controlled environment using tools like Lighthouse, WebPageTest, or 
+          Chrome DevTools. The same test is run multiple times under consistent conditions.
+        </p>
+        <p>
+          <strong>Characteristics:</strong>
+        </p>
+        <ul className="space-y-1">
+          <li>• <strong>Reproducible:</strong> Same conditions = same result</li>
+          <li>• <strong>Controlled:</strong> Simulated device, network, and location</li>
+          <li>• <strong>Debuggable:</strong> Easy to identify specific issues</li>
+          <li>• <strong>Limited:</strong> May not reflect real user conditions</li>
+          <li>• <strong>INP limitation:</strong> Cannot measure INP (needs real interactions)</li>
+        </ul>
+        <p>
+          <strong>Best for:</strong> Development, CI/CD gates, debugging, regression detection.
+        </p>
+
+        <h4>Field Data (Real User Monitoring)</h4>
+        <p>
+          Field data is collected from actual users visiting your site. Tools include the Chrome UX Report 
+          (CrUX), the web-vitals JavaScript library, and commercial RUM providers.
+        </p>
+        <p>
+          <strong>Characteristics:</strong>
+        </p>
+        <ul className="space-y-1">
+          <li>• <strong>Real-world:</strong> Actual devices, networks, and user behavior</li>
+          <li>• <strong>Variable:</strong> Results vary by user, device, network</li>
+          <li>• <strong>Comprehensive:</strong> Covers all user journeys</li>
+          <li>• <strong>Measures INP:</strong> Captures real interactions</li>
+          <li>• <strong>SEO impact:</strong> Google uses field data for ranking</li>
+        </ul>
+        <p>
+          <strong>Best for:</strong> SEO ranking, monitoring real-world performance, understanding user 
+          experience across different conditions.
+        </p>
+
+        <h3>Measuring Web Vitals in Production</h3>
+        <p>
+          The <code>web-vitals</code> library (official Google package) provides a simple API for measuring 
+          all Web Vitals:
+        </p>
+        <p>
+          The typical implementation:
+        </p>
+        <ul className="space-y-2">
+          <li>
+            <strong>Install:</strong> <code>pnpm add web-vitals</code>
+          </li>
+          <li>
+            <strong>Import metrics:</strong> <code>onLCP</code>, <code>onINP</code>, <code>onCLS</code>, etc.
+          </li>
+          <li>
+            <strong>Send to analytics:</strong> Use <code>sendBeacon</code> for reliable delivery
+          </li>
+          <li>
+            <strong>Segment data:</strong> Track by device, network, geography for insights
+          </li>
+        </ul>
+
+        <h3>Chrome UX Report (CrUX)</h3>
+        <p>
+          The Chrome UX Report is Google&apos;s public dataset of real user performance data. It powers 
+          PageSpeed Insights, Search Console&apos;s Core Web Vitals report, and is available via BigQuery 
+          for custom analysis.
+        </p>
+        <p>
+          <strong>Data coverage:</strong>
+        </p>
+        <ul className="space-y-1">
+          <li>• Millions of real Chrome users</li>
+          <li>• Aggregated by origin (domain) and URL</li>
+          <li>• Segmented by device (phone, tablet, desktop) and connection (4G, 3G, etc.)</li>
+          <li>• Updated monthly</li>
+        </ul>
+        <p>
+          <strong>Access methods:</strong>
+        </p>
+        <ul className="space-y-1">
+          <li>• <strong>PageSpeed Insights API:</strong> On-demand lookup for specific URLs</li>
+          <li>• <strong>Search Console:</strong> Core Web Vitals report for your properties</li>
+          <li>• <strong>BigQuery:</strong> Raw dataset for custom analysis (free tier available)</li>
+        </ul>
+      </section>
+
+      {/* ============================================================
+          SECTION 4: Trade-offs & Comparison
+          ============================================================ */}
+      <section>
+        <h2>Trade-offs & Comparison</h2>
+
+        <h3>Lab vs Field Data Comparison</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b-2 border-theme">
+                <th className="p-3 text-left">Aspect</th>
+                <th className="p-3 text-left">Lab Data</th>
+                <th className="p-3 text-left">Field Data (RUM)</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-3 font-medium">Source</td>
+                <td className="p-3">Lighthouse, DevTools, WebPageTest</td>
+                <td className="p-3">CrUX, web-vitals library, RUM providers</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">Environment</td>
+                <td className="p-3">Controlled (simulated)</td>
+                <td className="p-3">Real users, real devices, real networks</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">Reproducible</td>
+                <td className="p-3">Yes</td>
+                <td className="p-3">No (varies by user)</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">INP Measurement</td>
+                <td className="p-3">Not possible</td>
+                <td className="p-3">Yes (from real interactions)</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">SEO Impact</td>
+                <td className="p-3">Indirect (debugging)</td>
+                <td className="p-3">Direct (Google uses this)</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">Best For</td>
+                <td className="p-3">Development, CI/CD, debugging</td>
+                <td className="p-3">Monitoring, SEO, real-world impact</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Optimization Strategies by Metric</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b-2 border-theme">
+                <th className="p-3 text-left">Metric</th>
+                <th className="p-3 text-left">Primary Levers</th>
+                <th className="p-3 text-left">Secondary Levers</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-3 font-medium">LCP</td>
+                <td className="p-3">Optimize LCP image, SSR, CDN</td>
+                <td className="p-3">Critical CSS, preload, reduce TTFB</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">INP</td>
+                <td className="p-3">Break up long tasks, reduce JS</td>
+                <td className="p-3">Web Workers, optimize event handlers</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">CLS</td>
+                <td className="p-3">Set image dimensions, reserve space</td>
+                <td className="p-3">font-display: optional, avoid late CSS</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">TTFB</td>
+                <td className="p-3">CDN, server caching, edge computing</td>
+                <td className="p-3">Optimize backend, database queries</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">FCP</td>
+                <td className="p-3">Critical CSS, eliminate render-blocking</td>
+                <td className="p-3">Reduce bundle size, optimize LCP</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* ============================================================
+          SECTION 5: Best Practices
+          ============================================================ */}
+      <section>
+        <h2>Best Practices</h2>
+
+        <h3>Monitor Both Lab and Field Data</h3>
+        <p>
+          Use lab data for development and debugging, field data for monitoring and SEO. They complement 
+          each other:
+        </p>
+        <ul className="space-y-1">
+          <li>• Run Lighthouse in CI/CD to catch regressions before deployment</li>
+          <li>• Track CrUX data in Search Console for SEO impact</li>
+          <li>• Implement web-vitals library for granular production monitoring</li>
+        </ul>
+
+        <h3>Focus on the 75th Percentile</h3>
+        <p>
+          Google uses the 75th percentile of page loads across all users. This means:
+        </p>
+        <ul className="space-y-1">
+          <li>• 75% of users should have a &quot;Good&quot; experience</li>
+          <li>• Optimizing for average isn&apos;t sufficient</li>
+          <li>• Focus on improving the worst 25% of experiences</li>
+        </ul>
+
+        <h3>Prioritize Mobile Performance</h3>
+        <p>
+          Mobile devices have slower CPUs and networks. Core Web Vitals are measured separately for mobile 
+          and desktop, and mobile is often the ranking signal:
+        </p>
+        <ul className="space-y-1">
+          <li>• Test on real mobile devices, not just desktop simulation</li>
+          <li>• Prioritize mobile optimizations (smaller bundles, optimized images)</li>
+          <li>• Consider 3G/4G network conditions in testing</li>
+        </ul>
+
+        <h3>Set Performance Budgets</h3>
+        <p>
+          Define thresholds for Web Vitals and enforce them:
+        </p>
+        <ul className="space-y-1">
+          <li>• LCP: &lt; 2.5s for 75th percentile</li>
+          <li>• INP: &lt; 200ms for 75th percentile</li>
+          <li>• CLS: &lt; 0.1 for 75th percentile</li>
+          <li>• Fail CI/CD builds that exceed budgets</li>
+        </ul>
+
+        <h3>Segment Your Data</h3>
+        <p>
+          Web Vitals vary significantly by:
+        </p>
+        <ul className="space-y-1">
+          <li>• <strong>Device:</strong> Mobile vs tablet vs desktop</li>
+          <li>• <strong>Network:</strong> 4G vs 3G vs 2G</li>
+          <li>• <strong>Geography:</strong> Different regions have different infrastructure</li>
+          <li>• <strong>Page type:</strong> Homepage vs product page vs checkout</li>
+        </ul>
+        <p>
+          Segment your analysis to identify specific improvement opportunities.
+        </p>
+      </section>
+
+      {/* ============================================================
+          SECTION 6: Common Pitfalls
+          ============================================================ */}
+      <section>
+        <h2>Common Pitfalls</h2>
+
+        <h3>Optimizing Only for Lab Data</h3>
+        <p>
+          A page can score 100 on Lighthouse but fail Core Web Vitals in the field. Lab data is controlled; 
+          real users have varying devices and networks.
+        </p>
+        <p>
+          <strong>Solution:</strong> Always validate optimizations with field data (CrUX, RUM). Use lab 
+          data for debugging, field data for success criteria.
+        </p>
+
+        <h3>Ignoring the 75th Percentile</h3>
+        <p>
+          Optimizing for average or median performance isn&apos;t sufficient. Google uses the 75th percentile, 
+          meaning 75% of users should have a &quot;Good&quot; experience.
+        </p>
+        <p>
+          <strong>Solution:</strong> Analyze the distribution of your metrics. Focus on improving the worst 
+          25% of experiences.
+        </p>
+
+        <h3>Not Handling Dynamic Content</h3>
+        <p>
+          LCP can change based on what content is shown (personalized hero, A/B test variants). CLS can 
+          occur when dynamic content loads and shifts layout.
+        </p>
+        <p>
+          <strong>Solution:</strong> Reserve space for dynamic content. Use skeleton screens. Monitor LCP 
+          across different page variants.
+        </p>
+
+        <h3>Over-Optimizing One Metric</h3>
+        <p>
+          Optimizing LCP by preloading everything can hurt INP (more JavaScript to parse). Reducing CLS by 
+          deferring all images can hurt LCP.
+        </p>
+        <p>
+          <strong>Solution:</strong> Take a holistic approach. Measure the impact of changes on all Core 
+          Web Vitals, not just one.
+        </p>
+
+        <h3>Not Monitoring Continuously</h3>
+        <p>
+          Web Vitals can regress over time as new features are added. A one-time optimization isn&apos;t 
+          sufficient.
+        </p>
+        <p>
+          <strong>Solution:</strong> Implement continuous monitoring with alerts. Set up dashboards. Review 
+          Web Vitals in sprint retrospectives.
+        </p>
+      </section>
+
+      {/* ============================================================
+          SECTION 7: Real-World Use Cases
+          ============================================================ */}
+      <section>
+        <h2>Real-World Use Cases</h2>
+
+        <h3>E-Commerce Site: LCP Optimization</h3>
+        <p>
+          An e-commerce site had an LCP of 4.2s on mobile (Poor). Analysis revealed the hero image was 
+          1.2 MB and loaded late.
+        </p>
+        <p>
+          Optimizations:
+        </p>
+        <ul className="space-y-1">
+          <li>• Compressed hero image to 150 KB (WebP with JPEG fallback)</li>
+          <li>• Added preload hint for hero image</li>
+          <li>• Implemented SSR for product data</li>
+          <li>• Used CDN with edge caching</li>
+        </ul>
+        <p>
+          Results: LCP improved from 4.2s to 2.1s. Mobile organic traffic increased 18%.
+        </p>
+
+        <h3>SaaS Dashboard: INP Improvement</h3>
+        <p>
+          A SaaS dashboard had INP of 650ms (Poor). Users reported the interface felt &quot;laggy&quot; 
+          when clicking buttons.
+        </p>
+        <p>
+          Optimizations:
+        </p>
+        <ul className="space-y-1">
+          <li>• Broke up long tasks using scheduler.yield()</li>
+          <li>• Moved data processing to Web Workers</li>
+          <li>• Used startTransition for non-urgent updates</li>
+          <li>• Reduced JavaScript bundle by 40%</li>
+        </ul>
+        <p>
+          Results: INP improved from 650ms to 180ms. User satisfaction scores increased 22%.
+        </p>
+
+        <h3>News Publisher: CLS Reduction</h3>
+        <p>
+          A news publisher had CLS of 0.35 (Poor). Users complained about content &quot;jumping&quot; 
+          while reading.
+        </p>
+        <p>
+          Optimizations:
+        </p>
+        <ul className="space-y-1">
+          <li>• Added explicit dimensions to all images</li>
+          <li>• Reserved space for ads with min-height</li>
+          <li>• Used font-display: optional with size-adjust fallbacks</li>
+          <li>• Loaded late CSS asynchronously</li>
+        </ul>
+        <p>
+          Results: CLS improved from 0.35 to 0.08. Time on page increased 15%.
+        </p>
+      </section>
+
+      {/* ============================================================
+          SECTION 8: Interview Questions & Answers
+          ============================================================ */}
+      <section>
+        <h2>Interview Questions & Answers</h2>
+
+        <div className="space-y-6">
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 1: What are Core Web Vitals and why do they matter?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <p className="mb-3">
+              Core Web Vitals are three metrics that measure real-world user experience:
+            </p>
+            <ul className="space-y-1">
+              <li>• <strong>LCP (Largest Contentful Paint):</strong> Loading performance (≤2.5s good)</li>
+              <li>• <strong>INP (Interaction to Next Paint):</strong> Interactivity responsiveness (≤200ms good)</li>
+              <li>• <strong>CLS (Cumulative Layout Shift):</strong> Visual stability (≤0.1 good)</li>
+            </ul>
+            <p className="mb-3">
+              They matter because:
+            </p>
+            <ul className="space-y-1">
+              <li>• <strong>SEO:</strong> Google uses Core Web Vitals as a ranking signal since May 2021</li>
+              <li>• <strong>User Experience:</strong> Better scores correlate with lower bounce rates and higher conversions</li>
+              <li>• <strong>Business Impact:</strong> Companies report 8-24% improvements in key metrics after optimization</li>
+            </ul>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 2: How would you improve LCP for a page with a large hero image?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <p className="mb-3">
+              I would implement these optimizations:
+            </p>
+            <ol className="space-y-2">
+              <li>
+                <strong>Optimize the image:</strong> Compress to WebP/AVIF format, serve responsive sizes 
+                with srcset, target quality 75-85.
+              </li>
+              <li>
+                <strong>Preload the image:</strong> Add <code>&lt;link rel=&quot;preload&quot; as=&quot;image&quot;&gt;</code> 
+                in the head to start downloading early.
+              </li>
+              <li>
+                <strong>Use fetchPriority=&quot;high&quot;:</strong> Tell the browser to prioritize this image.
+              </li>
+              <li>
+                <strong>Implement SSR:</strong> Server-render the image tag so it&apos;s in the initial HTML.
+              </li>
+              <li>
+                <strong>Use a CDN:</strong> Serve images from edge locations to reduce latency.
+              </li>
+              <li>
+                <strong>Reduce TTFB:</strong> Optimize server response time with caching and edge computing.
+              </li>
+            </ol>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 3: What is the difference between lab data and field data?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <p className="mb-3">
+              <strong>Lab data</strong> is collected in controlled environments:
+            </p>
+            <ul className="space-y-1">
+              <li>• Tools: Lighthouse, WebPageTest, DevTools</li>
+              <li>• Reproducible, debuggable</li>
+              <li>• Cannot measure INP (needs real interactions)</li>
+              <li>• Best for: Development, CI/CD, debugging</li>
+            </ul>
+            <p className="mb-3 mt-3">
+              <strong>Field data</strong> is collected from real users:
+            </p>
+            <ul className="space-y-1">
+              <li>• Sources: CrUX, web-vitals library, RUM providers</li>
+              <li>• Real devices, networks, conditions</li>
+              <li>• Measures all metrics including INP</li>
+              <li>• Best for: SEO, monitoring, real-world impact</li>
+            </ul>
+            <p className="mt-3">
+              Google uses field data for ranking. Use both: lab for development, field for success criteria.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 4: How do you reduce CLS on a content-heavy page?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <p className="mb-3">
+              Common CLS causes and solutions:
+            </p>
+            <ul className="space-y-1">
+              <li>• <strong>Images without dimensions:</strong> Always set width/height or use aspect-ratio</li>
+              <li>• <strong>Ads/embeds:</strong> Reserve space with min-height containers</li>
+              <li>• <strong>Dynamic content:</strong> Use skeleton screens, avoid injecting content above existing content</li>
+              <li>• <strong>Web fonts:</strong> Use font-display: optional with size-adjust fallbacks</li>
+              <li>• <strong>Late-loading CSS:</strong> Inline critical CSS, load non-critical asynchronously</li>
+            </ul>
+            <p className="mt-3">
+              Target CLS ≤ 0.1 for 75% of users.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 5: Why did Google replace FID with INP?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <p className="mb-3">
+              FID (First Input Delay) measured only the <em>first</em> interaction. This had limitations:
+            </p>
+            <ul className="space-y-1">
+              <li>• A page could pass FID but have slow subsequent interactions</li>
+              <li>• FID didn&apos;t capture the full interaction experience</li>
+              <li>• Pages with minimal initial interaction could score well despite poor overall responsiveness</li>
+            </ul>
+            <p className="mb-3">
+              INP (Interaction to Next Paint) measures the <em>worst</em> interaction latency throughout 
+              the page&apos;s lifetime:
+            </p>
+            <ul className="space-y-1">
+              <li>• Captures all clicks, taps, and keyboard interactions</li>
+              <li>• Better reflects overall responsiveness</li>
+              <li>• Encourages consistent performance, not just good initial performance</li>
+            </ul>
+            <p className="mt-3">
+              INP replaced FID as a Core Web Vital in March 2024.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 6: How do you monitor Web Vitals in production?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <p className="mb-3">
+              I would use a combination of approaches:
+            </p>
+            <ol className="space-y-2">
+              <li>
+                <strong>web-vitals library:</strong> Install Google&apos;s official package, send metrics 
+                to analytics using sendBeacon for reliable delivery.
+              </li>
+              <li>
+                <strong>Chrome UX Report (CrUX):</strong> Monitor via Search Console for SEO impact, or 
+                query BigQuery for custom analysis.
+              </li>
+              <li>
+                <strong>RUM provider:</strong> Use commercial tools (SpeedCurve, New Relic, Datadog) for 
+                comprehensive monitoring.
+              </li>
+              <li>
+                <strong>Segment data:</strong> Track by device, network, geography to identify specific 
+                improvement opportunities.
+              </li>
+              <li>
+                <strong>Set alerts:</strong> Notify when 75th percentile exceeds thresholds.
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+          SECTION 9: References
+          ============================================================ */}
+      <section>
+        <h2>References</h2>
+        <ul className="space-y-3">
+          <li>
+            <a 
+              href="https://web.dev/vitals/" 
+              className="text-accent hover:underline" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              web.dev — Core Web Vitals
+            </a>
+            <p className="text-sm text-muted mt-1">
+              Official Google documentation on Core Web Vitals metrics and optimization.
+            </p>
+          </li>
+          <li>
+            <a 
+              href="https://github.com/GoogleChrome/web-vitals" 
+              className="text-accent hover:underline" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              web-vitals Library
+            </a>
+            <p className="text-sm text-muted mt-1">
+              Official Google library for measuring Web Vitals in production.
+            </p>
+          </li>
+          <li>
+            <a 
+              href="https://search.google.com/search-console/core-web-vitals" 
+              className="text-accent hover:underline" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              Search Console — Core Web Vitals
+            </a>
+            <p className="text-sm text-muted mt-1">
+              Google Search Console report showing your site&apos;s Core Web Vitals performance.
+            </p>
+          </li>
+          <li>
+            <a 
+              href="https://developer.chrome.com/docs/crux/" 
+              className="text-accent hover:underline" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              Chrome UX Report Documentation
+            </a>
+            <p className="text-sm text-muted mt-1">
+              Guide to accessing and analyzing the Chrome UX Report dataset.
+            </p>
+          </li>
+          <li>
+            <a 
+              href="https://web.dev/inp/" 
+              className="text-accent hover:underline" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              web.dev — Interaction to Next Paint (INP)
+            </a>
+            <p className="text-sm text-muted mt-1">
+              Comprehensive guide to INP measurement and optimization.
+            </p>
+          </li>
+          <li>
+            <a 
+              href="https://developers.google.com/search/docs/appearance/core-web-vitals" 
+              className="text-accent hover:underline" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              Google Search — Core Web Vitals
+            </a>
+            <p className="text-sm text-muted mt-1">
+              Google Search documentation on Core Web Vitals as a ranking signal.
+            </p>
           </li>
         </ul>
       </section>

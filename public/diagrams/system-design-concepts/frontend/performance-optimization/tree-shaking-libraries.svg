@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 480" role="img" aria-labelledby="treeShakingLibrariesTitle treeShakingLibrariesDesc">
+  <title id="treeShakingLibrariesTitle">Tree-Shakeable vs Non-Tree-Shakeable Libraries</title>
+  <desc id="treeShakingLibrariesDesc">Comparison of popular libraries showing bundle size impact of tree shaking</desc>
+  
+  <defs>
+    <linearGradient id="libBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fafafa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="850" height="480" fill="url(#libBg)" />
+  
+  <text x="425" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#1e293b">Library Comparison: Tree-Shakeable vs Non-Tree-Shakeable</text>
+  
+  <!-- Header Row -->
+  <rect x="30" y="60" width="790" height="40" rx="6" fill="#1e293b" />
+  <text x="180" y="87" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#ffffff">Library</text>
+  <text x="350" y="87" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#ffffff">Full Bundle</text>
+  <text x="520" y="87" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#ffffff">Tree-Shaken</text>
+  <text x="690" y="87" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#ffffff">Savings</text>
+  
+  <!-- Row 1: lodash -->
+  <rect x="30" y="105" width="790" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0" />
+  <text x="180" y="135" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="#1e293b">lodash (full)</text>
+  <text x="350" y="135" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#dc2626">~70 KB</text>
+  <text x="520" y="135" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#ef4444">✗ Not tree-shakeable</text>
+  <text x="690" y="135" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">—</text>
+  
+  <!-- Row 1: lodash-es -->
+  <rect x="30" y="155" width="790" height="50" rx="4" fill="#f0fdf4" stroke="#22c55e" />
+  <text x="180" y="185" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="#16a34a">lodash-es</text>
+  <text x="350" y="185" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#1e293b">~70 KB</text>
+  <text x="520" y="185" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#16a34a">~2 KB (single function)</text>
+  <text x="690" y="185" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="#16a34a">97% reduction ✓</text>
+  
+  <!-- Row 2: moment -->
+  <rect x="30" y="210" width="790" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0" />
+  <text x="180" y="240" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="#1e293b">moment.js</text>
+  <text x="350" y="240" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#dc2626">~300 KB</text>
+  <text x="520" y="240" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#ef4444">✗ Not tree-shakeable</text>
+  <text x="690" y="240" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">—</text>
+  
+  <!-- Row 2: date-fns -->
+  <rect x="30" y="260" width="790" height="50" rx="4" fill="#f0fdf4" stroke="#22c55e" />
+  <text x="180" y="290" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="#16a34a">date-fns</text>
+  <text x="350" y="290" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#1e293b">~300 KB (full)</text>
+  <text x="520" y="290" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#16a34a">~3 KB (per function)</text>
+  <text x="690" y="290" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="#16a34a">99% reduction ✓</text>
+  
+  <!-- Row 3: Material UI -->
+  <rect x="30" y="315" width="790" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0" />
+  <text x="180" y="345" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="#1e293b">@mui/material</text>
+  <text x="350" y="345" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#f59e0b">~200 KB</text>
+  <text x="520" y="345" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#16a34a">~10-30 KB (per component)</text>
+  <text x="690" y="345" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="#16a34a">85% reduction ✓</text>
+  
+  <!-- Row 4: RxJS -->
+  <rect x="30" y="370" width="790" height="50" rx="4" fill="#ffffff" stroke="#e2e8f0" />
+  <text x="180" y="400" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="#1e293b">rxjs (full)</text>
+  <text x="350" y="400" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#dc2626">~60 KB</text>
+  <text x="520" y="400" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#ef4444">✗ Partial support</text>
+  <text x="690" y="400" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#64748b">Use rxjs/operators</text>
+  
+  <!-- Row 4: rxjs/operators -->
+  <rect x="30" y="420" width="790" height="50" rx="4" fill="#f0fdf4" stroke="#22c55e" />
+  <text x="180" y="450" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="#16a34a">rxjs/operators</text>
+  <text x="350" y="450" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#1e293b">~60 KB (full)</text>
+  <text x="520" y="450" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#16a34a">~1-5 KB (per operator)</text>
+  <text x="690" y="450" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="#16a34a">90%+ reduction ✓</text>
+  
+  <!-- Legend -->
+  <rect x="30" y="475" width="790" height="3" rx="1" fill="#e2e8f0" />
+</svg>

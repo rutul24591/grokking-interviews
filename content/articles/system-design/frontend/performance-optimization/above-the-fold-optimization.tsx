@@ -5,20 +5,20 @@ import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
-  id: "article-frontend-above-fold-extensive",
+  id: "article-frontend-above-fold-optimization",
   title: "Above-the-Fold Optimization",
-  description: "Comprehensive guide to above-the-fold optimization techniques for improving perceived performance and Core Web Vitals.",
+  description: "Comprehensive guide to above-the-fold optimization techniques for improving perceived performance and Core Web Vitals including critical CSS, resource prioritization, and LCP optimization.",
   category: "frontend",
   subcategory: "performance-optimization",
   slug: "above-the-fold-optimization",
-  wordCount: 11000,
-  readingTime: 44,
-  lastUpdated: "2026-03-10",
-  tags: ["frontend", "performance", "critical-rendering-path", "above-the-fold", "core-web-vitals"],
+  wordCount: 6200,
+  readingTime: 25,
+  lastUpdated: "2026-03-30",
+  tags: ["frontend", "performance", "critical-rendering-path", "above-the-fold", "core-web-vitals", "LCP", "FCP"],
   relatedTopics: ["critical-css", "image-optimization", "web-vitals", "resource-hints"],
 };
 
-export default function AboveTheFoldOptimizationConciseArticle() {
+export default function AboveTheFoldOptimizationArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       {/* ============================================================
@@ -117,7 +117,7 @@ export default function AboveTheFoldOptimizationConciseArticle() {
 
         <h3>Step 2: CSSOM Construction (Render-Blocking)</h3>
         <p>
-          When the HTML parser encounters a <code>{'<link rel="stylesheet">'}</code> tag, the browser must
+          When the HTML parser encounters a stylesheet link tag, the browser must
           download and parse that entire stylesheet before it can proceed to render anything. This is
           <strong>render-blocking</strong> behavior. The browser builds the CSS Object Model (CSSOM) from the
           parsed stylesheet, which maps selectors to computed styles.
@@ -132,8 +132,8 @@ export default function AboveTheFoldOptimizationConciseArticle() {
         <h3>Step 3: Render Tree Construction</h3>
         <p>
           The browser combines the DOM and CSSOM into a render tree. The render tree only contains visible
-          nodes — elements with <code>display: none</code> are excluded (though elements with
-          <code>visibility: hidden</code> or <code>opacity: 0</code> are included because they still affect
+          nodes — elements with display none are excluded (though elements with
+          visibility hidden or opacity 0 are included because they still affect
           layout). Each node in the render tree has its computed styles attached.
         </p>
         <p>
@@ -167,7 +167,7 @@ export default function AboveTheFoldOptimizationConciseArticle() {
         <p>
           Finally, the compositor combines the painted layers in the correct order, applying transforms and
           opacity. Compositing happens on the GPU and is extremely fast. Elements promoted to their own
-          compositor layer (via <code>will-change</code>, <code>transform</code>, or <code>opacity</code>
+          compositor layer (via will-change, transform, or opacity
           animations) can be composited independently without triggering layout or paint on other elements.
         </p>
 
@@ -175,12 +175,15 @@ export default function AboveTheFoldOptimizationConciseArticle() {
         <p>
           Understanding the distinction between these two types of blocking is essential:
         </p>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
         <p>
-          A synchronous <code>{'<script>'}</code> tag is actually <strong>both</strong> parser-blocking and
+          <strong>CSS stylesheets</strong> are render-blocking but not parser-blocking. The HTML parser continues
+          building the DOM, but the browser won&apos;t paint anything until CSS is loaded and parsed.
+        </p>
+        <p>
+          <strong>Synchronous JavaScript</strong> (script tags without defer or async) is both parser-blocking and
           render-blocking. It stops the HTML parser (preventing further DOM construction) and since the render
           tree depends on the DOM, it also blocks rendering. This is why moving scripts to the bottom of
-          <code>{'<body>'}</code> or using <code>defer</code> is so impactful.
+          body or using defer is so impactful.
         </p>
       </section>
 
@@ -191,10 +194,16 @@ export default function AboveTheFoldOptimizationConciseArticle() {
         <h2>Critical CSS</h2>
         <p>
           Critical CSS is the technique of extracting only the CSS rules needed to render above-the-fold
-          content, inlining them in the HTML document&apos;s <code>{'<head>'}</code>, and deferring the load
+          content, inlining them in the HTML document&apos;s head, and deferring the load
           of the remaining CSS. This eliminates the render-blocking CSS problem and allows the browser to
           paint above-the-fold content after a single network round-trip.
         </p>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/performance-optimization/critical-css-flow.svg"
+          alt="Diagram showing critical CSS extraction process: full stylesheet split into inlined critical CSS and asynchronously loaded non-critical CSS"
+          caption="Critical CSS flow: extract above-the-fold styles, inline in head, defer remaining CSS"
+        />
 
         <h3>Why It Works</h3>
         <p>
@@ -210,31 +219,51 @@ export default function AboveTheFoldOptimizationConciseArticle() {
           Several tools automate critical CSS extraction by rendering the page in a headless browser and
           determining which CSS rules apply to elements in the viewport:
         </p>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+        <p>
+          The <strong>critical</strong> npm package is the most popular tool. It uses Puppeteer to render pages
+          and extract CSS rules that apply to above-the-fold elements. It supports multiple viewport sizes to
+          ensure critical CSS covers mobile, tablet, and desktop.
+        </p>
 
         <h3>Critters: Build-Time Critical CSS for Webpack/Next.js</h3>
         <p>
-          Critters takes a different approach from <code>critical</code>: instead of using a headless browser,
+          Critters takes a different approach from critical: instead of using a headless browser,
           it analyzes the HTML and CSS at build time to determine which rules are used. This is faster but
           less accurate — it includes all CSS rules that match elements in the HTML, regardless of whether
           those elements are above the fold. In practice, this over-inclusion is acceptable because the CSS
           is still significantly smaller than the full stylesheet.
         </p>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+        <p>
+          Next.js uses Critters internally when the optimizeFonts and optimizeCss experimental flags are enabled.
+        </p>
 
         <h3>Manual Inlining Strategy</h3>
         <p>
           For maximum control, you can manually inline critical CSS. This is common in Next.js App Router
-          where you want to ensure the initial HTML payload is optimized:
+          where you want to ensure the initial HTML payload is optimized. The approach involves identifying
+          the CSS rules needed for above-the-fold content and placing them in a style tag in the head.
         </p>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
 
         <h3>Async Loading Non-Critical CSS</h3>
         <p>
           After inlining critical CSS, the remaining stylesheet must be loaded without blocking render.
           There are several patterns:
         </p>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+        <p>
+          <strong>Preload with onload:</strong> Use link rel=&quot;preload&quot; with an onload handler
+          that switches the rel to &quot;stylesheet&quot; once loaded. This is the modern approach.
+        </p>
+        <p>
+          <strong>Print media trick:</strong> Load the stylesheet with media=&quot;print&quot; and switch
+          to media=&quot;all&quot; on load. This works because print stylesheets don&apos;t block rendering.
+        </p>
+        <p>
+          <strong>JavaScript injection:</strong> Create the link element dynamically with JavaScript after
+          page load. This defers the CSS download until after the initial render.
+        </p>
+        <p>
+          Always include a noscript fallback for users with JavaScript disabled.
+        </p>
       </section>
 
       {/* ============================================================
@@ -256,35 +285,47 @@ export default function AboveTheFoldOptimizationConciseArticle() {
 
         <h3>Preload: Fetch Critical Resources Early</h3>
         <p>
-          <code>{'<link rel="preload">'}</code> tells the browser to fetch a resource immediately because you
+          The preload link relation tells the browser to fetch a resource immediately because you
           know it will be needed soon. Without preload, the browser discovers resources only when the parser
           encounters them in the HTML or when CSS is parsed. Preload moves the discovery earlier.
         </p>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+        <p>
+          Use preload for fonts, LCP images, and critical scripts that the browser would otherwise discover
+          late. Always include the &quot;as&quot; attribute to specify the resource type.
+        </p>
 
         <h3>Preconnect: Warm Up Third-Party Connections</h3>
         <p>
-          <code>{'<link rel="preconnect">'}</code> performs DNS lookup, TCP handshake, and TLS negotiation
+          The preconnect link relation performs DNS lookup, TCP handshake, and TLS negotiation
           to a third-party origin before any resources from that origin are requested. This can save
           200-500ms per connection on mobile networks.
         </p>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+        <p>
+          Use preconnect for font CDNs, image CDNs, and API endpoints. Limit to 2-4 critical origins to avoid
+          resource contention.
+        </p>
 
         <h3>Prefetch: Load Resources for Future Navigation</h3>
         <p>
-          <code>{'<link rel="prefetch">'}</code> is a low-priority hint telling the browser to fetch a
+          The prefetch link relation is a low-priority hint telling the browser to fetch a
           resource during idle time for use in future navigations. Unlike preload, prefetch is not
           for the current page — it is for the next likely page the user will visit.
         </p>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+        <p>
+          Use prefetch for next-page JavaScript, CSS, or data. Don&apos;t prefetch for the current page — use
+          preload instead.
+        </p>
 
         <h3>fetchpriority: Fine-Grained Control</h3>
         <p>
-          The <code>fetchpriority</code> attribute (part of the Priority Hints API) lets you explicitly
+          The fetchpriority attribute (part of the Priority Hints API) lets you explicitly
           set the priority of a resource relative to other resources of the same type. This is the most
           direct tool for above-the-fold optimization.
         </p>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+        <p>
+          Use fetchpriority=&quot;high&quot; for the LCP image, fetchpriority=&quot;low&quot; for
+          below-the-fold images. This helps the browser prioritize critical resources.
+        </p>
       </section>
 
       {/* ============================================================
@@ -301,37 +342,46 @@ export default function AboveTheFoldOptimizationConciseArticle() {
 
         <h3>Identifying the LCP Element</h3>
         <p>
-          The LCP element can be any of these types: <code>{'<img>'}</code>, <code>{'<image>'}</code> inside
-          SVG, <code>{'<video>'}</code> poster image, element with a CSS <code>background-image</code>, or
-          a block-level element containing text. You can identify the LCP element using Chrome DevTools:
+          The LCP element can be any of these types: img tags, image tags inside
+          SVG, video poster images, elements with a CSS background-image, or
+          a block-level element containing text. You can identify the LCP element using Chrome DevTools
+          Performance panel or Lighthouse.
         </p>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
 
         <h3>Image Optimization for LCP</h3>
         <p>
           When the LCP element is an image (which it is in approximately 72% of pages according to HTTP
           Archive data), optimizing that image delivery is critical:
         </p>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+        <p>
+          Use modern formats (WebP, AVIF) with JPEG fallback. Serve responsive images with srcset.
+          Compress to quality 75-85. Set explicit width and height to prevent layout shift.
+        </p>
 
         <h3>Preloading the LCP Image</h3>
         <p>
           One of the most common LCP issues is late discovery. The browser cannot start downloading an
-          image until it discovers the <code>{'<img>'}</code> tag during HTML parsing, which may be
+          image until it discovers the img tag during HTML parsing, which may be
           delayed by CSS-in-JS execution, JavaScript rendering, or simply being deep in the HTML. Preload
-          solves this:
+          solves this by moving discovery earlier.
         </p>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+        <p>
+          Add a preload link in the head for the LCP image with as=&quot;image&quot; and
+          fetchpriority=&quot;high&quot;.
+        </p>
 
         <h3>SSR Impact on LCP</h3>
         <p>
           Client-side rendering (CSR) has a devastating impact on LCP because the browser must: download
           HTML → download JS bundle → execute JS → render components → discover image → download image →
-          paint. With SSR, the HTML already contains the <code>{'<img>'}</code> tag, so the browser can
+          paint. With SSR, the HTML already contains the img tag, so the browser can
           discover and start downloading the image immediately during HTML parsing. This alone can improve
           LCP by 1-3 seconds on typical pages.
         </p>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+        <p>
+          For optimal LCP, use SSR or SSG for above-the-fold content. Stream SSR for even faster initial
+          HTML delivery.
+        </p>
       </section>
 
       {/* ============================================================
@@ -347,26 +397,51 @@ export default function AboveTheFoldOptimizationConciseArticle() {
         </p>
 
         <h3>defer vs. async</h3>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
         <p>
-          For above-the-fold optimization, <code>defer</code> is almost always the right choice for
+          The defer attribute tells the browser to download the script during HTML parsing but
+          execute it after parsing completes. Scripts with defer maintain execution order.
+        </p>
+        <p>
+          The async attribute tells the browser to download the script and execute it immediately
+          upon completion, potentially interrupting HTML parsing. Execution order is not guaranteed.
+        </p>
+        <p>
+          For above-the-fold optimization, defer is almost always the right choice for
           application JavaScript. It allows the browser to parse and render HTML (showing above-the-fold
           content) while JavaScript downloads in the background. Scripts execute after the DOM is ready,
           in document order.
         </p>
 
         <h3>Dynamic Import for Below-Fold Components</h3>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+        <p>
+          Use dynamic import() to code-split below-fold components. This defers JavaScript
+          execution until the component is needed, reducing initial bundle size and main thread work.
+        </p>
+        <p>
+          Combine with React.lazy and Suspense for React components. Show a loading state while the
+          chunk downloads.
+        </p>
 
         <h3>IntersectionObserver for Lazy Initialization</h3>
         <p>
           For components that need JavaScript to become interactive but are below the fold, you can defer
-          their initialization until they scroll into view:
+          their initialization until they scroll into view using IntersectionObserver.
         </p>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+        <p>
+          This pattern is useful for heavy components like charts, maps, or rich text editors that aren&apos;t
+          needed immediately.
+        </p>
 
         <h3>Next.js Script Component</h3>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+        <p>
+          Next.js provides a Script component with strategy prop for controlling script loading:
+          &quot;beforeInteractive&quot; (critical scripts), &quot;afterInteractive&quot; (default, most
+          scripts), and &quot;lazyOnload&quot; (non-essential scripts).
+        </p>
+        <p>
+          Use &quot;afterInteractive&quot; for most application scripts. Reserve &quot;beforeInteractive&quot;
+          for critical scripts that must run before the page becomes interactive.
+        </p>
       </section>
 
       {/* ============================================================
@@ -397,13 +472,33 @@ export default function AboveTheFoldOptimizationConciseArticle() {
         </ul>
 
         <h3>font-display Strategies</h3>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+        <p>
+          The font-display CSS property controls font loading behavior:
+        </p>
+        <p>
+          <strong>swap:</strong> Show fallback font immediately, swap when web font loads. Best for LCP
+          improvement. May cause layout shift if font metrics differ.
+        </p>
+        <p>
+          <strong>optional:</strong> Show fallback font, only swap if web font is already cached. Best for
+          CLS. May never show web font on slow connections.
+        </p>
+        <p>
+          <strong>fallback:</strong> Hide text briefly (100ms), then show fallback. Compromise between FOIT
+          and FOUT.
+        </p>
 
         <h3>Preloading Fonts</h3>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+        <p>
+          Preload critical fonts to reduce font loading delay. Use preload with as=&quot;font&quot;
+          and crossorigin attributes. Include font-display: swap in CSS.
+        </p>
 
         <h3>next/font: Automatic Font Optimization</h3>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+        <p>
+          Next.js provides next/font for automatic font optimization. It downloads fonts at build time
+          and self-hosts them, eliminating layout shift and improving performance.
+        </p>
 
         <h3>Font Subsetting</h3>
         <p>
@@ -411,10 +506,16 @@ export default function AboveTheFoldOptimizationConciseArticle() {
           A full Inter font with all weights and characters can be 300KB+. Subsetting to Latin characters
           brings it under 20KB.
         </p>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+        <p>
+          Use font subsetting for better performance, especially for non-Latin scripts.
+        </p>
 
         <h3>Reducing CLS from Font Swaps</h3>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+        <p>
+          To reduce CLS from font swaps, use size-adjust, ascent-override, or
+          descent-override CSS properties to match fallback font metrics to web font metrics.
+          This prevents layout shift when the font swaps.
+        </p>
       </section>
 
       {/* ============================================================
@@ -430,122 +531,91 @@ export default function AboveTheFoldOptimizationConciseArticle() {
         </p>
 
         <h3>SSR for Above-Fold Content</h3>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+        <p>
+          Server-side rendering generates HTML on the server for each request. The browser receives fully
+          rendered HTML and can begin painting immediately. This is the most effective way to improve LCP
+          and FCP.
+        </p>
+        <p>
+          Use SSR for dynamic content that changes per user or per request. Next.js, Remix, and Nuxt provide
+          SSR out of the box.
+        </p>
+
+        <h3>SSG for Static Content</h3>
+        <p>
+          Static Site Generation generates HTML at build time. The browser receives pre-rendered HTML with
+          zero server computation. This is the fastest option for content that doesn&apos;t change frequently.
+        </p>
+        <p>
+          Use SSG for marketing pages, documentation, blog posts, and product listings that don&apos;t change
+          per user.
+        </p>
 
         <h3>Streaming SSR</h3>
         <p>
-          Streaming SSR sends HTML in chunks as it becomes available, rather than waiting for the entire
-          page to render. This is particularly powerful for above-the-fold optimization because the
-          above-fold HTML can be sent immediately while below-fold content and data fetching continues.
+          Streaming SSR sends HTML in chunks as it&apos;s generated. The above-the-fold HTML is sent first,
+          allowing the browser to begin rendering before the entire page is ready. This is especially powerful
+          for pages with slow data dependencies.
         </p>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-
-        <h3>React Server Components</h3>
         <p>
-          React Server Components (RSC) in Next.js App Router render on the server and send serialized
-          component trees (not HTML) to the client. For above-the-fold optimization, the key benefit is
-          that RSC output includes the rendered HTML in the initial response — no JavaScript is sent to
-          the client for Server Components:
+          React 18+ supports streaming SSR with Suspense. Next.js App Router uses streaming by default.
         </p>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
 
-        <h3>Edge Rendering for TTFB</h3>
+        <h3>Edge Rendering</h3>
         <p>
-          Edge rendering runs server-side logic at CDN edge locations, reducing the physical distance
-          between server and user. This dramatically improves Time to First Byte (TTFB), which cascades
-          into faster FCP and LCP.
+          Edge rendering moves SSR computation to CDN edge locations closer to users. This reduces TTFB
+          (Time to First Byte) by eliminating network latency to origin servers.
         </p>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
+        <p>
+          Use edge rendering for global audiences. Vercel Edge Functions, Cloudflare Workers, and AWS
+          Lambda@Edge enable edge SSR.
+        </p>
       </section>
 
       {/* ============================================================
-          SECTION 9: Measuring Above-the-Fold Performance
+          SECTION 9: Best Practices
           ============================================================ */}
       <section>
-        <h2>Measuring Above-the-Fold Performance</h2>
+        <h2>Best Practices</h2>
 
-        <ArticleImage
-          src="/diagrams/system-design-concepts/frontend/performance-optimization/above-fold-optimization-timeline.svg"
-          alt="Page load timeline showing FCP, LCP, TTI markers and what factors affect each metric"
-          caption="Key performance markers on the page load timeline — each is affected by different optimization strategies"
-        />
-
+        <h3>Inline Critical CSS</h3>
         <p>
-          You cannot optimize what you do not measure. Above-the-fold performance is quantified through
-          several complementary metrics, measured in both lab and field conditions.
+          Extract and inline CSS needed for above-the-fold content. Keep it under 14KB compressed to fit
+          in the first TCP congestion window.
         </p>
 
-        <h3>Core Metrics</h3>
-        <ul className="space-y-3">
-          <li>
-            <strong>Time to First Byte (TTFB):</strong> Time from navigation start to the first byte of
-            the response. Target: ≤ 800ms. Affected by server processing, CDN latency, redirects.
-          </li>
-          <li>
-            <strong>First Contentful Paint (FCP):</strong> Time until the browser renders the first
-            content (text, image, canvas). Target: ≤ 1.8s. Affected by render-blocking CSS/JS, font loading.
-          </li>
-          <li>
-            <strong>Largest Contentful Paint (LCP):</strong> Time until the largest visible content element
-            renders. Target: ≤ 2.5s. Affected by image loading, preload hints, rendering strategy.
-          </li>
-          <li>
-            <strong>Speed Index:</strong> Measures how quickly content is visually populated. It captures the
-            visual progression of the page — a page that shows above-fold content early has a better (lower)
-            Speed Index even if total load time is the same.
-          </li>
-          <li>
-            <strong>Cumulative Layout Shift (CLS):</strong> Measures total unexpected layout shifts during
-            the page&apos;s lifespan. Target: ≤ 0.1. Above-fold shifts are the most impactful because users
-            are looking at that content.
-          </li>
-        </ul>
-
-        <h3>Measurement Tools</h3>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-
-        <h3>Lighthouse and WebPageTest</h3>
+        <h3>Preload LCP Image</h3>
         <p>
-          Lighthouse provides lab-based measurements with specific recommendations. Run it in Chrome DevTools
-          (Lighthouse tab), via the CLI (<code>npx lighthouse https://example.com</code>), or in CI:
+          Add preload link for the LCP image with fetchpriority=&quot;high&quot;. Don&apos;t lazy-load
+          the LCP element.
         </p>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
 
-        <h3>Chrome DevTools Performance Panel</h3>
+        <h3>Use SSR or SSG</h3>
         <p>
-          The Performance panel provides the most detailed view of above-the-fold rendering. Key features:
+          Avoid CSR for above-the-fold content. Use SSR for dynamic content, SSG for static content.
         </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Filmstrip view:</strong> Shows visual progression of the page at each moment. You can
-            see exactly when above-fold content appears and identify what is delaying it.
-          </li>
-          <li>
-            <strong>Main thread flame chart:</strong> Shows JavaScript execution, style recalculation,
-            layout, and paint operations. Look for long tasks (&gt; 50ms) that block rendering.
-          </li>
-          <li>
-            <strong>Network waterfall:</strong> Shows the order and timing of resource downloads.
-            Check that LCP resources are requested early and at high priority.
-          </li>
-          <li>
-            <strong>Layout Shift regions:</strong> Highlights elements that cause CLS, with a visual
-            overlay showing what moved and by how much.
-          </li>
-        </ul>
 
-        <h3>CrUX (Chrome User Experience Report)</h3>
+        <h3>Defer Non-Critical JavaScript</h3>
         <p>
-          CrUX provides real-world (field) data from Chrome users who have opted into data sharing. Unlike
-          lab tools, CrUX reflects actual user experiences across different devices, networks, and locations.
-          Google uses CrUX data for search ranking signals. Access CrUX data via:
+          Use defer for application scripts. Code-split below-fold components with dynamic import.
         </p>
-        <ul className="space-y-1">
-          <li>PageSpeed Insights (pagespeed.web.dev)</li>
-          <li>CrUX API (<code>https://chromeuxreport.googleapis.com/v1/records:queryRecord</code>)</li>
-          <li>CrUX Dashboard (Google Data Studio template)</li>
-          <li>BigQuery (for historical analysis and custom queries)</li>
-        </ul>
+
+        <h3>Optimize Fonts</h3>
+        <p>
+          Use font-display: swap. Preload critical fonts. Consider next/font for automatic
+          optimization.
+        </p>
+
+        <h3>Set Explicit Dimensions</h3>
+        <p>
+          Always set width and height for images and embeds to prevent CLS. Use aspect-ratio
+          for responsive images.
+        </p>
+
+        <h3>Monitor Core Web Vitals</h3>
+        <p>
+          Use Lighthouse for lab data, CrUX for field data. Set performance budgets and enforce in CI/CD.
+        </p>
       </section>
 
       {/* ============================================================
@@ -553,285 +623,243 @@ export default function AboveTheFoldOptimizationConciseArticle() {
           ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
+
+        <h3>Lazy-Loading the LCP Image</h3>
         <p>
-          Even experienced developers make mistakes that hurt above-the-fold performance. Understanding these
-          pitfalls is valuable in interviews — it demonstrates practical experience beyond theoretical knowledge.
+          The hero/LCP image must load eagerly. Lazy-loading it adds 1-3 seconds to LCP because the
+          image won&apos;t start downloading until JavaScript executes and the Intersection Observer
+          triggers.
+        </p>
+        <p>
+          <strong>Solution:</strong> Use fetchpriority=&quot;high&quot; and loading=&quot;eager&quot;
+          for the LCP image. Never lazy-load above-the-fold hero images.
         </p>
 
-        <h3>1. Layout Shifts from Images Without Dimensions</h3>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-
-        <h3>2. Lazy-Loading the LCP Image</h3>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-
-        <h3>3. Over-Inlining CSS</h3>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-
-        <h3>4. Third-Party Scripts Blocking Render</h3>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-
-        <h3>5. Font-Caused Layout Shifts</h3>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-
-        <h3>6. Mobile Viewport Differences</h3>
+        <h3>Inlining Too Much CSS</h3>
         <p>
-          A common mistake is optimizing above-the-fold content only for desktop viewports. Mobile devices
-          have different &quot;fold&quot; positions — a phone at 375x667 shows very different content above
-          the fold than a desktop at 1920x1080. Your critical CSS must cover all viewport sizes, and your
-          LCP element may differ between mobile and desktop.
+          Inlining more than 30 KB of CSS defeats the purpose — the HTML becomes slow to download, negating the
+          benefit of eliminating the CSS request.
         </p>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-
-        <h3>7. Client-Side Data Fetching for Above-Fold Content</h3>
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">Example code moved to the Example tab.</div>
-      </section>
-
-      {/* ============================================================
-          SECTION 11: Best Practices Summary
-          ============================================================ */}
-      <section>
-        <h2>Best Practices Summary</h2>
-
-        <ArticleImage
-          src="/diagrams/system-design-concepts/frontend/performance-optimization/above-fold-strategy-overview.svg"
-          alt="Overview diagram showing all above-the-fold optimization strategies mapped to their Core Web Vitals impact"
-          caption="All optimization strategies and their impact on Core Web Vitals"
-        />
-
         <p>
-          The following best practices are ordered by impact — implement them in this order for maximum
-          benefit with minimum effort:
+          <strong>Solution:</strong> Be aggressive about what&apos;s truly &quot;above-the-fold.&quot; Use tools
+          that show extracted CSS size and set a hard limit of 14KB compressed.
         </p>
 
-        <h3>Tier 1: Critical (Implement First)</h3>
-        <ul className="space-y-2">
-          <li>
-            <strong>Inline critical CSS:</strong> Extract and inline above-fold CSS in
-            <code>{'<head>'}</code>. Target ≤ 14KB for the entire initial HTML payload (compressed).
-            Use Critters (built into Next.js) or the <code>critical</code> npm package.
-          </li>
-          <li>
-            <strong>Preload the LCP image:</strong> Add
-            <code>{'<link rel="preload" href="/hero.webp" as="image" fetchpriority="high">'}</code>.
-            In Next.js, use <code>{'<Image priority>'}</code>.
-          </li>
-          <li>
-            <strong>Defer all JavaScript:</strong> Use <code>defer</code> for application scripts.
-            Move third-party scripts to <code>afterInteractive</code> or <code>lazyOnload</code> strategy.
-          </li>
-          <li>
-            <strong>Set explicit image dimensions:</strong> Every <code>{'<img>'}</code> must have
-            <code>width</code> and <code>height</code> (or CSS <code>aspect-ratio</code>) to prevent CLS.
-          </li>
-          <li>
-            <strong>Use SSR for above-fold content:</strong> Server-render the initial HTML so the
-            browser can start rendering immediately without waiting for JavaScript.
-          </li>
-        </ul>
-
-        <h3>Tier 2: Important (High Impact)</h3>
-        <ul className="space-y-2">
-          <li>
-            <strong>Optimize fonts:</strong> Use <code>next/font</code> for automatic optimization.
-            Apply <code>font-display: swap</code> or <code>optional</code>. Preload critical fonts.
-            Subset to needed character sets.
-          </li>
-          <li>
-            <strong>Preconnect to third-party origins:</strong> Add <code>preconnect</code> for CDN,
-            API, font, and analytics domains.
-          </li>
-          <li>
-            <strong>Lazy-load below-fold content:</strong> Use <code>loading=&quot;lazy&quot;</code> for
-            below-fold images and <code>React.lazy</code> for below-fold interactive components.
-          </li>
-          <li>
-            <strong>Use modern image formats:</strong> Serve WebP or AVIF with fallbacks. Use responsive
-            images with <code>srcSet</code> and <code>sizes</code>.
-          </li>
-          <li>
-            <strong>Stream SSR with Suspense:</strong> Wrap below-fold async Server Components in
-            Suspense boundaries to stream them independently of above-fold content.
-          </li>
-        </ul>
-
-        <h3>Tier 3: Optimization (Incremental Gains)</h3>
-        <ul className="space-y-2">
-          <li>
-            <strong>Edge rendering:</strong> Deploy SSR to edge locations for lower TTFB globally.
-          </li>
-          <li>
-            <strong>Priority Hints:</strong> Use <code>fetchpriority=&quot;high&quot;</code> on LCP
-            elements and <code>fetchpriority=&quot;low&quot;</code> on below-fold resources.
-          </li>
-          <li>
-            <strong>Resource budgets:</strong> Set performance budgets in CI — fail the build if
-            LCP exceeds 2.5s or critical CSS exceeds 15KB.
-          </li>
-          <li>
-            <strong>Skeleton screens:</strong> Show content placeholders immediately while data loads,
-            maintaining layout stability.
-          </li>
-          <li>
-            <strong>HTTP/2 or HTTP/3:</strong> Enable multiplexing to avoid head-of-line blocking
-            and reduce connection overhead for multiple resources.
-          </li>
-        </ul>
-      </section>
-
-      {/* ============================================================
-          SECTION 12: Interview Talking Points
-          ============================================================ */}
-      <section>
-        <h2>Interview Talking Points</h2>
+        <h3>Blocking JavaScript</h3>
         <p>
-          When discussing above-the-fold optimization in system design interviews, these talking points
-          demonstrate depth of understanding:
+          Synchronous script tags in the head block HTML parsing and rendering.
+        </p>
+        <p>
+          <strong>Solution:</strong> Use defer or async for all scripts. Move critical inline scripts
+          to the end of body if absolutely necessary.
         </p>
 
-        <h3>Opening Framework</h3>
+        <h3>Font Loading Blocking Text</h3>
         <p>
-          &quot;Above-the-fold optimization is about prioritizing what the user sees first. The key insight
-          is that perceived performance matters more than total load time. A page that shows meaningful
-          content in under a second, even if it finishes loading at 4 seconds, feels dramatically faster
-          than one that loads nothing for 2 seconds then shows everything at 3 seconds.&quot;
+          Without font-display: swap, text may be invisible for seconds while fonts load.
+        </p>
+        <p>
+          <strong>Solution:</strong> Always use font-display: swap or optional. Preload critical fonts.
         </p>
 
-        <h3>Technical Depth</h3>
-        <ul className="space-y-3">
-          <li>
-            <strong>14KB rule:</strong> &quot;The first TCP congestion window is about 14KB. If we can fit
-            our HTML plus inlined critical CSS within 14KB compressed, the browser can render the first paint
-            after a single network round-trip — the theoretical minimum latency.&quot;
-          </li>
-          <li>
-            <strong>Render-blocking elimination:</strong> &quot;CSS is render-blocking because the browser
-            needs the CSSOM to build the render tree. By inlining critical CSS, we give the browser the
-            styles it needs for above-fold content in the initial HTML, eliminating the need for an
-            additional stylesheet request before first paint.&quot;
-          </li>
-          <li>
-            <strong>LCP optimization:</strong> &quot;The LCP element is almost always above the fold. For
-            image-heavy pages, the single biggest LCP improvement is adding a preload hint with
-            fetchpriority=high — this moves the discovery of the image from parser time to preload scanner
-            time, saving hundreds of milliseconds.&quot;
-          </li>
-          <li>
-            <strong>SSR vs CSR tradeoff:</strong> &quot;Client-side rendering adds a minimum of 2 extra
-            sequential steps before content appears: downloading the JavaScript bundle and executing it to
-            produce DOM nodes. With SSR, the HTML already contains the content, and the browser&apos;s
-            preload scanner can discover images while still parsing. This typically improves LCP by 1-3
-            seconds.&quot;
-          </li>
-          <li>
-            <strong>Streaming SSR:</strong> &quot;With streaming SSR using React Suspense boundaries, we
-            can send above-fold HTML immediately while below-fold data fetching continues on the server.
-            The user sees meaningful content within the first chunk, and below-fold sections stream in as
-            they become ready.&quot;
-          </li>
-        </ul>
-
-        <h3>Tradeoffs to Discuss</h3>
-        <ul className="space-y-2">
-          <li>
-            <strong>Inlined CSS is not cacheable:</strong> Each page load re-downloads the inlined CSS.
-            For return visitors, a cached external stylesheet would be more efficient. The tradeoff is
-            worth it for FCP because the first visit experience drives user retention.
-          </li>
-          <li>
-            <strong>SSR adds server cost:</strong> Generating HTML on every request requires server
-            compute. Static Site Generation (SSG) and Incremental Static Regeneration (ISR) provide
-            SSR-like FCP benefits without per-request server rendering. The tradeoff depends on content
-            freshness requirements.
-          </li>
-          <li>
-            <strong>font-display: optional skips custom fonts on slow connections:</strong> Users on
-            slow networks may never see the custom font. For most applications, this is an acceptable
-            tradeoff — the content is more important than the typography.
-          </li>
-          <li>
-            <strong>Streaming SSR complexity:</strong> Streaming requires careful error boundary placement.
-            If an above-fold component throws during streaming, the error can bubble up differently than
-            in traditional SSR. The tradeoff is increased resilience complexity for better perceived
-            performance.
-          </li>
-        </ul>
-
-        <h3>Measurement and Monitoring</h3>
+        <h3>Images Without Dimensions</h3>
         <p>
-          &quot;I would measure above-the-fold performance using a combination of lab and field data.
-          Lighthouse CI in the build pipeline catches regressions before deployment. In production, I would
-          use the <code>web-vitals</code> library to capture real user metrics (RUM) and send them to an
-          analytics dashboard. CrUX data gives us the 75th percentile experience across all Chrome users
-          on our site — this is what Google uses for search ranking. I would set alerts for LCP &gt; 2.5s
-          at the 75th percentile.&quot;
+          Images without width/height cause Cumulative Layout Shift as they load.
+        </p>
+        <p>
+          <strong>Solution:</strong> Always specify width and height, or use CSS aspect-ratio to
+          reserve space.
         </p>
 
-        <h3>When the Interviewer Asks &quot;What Would You Prioritize?&quot;</h3>
+        <h3>Not Testing on Real Devices</h3>
         <p>
-          &quot;I would start by measuring the current state — run Lighthouse, check CrUX data, and identify
-          the LCP element. The three highest-impact optimizations, in order, are: (1) inline critical CSS to
-          unblock first paint, (2) preload the LCP element with fetchpriority=high, and (3) defer all
-          non-critical JavaScript. These three changes alone can typically bring LCP from 4+ seconds to
-          under 2.5 seconds. After that, I would set up monitoring and iterate on font optimization,
-          image format modernization, and streaming SSR.&quot;
+          Above-the-fold optimization that works on desktop may fail on mobile due to different viewport
+          sizes and slower networks.
+        </p>
+        <p>
+          <strong>Solution:</strong> Test on real mobile devices with network throttling. Use Lighthouse
+          mobile preset.
         </p>
       </section>
 
       {/* ============================================================
-          SECTION 13: References
+          SECTION 11: Interview Questions & Answers
           ============================================================ */}
       <section>
-        <h2>References</h2>
+        <h2>Interview Questions & Answers</h2>
+
+        <div className="space-y-6">
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 1: What is above-the-fold optimization and why does it matter?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <p className="mb-3">
+              Above-the-fold optimization prioritizes loading and rendering content visible in the initial
+              viewport without scrolling. It matters because <strong>perceived performance matters more than
+              total load time</strong> — users judge page quality within 2-3 seconds.
+            </p>
+            <p className="mb-3">
+              Techniques include critical CSS inlining, LCP image optimization, SSR/SSG, font optimization,
+              and JavaScript deferral. These directly improve Core Web Vitals (LCP, FCP, CLS).
+            </p>
+            <p>
+              Business impact is significant: Amazon found every 100ms latency cost 1% in sales. Google found
+              500ms delay reduced traffic by 20%.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 2: What is critical CSS and how does it work?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <p className="mb-3">
+              Critical CSS is the minimum CSS needed to render above-the-fold content, inlined in the HTML
+              head. It eliminates render-blocking CSS by providing styles immediately without waiting for
+              an external stylesheet.
+            </p>
+            <p className="mb-3">
+              How it works: (1) Extract CSS rules for above-the-fold elements, (2) Inline in style tag
+              in head, (3) Load remaining CSS asynchronously with preload or JavaScript.
+            </p>
+            <p>
+              Target: Keep critical CSS under 14KB compressed to fit in the first TCP congestion window,
+              enabling rendering after a single network round-trip.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 3: How do you optimize the LCP element?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <ul className="space-y-2 mb-3">
+              <li>
+                <strong>Identify LCP:</strong> Use Lighthouse or Chrome DevTools Performance panel to
+                identify the LCP element.
+              </li>
+              <li>
+                <strong>Preload:</strong> Add preload link with fetchpriority=&quot;high&quot; for
+                LCP image.
+              </li>
+              <li>
+                <strong>Optimize Image:</strong> Use WebP/AVIF, compress to quality 75-85, serve
+                responsive images with srcset.
+              </li>
+              <li>
+                <strong>SSR/SSG:</strong> Render LCP element on server so HTML includes img tag
+                for early discovery.
+              </li>
+              <li>
+                <strong>Don&apos;t Lazy-Load:</strong> Never lazy-load the LCP element — it must
+                load eagerly.
+              </li>
+            </ul>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 4: What is the impact of SSR on above-the-fold performance?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <p className="mb-3">
+              SSR has the most significant impact on above-the-fold performance because it eliminates
+              client-side JavaScript execution before rendering:
+            </p>
+            <ul className="space-y-2 mb-3">
+              <li>
+                <strong>CSR:</strong> Download HTML → Download JS → Execute JS → Render → Discover
+                images → Download images → Paint (3-5 seconds)
+              </li>
+              <li>
+                <strong>SSR:</strong> Download HTML (with content) → Discover images → Download images
+                → Paint (1-2 seconds)
+              </li>
+            </ul>
+            <p>
+              SSR can improve LCP by 1-3 seconds on typical pages. Streaming SSR sends HTML in chunks,
+              allowing even faster initial rendering.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 5: How do you prevent CLS from font swaps?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <ul className="space-y-2 mb-3">
+              <li>
+                <strong>font-display: swap:</strong> Show fallback font immediately, swap when web font
+                loads. Prevents invisible text but may cause layout shift.
+              </li>
+              <li>
+                <strong>size-adjust:</strong> Scale fallback font to match web font metrics. Prevents
+                layout shift when fonts swap.
+              </li>
+              <li>
+                <strong>Preload fonts:</strong> Start font download early with preload link. Reduces
+                time until font loads.
+              </li>
+              <li>
+                <strong>next/font:</strong> Next.js font optimization automatically handles font
+                subsetting and fallback metrics.
+              </li>
+            </ul>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 6: What resource hints would you use for above-the-fold optimization?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <ul className="space-y-2 mb-3">
+              <li>
+                <strong>preload:</strong> For LCP image, critical fonts, critical scripts. Fetches
+                immediately with high priority.
+              </li>
+              <li>
+                <strong>preconnect:</strong> For font CDN, image CDN, API endpoints. Warms up
+                connections before resources are requested.
+              </li>
+              <li>
+                <strong>prefetch:</strong> For next-page resources. Low-priority fetch during idle time.
+              </li>
+              <li>
+                <strong>fetchpriority:</strong> Set &quot;high&quot; for LCP image, &quot;low&quot; for
+                below-the-fold images. Fine-grained priority control.
+              </li>
+            </ul>
+            <p>
+              Limit preconnect to 2-4 origins. Don&apos;t overuse preload (3-5 resources max).
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+          SECTION 12: References
+          ============================================================ */}
+      <section>
+        <h2>References & Further Reading</h2>
         <ul className="space-y-2">
           <li>
-            <strong>Google Web Vitals documentation:</strong>
-            <code>https://web.dev/vitals/</code> — Official definitions and thresholds for Core Web Vitals
-            including LCP, CLS, and INP.
+            <a href="https://web.dev/above-the-fold/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              web.dev — Above-the-Fold Content
+            </a> — Guide to optimizing above-the-fold content for Core Web Vitals.
           </li>
           <li>
-            <strong>Critical Rendering Path — Google Developers:</strong>
-            <code>https://developers.google.com/web/fundamentals/performance/critical-rendering-path</code> —
-            Detailed walkthrough of DOM construction, CSSOM, render tree, layout, and paint.
+            <a href="https://web.dev/critical-css/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              web.dev — Critical CSS
+            </a> — Techniques for extracting and inlining critical CSS.
           </li>
           <li>
-            <strong>Priority Hints specification:</strong>
-            <code>https://wicg.github.io/priority-hints/</code> — W3C specification for the
-            <code>fetchpriority</code> attribute.
+            <a href="https://web.dev/optimize-lcp/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              web.dev — Optimize LCP
+            </a> — Strategies for improving Largest Contentful Paint.
           </li>
           <li>
-            <strong>Optimize Largest Contentful Paint — web.dev:</strong>
-            <code>https://web.dev/optimize-lcp/</code> — Google&apos;s guide to LCP optimization including
-            preloading, SSR, and image optimization techniques.
+            <a href="https://web.dev/font-optimization/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              web.dev — Font Optimization
+            </a> — Guide to optimizing web font loading.
           </li>
           <li>
-            <strong>Critical CSS tools — GitHub:</strong>
-            <code>https://github.com/addyosmani/critical</code> — Addy Osmani&apos;s critical CSS extraction
-            tool for automated above-fold CSS inlining.
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/preload" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN — Preload
+            </a> — Documentation on preload resource hints.
           </li>
           <li>
-            <strong>Critters — Google Chrome Labs:</strong>
-            <code>https://github.com/GoogleChromeLabs/critters</code> — Build-time critical CSS inliner
-            used internally by Next.js.
-          </li>
-          <li>
-            <strong>web-vitals npm package:</strong>
-            <code>https://github.com/GoogleChrome/web-vitals</code> — Library for measuring Core Web Vitals
-            in the field (Real User Monitoring).
-          </li>
-          <li>
-            <strong>Next.js Font Optimization:</strong>
-            <code>https://nextjs.org/docs/app/building-your-application/optimizing/fonts</code> —
-            Documentation for <code>next/font</code> automatic font optimization with zero CLS.
-          </li>
-          <li>
-            <strong>HTTP Archive Web Almanac — Performance chapter:</strong>
-            <code>https://almanac.httparchive.org/en/2024/performance</code> — Annual analysis of real-world
-            web performance data including LCP element distribution and resource loading patterns.
-          </li>
-          <li>
-            <strong>Chrome for Developers — Preload, Prefetch, Preconnect:</strong>
-            <code>https://developer.chrome.com/docs/devtools/network/reference</code> — Resource hints
-            documentation and DevTools network analysis.
+            <a href="https://nextjs.org/docs/app/building-your-application/optimizing/font" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Next.js — Font Optimization
+            </a> — next/font documentation for automatic font optimization.
           </li>
         </ul>
       </section>

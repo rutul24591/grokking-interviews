@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-labelledby="bundleOptimizationTitle bundleOptimizationDesc">
+  <title id="bundleOptimizationTitle">Bundle Optimization Strategies</title>
+  <desc id="bundleOptimizationDesc">Diagram showing various bundle optimization techniques and their impact on final bundle size</desc>
+  
+  <defs>
+    <linearGradient id="optBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fafafa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f1f5f9;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="800" height="450" fill="url(#optBg)" />
+  
+  <text x="400" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#1e293b">Bundle Optimization: Step-by-Step Reduction</text>
+  
+  <!-- Original Bundle -->
+  <rect x="50" y="70" width="140" height="300" rx="6" fill="#ef4444" opacity="0.8" />
+  <text x="120" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Original</text>
+  <text x="120" y="235" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#ffffff">2.4 MB</text>
+  
+  <!-- Arrow 1 -->
+  <line x1="190" y1="220" x2="230" y2="220" stroke="#475569" stroke-width="2" />
+  <polygon points="230,220 220,215 220,225" fill="#475569" />
+  <text x="210" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#475569">Tree Shaking</text>
+  
+  <!-- After Tree Shaking -->
+  <rect x="240" y="90" width="120" height="260" rx="6" fill="#f59e0b" opacity="0.8" />
+  <text x="300" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#ffffff">Tree Shaking</text>
+  <text x="300" y="235" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#ffffff">1.6 MB</text>
+  <text x="300" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#ffffff">-33%</text>
+  
+  <!-- Arrow 2 -->
+  <line x1="360" y1="220" x2="400" y2="220" stroke="#475569" stroke-width="2" />
+  <polygon points="400,220 390,215 390,225" fill="#475569" />
+  <text x="380" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#475569">Code Splitting</text>
+  
+  <!-- After Code Splitting -->
+  <rect x="410" y="120" width="100" height="200" rx="6" fill="#8b5cf6" opacity="0.8" />
+  <text x="460" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">Code Split</text>
+  <text x="460" y="235" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#ffffff">800 KB</text>
+  <text x="460" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#ffffff">-50%</text>
+  
+  <!-- Arrow 3 -->
+  <line x1="510" y1="220" x2="550" y2="220" stroke="#475569" stroke-width="2" />
+  <polygon points="550,220 540,215 540,225" fill="#475569" />
+  <text x="530" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#475569">Library Replace</text>
+  
+  <!-- After Library Replacement -->
+  <rect x="560" y="150" width="80" height="140" rx="6" fill="#22c55e" opacity="0.8" />
+  <text x="600" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">Optimized</text>
+  <text x="600" y="235" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="#ffffff">400 KB</text>
+  <text x="600" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#ffffff">-50%</text>
+  
+  <!-- Final Arrow -->
+  <line x1="640" y1="220" x2="680" y2="220" stroke="#475569" stroke-width="2" />
+  <polygon points="680,220 670,215 670,225" fill="#475569" />
+  <text x="660" y="205" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#475569">Compression</text>
+  
+  <!-- After Compression -->
+  <rect x="690" y="180" width="60" height="80" rx="6" fill="#06b6d4" opacity="0.8" />
+  <text x="720" y="215" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="700" fill="#ffffff">Brotli</text>
+  <text x="720" y="235" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#ffffff">120 KB</text>
+  <text x="720" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="400" fill="#ffffff">-70%</text>
+  
+  <!-- Summary at bottom -->
+  <rect x="50" y="390" width="700" height="40" rx="6" fill="#ffffff" stroke="#cbd5e1" />
+  <text x="400" y="410" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#1e293b">Total Reduction: 2.4 MB → 120 KB (95% reduction)</text>
+  <text x="400" y="425" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#64748b">Uncompressed: 400 KB | Compressed (Brotli): 120 KB</text>
+</svg>

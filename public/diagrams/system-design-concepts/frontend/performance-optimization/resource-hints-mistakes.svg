@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 420" role="img" aria-labelledby="resourceHintsMistakesTitle resourceHintsMistakesDesc">
+  <title id="resourceHintsMistakesTitle">Resource Hints Common Mistakes</title>
+  <desc id="resourceHintsMistakesDesc">Diagram showing common mistakes when using resource hints and their correct alternatives</desc>
+  
+  <defs>
+    <linearGradient id="mistakesBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#cbd5e1;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="850" height="420" fill="url(#mistakesBg)" />
+  
+  <text x="425" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#1e293b">Resource Hints: Common Mistakes &amp; Fixes</text>
+  
+  <!-- Mistake 1: Too many preloads -->
+  <rect x="40" y="70" width="370" height="100" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2" />
+  <text x="60" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#dc2626">✗ Mistake: Too Many Preloads</text>
+  <text x="60" y="125" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Preloading 10+ resources dilutes priority and wastes bandwidth.</text>
+  <text x="60" y="150" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Browser may warn if preload unused within 3 seconds.</text>
+  
+  <rect x="40" y="180" width="370" height="70" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" />
+  <text x="60" y="210" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#16a34a">✓ Fix: Limit to 3-5 Critical Resources</text>
+  <text x="60" y="235" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Only preload what's needed for current page and discovered late.</text>
+  
+  <!-- Mistake 2: Missing crossorigin -->
+  <rect x="440" y="70" width="370" height="100" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2" />
+  <text x="460" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#dc2626">✗ Mistake: Missing crossorigin on Fonts</text>
+  <text x="460" y="125" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Font preload without crossorigin causes double-fetch.</text>
+  <text x="460" y="150" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Non-CORS preload + CORS actual request = wasted bandwidth.</text>
+  
+  <rect x="440" y="180" width="370" height="70" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" />
+  <text x="460" y="210" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#16a34a">✓ Fix: Always Add crossorigin Attribute</text>
+  <text x="460" y="235" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">&lt;link rel="preload" href="font.woff2" as="font" crossorigin&gt;</text>
+  
+  <!-- Mistake 3: Wrong hint type -->
+  <rect x="40" y="270" width="370" height="100" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2" />
+  <text x="60" y="300" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#dc2626">✗ Mistake: Using preload for Next Page</text>
+  <text x="60" y="325" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Preload fetches at HIGH priority for current page.</text>
+  <text x="60" y="350" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Wastes bandwidth competing with critical resources.</text>
+  
+  <rect x="40" y="380" width="370" height="35" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" />
+  <text x="60" y="403" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#16a34a">✓ Fix: Use prefetch for Future Navigation</text>
+  
+  <!-- Mistake 4: Too many preconnects -->
+  <rect x="440" y="270" width="370" height="100" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2" />
+  <text x="460" y="300" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#dc2626">✗ Mistake: Preconnecting to 10+ Origins</text>
+  <text x="460" y="325" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Each preconnect holds open socket (~10s timeout).</text>
+  <text x="460" y="350" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Wastes client and server resources.</text>
+  
+  <rect x="440" y="380" width="370" height="35" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" />
+  <text x="460" y="403" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#16a34a">✓ Fix: Limit to 2-4 Critical Origins</text>
+  
+  <!-- Bottom summary -->
+  <rect x="40" y="425" width="770" height="12" rx="3" fill="#f1f5f9" />
+  <text x="425" y="434" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#64748b">Every hint has a cost — use intentionally and measure impact</text>
+</svg>

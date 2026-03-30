@@ -1,300 +1,893 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
-  id: "article-frontend-minification-uglification-concise",
+  id: "article-frontend-minification-uglification",
   title: "Minification and Uglification",
-  description: "Quick overview of JavaScript and CSS minification techniques for reducing bundle sizes.",
+  description: "Comprehensive guide to JavaScript and CSS minification techniques for reducing bundle sizes through code transformation and optimization.",
   category: "frontend",
   subcategory: "performance-optimization",
   slug: "minification-and-uglification",
-  version: "concise",
-  wordCount: 2500,
-  readingTime: 10,
-  lastUpdated: "2026-03-09",
-  tags: ["frontend", "performance", "minification", "uglification", "terser", "bundling"],
-  relatedTopics: ["compression", "tree-shaking", "bundle-size-optimization"],
+  wordCount: 6000,
+  readingTime: 24,
+  lastUpdated: "2026-03-30",
+  tags: ["frontend", "performance", "minification", "uglification", "terser", "esbuild", "bundling", "optimization"],
+  relatedTopics: ["compression", "tree-shaking", "bundle-size-optimization", "code-splitting"],
 };
 
-export default function MinificationConciseArticle() {
+export default function MinificationUglificationArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      {/* ============================================================
+          SECTION 1: Definition & Context
+          ============================================================ */}
       <section>
-        <h2>Quick Overview</h2>
+        <h2>Definition & Context</h2>
         <p>
-          <strong>Minification</strong> removes unnecessary characters from source code (whitespace, comments,
-          newlines) without changing functionality. <strong>Uglification</strong> (or mangling) goes further by
-          renaming variables and functions to shorter names. Together, they typically reduce JavaScript bundle
-          size by <strong>30-60%</strong> and CSS by <strong>20-40%</strong> before compression.
+          <strong>Minification</strong> removes unnecessary characters from source code (whitespace, 
+          comments, newlines) without changing functionality. <strong>Uglification</strong> (or 
+          mangling) goes further by renaming variables and functions to shorter names. Together, they 
+          typically reduce JavaScript bundle size by <strong>30-60%</strong> and CSS by 
+          <strong>20-40%</strong> before compression.
         </p>
         <p>
-          These are build-time transformations — your source code stays readable, but the production output is
-          compact and optimized. Every modern bundler (Webpack, Vite, Rollup, esbuild) performs minification
-          automatically in production builds.
+          These are build-time transformations — your source code stays readable and maintainable, 
+          but the production output is compact and optimized. Every modern bundler (Webpack, Vite, 
+          Rollup, esbuild) performs minification automatically in production builds, but understanding 
+          the underlying techniques helps you configure optimal settings and debug issues.
         </p>
-      </section>
 
-      <section>
-        <h2>What Minification Does</h2>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`// === Before minification (readable source) ===
-function calculateTotalPrice(items, taxRate) {
-  // Sum up all item prices
-  let subtotal = 0;
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/performance-optimization/minification-pipeline.svg"
+          alt="Diagram showing minification pipeline from source code through parsing, transformation, mangling, and output with size reduction percentages"
+          caption="Minification pipeline: source code is parsed, transformed, mangled, and output as compact bundle"
+        />
 
-  for (const item of items) {
-    const itemPrice = item.price * item.quantity;
-    subtotal += itemPrice;
-  }
-
-  // Apply tax
-  const tax = subtotal * taxRate;
-  const total = subtotal + tax;
-
-  return {
-    subtotal: subtotal,
-    tax: tax,
-    total: total,
-  };
-}
-
-// === After minification + uglification ===
-function c(t,r){let e=0;for(const o of t)e+=o.price*o.quantity;const n=e*r;return{subtotal:e,tax:n,total:e+n}}
-
-// What happened:
-// 1. Comments removed
-// 2. Whitespace/newlines removed
-// 3. Variables renamed: calculateTotalPrice→c, items→t, taxRate→r, etc.
-// 4. Redundant variables eliminated (itemPrice inlined)
-// 5. Object shorthand applied where possible
-// 6. Dead code eliminated`}</code>
-        </pre>
-      </section>
-
-      <section>
-        <h2>JavaScript Minifiers</h2>
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="border-b border-theme">
-              <th className="p-3 text-left">Tool</th>
-              <th className="p-3 text-left">Speed</th>
-              <th className="p-3 text-left">Compression</th>
-              <th className="p-3 text-left">Used By</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-theme">
-            <tr>
-              <td className="p-3"><strong>Terser</strong></td>
-              <td className="p-3">Moderate</td>
-              <td className="p-3">Best (most aggressive)</td>
-              <td className="p-3">Webpack (default), Next.js</td>
-            </tr>
-            <tr>
-              <td className="p-3"><strong>esbuild</strong></td>
-              <td className="p-3">Fastest (10-100x)</td>
-              <td className="p-3">Good (slightly larger output)</td>
-              <td className="p-3">Vite (default)</td>
-            </tr>
-            <tr>
-              <td className="p-3"><strong>SWC</strong></td>
-              <td className="p-3">Very fast</td>
-              <td className="p-3">Good</td>
-              <td className="p-3">Next.js (optional), Parcel</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm mt-4">
-          <code>{`// === Webpack with Terser (default in production) ===
-// webpack.config.js
-const TerserPlugin = require('terser-webpack-plugin');
-
-module.exports = {
-  mode: 'production', // Enables minification automatically
-  optimization: {
-    minimize: true,
-    minimizer: [
-      new TerserPlugin({
-        terserOptions: {
-          compress: {
-            dead_code: true,       // Remove unreachable code
-            drop_console: true,    // Remove console.log
-            drop_debugger: true,   // Remove debugger statements
-            pure_funcs: ['console.info', 'console.debug'],
-            passes: 2,            // Multiple passes for better compression
-          },
-          mangle: {
-            safari10: true,        // Work around Safari 10 bugs
-          },
-          format: {
-            comments: false,       // Remove all comments
-          },
-        },
-        extractComments: false,
-      }),
-    ],
-  },
-};
-
-// === Vite with esbuild (default) ===
-export default defineConfig({
-  build: {
-    minify: 'esbuild', // Default — fast
-    // minify: 'terser', // Alternative — smaller output, slower
-    terserOptions: {
-      compress: { drop_console: true },
-    },
-  },
-});`}</code>
-        </pre>
-      </section>
-
-      <section>
-        <h2>CSS Minification</h2>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`/* Before CSS minification */
-.hero-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem 1rem 2rem 1rem;     /* Can be simplified */
-  margin: 0px;                       /* 0px → 0 */
-  background-color: #ffffff;         /* Can be shortened */
-  color: rgb(0, 0, 0);              /* Can be shortened */
-  /* This is a comment */
-  font-weight: 700;                  /* Can use 'bold' or keep */
-}
-
-/* After CSS minification (cssnano) */
-.hero-section{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1rem;margin:0;background-color:#fff;color:#000;font-weight:700}
-
-/* CSS minifiers:
-   - cssnano (PostCSS plugin, used by most frameworks)
-   - Lightning CSS (Rust-based, very fast, used by Parcel/Vite)
-   - clean-css (standalone)
-*/
-
-// PostCSS config with cssnano
-// postcss.config.js
-module.exports = {
-  plugins: [
-    require('cssnano')({
-      preset: ['default', {
-        discardComments: { removeAll: true },
-        normalizeWhitespace: true,
-        minifySelectors: true,
-        reduceTransforms: true,
-      }],
-    }),
-  ],
-};`}</code>
-        </pre>
-      </section>
-
-      <section>
-        <h2>HTML Minification</h2>
-        <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm">
-          <code>{`<!-- Before --&gt;
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>My App</title>
-    <!-- This is a comment --&gt;
-  </head>
-  <body>
-    <div id="root">
-      <p>Hello World</p>
-    </div>
-  </body>
-</html>
-
-<!-- After (html-minifier-terser) --&gt;
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>My App</title></head><body><div id="root"><p>Hello World</p></div></body></html>
-
-<!-- Savings: ~30% for HTML
-   Most frameworks handle this automatically:
-   - Next.js: automatic HTML minification in production
-   - Vite: html-minifier-terser plugin available
---&gt;`}</code>
-        </pre>
-      </section>
-
-      <section>
-        <h2>Advanced Minification Techniques</h2>
+        <p>
+          Minification operates at several levels:
+        </p>
         <ul className="space-y-2">
           <li>
-            <strong>Property mangling:</strong> Rename object properties (<code>{'{ longPropertyName: 1 }'}</code> →
-            <code>{'{ a: 1 }'}</code>). Risky — only safe for internal-only properties. Terser's <code>mangle.properties</code> with a regex pattern.
+            <strong>Whitespace Removal:</strong> Remove spaces, tabs, newlines that are only for 
+            human readability. Code remains functionally identical.
           </li>
           <li>
-            <strong>Dead code elimination:</strong> Remove code in <code>if (false)</code> blocks, unused variables,
-            and unreachable code after <code>return</code> statements.
+            <strong>Comment Removal:</strong> Strip all comments (unless preserved by license 
+            comments). Reduces size without affecting execution.
           </li>
           <li>
-            <strong>Constant folding:</strong> Replace <code>1 + 2</code> with <code>3</code>,
-            <code>"hello" + " " + "world"</code> with <code>"hello world"</code> at build time.
+            <strong>Variable Mangling:</strong> Rename variables and functions to shorter names 
+            (<code>userData</code> → <code>a</code>, <code>calculateTotal</code> → <code>b</code>). 
+            This is where &quot;uglification&quot; gets its name — the output is ugly but functional.
           </li>
           <li>
-            <strong>Boolean simplification:</strong> <code>!!x</code> → context-dependent optimization,
-            <code>x === true</code> → <code>x</code>.
+            <strong>Dead Code Elimination:</strong> Remove unreachable code (after return statements, 
+            in false conditionals), unused variables, and unused exports.
           </li>
           <li>
-            <strong>Drop console in production:</strong> <code>drop_console: true</code> removes all
-            <code>console.log/warn/error</code> calls. Reduces bundle size and prevents leaking debug info.
+            <strong>Expression Optimization:</strong> Simplify expressions (<code>1 + 2</code> → 
+            <code>3</code>), inline constants, and apply other algebraic simplifications.
+          </li>
+        </ul>
+
+        <p>
+          The performance impact of minification is significant:
+        </p>
+        <ul className="space-y-2">
+          <li>
+            <strong>Reduced Transfer Size:</strong> A 500KB JavaScript bundle minifies to 250-350KB 
+            (30-50% reduction). After Gzip/Brotli compression, the transfer size is even smaller.
+          </li>
+          <li>
+            <strong>Faster Parsing:</strong> Less code to parse means faster JavaScript parsing and 
+            compilation. This directly improves Time to Interactive (TTI).
+          </li>
+          <li>
+            <strong>Lower Memory Usage:</strong> Smaller bundles consume less memory, especially 
+            important on mobile devices with limited RAM.
+          </li>
+        </ul>
+
+        <p>
+          Minification complements other optimization techniques:
+        </p>
+        <ul className="space-y-2">
+          <li>
+            <strong>Tree Shaking:</strong> Removes unused exports from bundles. Minification then 
+            shrinks the remaining code.
+          </li>
+          <li>
+            <strong>Compression:</strong> Minification removes redundancy in source code; Gzip/Brotli 
+            removes redundancy in byte patterns. Both should be used together.
+          </li>
+          <li>
+            <strong>Code Splitting:</strong> Split bundles into smaller chunks; minification reduces 
+            each chunk&apos;s size.
+          </li>
+        </ul>
+
+        <p>
+          In system design interviews, minification demonstrates understanding of build tooling, 
+          code transformation, and the trade-offs between development experience and production 
+          performance. It&apos;s a foundational technique that applies beyond JavaScript — CSS, 
+          HTML, and even server-side code can benefit from similar optimization principles.
+        </p>
+      </section>
+
+      {/* ============================================================
+          SECTION 2: Core Concepts
+          ============================================================ */}
+      <section>
+        <h2>Core Concepts</h2>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/performance-optimization/minification-techniques.svg"
+          alt="Comparison showing before/after code examples for whitespace removal, comment removal, variable mangling, and dead code elimination"
+          caption="Minification techniques: whitespace removal, comment stripping, variable mangling, and dead code elimination"
+        />
+
+        <h3>JavaScript Minification Process</h3>
+        <p>
+          JavaScript minification involves several transformation passes:
+        </p>
+        <ol className="space-y-2">
+          <li>
+            <strong>Parsing:</strong> The minifier parses JavaScript into an Abstract Syntax Tree (AST). 
+            This ensures transformations preserve semantics — it&apos;s not just regex-based text 
+            replacement.
+          </li>
+          <li>
+            <strong>Whitespace Removal:</strong> All unnecessary whitespace is removed. This includes 
+            spaces around operators, between statements, and blank lines.
+          </li>
+          <li>
+            <strong>Comment Removal:</strong> All comments are stripped except license comments 
+            (preserved by convention with <code>/*! ... */</code> or <code>@preserve</code>).
+          </li>
+          <li>
+            <strong>Variable Renaming:</strong> Local variables and function names are renamed to 
+            short identifiers (<code>a</code>, <code>b</code>, <code>c</code>...). Global variables 
+            and exported names are preserved.
+          </li>
+          <li>
+            <strong>Expression Simplification:</strong> Constant expressions are evaluated at build 
+            time (<code>2 + 2</code> → <code>4</code>). Dead code is eliminated.
+          </li>
+          <li>
+            <strong>Output Generation:</strong> The transformed AST is printed as compact JavaScript 
+            with minimal whitespace.
+          </li>
+        </ol>
+
+        <h3>CSS Minification Process</h3>
+        <p>
+          CSS minification applies similar techniques:
+        </p>
+        <ul className="space-y-2">
+          <li>
+            <strong>Whitespace Removal:</strong> Remove spaces, newlines, and indentation from CSS 
+            rules.
+          </li>
+          <li>
+            <strong>Comment Removal:</strong> Strip all comments from CSS.
+          </li>
+          <li>
+            <strong>Color Simplification:</strong> Convert long hex colors to short form 
+            (<code>#ffffff</code> → <code>#fff</code>, <code>rgba(255, 0, 0, 1)</code> → <code>red</code>).
+          </li>
+          <li>
+            <strong>Unit Simplification:</strong> Remove unnecessary units (<code>0px</code> → 
+            <code>0</code>, <code>1000ms</code> → <code>1s</code>).
+          </li>
+          <li>
+            <strong>Shorthand Properties:</strong> Combine properties into shorthand 
+            (<code>margin-top: 1px; margin-right: 2px; margin-bottom: 3px; margin-left: 4px;</code> → 
+            <code>margin: 1px 2px 3px 4px;</code>).
+          </li>
+        </ul>
+
+        <h3>HTML Minification</h3>
+        <p>
+          HTML minification is less common but still beneficial:
+        </p>
+        <ul className="space-y-2">
+          <li>
+            <strong>Whitespace Removal:</strong> Collapse whitespace in text content and between tags.
+          </li>
+          <li>
+            <strong>Comment Removal:</strong> Strip HTML comments (<code>&lt;!-- ... --&gt;</code>).
+          </li>
+          <li>
+            <strong>Attribute Optimization:</strong> Remove optional quotes, default attribute values.
+          </li>
+          <li>
+            <strong>Optional Tag Removal:</strong> Omit optional closing tags (<code>&lt;/p&gt;</code>, 
+            <code>&lt;/li&gt;</code>).
+          </li>
+        </ul>
+        <p>
+          HTML minification typically achieves 20-30% size reduction. Most frameworks (Next.js, 
+          Vite) handle this automatically in production builds.
+        </p>
+
+        <h3>Minifiers Compared</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b-2 border-theme">
+                <th className="p-3 text-left">Tool</th>
+                <th className="p-3 text-left">Language</th>
+                <th className="p-3 text-left">Speed</th>
+                <th className="p-3 text-left">Compression</th>
+                <th className="p-3 text-left">Used By</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-3 font-medium">Terser</td>
+                <td className="p-3">JavaScript</td>
+                <td className="p-3">Moderate</td>
+                <td className="p-3">Best (most aggressive)</td>
+                <td className="p-3">Webpack (default), Next.js</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">esbuild</td>
+                <td className="p-3">JavaScript</td>
+                <td className="p-3">Fastest (10-100x)</td>
+                <td className="p-3">Good (slightly larger)</td>
+                <td className="p-3">Vite (default), Bun</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">SWC</td>
+                <td className="p-3">JavaScript/TypeScript</td>
+                <td className="p-3">Very fast (Rust)</td>
+                <td className="p-3">Good</td>
+                <td className="p-3">Next.js (optional), Parcel</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">cssnano</td>
+                <td className="p-3">CSS</td>
+                <td className="p-3">Moderate</td>
+                <td className="p-3">Best for CSS</td>
+                <td className="p-3">PostCSS, most frameworks</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">Lightning CSS</td>
+                <td className="p-3">CSS</td>
+                <td className="p-3">Very fast (Rust)</td>
+                <td className="p-3">Good</td>
+                <td className="p-3">Parcel, Vite (optional)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/frontend/performance-optimization/minification-tool-comparison.svg"
+          alt="Comparison chart showing Terser vs esbuild vs SWC for speed, compression ratio, and bundle size output"
+          caption="Minifier comparison: Terser provides best compression, esbuild provides fastest speed, SWC offers balance"
+        />
+      </section>
+
+      {/* ============================================================
+          SECTION 3: Architecture & Flow
+          ============================================================ */}
+      <section>
+        <h2>Architecture & Flow</h2>
+
+        <h3>Build Pipeline Integration</h3>
+        <p>
+          Minification is typically integrated into the build pipeline:
+        </p>
+        <ol className="space-y-2">
+          <li>
+            <strong>Source Code:</strong> Developers write readable, well-formatted code with 
+            meaningful variable names and comments.
+          </li>
+          <li>
+            <strong>Bundling:</strong> The bundler (Webpack, Vite, Rollup) combines all modules 
+            into one or more bundles.
+          </li>
+          <li>
+            <strong>Tree Shaking:</strong> Unused exports are removed from bundles.
+          </li>
+          <li>
+            <strong>Minification:</strong> The minifier transforms the bundle: removes whitespace, 
+            mangles names, eliminates dead code.
+          </li>
+          <li>
+            <strong>Source Map Generation:</strong> A source map is generated to map minified 
+            code back to original source for debugging.
+          </li>
+          <li>
+            <strong>Compression:</strong> The minified bundle is compressed with Gzip or Brotli 
+            for transfer.
+          </li>
+        </ol>
+
+        <h3>Webpack with Terser</h3>
+        <p>
+          Webpack uses Terser as the default minifier in production mode:
+        </p>
+        <ul className="space-y-1">
+          <li>• <code>mode: &apos;production&apos;</code> enables minification automatically</li>
+          <li>• TerserPlugin can be configured for custom optimization</li>
+          <li>• Options include dead code elimination, console removal, passes</li>
+          <li>• Source maps generated for debugging</li>
+        </ul>
+
+        <h3>Vite with esbuild</h3>
+        <p>
+          Vite uses esbuild for minification by default:
+        </p>
+        <ul className="space-y-1">
+          <li>• esbuild is 10-100x faster than Terser</li>
+          <li>• Slightly larger output than Terser (1-5%)</li>
+          <li>• Can switch to Terser with <code>build.minify: &apos;terser&apos;</code></li>
+          <li>• Lightning CSS available for CSS minification</li>
+        </ul>
+
+        <h3>Next.js Configuration</h3>
+        <p>
+          Next.js handles minification automatically:
+        </p>
+        <ul className="space-y-1">
+          <li>• Production builds are minified by default</li>
+          <li>• Uses SWC for fast compilation and minification</li>
+          <li>• Terser available as fallback</li>
+          <li>• Source maps can be enabled for production debugging</li>
+        </ul>
+
+        <h3>Source Maps</h3>
+        <p>
+          Source maps bridge the gap between minified production code and original source:
+        </p>
+        <ul className="space-y-2">
+          <li>
+            <strong>What They Are:</strong> A source map (<code>.map</code> file) contains mappings 
+            from minified positions to original source positions.
+          </li>
+          <li>
+            <strong>How They Work:</strong> When an error occurs in production, error reporting 
+            tools (Sentry, LogRocket) use source maps to show the original source code and line 
+            numbers.
+          </li>
+          <li>
+            <strong>Security Consideration:</strong> Don&apos;t deploy source maps to production 
+            servers where users can access them. Upload to error reporting tools only, or host 
+            behind authentication.
+          </li>
+          <li>
+            <strong>Source Map Types:</strong> <code>source-map</code> (full, best for debugging), 
+            <code>hidden-source-map</code> (separate file), <code>inline-source-map</code> (embedded 
+            in bundle, larger).
           </li>
         </ul>
       </section>
 
+      {/* ============================================================
+          SECTION 4: Trade-offs & Comparison
+          ============================================================ */}
+      <section>
+        <h2>Trade-offs & Comparison</h2>
+
+        <h3>Minifier Trade-offs</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b-2 border-theme">
+                <th className="p-3 text-left">Minifier</th>
+                <th className="p-3 text-left">Speed</th>
+                <th className="p-3 text-left">Compression</th>
+                <th className="p-3 text-left">Best For</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-3 font-medium">Terser</td>
+                <td className="p-3">Moderate (slower)</td>
+                <td className="p-3">Best compression</td>
+                <td className="p-3">Production builds where size matters most</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">esbuild</td>
+                <td className="p-3">Fastest (10-100x)</td>
+                <td className="p-3">Good (1-5% larger)</td>
+                <td className="p-3">Fast builds, development, large projects</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">SWC</td>
+                <td className="p-3">Very fast (Rust)</td>
+                <td className="p-3">Good</td>
+                <td className="p-3">TypeScript projects, Next.js</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Minification Level Trade-offs</h3>
+        <p>
+          Aggressive minification settings provide better compression but may cause issues:
+        </p>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b-2 border-theme">
+                <th className="p-3 text-left">Option</th>
+                <th className="p-3 text-left">Conservative</th>
+                <th className="p-3 text-left">Aggressive</th>
+                <th className="p-3 text-left">Risk</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-3 font-medium">Variable Mangling</td>
+                <td className="p-3">Keep some names</td>
+                <td className="p-3">Mangle everything</td>
+                <td className="p-3">Breaking external APIs</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">Property Mangling</td>
+                <td className="p-3">Never mangle</td>
+                <td className="p-3">Mangle all properties</td>
+                <td className="p-3">High (breaks object access)</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">Dead Code Elimination</td>
+                <td className="p-3">Basic only</td>
+                <td className="p-3">Aggressive</td>
+                <td className="p-3">Removing needed code</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">Console Removal</td>
+                <td className="p-3">Keep console.error</td>
+                <td className="p-3">Remove all console</td>
+                <td className="p-3">Losing production logs</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>When Minification Isn&apos;t Worth It</h3>
+        <ul className="space-y-2">
+          <li>
+            <strong>Development Builds:</strong> Minification slows down builds and makes debugging 
+            harder. Only minify production builds.
+          </li>
+          <li>
+            <strong>Already-Minified Libraries:</strong> Some libraries ship pre-minified. Re-minifying 
+            provides minimal benefit.
+          </li>
+          <li>
+            <strong>Small Scripts:</strong> For scripts under 10KB, minification provides negligible 
+            benefit.
+          </li>
+          <li>
+            <strong>Code Requiring Debugging:</strong> If you need to debug production code frequently, 
+            consider less aggressive minification or ensure source maps are available.
+          </li>
+        </ul>
+      </section>
+
+      {/* ============================================================
+          SECTION 5: Best Practices
+          ============================================================ */}
+      <section>
+        <h2>Best Practices</h2>
+
+        <h3>Use Production Mode</h3>
+        <p>
+          Always build with production mode for deployment:
+        </p>
+        <ul className="space-y-1">
+          <li>• Webpack: <code>mode: &apos;production&apos;</code></li>
+          <li>• Vite: <code>vite build</code> (defaults to production)</li>
+          <li>• Next.js: <code>next build</code> (production by default)</li>
+          <li>• Rollup: <code>--environment NODE_ENV:production</code></li>
+        </ul>
+
+        <h3>Generate Source Maps</h3>
+        <p>
+          Always generate source maps for production:
+        </p>
+        <ul className="space-y-1">
+          <li>• Enables debugging production errors</li>
+          <li>• Upload to error reporting tools (Sentry, Datadog)</li>
+          <li>• Don&apos;t deploy source maps to public servers</li>
+          <li>• Use <code>devtool: &apos;source-map&apos;</code> for best quality</li>
+        </ul>
+
+        <h3>Configure Terser for Production</h3>
+        <p>
+          Optimize Terser settings for production builds:
+        </p>
+        <ul className="space-y-1">
+          <li>• <code>drop_console: true</code> — Remove console.log statements</li>
+          <li>• <code>drop_debugger: true</code> — Remove debugger statements</li>
+          <li>• <code>pure_funcs</code> — Mark pure functions for elimination</li>
+          <li>• <code>passes: 2</code> — Multiple passes for better compression</li>
+          <li>• <code>comments: false</code> — Remove all comments (or preserve licenses)</li>
+        </ul>
+
+        <h3>Preserve Required Names</h3>
+        <p>
+          Some names must be preserved:
+        </p>
+        <ul className="space-y-1">
+          <li>• Global variables accessed by external scripts</li>
+          <li>• Function names called by string (<code>obj[&quot;methodName&quot;]()</code>)</li>
+          <li>• Component names for debugging (React DevTools)</li>
+          <li>• Use Terser&apos;s <code>reserved</code> option to protect specific names</li>
+        </ul>
+
+        <h3>Keep console.error in Production</h3>
+        <p>
+          Consider keeping console.error for production debugging:
+        </p>
+        <ul className="space-y-1">
+          <li>• <code>pure_funcs: [&apos;console.log&apos;, &apos;console.debug&apos;]</code></li>
+          <li>• This removes log/debug but keeps warn/error</li>
+          <li>• Helps with production debugging via browser console</li>
+        </ul>
+
+        <h3>Verify Minification</h3>
+        <p>
+          Always verify minification is working:
+        </p>
+        <ul className="space-y-1">
+          <li>• Check bundle size before/after minification</li>
+          <li>• Inspect minified output to ensure it&apos;s valid</li>
+          <li>• Test application functionality after minification</li>
+          <li>• Use bundle analyzer to verify composition</li>
+        </ul>
+      </section>
+
+      {/* ============================================================
+          SECTION 6: Common Pitfalls
+          ============================================================ */}
       <section>
         <h2>Common Pitfalls</h2>
-        <ul className="space-y-2">
-          <li>
-            <strong>Mangling breaking external APIs:</strong> If your code accesses <code>window.myGlobal</code>
-            or uses string-based property access (<code>obj["propertyName"]</code>), mangling can rename the
-            variable but not the string. Use Terser's <code>reserved</code> option to protect specific names.
-          </li>
-          <li>
-            <strong>Not generating source maps:</strong> Minified code is unreadable. Always generate source maps
-            in production (<code>devtool: "source-map"</code>) for debugging via error reporting tools.
-          </li>
-          <li>
-            <strong>Minifying in development:</strong> Slows down builds and makes debugging hard. Only minify
-            in production builds.
-          </li>
-          <li>
-            <strong>Dropping all console statements:</strong> <code>console.error</code> in production can be
-            valuable for debugging. Use <code>pure_funcs: ['console.log', 'console.debug']</code> to keep
-            errors and warnings.
-          </li>
-        </ul>
+
+        <h3>Mangling Breaking External APIs</h3>
+        <p>
+          If your code accesses <code>window.myGlobal</code> or uses string-based property access 
+          (<code>obj[&quot;propertyName&quot;]</code>), mangling can rename the variable but not the 
+          string:
+        </p>
+        <p>
+          <strong>Problem:</strong> <code>window.appData</code> gets mangled to <code>window.a</code>, 
+          but external code still expects <code>window.appData</code>.
+        </p>
+        <p>
+          <strong>Solution:</strong> Use Terser&apos;s <code>reserved</code> option to protect specific 
+          names. Or use consistent property access patterns.
+        </p>
+
+        <h3>Not Generating Source Maps</h3>
+        <p>
+          Minified code is unreadable. Without source maps, debugging production errors is nearly 
+          impossible:
+        </p>
+        <p>
+          <strong>Problem:</strong> Error stack traces show minified line/column numbers.
+        </p>
+        <p>
+          <strong>Solution:</strong> Always generate source maps (<code>devtool: &quot;source-map&quot;</code>). 
+          Upload to error reporting tools.
+        </p>
+
+        <h3>Minifying in Development</h3>
+        <p>
+          Minifying development builds slows down builds and makes debugging hard:
+        </p>
+        <p>
+          <strong>Problem:</strong> Slow rebuilds, unreadable errors in browser.
+        </p>
+        <p>
+          <strong>Solution:</strong> Only minify production builds. Use development mode for local 
+          development.
+        </p>
+
+        <h3>Dropping All Console Statements</h3>
+        <p>
+          Removing all console statements including console.error can hinder production debugging:
+        </p>
+        <p>
+          <strong>Problem:</strong> No way to see errors in browser console.
+        </p>
+        <p>
+          <strong>Solution:</strong> Use <code>pure_funcs: [&apos;console.log&apos;, &apos;console.debug&apos;]</code> 
+          to keep warn/error.
+        </p>
+
+        <h3>Property Mangling Without Care</h3>
+        <p>
+          Aggressive property mangling can break code that uses dynamic property access:
+        </p>
+        <p>
+          <strong>Problem:</strong> <code>obj[&quot;dynamicKey&quot;]</code> breaks if property names 
+          are mangled.
+        </p>
+        <p>
+          <strong>Solution:</strong> Avoid property mangling unless you control all access patterns. 
+          Use <code>mangle.properties: false</code> or reserve specific property names.
+        </p>
+
+        <h3>Not Testing After Minification</h3>
+        <p>
+          Minification can introduce subtle bugs. Always test minified builds:
+        </p>
+        <p>
+          <strong>Problem:</strong> Code works in development but fails in production.
+        </p>
+        <p>
+          <strong>Solution:</strong> Test production builds before deployment. Use E2E tests on 
+          minified output.
+        </p>
       </section>
 
+      {/* ============================================================
+          SECTION 7: Real-World Use Cases
+          ============================================================ */}
       <section>
-        <h2>Interview Talking Points</h2>
+        <h2>Real-World Use Cases</h2>
+
+        <h3>E-Commerce: Terser Optimization</h3>
+        <p>
+          An e-commerce site&apos;s JavaScript bundle was 600KB uncompressed. Initial load time on 
+          mobile was 4+ seconds.
+        </p>
+        <p>
+          <strong>Solution:</strong> Configured Terser with aggressive settings: <code>passes: 2</code>, 
+          <code>drop_console: true</code>, <code>dead_code: true</code>.
+        </p>
+        <p>
+          <strong>Results:</strong> Bundle reduced to 280KB (53% reduction). Mobile load time decreased 
+          to 2.5 seconds. Conversion rate increased 12%.
+        </p>
+
+        <h3>SaaS Platform: esbuild Migration</h3>
+        <p>
+          A SaaS platform&apos;s build time was 2-3 minutes with Terser. This slowed down CI/CD 
+          pipelines and developer productivity.
+        </p>
+        <p>
+          <strong>Solution:</strong> Migrated from Terser to esbuild for minification.
+        </p>
+        <p>
+          <strong>Results:</strong> Build time reduced from 180s to 25s (86% faster). Bundle size 
+          increased by 3% (negligible trade-off). Developer productivity improved significantly.
+        </p>
+
+        <h3>News Publisher: CSS Minification</h3>
+        <p>
+          A news publisher&apos;s CSS was 150KB uncompressed. Critical CSS inlining was affected by 
+          the large stylesheet size.
+        </p>
+        <p>
+          <strong>Solution:</strong> Implemented cssnano with aggressive preset. Enabled shorthand 
+          optimization, color simplification, and whitespace removal.
+        </p>
+        <p>
+          <strong>Results:</strong> CSS reduced to 60KB (60% reduction). Critical CSS size decreased, 
+          improving FCP by 200ms.
+        </p>
+
+        <h3>Web App: Source Map Debugging</h3>
+        <p>
+          A web application had frequent production errors that were impossible to debug without 
+          source maps.
+        </p>
+        <p>
+          <strong>Solution:</strong> Enabled source map generation. Uploaded maps to Sentry. 
+          Configured Sentry to symbolicate errors automatically.
+        </p>
+        <p>
+          <strong>Results:</strong> Production debugging time reduced from hours to minutes. Error 
+          resolution improved significantly.
+        </p>
+      </section>
+
+      {/* ============================================================
+          SECTION 8: Interview Questions & Answers
+          ============================================================ */}
+      <section>
+        <h2>Interview Questions & Answers</h2>
+
+        <div className="space-y-6">
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 1: What is minification and how does it reduce bundle size?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <p className="mb-3">
+              Minification removes unnecessary characters from source code without changing 
+              functionality:
+            </p>
+            <ul className="space-y-2 mb-3">
+              <li>
+                <strong>Whitespace Removal:</strong> Spaces, tabs, newlines for readability are removed.
+              </li>
+              <li>
+                <strong>Comment Removal:</strong> All comments stripped (except license comments).
+              </li>
+              <li>
+                <strong>Variable Mangling:</strong> Variables renamed to short names (<code>userData</code> 
+                → <code>a</code>).
+              </li>
+              <li>
+                <strong>Dead Code Elimination:</strong> Unreachable code and unused variables removed.
+              </li>
+              <li>
+                <strong>Expression Optimization:</strong> Constant expressions evaluated at build time.
+              </li>
+            </ul>
+            <p>
+              Together, these techniques reduce JavaScript by 30-60% and CSS by 20-40% before compression.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 2: What's the difference between Terser, esbuild, and SWC?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <ul className="space-y-2 mb-3">
+              <li>
+                <strong>Terser:</strong> Best compression, moderate speed. Default in Webpack and 
+                Next.js. Written in JavaScript.
+              </li>
+              <li>
+                <strong>esbuild:</strong> Fastest (10-100x), good compression (1-5% larger than Terser). 
+                Default in Vite. Written in Go.
+              </li>
+              <li>
+                <strong>SWC:</strong> Very fast (Rust-based), good compression. Optional in Next.js. 
+                Written in Rust.
+              </li>
+            </ul>
+            <p>
+              Choose Terser for smallest bundles, esbuild for fastest builds, SWC for TypeScript 
+              projects.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 3: Why are source maps important?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <p className="mb-3">
+              Source maps map minified code back to original source. They&apos;re essential for 
+              debugging production:
+            </p>
+            <ul className="space-y-2 mb-3">
+              <li>
+                <strong>Error Debugging:</strong> Stack traces show original line numbers and source 
+                code instead of minified gibberish.
+              </li>
+              <li>
+                <strong>Browser DevTools:</strong> You can set breakpoints and step through original 
+                source code even in production.
+              </li>
+              <li>
+                <strong>Error Reporting:</strong> Tools like Sentry use source maps to symbolicate 
+                errors automatically.
+              </li>
+            </ul>
+            <p>
+              Security note: Don&apos;t deploy source maps to public servers. Upload to error 
+              reporting tools only.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 4: What are common minification pitfalls?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <ul className="space-y-2 mb-3">
+              <li>
+                <strong>Mangling breaking external APIs:</strong> Property mangling can break code 
+                that uses string-based property access.
+              </li>
+              <li>
+                <strong>Missing source maps:</strong> Debugging production without source maps is 
+                nearly impossible.
+              </li>
+              <li>
+                <strong>Minifying in development:</strong> Slows builds and makes debugging hard.
+              </li>
+              <li>
+                <strong>Dropping all console:</strong> Removing console.error hinders production 
+                debugging.
+              </li>
+              <li>
+                <strong>Not testing minified output:</strong> Minification can introduce bugs. Always 
+                test production builds.
+              </li>
+            </ul>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 5: How does minification complement compression?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <p className="mb-3">
+              Minification and compression (Gzip/Brotli) work at different levels:
+            </p>
+            <ul className="space-y-2 mb-3">
+              <li>
+                <strong>Minification:</strong> Removes redundancy in source code (whitespace, comments, 
+                long names). Happens at build time.
+              </li>
+              <li>
+                <strong>Compression:</strong> Removes redundancy in byte patterns. Happens at 
+                request/response time.
+              </li>
+            </ul>
+            <p>
+              Together they provide cumulative benefits: a 500KB bundle might minify to 250KB, then 
+              compress to 80KB. Both should be used for optimal performance.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-theme bg-panel-soft p-5">
+            <h3 className="text-lg font-semibold mb-3">Question 6: What Terser options would you configure for production?</h3>
+            <p className="text-muted mb-3"><strong>Answer:</strong></p>
+            <ul className="space-y-2 mb-3">
+              <li>
+                <strong>compress.drop_console:</strong> Remove console.log statements.
+              </li>
+              <li>
+                <strong>compress.drop_debugger:</strong> Remove debugger statements.
+              </li>
+              <li>
+                <strong>compress.pure_funcs:</strong> Mark pure functions for elimination.
+              </li>
+              <li>
+                <strong>compress.passes:</strong> Multiple passes (2) for better compression.
+              </li>
+              <li>
+                <strong>format.comments:</strong> false (or preserve licenses with regex).
+              </li>
+              <li>
+                <strong>mangle.reserved:</strong> Protect names that must not be mangled.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+          SECTION 9: References
+          ============================================================ */}
+      <section>
+        <h2>References & Further Reading</h2>
         <ul className="space-y-2">
           <li>
-            Minification removes whitespace, comments, and newlines. Uglification (mangling) renames variables
-            to shorter names. Together they reduce JS by 30-60%, CSS by 20-40%.
+            <a href="https://terser.org/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Terser Documentation
+            </a> — Official Terser minifier documentation with configuration options.
           </li>
           <li>
-            The three main JS minifiers: <strong>Terser</strong> (best compression, used by Webpack),
-            <strong>esbuild</strong> (fastest, used by Vite), and <strong>SWC</strong> (fast, Rust-based).
+            <a href="https://esbuild.github.io/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              esbuild Documentation
+            </a> — Fast JavaScript bundler and minifier.
           </li>
           <li>
-            Minification happens at build time — source code stays readable, production output is compact.
-            Source maps bridge the gap for debugging.
+            <a href="https://swc.rs/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              SWC Documentation
+            </a> — Rust-based JavaScript/TypeScript compiler.
           </li>
           <li>
-            Advanced techniques include dead code elimination, constant folding, and dropping console statements.
-            Property mangling is possible but risky.
+            <a href="https://cssnano.co/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              cssnano Documentation
+            </a> — CSS minification with PostCSS.
           </li>
           <li>
-            Minification complements compression (Gzip/Brotli). Minification removes redundancy in source code;
-            compression removes redundancy in byte patterns. Both should be used together.
+            <a href="https://developer.mozilla.org/en-US/docs/Tools/Debugger/How_to/Use_a_source_map" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              MDN — Source Maps
+            </a> — Guide to using source maps for debugging.
+          </li>
+          <li>
+            <a href="https://webpack.js.org/plugins/terser-webpack-plugin/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
+              Webpack — Terser Plugin
+            </a> — Webpack integration for Terser minification.
           </li>
         </ul>
       </section>

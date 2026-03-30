@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 500" role="img" aria-labelledby="treeShakingProcessTitle treeShakingProcessDesc">
+  <title id="treeShakingProcessTitle">Tree Shaking Process Diagram</title>
+  <desc id="treeShakingProcessDesc">Visual representation of how tree shaking eliminates dead code from JavaScript bundles during build time</desc>
+  
+  <defs>
+    <linearGradient id="treeShakingBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fafafa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e2e8f0;stop-opacity:1" />
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.12" />
+    </filter>
+  </defs>
+  
+  <rect width="850" height="500" fill="url(#treeShakingBg)" />
+  
+  <text x="425" y="35" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1e293b">Tree Shaking: Dead Code Elimination</text>
+  
+  <!-- Source Code (Left) -->
+  <rect x="30" y="70" width="250" height="380" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" filter="url(#softShadow)" />
+  <rect x="30" y="70" width="250" height="45" rx="8" fill="#1e293b" />
+  <text x="155" y="100" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Source Code</text>
+  
+  <text x="45" y="135" font-family="monospace" font-size="11" font-weight="400" fill="#1e293b">// utils.js</text>
+  <text x="45" y="155" font-family="monospace" font-size="11" font-weight="600" fill="#16a34a">export</text>
+  <text x="95" y="155" font-family="monospace" font-size="11" font-weight="400" fill="#1e293b">function formatDate() {'{}'}</text>
+  <text x="45" y="175" font-family="monospace" font-size="11" font-weight="600" fill="#16a34a">export</text>
+  <text x="95" y="175" font-family="monospace" font-size="11" font-weight="400" fill="#1e293b">function formatCurrency() {'{}'}</text>
+  <text x="45" y="195" font-family="monospace" font-size="11" font-weight="600" fill="#dc2626">export</text>
+  <text x="95" y="195" font-family="monospace" font-size="11" font-weight="400" fill="#dc2626">function formatPhone() {'{}'}</text>
+  <text x="45" y="215" font-family="monospace" font-size="11" font-weight="600" fill="#dc2626">export</text>
+  <text x="95" y="215" font-family="monospace" font-size="11" font-weight="400" fill="#dc2626">function formatSSN() {'{}'}</text>
+  
+  <text x="45" y="255" font-family="monospace" font-size="11" font-weight="400" fill="#1e293b">// app.js</text>
+  <text x="45" y="275" font-family="monospace" font-size="11" font-weight="600" fill="#8b5cf6">import</text>
+  <text x="95" y="275" font-family="monospace" font-size="11" font-weight="400" fill="#1e293b">{ formatDate, formatCurrency }</text>
+  <text x="45" y="310" font-family="monospace" font-size="11" font-weight="400" fill="#1e293b">formatDate(new Date());</text>
+  <text x="45" y="330" font-family="monospace" font-size="11" font-weight="400" fill="#1e293b">formatCurrency(29.99);</text>
+  
+  <text x="45" y="370" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#64748b">✓ USED: formatDate, formatCurrency</text>
+  <text x="45" y="390" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#dc2626">✗ UNUSED: formatPhone, formatSSN</text>
+  
+  <!-- Arrow to Bundler -->
+  <line x1="280" y1="260" x2="320" y2="260" stroke="#475569" stroke-width="2" />
+  <polygon points="320,260 310,255 310,265" fill="#475569" />
+  <text x="300" y="245" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Build</text>
+  
+  <!-- Bundler (Center) -->
+  <rect x="320" y="150" width="210" height="220" rx="8" fill="#ffffff" stroke="#8b5cf6" stroke-width="2" filter="url(#softShadow)" />
+  <rect x="320" y="150" width="210" height="45" rx="8" fill="#8b5cf6" />
+  <text x="425" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Bundler Analysis</text>
+  
+  <text x="335" y="215" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">1. Static Analysis</text>
+  <text x="335" y="240" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Parse import/export statements</text>
+  
+  <text x="335" y="270" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">2. Mark Used Exports</text>
+  <text x="335" y="295" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Trace dependency graph</text>
+  
+  <text x="335" y="325" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#1e293b">3. Eliminate Dead Code</text>
+  <text x="335" y="350" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#475569">Remove unused exports</text>
+  
+  <!-- Arrow to Bundle -->
+  <line x1="530" y1="260" x2="570" y2="260" stroke="#475569" stroke-width="2" />
+  <polygon points="570,260 560,255 560,265" fill="#475569" />
+  <text x="550" y="245" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Output</text>
+  
+  <!-- Final Bundle (Right) -->
+  <rect x="570" y="120" width="250" height="180" rx="8" fill="#ffffff" stroke="#22c55e" stroke-width="2" filter="url(#softShadow)" />
+  <rect x="570" y="120" width="250" height="45" rx="8" fill="#22c55e" />
+  <text x="695" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Final Bundle</text>
+  
+  <text x="585" y="190" font-family="monospace" font-size="11" font-weight="600" fill="#16a34a">export</text>
+  <text x="635" y="190" font-family="monospace" font-size="11" font-weight="400" fill="#1e293b">function formatDate() {'{}'}</text>
+  <text x="585" y="210" font-family="monospace" font-size="11" font-weight="600" fill="#16a34a">export</text>
+  <text x="635" y="210" font-family="monospace" font-size="11" font-weight="400" fill="#1e293b">function formatCurrency() {'{}'}</text>
+  
+  <rect x="585" y="230" width="220" height="55" rx="4" fill="#f0fdf4" stroke="#22c55e" stroke-dasharray="4,3" />
+  <text x="695" y="255" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#166534">✓ Only used exports included</text>
+  <text x="695" y="275" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="400" fill="#166534">formatPhone &amp; formatSSN removed</text>
+  
+  <!-- Eliminated Code Box (Bottom Right) -->
+  <rect x="570" y="320" width="250" height="130" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2" filter="url(#softShadow)" />
+  <rect x="570" y="320" width="250" height="35" rx="8" fill="#fef2f2" />
+  <text x="695" y="343" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="#dc2626">Eliminated (Dead Code)</text>
+  
+  <text x="585" y="370" font-family="monospace" font-size="11" font-weight="400" fill="#dc2626">function formatPhone() {'{}'}</text>
+  <text x="585" y="390" font-family="monospace" font-size="11" font-weight="400" fill="#dc2626">function formatSSN() {'{}'}</text>
+  <text x="585" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#dc2626">✗ Removed from bundle (~2KB saved)</text>
+  
+  <!-- Size Comparison -->
+  <rect x="30" y="460" width="250" height="30" rx="4" fill="#f1f5f9" />
+  <text x="155" y="480" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#475569">Original: 4 exports (~4KB)</text>
+  
+  <rect x="570" y="460" width="250" height="30" rx="4" fill="#f0fdf4" />
+  <text x="695" y="480" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500" fill="#16a34a">After Tree Shaking: 2 exports (~2KB)</text>
+</svg>
