@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">Chaos Game Day Workflow</text>
+  
+  <rect x="30" y="70" width="270" height="140" rx="5" class="box-base" stroke-width="2"/>
+  <text x="165" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Pre-Game Preparation</text>
+  <rect x="50" y="110" width="230" height="85" rx="3" class="box-base" stroke-width="1"/>
+  <text x="65" y="130" font-size="9" class="text-primary">• Define objectives</text>
+  <text x="65" y="145" font-size="9" class="text-primary">• Select scenarios</text>
+  <text x="65" y="160" font-size="9" class="text-primary">• Set up monitoring</text>
+  <text x="65" y="175" font-size="9" class="text-primary">• Prepare runbooks</text>
+  <text x="65" y="190" font-size="9" class="text-primary">• Brief participants</text>
+  
+  <line x1="300" y1="140" x2="340" y2="140" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="340" y="70" width="270" height="140" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="475" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Game Day Execution</text>
+  <rect x="360" y="110" width="230" height="85" rx="3" class="box-base" stroke-width="1"/>
+  <text x="375" y="130" font-size="9" class="text-primary">• Inject failures</text>
+  <text x="375" y="145" font-size="9" class="text-primary">• Observe responses</text>
+  <text x="375" y="160" font-size="9" class="text-primary">• Document findings</text>
+  <text x="375" y="175" font-size="9" class="text-primary">• Adjust scenarios</text>
+  <text x="375" y="190" font-size="9" class="text-primary">• Time-boxed (2-4 hrs)</text>
+  
+  <line x1="610" y1="140" x2="650" y2="140" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="650" y="70" width="220" height="140" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="760" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Post-Game Analysis</text>
+  <rect x="670" y="110" width="180" height="85" rx="3" class="box-base" stroke-width="1"/>
+  <text x="760" y="130" text-anchor="middle" font-size="9" class="text-primary">• Review findings</text>
+  <text x="760" y="145" text-anchor="middle" font-size="9" class="text-primary">• Identify gaps</text>
+  <text x="760" y="160" text-anchor="middle" font-size="9" class="text-primary">• Create action items</text>
+  <text x="760" y="175" text-anchor="middle" font-size="9" class="text-primary">• Update runbooks</text>
+  <text x="760" y="190" text-anchor="middle" font-size="9" class="text-primary">• Share learnings</text>
+  
+  <!-- Participants -->
+  <rect x="30" y="230" width="840" height="120" rx="5" class="box-base" stroke-width="2"/>
+  <text x="450" y="255" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Game Day Participants &amp; Roles</text>
+  
+  <rect x="50" y="270" width="190" height="65" rx="3" class="accent-box" stroke-width="1"/>
+  <text x="145" y="290" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Game Master</text>
+  <text x="145" y="310" text-anchor="middle" font-size="8" class="text-secondary">Facilitates exercise</text>
+  <text x="145" y="325" text-anchor="middle" font-size="8" class="text-secondary">Controls injection</text>
+  
+  <rect x="255" y="270" width="190" height="65" rx="3" class="accent-box" stroke-width="1"/>
+  <text x="350" y="290" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Observers</text>
+  <text x="350" y="310" text-anchor="middle" font-size="8" class="text-secondary">Monitor systems</text>
+  <text x="350" y="325" text-anchor="middle" font-size="8" class="text-secondary">Document responses</text>
+  
+  <rect x="460" y="270" width="190" height="65" rx="3" class="accent-box" stroke-width="1"/>
+  <text x="555" y="290" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Responders</text>
+  <text x="555" y="310" text-anchor="middle" font-size="8" class="text-secondary">On-call engineers</text>
+  <text x="555" y="325" text-anchor="middle" font-size="8" class="text-secondary">Execute runbooks</text>
+  
+  <rect x="665" y="270" width="190" height="65" rx="3" class="accent-box" stroke-width="1"/>
+  <text x="760" y="290" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Stakeholders</text>
+  <text x="760" y="310" text-anchor="middle" font-size="8" class="text-secondary">Management</text>
+  <text x="760" y="325" text-anchor="middle" font-size="8" class="text-secondary">Product owners</text>
+  
+  <!-- Outcomes -->
+  <rect x="30" y="370" width="840" height="100" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="450" y="395" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Game Day Outcomes</text>
+  
+  <rect x="50" y="410" width="800" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="70" y="430" font-size="9" class="highlight-green">✓ Validated runbooks</text>
+  <text x="200" y="430" font-size="9" class="highlight-green">✓ Identified weaknesses</text>
+  <text x="350" y="430" font-size="9" class="highlight-green">✓ Trained team</text>
+  <text x="480" y="430" font-size="9" class="highlight-green">✓ Improved monitoring</text>
+  <text x="630" y="430" font-size="9" class="highlight-green">✓ Updated documentation</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

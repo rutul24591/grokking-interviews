@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">Multi-Tenant Security Architecture</text>
+  
+  <rect x="30" y="70" width="270" height="150" rx="5" class="box-base" stroke-width="2"/>
+  <text x="165" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Authentication Layer</text>
+  <rect x="50" y="110" width="230" height="95" rx="3" class="box-base" stroke-width="1"/>
+  <text x="65" y="130" font-size="9" class="text-primary">• Tenant identification</text>
+  <text x="65" y="145" font-size="9" class="text-primary">• SSO/SAML integration</text>
+  <text x="65" y="160" font-size="9" class="text-primary">• MFA enforcement</text>
+  <text x="65" y="175" font-size="9" class="text-primary">• Token validation</text>
+  <text x="65" y="190" font-size="9" class="text-primary">• Session management</text>
+  
+  <line x1="300" y1="145" x2="340" y2="145" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="340" y="70" width="270" height="150" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="475" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Authorization Layer</text>
+  <rect x="360" y="110" width="230" height="95" rx="3" class="box-base" stroke-width="1"/>
+  <text x="375" y="130" font-size="9" class="text-primary">• RBAC/ABAC policies</text>
+  <text x="375" y="145" font-size="9" class="text-primary">• Tenant-scoped permissions</text>
+  <text x="375" y="160" font-size="9" class="text-primary">• Resource isolation</text>
+  <text x="375" y="175" font-size="9" class="text-primary">• API rate limiting</text>
+  <text x="375" y="190" font-size="9" class="text-primary">• Quota enforcement</text>
+  
+  <line x1="610" y1="145" x2="650" y2="145" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="650" y="70" width="220" height="150" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="760" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Data Layer</text>
+  <rect x="670" y="110" width="180" height="95" rx="3" class="box-base" stroke-width="1"/>
+  <text x="685" y="130" font-size="9" class="text-primary">• Row-level security</text>
+  <text x="685" y="145" font-size="9" class="text-primary">• Encryption at rest</text>
+  <text x="685" y="160" font-size="9" class="text-primary">• Tenant ID filtering</text>
+  <text x="685" y="175" font-size="9" class="text-primary">• Audit logging</text>
+  <text x="685" y="190" font-size="9" class="text-primary">• Data masking</text>
+  
+  <rect x="30" y="240" width="840" height="230" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="450" y="265" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Security Controls by Layer</text>
+  
+  <rect x="50" y="280" width="800" height="175" rx="3" class="box-base" stroke-width="1"/>
+  <text x="100" y="300" font-size="9" font-weight="bold" class="text-primary">Control</text>
+  <text x="250" y="300" font-size="9" font-weight="bold" class="text-primary">Auth Layer</text>
+  <text x="400" y="300" font-size="9" font-weight="bold" class="text-primary">AuthZ Layer</text>
+  <text x="550" y="300" font-size="9" font-weight="bold" class="text-primary">Data Layer</text>
+  <text x="700" y="300" font-size="9" font-weight="bold" class="text-primary">Priority</text>
+  
+  <line x1="80" y1="310" x2="820" y2="310" class="arrow" stroke-width="1"/>
+  <text x="100" y="325" font-size="8" class="text-primary">Tenant Isolation</text>
+  <text x="250" y="325" font-size="8" class="highlight-green">✓ Primary</text>
+  <text x="400" y="325" font-size="8" class="highlight-green">✓ Enforced</text>
+  <text x="550" y="325" font-size="8" class="highlight-green">✓ Row-level</text>
+  <text x="700" y="325" font-size="8" class="highlight-red">Critical</text>
+  
+  <line x1="80" y1="345" x2="820" y2="345" class="arrow" stroke-width="1"/>
+  <text x="100" y="360" font-size="8" class="text-primary">Access Control</text>
+  <text x="250" y="360" font-size="8" class="highlight-green">✓ MFA</text>
+  <text x="400" y="360" font-size="8" class="highlight-green">✓ RBAC</text>
+  <text x="550" y="360" font-size="8" class="highlight-purple">⚠ Views</text>
+  <text x="700" y="360" font-size="8" class="highlight-red">Critical</text>
+  
+  <line x1="80" y1="380" x2="820" y2="380" class="arrow" stroke-width="1"/>
+  <text x="100" y="395" font-size="8" class="text-primary">Data Protection</text>
+  <text x="250" y="395" font-size="8" class="highlight-purple">⚠ Tokens</text>
+  <text x="400" y="395" font-size="8" class="highlight-purple">⚠ Policies</text>
+  <text x="550" y="395" font-size="8" class="highlight-green">✓ Encryption</text>
+  <text x="700" y="395" font-size="8" class="highlight-blue">High</text>
+  
+  <line x1="80" y1="415" x2="820" y2="415" class="arrow" stroke-width="1"/>
+  <text x="100" y="430" font-size="8" class="text-primary">Audit/Compliance</text>
+  <text x="250" y="430" font-size="8" class="highlight-green">✓ Login logs</text>
+  <text x="400" y="430" font-size="8" class="highlight-green">✓ Access logs</text>
+  <text x="550" y="430" font-size="8" class="highlight-green">✓ Data logs</text>
+  <text x="700" y="430" font-size="8" class="highlight-blue">Required</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

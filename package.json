@@ -6,6 +6,18 @@
     "dev": "next dev",
     "generate-article-routes": "tsx scripts/generate-article-routes.ts",
     "generate-examples-manifest:requirements": "node scripts/generate-examples-manifest-requirements.js",
+    "orchestrator": "node --import tsx ./scripts/orchestrator.ts",
+    "orchestrator:plan": "node --import tsx ./scripts/orchestrator.ts plan",
+    "orchestrator:status": "node --import tsx ./scripts/orchestrator.ts status",
+    "orchestrator:ready": "node --import tsx ./scripts/orchestrator.ts ready",
+    "orchestrator:claim": "node --import tsx ./scripts/orchestrator.ts claim",
+    "orchestrator:render-prompt": "node --import tsx ./scripts/orchestrator.ts render-prompt",
+    "orchestrator:complete": "node --import tsx ./scripts/orchestrator.ts complete",
+    "orchestrator:evaluate": "node --import tsx ./scripts/orchestrator.ts evaluate",
+    "orchestrator:merge-plan": "node --import tsx ./scripts/orchestrator.ts merge-plan",
+    "orchestrator:merge": "node --import tsx ./scripts/orchestrator.ts merge",
+    "orchestrator:recover": "node --import tsx ./scripts/orchestrator.ts recover",
+    "orchestrator:fail": "node --import tsx ./scripts/orchestrator.ts fail",
     "build": "pnpm generate-article-routes && pnpm generate-examples-manifest:requirements && next build",
     "start": "next start",
     "lint": "eslint",
@@ -15,7 +27,8 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug",
     "test:e2e:headed": "playwright test --headed",
-    "test:e2e:report": "playwright show-report"
+    "test:e2e:report": "playwright show-report",
+    "orchestrator:help": "node --import tsx ./scripts/orchestrator.ts help"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.19",

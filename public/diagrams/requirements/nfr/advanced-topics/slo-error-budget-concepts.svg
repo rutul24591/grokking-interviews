@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">SLO Error Budget Concepts</text>
+  
+  <rect x="30" y="70" width="270" height="180" rx="5" class="box-base" stroke-width="2"/>
+  <text x="165" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Error Budget Definition</text>
+  <rect x="50" y="110" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="65" y="130" font-size="9" class="text-primary">Error Budget = 1 - SLO</text>
+  <text x="65" y="150" font-size="9" class="text-primary">Example: 99.9% SLO</text>
+  <text x="65" y="170" font-size="9" class="text-primary">= 0.1% error budget</text>
+  <text x="65" y="195" font-size="9" class="text-primary">99.9% of 30 days</text>
+  <text x="65" y="215" font-size="9" class="text-primary">= 43 minutes downtime</text>
+  <text x="65" y="235" font-size="9" class="highlight-green">✓ Quantifies reliability</text>
+  
+  <rect x="315" y="70" width="270" height="180" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="450" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Budget Consumption</text>
+  <rect x="335" y="110" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="350" y="130" font-size="9" class="text-primary">• Every error consumes budget</text>
+  <text x="350" y="145" font-size="9" class="text-primary">• Tracked continuously</text>
+  <text x="350" y="160" font-size="9" class="text-primary">• Rolling window (28 days)</text>
+  <text x="350" y="175" font-size="9" class="text-primary">• Burn rate = consumption rate</text>
+  <text x="350" y="190" font-size="9" class="text-primary">• Alert on high burn rate</text>
+  <text x="350" y="205" font-size="9" class="text-primary">• Budget resets over time</text>
+  <text x="350" y="220" font-size="9" class="highlight-purple">⚠ Monitor closely</text>
+  
+  <rect x="600" y="70" width="270" height="180" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="735" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Budget Policies</text>
+  <rect x="620" y="110" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="635" y="130" font-size="9" class="text-primary">• Budget exhausted → freeze releases</text>
+  <text x="635" y="145" font-size="9" class="text-primary">• Focus on reliability</text>
+  <text x="635" y="160" font-size="9" class="text-primary">• Budget replenishes over time</text>
+  <text x="635" y="175" font-size="9" class="text-primary">• Can carry over (optional)</text>
+  <text x="635" y="190" font-size="9" class="text-primary">• Different policies per service</text>
+  <text x="635" y="205" font-size="9" class="text-primary">• Executive visibility</text>
+  <text x="635" y="220" font-size="9" class="highlight-green">✓ Drives behavior</text>
+  
+  <!-- Burn Rate Alerts -->
+  <rect x="30" y="270" width="840" height="200" rx="5" class="box-base" stroke-width="2"/>
+  <text x="450" y="295" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Burn Rate Alerting Strategy</text>
+  
+  <rect x="50" y="310" width="190" height="145" rx="3" class="box-base" stroke-width="1"/>
+  <text x="145" y="330" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">2x Burn Rate</text>
+  <rect x="70" y="345" width="150" height="95" rx="2" class="box-base" stroke-width="1"/>
+  <text x="145" y="365" text-anchor="middle" font-size="9" class="highlight-blue">Page: No</text>
+  <text x="145" y="380" text-anchor="middle" font-size="9" class="text-primary">Ticket: Yes</text>
+  <text x="145" y="395" text-anchor="middle" font-size="9" class="text-primary">Budget left: ~14 days</text>
+  <text x="145" y="410" text-anchor="middle" font-size="9" class="text-primary">Action: Monitor</text>
+  <text x="145" y="425" text-anchor="middle" font-size="9" class="text-primary">Severity: Low</text>
+  <text x="145" y="440" text-anchor="middle" font-size="9" class="text-primary">Window: 1 hour</text>
+  
+  <rect x="255" y="310" width="190" height="145" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="350" y="330" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">5x Burn Rate</text>
+  <rect x="275" y="345" width="150" height="95" rx="2" class="box-base" stroke-width="1"/>
+  <text x="350" y="365" text-anchor="middle" font-size="9" class="highlight-purple">Page: Maybe</text>
+  <text x="350" y="380" text-anchor="middle" font-size="9" class="text-primary">Ticket: Yes</text>
+  <text x="350" y="395" text-anchor="middle" font-size="9" class="text-primary">Budget left: ~5 days</text>
+  <text x="350" y="410" text-anchor="middle" font-size="9" class="text-primary">Action: Investigate</text>
+  <text x="350" y="425" text-anchor="middle" font-size="9" class="text-primary">Severity: Medium</text>
+  <text x="350" y="440" text-anchor="middle" font-size="9" class="text-primary">Window: 30 min</text>
+  
+  <rect x="460" y="310" width="190" height="145" rx="3" class="highlight-box" stroke-width="1.5"/>
+  <text x="555" y="330" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">10x Burn Rate</text>
+  <rect x="480" y="345" width="150" height="95" rx="2" class="box-base" stroke-width="1"/>
+  <text x="555" y="365" text-anchor="middle" font-size="9" class="highlight-red">Page: Yes</text>
+  <text x="555" y="380" text-anchor="middle" font-size="9" class="text-primary">Ticket: Yes</text>
+  <text x="555" y="395" text-anchor="middle" font-size="9" class="text-primary">Budget left: ~2 days</text>
+  <text x="555" y="410" text-anchor="middle" font-size="9" class="text-primary">Action: Fix now</text>
+  <text x="555" y="425" text-anchor="middle" font-size="9" class="text-primary">Severity: High</text>
+  <text x="555" y="440" text-anchor="middle" font-size="9" class="text-primary">Window: 5 min</text>
+  
+  <rect x="665" y="310" width="190" height="145" rx="3" class="highlight-red" stroke-width="2"/>
+  <text x="760" y="330" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">20x Burn Rate</text>
+  <rect x="685" y="345" width="150" height="95" rx="2" class="box-base" stroke-width="1"/>
+  <text x="760" y="365" text-anchor="middle" font-size="9" class="highlight-red">Page: Critical</text>
+  <text x="760" y="380" text-anchor="middle" font-size="9" class="text-primary">Ticket: Yes</text>
+  <text x="760" y="395" text-anchor="middle" font-size="9" class="text-primary">Budget left: &lt;1 day</text>
+  <text x="760" y="410" text-anchor="middle" font-size="9" class="text-primary">Action: Emergency</text>
+  <text x="760" y="425" text-anchor="middle" font-size="9" class="text-primary">Severity: Critical</text>
+  <text x="760" y="440" text-anchor="middle" font-size="9" class="text-primary">Window: 1 min</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

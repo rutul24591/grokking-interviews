@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">Lineage Capture Architecture</text>
+  
+  <rect x="30" y="70" width="270" height="180" rx="5" class="box-base" stroke-width="2"/>
+  <text x="165" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Automatic Capture</text>
+  <rect x="50" y="110" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="65" y="130" font-size="9" class="text-primary">• SQL parsing</text>
+  <text x="65" y="145" font-size="9" class="text-primary">• Query plan analysis</text>
+  <text x="65" y="160" font-size="9" class="text-primary">• ETL job metadata</text>
+  <text x="65" y="175" font-size="9" class="text-primary">• Pipeline orchestration</text>
+  <text x="65" y="190" font-size="9" class="text-primary">• Schema evolution tracking</text>
+  <text x="65" y="205" font-size="9" class="text-primary">• Real-time streaming</text>
+  <text x="65" y="220" font-size="9" class="highlight-green">✓ No code changes</text>
+  
+  <rect x="315" y="70" width="270" height="180" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="450" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Manual Annotation</text>
+  <rect x="335" y="110" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="350" y="130" font-size="9" class="text-primary">• Business glossary</text>
+  <text x="350" y="145" font-size="9" class="text-primary">• Data ownership</text>
+  <text x="350" y="160" font-size="9" class="text-primary">• Quality rules</text>
+  <text x="350" y="175" font-size="9" class="text-primary">• PII classification</text>
+  <text x="350" y="190" font-size="9" class="text-primary">• Retention policies</text>
+  <text x="350" y="205" font-size="9" class="text-primary">• Compliance tags</text>
+  <text x="350" y="220" font-size="9" class="highlight-purple">⚠ Requires effort</text>
+  
+  <rect x="600" y="70" width="270" height="180" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="735" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Hybrid Approach</text>
+  <rect x="620" y="110" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="635" y="130" font-size="9" class="text-primary">• Auto-capture technical</text>
+  <text x="635" y="145" font-size="9" class="text-primary">• Manual business context</text>
+  <text x="635" y="160" font-size="9" class="text-primary">• ML-assisted tagging</text>
+  <text x="635" y="175" font-size="9" class="text-primary">• Crowdsourced curation</text>
+  <text x="635" y="190" font-size="9" class="text-primary">• Validation workflows</text>
+  <text x="635" y="205" font-size="9" class="text-primary">• Quality scoring</text>
+  <text x="635" y="220" font-size="9" class="highlight-green">✓ Best of both</text>
+  
+  <!-- Implementation Patterns -->
+  <rect x="30" y="270" width="840" height="200" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="450" y="295" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Implementation Patterns</text>
+  
+  <rect x="50" y="310" width="260" height="145" rx="3" class="box-base" stroke-width="1"/>
+  <text x="180" y="330" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Agent-Based</text>
+  <rect x="70" y="345" width="220" height="95" rx="2" class="box-base" stroke-width="1"/>
+  <text x="85" y="365" font-size="9" class="text-primary">• Deploy agents to sources</text>
+  <text x="85" y="380" font-size="9" class="text-primary">• Capture at point of origin</text>
+  <text x="85" y="395" font-size="9" class="text-primary">• Low latency</text>
+  <text x="85" y="410" font-size="9" class="text-primary">• Higher maintenance</text>
+  <text x="85" y="425" font-size="9" class="highlight-purple">⚠ Agent management</text>
+  
+  <rect x="325" y="310" width="260" height="145" rx="3" class="box-base" stroke-width="1"/>
+  <text x="455" y="330" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Log-Based</text>
+  <rect x="345" y="345" width="220" height="95" rx="2" class="box-base" stroke-width="1"/>
+  <text x="360" y="365" font-size="9" class="text-primary">• Parse query logs</text>
+  <text x="360" y="380" font-size="9" class="text-primary">• Audit log analysis</text>
+  <text x="360" y="395" font-size="9" class="text-primary">• Non-intrusive</text>
+  <text x="360" y="410" font-size="9" class="text-primary">• Eventual consistency</text>
+  <text x="360" y="425" font-size="9" class="highlight-green">✓ No agents</text>
+  
+  <rect x="580" y="310" width="260" height="145" rx="3" class="box-base" stroke-width="1"/>
+  <text x="710" y="330" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">API-Based</text>
+  <rect x="600" y="345" width="220" height="95" rx="2" class="box-base" stroke-width="1"/>
+  <text x="615" y="365" font-size="9" class="text-primary">• Query system metadata</text>
+  <text x="615" y="380" font-size="9" class="text-primary">• INFORMATION_SCHEMA</text>
+  <text x="615" y="395" font-size="9" class="text-primary">• Standardized</text>
+  <text x="615" y="410" font-size="9" class="text-primary">• Limited detail</text>
+  <text x="615" y="425" font-size="9" class="highlight-blue">✓ Standard APIs</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

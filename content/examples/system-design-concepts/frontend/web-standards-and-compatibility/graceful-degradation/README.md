@@ -1,7 +1,5 @@
-# Graceful Degradation Example
+# Graceful Degradation Examples
 
-This example demonstrates the core implementation ideas for this concept.
-
-## Files
-- Minimal-Code-Pattern.txt
-- Comprehensive-Example.txt
+- `example-1`: feature-rich UI with reduced but functional fallback path.
+- `example-2`: fallback selection runner.
+- `example-3`: broken-critical-path audit.

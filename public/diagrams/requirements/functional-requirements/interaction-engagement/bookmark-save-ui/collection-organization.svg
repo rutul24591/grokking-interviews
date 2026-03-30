@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="1000" height="450" class="bg-base"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Collection Organization Models</text>
+  
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Flat Collections</text>
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="55" y="125" width="150" height="25" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="70" y="142" font-size="8" font-weight="bold" class="text-primary">📁 Recipes</text>
+  <rect x="55" y="155" width="150" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="70" y="172" font-size="8" font-weight="bold" class="text-primary">📁 Travel</text>
+  <rect x="55" y="185" width="150" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="70" y="202" font-size="8" font-weight="bold" class="text-primary">📁 Tech Articles</text>
+  <text x="130" y="245" text-anchor="middle" font-size="9" class="highlight-purple">⚠ No nesting</text>
+  <text x="130" y="260" text-anchor="middle" font-size="9" class="text-secondary">Used by: Twitter</text>
+  
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Nested Folders</text>
+  <rect x="280" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="295" y="125" width="150" height="25" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="310" y="142" font-size="8" font-weight="bold" class="text-primary">📁 Food</text>
+  <line x1="310" y1="150" x2="310" y2="165" class="arrow" stroke-width="1"/>
+  <rect x="325" y="165" width="105" height="20" rx="2" class="box-base" stroke-width="1"/>
+  <text x="340" y="179" font-size="7" class="text-primary">↳ Recipes</text>
+  <line x1="310" y1="165" x2="310" y2="180" class="arrow" stroke-width="1"/>
+  <rect x="325" y="180" width="105" height="20" rx="2" class="box-base" stroke-width="1"/>
+  <text x="340" y="194" font-size="7" class="text-primary">↳ Restaurants</text>
+  <text x="370" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Deep organization</text>
+  <text x="370" y="260" text-anchor="middle" font-size="9" class="text-secondary">Used by: Pinterest</text>
+  
+  <rect x="500" y="70" width="240" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Tags</text>
+  <rect x="520" y="110" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="535" y="125" width="70" height="25" rx="15" class="accent-box" stroke-width="1"/>
+  <text x="570" y="142" text-anchor="middle" font-size="7" class="text-primary">#recipes</text>
+  <rect x="615" y="125" width="70" height="25" rx="15" class="accent-box" stroke-width="1"/>
+  <text x="650" y="142" text-anchor="middle" font-size="7" class="text-primary">#healthy</text>
+  <rect x="535" y="155" width="70" height="25" rx="15" class="accent-box" stroke-width="1"/>
+  <text x="570" y="172" text-anchor="middle" font-size="7" class="text-primary">#quick</text>
+  <rect x="615" y="155" width="70" height="25" rx="15" class="accent-box" stroke-width="1"/>
+  <text x="650" y="172" text-anchor="middle" font-size="7" class="text-primary">#dinner</text>
+  <text x="620" y="205" text-anchor="middle" font-size="8" class="text-secondary">Article can have multiple tags</text>
+  <text x="620" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Flexible</text>
+  <text x="620" y="260" text-anchor="middle" font-size="9" class="text-secondary">Used by: Pocket</text>
+  
+  <rect x="20" y="260" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Smart Collections</text>
+  <rect x="40" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="55" y="315" width="230" height="35" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="70" y="335" font-size="8" font-weight="bold" class="text-primary">🤖 Auto: "All Tech"</text>
+  <text x="70" y="350" font-size="7" class="text-secondary">Rule: tag contains "tech"</text>
+  <rect x="55" y="355" width="230" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="70" y="375" font-size="8" font-weight="bold" class="text-primary">🤖 Auto: "Recent"</text>
+  <text x="70" y="390" font-size="7" class="text-secondary">Rule: saved &lt; 7 days</text>
+  <text x="170" y="445" text-anchor="middle" font-size="9" class="highlight-purple">⚠ Auto-organized</text>
+  
+  <rect x="340" y="260" width="320" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Collection Picker UI</text>
+  <rect x="360" y="300" width="280" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="375" y="315" width="250" height="30" rx="2" class="accent-box" stroke-width="1.5"/>
+  <text x="390" y="335" font-size="8" class="text-primary">🔍 Search collections...</text>
+  <rect x="375" y="350" width="250" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="390" y="367" font-size="7" class="text-primary">☑ Recipes (45 items)</text>
+  <rect x="375" y="380" width="250" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="390" y="397" font-size="7" class="text-primary">☐ Travel (23 items)</text>
+  <rect x="375" y="410" width="250" height="25" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="390" y="427" font-size="7" font-weight="bold" class="text-primary">+ Create new collection</text>
+  
+  <rect x="680" y="260" width="300" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="830" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Model Comparison</text>
+  <rect x="700" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <text x="715" y="320" font-size="8" font-weight="bold" class="text-primary">Model</text>
+  <text x="850" y="320" font-size="8" font-weight="bold" class="text-primary">Best For</text>
+  <line x1="710" y1="330" x2="950" y2="330" class="arrow" stroke-width="1"/>
+  <text x="715" y="345" font-size="7" class="text-primary">Flat</text>
+  <text x="850" y="345" font-size="7" class="text-secondary">Casual users</text>
+  <line x1="710" y1="355" x2="950" y2="355" class="arrow" stroke-width="1"/>
+  <text x="715" y="370" font-size="7" class="text-primary">Nested</text>
+  <text x="850" y="370" font-size="7" class="text-secondary">Power users</text>
+  <line x1="710" y1="380" x2="950" y2="380" class="arrow" stroke-width="1"/>
+  <text x="715" y="395" font-size="7" class="text-primary">Tags</text>
+  <text x="850" y="395" font-size="7" class="text-secondary">Articles</text>
+  <line x1="710" y1="405" x2="950" y2="405" class="arrow" stroke-width="1"/>
+  <text x="715" y="420" font-size="7" class="text-primary">Smart</text>
+  <text x="850" y="420" font-size="7" class="text-secondary">Auto-organize</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

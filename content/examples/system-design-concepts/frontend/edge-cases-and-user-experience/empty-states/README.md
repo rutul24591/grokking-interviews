@@ -1,7 +1,5 @@
-# Empty States Example
+# Empty States Examples
 
-This example demonstrates the core implementation ideas for this concept.
-
-## Files
-- Minimal-Code-Pattern.txt
-- Comprehensive-Example.txt
+- `example-1`: dashboard with first-use, filtered-empty, and cleared-empty states.
+- `example-2`: empty-state decision runner.
+- `example-3`: CTA quality audit for dead-end empties.

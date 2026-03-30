@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="1000" height="450" class="bg-base"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Enforcement Actions</text>
+  
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Engagement Removal</text>
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="55" y="125" width="150" height="40" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="130" y="145" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Remove fake likes</text>
+  <text x="130" y="165" text-anchor="middle" font-size="8" class="text-secondary">Batch processing</text>
+  <text x="130" y="190" font-size="8" class="text-primary">• Corrects metrics</text>
+  <text x="130" y="205" font-size="8" class="text-primary">• Notify creator</text>
+  <text x="130" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Most common</text>
+  
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Account Penalties</text>
+  <rect x="280" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="295" y="125" width="150" height="30" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="370" y="143" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">⚠️ Warning</text>
+  <rect x="295" y="160" width="150" height="30" rx="2" class="highlight-purple" stroke-width="1"/>
+  <text x="370" y="178" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">⏸️ 7-30 day suspend</text>
+  <rect x="295" y="195" width="150" height="30" rx="2" class="highlight-red" stroke-width="1"/>
+  <text x="370" y="213" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">🚫 Permanent ban</text>
+  <text x="370" y="245" text-anchor="middle" font-size="9" class="highlight-purple">⚠ Escalating</text>
+  
+  <rect x="500" y="70" width="240" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Shadow Limiting</text>
+  <rect x="520" y="110" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="535" y="125" width="170" height="40" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="620" y="145" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">👻 Hidden from feeds</text>
+  <text x="620" y="165" text-anchor="middle" font-size="8" class="text-secondary">No notification</text>
+  <text x="620" y="190" font-size="8" class="text-primary">• Continue monitoring</text>
+  <text x="620" y="205" font-size="8" class="text-primary">• Prevent spread</text>
+  <text x="620" y="245" text-anchor="middle" font-size="9" class="highlight-blue">✓ Stealth action</text>
+  
+  <rect x="20" y="260" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Enforcement Flow</text>
+  <rect x="40" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="55" y="315" width="230" height="25" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="170" y="332" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Fraud detected</text>
+  <line x1="170" y1="340" x2="170" y2="355" class="arrow" stroke-width="1.5"/>
+  <rect x="55" y="355" width="230" height="25" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="170" y="372" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Queue for batch</text>
+  <line x1="170" y1="380" x2="170" y2="395" class="arrow" stroke-width="1.5"/>
+  <rect x="55" y="395" width="230" height="25" rx="2" class="highlight-red" stroke-width="1"/>
+  <text x="170" y="412" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Execute action</text>
+  <text x="170" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Batch processing</text>
+  
+  <rect x="340" y="260" width="320" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Appeal Process</text>
+  <rect x="360" y="300" width="280" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="375" y="315" width="250" height="30" rx="2" class="box-base" stroke-width="1"/>
+  <text x="500" y="335" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">📧 User submits appeal</text>
+  <rect x="375" y="350" width="250" height="30" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="500" y="370" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">👤 Human review</text>
+  <rect x="375" y="385" width="120" height="30" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="435" y="405" text-anchor="middle" font-size="7" font-weight="bold" class="text-primary">✓ Reinstate</text>
+  <rect x="505" y="385" width="120" height="30" rx="2" class="highlight-red" stroke-width="1"/>
+  <text x="565" y="405" text-anchor="middle" font-size="7" font-weight="bold" class="text-primary">✕ Uphold</text>
+  
+  <rect x="680" y="260" width="300" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="830" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Action Thresholds</text>
+  <rect x="700" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <text x="715" y="320" font-size="8" font-weight="bold" class="text-primary">Fraud Score</text>
+  <text x="850" y="320" font-size="8" font-weight="bold" class="text-primary">Action</text>
+  <line x1="710" y1="330" x2="950" y2="330" class="arrow" stroke-width="1"/>
+  <text x="715" y="345" font-size="7" class="text-primary">&lt; 0.3</text>
+  <text x="850" y="345" font-size="7" class="highlight-green">Pass</text>
+  <line x1="710" y1="355" x2="950" y2="355" class="arrow" stroke-width="1"/>
+  <text x="715" y="370" font-size="7" class="text-primary">0.3 - 0.7</text>
+  <text x="850" y="370" font-size="7" class="highlight-purple">Review</text>
+  <line x1="710" y1="380" x2="950" y2="380" class="arrow" stroke-width="1"/>
+  <text x="715" y="395" font-size="7" class="text-primary">0.7 - 0.9</text>
+  <text x="850" y="395" font-size="7" class="highlight-blue">Shadow limit</text>
+  <line x1="710" y1="405" x2="950" y2="405" class="arrow" stroke-width="1"/>
+  <text x="715" y="420" font-size="7" class="text-primary">&gt; 0.9</text>
+  <text x="850" y="420" font-size="7" class="highlight-red">Remove + Suspend</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

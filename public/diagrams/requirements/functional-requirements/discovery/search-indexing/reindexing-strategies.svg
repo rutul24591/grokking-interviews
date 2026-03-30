@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Reindexing Strategies (Blue-Green)</text>
+  
+  <!-- Phase 1: Create New Index -->
+  <rect x="20" y="70" width="220" height="160" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Phase 1: Create New Index</text>
+  
+  <rect x="40" y="110" width="180" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="130" y="130" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Old Index (v1)</text>
+  <text x="130" y="148" text-anchor="middle" font-size="9" class="text-secondary">Alias → products_v1</text>
+  
+  <rect x="40" y="165" width="180" height="45" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="130" y="185" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">New Index (v2)</text>
+  <text x="130" y="203" text-anchor="middle" font-size="9" class="text-secondary">Updated mapping/settings</text>
+  
+  <!-- Arrow to Phase 2 -->
+  <line x1="240" y1="150" x2="280" y2="150" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  <text x="260" y="140" text-anchor="middle" font-size="10" class="text-secondary">Step 1</text>
+  
+  <!-- Phase 2: Reindex Data -->
+  <rect x="280" y="70" width="220" height="160" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="390" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Phase 2: Reindex Data</text>
+  
+  <rect x="300" y="110" width="180" height="100" rx="3" class="box-base" stroke-width="1"/>
+  <text x="390" y="135" text-anchor="middle" font-size="10" class="text-secondary">Scroll API (batch read)</text>
+  <text x="390" y="155" text-anchor="middle" font-size="10" class="text-secondary">Bulk API (batch write)</text>
+  <text x="390" y="175" text-anchor="middle" font-size="10" class="text-secondary">Progress: 0% → 100%</text>
+  <text x="390" y="195" text-anchor="middle" font-size="10" class="highlight-green">~10K docs/sec</text>
+  
+  <!-- Arrow to Phase 3 -->
+  <line x1="500" y1="150" x2="540" y2="150" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  <text x="520" y="140" text-anchor="middle" font-size="10" class="text-secondary">Step 2</text>
+  
+  <!-- Phase 3: Validate -->
+  <rect x="540" y="70" width="220" height="160" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="650" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Phase 3: Validate</text>
+  
+  <rect x="560" y="110" width="180" height="100" rx="3" class="box-base" stroke-width="1"/>
+  <text x="650" y="135" text-anchor="middle" font-size="10" class="text-secondary">✓ Document count match</text>
+  <text x="650" y="155" text-anchor="middle" font-size="10" class="text-secondary">✓ Sample search queries</text>
+  <text x="650" y="175" text-anchor="middle" font-size="10" class="text-secondary">✓ Aggregations test</text>
+  <text x="650" y="195" text-anchor="middle" font-size="10" class="highlight-green">Ready for switch</text>
+  
+  <!-- Arrow to Phase 4 -->
+  <line x1="760" y1="150" x2="800" y2="150" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  <text x="780" y="140" text-anchor="middle" font-size="10" class="text-secondary">Step 3</text>
+  
+  <!-- Phase 4: Switch Alias -->
+  <rect x="800" y="70" width="180" height="160" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="890" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Phase 4: Switch</text>
+  
+  <rect x="820" y="110" width="140" height="100" rx="3" class="highlight-box" stroke-width="1.5"/>
+  <text x="890" y="140" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Atomic Alias</text>
+  <text x="890" y="160" text-anchor="middle" font-size="10" class="text-secondary">Remove: products_v1</text>
+  <text x="890" y="180" text-anchor="middle" font-size="10" class="text-secondary">Add: products_v2</text>
+  <text x="890" y="200" text-anchor="middle" font-size="10" class="highlight-green">Zero downtime</text>
+  
+  <!-- Timeline (Bottom) -->
+  <rect x="20" y="250" width="960" height="100" rx="5" class="box-base" stroke-width="2"/>
+  <text x="500" y="280" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Timeline &amp; Rollback Strategy</text>
+  
+  <!-- Timeline Arrow -->
+  <line x1="60" y1="310" x2="940" y2="310" class="arrow" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <!-- Time Markers -->
+  <line x1="60" y1="300" x2="60" y2="320" class="arrow" stroke-width="2"/>
+  <text x="60" y="345" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">T0</text>
+  <text x="60" y="365" text-anchor="middle" font-size="9" class="text-secondary">Create v2</text>
+  
+  <line x1="250" y1="300" x2="250" y2="320" class="arrow" stroke-width="2"/>
+  <text x="250" y="345" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">T1</text>
+  <text x="250" y="365" text-anchor="middle" font-size="9" class="text-secondary">Start Reindex</text>
+  
+  <line x1="500" y1="300" x2="500" y2="320" class="arrow" stroke-width="2"/>
+  <text x="500" y="345" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">T2</text>
+  <text x="500" y="365" text-anchor="middle" font-size="9" class="text-secondary">Reindex Complete</text>
+  
+  <line x1="680" y1="300" x2="680" y2="320" class="arrow" stroke-width="2"/>
+  <text x="680" y="345" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">T3</text>
+  <text x="680" y="365" text-anchor="middle" font-size="9" class="text-secondary">Validation</text>
+  
+  <line x1="850" y1="300" x2="850" y2="320" class="arrow" stroke-width="2"/>
+  <text x="850" y="345" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">T4</text>
+  <text x="850" y="365" text-anchor="middle" font-size="9" class="text-secondary">Alias Switch</text>
+  
+  <!-- Rollback Box -->
+  <rect x="20" y="370" width="400" height="60" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="220" y="395" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Rollback Strategy</text>
+  <text x="60" y="415" font-size="10" class="text-secondary">If validation fails:</text>
+  <text x="200" y="415" font-size="10" class="text-secondary">Keep alias pointing to v1</text>
+  <text x="350" y="415" font-size="10" class="text-secondary">Delete v2, fix issues</text>
+  
+  <!-- Continue Serving Box -->
+  <rect x="440" y="370" width="260" height="60" rx="5" class="box-base" stroke-width="2"/>
+  <text x="570" y="395" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">During Reindex</text>
+  <text x="570" y="415" font-size="10" class="highlight-green">● Old index serves all traffic</text>
+  
+  <!-- Delete Old Box -->
+  <rect x="720" y="370" width="260" height="60" rx="5" class="box-base" stroke-width="2"/>
+  <text x="850" y="395" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">After Validation</text>
+  <text x="850" y="415" font-size="10" class="text-secondary">Keep v1 for 24-48 hours</text>
+  
+  <!-- Key Considerations (Far Bottom) -->
+  <rect x="20" y="450" width="460" height="80" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="250" y="475" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Key Considerations</text>
+  
+  <text x="50" y="500" font-size="10" class="text-primary">•</text>
+  <text x="65" y="500" font-size="10" class="text-secondary">Index size: Plan for 2x storage during reindex</text>
+  
+  <text x="50" y="520" font-size="10" class="text-primary">•</text>
+  <text x="65" y="520" font-size="10" class="text-secondary">Reindex speed: Tune bulk size, refresh interval</text>
+  
+  <text x="280" y="500" font-size="10" class="text-primary">•</text>
+  <text x="295" y="500" font-size="10" class="text-secondary">Incremental updates: Capture changes during reindex</text>
+  
+  <text x="280" y="520" font-size="10" class="text-primary">•</text>
+  <text x="295" y="520" font-size="10" class="text-secondary">Throttle: Prevent cluster overload during reindex</text>
+  
+  <!-- Alternatives (Far Bottom Right) -->
+  <rect x="500" y="450" width="480" height="80" rx="5" class="box-base" stroke-width="2"/>
+  <text x="740" y="475" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Alternative Approaches</text>
+  
+  <text x="530" y="500" font-size="10" class="text-primary">•</text>
+  <text x="545" y="500" font-size="10" class="text-secondary">Reindex API: Built-in Elasticsearch reindex</text>
+  
+  <text x="530" y="520" font-size="10" class="text-primary">•</text>
+  <text x="545" y="520" font-size="10" class="text-secondary">Snapshot/Restore: For large indices</text>
+  
+  <text x="740" y="500" font-size="10" class="text-primary">•</text>
+  <text x="755" y="500" font-size="10" class="text-secondary">Logstash: For complex transformations</text>
+  
+  <text x="740" y="520" font-size="10" class="text-primary">•</text>
+  <text x="755" y="520" font-size="10" class="text-secondary">Custom script: For domain-specific logic</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

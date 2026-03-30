@@ -1,0 +1,183 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Comment Input States</text>
+  
+  <!-- Default State (Top Left) -->
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Default</text>
+  
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1.5"/>
+  
+  <!-- Textarea -->
+  <rect x="55" y="125" width="150" height="60" rx="2" class="box-base" stroke-width="1.5"/>
+  <text x="70" y="145" font-size="8" class="text-secondary">Write a comment...</text>
+  
+  <!-- Submit button -->
+  <rect x="155" y="190" width="50" height="25" rx="3" class="box-base" stroke-width="1"/>
+  <text x="180" y="207" text-anchor="middle" font-size="8" class="text-secondary">Post</text>
+  
+  <text x="130" y="245" text-anchor="middle" font-size="9" class="text-secondary">Collapsed textarea</text>
+  
+  <!-- Focused State (Top Center Left) -->
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Focused</text>
+  
+  <rect x="280" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Expanded textarea -->
+  <rect x="295" y="125" width="150" height="80" rx="2" class="accent-box" stroke-width="2"/>
+  <text x="310" y="145" font-size="8" class="text-primary">Great post! I really</text>
+  <text x="310" y="160" font-size="8" class="text-primary">enjoyed reading this.</text>
+  <text x="310" y="175" font-size="8" class="text-primary">Thanks for sharing!</text>
+  <text x="435" y="195" text-anchor="end" font-size="7" class="text-secondary">142/500</text>
+  
+  <!-- Submit button active -->
+  <rect x="395" y="190" width="50" height="25" rx="3" class="accent-box" stroke-width="2"/>
+  <text x="420" y="207" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Post</text>
+  
+  <text x="370" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Expanded</text>
+  <text x="370" y="260" text-anchor="middle" font-size="9" class="text-secondary">Character count</text>
+  
+  <!-- Typing State (Top Center) -->
+  <rect x="500" y="70" width="240" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="620" y="95" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Typing</text>
+  
+  <rect x="520" y="110" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Textarea with cursor -->
+  <rect x="535" y="125" width="170" height="80" rx="2" class="accent-box" stroke-width="2"/>
+  <text x="550" y="145" font-size="8" class="text-primary">Great post! I really</text>
+  <text x="550" y="160" font-size="8" class="text-primary">enjoyed reading this.</text>
+  <line x1="680" y1="168" x2="680" y2="180" class="highlight-blue" stroke-width="2">
+    <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+  </line>
+  <text x="695" y="195" text-anchor="end" font-size="7" class="text-secondary">142/500</text>
+  
+  <!-- Toolbar -->
+  <rect x="535" y="210" width="100" height="20" rx="2" class="box-base" stroke-width="1"/>
+  <text x="550" y="224" font-size="7" class="text-secondary">B</text>
+  <text x="565" y="224" font-size="7" class="text-secondary">I</text>
+  <text x="580" y="224" font-size="7" class="text-secondary">@</text>
+  <text x="595" y="224" font-size="7" class="text-secondary">😊</text>
+  <text x="615" y="224" font-size="7" class="text-secondary">Link</text>
+  
+  <text x="620" y="245" text-anchor="middle" font-size="9" class="highlight-purple">⚠ Auto-save draft</text>
+  
+  <!-- Submitting State (Top Right) -->
+  <rect x="760" y="70" width="220" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="870" y="95" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Submitting</text>
+  
+  <rect x="780" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Disabled textarea -->
+  <rect x="795" y="125" width="150" height="80" rx="2" class="box-base" stroke-width="1" opacity="0.5"/>
+  <text x="810" y="145" font-size="8" class="text-secondary">Great post! I really</text>
+  <text x="810" y="160" font-size="8" class="text-secondary">enjoyed reading this.</text>
+  
+  <!-- Loading spinner -->
+  <circle cx="870" cy="185" r="12" fill="none" class="highlight-blue" stroke-width="2">
+    <animateTransform attributeName="transform" type="rotate" from="0 870 185" to="360 870 185" dur="1s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Disabled button -->
+  <rect x="845" y="205" width="50" height="25" rx="3" class="box-base" stroke-width="1" opacity="0.5"/>
+  <text x="870" y="222" text-anchor="middle" font-size="8" class="text-secondary">Posting...</text>
+  
+  <text x="870" y="245" text-anchor="middle" font-size="9" class="highlight-purple">⚠ Disable input</text>
+  
+  <!-- Success State (Bottom Left) -->
+  <rect x="20" y="260" width="300" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="170" y="285" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Success</text>
+  
+  <rect x="40" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Cleared textarea -->
+  <rect x="55" y="315" width="230" height="60" rx="2" class="box-base" stroke-width="1.5"/>
+  <text x="70" y="335" font-size="8" class="text-secondary">Write a comment...</text>
+  
+  <!-- Success message -->
+  <rect x="55" y="380" width="230" height="25" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="170" y="397" text-anchor="middle" font-size="8" class="text-primary">✓ Comment posted!</text>
+  
+  <text x="170" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Clear and reset</text>
+  
+  <!-- Error State (Bottom Center) -->
+  <rect x="340" y="260" width="320" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="500" y="285" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Error</text>
+  
+  <rect x="360" y="300" width="280" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Textarea with error -->
+  <rect x="375" y="315" width="250" height="60" rx="2" class="box-base" stroke-width="2" stroke="#f56565"/>
+  <text x="390" y="335" font-size="8" class="text-primary">Comment content here...</text>
+  
+  <!-- Error message -->
+  <rect x="375" y="380" width="250" height="25" rx="2" class="highlight-red" stroke-width="1"/>
+  <text x="500" y="397" text-anchor="middle" font-size="8" class="text-primary">⚠ Failed to post. Try again.</text>
+  
+  <!-- Retry button -->
+  <rect x="475" y="410" width="70" height="20" rx="2" class="highlight-red" stroke-width="1"/>
+  <text x="510" y="424" text-anchor="middle" font-size="7" font-weight="bold" class="text-primary">Retry</text>
+  
+  <text x="500" y="445" text-anchor="middle" font-size="9" class="highlight-red">⚠ Keep draft</text>
+  
+  <!-- Mention Autocomplete (Bottom Right) -->
+  <rect x="680" y="260" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="830" y="285" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Mention Autocomplete</text>
+  
+  <rect x="700" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Textarea with @ -->
+  <rect x="715" y="315" width="230" height="60" rx="2" class="accent-box" stroke-width="2"/>
+  <text x="730" y="335" font-size="8" class="text-primary">Thanks @</text>
+  <line x1="800" y1="343" x2="800" y2="355" class="highlight-blue" stroke-width="2">
+    <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+  </line>
+  
+  <!-- Autocomplete dropdown -->
+  <rect x="715" y="380" width="230" height="60" rx="2" class="highlight-box" stroke-width="1.5"/>
+  <rect x="730" y="390" width="200" height="20" rx="1" class="accent-box" stroke-width="1"/>
+  <text x="745" y="404" font-size="7" font-weight="bold" class="text-primary">@johndoe</text>
+  <text x="880" y="404" text-anchor="end" font-size="6" class="text-secondary">John Doe</text>
+  <rect x="730" y="415" width="200" height="20" rx="1" class="box-base" stroke-width="1"/>
+  <text x="745" y="429" font-size="7" class="text-primary">@janedoe</text>
+  <text x="880" y="429" text-anchor="end" font-size="6" class="text-secondary">Jane Doe</text>
+  
+  <text x="830" y="445" text-anchor="middle" font-size="9" class="highlight-purple">⚠ Debounce search</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

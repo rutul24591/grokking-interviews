@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+body {
+  background: #070a13;
+  color: #e6e9f2;
+}
+
+textarea,
+input {
+  color: #e6e9f2;
+}
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+

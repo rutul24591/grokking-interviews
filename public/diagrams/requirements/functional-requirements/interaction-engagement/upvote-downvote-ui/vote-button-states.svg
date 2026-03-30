@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-orange { fill: #ed8936; }
+      .highlight-blue { fill: #4299e1; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="500" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Vote Button States</text>
+  
+  <!-- None State (Top Left) -->
+  <rect x="20" y="70" width="220" height="200" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">None (No Vote)</text>
+  
+  <rect x="40" y="110" width="180" height="145" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Vote buttons -->
+  <rect x="55" y="125" width="40" height="35" rx="2" class="box-base" stroke-width="2"/>
+  <text x="75" y="148" text-anchor="middle" font-size="16" class="text-secondary">▲</text>
+  
+  <text x="115" y="148" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">1,234</text>
+  
+  <rect x="55" y="165" width="40" height="35" rx="2" class="box-base" stroke-width="2"/>
+  <text x="75" y="188" text-anchor="middle" font-size="16" class="text-secondary">▼</text>
+  
+  <text x="130" y="225" text-anchor="middle" font-size="9" class="text-secondary">Gray outlines</text>
+  <text x="130" y="240" text-anchor="middle" font-size="9" class="text-secondary">Click up or down</text>
+  
+  <!-- Upvoted State (Top Center) -->
+  <rect x="260" y="70" width="220" height="200" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Upvoted</text>
+  
+  <rect x="280" y="110" width="180" height="145" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Upvote button filled -->
+  <rect x="295" y="125" width="40" height="35" rx="2" class="highlight-orange" stroke-width="2"/>
+  <text x="315" y="148" text-anchor="middle" font-size="16" class="text-primary">▲</text>
+  
+  <text x="355" y="148" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">1,235</text>
+  
+  <rect x="295" y="165" width="40" height="35" rx="2" class="box-base" stroke-width="2"/>
+  <text x="315" y="188" text-anchor="middle" font-size="16" class="text-secondary">▼</text>
+  
+  <text x="370" y="225" text-anchor="middle" font-size="9" class="highlight-green">✓ Score +1</text>
+  <text x="370" y="240" text-anchor="middle" font-size="9" class="text-secondary">Click again to remove</text>
+  
+  <!-- Downvoted State (Top Right) -->
+  <rect x="500" y="70" width="240" height="200" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Downvoted</text>
+  
+  <rect x="520" y="110" width="200" height="145" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Upvote button -->
+  <rect x="535" y="125" width="40" height="35" rx="2" class="box-base" stroke-width="2"/>
+  <text x="555" y="148" text-anchor="middle" font-size="16" class="text-secondary">▲</text>
+  
+  <text x="595" y="148" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">1,233</text>
+  
+  <rect x="535" y="165" width="40" height="35" rx="2" class="highlight-blue" stroke-width="2"/>
+  <text x="555" y="188" text-anchor="middle" font-size="16" class="text-primary">▼</text>
+  
+  <text x="620" y="225" text-anchor="middle" font-size="9" class="highlight-red">⚠ Score -1</text>
+  <text x="620" y="240" text-anchor="middle" font-size="9" class="text-secondary">Click again to remove</text>
+  
+  <!-- Vote Toggle (Bottom Left) -->
+  <rect x="20" y="290" width="300" height="190" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="315" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Vote Toggle</text>
+  
+  <rect x="40" y="330" width="260" height="135" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Toggle flow -->
+  <text x="55" y="350" font-size="9" font-weight="bold" class="text-primary">Switching Votes:</text>
+  
+  <!-- Downvoted to Upvoted -->
+  <rect x="55" y="365" width="110" height="35" rx="2" class="highlight-blue" stroke-width="1"/>
+  <text x="110" y="387" text-anchor="middle" font-size="8" class="text-primary">Downvoted</text>
+  
+  <text x="175" y="387" text-anchor="middle" font-size="10" class="highlight-green">→</text>
+  
+  <rect x="190" y="365" width="110" height="35" rx="2" class="highlight-orange" stroke-width="1"/>
+  <text x="245" y="387" text-anchor="middle" font-size="8" class="text-primary">Upvoted</text>
+  
+  <text x="170" y="415" text-anchor="middle" font-size="8" class="highlight-purple">Score changes by 2</text>
+  <text x="170" y="430" text-anchor="middle" font-size="8" class="text-secondary">(-1 to +1 = +2)</text>
+  
+  <text x="170" y="495" text-anchor="middle" font-size="9" class="highlight-green">✓ Clean transitions</text>
+  
+  <!-- Score Display (Bottom Center) -->
+  <rect x="340" y="290" width="320" height="190" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="315" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Score Display</text>
+  
+  <rect x="360" y="330" width="280" height="135" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Net score -->
+  <text x="375" y="350" font-size="9" font-weight="bold" class="text-primary">Net Score:</text>
+  <rect x="375" y="360" width="120" height="35" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="435" y="382" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">+1,234</text>
+  
+  <!-- Abbreviated -->
+  <text x="520" y="350" font-size="9" font-weight="bold" class="text-primary">Abbreviated:</text>
+  <rect x="520" y="360" width="100" height="35" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="570" y="382" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">1.2K</text>
+  
+  <!-- Exact on hover -->
+  <text x="375" y="420" font-size="8" class="text-secondary">Show exact on hover</text>
+  <text x="520" y="420" font-size="8" class="text-secondary">1,234 upvotes</text>
+  
+  <text x="500" y="495" text-anchor="middle" font-size="9" class="highlight-green">✓ Clear feedback</text>
+  
+  <!-- Vote States Summary (Bottom Right) -->
+  <rect x="680" y="290" width="300" height="190" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="830" y="315" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">State Summary</text>
+  
+  <rect x="700" y="330" width="260" height="135" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- State table -->
+  <text x="715" y="350" font-size="8" font-weight="bold" class="text-primary">State</text>
+  <text x="850" y="350" font-size="8" font-weight="bold" class="text-primary">Score Change</text>
+  
+  <line x1="710" y1="360" x2="950" y2="360" class="arrow" stroke-width="1"/>
+  <text x="715" y="375" font-size="7" class="text-primary">None → Up</text>
+  <text x="850" y="375" font-size="7" class="highlight-green">+1</text>
+  
+  <line x1="710" y1="385" x2="950" y2="385" class="arrow" stroke-width="1"/>
+  <text x="715" y="400" font-size="7" class="text-primary">None → Down</text>
+  <text x="850" y="400" font-size="7" class="highlight-red">-1</text>
+  
+  <line x1="710" y1="410" x2="950" y2="410" class="arrow" stroke-width="1"/>
+  <text x="715" y="425" font-size="7" class="text-primary">Down → Up</text>
+  <text x="850" y="425" font-size="7" class="highlight-green">+2</text>
+  
+  <line x1="710" y1="435" x2="950" y2="435" class="arrow" stroke-width="1"/>
+  <text x="715" y="450" font-size="7" class="text-primary">Up → Down</text>
+  <text x="850" y="450" font-size="7" class="highlight-red">-2</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

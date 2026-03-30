@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">Flag Evaluation Flow</text>
+  
+  <!-- Evaluation Pipeline -->
+  <rect x="30" y="70" width="840" height="120" rx="5" class="box-base" stroke-width="2"/>
+  
+  <rect x="50" y="90" width="150" height="80" rx="3" class="box-base" stroke-width="1.5"/>
+  <text x="125" y="115" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">1. Request</text>
+  <rect x="70" y="130" width="110" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="125" y="147" text-anchor="middle" font-size="8" class="text-primary">User + Context</text>
+  
+  <line x1="200" y1="130" x2="230" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="230" y="90" width="150" height="80" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="305" y="115" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">2. Targeting</text>
+  <rect x="250" y="130" width="110" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="305" y="147" text-anchor="middle" font-size="8" class="text-primary">Rules evaluation</text>
+  
+  <line x1="380" y1="130" x2="410" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="410" y="90" width="150" height="80" rx="3" class="highlight-box" stroke-width="1.5"/>
+  <text x="485" y="115" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">3. Override</text>
+  <rect x="430" y="130" width="110" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="485" y="147" text-anchor="middle" font-size="8" class="text-primary">User overrides</text>
+  
+  <line x1="560" y1="130" x2="590" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="590" y="90" width="150" height="80" rx="3" class="highlight-purple" stroke-width="1.5"/>
+  <text x="665" y="115" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">4. Rollout</text>
+  <rect x="610" y="130" width="110" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="665" y="147" text-anchor="middle" font-size="8" class="text-primary">Percentage check</text>
+  
+  <line x1="740" y1="130" x2="770" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="770" y="90" width="80" height="80" rx="3" class="highlight-green" stroke-width="1.5"/>
+  <text x="810" y="130" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">5. Result</text>
+  
+  <!-- Targeting Rules -->
+  <rect x="30" y="210" width="410" height="140" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="235" y="235" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Targeting Rules (Evaluated in Order)</text>
+  
+  <rect x="50" y="250" width="370" height="85" rx="3" class="box-base" stroke-width="1"/>
+  <text x="70" y="270" font-size="9" class="text-primary">1. User ID whitelist → Variant A (internal testing)</text>
+  <text x="70" y="285" font-size="9" class="text-primary">2. User attribute (country=US) → Variant B</text>
+  <text x="70" y="300" font-size="9" class="text-primary">3. Percentage rollout (10%) → Variant B</text>
+  <text x="70" y="315" font-size="9" class="text-primary">4. Default → Variant A (control)</text>
+  <text x="70" y="330" font-size="9" class="highlight-green">✓ First match wins</text>
+  
+  <!-- Rollout Strategies -->
+  <rect x="460" y="210" width="410" height="140" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="665" y="235" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Rollout Strategies</text>
+  
+  <rect x="480" y="250" width="370" height="85" rx="3" class="box-base" stroke-width="1"/>
+  <text x="500" y="270" font-size="9" class="text-primary">• Gradual: 1% → 10% → 50% → 100%</text>
+  <text x="500" y="285" font-size="9" class="text-primary">• Canary: Small % with monitoring</text>
+  <text x="500" y="300" font-size="9" class="text-primary">• Blue-Green: Instant switch</text>
+  <text x="500" y="315" font-size="9" class="text-primary">• User segment: By attribute</text>
+  <text x="500" y="330" font-size="9" class="highlight-green">✓ Risk mitigation</text>
+  
+  <!-- Evaluation Modes -->
+  <rect x="30" y="370" width="270" height="100" rx="5" class="box-base" stroke-width="2"/>
+  <text x="165" y="395" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Client-Side Evaluation</text>
+  <rect x="50" y="410" width="230" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="165" y="430" text-anchor="middle" font-size="9" class="text-primary">✓ Fast, works offline</text>
+  <text x="165" y="445" text-anchor="middle" font-size="9" class="highlight-red">⚠ Rules exposed</text>
+  
+  <rect x="315" y="370" width="270" height="100" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="450" y="395" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Server-Side Evaluation</text>
+  <rect x="335" y="410" width="230" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="450" y="430" text-anchor="middle" font-size="9" class="text-primary">✓ Rules hidden, secure</text>
+  <text x="450" y="445" text-anchor="middle" font-size="9" class="highlight-purple">⚠ API call needed</text>
+  
+  <rect x="600" y="370" width="270" height="100" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="735" y="395" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Hybrid Approach</text>
+  <rect x="620" y="410" width="230" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="735" y="430" text-anchor="middle" font-size="9" class="text-primary">✓ Best of both worlds</text>
+  <text x="735" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Recommended</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

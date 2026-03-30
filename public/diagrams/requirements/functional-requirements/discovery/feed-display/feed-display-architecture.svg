@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="500" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Feed Display Architecture</text>
+  
+  <!-- Feed Container (Left) -->
+  <rect x="20" y="70" width="280" height="380" rx="5" class="box-base" stroke-width="2"/>
+  <text x="160" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Feed Container</text>
+  <text x="160" y="115" text-anchor="middle" font-size="10" class="text-secondary">Scrollable Area</text>
+  
+  <!-- Visible Window -->
+  <rect x="40" y="130" width="240" height="200" rx="3" class="accent-box" stroke-width="2"/>
+  <text x="160" y="150" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Visible Window</text>
+  
+  <!-- Rendered Items -->
+  <rect x="55" y="165" width="210" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="160" y="192" text-anchor="middle" font-size="10" class="text-primary">Item 5 (rendered)</text>
+  
+  <rect x="55" y="215" width="210" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="160" y="242" text-anchor="middle" font-size="10" class="text-primary">Item 6 (rendered)</text>
+  
+  <rect x="55" y="265" width="210" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="160" y="292" text-anchor="middle" font-size="10" class="text-primary">Item 7 (rendered)</text>
+  
+  <rect x="55" y="315" width="210" height="45" rx="3" class="highlight-box" stroke-width="1.5"/>
+  <text x="160" y="342" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Item 8 (loading)</text>
+  
+  <!-- Buffer Zone -->
+  <text x="270" y="230" text-anchor="middle" font-size="9" class="highlight-purple" transform="rotate(90, 270, 230)">Buffer Zone</text>
+  
+  <!-- Unrendered Items -->
+  <text x="160" y="380" text-anchor="middle" font-size="9" class="text-secondary">Items 9-100 (not rendered)</text>
+  <text x="160" y="395" text-anchor="middle" font-size="9" class="text-secondary">Placeholder spacing only</text>
+  
+  <!-- Arrow to Virtualizer -->
+  <line x1="300" y1="260" x2="340" y2="260" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Virtualized List (Center) -->
+  <rect x="340" y="150" width="320" height="220" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="180" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Virtualized List</text>
+  
+  <!-- Calculations -->
+  <rect x="360" y="195" width="280" height="160" rx="3" class="box-base" stroke-width="1"/>
+  <text x="500" y="220" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Windowing Logic</text>
+  
+  <text x="380" y="245" font-size="10" class="text-primary">1. Calculate visible range</text>
+  <text x="380" y="265" font-size="10" class="text-secondary">scrollTop, viewport height</text>
+  
+  <text x="380" y="290" font-size="10" class="text-primary">2. Add buffer (5-10 items)</text>
+  <text x="380" y="310" font-size="10" class="text-secondary">Prevent blank space on scroll</text>
+  
+  <text x="380" y="335" font-size="10" class="text-primary">3. Render visible items only</text>
+  <text x="380" y="355" font-size="10" class="text-secondary">Unmount off-screen items</text>
+  
+  <!-- Arrow to Data Manager -->
+  <line x1="660" y1="260" x2="700" y2="260" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Data Manager (Right) -->
+  <rect x="700" y="150" width="280" height="220" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="840" y="180" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Data Manager</text>
+  
+  <!-- State -->
+  <rect x="720" y="195" width="240" height="160" rx="3" class="box-base" stroke-width="1"/>
+  <text x="840" y="220" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Feed State</text>
+  
+  <text x="740" y="245" font-size="10" class="text-secondary">items: [Post1, Post2...]</text>
+  <text x="740" y="265" font-size="10" class="text-secondary">cursor: "abc123"</text>
+  <text x="740" y="285" font-size="10" class="text-secondary">loading: boolean</text>
+  <text x="740" y="305" font-size="10" class="text-secondary">hasMore: boolean</text>
+  <text x="740" y="325" font-size="10" class="text-secondary">error: Error | null</text>
+  <text x="740" y="345" font-size="10" class="highlight-green">scrollOffset: 1250</text>
+  
+  <!-- Scroll Position Manager (Bottom Left) -->
+  <rect x="20" y="470" width="300" height="80" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="495" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Scroll Position Manager</text>
+  <text x="60" y="520" font-size="10" class="text-secondary">Save: Before navigation</text>
+  <text x="60" y="535" font-size="10" class="text-secondary">Restore: On page mount</text>
+  <text x="200" y="520" font-size="10" class="text-secondary">Storage: sessionStorage</text>
+  <text x="200" y="535" font-size="10" class="highlight-purple">Use scrollRestoration: manual</text>
+  
+  <!-- Infinite Scroll Trigger (Bottom Center) -->
+  <rect x="340" y="470" width="320" height="80" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="500" y="495" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Infinite Scroll Trigger</text>
+  <text x="380" y="520" font-size="10" class="text-secondary">Threshold: 200-500px from bottom</text>
+  <text x="380" y="535" font-size="10" class="text-secondary">Debounce: 100-200ms</text>
+  <text x="620" y="520" font-size="10" class="text-secondary">Method: IntersectionObserver</text>
+  <text x="620" y="535" font-size="10" class="highlight-green">or scroll event listener</text>
+  
+  <!-- Real-time Updater (Bottom Right) -->
+  <rect x="680" y="470" width="300" height="80" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="830" y="495" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Real-time Updater</text>
+  <text x="710" y="520" font-size="10" class="text-secondary">Listen: WebSocket / SSE / Polling</text>
+  <text x="710" y="535" font-size="10" class="text-secondary">Action: Show "X new posts" banner</text>
+  <text x="880" y="520" font-size="10" class="highlight-purple">User clicks to refresh</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

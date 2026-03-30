@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">Chaos Experiment Lifecycle</text>
+  
+  <rect x="50" y="70" width="160" height="100" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">1. Hypothesis</text>
+  <rect x="70" y="110" width="120" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="130" y="130" text-anchor="middle" font-size="8" class="text-primary">Define expected</text>
+  <text x="130" y="145" text-anchor="middle" font-size="8" class="text-primary">behavior</text>
+  <text x="130" y="160" text-anchor="middle" font-size="8" class="text-primary">Success criteria</text>
+  
+  <line x1="210" y1="120" x2="250" y2="120" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="250" y="70" width="160" height="100" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="330" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">2. Design</text>
+  <rect x="270" y="110" width="120" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="330" y="130" text-anchor="middle" font-size="8" class="text-primary">Select target</text>
+  <text x="330" y="145" text-anchor="middle" font-size="8" class="text-primary">Choose fault</text>
+  <text x="330" y="160" text-anchor="middle" font-size="8" class="text-primary">Define blast radius</text>
+  
+  <line x1="410" y1="120" x2="450" y2="120" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="450" y="70" width="160" height="100" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="530" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">3. Run</text>
+  <rect x="470" y="110" width="120" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="530" y="130" text-anchor="middle" font-size="8" class="text-primary">Inject fault</text>
+  <text x="530" y="145" text-anchor="middle" font-size="8" class="text-primary">Monitor metrics</text>
+  <text x="530" y="160" text-anchor="middle" font-size="8" class="text-primary">Auto-abort if needed</text>
+  
+  <line x1="610" y1="120" x2="650" y2="120" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="650" y="70" width="160" height="100" rx="5" class="highlight-purple" stroke-width="2"/>
+  <text x="730" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">4. Analyze</text>
+  <rect x="670" y="110" width="120" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="730" y="130" text-anchor="middle" font-size="8" class="text-primary">Compare metrics</text>
+  <text x="730" y="145" text-anchor="middle" font-size="8" class="text-primary">Validate hypothesis</text>
+  <text x="730" y="160" text-anchor="middle" font-size="8" class="text-primary">Document findings</text>
+  
+  <line x1="730" y1="170" x2="730" y2="210" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="650" y="210" width="160" height="100" rx="5" class="highlight-green" stroke-width="2"/>
+  <text x="730" y="235" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">5. Improve</text>
+  <rect x="670" y="250" width="120" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="730" y="270" text-anchor="middle" font-size="8" class="text-primary">Fix weaknesses</text>
+  <text x="730" y="285" text-anchor="middle" font-size="8" class="text-primary">Update runbooks</text>
+  <text x="730" y="300" text-anchor="middle" font-size="8" class="text-primary">Share learnings</text>
+  
+  <line x1="650" y1="260" x2="610" y2="260" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  <line x1="450" y1="260" x2="410" y2="260" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  <line x1="250" y1="260" x2="210" y2="260" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="450" y="210" width="160" height="100" rx="5" class="box-base" stroke-width="2"/>
+  <text x="530" y="235" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Feedback Loop</text>
+  <rect x="470" y="250" width="120" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="530" y="270" text-anchor="middle" font-size="8" class="text-primary">Continuous</text>
+  <text x="530" y="285" text-anchor="middle" font-size="8" class="text-primary">improvement</text>
+  <text x="530" y="300" text-anchor="middle" font-size="8" class="text-primary">Resilience grows</text>
+  
+  <!-- Safety Controls -->
+  <rect x="50" y="340" width="800" height="130" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="450" y="365" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Safety Controls (Abort Conditions)</text>
+  
+  <rect x="70" y="380" width="760" height="75" rx="3" class="box-base" stroke-width="1"/>
+  <text x="90" y="400" font-size="9" class="highlight-red">🚨 Error rate exceeds threshold → Auto-abort</text>
+  <text x="90" y="415" font-size="9" class="highlight-red">🚨 Latency spike detected → Pause experiment</text>
+  <text x="90" y="430" font-size="9" class="highlight-red">🚨 Customer impact detected → Immediate rollback</text>
+  <text x="450" y="400" font-size="9" class="highlight-purple">⚠ Blast radius limits</text>
+  <text x="450" y="415" font-size="9" class="highlight-purple">⚠ Time-boxed experiments</text>
+  <text x="450" y="430" font-size="9" class="highlight-purple">⚠ Manual override available</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

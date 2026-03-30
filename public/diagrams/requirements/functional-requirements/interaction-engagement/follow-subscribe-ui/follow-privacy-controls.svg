@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="1000" height="450" class="bg-base"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Follow Privacy Controls</text>
+  
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Private Account</text>
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="55" y="125" width="150" height="40" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="130" y="145" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">🔒 Private</text>
+  <text x="130" y="160" text-anchor="middle" font-size="8" class="text-secondary">Approval required</text>
+  <text x="130" y="185" text-anchor="middle" font-size="8" class="text-primary">Follow requests queue</text>
+  <text x="130" y="200" text-anchor="middle" font-size="8" class="text-primary">Manual approve/deny</text>
+  <text x="130" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ User control</text>
+  
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Block User</text>
+  <rect x="280" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="295" y="125" width="150" height="40" rx="2" class="highlight-red" stroke-width="1"/>
+  <text x="370" y="145" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">🚫 Blocked</text>
+  <text x="370" y="160" text-anchor="middle" font-size="8" class="text-secondary">User cannot follow</text>
+  <text x="370" y="185" text-anchor="middle" font-size="8" class="text-primary">Cannot view profile</text>
+  <text x="370" y="200" text-anchor="middle" font-size="8" class="text-primary">Cannot interact</text>
+  <text x="370" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Full protection</text>
+  
+  <rect x="500" y="70" width="240" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Mute User</text>
+  <rect x="520" y="110" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="535" y="125" width="170" height="40" rx="2" class="highlight-purple" stroke-width="1"/>
+  <text x="620" y="145" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">🔇 Muted</text>
+  <text x="620" y="160" text-anchor="middle" font-size="8" class="text-secondary">Hide from feed</text>
+  <text x="620" y="185" text-anchor="middle" font-size="8" class="text-primary">Still following</text>
+  <text x="620" y="200" text-anchor="middle" font-size="8" class="text-primary">No notification</text>
+  <text x="620" y="245" text-anchor="middle" font-size="9" class="highlight-purple">⚠ Soft restriction</text>
+  
+  <rect x="760" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="870" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Remove Follower</text>
+  <rect x="780" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="795" y="125" width="150" height="40" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="870" y="145" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">👤 Remove</text>
+  <text x="870" y="160" text-anchor="middle" font-size="8" class="text-secondary">Remove from followers</text>
+  <text x="870" y="185" text-anchor="middle" font-size="8" class="text-primary">User can re-follow</text>
+  <text x="870" y="200" text-anchor="middle" font-size="8" class="text-primary">No notification sent</text>
+  <text x="870" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Quiet cleanup</text>
+  
+  <rect x="20" y="260" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Follow Request Flow</text>
+  <rect x="40" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="55" y="315" width="230" height="30" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="170" y="335" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">User requests to follow</text>
+  <line x1="170" y1="345" x2="170" y2="360" class="arrow" stroke-width="1.5"/>
+  <rect x="55" y="360" width="230" height="30" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="170" y="380" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Owner receives notification</text>
+  <line x1="170" y1="390" x2="170" y2="405" class="arrow" stroke-width="1.5"/>
+  <rect x="55" y="405" width="105" height="25" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="107" y="422" text-anchor="middle" font-size="7" font-weight="bold" class="text-primary">Approve</text>
+  <rect x="170" y="405" width="105" height="25" rx="2" class="highlight-red" stroke-width="1"/>
+  <text x="222" y="422" text-anchor="middle" font-size="7" font-weight="bold" class="text-primary">Deny</text>
+  
+  <rect x="340" y="260" width="320" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Follower Management</text>
+  <rect x="360" y="300" width="280" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="375" y="315" width="250" height="30" rx="2" class="box-base" stroke-width="1"/>
+  <text x="390" y="335" font-size="8" font-weight="bold" class="text-primary">👥 Followers List</text>
+  <text x="580" y="335" text-anchor="end" font-size="8" class="text-secondary">View all</text>
+  <rect x="375" y="350" width="250" height="30" rx="2" class="box-base" stroke-width="1"/>
+  <text x="390" y="370" font-size="8" font-weight="bold" class="text-primary">🗑️ Remove Follower</text>
+  <text x="580" y="370" text-anchor="end" font-size="8" class="text-secondary">Per user</text>
+  <rect x="375" y="385" width="250" height="30" rx="2" class="box-base" stroke-width="1"/>
+  <text x="390" y="405" font-size="8" font-weight="bold" class="text-primary">🚫 Block User</text>
+  <text x="580" y="405" text-anchor="end" font-size="8" class="text-secondary">Full restriction</text>
+  
+  <rect x="680" y="260" width="300" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="830" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Privacy Comparison</text>
+  <rect x="700" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <text x="715" y="320" font-size="8" font-weight="bold" class="text-primary">Action</text>
+  <text x="850" y="320" font-size="8" font-weight="bold" class="text-primary">Visibility</text>
+  <line x1="710" y1="330" x2="950" y2="330" class="arrow" stroke-width="1"/>
+  <text x="715" y="345" font-size="7" class="text-primary">Block</text>
+  <text x="850" y="345" font-size="7" class="highlight-red">Hidden</text>
+  <line x1="710" y1="355" x2="950" y2="355" class="arrow" stroke-width="1"/>
+  <text x="715" y="370" font-size="7" class="text-primary">Mute</text>
+  <text x="850" y="370" font-size="7" class="highlight-purple">User unaware</text>
+  <line x1="710" y1="380" x2="950" y2="380" class="arrow" stroke-width="1"/>
+  <text x="715" y="395" font-size="7" class="text-primary">Remove</text>
+  <text x="850" y="395" font-size="7" class="highlight-blue">Can re-follow</text>
+  <line x1="710" y1="405" x2="950" y2="405" class="arrow" stroke-width="1"/>
+  <text x="715" y="420" font-size="7" class="text-primary">Deny Request</text>
+  <text x="850" y="420" font-size="7" class="highlight-purple">Requester notified</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,10 @@
+{
+  "name": "frontend-data-storage-localstorage-example-2",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "node ttl-storage.js"
+  }
+}
+

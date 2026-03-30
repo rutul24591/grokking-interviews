@@ -1,7 +1,5 @@
-# Error States Example
+# Error States Examples
 
-This example demonstrates the core implementation ideas for this concept.
-
-## Files
-- Minimal-Code-Pattern.txt
-- Comprehensive-Example.txt
+- `example-1`: recovery-focused error handling app with retry and partial-data fallback.
+- `example-2`: classify retryable vs terminal failures.
+- `example-3`: user-facing messaging audit.

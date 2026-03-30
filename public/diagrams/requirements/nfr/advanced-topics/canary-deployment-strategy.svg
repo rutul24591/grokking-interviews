@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="1000" height="550" class="bg-base"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Canary Deployment Strategy</text>
+  
+  <!-- Progression stages -->
+  <rect x="50" y="80" width="180" height="100" rx="5" class="box-base" stroke-width="2"/>
+  <text x="140" y="105" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Stage 1: 1%</text>
+  <rect x="70" y="120" width="140" height="45" rx="3" class="accent-box" stroke-width="1"/>
+  <text x="140" y="140" text-anchor="middle" font-size="9" class="text-primary">1% of users</text>
+  <text x="140" y="160" text-anchor="middle" font-size="9" class="text-secondary">Internal testing</text>
+  
+  <line x1="230" y1="130" x2="270" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="270" y="80" width="180" height="100" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="360" y="105" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Stage 2: 10%</text>
+  <rect x="290" y="120" width="140" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="360" y="140" text-anchor="middle" font-size="9" class="text-primary">10% of users</text>
+  <text x="360" y="160" text-anchor="middle" font-size="9" class="text-secondary">Early adopters</text>
+  
+  <line x1="450" y1="130" x2="490" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="490" y="80" width="180" height="100" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="580" y="105" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Stage 3: 50%</text>
+  <rect x="510" y="120" width="140" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="580" y="140" text-anchor="middle" font-size="9" class="text-primary">50% of users</text>
+  <text x="580" y="160" text-anchor="middle" font-size="9" class="text-secondary">Majority rollout</text>
+  
+  <line x1="670" y1="130" x2="710" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="710" y="80" width="180" height="100" rx="5" class="highlight-green" stroke-width="2"/>
+  <text x="800" y="105" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Stage 4: 100%</text>
+  <rect x="730" y="120" width="140" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="800" y="140" text-anchor="middle" font-size="9" class="text-primary">100% of users</text>
+  <text x="800" y="160" text-anchor="middle" font-size="9" class="text-secondary">Full deployment</text>
+  
+  <!-- Monitoring checkpoints -->
+  <rect x="50" y="220" width="840" height="120" rx="5" class="box-base" stroke-width="2"/>
+  <text x="470" y="245" text-anchor="middle" font-size="16" font-weight="bold" class="text-primary">Monitoring Checkpoints (After Each Stage)</text>
+  
+  <rect x="70" y="260" width="200" height="65" rx="3" class="accent-box" stroke-width="1"/>
+  <text x="170" y="280" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Error Rate</text>
+  <text x="170" y="300" text-anchor="middle" font-size="9" class="text-secondary">Threshold: &lt;1%</text>
+  <text x="170" y="315" text-anchor="middle" font-size="9" class="highlight-green">✓ Critical metric</text>
+  
+  <rect x="290" y="260" width="200" height="65" rx="3" class="accent-box" stroke-width="1"/>
+  <text x="390" y="280" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Latency (p95)</text>
+  <text x="390" y="300" text-anchor="middle" font-size="9" class="text-secondary">Threshold: &lt;200ms</text>
+  <text x="390" y="315" text-anchor="middle" font-size="9" class="highlight-green">✓ Performance</text>
+  
+  <rect x="510" y="260" width="200" height="65" rx="3" class="accent-box" stroke-width="1"/>
+  <text x="610" y="280" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Success Rate</text>
+  <text x="610" y="300" text-anchor="middle" font-size="9" class="text-secondary">Threshold: &gt;99%</text>
+  <text x="610" y="315" text-anchor="middle" font-size="9" class="highlight-green">✓ Reliability</text>
+  
+  <rect x="730" y="260" width="140" height="65" rx="3" class="accent-box" stroke-width="1"/>
+  <text x="800" y="280" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">User Feedback</text>
+  <text x="800" y="300" text-anchor="middle" font-size="9" class="text-secondary">Support tickets</text>
+  <text x="800" y="315" text-anchor="middle" font-size="9" class="highlight-purple">⚠ Qualitative</text>
+  
+  <!-- Rollback flow -->
+  <rect x="50" y="370" width="400" height="150" rx="5" class="highlight-red" stroke-width="2.5"/>
+  <text x="250" y="395" text-anchor="middle" font-size="16" font-weight="bold" class="text-primary">Automated Rollback Triggers</text>
+  
+  <rect x="70" y="410" width="360" height="35" rx="3" class="box-base" stroke-width="1"/>
+  <text x="250" y="432" text-anchor="middle" font-size="10" class="highlight-red">🚨 Error rate exceeds threshold → Auto-rollback</text>
+  
+  <rect x="70" y="450" width="360" height="35" rx="3" class="box-base" stroke-width="1"/>
+  <text x="250" y="472" text-anchor="middle" font-size="10" class="highlight-red">🚨 Latency spike detected → Pause rollout</text>
+  
+  <rect x="70" y="490" width="360" height="35" rx="3" class="box-base" stroke-width="1"/>
+  <text x="250" y="512" text-anchor="middle" font-size="10" class="highlight-red">🚨 Success rate drops → Auto-rollback</text>
+  
+  <!-- Success flow -->
+  <rect x="470" y="370" width="420" height="150" rx="5" class="highlight-green" stroke-width="2.5"/>
+  <text x="680" y="395" text-anchor="middle" font-size="16" font-weight="bold" class="text-primary">Success Criteria (Advance to Next Stage)</text>
+  
+  <rect x="490" y="410" width="380" height="35" rx="3" class="box-base" stroke-width="1"/>
+  <text x="680" y="432" text-anchor="middle" font-size="10" class="highlight-green">✓ Error rate stable for 30 minutes</text>
+  
+  <rect x="490" y="450" width="380" height="35" rx="3" class="box-base" stroke-width="1"/>
+  <text x="680" y="472" text-anchor="middle" font-size="10" class="highlight-green">✓ No increase in support tickets</text>
+  
+  <rect x="490" y="490" width="380" height="35" rx="3" class="box-base" stroke-width="1"/>
+  <text x="680" y="512" text-anchor="middle" font-size="10" class="highlight-green">✓ Performance metrics within SLA</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

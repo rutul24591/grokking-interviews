@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">Privacy by Design Framework</text>
+  
+  <!-- Seven Principles -->
+  <rect x="30" y="70" width="840" height="200" rx="5" class="box-base" stroke-width="2"/>
+  <text x="450" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Seven Foundational Principles</text>
+  
+  <rect x="50" y="110" width="110" height="145" rx="3" class="box-base" stroke-width="1"/>
+  <text x="105" y="130" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">1. Proactive</text>
+  <rect x="70" y="145" width="70" height="95" rx="2" class="box-base" stroke-width="1"/>
+  <text x="105" y="165" text-anchor="middle" font-size="8" class="text-primary">Prevent not</text>
+  <text x="105" y="180" text-anchor="middle" font-size="8" class="text-primary">remediate</text>
+  <text x="105" y="195" text-anchor="middle" font-size="8" class="text-primary">Privacy</text>
+  <text x="105" y="210" text-anchor="middle" font-size="8" class="text-primary">breaches</text>
+  <text x="105" y="225" text-anchor="middle" font-size="8" class="text-primary">before</text>
+  <text x="105" y="240" text-anchor="middle" font-size="8" class="text-primary">happen</text>
+  
+  <rect x="175" y="110" width="110" height="145" rx="3" class="accent-box" stroke-width="1"/>
+  <text x="230" y="130" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">2. Default</text>
+  <rect x="195" y="145" width="70" height="95" rx="2" class="box-base" stroke-width="1"/>
+  <text x="230" y="165" text-anchor="middle" font-size="8" class="text-primary">Highest</text>
+  <text x="230" y="180" text-anchor="middle" font-size="8" class="text-primary">privacy</text>
+  <text x="230" y="195" text-anchor="middle" font-size="8" class="text-primary">by</text>
+  <text x="230" y="210" text-anchor="middle" font-size="8" class="text-primary">default</text>
+  <text x="230" y="225" text-anchor="middle" font-size="8" class="text-primary">No</text>
+  <text x="230" y="240" text-anchor="middle" font-size="8" class="text-primary">action</text>
+  <text x="230" y="255" text-anchor="middle" font-size="8" class="text-primary">needed</text>
+  
+  <rect x="300" y="110" width="110" height="145" rx="3" class="highlight-box" stroke-width="1"/>
+  <text x="355" y="130" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">3. Embedded</text>
+  <rect x="320" y="145" width="70" height="95" rx="2" class="box-base" stroke-width="1"/>
+  <text x="355" y="165" text-anchor="middle" font-size="8" class="text-primary">Into</text>
+  <text x="355" y="180" text-anchor="middle" font-size="8" class="text-primary">design</text>
+  <text x="355" y="195" text-anchor="middle" font-size="8" class="text-primary">Not</text>
+  <text x="355" y="210" text-anchor="middle" font-size="8" class="text-primary">bolt-on</text>
+  <text x="355" y="225" text-anchor="middle" font-size="8" class="text-primary">Core</text>
+  <text x="355" y="240" text-anchor="middle" font-size="8" class="text-primary">function</text>
+  
+  <rect x="425" y="110" width="110" height="145" rx="3" class="box-base" stroke-width="1"/>
+  <text x="480" y="130" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">4. Full</text>
+  <rect x="445" y="145" width="70" height="95" rx="2" class="box-base" stroke-width="1"/>
+  <text x="480" y="165" text-anchor="middle" font-size="8" class="text-primary">All</text>
+  <text x="480" y="180" text-anchor="middle" font-size="8" class="text-primary">data</text>
+  <text x="480" y="195" text-anchor="middle" font-size="8" class="text-primary">lifecycle</text>
+  <text x="480" y="210" text-anchor="middle" font-size="8" class="text-primary">Collect</text>
+  <text x="480" y="225" text-anchor="middle" font-size="8" class="text-primary">to</text>
+  <text x="480" y="240" text-anchor="middle" font-size="8" class="text-primary">delete</text>
+  
+  <rect x="550" y="110" width="110" height="145" rx="3" class="accent-box" stroke-width="1"/>
+  <text x="605" y="130" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">5. Visible</text>
+  <rect x="570" y="145" width="70" height="95" rx="2" class="box-base" stroke-width="1"/>
+  <text x="605" y="165" text-anchor="middle" font-size="8" class="text-primary">Keep</text>
+  <text x="605" y="180" text-anchor="middle" font-size="8" class="text-primary">open</text>
+  <text x="605" y="195" text-anchor="middle" font-size="8" class="text-primary">Transparent</text>
+  <text x="605" y="210" text-anchor="middle" font-size="8" class="text-primary">Verifiable</text>
+  <text x="605" y="225" text-anchor="middle" font-size="8" class="text-primary">Accountable</text>
+  
+  <rect x="675" y="110" width="110" height="145" rx="3" class="highlight-box" stroke-width="1"/>
+  <text x="730" y="130" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">6. Respect</text>
+  <rect x="695" y="145" width="70" height="95" rx="2" class="box-base" stroke-width="1"/>
+  <text x="730" y="165" text-anchor="middle" font-size="8" class="text-primary">User</text>
+  <text x="730" y="180" text-anchor="middle" font-size="8" class="text-primary">interests</text>
+  <text x="730" y="195" text-anchor="middle" font-size="8" class="text-primary">Consent</text>
+  <text x="730" y="210" text-anchor="middle" font-size="8" class="text-primary">Accuracy</text>
+  <text x="730" y="225" text-anchor="middle" font-size="8" class="text-primary">Access</text>
+  <text x="730" y="240" text-anchor="middle" font-size="8" class="text-primary">Compliance</text>
+  
+  <!-- Implementation Layers -->
+  <rect x="30" y="290" width="840" height="180" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="450" y="315" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Implementation Across System Layers</text>
+  
+  <rect x="50" y="330" width="190" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="145" y="350" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Data Layer</text>
+  <rect x="70" y="365" width="150" height="75" rx="2" class="box-base" stroke-width="1"/>
+  <text x="145" y="385" text-anchor="middle" font-size="9" class="text-primary">• Encryption</text>
+  <text x="145" y="400" text-anchor="middle" font-size="9" class="text-primary">• Minimization</text>
+  <text x="145" y="415" text-anchor="middle" font-size="9" class="text-primary">• Retention</text>
+  <text x="145" y="430" text-anchor="middle" font-size="9" class="text-primary">• Anonymization</text>
+  
+  <rect x="255" y="330" width="190" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="350" y="350" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Application Layer</text>
+  <rect x="275" y="365" width="150" height="75" rx="2" class="box-base" stroke-width="1"/>
+  <text x="350" y="385" text-anchor="middle" font-size="9" class="text-primary">• Access controls</text>
+  <text x="350" y="400" text-anchor="middle" font-size="9" class="text-primary">• Consent mgmt</text>
+  <text x="350" y="415" text-anchor="middle" font-size="9" class="text-primary">• Audit logging</text>
+  <text x="350" y="430" text-anchor="middle" font-size="9" class="text-primary">• Data export</text>
+  
+  <rect x="460" y="330" width="190" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="555" y="350" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">UI Layer</text>
+  <rect x="480" y="365" width="150" height="75" rx="2" class="box-base" stroke-width="1"/>
+  <text x="555" y="385" text-anchor="middle" font-size="9" class="text-primary">• Privacy notices</text>
+  <text x="555" y="400" text-anchor="middle" font-size="9" class="text-primary">• Consent UI</text>
+  <text x="555" y="415" text-anchor="middle" font-size="9" class="text-primary">• Settings</text>
+  <text x="555" y="430" text-anchor="middle" font-size="9" class="text-primary">• Transparency</text>
+  
+  <rect x="665" y="330" width="190" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="760" y="350" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Process Layer</text>
+  <rect x="685" y="365" width="150" height="75" rx="2" class="box-base" stroke-width="1"/>
+  <text x="760" y="385" text-anchor="middle" font-size="9" class="text-primary">• DPIA</text>
+  <text x="760" y="400" text-anchor="middle" font-size="9" class="text-primary">• Training</text>
+  <text x="760" y="415" text-anchor="middle" font-size="9" class="text-primary">• Incident response</text>
+  <text x="760" y="430" text-anchor="middle" font-size="9" class="text-primary">• Vendor mgmt</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

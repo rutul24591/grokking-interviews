@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="1000" height="450" class="bg-base"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Engagement Metrics Computation</text>
+  
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Total Likes</text>
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="55" y="125" width="150" height="40" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="130" y="145" text-anchor="middle" font-size="9" class="text-primary">likes_count = Σ(likes)</text>
+  <text x="130" y="185" text-anchor="middle" font-size="8" class="text-secondary">User 1: +1</text>
+  <text x="130" y="200" text-anchor="middle" font-size="8" class="text-secondary">User 2: +1</text>
+  <text x="130" y="215" text-anchor="middle" font-size="8" class="highlight-green">Total: 2</text>
+  <text x="130" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Simple aggregation</text>
+  
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Engagement Rate</text>
+  <rect x="280" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="295" y="125" width="150" height="50" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="370" y="145" text-anchor="middle" font-size="8" class="text-primary">Rate = (L+C+S)/V</text>
+  <text x="370" y="165" text-anchor="middle" font-size="7" class="text-secondary">L=likes, C=comments</text>
+  <text x="370" y="195" text-anchor="middle" font-size="8" class="text-secondary">(100+20+10)/1000</text>
+  <text x="370" y="210" text-anchor="middle" font-size="8" class="highlight-green">= 13% engagement</text>
+  <text x="370" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Quality metric</text>
+  
+  <rect x="500" y="70" width="240" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Trending Score</text>
+  <rect x="520" y="110" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="535" y="125" width="170" height="50" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="620" y="145" text-anchor="middle" font-size="8" class="text-primary">Score = Σ(votes × decay)</text>
+  <text x="620" y="165" text-anchor="middle" font-size="7" class="text-secondary">decay(t) = e^(-λt)</text>
+  <text x="620" y="195" text-anchor="middle" font-size="8" class="text-secondary">Recent votes weighted higher</text>
+  <text x="620" y="210" text-anchor="middle" font-size="8" class="highlight-green">New content can trend</text>
+  <text x="620" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Time-sensitive</text>
+  
+  <rect x="20" y="260" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Unique Viewers (HLL)</text>
+  <rect x="40" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="55" y="315" width="230" height="40" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="170" y="335" text-anchor="middle" font-size="8" class="text-primary">HLL(user_ids) → cardinality</text>
+  <text x="170" y="370" text-anchor="middle" font-size="8" class="highlight-green">99% accurate</text>
+  <text x="170" y="385" text-anchor="middle" font-size="8" class="highlight-purple">~1% error margin</text>
+  <text x="170" y="400" text-anchor="middle" font-size="8" class="highlight-green">10x more scalable</text>
+  <text x="170" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Approximate at scale</text>
+  
+  <rect x="340" y="260" width="320" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Time-Bucketed Counts</text>
+  <rect x="360" y="300" width="280" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="375" y="315" width="250" height="30" rx="2" class="box-base" stroke-width="1"/>
+  <text x="390" y="335" font-size="8" class="text-primary">Today: 1,234 likes</text>
+  <text x="390" y="345" font-size="7" class="text-secondary">2026-03-25 bucket</text>
+  <rect x="375" y="350" width="250" height="30" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="390" y="370" font-size="8" class="text-primary">Yesterday: 987 likes</text>
+  <text x="390" y="380" font-size="7" class="text-secondary">2026-03-24 bucket</text>
+  <text x="500" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Trend analysis</text>
+  
+  <rect x="680" y="260" width="300" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="830" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Weighted Score</text>
+  <rect x="700" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <text x="715" y="320" font-size="9" font-weight="bold" class="text-primary">Action Weights:</text>
+  <rect x="715" y="330" width="110" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="770" y="347" text-anchor="middle" font-size="7" class="text-primary">Like: 1 point</text>
+  <rect x="835" y="330" width="110" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="890" y="347" text-anchor="middle" font-size="7" class="text-primary">Comment: 3 pts</text>
+  <rect x="715" y="360" width="110" height="25" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="770" y="377" text-anchor="middle" font-size="7" class="text-primary">Share: 5 points</text>
+  <rect x="835" y="360" width="110" height="25" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="890" y="377" text-anchor="middle" font-size="7" class="text-primary">Save: 2 points</text>
+  <text x="830" y="410" text-anchor="middle" font-size="8" class="highlight-purple">Total = Σ(action × weight)</text>
+  <text x="830" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Quality signal</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

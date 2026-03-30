@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Cold Start Solutions</text>
+  
+  <!-- Split: New Users (Left) vs New Items (Right) -->
+  <line x1="500" y1="60" x2="500" y2="430" class="arrow" stroke-width="1" stroke-dasharray="5,5"/>
+  
+  <!-- New Users (Left Side) -->
+  <text x="250" y="85" text-anchor="middle" font-size="16" font-weight="bold" class="text-primary">New Users (No History)</text>
+  
+  <!-- Onboarding Flow -->
+  <rect x="40" y="105" width="200" height="100" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="140" y="135" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Onboarding Flow</text>
+  <text x="140" y="160" text-anchor="middle" font-size="10" class="text-secondary">Ask for interests</text>
+  <text x="140" y="180" text-anchor="middle" font-size="10" class="text-secondary">Follow topics/accounts</text>
+  <text x="140" y="200" text-anchor="middle" font-size="10" class="highlight-green">5-10 selections</text>
+  
+  <!-- Popularity-Based -->
+  <rect x="260" y="105" width="200" height="100" rx="5" class="box-base" stroke-width="2"/>
+  <text x="360" y="135" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Popularity-Based</text>
+  <text x="360" y="160" text-anchor="middle" font-size="10" class="text-secondary">Trending content</text>
+  <text x="360" y="180" text-anchor="middle" font-size="10" class="text-secondary">Top in category</text>
+  <text x="360" y="200" text-anchor="middle" font-size="10" class="highlight-green">Safe fallback</text>
+  
+  <!-- Demographic-Based -->
+  <rect x="480" y="105" width="200" height="100" rx="5" class="box-base" stroke-width="2"/>
+  <text x="580" y="135" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Demographic-Based</text>
+  <text x="580" y="160" text-anchor="middle" font-size="10" class="text-secondary">Age, location, language</text>
+  <text x="580" y="180" text-anchor="middle" font-size="10" class="text-secondary">Similar user preferences</text>
+  <text x="580" y="200" text-anchor="middle" font-size="10" class="highlight-green">Cold start signal</text>
+  
+  <!-- Content Exploration -->
+  <rect x="700" y="105" width="260" height="100" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="830" y="135" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Content Exploration</text>
+  <text x="830" y="160" text-anchor="middle" font-size="10" class="text-secondary">Show diverse content</text>
+  <text x="830" y="180" text-anchor="middle" font-size="10" class="text-secondary">Multi-armed bandit</text>
+  <text x="830" y="200" text-anchor="middle" font-size="10" class="highlight-purple">Learn preferences quickly</text>
+  
+  <!-- Arrow down to Merge -->
+  <line x1="250" y1="205" x2="250" y2="240" class="arrow" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="580" y1="205" x2="580" y2="240" class="arrow" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Blend Strategy -->
+  <rect x="120" y="240" width="260" height="90" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="250" y="270" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Blend Strategy</text>
+  <text x="250" y="295" text-anchor="middle" font-size="10" class="text-secondary">40% Onboarding picks</text>
+  <text x="250" y="315" text-anchor="middle" font-size="10" class="text-secondary">30% Popular + 30% Exploration</text>
+  
+  <!-- New Items (Right Side) -->
+  <text x="750" y="85" text-anchor="middle" font-size="16" font-weight="bold" class="text-primary">New Items (No Engagement)</text>
+  
+  <!-- Content-Based Scoring -->
+  <rect x="540" y="105" width="200" height="100" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="640" y="135" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Content-Based Score</text>
+  <text x="640" y="160" text-anchor="middle" font-size="10" class="text-secondary">Use item features</text>
+  <text x="640" y="180" text-anchor="middle" font-size="10" class="text-secondary">Embeddings, metadata</text>
+  <text x="640" y="200" text-anchor="middle" font-size="10" class="highlight-green">Available immediately</text>
+  
+  <!-- Temporary Boost -->
+  <rect x="760" y="105" width="200" height="100" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="860" y="135" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Temporary Boost</text>
+  <text x="860" y="160" text-anchor="middle" font-size="10" class="text-secondary">Exploration period</text>
+  <text x="860" y="180" text-anchor="middle" font-size="10" class="text-secondary">24-72 hours</text>
+  <text x="860" y="200" text-anchor="middle" font-size="10" class="highlight-purple">Gather initial data</text>
+  
+  <!-- Arrow down -->
+  <line x1="640" y1="205" x2="640" y2="240" class="arrow" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="860" y1="205" x2="860" y2="240" class="arrow" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Show to Early Adopters -->
+  <rect x="620" y="240" width="320" height="90" rx="5" class="box-base" stroke-width="2.5"/>
+  <text x="780" y="270" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Show to Early Adopters</text>
+  <text x="780" y="295" text-anchor="middle" font-size="10" class="text-secondary">Users who engage with new content</text>
+  <text x="780" y="315" text-anchor="middle" font-size="10" class="text-secondary">Higher tolerance for experimentation</text>
+  
+  <!-- Common Metrics (Bottom) -->
+  <rect x="20" y="350" width="460" height="80" rx="5" class="box-base" stroke-width="2"/>
+  <text x="250" y="375" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Success Metrics (New Users)</text>
+  <text x="80" y="400" font-size="10" class="text-primary">•</text>
+  <text x="95" y="400" font-size="10" class="text-secondary">Time to first click (&lt;2 min target)</text>
+  <text x="80" y="420" font-size="10" class="text-primary">•</text>
+  <text x="95" y="420" font-size="10" class="text-secondary">Time to first follow (&lt;5 min target)</text>
+  <text x="280" y="400" font-size="10" class="text-primary">•</text>
+  <text x="295" y="400" font-size="10" class="text-secondary">Day-1 retention (&gt;40% target)</text>
+  <text x="280" y="420" font-size="10" class="text-primary">•</text>
+  <text x="295" y="420" font-size="10" class="text-secondary">Onboarding completion rate</text>
+  
+  <rect x="500" y="350" width="480" height="80" rx="5" class="box-base" stroke-width="2"/>
+  <text x="740" y="375" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Success Metrics (New Items)</text>
+  <text x="540" y="400" font-size="10" class="text-primary">•</text>
+  <text x="555" y="400" font-size="10" class="text-secondary">Time to first engagement</text>
+  <text x="540" y="420" font-size="10" class="text-primary">•</text>
+  <text x="555" y="420" font-size="10" class="text-secondary">Impressions to first click ratio</text>
+  <text x="740" y="400" font-size="10" class="text-primary">•</text>
+  <text x="755" y="400" font-size="10" class="text-secondary">Early engagement velocity</text>
+  <text x="740" y="420" font-size="10" class="text-primary">•</text>
+  <text x="755" y="420" font-size="10" class="text-secondary">Survival rate after boost period</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="1000" height="450" class="bg-base"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Comment Threading Models</text>
+  
+  <rect x="20" y="70" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Flat Threading</text>
+  <rect x="40" y="110" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="55" y="125" width="230" height="25" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="70" y="142" font-size="8" font-weight="bold" class="text-primary">Comment 1 (Top level)</text>
+  <rect x="55" y="155" width="230" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="70" y="172" font-size="8" font-weight="bold" class="text-primary">Comment 2 (Top level)</text>
+  <rect x="55" y="185" width="230" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="70" y="202" font-size="8" font-weight="bold" class="text-primary">Comment 3 (Top level)</text>
+  <text x="170" y="245" text-anchor="middle" font-size="9" class="highlight-purple">⚠ No visual nesting</text>
+  <text x="170" y="260" text-anchor="middle" font-size="9" class="text-secondary">Used by: YouTube, Instagram</text>
+  
+  <rect x="340" y="70" width="320" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Nested Threading</text>
+  <rect x="360" y="110" width="280" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="375" y="125" width="250" height="25" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="390" y="142" font-size="8" font-weight="bold" class="text-primary">Comment 1 (Parent)</text>
+  <line x1="400" y1="150" x2="400" y2="180" class="arrow" stroke-width="1.5"/>
+  <rect x="415" y="155" width="210" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="430" y="172" font-size="8" font-weight="bold" class="text-primary">↳ Reply 1.1</text>
+  <line x1="430" y1="180" x2="430" y2="210" class="arrow" stroke-width="1.5"/>
+  <rect x="445" y="185" width="180" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="460" y="202" font-size="8" font-weight="bold" class="text-primary">↳ Reply 1.1.1</text>
+  <text x="500" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Clear conversations</text>
+  <text x="500" y="260" text-anchor="middle" font-size="9" class="text-secondary">Used by: Reddit, HN</text>
+  
+  <rect x="680" y="70" width="300" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="830" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Hybrid Threading</text>
+  <rect x="700" y="110" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="715" y="125" width="230" height="25" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="730" y="142" font-size="8" font-weight="bold" class="text-primary">Comment 1</text>
+  <rect x="715" y="155" width="230" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="730" y="172" font-size="8" font-weight="bold" class="text-primary">Comment 2</text>
+  <rect x="715" y="185" width="230" height="25" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="730" y="202" font-size="8" font-weight="bold" class="text-primary">Comment 3</text>
+  <text x="800" y="202" text-anchor="start" font-size="7" class="highlight-green">▶ 5 replies</text>
+  <text x="830" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Expandable threads</text>
+  <text x="830" y="260" text-anchor="middle" font-size="9" class="text-secondary">Used by: Facebook</text>
+  
+  <rect x="20" y="260" width="460" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="250" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Depth Limit Comparison</text>
+  <rect x="40" y="300" width="420" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <text x="55" y="320" font-size="9" font-weight="bold" class="text-primary">Unlimited (Reddit):</text>
+  <text x="55" y="340" font-size="8" class="text-secondary">Complex discussions possible, but unreadable on mobile</text>
+  <text x="55" y="360" font-size="9" font-weight="bold" class="text-primary">Limited 2-3 levels (Facebook):</text>
+  <text x="55" y="380" font-size="8" class="text-secondary">Readable on all devices, encourages new threads</text>
+  <text x="55" y="400" font-size="9" font-weight="bold" class="text-primary">Flat (YouTube):</text>
+  <text x="55" y="420" font-size="8" class="text-secondary">Simple, but conversations hard to follow</text>
+  
+  <rect x="500" y="260" width="480" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="740" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Visual Indicators</text>
+  <rect x="520" y="300" width="440" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="535" y="315" width="120" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <line x1="545" y1="325" x2="545" y2="340" class="highlight-blue" stroke-width="2"/>
+  <text x="560" y="337" font-size="7" class="text-primary">Indentation lines</text>
+  <rect x="535" y="355" width="120" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="550" y="372" font-size="7" class="text-primary">Avatar colors</text>
+  <rect x="675" y="315" width="120" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="690" y="332" font-size="7" class="text-primary">Connecting lines</text>
+  <rect x="675" y="355" width="120" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="690" y="372" font-size="7" class="text-primary">Collapse buttons</text>
+  <rect x="815" y="315" width="120" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="830" y="332" font-size="7" class="text-primary">Reply count badges</text>
+  <rect x="815" y="355" width="120" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="830" y="372" font-size="7" class="text-primary">OP highlights</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

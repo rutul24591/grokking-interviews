@@ -1,7 +1,5 @@
-# Cross Browser Testing Example
+# Cross-Browser Testing Examples
 
-This example demonstrates the core implementation ideas for this concept.
-
-## Files
-- Minimal-Code-Pattern.txt
-- Comprehensive-Example.txt
+- `example-1`: compatibility checklist app for critical frontend workflows.
+- `example-2`: support matrix runner.
+- `example-3`: flaky-browser-difference audit.

@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="1000" height="450" class="bg-base"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Share Tracking Flow</text>
+  
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">UTM Parameters</text>
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="55" y="125" width="150" height="85" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="70" y="145" font-size="7" class="text-primary">yoursite.com/page</text>
+  <text x="70" y="160" font-size="7" class="highlight-purple">?utm_source=twitter</text>
+  <text x="70" y="175" font-size="7" class="highlight-purple">utm_medium=social</text>
+  <text x="70" y="190" font-size="7" class="highlight-purple">utm_campaign=share</text>
+  <text x="130" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Track source</text>
+  
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Referral Codes</text>
+  <rect x="280" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="295" y="125" width="150" height="40" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="370" y="145" text-anchor="middle" font-size="8" class="text-primary">yoursite.com/r/ABC123</text>
+  <text x="370" y="160" text-anchor="middle" font-size="7" class="text-secondary">User: @johndoe</text>
+  <rect x="295" y="175" width="150" height="35" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="370" y="195" text-anchor="middle" font-size="8" font-weight="bold" class="highlight-green">🎁 Both get $10</text>
+  <text x="370" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Attribute signups</text>
+  
+  <rect x="500" y="70" width="240" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Click Tracking</text>
+  <rect x="520" y="110" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="535" y="125" width="170" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="620" y="145" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Shared Link Clicked</text>
+  <line x1="620" y1="160" x2="620" y2="175" class="arrow" stroke-width="1.5"/>
+  <rect x="535" y="175" width="170" height="35" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="620" y="195" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Log Event</text>
+  <text x="620" y="205" text-anchor="middle" font-size="7" class="text-secondary">source, user, content</text>
+  <line x1="620" y1="210" x2="620" y2="225" class="arrow" stroke-width="1.5"/>
+  <rect x="535" y="225" width="170" height="35" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="620" y="245" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Redirect to Content</text>
+  <text x="620" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Measure CTR</text>
+  
+  <rect x="20" y="260" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Share Analytics</text>
+  <rect x="40" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="55" y="315" width="110" height="45" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="110" y="335" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">1,234</text>
+  <text x="110" y="355" text-anchor="middle" font-size="8" class="text-secondary">Total Shares</text>
+  <rect x="175" y="315" width="110" height="45" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="230" y="335" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">567</text>
+  <text x="230" y="355" text-anchor="middle" font-size="8" class="text-secondary">Click-throughs</text>
+  <text x="55" y="380" font-size="8" font-weight="bold" class="text-primary">Top Destinations:</text>
+  <text x="55" y="395" font-size="7" class="text-secondary">🐦 Twitter: 45%</text>
+  <text x="150" y="395" font-size="7" class="text-secondary">💬 WhatsApp: 30%</text>
+  <text x="55" y="410" font-size="7" class="text-secondary">📘 Facebook: 15%</text>
+  <text x="150" y="410" font-size="7" class="text-secondary">📧 Email: 10%</text>
+  
+  <rect x="340" y="260" width="320" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Viral Coefficient</text>
+  <rect x="360" y="300" width="280" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <text x="375" y="320" font-size="9" font-weight="bold" class="text-primary">K = i × c</text>
+  <text x="375" y="340" font-size="7" class="text-secondary">i = invites per user</text>
+  <text x="375" y="355" font-size="7" class="text-secondary">c = conversion rate</text>
+  <rect x="375" y="370" width="250" height="35" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="500" y="390" text-anchor="middle" font-size="8" class="text-primary">K = 2.5 × 0.20 = 0.50</text>
+  <text x="500" y="420" text-anchor="middle" font-size="8" class="highlight-purple">K > 1 = Viral growth</text>
+  
+  <rect x="680" y="260" width="300" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="830" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Share Funnel</text>
+  <rect x="700" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="715" y="315" width="230" height="20" rx="1" class="accent-box" stroke-width="1"/>
+  <text x="830" y="329" text-anchor="middle" font-size="7" class="text-primary">10,000 View Content</text>
+  <rect x="730" y="340" width="200" height="20" rx="1" class="accent-box" stroke-width="1"/>
+  <text x="830" y="354" text-anchor="middle" font-size="7" class="text-primary">1,000 Click Share (10%)</text>
+  <rect x="745" y="365" width="170" height="20" rx="1" class="accent-box" stroke-width="1"/>
+  <text x="830" y="379" text-anchor="middle" font-size="7" class="text-primary">500 Complete Share (50%)</text>
+  <rect x="760" y="390" width="140" height="20" rx="1" class="highlight-green" stroke-width="1"/>
+  <text x="830" y="404" text-anchor="middle" font-size="7" class="text-primary">100 Click-throughs (20%)</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

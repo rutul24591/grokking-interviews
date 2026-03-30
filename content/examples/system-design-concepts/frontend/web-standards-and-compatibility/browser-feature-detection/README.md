@@ -1,7 +1,5 @@
-# Browser Feature Detection Example
+# Browser Feature Detection Examples
 
-This example demonstrates the core implementation ideas for this concept.
-
-## Files
-- Minimal-Code-Pattern.txt
-- Comprehensive-Example.txt
+- `example-1`: compatibility lab using feature detection and fallback UI.
+- `example-2`: capability matrix runner.
+- `example-3`: anti-pattern audit for UA sniffing.

@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Scroll Position Management</text>
+  
+  <!-- Phase 1: Save Position (Left) -->
+  <rect x="20" y="70" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Phase 1: Save Before Navigation</text>
+  
+  <!-- User clicks link -->
+  <rect x="40" y="110" width="260" height="50" rx="3" class="box-base" stroke-width="1.5"/>
+  <text x="170" y="135" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">User Clicks Link</text>
+  <text x="170" y="155" text-anchor="middle" font-size="9" class="text-secondary">onBeforeNavigation handler</text>
+  
+  <!-- Arrow down -->
+  <line x1="170" y1="160" x2="170" y2="190" class="arrow" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Save to storage -->
+  <rect x="40" y="190" width="260" height="40" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="170" y="215" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Save to Storage</text>
+  
+  <text x="60" y="255" font-size="10" class="text-secondary">sessionStorage.setItem('feed-scroll', offset)</text>
+  <text x="60" y="275" font-size="10" class="text-secondary">Zustand: useFeedStore.setState({ scrollOffset })</text>
+  
+  <!-- Arrow to Phase 2 -->
+  <line x1="320" y1="155" x2="360" y2="155" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Phase 2: Navigate (Center) -->
+  <rect x="360" y="70" width="280" height="170" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="500" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Phase 2: Navigate</text>
+  
+  <!-- Navigation -->
+  <rect x="380" y="110" width="240" height="120" rx="3" class="box-base" stroke-width="1"/>
+  <text x="500" y="145" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Next.js Router</text>
+  <text x="500" y="170" text-anchor="middle" font-size="10" class="text-secondary">router.push('/post/123')</text>
+  <text x="500" y="195" text-anchor="middle" font-size="10" class="text-secondary">scrollRestoration: 'manual'</text>
+  <text x="500" y="215" text-anchor="middle" font-size="10" class="highlight-green">Prevents auto-scroll to top</text>
+  
+  <!-- Arrow to Phase 3 -->
+  <line x1="640" y1="155" x2="680" y2="155" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Phase 3: Restore Position (Right) -->
+  <rect x="680" y="70" width="300" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="830" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Phase 3: Restore On Return</text>
+  
+  <!-- Page Mount -->
+  <rect x="700" y="110" width="260" height="40" rx="3" class="box-base" stroke-width="1.5"/>
+  <text x="830" y="135" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Page Mount</text>
+  <text x="830" y="145" text-anchor="middle" font-size="9" class="text-secondary">useEffect on mount</text>
+  
+  <!-- Arrow down -->
+  <line x1="830" y1="150" x2="830" y2="175" class="arrow" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Check for saved position -->
+  <rect x="700" y="175" width="260" height="55" rx="3" class="accent-box" stroke-width="1"/>
+  <text x="830" y="200" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Check Saved Position</text>
+  <text x="830" y="220" text-anchor="middle" font-size="9" class="text-secondary">const offset = sessionStorage.getItem()</text>
+  
+  <!-- Arrow down -->
+  <line x1="830" y1="230" x2="830" y2="255" class="arrow" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Restore scroll -->
+  <rect x="700" y="255" width="260" height="55" rx="3" class="highlight-box" stroke-width="1.5"/>
+  <text x="830" y="280" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Restore Scroll</text>
+  <text x="830" y="300" text-anchor="middle" font-size="9" class="text-secondary">window.scrollTo(0, offset)</text>
+  <text x="830" y="315" text-anchor="middle" font-size="9" class="highlight-green">Use requestAnimationFrame</text>
+  
+  <!-- Edge Cases (Bottom Left) -->
+  <rect x="20" y="260" width="460" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="250" y="285" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Edge Cases &amp; Solutions</text>
+  
+  <!-- Dynamic Content -->
+  <rect x="40" y="300" width="420" height="55" rx="3" class="box-base" stroke-width="1"/>
+  <text x="60" y="325" font-size="10" font-weight="bold" class="text-primary">Dynamic Content Changed:</text>
+  <text x="200" y="325" font-size="10" class="text-secondary">If items added/removed, adjust position proportionally</text>
+  <text x="60" y="345" font-size="9" class="highlight-purple">Solution: Use stable item IDs, find item position</text>
+  
+  <!-- Images Loading -->
+  <rect x="40" y="365" width="420" height="55" rx="3" class="box-base" stroke-width="1"/>
+  <text x="60" y="390" font-size="10" font-weight="bold" class="text-primary">Images Loading Late:</text>
+  <text x="200" y="390" font-size="10" class="text-secondary">Layout shift after scroll restore</text>
+  <text x="60" y="410" font-size="9" class="highlight-purple">Solution: Reserve space with aspect ratio, skeleton</text>
+  
+  <!-- Timing Issues (Bottom Right) -->
+  <rect x="500" y="260" width="480" height="170" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="740" y="285" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Implementation Details</text>
+  
+  <!-- Code Example -->
+  <rect x="520" y="300" width="440" height="120" rx="3" class="box-base" stroke-width="1"/>
+  <text x="540" y="325" font-size="10" font-weight="bold" class="text-primary">// Save before navigation</text>
+  <text x="540" y="345" font-size="9" class="text-secondary" font-family="monospace">const handleNavigation = (href) => {</text>
+  <text x="560" y="360" font-size="9" class="text-secondary" font-family="monospace">sessionStorage.setItem('scroll', window.scrollY);</text>
+  <text x="560" y="375" font-size="9" class="text-secondary" font-family="monospace">router.push(href);</text>
+  <text x="540" y="390" font-size="9" class="text-secondary" font-family="monospace">};</text>
+  <text x="540" y="410" font-size="10" font-weight="bold" class="text-primary">// Restore on mount</text>
+  <text x="540" y="430" font-size="9" class="text-secondary" font-family="monospace">useEffect(() => {</text>
+  <text x="560" y="445" font-size="9" class="text-secondary" font-family="monospace">const offset = sessionStorage.getItem('scroll');</text>
+  <text x="560" y="460" font-size="9" class="text-secondary" font-family="monospace">if (offset) requestAnimationFrame(() => window.scrollTo(0, offset));</text>
+  <text x="540" y="475" font-size="9" class="text-secondary" font-family="monospace">}, []);</text>
+  
+  <!-- Key Points (Far Bottom) -->
+  <rect x="20" y="450" width="300" height="60" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="170" y="475" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Key Points</text>
+  <text x="60" y="495" font-size="10" class="text-secondary">✓ Save before navigation</text>
+  <text x="60" y="510" font-size="10" class="text-secondary">✓ Restore after render</text>
+  <text x="200" y="495" font-size="10" class="text-secondary">✓ Use requestAnimationFrame</text>
+  <text x="200" y="510" font-size="10" class="text-secondary">✓ scrollRestoration: manual</text>
+  
+  <rect x="340" y="450" width="300" height="60" rx="5" class="box-base" stroke-width="2"/>
+  <text x="490" y="475" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Storage Options</text>
+  <text x="380" y="495" font-size="10" class="text-secondary">sessionStorage (session only)</text>
+  <text x="380" y="510" font-size="10" class="text-secondary">Zustand/Redux (in-memory)</text>
+  <text x="540" y="495" font-size="10" class="text-secondary">localStorage (persists)</text>
+  <text x="540" y="510" font-size="10" class="text-secondary">URL state (shareable)</text>
+  
+  <rect x="660" y="450" width="320" height="60" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="820" y="475" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Performance Tips</text>
+  <text x="690" y="495" font-size="10" class="text-secondary">Debounce scroll save (100ms)</text>
+  <text x="690" y="510" font-size="10" class="text-secondary">Don't save during smooth scroll</text>
+  <text x="850" y="495" font-size="10" class="highlight-green">Target: &lt;16ms restore</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

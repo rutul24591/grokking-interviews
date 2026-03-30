@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">Client Storage Mechanisms Comparison</text>
+  
+  <!-- Cookies -->
+  <rect x="30" y="70" width="270" height="180" rx="5" class="box-base" stroke-width="2"/>
+  <text x="165" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Cookies</text>
+  <rect x="50" y="110" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="65" y="130" font-size="9" class="text-primary">• 4KB limit</text>
+  <text x="65" y="145" font-size="9" class="text-primary">• Sent with requests</text>
+  <text x="65" y="160" font-size="9" class="text-primary">• HTTP-only option</text>
+  <text x="65" y="175" font-size="9" class="text-primary">• SameSite policies</text>
+  <text x="65" y="190" font-size="9" class="text-primary">• Expiration support</text>
+  <text x="65" y="205" font-size="9" class="highlight-green">✓ Server access</text>
+  <text x="65" y="220" font-size="9" class="highlight-red">⚠ Bandwidth cost</text>
+  <text x="65" y="235" font-size="9" class="highlight-green">✓ Auth tokens</text>
+  
+  <!-- LocalStorage -->
+  <rect x="315" y="70" width="270" height="180" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="450" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">LocalStorage</text>
+  <rect x="335" y="110" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="350" y="130" font-size="9" class="text-primary">• 5-10MB limit</text>
+  <text x="350" y="145" font-size="9" class="text-primary">• Persistent storage</text>
+  <text x="350" y="160" font-size="9" class="text-primary">• Sync API</text>
+  <text x="350" y="175" font-size="9" class="text-primary">• String values only</text>
+  <text x="350" y="190" font-size="9" class="text-primary">• No expiration</text>
+  <text x="350" y="205" font-size="9" class="highlight-green">✓ Simple API</text>
+  <text x="350" y="220" font-size="9" class="highlight-red">⚠ Blocks main thread</text>
+  <text x="350" y="235" font-size="9" class="highlight-green">✓ User prefs</text>
+  
+  <!-- SessionStorage -->
+  <rect x="600" y="70" width="270" height="180" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="735" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">SessionStorage</text>
+  <rect x="620" y="110" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="635" y="130" font-size="9" class="text-primary">• 5-10MB limit</text>
+  <text x="635" y="145" font-size="9" class="text-primary">• Tab-scoped</text>
+  <text x="635" y="160" font-size="9" class="text-primary">• Cleared on close</text>
+  <text x="635" y="175" font-size="9" class="text-primary">• Sync API</text>
+  <text x="635" y="190" font-size="9" class="text-primary">• Per-tab isolation</text>
+  <text x="635" y="205" font-size="9" class="highlight-green">✓ Tab isolation</text>
+  <text x="635" y="220" font-size="9" class="highlight-green">✓ Auto-cleanup</text>
+  <text x="635" y="235" font-size="9" class="highlight-purple">⚠ Not persistent</text>
+  
+  <!-- IndexedDB -->
+  <rect x="30" y="270" width="270" height="180" rx="5" class="box-base" stroke-width="2"/>
+  <text x="165" y="295" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">IndexedDB</text>
+  <rect x="50" y="310" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="65" y="330" font-size="9" class="text-primary">• Large storage (GB)</text>
+  <text x="65" y="345" font-size="9" class="text-primary">• Async API</text>
+  <text x="65" y="360" font-size="9" class="text-primary">• Structured data</text>
+  <text x="65" y="375" font-size="9" class="text-primary">• Indexes & queries</text>
+  <text x="65" y="390" font-size="9" class="text-primary">• Transactions</text>
+  <text x="65" y="405" font-size="9" class="highlight-green">✓ Large data</text>
+  <text x="65" y="420" font-size="9" class="highlight-green">✓ Complex queries</text>
+  <text x="65" y="435" font-size="9" class="highlight-red">⚠ Complex API</text>
+  
+  <!-- Cache API -->
+  <rect x="315" y="270" width="270" height="180" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="450" y="295" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Cache API</text>
+  <rect x="335" y="310" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="350" y="330" font-size="9" class="text-primary">• HTTP caching</text>
+  <text x="350" y="345" font-size="9" class="text-primary">• Request/Response</text>
+  <text x="350" y="360" font-size="9" class="text-primary">• Service Worker</text>
+  <text x="350" y="375" font-size="9" class="text-primary">• Offline support</text>
+  <text x="350" y="390" font-size="9" class="text-primary">• Network fallback</text>
+  <text x="350" y="405" font-size="9" class="highlight-green">✓ Offline-first</text>
+  <text x="350" y="420" font-size="9" class="highlight-green">✓ PWA essential</text>
+  <text x="350" y="435" font-size="9" class="highlight-purple">⚠ SW required</text>
+  
+  <!-- Decision Matrix -->
+  <rect x="600" y="270" width="270" height="180" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="735" y="295" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Storage Selection Guide</text>
+  <rect x="620" y="310" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="635" y="330" font-size="9" class="text-primary">Auth tokens → Cookies</text>
+  <text x="635" y="345" font-size="9" class="text-primary">User prefs → LocalStorage</text>
+  <text x="635" y="360" font-size="9" class="text-primary">Form data → SessionStorage</text>
+  <text x="635" y="375" font-size="9" class="text-primary">Large data → IndexedDB</text>
+  <text x="635" y="390" font-size="9" class="text-primary">Assets → Cache API</text>
+  <text x="635" y="405" font-size="9" class="highlight-green">✓ Use right tool</text>
+  <text x="635" y="420" font-size="9" class="highlight-purple">⚠ Consider limits</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

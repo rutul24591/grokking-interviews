@@ -1,0 +1,176 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Search Bar States</text>
+  
+  <!-- Empty State (Top Left) -->
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Empty State</text>
+  
+  <!-- Search Input -->
+  <rect x="40" y="110" width="180" height="40" rx="5" class="box-base" stroke-width="1.5"/>
+  <text x="60" y="135" font-size="11" class="text-secondary">🔍 Search...</text>
+  
+  <!-- Trending Queries -->
+  <text x="40" y="175" font-size="10" font-weight="bold" class="text-primary">Trending:</text>
+  <text x="40" y="195" font-size="9" class="text-secondary">• Machine learning</text>
+  <text x="40" y="210" font-size="9" class="text-secondary">• Deep learning</text>
+  <text x="130" y="195" font-size="9" class="text-secondary">• AI trends</text>
+  <text x="130" y="210" font-size="9" class="text-secondary">• Neural nets</text>
+  
+  <text x="130" y="235" text-anchor="middle" font-size="10" class="highlight-green">Show on focus</text>
+  
+  <!-- Typing State (Top Center) -->
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Typing State</text>
+  
+  <!-- Search Input with Text -->
+  <rect x="280" y="110" width="180" height="40" rx="5" class="box-base" stroke-width="1.5"/>
+  <text x="300" y="135" font-size="11" class="text-primary">🔍 mach</text>
+  <text x="450" y="135" font-size="14" class="highlight-purple">|</text>
+  
+  <!-- Suggestions Dropdown -->
+  <rect x="280" y="155" width="180" height="75" rx="3" class="box-base" stroke-width="1"/>
+  <text x="295" y="175" font-size="9" class="text-primary">machine </text>
+  <text x="340" y="175" font-size="9" font-weight="bold" class="text-primary">learning</text>
+  <text x="295" y="195" font-size="9" class="text-primary">machine </text>
+  <text x="340" y="195" font-size="9" font-weight="bold" class="text-primary">vision</text>
+  <text x="295" y="215" font-size="9" class="text-primary">machine </text>
+  <text x="340" y="215" font-size="9" font-weight="bold" class="text-primary">translation</text>
+  
+  <text x="370" y="235" text-anchor="middle" font-size="10" class="highlight-purple">Debounce 200-300ms</text>
+  
+  <!-- Recent Searches State (Top Right) -->
+  <rect x="500" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="610" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Recent Searches</text>
+  
+  <!-- Search Input -->
+  <rect x="520" y="110" width="180" height="40" rx="5" class="box-base" stroke-width="1.5"/>
+  <text x="540" y="135" font-size="11" class="text-secondary">🔍</text>
+  <text x="560" y="135" font-size="11" class="text-primary">Clear</text>
+  
+  <!-- Recent List -->
+  <text x="520" y="175" font-size="10" font-weight="bold" class="text-primary">Recent:</text>
+  <text x="520" y="195" font-size="9" class="text-secondary">🕐 machine learning</text>
+  <text x="520" y="210" font-size="9" class="text-secondary">🕐 python tutorial</text>
+  <text x="610" y="195" font-size="9" class="text-secondary">🕐 react hooks</text>
+  
+  <text x="610" y="235" text-anchor="middle" font-size="10" class="highlight-green">localStorage</text>
+  
+  <!-- No Results State (Bottom Left) -->
+  <rect x="20" y="260" width="220" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="130" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">No Results</text>
+  
+  <!-- Search Input -->
+  <rect x="40" y="300" width="180" height="40" rx="5" class="box-base" stroke-width="1.5"/>
+  <text x="60" y="325" font-size="11" class="text-primary">🔍 xyzabc123</text>
+  
+  <!-- No Results Message -->
+  <text x="130" y="365" text-anchor="middle" font-size="10" class="text-secondary">No results for</text>
+  <text x="130" y="380" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">"xyzabc123"</text>
+  
+  <!-- Suggestions -->
+  <text x="50" y="405" font-size="9" class="highlight-purple">Try:</text>
+  <text x="80" y="420" font-size="9" class="text-secondary">• Check spelling</text>
+  
+  <!-- Selected State (Bottom Center) -->
+  <rect x="260" y="260" width="220" height="170" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="370" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Selected State</text>
+  
+  <!-- Search Input -->
+  <rect x="280" y="300" width="180" height="40" rx="5" class="box-base" stroke-width="1.5"/>
+  <text x="300" y="325" font-size="11" class="text-primary">🔍 mach</text>
+  
+  <!-- Suggestions with Selection -->
+  <rect x="280" y="345" width="180" height="75" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="285" y="350" width="170" height="22" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="300" y="365" font-size="9" class="text-primary">machine </text>
+  <text x="345" y="365" font-size="9" font-weight="bold" class="text-primary">learning</text>
+  <text x="300" y="385" font-size="9" class="text-secondary">machine vision</text>
+  <text x="300" y="405" font-size="9" class="text-secondary">machine translation</text>
+  
+  <text x="370" y="425" text-anchor="middle" font-size="10" class="highlight-purple">↑↓ Navigate, Enter</text>
+  
+  <!-- Mobile State (Bottom Right) -->
+  <rect x="500" y="260" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="610" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Mobile State</text>
+  
+  <!-- Mobile Search Input -->
+  <rect x="520" y="300" width="180" height="45" rx="5" class="box-base" stroke-width="1.5"/>
+  <text x="540" y="328" font-size="12" class="text-secondary">🔍</text>
+  <text x="565" y="328" font-size="12" class="text-primary">Search...</text>
+  <text x="685" y="328" font-size="12" class="highlight-purple">🎤</text>
+  
+  <!-- Mobile Keyboard Hint -->
+  <text x="610" y="370" text-anchor="middle" font-size="10" class="text-secondary">Full-width input</text>
+  <text x="610" y="390" text-anchor="middle" font-size="10" class="text-secondary">Large touch targets</text>
+  <text x="610" y="405" text-anchor="middle" font-size="10" class="text-secondary">Voice input option</text>
+  
+  <text x="610" y="425" text-anchor="middle" font-size="10" class="highlight-green">44px min height</text>
+  
+  <!-- State Transitions (Bottom Far) -->
+  <rect x="740" y="260" width="240" height="170" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="860" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">State Transitions</text>
+  
+  <text x="770" y="310" font-size="10" class="text-primary">Empty</text>
+  <text x="810" y="310" font-size="14" class="text-secondary">→</text>
+  <text x="830" y="310" font-size="10" class="text-primary">Focus</text>
+  <text x="880" y="310" font-size="10" class="highlight-green">(show trending)</text>
+  
+  <text x="770" y="335" font-size="10" class="text-primary">Focus</text>
+  <text x="810" y="335" font-size="14" class="text-secondary">→</text>
+  <text x="830" y="335" font-size="10" class="text-primary">Typing</text>
+  <text x="880" y="335" font-size="10" class="highlight-green">(debounce)</text>
+  
+  <text x="770" y="360" font-size="10" class="text-primary">Typing</text>
+  <text x="810" y="360" font-size="14" class="text-secondary">→</text>
+  <text x="830" y="360" font-size="10" class="text-primary">Results</text>
+  <text x="880" y="360" font-size="10" class="highlight-purple">(&lt;100ms)</text>
+  
+  <text x="770" y="385" font-size="10" class="text-primary">Typing</text>
+  <text x="810" y="385" font-size="14" class="text-secondary">→</text>
+  <text x="830" y="385" font-size="10" class="text-primary">No Results</text>
+  <text x="880" y="385" font-size="10" class="text-secondary">(show suggestions)</text>
+  
+  <text x="770" y="410" font-size="10" class="text-primary">Any</text>
+  <text x="810" y="410" font-size="14" class="text-secondary">→</text>
+  <text x="830" y="410" font-size="10" class="text-primary">Selected</text>
+  <text x="880" y="410" font-size="10" class="highlight-purple">(keyboard nav)</text>
+  
+  <!-- Key Interactions -->
+  <text x="770" y="440" font-size="10" font-weight="bold" class="text-primary">Key Interactions:</text>
+  <text x="770" y="455" font-size="9" class="text-secondary">Enter = Submit, Esc = Close, Tab = Next</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

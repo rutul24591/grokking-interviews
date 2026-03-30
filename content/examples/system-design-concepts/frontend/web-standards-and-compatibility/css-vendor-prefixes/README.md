@@ -1,7 +1,5 @@
-# Css Vendor Prefixes Example
+# CSS Vendor Prefixes Examples
 
-This example demonstrates the core implementation ideas for this concept.
-
-## Files
-- Minimal-Code-Pattern.txt
-- Comprehensive-Example.txt
+- `example-1`: compatibility panel showing prefixed and unprefixed fallbacks.
+- `example-2`: prefix policy runner.
+- `example-3`: obsolete-prefix audit.

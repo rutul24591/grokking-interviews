@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">Deployment Strategies Comparison</text>
+  
+  <!-- Recreate -->
+  <rect x="30" y="70" width="270" height="180" rx="5" class="box-base" stroke-width="2"/>
+  <text x="165" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Recreate</text>
+  <rect x="50" y="110" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="65" y="130" font-size="9" class="text-primary">• Stop old version</text>
+  <text x="65" y="145" font-size="9" class="text-primary">• Start new version</text>
+  <text x="65" y="160" font-size="9" class="text-primary">• Downtime required</text>
+  <text x="65" y="175" font-size="9" class="text-primary">• Simple to implement</text>
+  <text x="65" y="190" font-size="9" class="text-primary">• All-or-nothing</text>
+  <text x="65" y="205" font-size="9" class="highlight-red">⚠ Downtime</text>
+  <text x="65" y="220" font-size="9" class="highlight-red">⚠ Risky</text>
+  <text x="65" y="235" font-size="9" class="highlight-green">✓ Simple</text>
+  
+  <!-- Rolling -->
+  <rect x="315" y="70" width="270" height="180" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="450" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Rolling Update</text>
+  <rect x="335" y="110" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="350" y="130" font-size="9" class="text-primary">• Replace gradually</text>
+  <text x="350" y="145" font-size="9" class="text-primary">• No downtime</text>
+  <text x="350" y="160" font-size="9" class="text-primary">• Mixed versions</text>
+  <text x="350" y="175" font-size="9" class="text-primary">• Auto-rollback</text>
+  <text x="350" y="190" font-size="9" class="text-primary">• Health checks</text>
+  <text x="350" y="205" font-size="9" class="highlight-green">✓ Zero downtime</text>
+  <text x="350" y="220" font-size="9" class="highlight-purple">⚠ Version mix</text>
+  <text x="350" y="235" font-size="9" class="highlight-green">✓ Safe</text>
+  
+  <!-- Blue-Green -->
+  <rect x="600" y="70" width="270" height="180" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="735" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Blue-Green</text>
+  <rect x="620" y="110" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="635" y="130" font-size="9" class="text-primary">• Two environments</text>
+  <text x="635" y="145" font-size="9" class="text-primary">• Switch traffic</text>
+  <text x="635" y="160" font-size="9" class="text-primary">• Instant rollback</text>
+  <text x="635" y="175" font-size="9" class="text-primary">• Full testing first</text>
+  <text x="635" y="190" font-size="9" class="text-primary">• 2x resources</text>
+  <text x="635" y="205" font-size="9" class="highlight-green">✓ Instant rollback</text>
+  <text x="635" y="220" font-size="9" class="highlight-red">⚠ 2x cost</text>
+  <text x="635" y="235" font-size="9" class="highlight-green">✓ Safe</text>
+  
+  <!-- Canary -->
+  <rect x="30" y="270" width="270" height="180" rx="5" class="box-base" stroke-width="2"/>
+  <text x="165" y="295" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Canary</text>
+  <rect x="50" y="310" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="65" y="330" font-size="9" class="text-primary">• Small % first</text>
+  <text x="65" y="345" font-size="9" class="text-primary">• Monitor metrics</text>
+  <text x="65" y="360" font-size="9" class="text-primary">• Gradual rollout</text>
+  <text x="65" y="375" font-size="9" class="text-primary">• Auto-stop on errors</text>
+  <text x="65" y="390" font-size="9" class="text-primary">• Risk mitigation</text>
+  <text x="65" y="405" font-size="9" class="highlight-green">✓ Lowest risk</text>
+  <text x="65" y="420" font-size="9" class="highlight-green">✓ Real-world test</text>
+  <text x="65" y="435" font-size="9" class="highlight-purple">⚠ Complex</text>
+  
+  <!-- Comparison Table -->
+  <rect x="315" y="270" width="555" height="180" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="592" y="295" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Strategy Comparison</text>
+  
+  <rect x="335" y="310" width="515" height="125" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="350" y="330" font-size="8" font-weight="bold" class="text-primary">Strategy</text>
+  <text x="450" y="330" font-size="8" font-weight="bold" class="text-primary">Downtime</text>
+  <text x="550" y="330" font-size="8" font-weight="bold" class="text-primary">Risk</text>
+  <text x="650" y="330" font-size="8" font-weight="bold" class="text-primary">Cost</text>
+  <text x="750" y="330" font-size="8" font-weight="bold" class="text-primary">Best For</text>
+  
+  <line x1="340" y1="340" x2="820" y2="340" class="arrow" stroke-width="1"/>
+  <text x="350" y="355" font-size="7" class="text-primary">Recreate</text>
+  <text x="450" y="355" font-size="7" class="highlight-red">Yes</text>
+  <text x="550" y="355" font-size="7" class="highlight-red">High</text>
+  <text x="650" y="355" font-size="7" class="highlight-green">Low</text>
+  <text x="750" y="355" font-size="7" class="text-secondary">Dev/Test</text>
+  
+  <line x1="340" y1="370" x2="820" y2="370" class="arrow" stroke-width="1"/>
+  <text x="350" y="385" font-size="7" class="text-primary">Rolling</text>
+  <text x="450" y="385" font-size="7" class="highlight-green">No</text>
+  <text x="550" y="385" font-size="7" class="highlight-blue">Medium</text>
+  <text x="650" y="385" font-size="7" class="highlight-green">Low</text>
+  <text x="750" y="385" font-size="7" class="text-secondary">Production</text>
+  
+  <line x1="340" y1="400" x2="820" y2="400" class="arrow" stroke-width="1"/>
+  <text x="350" y="415" font-size="7" class="text-primary">Blue-Green</text>
+  <text x="450" y="415" font-size="7" class="highlight-green">No</text>
+  <text x="550" y="415" font-size="7" class="highlight-green">Low</text>
+  <text x="650" y="415" font-size="7" class="highlight-red">High</text>
+  <text x="750" y="415" font-size="7" class="text-secondary">Critical apps</text>
+  
+  <line x1="340" y1="430" x2="820" y2="430" class="arrow" stroke-width="1"/>
+  <text x="350" y="445" font-size="7" class="text-primary">Canary</text>
+  <text x="450" y="445" font-size="7" class="highlight-green">No</text>
+  <text x="550" y="445" font-size="7" class="highlight-green">Lowest</text>
+  <text x="650" y="445" font-size="7" class="highlight-blue">Medium</text>
+  <text x="750" y="445" font-size="7" class="text-secondary">High traffic</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

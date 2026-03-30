@@ -1,0 +1,171 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Search Indexing Pipeline</text>
+  
+  <!-- Document Ingestion -->
+  <rect x="20" y="70" width="140" height="80" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="90" y="100" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Document</text>
+  <text x="90" y="120" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Ingestion</text>
+  <text x="90" y="140" text-anchor="middle" font-size="9" class="text-secondary">API / Kafka</text>
+  
+  <!-- Arrow to Parser -->
+  <line x1="160" y1="110" x2="200" y2="110" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Document Parser -->
+  <rect x="200" y="70" width="140" height="80" rx="5" class="box-base" stroke-width="2"/>
+  <text x="270" y="100" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Document</text>
+  <text x="270" y="120" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Parser</text>
+  <text x="270" y="140" text-anchor="middle" font-size="9" class="text-secondary">HTML, PDF, Text</text>
+  
+  <!-- Arrow to Analyzer -->
+  <line x1="340" y1="110" x2="380" y2="110" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Analyzer Chain -->
+  <rect x="380" y="60" width="180" height="100" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="470" y="90" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Analyzer Chain</text>
+  
+  <!-- Char Filter -->
+  <rect x="400" y="105" width="140" height="30" rx="3" class="box-base" stroke-width="1"/>
+  <text x="470" y="125" text-anchor="middle" font-size="10" class="text-secondary">Char Filter</text>
+  
+  <!-- Tokenizer -->
+  <rect x="400" y="140" width="140" height="30" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="470" y="160" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Tokenizer</text>
+  
+  <!-- Arrow to Token Filters -->
+  <line x1="560" y1="110" x2="600" y2="110" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Token Filters -->
+  <rect x="600" y="60" width="180" height="100" rx="5" class="box-base" stroke-width="2"/>
+  <text x="690" y="90" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Token Filters</text>
+  
+  <text x="630" y="115" font-size="9" class="text-secondary">Lowercase</text>
+  <text x="630" y="130" font-size="9" class="text-secondary">Stemming</text>
+  <text x="630" y="145" font-size="9" class="text-secondary">Stop Words</text>
+  
+  <text x="740" y="115" font-size="9" class="text-secondary">Synonyms</text>
+  <text x="740" y="130" font-size="9" class="text-secondary">ASCII Fold</text>
+  <text x="740" y="145" font-size="9" class="text-secondary">N-grams</text>
+  
+  <!-- Arrow to Index Writer -->
+  <line x1="780" y1="110" x2="820" y2="110" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Index Writer -->
+  <rect x="820" y="70" width="160" height="80" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="900" y="100" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Index</text>
+  <text x="900" y="120" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Writer</text>
+  <text x="900" y="140" text-anchor="middle" font-size="9" class="text-secondary">Segments, FST</text>
+  
+  <!-- Arrow down to Storage -->
+  <line x1="900" y1="150" x2="900" y2="190" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Segment Storage -->
+  <rect x="780" y="190" width="200" height="120" rx="5" class="box-base" stroke-width="2"/>
+  <text x="880" y="220" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Segment Storage</text>
+  
+  <!-- Segments -->
+  <rect x="800" y="235" width="70" height="60" rx="3" class="box-base" stroke-width="1"/>
+  <text x="835" y="260" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Segment 1</text>
+  <text x="835" y="280" text-anchor="middle" font-size="9" class="highlight-green">Committed</text>
+  
+  <rect x="880" y="235" width="70" height="60" rx="3" class="box-base" stroke-width="1"/>
+  <text x="915" y="260" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Segment 2</text>
+  <text x="915" y="280" text-anchor="middle" font-size="9" class="highlight-green">Committed</text>
+  
+  <rect x="840" y="300" width="70" height="60" rx="3" class="highlight-box" stroke-width="1.5"/>
+  <text x="875" y="325" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Segment 3</text>
+  <text x="875" y="345" text-anchor="middle" font-size="9" class="highlight-purple">Active</text>
+  
+  <!-- Refresh/Commit (Bottom Left) -->
+  <rect x="20" y="200" width="300" height="140" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="170" y="230" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Refresh &amp; Commit</text>
+  
+  <text x="50" y="260" font-size="11" class="text-primary">Refresh (1s default):</text>
+  <text x="50" y="280" font-size="10" class="text-secondary">• New segment searchable</text>
+  <text x="50" y="298" font-size="10" class="text-secondary">• Not durable (in memory)</text>
+  
+  <text x="180" y="260" font-size="11" class="text-primary">Commit:</text>
+  <text x="180" y="280" font-size="10" class="text-secondary">• Durable (on disk)</text>
+  <text x="180" y="298" font-size="10" class="text-secondary">• Transaction log updated</text>
+  
+  <text x="50" y="325" font-size="10" class="highlight-green">● Near-real-time search</text>
+  
+  <!-- Segment Merging (Bottom Center) -->
+  <rect x="340" y="200" width="320" height="140" rx="5" class="box-base" stroke-width="2"/>
+  <text x="500" y="230" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Segment Merging</text>
+  
+  <!-- Before Merge -->
+  <rect x="360" y="245" width="120" height="80" rx="3" class="box-base" stroke-width="1"/>
+  <text x="420" y="270" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Before Merge</text>
+  <text x="420" y="290" font-size="9" class="text-secondary">Segment A (small)</text>
+  <text x="420" y="305" font-size="9" class="text-secondary">Segment B (small)</text>
+  <text x="420" y="320" font-size="9" class="text-secondary">Segment C (small)</text>
+  
+  <!-- Arrow -->
+  <line x1="480" y1="285" x2="510" y2="285" class="arrow" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- After Merge -->
+  <rect x="520" y="245" width="120" height="80" rx="3" class="highlight-box" stroke-width="1.5"/>
+  <text x="580" y="270" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">After Merge</text>
+  <text x="580" y="295" font-size="9" class="text-secondary">Segment ABC</text>
+  <text x="580" y="310" font-size="9" class="highlight-green">Larger, optimized</text>
+  <text x="580" y="325" font-size="9" class="highlight-purple">Deleted docs removed</text>
+  
+  <!-- Search Flow (Bottom Right) -->
+  <rect x="680" y="200" width="300" height="140" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="830" y="230" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Search Across Segments</text>
+  
+  <text x="710" y="260" font-size="10" class="text-primary">Query executes against:</text>
+  <text x="710" y="280" font-size="9" class="text-secondary">• All committed segments</text>
+  <text x="710" y="298" font-size="9" class="text-secondary">• Current uncommitted segment</text>
+  
+  <text x="710" y="325" font-size="10" class="highlight-purple">● Results merged &amp; sorted</text>
+  <text x="710" y="343" font-size="10" class="text-secondary">More segments = slower search</text>
+  
+  <!-- Example Analysis (Bottom Far) -->
+  <rect x="20" y="360" width="460" height="70" rx="5" class="box-base" stroke-width="1.5"/>
+  <text x="250" y="385" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Example: "Machine Learning!" → Analyzer</text>
+  
+  <text x="60" y="410" font-size="10" class="text-secondary">Original:</text>
+  <text x="120" y="410" font-size="10" class="text-primary">"Machine Learning!"</text>
+  
+  <text x="220" y="410" font-size="10" class="text-secondary">Lowercase:</text>
+  <text x="290" y="410" font-size="10" class="text-primary">"machine learning!"</text>
+  
+  <text x="380" y="410" font-size="10" class="text-secondary">Tokens:</text>
+  <text x="440" y="410" font-size="10" class="highlight-green">["machine", "learning"]</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

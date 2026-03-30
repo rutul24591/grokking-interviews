@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="1000" height="500" class="bg-base"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Follow Architecture</text>
+  
+  <rect x="20" y="70" width="180" height="100" rx="5" class="box-base" stroke-width="2"/>
+  <text x="110" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Client</text>
+  <rect x="40" y="110" width="140" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="55" y="130" font-size="9" class="text-primary">• Follow button</text>
+  <text x="55" y="148" font-size="9" class="text-primary">• Optimistic update</text>
+  
+  <line x1="200" y1="120" x2="240" y2="120" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="240" y="70" width="200" height="100" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="340" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">API Layer</text>
+  <rect x="260" y="110" width="160" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="275" y="130" font-size="9" class="text-primary">• Validate request</text>
+  <text x="275" y="148" font-size="9" class="text-secondary">• Rate limiting</text>
+  
+  <line x1="440" y1="120" x2="480" y2="120" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="480" y="70" width="200" height="100" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="580" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Social Graph</text>
+  <rect x="500" y="110" width="160" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="515" y="130" font-size="9" class="text-secondary">Follow relationships</text>
+  <text x="515" y="148" font-size="9" class="text-secondary">Sharded storage</text>
+  
+  <line x1="680" y1="120" x2="720" y2="120" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="720" y="70" width="260" height="100" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="850" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Cache Layer</text>
+  <rect x="740" y="110" width="220" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="755" y="130" font-size="9" class="text-primary">• Redis counts</text>
+  <text x="755" y="148" font-size="9" class="text-secondary">• Relationship cache</text>
+  
+  <line x1="580" y1="170" x2="580" y2="210" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="480" y="210" width="200" height="120" rx="5" class="box-base" stroke-width="2"/>
+  <text x="580" y="235" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Event Queue</text>
+  <rect x="500" y="250" width="160" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="515" y="270" font-size="9" class="text-primary">• Kafka/SQS</text>
+  <text x="515" y="288" font-size="9" class="text-primary">• Follow events</text>
+  <text x="515" y="306" font-size="9" class="highlight-green">✓ Async processing</text>
+  
+  <line x1="480" y1="270" x2="440" y2="270" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  <line x1="680" y1="270" x2="720" y2="270" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="240" y="210" width="200" height="120" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="340" y="235" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Notifications</text>
+  <rect x="260" y="250" width="160" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="275" y="270" font-size="9" class="text-primary">• Push notification</text>
+  <text x="275" y="288" font-size="9" class="text-primary">• In-app alert</text>
+  <text x="275" y="306" font-size="9" class="highlight-green">✓ User notified</text>
+  
+  <rect x="720" y="210" width="260" height="120" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="850" y="235" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Feed Service</text>
+  <rect x="740" y="250" width="220" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="755" y="270" font-size="9" class="text-primary">• Update follower feeds</text>
+  <text x="755" y="288" font-size="9" class="text-primary">• Content ranking</text>
+  <text x="755" y="306" font-size="9" class="highlight-purple">✓ Feed integration</text>
+  
+  <rect x="20" y="350" width="960" height="130" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="500" y="375" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Follow Flow</text>
+  <rect x="40" y="390" width="920" height="75" rx="3" class="box-base" stroke-width="1"/>
+  <text x="55" y="410" font-size="9" class="text-primary">1. User clicks follow → 2. Optimistic UI update → 3. API validates and creates relationship → 4. Update cache → 5. Event published → 6. Notification sent → 7. Feed updated</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

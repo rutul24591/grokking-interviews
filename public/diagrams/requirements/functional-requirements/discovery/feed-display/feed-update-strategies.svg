@@ -1,0 +1,171 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-blue { fill: #4299e1; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Feed Update Strategies</text>
+  
+  <!-- Pull-to-Refresh (Top Left) -->
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Pull-to-Refresh</text>
+  
+  <!-- Visual -->
+  <rect x="40" y="110" width="180" height="110" rx="3" class="box-base" stroke-width="1"/>
+  <text x="130" y="135" text-anchor="middle" font-size="10" class="text-secondary">Feed Content</text>
+  
+  <!-- Pull indicator -->
+  <path d="M 130 125 L 130 145" class="arrow" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="130" y="140" text-anchor="middle" font-size="14" class="highlight-purple">⬇</text>
+  
+  <!-- Loading spinner -->
+  <circle cx="130" cy="165" r="10" class="highlight-blue" fill="none" stroke-width="2" stroke-dasharray="10,5">
+    <animateTransform attributeName="transform" type="rotate" from="0 130 165" to="360 130 165" dur="1s" repeatCount="indefinite"/>
+  </circle>
+  
+  <text x="130" y="205" text-anchor="middle" font-size="9" class="text-secondary">User pulls down</text>
+  <text x="130" y="220" text-anchor="middle" font-size="9" class="text-secondary">Fetch latest content</text>
+  <text x="130" y="235" text-anchor="middle" font-size="9" class="highlight-green">Prepend + scroll to top</text>
+  
+  <!-- X New Posts Banner (Top Center) -->
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">"X New Posts" Banner</text>
+  
+  <!-- Visual -->
+  <rect x="280" y="110" width="180" height="110" rx="3" class="box-base" stroke-width="1"/>
+  <text x="370" y="135" text-anchor="middle" font-size="10" class="text-secondary">Feed Content</text>
+  
+  <!-- Banner -->
+  <rect x="290" y="145" width="160" height="35" rx="17" class="highlight-box" stroke-width="1.5"/>
+  <text x="370" y="167" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">⬆ 5 New Posts</text>
+  
+  <text x="370" y="205" text-anchor="middle" font-size="9" class="text-secondary">Passive notification</text>
+  <text x="370" y="220" text-anchor="middle" font-size="9" class="text-secondary">User clicks to refresh</text>
+  <text x="370" y="235" text-anchor="middle" font-size="9" class="highlight-green">Non-disruptive</text>
+  
+  <!-- Auto-Refresh on Return (Top Right) -->
+  <rect x="500" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="610" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Auto-Refresh on Return</text>
+  
+  <!-- Visual -->
+  <rect x="520" y="110" width="180" height="110" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Tab navigation -->
+  <rect x="530" y="120" width="50" height="25" rx="3" class="box-base" stroke-width="1"/>
+  <text x="555" y="137" text-anchor="middle" font-size="8" class="text-secondary">Home</text>
+  
+  <rect x="585" y="120" width="50" height="25" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="610" y="137" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Feed</text>
+  
+  <rect x="640" y="120" width="50" height="25" rx="3" class="box-base" stroke-width="1"/>
+  <text x="665" y="137" text-anchor="middle" font-size="8" class="text-secondary">Profile</text>
+  
+  <!-- Refresh indicator -->
+  <text x="610" y="175" text-anchor="middle" font-size="14" class="highlight-purple">🔄</text>
+  <text x="610" y="195" text-anchor="middle" font-size="9" class="text-secondary">Silent fetch</text>
+  
+  <text x="610" y="220" text-anchor="middle" font-size="9" class="text-secondary">When user returns to tab</text>
+  <text x="610" y="235" text-anchor="middle" font-size="9" class="highlight-green">Show banner if updates</text>
+  
+  <!-- Optimistic Updates (Bottom Left) -->
+  <rect x="20" y="260" width="220" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="130" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Optimistic Updates</text>
+  
+  <!-- Visual -->
+  <rect x="40" y="300" width="180" height="110" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- User creates post -->
+  <rect x="50" y="315" width="160" height="35" rx="3" class="accent-box" stroke-width="1"/>
+  <text x="130" y="337" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">User Creates Post</text>
+  
+  <!-- Immediately prepend -->
+  <line x1="130" y1="350" x2="130" y2="375" class="arrow" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Post appears -->
+  <rect x="50" y="375" width="160" height="30" rx="3" class="highlight-box" stroke-width="1"/>
+  <text x="130" y="395" text-anchor="middle" font-size="9" class="text-primary">Post appears instantly</text>
+  
+  <text x="130" y="420" text-anchor="middle" font-size="9" class="text-secondary">Then confirm with server</text>
+  <text x="130" y="435" text-anchor="middle" font-size="9" class="highlight-green">Rollback on failure</text>
+  
+  <!-- Comparison Table (Bottom Right) -->
+  <rect x="260" y="260" width="720" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="620" y="285" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Strategy Comparison</text>
+  
+  <text x="300" y="310" font-size="11" font-weight="bold" class="text-primary">Strategy</text>
+  <text x="450" y="310" font-size="11" font-weight="bold" class="text-primary">Use Case</text>
+  <text x="620" y="310" font-size="11" font-weight="bold" class="text-primary">Pros</text>
+  <text x="850" y="310" font-size="11" font-weight="bold" class="text-primary">Cons</text>
+  
+  <!-- Row 1 -->
+  <line x1="280" y1="325" x2="960" y2="325" class="arrow" stroke-width="1"/>
+  <text x="300" y="345" font-size="10" class="text-primary">Pull-to-Refresh</text>
+  <text x="450" y="345" font-size="10" class="text-secondary">Mobile apps</text>
+  <text x="620" y="345" font-size="10" class="highlight-green">Native feel, user control</text>
+  <text x="850" y="345" font-size="10" class="text-secondary">Requires action</text>
+  
+  <!-- Row 2 -->
+  <line x1="280" y1="360" x2="960" y2="360" class="arrow" stroke-width="1"/>
+  <text x="300" y="380" font-size="10" class="text-primary">X New Posts</text>
+  <text x="450" y="380" font-size="10" class="text-secondary">Twitter, Facebook</text>
+  <text x="620" y="380" font-size="10" class="highlight-green">Non-disruptive</text>
+  <text x="850" y="380" font-size="10" class="text-secondary">User may miss updates</text>
+  
+  <!-- Row 3 -->
+  <line x1="280" y1="395" x2="960" y2="395" class="arrow" stroke-width="1"/>
+  <text x="300" y="415" font-size="10" class="text-primary">Auto-Refresh</text>
+  <text x="450" y="415" font-size="10" class="text-secondary">Tab switch</text>
+  <text x="620" y="415" font-size="10" class="highlight-green">Always fresh</text>
+  <text x="850" y="415" font-size="10" class="text-secondary">Extra bandwidth</text>
+  
+  <!-- Row 4 -->
+  <line x1="280" y1="430" x2="960" y2="430" class="arrow" stroke-width="1"/>
+  <text x="300" y="450" font-size="10" class="text-primary">Optimistic</text>
+  <text x="450" y="450" font-size="10" class="text-secondary">User actions</text>
+  <text x="620" y="450" font-size="10" class="highlight-green">Instant feedback</text>
+  <text x="850" y="450" font-size="10" class="text-secondary">Rollback complexity</text>
+  
+  <!-- Recommendation (Far Bottom) -->
+  <rect x="20" y="450" width="460" height="60" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="250" y="475" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Recommended Approach</text>
+  <text x="60" y="495" font-size="10" class="text-secondary">Combine: Pull-to-refresh + "X new posts" banner</text>
+  <text x="60" y="510" font-size="10" class="text-secondary">Use optimistic for user's own posts</text>
+  <text x="300" y="495" font-size="10" class="highlight-green">Best of both worlds</text>
+  
+  <rect x="500" y="450" width="480" height="60" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="740" y="475" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Implementation Tips</text>
+  <text x="530" y="495" font-size="10" class="text-secondary">Debounce refresh (prevent double-fetch)</text>
+  <text x="530" y="510" font-size="10" class="text-secondary">Show loading state during refresh</text>
+  <text x="800" y="495" font-size="10" class="highlight-purple">Handle errors gracefully</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

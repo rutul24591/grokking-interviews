@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">Performance Budget Categories</text>
+  
+  <!-- Budget Categories -->
+  <rect x="30" y="70" width="270" height="180" rx="5" class="box-base" stroke-width="2"/>
+  <text x="165" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Size Budgets</text>
+  <rect x="50" y="110" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="65" y="130" font-size="9" class="text-primary">• Total page weight</text>
+  <text x="65" y="145" font-size="9" class="text-primary">• JavaScript bundle</text>
+  <text x="65" y="160" font-size="9" class="text-primary">• CSS size</text>
+  <text x="65" y="175" font-size="9" class="text-primary">• Image size</text>
+  <text x="65" y="190" font-size="9" class="text-primary">• Font size</text>
+  <text x="65" y="205" font-size="9" class="highlight-green">✓ Easy to measure</text>
+  <text x="65" y="220" font-size="9" class="highlight-green">✓ CI enforcement</text>
+  <text x="65" y="235" font-size="9" class="text-primary">Target: &lt;500KB total</text>
+  
+  <rect x="315" y="70" width="270" height="180" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="450" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Timing Budgets</text>
+  <rect x="335" y="110" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="350" y="130" font-size="9" class="text-primary">• First Contentful Paint</text>
+  <text x="350" y="145" font-size="9" class="text-primary">• Time to Interactive</text>
+  <text x="350" y="160" font-size="9" class="text-primary">• Largest Contentful Paint</text>
+  <text x="350" y="175" font-size="9" class="text-primary">• First Input Delay</text>
+  <text x="350" y="190" font-size="9" class="text-primary">• Total Blocking Time</text>
+  <text x="350" y="205" font-size="9" class="highlight-green">✓ User-centric</text>
+  <text x="350" y="220" font-size="9" class="highlight-green">✓ Core Web Vitals</text>
+  <text x="350" y="235" font-size="9" class="text-primary">Target: LCP &lt;2.5s</text>
+  
+  <rect x="600" y="70" width="270" height="180" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="735" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Quantity Budgets</text>
+  <rect x="620" y="110" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="635" y="130" font-size="9" class="text-primary">• Number of requests</text>
+  <text x="635" y="145" font-size="9" class="text-primary">• DOM nodes</text>
+  <text x="635" y="160" font-size="9" class="text-primary">• Fonts loaded</text>
+  <text x="635" y="175" font-size="9" class="text-primary">• Third-party scripts</text>
+  <text x="635" y="190" font-size="9" class="text-primary">• Images per page</text>
+  <text x="635" y="205" font-size="9" class="highlight-green">✓ Prevent bloat</text>
+  <text x="635" y="220" font-size="9" class="highlight-green">✓ Simple limits</text>
+  <text x="635" y="235" font-size="9" class="text-primary">Target: &lt;100 requests</text>
+  
+  <!-- Budget Allocation -->
+  <rect x="30" y="270" width="840" height="200" rx="5" class="box-base" stroke-width="2"/>
+  <text x="450" y="295" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Performance Budget Allocation by Page Type</text>
+  
+  <rect x="50" y="310" width="250" height="145" rx="3" class="box-base" stroke-width="1"/>
+  <text x="175" y="330" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Homepage</text>
+  <rect x="70" y="345" width="210" height="95" rx="2" class="box-base" stroke-width="1"/>
+  <text x="175" y="365" text-anchor="middle" font-size="9" class="text-primary">• Budget: 300KB</text>
+  <text x="175" y="380" text-anchor="middle" font-size="9" class="text-primary">• LCP: &lt;2.0s</text>
+  <text x="175" y="395" text-anchor="middle" font-size="9" class="text-primary">• TTI: &lt;3.0s</text>
+  <text x="175" y="410" text-anchor="middle" font-size="9" class="text-primary">• Requests: &lt;50</text>
+  <text x="175" y="425" text-anchor="middle" font-size="9" class="text-primary">• Critical: Marketing</text>
+  <text x="175" y="440" text-anchor="middle" font-size="9" class="highlight-green">✓ Strictest budget</text>
+  
+  <rect x="315" y="310" width="250" height="145" rx="3" class="accent-box" stroke-width="1"/>
+  <text x="440" y="330" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Product/Content</text>
+  <rect x="335" y="345" width="210" height="95" rx="2" class="box-base" stroke-width="1"/>
+  <text x="440" y="365" text-anchor="middle" font-size="9" class="text-primary">• Budget: 500KB</text>
+  <text x="440" y="380" text-anchor="middle" font-size="9" class="text-primary">• LCP: &lt;2.5s</text>
+  <text x="440" y="395" text-anchor="middle" font-size="9" class="text-primary">• TTI: &lt;4.0s</text>
+  <text x="440" y="410" text-anchor="middle" font-size="9" class="text-primary">• Requests: &lt;80</text>
+  <text x="440" y="425" text-anchor="middle" font-size="9" class="text-primary">• Images: optimized</text>
+  <text x="440" y="440" text-anchor="middle" font-size="9" class="highlight-green">✓ Balanced budget</text>
+  
+  <rect x="580" y="310" width="250" height="145" rx="3" class="highlight-box" stroke-width="1"/>
+  <text x="705" y="330" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Checkout/Conversion</text>
+  <rect x="595" y="345" width="210" height="95" rx="2" class="box-base" stroke-width="1"/>
+  <text x="705" y="365" text-anchor="middle" font-size="9" class="text-primary">• Budget: 200KB</text>
+  <text x="705" y="380" text-anchor="middle" font-size="9" class="text-primary">• LCP: &lt;1.5s</text>
+  <text x="705" y="395" text-anchor="middle" font-size="9" class="text-primary">• TTI: &lt;2.0s</text>
+  <text x="705" y="410" text-anchor="middle" font-size="9" class="text-primary">• Requests: &lt;30</text>
+  <text x="705" y="425" text-anchor="middle" font-size="9" class="text-primary">• Critical: Revenue</text>
+  <text x="705" y="440" text-anchor="middle" font-size="9" class="highlight-red">⚠ Most strict</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

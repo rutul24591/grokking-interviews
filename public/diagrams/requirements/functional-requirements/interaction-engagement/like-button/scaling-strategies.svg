@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="1000" height="450" class="bg-base"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Scaling Strategies Comparison</text>
+  
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Single Counter</text>
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="55" y="125" width="150" height="50" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="130" y="150" text-anchor="middle" font-size="9" class="text-primary">Redis: content:123</text>
+  <text x="130" y="165" text-anchor="middle" font-size="8" class="text-secondary">Single key</text>
+  <text x="130" y="195" text-anchor="middle" font-size="8" class="highlight-red">⚠ ~1K req/sec</text>
+  <text x="130" y="210" text-anchor="middle" font-size="8" class="highlight-red">⚠ Bottleneck</text>
+  
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Sharded Counters</text>
+  <rect x="280" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="295" y="125" width="70" height="40" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="330" y="145" text-anchor="middle" font-size="7" class="text-primary">Shard 0</text>
+  <rect x="375" y="125" width="70" height="40" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="410" y="145" text-anchor="middle" font-size="7" class="text-primary">Shard 1</text>
+  <rect x="295" y="170" width="70" height="40" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="330" y="190" text-anchor="middle" font-size="7" class="text-primary">Shard 2</text>
+  <rect x="375" y="170" width="70" height="40" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="410" y="190" text-anchor="middle" font-size="7" class="text-primary">Shard N</text>
+  <text x="370" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ ~10K req/sec</text>
+  <text x="370" y="260" text-anchor="middle" font-size="9" class="text-secondary">Sum all shards</text>
+  
+  <rect x="500" y="70" width="240" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Local + Aggregate</text>
+  <rect x="520" y="110" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="535" y="125" width="80" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="575" y="145" text-anchor="middle" font-size="7" class="text-primary">App Server 1</text>
+  <rect x="625" y="125" width="80" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="665" y="145" text-anchor="middle" font-size="7" class="text-primary">App Server 2</text>
+  <line x1="575" y1="160" x2="575" y2="180" class="arrow" stroke-width="1.5"/>
+  <line x1="665" y1="160" x2="665" y2="180" class="arrow" stroke-width="1.5"/>
+  <rect x="560" y="180" width="120" height="30" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="620" y="200" text-anchor="middle" font-size="7" class="text-primary">Central Redis</text>
+  <text x="620" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ ~100K req/sec</text>
+  
+  <rect x="760" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="870" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">HyperLogLog</text>
+  <rect x="780" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="795" y="125" width="150" height="50" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="870" y="150" text-anchor="middle" font-size="8" class="text-primary">HLL Structure</text>
+  <text x="870" y="170" text-anchor="middle" font-size="7" class="text-secondary">Probabilistic</text>
+  <text x="870" y="195" text-anchor="middle" font-size="8" class="highlight-green">✓ ~1M req/sec</text>
+  <text x="870" y="210" text-anchor="middle" font-size="8" class="highlight-purple">~1% error</text>
+  
+  <rect x="20" y="260" width="460" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="250" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Sharding Formula</text>
+  <rect x="40" y="300" width="420" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="55" y="315" width="390" height="45" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="250" y="342" text-anchor="middle" font-size="10" class="text-primary">shard_id = hash(user_id + content_id) % N</text>
+  <text x="250" y="375" text-anchor="middle" font-size="8" class="text-secondary">N = number of shards (e.g., 10)</text>
+  <text x="250" y="395" text-anchor="middle" font-size="8" class="text-secondary">Same user always hits same shard</text>
+  
+  <rect x="500" y="260" width="480" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="740" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Strategy Selection Guide</text>
+  <rect x="520" y="300" width="440" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <text x="535" y="320" font-size="8" font-weight="bold" class="text-primary">Expected Volume</text>
+  <text x="700" y="320" font-size="8" font-weight="bold" class="text-primary">Recommended Strategy</text>
+  <line x1="530" y1="330" x2="950" y2="330" class="arrow" stroke-width="1"/>
+  <text x="535" y="345" font-size="7" class="text-primary">&lt;1K likes/day</text>
+  <text x="700" y="345" font-size="7" class="highlight-green">Single counter</text>
+  <line x1="530" y1="355" x2="950" y2="355" class="arrow" stroke-width="1"/>
+  <text x="535" y="370" font-size="7" class="text-primary">1K-100K likes/day</text>
+  <text x="700" y="370" font-size="7" class="highlight-green">Sharded (10 shards)</text>
+  <line x1="530" y1="380" x2="950" y2="380" class="arrow" stroke-width="1"/>
+  <text x="535" y="395" font-size="7" class="text-primary">100K-1M likes/day</text>
+  <text x="700" y="395" font-size="7" class="highlight-green">Local + aggregate</text>
+  <line x1="530" y1="405" x2="950" y2="405" class="arrow" stroke-width="1"/>
+  <text x="535" y="420" font-size="7" class="text-primary">&gt;1M likes/day</text>
+  <text x="700" y="420" font-size="7" class="highlight-green">HyperLogLog</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">Error Budget Burn Rate Policy</text>
+  
+  <!-- Burn Rate Visualization -->
+  <rect x="50" y="70" width="800" height="150" rx="5" class="box-base" stroke-width="2"/>
+  <text x="450" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Error Budget Consumption Over Time</text>
+  
+  <!-- Budget line -->
+  <line x1="100" y1="120" x2="800" y2="120" class="highlight-red" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="820" y="125" font-size="10" class="text-primary">Budget limit</text>
+  
+  <!-- Burn rate curve -->
+  <path d="M 100 200 Q 200 190, 300 170 T 500 140 T 700 125" fill="none" class="highlight-red" stroke-width="3"/>
+  <text x="720" y="130" font-size="10" class="highlight-red">Actual burn</text>
+  
+  <!-- Safe zone -->
+  <rect x="100" y="120" width="700" height="80" rx="2" class="highlight-green" opacity="0.2"/>
+  <text x="450" y="145" text-anchor="middle" font-size="10" class="highlight-green">Safe zone - can release</text>
+  
+  <!-- Danger zone -->
+  <rect x="100" y="120" width="700" height="40" rx="2" class="highlight-red" opacity="0.2"/>
+  <text x="450" y="140" text-anchor="middle" font-size="10" class="highlight-red">Danger zone - freeze releases</text>
+  
+  <!-- Time axis -->
+  <line x1="100" y1="200" x2="800" y2="200" class="arrow" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="450" y="215" text-anchor="middle" font-size="9" class="text-secondary">Time (rolling 28-day window)</text>
+  
+  <!-- Policy Table -->
+  <rect x="50" y="240" width="800" height="230" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="450" y="265" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Error Budget Policy Matrix</text>
+  
+  <rect x="70" y="280" width="760" height="175" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Header -->
+  <text x="120" y="300" font-size="9" font-weight="bold" class="text-primary">Budget Remaining</text>
+  <text x="280" y="300" font-size="9" font-weight="bold" class="text-primary">Release Policy</text>
+  <text x="450" y="300" font-size="9" font-weight="bold" class="text-primary">Focus</text>
+  <text x="600" y="300" font-size="9" font-weight="bold" class="text-primary">Approval Required</text>
+  <text x="750" y="300" font-size="9" font-weight="bold" class="text-primary">Alert Level</text>
+  
+  <!-- Row 1 -->
+  <line x1="100" y1="310" x2="800" y2="310" class="arrow" stroke-width="1"/>
+  <text x="120" y="325" font-size="8" class="highlight-green">&gt; 50%</text>
+  <text x="280" y="325" font-size="8" class="text-primary">Normal releases</text>
+  <text x="450" y="325" font-size="8" class="text-primary">Features</text>
+  <text x="600" y="325" font-size="8" class="text-primary">Team lead</text>
+  <text x="750" y="325" font-size="8" class="highlight-green">None</text>
+  
+  <!-- Row 2 -->
+  <line x1="100" y1="335" x2="800" y2="335" class="arrow" stroke-width="1"/>
+  <text x="120" y="350" font-size="8" class="highlight-blue">25-50%</text>
+  <text x="280" y="350" font-size="8" class="text-primary">Normal releases</text>
+  <text x="450" y="350" font-size="8" class="text-primary">Features + reliability</text>
+  <text x="600" y="350" font-size="8" class="text-primary">Team lead</text>
+  <text x="750" y="350" font-size="8" class="highlight-blue">Info</text>
+  
+  <!-- Row 3 -->
+  <line x1="100" y1="360" x2="800" y2="360" class="arrow" stroke-width="1"/>
+  <text x="120" y="375" font-size="8" class="highlight-purple">10-25%</text>
+  <text x="280" y="375" font-size="8" class="text-primary">Reduced releases</text>
+  <text x="450" y="375" font-size="8" class="text-primary">Reliability focus</text>
+  <text x="600" y="375" font-size="8" class="text-primary">Engineering manager</text>
+  <text x="750" y="375" font-size="8" class="highlight-purple">Warning</text>
+  
+  <!-- Row 4 -->
+  <line x1="100" y1="385" x2="800" y2="385" class="arrow" stroke-width="1"/>
+  <text x="120" y="400" font-size="8" class="highlight-red">&lt; 10%</text>
+  <text x="280" y="400" font-size="8" class="text-primary">Release freeze</text>
+  <text x="450" y="400" font-size="8" class="text-primary">Reliability only</text>
+  <text x="600" y="400" font-size="8" class="text-primary">VP Engineering</text>
+  <text x="750" y="400" font-size="8" class="highlight-red">Critical</text>
+  
+  <!-- Row 5 -->
+  <line x1="100" y1="410" x2="800" y2="410" class="arrow" stroke-width="1"/>
+  <text x="120" y="425" font-size="8" class="highlight-red">Exhausted</text>
+  <text x="280" y="425" font-size="8" class="text-primary">Emergency only</text>
+  <text x="450" y="425" font-size="8" class="text-primary">Fix reliability</text>
+  <text x="600" y="425" font-size="8" class="text-primary">CTO</text>
+  <text x="750" y="425" font-size="8" class="highlight-red">Page on-call</text>
+  
+  <!-- Recovery -->
+  <rect x="70" y="460" width="760" height="40" rx="3" class="accent-box" stroke-width="1"/>
+  <text x="450" y="480" text-anchor="middle" font-size="9" class="text-primary">Budget Recovery: Budget replenishes gradually over the rolling window as old errors age out</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

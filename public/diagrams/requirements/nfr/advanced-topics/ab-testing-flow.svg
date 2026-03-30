@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="1000" height="550" class="bg-base"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">A/B Testing Flow</text>
+  
+  <!-- Experiment Design -->
+  <rect x="30" y="70" width="220" height="140" rx="5" class="box-base" stroke-width="2"/>
+  <text x="140" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">1. Experiment Design</text>
+  <rect x="50" y="110" width="180" height="85" rx="3" class="box-base" stroke-width="1"/>
+  <text x="65" y="130" font-size="9" class="text-primary">• Hypothesis</text>
+  <text x="65" y="145" font-size="9" class="text-primary">• Primary metric</text>
+  <text x="65" y="160" font-size="9" class="text-primary">• Sample size calc</text>
+  <text x="65" y="175" font-size="9" class="text-primary">• Success criteria</text>
+  <text x="65" y="190" font-size="9" class="highlight-green">✓ Planning phase</text>
+  
+  <line x1="250" y1="140" x2="290" y2="140" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Randomization -->
+  <rect x="290" y="70" width="220" height="140" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="400" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">2. Randomization</text>
+  <rect x="310" y="110" width="180" height="85" rx="3" class="box-base" stroke-width="1"/>
+  <text x="325" y="130" font-size="9" class="text-primary">• User assignment</text>
+  <text x="325" y="145" font-size="9" class="text-primary">• Variant A/B</text>
+  <text x="325" y="160" font-size="9" class="text-primary">• Consistent hash</text>
+  <text x="325" y="175" font-size="9" class="text-primary">• 50/50 split</text>
+  <text x="400" y="195" text-anchor="middle" font-size="9" class="highlight-green">✓ Random assignment</text>
+  
+  <line x1="510" y1="140" x2="550" y2="140" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Metric Collection -->
+  <rect x="550" y="70" width="220" height="140" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="660" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">3. Metric Collection</text>
+  <rect x="570" y="110" width="180" height="85" rx="3" class="box-base" stroke-width="1"/>
+  <text x="585" y="130" font-size="9" class="text-primary">• Track events</text>
+  <text x="585" y="145" font-size="9" class="text-primary">• Primary metric</text>
+  <text x="585" y="160" font-size="9" class="text-primary">• Guardrail metrics</text>
+  <text x="585" y="175" font-size="9" class="text-primary">• Segment data</text>
+  <text x="660" y="195" text-anchor="middle" font-size="9" class="highlight-green">✓ Data gathering</text>
+  
+  <line x1="770" y1="140" x2="810" y2="140" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Statistical Analysis -->
+  <rect x="810" y="70" width="160" height="140" rx="5" class="highlight-purple" stroke-width="2"/>
+  <text x="890" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">4. Analysis</text>
+  <rect x="830" y="110" width="120" height="85" rx="3" class="box-base" stroke-width="1"/>
+  <text x="845" y="130" font-size="8" class="text-primary">• T-test</text>
+  <text x="845" y="145" font-size="8" class="text-primary">• P-value</text>
+  <text x="845" y="160" font-size="8" class="text-primary">• Confidence</text>
+  <text x="845" y="175" font-size="8" class="text-primary">• Power check</text>
+  <text x="890" y="195" text-anchor="middle" font-size="9" class="highlight-purple">⚠ Statistics</text>
+  
+  <!-- Decision Framework -->
+  <rect x="30" y="230" width="940" height="140" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="500" y="255" text-anchor="middle" font-size="16" font-weight="bold" class="text-primary">Decision Framework</text>
+  
+  <!-- Winner -->
+  <rect x="60" y="280" width="270" height="75" rx="5" class="highlight-green" stroke-width="2"/>
+  <text x="195" y="305" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Variant Wins</text>
+  <text x="195" y="325" text-anchor="middle" font-size="9" class="text-primary">p &lt; 0.05, CI excludes 0</text>
+  <text x="195" y="345" text-anchor="middle" font-size="9" class="text-secondary">→ Full rollout</text>
+  
+  <!-- Inconclusive -->
+  <rect x="365" y="280" width="270" height="75" rx="5" class="highlight-purple" stroke-width="2"/>
+  <text x="500" y="305" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Inconclusive</text>
+  <text x="500" y="325" text-anchor="middle" font-size="9" class="text-primary">p ≥ 0.05, low power</text>
+  <text x="500" y="345" text-anchor="middle" font-size="9" class="text-secondary">→ Run longer or iterate</text>
+  
+  <!-- No Effect -->
+  <rect x="670" y="280" width="270" height="75" rx="5" class="highlight-red" stroke-width="2"/>
+  <text x="805" y="305" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">No Effect</text>
+  <text x="805" y="325" text-anchor="middle" font-size="9" class="text-primary">p ≥ 0.05, high power</text>
+  <text x="805" y="345" text-anchor="middle" font-size="9" class="text-secondary">→ Keep control, learn</text>
+  
+  <!-- Common Pitfalls -->
+  <rect x="30" y="390" width="460" height="140" rx="5" class="box-base" stroke-width="2"/>
+  <text x="260" y="415" text-anchor="middle" font-size="16" font-weight="bold" class="text-primary">Common Pitfalls to Avoid</text>
+  <rect x="50" y="430" width="420" height="85" rx="3" class="box-base" stroke-width="1"/>
+  <text x="70" y="450" font-size="9" class="highlight-red">⚠ Multiple Testing: Increases false positive rate</text>
+  <text x="70" y="465" font-size="9" class="highlight-red">⚠ Novelty Effect: Users react to change, not improvement</text>
+  <text x="70" y="480" font-size="9" class="highlight-red">⚠ Seasonality: Results vary by day/week/season</text>
+  <text x="70" y="495" font-size="9" class="highlight-red">⚠ Peeking: Early stopping inflates false positives</text>
+  <text x="70" y="510" font-size="9" class="highlight-red">⚠ Underpowered: Sample too small to detect effects</text>
+  
+  <!-- Best Practices -->
+  <rect x="510" y="390" width="460" height="140" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="740" y="415" text-anchor="middle" font-size="16" font-weight="bold" class="text-primary">Best Practices</text>
+  <rect x="530" y="430" width="420" height="85" rx="3" class="box-base" stroke-width="1"/>
+  <text x="550" y="450" font-size="9" class="highlight-green">✓ Pre-register primary metric before launch</text>
+  <text x="550" y="465" font-size="9" class="highlight-green">✓ Calculate sample size with 80% power</text>
+  <text x="550" y="480" font-size="9" class="highlight-green">✓ Run for full business cycles (1-2 weeks)</text>
+  <text x="550" y="495" font-size="9" class="highlight-green">✓ Use guardrail metrics (retention, revenue)</text>
+  <text x="550" y="510" font-size="9" class="highlight-green">✓ Don't peek until experiment completes</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

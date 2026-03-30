@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">Audit Trail Design for Compliance</text>
+  
+  <rect x="30" y="70" width="270" height="180" rx="5" class="box-base" stroke-width="2"/>
+  <text x="165" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Audit Event Structure</text>
+  <rect x="50" y="110" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="65" y="130" font-size="9" class="text-primary">• event_id (UUID)</text>
+  <text x="65" y="145" font-size="9" class="text-primary">• timestamp (UTC, immutable)</text>
+  <text x="65" y="160" font-size="9" class="text-primary">• actor (user/service)</text>
+  <text x="65" y="175" font-size="9" class="text-primary">• action (CRUD operation)</text>
+  <text x="65" y="190" font-size="9" class="text-primary">• resource (what was accessed)</text>
+  <text x="65" y="205" font-size="9" class="text-primary">• outcome (success/failure)</text>
+  <text x="65" y="220" font-size="9" class="text-primary">• metadata (context, IP, etc.)</text>
+  
+  <rect x="315" y="70" width="270" height="180" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="450" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Storage Requirements</text>
+  <rect x="335" y="110" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="350" y="130" font-size="9" class="text-primary">• Immutable (WORM)</text>
+  <text x="350" y="145" font-size="9" class="text-primary">• Tamper-evident</text>
+  <text x="350" y="160" font-size="9" class="text-primary">• Encrypted at rest</text>
+  <text x="350" y="175" font-size="9" class="text-primary">• Retention: 7+ years</text>
+  <text x="350" y="190" font-size="9" class="text-primary">• Searchable</text>
+  <text x="350" y="205" font-size="9" class="text-primary">• Export capability</text>
+  <text x="350" y="220" font-size="9" class="highlight-green">✓ Compliance ready</text>
+  
+  <rect x="600" y="70" width="270" height="180" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="735" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Access Controls</text>
+  <rect x="620" y="110" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="635" y="130" font-size="9" class="text-primary">• Write: System only</text>
+  <text x="635" y="145" font-size="9" class="text-primary">• Read: Auditors, admins</text>
+  <text x="635" y="160" font-size="9" class="text-primary">• Delete: Never allowed</text>
+  <text x="635" y="175" font-size="9" class="text-primary">• Modify: Never allowed</text>
+  <text x="635" y="190" font-size="9" class="text-primary">• Export: Approved users</text>
+  <text x="635" y="205" font-size="9" class="text-primary">• Access logged</text>
+  <text x="635" y="220" font-size="9" class="highlight-red">🔒 Highly restricted</text>
+  
+  <!-- Audit Flow -->
+  <rect x="30" y="270" width="840" height="200" rx="5" class="box-base" stroke-width="2"/>
+  <text x="450" y="295" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Audit Event Flow</text>
+  
+  <rect x="50" y="310" width="140" height="145" rx="3" class="box-base" stroke-width="1"/>
+  <text x="120" y="330" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Event Source</text>
+  <rect x="70" y="345" width="100" height="25" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="120" y="362" text-anchor="middle" font-size="8" class="text-primary">Application</text>
+  <rect x="70" y="375" width="100" height="25" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="120" y="392" text-anchor="middle" font-size="8" class="text-primary">Database</text>
+  <rect x="70" y="405" width="100" height="25" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="120" y="422" text-anchor="middle" font-size="8" class="text-primary">API Gateway</text>
+  <rect x="70" y="435" width="100" height="25" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="120" y="452" text-anchor="middle" font-size="8" class="text-primary">Auth Service</text>
+  
+  <line x1="190" y1="382" x2="230" y2="382" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="230" y="310" width="140" height="145" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="300" y="330" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Collector</text>
+  <rect x="250" y="345" width="100" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="300" y="362" text-anchor="middle" font-size="8" class="text-primary">Validate</text>
+  <rect x="250" y="375" width="100" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="300" y="392" text-anchor="middle" font-size="8" class="text-primary">Enrich</text>
+  <rect x="250" y="405" width="100" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="300" y="422" text-anchor="middle" font-size="8" class="text-primary">Buffer</text>
+  <rect x="250" y="435" width="100" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="300" y="452" text-anchor="middle" font-size="8" class="text-primary">Batch</text>
+  
+  <line x1="370" y1="382" x2="410" y2="382" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="410" y="310" width="140" height="145" rx="3" class="highlight-box" stroke-width="1.5"/>
+  <text x="480" y="330" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Transport</text>
+  <rect x="430" y="345" width="100" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="480" y="362" text-anchor="middle" font-size="8" class="text-primary">Kafka</text>
+  <rect x="430" y="375" width="100" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="480" y="392" text-anchor="middle" font-size="8" class="text-primary">Kinesis</text>
+  <rect x="430" y="405" width="100" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="480" y="422" text-anchor="middle" font-size="8" class="text-primary">TLS encrypted</text>
+  <rect x="430" y="435" width="100" height="25" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="480" y="452" text-anchor="middle" font-size="8" class="text-primary">Ordered</text>
+  
+  <line x1="550" y1="382" x2="590" y2="382" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="590" y="310" width="140" height="145" rx="3" class="highlight-purple" stroke-width="1.5"/>
+  <text x="660" y="330" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Storage</text>
+  <rect x="610" y="345" width="100" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="660" y="362" text-anchor="middle" font-size="8" class="text-primary">S3 (WORM)</text>
+  <rect x="610" y="375" width="100" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="660" y="392" text-anchor="middle" font-size="8" class="text-primary">Immutable DB</text>
+  <rect x="610" y="405" width="100" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="660" y="422" text-anchor="middle" font-size="8" class="text-primary">Encrypted</text>
+  <rect x="610" y="435" width="100" height="25" rx="2" class="highlight-red" stroke-width="1"/>
+  <text x="660" y="452" text-anchor="middle" font-size="8" class="text-primary">No delete</text>
+  
+  <line x1="730" y1="382" x2="770" y2="382" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="770" y="310" width="80" height="145" rx="3" class="highlight-green" stroke-width="1.5"/>
+  <text x="810" y="382" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Query</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

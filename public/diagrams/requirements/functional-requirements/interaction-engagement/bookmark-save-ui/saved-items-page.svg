@@ -1,0 +1,179 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Saved Items Page UI</text>
+  
+  <!-- Grid View (Top Left) -->
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Grid View</text>
+  
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Grid items -->
+  <rect x="55" y="125" width="70" height="45" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="90" y="145" text-anchor="middle" font-size="7" class="text-primary">Image</text>
+  <text x="90" y="165" text-anchor="middle" font-size="6" class="text-secondary">Title</text>
+  
+  <rect x="135" y="125" width="70" height="45" rx="2" class="box-base" stroke-width="1"/>
+  <text x="170" y="145" text-anchor="middle" font-size="7" class="text-primary">Image</text>
+  <text x="170" y="165" text-anchor="middle" font-size="6" class="text-secondary">Title</text>
+  
+  <rect x="55" y="175" width="70" height="45" rx="2" class="box-base" stroke-width="1"/>
+  <text x="90" y="195" text-anchor="middle" font-size="7" class="text-primary">Image</text>
+  <text x="90" y="215" text-anchor="middle" font-size="6" class="text-secondary">Title</text>
+  
+  <rect x="135" y="175" width="70" height="45" rx="2" class="box-base" stroke-width="1"/>
+  <text x="170" y="195" text-anchor="middle" font-size="7" class="text-primary">Image</text>
+  <text x="170" y="215" text-anchor="middle" font-size="6" class="text-secondary">Title</text>
+  
+  <text x="130" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Visual content</text>
+  <text x="130" y="260" text-anchor="middle" font-size="9" class="text-secondary">Used by: Pinterest</text>
+  
+  <!-- List View (Top Center) -->
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">List View</text>
+  
+  <rect x="280" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- List items -->
+  <rect x="295" y="125" width="150" height="28" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="310" y="142" font-size="7" font-weight="bold" class="text-primary">Article Title 1</text>
+  <text x="420" y="142" text-anchor="end" font-size="6" class="text-secondary">Jan 15</text>
+  
+  <rect x="295" y="158" width="150" height="28" rx="2" class="box-base" stroke-width="1"/>
+  <text x="310" y="175" font-size="7" font-weight="bold" class="text-primary">Article Title 2</text>
+  <text x="420" y="175" text-anchor="end" font-size="6" class="text-secondary">Jan 14</text>
+  
+  <rect x="295" y="191" width="150" height="28" rx="2" class="box-base" stroke-width="1"/>
+  <text x="310" y="208" font-size="7" font-weight="bold" class="text-primary">Article Title 3</text>
+  <text x="420" y="208" text-anchor="end" font-size="6" class="text-secondary">Jan 13</text>
+  
+  <text x="370" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ More metadata</text>
+  <text x="370" y="260" text-anchor="middle" font-size="9" class="text-secondary">Used by: Pocket</text>
+  
+  <!-- Collection Filter (Top Right) -->
+  <rect x="500" y="70" width="240" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Collection Filter</text>
+  
+  <rect x="520" y="110" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Filter dropdown -->
+  <rect x="535" y="125" width="170" height="30" rx="2" class="accent-box" stroke-width="1.5"/>
+  <text x="550" y="145" font-size="8" class="text-primary">📁 All Collections</text>
+  <text x="685" y="145" text-anchor="end" font-size="8" class="text-primary">▼</text>
+  
+  <!-- Filter options -->
+  <rect x="535" y="160" width="170" height="50" rx="2" class="box-base" stroke-width="1"/>
+  <text x="550" y="177" font-size="7" class="text-primary">📁 Articles (45)</text>
+  <text x="550" y="195" font-size="7" class="text-primary">📁 Videos (30)</text>
+  
+  <text x="620" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Filter by collection</text>
+  
+  <!-- Search (Bottom Left) -->
+  <rect x="20" y="260" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Search Saved Items</text>
+  
+  <rect x="40" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Search bar -->
+  <rect x="55" y="315" width="230" height="35" rx="2" class="accent-box" stroke-width="1.5"/>
+  <text x="70" y="337" font-size="8" class="text-secondary">🔍 Search saved items...</text>
+  <rect x="255" y="320" width="25" height="25" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="267" y="337" text-anchor="middle" font-size="10" class="text-primary">🔍</text>
+  
+  <!-- Search results -->
+  <rect x="55" y="355" width="230" height="50" rx="2" class="box-base" stroke-width="1"/>
+  <text x="70" y="372" font-size="7" font-weight="bold" class="text-primary">Search Results:</text>
+  <text x="70" y="387" font-size="7" class="text-secondary">"javascript tutorial" - 5 found</text>
+  
+  <text x="170" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Full-text search</text>
+  
+  <!-- Bulk Operations (Bottom Center) -->
+  <rect x="340" y="260" width="320" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Bulk Operations</text>
+  
+  <rect x="360" y="300" width="280" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Selection mode -->
+  <rect x="375" y="315" width="250" height="30" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="390" y="335" font-size="8" font-weight="bold" class="text-primary">Select Mode</text>
+  <text x="600" y="335" text-anchor="end" font-size="8" class="highlight-green">3 selected</text>
+  
+  <!-- Selected items -->
+  <rect x="375" y="350" width="80" height="25" rx="2" class="accent-box" stroke-width="1.5"/>
+  <text x="390" y="367" font-size="7" class="highlight-green">☑</text>
+  <text x="405" y="367" font-size="7" class="text-primary">Item 1</text>
+  
+  <rect x="465" y="350" width="80" height="25" rx="2" class="accent-box" stroke-width="1.5"/>
+  <text x="480" y="367" font-size="7" class="highlight-green">☑</text>
+  <text x="495" y="367" font-size="7" class="text-primary">Item 2</text>
+  
+  <rect x="555" y="350" width="80" height="25" rx="2" class="accent-box" stroke-width="1.5"/>
+  <text x="570" y="367" font-size="7" class="highlight-green">☑</text>
+  <text x="585" y="367" font-size="7" class="text-primary">Item 3</text>
+  
+  <!-- Action buttons -->
+  <rect x="375" y="380" width="70" height="25" rx="2" class="highlight-blue" stroke-width="1"/>
+  <text x="410" y="397" text-anchor="middle" font-size="7" font-weight="bold" class="text-primary">Move</text>
+  
+  <rect x="455" y="380" width="70" height="25" rx="2" class="highlight-red" stroke-width="1"/>
+  <text x="490" y="397" text-anchor="middle" font-size="7" font-weight="bold" class="text-primary">Delete</text>
+  
+  <text x="500" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Bulk move/delete</text>
+  
+  <!-- View Toggle (Bottom Right) -->
+  <rect x="680" y="260" width="300" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="830" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">View Toggle</text>
+  
+  <rect x="700" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Toggle buttons -->
+  <rect x="715" y="315" width="110" height="35" rx="2" class="accent-box" stroke-width="1.5"/>
+  <text x="770" y="337" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">▦ Grid</text>
+  
+  <rect x="835" y="315" width="110" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="890" y="337" text-anchor="middle" font-size="8" class="text-primary">☰ List</text>
+  
+  <!-- Sort options -->
+  <rect x="715" y="355" width="230" height="50" rx="2" class="box-base" stroke-width="1"/>
+  <text x="730" y="375" font-size="8" font-weight="bold" class="text-primary">Sort by:</text>
+  <text x="730" y="392" font-size="7" class="text-primary">Date saved ▼</text>
+  <text x="850" y="392" text-anchor="end" font-size="7" class="text-secondary">Title | Source</text>
+  
+  <text x="830" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ User preference</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

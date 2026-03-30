@@ -1,0 +1,19 @@
+{
+  "name": "Offline Support — PWA Example",
+  "short_name": "OfflinePWA",
+  "description": "Manifest + service worker + install prompt demonstration",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#070a13",
+  "theme_color": "#4f46e5",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
+

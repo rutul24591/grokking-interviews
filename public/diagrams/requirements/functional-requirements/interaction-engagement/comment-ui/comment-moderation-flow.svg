@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="1000" height="450" class="bg-base"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Comment Moderation Flow</text>
+  
+  <rect x="20" y="70" width="180" height="100" rx="5" class="box-base" stroke-width="2"/>
+  <text x="110" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">User Submits</text>
+  <rect x="40" y="110" width="140" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="55" y="130" font-size="9" class="text-primary">• Comment content</text>
+  <text x="55" y="148" font-size="9" class="text-primary">• User context</text>
+  
+  <line x1="200" y1="120" x2="240" y2="120" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="240" y="70" width="200" height="100" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="340" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Auto-Filter</text>
+  <rect x="260" y="110" width="160" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="275" y="130" font-size="9" class="text-primary">• Keyword matching</text>
+  <text x="275" y="148" font-size="9" class="text-secondary">• ML toxicity score</text>
+  
+  <line x1="440" y1="120" x2="520" y2="120" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  <text x="480" y="110" text-anchor="middle" font-size="8" class="highlight-green">Clean</text>
+  <text x="480" y="145" text-anchor="middle" font-size="8" class="highlight-red">Flagged</text>
+  
+  <rect x="520" y="70" width="200" height="100" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Publish</text>
+  <rect x="540" y="110" width="160" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="555" y="130" font-size="9" class="text-primary">• Store comment</text>
+  <text x="555" y="148" font-size="9" class="text-secondary">• Push to viewers</text>
+  
+  <line x1="620" y1="170" x2="620" y2="210" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="520" y="210" width="200" height="120" rx="5" class="box-base" stroke-width="2"/>
+  <text x="620" y="235" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">User Reports</text>
+  <rect x="540" y="250" width="160" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="555" y="270" font-size="9" class="text-primary">• Report button</text>
+  <text x="555" y="288" font-size="9" class="text-primary">• Violation category</text>
+  <text x="555" y="306" font-size="9" class="highlight-purple">✓ Community input</text>
+  
+  <line x1="520" y1="270" x2="480" y2="270" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="240" y="210" width="240" height="120" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="360" y="235" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Moderator Queue</text>
+  <rect x="260" y="250" width="200" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="275" y="270" font-size="9" class="text-primary">• Flagged comments</text>
+  <text x="275" y="288" font-size="9" class="text-primary">• User reports</text>
+  <text x="275" y="306" font-size="9" class="highlight-green">✓ Human review</text>
+  
+  <line x1="240" y1="270" x2="200" y2="270" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="20" y="210" width="200" height="120" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="120" y="235" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Enforcement</text>
+  <rect x="40" y="250" width="160" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="55" y="270" font-size="9" class="text-primary">• Remove comment</text>
+  <text x="55" y="288" font-size="9" class="text-primary">• Warn/suspend user</text>
+  <text x="55" y="306" font-size="9" class="highlight-red">✓ Action taken</text>
+  
+  <rect x="740" y="70" width="240" height="260" rx="5" class="box-base" stroke-width="2"/>
+  <text x="860" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Moderation Actions</text>
+  <rect x="760" y="110" width="200" height="205" rx="3" class="box-base" stroke-width="1"/>
+  
+  <rect x="775" y="125" width="170" height="30" rx="2" class="box-base" stroke-width="1"/>
+  <text x="860" y="143" text-anchor="middle" font-size="8" class="text-primary">Approve (no action)</text>
+  
+  <rect x="775" y="160" width="170" height="30" rx="2" class="highlight-red" stroke-width="1"/>
+  <text x="860" y="178" text-anchor="middle" font-size="8" class="text-primary">Remove comment</text>
+  
+  <rect x="775" y="195" width="170" height="30" rx="2" class="highlight-purple" stroke-width="1"/>
+  <text x="860" y="213" text-anchor="middle" font-size="8" class="text-primary">Shadow ban user</text>
+  
+  <rect x="775" y="230" width="170" height="30" rx="2" class="highlight-blue" stroke-width="1"/>
+  <text x="860" y="248" text-anchor="middle" font-size="8" class="text-primary">Suspend account</text>
+  
+  <rect x="775" y="265" width="170" height="30" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="860" y="283" text-anchor="middle" font-size="8" class="text-primary">Send warning</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

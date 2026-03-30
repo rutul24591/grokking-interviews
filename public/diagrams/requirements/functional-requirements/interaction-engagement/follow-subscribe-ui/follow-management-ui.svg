@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Follow Management UI</text>
+  
+  <!-- Following List (Top Left) -->
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Following List</text>
+  
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Search bar -->
+  <rect x="55" y="125" width="150" height="25" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="70" y="142" font-size="8" class="text-secondary">🔍 Search...</text>
+  
+  <!-- List items -->
+  <rect x="55" y="155" width="150" height="28" rx="2" class="box-base" stroke-width="1"/>
+  <text x="70" y="172" font-size="7" font-weight="bold" class="text-primary">@user1</text>
+  <text x="180" y="172" text-anchor="end" font-size="7" class="highlight-green">✓</text>
+  
+  <rect x="55" y="188" width="150" height="28" rx="2" class="box-base" stroke-width="1"/>
+  <text x="70" y="205" font-size="7" font-weight="bold" class="text-primary">@user2</text>
+  <text x="180" y="205" text-anchor="end" font-size="7" class="highlight-green">✓</text>
+  
+  <text x="130" y="245" text-anchor="middle" font-size="9" class="text-secondary">Sortable, searchable</text>
+  
+  <!-- Batch Unfollow (Top Center) -->
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Batch Unfollow</text>
+  
+  <rect x="280" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Selection mode -->
+  <rect x="295" y="125" width="150" height="25" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="310" y="142" font-size="8" font-weight="bold" class="text-primary">Select Mode</text>
+  <text x="420" y="142" text-anchor="end" font-size="8" class="highlight-green">3 selected</text>
+  
+  <!-- Selected items -->
+  <rect x="295" y="155" width="150" height="28" rx="2" class="accent-box" stroke-width="1.5"/>
+  <text x="310" y="172" font-size="7" class="highlight-green">☑</text>
+  <text x="325" y="172" font-size="7" font-weight="bold" class="text-primary">@inactive1</text>
+  
+  <rect x="295" y="188" width="150" height="28" rx="2" class="accent-box" stroke-width="1.5"/>
+  <text x="310" y="205" font-size="7" class="highlight-green">☑</text>
+  <text x="325" y="205" font-size="7" font-weight="bold" class="text-primary">@inactive2</text>
+  
+  <!-- Unfollow button -->
+  <rect x="340" y="225" width="100" height="20" rx="2" class="highlight-red" stroke-width="1"/>
+  <text x="390" y="239" text-anchor="middle" font-size="7" font-weight="bold" class="text-primary">Unfollow (3)</text>
+  
+  <text x="370" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Bulk cleanup</text>
+  
+  <!-- Mute Option (Top Right) -->
+  <rect x="500" y="70" width="240" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Mute vs Unfollow</text>
+  
+  <rect x="520" y="110" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Mute option -->
+  <rect x="535" y="125" width="170" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="550" y="145" font-size="8" font-weight="bold" class="text-primary">Mute @user</text>
+  <text x="680" y="145" text-anchor="end" font-size="8" class="highlight-purple">Toggle</text>
+  <text x="550" y="155" font-size="7" class="text-secondary">Hide posts, stay following</text>
+  
+  <!-- Unfollow option -->
+  <rect x="535" y="165" width="170" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="550" y="183" font-size="8" font-weight="bold" class="text-primary">Unfollow @user</text>
+  <text x="680" y="183" text-anchor="end" font-size="8" class="highlight-red">Action</text>
+  <text x="550" y="193" font-size="7" class="text-secondary">Stop following completely</text>
+  
+  <text x="620" y="245" text-anchor="middle" font-size="9" class="highlight-purple">✓ Less confrontational</text>
+  
+  <!-- Notification Settings (Bottom Left) -->
+  <rect x="20" y="260" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Notification Settings</text>
+  
+  <rect x="40" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Per-account settings -->
+  <rect x="55" y="315" width="230" height="25" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="70" y="332" font-size="8" font-weight="bold" class="text-primary">@creator</text>
+  <text x="260" y="332" text-anchor="end" font-size="8" class="highlight-green">All Posts 🔔</text>
+  
+  <!-- Options dropdown -->
+  <rect x="55" y="345" width="230" height="55" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="70" y="362" font-size="7" class="text-primary">• All Posts 🔔</text>
+  <text x="70" y="377" font-size="7" class="text-primary">• Personalized 📱</text>
+  <text x="70" y="392" font-size="7" class="text-secondary">• None 🚫</text>
+  
+  <text x="170" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Granular control</text>
+  
+  <!-- Pending Requests (Bottom Center) -->
+  <rect x="340" y="260" width="320" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Pending Requests</text>
+  
+  <rect x="360" y="300" width="280" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Request list -->
+  <rect x="375" y="315" width="250" height="40" rx="2" class="box-base" stroke-width="1"/>
+  <text x="390" y="335" font-size="8" font-weight="bold" class="text-primary">@newuser</text>
+  <text x="390" y="348" font-size="7" class="text-secondary">2 mutual friends</text>
+  <rect x="580" y="325" width="40" height="20" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="600" y="339" text-anchor="middle" font-size="7" font-weight="bold" class="text-primary">✓</text>
+  <rect x="580" y="325" width="40" height="20" rx="2" class="highlight-red" stroke-width="1" transform="translate(45, 0)"/>
+  <text x="600" y="339" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">✕</text>
+  
+  <rect x="375" y="360" width="250" height="40" rx="2" class="box-base" stroke-width="1"/>
+  <text x="390" y="380" font-size="8" font-weight="bold" class="text-primary">@anotheruser</text>
+  <text x="390" y="393" font-size="7" class="text-secondary">0 mutual friends</text>
+  <rect x="580" y="370" width="40" height="20" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="600" y="384" text-anchor="middle" font-size="7" font-weight="bold" class="text-primary">✓</text>
+  <rect x="580" y="370" width="40" height="20" rx="2" class="highlight-red" stroke-width="1" transform="translate(45, 0)"/>
+  <text x="600" y="384" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">✕</text>
+  
+  <text x="500" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Approve/Deny</text>
+  
+  <!-- Follow Stats (Bottom Right) -->
+  <rect x="680" y="260" width="300" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="830" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Follow Analytics</text>
+  
+  <rect x="700" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  
+  <!-- Stats -->
+  <text x="715" y="320" font-size="9" font-weight="bold" class="text-primary">Your Network:</text>
+  
+  <rect x="715" y="330" width="110" height="35" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="770" y="345" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">1.2K</text>
+  <text x="770" y="360" text-anchor="middle" font-size="7" class="text-secondary">Following</text>
+  
+  <rect x="840" y="330" width="110" height="35" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="895" y="345" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">5.8K</text>
+  <text x="895" y="360" text-anchor="middle" font-size="7" class="text-secondary">Followers</text>
+  
+  <!-- Growth trend -->
+  <text x="715" y="385" font-size="8" font-weight="bold" class="text-primary">Growth:</text>
+  <polyline points="715,405 740,400 765,395 790,390 815,385 840,380 865,375 890,370" fill="none" class="highlight-green" stroke-width="2"/>
+  <text x="890" y="395" text-anchor="end" font-size="7" class="highlight-green">+12% this month</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

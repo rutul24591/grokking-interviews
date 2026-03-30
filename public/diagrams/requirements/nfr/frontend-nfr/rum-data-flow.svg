@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">RUM Data Flow Architecture</text>
+  
+  <!-- Client Collection -->
+  <rect x="30" y="70" width="200" height="120" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Client Collection</text>
+  <rect x="50" y="110" width="160" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="130" y="130" text-anchor="middle" font-size="9" class="text-primary">• Performance API</text>
+  <text x="130" y="145" text-anchor="middle" font-size="9" class="text-primary">• Web Vitals</text>
+  <text x="130" y="160" text-anchor="middle" font-size="9" class="text-primary">• Error tracking</text>
+  <text x="130" y="175" text-anchor="middle" font-size="9" class="highlight-green">✓ Browser native</text>
+  
+  <line x1="230" y1="130" x2="270" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Batch & Buffer -->
+  <rect x="270" y="70" width="200" height="120" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Batch &amp; Buffer</text>
+  <rect x="290" y="110" width="160" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="370" y="130" text-anchor="middle" font-size="9" class="text-primary">• Queue metrics</text>
+  <text x="370" y="145" text-anchor="middle" font-size="9" class="text-primary">• Batch send (5-10)</text>
+  <text x="370" y="160" text-anchor="middle" font-size="9" class="text-primary">• Beacon API</text>
+  <text x="370" y="175" text-anchor="middle" font-size="9" class="highlight-green">✓ Reduce requests</text>
+  
+  <line x1="470" y1="130" x2="510" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Ingestion -->
+  <rect x="510" y="70" width="200" height="120" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="610" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Ingestion Service</text>
+  <rect x="530" y="110" width="160" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="610" y="130" text-anchor="middle" font-size="9" class="text-primary">• Validate payload</text>
+  <text x="610" y="145" text-anchor="middle" font-size="9" class="text-primary">• Enrich metadata</text>
+  <text x="610" y="160" text-anchor="middle" font-size="9" class="text-primary">• Route to storage</text>
+  <text x="610" y="175" text-anchor="middle" font-size="9" class="highlight-green">✓ High throughput</text>
+  
+  <line x1="710" y1="130" x2="750" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Storage & Analysis -->
+  <rect x="750" y="70" width="120" height="120" rx="5" class="highlight-purple" stroke-width="2"/>
+  <text x="810" y="130" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Storage &amp; Analysis</text>
+  
+  <!-- Metrics Categories -->
+  <rect x="30" y="210" width="840" height="140" rx="5" class="box-base" stroke-width="2"/>
+  <text x="450" y="235" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Core Web Vitals &amp; Metrics</text>
+  
+  <rect x="50" y="250" width="190" height="85" rx="3" class="accent-box" stroke-width="1"/>
+  <text x="145" y="270" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">LCP</text>
+  <text x="145" y="290" text-anchor="middle" font-size="9" class="text-primary">Largest Contentful Paint</text>
+  <text x="145" y="305" text-anchor="middle" font-size="9" class="text-primary">Target: &lt;2.5s</text>
+  <text x="145" y="320" text-anchor="middle" font-size="9" class="highlight-green">✓ Load performance</text>
+  
+  <rect x="255" y="250" width="190" height="85" rx="3" class="highlight-box" stroke-width="1"/>
+  <text x="350" y="270" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">FID/INP</text>
+  <text x="350" y="290" text-anchor="middle" font-size="9" class="text-primary">Interaction to Next Paint</text>
+  <text x="350" y="305" text-anchor="middle" font-size="9" class="text-primary">Target: &lt;200ms</text>
+  <text x="350" y="320" text-anchor="middle" font-size="9" class="highlight-green">✓ Interactivity</text>
+  
+  <rect x="460" y="250" width="190" height="85" rx="3" class="highlight-green" stroke-width="1"/>
+  <text x="555" y="270" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">CLS</text>
+  <text x="555" y="290" text-anchor="middle" font-size="9" class="text-primary">Cumulative Layout Shift</text>
+  <text x="555" y="305" text-anchor="middle" font-size="9" class="text-primary">Target: &lt;0.1</text>
+  <text x="555" y="320" text-anchor="middle" font-size="9" class="highlight-green">✓ Visual stability</text>
+  
+  <rect x="665" y="250" width="190" height="85" rx="3" class="highlight-purple" stroke-width="1"/>
+  <text x="760" y="270" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Custom Metrics</text>
+  <text x="760" y="290" text-anchor="middle" font-size="9" class="text-primary">• Time to interactive</text>
+  <text x="760" y="305" text-anchor="middle" font-size="9" class="text-primary">• First byte</text>
+  <text x="760" y="320" text-anchor="middle" font-size="9" class="text-primary">• Business metrics</text>
+  
+  <!-- Alerting -->
+  <rect x="30" y="370" width="840" height="100" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="450" y="395" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Alerting &amp; Dashboards</text>
+  
+  <rect x="50" y="410" width="190" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="145" y="430" text-anchor="middle" font-size="9" class="text-primary">SLO monitoring</text>
+  <text x="145" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Proactive alerts</text>
+  
+  <rect x="255" y="410" width="190" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="350" y="430" text-anchor="middle" font-size="9" class="text-primary">Real-time dashboards</text>
+  <text x="350" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Visibility</text>
+  
+  <rect x="460" y="410" width="190" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="555" y="430" text-anchor="middle" font-size="9" class="text-primary">Segment analysis</text>
+  <text x="555" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Device/Geo</text>
+  
+  <rect x="665" y="410" width="190" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="760" y="430" text-anchor="middle" font-size="9" class="text-primary">Trend analysis</text>
+  <text x="760" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Regression detection</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,7 +1,5 @@
-# Skeleton Screens Example
+# Skeleton Screens Examples
 
-This example demonstrates the core implementation ideas for this concept.
-
-## Files
-- Minimal-Code-Pattern.txt
-- Comprehensive-Example.txt
+- `example-1`: article list with structural skeleton placeholders.
+- `example-2`: choose skeleton vs spinner runner.
+- `example-3`: layout-shift audit for mismatched skeletons.

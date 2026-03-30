@@ -1,7 +1,5 @@
-# Print Stylesheets Example
+# Print Stylesheets Examples
 
-This example demonstrates the core implementation ideas for this concept.
-
-## Files
-- Minimal-Code-Pattern.txt
-- Comprehensive-Example.txt
+- `example-1`: printable article view with screen-only and print-only affordances.
+- `example-2`: media-query rule selection runner.
+- `example-3`: audit for hidden nav, links, and page-break handling.

@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="1000" height="550" class="bg-base"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Experimentation Platform Architecture</text>
+  
+  <!-- User Layer -->
+  <rect x="30" y="70" width="200" height="120" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">User Layer</text>
+  <rect x="50" y="110" width="160" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="130" y="130" text-anchor="middle" font-size="9" class="text-primary">• Web clients</text>
+  <text x="130" y="145" text-anchor="middle" font-size="9" class="text-primary">• Mobile apps</text>
+  <text x="130" y="160" text-anchor="middle" font-size="9" class="text-primary">• API consumers</text>
+  
+  <line x1="230" y1="130" x2="270" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Assignment Service -->
+  <rect x="270" y="70" width="220" height="120" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="380" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Assignment Service</text>
+  <rect x="290" y="110" width="180" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="380" y="130" text-anchor="middle" font-size="9" class="text-primary">• Consistent hashing</text>
+  <text x="380" y="145" text-anchor="middle" font-size="9" class="text-primary">• Experiment eligibility</text>
+  <text x="380" y="160" text-anchor="middle" font-size="9" class="text-primary">• Variant assignment</text>
+  
+  <line x1="490" y1="130" x2="530" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Feature Flag Integration -->
+  <rect x="530" y="70" width="220" height="120" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="640" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Feature Flag Service</text>
+  <rect x="550" y="110" width="180" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="640" y="130" text-anchor="middle" font-size="9" class="text-primary">• Flag evaluation</text>
+  <text x="640" y="145" text-anchor="middle" font-size="9" class="text-primary">• Variant delivery</text>
+  <text x="640" y="160" text-anchor="middle" font-size="9" class="text-primary">• Targeting rules</text>
+  
+  <line x1="750" y1="130" x2="790" y2="130" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Experience Layer -->
+  <rect x="790" y="70" width="180" height="120" rx="5" class="highlight-green" stroke-width="2"/>
+  <text x="880" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Experience</text>
+  <rect x="810" y="110" width="140" height="65" rx="3" class="box-base" stroke-width="1"/>
+  <text x="880" y="130" text-anchor="middle" font-size="9" class="text-primary">• Variant A</text>
+  <text x="880" y="145" text-anchor="middle" font-size="9" class="text-primary">• Variant B</text>
+  <text x="880" y="160" text-anchor="middle" font-size="9" class="text-primary">User sees variant</text>
+  
+  <!-- Event Pipeline -->
+  <line x1="640" y1="190" x2="640" y2="230" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <rect x="420" y="230" width="440" height="100" rx="5" class="highlight-purple" stroke-width="2.5"/>
+  <text x="640" y="255" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Event Pipeline</text>
+  <rect x="440" y="270" width="400" height="45" rx="3" class="box-base" stroke-width="1"/>
+  <text x="640" y="290" text-anchor="middle" font-size="9" class="text-primary">• Click/impression events → Kafka → Data warehouse</text>
+  <text x="640" y="305" text-anchor="middle" font-size="9" class="text-primary">• Real-time + batch processing</text>
+  
+  <line x1="640" y1="330" x2="640" y2="370" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Analysis Engine -->
+  <rect x="420" y="370" width="440" height="150" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="640" y="395" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Analysis Engine</text>
+  <rect x="440" y="410" width="200" height="95" rx="3" class="box-base" stroke-width="1"/>
+  <text x="540" y="430" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Statistical Analysis</text>
+  <text x="455" y="450" font-size="8" class="text-primary">• T-tests</text>
+  <text x="455" y="465" font-size="8" class="text-primary">• Bayesian inference</text>
+  <text x="455" y="480" font-size="8" class="text-primary">• Segmentation</text>
+  <text x="455" y="495" font-size="8" class="text-primary">• Power analysis</text>
+  
+  <rect x="660" y="410" width="180" height="95" rx="3" class="box-base" stroke-width="1"/>
+  <text x="750" y="430" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Reporting</text>
+  <text x="675" y="450" font-size="8" class="text-primary">• Dashboards</text>
+  <text x="675" y="465" font-size="8" class="text-primary">• Alerts</text>
+  <text x="675" y="480" font-size="8" class="text-primary">• Export results</text>
+  <text x="675" y="495" font-size="8" class="text-primary">• Decision support</text>
+  
+  <!-- Key Capabilities -->
+  <rect x="30" y="230" width="370" height="290" rx="5" class="box-base" stroke-width="2"/>
+  <text x="215" y="255" text-anchor="middle" font-size="16" font-weight="bold" class="text-primary">Key Platform Capabilities</text>
+  
+  <rect x="50" y="270" width="330" height="235" rx="3" class="box-base" stroke-width="1"/>
+  <text x="70" y="290" font-size="9" class="highlight-green">✓ Consistent Assignment</text>
+  <text x="85" y="305" font-size="8" class="text-secondary">Same user always gets same variant</text>
+  
+  <text x="70" y="330" font-size="9" class="highlight-green">✓ Overlap Prevention</text>
+  <text x="85" y="345" font-size="8" class="text-secondary">Users in one experiment per layer</text>
+  
+  <text x="70" y="370" font-size="9" class="highlight-green">✓ Interaction Detection</text>
+  <text x="85" y="385" font-size="8" class="text-secondary">Monitor cross-experiment effects</text>
+  
+  <text x="70" y="410" font-size="9" class="highlight-green">✓ Guardrail Metrics</text>
+  <text x="85" y="425" font-size="8" class="text-secondary">Auto-monitor retention, revenue</text>
+  
+  <text x="70" y="450" font-size="9" class="highlight-green">✓ Sequential Testing</text>
+  <text x="85" y="465" font-size="8" class="text-secondary">Correct for multiple peeking</text>
+  
+  <!-- Maturity Levels -->
+  <rect x="30" y="540" width="940" height="80" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="500" y="560" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Experimentation Maturity Levels</text>
+  <rect x="50" y="575" width="190" height="35" rx="3" class="box-base" stroke-width="1"/>
+  <text x="145" y="595" text-anchor="middle" font-size="9" class="text-primary">Level 1: Ad Hoc</text>
+  <rect x="250" y="575" width="190" height="35" rx="3" class="accent-box" stroke-width="1"/>
+  <text x="345" y="595" text-anchor="middle" font-size="9" class="text-primary">Level 2: Standardized</text>
+  <rect x="450" y="575" width="190" height="35" rx="3" class="highlight-box" stroke-width="1"/>
+  <text x="545" y="595" text-anchor="middle" font-size="9" class="text-primary">Level 3: Scaled</text>
+  <rect x="650" y="575" width="190" height="35" rx="3" class="highlight-green" stroke-width="1.5"/>
+  <text x="745" y="595" text-anchor="middle" font-size="9" class="text-primary">Level 4: Advanced</text>
+  <rect x="850" y="575" width="120" height="35" rx="3" class="highlight-purple" stroke-width="1.5"/>
+  <text x="910" y="595" text-anchor="middle" font-size="9" class="text-primary">Level 5: ML</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

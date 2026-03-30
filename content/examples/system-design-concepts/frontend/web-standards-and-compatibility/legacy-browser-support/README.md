@@ -1,7 +1,5 @@
-# Legacy Browser Support Example
+# Legacy Browser Support Examples
 
-This example demonstrates the core implementation ideas for this concept.
-
-## Files
-- Minimal-Code-Pattern.txt
-- Comprehensive-Example.txt
+- `example-1`: support-policy console with capability tiers and reduced-mode UI.
+- `example-2`: support-tier runner.
+- `example-3`: maintenance-cost audit.

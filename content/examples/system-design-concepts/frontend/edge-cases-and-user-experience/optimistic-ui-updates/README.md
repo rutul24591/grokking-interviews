@@ -1,7 +1,5 @@
-# Optimistic Ui Updates Example
+# Optimistic UI Updates Examples
 
-This example demonstrates the core implementation ideas for this concept.
-
-## Files
-- Minimal-Code-Pattern.txt
-- Comprehensive-Example.txt
+- `example-1`: feed actions app with optimistic like/bookmark and rollback.
+- `example-2`: optimistic success/failure timeline runner.
+- `example-3`: duplicate-click and conflict audit.

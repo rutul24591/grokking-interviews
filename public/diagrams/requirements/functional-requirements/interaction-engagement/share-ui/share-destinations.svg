@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="1000" height="450" class="bg-base"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Share Destinations</text>
+  
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Social Media</text>
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="55" y="125" width="70" height="40" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="90" y="145" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">🐦 Twitter</text>
+  <rect x="135" y="125" width="70" height="40" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="170" y="145" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">📘 Facebook</text>
+  <rect x="55" y="170" width="70" height="40" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="90" y="190" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">💼 LinkedIn</text>
+  <rect x="135" y="170" width="70" height="40" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="170" y="190" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">📸 Instagram</text>
+  <text x="130" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Most common</text>
+  
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Messaging Apps</text>
+  <rect x="280" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="295" y="125" width="70" height="40" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="330" y="145" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">💬 WhatsApp</text>
+  <rect x="375" y="125" width="70" height="40" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="410" y="145" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">✈️ Telegram</text>
+  <rect x="295" y="170" width="70" height="40" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="330" y="190" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">📨 Messenger</text>
+  <rect x="375" y="170" width="70" height="40" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="410" y="190" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">📱 SMS</text>
+  <text x="370" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Direct to contacts</text>
+  
+  <rect x="500" y="70" width="240" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Email</text>
+  <rect x="520" y="110" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="535" y="125" width="170" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="620" y="145" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">📧 Gmail</text>
+  <rect x="535" y="165" width="170" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="620" y="185" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">📬 Outlook</text>
+  <rect x="535" y="205" width="170" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="620" y="225" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">🍎 Apple Mail</text>
+  <text x="620" y="245" text-anchor="middle" font-size="9" class="text-secondary">Pre-populated subject/body</text>
+  
+  <rect x="20" y="260" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Copy Link</text>
+  <rect x="40" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="55" y="315" width="230" height="40" rx="2" class="accent-box" stroke-width="1.5"/>
+  <text x="70" y="335" font-size="8" class="text-secondary">🔗 yoursite.com/article/...</text>
+  <rect x="255" y="320" width="25" height="30" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="267" y="340" text-anchor="middle" font-size="10" class="text-primary">📋</text>
+  <rect x="55" y="365" width="230" height="35" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="170" y="387" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">✓ Link copied!</text>
+  <text x="170" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Universal fallback</text>
+  
+  <rect x="340" y="260" width="320" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Embed Code</text>
+  <rect x="360" y="300" width="280" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="375" y="315" width="250" height="85" rx="2" class="box-base" stroke-width="1"/>
+  <text x="390" y="335" font-size="7" font-weight="bold" class="text-primary">&lt;iframe src="..."&gt;</text>
+  <text x="390" y="350" font-size="7" class="text-secondary">&lt;/iframe&gt;</text>
+  <text x="390" y="370" font-size="7" class="text-secondary">Width: [300▼] Height: [150▼]</text>
+  <rect x="550" y="385" width="70" height="20" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="585" y="399" text-anchor="middle" font-size="7" font-weight="bold" class="text-primary">Copy</text>
+  <text x="500" y="445" text-anchor="middle" font-size="9" class="highlight-purple">⚠ For websites</text>
+  
+  <rect x="680" y="260" width="300" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="830" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">More Options</text>
+  <rect x="700" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="715" y="315" width="110" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="770" y="335" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">📌 Pinterest</text>
+  <rect x="835" y="315" width="110" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="890" y="335" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">📝 Reddit</text>
+  <rect x="715" y="355" width="110" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="770" y="375" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">💾 Save</text>
+  <rect x="835" y="355" width="110" height="35" rx="2" class="box-base" stroke-width="1"/>
+  <text x="890" y="375" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">⋯ More</text>
+  <text x="830" y="445" text-anchor="middle" font-size="9" class="text-secondary">Platform-specific options</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

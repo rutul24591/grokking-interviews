@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">Code Splitting Strategies</text>
+  
+  <!-- Route-Based Splitting -->
+  <rect x="30" y="70" width="270" height="180" rx="5" class="box-base" stroke-width="2"/>
+  <text x="165" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Route-Based</text>
+  <rect x="50" y="110" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="65" y="130" font-size="9" class="text-primary">• Split by route</text>
+  <text x="65" y="145" font-size="9" class="text-primary">• Load on navigation</text>
+  <text x="65" y="160" font-size="9" class="text-primary">• React.lazy + Suspense</text>
+  <text x="65" y="175" font-size="9" class="text-primary">• Next.js automatic</text>
+  <text x="65" y="190" font-size="9" class="text-primary">• Large initial savings</text>
+  <text x="65" y="205" font-size="9" class="highlight-green">✓ Easy to implement</text>
+  <text x="65" y="220" font-size="9" class="highlight-green">✓ Big impact</text>
+  <text x="65" y="235" font-size="9" class="highlight-purple">⚠ Route transitions</text>
+  
+  <!-- Component-Based -->
+  <rect x="315" y="70" width="270" height="180" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="450" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Component-Based</text>
+  <rect x="335" y="110" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="350" y="130" font-size="9" class="text-primary">• Split heavy components</text>
+  <text x="350" y="145" font-size="9" class="text-primary">• Modals, charts, editors</text>
+  <text x="350" y="160" font-size="9" class="text-primary">• Load on interaction</text>
+  <text x="350" y="175" font-size="9" class="text-primary">• Manual boundaries</text>
+  <text x="350" y="190" font-size="9" class="text-primary">• Fine-grained control</text>
+  <text x="350" y="205" font-size="9" class="highlight-green">✓ Precise control</text>
+  <text x="350" y="220" font-size="9" class="highlight-purple">⚠ More complex</text>
+  <text x="350" y="235" font-size="9" class="highlight-green">✓ Targeted</text>
+  
+  <!-- Library Splitting -->
+  <rect x="600" y="70" width="270" height="180" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="735" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Library Splitting</text>
+  <rect x="620" y="110" width="230" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="635" y="130" font-size="9" class="text-primary">• Separate vendor chunks</text>
+  <text x="635" y="145" font-size="9" class="text-primary">• Long-term caching</text>
+  <text x="635" y="160" font-size="9" class="text-primary">• Framework separate</text>
+  <text x="635" y="175" font-size="9" class="text-primary">• Auto by bundler</text>
+  <text x="635" y="190" font-size="9" class="text-primary">• Cache optimization</text>
+  <text x="635" y="205" font-size="9" class="highlight-green">✓ Better caching</text>
+  <text x="635" y="220" font-size="9" class="highlight-green">✓ Automatic</text>
+  <text x="635" y="235" font-size="9" class="highlight-purple">⚠ More requests</text>
+  
+  <!-- Impact Analysis -->
+  <rect x="30" y="270" width="840" height="200" rx="5" class="box-base" stroke-width="2"/>
+  <text x="450" y="295" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Bundle Size Impact Analysis</text>
+  
+  <rect x="50" y="310" width="800" height="145" rx="3" class="box-base" stroke-width="1"/>
+  
+  <text x="100" y="330" font-size="9" font-weight="bold" class="text-primary">Strategy</text>
+  <text x="250" y="330" font-size="9" font-weight="bold" class="text-primary">Initial Bundle</text>
+  <text x="400" y="330" font-size="9" font-weight="bold" class="text-primary">Lazy Chunks</text>
+  <text x="550" y="330" font-size="9" font-weight="bold" class="text-primary">Load Time</text>
+  <text x="700" y="330" font-size="9" font-weight="bold" class="text-primary">Recommendation</text>
+  
+  <line x1="80" y1="340" x2="820" y2="340" class="arrow" stroke-width="1"/>
+  <text x="100" y="355" font-size="8" class="text-primary">No splitting</text>
+  <text x="250" y="355" font-size="8" class="highlight-red">500 KB</text>
+  <text x="400" y="355" font-size="8" class="text-secondary">N/A</text>
+  <text x="550" y="355" font-size="8" class="highlight-red">3-5s</text>
+  <text x="700" y="355" font-size="8" class="highlight-red">❌ Avoid</text>
+  
+  <line x1="80" y1="375" x2="820" y2="375" class="arrow" stroke-width="1"/>
+  <text x="100" y="390" font-size="8" class="text-primary">Route-based</text>
+  <text x="250" y="390" font-size="8" class="highlight-green">100 KB</text>
+  <text x="400" y="390" font-size="8" class="highlight-blue">50-100 KB</text>
+  <text x="550" y="390" font-size="8" class="highlight-green">&lt;1s</text>
+  <text x="700" y="390" font-size="8" class="highlight-green">✓ Essential</text>
+  
+  <line x1="80" y1="410" x2="820" y2="410" class="arrow" stroke-width="1"/>
+  <text x="100" y="425" font-size="8" class="text-primary">+ Component</text>
+  <text x="250" y="425" font-size="8" class="highlight-green">80 KB</text>
+  <text x="400" y="425" font-size="8" class="highlight-blue">20-50 KB</text>
+  <text x="550" y="425" font-size="8" class="highlight-green">&lt;1s</text>
+  <text x="700" y="425" font-size="8" class="highlight-green">✓ For large apps</text>
+  
+  <line x1="80" y1="445" x2="820" y2="445" class="arrow" stroke-width="1"/>
+  <text x="100" y="460" font-size="8" class="text-primary">+ Library</text>
+  <text x="250" y="460" font-size="8" class="highlight-green">50 KB</text>
+  <text x="400" y="460" font-size="8" class="highlight-blue">30 KB (cached)</text>
+  <text x="550" y="460" font-size="8" class="highlight-green">&lt;500ms</text>
+  <text x="700" y="460" font-size="8" class="highlight-green">✓ Optimal</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

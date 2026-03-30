@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="1000" height="450" class="bg-base"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Fraud Patterns and Detection</text>
+  
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Bot Activity</text>
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <text x="55" y="130" font-size="8" class="text-primary">• Superhuman speed</text>
+  <text x="55" y="145" font-size="8" class="text-secondary">(ms after post)</text>
+  <text x="55" y="165" font-size="8" class="text-primary">• Inhuman volume</text>
+  <text x="55" y="180" font-size="8" class="text-secondary">(1000s per day)</text>
+  <text x="55" y="200" font-size="8" class="text-primary">• 24/7 activity</text>
+  <text x="55" y="215" font-size="8" class="text-secondary">(no sleep pattern)</text>
+  <text x="130" y="245" text-anchor="middle" font-size="9" class="highlight-red">⚠ Timing patterns</text>
+  
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Click Farms</text>
+  <rect x="280" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <text x="295" y="130" font-size="8" class="text-primary">• IP concentration</text>
+  <text x="295" y="145" font-size="8" class="text-secondary">(same IP range)</text>
+  <text x="295" y="165" font-size="8" class="text-primary">• Device farms</text>
+  <text x="295" y="180" font-size="8" class="text-secondary">(100s of phones)</text>
+  <text x="295" y="200" font-size="8" class="text-primary">• Geo mismatch</text>
+  <text x="295" y="215" font-size="8" class="text-secondary">(wrong region)</text>
+  <text x="370" y="245" text-anchor="middle" font-size="9" class="highlight-red">⚠ IP patterns</text>
+  
+  <rect x="500" y="70" width="240" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Engagement Pods</text>
+  <rect x="520" y="110" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <text x="535" y="130" font-size="8" class="text-primary">• Reciprocal engagement</text>
+  <text x="535" y="145" font-size="8" class="text-secondary">(members only)</text>
+  <text x="535" y="165" font-size="8" class="text-primary">• Tight timing</text>
+  <text x="535" y="180" font-size="8" class="text-secondary">(mins of post)</text>
+  <text x="535" y="200" font-size="8" class="text-primary">• Closed network</text>
+  <text x="535" y="215" font-size="8" class="text-secondary">(no outside engage)</text>
+  <text x="620" y="245" text-anchor="middle" font-size="9" class="highlight-purple">⚠ Graph patterns</text>
+  
+  <rect x="20" y="260" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Detection Signals</text>
+  <rect x="40" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="55" y="315" width="110" height="35" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="110" y="337" text-anchor="middle" font-size="8" class="text-primary">Velocity</text>
+  <rect x="175" y="315" width="110" height="35" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="230" y="337" text-anchor="middle" font-size="8" class="text-primary">Network</text>
+  <rect x="55" y="355" width="110" height="35" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="110" y="377" text-anchor="middle" font-size="8" class="text-primary">ML Model</text>
+  <rect x="175" y="355" width="110" height="35" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="230" y="377" text-anchor="middle" font-size="8" class="text-primary">Device Print</text>
+  <text x="170" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Multi-signal</text>
+  
+  <rect x="340" y="260" width="320" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Network Graph</text>
+  <rect x="360" y="300" width="280" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <!-- Pod cluster -->
+  <circle cx="420" cy="330" r="15" class="highlight-red" stroke-width="1"/>
+  <circle cx="460" cy="320" r="15" class="highlight-red" stroke-width="1"/>
+  <circle cx="480" cy="350" r="15" class="highlight-red" stroke-width="1"/>
+  <circle cx="440" cy="370" r="15" class="highlight-red" stroke-width="1"/>
+  <circle cx="400" cy="360" r="15" class="highlight-red" stroke-width="1"/>
+  <line x1="420" y1="330" x2="460" y2="320" class="arrow" stroke-width="1"/>
+  <line x1="460" y1="320" x2="480" y2="350" class="arrow" stroke-width="1"/>
+  <line x1="480" y1="350" x2="440" y2="370" class="arrow" stroke-width="1"/>
+  <line x1="440" y1="370" x2="400" y2="360" class="arrow" stroke-width="1"/>
+  <line x1="400" y1="360" x2="420" y2="330" class="arrow" stroke-width="1"/>
+  <text x="550" y="330" font-size="8" class="text-primary">Dense cluster</text>
+  <text x="550" y="345" font-size="8" class="text-primary">= Pod detected</text>
+  <text x="500" y="445" text-anchor="middle" font-size="9" class="highlight-purple">⚠ High internal engagement</text>
+  
+  <rect x="680" y="260" width="300" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="830" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Account Indicators</text>
+  <rect x="700" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <text x="715" y="320" font-size="8" font-weight="bold" class="text-primary">Red Flags:</text>
+  <text x="715" y="340" font-size="7" class="highlight-red">⚠ Account &lt; 24 hours</text>
+  <text x="715" y="355" font-size="7" class="highlight-red">⚠ No profile info</text>
+  <text x="715" y="370" font-size="7" class="highlight-red">⚠ Following 1000s, 0 followers</text>
+  <text x="715" y="385" font-size="7" class="highlight-red">⚠ Identical comments</text>
+  <text x="715" y="400" font-size="7" class="highlight-purple">⚠ Geo/language mismatch</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

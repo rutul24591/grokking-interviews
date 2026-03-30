@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="1000" height="450" class="bg-base"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Saved Content Lifecycle</text>
+  
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Available</text>
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="55" y="125" width="150" height="85" rx="2" class="accent-box" stroke-width="1"/>
+  <rect x="70" y="135" width="60" height="45" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="100" y="160" text-anchor="middle" font-size="8" class="text-primary">Image</text>
+  <text x="145" y="145" font-size="8" font-weight="bold" class="text-primary">Article Title</text>
+  <text x="145" y="160" font-size="7" class="text-secondary">Description text...</text>
+  <text x="145" y="180" font-size="7" class="text-secondary">✓ Available</text>
+  <text x="130" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Normal state</text>
+  
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Updated</text>
+  <rect x="280" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="295" y="125" width="150" height="85" rx="2" class="accent-box" stroke-width="1"/>
+  <rect x="310" y="135" width="60" height="45" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="340" y="160" text-anchor="middle" font-size="8" class="text-primary">Image</text>
+  <text x="385" y="145" font-size="8" font-weight="bold" class="text-primary">Article Title</text>
+  <text x="385" y="160" font-size="7" class="text-secondary">Updated description...</text>
+  <rect x="385" y="175" width="50" height="15" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="410" y="186" text-anchor="middle" font-size="6" class="text-primary">UPDATED</text>
+  <text x="370" y="245" text-anchor="middle" font-size="9" class="highlight-blue">✓ Shows current</text>
+  
+  <rect x="500" y="70" width="240" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Deleted</text>
+  <rect x="520" y="110" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="535" y="125" width="170" height="85" rx="2" class="box-base" stroke-width="1" stroke-dasharray="4,4"/>
+  <text x="620" y="165" text-anchor="middle" font-size="9" class="highlight-red">⚠ Content unavailable</text>
+  <text x="620" y="185" text-anchor="middle" font-size="7" class="text-secondary">This content was deleted</text>
+  <text x="620" y="200" text-anchor="middle" font-size="7" class="text-secondary">by the creator</text>
+  <rect x="570" y="210" width="100" height="20" rx="2" class="highlight-red" stroke-width="1"/>
+  <text x="620" y="224" text-anchor="middle" font-size="7" font-weight="bold" class="text-primary">Remove</text>
+  <text x="620" y="245" text-anchor="middle" font-size="9" class="highlight-red">⚠ Needs cleanup</text>
+  
+  <rect x="20" y="260" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Cleanup Flow</text>
+  <rect x="40" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="55" y="315" width="230" height="30" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="170" y="335" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Content deleted</text>
+  <line x1="170" y1="345" x2="170" y2="360" class="arrow" stroke-width="1.5"/>
+  <rect x="55" y="360" width="230" height="30" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="170" y="380" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Show placeholder</text>
+  <line x1="170" y1="390" x2="170" y2="405" class="arrow" stroke-width="1.5"/>
+  <rect x="55" y="405" width="230" height="30" rx="2" class="highlight-red" stroke-width="1"/>
+  <text x="170" y="425" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">Auto-remove after 30 days</text>
+  
+  <rect x="340" y="260" width="320" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Snapshot Storage</text>
+  <rect x="360" y="300" width="280" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <text x="375" y="320" font-size="9" font-weight="bold" class="text-primary">At Save Time:</text>
+  <rect x="375" y="330" width="250" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="390" y="347" font-size="7" class="text-primary">• Title and description</text>
+  <rect x="375" y="360" width="250" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="390" y="377" font-size="7" class="text-primary">• Image URL</text>
+  <rect x="375" y="390" width="250" height="25" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="390" y="407" font-size="7" class="text-primary">• Full text (premium)</text>
+  <text x="500" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Preserves content</text>
+  
+  <rect x="680" y="260" width="300" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="830" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">User Notification</text>
+  <rect x="700" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="715" y="315" width="230" height="40" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="830" y="335" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">📧 Email Notification</text>
+  <text x="830" y="350" text-anchor="middle" font-size="7" class="text-secondary">5 saved items unavailable</text>
+  <rect x="715" y="360" width="105" height="25" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="767" y="377" text-anchor="middle" font-size="7" font-weight="bold" class="text-primary">Review</text>
+  <rect x="830" y="360" width="105" height="25" rx="2" class="highlight-red" stroke-width="1"/>
+  <text x="882" y="377" text-anchor="middle" font-size="7" font-weight="bold" class="text-primary">Remove All</text>
+  <text x="830" y="445" text-anchor="middle" font-size="9" class="highlight-purple">⚠ Before cleanup</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

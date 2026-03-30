@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="1000" height="450" class="bg-base"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Follow Suggestions Pipeline</text>
+  
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Social Graph</text>
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <circle cx="90" cy="145" r="20" class="accent-box" stroke-width="1.5"/>
+  <text x="90" y="150" text-anchor="middle" font-size="7" class="text-primary">You</text>
+  <circle cx="150" cy="130" r="15" class="box-base" stroke-width="1"/>
+  <text x="150" y="133" text-anchor="middle" font-size="6" class="text-secondary">F1</text>
+  <circle cx="170" cy="160" r="15" class="box-base" stroke-width="1"/>
+  <text x="170" y="163" text-anchor="middle" font-size="6" class="text-secondary">F2</text>
+  <line x1="105" y1="140" x2="135" y2="135" class="arrow" stroke-width="1"/>
+  <line x1="105" y1="150" x2="155" y2="155" class="arrow" stroke-width="1"/>
+  <text x="130" y="205" text-anchor="middle" font-size="8" class="text-primary">Friends of friends</text>
+  <text x="130" y="220" text-anchor="middle" font-size="8" class="text-secondary">People you may know</text>
+  <text x="130" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ High relevance</text>
+  
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Interest Matching</text>
+  <rect x="280" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="295" y="125" width="70" height="25" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="330" y="142" text-anchor="middle" font-size="7" class="text-primary">#tech</text>
+  <rect x="375" y="125" width="70" height="25" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="410" y="142" text-anchor="middle" font-size="7" class="text-primary">#design</text>
+  <rect x="295" y="155" width="70" height="25" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="330" y="172" text-anchor="middle" font-size="7" class="text-primary">#startup</text>
+  <text x="370" y="205" text-anchor="middle" font-size="8" class="text-primary">Similar accounts</text>
+  <text x="370" y="220" text-anchor="middle" font-size="8" class="text-secondary">Content-based filtering</text>
+  <text x="370" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Topic relevance</text>
+  
+  <rect x="500" y="70" width="240" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Contact Import</text>
+  <rect x="520" y="110" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="535" y="125" width="80" height="35" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="575" y="145" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">📧 Email</text>
+  <rect x="625" y="125" width="80" height="35" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="665" y="145" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">📱 Phone</text>
+  <text x="620" y="185" text-anchor="middle" font-size="8" class="text-primary">Match contacts</text>
+  <text x="620" y="200" text-anchor="middle" font-size="8" class="text-secondary">Find existing users</text>
+  <text x="620" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Real connections</text>
+  
+  <rect x="760" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="870" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Activity-Based</text>
+  <rect x="780" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <text x="795" y="130" font-size="8" class="text-primary">Users like you follow:</text>
+  <rect x="795" y="145" width="150" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="870" y="162" text-anchor="middle" font-size="7" class="text-primary">@account1</text>
+  <rect x="795" y="175" width="150" height="25" rx="2" class="box-base" stroke-width="1"/>
+  <text x="870" y="192" text-anchor="middle" font-size="7" class="text-primary">@account2</text>
+  <text x="870" y="245" text-anchor="middle" font-size="9" class="highlight-purple">⚠ Collaborative</text>
+  
+  <rect x="20" y="260" width="460" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="250" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Ranking &amp; Scoring</text>
+  <rect x="40" y="300" width="420" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <text x="55" y="320" font-size="9" font-weight="bold" class="text-primary">Final Score =</text>
+  <rect x="55" y="330" width="180" height="30" rx="2" class="box-base" stroke-width="1"/>
+  <text x="145" y="350" text-anchor="middle" font-size="8" class="text-primary">0.35×Social</text>
+  <rect x="245" y="330" width="180" height="30" rx="2" class="box-base" stroke-width="1"/>
+  <text x="335" y="350" text-anchor="middle" font-size="8" class="text-primary">0.30×Interest</text>
+  <rect x="55" y="365" width="180" height="30" rx="2" class="box-base" stroke-width="1"/>
+  <text x="145" y="385" text-anchor="middle" font-size="8" class="text-primary">0.20×Contact</text>
+  <rect x="245" y="365" width="180" height="30" rx="2" class="box-base" stroke-width="1"/>
+  <text x="335" y="385" text-anchor="middle" font-size="8" class="text-primary">0.15×Activity</text>
+  <text x="250" y="410" text-anchor="middle" font-size="8" class="highlight-purple">+ Diversity bonus</text>
+  <text x="250" y="425" text-anchor="middle" font-size="8" class="text-secondary">Avoid same-type suggestions</text>
+  
+  <rect x="500" y="260" width="480" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="740" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Suggestion Pipeline Flow</text>
+  <rect x="520" y="300" width="440" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="535" y="315" width="410" height="25" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="740" y="332" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">1. Generate candidates from all sources (1000+)</text>
+  <rect x="535" y="345" width="410" height="25" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="740" y="362" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">2. Score and rank by predicted follow probability</text>
+  <rect x="535" y="375" width="410" height="25" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="740" y="392" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">3. Apply diversity filtering (max 2 per category)</text>
+  <rect x="535" y="405" width="410" height="25" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="740" y="422" text-anchor="middle" font-size="8" font-weight="bold" class="text-primary">4. Return top 10-20 suggestions for display</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

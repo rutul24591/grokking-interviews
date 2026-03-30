@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      .highlight-orange { fill: #ed8936; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="1000" height="450" class="bg-base"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Sorting Algorithm Comparison</text>
+  
+  <rect x="20" y="70" width="180" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="110" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Top</text>
+  <rect x="40" y="110" width="140" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="55" y="125" width="110" height="28" rx="2" class="highlight-orange" stroke-width="1"/>
+  <text x="70" y="142" font-size="7" font-weight="bold" class="text-primary">1. Post A (+5K)</text>
+  <rect x="55" y="158" width="110" height="28" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="70" y="175" font-size="7" font-weight="bold" class="text-primary">2. Post B (+3K)</text>
+  <rect x="55" y="191" width="110" height="28" rx="2" class="box-base" stroke-width="1"/>
+  <text x="70" y="208" font-size="7" font-weight="bold" class="text-primary">3. Post C (+2K)</text>
+  <text x="110" y="245" text-anchor="middle" font-size="9" class="highlight-purple">⚠ Old dominates</text>
+  
+  <rect x="220" y="70" width="180" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="310" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Hot</text>
+  <rect x="240" y="110" width="140" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="255" y="125" width="110" height="28" rx="2" class="highlight-orange" stroke-width="1"/>
+  <text x="270" y="142" font-size="7" font-weight="bold" class="text-primary">1. Post D (+800)</text>
+  <text x="270" y="155" font-size="6" class="text-secondary">New!</text>
+  <rect x="255" y="158" width="110" height="28" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="270" y="175" font-size="7" font-weight="bold" class="text-primary">2. Post A (+5K)</text>
+  <rect x="255" y="191" width="110" height="28" rx="2" class="box-base" stroke-width="1"/>
+  <text x="270" y="208" font-size="7" font-weight="bold" class="text-primary">3. Post E (+650)</text>
+  <text x="310" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Trending</text>
+  
+  <rect x="420" y="70" width="180" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="510" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Controversial</text>
+  <rect x="440" y="110" width="140" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="455" y="125" width="110" height="28" rx="2" class="highlight-red" stroke-width="1"/>
+  <text x="470" y="142" font-size="7" font-weight="bold" class="text-primary">↑2.5K ↓2.3K</text>
+  <rect x="455" y="158" width="110" height="28" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="470" y="175" font-size="7" font-weight="bold" class="text-primary">↑1.8K ↓1.5K</text>
+  <rect x="455" y="191" width="110" height="28" rx="2" class="box-base" stroke-width="1"/>
+  <text x="470" y="208" font-size="7" font-weight="bold" class="text-primary">↑900 ↓850</text>
+  <text x="510" y="245" text-anchor="middle" font-size="9" class="highlight-purple">⚠ Divisive</text>
+  
+  <rect x="620" y="70" width="180" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="710" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Wilson Score</text>
+  <rect x="640" y="110" width="140" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="655" y="125" width="110" height="28" rx="2" class="highlight-orange" stroke-width="1"/>
+  <text x="670" y="142" font-size="7" font-weight="bold" class="text-primary">99/100 (99%)</text>
+  <rect x="655" y="158" width="110" height="28" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="670" y="175" font-size="7" font-weight="bold" class="text-primary">1/1 (100%)</text>
+  <text x="670" y="195" font-size="6" class="text-secondary">Lower confidence</text>
+  <text x="710" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Statistical</text>
+  
+  <rect x="20" y="260" width="460" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="250" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Reddit Hot Algorithm</text>
+  <rect x="40" y="300" width="420" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="55" y="315" width="390" height="45" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="250" y="335" text-anchor="middle" font-size="9" class="text-primary">score = log₁₀(votes) + (t - t₀) / 45000</text>
+  <text x="55" y="375" font-size="8" class="text-primary">• log₁₀ scale: 10→100 matters more than 1010→1100</text>
+  <text x="55" y="395" font-size="8" class="text-primary">• Time term: newer posts rank higher with fewer votes</text>
+  <text x="55" y="415" font-size="8" class="text-primary">• Gravity (45000): controls how fast posts fall off</text>
+  
+  <rect x="500" y="260" width="480" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="740" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Wilson Score Formula</text>
+  <rect x="520" y="300" width="440" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="535" y="315" width="410" height="50" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="740" y="335" text-anchor="middle" font-size="8" class="text-primary">(p̂ + z²/2n - z√(p̂(1-p̂)/n + z²/4n²)) / (1 + z²/n)</text>
+  <text x="740" y="355" text-anchor="middle" font-size="7" class="text-secondary">p̂ = upvotes/total, n = total votes, z = 1.96</text>
+  <text x="535" y="385" font-size="8" class="text-primary">• Accounts for sample size uncertainty</text>
+  <text x="535" y="405" font-size="8" class="text-primary">• 99/100 ranks above 1/1 despite lower %</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

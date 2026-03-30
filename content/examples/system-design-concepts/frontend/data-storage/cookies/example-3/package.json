@@ -1,0 +1,10 @@
+{
+  "name": "frontend-data-storage-cookies-example-3",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "node cookie-chunks.js"
+  }
+}
+

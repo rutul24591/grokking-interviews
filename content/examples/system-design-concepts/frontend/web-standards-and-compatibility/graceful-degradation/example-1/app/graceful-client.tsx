@@ -1,0 +1,12 @@
+"use client";
+import { useMemo, useState } from "react";
+export function GracefulClient() {
+  const [surface, setSurface] = useState<"preview" | "editor" | "comments">("preview");
+  const richPreviewSupported = useMemo(() => typeof window !== 'undefined' && 'ResizeObserver' in window, []);
+  const fallback = useMemo(() => {
+    if (surface === "preview") return richPreviewSupported ? "Live preview with responsive reflow." : "Static preview image with manual refresh.";
+    if (surface === "editor") return richPreviewSupported ? "Inline panels and dynamic sizing." : "Single-column editor with fewer interactive affordances.";
+    return richPreviewSupported ? "Real-time reactions and auto-layout." : "Threaded comments without live layout helpers.";
+  }, [richPreviewSupported, surface]);
+  return <main className="mx-auto min-h-screen max-w-5xl p-8"><section className="rounded-3xl border border-slate-800 bg-slate-950/70 p-6"><div className="flex flex-wrap items-start justify-between gap-4"><div><p className="text-sm uppercase tracking-[0.25em] text-amber-300">Graceful degradation</p><h1 className="mt-2 text-3xl font-semibold">Document viewer fallback console</h1><p className="mt-2 max-w-3xl text-sm text-slate-400">Core tasks stay possible even when richer browser features are unavailable. This app maps each surface to a reduced-but-functional fallback.</p></div><select className="rounded-2xl border border-slate-700 bg-slate-900 px-4 py-3" value={surface} onChange={(event) => setSurface(event.target.value as "preview" | "editor" | "comments")}><option value="preview">Preview</option><option value="editor">Editor</option><option value="comments">Comments</option></select></div><div className="mt-6 grid gap-4 lg:grid-cols-[1.1fr_0.9fr]"><article className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4"><h2 className="text-lg font-medium">Current behavior</h2><p className="mt-3 text-sm text-slate-300">{fallback}</p><p className="mt-2 text-sm text-slate-400">ResizeObserver support: {String(richPreviewSupported)}</p></article><article className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4"><h2 className="text-lg font-medium">Degradation policy</h2><ul className="mt-3 space-y-2 text-sm text-slate-300"><li>Keep the content readable before enabling enhancement.</li><li>Hide unsupported controls instead of leaving dead buttons.</li><li>Reduce fidelity explicitly and explain the tradeoff.</li></ul></article></div></section></main>;
+}

@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="1000" height="450" class="bg-base"/>
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Counter Sharding for Viral Content</text>
+  
+  <rect x="20" y="70" width="220" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="130" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Single Counter</text>
+  <rect x="40" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="55" y="125" width="150" height="50" rx="2" class="highlight-red" stroke-width="2"/>
+  <text x="130" y="150" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Redis: content:123</text>
+  <text x="130" y="165" text-anchor="middle" font-size="8" class="text-secondary">Single key</text>
+  <text x="130" y="195" text-anchor="middle" font-size="8" class="highlight-red">⚠ ~10K ops/sec</text>
+  <text x="130" y="210" text-anchor="middle" font-size="8" class="highlight-red">⚠ Bottleneck</text>
+  <text x="130" y="245" text-anchor="middle" font-size="9" class="highlight-red">⚠ Single point of failure</text>
+  
+  <rect x="260" y="70" width="220" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="370" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Sharded Counters</text>
+  <rect x="280" y="110" width="180" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="295" y="125" width="70" height="40" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="330" y="145" text-anchor="middle" font-size="7" class="text-primary">Shard 0</text>
+  <rect x="375" y="125" width="70" height="40" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="410" y="145" text-anchor="middle" font-size="7" class="text-primary">Shard 1</text>
+  <rect x="295" y="170" width="70" height="40" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="330" y="190" text-anchor="middle" font-size="7" class="text-primary">Shard 2</text>
+  <rect x="375" y="170" width="70" height="40" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="410" y="190" text-anchor="middle" font-size="7" class="text-primary">Shard N</text>
+  <text x="370" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ ~1M ops/sec</text>
+  <text x="370" y="260" text-anchor="middle" font-size="9" class="text-secondary">Sum all shards</text>
+  
+  <rect x="500" y="70" width="240" height="170" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="620" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Aggregation Layer</text>
+  <rect x="520" y="110" width="200" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="535" y="125" width="170" height="50" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="620" y="145" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Total = Σ(shards)</text>
+  <text x="620" y="165" text-anchor="middle" font-size="8" class="text-secondary">Sum all shard values</text>
+  <rect x="535" y="180" width="170" height="35" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="620" y="200" text-anchor="middle" font-size="8" class="text-primary">Cache aggregated total</text>
+  <text x="620" y="245" text-anchor="middle" font-size="9" class="highlight-green">✓ Single value for display</text>
+  
+  <rect x="20" y="260" width="300" height="170" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Shard Assignment</text>
+  <rect x="40" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="55" y="315" width="230" height="40" rx="2" class="accent-box" stroke-width="1"/>
+  <text x="170" y="340" text-anchor="middle" font-size="9" class="text-primary">shard_id = hash(user_id) % N</text>
+  <text x="55" y="370" font-size="8" font-weight="bold" class="text-primary">Example:</text>
+  <text x="55" y="385" font-size="7" class="text-secondary">hash("user:456") % 10 = 7</text>
+  <text x="55" y="400" font-size="7" class="text-secondary">→ Route to Shard 7</text>
+  <text x="170" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Consistent routing</text>
+  
+  <rect x="340" y="260" width="320" height="170" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="500" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Local Counters + Sync</text>
+  <rect x="360" y="300" width="280" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <rect x="375" y="315" width="110" height="40" rx="2" class="box-base" stroke-width="1"/>
+  <text x="430" y="335" text-anchor="middle" font-size="8" class="text-primary">App Server 1</text>
+  <text x="430" y="350" text-anchor="middle" font-size="7" class="text-secondary">Local: 1,234</text>
+  <rect x="500" y="315" width="110" height="40" rx="2" class="box-base" stroke-width="1"/>
+  <text x="555" y="335" text-anchor="middle" font-size="8" class="text-primary">App Server 2</text>
+  <text x="555" y="350" text-anchor="middle" font-size="7" class="text-secondary">Local: 2,345</text>
+  <line x1="430" y1="360" x2="430" y2="380" class="arrow" stroke-width="1.5"/>
+  <line x1="555" y1="360" x2="555" y2="380" class="arrow" stroke-width="1.5"/>
+  <rect x="400" y="380" width="180" height="25" rx="2" class="highlight-box" stroke-width="1"/>
+  <text x="490" y="397" text-anchor="middle" font-size="8" class="text-primary">Central Redis: 3,579</text>
+  <text x="500" y="445" text-anchor="middle" font-size="9" class="highlight-green">✓ Reduce central load</text>
+  
+  <rect x="680" y="260" width="300" height="170" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="830" y="285" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Sharding Comparison</text>
+  <rect x="700" y="300" width="260" height="115" rx="3" class="box-base" stroke-width="1"/>
+  <text x="715" y="320" font-size="8" font-weight="bold" class="text-primary">Strategy</text>
+  <text x="850" y="320" font-size="8" font-weight="bold" class="text-primary">Scale</text>
+  <line x1="710" y1="330" x2="950" y2="330" class="arrow" stroke-width="1"/>
+  <text x="715" y="345" font-size="7" class="text-primary">Single Counter</text>
+  <text x="850" y="345" font-size="7" class="highlight-red">~10K/sec</text>
+  <line x1="710" y1="355" x2="950" y2="355" class="arrow" stroke-width="1"/>
+  <text x="715" y="370" font-size="7" class="text-primary">Sharded (10)</text>
+  <text x="850" y="370" font-size="7" class="highlight-green">~100K/sec</text>
+  <line x1="710" y1="380" x2="950" y2="380" class="arrow" stroke-width="1"/>
+  <text x="715" y="395" font-size="7" class="text-primary">Local + Sync</text>
+  <text x="850" y="395" font-size="7" class="highlight-green">~1M/sec</text>
+  <line x1="710" y1="405" x2="950" y2="405" class="arrow" stroke-width="1"/>
+  <text x="715" y="420" font-size="7" class="text-primary">HyperLogLog</text>
+  <text x="850" y="420" font-size="7" class="highlight-green">~10M/sec</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

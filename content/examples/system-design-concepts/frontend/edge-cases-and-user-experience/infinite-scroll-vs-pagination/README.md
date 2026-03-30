@@ -1,7 +1,5 @@
-# Infinite Scroll Vs Pagination Example
+# Infinite Scroll vs Pagination Examples
 
-This example demonstrates the core implementation ideas for this concept.
-
-## Files
-- Minimal-Code-Pattern.txt
-- Comprehensive-Example.txt
+- `example-1`: switchable feed showing UX tradeoffs between infinite scroll and pagination.
+- `example-2`: offset/page behavior runner.
+- `example-3`: footer reachability and back-navigation audit.

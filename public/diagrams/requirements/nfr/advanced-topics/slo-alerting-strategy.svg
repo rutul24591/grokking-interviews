@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      .highlight-red { fill: #f56565; }
+      .highlight-blue { fill: #4299e1; }
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  <rect width="900" height="500" class="bg-base"/>
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="bold" class="text-primary">SLO Alerting Strategy</text>
+  
+  <!-- Multi-Window Burn Rate Alerts -->
+  <rect x="30" y="70" width="840" height="180" rx="5" class="box-base" stroke-width="2"/>
+  <text x="450" y="95" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Multi-Window Multi-Burn-Rate Alerting</text>
+  
+  <rect x="50" y="110" width="190" height="125" rx="3" class="box-base" stroke-width="1"/>
+  <text x="145" y="130" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Short Window</text>
+  <rect x="70" y="145" width="150" height="75" rx="2" class="box-base" stroke-width="1"/>
+  <text x="145" y="165" text-anchor="middle" font-size="9" class="text-primary">Window: 5 min</text>
+  <text x="145" y="180" text-anchor="middle" font-size="9" class="text-primary">Threshold: 14.4x</text>
+  <text x="145" y="195" text-anchor="middle" font-size="9" class="text-primary">Detects: Spikes</text>
+  <text x="145" y="210" text-anchor="middle" font-size="9" class="text-primary">Response: Page</text>
+  <text x="145" y="225" text-anchor="middle" font-size="9" class="highlight-red">⚠ Fast detection</text>
+  
+  <rect x="255" y="110" width="190" height="125" rx="3" class="accent-box" stroke-width="1.5"/>
+  <text x="350" y="130" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Medium Window</text>
+  <rect x="275" y="145" width="150" height="75" rx="2" class="box-base" stroke-width="1"/>
+  <text x="350" y="165" text-anchor="middle" font-size="9" class="text-primary">Window: 30 min</text>
+  <text x="350" y="180" text-anchor="middle" font-size="9" class="text-primary">Threshold: 6x</text>
+  <text x="350" y="195" text-anchor="middle" font-size="9" class="text-primary">Detects: Sustained</text>
+  <text x="350" y="210" text-anchor="middle" font-size="9" class="text-primary">Response: Page</text>
+  <text x="350" y="225" text-anchor="middle" font-size="9" class="highlight-purple">⚠ Balanced</text>
+  
+  <rect x="460" y="110" width="190" height="125" rx="3" class="highlight-box" stroke-width="1.5"/>
+  <text x="555" y="130" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Long Window</text>
+  <rect x="480" y="145" width="150" height="75" rx="2" class="box-base" stroke-width="1"/>
+  <text x="555" y="165" text-anchor="middle" font-size="9" class="text-primary">Window: 2 hours</text>
+  <text x="555" y="180" text-anchor="middle" font-size="9" class="text-primary">Threshold: 3x</text>
+  <text x="555" y="195" text-anchor="middle" font-size="9" class="text-primary">Detects: Gradual</text>
+  <text x="555" y="210" text-anchor="middle" font-size="9" class="text-primary">Response: Ticket</text>
+  <text x="555" y="225" text-anchor="middle" font-size="9" class="highlight-blue">✓ Low noise</text>
+  
+  <rect x="665" y="110" width="190" height="125" rx="3" class="highlight-green" stroke-width="1.5"/>
+  <text x="760" y="130" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Very Long Window</text>
+  <rect x="685" y="145" width="150" height="75" rx="2" class="box-base" stroke-width="1"/>
+  <text x="760" y="165" text-anchor="middle" font-size="9" class="text-primary">Window: 6 hours</text>
+  <text x="760" y="180" text-anchor="middle" font-size="9" class="text-primary">Threshold: 1x</text>
+  <text x="760" y="195" text-anchor="middle" font-size="9" class="text-primary">Detects: Budget</text>
+  <text x="760" y="210" text-anchor="middle" font-size="9" class="text-primary">Response: Review</text>
+  <text x="760" y="225" text-anchor="middle" font-size="9" class="highlight-green">✓ Budget tracking</text>
+  
+  <!-- Alert Flow -->
+  <rect x="30" y="270" width="410" height="200" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="235" y="295" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Alert Escalation Flow</text>
+  
+  <rect x="50" y="310" width="370" height="145" rx="3" class="box-base" stroke-width="1"/>
+  
+  <rect x="70" y="325" width="330" height="30" rx="2" class="highlight-red" stroke-width="1"/>
+  <text x="235" y="345" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Step 1: Fast burn alert fires (5min window)</text>
+  
+  <line x1="235" y1="355" x2="235" y2="365" class="arrow" stroke-width="1.5"/>
+  
+  <rect x="70" y="365" width="330" height="30" rx="2" class="highlight-purple" stroke-width="1"/>
+  <text x="235" y="385" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Step 2: Slow burn alert fires (30min window)</text>
+  
+  <line x1="235" y1="395" x2="235" y2="405" class="arrow" stroke-width="1.5"/>
+  
+  <rect x="70" y="405" width="330" height="30" rx="2" class="highlight-blue" stroke-width="1"/>
+  <text x="235" y="425" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Step 3: Page on-call engineer</text>
+  
+  <line x1="235" y1="435" x2="235" y2="445" class="arrow" stroke-width="1.5"/>
+  
+  <rect x="70" y="445" width="330" height="30" rx="2" class="highlight-green" stroke-width="1"/>
+  <text x="235" y="465" text-anchor="middle" font-size="9" font-weight="bold" class="text-primary">Step 4: Ticket created for follow-up</text>
+  
+  <!-- Best Practices -->
+  <rect x="460" y="270" width="410" height="200" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="665" y="295" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Alerting Best Practices</text>
+  
+  <rect x="480" y="310" width="370" height="145" rx="3" class="box-base" stroke-width="1"/>
+  <text x="500" y="330" font-size="9" class="highlight-green">✓ Use multiple windows (fast + slow burn)</text>
+  <text x="500" y="345" font-size="9" class="highlight-green">✓ Require both windows to fire (reduces noise)</text>
+  <text x="500" y="360" font-size="9" class="highlight-green">✓ Page only for high burn rates</text>
+  <text x="500" y="375" font-size="9" class="highlight-green">✓ Ticket for low burn rates</text>
+  <text x="500" y="390" font-size="9" class="highlight-purple">⚠ Tune thresholds per service</text>
+  <text x="500" y="405" font-size="9" class="highlight-purple">⚠ Review alert effectiveness monthly</text>
+  <text x="500" y="420" font-size="9" class="highlight-purple">⚠ Document runbooks for each alert</text>
+  <text x="500" y="435" font-size="9" class="highlight-purple">⚠ Track alert fatigue metrics</text>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

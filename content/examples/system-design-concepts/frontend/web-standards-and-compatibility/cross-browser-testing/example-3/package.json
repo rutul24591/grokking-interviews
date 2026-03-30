@@ -1,0 +1,9 @@
+{
+  "name": "frontend-standards-cross-browser-testing-example-3",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "node run.js"
+  }
+}

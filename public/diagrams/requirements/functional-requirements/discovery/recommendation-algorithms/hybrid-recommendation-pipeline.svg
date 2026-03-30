@@ -1,0 +1,175 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      .highlight-purple { fill: #9f7aea; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="450" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Hybrid Recommendation Pipeline</text>
+  
+  <!-- User Input (Top Left) -->
+  <rect x="20" y="70" width="120" height="60" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="80" y="95" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">User</text>
+  <text x="80" y="115" text-anchor="middle" font-size="10" class="text-secondary">Profile + History</text>
+  
+  <!-- Arrows to Candidate Sources -->
+  <line x1="140" y1="100" x2="180" y2="100" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Candidate Generation Sources -->
+  <rect x="180" y="60" width="200" height="180" rx="5" class="box-base" stroke-width="2"/>
+  <text x="280" y="90" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Candidate Generation</text>
+  <text x="280" y="110" text-anchor="middle" font-size="10" class="text-secondary">~1,000 candidates</text>
+  
+  <!-- CF -->
+  <rect x="200" y="125" width="160" height="35" rx="4" class="box-base" stroke-width="1.5"/>
+  <text x="280" y="147" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Collaborative Filtering</text>
+  <text x="280" y="165" text-anchor="middle" font-size="9" class="text-secondary">ALS, Item-Item CF</text>
+  
+  <!-- Content-Based -->
+  <rect x="200" y="165" width="160" height="35" rx="4" class="box-base" stroke-width="1.5"/>
+  <text x="280" y="187" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Content-Based</text>
+  <text x="280" y="205" text-anchor="middle" font-size="9" class="text-secondary">Embeddings, TF-IDF</text>
+  
+  <!-- Trending -->
+  <rect x="200" y="205" width="160" height="35" rx="4" class="box-base" stroke-width="1.5"/>
+  <text x="280" y="227" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Trending/Popular</text>
+  <text x="280" y="245" text-anchor="middle" font-size="9" class="text-secondary">Fallback for cold start</text>
+  
+  <!-- Arrow to Merge -->
+  <line x1="380" y1="150" x2="420" y2="150" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Merge & Deduplicate -->
+  <rect x="420" y="120" width="130" height="60" rx="5" class="highlight-box" stroke-width="2"/>
+  <text x="485" y="145" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Merge &amp;</text>
+  <text x="485" y="165" text-anchor="middle" font-size="12" font-weight="bold" class="text-primary">Deduplicate</text>
+  
+  <!-- Arrow to Scoring -->
+  <line x1="550" y1="150" x2="590" y2="150" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- ML Scoring/Ranking -->
+  <rect x="590" y="80" width="180" height="140" rx="5" class="accent-box" stroke-width="2.5"/>
+  <text x="680" y="110" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">ML Scoring</text>
+  
+  <!-- Features -->
+  <text x="680" y="135" text-anchor="middle" font-size="10" class="text-secondary">Features:</text>
+  <text x="680" y="152" font-size="9" class="text-secondary">• User preferences</text>
+  <text x="680" y="167" font-size="9" class="text-secondary">• Item quality</text>
+  <text x="680" y="182" font-size="9" class="text-secondary">• Context (time, device)</text>
+  <text x="680" y="197" font-size="9" class="text-secondary">• Cross features</text>
+  
+  <text x="680" y="215" text-anchor="middle" font-size="10" class="highlight-green">XGBoost / DeepFM</text>
+  
+  <!-- Arrow to Re-Ranking -->
+  <line x1="770" y1="150" x2="810" y2="150" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Re-Ranking -->
+  <rect x="810" y="80" width="170" height="140" rx="5" class="highlight-box" stroke-width="2.5"/>
+  <text x="895" y="110" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Re-Ranking</text>
+  
+  <!-- Business Rules -->
+  <text x="895" y="135" text-anchor="middle" font-size="10" class="text-secondary">Apply:</text>
+  <text x="895" y="152" font-size="9" class="text-secondary">• Diversity (MMR)</text>
+  <text x="895" y="167" font-size="9" class="text-secondary">• Freshness boost</text>
+  <text x="895" y="182" font-size="9" class="text-secondary">• Filter inappropriate</text>
+  <text x="895" y="197" font-size="9" class="text-secondary">• Remove seen items</text>
+  
+  <text x="895" y="215" text-anchor="middle" font-size="10" class="highlight-purple">Final ~100 items</text>
+  
+  <!-- Arrow to Output -->
+  <line x1="980" y1="150" x2="980" y2="200" class="arrow" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Final Recommendations -->
+  <rect x="900" y="200" width="160" height="80" rx="5" class="accent-box" stroke-width="3"/>
+  <text x="980" y="230" text-anchor="middle" font-size="13" font-weight="bold" class="text-primary">Top N</text>
+  <text x="980" y="255" text-anchor="middle" font-size="24" font-weight="bold" class="highlight-green">20-50</text>
+  <text x="980" y="275" text-anchor="middle" font-size="10" class="text-secondary">Recommendations</text>
+  
+  <!-- Feature Store (Bottom Left) -->
+  <rect x="20" y="280" width="300" height="150" rx="5" class="box-base" stroke-width="2"/>
+  <text x="170" y="310" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Feature Store</text>
+  
+  <text x="50" y="335" font-size="11" font-weight="bold" class="text-primary">User Features:</text>
+  <text x="50" y="355" font-size="9" class="text-secondary">• Age, location, language</text>
+  <text x="50" y="372" font-size="9" class="text-secondary">• Watch history, preferences</text>
+  <text x="50" y="389" font-size="9" class="text-secondary">• Engagement patterns</text>
+  
+  <text x="180" y="335" font-size="11" font-weight="bold" class="text-primary">Item Features:</text>
+  <text x="180" y="355" font-size="9" class="text-secondary">• Category, tags</text>
+  <text x="180" y="372" font-size="9" class="text-secondary">• Quality score</text>
+  <text x="180" y="389" font-size="9" class="text-secondary">• Engagement rate</text>
+  
+  <text x="50" y="415" font-size="10" class="highlight-green">● Pre-computed, cached in Redis</text>
+  
+  <!-- Feedback Loop (Bottom Right) -->
+  <rect x="340" y="280" width="640" height="150" rx="5" class="accent-box" stroke-width="2"/>
+  <text x="660" y="310" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Feedback Loop &amp; Model Training</text>
+  
+  <!-- Impression Logging -->
+  <rect x="370" y="325" width="140" height="90" rx="4" class="box-base" stroke-width="1.5"/>
+  <text x="440" y="350" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Impression</text>
+  <text x="440" y="370" text-anchor="middle" font-size="10" class="text-secondary">Logging</text>
+  <text x="440" y="395" font-size="9" class="text-secondary">Track: impressions,</text>
+  <text x="440" y="408" font-size="9" class="text-secondary">clicks, dwell time</text>
+  
+  <!-- Arrow to Training Data -->
+  <line x1="510" y1="370" x2="540" y2="370" class="arrow" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Training Data -->
+  <rect x="540" y="325" width="140" height="90" rx="4" class="box-base" stroke-width="1.5"/>
+  <text x="610" y="350" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Training</text>
+  <text x="610" y="370" text-anchor="middle" font-size="10" class="text-secondary">Dataset</text>
+  <text x="610" y="395" font-size="9" class="text-secondary">Positive: clicks,</text>
+  <text x="610" y="408" font-size="9" class="text-secondary">Negative: skips</text>
+  
+  <!-- Arrow to Model Training -->
+  <line x1="680" y1="370" x2="710" y2="370" class="arrow" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Model Training -->
+  <rect x="710" y="325" width="140" height="90" rx="4" class="highlight-box" stroke-width="1.5"/>
+  <text x="780" y="350" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Model</text>
+  <text x="780" y="370" text-anchor="middle" font-size="10" class="text-secondary">Training</text>
+  <text x="780" y="395" font-size="9" class="text-secondary">Weekly retrain,</text>
+  <text x="780" y="408" font-size="9" class="text-secondary">online learning</text>
+  
+  <!-- Arrow to Deployment -->
+  <line x1="850" y1="370" x2="880" y2="370" class="arrow" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Model Deployment -->
+  <rect x="880" y="325" width="90" height="90" rx="4" class="accent-box" stroke-width="1.5"/>
+  <text x="925" y="355" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Deploy</text>
+  <text x="925" y="375" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">to</text>
+  <text x="925" y="395" text-anchor="middle" font-size="10" font-weight="bold" class="text-primary">Production</text>
+  
+  <!-- Arrow back to scoring -->
+  <path d="M 925 325 L 925 280 L 680 280 L 680 225" fill="none" class="arrow" stroke-width="1.5" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  <text x="800" y="265" text-anchor="middle" font-size="9" class="text-secondary">Updated Model</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500">
+  <defs>
+    <style>
+      .bg-base { fill: #ffffff; }
+      .text-primary { fill: #1a202c; }
+      .text-secondary { fill: #4a5568; }
+      .box-base { fill: #f7fafc; stroke: #cbd5e0; }
+      .accent-box { fill: #ebf8ff; stroke: #4299e1; }
+      .highlight-box { fill: #fef5e7; stroke: #ed8936; }
+      .arrow { stroke: #4a5568; }
+      .highlight-green { fill: #48bb78; }
+      
+      @media (prefers-color-scheme: dark) {
+        .bg-base { fill: #1a1a2e; }
+        .text-primary { fill: #f7fafc; }
+        .text-secondary { fill: #a0aec0; }
+        .box-base { fill: #2d3748; stroke: #4a5568; }
+        .accent-box { fill: #2c5282; stroke: #63b3ed; }
+        .highlight-box { fill: #744210; stroke: #d69e2e; }
+        .arrow { stroke: #a0aec0; }
+      }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="500" class="bg-base"/>
+  
+  <!-- Title -->
+  <text x="500" y="35" text-anchor="middle" font-size="20" font-weight="bold" class="text-primary">Two-Stage Ranking Architecture</text>
+  
+  <!-- Stage 1: Retrieval -->
+  <rect x="20" y="70" width="300" height="200" rx="8" class="accent-box" stroke-width="2.5"/>
+  <text x="170" y="100" text-anchor="middle" font-size="16" font-weight="bold" class="text-primary">Stage 1: Retrieval</text>
+  <text x="170" y="120" text-anchor="middle" font-size="12" class="text-secondary">Fast Candidate Generation</text>
+  
+  <!-- Retrieval sub-components -->
+  <rect x="40" y="140" width="110" height="50" rx="4" class="box-base" stroke-width="1.5"/>
+  <text x="95" y="160" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">BM25 / TF-IDF</text>
+  <text x="95" y="178" text-anchor="middle" font-size="10" class="text-secondary">Inverted Index</text>
+  
+  <rect x="170" y="140" width="110" height="50" rx="4" class="box-base" stroke-width="1.5"/>
+  <text x="225" y="160" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Vector Search</text>
+  <text x="225" y="178" text-anchor="middle" font-size="10" class="text-secondary">ANN (FAISS)</text>
+  
+  <rect x="105" y="205" width="110" height="50" rx="4" class="box-base" stroke-width="1.5"/>
+  <text x="160" y="225" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Hybrid Merge</text>
+  <text x="160" y="243" text-anchor="middle" font-size="10" class="text-secondary">Score Normalization</text>
+  
+  <!-- Arrows within Stage 1 -->
+  <line x1="95" y1="190" x2="130" y2="205" class="arrow" stroke-width="1.5"/>
+  <line x1="225" y1="190" x2="190" y2="205" class="arrow" stroke-width="1.5"/>
+  
+  <!-- Stage 1 Output -->
+  <text x="170" y="285" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">~1,000 Candidates</text>
+  <text x="170" y="305" text-anchor="middle" font-size="11" class="text-secondary">Latency: 10-50ms</text>
+  
+  <!-- Arrow from Stage 1 to Stage 2 -->
+  <line x1="320" y1="170" x2="380" y2="170" class="arrow" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <text x="350" y="160" text-anchor="middle" font-size="11" font-weight="bold" class="text-secondary">Candidates</text>
+  <text x="350" y="175" text-anchor="middle" font-size="11" font-weight="bold" class="text-secondary">+ Features</text>
+  
+  <!-- Stage 2: Re-ranking -->
+  <rect x="380" y="70" width="320" height="200" rx="8" class="highlight-box" stroke-width="2.5"/>
+  <text x="540" y="100" text-anchor="middle" font-size="16" font-weight="bold" class="text-primary">Stage 2: Re-Ranking</text>
+  <text x="540" y="120" text-anchor="middle" font-size="12" class="text-secondary">ML Scoring + Business Rules</text>
+  
+  <!-- Re-ranking sub-components -->
+  <rect x="400" y="140" width="130" height="50" rx="4" class="box-base" stroke-width="1.5"/>
+  <text x="465" y="160" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Feature Store</text>
+  <text x="465" y="178" text-anchor="middle" font-size="10" class="text-secondary">Real-time Lookup</text>
+  
+  <rect x="550" y="140" width="130" height="50" rx="4" class="accent-box" stroke-width="1.5"/>
+  <text x="615" y="160" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">ML Model</text>
+  <text x="615" y="178" text-anchor="middle" font-size="10" class="text-secondary">XGBoost/LambdaMART</text>
+  
+  <rect x="475" y="205" width="130" height="50" rx="4" class="box-base" stroke-width="1.5"/>
+  <text x="540" y="225" text-anchor="middle" font-size="11" font-weight="bold" class="text-primary">Re-Ranking</text>
+  <text x="540" y="243" text-anchor="middle" font-size="10" class="text-secondary">Diversity + Rules</text>
+  
+  <!-- Arrows within Stage 2 -->
+  <line x1="465" y1="190" x2="510" y2="205" class="arrow" stroke-width="1.5"/>
+  <line x1="615" y1="190" x2="570" y2="205" class="arrow" stroke-width="1.5"/>
+  
+  <!-- Stage 2 Output -->
+  <text x="540" y="285" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">~50 Results</text>
+  <text x="540" y="305" text-anchor="middle" font-size="11" class="text-secondary">Latency: 50-100ms</text>
+  
+  <!-- Arrow from Stage 2 to Output -->
+  <line x1="700" y1="170" x2="760" y2="170" class="arrow" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <text x="730" y="160" text-anchor="middle" font-size="11" font-weight="bold" class="text-secondary">Ranked</text>
+  <text x="730" y="175" text-anchor="middle" font-size="11" font-weight="bold" class="text-secondary">Results</text>
+  
+  <!-- Final Output -->
+  <rect x="760" y="120" width="220" height="100" rx="8" class="accent-box" stroke-width="3"/>
+  <text x="870" y="155" text-anchor="middle" font-size="16" font-weight="bold" class="text-primary">Final Results</text>
+  <text x="870" y="180" text-anchor="middle" font-size="24" font-weight="bold" class="highlight-green">10-50</text>
+  <text x="870" y="205" text-anchor="middle" font-size="11" class="text-secondary">to User</text>
+  
+  <!-- Feature Store Detail (Bottom Left) -->
+  <rect x="20" y="330" width="300" height="150" rx="5" class="box-base" stroke-width="1.5"/>
+  <text x="170" y="355" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">Feature Categories</text>
+  
+  <text x="50" y="380" font-size="11" font-weight="bold" class="text-primary">Text:</text>
+  <text x="90" y="380" font-size="10" class="text-secondary">BM25, field match</text>
+  
+  <text x="50" y="400" font-size="11" font-weight="bold" class="text-primary">Quality:</text>
+  <text x="110" y="400" font-size="10" class="text-secondary">word count, spam score</text>
+  
+  <text x="50" y="420" font-size="11" font-weight="bold" class="text-primary">Popularity:</text>
+  <text x="120" y="420" font-size="10" class="text-secondary">views, CTR, shares</text>
+  
+  <text x="50" y="440" font-size="11" font-weight="bold" class="text-primary">Personalization:</text>
+  <text x="145" y="440" font-size="10" class="text-secondary">user affinity, location</text>
+  
+  <text x="50" y="460" font-size="11" font-weight="bold" class="text-primary">Freshness:</text>
+  <text x="120" y="460" font-size="10" class="text-secondary">document age, velocity</text>
+  
+  <!-- ML Model Detail (Bottom Right) -->
+  <rect x="700" y="330" width="280" height="150" rx="5" class="box-base" stroke-width="1.5"/>
+  <text x="840" y="355" text-anchor="middle" font-size="14" font-weight="bold" class="text-primary">ML Model Training</text>
+  
+  <text x="730" y="380" font-size="10" class="text-secondary">Training Data:</text>
+  <text x="840" y="380" font-size="10" class="text-secondary">Historical clicks, impressions</text>
+  
+  <text x="730" y="400" font-size="10" class="text-secondary">Loss Function:</text>
+  <text x="840" y="400" font-size="10" class="text-secondary">Pairwise (LambdaRank)</text>
+  
+  <text x="730" y="420" font-size="10" class="text-secondary">Validation:</text>
+  <text x="840" y="420" font-size="10" class="text-secondary">NDCG@10, MRR</text>
+  
+  <text x="730" y="440" font-size="10" class="text-secondary">Retraining:</text>
+  <text x="840" y="440" font-size="10" class="text-secondary">Weekly with fresh data</text>
+  
+  <text x="730" y="460" font-size="10" class="text-secondary">Deployment:</text>
+  <text x="840" y="460" font-size="10" class="text-secondary">A/B testing, canary</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" class="arrow"/>
+    </marker>
+  </defs>
+</svg>
