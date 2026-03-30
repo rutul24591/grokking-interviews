@@ -1,0 +1,73 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Event Listener Cleanup Patterns Comparison</text>
+  
+  <!-- Pattern 1: useEffect Cleanup -->
+  <rect x="50" y="80" width="400" height="220" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e40af">Pattern 1: useEffect Cleanup</text>
+  
+  <rect x="70" y="130" width="360" height="100" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="85" y="155" font-family="monospace" font-size="11" fill="#22d3ee">useEffect(() =&gt; {'{'}</text>
+  <text x="85" y="175" font-family="monospace" font-size="11" fill="#e2e8f0">  const handler = (e) =&gt; {'{'}</text>
+  <text x="85" y="195" font-family="monospace" font-size="11" fill="#e2e8f0">    // handle event</text>
+  <text x="85" y="215" font-family="monospace" font-size="11" fill="#e2e8f0">  {'}'};</text>
+  <text x="85" y="235" font-family="monospace" font-size="11" fill="#22d3ee">  window.addEventListener('scroll', handler);</text>
+  <text x="85" y="255" font-family="monospace" font-size="11" fill="#fbbf24">  return () =&gt; window.removeEventListener('scroll', handler);</text>
+  <text x="85" y="275" font-family="monospace" font-size="11" fill="#22d3ee">{'}'}, []);</text>
+  
+  <rect x="70" y="245" width="360" height="45" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="250" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#92400e">✓ Best for: Component-scoped listeners</text>
+  <text x="250" y="282" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">⚠ Watch: Must match exact handler reference</text>
+  
+  <!-- Pattern 2: AbortController -->
+  <rect x="470" y="80" width="380" height="220" rx="12" fill="#fce7f3" stroke="#ec4899" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#9d174d">Pattern 2: AbortController</text>
+  
+  <rect x="490" y="130" width="340" height="100" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="505" y="155" font-family="monospace" font-size="11" fill="#22d3ee">useEffect(() =&gt; {'{'}</text>
+  <text x="505" y="175" font-family="monospace" font-size="11" fill="#e2e8f0">  const controller = new AbortController();</text>
+  <text x="505" y="195" font-family="monospace" font-size="11" fill="#e2e8f0">  </text>
+  <text x="505" y="215" font-family="monospace" font-size="11" fill="#e2e8f0">  el.addEventListener('click', handler, </text>
+  <text x="505" y="235" font-family="monospace" font-size="11" fill="#fbbf24">    { '{ signal: controller.signal }' });</text>
+  <text x="505" y="255" font-family="monospace" font-size="11" fill="#fbbf24">  return () =&gt; controller.abort();</text>
+  <text x="505" y="275" font-family="monospace" font-size="11" fill="#22d3ee">{'}'}, []);</text>
+  
+  <rect x="490" y="245" width="340" height="45" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="660" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#92400e">✓ Best for: Multiple listeners, fetch cleanup</text>
+  <text x="660" y="282" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">⚠ Watch: Aborts ALL listeners on controller</text>
+  
+  <!-- Pattern 3: Event Delegation -->
+  <rect x="50" y="320" width="400" height="210" rx="12" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="250" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#065f46">Pattern 3: Event Delegation</text>
+  
+  <rect x="70" y="370" width="360" height="90" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="85" y="395" font-family="monospace" font-size="11" fill="#22d3ee">// Single listener on parent</text>
+  <text x="85" y="415" font-family="monospace" font-size="11" fill="#e2e8f0">listRef.current.addEventListener('click', (e) =&gt; {'{'}</text>
+  <text x="85" y="435" font-family="monospace" font-size="11" fill="#e2e8f0">  const item = e.target.closest('[data-item]');</text>
+  <text x="85" y="455" font-family="monospace" font-size="11" fill="#e2e8f0">  if (item) handleItemClick(item.dataset.id);</text>
+  <text x="85" y="475" font-family="monospace" font-size="11" fill="#e2e8f0">{'}'});</text>
+  
+  <rect x="70" y="475" width="360" height="45" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="250" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#92400e">✓ Best for: Dynamic lists, many similar items</text>
+  <text x="250" y="512" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">⚠ Watch: Event bubbling, target identification</text>
+  
+  <!-- Pattern 4: Custom Hook -->
+  <rect x="470" y="320" width="380" height="210" rx="12" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="660" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#3730a3">Pattern 4: Custom Hook (useEventListener)</text>
+  
+  <rect x="490" y="370" width="340" height="90" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="505" y="395" font-family="monospace" font-size="11" fill="#22d3ee">// Encapsulates cleanup logic</text>
+  <text x="505" y="415" font-family="monospace" font-size="11" fill="#e2e8f0">function useEventListener(target, event, handler) {'{'}</text>
+  <text x="505" y="435" font-family="monospace" font-size="11" fill="#e2e8f0">  useEffect(() =&gt; {'{'}</text>
+  <text x="505" y="455" font-family="monospace" font-size="11" fill="#e2e8f0">    target.addEventListener(event, handler);</text>
+  <text x="505" y="475" font-family="monospace" font-size="11" fill="#fbbf24">    return () =&gt; target.removeEventListener(event, handler);</text>
+  <text x="505" y="495" font-family="monospace" font-size="11" fill="#e2e8f0">  {'}'}, [target, event, handler]);</text>
+  <text x="505" y="515" font-family="monospace" font-size="11" fill="#22d3ee">{'}'}</text>
+  
+  <rect x="490" y="475" width="340" height="45" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="660" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#92400e">✓ Best for: Reusable patterns, team consistency</text>
+  <text x="660" y="512" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">⚠ Watch: Handler stability (useCallback)</text>
+</svg>

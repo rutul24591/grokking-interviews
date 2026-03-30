@@ -1,0 +1,92 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Event Listener Retention Chain</text>
+  
+  <!-- Top: The Chain -->
+  <rect x="50" y="70" width="800" height="200" rx="12" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="450" y="100" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#991b1b">How Event Listeners Cause Memory Retention</text>
+  
+  <!-- Event Target -->
+  <rect x="80" y="125" width="130" height="120" rx="10" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="145" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#991b1b">Event Target</text>
+  <text x="145" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7f1d1d">window, document,</text>
+  <text x="145" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7f1d1d">or DOM element</text>
+  <text x="145" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7f1d1d">Lives until</text>
+  <text x="145" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7f1d1d">explicitly removed</text>
+  
+  <!-- Arrow 1 -->
+  <defs>
+    <marker id="arrowChain" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+      <polygon points="0 0, 12 4, 0 8" fill="#ef4444"/>
+    </marker>
+  </defs>
+  <line x1="210" y1="185" x2="250" y2="185" stroke="#ef4444" stroke-width="2.5" marker-end="url(#arrowChain)"/>
+  <text x="230" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">holds</text>
+  
+  <!-- Listener Registry -->
+  <rect x="255" y="125" width="140" height="120" rx="10" fill="#fce7f3" stroke="#ec4899" stroke-width="2"/>
+  <text x="325" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#9d174d">Listener</text>
+  <text x="325" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#9d174d">Registry</text>
+  <text x="325" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#831843">Internal map:</text>
+  <text x="325" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#831843">target → handlers</text>
+  <text x="325" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#831843">Never GC'd until</text>
+  <text x="325" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#831843">removeEventListener</text>
+  
+  <!-- Arrow 2 -->
+  <line x1="395" y1="185" x2="435" y2="185" stroke="#ec4899" stroke-width="2.5" marker-end="url(#arrowChain)"/>
+  <text x="415" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#db2777">references</text>
+  
+  <!-- Callback -->
+  <rect x="440" y="125" width="140" height="120" rx="10" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="510" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#3730a3">Callback</text>
+  <text x="510" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4338ca">Handler function</text>
+  <text x="510" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4338ca">Kept alive by</text>
+  <text x="510" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4338ca">registry reference</text>
+  <text x="510" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4338ca">Captures closure</text>
+  
+  <!-- Arrow 3 -->
+  <line x1="580" y1="185" x2="620" y2="185" stroke="#6366f1" stroke-width="2.5" marker-end="url(#arrowChain)"/>
+  <text x="600" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4f46e5">captures</text>
+  
+  <!-- Closure -->
+  <rect x="625" y="125" width="205" height="120" rx="10" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="727" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#065f46">Closure Scope</text>
+  <text x="727" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857">Captured variables:</text>
+  <text x="727" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857">• Component state</text>
+  <text x="727" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857">• DOM references</text>
+  <text x="727" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857">• Large data objects</text>
+  <text x="727" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857">All retained in memory!</text>
+  
+  <!-- Bottom: The Problem -->
+  <rect x="50" y="290" width="400" height="240" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="250" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">The Problem: View Unmounts</text>
+  
+  <rect x="70" y="345" width="360" height="80" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="250" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Component/View is destroyed</text>
+  <text x="250" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">React unmounts, DOM removed, state cleared</text>
+  <text x="250" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">BUT listener still registered on window/document</text>
+  
+  <rect x="70" y="440" width="360" height="75" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="250" y="465" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#991b1b">Result: Memory Leak</text>
+  <text x="250" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7f1d1d">Entire closure chain stays alive = view-lifetime objects</text>
+  <text x="250" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7f1d1d">become session-lifetime retention</text>
+  
+  <!-- Right: The Solution -->
+  <rect x="470" y="290" width="380" height="240" rx="12" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="660" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">The Solution: Cleanup on Unmount</text>
+  
+  <rect x="490" y="345" width="340" height="55" rx="8" fill="#ffffff" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="660" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#166534">useEffect Cleanup Pattern</text>
+  <text x="660" y="390" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">return () => target.removeEventListener(event, handler)</text>
+  
+  <rect x="490" y="410" width="340" height="55" rx="8" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="660" y="435" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e40af">AbortController Pattern</text>
+  <text x="660" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1e3a8a">controller.abort() cancels all listeners at once</text>
+  
+  <rect x="490" y="475" width="340" height="55" rx="8" fill="#ffffff" stroke="#8b5cf6" stroke-width="1.5"/>
+  <text x="660" y="500" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#5b21b6">Event Delegation</text>
+  <text x="660" y="520" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6d28d9">Single listener on parent, no cleanup needed per child</text>
+</svg>

@@ -1,0 +1,79 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">JavaScript Heap Architecture and GC Generations</text>
+  
+  <!-- Browser container -->
+  <rect x="40" y="70" width="820" height="420" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="70" y="98" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1e293b">Browser Process / Tab</text>
+  
+  <!-- Roots box -->
+  <rect x="70" y="125" width="200" height="140" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="170" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#92400e">Root Set</text>
+  <text x="85" y="175" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#78350f">What are roots?</text>
+  <text x="85" y="195" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">• Global scope (window)</text>
+  <text x="85" y="212" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">• Local scope (stack frames)</text>
+  <text x="85" y="229" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">• Currently executing code</text>
+  <text x="85" y="246" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">• Event callbacks pending</text>
+  
+  <!-- Arrow from Roots to Heap -->
+  <defs>
+    <marker id="arrowGC" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+      <polygon points="0 0, 12 4, 0 8" fill="#64748b"/>
+    </marker>
+  </defs>
+  <line x1="270" y1="195" x2="310" y2="195" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrowGC)"/>
+  <text x="290" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">traces</text>
+  
+  <!-- JS Heap box -->
+  <rect x="320" y="125" width="300" height="280" rx="10" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="470" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1e40af">JavaScript Heap</text>
+  
+  <!-- Young Generation -->
+  <rect x="345" y="170" width="250" height="90" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="470" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e40af">Young Generation</text>
+  <text x="470" y="218" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">New objects allocated here</text>
+  <text x="470" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Minor GC: fast, frequent</text>
+  <text x="470" y="252" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Survivors promoted to Old</text>
+  
+  <!-- Arrow Young to Old -->
+  <line x1="470" y1="260" x2="470" y2="285" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowGC)"/>
+  <text x="485" y="278" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#3b82f6">promote</text>
+  
+  <!-- Old Generation -->
+  <rect x="345" y="295" width="250" height="100" rx="8" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.5"/>
+  <text x="470" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e3a8a">Old Generation</text>
+  <text x="470" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Long-lived objects</text>
+  <text x="470" y="362" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Major GC: slow, infrequent</text>
+  <text x="470" y="379" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">May compact memory</text>
+  
+  <!-- DOM box -->
+  <rect x="650" y="125" width="180" height="200" rx="10" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="740" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#065f46">DOM + Layout</text>
+  <text x="665" y="178" font-family="system-ui, sans-serif" font-size="10" fill="#047857">• DOM tree nodes</text>
+  <text x="665" y="198" font-family="system-ui, sans-serif" font-size="10" fill="#047857">• Style information</text>
+  <text x="665" y="218" font-family="system-ui, sans-serif" font-size="10" fill="#047857">• Layout state</text>
+  <text x="665" y="238" font-family="system-ui, sans-serif" font-size="10" fill="#047857">• Event registries</text>
+  <text x="665" y="258" font-family="system-ui, sans-serif" font-size="10" fill="#047857">• JS wrappers</text>
+  
+  <!-- Arrow Heap to DOM -->
+  <line x1="620" y1="210" x2="650" y2="210" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrowGC)"/>
+  <text x="635" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">references</text>
+  
+  <!-- GC box -->
+  <rect x="650" y="350" width="180" height="80" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="740" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#92400e">Garbage Collector</text>
+  <text x="740" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">Mark → Sweep → Compact</text>
+  <text x="740" y="420" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">Reclaims unreachable memory</text>
+  
+  <!-- Arrow GC to Heap -->
+  <line x1="650" y1="370" x2="620" y2="370" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arrowGC)"/>
+  <text x="635" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309">reclaims</text>
+  
+  <!-- Bottom note -->
+  <rect x="70" y="450" width="760" height="60" rx="10" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e293b">Key Insight: Objects stay alive if reachable from roots</text>
+  <text x="450" y="498" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Memory leaks occur when unintended references keep objects reachable from the root set</text>
+</svg>

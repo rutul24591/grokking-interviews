@@ -1,0 +1,141 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">GC Pause Impact on Application Performance</text>
+  
+  <!-- Top: Normal Execution -->
+  <rect x="50" y="80" width="400" height="200" rx="12" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="250" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">Normal Execution (No GC Pressure)</text>
+  
+  <!-- Timeline normal -->
+  <rect x="70" y="130" width="360" height="130" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  
+  <!-- Time axis -->
+  <line x1="80" y1="250" x2="420" y2="250" stroke="#9ca3af" stroke-width="2"/>
+  <text x="430" y="255" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b7280">Time (ms) →</text>
+  
+  <!-- Frame markers (60fps = 16.67ms per frame) -->
+  <line x1="80" y1="245" x2="80" y2="255" stroke="#22c55e" stroke-width="2"/>
+  <text x="80" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">0</text>
+  
+  <line x1="140" y1="245" x2="140" y2="255" stroke="#22c55e" stroke-width="2"/>
+  <text x="140" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">16ms</text>
+  
+  <line x1="200" y1="245" x2="200" y2="255" stroke="#22c55e" stroke-width="2"/>
+  <text x="200" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">33ms</text>
+  
+  <line x1="260" y1="245" x2="260" y2="255" stroke="#22c55e" stroke-width="2"/>
+  <text x="260" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">50ms</text>
+  
+  <line x1="320" y1="245" x2="320" y2="255" stroke="#22c55e" stroke-width="2"/>
+  <text x="320" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">67ms</text>
+  
+  <line x1="380" y1="245" x2="380" y2="255" stroke="#22c55e" stroke-width="2"/>
+  <text x="380" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#15803d">83ms</text>
+  
+  <!-- Smooth execution blocks -->
+  <rect x="80" y="145" width="55" height="40" rx="4" fill="#86efac" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="107" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#166534">Frame 1</text>
+  
+  <rect x="140" y="145" width="55" height="40" rx="4" fill="#86efac" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="167" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#166534">Frame 2</text>
+  
+  <rect x="200" y="145" width="55" height="40" rx="4" fill="#86efac" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="227" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#166534">Frame 3</text>
+  
+  <rect x="260" y="145" width="55" height="40" rx="4" fill="#86efac" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="287" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#166534">Frame 4</text>
+  
+  <rect x="320" y="145" width="55" height="40" rx="4" fill="#86efac" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="347" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#166534">Frame 5</text>
+  
+  <rect x="380" y="145" width="45" height="40" rx="4" fill="#86efac" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="402" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#166534">Frame 6</text>
+  
+  <text x="250" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">✓ Smooth 60fps, responsive UI</text>
+  
+  <!-- Bottom: GC Pause -->
+  <rect x="470" y="80" width="380" height="200" rx="12" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#991b1b">GC Pause (Major Collection)</text>
+  
+  <!-- Timeline with GC -->
+  <rect x="490" y="130" width="340" height="130" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  
+  <!-- Time axis -->
+  <line x1="500" y1="250" x2="820" y2="250" stroke="#9ca3af" stroke-width="2"/>
+  <text x="830" y="255" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#6b7280">Time (ms) →</text>
+  
+  <!-- Frame markers -->
+  <line x1="500" y1="245" x2="500" y2="255" stroke="#ef4444" stroke-width="2"/>
+  <text x="500" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#991b1b">0</text>
+  
+  <line x1="560" y1="245" x2="560" y2="255" stroke="#ef4444" stroke-width="2"/>
+  <text x="560" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#991b1b">16ms</text>
+  
+  <line x1="620" y1="245" x2="620" y2="255" stroke="#ef4444" stroke-width="2"/>
+  <text x="620" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#991b1b">33ms</text>
+  
+  <line x1="680" y1="245" x2="680" y2="255" stroke="#ef4444" stroke-width="2"/>
+  <text x="680" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#991b1b">50ms</text>
+  
+  <line x1="740" y1="245" x2="740" y2="255" stroke="#ef4444" stroke-width="2"/>
+  <text x="740" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#991b1b">67ms</text>
+  
+  <line x1="800" y1="245" x2="800" y2="255" stroke="#ef4444" stroke-width="2"/>
+  <text x="800" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#991b1b">83ms</text>
+  
+  <!-- Execution with GC pause -->
+  <rect x="500" y="145" width="55" height="40" rx="4" fill="#86efac" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="527" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#166534">Frame 1</text>
+  
+  <rect x="560" y="145" width="55" height="40" rx="4" fill="#86efac" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="587" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#166534">Frame 2</text>
+  
+  <!-- GC PAUSE block -->
+  <rect x="620" y="145" width="115" height="40" rx="4" fill="#fca5a5" stroke="#dc2626" stroke-width="2"/>
+  <text x="677" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#991b1b">GC PAUSE ~50ms</text>
+  
+  <!-- Dropped frames indicators -->
+  <text x="620" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#dc2626">Frame 3 dropped</text>
+  <text x="677" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#dc2626">Frame 4 dropped</text>
+  <text x="735" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#dc2626">Frame 5 dropped</text>
+  
+  <!-- Resumed frames -->
+  <rect x="740" y="145" width="55" height="40" rx="4" fill="#fde68a" stroke="#d97706" stroke-width="1.5"/>
+  <text x="767" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#92400e">Frame 6</text>
+  
+  <rect x="800" y="145" width="25" height="40" rx="4" fill="#fde68a" stroke="#d97706" stroke-width="1.5"/>
+  <text x="812" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#92400e">F7</text>
+  
+  <text x="660" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#991b1b">✗ Jank, unresponsive UI, dropped frames</text>
+  
+  <!-- Bottom: Impact Summary -->
+  <rect x="50" y="300" width="800" height="230" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="450" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">GC Impact on User Experience</text>
+  
+  <!-- Impact categories -->
+  <rect x="70" y="350" width="240" height="80" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="190" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#991b1b">Visual Impact</text>
+  <text x="190" y="398" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7f1d1d">• Frozen UI during pause</text>
+  <text x="190" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7f1d1d">• Dropped frames (jank)</text>
+  <text x="190" y="432" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7f1d1d">• Stuttering animations</text>
+  
+  <rect x="330" y="350" width="240" height="80" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="450" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#92400e">Interaction Impact</text>
+  <text x="450" y="398" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">• Clicks not registered</text>
+  <text x="450" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">• Scroll lag</text>
+  <text x="450" y="432" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">• Input delay (INP increases)</text>
+  
+  <rect x="590" y="350" width="240" height="80" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="710" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#1e40af">Performance Metrics</text>
+  <text x="710" y="398" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1e3a8a">• FPS drops below 30</text>
+  <text x="710" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1e3a8a">• TBT (Total Blocking Time) ↑</text>
+  <text x="710" y="432" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1e3a8a">• INP (Interaction to Next Paint) ↑</text>
+  
+  <!-- Mitigation strategies -->
+  <rect x="70" y="450" width="760" height="65" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="450" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#166534">Mitigation Strategies</text>
+  <text x="450" y="498" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Reduce allocation rate • Use object pools • Incremental GC • Web Workers for heavy computation • Avoid memory leaks</text>
+</svg>

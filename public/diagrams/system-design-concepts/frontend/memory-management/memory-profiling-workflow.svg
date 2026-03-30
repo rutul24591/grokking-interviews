@@ -1,0 +1,92 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Memory Profiling Workflow</text>
+  
+  <!-- Main workflow diagram -->
+  <rect x="50" y="80" width="800" height="450" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  
+  <!-- Step 1: Setup -->
+  <rect x="80" y="110" width="140" height="100" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="150" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#166534">1. Setup</text>
+  <text x="150" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Open DevTools</text>
+  <text x="150" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Memory panel</text>
+  <text x="150" y="199" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Prepare scenario</text>
+  
+  <!-- Arrow 1 -->
+  <defs>
+    <marker id="arrowFlow1" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+      <polygon points="0 0, 12 4, 0 8" fill="#64748b"/>
+    </marker>
+  </defs>
+  <line x1="220" y1="160" x2="260" y2="160" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrowFlow1)"/>
+  
+  <!-- Step 2: Baseline -->
+  <rect x="265" y="110" width="140" height="100" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="335" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#92400e">2. Baseline</text>
+  <text x="335" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">Fresh page load</text>
+  <text x="335" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">Take heap snapshot</text>
+  <text x="335" y="199" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">Label "baseline"</text>
+  
+  <!-- Arrow 2 -->
+  <line x1="405" y1="160" x2="445" y2="160" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrowFlow1)"/>
+  
+  <!-- Step 3: Exercise -->
+  <rect x="450" y="110" width="140" height="100" rx="10" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="520" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#1e40af">3. Exercise</text>
+  <text x="520" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1e3a8a">Perform actions</text>
+  <text x="520" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1e3a8a">Navigate, interact</text>
+  <text x="520" y="199" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1e3a8a">Trigger suspected leak</text>
+  
+  <!-- Arrow 3 -->
+  <line x1="590" y1="160" x2="630" y2="160" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrowFlow1)"/>
+  
+  <!-- Step 4: Snapshot -->
+  <rect x="635" y="110" width="140" height="100" rx="10" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="705" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#3730a3">4. Snapshot</text>
+  <text x="705" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4338ca">Take heap snapshot</text>
+  <text x="705" y="182" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4338ca">Label "after leak"</text>
+  <text x="705" y="199" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4338ca">Wait for GC</text>
+  
+  <!-- Middle section: Analysis -->
+  <rect x="80" y="240" width="695" height="180" rx="10" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="427" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#991b1b">5. Compare &amp; Analyze</text>
+  
+  <!-- Comparison boxes -->
+  <rect x="100" y="290" width="200" height="115" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="200" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#1e293b">Snapshot Comparison</text>
+  <text x="200" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">• Select both snapshots</text>
+  <text x="200" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">• View "Comparison" mode</text>
+  <text x="200" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">• Sort by "Delta" column</text>
+  <text x="200" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">• Look for positive Δ values</text>
+  
+  <rect x="320" y="290" width="220" height="115" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="430" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#1e293b">Find Growing Objects</text>
+  <text x="430" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">• Filter by constructor name</text>
+  <text x="430" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">• Look for Arrays, Objects</text>
+  <text x="430" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">• Check # of deleted vs alive</text>
+  <text x="430" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">• High deleted = potential leak</text>
+  
+  <rect x="560" y="290" width="200" height="115" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="660" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#1e293b">Trace Retainers</text>
+  <text x="660" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">• Select suspicious object</text>
+  <text x="660" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">• View "Retainers" panel</text>
+  <text x="660" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">• Trace path to root</text>
+  <text x="660" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626">• Find the leak source!</text>
+  
+  <!-- Arrow down to Fix -->
+  <line x1="427" y1="420" x2="427" y2="455" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrowFlow1)"/>
+  
+  <!-- Step 6: Fix & Verify -->
+  <rect x="320" y="460" width="215" height="60" rx="10" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="427" y="485" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#065f46">6. Fix &amp; Verify</text>
+  <text x="427" y="508" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857">Apply fix, repeat workflow</text>
+  
+  <!-- Side note: Tips -->
+  <rect x="600" y="460" width="230" height="60" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="715" y="485" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#92400e">Pro Tips</text>
+  <text x="715" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">• Force GC before snapshots</text>
+  <text x="715" y="518" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">• Use allocation timeline for real-time</text>
+</svg>
