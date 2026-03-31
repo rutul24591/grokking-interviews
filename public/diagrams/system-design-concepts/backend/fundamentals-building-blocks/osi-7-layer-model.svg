@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <title>OSI 7-Layer Model</title>
+  <desc>The seven layers of the OSI model with example protocols</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="500" fill="#FFFFFF"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">OSI 7-Layer Model</text>
+  
+  <!-- Layer 7: Application -->
+  <rect x="100" y="60" width="600" height="55" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="130" y="92" text-anchor="start" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Layer 7: Application</text>
+  <text x="700" y="92" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#4B5563">HTTP, DNS, SMTP, FTP</text>
+  
+  <!-- Layer 6: Presentation -->
+  <rect x="100" y="120" width="600" height="55" rx="4" fill="#F8F9FC" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="130" y="152" text-anchor="start" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Layer 6: Presentation</text>
+  <text x="700" y="152" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#4B5563">TLS/SSL, JPEG, GIF, Encryption</text>
+  
+  <!-- Layer 5: Session -->
+  <rect x="100" y="180" width="600" height="55" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="130" y="212" text-anchor="start" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Layer 5: Session</text>
+  <text x="700" y="212" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#4B5563">RPC, NetBIOS, Sessions</text>
+  
+  <!-- Layer 4: Transport -->
+  <rect x="100" y="240" width="600" height="55" rx="4" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="130" y="272" text-anchor="start" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Layer 4: Transport</text>
+  <text x="700" y="272" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#4B5563">TCP, UDP, Ports</text>
+  
+  <!-- Layer 3: Network -->
+  <rect x="100" y="300" width="600" height="55" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="130" y="332" text-anchor="start" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Layer 3: Network</text>
+  <text x="700" y="332" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#4B5563">IP, ICMP, Routers, IP Addresses</text>
+  
+  <!-- Layer 2: Data Link -->
+  <rect x="100" y="360" width="600" height="55" rx="4" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="130" y="392" text-anchor="start" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Layer 2: Data Link</text>
+  <text x="700" y="392" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#4B5563">Ethernet, Switches, MAC Addresses</text>
+  
+  <!-- Layer 1: Physical -->
+  <rect x="100" y="420" width="600" height="55" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="130" y="452" text-anchor="start" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Layer 1: Physical</text>
+  <text x="700" y="452" text-anchor="end" font-family="system-ui, sans-serif" font-size="11" fill="#4B5563">Cables, Hubs, Bits on Wire</text>
+  
+  <!-- Side Label -->
+  <text x="50" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#4B5563" transform="rotate(-90, 50, 260)">OSI Layers</text>
+  
+  <!-- TCP/IP Mapping Box -->
+  <rect x="100" y="485" width="600" height="12" rx="2" fill="#F8F9FC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="400" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">TCP/IP: Application (L7-L5) | Transport (L4) | Internet (L3) | Network Access (L2-L1)</text>
+</svg>

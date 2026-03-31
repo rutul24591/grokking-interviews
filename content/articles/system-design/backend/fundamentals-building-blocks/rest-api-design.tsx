@@ -145,74 +145,56 @@ export default function RestApiDesignArticle() {
           <strong>Key principle:</strong> Resources should reflect business concepts, not database tables. A &quot;User&quot; resource may aggregate data from multiple tables (users, profiles, preferences).
         </p>
 
+        <ArticleImage
+          src="/diagrams/system-design-concepts/backend/fundamentals-building-blocks/rest-api-crud-operations.svg"
+          alt="REST API CRUD Operations"
+          caption="CRUD operations mapped to HTTP methods: POST for Create, GET for Read, PUT/PATCH for Update, DELETE for Delete"
+        />
+      </section>
+
+      <section>
+        <h2>Resource Modeling</h2>
+
         <h3 className="mt-8 mb-4 text-xl font-semibold">URL Design Best Practices</h3>
 
         <h4 className="mt-4 mb-2 font-semibold">Use Nouns, Not Verbs</h4>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          # Good (RESTful)
-          GET    /users
-          POST   /users
-          GET    /users/123
-          PUT    /users/123
-          DELETE /users/123
-
-          # Bad (RPC-style)
-          GET    /getUsers
-          POST   /createUser
-          POST   /updateUser
-          POST   /deleteUser
-        </pre>
+        <p>
+          RESTful APIs use nouns for resources and HTTP methods for actions. Good examples include GET for listing users, POST for creating users, GET for retrieving a specific user, PUT for updating, and DELETE for removing. Bad examples use verb-based URLs like getUsers, createUser, updateUser, or deleteUser because HTTP methods already convey the action.
+        </p>
         <p>
           <strong>Why:</strong> HTTP methods already convey the action. Adding verbs to URLs is redundant and breaks REST conventions.
         </p>
 
         <h4 className="mt-4 mb-2 font-semibold">Use Plural Nouns for Collections</h4>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          /users          # Collection of users
-          /users/123      # Single user
-          /users/123/orders  # Orders for user 123
-        </pre>
+        <p>
+          Use plural nouns for collection endpoints such as users for a collection of users, users/123 for a single user, and users/123/orders for orders belonging to a user.
+        </p>
         <p>
           <strong>Why:</strong> Plurals clearly distinguish collection endpoints from single-resource endpoints.
         </p>
 
         <h4 className="mt-4 mb-2 font-semibold">Use Nested Resources for Ownership</h4>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          /users/123/orders        # Orders belonging to user 123
-          /orders/456/items        # Items in order 456
-          /products/789/reviews    # Reviews for product 789
-        </pre>
         <p>
-          <strong>Guideline:</strong> Limit nesting to 2 levels. Deep nesting (<code>/a/b/c/d/e</code>) is hard to read and suggests poor resource modeling.
+          Use nested paths to show ownership relationships such as users/123/orders for orders belonging to a user, orders/456/items for items in an order, and products/789/reviews for reviews for a product.
+        </p>
+        <p>
+          <strong>Guideline:</strong> Limit nesting to 2 levels. Deep nesting is hard to read and suggests poor resource modeling.
         </p>
 
         <h4 className="mt-4 mb-2 font-semibold">Use Lowercase with Hyphens</h4>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          # Good
-          /user-profiles
-          /order-items
-
-          # Bad
-          /UserProfiles     # CamelCase
-          /orderItems       # camelCase
-          /order_items      # snake_case (less common in URLs)
-        </pre>
+        <p>
+          URLs should be lowercase with hyphens for readability. Good examples include user-profiles and order-items. Bad examples include CamelCase, camelCase, or snake_case which are less common in URLs.
+        </p>
         <p>
           <strong>Why:</strong> URLs are case-sensitive on some servers. Hyphens are more readable and SEO-friendly.
         </p>
 
         <h4 className="mt-4 mb-2 font-semibold">Use Opaque, Prefixed IDs</h4>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          # Good
-          /users/usr_abc123
-          /orders/ord_xyz789
-
-          # Bad
-          /users/123        # Auto-increment integer (reveals business metrics)
-          /users/550e8400   # Raw UUID (hard to read, no context)
-        </pre>
         <p>
-          <strong>Why:</strong> Opaque IDs hide implementation details. Prefixes (<code>usr_</code>, <code>ord_</code>) make logs and debugging easier.
+          Use opaque, prefixed IDs such as users/usr_abc123 or orders/ord_xyz789. Avoid auto-increment integers which reveal business metrics, or raw UUIDs which are hard to read and lack context.
+        </p>
+        <p>
+          <strong>Why:</strong> Opaque IDs hide implementation details. Prefixes make logs and debugging easier.
         </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Resource Relationships</h3>
@@ -333,23 +315,7 @@ export default function RestApiDesignArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Idempotency Keys for POST</h3>
         <p>
-          For non-idempotent operations, use idempotency keys:
-        </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          {`POST /charges
-Idempotency-Key: abc123
-{ "amount": 1000, "currency": "usd" }
-
-→ 200 OK { "id": "ch_123", "amount": 1000 }
-
-(Retry with same key)
-POST /charges
-Idempotency-Key: abc123
-
-→ 200 OK { "id": "ch_123", "amount": 1000 }  # Same response, no duplicate`}
-        </pre>
-        <p>
-          <strong>Implementation:</strong> Store request hash + response keyed by idempotency key. Return stored response for duplicates. Retain keys for 24 hours to 7 days.
+          For non-idempotent operations, use idempotency keys. Clients generate a unique key (UUID) and include it in the request header. The server stores the request hash and response keyed by idempotency key, then returns the stored response for duplicates. Keys should be retained for 24 hours to 7 days.
         </p>
       </section>
 
@@ -464,37 +430,8 @@ Idempotency-Key: abc123
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Error Response Format</h3>
         <p>
-          Use a consistent error format across all endpoints:
+          Use a consistent error format across all endpoints with a nested error object containing machine-readable codes, human-readable messages, request IDs for debugging, and field-level details for validation failures.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          {`HTTP/1.1 400 Bad Request
-Content-Type: application/json
-X-Request-ID: req_abc123
-
-{
-  "error": {
-    "code": "validation_failed",
-    "message": "The request contains invalid data",
-    "request_id": "req_abc123",
-    "details": [
-      {
-        "field": "email",
-        "code": "invalid_format",
-        "message": "Email must be a valid email address"
-      }
-    ]
-  }
-}`}
-        </pre>
-        <p>
-          <strong>Fields:</strong>
-        </p>
-        <ul>
-          <li><strong>code:</strong> Machine-readable error code (stable across versions).</li>
-          <li><strong>message:</strong> Human-readable explanation.</li>
-          <li><strong>request_id:</strong> For debugging (correlate with logs).</li>
-          <li><strong>details:</strong> Field-level errors (for validation failures).</li>
-        </ul>
       </section>
 
       <section>
@@ -503,76 +440,31 @@ X-Request-ID: req_abc123
         <h3 className="mt-8 mb-4 text-xl font-semibold">Pagination Strategies</h3>
 
         <h4 className="mt-4 mb-2 font-semibold">Offset Pagination</h4>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          GET /users?offset=0&amp;limit=20
-          GET /users?offset=20&amp;limit=20
-        </pre>
         <p>
-          <strong>Pros:</strong> Simple, supports random access (jump to page 50).
-        </p>
-        <p>
-          <strong>Cons:</strong> Performance degrades with depth (<code>OFFSET 10000</code> scans 10,000 rows). Inconsistent under concurrent writes.
+          Offset pagination uses offset and limit parameters to skip records and return a fixed-size page. It is simple and supports random access to any page. However, performance degrades with depth because large offsets require scanning many rows, and results can be inconsistent under concurrent writes.
         </p>
 
         <h4 className="mt-4 mb-2 font-semibold">Cursor Pagination</h4>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          {`GET /users?limit=20
-→ { "data": [...], "next_cursor": "eyJpZCI6MjB9", "has_more": true }
-
-GET /users?limit=20&cursor=eyJpZCI6MjB9`}
-        </pre>
         <p>
-          <strong>Pros:</strong> Consistent performance (uses index), stable results under writes.
+          Cursor pagination uses an opaque cursor pointing to a position in the result set. The client receives a cursor with each response and uses it to fetch the next page. This approach provides consistent performance because it uses an index, and stable results under writes. However, it does not support random access and requires iterating from the start.
         </p>
         <p>
-          <strong>Cons:</strong> No random access (must iterate from start).
-        </p>
-        <p>
-          <strong>Recommendation:</strong> Use cursor pagination for large datasets (&gt;10,000 rows) or frequently-updated data.
+          <strong>Recommendation:</strong> Use cursor pagination for large datasets (over 10,000 rows) or frequently-updated data.
         </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Filtering</h3>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          GET /users?status=active&amp;role=admin
-          GET /orders?created_at[gte]=2024-01-01&amp;created_at[lte]=2024-12-31
-          GET /products?price[min]=10&amp;price[max]=100
-        </pre>
         <p>
-          <strong>Best practices:</strong>
+          Support filtering with query parameters for status, role, date ranges, and price ranges. Use consistent operators like gte, lte, min, and max. Document filterable fields, validate filter values (return 400 for invalid), and index filtered fields for performance.
         </p>
-        <ul>
-          <li>Use consistent operators (<code>gte</code>, <code>lte</code>, <code>min</code>, <code>max</code>).</li>
-          <li>Document filterable fields.</li>
-          <li>Validate filter values (return 400 for invalid).</li>
-          <li>Index filtered fields for performance.</li>
-        </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Sorting</h3>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          GET /users?sort=created_at
-          GET /users?sort=-created_at  # Descending
-          GET /users?sort=last_name,first_name
-        </pre>
         <p>
-          <strong>Best practices:</strong>
+          Support sorting with a sort parameter. Clients can sort by any field, with descending order indicated by a minus prefix or desc parameter. Multi-field sorting is also supported. Document default sort order, limit sortable fields (not all fields should be sortable), and always sort by a stable key for pagination consistency.
         </p>
-        <ul>
-          <li>Document default sort order.</li>
-          <li>Allow descending (<code>-</code> prefix or <code>desc</code>).</li>
-          <li>Limit sortable fields (not all fields should be sortable).</li>
-          <li>Always sort by a stable key (ID, timestamp) for pagination consistency.</li>
-        </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Field Selection</h3>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          {`GET /users?fields=id,name,email
-→ { "id": "123", "name": "John", "email": "john@example.com" }`}
-        </pre>
         <p>
-          <strong>Benefits:</strong> Reduced payload size, improved performance, privacy (clients can&apos;t access sensitive fields).
-        </p>
-        <p>
-          <strong>Implementation:</strong> Always include ID. Validate field names. Document available fields.
+          Allow clients to request specific fields using a fields parameter. This reduces payload size, improves performance, and enhances privacy by preventing clients from accessing sensitive fields. Always include ID, validate field names, and document available fields.
         </p>
       </section>
 
@@ -627,6 +519,12 @@ GET /users?limit=20&cursor=eyJpZCI6MjB9`}
           <strong>Recommendation:</strong> URL versioning for simplicity and explicitness.
         </p>
 
+        <ArticleImage
+          src="/diagrams/system-design-concepts/backend/fundamentals-building-blocks/api-versioning-strategies.svg"
+          alt="API Versioning Strategies"
+          caption="Three versioning approaches: URL versioning (simple, explicit), Header versioning (clean URLs), Media Type versioning (most RESTful)"
+        />
+
         <h3 className="mt-8 mb-4 text-xl font-semibold">Deprecation Strategy</h3>
         <ol className="space-y-2">
           <li><strong>Announce:</strong> Email developers, update docs, add deprecation headers.</li>
@@ -634,11 +532,9 @@ GET /users?limit=20&cursor=eyJpZCI6MjB9`}
           <li><strong>Monitor:</strong> Track API version usage.</li>
           <li><strong>Sunset:</strong> Return 410 Gone after timeline.</li>
         </ol>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          Deprecation: true
-          Sunset: Sat, 31 Dec 2026 23:59:59 GMT
-          Link: &lt;https://docs.example.com/migration&gt;; rel="deprecation"
-        </pre>
+        <p>
+          Use standard deprecation headers to communicate the sunset timeline and provide a link to migration documentation.
+        </p>
       </section>
 
       <section>
@@ -661,14 +557,8 @@ GET /users?limit=20&cursor=eyJpZCI6MjB9`}
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Conditional Requests</h3>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          GET /users/123
-          If-None-Match: "abc123"
-
-          → 304 Not Modified (no body)
-        </pre>
         <p>
-          <strong>Benefits:</strong> Saves bandwidth, reduces server load.
+          Conditional requests use If-None-Match headers with ETag values. If the resource hasn't changed, the server returns 304 Not Modified with no body. This saves bandwidth and reduces server load.
         </p>
       </section>
 
@@ -896,16 +786,6 @@ GET /users?limit=20&cursor=eyJpZCI6MjB9`}
             <strong>Books:</strong> &quot;REST API Design Rulebook&quot; by Mark Masse, &quot;Build APIs You Won&apos;t Hate&quot; by Phil Sturgeon
           </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <p>
-          REST API design is about creating predictable, scalable, and maintainable interfaces. Key principles include: resource-oriented URLs (nouns, plurals, lowercase), proper HTTP method usage (GET/POST/PUT/PATCH/DELETE with correct semantics), appropriate status codes (2xx/3xx/4xx/5xx), consistent error handling (machine-readable codes, request IDs), pagination for scale (cursor for large datasets), versioning for breaking changes (URL versioning with deprecation timeline), caching for performance (Cache-Control, ETag), and security at every layer (auth, authorization, rate limiting, validation).
-        </p>
-        <p>
-          For staff/principal engineer interviews, expect to discuss: REST constraints and their benefits, method semantics (safe vs idempotent), pagination strategies (offset vs cursor), versioning approaches, error handling design, caching strategies, and real-world examples from APIs you&apos;ve designed. The key is demonstrating understanding of REST as an architectural style, not just &quot;JSON over HTTP.&quot;
-        </p>
       </section>
     </ArticleLayout>
   );

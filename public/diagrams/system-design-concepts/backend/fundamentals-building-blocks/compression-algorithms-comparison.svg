@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <title>Compression Algorithm Comparison</title>
+  <desc>Comparing gzip, Brotli, LZ4, and Snappy compression algorithms</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="400" fill="#FFFFFF"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">Compression Algorithm Comparison</text>
+  
+  <!-- gzip -->
+  <rect x="50" y="60" width="320" height="80" rx="8" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="210" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827">gzip (DEFLATE)</text>
+  <text x="210" y="108" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">Compression Ratio: 70-90%</text>
+  <text x="210" y="125" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">Speed: Moderate (~100 MB/s)</text>
+  <text x="210" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Best for: General purpose, APIs</text>
+  
+  <!-- Brotli -->
+  <rect x="430" y="60" width="320" height="80" rx="8" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="590" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827">Brotli (br)</text>
+  <text x="590" y="108" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">Compression Ratio: 80-95%</text>
+  <text x="590" y="125" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">Speed: Slow (~10 MB/s at level 11)</text>
+  <text x="590" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Best for: Static assets, CDNs</text>
+  
+  <!-- LZ4 -->
+  <rect x="50" y="160" width="320" height="80" rx="8" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="210" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827">LZ4</text>
+  <text x="210" y="208" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">Compression Ratio: 50-70%</text>
+  <text x="210" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">Speed: Very Fast (~500 MB/s)</text>
+  <text x="210" y="240" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Best for: Real-time, low latency</text>
+  
+  <!-- Snappy -->
+  <rect x="430" y="160" width="320" height="80" rx="8" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="590" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827">Snappy</text>
+  <text x="590" y="208" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">Compression Ratio: 50-70%</text>
+  <text x="590" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">Speed: Very Fast (~400 MB/s)</text>
+  <text x="590" y="240" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Best for: Internal services, logs</text>
+  
+  <!-- Comparison Chart -->
+  <rect x="50" y="260" width="700" height="110" rx="8" fill="#F8F9FC" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="400" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Speed vs Ratio Trade-off</text>
+  
+  <!-- Speed Bar (LZ4 fastest) -->
+  <rect x="100" y="305" width="280" height="25" rx="4" fill="#EC4899"/>
+  <text x="240" y="323" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#FFFFFF">LZ4/Snappy (Fastest)</text>
+  
+  <!-- Speed Bar (gzip moderate) -->
+  <rect x="100" y="335" width="180" height="25" rx="4" fill="#EC4899"/>
+  <text x="190" y="353" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#FFFFFF">gzip (Moderate)</text>
+  
+  <!-- Speed Bar (Brotli slowest) -->
+  <rect x="100" y="365" width="80" height="25" rx="4" fill="#EC4899"/>
+  <text x="140" y="383" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#FFFFFF">Brotli (Slow)</text>
+  
+  <!-- Ratio labels (opposite direction) -->
+  <text x="450" y="323" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">← Lower Ratio</text>
+  <text x="450" y="353" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">← Moderate Ratio</text>
+  <text x="450" y="383" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#10B981">← Best Ratio</text>
+</svg>

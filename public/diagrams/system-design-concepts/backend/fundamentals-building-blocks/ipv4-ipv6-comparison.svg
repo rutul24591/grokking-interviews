@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <title>IPv4 vs IPv6 Comparison</title>
+  <desc>Visual comparison of IPv4 and IPv6 address formats and characteristics</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="400" fill="#FFFFFF"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">IPv4 vs IPv6 Address Format</text>
+  
+  <!-- IPv4 Section (Left) -->
+  <rect x="50" y="60" width="320" height="300" rx="8" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="210" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827">IPv4 (32-bit)</text>
+  
+  <!-- IPv4 Address Example -->
+  <rect x="80" y="110" width="260" height="50" rx="4" fill="#FFFFFF" stroke="#EC4899" stroke-width="2"/>
+  <text x="210" y="140" text-anchor="middle" font-family="monospace, sans-serif" font-size="18" font-weight="700" fill="#EC4899">192.168.1.1</text>
+  
+  <!-- IPv4 Bit Breakdown -->
+  <rect x="80" y="180" width="260" height="80" rx="4" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="210" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#111827">32 bits = 4 octets × 8 bits</text>
+  
+  <!-- Octet 1 -->
+  <rect x="90" y="220" width="55" height="35" rx="2" fill="#EC4899"/>
+  <text x="117" y="240" text-anchor="middle" font-family="monospace, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">192</text>
+  <text x="117" y="252" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#FFFFFF">8 bits</text>
+  
+  <!-- Octet 2 -->
+  <rect x="150" y="220" width="55" height="35" rx="2" fill="#EC4899"/>
+  <text x="177" y="240" text-anchor="middle" font-family="monospace, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">168</text>
+  <text x="177" y="252" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#FFFFFF">8 bits</text>
+  
+  <!-- Octet 3 -->
+  <rect x="210" y="220" width="55" height="35" rx="2" fill="#EC4899"/>
+  <text x="237" y="240" text-anchor="middle" font-family="monospace, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">1</text>
+  <text x="237" y="252" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#FFFFFF">8 bits</text>
+  
+  <!-- Octet 4 -->
+  <rect x="270" y="220" width="55" height="35" rx="2" fill="#EC4899"/>
+  <text x="297" y="240" text-anchor="middle" font-family="monospace, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">1</text>
+  <text x="297" y="252" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#FFFFFF">8 bits</text>
+  
+  <!-- IPv4 Stats -->
+  <rect x="80" y="280" width="260" height="60" rx="4" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="210" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827">~4.3 billion addresses</text>
+  <text x="210" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">Exhausted in 2011</text>
+  <text x="210" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Dotted decimal notation</text>
+  
+  <!-- IPv6 Section (Right) -->
+  <rect x="430" y="60" width="320" height="300" rx="8" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="590" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827">IPv6 (128-bit)</text>
+  
+  <!-- IPv6 Address Example -->
+  <rect x="460" y="110" width="260" height="50" rx="4" fill="#FFFFFF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="590" y="140" text-anchor="middle" font-family="monospace, sans-serif" font-size="16" font-weight="700" fill="#8B5CF6">2001:db8::1</text>
+  
+  <!-- IPv6 Groups -->
+  <rect x="460" y="180" width="260" height="80" rx="4" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="590" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#111827">128 bits = 8 groups × 16 bits</text>
+  
+  <!-- Group 1 -->
+  <rect x="470" y="220" width="35" height="35" rx="2" fill="#8B5CF6"/>
+  <text x="487" y="240" text-anchor="middle" font-family="monospace, sans-serif" font-size="9" font-weight="700" fill="#FFFFFF">2001</text>
+  <text x="487" y="252" text-anchor="middle" font-family="system-ui, sans-serif" font-size="7" fill="#FFFFFF">16 bits</text>
+  
+  <!-- Group 2 -->
+  <rect x="510" y="220" width="35" height="35" rx="2" fill="#8B5CF6"/>
+  <text x="527" y="240" text-anchor="middle" font-family="monospace, sans-serif" font-size="9" font-weight="700" fill="#FFFFFF">db8</text>
+  <text x="527" y="252" text-anchor="middle" font-family="system-ui, sans-serif" font-size="7" fill="#FFFFFF">16 bits</text>
+  
+  <!-- Compression indicator -->
+  <rect x="550" y="220" width="60" height="35" rx="2" fill="#E2E8F0" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="3"/>
+  <text x="580" y="243" text-anchor="middle" font-family="monospace, sans-serif" font-size="12" font-weight="700" fill="#4B5563">::</text>
+  
+  <!-- Group 7 -->
+  <rect x="615" y="220" width="35" height="35" rx="2" fill="#8B5CF6"/>
+  <text x="632" y="240" text-anchor="middle" font-family="monospace, sans-serif" font-size="9" font-weight="700" fill="#FFFFFF">0</text>
+  <text x="632" y="252" text-anchor="middle" font-family="system-ui, sans-serif" font-size="7" fill="#FFFFFF">16 bits</text>
+  
+  <!-- Group 8 -->
+  <rect x="655" y="220" width="35" height="35" rx="2" fill="#8B5CF6"/>
+  <text x="672" y="240" text-anchor="middle" font-family="monospace, sans-serif" font-size="9" font-weight="700" fill="#FFFFFF">1</text>
+  <text x="672" y="252" text-anchor="middle" font-family="system-ui, sans-serif" font-size="7" fill="#FFFFFF">16 bits</text>
+  
+  <text x="580" y="268" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#4B5563">:: = consecutive zeros</text>
+  
+  <!-- IPv6 Stats -->
+  <rect x="460" y="280" width="260" height="60" rx="4" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="590" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827">~3.4 × 10³⁸ addresses</text>
+  <text x="590" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">Essentially unlimited</text>
+  <text x="590" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Hexadecimal with :: compression</text>
+  
+  <!-- Arrow between sections -->
+  <path d="M370 210 L430 210" stroke="#4B5563" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowGray)"/>
+  <text x="400" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Evolution</text>
+  
+  <!-- Arrow Markers -->
+  <defs>
+    <marker id="arrowGray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4B5563"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <title>Unicode to UTF-8 Encoding</title>
+  <desc>How Unicode code points are encoded into UTF-8 byte sequences</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="400" fill="#FFFFFF"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">Unicode to UTF-8 Encoding</text>
+  
+  <!-- Unicode Code Points (Left) -->
+  <rect x="50" y="60" width="300" height="300" rx="8" fill="#F8F9FC" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="200" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Unicode Code Points</text>
+  
+  <!-- ASCII Character -->
+  <rect x="80" y="110" width="240" height="45" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="200" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">'A' = U+0041</text>
+  <text x="200" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">ASCII Range (0-127)</text>
+  
+  <!-- Latin Character -->
+  <rect x="80" y="170" width="240" height="45" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="200" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">'é' = U+00E9</text>
+  <text x="200" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Latin-1 Supplement</text>
+  
+  <!-- CJK Character -->
+  <rect x="80" y="230" width="240" height="45" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="200" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">'中' = U+4E2D</text>
+  <text x="200" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">CJK Characters</text>
+  
+  <!-- Emoji Character -->
+  <rect x="80" y="290" width="240" height="45" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="200" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">'😀' = U+1F600</text>
+  <text x="200" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Emoji (Supplementary)</text>
+  
+  <!-- Arrow -->
+  <path d="M350 210 L450 210" stroke="#4B5563" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowGray)"/>
+  <text x="400" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#4B5563">UTF-8 Encoding</text>
+  
+  <!-- UTF-8 Bytes (Right) -->
+  <rect x="450" y="60" width="300" height="300" rx="8" fill="#F8F9FC" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="600" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">UTF-8 Byte Sequences</text>
+  
+  <!-- ASCII Byte -->
+  <rect x="480" y="110" width="240" height="45" rx="4" fill="#10B981"/>
+  <text x="600" y="135" text-anchor="middle" font-family="monospace, sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">0x41 (1 byte)</text>
+  <text x="600" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#FFFFFF">0xxxxxxx format</text>
+  
+  <!-- Latin Bytes -->
+  <rect x="480" y="170" width="240" height="45" rx="4" fill="#10B981"/>
+  <text x="600" y="195" text-anchor="middle" font-family="monospace, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">0xC3 0xA9 (2 bytes)</text>
+  <text x="600" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#FFFFFF">110xxxxx 10xxxxxx</text>
+  
+  <!-- CJK Bytes -->
+  <rect x="480" y="230" width="240" height="45" rx="4" fill="#10B981"/>
+  <text x="600" y="255" text-anchor="middle" font-family="monospace, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">0xE4 0xB8 0xAD (3 bytes)</text>
+  <text x="600" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#FFFFFF">1110xxxx 10xxxxxx 10xxxxxx</text>
+  
+  <!-- Emoji Bytes -->
+  <rect x="480" y="290" width="240" height="45" rx="4" fill="#10B981"/>
+  <text x="600" y="315" text-anchor="middle" font-family="monospace, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">0xF0 0x9F 0x98 0x80 (4 bytes)</text>
+  <text x="600" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#FFFFFF">11110xxx 10xxxxxx 10xxxxxx 10xxxxxx</text>
+  
+  <!-- Arrow Markers -->
+  <defs>
+    <marker id="arrowGray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4B5563"/>
+    </marker>
+  </defs>
+</svg>

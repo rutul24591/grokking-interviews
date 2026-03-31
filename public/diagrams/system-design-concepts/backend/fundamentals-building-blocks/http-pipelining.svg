@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <title>HTTP Pipelining</title>
+  <desc>HTTP pipelining allows multiple requests without waiting for responses</desc>
+  
+  <rect width="800" height="400" fill="#FFFFFF"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">HTTP Pipelining</text>
+  
+  <!-- Client -->
+  <rect x="50" y="70" width="120" height="260" rx="8" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="110" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Client</text>
+  
+  <!-- Server -->
+  <rect x="630" y="70" width="120" height="260" rx="8" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+  <text x="690" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Server</text>
+  
+  <!-- Request 1 -->
+  <rect x="200" y="90" width="180" height="35" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="290" y="113" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#111827">GET /api/users</text>
+  
+  <!-- Request 2 -->
+  <rect x="200" y="140" width="180" height="35" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="290" y="163" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#111827">GET /api/posts</text>
+  
+  <!-- Request 3 -->
+  <rect x="200" y="190" width="180" height="35" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="290" y="213" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#111827">GET /api/comments</text>
+  
+  <!-- Request 4 -->
+  <rect x="200" y="240" width="180" height="35" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="290" y="263" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#111827">GET /api/profile</text>
+  
+  <!-- Request Arrows -->
+  <path d="M380 107 L630 107" stroke="#EC4899" stroke-width="2" marker-end="url(#arrowPink)"/>
+  <path d="M380 157 L630 157" stroke="#EC4899" stroke-width="2" marker-end="url(#arrowPink)"/>
+  <path d="M380 207 L630 207" stroke="#EC4899" stroke-width="2" marker-end="url(#arrowPink)"/>
+  <path d="M380 257 L630 257" stroke="#EC4899" stroke-width="2" marker-end="url(#arrowPink)"/>
+  
+  <!-- Response 1 -->
+  <rect x="420" y="90" width="180" height="35" rx="4" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+  <text x="510" y="113" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#111827">200 OK [users]</text>
+  
+  <!-- Response 2 -->
+  <rect x="420" y="140" width="180" height="35" rx="4" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+  <text x="510" y="163" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#111827">200 OK [posts]</text>
+  
+  <!-- Response 3 -->
+  <rect x="420" y="190" width="180" height="35" rx="4" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+  <text x="510" y="213" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#111827">200 OK [comments]</text>
+  
+  <!-- Response 4 -->
+  <rect x="420" y="240" width="180" height="35" rx="4" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+  <text x="510" y="263" text-anchor="middle" font-family="monospace, sans-serif" font-size="10" fill="#111827">200 OK [profile]</text>
+  
+  <!-- Response Arrows -->
+  <path d="M420 107 L200 107" stroke="#10B981" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <path d="M420 157 L200 157" stroke="#10B981" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <path d="M420 207 L200 207" stroke="#10B981" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <path d="M420 257 L200 257" stroke="#10B981" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  
+  <!-- Comparison Box -->
+  <rect x="50" y="340" width="700" height="50" rx="4" fill="#F8F9FC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="400" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#111827">Without Pipelining: Request → Wait → Response → Request → Wait → Response</text>
+  <text x="400" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#10B981">With Pipelining: Multiple requests sent without waiting, responses returned in order</text>
+  
+  <defs>
+    <marker id="arrowPink" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#EC4899"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10B981"/>
+    </marker>
+  </defs>
+</svg>

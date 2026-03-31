@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <title>Scaling Patterns Comparison</title>
+  <desc>Visual comparison of vertical scaling (scale up) vs horizontal scaling (scale out)</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="400" fill="#FFFFFF"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">Scaling Patterns: Vertical vs Horizontal</text>
+  
+  <!-- Vertical Scaling Section (Left) -->
+  <rect x="50" y="60" width="320" height="300" rx="8" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="210" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827">Vertical Scaling (Scale Up)</text>
+  
+  <!-- Small Server -->
+  <rect x="130" y="110" width="80" height="70" rx="4" fill="#FFFFFF" stroke="#EC4899" stroke-width="2"/>
+  <text x="170" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#111827">2 vCPU</text>
+  <text x="170" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#111827">4GB RAM</text>
+  <text x="170" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Initial</text>
+  
+  <!-- Arrow Up -->
+  <path d="M170 180 L170 210" stroke="#EC4899" stroke-width="3" marker-end="url(#arrowPink)"/>
+  <text x="170" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#EC4899">Scale Up</text>
+  
+  <!-- Large Server -->
+  <rect x="110" y="220" width="120" height="100" rx="4" fill="#FFFFFF" stroke="#EC4899" stroke-width="3"/>
+  <text x="170" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">16 vCPU</text>
+  <text x="170" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">64GB RAM</text>
+  <text x="170" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">Single Server</text>
+  
+  <!-- Vertical Pros/Cons -->
+  <rect x="70" y="335" width="280" height="20" rx="4" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="210" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">✓ Simple | ✗ Single point of failure</text>
+  
+  <!-- Horizontal Scaling Section (Right) -->
+  <rect x="430" y="60" width="320" height="300" rx="8" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="590" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827">Horizontal Scaling (Scale Out)</text>
+  
+  <!-- Load Balancer -->
+  <rect x="510" y="110" width="160" height="45" rx="4" fill="#FFFFFF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="590" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827">Load Balancer</text>
+  <text x="590" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Distributes traffic</text>
+  
+  <!-- Arrows to Servers -->
+  <path d="M540 155 L500 190" stroke="#8B5CF6" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  <path d="M590 155 L590 190" stroke="#8B5CF6" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  <path d="M640 155 L680 190" stroke="#8B5CF6" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  
+  <!-- Server 1 -->
+  <rect x="460" y="190" width="80" height="60" rx="4" fill="#FFFFFF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="500" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#111827">Server 1</text>
+  <text x="500" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">4 vCPU</text>
+  
+  <!-- Server 2 -->
+  <rect x="550" y="190" width="80" height="60" rx="4" fill="#FFFFFF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="590" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#111827">Server 2</text>
+  <text x="590" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">4 vCPU</text>
+  
+  <!-- Server 3 -->
+  <rect x="640" y="190" width="80" height="60" rx="4" fill="#FFFFFF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="680" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#111827">Server 3</text>
+  <text x="680" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">4 vCPU</text>
+  
+  <!-- Arrow Down -->
+  <path d="M590 250 L590 280" stroke="#8B5CF6" stroke-width="3" marker-end="url(#arrowPurple)"/>
+  <text x="590" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#8B5CF6">Add More</text>
+  
+  <!-- Added Servers (dashed) -->
+  <rect x="480" y="290" width="70" height="50" rx="4" fill="#FFFFFF" stroke="#8B5CF6" stroke-width="2" stroke-dasharray="4"/>
+  <text x="515" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#111827">Server 4</text>
+  
+  <rect x="565" y="290" width="70" height="50" rx="4" fill="#FFFFFF" stroke="#8B5CF6" stroke-width="2" stroke-dasharray="4"/>
+  <text x="600" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#111827">Server 5</text>
+  
+  <rect x="650" y="290" width="70" height="50" rx="4" fill="#FFFFFF" stroke="#8B5CF6" stroke-width="2" stroke-dasharray="4"/>
+  <text x="685" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#111827">Server 6</text>
+  
+  <!-- Horizontal Pros/Cons -->
+  <rect x="450" y="335" width="280" height="20" rx="4" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="590" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">✓ No single point of failure | ✗ More complex</text>
+  
+  <!-- Arrow Markers -->
+  <defs>
+    <marker id="arrowPink" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#EC4899"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8B5CF6"/>
+    </marker>
+  </defs>
+</svg>

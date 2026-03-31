@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <title>Cloud Network Hierarchy</title>
+  <desc>VPC, subnet, and instance hierarchy in cloud networking</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="450" fill="#FFFFFF"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">Cloud Network Hierarchy</text>
+  
+  <!-- VPC Container -->
+  <rect x="50" y="60" width="700" height="350" rx="8" fill="#F8F9FC" stroke="#8B5CF6" stroke-width="3"/>
+  <text x="400" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#8B5CF6">VPC (10.0.0.0/16)</text>
+  <text x="400" y="105" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">65,536 IP addresses | Isolated network boundary</text>
+  
+  <!-- Public Subnet -->
+  <rect x="80" y="125" width="300" height="260" rx="6" fill="#FFFFFF" stroke="#EC4899" stroke-width="2"/>
+  <text x="230" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#EC4899">Public Subnet</text>
+  <text x="230" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">10.0.1.0/24 (256 IPs)</text>
+  
+  <!-- Internet Gateway -->
+  <rect x="110" y="190" width="120" height="45" rx="4" fill="#EC4899"/>
+  <text x="170" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#FFFFFF">Internet Gateway</text>
+  <text x="170" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#FFFFFF">Public access</text>
+  
+  <!-- Load Balancer -->
+  <rect x="110" y="255" width="120" height="45" rx="4" fill="#FFFFFF" stroke="#EC4899" stroke-width="2"/>
+  <text x="170" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#111827">Load Balancer</text>
+  <text x="170" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">10.0.1.10</text>
+  
+  <!-- NAT Gateway -->
+  <rect x="110" y="320" width="120" height="45" rx="4" fill="#FFFFFF" stroke="#EC4899" stroke-width="2"/>
+  <text x="170" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#111827">NAT Gateway</text>
+  <text x="170" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">10.0.1.20</text>
+  
+  <!-- Private Subnet 1 -->
+  <rect x="420" y="125" width="300" height="120" rx="6" fill="#FFFFFF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="570" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#8B5CF6">Private Subnet 1</text>
+  <text x="570" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">10.0.2.0/24 (256 IPs)</text>
+  
+  <!-- App Server 1 -->
+  <rect x="450" y="190" width="110" height="45" rx="4" fill="#10B981"/>
+  <text x="505" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#FFFFFF">App Server 1</text>
+  <text x="505" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#FFFFFF">10.0.2.10</text>
+  
+  <!-- App Server 2 -->
+  <rect x="580" y="190" width="110" height="45" rx="4" fill="#10B981"/>
+  <text x="635" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#FFFFFF">App Server 2</text>
+  <text x="635" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#FFFFFF">10.0.2.11</text>
+  
+  <!-- Private Subnet 2 (Database) -->
+  <rect x="420" y="265" width="300" height="120" rx="6" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="570" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#10B981">Private Subnet 2 (DB)</text>
+  <text x="570" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">10.0.3.0/24 (256 IPs)</text>
+  
+  <!-- Primary DB -->
+  <rect x="450" y="330" width="110" height="45" rx="4" fill="#10B981"/>
+  <text x="505" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#FFFFFF">Primary DB</text>
+  <text x="505" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#FFFFFF">10.0.3.10</text>
+  
+  <!-- Read Replica -->
+  <rect x="580" y="330" width="110" height="45" rx="4" fill="#10B981"/>
+  <text x="635" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#FFFFFF">Read Replica</text>
+  <text x="635" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#FFFFFF">10.0.3.11</text>
+  
+  <!-- Flow Arrows -->
+  <path d="M230 320 L230 360 L420 360" stroke="#4B5563" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowGray)"/>
+  <text x="330" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Outbound via NAT</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="425" width="700" height="20" rx="4" fill="#F8F9FC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="400" y="440" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Public subnets: Internet-facing | Private subnets: Internal only | Isolated: Databases</text>
+  
+  <!-- Arrow Markers -->
+  <defs>
+    <marker id="arrowGray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4B5563"/>
+    </marker>
+  </defs>
+</svg>

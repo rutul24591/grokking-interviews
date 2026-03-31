@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <title>Content-Type Compressibility</title>
+  <desc>Which content types benefit from compression</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="400" fill="#FFFFFF"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">Content-Type Compressibility</text>
+  
+  <!-- High Compressibility (Left) -->
+  <rect x="50" y="60" width="320" height="160" rx="8" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+  <text x="210" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#10B981">High Compressibility (70-90%)</text>
+  <text x="210" y="105" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">Compress These!</text>
+  
+  <rect x="80" y="120" width="260" height="30" rx="4" fill="#10B981"/>
+  <text x="210" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#FFFFFF">text/* (HTML, CSS, Plain Text)</text>
+  
+  <rect x="80" y="160" width="260" height="30" rx="4" fill="#10B981"/>
+  <text x="210" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#FFFFFF">application/json (APIs)</text>
+  
+  <rect x="80" y="200" width="260" height="30" rx="4" fill="#10B981"/>
+  <text x="210" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#FFFFFF">application/xml, application/javascript</text>
+  
+  <!-- Low Compressibility (Right) -->
+  <rect x="430" y="60" width="320" height="160" rx="8" fill="#FEE2E2" stroke="#EC4899" stroke-width="2"/>
+  <text x="590" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#EC4899">Low Compressibility (0-5%)</text>
+  <text x="590" y="105" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">Skip Compression (Already Compressed)</text>
+  
+  <rect x="460" y="120" width="260" height="30" rx="4" fill="#EC4899"/>
+  <text x="590" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#FFFFFF">image/* (JPEG, PNG, GIF, WebP)</text>
+  
+  <rect x="460" y="160" width="260" height="30" rx="4" fill="#EC4899"/>
+  <text x="590" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#FFFFFF">video/* (MP4, WebM, AVI)</text>
+  
+  <rect x="460" y="200" width="260" height="30" rx="4" fill="#EC4899"/>
+  <text x="590" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#FFFFFF">application/zip, application/gzip</text>
+  
+  <!-- Medium Compressibility (Bottom) -->
+  <rect x="50" y="240" width="700" height="70" rx="8" fill="#F8F9FC" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="400" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827">Medium Compressibility (30-50%)</text>
+  <text x="400" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">Compress if large, skip if small</text>
+  <text x="400" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#111827">application/pdf | font/* (WOFF, WOFF2) | image/svg+xml</text>
+  
+  <!-- Decision Flow -->
+  <rect x="50" y="325" width="700" height="60" rx="8" fill="#F8F9FC" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="400" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Compression Decision Flow</text>
+  <text x="400" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">1. Check Content-Type → 2. Check size (&gt;1KB?) → 3. Check client Accept-Encoding → 4. Compress if text and large</text>
+</svg>

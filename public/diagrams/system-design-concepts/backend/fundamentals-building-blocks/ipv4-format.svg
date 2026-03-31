@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
+  <title>IPv4 Address Format</title>
+  <desc>IPv4 32-bit address structure in dotted decimal notation</desc>
+  
+  <rect width="800" height="300" fill="#FFFFFF"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">IPv4 Address Format</text>
+  
+  <!-- Full Address -->
+  <rect x="100" y="60" width="600" height="60" rx="8" fill="#FCE7F3" stroke="#EC4899" stroke-width="3"/>
+  <text x="400" y="98" text-anchor="middle" font-family="monospace, sans-serif" font-size="28" font-weight="700" fill="#EC4899">192.168.1.1</text>
+  
+  <!-- Bit Breakdown -->
+  <rect x="100" y="140" width="600" height="80" rx="4" fill="#F8F9FC" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="400" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">32 bits = 4 octets × 8 bits</text>
+  
+  <!-- Octet 1 -->
+  <rect x="120" y="180" width="130" height="35" rx="4" fill="#EC4899"/>
+  <text x="185" y="200" text-anchor="middle" font-family="monospace, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF">192</text>
+  <text x="185" y="212" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#FFFFFF">Bits 0-7</text>
+  
+  <!-- Octet 2 -->
+  <rect x="260" y="180" width="130" height="35" rx="4" fill="#EC4899"/>
+  <text x="325" y="200" text-anchor="middle" font-family="monospace, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF">168</text>
+  <text x="325" y="212" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#FFFFFF">Bits 8-15</text>
+  
+  <!-- Octet 3 -->
+  <rect x="400" y="180" width="130" height="35" rx="4" fill="#EC4899"/>
+  <text x="465" y="200" text-anchor="middle" font-family="monospace, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF">1</text>
+  <text x="465" y="212" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#FFFFFF">Bits 16-23</text>
+  
+  <!-- Octet 4 -->
+  <rect x="540" y="180" width="130" height="35" rx="4" fill="#EC4899"/>
+  <text x="605" y="200" text-anchor="middle" font-family="monospace, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF">1</text>
+  <text x="605" y="212" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#FFFFFF">Bits 24-31</text>
+  
+  <!-- Stats Box -->
+  <rect x="100" y="235" width="600" height="50" rx="4" fill="#F8F9FC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="400" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#111827">Total Addresses: ~4.3 billion (2^32)</text>
+  <text x="400" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">Private Ranges: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16</text>
+</svg>

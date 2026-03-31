@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <title>Multi-Tier Architecture</title>
+  <desc>Three-tier architecture showing presentation, application, and data layers</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="450" fill="#FFFFFF"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">Multi-Tier Architecture</text>
+  
+  <!-- Tier 1: Presentation Layer -->
+  <rect x="50" y="60" width="700" height="90" rx="8" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="400" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827">Presentation Tier (Layer 1)</text>
+  
+  <!-- Client Icons -->
+  <g transform="translate(120, 100)">
+    <rect width="90" height="40" rx="4" fill="#FFFFFF" stroke="#EC4899" stroke-width="2"/>
+    <text x="45" y="25" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#111827">Web</text>
+  </g>
+  
+  <g transform="translate(240, 100)">
+    <rect width="90" height="40" rx="4" fill="#FFFFFF" stroke="#EC4899" stroke-width="2"/>
+    <text x="45" y="25" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#111827">Mobile</text>
+  </g>
+  
+  <g transform="translate(360, 100)">
+    <rect width="90" height="40" rx="4" fill="#FFFFFF" stroke="#EC4899" stroke-width="2"/>
+    <text x="45" y="25" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#111827">Desktop</text>
+  </g>
+  
+  <g transform="translate(480, 100)">
+    <rect width="90" height="40" rx="4" fill="#FFFFFF" stroke="#EC4899" stroke-width="2"/>
+    <text x="45" y="25" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#111827">3rd Party</text>
+  </g>
+  
+  <!-- Tier 2: Application Layer -->
+  <rect x="50" y="170" width="700" height="110" rx="8" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="400" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827">Application Tier (Layer 2)</text>
+  
+  <!-- Load Balancer -->
+  <rect x="100" y="210" width="120" height="50" rx="4" fill="#FFFFFF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="160" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827">Load Balancer</text>
+  <text x="160" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Distributes traffic</text>
+  
+  <!-- App Server 1 -->
+  <rect x="250" y="210" width="100" height="50" rx="4" fill="#FFFFFF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="300" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#111827">Server 1</text>
+  <text x="300" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Business Logic</text>
+  
+  <!-- App Server 2 -->
+  <rect x="370" y="210" width="100" height="50" rx="4" fill="#FFFFFF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="420" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#111827">Server 2</text>
+  <text x="420" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Business Logic</text>
+  
+  <!-- App Server 3 -->
+  <rect x="490" y="210" width="100" height="50" rx="4" fill="#FFFFFF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="540" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#111827">Server 3</text>
+  <text x="540" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Business Logic</text>
+  
+  <!-- Tier 3: Data Layer -->
+  <rect x="50" y="300" width="700" height="110" rx="8" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+  <text x="400" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827">Data Tier (Layer 3)</text>
+  
+  <!-- Primary DB -->
+  <rect x="180" y="340" width="130" height="50" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="245" y="365" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827">Primary DB</text>
+  <text x="245" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Read/Write</text>
+  
+  <!-- Read Replica 1 -->
+  <rect x="335" y="340" width="130" height="50" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="400" y="365" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#111827">Read Replica 1</text>
+  <text x="400" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Read-only</text>
+  
+  <!-- Read Replica 2 -->
+  <rect x="490" y="340" width="130" height="50" rx="4" fill="#FFFFFF" stroke="#10B981" stroke-width="2"/>
+  <text x="555" y="365" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#111827">Read Replica 2</text>
+  <text x="555" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Read-only</text>
+  
+  <!-- Flow Arrows -->
+  <path d="M400 150 L400 170" stroke="#8B5CF6" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  <path d="M400 280 L400 300" stroke="#10B981" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  
+  <!-- Benefits Box -->
+  <rect x="50" y="425" width="700" height="20" rx="4" fill="#F8F9FC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="400" y="440" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">Benefits: Separation of concerns | Independent scaling | Improved security | Easier maintenance</text>
+  
+  <!-- Arrow Markers -->
+  <defs>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8B5CF6"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10B981"/>
+    </marker>
+  </defs>
+</svg>

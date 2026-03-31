@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
+  <title>UDP Datagram Flow</title>
+  <desc>UDP connectionless datagram transmission</desc>
+  
+  <rect width="800" height="300" fill="#FFFFFF"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">UDP Datagram Flow</text>
+  
+  <!-- Sender -->
+  <rect x="100" y="80" width="120" height="140" rx="8" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="160" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Sender</text>
+  
+  <!-- Receiver -->
+  <rect x="580" y="80" width="120" height="140" rx="8" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+  <text x="640" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Receiver</text>
+  
+  <!-- Datagram 1 -->
+  <path d="M220 110 L580 110" stroke="#8B5CF6" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  <rect x="350" y="95" width="100" height="30" rx="4" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="400" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#111827">Datagram 1</text>
+  
+  <!-- Datagram 2 -->
+  <path d="M220 150 L580 150" stroke="#8B5CF6" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  <rect x="350" y="135" width="100" height="30" rx="4" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="400" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#111827">Datagram 2</text>
+  
+  <!-- Datagram 3 (lost) -->
+  <path d="M220 190 L400 190" stroke="#F59E0B" stroke-width="2" stroke-dasharray="4"/>
+  <rect x="350" y="175" width="100" height="30" rx="4" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2" stroke-dasharray="4"/>
+  <text x="400" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#111827">Datagram 3</text>
+  <text x="450" y="185" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#F59E0B">LOST</text>
+  
+  <!-- Characteristics Box -->
+  <rect x="50" y="235" width="700" height="55" rx="4" fill="#F8F9FC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="400" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#111827">UDP Characteristics</text>
+  <text x="150" y="275" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">✓ No connection setup</text>
+  <text x="300" y="275" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">✓ No guaranteed delivery</text>
+  <text x="480" y="275" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">✓ No ordering</text>
+  <text x="620" y="275" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">✓ Low latency</text>
+  
+  <defs>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8B5CF6"/>
+    </marker>
+  </defs>
+</svg>

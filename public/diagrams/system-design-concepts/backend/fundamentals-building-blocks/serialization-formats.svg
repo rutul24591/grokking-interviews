@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <title>Serialization Formats Comparison</title>
+  <desc>Text-based vs binary serialization formats</desc>
+  
+  <rect width="800" height="400" fill="#FFFFFF"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">Serialization Formats</text>
+  
+  <!-- Text-Based Formats -->
+  <rect x="50" y="60" width="320" height="320" rx="8" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="210" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827">Text-Based Formats</text>
+  
+  <!-- JSON -->
+  <rect x="80" y="110" width="260" height="55" rx="4" fill="#FFFFFF" stroke="#EC4899" stroke-width="2"/>
+  <text x="210" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">JSON</text>
+  <text x="210" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Human-readable, universal support</text>
+  
+  <!-- XML -->
+  <rect x="80" y="180" width="260" height="55" rx="4" fill="#FFFFFF" stroke="#EC4899" stroke-width="2"/>
+  <text x="210" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">XML</text>
+  <text x="210" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Schema validation, verbose</text>
+  
+  <!-- YAML -->
+  <rect x="80" y="250" width="260" height="55" rx="4" fill="#FFFFFF" stroke="#EC4899" stroke-width="2"/>
+  <text x="210" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">YAML</text>
+  <text x="210" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Configuration files, concise</text>
+  
+  <!-- Text Pros/Cons -->
+  <rect x="80" y="320" width="260" height="50" rx="4" fill="#FFFFFF" stroke="#EC4899" stroke-width="1"/>
+  <text x="210" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#10B981">✓ Human-readable, debuggable</text>
+  <text x="210" y="358" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#EC4899">✗ Verbose, slower parsing</text>
+  
+  <!-- Binary Formats -->
+  <rect x="430" y="60" width="320" height="320" rx="8" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="590" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#111827">Binary Formats</text>
+  
+  <!-- Protobuf -->
+  <rect x="460" y="110" width="260" height="55" rx="4" fill="#FFFFFF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="590" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Protocol Buffers</text>
+  <text x="590" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Schema-based, compact, fast</text>
+  
+  <!-- Avro -->
+  <rect x="460" y="180" width="260" height="55" rx="4" fill="#FFFFFF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="590" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Apache Avro</text>
+  <text x="590" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Schema evolution, Kafka</text>
+  
+  <!-- MessagePack -->
+  <rect x="460" y="250" width="260" height="55" rx="4" fill="#FFFFFF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="590" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">MessagePack</text>
+  <text x="590" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Binary JSON, drop-in replacement</text>
+  
+  <!-- Binary Pros/Cons -->
+  <rect x="460" y="320" width="260" height="50" rx="4" fill="#FFFFFF" stroke="#8B5CF6" stroke-width="1"/>
+  <text x="590" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#10B981">✓ Compact, fast parsing</text>
+  <text x="590" y="358" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#EC4899">✗ Not human-readable</text>
+</svg>

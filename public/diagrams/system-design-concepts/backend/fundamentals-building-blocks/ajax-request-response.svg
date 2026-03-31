@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <title>AJAX Request Response Flow</title>
+  <desc>Asynchronous JavaScript request-response cycle</desc>
+  
+  <rect width="800" height="400" fill="#FFFFFF"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">AJAX Request-Response Flow</text>
+  
+  <!-- Browser -->
+  <rect x="50" y="70" width="150" height="80" rx="8" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="125" y="105" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Browser</text>
+  <text x="125" y="125" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">JavaScript</text>
+  <text x="125" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">XMLHttpRequest</text>
+  
+  <!-- Fetch API -->
+  <rect x="250" y="85" width="100" height="50" rx="4" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="300" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#111827">Fetch API</text>
+  
+  <!-- Network -->
+  <rect x="400" y="70" width="120" height="80" rx="8" fill="#F8F9FC" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="460" y="105" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Network</text>
+  <text x="460" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">HTTP/HTTPS</text>
+  
+  <!-- Server -->
+  <rect x="570" y="70" width="180" height="80" rx="8" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+  <text x="660" y="105" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Server</text>
+  <text x="660" y="125" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">API Endpoint</text>
+  <text x="660" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">JSON Response</text>
+  
+  <!-- Request Arrow -->
+  <path d="M200 110 L250 110" stroke="#EC4899" stroke-width="2" marker-end="url(#arrowPink)"/>
+  <text x="225" y="100" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#EC4899">fetch()</text>
+  
+  <path d="M350 110 L400 110" stroke="#EC4899" stroke-width="2" marker-end="url(#arrowPink)"/>
+  <text x="375" y="100" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#EC4899">HTTP Request</text>
+  
+  <path d="M520 110 L570 110" stroke="#EC4899" stroke-width="2" marker-end="url(#arrowPink)"/>
+  
+  <!-- Response Arrow -->
+  <path d="M570 130 L520 130" stroke="#10B981" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <text x="545" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#10B981">JSON</text>
+  
+  <path d="M400 130 L350 130" stroke="#10B981" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <text x="375" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#10B981">Response</text>
+  
+  <path d="M250 130 L200 130" stroke="#10B981" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <text x="225" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" font-weight="600" fill="#10B981">Promise</text>
+  
+  <!-- Callback Box -->
+  <rect x="50" y="200" width="700" height="150" rx="8" fill="#F8F9FC" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="400" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">JavaScript Callback Flow</text>
+  
+  <rect x="80" y="250" width="150" height="40" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="155" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#111827">1. Request Sent</text>
+  
+  <path d="M230 270 L270 270" stroke="#4B5563" stroke-width="2" marker-end="url(#arrowGray)"/>
+  
+  <rect x="270" y="250" width="150" height="40" rx="4" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="345" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#111827">2. Waiting...</text>
+  
+  <path d="M420 270 L460 270" stroke="#4B5563" stroke-width="2" marker-end="url(#arrowGray)"/>
+  
+  <rect x="460" y="250" width="150" height="40" rx="4" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+  <text x="535" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#111827">3. Response Received</text>
+  
+  <path d="M610 270 L650 270" stroke="#4B5563" stroke-width="2" marker-end="url(#arrowGray)"/>
+  
+  <rect x="650" y="250" width="80" height="40" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="690" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#111827">4. Update UI</text>
+  
+  <!-- Async Note -->
+  <rect x="80" y="310" width="640" height="30" rx="4" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1"/>
+  <text x="400" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">Key: JavaScript continues executing while waiting for response (non-blocking)</text>
+  
+  <defs>
+    <marker id="arrowPink" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#EC4899"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10B981"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4B5563"/>
+    </marker>
+  </defs>
+</svg>

@@ -8,19 +8,20 @@ export const metadata: ArticleMetadata = {
   id: "article-backend-client-server-extensive",
   title: "Client-Server Architecture",
   description:
-    "A practical guide to client-server architecture: boundaries, state, scaling, failure modes, and operational trade-offs.",
+    "Comprehensive guide to client-server architecture: boundaries, state management, scaling patterns, failure modes, security, and production trade-offs for distributed systems.",
   category: "backend",
   subcategory: "fundamentals-building-blocks",
   slug: "client-server-architecture",
-  wordCount: 2000,
-  readingTime: 10,
-  lastUpdated: "2026-03-14",
-  tags: ["backend", "architecture", "client-server", "networking", "scalability"],
+  wordCount: 6000,
+  readingTime: 24,
+  lastUpdated: "2026-03-30",
+  tags: ["backend", "architecture", "client-server", "networking", "scalability", "distributed-systems"],
   relatedTopics: [
     "http-https-protocol",
     "request-response-lifecycle",
     "stateless-vs-stateful-services",
     "tcp-vs-udp",
+    "load-balancers",
   ],
 };
 
@@ -93,16 +94,16 @@ export default function ClientServerArchitectureConciseArticle() {
           </li>
         </ul>
         <ArticleImage
-          src="/diagrams/system-design-concepts/backend/fundamentals-building-blocks/three-tier-application.svg"
-          alt="Three tier architecture diagram showing presentation, application, and data tiers"
-          caption="Three-tier architecture is common: client, API, and data tier."
+          src="/diagrams/system-design-concepts/backend/fundamentals-building-blocks/multi-tier-architecture.svg"
+          alt="Multi-Tier Architecture Diagram"
+          caption="Three-tier architecture with presentation tier (clients), application tier (load balancer + app servers), and data tier (primary database + read replicas)"
         />
       </section>
 
       <section>
         <h2>Request Lifecycle (Where Latency and Failure Hide)</h2>
         <p>
-          A “simple” client request is a pipeline with multiple stages. Understanding the pipeline
+          A "simple" client request is a pipeline with multiple stages. Understanding the pipeline
           helps you debug tail latency and reliability issues.
         </p>
         <ol className="space-y-2">
@@ -113,13 +114,10 @@ export default function ClientServerArchitectureConciseArticle() {
           <li>Server returns a response; client updates UI or triggers the next step.</li>
         </ol>
         <ArticleImage
-          src="/diagrams/system-design-concepts/backend/fundamentals-building-blocks/ajax-request-response.svg"
-          alt="Request response flow between client, server, and database"
-          caption="A request path spans client, server, and downstream systems."
+          src="/diagrams/system-design-concepts/backend/fundamentals-building-blocks/client-server-request-flow.svg"
+          alt="Client-Server Request Flow Diagram"
+          caption="Complete request flow from client through server to database and back, showing the five lifecycle steps"
         />
-        <div className="mt-4 rounded-lg border border-theme bg-panel-soft p-4 text-sm text-muted">
-          Example code moved to the Example tab.
-        </div>
       </section>
 
       <section>
@@ -141,8 +139,11 @@ export default function ClientServerArchitectureConciseArticle() {
       <section>
         <h2>Scaling Patterns</h2>
         <p>
-          Scaling is not only “add more servers.” It is about protecting downstreams, reducing fan-out
+          Scaling is not only "add more servers." It is about protecting downstreams, reducing fan-out
           cost, and keeping p99 latency stable under bursty load.
+        </p>
+        <p>
+          <strong>Vertical scaling (scale up)</strong> improves a single node by adding more CPU, memory, or storage. This is simple but has hard limits (largest instance size) and creates a single point of failure. <strong>Horizontal scaling (scale out)</strong> distributes traffic across multiple nodes. This requires stateless services and load balancing but provides near-unlimited scalability and improved resilience.
         </p>
         <ul className="space-y-2">
           <li>
@@ -163,9 +164,9 @@ export default function ClientServerArchitectureConciseArticle() {
           </li>
         </ul>
         <ArticleImage
-          src="/diagrams/system-design-concepts/backend/fundamentals-building-blocks/http-pipelining.svg"
-          alt="HTTP pipelining diagram showing multiple requests in flight"
-          caption="Reducing round trips and fan-out helps tail latency."
+          src="/diagrams/system-design-concepts/backend/fundamentals-building-blocks/scaling-patterns.svg"
+          alt="Scaling Patterns Diagram"
+          caption="Vertical scaling (scale up) adds resources to a single node; horizontal scaling (scale out) adds more nodes behind a load balancer"
         />
       </section>
 
@@ -249,6 +250,183 @@ export default function ClientServerArchitectureConciseArticle() {
       </section>
 
       <section>
+        <h2>Production Case Studies</h2>
+        <p>
+          Real-world client-server implementations demonstrate how theoretical patterns adapt to production constraints.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Netflix: Global Client-Server Architecture</h3>
+          <p className="mb-3">
+            Netflix serves 200+ million subscribers globally with a client-server architecture optimized
+            for regional latency and resilience. Their approach includes regional API gateways,
+            client-specific BFFs for TV/mobile/web, and graceful degradation when services fail.
+          </p>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Uber: Real-Time Client-Server Communication</h3>
+          <p className="mb-3">
+            Uber's ride-matching requires sub-second communication between rider apps, driver apps, and
+            dispatch servers. They use WebSocket connections for real-time updates, geographic sharding
+            for latency reduction, and conflict resolution for concurrent ride requests.
+          </p>
+        </div>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Stripe: API-First Client-Server Design</h3>
+          <p className="mb-3">
+            Stripe's payment API demonstrates client-server best practices: idempotency keys for safe
+            retries, date-based API versioning for gradual migration, and structured error responses
+            with machine-readable codes for automated handling.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Performance Benchmarks</h2>
+        <p>
+          Understanding performance characteristics helps set realistic SLOs and identify bottlenecks.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Typical Latency Budgets</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Component</th>
+                <th className="p-2 text-left">Target (p95)</th>
+                <th className="p-2 text-left">Acceptable (p99)</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">DNS Resolution</td>
+                <td className="p-2">&lt;50ms</td>
+                <td className="p-2">&lt;100ms</td>
+              </tr>
+              <tr>
+                <td className="p-2">TCP Handshake</td>
+                <td className="p-2">&lt;30ms</td>
+                <td className="p-2">&lt;60ms</td>
+              </tr>
+              <tr>
+                <td className="p-2">TLS Handshake</td>
+                <td className="p-2">&lt;100ms</td>
+                <td className="p-2">&lt;200ms</td>
+              </tr>
+              <tr>
+                <td className="p-2">Server Processing</td>
+                <td className="p-2">&lt;200ms</td>
+                <td className="p-2">&lt;500ms</td>
+              </tr>
+              <tr>
+                <td className="p-2">Total End-to-End</td>
+                <td className="p-2">&lt;500ms</td>
+                <td className="p-2">&lt;1000ms</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>Cost Analysis</h2>
+        <p>
+          Client-server architecture decisions directly impact infrastructure costs and operational overhead.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Infrastructure Cost Components</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>Compute:</strong> Server instances typically represent 40-60% of infrastructure costs.
+              Stateless designs enable better utilization through autoscaling.
+            </li>
+            <li>
+              <strong>Load Balancers:</strong> Application Load Balancers cost $16-22/month plus usage fees.
+              At scale, this becomes significant.
+            </li>
+            <li>
+              <strong>Data Transfer:</strong> Cross-AZ and cross-region traffic incurs charges. Client-server
+              chattiness directly impacts this cost.
+            </li>
+            <li>
+              <strong>Caching Layer:</strong> Redis/Memcached instances cost $15-200+/month. Proper caching
+              can reduce compute costs by 50-80%.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Decision Framework: Architecture Selection</h2>
+        <p>
+          Choose the right client-server pattern based on your specific requirements and constraints.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">When to Use Each Pattern</h3>
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-theme">
+                <th className="p-2 text-left">Pattern</th>
+                <th className="p-2 text-left">Best For</th>
+                <th className="p-2 text-left">Avoid When</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-theme">
+              <tr>
+                <td className="p-2">Two-Tier</td>
+                <td className="p-2">Small apps, internal tools, prototypes</td>
+                <td className="p-2">High scale, security-critical, multi-client</td>
+              </tr>
+              <tr>
+                <td className="p-2">Three-Tier</td>
+                <td className="p-2">Standard web apps, clear separation needs</td>
+                <td className="p-2">Microservices already in place</td>
+              </tr>
+              <tr>
+                <td className="p-2">API Gateway + Services</td>
+                <td className="p-2">Microservices, cross-cutting concerns</td>
+                <td className="p-2">Simple apps, limited ops resources</td>
+              </tr>
+              <tr>
+                <td className="p-2">BFF</td>
+                <td className="p-2">Multiple client types, aggregation needs</td>
+                <td className="p-2">Single client type, simple data needs</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>Security Deep Dive</h2>
+        <p>
+          Security in client-server systems requires defense in depth across all layers.
+        </p>
+
+        <div className="my-6 rounded-lg bg-panel-soft p-6">
+          <h3 className="mb-4 text-lg font-semibold">Authentication Strategies</h3>
+          <ul className="space-y-2">
+            <li>
+              <strong>JWT Tokens:</strong> Stateless, scalable, but require careful key management and
+              short expiration times.
+            </li>
+            <li>
+              <strong>Session-Based:</strong> Server-controlled, easier to revoke, but requires session
+              storage and sticky sessions or shared session stores.
+            </li>
+            <li>
+              <strong>OAuth 2.0 / OIDC:</strong> Standard for third-party integrations, supports
+              delegated authorization, but adds complexity.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
         <h2>Common Pitfalls</h2>
         <ul className="space-y-2">
           <li>Embedding business logic in the client and duplicating it across platforms.</li>
@@ -256,6 +434,7 @@ export default function ClientServerArchitectureConciseArticle() {
           <li>Building chatty clients that perform many round trips per screen.</li>
           <li>Ignoring tail latency and designing only for average throughput.</li>
           <li>Assuming the internal network is trusted and skipping authorization checks.</li>
+          <li>Over-engineering for scale: building microservices for a 10-person team with 1,000 users.</li>
         </ul>
       </section>
 
@@ -267,6 +446,9 @@ export default function ClientServerArchitectureConciseArticle() {
           <li>Design for partial failure: fallbacks, caching, and safe degraded modes.</li>
           <li>Instrument request IDs, traces, and SLO dashboards.</li>
           <li>Keep state placement explicit (stateless when possible, shared stores when needed).</li>
+          <li>Document latency budgets for each layer and monitor compliance.</li>
+          <li>Implement circuit breakers for all external dependencies.</li>
+          <li>Test failure scenarios: dependency outages, network partitions, and cascading failures.</li>
         </ul>
       </section>
 
@@ -292,20 +474,102 @@ export default function ClientServerArchitectureConciseArticle() {
             <p className="font-semibold">Q: How do you prevent retry storms?</p>
             <p className="mt-2 text-sm">
               A: Backoff with jitter, retry budgets, circuit breakers, and aligning timeouts so one
-              layer doesn’t trigger retries while another layer is still working.
+              layer doesn't trigger retries while another layer is still working.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: What is the difference between two-tier and three-tier architecture?</p>
+            <p className="mt-2 text-sm">
+              A: Two-tier has clients talking directly to a server that owns both logic and data. Three-tier
+              separates presentation (client), application logic (API tier), and data storage (database tier).
+              Three-tier improves scalability, security, and maintainability by isolating concerns.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: When would you use a BFF (Backend-for-Frontend) pattern?</p>
+            <p className="mt-2 text-sm">
+              A: Use BFF when you have multiple client types (web, mobile, TV) with different data needs,
+              when clients need aggregated data from multiple services, or when you want to reduce chatty
+              client-server communication. BFF provides tailored APIs per client type, reducing over-fetching
+              and round trips.
+            </p>
+          </div>
+          <div className="rounded-lg border border-theme bg-panel-soft p-4">
+            <p className="font-semibold">Q: How do you handle backward compatibility in client-server systems?</p>
+            <p className="mt-2 text-sm">
+              A: Use additive changes only (never remove fields), version your APIs, support multiple versions
+              during transition periods, use feature flags for gradual rollouts, and maintain a deprecation
+              policy with clear timelines. For mobile clients, expect longer version lag and support older
+              versions accordingly.
             </p>
           </div>
         </div>
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <p>
-          Client-server architecture is about explicit boundaries: contracts, state placement, failure
-          handling, and operational ownership. Strong designs assume partial failure, protect
-          downstream systems, and make scaling and deployment safe through statelessness, observability,
-          and compatibility discipline.
-        </p>
+        <h2>References &amp; Further Reading</h2>
+        <ul className="space-y-2">
+          <li>
+            <a
+              href="https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Roy Fielding - Architectural Styles and the Design of Network-based Software Architectures
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://martinfowler.com/articles/bff.html"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Martin Fowler - Backends For Frontends (BFF) Pattern
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://aws.amazon.com/architecture/reference-architecture-diagrams/?nc1=h_ls"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              AWS Architecture Center - Reference Architecture Diagrams
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://cloud.google.com/architecture?hl=en"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Google Cloud Architecture Center
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.microsoft.com/en-us/research/publication/the-client-server-architecture/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Microsoft Research - The Client-Server Architecture
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://docs.microsoft.com/en-us/azure/architecture/patterns/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Microsoft Azure - Cloud Design Patterns
+            </a>
+          </li>
+        </ul>
       </section>
     </ArticleLayout>
   );

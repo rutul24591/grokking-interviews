@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <title>Protocol Mapping to OSI Layers</title>
+  <desc>Common protocols mapped to their respective OSI and TCP/IP layers</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="450" fill="#FFFFFF"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">Protocol Mapping to OSI Layers</text>
+  
+  <!-- Layer 7: Application -->
+  <rect x="100" y="60" width="600" height="45" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="130" y="87" text-anchor="start" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">L7: Application</text>
+  <text x="280" y="87" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#4B5563">HTTP | HTTPS | DNS | SMTP | FTP | SSH</text>
+  
+  <!-- Layer 6: Presentation -->
+  <rect x="100" y="110" width="600" height="45" rx="4" fill="#F8F9FC" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="130" y="137" text-anchor="start" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">L6: Presentation</text>
+  <text x="280" y="137" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#4B5563">TLS/SSL | JPEG | GIF | ASCII | Encryption</text>
+  
+  <!-- Layer 5: Session -->
+  <rect x="100" y="160" width="600" height="45" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="130" y="187" text-anchor="start" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">L5: Session</text>
+  <text x="280" y="187" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#4B5563">RPC | NetBIOS | SQL | NFS</text>
+  
+  <!-- Layer 4: Transport -->
+  <rect x="100" y="210" width="600" height="45" rx="4" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="130" y="237" text-anchor="start" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">L4: Transport</text>
+  <text x="280" y="237" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#4B5563">TCP (port 80, 443) | UDP (port 53) | SCTP</text>
+  
+  <!-- Layer 3: Network -->
+  <rect x="100" y="260" width="600" height="45" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="130" y="287" text-anchor="start" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">L3: Network</text>
+  <text x="280" y="287" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#4B5563">IP (IPv4/IPv6) | ICMP | IPSec | Routers</text>
+  
+  <!-- Layer 2: Data Link -->
+  <rect x="100" y="310" width="600" height="45" rx="4" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="130" y="337" text-anchor="start" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">L2: Data Link</text>
+  <text x="280" y="337" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#4B5563">Ethernet | WiFi | PPP | Switches | MAC</text>
+  
+  <!-- Layer 1: Physical -->
+  <rect x="100" y="360" width="600" height="45" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="130" y="387" text-anchor="start" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">L1: Physical</text>
+  <text x="280" y="387" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#4B5563">Cables | Hubs | Repeaters | Bits on Wire</text>
+  
+  <!-- TCP/IP Mapping Box -->
+  <rect x="100" y="415" width="600" height="25" rx="4" fill="#F8F9FC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="400" y="433" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">TCP/IP Model: Application (L7-L5) | Transport (L4) | Internet (L3) | Network Access (L2-L1)</text>
+</svg>

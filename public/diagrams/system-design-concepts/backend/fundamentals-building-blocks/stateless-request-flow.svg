@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <title>Stateless Request Flow</title>
+  <desc>How stateless services handle requests with external session storage</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="400" fill="#FFFFFF"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">Stateless Service Architecture</text>
+  
+  <!-- Client -->
+  <rect x="50" y="80" width="120" height="55" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="110" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Client</text>
+  <text x="110" y="128" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Request + Token</text>
+  
+  <!-- Load Balancer -->
+  <rect x="250" y="80" width="120" height="55" rx="4" fill="#8B5CF6"/>
+  <text x="310" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">Load Balancer</text>
+  <text x="310" y="128" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#FFFFFF">Round-Robin</text>
+  
+  <!-- App Server 1 -->
+  <rect x="450" y="60" width="120" height="55" rx="4" fill="#10B981"/>
+  <text x="510" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#FFFFFF">App Server 1</text>
+  <text x="510" y="105" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#FFFFFF">No Session State</text>
+  
+  <!-- App Server 2 -->
+  <rect x="450" y="130" width="120" height="55" rx="4" fill="#10B981"/>
+  <text x="510" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#FFFFFF">App Server 2</text>
+  <text x="510" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#FFFFFF">No Session State</text>
+  
+  <!-- App Server 3 -->
+  <rect x="450" y="200" width="120" height="55" rx="4" fill="#10B981"/>
+  <text x="510" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#FFFFFF">App Server 3</text>
+  <text x="510" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#FFFFFF">No Session State</text>
+  
+  <!-- Session Store -->
+  <rect x="650" y="130" width="120" height="80" rx="4" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="710" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#111827">Session Store</text>
+  <text x="710" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Redis / Database</text>
+  <text x="710" y="197" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">External State</text>
+  
+  <!-- Request Flow Arrows -->
+  <path d="M170 107 L250 107" stroke="#EC4899" stroke-width="2" marker-end="url(#arrowPink)"/>
+  <text x="210" y="100" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Request</text>
+  
+  <path d="M370 107 L450 87" stroke="#8B5CF6" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  <path d="M370 107 L450 157" stroke="#8B5CF6" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  <path d="M370 107 L450 227" stroke="#8B5CF6" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  
+  <!-- Session Lookup Arrows (dashed) -->
+  <path d="M570 87 L650 145" stroke="#4B5563" stroke-width="2" stroke-dasharray="4" marker-end="url(#arrowGray)"/>
+  <path d="M570 157 L650 165" stroke="#4B5563" stroke-width="2" stroke-dasharray="4" marker-end="url(#arrowGray)"/>
+  <path d="M570 227 L650 185" stroke="#4B5563" stroke-width="2" stroke-dasharray="4" marker-end="url(#arrowGray)"/>
+  <text x="610" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#4B5563">Session Lookup</text>
+  
+  <!-- Key Benefits Box -->
+  <rect x="50" y="280" width="700" height="90" rx="8" fill="#F8F9FC" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="400" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Stateless Architecture Benefits</text>
+  
+  <text x="100" y="335" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#111827">✓ Any server can handle any request</text>
+  <text x="100" y="355" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#111827">✓ Easy horizontal scaling</text>
+  <text x="400" y="335" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#111827">✓ Simple load balancing (round-robin)</text>
+  <text x="400" y="355" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#111827">✓ Server failure = no session loss</text>
+  <text x="100" y="375" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#111827">✓ Zero-downtime deployments</text>
+  <text x="400" y="375" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">Requires: External session store</text>
+  
+  <!-- Arrow Markers -->
+  <defs>
+    <marker id="arrowPink" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#EC4899"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8B5CF6"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4B5563"/>
+    </marker>
+  </defs>
+</svg>

@@ -170,13 +170,8 @@ export default function ApiDesignBestPracticesArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Offset Pagination (Simple but Flawed)</h3>
         <p>
-          Offset pagination uses <code>offset</code> (or <code>page</code>) and <code>limit</code> parameters:
+          Offset pagination uses offset (or page) and limit parameters to skip a certain number of records and return a fixed-size page. For example, the first request fetches records 0-19, the second fetches 20-39, and so on.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          GET /users?offset=0&amp;limit=20
-          GET /users?offset=20&amp;limit=20
-          GET /users?offset=40&amp;limit=20
-        </pre>
         <p>
           <strong>Advantages:</strong> Simple to implement, easy to understand, supports random access (jump to page 50).
         </p>
@@ -184,26 +179,19 @@ export default function ApiDesignBestPracticesArticle() {
           <strong>Disadvantages:</strong>
         </p>
         <ul>
-          <li><strong>Performance degrades with depth:</strong> <code>OFFSET 10000 LIMIT 20</code> scans 10,020 rows, discards 10,000. Slow on large datasets.</li>
+          <li><strong>Performance degrades with depth:</strong> Large offset values require scanning many rows only to discard them. Slow on large datasets.</li>
           <li><strong>Inconsistent results under concurrent writes:</strong> If a row is inserted/deleted between requests, pages shift—items may be duplicated or skipped.</li>
         </ul>
         <p>
-          <strong>Use when:</strong> Dataset is small (&lt;10,000 rows), data is static, or random page access is required.
+          <strong>Use when:</strong> Dataset is small (under 10,000 rows), data is static, or random page access is required.
         </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Cursor Pagination (Recommended for Scale)</h3>
         <p>
-          Cursor pagination uses an opaque cursor pointing to a position in the result set:
+          Cursor pagination uses an opaque cursor pointing to a position in the result set. The client receives a cursor with each response and uses it to fetch the next page.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          {`GET /users?limit=20
-→ { "data": [...], "next_cursor": "eyJpZCI6MjB9", "has_more": true }
-
-GET /users?limit=20&cursor=eyJpZCI6MjB9
-→ { "data": [...], "next_cursor": "eyJpZCI6NDB9", "has_more": true }`}
-        </pre>
         <p>
-          <strong>How it works:</strong> The cursor encodes the position (e.g., last seen ID or timestamp). The server queries <code>WHERE id &gt; last_seen_id ORDER BY id ASC LIMIT 21</code>. If 21 rows are returned, <code>has_more = true</code> and the 21st row&apos;s ID becomes the next cursor.
+          <strong>How it works:</strong> The cursor encodes the position (e.g., last seen ID or timestamp). The server queries for records after the cursor position, ordered by a stable key. If more records exist beyond the limit, a new cursor is returned.
         </p>
         <p>
           <strong>Advantages:</strong>
@@ -226,12 +214,8 @@ GET /users?limit=20&cursor=eyJpZCI6MjB9
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Keyset Pagination (Variant of Cursor)</h3>
         <p>
-          Keyset pagination uses explicit keys instead of opaque cursors:
+          Keyset pagination uses explicit keys instead of opaque cursors. The client passes the last seen ID to fetch the next page.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          GET /users?limit=20&amp;after_id=123
-          GET /users?limit=20&amp;after_id=456
-        </pre>
         <p>
           <strong>Advantages:</strong> Simpler than cursor encoding, transparent to clients.
         </p>
@@ -261,51 +245,37 @@ GET /users?limit=20&cursor=eyJpZCI6MjB9
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Filtering</h3>
         <p>
-          Support filtering with query parameters:
+          Support filtering with query parameters. Clients can filter by status, role, date ranges, price ranges, and other relevant fields.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          GET /users?status=active&amp;role=admin
-          GET /orders?created_at[gte]=2024-01-01&amp;created_at[lte]=2024-12-31
-          GET /products?price[min]=10&amp;price[max]=100
-        </pre>
         <p>
           <strong>Best practices:</strong>
         </p>
         <ul>
-          <li><strong>Use consistent operators:</strong> <code>gte</code>, <code>lte</code>, <code>min</code>, <code>max</code>, <code>contains</code>.</li>
+          <li><strong>Use consistent operators:</strong> Use gte, lte, min, max, contains for range and pattern matching.</li>
           <li><strong>Support multiple filters:</strong> Combine with AND logic by default.</li>
           <li><strong>Document filterable fields:</strong> Not all fields need filtering. Document which fields support filtering.</li>
-          <li><strong>Validate filter values:</strong> Return 400 for invalid filter values (e.g., <code>status=invalid</code>).</li>
+          <li><strong>Validate filter values:</strong> Return 400 for invalid filter values.</li>
           <li><strong>Index filtered fields:</strong> Ensure filtered queries are performant.</li>
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Sorting</h3>
         <p>
-          Support sorting with <code>sort</code> parameter:
+          Support sorting with a sort parameter. Clients can sort by any indexed field, with descending order indicated by a prefix.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          GET /users?sort=created_at
-          GET /users?sort=-created_at  (descending)
-          GET /users?sort=last_name,first_name  (multi-field)
-        </pre>
         <p>
           <strong>Best practices:</strong>
         </p>
         <ul>
-          <li><strong>Default sort:</strong> Document default sort order (e.g., <code>created_at DESC</code>).</li>
-          <li><strong>Allow descending:</strong> Prefix with <code>-</code> or <code>desc</code>.</li>
+          <li><strong>Default sort:</strong> Document default sort order (e.g., created_at descending).</li>
+          <li><strong>Allow descending:</strong> Prefix with minus or use desc parameter.</li>
           <li><strong>Limit sortable fields:</strong> Not all fields should be sortable (e.g., full-text fields).</li>
-          <li><strong>Include sort in cache key:</strong> Different sort orders = different responses.</li>
+          <li><strong>Include sort in cache key:</strong> Different sort orders equal different responses.</li>
         </ul>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Field Selection (Sparse Fieldsets)</h3>
         <p>
-          Allow clients to request specific fields to reduce payload size:
+          Allow clients to request specific fields to reduce payload size. Clients specify which fields they need, and the response includes only those fields.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          {`GET /users?fields=id,name,email
-→ { "id": "123", "name": "John", "email": "john@example.com" }`}
-        </pre>
         <p>
           <strong>Advantages:</strong>
         </p>
@@ -318,7 +288,7 @@ GET /users?limit=20&cursor=eyJpZCI6MjB9
           <strong>Implementation:</strong>
         </p>
         <ul>
-          <li>Use <code>fields</code> or <code>include</code> parameter.</li>
+          <li>Use fields or include parameter.</li>
           <li>Validate field names (reject unknown fields).</li>
           <li>Always include ID (even if not requested) for resource identification.</li>
           <li>Document available fields.</li>
@@ -326,16 +296,8 @@ GET /users?limit=20&cursor=eyJpZCI6MjB9
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Expanding Related Resources</h3>
         <p>
-          Allow clients to include related resources to reduce round trips:
+          Allow clients to include related resources to reduce round trips. Clients specify which relationships to expand, and the response includes the related objects inline.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          {`GET /orders?expand=user,items
-→ {
-  "id": "ord_123",
-  "user": { "id": "usr_456", "name": "John" },
-  "items": [{ "id": "item_1", "product": "Widget" }]
-}`}
-        </pre>
         <p>
           <strong>Best practices:</strong>
         </p>
@@ -438,24 +400,8 @@ GET /users?limit=20&cursor=eyJpZCI6MjB9
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Consistent Error Response Format</h3>
         <p>
-          All errors should follow a consistent schema:
+          All errors should follow a consistent schema with a nested error object containing machine-readable codes, human-readable messages, and debugging information.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          {`{
-  "error": {
-    "code": "validation_failed",
-    "message": "The request contains invalid data",
-    "request_id": "req_abc123",
-    "details": [
-      {
-        "field": "email",
-        "code": "invalid_format",
-        "message": "Email must be a valid email address"
-      }
-    ]
-  }
-}`}
-        </pre>
         <p>
           <strong>Fields:</strong>
         </p>
@@ -491,6 +437,12 @@ GET /users?limit=20&cursor=eyJpZCI6MjB9
           <li><strong>Leaking internal details:</strong> Don&apos;t expose stack traces, SQL errors, or internal state in production errors.</li>
           <li><strong>Missing request_id:</strong> Without request IDs, debugging production issues is nearly impossible.</li>
         </ul>
+
+        <ArticleImage
+          src="/diagrams/system-design-concepts/backend/fundamentals-building-blocks/api-error-response-format.svg"
+          alt="API Error Response Format"
+          caption="Standardized error response with HTTP status, error code, message, request_id, and field-level validation errors"
+        />
       </section>
 
       <section>
@@ -526,57 +478,45 @@ GET /users?limit=20&cursor=eyJpZCI6MjB9
         <h3 className="mt-8 mb-4 text-xl font-semibold">Versioning Strategies</h3>
 
         <h4 className="mt-4 mb-2 font-semibold">URL Versioning (Most Common)</h4>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          GET /v1/users
-          GET /v2/users
-        </pre>
         <p>
-          <strong>Advantages:</strong> Simple, explicit, easy to route, cacheable.</p>
+          URL versioning includes the version number in the path, such as v1 or v2. This approach is simple and explicit.
+        </p>
+        <p>
+          <strong>Advantages:</strong> Simple, explicit, easy to route, cacheable.
+        </p>
         <p>
           <strong>Disadvantages:</strong> Clutters URLs, encourages version proliferation.
         </p>
 
         <h4 className="mt-4 mb-2 font-semibold">Header Versioning</h4>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          GET /users
-          Accept-Version: v2
-        </pre>
         <p>
-          <strong>Advantages:</strong> Clean URLs, version is explicit.</p>
+          Header versioning uses a custom header to specify the API version. The URL remains clean while the version is communicated via headers.
+        </p>
+        <p>
+          <strong>Advantages:</strong> Clean URLs, version is explicit.
+        </p>
         <p>
           <strong>Disadvantages:</strong> Harder to test in browser, less cacheable.
         </p>
 
         <h4 className="mt-4 mb-2 font-semibold">Media Type Versioning</h4>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          GET /users
-          Accept: application/vnd.myapi.v2+json
-        </pre>
         <p>
-          <strong>Advantages:</strong> RESTful, content negotiation.</p>
+          Media type versioning uses the Accept header with a custom media type that includes the version. This follows RESTful content negotiation principles.
+        </p>
+        <p>
+          <strong>Advantages:</strong> RESTful, content negotiation.
+        </p>
         <p>
           <strong>Disadvantages:</strong> Complex, hard to implement correctly.
         </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Deprecation Strategy</h3>
         <p>
-          When deprecating old versions:
+          When deprecating old versions, follow a structured process: announce the deprecation, provide migration guides, set a timeline of 6-12 months, monitor usage, and finally sunset the old version with a 410 Gone response.
         </p>
-        <ol className="space-y-2">
-          <li><strong>Announce deprecation:</strong> Email developers, update docs, add deprecation headers.</li>
-          <li><strong>Provide migration guide:</strong> Document changes and migration steps.</li>
-          <li><strong>Set timeline:</strong> Give 6-12 months for migration.</li>
-          <li><strong>Monitor usage:</strong> Track API version usage, identify holdouts.</li>
-          <li><strong>Sunset:</strong> After timeline, return 410 Gone for old version.</li>
-        </ol>
         <p>
-          <strong>Deprecation headers:</strong>
+          <strong>Deprecation headers:</strong> Use standard deprecation headers to communicate the sunset timeline and provide a link to migration documentation.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          Deprecation: true
-          Sunset: Sat, 31 Dec 2026 23:59:59 GMT
-          Link: &lt;https://docs.example.com/migration&gt;; rel="deprecation"
-        </pre>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Backward Compatibility Checklist</h3>
         <ul>
@@ -637,14 +577,8 @@ GET /users?limit=20&cursor=eyJpZCI6MjB9
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Rate Limit Headers</h3>
         <p>
-          Always expose rate limit status to clients:
+          Always expose rate limit status to clients via response headers. This allows clients to self-regulate and avoid hitting limits unexpectedly.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          X-RateLimit-Limit: 1000
-          X-RateLimit-Remaining: 950
-          X-RateLimit-Reset: 1640000000
-          Retry-After: 60
-        </pre>
         <p>
           <strong>Fields:</strong>
         </p>
@@ -693,26 +627,13 @@ GET /users?limit=20&cursor=eyJpZCI6MjB9
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Idempotency Keys</h3>
         <p>
-          Clients generate a unique key (UUID) and include it in the request:
+          Clients generate a unique key (UUID) and include it in the request header. The server uses this key to detect and deduplicate retries, returning the same response without re-executing the operation.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          {`POST /charges
-Idempotency-Key: abc123
-{ "amount": 1000, "currency": "usd" }
-
-→ 200 OK { "id": "ch_123", "amount": 1000 }
-
-(Retry with same key)
-POST /charges
-Idempotency-Key: abc123
-
-→ 200 OK { "id": "ch_123", "amount": 1000 }  (same response, no duplicate charge)`}
-        </pre>
         <p>
           <strong>Implementation:</strong>
         </p>
         <ol className="space-y-2">
-          <li>Store request hash + response keyed by idempotency key.</li>
+          <li>Store request hash plus response keyed by idempotency key.</li>
           <li>On duplicate key, return stored response without re-executing.</li>
           <li>Set TTL on idempotency keys (24 hours to 7 days).</li>
         </ol>
@@ -752,13 +673,9 @@ Idempotency-Key: abc123
         </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Response Headers for Debugging</h3>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          X-Request-ID: req_abc123
-          X-Response-Time: 45ms
-          X-RateLimit-Remaining: 950
-          Cache-Control: max-age=60
-          ETag: "abc123"
-        </pre>
+        <p>
+          Include helpful response headers for debugging: request ID for tracing, response time for performance monitoring, rate limit remaining for quota awareness, cache control for caching behavior, and ETag for conditional requests.
+        </p>
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Logging Best Practices</h3>
         <ul>
@@ -1044,16 +961,6 @@ Idempotency-Key: abc123
             <strong>Guides:</strong> Google API Design Guide, Microsoft REST API Guidelines, Zalando REST API Guidelines
           </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <p>
-          API design is a critical skill for backend engineers. Well-designed APIs are predictable, maintainable, and performant. Key principles include: consistent resource naming (nouns, plurals, lowercase), proper pagination (cursor for scale), clear error handling (consistent format, appropriate status codes), backward compatibility (additive changes, versioning for breaking changes), rate limiting (protect backend, fair usage), idempotency (safe retries for POST), and excellent documentation (OpenAPI, examples, SDKs).
-        </p>
-        <p>
-          For staff/principal engineer interviews, expect to discuss: pagination strategies (offset vs cursor), idempotency implementation, versioning approaches, rate limiting algorithms, error handling design, and real-world examples from APIs you&apos;ve designed. The key is demonstrating understanding of trade-offs and the ability to design APIs that scale while maintaining excellent developer experience.
-        </p>
       </section>
     </ArticleLayout>
   );

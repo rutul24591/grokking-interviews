@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 350">
+  <title>Payload Size Comparison</title>
+  <desc>Size comparison of different serialization formats</desc>
+  
+  <rect width="800" height="350" fill="#FFFFFF"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">Payload Size Comparison</text>
+  
+  <!-- JSON Bar -->
+  <rect x="100" y="70" width="500" height="45" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="80" y="98" text-anchor="end" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#111827">JSON</text>
+  <text x="350" y="98" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">100% (baseline)</text>
+  
+  <!-- XML Bar -->
+  <rect x="100" y="125" width="600" height="45" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="80" y="153" text-anchor="end" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#111827">XML</text>
+  <text x="400" y="153" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">120% (most verbose)</text>
+  
+  <!-- YAML Bar -->
+  <rect x="100" y="180" width="450" height="45" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="80" y="208" text-anchor="end" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#111827">YAML</text>
+  <text x="325" y="208" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">90%</text>
+  
+  <!-- MessagePack Bar -->
+  <rect x="100" y="235" width="300" height="45" rx="4" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="80" y="263" text-anchor="end" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#111827">MessagePack</text>
+  <text x="250" y="263" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">60%</text>
+  
+  <!-- Protobuf Bar -->
+  <rect x="100" y="290" width="250" height="45" rx="4" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="80" y="318" text-anchor="end" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#111827">Protobuf</text>
+  <text x="225" y="318" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">50% (most compact)</text>
+  
+  <!-- Note -->
+  <rect x="50" y="340" width="700" height="10" rx="2" fill="#F8F9FC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="400" y="348" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Binary formats typically achieve 50-60% size reduction vs JSON</text>
+</svg>

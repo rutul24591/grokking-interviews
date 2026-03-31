@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <title>External Session Store Architecture</title>
+  <desc>How external session stores enable stateless applications</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="400" fill="#FFFFFF"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">External Session Store Architecture</text>
+  
+  <!-- Clients -->
+  <rect x="50" y="70" width="100" height="45" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="100" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#111827">Client 1</text>
+  
+  <rect x="50" y="130" width="100" height="45" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="100" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#111827">Client 2</text>
+  
+  <rect x="50" y="190" width="100" height="45" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="100" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#111827">Client 3</text>
+  
+  <!-- Load Balancer -->
+  <rect x="220" y="130" width="120" height="55" rx="4" fill="#8B5CF6"/>
+  <text x="280" y="160" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">Load Balancer</text>
+  
+  <!-- App Servers -->
+  <rect x="400" y="70" width="120" height="55" rx="4" fill="#10B981"/>
+  <text x="460" y="100" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#FFFFFF">App Server 1</text>
+  
+  <rect x="400" y="140" width="120" height="55" rx="4" fill="#10B981"/>
+  <text x="460" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#FFFFFF">App Server 2</text>
+  
+  <rect x="400" y="210" width="120" height="55" rx="4" fill="#10B981"/>
+  <text x="460" y="240" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#FFFFFF">App Server 3</text>
+  
+  <!-- Session Store Cluster -->
+  <rect x="580" y="90" width="180" height="140" rx="8" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="670" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Session Store Cluster</text>
+  
+  <!-- Redis Node 1 -->
+  <rect x="600" y="130" width="140" height="35" rx="4" fill="#8B5CF6"/>
+  <text x="670" y="153" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#FFFFFF">Redis Primary</text>
+  
+  <!-- Redis Node 2 -->
+  <rect x="600" y="175" width="140" height="35" rx="4" fill="#8B5CF6"/>
+  <text x="670" y="198" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#FFFFFF">Redis Replica</text>
+  
+  <!-- Session Data -->
+  <rect x="600" y="220" width="140" height="10" rx="2" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="670" y="230" text-anchor="middle" font-family="monospace, sans-serif" font-size="7" fill="#4B5563">session_id → {user, cart, ...}</text>
+  
+  <!-- Connection Arrows -->
+  <path d="M150 92 L220 140" stroke="#4B5563" stroke-width="2" marker-end="url(#arrowGray)"/>
+  <path d="M150 152 L220 157" stroke="#4B5563" stroke-width="2" marker-end="url(#arrowGray)"/>
+  <path d="M150 212 L220 175" stroke="#4B5563" stroke-width="2" marker-end="url(#arrowGray)"/>
+  
+  <path d="M340 157 L400 97" stroke="#8B5CF6" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  <path d="M340 157 L400 167" stroke="#8B5CF6" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  <path d="M340 157 L400 237" stroke="#8B5CF6" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  
+  <!-- Session Lookup Arrows (dashed) -->
+  <path d="M520 97 L580 145" stroke="#4B5563" stroke-width="2" stroke-dasharray="4" marker-end="url(#arrowGray)"/>
+  <path d="M520 167 L580 160" stroke="#4B5563" stroke-width="2" stroke-dasharray="4" marker-end="url(#arrowGray)"/>
+  <path d="M520 237 L580 175" stroke="#4B5563" stroke-width="2" stroke-dasharray="4" marker-end="url(#arrowGray)"/>
+  <text x="550" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#4B5563">Session Read/Write</text>
+  
+  <!-- Key Benefits Box -->
+  <rect x="50" y="280" width="700" height="90" rx="8" fill="#F8F9FC" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="400" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">External Session Store Benefits</text>
+  
+  <text x="100" y="335" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#111827">✓ Any server can handle any request</text>
+  <text x="100" y="355" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#111827">✓ Session survives server failure</text>
+  <text x="100" y="375" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#111827">✓ Simple round-robin load balancing</text>
+  <text x="400" y="335" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#111827">✓ Zero-downtime deployments</text>
+  <text x="400" y="355" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#111827">✓ Easy horizontal scaling</text>
+  <text x="400" y="375" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">Requires: Redis cluster, network calls</text>
+  
+  <!-- Arrow Markers -->
+  <defs>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8B5CF6"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4B5563"/>
+    </marker>
+  </defs>
+</svg>

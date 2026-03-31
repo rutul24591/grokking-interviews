@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 350">
+  <title>TCP Three-Way Handshake</title>
+  <desc>TCP connection establishment with SYN, SYN-ACK, ACK</desc>
+  
+  <rect width="800" height="350" fill="#FFFFFF"/>
+  
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">TCP Three-Way Handshake</text>
+  
+  <!-- Client -->
+  <rect x="100" y="70" width="120" height="220" rx="8" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="160" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Client</text>
+  
+  <!-- Server -->
+  <rect x="580" y="70" width="120" height="220" rx="8" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+  <text x="640" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#111827">Server</text>
+  
+  <!-- Step 1: SYN -->
+  <path d="M220 110 L580 110" stroke="#EC4899" stroke-width="3" marker-end="url(#arrowPink)"/>
+  <text x="400" y="100" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#EC4899">1. SYN</text>
+  <text x="400" y="125" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Seq=X</text>
+  
+  <!-- Step 2: SYN-ACK -->
+  <path d="M580 175 L220 175" stroke="#10B981" stroke-width="3" marker-end="url(#arrowGreen)"/>
+  <text x="400" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#10B981">2. SYN-ACK</text>
+  <text x="400" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Seq=Y, Ack=X+1</text>
+  
+  <!-- Step 3: ACK -->
+  <path d="M220 240 L580 240" stroke="#8B5CF6" stroke-width="3" marker-end="url(#arrowPurple)"/>
+  <text x="400" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#8B5CF6">3. ACK</text>
+  <text x="400" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Ack=Y+1</text>
+  
+  <!-- Connection Established -->
+  <rect x="280" y="280" width="240" height="50" rx="4" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/>
+  <text x="400" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#111827">Connection Established</text>
+  <text x="400" y="322" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Data transfer can begin</text>
+  
+  <!-- Latency Note -->
+  <rect x="50" y="340" width="700" height="10" rx="2" fill="#F8F9FC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="400" y="348" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4B5563">Latency Cost: 1 RTT (Round Trip Time) before data transfer</text>
+  
+  <defs>
+    <marker id="arrowPink" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#EC4899"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10B981"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8B5CF6"/>
+    </marker>
+  </defs>
+</svg>

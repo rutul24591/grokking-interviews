@@ -325,15 +325,7 @@ export default function DomainNameSystemArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">DNS Round-Robin</h3>
         <p>
-          Simple DNS load balancing: publish multiple A records for the same name:
-        </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          example.com → 192.0.2.1
-          example.com → 192.0.2.2
-          example.com → 192.0.2.3
-        </pre>
-        <p>
-          Resolvers rotate through the IPs (round-robin). Simple, but has limitations:
+          Simple DNS load balancing publishes multiple A records for the same name. Resolvers rotate through the IPs in round-robin fashion. This approach is simple but has significant limitations.
         </p>
         <ul>
           <li><strong>No health checking:</strong> DNS doesn&apos;t know if a server is down. Clients may get a dead IP.</li>
@@ -530,18 +522,15 @@ export default function DomainNameSystemArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Reverse DNS (PTR Records)</h3>
         <p>
-          Reverse DNS maps IP addresses to domain names (opposite of A/AAAA):
+          Reverse DNS maps IP addresses to domain names, which is the opposite of A or AAAA records. This mapping is used for email deliverability, compliance requirements, and debugging.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          34.216.184.93.in-addr.arpa → www.example.com
-        </pre>
         <p>
           <strong>Use cases:</strong>
         </p>
         <ul>
           <li><strong>Email deliverability:</strong> Many mail servers reject email from IPs without matching PTR records.</li>
           <li><strong>Compliance:</strong> Some enterprise integrations require reverse DNS.</li>
-          <li><strong>Debugging:</strong> Log analysis (IP → domain is more readable).</li>
+          <li><strong>Debugging:</strong> Log analysis (IP to domain is more readable).</li>
         </ul>
         <p>
           <strong>Management:</strong> PTR records are managed by the IP owner (ISP, cloud provider), not the domain owner. Request through your hosting provider.
@@ -787,19 +776,6 @@ export default function DomainNameSystemArticle() {
             <strong>Tools:</strong> dig, nslookup, dnschecker.org (propagation), intoDNS (health check)
           </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <p>
-          DNS is the foundation of internet infrastructure—translating domain names to IP addresses, routing traffic globally, and enabling email delivery. Key concepts include: hierarchical resolution (root → TLD → authoritative), record types (A, AAAA, CNAME, MX, TXT, etc.), TTL and caching (propagation delay), load balancing (round-robin, geolocation, latency-based), security (DNSSEC, DoH/DoT, SPF/DKIM/DMARC), and operational best practices (low TTL for migrations, health checks, multi-provider redundancy).
-        </p>
-        <p>
-          For backend engineers, DNS is critical for: performance (resolution latency), reliability (failover, health checks), security (DNSSEC, email authentication), and operations (migrations, debugging). Understanding DNS deeply enables better system design, faster incident resolution, and more robust infrastructure.
-        </p>
-        <p>
-          For staff/principal engineer interviews, expect to discuss: DNS resolution flow, TTL strategy for migrations, DNS load balancing approaches, DNSSEC trade-offs, and real-world examples from systems you&apos;ve designed. The key is demonstrating understanding of DNS as a distributed system with caching, delegation, and eventual consistency.
-        </p>
       </section>
     </ArticleLayout>
   );

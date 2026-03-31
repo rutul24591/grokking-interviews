@@ -1,21 +1,77 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="320" viewBox="0 0 900 320">
-  <rect width="100%" height="100%" fill="#ffffff" />
-  <style>
-    text { font-family: 'Sora', Arial, sans-serif; fill: #1f2937; }
-    .box { fill: #f8fafc; stroke: #cbd5f5; stroke-width: 2; rx: 12; }
-    .title { font-size: 20px; font-weight: 700; }
-    .label { font-size: 16px; font-weight: 600; }
-    .small { font-size: 14px; fill: #475569; }
-    .line { stroke: #94a3b8; stroke-width: 2.5; }
-  </style>
-  <text x="450" y="40" text-anchor="middle" class="title">Load Balancer Fan-out</text>
-  <rect class="box" x="120" y="90" width="200" height="80" />
-  <rect class="box" x="350" y="90" width="200" height="80" />
-  <rect class="box" x="580" y="90" width="200" height="80" />
-  <text x="220" y="135" text-anchor="middle" class="label">Client</text>
-  <text x="450" y="135" text-anchor="middle" class="label">Load balancer</text>
-  <text x="680" y="135" text-anchor="middle" class="label">Server pool</text>
-  <line class="line" x1="320" y1="130" x2="350" y2="130" />
-  <line class="line" x1="550" y1="130" x2="580" y2="130" />
-  <text x="450" y="260" text-anchor="middle" class="small">Backend Fundamentals Diagram</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 350">
+  <title>Load Balancer Fan-out</title>
+  <desc>How load balancers distribute traffic across multiple backend instances</desc>
+  
+  <!-- Background -->
+  <rect width="800" height="350" fill="#FFFFFF"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#111827">Load Balancer Fan-out</text>
+  
+  <!-- Clients -->
+  <rect x="50" y="70" width="80" height="45" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="90" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#111827">Client 1</text>
+  
+  <rect x="50" y="130" width="80" height="45" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="90" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#111827">Client 2</text>
+  
+  <rect x="50" y="190" width="80" height="45" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="90" y="215" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#111827">Client 3</text>
+  
+  <rect x="50" y="250" width="80" height="45" rx="4" fill="#FCE7F3" stroke="#EC4899" stroke-width="2"/>
+  <text x="90" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="600" fill="#111827">Client 4</text>
+  
+  <!-- Load Balancer -->
+  <rect x="250" y="150" width="150" height="80" rx="4" fill="#8B5CF6"/>
+  <text x="325" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">Load Balancer</text>
+  <text x="325" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#FFFFFF">Round-Robin</text>
+  <text x="325" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#FFFFFF">Health Checks</text>
+  
+  <!-- Backend Servers -->
+  <rect x="520" y="70" width="100" height="55" rx="4" fill="#10B981"/>
+  <text x="570" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">Server 1</text>
+  <text x="570" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#FFFFFF">Healthy</text>
+  
+  <rect x="520" y="145" width="100" height="55" rx="4" fill="#10B981"/>
+  <text x="570" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">Server 2</text>
+  <text x="570" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#FFFFFF">Healthy</text>
+  
+  <rect x="520" y="220" width="100" height="55" rx="4" fill="#10B981"/>
+  <text x="570" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">Server 3</text>
+  <text x="570" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#FFFFFF">Healthy</text>
+  
+  <rect x="520" y="295" width="100" height="55" rx="4" fill="#F59E0B"/>
+  <text x="570" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">Server 4</text>
+  <text x="570" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#FFFFFF">Unhealthy</text>
+  
+  <!-- Request Arrows (to LB) -->
+  <path d="M130 92 L250 160" stroke="#EC4899" stroke-width="2" marker-end="url(#arrowPink)"/>
+  <path d="M130 152 L250 175" stroke="#EC4899" stroke-width="2" marker-end="url(#arrowPink)"/>
+  <path d="M130 212 L250 190" stroke="#EC4899" stroke-width="2" marker-end="url(#arrowPink)"/>
+  <path d="M130 272 L250 210" stroke="#EC4899" stroke-width="2" marker-end="url(#arrowPink)"/>
+  
+  <!-- Distribution Arrows (from LB to Servers) -->
+  <path d="M400 175 L520 97" stroke="#8B5CF6" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  <path d="M400 190 L520 172" stroke="#8B5CF6" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  <path d="M400 205 L520 247" stroke="#8B5CF6" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  <!-- No arrow to unhealthy server -->
+  
+  <!-- Health Check Arrow (crossed out to unhealthy) -->
+  <path d="M400 220 L520 322" stroke="#F59E0B" stroke-width="2" stroke-dasharray="4"/>
+  <line x1="480" y1="260" x2="500" y2="285" stroke="#F59E0B" stroke-width="3"/>
+  <line x1="500" y1="260" x2="480" y2="285" stroke="#F59E0B" stroke-width="3"/>
+  
+  <!-- Key Benefits Box -->
+  <rect x="50" y="310" width="700" height="30" rx="4" fill="#F8F9FC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="400" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4B5563">Benefits: Distributes load | Health checks remove unhealthy instances | Enables horizontal scaling</text>
+  
+  <!-- Arrow Markers -->
+  <defs>
+    <marker id="arrowPink" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#EC4899"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8B5CF6"/>
+    </marker>
+  </defs>
 </svg>

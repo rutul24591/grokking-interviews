@@ -720,22 +720,6 @@ export default function TcpVsUdpArticle() {
           </li>
         </ul>
       </section>
-
-      <section>
-        <h2>Summary</h2>
-        <p>
-          TCP and UDP represent fundamentally different approaches to transport. TCP prioritizes correctness—guaranteeing reliable, ordered delivery with built-in congestion and flow control. UDP prioritizes timeliness—sending data immediately with minimal overhead, leaving reliability to the application.
-        </p>
-        <p>
-          The choice between TCP and UDP is not about which is &quot;better&quot; but about which failure mode your application can tolerate. TCP fails by getting slower (retransmissions, congestion backoff). UDP fails by losing data (no retransmission). File transfers can be slow but not incomplete; video calls can have artifacts but not freeze.
-        </p>
-        <p>
-          Modern protocols like QUIC demonstrate that the TCP/UDP dichotomy is not absolute—QUIC implements TCP-like reliability over UDP, achieving the best of both worlds. For backend engineers, understanding these trade-offs enables informed protocol selection and effective debugging of network issues.
-        </p>
-        <p>
-          For staff/principal engineer interviews, expect to discuss: TCP handshake mechanics, congestion control algorithms, HOL blocking and HTTP/2 vs HTTP/3, UDP use cases (DNS, VoIP, gaming), QUIC advantages, and real-world examples from systems you&apos;ve designed. The key is demonstrating understanding of trade-offs and the ability to select protocols based on application requirements, not defaults.
-        </p>
-      </section>
     </ArticleLayout>
   );
 }

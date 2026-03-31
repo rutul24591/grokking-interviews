@@ -61,20 +61,8 @@ export default function SerializationFormatsArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">JSON (JavaScript Object Notation)</h3>
         <p>
-          <strong>JSON</strong> is the most widely used serialization format for web APIs. It&apos;s text-based, language-independent, and human-readable.
+          <strong>JSON</strong> is the most widely used serialization format for web APIs. It&apos;s text-based, language-independent, and human-readable. JSON represents data as key-value pairs with support for strings, numbers, booleans, arrays, and nested objects.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          {`{
-  "id": "user_123",
-  "name": "John Doe",
-  "email": "john@example.com",
-  "active": true,
-  "roles": ["admin", "user"],
-  "metadata": {
-    "created_at": "2024-01-01T00:00:00Z"
-  }
-}`}
-        </pre>
         <p>
           <strong>Advantages:</strong>
         </p>
@@ -99,20 +87,8 @@ export default function SerializationFormatsArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">XML (Extensible Markup Language)</h3>
         <p>
-          <strong>XML</strong> was dominant before JSON. Still used in enterprise systems, SOAP APIs, and document storage.
+          <strong>XML</strong> was dominant before JSON. Still used in enterprise systems, SOAP APIs, and document storage. XML uses opening and closing tags to define elements with attributes for metadata.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          {`<user>
-  <id>user_123</id>
-  <name>John Doe</name>
-  <email>john@example.com</email>
-  <active>true</active>
-  <roles>
-    <role>admin</role>
-    <role>user</role>
-  </roles>
-</user>`}
-        </pre>
         <p>
           <strong>Advantages:</strong>
         </p>
@@ -137,19 +113,8 @@ export default function SerializationFormatsArticle() {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">YAML (YAML Ain&apos;t Markup Language)</h3>
         <p>
-          <strong>YAML</strong> is a human-friendly data format, commonly used for configuration files.
+          <strong>YAML</strong> is a human-friendly data format, commonly used for configuration files. It uses indentation for structure and supports comments.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          {`id: user_123
-name: John Doe
-email: john@example.com
-active: true
-roles:
-  - admin
-  - user
-metadata:
-  created_at: 2024-01-01T00:00:00Z`}
-        </pre>
         <p>
           <strong>Advantages:</strong> Human-readable, concise (no braces/quotes), supports comments.
         </p>
@@ -172,25 +137,8 @@ metadata:
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Protocol Buffers (Protobuf)</h3>
         <p>
-          <strong>Protobuf</strong> is Google&apos;s binary serialization format. It requires a schema (.proto file) and generates code for multiple languages.
+          <strong>Protobuf</strong> is Google&apos;s binary serialization format. It requires a schema (.proto file) and generates code for multiple languages. The schema defines message types with field numbers for binary encoding.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          {`// user.proto
-syntax = "proto3";
-
-message User {
-  string id = 1;
-  string name = 2;
-  string email = 3;
-  bool active = 4;
-  repeated string roles = 5;
-  Metadata metadata = 6;
-}
-
-message Metadata {
-  int64 created_at = 1;
-}`}
-        </pre>
         <p>
           <strong>Advantages:</strong>
         </p>
@@ -216,22 +164,8 @@ message Metadata {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Apache Avro</h3>
         <p>
-          <strong>Avro</strong> is a binary format designed for data pipelines and event streaming. Schema is sent with data (or stored in schema registry).
+          <strong>Avro</strong> is a binary format designed for data pipelines and event streaming. Schema is sent with data (or stored in schema registry). Avro schemas are defined in JSON format with record types and field definitions.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          {`// user.avsc
-{
-  "type": "record",
-  "name": "User",
-  "fields": [
-    {"name": "id", "type": "string"},
-    {"name": "name", "type": "string"},
-    {"name": "email", "type": "string"},
-    {"name": "active", "type": "boolean"},
-    {"name": "roles", "type": {"type": "array", "items": "string"}}
-  ]
-}`}
-        </pre>
         <p>
           <strong>Advantages:</strong>
         </p>
@@ -256,23 +190,8 @@ message Metadata {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">Apache Thrift</h3>
         <p>
-          <strong>Thrift</strong> is Facebook&apos;s RPC framework with binary serialization. Similar to Protobuf but includes transport layer.
+          <strong>Thrift</strong> is Facebook&apos;s RPC framework with binary serialization. Similar to Protobuf but includes transport layer. Thrift defines structs for data and services for RPC methods.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          {`// user.thrift
-struct User {
-  1: string id,
-  2: string name,
-  3: string email,
-  4: bool active,
-  5: list<string> roles,
-}
-
-service UserService {
-  User getUser(1: string id),
-  list<User> listUsers(),
-}`}
-        </pre>
         <p>
           <strong>Advantages:</strong> Compact, fast, schema enforcement, multi-language, includes RPC framework.
         </p>
@@ -285,13 +204,8 @@ service UserService {
 
         <h3 className="mt-8 mb-4 text-xl font-semibold">MessagePack</h3>
         <p>
-          <strong>MessagePack</strong> is &quot;binary JSON&quot;—same data model as JSON but binary-encoded.
+          <strong>MessagePack</strong> is "binary JSON"—same data model as JSON but binary-encoded. It encodes the same data as JSON but in a more compact binary format.
         </p>
-        <pre className="my-4 rounded-lg bg-panel-soft p-4 text-sm overflow-x-auto">
-          {`// Same data as JSON, but binary-encoded
-// {"id": "user_123", "name": "John", "active": true}
-// → 0x83 0xa2 0x69 0x64 0xa7 0x75 0x73 0x65 0x72 0x5f 0x31 0x32 0x33 ...`}
-        </pre>
         <p>
           <strong>Advantages:</strong> Drop-in JSON replacement (same data model), compact (30-50% smaller than JSON), fast, no schema required.
         </p>
@@ -811,16 +725,6 @@ service UserService {
             <strong>Benchmarks:</strong> <a href="https://github.com/eishay/jvm-serializers" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">JVM Serializers Benchmark</a>
           </li>
         </ul>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <p>
-          Serialization format choice impacts performance, compatibility, and operational complexity. Key takeaways: JSON is ideal for public APIs (debuggability, universal support). Protobuf is ideal for internal RPC (performance, schema enforcement). Avro is ideal for event streaming (schema evolution, Kafka integration). MessagePack is a drop-in JSON replacement for caching. Schema evolution requires discipline (never reuse field numbers in Protobuf, use schema registry for Avro). Security matters—validate input, enforce size limits, use safe parsers. Always benchmark with your actual workload before committing to a format.
-        </p>
-        <p>
-          For staff/principal engineer interviews, expect to discuss: format trade-offs (JSON vs Protobuf vs Avro), schema evolution rules, schema registry importance, security considerations, and real-world examples from systems you&apos;ve designed. The key is demonstrating understanding that format choice is a multi-dimensional decision based on interoperability, performance, schema evolution, and operational complexity.
-        </p>
       </section>
     </ArticleLayout>
   );
