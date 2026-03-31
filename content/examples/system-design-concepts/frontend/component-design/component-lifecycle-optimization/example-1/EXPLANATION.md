@@ -1,0 +1,7 @@
+# Component lifecycle optimization
+
+Control mount, cleanup, and async work so interactive components stay fast and leak-free under frequent visibility changes.
+
+- Example 1 demonstrates the primary component-design pattern end to end with a Next.js UI and Node API.
+- The app keeps the workflow runnable while staying small enough for article rendering.
+- Example 2 and Example 3 isolate operational checks and edge cases tied to the same topic.
