@@ -1,0 +1,60 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Dashboard Visual Hierarchy</text>
+  
+  <!-- Hierarchy Pyramid -->
+  <rect x="350" y="80" width="200" height="50" rx="4" fill="#ef4444"/>
+  <text x="450" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#ffffff">KPIs (Top)</text>
+  <text x="450" y="125" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fca5a5">Most important</text>
+  
+  <rect x="275" y="140" width="350" height="60" rx="4" fill="#f97316"/>
+  <text x="450" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#ffffff">Charts (Middle)</text>
+  <text x="450" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fdba74">Trends &amp; patterns</text>
+  
+  <rect x="200" y="210" width="500" height="70" rx="4" fill="#eab308"/>
+  <text x="450" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#ffffff">Tables (Bottom)</text>
+  <text x="450" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fef08a">Detailed data</text>
+  
+  <!-- Layout Example -->
+  <rect x="50" y="300" width="800" height="230" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="450" y="335" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1e293b">Dashboard Layout Example</text>
+  
+  <!-- KPI Row -->
+  <rect x="70" y="355" width="180" height="70" rx="6" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="160" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7f1d1d">Revenue</text>
+  <text x="160" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#dc2626">$1.2M</text>
+  
+  <rect x="265" y="355" width="180" height="70" rx="6" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="355" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7f1d1d">Users</text>
+  <text x="355" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#dc2626">45.2K</text>
+  
+  <rect x="460" y="355" width="180" height="70" rx="6" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="550" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7f1d1d">Orders</text>
+  <text x="550" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#dc2626">12.5K</text>
+  
+  <rect x="655" y="355" width="180" height="70" rx="6" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="745" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7f1d1d">Conversion</text>
+  <text x="745" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#dc2626">3.2%</text>
+  
+  <!-- Charts Row -->
+  <rect x="70" y="440" width="375" height="80" rx="6" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
+  <text x="257" y="465" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#9a3412">Revenue Trend</text>
+  <path d="M 90 490 L 130 485 L 170 495 L 210 480 L 250 485 L 290 475 L 330 470 L 370 465 L 410 470" stroke="#f97316" stroke-width="2" fill="none"/>
+  
+  <rect x="460" y="440" width="375" height="80" rx="6" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
+  <text x="647" y="465" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#9a3412">User Growth</text>
+  <rect x="480" y="475" width="40" height="35" fill="#f97316" opacity="0.4"/>
+  <rect x="530" y="470" width="40" height="40" fill="#f97316" opacity="0.6"/>
+  <rect x="580" y="465" width="40" height="45" fill="#f97316" opacity="0.8"/>
+  <rect x="630" y="460" width="40" height="50" fill="#f97316"/>
+  <rect x="680" y="465" width="40" height="45" fill="#f97316" opacity="0.8"/>
+  <rect x="730" y="470" width="40" height="40" fill="#f97316" opacity="0.6"/>
+  <rect x="780" y="475" width="40" height="35" fill="#f97316" opacity="0.4"/>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="545" width="800" height="25" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="562" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Visual hierarchy guides attention: KPIs at top (largest), charts in middle, tables at bottom. Size, position, and color create hierarchy</text>
+</svg>

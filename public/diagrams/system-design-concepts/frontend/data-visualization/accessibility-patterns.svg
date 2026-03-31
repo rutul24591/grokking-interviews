@@ -1,0 +1,82 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Accessibility in Visualizations</text>
+  
+  <!-- Visual Channel -->
+  <rect x="50" y="80" width="260" height="220" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="180" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e40af">Visual Channels</text>
+  <text x="180" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1e3a8a">Encode data visually</text>
+  
+  <rect x="70" y="170" width="220" height="110" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="180" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Position (Best)</text>
+  <rect x="90" y="215" width="180" height="4" fill="#3b82f6"/>
+  <circle cx="90" cy="217" r="4" fill="#3b82f6"/>
+  <circle cx="150" cy="217" r="4" fill="#3b82f6"/>
+  <circle cx="210" cy="217" r="4" fill="#3b82f6"/>
+  <text x="180" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Color (Colorblind issues)</text>
+  <rect x="90" y="255" width="40" height="15" fill="#ef4444"/>
+  <rect x="140" y="255" width="40" height="15" fill="#22c55e"/>
+  <rect x="190" y="255" width="40" height="15" fill="#3b82f6"/>
+  <text x="180" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#64748b">Use patterns too</text>
+  
+  <!-- Screen Reader -->
+  <rect x="330" y="80" width="260" height="220" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="460" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#3730a3">Screen Reader</text>
+  <text x="460" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4338ca">Non-visual access</text>
+  
+  <rect x="350" y="170" width="220" height="110" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="460" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">ARIA Labels</text>
+  <text x="460" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569" font-style="italic">"Bar chart showing"</text>
+  <text x="460" y="240" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569" font-style="italic">revenue by month."</text>
+  <text x="460" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Data Table Alternative</text>
+  <rect x="370" y="270" width="180" height="40" rx="4" fill="#6366f1" opacity="0.2"/>
+  <text x="460" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4338ca">Hidden but accessible</text>
+  
+  <!-- Keyboard -->
+  <rect x="610" y="80" width="260" height="220" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="740" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Keyboard Navigation</text>
+  <text x="740" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">Non-mouse access</text>
+  
+  <rect x="630" y="170" width="220" height="110" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="740" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Tab Navigation</text>
+  <text x="740" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Tab through data points</text>
+  <text x="740" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Arrow Keys</text>
+  <text x="740" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Navigate between points</text>
+  
+  <!-- Colorblind Safe -->
+  <rect x="50" y="320" width="400" height="210" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="250" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#065f46">Colorblind-Safe Palettes</text>
+  <text x="250" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857">8% males have color vision deficiency</text>
+  
+  <rect x="70" y="410" width="360" height="100" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="250" y="440" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Avoid Red-Green Combinations</text>
+  <rect x="90" y="455" width="80" height="40" rx="4" fill="#ef4444"/>
+  <text x="130" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#ffffff">Red</text>
+  <rect x="180" y="455" width="80" height="40" rx="4" fill="#22c55e"/>
+  <text x="220" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#ffffff">Green</text>
+  <text x="250" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#dc2626" font-weight="600">✗ Hard to distinguish</text>
+  <rect x="270" y="455" width="80" height="40" rx="4" fill="#3b82f6"/>
+  <text x="310" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#ffffff">Blue</text>
+  <rect x="360" y="455" width="80" height="40" rx="4" fill="#f97316"/>
+  <text x="400" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#ffffff">Orange</text>
+  <text x="250" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#16a34a" font-weight="600">✓ Easy to distinguish</text>
+  
+  <!-- Alternative Text -->
+  <rect x="470" y="320" width="400" height="210" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="670" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">Alternative Text Description</text>
+  <text x="670" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Describe visualization in words</text>
+  
+  <rect x="490" y="410" width="360" height="100" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="670" y="440" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Long Description</text>
+  <text x="670" y="465" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475569">"Bar chart showing monthly</text>
+  <text x="670" y="480" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475569">revenue from Jan to Dec.</text>
+  <text x="670" y="495" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Peak in November ($2.5M),</text>
+  <text x="670" y="510" text-anchor="start" font-family="system-ui, sans-serif" font-size="9" fill="#475569">lowest in February ($0.8M)."</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="545" width="800" height="25" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="562" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Accessibility: use position over color, provide ARIA labels, enable keyboard navigation, offer data tables, write alt text descriptions</text>
+</svg>

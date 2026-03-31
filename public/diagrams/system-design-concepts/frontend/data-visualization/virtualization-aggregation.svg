@@ -1,0 +1,67 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Virtualization and Aggregation</text>
+  
+  <!-- Virtualization -->
+  <rect x="50" y="80" width="400" height="220" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="250" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1e40af">Virtualization (Windowing)</text>
+  <text x="250" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#1e3a8a">Render only visible data</text>
+  
+  <rect x="70" y="170" width="360" height="110" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="250" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Viewport: 1000-1100</text>
+  <rect x="90" y="215" width="320" height="50" rx="4" fill="#e5e7eb"/>
+  <rect x="90" y="215" width="320" height="50" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <text x="250" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1e3a8a">Render 100 of 100,000 points</text>
+  <text x="250" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1e3a8a">Constant memory &amp; rendering</text>
+  
+  <!-- Aggregation -->
+  <rect x="470" y="80" width="400" height="220" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="670" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#3730a3">Aggregation (Binning)</text>
+  <text x="670" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#4338ca">Combine points into bins</text>
+  
+  <rect x="490" y="170" width="360" height="110" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="670" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Hexbin / Heatmap</text>
+  <rect x="510" y="215" width="320" height="50" rx="4" fill="#e5e7eb"/>
+  <!-- Hexagons representation -->
+  <polygon points="530,240 545,230 560,240 560,255 545,265 530,255" fill="#6366f1" opacity="0.6"/>
+  <polygon points="560,240 575,230 590,240 590,255 575,265 560,255" fill="#6366f1" opacity="0.4"/>
+  <polygon points="590,240 605,230 620,240 620,255 605,265 590,255" fill="#6366f1" opacity="0.8"/>
+  <polygon points="620,240 635,230 650,240 650,255 635,265 620,255" fill="#6366f1" opacity="0.3"/>
+  <text x="670" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4338ca">100,000 points → 100 bins</text>
+  <text x="670" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4338ca">Color by count per bin</text>
+  
+  <!-- LOD -->
+  <rect x="50" y="320" width="400" height="210" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="250" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#92400e">Level of Detail (LOD)</text>
+  <text x="250" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#78350f">Adaptive detail by zoom</text>
+  
+  <rect x="70" y="410" width="360" height="100" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="250" y="440" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Zoom Level → Detail Level</text>
+  <rect x="90" y="455" width="100" height="40" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="140" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">Zoomed Out</text>
+  <text x="140" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#78350f">Aggregated</text>
+  <rect x="210" y="455" width="100" height="40" rx="4" fill="#f59e0b" opacity="0.6"/>
+  <text x="260" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">Medium</text>
+  <text x="260" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#78350f">Sampled</text>
+  <rect x="330" y="455" width="100" height="40" rx="4" fill="#f59e0b"/>
+  <text x="380" y="480" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#ffffff">Zoomed In</text>
+  <text x="380" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#ffffff">Full Detail</text>
+  
+  <!-- GPU -->
+  <rect x="470" y="320" width="400" height="210" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="670" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#065f46">GPU Acceleration</text>
+  <text x="670" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#047857">Parallel rendering</text>
+  
+  <rect x="490" y="410" width="360" height="100" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="670" y="440" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">WebGL Pipeline</text>
+  <text x="670" y="470" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">CPU → GPU (data upload)</text>
+  <text x="670" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">GPU (parallel render)</text>
+  <text x="670" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">1,000,000+ points at 60fps</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="545" width="800" height="25" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="562" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Combine techniques: virtualization for scrolling, aggregation for patterns, LOD for multi-scale, GPU for massive datasets</text>
+</svg>

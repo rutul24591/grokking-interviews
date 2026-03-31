@@ -1,0 +1,63 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Responsive Dashboard Patterns</text>
+  
+  <!-- Desktop -->
+  <rect x="50" y="80" width="380" height="220" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="240" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e40af">Desktop (1920x1080)</text>
+  <text x="240" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1e3a8a">Full dashboard visible</text>
+  
+  <rect x="70" y="160" width="340" height="120" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <!-- KPI Row -->
+  <rect x="85" y="175" width="70" height="40" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <rect x="165" y="175" width="70" height="40" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <rect x="245" y="175" width="70" height="40" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <rect x="325" y="175" width="70" height="40" rx="4" fill="#3b82f6" opacity="0.3"/>
+  <!-- Charts Row -->
+  <rect x="85" y="225" width="155" height="45" rx="4" fill="#3b82f6" opacity="0.5"/>
+  <rect x="250" y="225" width="155" height="45" rx="4" fill="#3b82f6" opacity="0.5"/>
+  <text x="240" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#1e3a8a">4 KPIs + 2 charts visible</text>
+  
+  <!-- Tablet -->
+  <rect x="450" y="80" width="200" height="300" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="550" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#3730a3">Tablet (768x1024)</text>
+  <text x="550" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4338ca">Reflow layout</text>
+  
+  <rect x="470" y="160" width="160" height="200" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <!-- KPI Grid -->
+  <rect x="485" y="175" width="65" height="35" rx="4" fill="#6366f1" opacity="0.3"/>
+  <rect x="555" y="175" width="65" height="35" rx="4" fill="#6366f1" opacity="0.3"/>
+  <rect x="485" y="215" width="65" height="35" rx="4" fill="#6366f1" opacity="0.3"/>
+  <rect x="555" y="215" width="65" height="35" rx="4" fill="#6366f1" opacity="0.3"/>
+  <!-- Chart -->
+  <rect x="485" y="260" width="130" height="90" rx="4" fill="#6366f1" opacity="0.5"/>
+  <text x="550" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#4338ca">2x2 KPIs + 1 chart</text>
+  
+  <!-- Mobile -->
+  <rect x="670" y="80" width="180" height="380" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="760" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Mobile (375x667)</text>
+  <text x="760" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">Progressive disclosure</text>
+  
+  <rect x="690" y="160" width="140" height="280" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <!-- Single KPI -->
+  <rect x="705" y="175" width="110" height="35" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="760" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">▼ More KPIs</text>
+  <!-- Single Chart -->
+  <rect x="705" y="240" width="110" height="80" rx="4" fill="#f59e0b" opacity="0.5"/>
+  <text x="760" y="335" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">▼ More Charts</text>
+  <!-- Tab Bar -->
+  <rect x="705" y="350" width="110" height="30" rx="4" fill="#f59e0b" opacity="0.7"/>
+  <text x="760" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">Tab navigation</text>
+  <text x="760" y="435" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#78350f">1 KPI + tabs</text>
+  
+  <!-- Responsive Strategies -->
+  <rect x="50" y="480" width="800" height="50" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="450" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Reflow (rearrange grid) | Progressive Disclosure (show less, expand on tap) | Tabbing (group into tabs) | Mobile-specific views</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="545" width="800" height="25" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="562" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Design mobile-first: identify key metrics for mobile, provide full dashboard on desktop, use responsive grid with breakpoints</text>
+</svg>

@@ -1,0 +1,71 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Large Dataset Rendering Techniques</text>
+  
+  <!-- Virtualization -->
+  <rect x="50" y="80" width="260" height="140" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e40af">Virtualization</text>
+  <text x="180" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1e3a8a">Render visible only</text>
+  <rect x="70" y="155" width="220" height="55" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="180" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Viewport: render points 1000-1100</text>
+  <text x="180" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Total: 100,000 points</text>
+  
+  <!-- Sampling -->
+  <rect x="330" y="80" width="260" height="140" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="460" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#3730a3">Sampling</text>
+  <text x="460" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4338ca">Display subset</text>
+  <rect x="350" y="155" width="220" height="55" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="460" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Show 1,000 of 100,000 points</text>
+  <text x="460" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Random or systematic selection</text>
+  
+  <!-- Aggregation -->
+  <rect x="610" y="80" width="260" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="740" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Aggregation</text>
+  <text x="740" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">Bin and summarize</text>
+  <rect x="630" y="155" width="220" height="55" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="740" y="180" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Bin into 100 hexagons</text>
+  <text x="740" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Color by count per bin</text>
+  
+  <!-- Level of Detail -->
+  <rect x="50" y="240" width="400" height="140" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="250" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#065f46">Level of Detail (LOD)</text>
+  <text x="250" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857">Adaptive detail based on zoom</text>
+  <rect x="70" y="315" width="360" height="55" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="250" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Zoomed out: aggregated view (100 bins)</text>
+  <text x="250" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Zoomed in: detailed view (10,000 points)</text>
+  
+  <!-- GPU Acceleration -->
+  <rect x="470" y="240" width="400" height="140" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="670" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">GPU Acceleration (WebGL)</text>
+  <text x="670" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Parallel rendering</text>
+  <rect x="490" y="315" width="360" height="55" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="670" y="340" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Render 1,000,000+ points at 60fps</text>
+  <text x="670" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">GPU parallel processing</text>
+  
+  <!-- Performance Comparison -->
+  <rect x="50" y="400" width="800" height="130" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="450" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Performance by Technique (100,000 points)</text>
+  
+  <rect x="70" y="450" width="150" height="60" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="145" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#991b1b">Naive SVG</text>
+  <text x="145" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7f1d1d">~1 FPS</text>
+  
+  <rect x="240" y="450" width="150" height="60" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="315" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#92400e">Canvas</text>
+  <text x="315" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">~10 FPS</text>
+  
+  <rect x="410" y="450" width="150" height="60" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="485" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#065f46">Virtualized</text>
+  <text x="485" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857">~60 FPS</text>
+  
+  <rect x="580" y="450" width="150" height="60" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="655" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#065f46">GPU (WebGL)</text>
+  <text x="655" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857">~60 FPS</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="545" width="800" height="25" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="562" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Combine techniques based on data volume: virtualization for scrolling, sampling for overviews, GPU for massive datasets</text>
+</svg>

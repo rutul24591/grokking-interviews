@@ -1,0 +1,75 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Multi-View Coordination</text>
+  
+  <!-- Shared State -->
+  <rect x="350" y="60" width="200" height="70" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="450" y="90" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Shared State</text>
+  <text x="450" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">Selection, Filters, Zoom</text>
+  
+  <!-- View 1 -->
+  <rect x="50" y="160" width="260" height="180" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="180" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e40af">Scatter Plot</text>
+  <rect x="70" y="215" width="220" height="110" rx="4" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <circle cx="150" cy="270" r="8" fill="#3b82f6" opacity="0.6"/>
+  <circle cx="180" cy="250" r="8" fill="#3b82f6"/>
+  <circle cx="210" cy="280" r="8" fill="#3b82f6" opacity="0.6"/>
+  <circle cx="170" cy="300" r="8" fill="#3b82f6" opacity="0.6"/>
+  <text x="180" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Brush selection</text>
+  
+  <!-- View 2 -->
+  <rect x="330" y="160" width="260" height="180" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="460" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#3730a3">Histogram</text>
+  <rect x="350" y="215" width="220" height="110" rx="4" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <rect x="370" y="280" width="30" height="40" fill="#6366f1" opacity="0.4"/>
+  <rect x="410" y="260" width="30" height="60" fill="#6366f1"/>
+  <rect x="450" y="290" width="30" height="30" fill="#6366f1" opacity="0.4"/>
+  <rect x="490" y="270" width="30" height="50" fill="#6366f1" opacity="0.6"/>
+  <rect x="530" y="285" width="30" height="35" fill="#6366f1" opacity="0.4"/>
+  <text x="460" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Highlight selection</text>
+  
+  <!-- View 3 -->
+  <rect x="610" y="160" width="260" height="180" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="740" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#065f46">Parallel Coordinates</text>
+  <rect x="630" y="215" width="220" height="110" rx="4" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <line x1="650" y1="230" x2="650" y2="310" stroke="#10b981" stroke-width="2"/>
+  <line x1="690" y1="230" x2="690" y2="310" stroke="#10b981" stroke-width="2"/>
+  <line x1="730" y1="230" x2="730" y2="310" stroke="#10b981" stroke-width="2"/>
+  <line x1="770" y1="230" x2="770" y2="310" stroke="#10b981" stroke-width="2"/>
+  <line x1="810" y1="230" x2="810" y2="310" stroke="#10b981" stroke-width="2"/>
+  <path d="M 650 250 L 690 270 L 730 260 L 770 280 L 810 270" stroke="#10b981" stroke-width="2" fill="none"/>
+  <path d="M 650 260 L 690 280 L 730 270 L 770 290 L 810 280" stroke="#10b981" stroke-width="2" fill="none" opacity="0.5"/>
+  <text x="740" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Highlight selection</text>
+  
+  <!-- Arrows -->
+  <path d="M 450 130 L 450 150" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,3"/>
+  <path d="M 180 150 L 180 160" stroke="#3b82f6" stroke-width="2" stroke-dasharray="5,3"/>
+  <path d="M 460 150 L 460 160" stroke="#6366f1" stroke-width="2" stroke-dasharray="5,3"/>
+  <path d="M 740 150 L 740 160" stroke="#10b981" stroke-width="2" stroke-dasharray="5,3"/>
+  
+  <!-- Coordination Types -->
+  <rect x="50" y="360" width="820" height="170" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="460" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1e293b">Coordination Techniques</text>
+  
+  <rect x="70" y="420" width="240" height="90" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="190" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1e293b">Linking</text>
+  <text x="190" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Selection in one view</text>
+  <text x="190" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">highlights in others</text>
+  
+  <rect x="330" y="420" width="240" height="90" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="450" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1e293b">Brushing</text>
+  <text x="450" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Brush in one view</text>
+  <text x="450" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">filters others</text>
+  
+  <rect x="590" y="420" width="240" height="90" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="710" y="450" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1e293b">Focus+Context</text>
+  <text x="710" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">One view shows detail</text>
+  <text x="710" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">others show context</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="545" width="800" height="25" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="562" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Shared state enables coordination: selection, filters, and zoom synchronized across all views for multi-angle exploration</text>
+</svg>

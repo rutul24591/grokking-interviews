@@ -1,0 +1,62 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Library Integration Architecture</text>
+  
+  <!-- Application Layer -->
+  <rect x="50" y="80" width="800" height="80" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="450" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e40af">Application Layer</text>
+  <text x="450" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1e3a8a">Dashboard Components, Page Components, Feature Components</text>
+  
+  <!-- Arrow -->
+  <line x1="450" y1="160" x2="450" y2="190" stroke="#3b82f6" stroke-width="3" marker-end="url(#arrow1)"/>
+  <defs>
+    <marker id="arrow1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+  </defs>
+  
+  <!-- Abstraction Layer -->
+  <rect x="50" y="190" width="800" height="100" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="450" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#3730a3">Chart Abstraction Layer</text>
+  <text x="450" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4338ca">ChartRegistry, ChartFactory, Common Interface</text>
+  <text x="450" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4338ca">createChart(type, config), updateChart(id, data), destroyChart(id)</text>
+  
+  <!-- Arrow -->
+  <line x1="450" y1="290" x2="450" y2="320" stroke="#6366f1" stroke-width="3" marker-end="url(#arrow2)"/>
+  <defs>
+    <marker id="arrow2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+  </defs>
+  
+  <!-- Library Layer -->
+  <rect x="50" y="320" width="250" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="175" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">D3.js</text>
+  <text x="175" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">Low-level toolkit</text>
+  <text x="175" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">Maximum flexibility</text>
+  <text x="175" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">Custom visualizations</text>
+  
+  <rect x="325" y="320" width="250" height="120" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="450" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#065f46">Recharts</text>
+  <text x="450" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857">React components</text>
+  <text x="450" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857">Declarative API</text>
+  <text x="450" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857">Standard charts</text>
+  
+  <rect x="600" y="320" width="250" height="120" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="725" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">Chart.js</text>
+  <text x="725" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">High-level library</text>
+  <text x="725" y="405" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Configuration-based</text>
+  <text x="725" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Quick setup</text>
+  
+  <!-- Data Flow -->
+  <rect x="50" y="460" width="800" height="70" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="450" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Data Flow: Raw Data → Transform → Chart Config → Library → Render</text>
+  <text x="450" y="515" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Abstraction layer handles library-specific transformations</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="545" width="800" height="25" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="562" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Abstraction layer enables library switching, consistent API, and centralized optimization across multiple chart libraries</text>
+</svg>

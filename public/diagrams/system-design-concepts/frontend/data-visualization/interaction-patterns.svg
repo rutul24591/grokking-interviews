@@ -1,0 +1,81 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Interaction Patterns</text>
+  
+  <!-- Hover/Tooltip -->
+  <rect x="50" y="80" width="260" height="140" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="180" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e40af">Hover (Tooltip)</text>
+  <text x="180" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1e3a8a">Details on demand</text>
+  <rect x="70" y="155" width="220" height="55" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <rect x="150" y="165" width="80" height="35" rx="4" fill="#3b82f6"/>
+  <text x="190" y="187" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#ffffff">Data Point</text>
+  <rect x="140" y="140" width="100" height="20" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="190" y="154" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#92400e">Value: 42</text>
+  
+  <!-- Click/Selection -->
+  <rect x="330" y="80" width="260" height="140" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="460" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#3730a3">Click (Selection)</text>
+  <text x="460" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#4338ca">Focus on relevant</text>
+  <rect x="350" y="155" width="220" height="55" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <circle cx="390" cy="182" r="12" fill="#6366f1" opacity="0.3"/>
+  <circle cx="430" cy="182" r="12" fill="#6366f1"/>
+  <circle cx="470" cy="182" r="12" fill="#6366f1" opacity="0.3"/>
+  <circle cx="510" cy="182" r="12" fill="#6366f1" opacity="0.3"/>
+  <text x="460" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#4338ca">Selected</text>
+  
+  <!-- Brush/Range -->
+  <rect x="610" y="80" width="260" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="740" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">Brush (Range)</text>
+  <text x="740" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">Select range</text>
+  <rect x="630" y="155" width="220" height="55" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <rect x="650" y="170" width="180" height="25" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <line x1="650" y1="170" x2="650" y2="195" stroke="#f59e0b" stroke-width="2"/>
+  <line x1="830" y1="170" x2="830" y2="195" stroke="#f59e0b" stroke-width="2"/>
+  <text x="740" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#78350f">Selected range</text>
+  
+  <!-- Zoom/Pan -->
+  <rect x="50" y="240" width="400" height="140" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="250" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#065f46">Zoom / Pan</text>
+  <text x="250" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857">Navigate and scale</text>
+  <rect x="70" y="315" width="360" height="55" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <rect x="100" y="330" width="280" height="25" rx="4" fill="#10b981" opacity="0.2"/>
+  <rect x="150" y="330" width="180" height="25" rx="4" fill="#10b981" opacity="0.5"/>
+  <text x="250" y="360" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#047857">Zoom level indicator</text>
+  
+  <!-- Filter -->
+  <rect x="470" y="240" width="400" height="140" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="670" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">Filter</text>
+  <text x="670" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Show subset</text>
+  <rect x="490" y="315" width="360" height="55" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <rect x="510" y="330" width="70" height="25" rx="4" fill="#22c55e"/>
+  <text x="545" y="347" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#ffffff">Category A</text>
+  <rect x="590" y="330" width="70" height="25" rx="4" fill="#22c55e"/>
+  <text x="625" y="347" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#ffffff">Category B</text>
+  <rect x="670" y="330" width="70" height="25" rx="4" fill="#e5e7eb"/>
+  <text x="705" y="347" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#64748b">Category C</text>
+  <rect x="750" y="330" width="70" height="25" rx="4" fill="#e5e7eb"/>
+  <text x="785" y="347" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#64748b">Category D</text>
+  
+  <!-- Multi-View Coordination -->
+  <rect x="50" y="400" width="800" height="130" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="450" y="430" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Multi-View Coordination</text>
+  
+  <rect x="70" y="445" width="240" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="190" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">View 1</text>
+  <text x="190" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">Selection →</text>
+  
+  <rect x="330" y="445" width="240" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="450" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">View 2</text>
+  <text x="450" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">← Highlight →</text>
+  
+  <rect x="590" y="445" width="240" height="70" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="710" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">View 3</text>
+  <text x="710" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#475569">← Highlight</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="545" width="800" height="25" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="562" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Each interaction serves exploration goal: hover for details, click for selection, brush for ranges, zoom for scale, filter for subsets</text>
+</svg>
