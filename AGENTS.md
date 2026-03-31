@@ -65,13 +65,16 @@ For each article:
 
 - Issues Found:
 - Repetitive content
-- Lack of depth (Target 6000 word count approximately, +/- 500 words)
+- Lack of depth (Target 5500 word count approximately, +/- 500 words)
 - Missing SVGs
 - Missing references
 - Interview questions-answers present
 - Structure violations
 - Structure violations(order)
 - Check for placeholder svgs in article.
+- No code example or code blocks should be present in the article.
+- Check for any <section> with <pre> tag or header "Implementation Example" or string "Example code ..." and remove that section completely.
+- Content should be more paragraphed styled than bulleted.
 
 - Suggestions:
 - Specific improvements
@@ -143,7 +146,9 @@ If needed you can add specific content section but by and large the structure sh
 
 </constraints>
 <reference-example>For creating articles, refer to the article created at location  
-"content/articles/system-design/frontend/scalability-architecture-patterns/component-libraries-and-design-systems.tsx" 
+"content/articles/system-design/frontend/scalability-architecture-patterns/component-libraries-and-design-systems.tsx"
+"content/articles/system-design/frontend/animation-transitions/animation-queuing.tsx" 
+"content/articles/system-design/frontend/web-standards-and-compatibility/graceful-degradation.tsx"
 </reference-example>
 <svg-issues>
 These are the issues to be considered and avoided while building svg's.
