@@ -71,9 +71,28 @@ export function ArticleLayout({ metadata, children }: ArticleLayoutProps) {
 
         // Import manifest dynamically
         const manifest = await import("@/content/examples-manifest.json");
-        const articleExamples =
-          (manifest.default as Record<string, ExampleGroup[]>)[manifestKey] ||
-          [];
+        const rawData =
+          (manifest.default as Record<string, unknown>)[manifestKey];
+        
+        // Normalize the data to match ExampleGroup type
+        const articleExamples: ExampleGroup[] = Array.isArray(rawData)
+          ? rawData.map((item: unknown) => {
+              const eg = item as Record<string, unknown>;
+              return {
+                id: String(eg.id ?? ""),
+                label: String(eg.label ?? eg.id ?? ""),
+                files: Array.isArray(eg.files)
+                  ? eg.files.map((f: unknown) => {
+                      const file = f as Record<string, unknown>;
+                      return {
+                        name: String(file.name ?? file.path ?? ""),
+                        content: String(file.content ?? ""),
+                      };
+                    })
+                  : [],
+              };
+            })
+          : [];
         setExamples(articleExamples);
       } catch (error) {
         console.warn("Failed to load examples:", error);
