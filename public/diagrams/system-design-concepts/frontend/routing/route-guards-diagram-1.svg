@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <!-- Background -->
+  <rect width="900" height="500" fill="#f3f1f8" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="32" text-anchor="middle" font-size="16" font-weight="700" fill="#1a1822">Route Guard Decision Flow</text>
+
+  <!-- Start: User navigates -->
+  <rect x="320" y="50" width="260" height="40" rx="20" fill="#6d5bd0"/>
+  <text x="450" y="75" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">User navigates to /admin/settings</text>
+
+  <!-- Arrow down -->
+  <line x1="450" y1="90" x2="450" y2="120" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Decision 1: Authenticated? -->
+  <polygon points="450,120 560,170 450,220 340,170" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="166" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">Authenticated?</text>
+  <text x="450" y="181" text-anchor="middle" font-size="11" fill="#6d5bd0">Check session/token</text>
+
+  <!-- No → Redirect to /login -->
+  <line x1="560" y1="170" x2="720" y2="170" stroke="#d7d1e6" stroke-width="2" marker-end="url(#arrowGray)"/>
+  <text x="640" y="162" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">No</text>
+  <rect x="720" y="148" width="160" height="44" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="800" y="166" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Redirect to /login</text>
+  <text x="800" y="182" text-anchor="middle" font-size="10" fill="#6d5bd0">Save returnUrl=/admin/settings</text>
+
+  <!-- Yes arrow down -->
+  <line x1="450" y1="220" x2="450" y2="250" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="440" y="240" text-anchor="end" font-size="11" font-weight="600" fill="#1a1822">Yes</text>
+
+  <!-- Decision 2: Has admin role? -->
+  <polygon points="450,250 560,300 450,350 340,300" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="296" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">Has admin role?</text>
+  <text x="450" y="311" text-anchor="middle" font-size="11" fill="#6d5bd0">Check user.roles</text>
+
+  <!-- No → Redirect to /unauthorized -->
+  <line x1="560" y1="300" x2="720" y2="300" stroke="#d7d1e6" stroke-width="2" marker-end="url(#arrowGray)"/>
+  <text x="640" y="292" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">No</text>
+  <rect x="720" y="278" width="160" height="44" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="800" y="296" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Redirect to</text>
+  <text x="800" y="312" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">/unauthorized</text>
+
+  <!-- Yes arrow down -->
+  <line x1="450" y1="350" x2="450" y2="380" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="440" y="370" text-anchor="end" font-size="11" font-weight="600" fill="#1a1822">Yes</text>
+
+  <!-- Decision 3: Email verified? -->
+  <polygon points="450,380 548,420 450,460 352,420" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="416" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">Email verified?</text>
+  <text x="450" y="431" text-anchor="middle" font-size="11" fill="#6d5bd0">Check user.emailVerified</text>
+
+  <!-- No → Redirect to /verify-email -->
+  <line x1="548" y1="420" x2="720" y2="420" stroke="#d7d1e6" stroke-width="2" marker-end="url(#arrowGray)"/>
+  <text x="634" y="412" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">No</text>
+  <rect x="720" y="398" width="160" height="44" rx="6" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="800" y="416" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Redirect to</text>
+  <text x="800" y="432" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">/verify-email</text>
+
+  <!-- Yes arrow down-left -->
+  <line x1="352" y1="420" x2="200" y2="420" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="200" y1="420" x2="200" y2="460" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="340" y="412" text-anchor="end" font-size="11" font-weight="600" fill="#1a1822">Yes</text>
+
+  <!-- Render AdminSettings -->
+  <rect x="100" y="460" width="200" height="34" rx="6" fill="#6d5bd0"/>
+  <text x="200" y="482" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Render AdminSettings</text>
+
+  <!-- Checkmark icon -->
+  <circle cx="110" cy="477" r="10" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+  <polyline points="105,477 109,481 116,473" fill="none" stroke="#ffffff" stroke-width="2"/>
+
+  <!-- Legend -->
+  <rect x="16" y="50" width="12" height="12" rx="2" fill="#6d5bd0"/>
+  <text x="34" y="61" font-size="10" fill="#1a1822">Action / Terminal</text>
+  <polygon points="22,80 28,86 22,92 16,86" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="34" y="90" font-size="10" fill="#1a1822">Decision (Guard Check)</text>
+  <rect x="16" y="100" width="12" height="12" rx="2" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="34" y="111" font-size="10" fill="#1a1822">Redirect (Guard Rejected)</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d7d1e6"/>
+    </marker>
+  </defs>
+</svg>

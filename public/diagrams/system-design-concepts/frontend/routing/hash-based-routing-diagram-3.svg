@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <!-- Background -->
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Hash-Based vs History API Routing</text>
+
+  <!-- Table structure -->
+  <!-- Header row -->
+  <rect x="40" y="60" width="280" height="48" rx="0" fill="#1a1822"/>
+  <rect x="40" y="60" width="280" height="48" rx="8 0 0 0" fill="#1a1822"/>
+  <text x="180" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Dimension</text>
+
+  <rect x="320" y="60" width="260" height="48" fill="#e8842c"/>
+  <text x="450" y="83" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Hash-Based Routing</text>
+  <text x="450" y="100" text-anchor="middle" font-size="10" fill="#ffffff" font-family="monospace">/#/path</text>
+
+  <rect x="580" y="60" width="280" height="48" fill="#6d5bd0"/>
+  <rect x="580" y="60" width="280" height="48" rx="0 8 0 0" fill="#6d5bd0"/>
+  <text x="720" y="83" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">History API Routing</text>
+  <text x="720" y="100" text-anchor="middle" font-size="10" fill="#ffffff" font-family="monospace">/path</text>
+
+  <!-- Row 1: URL Aesthetics -->
+  <rect x="40" y="108" width="280" height="56" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="60" y="135" font-size="13" font-weight="600" fill="#1a1822">URL Aesthetics</text>
+  <text x="60" y="152" font-size="10" fill="#888">How clean the URL looks</text>
+
+  <rect x="320" y="108" width="260" height="56" fill="#fff7ed" stroke="#d7d1e6" stroke-width="1"/>
+  <circle cx="345" cy="136" r="11" fill="#ef4444"/>
+  <text x="340" y="140" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">✗</text>
+  <text x="365" y="132" font-size="12" fill="#1a1822" font-weight="600">Ugly</text>
+  <text x="365" y="150" font-size="10" fill="#888" font-family="monospace">app.com/#/dashboard</text>
+
+  <rect x="580" y="108" width="280" height="56" fill="#f0eef8" stroke="#d7d1e6" stroke-width="1"/>
+  <circle cx="605" cy="136" r="11" fill="#34a853"/>
+  <text x="600" y="140" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">✓</text>
+  <text x="625" y="132" font-size="12" fill="#1a1822" font-weight="600">Clean</text>
+  <text x="625" y="150" font-size="10" fill="#888" font-family="monospace">app.com/dashboard</text>
+
+  <!-- Row 2: Server Configuration -->
+  <rect x="40" y="164" width="280" height="56" fill="#f9f8fc" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="60" y="191" font-size="13" font-weight="600" fill="#1a1822">Server Configuration</text>
+  <text x="60" y="208" font-size="10" fill="#888">Setup needed on server side</text>
+
+  <rect x="320" y="164" width="260" height="56" fill="#fff7ed" stroke="#d7d1e6" stroke-width="1"/>
+  <circle cx="345" cy="192" r="11" fill="#34a853"/>
+  <text x="340" y="196" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">✓</text>
+  <text x="365" y="188" font-size="12" fill="#1a1822" font-weight="600">None Required</text>
+  <text x="365" y="206" font-size="10" fill="#888">Works on any static host</text>
+
+  <rect x="580" y="164" width="280" height="56" fill="#f0eef8" stroke="#d7d1e6" stroke-width="1"/>
+  <circle cx="605" cy="192" r="11" fill="#ef4444"/>
+  <text x="600" y="196" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">✗</text>
+  <text x="625" y="188" font-size="12" fill="#1a1822" font-weight="600">Catch-All Required</text>
+  <text x="625" y="206" font-size="10" fill="#888">All routes → index.html</text>
+
+  <!-- Row 3: SEO -->
+  <rect x="40" y="220" width="280" height="56" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="60" y="247" font-size="13" font-weight="600" fill="#1a1822">SEO Friendliness</text>
+  <text x="60" y="264" font-size="10" fill="#888">Search engine indexability</text>
+
+  <rect x="320" y="220" width="260" height="56" fill="#fff7ed" stroke="#d7d1e6" stroke-width="1"/>
+  <circle cx="345" cy="248" r="11" fill="#ef4444"/>
+  <text x="340" y="252" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">✗</text>
+  <text x="365" y="244" font-size="12" fill="#1a1822" font-weight="600">Poor</text>
+  <text x="365" y="262" font-size="10" fill="#888">Crawlers ignore hash fragments</text>
+
+  <rect x="580" y="220" width="280" height="56" fill="#f0eef8" stroke="#d7d1e6" stroke-width="1"/>
+  <circle cx="605" cy="248" r="11" fill="#34a853"/>
+  <text x="600" y="252" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">✓</text>
+  <text x="625" y="244" font-size="12" fill="#1a1822" font-weight="600">Good</text>
+  <text x="625" y="262" font-size="10" fill="#888">Unique URLs per page</text>
+
+  <!-- Row 4: Browser Support -->
+  <rect x="40" y="276" width="280" height="56" fill="#f9f8fc" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="60" y="303" font-size="13" font-weight="600" fill="#1a1822">Browser Support</text>
+  <text x="60" y="320" font-size="10" fill="#888">Compatibility range</text>
+
+  <rect x="320" y="276" width="260" height="56" fill="#fff7ed" stroke="#d7d1e6" stroke-width="1"/>
+  <circle cx="345" cy="304" r="11" fill="#34a853"/>
+  <text x="340" y="308" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">✓</text>
+  <text x="365" y="300" font-size="12" fill="#1a1822" font-weight="600">Universal</text>
+  <text x="365" y="318" font-size="10" fill="#888">All browsers, including IE6+</text>
+
+  <rect x="580" y="276" width="280" height="56" fill="#f0eef8" stroke="#d7d1e6" stroke-width="1"/>
+  <circle cx="605" cy="304" r="11" fill="#f59e0b"/>
+  <text x="601" y="309" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">~</text>
+  <text x="625" y="300" font-size="12" fill="#1a1822" font-weight="600">Modern Only</text>
+  <text x="625" y="318" font-size="10" fill="#888">IE10+, all modern browsers</text>
+
+  <!-- Row 5: Bookmarkable -->
+  <rect x="40" y="332" width="280" height="56" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="60" y="359" font-size="13" font-weight="600" fill="#1a1822">Bookmarkable</text>
+  <text x="60" y="376" font-size="10" fill="#888">Can save and share URLs</text>
+
+  <rect x="320" y="332" width="260" height="56" fill="#fff7ed" stroke="#d7d1e6" stroke-width="1"/>
+  <circle cx="345" cy="360" r="11" fill="#34a853"/>
+  <text x="340" y="364" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">✓</text>
+  <text x="365" y="356" font-size="12" fill="#1a1822" font-weight="600">Yes</text>
+  <text x="365" y="374" font-size="10" fill="#888">Hash preserved in bookmarks</text>
+
+  <rect x="580" y="332" width="280" height="56" fill="#f0eef8" stroke="#d7d1e6" stroke-width="1"/>
+  <circle cx="605" cy="360" r="11" fill="#34a853"/>
+  <text x="600" y="364" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">✓</text>
+  <text x="625" y="356" font-size="12" fill="#1a1822" font-weight="600">Yes</text>
+  <text x="625" y="374" font-size="10" fill="#888">Full URL bookmarkable</text>
+
+  <!-- Row 6: Server Request on Navigate -->
+  <rect x="40" y="388" width="280" height="56" fill="#f9f8fc" stroke="#d7d1e6" stroke-width="1"/>
+  <rect x="40" y="388" width="280" height="56" rx="0 0 0 8" fill="#f9f8fc" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="60" y="415" font-size="13" font-weight="600" fill="#1a1822">Server Request on Navigate</text>
+  <text x="60" y="432" font-size="10" fill="#888">HTTP call on route change</text>
+
+  <rect x="320" y="388" width="260" height="56" fill="#fff7ed" stroke="#d7d1e6" stroke-width="1"/>
+  <circle cx="345" cy="416" r="11" fill="#34a853"/>
+  <text x="340" y="420" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">✓</text>
+  <text x="365" y="412" font-size="12" fill="#1a1822" font-weight="600">No Request</text>
+  <text x="365" y="430" font-size="10" fill="#888">Client-side only</text>
+
+  <rect x="580" y="388" width="280" height="56" fill="#f0eef8" stroke="#d7d1e6" stroke-width="1"/>
+  <rect x="580" y="388" width="280" height="56" rx="0 0 8 0" fill="#f0eef8" stroke="#d7d1e6" stroke-width="1"/>
+  <circle cx="605" cy="416" r="11" fill="#34a853"/>
+  <text x="600" y="420" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">✓</text>
+  <text x="625" y="412" font-size="12" fill="#1a1822" font-weight="600">No Request</text>
+  <text x="625" y="430" font-size="10" fill="#888">pushState is client-side</text>
+
+  <!-- Summary bar -->
+  <rect x="40" y="458" width="820" height="32" rx="8" fill="#1a1822"/>
+  <text x="180" y="479" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Verdict:</text>
+  <text x="450" y="479" text-anchor="middle" font-size="11" fill="#e8842c" font-weight="600">Hash routing = simpler setup, legacy support</text>
+  <text x="450" y="479" text-anchor="middle" font-size="11" fill="#e8842c" font-weight="600">Hash = simpler setup, legacy support</text>
+  <text x="720" y="479" text-anchor="middle" font-size="11" fill="#b4a7e0" font-weight="600">History API = modern standard, better UX</text>
+</svg>

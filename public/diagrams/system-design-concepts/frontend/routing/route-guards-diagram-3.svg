@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Server-side vs client-side guard comparison showing security boundaries</title>
+
+  <!-- Background -->
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Client-Side vs Server-Side Route Guards</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Defense in Depth: Both layers are necessary for secure applications</text>
+
+  <!-- Left Column: Client-Side -->
+  <rect x="30" y="75" width="400" height="310" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="30" y="75" width="400" height="45" rx="12" fill="#6d5bd0"/>
+  <rect x="30" y="100" width="400" height="20" fill="#6d5bd0"/>
+  <text x="230" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Client-Side Guards</text>
+
+  <text x="50" y="145" font-size="12" font-weight="600" fill="#1a1822">How it works:</text>
+  <text x="50" y="165" font-size="11" fill="#1a1822">Router checks auth state in memory/storage</text>
+  <text x="50" y="182" font-size="11" fill="#1a1822">→ Conditionally renders or redirects</text>
+
+  <text x="50" y="210" font-size="12" font-weight="600" fill="#4caf50">Strengths:</text>
+  <text x="50" y="230" font-size="11" fill="#1a1822">• Instant feedback (no server round-trip)</text>
+  <text x="50" y="247" font-size="11" fill="#1a1822">• Smooth UX transitions</text>
+  <text x="50" y="264" font-size="11" fill="#1a1822">• Reduces unnecessary API calls</text>
+
+  <text x="50" y="292" font-size="12" font-weight="600" fill="#cc4444">Weaknesses:</text>
+  <text x="50" y="312" font-size="11" fill="#1a1822">• Can be bypassed (DevTools, direct API)</text>
+  <text x="50" y="329" font-size="11" fill="#1a1822">• Auth state can become stale</text>
+  <text x="50" y="346" font-size="11" fill="#1a1822">• JavaScript can be disabled/modified</text>
+
+  <rect x="50" y="358" width="360" height="18" rx="4" fill="#f0ad4e" opacity="0.2"/>
+  <text x="230" y="372" text-anchor="middle" font-size="10" font-weight="700" fill="#f0ad4e">UX PROTECTION ONLY</text>
+
+  <!-- Right Column: Server-Side -->
+  <rect x="470" y="75" width="400" height="310" rx="12" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="470" y="75" width="400" height="45" rx="12" fill="#6d5bd0"/>
+  <rect x="470" y="100" width="400" height="20" fill="#6d5bd0"/>
+  <text x="670" y="103" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Server-Side Guards</text>
+
+  <text x="490" y="145" font-size="12" font-weight="600" fill="#1a1822">How it works:</text>
+  <text x="490" y="165" font-size="11" fill="#1a1822">Middleware validates JWT/session on every request</text>
+  <text x="490" y="182" font-size="11" fill="#1a1822">→ Returns 401/403 or allows through</text>
+
+  <text x="490" y="210" font-size="12" font-weight="600" fill="#4caf50">Strengths:</text>
+  <text x="490" y="230" font-size="11" fill="#1a1822">• Cannot be bypassed by client</text>
+  <text x="490" y="247" font-size="11" fill="#1a1822">• Validates against real-time auth state</text>
+  <text x="490" y="264" font-size="11" fill="#1a1822">• Protects API endpoints directly</text>
+
+  <text x="490" y="292" font-size="12" font-weight="600" fill="#cc4444">Weaknesses:</text>
+  <text x="490" y="312" font-size="11" fill="#1a1822">• Network latency on every check</text>
+  <text x="490" y="329" font-size="11" fill="#1a1822">• Server load from validation</text>
+  <text x="490" y="346" font-size="11" fill="#1a1822">• Flash of unauthorized content possible</text>
+
+  <rect x="490" y="358" width="360" height="18" rx="4" fill="#4caf50" opacity="0.2"/>
+  <text x="670" y="372" text-anchor="middle" font-size="10" font-weight="700" fill="#4caf50">TRUE SECURITY BOUNDARY</text>
+
+  <!-- Defense in Depth section -->
+  <rect x="30" y="405" width="840" height="80" rx="12" fill="#6d5bd0"/>
+  <text x="450" y="430" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">Defense in Depth — Use Both Together</text>
+
+  <!-- Flow showing both layers -->
+  <text x="80" y="455" font-size="11" fill="#ffffff">User Request</text>
+  <line x1="160" y1="450" x2="210" y2="450" stroke="#ffffff" stroke-width="2" marker-end="url(#arrowW)"/>
+  <rect x="210" y="438" width="140" height="28" rx="6" fill="#ffffff" opacity="0.2"/>
+  <text x="280" y="457" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Client Guard</text>
+  <line x1="350" y1="450" x2="400" y2="450" stroke="#ffffff" stroke-width="2" marker-end="url(#arrowW)"/>
+  <text x="375" y="470" text-anchor="middle" font-size="8" fill="#ffffff" opacity="0.8">Fast UX</text>
+  <rect x="400" y="438" width="140" height="28" rx="6" fill="#ffffff" opacity="0.2"/>
+  <text x="470" y="457" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Server Guard</text>
+  <line x1="540" y1="450" x2="590" y2="450" stroke="#ffffff" stroke-width="2" marker-end="url(#arrowW)"/>
+  <text x="565" y="470" text-anchor="middle" font-size="8" fill="#ffffff" opacity="0.8">True auth</text>
+  <rect x="590" y="438" width="140" height="28" rx="6" fill="#ffffff" opacity="0.2"/>
+  <text x="660" y="457" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Protected Data</text>
+  <line x1="730" y1="450" x2="780" y2="450" stroke="#ffffff" stroke-width="2" marker-end="url(#arrowW)"/>
+  <text x="830" y="457" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff">Render</text>
+
+  <defs>
+    <marker id="arrowW" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ffffff"/>
+    </marker>
+  </defs>
+</svg>

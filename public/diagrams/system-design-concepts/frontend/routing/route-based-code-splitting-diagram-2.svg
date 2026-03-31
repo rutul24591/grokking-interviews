@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <!-- Background -->
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Prefetching Strategies Timeline</text>
+
+  <!-- Timeline axis -->
+  <line x1="80" y1="460" x2="860" y2="460" stroke="#1a1822" stroke-width="2"/>
+  <!-- Tick marks and labels -->
+  <line x1="80" y1="455" x2="80" y2="465" stroke="#1a1822" stroke-width="2"/>
+  <text x="80" y="485" text-anchor="middle" font-size="11" fill="#1a1822">0s</text>
+
+  <line x1="260" y1="455" x2="260" y2="465" stroke="#1a1822" stroke-width="2"/>
+  <text x="260" y="485" text-anchor="middle" font-size="11" fill="#1a1822">Page Load</text>
+
+  <line x1="500" y1="455" x2="500" y2="465" stroke="#1a1822" stroke-width="2"/>
+  <text x="500" y="485" text-anchor="middle" font-size="11" fill="#1a1822">User Scrolls</text>
+
+  <line x1="640" y1="455" x2="640" y2="465" stroke="#1a1822" stroke-width="2"/>
+  <text x="640" y="485" text-anchor="middle" font-size="11" fill="#1a1822">Hover Link</text>
+
+  <line x1="750" y1="455" x2="750" y2="465" stroke="#1a1822" stroke-width="2"/>
+  <text x="750" y="485" text-anchor="middle" font-size="11" fill="#1a1822">Click</text>
+
+  <line x1="860" y1="455" x2="860" y2="465" stroke="#1a1822" stroke-width="2"/>
+  <text x="860" y="485" text-anchor="middle" font-size="11" fill="#1a1822">Navigated</text>
+
+  <!-- Navigation moment line -->
+  <line x1="750" y1="55" x2="750" y2="455" stroke="#1a1822" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.4"/>
+  <text x="750" y="50" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1822">USER CLICKS</text>
+
+  <!-- ============ STRATEGY 1: No Prefetch (baseline) ============ -->
+  <text x="80" y="85" font-size="13" font-weight="600" fill="#1a1822">No Prefetch (Baseline)</text>
+  <!-- Load bar starts at click -->
+  <rect x="750" y="93" width="110" height="24" rx="4" fill="#d93025" opacity="0.85"/>
+  <text x="805" y="109" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">Loading 350ms</text>
+  <!-- Wait indicator -->
+  <text x="870" y="108" font-size="18" fill="#d93025">!</text>
+  <text x="750" y="132" font-size="10" fill="#d93025" font-weight="500">User waits for full download</text>
+
+  <!-- ============ STRATEGY 2: Hover Prefetch ============ -->
+  <text x="80" y="175" font-size="13" font-weight="600" fill="#6d5bd0">1. Hover Prefetch</text>
+  <text x="80" y="192" font-size="10" fill="#1a1822" opacity="0.7">onMouseEnter / onFocus triggers fetch</text>
+
+  <!-- Hover moment -->
+  <circle cx="640" cy="213" r="5" fill="#6d5bd0"/>
+  <text x="640" y="230" text-anchor="middle" font-size="9" fill="#6d5bd0">hover</text>
+
+  <!-- Prefetch bar from hover to after click -->
+  <rect x="640" y="205" width="90" height="18" rx="4" fill="#6d5bd0" opacity="0.3"/>
+  <text x="685" y="217" text-anchor="middle" font-size="9" fill="#6d5bd0">prefetching</text>
+
+  <!-- Already loaded marker at click -->
+  <rect x="730" y="205" width="50" height="18" rx="4" fill="#34a853"/>
+  <text x="755" y="217" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">ready</text>
+
+  <!-- Head start annotation -->
+  <line x1="640" y1="240" x2="750" y2="240" stroke="#6d5bd0" stroke-width="1.5"/>
+  <polygon points="640,237 640,243 634,240" fill="#6d5bd0"/>
+  <polygon points="750,237 750,243 756,240" fill="#6d5bd0"/>
+  <text x="695" y="254" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="500">~300ms head start</text>
+
+  <!-- ============ STRATEGY 3: Viewport Prefetch ============ -->
+  <text x="80" y="295" font-size="13" font-weight="600" fill="#6d5bd0">2. Viewport Prefetch</text>
+  <text x="80" y="312" font-size="10" fill="#1a1822" opacity="0.7">IntersectionObserver triggers when link visible</text>
+
+  <!-- Viewport enter moment -->
+  <circle cx="500" cy="333" r="5" fill="#6d5bd0"/>
+  <text x="500" y="350" text-anchor="middle" font-size="9" fill="#6d5bd0">in viewport</text>
+
+  <!-- Prefetch bar -->
+  <rect x="500" y="325" width="120" height="18" rx="4" fill="#6d5bd0" opacity="0.3"/>
+  <text x="560" y="337" text-anchor="middle" font-size="9" fill="#6d5bd0">prefetching</text>
+
+  <!-- Cached marker -->
+  <rect x="620" y="325" width="50" height="18" rx="4" fill="#34a853"/>
+  <text x="645" y="337" text-anchor="middle" font-size="9" font-weight="600" fill="#ffffff">cached</text>
+
+  <!-- At click time, instant -->
+  <rect x="750" y="325" width="40" height="18" rx="4" fill="#34a853"/>
+  <text x="770" y="337" text-anchor="middle" font-size="8" font-weight="600" fill="#ffffff">instant</text>
+
+  <!-- ============ STRATEGY 4: Idle Prefetch ============ -->
+  <text x="80" y="395" font-size="13" font-weight="600" fill="#6d5bd0">3. Idle Prefetch</text>
+  <text x="80" y="412" font-size="10" fill="#1a1822" opacity="0.7">requestIdleCallback during browser idle time</text>
+
+  <!-- Idle time blocks -->
+  <rect x="300" y="420" width="50" height="18" rx="4" fill="#6d5bd0" opacity="0.2"/>
+  <text x="325" y="432" text-anchor="middle" font-size="8" fill="#6d5bd0">idle</text>
+
+  <rect x="370" y="420" width="60" height="18" rx="4" fill="#6d5bd0" opacity="0.3"/>
+  <text x="400" y="432" text-anchor="middle" font-size="8" fill="#6d5bd0">prefetch</text>
+
+  <rect x="450" y="420" width="50" height="18" rx="4" fill="#34a853"/>
+  <text x="475" y="432" text-anchor="middle" font-size="8" font-weight="600" fill="#ffffff">cached</text>
+
+  <!-- At click time, instant -->
+  <rect x="750" y="420" width="40" height="18" rx="4" fill="#34a853"/>
+  <text x="770" y="432" text-anchor="middle" font-size="8" font-weight="600" fill="#ffffff">instant</text>
+
+  <!-- Summary box -->
+  <rect x="80" y="55" width="200" height="18" rx="3" fill="#6d5bd0" opacity="0.1"/>
+  <text x="180" y="67" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">Earlier prefetch = faster navigation</text>
+</svg>

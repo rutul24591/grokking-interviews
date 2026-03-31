@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <!-- Background -->
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Event Flow: pushState vs Browser Navigation</text>
+
+  <!-- Divider line -->
+  <line x1="450" y1="55" x2="450" y2="460" stroke="#d7d1e6" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="450" y="485" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">KEY DIFFERENCE: pushState() does NOT trigger popstate</text>
+
+  <!-- ===== LEFT SIDE: Programmatic Navigation ===== -->
+  <rect x="30" y="55" width="390" height="36" rx="8" fill="#6d5bd0"/>
+  <text x="225" y="78" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">Programmatic Navigation</text>
+
+  <!-- Step 1: pushState call -->
+  <rect x="80" y="110" width="290" height="50" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="225" y="132" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">history.pushState(state, &quot;&quot;, url)</text>
+  <text x="225" y="149" text-anchor="middle" font-size="11" fill="#1a1822">Called by application code</text>
+
+  <!-- Arrow down -->
+  <line x1="225" y1="160" x2="225" y2="185" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowDown)"/>
+
+  <!-- Step 2: URL changes -->
+  <rect x="80" y="185" width="290" height="44" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="225" y="207" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">URL Bar Updates</text>
+  <text x="225" y="222" text-anchor="middle" font-size="11" fill="#6d5bd0">Browser address bar reflects new URL</text>
+
+  <!-- Arrow down -->
+  <line x1="225" y1="229" x2="225" y2="254" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowDown)"/>
+
+  <!-- Step 3: NO EVENT (highlighted in red-ish) -->
+  <rect x="80" y="254" width="290" height="50" rx="8" fill="#fff0f0" stroke="#e05252" stroke-width="2.5"/>
+  <text x="225" y="276" text-anchor="middle" font-size="14" font-weight="800" fill="#e05252">NO EVENT FIRED</text>
+  <text x="225" y="295" text-anchor="middle" font-size="11" fill="#e05252">popstate is NOT triggered</text>
+
+  <!-- Arrow down -->
+  <line x1="225" y1="304" x2="225" y2="329" stroke="#e05252" stroke-width="2" marker-end="url(#arrowRed)"/>
+
+  <!-- Step 4: Manual update required -->
+  <rect x="80" y="329" width="290" height="56" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="225" y="352" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">App Must Update UI Manually</text>
+  <text x="225" y="369" text-anchor="middle" font-size="11" fill="#6d5bd0">Call render/navigate function directly</text>
+  <text x="225" y="381" text-anchor="middle" font-size="10" fill="#1a1822">after pushState/replaceState</text>
+
+  <!-- Warning icon area -->
+  <rect x="120" y="400" width="210" height="32" rx="6" fill="#e8e4f3"/>
+  <text x="225" y="420" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Developer must handle routing</text>
+
+  <!-- ===== RIGHT SIDE: Browser Navigation ===== -->
+  <rect x="480" y="55" width="390" height="36" rx="8" fill="#6d5bd0"/>
+  <text x="675" y="78" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">Browser Navigation</text>
+
+  <!-- Step 1: User action -->
+  <rect x="530" y="110" width="290" height="50" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="675" y="132" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">User Clicks Back / Forward</text>
+  <text x="675" y="149" text-anchor="middle" font-size="11" fill="#1a1822">Or browser gesture / keyboard shortcut</text>
+
+  <!-- Arrow down -->
+  <line x1="675" y1="160" x2="675" y2="185" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowDown)"/>
+
+  <!-- Step 2: popstate fires -->
+  <rect x="530" y="185" width="290" height="50" rx="8" fill="#edfaef" stroke="#34a853" stroke-width="2.5"/>
+  <text x="675" y="207" text-anchor="middle" font-size="14" font-weight="800" fill="#34a853">popstate EVENT FIRES</text>
+  <text x="675" y="226" text-anchor="middle" font-size="11" fill="#34a853">window dispatches PopStateEvent</text>
+
+  <!-- Arrow down -->
+  <line x1="675" y1="235" x2="675" y2="260" stroke="#34a853" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+  <!-- Step 3: Event handler reads state -->
+  <rect x="530" y="260" width="290" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="675" y="282" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">Event Handler Reads State</text>
+  <text x="675" y="299" text-anchor="middle" font-size="11" fill="#6d5bd0">event.state contains saved data</text>
+
+  <!-- Arrow down -->
+  <line x1="675" y1="310" x2="675" y2="335" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowDown)"/>
+
+  <!-- Step 4: App updates UI -->
+  <rect x="530" y="335" width="290" height="50" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="675" y="357" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">App Updates UI Automatically</text>
+  <text x="675" y="374" text-anchor="middle" font-size="11" fill="#6d5bd0">Router renders matching component</text>
+
+  <!-- Check icon area -->
+  <rect x="570" y="400" width="210" height="32" rx="6" fill="#edfaef"/>
+  <text x="675" y="420" text-anchor="middle" font-size="11" font-weight="600" fill="#34a853">Handled by event listener</text>
+
+  <!-- Code snippet at bottom -->
+  <rect x="60" y="445" width="780" height="40" rx="6" fill="#1a1822"/>
+  <text x="450" y="470" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff" font-family="monospace, system-ui, sans-serif">window.addEventListener(&quot;popstate&quot;, (e) =&gt; router.navigate(location.pathname, e.state))</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowDown" markerWidth="8" markerHeight="6" refX="4" refY="6" orient="auto">
+      <polygon points="0 0, 8 0, 4 6" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="8" markerHeight="6" refX="4" refY="6" orient="auto">
+      <polygon points="0 0, 8 0, 4 6" fill="#e05252"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="4" refY="6" orient="auto">
+      <polygon points="0 0, 8 0, 4 6" fill="#34a853"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <!-- Background -->
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Server Catch-All Configuration for History API</text>
+
+  <!-- ===== FLOW 1: /about (SPA route) ===== -->
+  <rect x="30" y="52" width="840" height="118" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="50" y="72" font-size="13" font-weight="700" fill="#6d5bd0">SPA Route Request</text>
+
+  <!-- Request box -->
+  <rect x="50" y="82" width="130" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="115" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">GET /about</text>
+  <text x="115" y="114" text-anchor="middle" font-size="10" fill="#ffffff">Browser request</text>
+
+  <!-- Arrow -->
+  <line x1="180" y1="102" x2="220" y2="102" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowR)"/>
+
+  <!-- Server check -->
+  <polygon points="300,78 370,102 300,126 230,102" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="300" y="99" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">File</text>
+  <text x="300" y="112" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">exists?</text>
+
+  <!-- No path -->
+  <line x1="370" y1="102" x2="410" y2="102" stroke="#e05252" stroke-width="2" marker-end="url(#arrowR)"/>
+  <text x="390" y="95" text-anchor="middle" font-size="11" font-weight="700" fill="#e05252">No</text>
+
+  <!-- Serve index.html -->
+  <rect x="410" y="82" width="150" height="40" rx="6" fill="#fff0f0" stroke="#e05252" stroke-width="1.5"/>
+  <text x="485" y="100" text-anchor="middle" font-size="12" font-weight="600" fill="#e05252">Serve index.html</text>
+  <text x="485" y="114" text-anchor="middle" font-size="10" fill="#1a1822">Fallback to SPA entry</text>
+
+  <!-- Arrow -->
+  <line x1="560" y1="102" x2="600" y2="102" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowR)"/>
+
+  <!-- Client router -->
+  <rect x="600" y="82" width="250" height="40" rx="6" fill="#edfaef" stroke="#34a853" stroke-width="1.5"/>
+  <text x="725" y="100" text-anchor="middle" font-size="12" font-weight="600" fill="#34a853">Client Router Handles /about</text>
+  <text x="725" y="114" text-anchor="middle" font-size="10" fill="#1a1822">JS reads location.pathname, renders view</text>
+
+  <!-- ===== FLOW 2: /styles.css (static file) ===== -->
+  <rect x="30" y="180" width="840" height="100" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="50" y="200" font-size="13" font-weight="700" fill="#6d5bd0">Static File Request</text>
+
+  <!-- Request box -->
+  <rect x="50" y="210" width="130" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="115" y="228" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">GET /styles.css</text>
+  <text x="115" y="242" text-anchor="middle" font-size="10" fill="#ffffff">Browser request</text>
+
+  <!-- Arrow -->
+  <line x1="180" y1="230" x2="220" y2="230" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowR)"/>
+
+  <!-- Server check -->
+  <polygon points="300,206 370,230 300,254 230,230" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="300" y="227" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">File</text>
+  <text x="300" y="240" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1822">exists?</text>
+
+  <!-- Yes path -->
+  <line x1="370" y1="230" x2="410" y2="230" stroke="#34a853" stroke-width="2" marker-end="url(#arrowR)"/>
+  <text x="390" y="223" text-anchor="middle" font-size="11" font-weight="700" fill="#34a853">Yes</text>
+
+  <!-- Serve file directly -->
+  <rect x="410" y="210" width="200" height="40" rx="6" fill="#edfaef" stroke="#34a853" stroke-width="1.5"/>
+  <text x="510" y="228" text-anchor="middle" font-size="12" font-weight="600" fill="#34a853">Serve styles.css Directly</text>
+  <text x="510" y="242" text-anchor="middle" font-size="10" fill="#1a1822">Static asset returned as-is</text>
+
+  <!-- ===== SERVER CONFIGS ===== -->
+  <text x="450" y="304" text-anchor="middle" font-size="16" font-weight="700" fill="#1a1822">Server Configuration Examples</text>
+
+  <!-- Nginx -->
+  <rect x="30" y="316" width="200" height="90" rx="8" fill="#1a1822"/>
+  <rect x="30" y="316" width="200" height="26" rx="8" fill="#6d5bd0"/>
+  <rect x="30" y="334" width="200" height="2" fill="#6d5bd0"/>
+  <text x="130" y="334" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Nginx</text>
+  <text x="44" y="360" font-size="10" fill="#34a853" font-family="monospace, system-ui, sans-serif">location / {</text>
+  <text x="54" y="374" font-size="10" fill="#ffffff" font-family="monospace, system-ui, sans-serif">try_files $uri</text>
+  <text x="64" y="388" font-size="10" fill="#ffffff" font-family="monospace, system-ui, sans-serif">/index.html;</text>
+  <text x="44" y="402" font-size="10" fill="#34a853" font-family="monospace, system-ui, sans-serif">}</text>
+
+  <!-- Apache -->
+  <rect x="250" y="316" width="200" height="90" rx="8" fill="#1a1822"/>
+  <rect x="250" y="316" width="200" height="26" rx="8" fill="#6d5bd0"/>
+  <rect x="250" y="334" width="200" height="2" fill="#6d5bd0"/>
+  <text x="350" y="334" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Apache (.htaccess)</text>
+  <text x="264" y="360" font-size="10" fill="#34a853" font-family="monospace, system-ui, sans-serif">RewriteEngine On</text>
+  <text x="264" y="374" font-size="10" fill="#ffffff" font-family="monospace, system-ui, sans-serif">RewriteCond %{REQUEST_</text>
+  <text x="274" y="388" font-size="10" fill="#ffffff" font-family="monospace, system-ui, sans-serif">FILENAME} !-f</text>
+  <text x="264" y="402" font-size="10" fill="#ffffff" font-family="monospace, system-ui, sans-serif">RewriteRule ^ index.html</text>
+
+  <!-- Express -->
+  <rect x="470" y="316" width="200" height="90" rx="8" fill="#1a1822"/>
+  <rect x="470" y="316" width="200" height="26" rx="8" fill="#6d5bd0"/>
+  <rect x="470" y="334" width="200" height="2" fill="#6d5bd0"/>
+  <text x="570" y="334" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Express (Node.js)</text>
+  <text x="484" y="360" font-size="10" fill="#34a853" font-family="monospace, system-ui, sans-serif">app.use(express</text>
+  <text x="494" y="374" font-size="10" fill="#ffffff" font-family="monospace, system-ui, sans-serif">.static(&quot;build&quot;));</text>
+  <text x="484" y="388" font-size="10" fill="#34a853" font-family="monospace, system-ui, sans-serif">app.get(&quot;*&quot;, (req,res)</text>
+  <text x="494" y="402" font-size="10" fill="#ffffff" font-family="monospace, system-ui, sans-serif">=&gt; res.sendFile(...))</text>
+
+  <!-- Netlify -->
+  <rect x="690" y="316" width="185" height="90" rx="8" fill="#1a1822"/>
+  <rect x="690" y="316" width="185" height="26" rx="8" fill="#6d5bd0"/>
+  <rect x="690" y="334" width="185" height="2" fill="#6d5bd0"/>
+  <text x="782" y="334" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Netlify (_redirects)</text>
+  <text x="704" y="365" font-size="10" fill="#ffffff" font-family="monospace, system-ui, sans-serif">/* /index.html 200</text>
+  <text x="704" y="390" font-size="10" fill="#34a853" font-family="monospace, system-ui, sans-serif"># Single rewrite rule</text>
+  <text x="704" y="405" font-size="10" fill="#34a853" font-family="monospace, system-ui, sans-serif"># handles all routes</text>
+
+  <!-- Bottom note -->
+  <rect x="120" y="420" width="660" height="36" rx="8" fill="#e8e4f3"/>
+  <text x="450" y="435" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="600">Without catch-all config, direct URL access or page refresh returns 404</text>
+  <text x="450" y="449" text-anchor="middle" font-size="11" fill="#6d5bd0">because the server looks for a file at /about which doesn&apos;t exist on disk</text>
+
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrowR" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

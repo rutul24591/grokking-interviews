@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Deep linking flow across web, installed app, and deferred install scenarios</title>
+
+  <!-- Background -->
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Deep Linking — Three Scenarios</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">What happens when a user clicks https://app.com/products/42</text>
+
+  <!-- Starting point -->
+  <rect x="320" y="75" width="260" height="50" rx="10" fill="#6d5bd0"/>
+  <text x="450" y="100" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">User clicks link to app.com/products/42</text>
+  <text x="450" y="117" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.8">(shared via SMS, email, social media)</text>
+
+  <!-- Decision diamond -->
+  <polygon points="450,145 530,185 450,225 370,185" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="182" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">App</text>
+  <text x="450" y="196" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">installed?</text>
+
+  <!-- Scenario A: Web (no app) - left branch -->
+  <line x1="370" y1="185" x2="160" y2="185" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowDL)"/>
+  <text x="265" y="178" text-anchor="middle" font-size="10" font-weight="600" fill="#cc4444">No</text>
+
+  <!-- Decision: has deferred linking? -->
+  <polygon points="160,185 220,215 160,245 100,215" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="160" y="212" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">Deferred</text>
+  <text x="160" y="224" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1822">linking?</text>
+
+  <!-- Scenario A: Plain web -->
+  <line x1="100" y1="215" x2="30" y2="215" stroke="#d7d1e6" stroke-width="1.5"/>
+  <line x1="30" y1="215" x2="30" y2="280" stroke="#d7d1e6" stroke-width="1.5" marker-end="url(#arrowDL)"/>
+  <text x="55" y="208" font-size="9" fill="#1a1822">No</text>
+
+  <rect x="10" y="280" width="200" height="90" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="10" y="280" width="200" height="30" rx="10" fill="#6d5bd0" opacity="0.1"/>
+  <rect x="10" y="300" width="200" height="10" fill="#6d5bd0" opacity="0.1"/>
+  <text x="110" y="300" text-anchor="middle" font-size="12" font-weight="700" fill="#6d5bd0">A: Web Fallback</text>
+  <text x="110" y="325" text-anchor="middle" font-size="10" fill="#1a1822">Opens in browser</text>
+  <text x="110" y="342" text-anchor="middle" font-size="10" fill="#1a1822">Web app renders</text>
+  <text x="110" y="359" text-anchor="middle" font-size="10" fill="#6d5bd0">/products/42</text>
+
+  <!-- Scenario C: Deferred deep link - down from decision -->
+  <line x1="160" y1="245" x2="160" y2="280" stroke="#d7d1e6" stroke-width="1.5" marker-end="url(#arrowDL)"/>
+  <text x="170" y="265" font-size="9" fill="#4caf50">Yes</text>
+
+  <rect x="230" y="280" width="220" height="210" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="230" y="280" width="220" height="32" rx="10" fill="#6d5bd0"/>
+  <rect x="230" y="300" width="220" height="12" fill="#6d5bd0"/>
+  <text x="340" y="302" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">C: Deferred Deep Link</text>
+
+  <!-- Steps for deferred -->
+  <circle cx="252" cy="330" r="10" fill="#6d5bd0"/>
+  <text x="252" y="334" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">1</text>
+  <text x="270" y="334" font-size="10" fill="#1a1822">Save link data (fingerprint)</text>
+
+  <circle cx="252" cy="358" r="10" fill="#6d5bd0"/>
+  <text x="252" y="362" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">2</text>
+  <text x="270" y="362" font-size="10" fill="#1a1822">Redirect to App Store</text>
+
+  <circle cx="252" cy="386" r="10" fill="#6d5bd0"/>
+  <text x="252" y="390" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">3</text>
+  <text x="270" y="390" font-size="10" fill="#1a1822">User installs app</text>
+
+  <circle cx="252" cy="414" r="10" fill="#6d5bd0"/>
+  <text x="252" y="418" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">4</text>
+  <text x="270" y="418" font-size="10" fill="#1a1822">First launch retrieves link</text>
+
+  <circle cx="252" cy="442" r="10" fill="#6d5bd0"/>
+  <text x="252" y="446" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">5</text>
+  <text x="270" y="446" font-size="10" fill="#1a1822">Opens /products/42</text>
+
+  <rect x="242" y="460" width="200" height="22" rx="4" fill="#6d5bd0" opacity="0.1"/>
+  <text x="342" y="476" text-anchor="middle" font-size="9" fill="#6d5bd0">Context preserved across install!</text>
+
+  <!-- Scenario B: App installed - right branch -->
+  <line x1="530" y1="185" x2="680" y2="185" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowDL)"/>
+  <text x="605" y="178" text-anchor="middle" font-size="10" font-weight="600" fill="#4caf50">Yes</text>
+
+  <rect x="580" y="165" width="10" height="1" fill="none"/>
+
+  <rect x="550" y="220" width="330" height="270" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <rect x="550" y="220" width="330" height="32" rx="10" fill="#6d5bd0"/>
+  <rect x="550" y="242" width="330" height="10" fill="#6d5bd0"/>
+  <text x="715" y="242" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">B: Direct App Open</text>
+
+  <line x1="715" y1="200" x2="715" y2="220" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowDL)"/>
+
+  <!-- Steps for direct -->
+  <circle cx="575" cy="275" r="10" fill="#6d5bd0"/>
+  <text x="575" y="279" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">1</text>
+  <text x="595" y="279" font-size="10" fill="#1a1822">OS intercepts URL (Universal Link)</text>
+
+  <circle cx="575" cy="305" r="10" fill="#6d5bd0"/>
+  <text x="575" y="309" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">2</text>
+  <text x="595" y="309" font-size="10" fill="#1a1822">Checks apple-app-site-association</text>
+
+  <circle cx="575" cy="335" r="10" fill="#6d5bd0"/>
+  <text x="575" y="339" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">3</text>
+  <text x="595" y="339" font-size="10" fill="#1a1822">App launched with URL context</text>
+
+  <circle cx="575" cy="365" r="10" fill="#6d5bd0"/>
+  <text x="575" y="369" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">4</text>
+  <text x="595" y="369" font-size="10" fill="#1a1822">App router parses /products/42</text>
+
+  <circle cx="575" cy="395" r="10" fill="#6d5bd0"/>
+  <text x="575" y="399" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">5</text>
+  <text x="595" y="399" font-size="10" fill="#1a1822">Renders product detail screen</text>
+
+  <!-- Best experience label -->
+  <rect x="600" y="425" width="240" height="50" rx="8" fill="#4caf50" opacity="0.1" stroke="#4caf50" stroke-width="1"/>
+  <text x="720" y="448" text-anchor="middle" font-size="11" font-weight="600" fill="#4caf50">Best User Experience</text>
+  <text x="720" y="465" text-anchor="middle" font-size="10" fill="#4caf50">Instant, native, seamless</text>
+
+  <defs>
+    <marker id="arrowDL" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

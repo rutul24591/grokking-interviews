@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Guard composition in nested routes showing layered auth and RBAC checks</title>
+
+  <!-- Background -->
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Guard Composition in Nested Routes</text>
+  <text x="450" y="55" text-anchor="middle" font-size="12" fill="#1a1822" opacity="0.7">Guards evaluate from outermost to innermost — inner guards inherit outer guarantees</text>
+
+  <!-- Route tree (left side) -->
+  <text x="50" y="90" font-size="13" font-weight="700" fill="#6d5bd0">Route Tree</text>
+
+  <!-- / (public) -->
+  <rect x="30" y="105" width="200" height="40" rx="8" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="50" y="130" font-size="12" font-weight="600" fill="#1a1822">/</text>
+  <text x="140" y="130" font-size="10" fill="#4caf50">Public — No guard</text>
+
+  <!-- /dashboard (AuthGuard) -->
+  <line x1="80" y1="145" x2="80" y2="165" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="60" y="165" width="240" height="45" rx="8" fill="#6d5bd0"/>
+  <text x="80" y="185" font-size="12" font-weight="600" fill="#ffffff">/dashboard</text>
+  <rect x="200" y="172" width="90" height="28" rx="5" fill="#ffffff" opacity="0.2"/>
+  <text x="245" y="191" text-anchor="middle" font-size="10" font-weight="600" fill="#ffffff">AuthGuard</text>
+
+  <!-- /dashboard/analytics (RoleGuard) -->
+  <line x1="120" y1="210" x2="120" y2="230" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="90" y="230" width="260" height="45" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="110" y="250" font-size="12" font-weight="600" fill="#1a1822">/dashboard/analytics</text>
+  <rect x="260" y="237" width="80" height="28" rx="5" fill="#6d5bd0" opacity="0.15"/>
+  <text x="300" y="256" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">RoleGuard</text>
+  <text x="110" y="268" font-size="9" fill="#1a1822" opacity="0.7">Requires: "analyst" role</text>
+
+  <!-- /dashboard/admin (RoleGuard) -->
+  <line x1="120" y1="275" x2="120" y2="295" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="90" y="295" width="260" height="45" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="110" y="315" font-size="12" font-weight="600" fill="#1a1822">/dashboard/admin</text>
+  <rect x="260" y="302" width="80" height="28" rx="5" fill="#6d5bd0" opacity="0.15"/>
+  <text x="300" y="321" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">RoleGuard</text>
+  <text x="110" y="333" font-size="9" fill="#1a1822" opacity="0.7">Requires: "admin" role</text>
+
+  <!-- /dashboard/admin/billing (PermissionGuard) -->
+  <line x1="160" y1="340" x2="160" y2="360" stroke="#d7d1e6" stroke-width="1.5"/>
+  <rect x="120" y="360" width="280" height="45" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5"/>
+  <text x="140" y="380" font-size="12" font-weight="600" fill="#1a1822">/dashboard/admin/billing</text>
+  <rect x="310" y="367" width="80" height="28" rx="5" fill="#6d5bd0" opacity="0.15"/>
+  <text x="350" y="386" text-anchor="middle" font-size="10" font-weight="600" fill="#6d5bd0">PermGuard</text>
+  <text x="140" y="398" font-size="9" fill="#1a1822" opacity="0.7">Requires: "billing:write"</text>
+
+  <!-- Evaluation order (right side) -->
+  <text x="480" y="90" font-size="13" font-weight="700" fill="#6d5bd0">Guard Evaluation Order</text>
+  <text x="480" y="108" font-size="10" fill="#1a1822" opacity="0.7">Navigating to /dashboard/admin/billing</text>
+
+  <!-- Step 1: AuthGuard -->
+  <rect x="480" y="125" width="390" height="70" rx="10" fill="#6d5bd0"/>
+  <text x="500" y="148" font-size="13" font-weight="700" fill="#ffffff">Step 1: AuthGuard</text>
+  <text x="500" y="168" font-size="11" fill="#ffffff" opacity="0.9">Is user authenticated? Check JWT/session token</text>
+  <text x="500" y="183" font-size="10" fill="#ffffff" opacity="0.7">Fail → Redirect to /login?redirect=/dashboard/admin/billing</text>
+
+  <line x1="675" y1="195" x2="675" y2="215" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowG)"/>
+  <text x="690" y="210" font-size="9" fill="#4caf50" font-weight="600">Pass ✓</text>
+
+  <!-- Step 2: RoleGuard -->
+  <rect x="480" y="215" width="390" height="70" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="500" y="238" font-size="13" font-weight="700" fill="#6d5bd0">Step 2: RoleGuard</text>
+  <text x="500" y="258" font-size="11" fill="#1a1822">Does user have "admin" role? (Auth already confirmed)</text>
+  <text x="500" y="273" font-size="10" fill="#1a1822" opacity="0.7">Fail → Redirect to /unauthorized</text>
+
+  <line x1="675" y1="285" x2="675" y2="305" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowG)"/>
+  <text x="690" y="300" font-size="9" fill="#4caf50" font-weight="600">Pass ✓</text>
+
+  <!-- Step 3: PermissionGuard -->
+  <rect x="480" y="305" width="390" height="70" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="500" y="328" font-size="13" font-weight="700" fill="#6d5bd0">Step 3: PermissionGuard</text>
+  <text x="500" y="348" font-size="11" fill="#1a1822">Has "billing:write" permission? (Role already confirmed)</text>
+  <text x="500" y="363" font-size="10" fill="#1a1822" opacity="0.7">Fail → Redirect to /forbidden</text>
+
+  <line x1="675" y1="375" x2="675" y2="395" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowG)"/>
+  <text x="690" y="390" font-size="9" fill="#4caf50" font-weight="600">Pass ✓</text>
+
+  <!-- Render -->
+  <rect x="540" y="395" width="270" height="45" rx="10" fill="#4caf50"/>
+  <text x="675" y="422" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Render BillingPage</text>
+
+  <!-- Key insight -->
+  <rect x="30" y="430" width="380" height="55" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="50" y="452" font-size="11" font-weight="700" fill="#6d5bd0">Key: Guards compose — no redundant checks</text>
+  <text x="50" y="470" font-size="10" fill="#1a1822">PermissionGuard doesn't re-check auth — AuthGuard already ran.</text>
+
+  <defs>
+    <marker id="arrowG" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>

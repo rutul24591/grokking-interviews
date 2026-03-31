@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <title>Route matching algorithm showing pattern specificity ranking</title>
+
+  <!-- Background -->
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Route Pattern Specificity Ranking</text>
+
+  <!-- Table Header -->
+  <rect x="40" y="58" width="520" height="36" rx="8" fill="#6d5bd0"/>
+  <text x="80" y="81" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Rank</text>
+  <text x="230" y="81" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Route Pattern</text>
+  <text x="420" y="81" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Type</text>
+  <text x="520" y="81" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Score</text>
+
+  <!-- Row 1: Exact static -->
+  <rect x="40" y="98" width="520" height="44" rx="0" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <rect x="55" y="108" width="40" height="24" rx="12" fill="#6d5bd0"/>
+  <text x="75" y="125" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">1</text>
+  <text x="230" y="125" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">/users/settings</text>
+  <text x="420" y="125" text-anchor="middle" font-size="11" fill="#1a1822">Exact Static</text>
+  <text x="520" y="125" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">100</text>
+
+  <!-- Row 2: Mixed -->
+  <rect x="40" y="142" width="520" height="44" rx="0" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <rect x="55" y="152" width="40" height="24" rx="12" fill="#6d5bd0"/>
+  <text x="75" y="169" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">2</text>
+  <text x="230" y="169" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">/users/:id/posts</text>
+  <text x="420" y="169" text-anchor="middle" font-size="11" fill="#1a1822">Mixed (static + param)</text>
+  <text x="520" y="169" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">75</text>
+
+  <!-- Row 3: Single param -->
+  <rect x="40" y="186" width="520" height="44" rx="0" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <rect x="55" y="196" width="40" height="24" rx="12" fill="#6d5bd0"/>
+  <text x="75" y="213" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">3</text>
+  <text x="230" y="213" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">/users/:id</text>
+  <text x="420" y="213" text-anchor="middle" font-size="11" fill="#1a1822">Single Dynamic Param</text>
+  <text x="520" y="213" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">50</text>
+
+  <!-- Row 4: Wildcard -->
+  <rect x="40" y="230" width="520" height="44" rx="0" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1"/>
+  <rect x="55" y="240" width="40" height="24" rx="12" fill="#6d5bd0"/>
+  <text x="75" y="257" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">4</text>
+  <text x="230" y="257" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">/users/*</text>
+  <text x="420" y="257" text-anchor="middle" font-size="11" fill="#1a1822">Wildcard (scoped)</text>
+  <text x="520" y="257" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">25</text>
+
+  <!-- Row 5: Catch-all -->
+  <rect x="40" y="274" width="520" height="44" rx="0" fill="#ffffff" stroke="#d7d1e6" stroke-width="1"/>
+  <rect x="55" y="284" width="40" height="24" rx="12" fill="#6d5bd0" opacity="0.6"/>
+  <text x="75" y="301" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">5</text>
+  <text x="230" y="301" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">/*</text>
+  <text x="420" y="301" text-anchor="middle" font-size="11" fill="#1a1822">Catch-All (fallback)</text>
+  <text x="520" y="301" text-anchor="middle" font-size="12" font-weight="600" fill="#6d5bd0">10</text>
+
+  <!-- Example Section -->
+  <rect x="40" y="345" width="820" height="140" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+
+  <!-- Example title -->
+  <text x="60" y="373" font-size="13" font-weight="700" fill="#6d5bd0">Example: Matching URL</text>
+  <rect x="220" y="357" width="260" height="24" rx="6" fill="#1a1822"/>
+  <text x="350" y="374" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff" letter-spacing="0.5">/users/123/posts</text>
+
+  <!-- Matching arrows -->
+  <text x="60" y="405" font-size="11" fill="#1a1822" opacity="0.7">Evaluated against each pattern (most specific first):</text>
+
+  <!-- Pattern checks -->
+  <text x="80" y="430" font-size="12" fill="#1a1822">/users/settings</text>
+  <text x="260" y="430" font-size="11" fill="#cc3333" font-weight="600">&#x2717; No match</text>
+  <text x="380" y="430" font-size="10" fill="#1a1822" opacity="0.6">"123" &#x2260; "settings"</text>
+
+  <text x="80" y="452" font-size="12" fill="#1a1822" font-weight="700">/users/:id/posts</text>
+  <rect x="248" y="438" width="100" height="22" rx="6" fill="#6d5bd0" opacity="0.15"/>
+  <text x="298" y="453" text-anchor="middle" font-size="11" fill="#6d5bd0" font-weight="700">&#x2713; Match!</text>
+  <text x="380" y="452" font-size="10" fill="#6d5bd0">:id = "123", static "posts" matches</text>
+
+  <text x="80" y="474" font-size="12" fill="#1a1822" opacity="0.5">/users/:id</text>
+  <text x="260" y="474" font-size="11" fill="#1a1822" opacity="0.4">Skipped</text>
+  <text x="380" y="474" font-size="10" fill="#1a1822" opacity="0.4">Higher-rank match already found</text>
+
+  <!-- Right side: Algorithm explanation -->
+  <rect x="600" y="58" width="260" height="270" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="730" y="84" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">Scoring Algorithm</text>
+
+  <text x="620" y="112" font-size="10" font-weight="600" fill="#1a1822">Static segment</text>
+  <text x="830" y="112" text-anchor="end" font-size="10" fill="#6d5bd0" font-weight="600">+25 pts</text>
+
+  <line x1="620" y1="122" x2="840" y2="122" stroke="#d7d1e6" stroke-width="1"/>
+
+  <text x="620" y="142" font-size="10" font-weight="600" fill="#1a1822">Dynamic param (:id)</text>
+  <text x="830" y="142" text-anchor="end" font-size="10" fill="#6d5bd0" font-weight="600">+15 pts</text>
+
+  <line x1="620" y1="152" x2="840" y2="152" stroke="#d7d1e6" stroke-width="1"/>
+
+  <text x="620" y="172" font-size="10" font-weight="600" fill="#1a1822">Wildcard (*)</text>
+  <text x="830" y="172" text-anchor="end" font-size="10" fill="#6d5bd0" font-weight="600">+5 pts</text>
+
+  <line x1="620" y1="182" x2="840" y2="182" stroke="#d7d1e6" stroke-width="1"/>
+
+  <text x="620" y="202" font-size="10" font-weight="600" fill="#1a1822">More segments</text>
+  <text x="830" y="202" text-anchor="end" font-size="10" fill="#6d5bd0" font-weight="600">+bonus</text>
+
+  <line x1="620" y1="218" x2="840" y2="218" stroke="#d7d1e6" stroke-width="1"/>
+
+  <text x="620" y="240" font-size="10" fill="#1a1822" opacity="0.8">Routes are sorted by total</text>
+  <text x="620" y="255" font-size="10" fill="#1a1822" opacity="0.8">score descending. First match</text>
+  <text x="620" y="270" font-size="10" fill="#1a1822" opacity="0.8">wins. This eliminates order-</text>
+  <text x="620" y="285" font-size="10" fill="#1a1822" opacity="0.8">dependent route definitions.</text>
+
+  <rect x="620" y="298" width="220" height="20" rx="4" fill="#6d5bd0" opacity="0.1"/>
+  <text x="730" y="312" text-anchor="middle" font-size="9" font-weight="600" fill="#6d5bd0">Used by React Router v6+, TanStack Router</text>
+</svg>

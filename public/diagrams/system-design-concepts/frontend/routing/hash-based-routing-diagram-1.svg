@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <!-- Background -->
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Hash-Based Routing: URL Anatomy</text>
+
+  <!-- URL bar background -->
+  <rect x="50" y="70" width="800" height="56" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="2"/>
+
+  <!-- URL segments inside bar -->
+  <!-- Protocol + Domain -->
+  <rect x="60" y="78" width="210" height="40" rx="6" fill="#6d5bd0"/>
+  <text x="165" y="104" text-anchor="middle" font-size="15" font-weight="600" fill="#ffffff">https://app.com</text>
+
+  <!-- Path -->
+  <rect x="278" y="78" width="160" height="40" rx="6" fill="#4a3fa0"/>
+  <text x="358" y="104" text-anchor="middle" font-size="15" font-weight="600" fill="#ffffff">/index.html</text>
+
+  <!-- Hash -->
+  <rect x="446" y="78" width="290" height="40" rx="6" fill="#e8842c"/>
+  <text x="591" y="104" text-anchor="middle" font-size="15" font-weight="600" fill="#ffffff">#/dashboard/settings</text>
+
+  <!-- Bracket lines and labels for server-visible portion -->
+  <!-- Left bracket for server portion -->
+  <line x1="60" y1="138" x2="60" y2="155" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="60" y1="155" x2="438" y2="155" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="438" y1="138" x2="438" y2="155" stroke="#6d5bd0" stroke-width="2"/>
+  <line x1="249" y1="155" x2="249" y2="175" stroke="#6d5bd0" stroke-width="2"/>
+
+  <rect x="139" y="178" width="220" height="32" rx="6" fill="#6d5bd0"/>
+  <text x="249" y="199" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">Sent to Server in HTTP Request</text>
+
+  <!-- Right bracket for client-only portion -->
+  <line x1="446" y1="138" x2="446" y2="155" stroke="#e8842c" stroke-width="2"/>
+  <line x1="446" y1="155" x2="736" y2="155" stroke="#e8842c" stroke-width="2"/>
+  <line x1="736" y1="138" x2="736" y2="155" stroke="#e8842c" stroke-width="2"/>
+  <line x1="591" y1="155" x2="591" y2="175" stroke="#e8842c" stroke-width="2"/>
+
+  <rect x="481" y="178" width="220" height="32" rx="6" fill="#e8842c"/>
+  <text x="591" y="199" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff">Client-Only (Never Sent)</text>
+
+  <!-- Divider -->
+  <line x1="50" y1="235" x2="850" y2="235" stroke="#d7d1e6" stroke-width="1" stroke-dasharray="6,4"/>
+
+  <!-- Server side illustration -->
+  <rect x="50" y="255" width="390" height="220" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="245" y="285" text-anchor="middle" font-size="16" font-weight="700" fill="#6d5bd0">Server Perspective</text>
+
+  <!-- Server icon -->
+  <rect x="90" y="305" width="60" height="45" rx="6" fill="#6d5bd0"/>
+  <rect x="98" y="313" width="18" height="4" rx="2" fill="#ffffff"/>
+  <rect x="98" y="321" width="18" height="4" rx="2" fill="#ffffff"/>
+  <rect x="98" y="329" width="18" height="4" rx="2" fill="#ffffff"/>
+  <circle cx="138" cy="318" r="3" fill="#4ade80"/>
+  <circle cx="138" cy="328" r="3" fill="#4ade80"/>
+
+  <!-- Arrow from server to response -->
+  <line x1="160" y1="328" x2="195" y2="328" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowPurple)"/>
+
+  <!-- Response box -->
+  <rect x="200" y="305" width="220" height="80" rx="6" fill="#f3f1f8" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="310" y="328" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">Always returns same response:</text>
+  <text x="310" y="348" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="600">index.html</text>
+  <text x="310" y="368" text-anchor="middle" font-size="11" fill="#1a1822">(+ bundled JS application)</text>
+
+  <!-- Request examples -->
+  <text x="90" y="415" font-size="11" fill="#1a1822" font-weight="600">All these hit the same endpoint:</text>
+  <text x="90" y="435" font-size="11" fill="#6d5bd0" font-family="monospace">GET /index.html</text>
+  <text x="90" y="452" font-size="10" fill="#888" font-family="monospace">← app.com/index.html#/home</text>
+  <text x="90" y="466" font-size="10" fill="#888" font-family="monospace">← app.com/index.html#/dashboard/settings</text>
+
+  <!-- Client side illustration -->
+  <rect x="460" y="255" width="390" height="220" rx="10" fill="#ffffff" stroke="#e8842c" stroke-width="2"/>
+  <text x="655" y="285" text-anchor="middle" font-size="16" font-weight="700" fill="#e8842c">Client (Browser) Perspective</text>
+
+  <!-- Browser icon -->
+  <rect x="500" y="305" width="70" height="50" rx="6" fill="#e8842c"/>
+  <rect x="505" y="318" width="60" height="32" rx="3" fill="#ffffff"/>
+  <circle cx="520" cy="312" r="3" fill="#ffffff"/>
+  <circle cx="530" cy="312" r="3" fill="#ffffff"/>
+  <circle cx="540" cy="312" r="3" fill="#ffffff"/>
+
+  <!-- Arrow to hash reader -->
+  <line x1="580" y1="330" x2="615" y2="330" stroke="#e8842c" stroke-width="2" marker-end="url(#arrowOrange)"/>
+
+  <!-- Hash reading box -->
+  <rect x="620" y="305" width="210" height="80" rx="6" fill="#fff7ed" stroke="#e8842c" stroke-width="1.5"/>
+  <text x="725" y="325" text-anchor="middle" font-size="12" font-weight="600" fill="#1a1822">JS reads location.hash:</text>
+  <text x="725" y="348" text-anchor="middle" font-size="12" fill="#e8842c" font-weight="600" font-family="monospace">"#/dashboard/settings"</text>
+  <text x="725" y="370" text-anchor="middle" font-size="11" fill="#1a1822">→ Routes to correct view</text>
+
+  <!-- Key insight -->
+  <rect x="500" y="405" width="330" height="55" rx="6" fill="#fff7ed" stroke="#e8842c" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="665" y="425" text-anchor="middle" font-size="11" font-weight="600" fill="#e8842c">Key Insight:</text>
+  <text x="665" y="443" text-anchor="middle" font-size="11" fill="#1a1822">Changing the hash does NOT trigger a</text>
+  <text x="665" y="457" text-anchor="middle" font-size="11" fill="#1a1822">page reload or new server request</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e8842c"/>
+    </marker>
+  </defs>
+</svg>

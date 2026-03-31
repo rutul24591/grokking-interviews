@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <!-- Background -->
+  <rect width="900" height="500" rx="12" fill="#f3f1f8"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1822">Chunk Dependency Graph</text>
+
+  <!-- ============ TOP LAYER: Entry Point ============ -->
+  <rect x="350" y="55" width="200" height="50" rx="8" fill="#1a1822"/>
+  <text x="450" y="77" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">main.js</text>
+  <text x="450" y="94" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.7">Entry Point (Router)</text>
+
+  <!-- Arrows from entry to route chunks -->
+  <!-- To home -->
+  <line x1="390" y1="105" x2="180" y2="170" stroke="#1a1822" stroke-width="1.5"/>
+  <polygon points="180,170 187,163 183,172" fill="#1a1822"/>
+
+  <!-- To dashboard -->
+  <line x1="430" y1="105" x2="400" y2="170" stroke="#1a1822" stroke-width="1.5"/>
+  <polygon points="400,170 404,161 396,164" fill="#1a1822"/>
+
+  <!-- To settings -->
+  <line x1="470" y1="105" x2="580" y2="170" stroke="#1a1822" stroke-width="1.5"/>
+  <polygon points="580,170 576,161 584,164" fill="#1a1822"/>
+
+  <!-- To admin -->
+  <line x1="510" y1="105" x2="760" y2="170" stroke="#1a1822" stroke-width="1.5"/>
+  <polygon points="760,170 753,163 757,172" fill="#1a1822"/>
+
+  <!-- Lazy load labels on arrows -->
+  <text x="270" y="138" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="500" transform="rotate(-20, 270, 138)">lazy()</text>
+  <text x="408" y="140" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="500" transform="rotate(-10, 408, 140)">lazy()</text>
+  <text x="535" y="140" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="500" transform="rotate(10, 535, 140)">lazy()</text>
+  <text x="650" y="138" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="500" transform="rotate(20, 650, 138)">lazy()</text>
+
+  <!-- ============ MIDDLE LAYER: Route Chunks ============ -->
+  <text x="450" y="165" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0" opacity="0.7">ROUTE CHUNKS (loaded on navigation)</text>
+
+  <!-- Home chunk -->
+  <rect x="100" y="175" width="160" height="60" rx="8" fill="#6d5bd0"/>
+  <text x="180" y="200" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">home.chunk.js</text>
+  <text x="180" y="218" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.8">80 KB | /home</text>
+
+  <!-- Dashboard chunk -->
+  <rect x="310" y="175" width="180" height="60" rx="8" fill="#6d5bd0"/>
+  <text x="400" y="200" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">dashboard.chunk.js</text>
+  <text x="400" y="218" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.8">150 KB | /dashboard</text>
+
+  <!-- Settings chunk -->
+  <rect x="540" y="175" width="160" height="60" rx="8" fill="#6d5bd0"/>
+  <text x="620" y="200" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">settings.chunk.js</text>
+  <text x="620" y="218" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.8">60 KB | /settings</text>
+
+  <!-- Admin chunk -->
+  <rect x="730" y="175" width="150" height="60" rx="8" fill="#6d5bd0"/>
+  <text x="805" y="200" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">admin.chunk.js</text>
+  <text x="805" y="218" text-anchor="middle" font-size="10" fill="#ffffff" opacity="0.8">120 KB | /admin</text>
+
+  <!-- ============ ARROWS FROM ROUTE CHUNKS TO SHARED CHUNKS ============ -->
+
+  <!-- Home -> vendor -->
+  <line x1="160" y1="235" x2="250" y2="330" stroke="#d7d1e6" stroke-width="1.5"/>
+  <polygon points="250,330 246,321 254,324" fill="#d7d1e6"/>
+
+  <!-- Home -> common -->
+  <line x1="200" y1="235" x2="590" y2="330" stroke="#d7d1e6" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <polygon points="590,330 584,323 590,325" fill="#d7d1e6"/>
+
+  <!-- Dashboard -> vendor -->
+  <line x1="370" y1="235" x2="320" y2="330" stroke="#d7d1e6" stroke-width="1.5"/>
+  <polygon points="320,330 318,320 326,322" fill="#d7d1e6"/>
+
+  <!-- Dashboard -> common -->
+  <line x1="430" y1="235" x2="620" y2="330" stroke="#d7d1e6" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <polygon points="620,330 614,323 620,325" fill="#d7d1e6"/>
+
+  <!-- Settings -> vendor -->
+  <line x1="590" y1="235" x2="380" y2="330" stroke="#d7d1e6" stroke-width="1.5"/>
+  <polygon points="380,330 376,321 384,323" fill="#d7d1e6"/>
+
+  <!-- Settings -> common -->
+  <line x1="640" y1="235" x2="650" y2="330" stroke="#d7d1e6" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <polygon points="650,330 644,323 650,325" fill="#d7d1e6"/>
+
+  <!-- Admin -> vendor -->
+  <line x1="775" y1="235" x2="400" y2="330" stroke="#d7d1e6" stroke-width="1.5"/>
+  <polygon points="400,330 396,321 404,323" fill="#d7d1e6"/>
+
+  <!-- Admin -> common -->
+  <line x1="830" y1="235" x2="700" y2="330" stroke="#d7d1e6" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <polygon points="700,330 694,323 700,325" fill="#d7d1e6"/>
+
+  <!-- ============ BOTTOM LAYER: Shared Chunks ============ -->
+  <text x="450" y="315" text-anchor="middle" font-size="11" font-weight="600" fill="#34a853" opacity="0.8">SHARED CHUNKS (loaded once, cached)</text>
+
+  <!-- Vendor chunk -->
+  <rect x="130" y="330" width="330" height="80" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="295" y="355" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">vendor.chunk.js</text>
+  <text x="295" y="373" text-anchor="middle" font-size="11" fill="#6d5bd0">95 KB</text>
+
+  <!-- Vendor contents -->
+  <rect x="150" y="383" width="60" height="20" rx="4" fill="#6d5bd0" opacity="0.15"/>
+  <text x="180" y="397" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="500">React</text>
+
+  <rect x="220" y="383" width="70" height="20" rx="4" fill="#6d5bd0" opacity="0.15"/>
+  <text x="255" y="397" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="500">ReactDOM</text>
+
+  <rect x="300" y="383" width="60" height="20" rx="4" fill="#6d5bd0" opacity="0.15"/>
+  <text x="330" y="397" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="500">lodash</text>
+
+  <rect x="370" y="383" width="70" height="20" rx="4" fill="#6d5bd0" opacity="0.15"/>
+  <text x="405" y="397" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="500">date-fns</text>
+
+  <!-- Common chunk -->
+  <rect x="510" y="330" width="300" height="80" rx="8" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="660" y="355" text-anchor="middle" font-size="13" font-weight="600" fill="#1a1822">common.chunk.js</text>
+  <text x="660" y="373" text-anchor="middle" font-size="11" fill="#6d5bd0">35 KB</text>
+
+  <!-- Common contents -->
+  <rect x="525" y="383" width="75" height="20" rx="4" fill="#6d5bd0" opacity="0.15"/>
+  <text x="563" y="397" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="500">API Client</text>
+
+  <rect x="610" y="383" width="80" height="20" rx="4" fill="#6d5bd0" opacity="0.15"/>
+  <text x="650" y="397" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="500">Auth Utils</text>
+
+  <rect x="700" y="383" width="90" height="20" rx="4" fill="#6d5bd0" opacity="0.15"/>
+  <text x="745" y="397" text-anchor="middle" font-size="9" fill="#6d5bd0" font-weight="500">UI Components</text>
+
+  <!-- Cache indicator -->
+  <rect x="270" y="440" width="360" height="36" rx="8" fill="#34a853" opacity="0.12" stroke="#34a853" stroke-width="1"/>
+  <text x="450" y="463" text-anchor="middle" font-size="12" font-weight="600" fill="#34a853">Shared chunks: loaded once, cached across route navigations</text>
+
+  <!-- Legend -->
+  <line x1="60" y1="490" x2="85" y2="490" stroke="#1a1822" stroke-width="1.5"/>
+  <text x="90" y="494" font-size="10" fill="#1a1822">Dynamic import</text>
+
+  <line x1="210" y1="490" x2="235" y2="490" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="240" y="494" font-size="10" fill="#1a1822">Vendor dependency (solid)</text>
+
+  <line x1="430" y1="490" x2="455" y2="490" stroke="#d7d1e6" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="460" y="494" font-size="10" fill="#1a1822">Shared util dependency (dashed)</text>
+</svg>

@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, sans-serif">
+  <!-- Background -->
+  <rect width="900" height="500" fill="#f3f1f8" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1822">Hash-Based Routing: Event Flow</text>
+
+  <!-- "No Server Request" banner -->
+  <rect x="280" y="48" width="340" height="28" rx="14" fill="#dcf5dc" stroke="#34a853" stroke-width="1.5"/>
+  <text x="450" y="67" text-anchor="middle" font-size="12" font-weight="600" fill="#1a6928">No server request made during this entire flow</text>
+
+  <!-- Flow nodes - arranged in a flowing path -->
+  <!-- Row 1 -->
+  <!-- Step 1: User clicks link -->
+  <rect x="30" y="105" width="150" height="70" rx="10" fill="#6d5bd0" stroke="#5a4ab5" stroke-width="1.5"/>
+  <text x="105" y="133" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">1. User Clicks Link</text>
+  <text x="105" y="150" text-anchor="middle" font-size="10" fill="#d7d1e6">&lt;a href="#/settings"&gt;</text>
+
+  <!-- Arrow 1→2 -->
+  <line x1="180" y1="140" x2="220" y2="140" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowFlow)"/>
+
+  <!-- Step 2: location.hash changes -->
+  <rect x="220" y="105" width="170" height="70" rx="10" fill="#6d5bd0" stroke="#5a4ab5" stroke-width="1.5"/>
+  <text x="305" y="130" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">2. Hash Changes</text>
+  <text x="305" y="148" text-anchor="middle" font-size="10" fill="#d7d1e6" font-family="monospace">window.location.hash</text>
+  <text x="305" y="163" text-anchor="middle" font-size="10" fill="#d7d1e6">= "#/settings"</text>
+
+  <!-- Arrow 2→3 -->
+  <line x1="390" y1="140" x2="430" y2="140" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowFlow)"/>
+
+  <!-- Step 3: hashchange event -->
+  <rect x="430" y="105" width="170" height="70" rx="10" fill="#6d5bd0" stroke="#5a4ab5" stroke-width="1.5"/>
+  <text x="515" y="130" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">3. Event Fires</text>
+  <text x="515" y="148" text-anchor="middle" font-size="10" fill="#d7d1e6" font-family="monospace">window.addEventListener(</text>
+  <text x="515" y="163" text-anchor="middle" font-size="10" fill="#d7d1e6" font-family="monospace">"hashchange", ...)</text>
+
+  <!-- Arrow 3→4 -->
+  <line x1="600" y1="140" x2="640" y2="140" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowFlow)"/>
+
+  <!-- Step 4: Router reads hash -->
+  <rect x="640" y="105" width="220" height="70" rx="10" fill="#6d5bd0" stroke="#5a4ab5" stroke-width="1.5"/>
+  <text x="750" y="130" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">4. Router Reads Hash</text>
+  <text x="750" y="148" text-anchor="middle" font-size="10" fill="#d7d1e6" font-family="monospace">const hash = location.hash</text>
+  <text x="750" y="163" text-anchor="middle" font-size="10" fill="#d7d1e6">// "#/settings"</text>
+
+  <!-- Arrow 4→5 (going down) -->
+  <line x1="750" y1="175" x2="750" y2="220" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowFlow)"/>
+
+  <!-- Row 2 (right to left) -->
+  <!-- Step 5: Pattern matching -->
+  <rect x="610" y="220" width="280" height="120" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="750" y="248" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">5. Pattern Matching</text>
+  <line x1="630" y1="260" x2="870" y2="260" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="640" y="282" font-size="11" fill="#1a1822" font-family="monospace">"#/"          → Home</text>
+  <text x="640" y="300" font-size="11" fill="#1a1822" font-family="monospace">"#/dashboard" → Dashboard</text>
+  <text x="640" y="318" font-size="11" fill="#6d5bd0" font-weight="600" font-family="monospace">"#/settings"  → Settings ✓</text>
+  <text x="640" y="336" font-size="11" fill="#1a1822" font-family="monospace">"#/profile"   → Profile</text>
+
+  <!-- Arrow 5→6 -->
+  <line x1="610" y1="280" x2="560" y2="280" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowFlowLeft)"/>
+
+  <!-- Step 6: Component lookup -->
+  <rect x="340" y="230" width="220" height="100" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="450" y="258" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">6. Component Lookup</text>
+  <line x1="360" y1="268" x2="540" y2="268" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="450" y="290" text-anchor="middle" font-size="11" fill="#1a1822">Route matched:</text>
+  <text x="450" y="308" text-anchor="middle" font-size="12" fill="#6d5bd0" font-weight="600" font-family="monospace">&lt;SettingsPage /&gt;</text>
+  <text x="450" y="325" text-anchor="middle" font-size="10" fill="#888">Component resolved from route map</text>
+
+  <!-- Arrow 6→7 -->
+  <line x1="340" y1="280" x2="290" y2="280" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowFlowLeft)"/>
+
+  <!-- Step 7: Render component -->
+  <rect x="80" y="230" width="210" height="100" rx="10" fill="#ffffff" stroke="#6d5bd0" stroke-width="2"/>
+  <text x="185" y="258" text-anchor="middle" font-size="13" font-weight="700" fill="#6d5bd0">7. Render Component</text>
+  <line x1="100" y1="268" x2="270" y2="268" stroke="#d7d1e6" stroke-width="1"/>
+  <text x="185" y="290" text-anchor="middle" font-size="11" fill="#1a1822" font-family="monospace">React.createElement(</text>
+  <text x="185" y="306" text-anchor="middle" font-size="11" fill="#1a1822" font-family="monospace">  SettingsPage, props</text>
+  <text x="185" y="322" text-anchor="middle" font-size="11" fill="#1a1822" font-family="monospace">)</text>
+
+  <!-- Arrow 7→8 (going down) -->
+  <line x1="185" y1="330" x2="185" y2="370" stroke="#6d5bd0" stroke-width="2" marker-end="url(#arrowFlow)"/>
+
+  <!-- Step 8: Update DOM -->
+  <rect x="55" y="370" width="260" height="100" rx="10" fill="#6d5bd0" stroke="#5a4ab5" stroke-width="1.5"/>
+  <text x="185" y="398" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">8. Update DOM</text>
+  <line x1="75" y1="408" x2="295" y2="408" stroke="#8b7bdb" stroke-width="1"/>
+
+  <!-- Mini browser mockup -->
+  <rect x="95" y="418" width="180" height="42" rx="5" fill="#ffffff"/>
+  <rect x="95" y="418" width="180" height="12" rx="5" fill="#e8e4f0"/>
+  <rect x="95" y="426" width="180" height="4" rx="0" fill="#e8e4f0"/>
+  <text x="185" y="425" text-anchor="middle" font-size="6" fill="#6d5bd0" font-family="monospace">app.com/#/settings</text>
+  <text x="185" y="450" text-anchor="middle" font-size="11" font-weight="600" fill="#6d5bd0">Settings Page</text>
+
+  <!-- Timeline annotation at bottom -->
+  <rect x="370" y="380" width="490" height="90" rx="10" fill="#ffffff" stroke="#d7d1e6" stroke-width="1.5"/>
+  <text x="615" y="405" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1822">How It Works Under the Hood</text>
+  <line x1="390" y1="413" x2="840" y2="413" stroke="#d7d1e6" stroke-width="1"/>
+  <circle cx="400" cy="435" r="6" fill="#6d5bd0"/>
+  <text x="415" y="439" font-size="11" fill="#1a1822">Browser natively handles # — no page reload triggered</text>
+  <circle cx="400" cy="457" r="6" fill="#6d5bd0"/>
+  <text x="415" y="461" font-size="11" fill="#1a1822">The hashchange event is the core mechanism enabling SPA routing</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowFlow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6d5bd0"/>
+    </marker>
+    <marker id="arrowFlowLeft" markerWidth="10" markerHeight="7" refX="1" refY="3.5" orient="auto">
+      <polygon points="10 0, 0 3.5, 10 7" fill="#6d5bd0"/>
+    </marker>
+  </defs>
+</svg>
