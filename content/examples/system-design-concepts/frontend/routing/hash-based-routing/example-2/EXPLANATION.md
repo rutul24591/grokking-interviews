@@ -1,0 +1,3 @@
+# Explanation
+
+Normalizes empty fragments.

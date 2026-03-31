@@ -1,0 +1,23 @@
+{
+  "name": "routing-example",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "api": "tsx api/server.ts"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "next": "16.0.0",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^24.3.0",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "tailwindcss": "^4.1.12",
+    "tsx": "^4.19.2",
+    "typescript": "^5.9.2"
+  }
+}
