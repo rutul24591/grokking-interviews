@@ -1,0 +1,65 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Render Props vs Hooks</text>
+  
+  <!-- Render Props -->
+  <rect x="50" y="80" width="400" height="220" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="250" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#92400e">Render Props</text>
+  <text x="250" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#78350f">Function as Prop</text>
+  
+  <rect x="70" y="170" width="360" height="60" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="90" y="195" font-family="monospace" font-size="10" fill="#e2e8f0">&lt;DataFetcher</text>
+  <text x="110" y="215" font-family="monospace" font-size="10" fill="#f59e0b">render={(data) =&gt; &lt;List data={data}/&gt;}</text>
+  <text x="90" y="235" font-family="monospace" font-size="10" fill="#e2e8f0">/&gt;</text>
+  
+  <rect x="70" y="250" width="360" height="40" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="250" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#78350f">✓ Maximum flexibility</text>
+  <text x="250" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#78350f">✗ Callback nesting</text>
+  
+  <!-- Arrow -->
+  <line x1="450" y1="190" x2="500" y2="190" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Hooks -->
+  <rect x="500" y="80" width="370" height="220" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="685" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#065f46">Custom Hooks</text>
+  <text x="685" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#047857">Logic Reuse</text>
+  
+  <rect x="520" y="170" width="330" height="60" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="540" y="195" font-family="monospace" font-size="10" fill="#22c55e">const data = useDataFetcher(url);</text>
+  <text x="540" y="215" font-family="monospace" font-size="10" fill="#e2e8f0">return &lt;List data={data}/&gt;;</text>
+  
+  <rect x="520" y="250" width="330" height="40" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="685" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#047857">✓ Clean syntax</text>
+  <text x="685" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#047857">✓ No nesting</text>
+  
+  <!-- Comparison -->
+  <rect x="50" y="320" width="820" height="210" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="460" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1e293b">Comparison</text>
+  
+  <!-- Render Props Pros/Cons -->
+  <rect x="70" y="380" width="380" height="130" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="260" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1e293b">Render Props</text>
+  <text x="260" y="440" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#16a34a">✓ Flexible rendering control</text>
+  <text x="260" y="465" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#16a34a">✓ Works with any component</text>
+  <text x="260" y="490" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#dc2626">✗ Callback hell with multiple</text>
+  
+  <!-- Hooks Pros/Cons -->
+  <rect x="470" y="380" width="380" height="130" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="660" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1e293b">Custom Hooks</text>
+  <text x="660" y="440" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#16a34a">✓ Clean, flat syntax</text>
+  <text x="660" y="465" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#16a34a">✓ Better type inference</text>
+  <text x="660" y="490" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#dc2626">✗ Requires function component</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="545" width="820" height="25" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="460" y="562" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Prefer hooks for new code. Render props still useful when component needs to control when/how render function is called</text>
+</svg>

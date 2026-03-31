@@ -1,0 +1,62 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Memoization Strategies</text>
+  
+  <!-- React.memo -->
+  <rect x="50" y="80" width="260" height="220" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="180" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1e40af">React.memo</text>
+  <text x="180" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#1e3a8a">Component Memoization</text>
+  
+  <rect x="70" y="170" width="220" height="120" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="180" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Prevents re-render when</text>
+  <text x="180" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">props unchanged</text>
+  <text x="180" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Shallow compares props</text>
+  <text x="180" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Best for pure components</text>
+  
+  <!-- useMemo -->
+  <rect x="330" y="80" width="260" height="220" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="460" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#3730a3">useMemo</text>
+  <text x="460" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#4338ca">Value Memoization</text>
+  
+  <rect x="350" y="170" width="220" height="120" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="460" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Memoizes computed values</text>
+  <text x="460" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Recalculates only when</text>
+  <text x="460" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">dependencies change</text>
+  <text x="460" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Expensive computations</text>
+  
+  <!-- useCallback -->
+  <rect x="610" y="80" width="260" height="220" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="740" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#92400e">useCallback</text>
+  <text x="740" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#78350f">Function Memoization</text>
+  
+  <rect x="630" y="170" width="220" height="120" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="740" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Memoizes function refs</text>
+  <text x="740" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Prevents recreation</text>
+  <text x="740" y="255" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Stable references for</text>
+  <text x="740" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">child components/deps</text>
+  
+  <!-- When to Use -->
+  <rect x="50" y="320" width="820" height="210" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="460" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1e293b">When to Use Each</text>
+  
+  <!-- Use React.memo -->
+  <rect x="70" y="380" width="380" height="130" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="260" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1e293b">Use React.memo When</text>
+  <text x="260" y="445" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475569">• Component renders frequently</text>
+  <text x="260" y="470" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475569">• Props are stable</text>
+  <text x="260" y="495" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475569">• Render is expensive</text>
+  
+  <!-- Use useMemo -->
+  <rect x="470" y="380" width="380" height="130" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="660" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1e293b">Use useMemo/useCallback When</text>
+  <text x="660" y="445" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475569">• Computation is expensive</text>
+  <text x="660" y="470" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475569">• Stable refs needed for deps</text>
+  <text x="660" y="495" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475569">• Passing functions to children</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="545" width="820" height="25" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="460" y="562" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Don't memoize everything. Measure first. Memoization has overhead. Use when benefit exceeds cost</text>
+</svg>

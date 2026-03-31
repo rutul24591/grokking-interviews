@@ -1,0 +1,62 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Controlled vs Uncontrolled Components</text>
+  
+  <!-- Controlled -->
+  <rect x="50" y="80" width="400" height="450" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="250" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#1e40af">Controlled Components</text>
+  <text x="250" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#1e3a8a">State in Parent (React)</text>
+  
+  <!-- Data flow -->
+  <rect x="70" y="170" width="360" height="100" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="250" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Data Flow</text>
+  <text x="250" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Parent state → value prop → Input</text>
+  <text x="250" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Input change → onChange → Parent state</text>
+  
+  <!-- Characteristics -->
+  <rect x="70" y="290" width="360" height="120" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="250" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Characteristics</text>
+  <text x="250" y="350" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475569">✓ Single source of truth</text>
+  <text x="250" y="375" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475569">✓ Real-time validation</text>
+  <text x="250" y="400" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475569">✓ Conditional UI based on value</text>
+  <text x="250" y="425" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475569">✗ Re-renders on every change</text>
+  
+  <!-- Use Cases -->
+  <rect x="70" y="430" width="360" height="90" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="250" y="460" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#92400e">Best For</text>
+  <text x="250" y="485" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">Real-time validation, conditional rendering,</text>
+  <text x="250" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">programmatic value setting</text>
+  
+  <!-- Uncontrolled -->
+  <rect x="470" y="80" width="400" height="450" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="670" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#166534">Uncontrolled Components</text>
+  <text x="670" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#15803d">State in DOM (Input)</text>
+  
+  <!-- Data flow -->
+  <rect x="490" y="170" width="360" height="100" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="670" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Data Flow</text>
+  <text x="670" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">defaultValue → Input (one-time)</text>
+  <text x="670" y="260" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Input manages own state</text>
+  <text x="670" y="285" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Parent reads via ref on submit</text>
+  
+  <!-- Characteristics -->
+  <rect x="490" y="290" width="360" height="120" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="670" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Characteristics</text>
+  <text x="670" y="350" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475569">✓ No re-renders on change</text>
+  <text x="670" y="375" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475569">✓ Better performance for large forms</text>
+  <text x="670" y="400" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475569">✓ Easier non-React integration</text>
+  <text x="670" y="425" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475569">✗ No real-time validation</text>
+  
+  <!-- Use Cases -->
+  <rect x="490" y="430" width="360" height="90" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="670" y="460" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#92400e">Best For</text>
+  <text x="670" y="485" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">Large forms, non-React integration,</text>
+  <text x="670" y="505" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">value only needed on submit</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="545" width="800" height="25" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="562" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Default to controlled for most cases. Use uncontrolled for large forms or non-React integration. Support both modes for reusable components</text>
+</svg>

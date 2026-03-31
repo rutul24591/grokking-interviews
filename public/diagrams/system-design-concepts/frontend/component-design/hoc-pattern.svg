@@ -1,0 +1,76 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrow2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Higher-Order Component Pattern</text>
+  
+  <!-- Original Component -->
+  <rect x="50" y="80" width="200" height="150" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="150" y="120" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e40af">Original</text>
+  <text x="150" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#1e3a8a">Component</text>
+  <text x="150" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1e3a8a">- Renders UI</text>
+  <text x="150" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1e3a8a">- Receives props</text>
+  
+  <!-- Arrow to HOC -->
+  <line x1="250" y1="155" x2="320" y2="155" stroke="#3b82f6" stroke-width="3" marker-end="url(#arrow1)"/>
+  <text x="285" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#3b82f6" font-weight="600">withAuth</text>
+  
+  <!-- HOC Function -->
+  <rect x="330" y="80" width="200" height="150" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="430" y="120" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">HOC Function</text>
+  <text x="430" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#78350f">(withAuth)</text>
+  <text x="430" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">- Takes Component</text>
+  <text x="430" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">- Returns Enhanced</text>
+  
+  <!-- Arrow to Enhanced -->
+  <line x1="530" y1="155" x2="600" y2="155" stroke="#f59e0b" stroke-width="3" marker-end="url(#arrow2)"/>
+  
+  <!-- Enhanced Component -->
+  <rect x="610" y="80" width="240" height="150" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="730" y="120" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#065f46">Enhanced</text>
+  <text x="730" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#047857">Component</text>
+  <text x="730" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857">- Original UI + Auth</text>
+  <text x="730" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#047857">- Injected props</text>
+  
+  <!-- Use Cases -->
+  <rect x="50" y="260" width="800" height="270" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="450" y="295" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1e293b">Common HOC Use Cases</text>
+  
+  <!-- Use Case 1 -->
+  <rect x="70" y="320" width="360" height="90" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="250" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1e293b">Authentication (withAuth)</text>
+  <text x="250" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Checks auth status, redirects if needed,</text>
+  <text x="250" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">injects user prop</text>
+  
+  <!-- Use Case 2 -->
+  <rect x="450" y="320" width="360" height="90" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="630" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1e293b">Data Fetching (withData)</text>
+  <text x="630" y="380" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Fetches data, passes as props,</text>
+  <text x="630" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">handles loading/error states</text>
+  
+  <!-- Use Case 3 -->
+  <rect x="70" y="430" width="360" height="90" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="250" y="460" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1e293b">Performance (withMemo)</text>
+  <text x="250" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Implements shouldComponentUpdate,</text>
+  <text x="250" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">prevents unnecessary renders</text>
+  
+  <!-- Use Case 4 -->
+  <rect x="450" y="430" width="360" height="90" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="630" y="460" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1e293b">Styling (withStyles)</text>
+  <text x="630" y="490" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Injects theme/classNames,</text>
+  <text x="630" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">enables theming</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="545" width="800" height="25" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="562" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">HOC pattern: const Enhanced = withEnhancement(Original). Hooks now preferred for new code, but HOCs still useful for wrapping</text>
+</svg>

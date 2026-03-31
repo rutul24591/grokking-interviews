@@ -1,0 +1,48 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Component Directory Structure</text>
+  
+  <!-- Atoms Folder -->
+  <rect x="50" y="80" width="380" height="100" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="80" y="110" text-anchor="start" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e40af">📁 atoms/</text>
+  <text x="80" y="140" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#1e3a8a">Button.tsx, Input.tsx, Label.tsx, Icon.tsx</text>
+  <text x="80" y="165" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#1e3a8a">No dependencies on other components</text>
+  
+  <!-- Molecules Folder -->
+  <rect x="50" y="195" width="380" height="100" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="80" y="225" text-anchor="start" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#3730a3">📁 molecules/</text>
+  <text x="80" y="255" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#4338ca">SearchForm.tsx, CardHeader.tsx, InputGroup.tsx</text>
+  <text x="80" y="280" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#4338ca">Depends only on atoms</text>
+  
+  <!-- Organisms Folder -->
+  <rect x="50" y="310" width="380" height="100" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="80" y="340" text-anchor="start" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#92400e">📁 organisms/</text>
+  <text x="80" y="370" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#78350f">NavigationBar.tsx, ProductCard.tsx, Footer.tsx</text>
+  <text x="80" y="395" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">Depends on atoms and molecules</text>
+  
+  <!-- Templates Folder -->
+  <rect x="480" y="80" width="380" height="100" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="510" y="110" text-anchor="start" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#065f46">📁 templates/</text>
+  <text x="510" y="140" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#047857">DashboardTemplate.tsx, ArticleTemplate.tsx</text>
+  <text x="510" y="165" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#047857">Depends on organisms, molecules, atoms</text>
+  
+  <!-- Pages Folder -->
+  <rect x="480" y="195" width="380" height="100" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="510" y="225" text-anchor="start" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#166534">📁 pages/</text>
+  <text x="510" y="255" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#15803d">HomePage.tsx, ProductPage.tsx, AboutPage.tsx</text>
+  <text x="510" y="280" text-anchor="start" font-family="system-ui, sans-serif" font-size="10" fill="#15803d">Depends on templates and any level</text>
+  
+  <!-- Dependency Flow -->
+  <rect x="480" y="310" width="380" height="100" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="670" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#1e293b">Dependency Flow</text>
+  
+  <rect x="500" y="360" width="340" height="40" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="670" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">atoms → molecules → organisms → templates → pages</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="545" width="800" height="25" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="562" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Organize by Atomic level to make hierarchy explicit. Prevents circular dependencies and keeps architecture clean</text>
+</svg>

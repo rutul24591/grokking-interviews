@@ -1,0 +1,82 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Component Lifecycle Phases</text>
+  
+  <!-- Mount Phase -->
+  <rect x="50" y="80" width="260" height="450" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="180" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1e40af">Mount</text>
+  <text x="180" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#1e3a8a">Component Creation</text>
+  
+  <rect x="70" y="170" width="220" height="80" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="180" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Initial Render</text>
+  <text x="180" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Component created</text>
+  <text x="180" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Inserted into DOM</text>
+  
+  <rect x="70" y="270" width="220" height="80" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="180" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Optimization</text>
+  <text x="180" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Lazy load components</text>
+  <text x="180" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Defer non-critical work</text>
+  
+  <rect x="70" y="370" width="220" height="80" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="180" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">useEffect</text>
+  <text x="180" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Runs after mount</text>
+  <text x="180" y="445" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">[] dependency array</text>
+  
+  <!-- Update Phase -->
+  <rect x="330" y="80" width="260" height="450" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="460" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#92400e">Update</text>
+  <text x="460" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#78350f">Re-rendering</text>
+  
+  <rect x="350" y="170" width="220" height="80" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="460" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Triggers</text>
+  <text x="460" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Props change</text>
+  <text x="460" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">State change</text>
+  
+  <rect x="350" y="270" width="220" height="80" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="460" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Optimization</text>
+  <text x="460" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">React.memo</text>
+  <text x="460" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">useMemo/useCallback</text>
+  
+  <rect x="350" y="370" width="220" height="80" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="460" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">useEffect</text>
+  <text x="460" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Runs after update</text>
+  <text x="460" y="445" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Based on dependencies</text>
+  
+  <!-- Unmount Phase -->
+  <rect x="610" y="80" width="260" height="450" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="740" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#065f46">Unmount</text>
+  <text x="740" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#047857">Component Removal</text>
+  
+  <rect x="630" y="170" width="220" height="80" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="740" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Cleanup</text>
+  <text x="740" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Remove from DOM</text>
+  <text x="740" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Free resources</text>
+  
+  <rect x="630" y="270" width="220" height="80" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="740" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">Cleanup Tasks</text>
+  <text x="740" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Cancel timers</text>
+  <text x="740" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Remove listeners</text>
+  
+  <rect x="630" y="370" width="220" height="80" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="740" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#1e293b">useEffect Cleanup</text>
+  <text x="740" y="425" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Return cleanup function</text>
+  <text x="740" y="445" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Prevents memory leaks</text>
+  
+  <!-- Arrows between phases -->
+  <line x1="310" y1="305" x2="330" y2="305" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <line x1="590" y1="305" x2="610" y2="305" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="545" width="820" height="25" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="460" y="562" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Mount: Create and insert | Update: Re-render on changes | Unmount: Remove and cleanup. Each phase has optimization opportunities</text>
+</svg>

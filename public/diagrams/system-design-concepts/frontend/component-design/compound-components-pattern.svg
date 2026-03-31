@@ -1,0 +1,63 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Compound Components Pattern</text>
+  
+  <!-- Parent Component -->
+  <rect x="50" y="80" width="350" height="200" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="225" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#92400e">&lt;Select&gt;</text>
+  <text x="225" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#78350f">Parent Component</text>
+  
+  <rect x="70" y="165" width="310" height="100" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="225" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">- Creates Context</text>
+  <text x="225" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">- Manages selected value</text>
+  <text x="225" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">- Provides onChange</text>
+  
+  <!-- Context Arrow -->
+  <path d="M 400 180 L 480 180" fill="none" stroke="#f59e0b" stroke-width="3" marker-end="url(#arrow1)"/>
+  <text x="440" y="170" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#f59e0b" font-weight="600">Context</text>
+  
+  <!-- Child Components -->
+  <rect x="490" y="80" width="360" height="200" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="670" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#065f46">&lt;Option&gt; Children</text>
+  <text x="670" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#047857">Consume Context</text>
+  
+  <rect x="510" y="165" width="320" height="100" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="670" y="195" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">- useContext(SelectContext)</text>
+  <text x="670" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">- Access selected value</text>
+  <text x="670" y="245" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">- Call onChange on click</text>
+  
+  <!-- Usage Example -->
+  <rect x="50" y="300" width="800" height="230" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="450" y="335" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1e293b">Usage Example</text>
+  
+  <rect x="70" y="355" width="760" height="160" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="90" y="385" font-family="monospace" font-size="11" fill="#22c55e">&lt;Select</text>
+  <text x="110" y="405" font-family="monospace" font-size="11" fill="#e2e8f0">value={selectedValue}</text>
+  <text x="110" y="425" font-family="monospace" font-size="11" fill="#e2e8f0">onChange={setValue}</text>
+  <text x="90" y="445" font-family="monospace" font-size="11" fill="#22c55e">&gt;</text>
+  <text x="110" y="465" font-family="monospace" font-size="11" fill="#e2e8f0">&lt;Option value="1"&gt;One&lt;/Option&gt;</text>
+  <text x="110" y="485" font-family="monospace" font-size="11" fill="#e2e8f0">&lt;Option value="2"&gt;Two&lt;/Option&gt;</text>
+  <text x="110" y="505" font-family="monospace" font-size="11" fill="#e2e8f0">&lt;Option value="3"&gt;Three&lt;/Option&gt;</text>
+  <text x="90" y="525" font-family="monospace" font-size="11" fill="#22c55e">&lt;/Select&gt;</text>
+  
+  <!-- Benefits -->
+  <rect x="510" y="355" width="320" height="160" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="670" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1e293b">Benefits</text>
+  <text x="670" y="415" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475569">✓ Flexible child arrangement</text>
+  <text x="670" y="440" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475569">✓ Implicit state sharing</text>
+  <text x="670" y="465" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475569">✓ Clean JSX syntax</text>
+  <text x="670" y="490" text-anchor="start" font-family="system-ui, sans-serif" font-size="11" fill="#475569">✓ Type-safe with TypeScript</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="545" width="800" height="25" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="562" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Compound components: Parent provides context, children consume it. Enables flexible APIs like Select/Option, Accordion/Panel, Tabs/TabList</text>
+</svg>

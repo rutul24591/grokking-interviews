@@ -1,0 +1,59 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Effect Cleanup Patterns</text>
+  
+  <!-- Timer Cleanup -->
+  <rect x="50" y="80" width="400" height="140" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="250" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1e40af">Timer Cleanup</text>
+  
+  <rect x="70" y="135" width="360" height="75" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="90" y="160" font-family="monospace" font-size="10" fill="#22c55e">useEffect(() =&gt; {</text>
+  <text x="110" y="180" font-family="monospace" font-size="10" fill="#e2e8f0">const id = setInterval(...);</text>
+  <text x="110" y="200" font-family="monospace" font-size="10" fill="#f59e0b">return () =&gt; clearInterval(id);</text>
+  <text x="90" y="220" font-family="monospace" font-size="10" fill="#22c55e">}, [])</text>
+  
+  <!-- Event Listener Cleanup -->
+  <rect x="470" y="80" width="400" height="140" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="670" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#3730a3">Event Listener Cleanup</text>
+  
+  <rect x="490" y="135" width="360" height="75" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="510" y="160" font-family="monospace" font-size="10" fill="#22c55e">useEffect(() =&gt; {</text>
+  <text x="530" y="180" font-family="monospace" font-size="10" fill="#e2e8f0">window.addEventListener(...);</text>
+  <text x="530" y="200" font-family="monospace" font-size="10" fill="#f59e0b">return () =&gt; removeEventListener();</text>
+  <text x="510" y="220" font-family="monospace" font-size="10" fill="#22c55e">}, [])</text>
+  
+  <!-- Fetch Abort -->
+  <rect x="50" y="240" width="400" height="140" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="250" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#92400e">Fetch Abort</text>
+  
+  <rect x="70" y="295" width="360" height="75" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="90" y="320" font-family="monospace" font-size="10" fill="#22c55e">useEffect(() =&gt; {</text>
+  <text x="110" y="340" font-family="monospace" font-size="10" fill="#e2e8f0">const ctrl = new AbortController();</text>
+  <text x="110" y="360" font-family="monospace" font-size="10" fill="#f59e0b">return () =&gt; ctrl.abort();</text>
+  <text x="90" y="380" font-family="monospace" font-size="10" fill="#22c55e">}, [])</text>
+  
+  <!-- Subscription Cleanup -->
+  <rect x="470" y="240" width="400" height="140" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="670" y="275" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#065f46">Subscription Cleanup</text>
+  
+  <rect x="490" y="295" width="360" height="75" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="510" y="320" font-family="monospace" font-size="10" fill="#22c55e">useEffect(() =&gt; {</text>
+  <text x="530" y="340" font-family="monospace" font-size="10" fill="#e2e8f0">const sub = store.subscribe(...);</text>
+  <text x="530" y="360" font-family="monospace" font-size="10" fill="#f59e0b">return () =&gt; sub.unsubscribe();</text>
+  <text x="510" y="380" font-family="monospace" font-size="10" fill="#22c55e">}, [])</text>
+  
+  <!-- Memory Leak Prevention -->
+  <rect x="50" y="400" width="820" height="130" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="460" y="435" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1e293b">Memory Leak Prevention</text>
+  
+  <rect x="70" y="455" width="780" height="65" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="460" y="485" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Always cleanup: timers, event listeners, subscriptions, and pending requests</text>
+  <text x="460" y="510" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#475569">Prevents memory leaks, state updates on unmounted components, and duplicate subscriptions</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="545" width="820" height="25" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="460" y="562" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Cleanup runs before effect re-runs and on unmount. Return cleanup function from useEffect to prevent memory leaks</text>
+</svg>

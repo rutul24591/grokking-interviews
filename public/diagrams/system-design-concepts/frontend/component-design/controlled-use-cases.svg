@@ -1,0 +1,55 @@
+<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="550" rx="12" fill="#ffffff"/>
+  
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#1a1a2e">Controlled vs Uncontrolled Use Cases</text>
+  
+  <!-- Controlled Use Cases -->
+  <rect x="50" y="80" width="400" height="450" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="250" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#1e40af">Use Controlled When</text>
+  
+  <!-- Use Case 1 -->
+  <rect x="70" y="140" width="360" height="90" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="250" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Real-Time Validation</text>
+  <text x="250" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Validate on every keystroke</text>
+  <text x="250" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Show instant feedback</text>
+  
+  <!-- Use Case 2 -->
+  <rect x="70" y="245" width="360" height="90" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="250" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Conditional UI</text>
+  <text x="250" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Show/hide fields based on value</text>
+  <text x="250" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Dynamic form behavior</text>
+  
+  <!-- Use Case 3 -->
+  <rect x="70" y="350" width="360" height="90" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="250" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Programmatic Control</text>
+  <text x="250" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Set value from external state</text>
+  <text x="250" y="435" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Reset form programmatically</text>
+  
+  <!-- Uncontrolled Use Cases -->
+  <rect x="470" y="80" width="380" height="450" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <text x="660" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#166534">Use Uncontrolled When</text>
+  
+  <!-- Use Case 1 -->
+  <rect x="490" y="140" width="340" height="90" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="660" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Large Forms</text>
+  <text x="660" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">50+ inputs, performance matters</text>
+  <text x="660" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Value only needed on submit</text>
+  
+  <!-- Use Case 2 -->
+  <rect x="490" y="245" width="340" height="90" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="660" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Non-React Integration</text>
+  <text x="660" y="310" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Third-party form libraries</text>
+  <text x="660" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">jQuery plugins, etc.</text>
+  
+  <!-- Use Case 3 -->
+  <rect x="490" y="350" width="340" height="90" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="660" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#1e293b">Simple Forms</text>
+  <text x="660" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Login, search, contact forms</text>
+  <text x="660" y="435" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">No validation needed</text>
+  
+  <!-- Bottom note -->
+  <rect x="50" y="545" width="800" height="25" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="450" y="562" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#475569">Default to controlled for most cases. Use uncontrolled for large forms, non-React integration, or when value only needed on submit</text>
+</svg>
